@@ -1,0 +1,62 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import { promises as fs } from "node:fs";
+import path from "node:path";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import GpxMap from "@/components/GpxMap";
+import ElevationChart from "@/components/ElevationChart";
+import { parseGpx } from "@/lib/gpx";
+import { useTranslations, pathWithLang } from "@/i18n/ui";
+
+export async function getStaticPaths() {
+  const all = await getCollection("hike", (p) => p.data.lang === "en" && !p.data.draft);
+  return all.map((entry) => ({ params: { slug: entry.data.translationKey }, props: { entry } }));
+}
+
+interface Props { entry: CollectionEntry<"hike"> }
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const lang = "en" as const;
+const t = useTranslations(lang);
+
+let stats: ReturnType<typeof parseGpx> | null = null;
+if (entry.data.gpx) {
+  try {
+    const xml = await fs.readFile(path.resolve(process.cwd(), "public", "gpx", entry.data.gpx), "utf-8");
+    stats = parseGpx(xml);
+  } catch {}
+}
+
+const distanceKm = entry.data.distanceKm ?? stats?.distanceKm;
+const elevationGainM = entry.data.elevationGainM ?? stats?.elevationGainM;
+const diffLabel = { easy: "Easy", moderate: "Moderate", hard: "Hard", expert: "Expert" };
+---
+
+<BaseLayout title={entry.data.title} description={entry.data.description}>
+  <article class="max-w-3xl mx-auto px-5 pt-12 pb-16">
+    <header class="mb-6">
+      <a href={pathWithLang("/hike", lang)} class="text-sm text-section-hike hover:underline">← {t("section.hike.title")}</a>
+      <h1 class="mt-3 text-3xl sm:text-4xl font-bold tracking-tight leading-tight">{entry.data.title}</h1>
+      <div class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-[var(--text-tertiary)]">
+        <time>{entry.data.date.toISOString().slice(0, 10)}</time><span>·</span><span>{entry.data.location}</span>
+        <span class="px-2 py-0.5 rounded-full bg-[var(--bg-soft)] text-xs">{diffLabel[entry.data.difficulty]}</span>
+      </div>
+      <div class="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {distanceKm != null && <div class="rounded-lg border border-[var(--border)] px-3 py-2"><div class="text-xs text-[var(--text-tertiary)]">Distance</div><div class="text-base font-semibold">{distanceKm} km</div></div>}
+        {elevationGainM != null && <div class="rounded-lg border border-[var(--border)] px-3 py-2"><div class="text-xs text-[var(--text-tertiary)]">Gain</div><div class="text-base font-semibold">+{elevationGainM} m</div></div>}
+        {entry.data.durationHours != null && <div class="rounded-lg border border-[var(--border)] px-3 py-2"><div class="text-xs text-[var(--text-tertiary)]">Duration</div><div class="text-base font-semibold">{entry.data.durationHours} h</div></div>}
+        {stats && <div class="rounded-lg border border-[var(--border)] px-3 py-2"><div class="text-xs text-[var(--text-tertiary)]">Elevation</div><div class="text-base font-semibold">{stats.minEle}–{stats.maxEle} m</div></div>}
+      </div>
+    </header>
+    {stats && stats.points.length > 1 && (
+      <>
+        <GpxMap points={stats.points} client:only="react" />
+        <div class="mt-4 rounded-xl border border-[var(--border)] p-3">
+          <h3 class="text-sm font-semibold mb-2 text-[var(--text-secondary)]">Elevation</h3>
+          <ElevationChart points={stats.points} client:visible />
+        </div>
+      </>
+    )}
+    {entry.body.trim().length > 0 && <div class="prose prose-neutral dark:prose-invert max-w-none mt-8 prose-headings:tracking-tight prose-a:text-section-hike"><Content /></div>}
+  </article>
+</BaseLayout>

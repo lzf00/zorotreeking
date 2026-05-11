@@ -1,0 +1,113 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import NetValueChart from "@/components/NetValueChart";
+import HoldingsPie from "@/components/HoldingsPie";
+import { useTranslations, pathWithLang } from "@/i18n/ui";
+
+const lang = "zh" as const;
+const t = useTranslations(lang);
+
+const snapshots = (await getCollection("invest-portfolio"))
+  .sort((a, b) => a.data.period.localeCompare(b.data.period));
+
+const baseValue = snapshots[0]?.data.totalValue ?? 1;
+const nvSeries = snapshots.map((s) => ({
+  period: s.data.period,
+  totalValue: s.data.totalValue,
+  netValue: Math.round((s.data.totalValue / baseValue) * 10000) / 10000,
+}));
+
+const latest = snapshots[snapshots.length - 1]?.data;
+const totalReturn = latest ? ((latest.totalValue / baseValue - 1) * 100).toFixed(2) : "0.00";
+
+const posts = (await getCollection("invest", (p) => p.data.lang === lang && !p.data.draft))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<BaseLayout title={t("section.invest.title")} description={t("section.invest.desc")}>
+  <section class="max-w-5xl mx-auto px-5 pt-12 pb-6">
+    <h1 class="text-3xl font-bold tracking-tight text-section-invest">{t("section.invest.title")}</h1>
+    <p class="mt-2 text-[var(--text-secondary)]">{t("section.invest.desc")}</p>
+  </section>
+
+  {latest && (
+    <section class="max-w-5xl mx-auto px-5">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+        <div class="rounded-lg border border-[var(--border)] p-3">
+          <div class="text-xs text-[var(--text-tertiary)]">截至</div>
+          <div class="text-sm font-semibold">{latest.period}</div>
+        </div>
+        <div class="rounded-lg border border-[var(--border)] p-3">
+          <div class="text-xs text-[var(--text-tertiary)]">总市值</div>
+          <div class="text-base font-semibold">¥{latest.totalValue.toLocaleString()}</div>
+        </div>
+        <div class="rounded-lg border border-[var(--border)] p-3">
+          <div class="text-xs text-[var(--text-tertiary)]">累计收益</div>
+          <div class:list={["text-base font-semibold", parseFloat(totalReturn) >= 0 ? "text-section-invest" : "text-green-600"]}>
+            {parseFloat(totalReturn) >= 0 ? "+" : ""}{totalReturn}%
+          </div>
+        </div>
+        <div class="rounded-lg border border-[var(--border)] p-3">
+          <div class="text-xs text-[var(--text-tertiary)]">持仓数</div>
+          <div class="text-base font-semibold">{latest.holdings.length}</div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div class="rounded-xl border border-[var(--border)] p-4">
+          <h3 class="text-sm font-semibold mb-2">净值曲线（基期 = {snapshots[0].data.period}）</h3>
+          <NetValueChart data={nvSeries} client:visible />
+        </div>
+        <div class="rounded-xl border border-[var(--border)] p-4">
+          <h3 class="text-sm font-semibold mb-2">当前持仓分布</h3>
+          <HoldingsPie holdings={latest.holdings} client:visible />
+        </div>
+      </div>
+
+      <div class="mt-6 rounded-xl border border-[var(--border)] overflow-hidden">
+        <table class="w-full text-sm">
+          <thead class="bg-[var(--bg-soft)] text-xs text-[var(--text-secondary)]">
+            <tr>
+              <th class="text-left p-3 font-semibold">代码</th>
+              <th class="text-left p-3 font-semibold">名称</th>
+              <th class="text-right p-3 font-semibold">股数</th>
+              <th class="text-right p-3 font-semibold">现价</th>
+              <th class="text-right p-3 font-semibold">市值</th>
+              <th class="text-right p-3 font-semibold">权重</th>
+            </tr>
+          </thead>
+          <tbody>
+            {latest.holdings.map((h) => (
+              <tr class="border-t border-[var(--border)]">
+                <td class="p-3 font-mono text-xs">{h.symbol}</td>
+                <td class="p-3">{h.name}</td>
+                <td class="p-3 text-right tabular-nums">{h.shares.toLocaleString()}</td>
+                <td class="p-3 text-right tabular-nums">{h.lastPrice.toFixed(2)}</td>
+                <td class="p-3 text-right tabular-nums">¥{h.marketValue.toLocaleString()}</td>
+                <td class="p-3 text-right tabular-nums">{(h.weight * 100).toFixed(1)}%</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  )}
+
+  <section class="max-w-5xl mx-auto px-5 mt-10">
+    <h2 class="text-xl font-semibold mb-4">复盘</h2>
+    {posts.length === 0 ? <p class="text-[var(--text-tertiary)]">还没有复盘文章</p> : (
+      <ul class="divide-y divide-[var(--border)]">
+        {posts.map((p) => (
+          <li class="py-4">
+            <a href={pathWithLang(`/invest/${p.data.translationKey}`, lang)} class="block group">
+              <div class="text-xs text-[var(--text-tertiary)] mb-1"><time>{p.data.date.toISOString().slice(0, 10)}</time></div>
+              <h3 class="text-base font-semibold group-hover:text-section-invest transition-colors">{p.data.title}</h3>
+              {p.data.description && <p class="mt-1 text-sm text-[var(--text-secondary)]">{p.data.description}</p>}
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </section>
+</BaseLayout>

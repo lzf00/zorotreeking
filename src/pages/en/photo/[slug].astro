@@ -1,0 +1,36 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PhotoGallery from "@/components/PhotoGallery";
+import { useTranslations, pathWithLang } from "@/i18n/ui";
+import { loadPhotoManifest } from "@/lib/photo-manifests";
+
+export async function getStaticPaths() {
+  const all = await getCollection("photo", (p) => p.data.lang === "en" && !p.data.draft);
+  return all.map((entry) => ({ params: { slug: entry.data.translationKey }, props: { entry } }));
+}
+
+interface Props { entry: CollectionEntry<"photo"> }
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const lang = "en" as const;
+const t = useTranslations(lang);
+const photos = loadPhotoManifest(entry.data.manifest);
+---
+
+<BaseLayout title={entry.data.title} description={entry.data.description}>
+  <article class="max-w-5xl mx-auto px-5 pt-12 pb-16">
+    <header class="mb-6">
+      <a href={pathWithLang("/photo", lang)} class="text-sm text-section-photo hover:underline">← {t("section.photo.title")}</a>
+      <h1 class="mt-3 text-3xl sm:text-4xl font-bold tracking-tight leading-tight">{entry.data.title}</h1>
+      <div class="mt-2 flex items-center gap-3 text-sm text-[var(--text-tertiary)]">
+        <time>{entry.data.date.toISOString().slice(0, 10)}</time>
+        {entry.data.location && <><span>·</span><span>{entry.data.location}</span></>}
+        {entry.data.cameraSummary && <><span>·</span><span>{entry.data.cameraSummary}</span></>}
+        <span>·</span><span>{photos.length} photos</span>
+      </div>
+    </header>
+    {entry.body.trim().length > 0 && <div class="prose prose-neutral dark:prose-invert max-w-none mb-8"><Content /></div>}
+    {photos.length > 0 ? <PhotoGallery photos={photos} galleryId={`gallery-${entry.data.translationKey}`} client:only="react" /> : <p class="text-center text-[var(--text-tertiary)] py-12">manifest not found</p>}
+  </article>
+</BaseLayout>

@@ -1,0 +1,55 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import NetValueChart from "@/components/NetValueChart";
+import HoldingsPie from "@/components/HoldingsPie";
+import { useTranslations, pathWithLang } from "@/i18n/ui";
+
+const lang = "en" as const;
+const t = useTranslations(lang);
+
+const snapshots = (await getCollection("invest-portfolio")).sort((a, b) => a.data.period.localeCompare(b.data.period));
+const baseValue = snapshots[0]?.data.totalValue ?? 1;
+const nvSeries = snapshots.map((s) => ({ period: s.data.period, totalValue: s.data.totalValue, netValue: Math.round((s.data.totalValue / baseValue) * 10000) / 10000 }));
+const latest = snapshots[snapshots.length - 1]?.data;
+const totalReturn = latest ? ((latest.totalValue / baseValue - 1) * 100).toFixed(2) : "0.00";
+
+const posts = (await getCollection("invest", (p) => p.data.lang === lang && !p.data.draft)).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<BaseLayout title={t("section.invest.title")} description={t("section.invest.desc")}>
+  <section class="max-w-5xl mx-auto px-5 pt-12 pb-6">
+    <h1 class="text-3xl font-bold tracking-tight text-section-invest">{t("section.invest.title")}</h1>
+    <p class="mt-2 text-[var(--text-secondary)]">{t("section.invest.desc")}</p>
+  </section>
+  {latest && (
+    <section class="max-w-5xl mx-auto px-5">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+        <div class="rounded-lg border border-[var(--border)] p-3"><div class="text-xs text-[var(--text-tertiary)]">As of</div><div class="text-sm font-semibold">{latest.period}</div></div>
+        <div class="rounded-lg border border-[var(--border)] p-3"><div class="text-xs text-[var(--text-tertiary)]">Total value</div><div class="text-base font-semibold">¥{latest.totalValue.toLocaleString()}</div></div>
+        <div class="rounded-lg border border-[var(--border)] p-3"><div class="text-xs text-[var(--text-tertiary)]">Total return</div><div class:list={["text-base font-semibold", parseFloat(totalReturn) >= 0 ? "text-section-invest" : "text-green-600"]}>{parseFloat(totalReturn) >= 0 ? "+" : ""}{totalReturn}%</div></div>
+        <div class="rounded-lg border border-[var(--border)] p-3"><div class="text-xs text-[var(--text-tertiary)]">Positions</div><div class="text-base font-semibold">{latest.holdings.length}</div></div>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div class="rounded-xl border border-[var(--border)] p-4"><h3 class="text-sm font-semibold mb-2">Net value (base = {snapshots[0].data.period})</h3><NetValueChart data={nvSeries} client:visible /></div>
+        <div class="rounded-xl border border-[var(--border)] p-4"><h3 class="text-sm font-semibold mb-2">Holdings</h3><HoldingsPie holdings={latest.holdings} client:visible /></div>
+      </div>
+    </section>
+  )}
+  <section class="max-w-5xl mx-auto px-5 mt-10">
+    <h2 class="text-xl font-semibold mb-4">Reviews</h2>
+    {posts.length === 0 ? <p class="text-[var(--text-tertiary)]">No reviews yet</p> : (
+      <ul class="divide-y divide-[var(--border)]">
+        {posts.map((p) => (
+          <li class="py-4">
+            <a href={pathWithLang(`/invest/${p.data.translationKey}`, lang)} class="block group">
+              <div class="text-xs text-[var(--text-tertiary)] mb-1"><time>{p.data.date.toISOString().slice(0, 10)}</time></div>
+              <h3 class="text-base font-semibold group-hover:text-section-invest transition-colors">{p.data.title}</h3>
+              {p.data.description && <p class="mt-1 text-sm text-[var(--text-secondary)]">{p.data.description}</p>}
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </section>
+</BaseLayout>

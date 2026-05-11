@@ -1,38 +1,35 @@
 import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
-import sitemap from "@astrojs/sitemap";
 import tailwind from "@astrojs/tailwind";
 import react from "@astrojs/react";
-import cloudflare from "@astrojs/cloudflare";
+import rehypeSlug from "rehype-slug";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
 
-// 主域名（带 protocol，sitemap / OG / RSS 需要绝对 URL）
 const SITE = "https://www.zorotreeking.online";
 
+// 静态输出。子域名 rewrite 由 functions/_middleware.ts 在 Cloudflare Pages 边缘处理，
+// 不依赖 Astro 的 cloudflare adapter（adapter 仅 SSR 模式需要）。
 export default defineConfig({
   site: SITE,
-  output: "hybrid",
-  adapter: cloudflare({
-    platformProxy: { enabled: true },
-  }),
+  output: "static",
   integrations: [
     mdx(),
     tailwind({ applyBaseStyles: false }),
     react(),
-    sitemap({
-      i18n: {
-        defaultLocale: "zh",
-        locales: { zh: "zh-CN", en: "en" },
-      },
-    }),
   ],
   i18n: {
     defaultLocale: "zh",
     locales: ["zh", "en"],
     routing: { prefixDefaultLocale: false },
   },
-  vite: {
-    ssr: {
-      external: ["node:async_hooks"],
+  markdown: {
+    shikiConfig: {
+      themes: { light: "github-light", dark: "github-dark" },
+      wrap: true,
     },
+    rehypePlugins: [
+      rehypeSlug,
+      [rehypeAutolinkHeadings, { behavior: "wrap", properties: { className: ["heading-anchor"] } }],
+    ],
   },
 });

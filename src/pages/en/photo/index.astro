@@ -1,0 +1,46 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { useTranslations, pathWithLang } from "@/i18n/ui";
+import { loadPhotoManifest } from "@/lib/photo-manifests";
+
+const lang = "en" as const;
+const t = useTranslations(lang);
+const albums = (await getCollection("photo", (p) => p.data.lang === lang && !p.data.draft))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const enriched = albums.map((album) => {
+  const manifest = loadPhotoManifest(album.data.manifest);
+  return { album, cover: manifest[0]?.thumb, count: manifest.length };
+});
+---
+
+<BaseLayout title={t("section.photo.title")} description={t("section.photo.desc")}>
+  <section class="max-w-6xl mx-auto px-5 pt-12 pb-6">
+    <h1 class="text-3xl font-bold tracking-tight text-section-photo">{t("section.photo.title")}</h1>
+    <p class="mt-2 text-[var(--text-secondary)]">{t("section.photo.desc")}</p>
+  </section>
+  <section class="max-w-6xl mx-auto px-5">
+    {enriched.length === 0 ? <p class="py-12 text-center text-[var(--text-tertiary)]">No albums yet</p> : (
+      <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {enriched.map(({ album, cover, count }) => (
+          <li>
+            <a href={pathWithLang(`/photo/${album.data.translationKey}`, lang)} class="group block rounded-xl overflow-hidden border border-[var(--border)] hover:border-section-photo/50 transition-colors">
+              <div class="aspect-[4/3] bg-[var(--bg-soft)] overflow-hidden">
+                {cover ? <img src={cover} alt={album.data.title} loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" /> : <div class="w-full h-full grid place-items-center text-[var(--text-tertiary)]">—</div>}
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold tracking-tight group-hover:text-section-photo transition-colors">{album.data.title}</h3>
+                <div class="mt-1 flex items-center gap-2 text-xs text-[var(--text-tertiary)]">
+                  <time>{album.data.date.toISOString().slice(0, 10)}</time>
+                  <span>·</span><span>{count} photos</span>
+                  {album.data.location && <><span>·</span><span>{album.data.location}</span></>}
+                </div>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </section>
+</BaseLayout>
