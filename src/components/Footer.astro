@@ -1,0 +1,12 @@
+---
+import { getLangFromUrl, useTranslations } from "@/i18n/ui";
+const t = useTranslations(getLangFromUrl(Astro.url));
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-24 border-t border-[var(--border)]">
+  <div class="max-w-6xl mx-auto px-5 py-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-[var(--text-tertiary)]">
+    <p>© {year} {t("site.title")} · {t("site.tagline")}</p>
+    <p>{t("footer.builtWith")}</p>
+  </div>
+</footer>

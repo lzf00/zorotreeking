@@ -1,0 +1,34 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { useTranslations, pathWithLang } from "@/i18n/ui";
+
+const lang = "en" as const;
+const t = useTranslations(lang);
+const posts = (await getCollection("ai", p => p.data.lang === lang && !p.data.draft))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<BaseLayout title={t("section.ai.title")} description={t("section.ai.desc")}>
+  <section class="max-w-3xl mx-auto px-5 pt-12 pb-6">
+    <h1 class="text-3xl font-bold tracking-tight text-section-ai">{t("section.ai.title")}</h1>
+    <p class="mt-2 text-[var(--text-secondary)]">{t("section.ai.desc")}</p>
+  </section>
+  <section class="max-w-3xl mx-auto px-5">
+    <ul class="divide-y divide-[var(--border)]">
+      {posts.map(p => (
+        <li class="py-5">
+          <a href={pathWithLang(`/ai/${p.data.translationKey}`, lang)} class="block group">
+            <div class="flex items-center gap-2 text-xs text-[var(--text-tertiary)] mb-1">
+              <time>{p.data.date.toISOString().slice(0, 10)}</time>
+              {p.data.tags.slice(0, 3).map(tag => <span class="px-1.5 py-0.5 rounded bg-[var(--bg-soft)]">#{tag}</span>)}
+            </div>
+            <h2 class="text-lg font-semibold group-hover:text-section-ai transition-colors">{p.data.title}</h2>
+            {p.data.description && <p class="mt-1 text-sm text-[var(--text-secondary)] line-clamp-2">{p.data.description}</p>}
+          </a>
+        </li>
+      ))}
+      {posts.length === 0 && <li class="py-12 text-center text-[var(--text-tertiary)]">No posts yet</li>}
+    </ul>
+  </section>
+</BaseLayout>

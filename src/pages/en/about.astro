@@ -1,0 +1,20 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { useTranslations } from "@/i18n/ui";
+const t = useTranslations("en");
+---
+<BaseLayout title={t("nav.about")}>
+  <article class="max-w-prose mx-auto px-5 pt-16 pb-16">
+    <h1 class="text-3xl font-bold tracking-tight mb-6">About</h1>
+    <div class="prose prose-neutral dark:prose-invert max-w-none">
+      <p>Welcome to ZoroTreeking — notes, data and images across four interests of mine: AI, investing, photography and hiking.</p>
+      <ul>
+        <li><strong>AI Learning</strong> — papers, tools, applications and thoughts</li>
+        <li><strong>Investment</strong> — fully transparent holdings and reviews</li>
+        <li><strong>Photography</strong> — albums by theme / location / year</li>
+        <li><strong>Hiking</strong> — routes, GPX tracks, elevation and trip logs</li>
+      </ul>
+      <p class="text-sm text-[var(--text-secondary)]">Open-sourced on GitHub, built with Astro, deployed on Cloudflare Pages.</p>
+    </div>
+  </article>
+</BaseLayout>

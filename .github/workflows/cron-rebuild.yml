@@ -1,0 +1,24 @@
+name: Daily rebuild
+
+# 每个工作日北京时间 15:30（A 股收盘后）触发 Cloudflare Pages 重新构建，
+# 使投资栏目的实时行情数据更新到站点。
+# UTC 07:30 = 北京 15:30；周一-周五运行。
+on:
+  schedule:
+    - cron: "30 7 * * 1-5"
+  workflow_dispatch: {}
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Cloudflare Pages deploy hook
+        env:
+          DEPLOY_HOOK: ${{ secrets.CF_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$DEPLOY_HOOK" ]; then
+            echo "::error::CF_DEPLOY_HOOK secret is not set. Add it in Settings → Secrets → Actions."
+            exit 1
+          fi
+          curl -fsSL -X POST "$DEPLOY_HOOK"
+          echo "Triggered Cloudflare Pages rebuild."

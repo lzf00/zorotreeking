@@ -1,0 +1,72 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import SectionCard from "@/components/SectionCard.astro";
+import { useTranslations, pathWithLang, defaultLang } from "@/i18n/ui";
+
+const lang = defaultLang;
+const t = useTranslations(lang);
+
+const [aiPosts, investPosts, photoAlbums, hikes] = await Promise.all([
+  getCollection("ai", (p) => p.data.lang === lang && !p.data.draft),
+  getCollection("invest", (p) => p.data.lang === lang && !p.data.draft),
+  getCollection("photo", (p) => p.data.lang === lang && !p.data.draft),
+  getCollection("hike", (p) => p.data.lang === lang && !p.data.draft),
+]);
+
+const latest = [
+  ...aiPosts.map(p => ({ ...p, section: "ai" as const })),
+  ...investPosts.map(p => ({ ...p, section: "invest" as const })),
+  ...photoAlbums.map(p => ({ ...p, section: "photo" as const })),
+  ...hikes.map(p => ({ ...p, section: "hike" as const })),
+]
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 6);
+
+const sectionLabel = {
+  ai: t("nav.ai"),
+  invest: t("nav.invest"),
+  photo: t("nav.photo"),
+  hike: t("nav.hike"),
+};
+---
+
+<BaseLayout>
+  <section class="max-w-6xl mx-auto px-5 pt-16 pb-10">
+    <h1 class="text-4xl sm:text-5xl font-bold tracking-tight leading-tight">
+      {t("site.title")}
+    </h1>
+    <p class="mt-4 text-lg text-[var(--text-secondary)]">{t("site.tagline")}</p>
+  </section>
+
+  <section class="max-w-6xl mx-auto px-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <SectionCard href={pathWithLang("/ai", lang)}     title={t("section.ai.title")}     desc={t("section.ai.desc")}     accent="ai"     count={aiPosts.length}     countLabel="篇" />
+    <SectionCard href={pathWithLang("/invest", lang)} title={t("section.invest.title")} desc={t("section.invest.desc")} accent="invest" count={investPosts.length} countLabel="篇" />
+    <SectionCard href={pathWithLang("/photo", lang)}  title={t("section.photo.title")}  desc={t("section.photo.desc")}  accent="photo"  count={photoAlbums.length}  countLabel="组" />
+    <SectionCard href={pathWithLang("/hike", lang)}   title={t("section.hike.title")}   desc={t("section.hike.desc")}   accent="hike"   count={hikes.length}        countLabel="条" />
+  </section>
+
+  {latest.length > 0 && (
+    <section class="max-w-6xl mx-auto px-5 mt-16">
+      <h2 class="text-xl font-semibold mb-5">{t("home.latest")}</h2>
+      <ul class="divide-y divide-[var(--border)]">
+        {latest.map(p => (
+          <li class="py-3 flex items-center gap-4">
+            <span class:list={["text-xs px-2 py-0.5 rounded-full shrink-0", {
+              "bg-blue-500/10 text-blue-600": p.section === "ai",
+              "bg-red-500/10 text-red-600": p.section === "invest",
+              "bg-violet-500/10 text-violet-600": p.section === "photo",
+              "bg-green-500/10 text-green-600": p.section === "hike",
+            }]}>
+              {sectionLabel[p.section]}
+            </span>
+            <a href={pathWithLang(`/${p.section === "invest" ? "invest" : p.section}/${p.data.translationKey}`, lang)} class="flex-1 truncate hover:underline">
+              {p.data.title}
+            </a>
+            <time class="text-xs text-[var(--text-tertiary)] shrink-0">{p.data.date.toISOString().slice(0, 10)}</time>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+</BaseLayout>

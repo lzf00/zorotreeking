@@ -1,0 +1,30 @@
+---
+lang: zh
+translationKey: hello-world
+title: 站点上线：MDX + Astro 起手式
+description: 第一篇文章，用来验证 MDX 渲染、代码块、行内组件、双语切换是否正常。
+date: 2026-05-11
+tags: [meta, astro, mdx]
+category: thoughts
+---
+
+## 为什么用 Astro
+
+> 静态优先、岛屿架构、零默认 JS——对于一个内容驱动的个人站，这套组合的写作摩擦最低。
+
+代码块测试：
+
+```ts
+function fib(n: number): number {
+  if (n < 2) return n;
+  return fib(n - 1) + fib(n - 2);
+}
+```
+
+行内 `code` 也能 work。**加粗**、*斜体*、[链接](https://astro.build) 都自然渲染。
+
+## 下一步
+
+1. 接入 Giscus 评论
+2. 加 RSS 与 sitemap
+3. 写第一篇真正的 AI 笔记

@@ -1,0 +1,32 @@
+---
+interface Props {
+  href: string;
+  title: string;
+  desc: string;
+  accent: "ai" | "invest" | "photo" | "hike";
+  count?: number;
+  countLabel?: string;
+}
+const { href, title, desc, accent, count, countLabel } = Astro.props;
+const accentClass = {
+  ai: "from-blue-500/15 to-blue-500/0 hover:border-blue-500/40",
+  invest: "from-red-500/15 to-red-500/0 hover:border-red-500/40",
+  photo: "from-violet-500/15 to-violet-500/0 hover:border-violet-500/40",
+  hike: "from-green-500/15 to-green-500/0 hover:border-green-500/40",
+}[accent];
+---
+
+<a href={href} class:list={[
+  "group relative block rounded-2xl border border-[var(--border)] p-6 overflow-hidden",
+  "bg-gradient-to-br", accentClass,
+  "transition-all hover:shadow-lg hover:-translate-y-0.5",
+]}>
+  <div class="flex items-start justify-between mb-2">
+    <h3 class="text-lg font-semibold tracking-tight">{title}</h3>
+    {count !== undefined && (
+      <span class="text-xs text-[var(--text-tertiary)]">{count} {countLabel}</span>
+    )}
+  </div>
+  <p class="text-sm text-[var(--text-secondary)] leading-relaxed">{desc}</p>
+  <div class="mt-4 text-sm font-medium text-[var(--text-secondary)] group-hover:text-[var(--text)] transition-colors">→</div>
+</a>
