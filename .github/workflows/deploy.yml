@@ -47,9 +47,12 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
-          echo "$SSH_DEPLOY_KEY" > ~/.ssh/deploy_key
+          # SSH_DEPLOY_KEY 是 base64 编码的单行字符串；解码后才是 OpenSSH 私钥
+          echo "$SSH_DEPLOY_KEY" | base64 -d > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
           ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+          # 防止 secret 在日志里漏，但快速 sanity check：开头应是 ----BEGIN
+          /usr/bin/head -c 30 ~/.ssh/deploy_key && echo "..."
 
       - name: Rsync dist → server
         run: |
