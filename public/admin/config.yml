@@ -1,0 +1,212 @@
+# Decap CMS 配置（基于 GitHub 后端 + Cloudflare Worker OAuth 代理）
+# 部署 Worker 后，把下面 base_url 改成 Worker 实际 URL
+
+backend:
+  name: github
+  repo: lzf00/zorotreeking
+  branch: main
+  base_url: https://decap-oauth.PLACEHOLDER.workers.dev   # ← 部署 Worker 后改这里
+  auth_endpoint: auth
+  commit_messages:
+    create: "Create {{collection}} '{{slug}}'"
+    update: "Update {{collection}} '{{slug}}'"
+    delete: "Delete {{collection}} '{{slug}}'"
+    uploadMedia: "Upload media '{{path}}'"
+    deleteMedia: "Delete media '{{path}}'"
+
+# 编辑器本地化
+locale: zh_Hans
+
+# 站点 URL（用于"预览"按钮）
+site_url: https://www.zorotreeking.online
+display_url: https://www.zorotreeking.online
+logo_url: /favicon.svg
+
+# 媒体文件上传位置
+media_folder: public/photos/uploads
+public_folder: /photos/uploads
+
+# 是否启用编辑工作流（pull request 模式）。简化起见，关闭，直接推 main
+publish_mode: simple
+
+# 内容集合
+collections:
+  # ─── AI 学习（中文 + 英文分两组，更清爽） ───
+  - name: ai-zh
+    label: "AI 学习 · 中文"
+    label_singular: "AI 文章"
+    folder: src/content/ai
+    create: true
+    filter: { field: lang, value: zh }
+    slug: "{{slug}}.zh"
+    extension: mdx
+    format: frontmatter
+    summary: "{{title}} · {{date | date('YYYY-MM-DD')}}"
+    fields:
+      - { label: 语言, name: lang, widget: hidden, default: zh }
+      - { label: 跨语言关联 Key（中英文用同一个）, name: translationKey, widget: string, hint: "例：hello-world，留空将自动用文件名" }
+      - { label: 标题, name: title, widget: string }
+      - { label: 描述, name: description, widget: text, required: false }
+      - { label: 发布日期, name: date, widget: datetime, format: "YYYY-MM-DDTHH:mm:ssZ", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: 更新日期, name: updated, widget: datetime, required: false, format: "YYYY-MM-DDTHH:mm:ssZ", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: 标签, name: tags, widget: list, default: [], required: false }
+      - { label: 分类, name: category, widget: select, options: ["basics", "paper", "tool", "applied", "thoughts"], default: thoughts }
+      - { label: 封面图（可选 URL）, name: cover, widget: string, required: false }
+      - { label: 草稿, name: draft, widget: boolean, default: false }
+      - { label: 正文（Markdown / MDX）, name: body, widget: markdown }
+
+  - name: ai-en
+    label: "AI 学习 · English"
+    folder: src/content/ai
+    create: true
+    filter: { field: lang, value: en }
+    slug: "{{slug}}.en"
+    extension: mdx
+    format: frontmatter
+    fields:
+      - { label: 语言, name: lang, widget: hidden, default: en }
+      - { label: translationKey, name: translationKey, widget: string }
+      - { label: Title, name: title, widget: string }
+      - { label: Description, name: description, widget: text, required: false }
+      - { label: Date, name: date, widget: datetime, format: "YYYY-MM-DDTHH:mm:ssZ", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: Updated, name: updated, widget: datetime, required: false, format: "YYYY-MM-DDTHH:mm:ssZ", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: Tags, name: tags, widget: list, default: [], required: false }
+      - { label: Category, name: category, widget: select, options: ["basics", "paper", "tool", "applied", "thoughts"], default: thoughts }
+      - { label: Cover, name: cover, widget: string, required: false }
+      - { label: Draft, name: draft, widget: boolean, default: false }
+      - { label: Body (Markdown / MDX), name: body, widget: markdown }
+
+  # ─── 个人投资 ───
+  - name: invest-zh
+    label: "个人投资 · 中文"
+    folder: src/content/invest
+    create: true
+    filter: { field: lang, value: zh }
+    slug: "{{slug}}.zh"
+    extension: mdx
+    format: frontmatter
+    fields:
+      - { label: 语言, name: lang, widget: hidden, default: zh }
+      - { label: translationKey, name: translationKey, widget: string }
+      - { label: 标题, name: title, widget: string }
+      - { label: 描述, name: description, widget: text, required: false }
+      - { label: 发布日期, name: date, widget: datetime, format: "YYYY-MM-DDTHH:mm:ssZ", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: 标签, name: tags, widget: list, default: [], required: false }
+      - { label: 关联期间, name: period, widget: string, required: false, hint: "例 2026-05" }
+      - { label: 关联快照 YAML, name: portfolio, widget: string, required: false }
+      - { label: 草稿, name: draft, widget: boolean, default: false }
+      - { label: 正文, name: body, widget: markdown }
+
+  - name: invest-en
+    label: "个人投资 · English"
+    folder: src/content/invest
+    create: true
+    filter: { field: lang, value: en }
+    slug: "{{slug}}.en"
+    extension: mdx
+    format: frontmatter
+    fields:
+      - { label: lang, name: lang, widget: hidden, default: en }
+      - { label: translationKey, name: translationKey, widget: string }
+      - { label: Title, name: title, widget: string }
+      - { label: Description, name: description, widget: text, required: false }
+      - { label: Date, name: date, widget: datetime, format: "YYYY-MM-DDTHH:mm:ssZ", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: Tags, name: tags, widget: list, default: [], required: false }
+      - { label: Period, name: period, widget: string, required: false }
+      - { label: Portfolio, name: portfolio, widget: string, required: false }
+      - { label: Draft, name: draft, widget: boolean, default: false }
+      - { label: Body, name: body, widget: markdown }
+
+  # ─── 摄影相册（manifest 由 photo-add.ts 脚本生成，CMS 这里只编辑随文） ───
+  - name: photo-zh
+    label: "摄影相册 · 中文"
+    folder: src/content/photo
+    create: true
+    filter: { field: lang, value: zh }
+    slug: "{{slug}}.zh"
+    extension: mdx
+    format: frontmatter
+    fields:
+      - { label: 语言, name: lang, widget: hidden, default: zh }
+      - { label: translationKey, name: translationKey, widget: string }
+      - { label: 标题, name: title, widget: string }
+      - { label: 描述, name: description, widget: text, required: false }
+      - { label: 拍摄日期, name: date, widget: datetime, format: "YYYY-MM-DDTHH:mm:ssZ", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: 标签, name: tags, widget: list, default: [], required: false }
+      - { label: 拍摄地, name: location, widget: string, required: false }
+      - { label: 相机器材, name: cameraSummary, widget: string, required: false }
+      - { label: manifest（src/data/photo-manifest/<x>.json）, name: manifest, widget: string }
+      - { label: 草稿, name: draft, widget: boolean, default: false }
+      - { label: 随文文字, name: body, widget: markdown }
+
+  - name: photo-en
+    label: "摄影相册 · English"
+    folder: src/content/photo
+    create: true
+    filter: { field: lang, value: en }
+    slug: "{{slug}}.en"
+    extension: mdx
+    format: frontmatter
+    fields:
+      - { label: lang, name: lang, widget: hidden, default: en }
+      - { label: translationKey, name: translationKey, widget: string }
+      - { label: Title, name: title, widget: string }
+      - { label: Description, name: description, widget: text, required: false }
+      - { label: Date, name: date, widget: datetime, format: "YYYY-MM-DDTHH:mm:ssZ", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: Tags, name: tags, widget: list, default: [], required: false }
+      - { label: Location, name: location, widget: string, required: false }
+      - { label: Camera, name: cameraSummary, widget: string, required: false }
+      - { label: Manifest, name: manifest, widget: string }
+      - { label: Draft, name: draft, widget: boolean, default: false }
+      - { label: Body, name: body, widget: markdown }
+
+  # ─── 徒步路线 ───
+  - name: hike-zh
+    label: "徒步路线 · 中文"
+    folder: src/content/hike
+    create: true
+    filter: { field: lang, value: zh }
+    slug: "{{slug}}.zh"
+    extension: mdx
+    format: frontmatter
+    fields:
+      - { label: 语言, name: lang, widget: hidden, default: zh }
+      - { label: translationKey, name: translationKey, widget: string }
+      - { label: 标题, name: title, widget: string }
+      - { label: 描述, name: description, widget: text, required: false }
+      - { label: 出行日期, name: date, widget: datetime, format: "YYYY-MM-DDTHH:mm:ssZ", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: 标签, name: tags, widget: list, default: [], required: false }
+      - { label: 地点, name: location, widget: string }
+      - { label: 距离 km, name: distanceKm, widget: number, required: false, value_type: float }
+      - { label: 累计爬升 m, name: elevationGainM, widget: number, required: false, value_type: int }
+      - { label: 用时（小时）, name: durationHours, widget: number, required: false, value_type: float }
+      - { label: 难度, name: difficulty, widget: select, options: ["easy", "moderate", "hard", "expert"], default: moderate }
+      - { label: GPX 文件名（public/gpx 内）, name: gpx, widget: string, required: false }
+      - { label: 关联相册 slug, name: photoAlbum, widget: string, required: false }
+      - { label: 草稿, name: draft, widget: boolean, default: false }
+      - { label: 游记正文, name: body, widget: markdown }
+
+  - name: hike-en
+    label: "徒步路线 · English"
+    folder: src/content/hike
+    create: true
+    filter: { field: lang, value: en }
+    slug: "{{slug}}.en"
+    extension: mdx
+    format: frontmatter
+    fields:
+      - { label: lang, name: lang, widget: hidden, default: en }
+      - { label: translationKey, name: translationKey, widget: string }
+      - { label: Title, name: title, widget: string }
+      - { label: Description, name: description, widget: text, required: false }
+      - { label: Date, name: date, widget: datetime, format: "YYYY-MM-DDTHH:mm:ssZ", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: Tags, name: tags, widget: list, default: [], required: false }
+      - { label: Location, name: location, widget: string }
+      - { label: Distance km, name: distanceKm, widget: number, required: false, value_type: float }
+      - { label: Elevation gain m, name: elevationGainM, widget: number, required: false, value_type: int }
+      - { label: Duration h, name: durationHours, widget: number, required: false, value_type: float }
+      - { label: Difficulty, name: difficulty, widget: select, options: ["easy", "moderate", "hard", "expert"], default: moderate }
+      - { label: GPX, name: gpx, widget: string, required: false }
+      - { label: Photo album, name: photoAlbum, widget: string, required: false }
+      - { label: Draft, name: draft, widget: boolean, default: false }
+      - { label: Body, name: body, widget: markdown }
