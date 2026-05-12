@@ -1,0 +1,64 @@
+name: Build & Deploy
+
+# 触发：
+#  - 任意 push 到 main → 立即 build + 部署
+#  - 工作日北京 15:30（A 股收盘后）定时 rebuild
+#  - 手动触发（用于调试）
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "30 7 * * 1-5"   # UTC 07:30 = 北京 15:30
+  workflow_dispatch: {}
+
+concurrency:
+  group: deploy-main
+  cancel-in-progress: false
+
+env:
+  SSH_HOST: 110.40.142.199
+  SSH_USER: root
+  DEPLOY_PATH: /www/wwwroot/zorotreeking/dist
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site
+        run: npm run build
+
+      - name: Setup SSH key
+        env:
+          SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          echo "$SSH_DEPLOY_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Rsync dist → server
+        run: |
+          rsync -avz --delete --no-perms --no-owner --no-group \
+            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new" \
+            dist/ "$SSH_USER@$SSH_HOST:$DEPLOY_PATH/"
+
+      - name: Summary
+        run: |
+          echo "Deployed to $DEPLOY_PATH on $SSH_HOST"
+          echo "Triggered by: ${{ github.event_name }}"
+          echo "Commit: ${{ github.sha }}"
