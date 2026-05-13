@@ -189,7 +189,7 @@ export default function AIChatWidget() {
 
   return (
     <>
-      {/* 浮动按钮 */}
+      {/* 浮动按钮：Q 版索隆 */}
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
@@ -200,34 +200,36 @@ export default function AIChatWidget() {
           right: "20px",
           bottom: "20px",
           zIndex: 9998,
-          width: "56px",
-          height: "56px",
+          width: "64px",
+          height: "64px",
           borderRadius: "50%",
-          background: "linear-gradient(135deg, #111827, #1f2937)",
+          background: open
+            ? "linear-gradient(135deg, #111827, #1f2937)"
+            : "linear-gradient(135deg, #2d8a4e, #1e6b39)",
           color: "#fff",
-          border: "none",
+          border: "3px solid #fff",
           cursor: "pointer",
           boxShadow: "0 6px 20px rgba(0,0,0,0.25), 0 2px 6px rgba(0,0,0,0.1)",
           display: "grid",
           placeItems: "center",
-          transition: "transform 0.15s ease, box-shadow 0.15s ease",
+          transition: "transform 0.15s ease, box-shadow 0.15s ease, background 0.2s",
+          padding: 0,
+          overflow: "hidden",
         }}
-        onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; }}
-        onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; }}
+        onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px) scale(1.05)"; }}
+        onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0) scale(1)"; }}
       >
         {open ? (
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
             <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
           </svg>
         ) : (
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-          </svg>
+          <ZoroChibiIcon size={56} />
         )}
         {unread && !open && (
           <span style={{
             position: "absolute", top: "4px", right: "4px",
-            width: "10px", height: "10px", borderRadius: "50%",
+            width: "12px", height: "12px", borderRadius: "50%",
             background: "#ef4444", border: "2px solid #fff",
           }} />
         )}
@@ -264,13 +266,17 @@ export default function AIChatWidget() {
           }}>
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
               <div style={{
-                width: "30px", height: "30px", borderRadius: "8px",
-                background: "linear-gradient(135deg, #2563eb, #7c3aed)",
-                color: "#fff", display: "grid", placeItems: "center",
-                fontSize: "12px", fontWeight: 700,
-              }}>AI</div>
+                width: "32px", height: "32px", borderRadius: "50%",
+                background: "linear-gradient(135deg, #2d8a4e, #1e6b39)",
+                display: "grid", placeItems: "center",
+                border: "2px solid #fff",
+                overflow: "hidden",
+                flexShrink: 0,
+              }}>
+                <ZoroChibiIcon size={26} />
+              </div>
               <div>
-                <div style={{ fontSize: "13.5px", fontWeight: 600 }}>AI 助手</div>
+                <div style={{ fontSize: "13.5px", fontWeight: 600 }}>索隆 · AI 助手</div>
                 <div style={{ fontSize: "11px", color: "var(--text-tertiary, #9ca3af)" }}>Kimi · 联网搜索可选</div>
               </div>
             </div>
@@ -458,5 +464,65 @@ function Bubble({ msg }: { msg: Message }) {
         }
       `}</style>
     </div>
+  );
+}
+
+/**
+ * Q 版索隆 SVG 图标。
+ * 抓住几个识别度最高的特征：
+ *   - 绿色立体短发（带几缕翘起的头发）
+ *   - 左眼竖向疤痕 + 闭眼
+ *   - 右眼睁开（黑色圆点）
+ *   - 左耳三只金色耳环
+ *   - 下巴右侧伸出一把刀的握柄（三刀流暗示）
+ */
+function ZoroChibiIcon({ size = 56 }: { size?: number }) {
+  return (
+    <svg viewBox="0 0 64 64" width={size} height={size} aria-hidden="true">
+      {/* 头颅（脸） */}
+      <ellipse cx="32" cy="36" rx="19" ry="20" fill="#fce0bd" stroke="#3a2010" strokeWidth="1.2" />
+
+      {/* 头发：绿色，带尖尖的几缕 */}
+      <g fill="#39a35e" stroke="#1f6b39" strokeWidth="1.2" strokeLinejoin="round">
+        {/* 主体头发壳 */}
+        <path d="M 12,28 Q 12,18 18,14 Q 23,9 28,12 Q 32,7 36,12 Q 41,9 46,14 Q 52,18 52,28 Q 50,22 44,20 Q 38,18 32,20 Q 26,18 20,20 Q 14,22 12,28 Z" />
+        {/* 几缕翘起的头发尖 */}
+        <path d="M 20,17 L 17,8 L 23,15 Z" />
+        <path d="M 28,13 L 27,5 L 32,12 Z" />
+        <path d="M 36,13 L 37,5 L 32,12 Z" />
+        <path d="M 44,17 L 47,8 L 41,15 Z" />
+      </g>
+
+      {/* 左眉 */}
+      <path d="M 17,28 Q 21,26 24,29" stroke="#3a2010" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+      {/* 右眉 */}
+      <path d="M 40,29 Q 43,26 47,28" stroke="#3a2010" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+
+      {/* 左眼疤痕（竖直从眉到颊） */}
+      <line x1="21" y1="25" x2="21" y2="42" stroke="#a55a32" strokeWidth="2" strokeLinecap="round" />
+
+      {/* 左眼（疤痕侧，闭眼线） */}
+      <path d="M 17,34 Q 21,36 25,34" stroke="#3a2010" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+      {/* 右眼（睁开，黑色圆点） */}
+      <circle cx="41" cy="34" r="2.8" fill="#1a1a1a" />
+      <circle cx="42" cy="33" r="0.8" fill="#fff" />
+
+      {/* 嘴巴：一点小坏笑 */}
+      <path d="M 27,46 Q 32,48 37,46" stroke="#3a2010" strokeWidth="2" fill="none" strokeLinecap="round" />
+
+      {/* 左耳三只金耳环 */}
+      <g fill="#ffcf3a" stroke="#8a6500" strokeWidth="0.6">
+        <circle cx="11" cy="36" r="1.8" />
+        <circle cx="10" cy="40" r="1.8" />
+        <circle cx="11" cy="44" r="1.8" />
+      </g>
+
+      {/* 右下角刀柄（三刀流暗示：菱形护手 + 缠绳柄） */}
+      <g>
+        <rect x="48" y="50" width="3.5" height="12" fill="#1a1a1a" transform="rotate(-30 49.75 56)" />
+        <rect x="46" y="48" width="8" height="3" fill="#666" rx="0.5" transform="rotate(-30 50 49.5)" />
+        <circle cx="51" cy="46" r="1.5" fill="#c9272d" />
+      </g>
+    </svg>
   );
 }
