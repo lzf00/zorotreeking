@@ -5,9 +5,54 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ZoroTreeking · 管理后台</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <style>
+    /* 浮动按钮：左下角，跳回主站。z-index 高于 Decap 自身 UI 不冲突 */
+    .back-to-site {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      z-index: 99999;
+      padding: 10px 16px;
+      background: #111827;
+      color: #fff;
+      border-radius: 24px;
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", sans-serif;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18), 0 1px 3px rgba(0, 0, 0, 0.06);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s;
+      backdrop-filter: blur(6px);
+    }
+    .back-to-site:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22), 0 2px 4px rgba(0, 0, 0, 0.08);
+      background: #000;
+    }
+    .back-to-site svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+    }
+  </style>
 </head>
 <body>
-  <!-- Decap CMS via CDN（开源，免维护，文章直接 commit 到 GitHub） -->
+  <!-- 跳回主站（自动用当前 origin，本地 → localhost；生产 → apex 域） -->
+  <a class="back-to-site" href="/" aria-label="返回主站" title="返回主站">
+    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19 12H5"/>
+      <path d="M12 19l-7-7 7-7"/>
+    </svg>
+    <span>回到主站</span>
+  </a>
+
+  <!-- Decap CMS via CDN -->
   <script src="https://unpkg.com/decap-cms@^3.5.0/dist/decap-cms.js"></script>
 </body>
 </html>
