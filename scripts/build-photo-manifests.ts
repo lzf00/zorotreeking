@@ -1,0 +1,141 @@
+/**
+ * 构建期照片 manifest 生成器
+ *
+ * 扫描 `public/photos/uploads/<album-slug>/*` 下每张图：
+ *   - sharp 测尺寸（用于 PhotoSwipe 等比缩放）
+ *   - exifr 抽元数据（相机/光圈/快门/ISO/焦段/拍摄时间）
+ *   - 输出 src/data/photo-manifest/<album-slug>.json
+ *
+ * 已存在但无对应上传子目录的 manifest（如 sample-album.json）不会被动。
+ * 这样原图(在线上传) 和 占位图/picsum(示例) 可以并存。
+ *
+ * 触发：
+ *   - 手动：npx tsx scripts/build-photo-manifests.ts
+ *   - 自动：deploy.yml 在 npm run build 之前调用
+ */
+import { promises as fs } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const UPLOADS_DIR = path.join(ROOT, "public", "photos", "uploads");
+const MANIFEST_DIR = path.join(ROOT, "src", "data", "photo-manifest");
+
+const IMAGE_RE = /\.(jpe?g|png|webp|avif)$/i;
+
+type PhotoEntry = {
+  src: string;
+  thumb: string;
+  width: number;
+  height: number;
+  alt: string;
+  exif?: {
+    camera?: string;
+    lens?: string;
+    iso?: number;
+    aperture?: number;
+    shutter?: string;
+    focal?: number;
+    takenAt?: string;
+  };
+};
+
+function formatShutter(t: number): string {
+  if (!Number.isFinite(t) || t <= 0) return "";
+  return t >= 1 ? `${t}s` : `1/${Math.round(1 / t)}`;
+}
+
+async function main() {
+  // 仅当 uploads 目录存在时才工作；不存在直接跳过（首次部署或没相册的情况）
+  try {
+    const stat = await fs.stat(UPLOADS_DIR);
+    if (!stat.isDirectory()) return;
+  } catch {
+    console.log("[photo-manifests] no uploads dir, skip.");
+    return;
+  }
+
+  const sharpMod = await import("sharp").catch(() => null);
+  const exifrMod = await import("exifr").catch(() => null);
+  const sharp = sharpMod?.default;
+  const exifr = (exifrMod as any)?.default ?? exifrMod;
+  if (!sharp) console.warn("[photo-manifests] sharp missing; manifest will lack dimensions.");
+
+  await fs.mkdir(MANIFEST_DIR, { recursive: true });
+
+  const subdirs = await fs.readdir(UPLOADS_DIR, { withFileTypes: true });
+  let albumCount = 0;
+  let photoCount = 0;
+
+  for (const ent of subdirs) {
+    if (!ent.isDirectory()) continue;
+    const albumSlug = ent.name;
+    const albumDir = path.join(UPLOADS_DIR, albumSlug);
+
+    const files = (await fs.readdir(albumDir)).filter((f) => IMAGE_RE.test(f)).sort();
+    if (files.length === 0) continue;
+
+    const entries: PhotoEntry[] = [];
+    for (const f of files) {
+      const inputPath = path.join(albumDir, f);
+      const buf = await fs.readFile(inputPath);
+
+      let width = 0;
+      let height = 0;
+      if (sharp) {
+        try {
+          const meta = await sharp(buf).rotate().metadata();
+          width = meta.width || 0;
+          height = meta.height || 0;
+        } catch (e) {
+          console.warn(`[photo-manifests] ${albumSlug}/${f}: sharp failed`, e);
+        }
+      }
+
+      let exifData: any = {};
+      if (exifr) {
+        try {
+          exifData = await exifr.parse(buf, {
+            pick: ["Make", "Model", "LensModel", "ISO", "FNumber", "ExposureTime", "FocalLength", "DateTimeOriginal"],
+          }) || {};
+        } catch {
+          // 部分文件可能没 EXIF，忽略
+        }
+      }
+
+      entries.push({
+        src: `/photos/uploads/${albumSlug}/${f}`,
+        thumb: `/photos/uploads/${albumSlug}/${f}`,
+        width,
+        height,
+        alt: path.basename(f, path.extname(f)),
+        exif: {
+          camera: exifData?.Make && exifData?.Model ? `${exifData.Make} ${exifData.Model}`.trim() : exifData?.Model,
+          lens: exifData?.LensModel,
+          iso: exifData?.ISO,
+          aperture: exifData?.FNumber,
+          shutter: exifData?.ExposureTime ? formatShutter(exifData.ExposureTime) : undefined,
+          focal: exifData?.FocalLength,
+          takenAt: exifData?.DateTimeOriginal?.toISOString?.(),
+        },
+      });
+    }
+
+    const outPath = path.join(MANIFEST_DIR, `${albumSlug}.json`);
+    await fs.writeFile(outPath, JSON.stringify(entries, null, 2));
+    console.log(`  ✓ ${albumSlug}: ${entries.length} photo(s)`);
+    albumCount++;
+    photoCount += entries.length;
+  }
+
+  if (albumCount === 0) {
+    console.log("[photo-manifests] no albums with uploaded photos.");
+  } else {
+    console.log(`[photo-manifests] generated ${albumCount} manifest(s), ${photoCount} photo(s) total.`);
+  }
+}
+
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});

@@ -38,7 +38,26 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # 用新浪财经实时报价刷新当月持仓 YAML（仅 CI workspace 内生效，不 commit）
+      # 这一步失败不阻塞 deploy——用 git 中已有的 YAML 兜底
+      - name: Refresh portfolio quotes
+        continue-on-error: true
+        run: npx tsx scripts/invest-snapshot.ts
+
+      # 扫描 public/photos/uploads/<album>/，生成对应 manifest（含尺寸 + EXIF）
+      # Decap 上线编辑相册时上传的图会落到这些子目录，构建时自动归档进 manifest
+      - name: Build photo manifests
+        continue-on-error: true
+        run: npx tsx scripts/build-photo-manifests.ts
+
       - name: Build site
+        env:
+          # Giscus 评论：值来自 GitHub repo Settings → Variables。
+          # 未设置时 Giscus.astro 组件自动跳过，不渲染。
+          PUBLIC_GISCUS_REPO: ${{ vars.PUBLIC_GISCUS_REPO }}
+          PUBLIC_GISCUS_REPO_ID: ${{ vars.PUBLIC_GISCUS_REPO_ID }}
+          PUBLIC_GISCUS_CATEGORY: ${{ vars.PUBLIC_GISCUS_CATEGORY }}
+          PUBLIC_GISCUS_CATEGORY_ID: ${{ vars.PUBLIC_GISCUS_CATEGORY_ID }}
         run: npm run build
 
       - name: Setup SSH key

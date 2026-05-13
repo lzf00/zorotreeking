@@ -88,6 +88,10 @@ collections:
     format: frontmatter
     summary: "[{{fields.lang}}] {{title}} · {{date | date('YYYY-MM-DD')}}"
     sortable_fields: [date, title]
+    # 相册 collection 用单独的 media 目录：按 manifest 字段值分子文件夹
+    # 这样在 Decap 编辑相册时上传图片，会自动落到对应相册的子目录
+    media_folder: "/public/photos/uploads/{{fields.manifest}}"
+    public_folder: "/photos/uploads/{{fields.manifest}}"
     fields:
       - { label: "🌐 语言", name: lang, widget: select, options: [{label: "中文 / Chinese", value: zh}, {label: "English", value: en}], default: zh }
       - { label: translationKey, name: translationKey, widget: string }

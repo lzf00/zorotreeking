@@ -1,0 +1,44 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { useTranslations, pathWithLang } from "@/i18n/ui";
+
+const lang = "zh" as const;
+const t = useTranslations(lang);
+---
+
+<BaseLayout title="页面走丢了 · 404">
+  <section class="max-w-prose mx-auto px-5 pt-24 pb-16 text-center">
+    <div class="text-[120px] sm:text-[160px] font-bold leading-none tracking-tight bg-gradient-to-br from-section-ai via-section-photo to-section-hike bg-clip-text text-transparent">
+      404
+    </div>
+    <h1 class="mt-2 text-2xl font-semibold tracking-tight">这页好像走丢了</h1>
+    <p class="mt-3 text-[var(--text-secondary)]">
+      链接可能已失效，或者文章被搬走了。试试从下面入口找找看：
+    </p>
+
+    <div class="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-xl mx-auto">
+      <a href={pathWithLang("/ai", lang)} class="rounded-xl border border-[var(--border)] p-4 hover:border-section-ai/50 hover:bg-[var(--bg-soft)] transition-all group">
+        <div class="text-2xl mb-1">🧠</div>
+        <div class="text-sm font-medium group-hover:text-section-ai transition-colors">{t("nav.ai")}</div>
+      </a>
+      <a href={pathWithLang("/invest", lang)} class="rounded-xl border border-[var(--border)] p-4 hover:border-section-invest/50 hover:bg-[var(--bg-soft)] transition-all group">
+        <div class="text-2xl mb-1">📊</div>
+        <div class="text-sm font-medium group-hover:text-section-invest transition-colors">{t("nav.invest")}</div>
+      </a>
+      <a href={pathWithLang("/photo", lang)} class="rounded-xl border border-[var(--border)] p-4 hover:border-section-photo/50 hover:bg-[var(--bg-soft)] transition-all group">
+        <div class="text-2xl mb-1">📷</div>
+        <div class="text-sm font-medium group-hover:text-section-photo transition-colors">{t("nav.photo")}</div>
+      </a>
+      <a href={pathWithLang("/hike", lang)} class="rounded-xl border border-[var(--border)] p-4 hover:border-section-hike/50 hover:bg-[var(--bg-soft)] transition-all group">
+        <div class="text-2xl mb-1">🥾</div>
+        <div class="text-sm font-medium group-hover:text-section-hike transition-colors">{t("nav.hike")}</div>
+      </a>
+    </div>
+
+    <div class="mt-8 text-sm">
+      <a href={pathWithLang("/", lang)} class="text-[var(--text-secondary)] hover:text-[var(--text)] hover:underline transition-colors">
+        ← 回到首页
+      </a>
+    </div>
+  </section>
+</BaseLayout>

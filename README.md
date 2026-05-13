@@ -2,114 +2,166 @@
 
 个人综合站：**AI 学习 · 个人投资 · 摄影 · 徒步**。
 
-- 域名：`zorotreeking.online`（主站）+ 4 个二级域名（`ai. / invest. / photo. / hike.`）
+- 域名：`zorotreeking.online` + `www.` / `ai.` / `invest.` / `photo.` / `hike.`
 - 技术栈：Astro 4 + MDX + TypeScript + Tailwind + React Islands
-- 部署：Cloudflare Pages（自动构建 + Cron 定时 rebuild）
+- 部署：腾讯云 + nginx，GitHub Actions 自动构建 + rsync
 - 双语：默认中文（`/`）+ 英文（`/en`）
+- 在线写文章：Decap CMS（`/admin/`），GitHub OAuth 登录（Cloudflare Worker 中转）
+
+## 架构
+
+```
+你 ─push─▶ GitHub
+              ├─ Actions: npm ci → 拉行情 → astro build → rsync ─▶ 腾讯云 nginx
+              └─ Decap admin (浏览器内) ─▶ GitHub OAuth ─▶ Cloudflare Worker
+                                              ▼
+                                     拿到 token，直接通过 GitHub API
+                                     提交 commit → 触发 Actions（同上）
+
+腾讯云 110.40.142.199
+  └─ nginx: /www/wwwroot/zorotreeking/dist/  ←─ 所有 6 个域名都指到这台机
+        └─ 4 个栏目子域名 → 301 redirect 到 apex /<section>/
+```
+
+**GitHub** 是源代码 + 工作流 + 身份验证的唯一真源。**Cloudflare** 只做一件事：跑 50 行的 OAuth 中转 Worker。**腾讯云** 是网站文件实际居所。
+
+## 写文章
+
+**方式 A · 浏览器在线**（推荐日常用）：
+
+1. 打开 `https://www.zorotreeking.online/admin/`（备案前先用 [http://localhost:4321/admin/index.html](http://localhost:4321/admin/index.html)）
+2. Login with GitHub
+3. 选集合（AI 学习 / 个人投资 / 摄影 / 徒步）→ 新建文章 → 写 → Publish
+4. 3 分钟后线上更新
+
+**方式 B · 本地编辑器**（适合写代码块多的长文）：
+
+```bash
+cd zorotreeking
+npm install              # 首次
+npm run dev              # http://localhost:4321 实时预览，热更新
+# 1. 新建 src/content/<section>/<slug>.zh.mdx
+# 2. （可选）同 slug 加 .en.mdx
+# 3. git add -A && git commit -m "..." && git push
+```
 
 ## 本地开发
 
 ```bash
 npm install
-npm run dev          # → http://localhost:4321
-npm run build
-npm run preview
+npm run dev          # 启动开发服务器
+npm run build        # 生产构建到 dist/
+npm run preview      # 预览构建产物
 ```
 
 ## 项目结构
 
 ```
-zorotreeking/
-├── astro.config.mjs       # i18n、Cloudflare adapter、集成
-├── tailwind.config.mjs    # 设计令牌、各栏目主色
-├── functions/
-│   └── _middleware.ts     # 子域名 → 路径内部 rewrite（生产环境生效）
-├── scripts/               # 工具脚本（photo-add / invest-snapshot 之后加）
-└── src/
-    ├── content/
-    │   ├── config.ts                  # 5 个 Content Collection 的 schema
-    │   ├── ai/{slug}.{zh,en}.mdx
-    │   ├── invest/{slug}.{zh,en}.mdx       # 复盘文章
-    │   ├── invest-portfolio/{YYYY-MM}.yaml # 月度持仓快照
-    │   ├── photo/{album}.{zh,en}.mdx       # 相册（引用 manifest）
-    │   └── hike/{slug}.{zh,en}.mdx         # 徒步游记（引用 gpx）
-    ├── data/photo-manifest/{album}.json    # 由 photo-add 脚本生成
-    ├── i18n/ui.ts                          # 双语 UI 字符串 + 工具函数
-    ├── components/                         # Navbar / Footer / SectionCard
-    ├── layouts/BaseLayout.astro
-    └── pages/
-        ├── index.astro · about.astro
-        ├── ai/index.astro · ai/[slug].astro
-        └── en/                             # 英文路由镜像
+.github/workflows/deploy.yml    CI/CD：build + rsync 到服务器
+astro.config.mjs                Astro 配置（i18n、Markdown、Shiki 高亮、auto-TOC）
+tailwind.config.mjs             设计令牌
+
+public/
+  admin/                        Decap CMS（在线写文章后台）
+    index.html                  入口 + "回到主站"浮动按钮
+    config.yml                  4 个集合的 schema + OAuth 配置
+  gpx/                          徒步轨迹文件
+  favicon.svg
+
+cloudflare-worker/              Decap CMS 用的 OAuth 中转 Worker（独立部署）
+  src/index.js                  ~50 行 JS
+
+scripts/                        离线工具（手动跑，非 CI）
+  invest-snapshot.ts            拉新浪行情 + 写月度持仓 YAML
+  photo-add.ts                  处理照片 + 上传 R2 + 生成 manifest
+
+src/
+  content/                      Content Collections
+    config.ts                   5 个集合的 Zod schema
+    ai/         *.{zh,en}.mdx
+    invest/     *.{zh,en}.mdx
+    invest-portfolio/  {YYYY-MM}.yaml + _holdings.yaml
+    photo/      *.{zh,en}.mdx
+    hike/       *.{zh,en}.mdx
+  data/photo-manifest/  *.json  照片 manifest（由 photo-add.ts 生成）
+  i18n/ui.ts                    UI 字符串 + 双语路由工具
+  layouts/BaseLayout.astro      全站基座
+  components/                   Navbar / Footer / 各种 React island 组件
+  lib/                          gpx 解析 / 阅读时长 / photo-manifest 加载
+  pages/                        4 栏目 × 2 语言 = 8 路由组 + index/about/rss/sitemap
 ```
 
-## 双语写作约定
+## 部署
 
-- 每篇文章两份 mdx：`my-post.zh.mdx` / `my-post.en.mdx`
-- `translationKey` 字段两边相同（用于跨语言 routing）
-- frontmatter 字段见 `src/content/config.ts`
+### 自动（标准流程）
 
-## 部署：Cloudflare Pages
-
-### 1. 创建 Pages 项目
-- Cloudflare → Workers & Pages → Create → Pages → Connect to Git → 选 `zorotreeking` 仓库
-- Build command：`npm run build`
-- Output directory：`dist`
-- Environment variables：暂无（之后 R2 上传脚本会用）
-
-### 2. 绑定主域名 + 4 个子域名
-在 Pages 项目 → Custom domains 添加：
-- `zorotreeking.online`
-- `www.zorotreeking.online`
-- `ai.zorotreeking.online`
-- `invest.zorotreeking.online`
-- `photo.zorotreeking.online`
-- `hike.zorotreeking.online`
-
-DNS 由 Cloudflare 自动配（每个子域名 CNAME 到 `<project>.pages.dev`）。
-
-### 3. 子域名 rewrite 已经在 `functions/_middleware.ts` 处理好了
-- 用户访问 `ai.zorotreeking.online/hello-world`
-- Middleware 内部把请求转到 `/ai/hello-world`
-- 浏览器地址栏依然保持子域名形式
-
-### 4. Cron 定时 rebuild（每天收盘后）
-**方案：用 Cloudflare Pages Deploy Hook + GitHub Actions cron**
-
-a) Cloudflare Pages → Settings → Builds & deployments → Deploy hooks → Create hook（命名 `daily-rebuild`），复制出 URL
-
-b) 在仓库 `Settings → Secrets → Actions` 加 secret：`CF_DEPLOY_HOOK`
-
-c) 仓库根目录创建 `.github/workflows/cron-rebuild.yml`：
-
-```yaml
-name: Daily rebuild
-on:
-  schedule:
-    - cron: '30 7 * * 1-5'   # UTC 07:30 = 北京 15:30，工作日
-  workflow_dispatch:
-jobs:
-  rebuild:
-    runs-on: ubuntu-latest
-    steps:
-      - run: curl -X POST "$DEPLOY_HOOK"
-        env:
-          DEPLOY_HOOK: ${{ secrets.CF_DEPLOY_HOOK }}
+```bash
+git push origin main
 ```
 
-每天收盘 30 分钟后，GitHub Actions 触发 Pages 重新构建，最新行情数据写入投资栏目。
+`.github/workflows/deploy.yml` 自动触发：
+1. checkout
+2. `npm ci`
+3. 用新浪行情刷新当月持仓 YAML（失败不阻塞）
+4. `npm run build` → 生成 `dist/`
+5. SSH 私钥从 `SSH_DEPLOY_KEY` secret 解码
+6. `rsync dist/ → 腾讯云:/www/wwwroot/zorotreeking/dist/`
 
-## 后续 Roadmap（按优先级）
+### 触发方式
 
-1. **AI 栏目**：Shiki 代码高亮、TOC 目录、阅读时长、Giscus 评论、RSS
-2. **摄影栏目**：`scripts/photo-add.ts`（sharp + exifr + S3 SDK 上传 R2）、PhotoSwipe lightbox、瀑布流相册
-3. **徒步栏目**：Leaflet 地图组件、GPX 解析（@tmcw/togeojson）抽出距离/爬升、海拔曲线
-4. **投资栏目**：`scripts/invest-snapshot.ts`（拉新浪行情 → 写 YAML）、Recharts 净值曲线、持仓饼图
-5. **全站**：客户端搜索（pagefind）、深色模式优化、404 页
+- **push 到 main**：每次推送自动 build + deploy
+- **每个工作日 15:30 北京时间**：定时 rebuild（拉一次实时行情）
+- **手动触发**：GitHub repo → Actions → Build & Deploy → Run workflow
 
-## 当前状态
+### 服务器侧 nginx 配置
 
-✅ 全站骨架、双语、子域名 middleware、AI 栏目 list+detail+示例文章
-🚧 其余 3 个栏目仅 schema + 占位符，等接下来按 Roadmap 推进
+位于服务器 `/www/server/panel/vhost/nginx/zorotreeking.conf`（由宝塔面板 include），结构：
 
-启动 dev 服务器后访问 [http://localhost:4321](http://localhost:4321) 即可预览。
+- `zorotreeking.online` + `www.` → 服务 `dist/`
+- `ai./invest./photo./hike.` → 301 redirect 到 `www./<section>/`
+
+备案通过后用 `certbot --nginx` 给 6 个域名签 HTTPS 证书。
+
+## 在线后台（Decap CMS）
+
+**首次配置**：参考 `cloudflare-worker/README.md`。需要：
+
+1. 创建 GitHub OAuth App
+2. 部署 Cloudflare Worker（环境变量配 `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` / `ALLOWED_USERS=lzf00`）
+3. 把 Worker URL 填到 `public/admin/config.yml` 的 `base_url`
+
+**日常用**：浏览器开 `/admin/` 登录就能写文章。
+
+**安全**：OAuth Worker 限制 `ALLOWED_USERS=lzf00`，其他人哪怕用自己的 GitHub 登录也会被挡住。
+
+## 工具脚本
+
+```bash
+# 拉今天的行情，写当月持仓快照（也由 CI 自动跑）
+npx tsx scripts/invest-snapshot.ts            # 当前月
+npx tsx scripts/invest-snapshot.ts 2026-05   # 指定月
+
+# 处理照片：生成缩略图 + 抽 EXIF + 上传 R2（或本地 public/photos/）+ 写 manifest
+npx tsx scripts/photo-add.ts <album-slug> <照片目录>
+```
+
+## 评论系统（Giscus）
+
+可选启用：
+
+1. 在 GitHub repo Settings 启用 Discussions
+2. 安装 [Giscus App](https://github.com/apps/giscus) 并选这个 repo
+3. 去 https://giscus.app 用 repo URL 获取 4 个 ID
+4. GitHub repo Settings → Secrets and variables → Actions → 加 4 个环境变量：
+   - `PUBLIC_GISCUS_REPO=lzf00/zorotreeking`
+   - `PUBLIC_GISCUS_REPO_ID=...`
+   - `PUBLIC_GISCUS_CATEGORY=Announcements`
+   - `PUBLIC_GISCUS_CATEGORY_ID=...`
+
+之后每篇 AI 文章底部自动出现评论区。
+
+## 当前状态 / 待办
+
+- ✅ 主站 + admin + CI/CD 全跑通
+- ⏳ **ICP 备案审核中**（备案通过前域名 80/443 被腾讯云拦截，看到的是备案提示页；rsync 等部署流不受影响）
+- ⏳ 备案通过后：certbot HTTPS + nginx HTTPS 301 + 6 域名公网烟测

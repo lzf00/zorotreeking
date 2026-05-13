@@ -26,7 +26,7 @@ export const ui = {
     "home.viewAll": "查看全部 →",
     "post.readTime": "分钟阅读",
     "post.draft": "草稿",
-    "footer.builtWith": "由 Astro 与 Cloudflare Pages 驱动",
+    "footer.builtWith": "由 Astro 构建",
   },
   en: {
     "site.title": "ZoroTreeking",
@@ -51,7 +51,7 @@ export const ui = {
     "home.viewAll": "View all →",
     "post.readTime": "min read",
     "post.draft": "Draft",
-    "footer.builtWith": "Powered by Astro & Cloudflare Pages",
+    "footer.builtWith": "Built with Astro",
   },
 } as const;
 
