@@ -2,6 +2,7 @@
 import "@/styles/global.css";
 import Navbar from "@/components/Navbar.astro";
 import Footer from "@/components/Footer.astro";
+import AIChatWidget from "@/components/AIChatWidget";
 import { getLangFromUrl, useTranslations } from "@/i18n/ui";
 
 interface Props {
@@ -44,5 +45,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
       <slot />
     </main>
     <Footer />
+    <!-- 悬浮 AI 助手（react island，仅在浏览器空闲后加载） -->
+    <AIChatWidget client:idle />
   </body>
 </html>
