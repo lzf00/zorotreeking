@@ -1,0 +1,65 @@
+name: Daily digest
+
+# 每天 00:00 UTC = 08:00 北京时间，拉外部源 + LLM 摘要 + commit 推回 main
+# main 上的 push 会触发 deploy.yml 走部署链路（CI 默认会忽略 bot 自己的 commit 防止递归）
+# 也可以手动触发 (workflow_dispatch) 调试
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "ai | invest | both"
+        type: choice
+        options: [both, ai, invest]
+        default: both
+
+permissions:
+  contents: write  # 需要写权限才能 commit + push 回 main
+
+concurrency:
+  group: daily-digest
+  cancel-in-progress: false
+
+jobs:
+  fetch-and-commit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Run digest fetcher
+        env:
+          ARK_API_KEY: ${{ secrets.ARK_API_KEY }}
+        run: |
+          MODE="${{ github.event.inputs.mode || 'both' }}"
+          npx tsx scripts/digest-fetch.ts "$MODE"
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "zorotreeking-bot"
+          git config user.email "bot@zorotreeking.online"
+          git add src/content/ai/digest-*.mdx src/content/invest/digest-*.mdx 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No new digest files. Nothing to commit."
+            exit 0
+          fi
+          DATE_CN=$(date -u -d "+8 hours" +%Y-%m-%d 2>/dev/null || date -u +%Y-%m-%d)
+          git commit -m "chore(digest): daily auto digest $DATE_CN
+
+[skip ci]"
+          git push origin HEAD:main
+          echo "✓ pushed daily digest commit"
