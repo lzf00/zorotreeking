@@ -1,0 +1,180 @@
+---
+lang: zh
+translationKey: digest-2026-05-14
+title: "AI 每日精选 · 2026-05-14"
+description: "来自 Hugging Face Daily Papers 的当日精选 12 篇，AI 自动摘要待你审核"
+date: 2026-05-14
+tags: [digest, auto, ai-papers]
+category: paper
+draft: true
+---
+
+> 自动从 [Hugging Face Daily Papers](https://huggingface.co/papers?date=2026-05-14) 抓取，AI 摘要待审。Publish 前请检查并补充你的批注。
+
+## 1. MinT: Managed Infrastructure for Training and Serving Millions of LLMs
+
+**作者**：Mind Lab, Song Cao, Vic Cao, Andrew Chen, Kaijie Chen…  
+**HF 投票**：63  
+**链接**：[arxiv](https://arxiv.org/abs/2605.13779) · [Hugging Face](https://huggingface.co/papers/2605.13779)
+
+**AI 摘要**：
+
+本文推出LoRA微调与在线服务专用托管基础设施MinT，采用基模型常驻、仅流转LoRA适配器的方案，规避全量checkpoint存储开销。其从三方向扩容：向上支持1T参数级稠密/MoE基模型训推；向下仅传输占比&lt;1%的适配器，训推效率最高提18.3倍且不增显存峰值；向外支持百万级LoRA策略目录，加载速度提8倍以上，可高效承载百万规模LoRA策略的训推调度。
+
+> **我的批注**：（请在此处补充）
+
+---
+
+## 2. AnyFlow: Any-Step Video Diffusion Model with On-Policy Flow Map Distillation
+
+**作者**：Yuchao Gu, Guian Fang, Yuxin Jiang, Weijia Mao, Song Han…  
+**HF 投票**：58  
+**链接**：[arxiv](https://arxiv.org/abs/2605.13724) · [Hugging Face](https://huggingface.co/papers/2605.13724)
+
+**AI 摘要**：
+
+针对一致性蒸馏的少步视频生成模型采样步数增加时性能下降的痛点，本文提出AnyFlow流图蒸馏框架，将蒸馏目标从端点一致性映射改为任意时间区间的流图过渡学习，配套流图反向模拟实现高效同策略蒸馏。跨架构、1.3B-14B参数量级实验表明，其少步生成性能媲美或优于同类方案，且可随采样步数提升生成效果，适配任意步长需求。
+
+> **我的批注**：（请在此处补充）
+
+---
+
+## 3. MulTaBench: Benchmarking Multimodal Tabular Learning with Text and Image
+
+**作者**：Alan Arazi, Eilam Shapira, Shoham Grunblat, Mor Ventura, Elad Hoffer…  
+**HF 投票**：47  
+**链接**：[arxiv](https://arxiv.org/abs/2605.10616) · [Hugging Face](https://huggingface.co/papers/2605.10616)
+
+**AI 摘要**：
+
+现有表格基础模型无法原生支持文本、图像等非结构化模态，现有多模态表格基准存在结果方差高、无法体现任务专属调优增益的缺陷。本文推出含40个数据集的MulTaBench基准，均等覆盖图像-表格、文本-表格的模态互补预测场景，横跨医疗、电商等高价值领域。实验验证任务感知表征调优可跨模态、模型结构等稳定提效，该基准可为多模态表格基础模型研发提供核心支撑。
+
+> **我的批注**：（请在此处补充）
+
+---
+
+## 4. Training Long-Context Vision-Language Models Effectively with Generalization Beyond 128K Context
+
+**作者**：Zhaowei Wang, Lishu Luo, Haodong Duan, Weiwei Liu, Sijin Wu…  
+**HF 投票**：32  
+**链接**：[arxiv](https://arxiv.org/abs/2605.13831) · [Hugging Face](https://huggingface.co/papers/2605.13831)
+
+**AI 摘要**：
+
+针对长上下文大视觉语言模型训练数据配比研究不足的问题，该研究经消融实验明确长文档VQA训练效果更优，得到序列长度均衡配比、优先检索类数据等3项核心结论，基于此仅用5B token训练出MMProLong，将7B模型上下文从32K扩至128K，长文档VQA精度提7.1%，无需额外训练即可泛化到512K上下文及多类长上下文多模态任务。
+
+> **我的批注**：（请在此处补充）
+
+---
+
+## 5. Edit-Compass & EditReward-Compass: A Unified Benchmark for Image Editing and Reward Modeling
+
+**作者**：Xuehai Bai, Yang Shi, Yi-Fan Zhang, Xuanyu Zhu, Yuran Wang…  
+**HF 投票**：27  
+**链接**：[arxiv](https://arxiv.org/abs/2605.13062) · [Hugging Face](https://huggingface.co/papers/2605.13062)
+
+**AI 摘要**：
+
+针对现有图像编辑及配套奖励模型基准存在任务难度不足、评估维度粗糙、偏离实际RL优化场景，无法准确反映模型真实性能的问题，该研究推出统一评估套件：含2388个标注实例、覆盖6类梯度难度任务、采用细粒度多维评估的Edit-Compass，及含2251个贴合真实RL场景偏好对的EditReward-Compass，填补了相关评估体系缺口。
+
+> **我的批注**：（请在此处补充）
+
+---
+
+## 6. TrackCraft3R: Repurposing Video Diffusion Transformers for Dense 3D Tracking
+
+**作者**：Jisu Nam, Jahyeok Koo, Soowon Son, Jaewoo Jung, Honggyu An…  
+**HF 投票**：24  
+**链接**：[arxiv](https://arxiv.org/abs/2605.12587) · [Hugging Face](https://huggingface.co/papers/2605.12587)
+
+**AI 摘要**：
+
+针对单目视频稠密3D跟踪现有方法缺乏真实场景运动先验的痛点，本文提出TrackCraft3R，首次将预训练视频扩散Transformer改造为单阶段前馈稠密3D跟踪器，通过双隐层表示、时序RoPE对齐设计，结合LoRA微调完成范式转换。该方法在公开基准达SOTA性能，较现有最优方案速度快1.3倍、峰值内存占用仅为其1/4.6，对大运动、长视频鲁棒性优异。
+
+> **我的批注**：（请在此处补充）
+
+---
+
+## 7. Qwen-Image-VAE-2.0 Technical Report
+
+**作者**：Zekai Zhang, Deqing Li, Kuan Cao, Yujia Wu, Chenfei Wu…  
+**HF 投票**：23  
+**链接**：[arxiv](https://arxiv.org/abs/2605.13565) · [Hugging Face](https://huggingface.co/papers/2605.13565)
+
+**AI 摘要**：
+
+本次发布的Qwen-Image-VAE-2.0是高压缩率图像变分自编码器，通过引入全局跳跃连接、扩充潜变量通道、十亿级图像加合成渲染数据训练、语义对齐适配扩散、无注意力非对称编解码降开销等方案，在通用及富文本场景重建精度达SOTA，适配扩散模型时收敛速度显著优于同类基线，兼顾高压缩、高重建质量、强扩散适配性优势。
+
+> **我的批注**：（请在此处补充）
+
+---
+
+## 8. Predicting Decisions of AI Agents from Limited Interaction through Text-Tabular Modeling
+
+**作者**：Eilam Shapira, Moshe Tennenholtz, Roi Reichart  
+**HF 投票**：22  
+**链接**：[arxiv](https://arxiv.org/abs/2605.12411) · [Hugging Face](https://huggingface.co/papers/2605.12411)
+
+**AI 摘要**：
+
+本文聚焦有限交互下陌生AI代理决策预测问题，提出目标自适应文本-表格建模框架，新增LLM-as-Observer模块，抽取冻结小模型的隐状态作为决策特征而非直接使用其输出。实验显示该模型显著优于基线，K=16时AUC提升4个点，议价报价误差降14%，验证了框架有效性及LLM隐态的独特决策信号价值。
+
+> **我的批注**：（请在此处补充）
+
+---
+
+## 9. Many-Shot CoT-ICL: Making In-Context Learning Truly Learn
+
+**作者**：Tsz Ting Chung, Lemao Liu, Mo Yu, Dit-Yan Yeung  
+**HF 投票**：18  
+**链接**：[arxiv](https://arxiv.org/abs/2605.13511) · [Hugging Face](https://huggingface.co/papers/2605.13511)
+
+**AI 摘要**：
+
+本文研究多示例思维链上下文学习（CoT-ICL），发现现有多示例ICL缩放规律不适用于推理场景：效果仅利好推理导向大模型，语义检索对推理任务无效，示例越多性能波动越大。将其定义为测试时上下文学习，提出曲线示例选择排序法，64示例几何任务最高提效5.42个百分点，把长上下文从检索缓存重构为结构化学习课程。
+
+> **我的批注**：（请在此处补充）
+
+---
+
+## 10. The DAWN of World-Action Interactive Models
+
+**作者**：Hongbo Lu, Liang Yao, Chenghao He, Haoyu Wang, Xiang Gu…  
+**HF 投票**：10  
+**链接**：[arxiv](https://arxiv.org/abs/2605.11550) · [Hugging Face](https://huggingface.co/papers/2605.11550)
+
+**AI 摘要**：
+
+针对现有世界动作模型割裂场景预测与动作生成、缺乏双向交互的缺陷，论文提出世界-动作交互模型（WAIM）框架，面向自动驾驶落地隐式生成基线DAWN：二者在语义隐空间递归迭代优化，短隐空间推演即可支撑复杂场景长轨迹生成。实验显示其在多自动驾驶基准上规划、安全表现优异，验证了交互生成范式的可行性。
+
+> **我的批注**：（请在此处补充）
+
+---
+
+## 11. Learning Agentic Policy from Action Guidance
+
+**作者**：Yuxiang Ji, Zengbin Wang, Yong Wang, Shidong Yang, Ziyu Ma…  
+**HF 投票**：8  
+**链接**：[arxiv](https://arxiv.org/abs/2605.12004) · [Hugging Face](https://huggingface.co/papers/2605.12004)
+
+**AI 摘要**：
+
+针对大模型智能体强化学习（RL）基础策略探索不足、难以触达奖励态的痛点，本文提出ActGuide-RL框架：复用人类日常交互动作数据作为规划引导，采用自适应最小干预策略+混合训练，既突破奖励态可达性壁垒，又控制离策略风险。实测其性能远超纯RL，对标SFT+RL管线效果且无需冷启动，大幅降低对高成本监督微调数据的依赖。
+
+> **我的批注**：（请在此处补充）
+
+---
+
+## 12. FrameSkip: Learning from Fewer but More Informative Frames in VLA Training
+
+**作者**：Bin Yu, Shijie Lian, Xiaopeng Lin, Zhaolong Shen, Yuliang Wei…  
+**HF 投票**：7  
+**链接**：[arxiv](https://arxiv.org/abs/2605.13757) · [Hugging Face](https://huggingface.co/papers/2605.13757)
+
+**AI 摘要**：
+
+现有视觉-语言-动作（VLA）策略训练对等权重采样遥操作演示帧，导致低变化片段占比过高、抓取释放等关键操作过渡样本稀疏。为此提出数据层选帧框架FrameSkip，多维度评估帧价值，按目标保留率重采样高价值帧，无需改动原有模型结构与训练推理流程。三类机器人任务基准测试显示，仅保留20%帧时，其成功率较全帧训练高出近10个百分点，优于其他简易选帧方案。
+
+> **我的批注**：（请在此处补充）
+
+---
