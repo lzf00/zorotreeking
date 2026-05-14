@@ -28,6 +28,15 @@ function escapeYaml(s: string): string {
   return s.replace(/"/g, '\\"').replace(/\n/g, " ");
 }
 
+/**
+ * MDX 转义：MDX 把 `<` 后跟非字母字符当作错误的 JSX 起手
+ * （如 `<1%` / `<a>` 没问题但 `<1`、`<x>` 都会炸）
+ * 把不像 JSX 标签开头的 `<` 转成 `&lt;`
+ */
+function sanitizeForMdx(s: string): string {
+  return s.replace(/<(?![a-zA-Z!/])/g, "&lt;");
+}
+
 async function summarizeSafe(
   text: string,
   kind: "paper" | "news",
@@ -139,7 +148,7 @@ async function buildAIDigest(date: string): Promise<void> {
     lines.push("");
     lines.push("**AI 摘要**：");
     lines.push("");
-    lines.push(p.zhSummary);
+    lines.push(sanitizeForMdx(p.zhSummary));
     lines.push("");
     lines.push("> **我的批注**：（请在此处补充）");
     lines.push("");
@@ -205,7 +214,7 @@ async function buildInvestDigest(date: string): Promise<void> {
       lines.push(`**原文**：[同花顺](${n.url})`);
     }
     lines.push("");
-    lines.push(n.zhSummary);
+    lines.push(sanitizeForMdx(n.zhSummary));
     lines.push("");
     lines.push("> **我的看法**：（请在此处补充）");
     lines.push("");

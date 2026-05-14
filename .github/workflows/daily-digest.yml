@@ -58,8 +58,6 @@ jobs:
             exit 0
           fi
           DATE_CN=$(date -u -d "+8 hours" +%Y-%m-%d 2>/dev/null || date -u +%Y-%m-%d)
-          git commit -m "chore(digest): daily auto digest $DATE_CN
-
-[skip ci]"
+          git commit -m "chore(digest): daily auto digest $DATE_CN [skip ci]"
           git push origin HEAD:main
           echo "✓ pushed daily digest commit"

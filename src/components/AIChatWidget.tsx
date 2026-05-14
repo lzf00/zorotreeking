@@ -30,8 +30,14 @@ type Message = {
 
 const SESSION_KEY = "zoro-chat-session";
 const HISTORY_KEY = "zoro-chat-history";
+const MODEL_KEY = "zoro-chat-model";
 
 const SUGGESTED = ["这个站是关于什么的？", "今日股市行情", "今日 AI 资讯"];
+
+type ModelsInfo = {
+  models: string[];
+  default: string;
+};
 
 marked.setOptions({ breaks: true, gfm: true });
 
@@ -50,17 +56,32 @@ export default function AIChatWidget() {
   const [sending, setSending] = useState(false);
   const [webSearch, setWebSearch] = useState(false);
   const [unread, setUnread] = useState(false);
+  const [models, setModels] = useState<string[]>([]);
+  const [currentModel, setCurrentModel] = useState<string>("Kimi-K2.5");
   const sessionId = useRef<string>("");
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // 加载历史
+  // 加载历史 + 模型列表
   useEffect(() => {
     try {
       const sid = localStorage.getItem(SESSION_KEY) || "";
       const hist = JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]") as Message[];
       sessionId.current = sid;
       if (hist.length) setMessages(hist);
+      const saved = localStorage.getItem(MODEL_KEY) || "";
+      if (saved) setCurrentModel(saved);
     } catch {}
+    fetch("/api/models")
+      .then((r) => r.json() as Promise<ModelsInfo>)
+      .then((info) => {
+        if (info.models && info.models.length) {
+          setModels(info.models);
+          // 没存过偏好就用 default
+          const saved = localStorage.getItem(MODEL_KEY) || "";
+          if (!saved && info.default) setCurrentModel(info.default);
+        }
+      })
+      .catch(() => {});
   }, []);
 
   // 保存历史
@@ -97,7 +118,7 @@ export default function AIChatWidget() {
         body: JSON.stringify({
           session_id: sessionId.current,
           message: msg,
-          model: "Kimi-K2.5",
+          model: currentModel,
           web_search: webSearch,
         }),
       });
@@ -277,10 +298,28 @@ export default function AIChatWidget() {
               </div>
               <div>
                 <div style={{ fontSize: "13.5px", fontWeight: 600 }}>索隆 · AI 助手</div>
-                <div style={{ fontSize: "11px", color: "var(--text-tertiary, #9ca3af)" }}>Kimi · 联网搜索可选</div>
+                <div style={{ fontSize: "11px", color: "var(--text-tertiary, #9ca3af)" }}>{currentModel} · 联网搜索可选</div>
               </div>
             </div>
-            <div style={{ display: "flex", gap: "4px" }}>
+            <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
+              {models.length > 1 && (
+                <select
+                  value={currentModel}
+                  onChange={(e) => {
+                    setCurrentModel(e.target.value);
+                    try { localStorage.setItem(MODEL_KEY, e.target.value); } catch {}
+                  }}
+                  title="切换模型"
+                  style={{
+                    fontSize: "11.5px", padding: "4px 6px",
+                    border: "1px solid var(--border, #e5e7eb)",
+                    borderRadius: "6px", background: "var(--bg, #fff)",
+                    color: "var(--text, #111827)", cursor: "pointer", maxWidth: "120px",
+                    fontFamily: "inherit", outline: "none",
+                  }}>
+                  {models.map((m) => <option key={m} value={m}>{m}</option>)}
+                </select>
+              )}
               <button onClick={clearHistory} title="清空"
                 style={{
                   width: "28px", height: "28px", border: "none", background: "transparent",
