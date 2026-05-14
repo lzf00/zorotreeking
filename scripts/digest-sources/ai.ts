@@ -6,7 +6,7 @@
  */
 
 export type Paper = {
-  source: "hf-daily";
+  source: "hf-daily" | "arxiv";
   title: string;
   authors: string[];
   url: string;          // arxiv 链接

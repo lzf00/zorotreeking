@@ -6,9 +6,9 @@
  */
 
 export type NewsItem = {
-  source: "10jqka";
+  source: "10jqka" | "eastmoney";
   title: string;
-  digest: string;       // 中文原文（同花顺已经是中文，不需要翻译，只需要 LLM 改写更精炼）
+  digest: string;       // 中文原文（已经是中文，不需要翻译，只需要 LLM 改写更精炼）
   url: string;
   publishedAt: string;  // ISO 时间
   tags?: string[];

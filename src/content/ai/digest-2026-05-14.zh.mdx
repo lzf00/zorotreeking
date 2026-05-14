@@ -2,72 +2,78 @@
 lang: zh
 translationKey: digest-2026-05-14
 title: "AI 每日精选 · 2026-05-14"
-description: "来自 Hugging Face Daily Papers 的当日精选 12 篇，AI 自动摘要待你审核"
+description: "11 篇论文 · 多源聚合 + AI 摘要"
 date: 2026-05-14
 tags: [digest, auto, ai-papers]
 category: paper
-draft: true
+draft: false
 ---
 
-> 自动从 [Hugging Face Daily Papers](https://huggingface.co/papers?date=2026-05-14) 抓取，AI 摘要待审。Publish 前请检查并补充你的批注。
+> 由 cron 每日 08:00 北京自动从 HF Daily Papers + arxiv cs.LG 抓取，豆包翻译/摘要。仅供参考。
+
+# 🤗 Hugging Face Daily Papers
 
 ## 1. MinT: Managed Infrastructure for Training and Serving Millions of LLMs
 
 **作者**：Mind Lab, Song Cao, Vic Cao, Andrew Chen, Kaijie Chen…  
-**HF 投票**：63  
+**HF 投票**：64  
 **链接**：[arxiv](https://arxiv.org/abs/2605.13779) · [Hugging Face](https://huggingface.co/papers/2605.13779)
 
 **AI 摘要**：
 
-本文推出LoRA微调与在线服务专用托管基础设施MinT，采用基模型常驻、仅流转LoRA适配器的方案，规避全量checkpoint存储开销。其从三方向扩容：向上支持1T参数级稠密/MoE基模型训推；向下仅传输占比&lt;1%的适配器，训推效率最高提18.3倍且不增显存峰值；向外支持百万级LoRA策略目录，加载速度提8倍以上，可高效承载百万规模LoRA策略的训推调度。
-
-> **我的批注**：（请在此处补充）
+本文推出MinT托管基础设施，专为LoRA后训练与在线服务设计。它无需生成合并后的全量checkpoint，仅调度迁移尺寸不到基模1%的LoRA适配器，从适配超1T参数大模型、降低迁移训练开销、支撑百万级策略目录三个维度优化，可在共享1T级基模上高效完成百万量级LoRA策略的训练与服务，各环节效率提升2到18倍不等。
 
 ---
 
 ## 2. AnyFlow: Any-Step Video Diffusion Model with On-Policy Flow Map Distillation
 
 **作者**：Yuchao Gu, Guian Fang, Yuxin Jiang, Weijia Mao, Song Han…  
-**HF 投票**：58  
+**HF 投票**：59  
 **链接**：[arxiv](https://arxiv.org/abs/2605.13724) · [Hugging Face](https://huggingface.co/papers/2605.13724)
 
 **AI 摘要**：
 
-针对一致性蒸馏的少步视频生成模型采样步数增加时性能下降的痛点，本文提出AnyFlow流图蒸馏框架，将蒸馏目标从端点一致性映射改为任意时间区间的流图过渡学习，配套流图反向模拟实现高效同策略蒸馏。跨架构、1.3B-14B参数量级实验表明，其少步生成性能媲美或优于同类方案，且可随采样步数提升生成效果，适配任意步长需求。
-
-> **我的批注**：（请在此处补充）
+针对一致性蒸馏的少步视频生成模型随测试采样步数增多性能下降、无法适配任意步数采样的问题，本文提出AnyFlow视频扩散蒸馏框架，将蒸馏目标从端点一致性映射改为任意时间间隔的流图过渡，辅以流图反向模拟实现高效同策略蒸馏。实验表明其少步生成性能比肩或优于同类方法，且性能可随采样步数提升。
 
 ---
 
 ## 3. MulTaBench: Benchmarking Multimodal Tabular Learning with Text and Image
 
 **作者**：Alan Arazi, Eilam Shapira, Shoham Grunblat, Mor Ventura, Elad Hoffer…  
-**HF 投票**：47  
+**HF 投票**：54  
 **链接**：[arxiv](https://arxiv.org/abs/2605.10616) · [Hugging Face](https://huggingface.co/papers/2605.10616)
 
 **AI 摘要**：
 
-现有表格基础模型无法原生支持文本、图像等非结构化模态，现有多模态表格基准存在结果方差高、无法体现任务专属调优增益的缺陷。本文推出含40个数据集的MulTaBench基准，均等覆盖图像-表格、文本-表格的模态互补预测场景，横跨医疗、电商等高价值领域。实验验证任务感知表征调优可跨模态、模型结构等稳定提效，该基准可为多模态表格基础模型研发提供核心支撑。
-
-> **我的批注**：（请在此处补充）
+现有表格基础模型无法原生处理图文非结构化模态，且现有多模态表格基准存在结果方差大、掩盖任务专属调优增益的缺陷。本文推出含40个数据集的MulTaBench基准，均分图像-表格、文本-表格任务，侧重模态信号互补的预测场景，是目前规模最大的图像-表格基准。实验证实任务感知表征调优可跨模态、跨架构稳定提效，可为多模态表格基础模型研发提供支撑。
 
 ---
 
 ## 4. Training Long-Context Vision-Language Models Effectively with Generalization Beyond 128K Context
 
 **作者**：Zhaowei Wang, Lishu Luo, Haodong Duan, Weiwei Liu, Sijin Wu…  
-**HF 投票**：32  
+**HF 投票**：35  
 **链接**：[arxiv](https://arxiv.org/abs/2605.13831) · [Hugging Face](https://huggingface.co/papers/2605.13831)
 
 **AI 摘要**：
 
-针对长上下文大视觉语言模型训练数据配比研究不足的问题，该研究经消融实验明确长文档VQA训练效果更优，得到序列长度均衡配比、优先检索类数据等3项核心结论，基于此仅用5B token训练出MMProLong，将7B模型上下文从32K扩至128K，长文档VQA精度提7.1%，无需额外训练即可泛化到512K上下文及多类长上下文多模态任务。
-
-> **我的批注**：（请在此处补充）
+本研究针对长上下文多模态大模型训练数据配比缺乏成熟方案的问题，经系列消融实验明确三大训练规律：均衡长度数据优于专攻目标长度、检索是核心瓶颈、长文档VQA训练可保留短上下文能力。基于此用5B token训得7B规模MMProLong，128K训练窗口可泛化至512K上下文，长文档VQA涨7.1%，适配多类零样本长上下文任务。
 
 ---
 
-## 5. Edit-Compass & EditReward-Compass: A Unified Benchmark for Image Editing and Reward Modeling
+## 5. Predicting Decisions of AI Agents from Limited Interaction through Text-Tabular Modeling
+
+**作者**：Eilam Shapira, Moshe Tennenholtz, Roi Reichart  
+**HF 投票**：28  
+**链接**：[arxiv](https://arxiv.org/abs/2605.12411) · [Hugging Face](https://huggingface.co/papers/2605.12411)
+
+**AI 摘要**：
+
+针对陌生AI代理交互时对方决策逻辑黑箱难预测的问题，本文将其转化为目标自适应文本-表格预测任务，在表格基模型基础上新增取冻结小LLM隐层状态作为决策特征的Observer模块。在多代理谈判博弈测试中，模型效果优于直接大模型提示基线，K=16时预测AUC提4个点、报价误差降14%，方案有效性得到验证。
+
+---
+
+## 6. Edit-Compass & EditReward-Compass: A Unified Benchmark for Image Editing and Reward Modeling
 
 **作者**：Xuehai Bai, Yang Shi, Yi-Fan Zhang, Xuanyu Zhu, Yuran Wang…  
 **HF 投票**：27  
@@ -75,106 +81,63 @@ draft: true
 
 **AI 摘要**：
 
-针对现有图像编辑及配套奖励模型基准存在任务难度不足、评估维度粗糙、偏离实际RL优化场景，无法准确反映模型真实性能的问题，该研究推出统一评估套件：含2388个标注实例、覆盖6类梯度难度任务、采用细粒度多维评估的Edit-Compass，及含2251个贴合真实RL场景偏好对的EditReward-Compass，填补了相关评估体系缺口。
-
-> **我的批注**：（请在此处补充）
+针对现有图像编辑基准任务难度低、评测粒度粗，奖励模型基准脱离RL优化实际场景，均无法贴合人类真实判断的问题，该工作推出统一评测套件：含2388个标注实例、覆盖6类难度递进任务、采用细粒度多维评测框架的Edit-Compass，及含2251个真实RL场景偏好对的EditReward-Compass，填补了相关评测空白。
 
 ---
 
-## 6. TrackCraft3R: Repurposing Video Diffusion Transformers for Dense 3D Tracking
+# 📄 arXiv cs.LG（机器学习）
 
-**作者**：Jisu Nam, Jahyeok Koo, Soowon Son, Jaewoo Jung, Honggyu An…  
-**HF 投票**：24  
-**链接**：[arxiv](https://arxiv.org/abs/2605.12587) · [Hugging Face](https://huggingface.co/papers/2605.12587)
+## 7. Learning When to Act: Communication-Efficient Reinforcement Learning via Run-Time Assurance
+
+**作者**：Adam Haroon, Erick J. Rodr\'iguez-Seda, Cody Fleming, Tristan Schuler  
+**链接**：[arxiv](https://arxiv.org/abs/2605.12561)
 
 **AI 摘要**：
 
-针对单目视频稠密3D跟踪现有方法缺乏真实场景运动先验的痛点，本文提出TrackCraft3R，首次将预训练视频扩散Transformer改造为单阶段前馈稠密3D跟踪器，通过双隐层表示、时序RoPE对齐设计，结合LoRA微调完成范式转换。该方法在公开基准达SOTA性能，较现有最优方案速度快1.3倍、峰值内存占用仅为其1/4.6，对大运动、长视频鲁棒性优异。
-
-> **我的批注**：（请在此处补充）
+该研究提出通信高效的安全强化学习框架，让智能体联合学习控制输出与动作触发时机，搭配运行时安全层，通过一步李雅普诺夫预测+预计算LQR备份兜底，安全保证强于仅保障期望安全的约束MDP方法。实验显示其采样间隔比传统基线高1.45-3.51倍，自适应时序保障稀疏控制安全，可跨环境迁移，适配高低维系统，鲁棒性优异。
 
 ---
 
-## 7. Qwen-Image-VAE-2.0 Technical Report
+## 8. CAWI: Copula-Aligned Weight Initialization for Randomized Neural Networks
 
-**作者**：Zekai Zhang, Deqing Li, Kuan Cao, Yujia Wu, Chenfei Wu…  
-**HF 投票**：23  
-**链接**：[arxiv](https://arxiv.org/abs/2605.13565) · [Hugging Face](https://huggingface.co/papers/2605.13565)
+**作者**：Mushir Akhtar, M. Tanveer, Mohd. Arshad  
+**链接**：[arxiv](https://arxiv.org/abs/2605.12580)
 
 **AI 摘要**：
 
-本次发布的Qwen-Image-VAE-2.0是高压缩率图像变分自编码器，通过引入全局跳跃连接、扩充潜变量通道、十亿级图像加合成渲染数据训练、语义对齐适配扩散、无注意力非对称编解码降开销等方案，在通用及富文本场景重建精度达SOTA，适配扩散模型时收敛速度显著优于同类基线，兼顾高压缩、高重建质量、强扩散适配性优势。
-
-> **我的批注**：（请在此处补充）
+针对无需反向传播的随机神经网络（RdNN）传统随机初始化忽略特征关联、性能受限的问题，本文提出Copula对齐权重初始化框架CAWI：基于拟合数据的Copula采样输入-隐层权重，保留RdNN输出层闭式解优势，可适配各类特征依赖。经83个分类基准及2个生物医学数据集验证，CAWI较传统初始化性能提升显著，代码已开源。
 
 ---
 
-## 8. Predicting Decisions of AI Agents from Limited Interaction through Text-Tabular Modeling
+## 9. Towards Robust Federated Multimodal Graph Learning under Modality Heterogeneity
 
-**作者**：Eilam Shapira, Moshe Tennenholtz, Roi Reichart  
-**HF 投票**：22  
-**链接**：[arxiv](https://arxiv.org/abs/2605.12411) · [Hugging Face](https://huggingface.co/papers/2605.12411)
+**作者**：Sirui Zhang, Haonan Wang, Xunkai Li, Zekai Chen, Shumeng Li…  
+**链接**：[arxiv](https://arxiv.org/abs/2605.12584)
 
 **AI 摘要**：
 
-本文聚焦有限交互下陌生AI代理决策预测问题，提出目标自适应文本-表格建模框架，新增LLM-as-Observer模块，抽取冻结小模型的隐状态作为决策特征而非直接使用其输出。实验显示该模型显著优于基线，K=16时AUC提升4个点，议价报价误差降14%，验证了框架有效性及LLM隐态的独特决策信号价值。
-
-> **我的批注**：（请在此处补充）
+针对联邦多模态图学习场景下的模态缺失异质性痛点，现有方案存在客户端补全缺乏全局语义、服务端聚合未适配更新可靠性的缺陷，本文提出FedMPO框架，采用拓扑感知跨模态补全、缺失感知噪声过滤、可靠性加权聚合策略。经6个数据集3类任务验证，其在高缺失、非IID场景下较基线最高提升4.10%、5.65%，性能优异。
 
 ---
 
-## 9. Many-Shot CoT-ICL: Making In-Context Learning Truly Learn
+## 10. OceanCBM: A Concept Bottleneck Model for Mechanistic Interpretability in Ocean Forecasting
 
-**作者**：Tsz Ting Chung, Lemao Liu, Mo Yu, Dit-Yan Yeung  
-**HF 投票**：18  
-**链接**：[arxiv](https://arxiv.org/abs/2605.13511) · [Hugging Face](https://huggingface.co/papers/2605.13511)
+**作者**：Sanah Suri, Kieran Ringel, Maike Sonnewald  
+**链接**：[arxiv](https://arxiv.org/abs/2605.12639)
 
 **AI 摘要**：
 
-本文研究多示例思维链上下文学习（CoT-ICL），发现现有多示例ICL缩放规律不适用于推理场景：效果仅利好推理导向大模型，语义检索对推理任务无效，示例越多性能波动越大。将其定义为测试时上下文学习，提出曲线示例选择排序法，64示例几何任务最高提效5.42个百分点，把长上下文从检索缓存重构为结构化学习课程。
-
-> **我的批注**：（请在此处补充）
+针对现有海洋极端现象预测AI黑箱、物理保真度低的问题，该研究提出海洋领域首个概念瓶颈模型OceanCBM，采用混合监督架构，中间层嵌入流体力学规定概念加自由概念，兼顾软物理约束与残差过程捕捉。实验表明其在不损失热含量预测精度的前提下，可获得稳定物理可解释表征，厘清了可解释性与性能的权衡关系。
 
 ---
 
-## 10. The DAWN of World-Action Interactive Models
+## 11. Learning to Decide with AI Assistance under Human-Alignment
 
-**作者**：Hongbo Lu, Liang Yao, Chenghao He, Haoyu Wang, Xiang Gu…  
-**HF 投票**：10  
-**链接**：[arxiv](https://arxiv.org/abs/2605.11550) · [Hugging Face](https://huggingface.co/papers/2605.11550)
-
-**AI 摘要**：
-
-针对现有世界动作模型割裂场景预测与动作生成、缺乏双向交互的缺陷，论文提出世界-动作交互模型（WAIM）框架，面向自动驾驶落地隐式生成基线DAWN：二者在语义隐空间递归迭代优化，短隐空间推演即可支撑复杂场景长轨迹生成。实验显示其在多自动驾驶基准上规划、安全表现优异，验证了交互生成范式的可行性。
-
-> **我的批注**：（请在此处补充）
-
----
-
-## 11. Learning Agentic Policy from Action Guidance
-
-**作者**：Yuxiang Ji, Zengbin Wang, Yong Wang, Shidong Yang, Ziyu Ma…  
-**HF 投票**：8  
-**链接**：[arxiv](https://arxiv.org/abs/2605.12004) · [Hugging Face](https://huggingface.co/papers/2605.12004)
+**作者**：Nina Corvelo Benz, Eleni Straitouri, Manuel Gomez-Rodriguez  
+**链接**：[arxiv](https://arxiv.org/abs/2605.12646)
 
 **AI 摘要**：
 
-针对大模型智能体强化学习（RL）基础策略探索不足、难以触达奖励态的痛点，本文提出ActGuide-RL框架：复用人类日常交互动作数据作为规划引导，采用自适应最小干预策略+混合训练，既突破奖励态可达性壁垒，又控制离策略风险。实测其性能远超纯RL，对标SFT+RL管线效果且无需冷启动，大幅降低对高成本监督微调数据的依赖。
-
-> **我的批注**：（请在此处补充）
-
----
-
-## 12. FrameSkip: Learning from Fewer but More Informative Frames in VLA Training
-
-**作者**：Bin Yu, Shijie Lian, Xiaopeng Lin, Zhaolong Shen, Yuliang Wei…  
-**HF 投票**：7  
-**链接**：[arxiv](https://arxiv.org/abs/2605.13757) · [Hugging Face](https://huggingface.co/papers/2605.13757)
-
-**AI 摘要**：
-
-现有视觉-语言-动作（VLA）策略训练对等权重采样遥操作演示帧，导致低变化片段占比过高、抓取释放等关键操作过渡样本稀疏。为此提出数据层选帧框架FrameSkip，多维度评估帧价值，按目标保留率重采样高价值帧，无需改动原有模型结构与训练推理流程。三类机器人任务基准测试显示，仅保留20%帧时，其成功率较全帧训练高出近10个百分点，优于其他简易选帧方案。
-
-> **我的批注**：（请在此处补充）
+针对AI辅助高风险决策时，人难以仅靠AI置信度判断是否信任模型、且置信度对齐对最优决策学习复杂度的影响不明的问题，本文将二元决策场景转化为全反馈双臂在线上下文学习问题，推导学习后悔度下界，证明AI与人置信度对齐可降低决策学习复杂度，真人实验验证结论在非完美对齐下仍稳健。
 
 ---
