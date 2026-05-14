@@ -1,6 +1,7 @@
 ---
 import { getCollection, type CollectionEntry } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import FeedbackButtons from "@/components/FeedbackButtons";
 import PhotoGallery from "@/components/PhotoGallery";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
 import { loadPhotoManifest } from "@/lib/photo-manifests";
@@ -32,5 +33,6 @@ const photos = loadPhotoManifest(entry.data.manifest);
     </header>
     {entry.body.trim().length > 0 && <div class="prose prose-neutral dark:prose-invert max-w-none mb-8"><Content /></div>}
     {photos.length > 0 ? <PhotoGallery photos={photos} galleryId={`gallery-${entry.data.translationKey}`} client:only="react" /> : <p class="text-center text-[var(--text-tertiary)] py-12">manifest not found</p>}
+    <FeedbackButtons slug={`photo/${entry.data.translationKey}`} client:visible />
   </article>
 </BaseLayout>

@@ -1,6 +1,7 @@
 ---
 import { getCollection, type CollectionEntry } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import FeedbackButtons from "@/components/FeedbackButtons";
 import TOC from "@/components/TOC.astro";
 import Giscus from "@/components/Giscus.astro";
 import { estimateReadingTime } from "@/lib/reading-time";
@@ -35,6 +36,7 @@ const readMins = estimateReadingTime(entry.body);
     <div class="prose prose-neutral dark:prose-invert max-w-none prose-headings:tracking-tight prose-a:text-section-ai prose-pre:bg-[#0d1117] prose-pre:rounded-xl prose-headings:scroll-mt-20">
       <Content />
     </div>
+    <FeedbackButtons slug={`ai/${entry.data.translationKey}`} client:visible />
     <Giscus />
   </article>
 </BaseLayout>

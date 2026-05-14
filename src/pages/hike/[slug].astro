@@ -3,6 +3,7 @@ import { getCollection, type CollectionEntry } from "astro:content";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import FeedbackButtons from "@/components/FeedbackButtons";
 import GpxMap from "@/components/GpxMap";
 import ElevationChart from "@/components/ElevationChart";
 import { parseGpx } from "@/lib/gpx";
@@ -79,5 +80,6 @@ const diffLabel = { easy: "轻松", moderate: "中等", hard: "困难", expert: 
         <Content />
       </div>
     )}
+    <FeedbackButtons slug={`hike/${entry.data.translationKey}`} client:visible />
   </article>
 </BaseLayout>

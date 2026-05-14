@@ -1,6 +1,7 @@
 ---
 import { getCollection, type CollectionEntry } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import FeedbackButtons from "@/components/FeedbackButtons";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
 
 export async function getStaticPaths() {
@@ -28,5 +29,6 @@ const t = useTranslations(lang);
     <div class="prose prose-neutral dark:prose-invert max-w-none prose-headings:tracking-tight prose-a:text-section-invest">
       <Content />
     </div>
+    <FeedbackButtons slug={`invest/${entry.data.translationKey}`} client:visible />
   </article>
 </BaseLayout>

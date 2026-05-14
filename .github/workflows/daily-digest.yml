@@ -60,6 +60,7 @@ jobs:
             exit 0
           fi
           DATE_CN=$(date -u -d "+8 hours" +%Y-%m-%d 2>/dev/null || date -u +%Y-%m-%d)
-          git commit -m "chore(digest): daily auto digest $DATE_CN [skip ci]"
+          # 不再加 [skip ci]：cron 提交也触发 deploy.yml，约 08:05 北京自动全栈上线
+          git commit -m "chore(digest): daily auto digest $DATE_CN"
           git push origin HEAD:main
           echo "✓ pushed daily digest commit"

@@ -1,6 +1,7 @@
 ---
 import { getCollection, type CollectionEntry } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import FeedbackButtons from "@/components/FeedbackButtons";
 import PhotoGallery from "@/components/PhotoGallery";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
 import { loadPhotoManifest } from "@/lib/photo-manifests";
@@ -46,5 +47,6 @@ const photos = loadPhotoManifest(entry.data.manifest);
         manifest 文件不存在或为空：<code>src/data/photo-manifest/{entry.data.manifest}.json</code>
       </p>
     )}
+    <FeedbackButtons slug={`photo/${entry.data.translationKey}`} client:visible />
   </article>
 </BaseLayout>
