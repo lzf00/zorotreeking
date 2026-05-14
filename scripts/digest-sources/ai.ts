@@ -6,7 +6,17 @@
  */
 
 export type Paper = {
-  source: "hf-daily" | "arxiv" | "openai-blog" | "lillog" | "anthropic" | "qbitai";
+  source:
+    | "hf-daily"
+    | "arxiv"
+    | "openai-blog"
+    | "lillog"
+    | "anthropic"
+    | "qbitai"
+    | "thegradient"
+    | "google-research"
+    | "deepmind"
+    | "hf-blog";
   title: string;
   authors: string[];
   url: string;          // 原文链接

@@ -6,7 +6,7 @@
  */
 
 export type NewsItem = {
-  source: "10jqka" | "eastmoney";
+  source: "10jqka" | "eastmoney" | "yahoo-finance";
   title: string;
   digest: string;       // 中文原文（已经是中文，不需要翻译，只需要 LLM 改写更精炼）
   url: string;

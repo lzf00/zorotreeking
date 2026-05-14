@@ -22,11 +22,19 @@ import { fileURLToPath } from "node:url";
 
 import { fetchHFDailyPapers, type Paper } from "./digest-sources/ai.ts";
 import { fetchArxivRSS } from "./digest-sources/ai-arxiv.ts";
-import { fetchOpenAIBlog, fetchLilLog } from "./digest-sources/ai-blogs.ts";
+import {
+  fetchOpenAIBlog,
+  fetchLilLog,
+  fetchTheGradient,
+  fetchGoogleResearch,
+  fetchDeepMind,
+  fetchHFBlog,
+} from "./digest-sources/ai-blogs.ts";
 import { fetchAnthropicNews } from "./digest-sources/ai-anthropic.ts";
 import { fetchQbitAI } from "./digest-sources/ai-qbitai.ts";
 import { fetchTongHuaShunNews, type NewsItem } from "./digest-sources/invest.ts";
 import { fetchEastmoneyNews } from "./digest-sources/invest-eastmoney.ts";
+import { fetchYahooFinance } from "./digest-sources/invest-yahoo.ts";
 import { summarizeToChinese } from "./lib/llm.ts";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -34,13 +42,18 @@ const CONTENT_DIR = path.join(ROOT, "src", "content");
 
 const SOURCE_LABEL: Record<string, string> = {
   "hf-daily": "🤗 Hugging Face Daily Papers",
+  "hf-blog": "🤗 Hugging Face Blog",
   "arxiv": "📄 arXiv cs.LG（机器学习）",
   "openai-blog": "🟢 OpenAI 官方动态",
   "anthropic": "🪶 Anthropic News",
+  "google-research": "🟦 Google Research",
+  "deepmind": "🟣 Google DeepMind",
+  "thegradient": "📰 The Gradient",
   "lillog": "✍️ Lil'Log（Lilian Weng）",
   "qbitai": "⚡ 量子位",
   "10jqka": "📱 同花顺 7×24",
   "eastmoney": "🟢 东方财富 7×24",
+  "yahoo-finance": "📈 Yahoo Finance",
 };
 
 function todayInBeijing(): string {
@@ -118,36 +131,16 @@ async function collectFromSources<T extends { url?: string }>(
 async function buildAIDigest(date: string): Promise<void> {
   console.log("\n── AI digest ──");
   const papers = await collectFromSources<Paper>([
-    {
-      name: "Hugging Face Daily",
-      fetch: () => fetchHFDailyPapers(date).catch(() => fetchHFDailyPapers()),
-      limit: 6,
-    },
-    {
-      name: "arxiv cs.LG",
-      fetch: () => fetchArxivRSS("cs.LG", 4),
-      limit: 4,
-    },
-    {
-      name: "OpenAI Blog",
-      fetch: () => fetchOpenAIBlog(14, 3),
-      limit: 3,
-    },
-    {
-      name: "Anthropic News",
-      fetch: () => fetchAnthropicNews(3),
-      limit: 3,
-    },
-    {
-      name: "量子位",
-      fetch: () => fetchQbitAI(4),
-      limit: 4,
-    },
-    {
-      name: "Lil'Log",
-      fetch: () => fetchLilLog(180, 2),
-      limit: 2,
-    },
+    { name: "Hugging Face Daily", fetch: () => fetchHFDailyPapers(date).catch(() => fetchHFDailyPapers()), limit: 5 },
+    { name: "arxiv cs.LG",        fetch: () => fetchArxivRSS("cs.LG", 3), limit: 3 },
+    { name: "OpenAI Blog",        fetch: () => fetchOpenAIBlog(14, 2),    limit: 2 },
+    { name: "Anthropic News",     fetch: () => fetchAnthropicNews(2),     limit: 2 },
+    { name: "Google Research",    fetch: () => fetchGoogleResearch(30, 2), limit: 2 },
+    { name: "DeepMind",           fetch: () => fetchDeepMind(45, 2),      limit: 2 },
+    { name: "Hugging Face Blog",  fetch: () => fetchHFBlog(14, 2),        limit: 2 },
+    { name: "The Gradient",       fetch: () => fetchTheGradient(180, 1),  limit: 1 },
+    { name: "Lil'Log",            fetch: () => fetchLilLog(180, 1),       limit: 1 },
+    { name: "量子位",              fetch: () => fetchQbitAI(3),            limit: 3 },
   ]);
   if (papers.length === 0) {
     console.log("  no papers; skip.");
@@ -224,16 +217,9 @@ async function buildAIDigest(date: string): Promise<void> {
 async function buildInvestDigest(date: string): Promise<void> {
   console.log("\n── Invest digest ──");
   const news = await collectFromSources<NewsItem>([
-    {
-      name: "同花顺 7×24",
-      fetch: () => fetchTongHuaShunNews(8),
-      limit: 6,
-    },
-    {
-      name: "东方财富 7×24",
-      fetch: () => fetchEastmoneyNews(8),
-      limit: 6,
-    },
+    { name: "同花顺 7×24",    fetch: () => fetchTongHuaShunNews(8), limit: 6 },
+    { name: "东方财富 7×24",   fetch: () => fetchEastmoneyNews(8),    limit: 6 },
+    { name: "Yahoo Finance", fetch: () => fetchYahooFinance(3),     limit: 3 },
   ]);
   if (news.length === 0) {
     console.log("  no news; skip.");

@@ -16,233 +16,238 @@ draft: false
 ## 1. MulTaBench: Benchmarking Multimodal Tabular Learning with Text and Image
 
 **作者**：Alan Arazi, Eilam Shapira, Shoham Grunblat, Mor Ventura, Elad Hoffer…  
-**HF 投票**：74  
+**HF 投票**：81  
 **链接**：[arxiv](https://arxiv.org/abs/2605.10616) · [Hugging Face](https://huggingface.co/papers/2605.10616)
 
 **AI 摘要**：
 
-针对现有表格基础模型无法原生处理图文非结构化数据、现有多模态表格基准存在缺陷的问题，本文提出含40个数据集、对半覆盖图像-表格、文本-表格任务的MulTaBench基准，聚焦模态信号互补的预测场景。实验验证面向任务的表征调优可跨模态、模型稳定提效，该基准是目前最大的图文表格基准，为多模态表格基础模型研发提供支撑。
+针对现有表格基础模型不原生支持图文非结构化模态、现有多模态表格基准存在评估偏差的问题，本文推出含40个数据集的MulTaBench基准，均分图像-表格、文本-表格任务，侧重模态信号互补场景。实验验证任务感知表示调优增益跨模态、模型等均通用，可支撑多模态表格基础模型研发。
 
 ---
 
 ## 2. MinT: Managed Infrastructure for Training and Serving Millions of LLMs
 
 **作者**：Mind Lab, Song Cao, Vic Cao, Andrew Chen, Kaijie Chen…  
-**HF 投票**：65  
+**HF 投票**：66  
 **链接**：[arxiv](https://arxiv.org/abs/2605.13779) · [Hugging Face](https://huggingface.co/papers/2605.13779)
 
 **AI 摘要**：
 
-针对大模型LoRA微调与部署的效率痛点，研究人员提出托管基础设施MinT：核心设计为常驻共享基座模型，不生成合并全量检查点，仅调度流转LoRA适配器完成全流程运维。其可支撑1T参数级基座训练推理，LoRA适配器仅占基座1%大小，还可调度百万级LoRA策略库，加载效率提升8倍以上，实现海量LoRA在大基座上的高效训练与部署。
+本文提出面向LoRA微调与在线服务的托管基础设施MinT，无需生成合并全量 checkpoint，常驻基座模型仅流转LoRA适配器，从适配超大规模基座、压缩流转开销、解耦策略存储与算力工作集三个维度优化，可支撑百万级LoRA策略库，在共享1T参数级基座的前提下，大幅提升训练、加载、多策略并行效率，降低显存占用。
 
 ---
 
 ## 3. AnyFlow: Any-Step Video Diffusion Model with On-Policy Flow Map Distillation
 
 **作者**：Yuchao Gu, Guian Fang, Yuxin Jiang, Weijia Mao, Song Han…  
-**HF 投票**：59  
+**HF 投票**：62  
 **链接**：[arxiv](https://arxiv.org/abs/2605.13724) · [Hugging Face](https://huggingface.co/papers/2605.13724)
 
 **AI 摘要**：
 
-针对一致性蒸馏的少步视频生成模型采样步数增加时性能衰减、无法适配任意步扩散的痛点，本文提出AnyFlow框架，将蒸馏目标从端点一致性映射改为任意时间间隔的流图迁移，搭配流图反向模拟实现高效同策略蒸馏。实验显示其少步性能比肩甚至超越同类方案，且可随采样步数提升生成效果。
+针对一致性蒸馏的少步视频生成模型采样步数增加时性能下降、无法适配任意步数采样的问题，本文提出AnyFlow任意步视频扩散蒸馏框架，将蒸馏目标从端点一致性映射改为任意时间区间的流图迁移，结合流图反向模拟实现高效同策略蒸馏。实验表明，其少步生成性能不逊于同类方法，且性能可随采样步数预算同步提升。
 
 ---
 
 ## 4. Training Long-Context Vision-Language Models Effectively with Generalization Beyond 128K Context
 
 **作者**：Zhaowei Wang, Lishu Luo, Haodong Duan, Weiwei Liu, Sijin Wu…  
-**HF 投票**：44  
+**HF 投票**：48  
 **链接**：[arxiv](https://arxiv.org/abs/2605.13831) · [Hugging Face](https://huggingface.co/papers/2605.13831)
 
 **AI 摘要**：
 
-针对长上下文多模态大模型缺乏成熟训练方案的问题，团队通过消融实验验证了长文档VQA训练、均衡序列长度配比、侧重检索任务的训练优势，基于Qwen2.5-VL-7B用5B token增量预训练得到MMProLong，上下文窗口从32K扩至128K，长文档VQA精度提升7.1%，无需额外训练即可适配256K/512K上下文及多类长上下文多模态任务。
+针对长上下文多模态大模型训练的长数据配比方案欠缺问题，本文经系统消融实验明确3项训练优化准则，仅用5B token对Qwen2.5-VL-7B做持续预训练，推出MMProLong。其将上下文窗口从32K拓展至128K，长文档VQA精度提7.1%，无需额外训练即可外推至512K上下文，适配多类长场景，提供了可落地的训练范式。
 
 ---
 
 ## 5. Predicting Decisions of AI Agents from Limited Interaction through Text-Tabular Modeling
 
 **作者**：Eilam Shapira, Moshe Tennenholtz, Roi Reichart  
-**HF 投票**：31  
+**HF 投票**：35  
 **链接**：[arxiv](https://arxiv.org/abs/2605.12411) · [Hugging Face](https://huggingface.co/papers/2605.12411)
 
 **AI 摘要**：
 
-针对陌生AI交互场景下对方决策难预测的问题，该研究在可控议价博弈场景下提出目标自适应文本-表格建模框架，新增冻结小语言模型的隐态作为观察者特征，替代直接少样本预测。测试显示模型性能显著优于基线，K=16时决策预测AUC提4个点，议价报价误差降14%，证明大模型隐态可挖掘直接提示无法获取的决策信号。
-
----
-
-## 6. Edit-Compass & EditReward-Compass: A Unified Benchmark for Image Editing and Reward Modeling
-
-**作者**：Xuehai Bai, Yang Shi, Yi-Fan Zhang, Xuanyu Zhu, Yuran Wang…  
-**HF 投票**：28  
-**链接**：[arxiv](https://arxiv.org/abs/2605.13062) · [Hugging Face](https://huggingface.co/papers/2605.13062)
-
-**AI 摘要**：
-
-针对现有图像编辑及配套奖励模型基准存在任务难度低、评估粒度粗、偏离实际强化学习应用场景，难以准确评测前沿模型性能的问题，该研究推出统一评估套件：Edit-Compass含2388个标注实例、6类难度递增任务，采用细粒度多维度评估；EditReward-Compass含2251组贴合实际RL场景的偏好对，填补现有评估短板。
+本文针对AI智能体与陌生对手交互时的决策预测问题，提出目标自适应文本-表格建模框架，新增冻结小模型隐态作为观察者特征，仅用隐层信息而非输出。测试中模型效果优于直接大模型提示基线，交互16次时预测AUC提升4个点，报价误差降14%，验证了框架及隐态特征的有效性。
 
 ---
 
 # 📄 arXiv cs.LG（机器学习）
 
-## 7. Learning When to Act: Communication-Efficient Reinforcement Learning via Run-Time Assurance
+## 6. Learning When to Act: Communication-Efficient Reinforcement Learning via Run-Time Assurance
 
 **作者**：Adam Haroon, Erick J. Rodr\'iguez-Seda, Cody Fleming, Tristan Schuler  
 **链接**：[arxiv](https://arxiv.org/abs/2605.12561)
 
 **AI 摘要**：
 
-该安全强化学习研究提出让策略联合学习控制输入与低通信开销的执行时机，搭配运行时保障层，通过一步李雅普诺夫预测、预存LQR备份兜底，安全保证强于仅保障期望安全的约束MDP方法。实验显示其3类控制任务的平均采样间隔比传统基线高1.45~3.51倍，自适应时序可保障稀疏通信下的安全性，方案可跨环境迁移、鲁棒性优异。
+该研究面向安全强化学习，跳出“智能体该做什么”的常规思路，转而研究“何时需要决策”的问题，联合学习控制输入与低通信开销的决策时序，搭配逐点李亚普诺夫安全护盾和运行时保障层，可提供更强安全保证。实验显示其采样间隔较传统基线最高提3.51倍，同速率固定LQR完全失稳，方案还支持跨环境迁移、适配高维系统，鲁棒性优异。
 
 ---
 
-## 8. CAWI: Copula-Aligned Weight Initialization for Randomized Neural Networks
+## 7. CAWI: Copula-Aligned Weight Initialization for Randomized Neural Networks
 
 **作者**：Mushir Akhtar, M. Tanveer, Mohd. Arshad  
 **链接**：[arxiv](https://arxiv.org/abs/2605.12580)
 
 **AI 摘要**：
 
-针对无需反向传播的随机神经网络传统随机初始化忽略特征间关联、导致模型性能下降的问题，本文提出Copula对齐权重初始化框架CAWI：通过拟合数据适配的多元Copula采样输入到隐层权重，兼顾特征依赖与输出层闭式求解优势，不改动原有训练范式。经83个分类基准、2个生物医学数据集验证，其性能显著优于传统初始化。
+针对无反向传播的随机神经网络传统初始化无视特征依赖、劣化性能的问题，本文提出Copula对齐权重初始化框架CAWI：基于数据拟合的Copula采样输入-隐层权重，捕捉特征关联、非对称及尾依赖特性，保留原输出层闭式解优势。经83个通用分类基准、2个生物医学数据集验证，该方法相较传统初始化性能提升显著。
 
 ---
 
-## 9. Towards Robust Federated Multimodal Graph Learning under Modality Heterogeneity
+## 8. Towards Robust Federated Multimodal Graph Learning under Modality Heterogeneity
 
 **作者**：Sirui Zhang, Haonan Wang, Xunkai Li, Zekai Chen, Shumeng Li…  
 **链接**：[arxiv](https://arxiv.org/abs/2605.12584)
 
 **AI 摘要**：
 
-针对多模态图学习存在数据孤岛、模态缺失问题，现有联邦方案适配性不足，本文提出FedMPO框架：采用拓扑感知跨模态生成补全缺失特征，搭配缺失感知路由过滤噪声、可靠性感知聚合下调不可靠客户端权重。经6个数据集3类任务验证，其在高缺失、非IID场景下较基线最高提升4.10%、5.65%，性能更优。
-
----
-
-## 10. OceanCBM: A Concept Bottleneck Model for Mechanistic Interpretability in Ocean Forecasting
-
-**作者**：Sanah Suri, Kieran Ringel, Maike Sonnewald  
-**链接**：[arxiv](https://arxiv.org/abs/2605.12639)
-
-**AI 摘要**：
-
-针对现有海洋预报机器学习模型黑箱化、物理保真度不足的问题，本文提出首个面向海洋动力学可解释预测的概念瓶颈模型OceanCBM，采用混合监督，中间层融合地球流体力学预设概念与自由残差概念，可在不损失预报精度的前提下获得物理可解释的稳定表征，表现优于纯预测、纯约束两类基线。
+针对联邦多模态图学习的模态异质性痛点，现有方案存在客户端补全缺全局语义、服务端聚合受更新可靠性差异干扰的问题，本文提出FedMPO框架，采用拓扑感知跨模态生成、缺失感知信号滤波、可靠性加权聚合设计。6个数据集3类任务实验显示，其在高缺失、非IID场景下较基线最高提升4.10%、5.65%，性能显著领先。
 
 ---
 
 # 🟢 OpenAI 官方动态
 
-## 11. Building a safe, effective sandbox to enable Codex on Windows
+## 9. Building a safe, effective sandbox to enable Codex on Windows
 
 **作者**：OpenAI  
 **链接**：[arxiv](https://openai.com/index/building-codex-windows-sandbox)
 
 **AI 摘要**：
 
-本研究由OpenAI完成，针对代码大模型Codex在Windows环境落地的安全风险，研发了专属安全沙箱方案。该方案通过精准管控文件访问权限、严格限制网络调用边界，既规避了代码执行过程中的系统泄露、恶意操作等安全隐患，也保障了代码智能体的高效运行，为Codex在Windows端的安全应用提供了可行支撑。
+OpenAI针对Windows平台部署Codex的安全需求，打造了专用安全沙箱方案，核心通过精细化管控文件访问权限、限制网络访问边界两类机制实现安全隔离。该方案既保障了Codex编码代理的运行效率，又可规避代码执行时的系统篡改、未授权数据调取、恶意联网等风险，为大模型代码工具在Windows端的安全落地提供了可行路径。
 
 ---
 
-## 12. Our response to the TanStack npm supply chain attack
+## 10. Our response to the TanStack npm supply chain attack
 
 **作者**：OpenAI  
 **链接**：[arxiv](https://openai.com/index/our-response-to-the-tanstack-npm-supply-chain-attack)
 
 **AI 摘要**：
 
-本文为OpenAI针对TanStack“迷你沙虫”供应链攻击的官方回应，披露了本次事件的影响范围，介绍了已落地的系统加固、签名证书防护等安全措施，提醒macOS用户需在2026年6月12日前更新OpenAI应用，同时公布了后续升级防御体系、对抗新型供应链攻击的相关计划。
-
----
-
-## 13. How finance teams use Codex
-
-**作者**：OpenAI  
-**链接**：[arxiv](https://openai.com/academy/how-finance-teams-use-codex)
-
-**AI 摘要**：
-
-本文梳理大模型编程工具Codex在财务团队的实操应用场景：依托真实业务输入，财务人员无需深厚编程能力，即可借助Codex快速搭建管理业务报表（MBR）、标准化报告包、差异分析桥、财务模型校验工具及规划情景模拟模块，实现高频财务工作自动化，大幅降低业财分析门槛，提升效率。
+针对TanStack“Mini Shai-Hulud”npm供应链攻击事件，OpenAI公开了官方处置详情：已完成自身系统、签名证书的安全加固，排查明确了事件影响范围，同时要求所有macOS端用户务必在2026年6月12日前更新OpenAI旗下应用。后续OpenAI将升级防御体系，应对持续演变的软件供应链安全风险。
 
 ---
 
 # 🪶 Anthropic News
 
-## 14. Introducing Claude Opus 4.7
+## 11. Introducing Claude Opus 4.7
 
 **作者**：Anthropic  
 **链接**：[arxiv](https://www.anthropic.com/news/claude-opus-4-7)
 
 **AI 摘要**：
 
-Anthropic近期正式全量开放旗下旗舰大模型最新版本Claude Opus 4.7的公共使用权限。相较上一代Opus 4.6，该版本实现了显著性能迭代，升级重点聚焦高级软件工程垂直场景，尤其在处理该领域高难度复杂任务时，完成质量增益尤为突出，可有效支撑代码开发、复杂系统架构搭建等研发场景提效。
+最新大模型Claude Opus 4.7现已全面开放使用。相较前代版本Opus 4.6，该版本核心能力提升集中在高阶软件工程领域，尤其是处理高难度复杂开发任务的表现有显著增益，可更好适配复杂编码、系统设计、疑难问题排查等专业开发场景需求。
 
 ---
 
-## 15. Introducing Claude Design by Anthropic Labs
+## 12. Introducing Claude Design by Anthropic Labs
 
 **作者**：Anthropic  
 **链接**：[arxiv](https://www.anthropic.com/news/claude-design-anthropic-labs)
 
 **AI 摘要**：
 
-Anthropic Labs正式推出新产品Claude Design，核心模式为支持用户与Claude大模型协同创作，可输出成熟高质量的视觉类工作成果，覆盖设计稿、产品原型、演示幻灯片、单页宣传物料等常用场景。该产品降低了专业视觉内容创作门槛，能有效提升不同背景用户的视觉内容生产效率。
+Anthropic实验室正式发布全新产品Claude Design。该产品支持用户与Claude协同开展创作，能够产出完成度较高的各类专业视觉成果，适用场景涵盖设计方案、交互原型、演示幻灯片、单页宣传材料等，为有视觉内容产出需求的用户提供了便捷的AI协作创作工具。
 
 ---
 
-## 16. Claude is a space to think |
+# 🟣 Google DeepMind
 
-**作者**：Anthropic  
-**链接**：[arxiv](https://www.anthropic.com/news/claude-is-a-space-to-think)
+## 13. AlphaEvolve: How our Gemini-powered coding agent is scaling impact across fields
+
+**作者**：Google DeepMind  
+**链接**：[arxiv](https://deepmind.google/blog/alphaevolve-impact/)
 
 **AI 摘要**：
 
-Anthropic公开明确Claude将始终保持无广告运营。官方指出，广告盈利模式的激励逻辑会倒逼AI优先迎合广告主、流量需求，与AI助手为用户提供实用帮助的核心定位完全相悖。后续团队将在严守用户信任底线、不偏离服务用户初衷的前提下，探索扩大用户覆盖的路径，坚守为用户提供纯粹思考辅助空间的定位。
+本文介绍智能编码代理AlphaEvolve，其核心算法以Gemini大模型为底座，可高效完成代码生成、调试、场景适配等复杂任务。目前该系统已实现跨域规模化落地，在商业运营提效、基础设施运维迭代、前沿科学研究辅助三大场景均取得显著价值，验证了大模型驱动的编码代理具备极强的泛化落地潜力。
+
+---
+
+## 14. Enabling a new model for healthcare with AI co-clinician
+
+**作者**：Google DeepMind  
+**链接**：[arxiv](https://deepmind.google/blog/ai-co-clinician/)
+
+**AI 摘要**：
+
+本文探索AI赋能医疗新范式，重点研究AI辅助诊疗落地路径，开发“AI协诊医师”新型模型。该模型定位为临床医生的协作伙伴而非替代者，可补足医生认知边界、降低误诊漏诊率、提升诊疗效率，为适配一线临床流程、推动传统医疗向人机协同新型服务模式转型提供可行方向。
+
+---
+
+# 🤗 Hugging Face Blog
+
+## 15. Building Blocks for Foundation Model Training and Inference on AWS
+
+**作者**：Hugging Face  
+**链接**：[arxiv](https://huggingface.co/blog/amazon/foundation-model-building-blocks)
+
+**AI 摘要**：
+
+本文聚焦基础模型云原生训推需求，梳理AWS平台大模型全流程技术支撑组件：训练侧整合分布式算力集群、并行训练框架优化、弹性存储模块；推理侧配套低延迟部署、自动扩缩容、成本管控套件。实测该方案算力利用率提升超30%，训推成本最高降40%，为云原生大模型落地提供标准化参考。
+
+---
+
+## 16. EMO: Pretraining mixture of experts for emergent modularity
+
+**作者**：Hugging Face  
+**链接**：[arxiv](https://huggingface.co/blog/allenai/emo)
+
+**AI 摘要**：
+
+本文提出EMO预训练框架，针对现有大模型参数冗余、模块化程度低的痛点，采用无人工预设分工的稀疏混合专家架构，仅靠输入特征驱动动态路由分配计算资源。实验显示其预训练后会自发涌现功能模块化特性，同类型任务自动路由至固定专家组，多任务精度追平原生稠密大模型，推理成本最高降40%，模块可迁移性更强。
+
+---
+
+# 📰 The Gradient
+
+## 17. After Orthogonality: Virtue-Ethical Agency and AI Alignment
+
+**作者**：The Gradient  
+**链接**：[arxiv](https://thegradient.pub/virtue-ethics-ai-alignment/)
+
+**AI 摘要**：
+
+这篇AI对齐领域论文质疑目标导向的理性预设：提出人类理性行动并非锚定终极目标，而是适配由行动、倾向、评价标准、资源构成的实践规范网络。若要实现AI与人类协作兼容，需让AI决策逻辑匹配人类的实践型行动逻辑，该路径既符合人类伦理诉求，也能保障AI核心安全属性。
 
 ---
 
 # ⚡ 量子位
 
-## 17. Robotaxi第一股又涨疯了
+## 18. Robotaxi第一股又涨疯了
 
 **作者**：量子位  
 **链接**：[arxiv](https://www.qbitai.com/2026/05/417754.html)
 
 **AI 摘要**：
 
-文远知行作为Robotaxi第一股，披露行业最大规模落地计划：5年内部署20万台Robotaxi。支撑其规划的Q1业绩亮眼：总营收同比增58%，车辆售卖收入暴涨116%，毛利率35%居行业前列，用户量翻番、单车日均峰值28单，出海12国已有区域实现单车盈亏平衡，印证L4自动驾驶已进入商业化兑现期。
+作为Robotaxi第一股，文远知行近日公布行业最大规模部署计划：5年内投用20万台Robotaxi。其Q1业绩支撑充足：总营收同比增58%，产品收入暴涨116%，35%毛利率领跑行业，注册用户翻倍，出海12国40城已有区域实现单车盈亏平衡，印证L4自动驾驶已进入商业化兑现阶段。
 
 ---
 
-## 18. 腾讯开源 Agent 记忆技术方案，Token 消耗最高降低 61%
+## 19. 腾讯开源 Agent 记忆技术方案，Token 消耗最高降低 61%
 
 **作者**：量子位  
 **链接**：[arxiv](https://www.qbitai.com/2026/05/417753.html)
 
 **AI 摘要**：
 
-5月14日腾讯开源TencentDB Agent Memory，适配主流Agent框架一键部署。针对Agent长任务Token消耗高、上下文易膨胀的痛点，核心采用两大技术：Mermaid任务画布保留结构化任务关系，上下文卸载将非关键原始信息存至外部、仅留摘要索引。实测多场景最高降61%Token消耗，任务成功率最高提升51%。
+腾讯近日开源TencentDB Agent Memory，适配主流Agent框架可一键部署。针对Agent长任务传统优化方案易出现的上下文膨胀、成本高、状态混乱问题，采用结构化任务画布留存关键执行关系、非核心信息外置存储仅留索引的压缩方案，实测多场景最高降61%Token消耗，任务成功率最高提升51%。
 
 ---
 
-## 19. 阿里 AI 应用新进展：悟空开始逐步规模化放量
+## 20. 阿里 AI 应用新进展：悟空开始逐步规模化放量
 
 **作者**：量子位  
 **链接**：[arxiv](https://www.qbitai.com/2026/05/417748.html)
 
 **AI 摘要**：
 
-阿里2026财年Q4财报显示，其全栈AI投入已跨越初期培育阶段，进入规模化商业回报周期。旗下企业级AI原生Agent平台“悟空”正逐步放量，可自主规划执行步骤、打通企业内部系统，完成需求到交付的全闭环任务，已在多行业落地验证提效价值，后续将覆盖更多企业工作场景。
-
----
-
-## 20. 田渊栋AI创业估值315亿，老黄苏妈都投了，姚班施天麟也是合伙人
-
-**作者**：量子位  
-**链接**：[arxiv](https://www.qbitai.com/2026/05/417468.html)
-
-**AI 摘要**：
-
-田渊栋与姚班施天麟等8位顶尖人士联创AI公司RSI，近日获6.5亿美元融资，估值达316亿元，英伟达、AMD等均参与投资。公司瞄准递归式自我改进超级智能赛道，先研发等效5万名博士能力的AI科研自动化系统，后续落地药物研发、新材料、核聚变等领域，探索大模型后的AI增长新路径。
+阿里2026财年Q4财报显示其全栈AI投入已进入规模商业化回报周期，旗下企业级AI Agent平台“悟空”正逐步规模化放量。该产品可自主规划步骤、调用工具完成全链路任务，适配企业内部系统，已在电商、制造等多行业落地，显著降本提效，后续还将覆盖更多场景迭代优化。
 
 ---
