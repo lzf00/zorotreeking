@@ -23,6 +23,8 @@ import { fileURLToPath } from "node:url";
 import { fetchHFDailyPapers, type Paper } from "./digest-sources/ai.ts";
 import { fetchArxivRSS } from "./digest-sources/ai-arxiv.ts";
 import { fetchOpenAIBlog, fetchLilLog } from "./digest-sources/ai-blogs.ts";
+import { fetchAnthropicNews } from "./digest-sources/ai-anthropic.ts";
+import { fetchQbitAI } from "./digest-sources/ai-qbitai.ts";
 import { fetchTongHuaShunNews, type NewsItem } from "./digest-sources/invest.ts";
 import { fetchEastmoneyNews } from "./digest-sources/invest-eastmoney.ts";
 import { summarizeToChinese } from "./lib/llm.ts";
@@ -34,7 +36,9 @@ const SOURCE_LABEL: Record<string, string> = {
   "hf-daily": "🤗 Hugging Face Daily Papers",
   "arxiv": "📄 arXiv cs.LG（机器学习）",
   "openai-blog": "🟢 OpenAI 官方动态",
+  "anthropic": "🪶 Anthropic News",
   "lillog": "✍️ Lil'Log（Lilian Weng）",
+  "qbitai": "⚡ 量子位",
   "10jqka": "📱 同花顺 7×24",
   "eastmoney": "🟢 东方财富 7×24",
 };
@@ -128,6 +132,16 @@ async function buildAIDigest(date: string): Promise<void> {
       name: "OpenAI Blog",
       fetch: () => fetchOpenAIBlog(14, 3),
       limit: 3,
+    },
+    {
+      name: "Anthropic News",
+      fetch: () => fetchAnthropicNews(3),
+      limit: 3,
+    },
+    {
+      name: "量子位",
+      fetch: () => fetchQbitAI(4),
+      limit: 4,
     },
     {
       name: "Lil'Log",

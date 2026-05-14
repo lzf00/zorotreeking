@@ -6,7 +6,7 @@
  */
 
 export type Paper = {
-  source: "hf-daily" | "arxiv" | "openai-blog" | "lillog";
+  source: "hf-daily" | "arxiv" | "openai-blog" | "lillog" | "anthropic" | "qbitai";
   title: string;
   authors: string[];
   url: string;          // 原文链接
