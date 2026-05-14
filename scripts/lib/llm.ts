@@ -4,11 +4,11 @@
  * 需要环境变量 ARK_API_KEY（GitHub Actions 加进 Secrets）
  */
 
-// Kimi-K2.5 是 reasoning model：必须给足 max_tokens 让它先 reasoning 再出 content
-// 默认 1500 不够，会全部花在 reasoning 上 → content 为空。调到 2000+ 才稳定
-const MODEL_URL =
-  "https://sd7tegu3s1b9g1a93r3d0.apigateway-cn-beijing.volceapi.com/v1/chat/completions";
-const MODEL_NAME = "Kimi-K2.5";
+// 豆包（Doubao-Seed-2.0-Pro）：reasoning model，但比 Kimi 便宜得多
+// 价格 ¥0.8/M 输入、¥2.0/M 输出（vs Kimi ¥12/¥12），更适合 digest 这种轻量任务
+const MODEL_URL = "https://ark.cn-beijing.volces.com/api/v3/chat/completions";
+const MODEL_NAME = "doubao-seed-2-0-pro-260215";
+const API_KEY_ENV = "DOUBAO_API_KEY";
 
 export type ChatMessage = { role: "system" | "user" | "assistant"; content: string };
 
@@ -16,8 +16,8 @@ export async function chat(
   messages: ChatMessage[],
   opts: { temperature?: number; maxTokens?: number; timeoutMs?: number } = {},
 ): Promise<string> {
-  const apiKey = process.env.ARK_API_KEY;
-  if (!apiKey) throw new Error("ARK_API_KEY not set");
+  const apiKey = process.env[API_KEY_ENV] || process.env.ARK_API_KEY;
+  if (!apiKey) throw new Error(`${API_KEY_ENV} (or ARK_API_KEY) not set`);
 
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), opts.timeoutMs ?? 90_000);

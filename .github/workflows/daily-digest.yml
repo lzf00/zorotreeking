@@ -43,6 +43,8 @@ jobs:
 
       - name: Run digest fetcher
         env:
+          # digest 默认走豆包（DOUBAO_API_KEY），ARK_API_KEY 作为兜底
+          DOUBAO_API_KEY: ${{ secrets.DOUBAO_API_KEY }}
           ARK_API_KEY: ${{ secrets.ARK_API_KEY }}
         run: |
           MODE="${{ github.event.inputs.mode || 'both' }}"
