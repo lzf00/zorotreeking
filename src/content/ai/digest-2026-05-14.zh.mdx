@@ -2,7 +2,7 @@
 lang: zh
 translationKey: digest-2026-05-14
 title: "AI 每日精选 · 2026-05-14"
-description: "11 篇论文 · 多源聚合 + AI 摘要"
+description: "13 篇论文 · 多源聚合 + AI 摘要"
 date: 2026-05-14
 tags: [digest, auto, ai-papers]
 category: paper
@@ -16,16 +16,28 @@ draft: false
 ## 1. MinT: Managed Infrastructure for Training and Serving Millions of LLMs
 
 **作者**：Mind Lab, Song Cao, Vic Cao, Andrew Chen, Kaijie Chen…  
-**HF 投票**：64  
+**HF 投票**：65  
 **链接**：[arxiv](https://arxiv.org/abs/2605.13779) · [Hugging Face](https://huggingface.co/papers/2605.13779)
 
 **AI 摘要**：
 
-本文推出MinT托管基础设施，专为LoRA后训练与在线服务设计。它无需生成合并后的全量checkpoint，仅调度迁移尺寸不到基模1%的LoRA适配器，从适配超1T参数大模型、降低迁移训练开销、支撑百万级策略目录三个维度优化，可在共享1T级基模上高效完成百万量级LoRA策略的训练与服务，各环节效率提升2到18倍不等。
+本文提出面向LoRA大模型微调和在线服务的托管基础设施MinT，无需合并全量权重，仅调度轻量LoRA适配器完成全链路管理。它三向扩容：兼容1T参数量级基座；仅传输占比&lt;1%的适配器，迭代提速最高18.3倍，多策略训练提速不增显存；支持百万级策略目录，加载提速最高8.7倍，可在共享1T级基座上高效管控百万级LoRA策略训推。
 
 ---
 
-## 2. AnyFlow: Any-Step Video Diffusion Model with On-Policy Flow Map Distillation
+## 2. MulTaBench: Benchmarking Multimodal Tabular Learning with Text and Image
+
+**作者**：Alan Arazi, Eilam Shapira, Shoham Grunblat, Mor Ventura, Elad Hoffer…  
+**HF 投票**：65  
+**链接**：[arxiv](https://arxiv.org/abs/2605.10616) · [Hugging Face](https://huggingface.co/papers/2605.10616)
+
+**AI 摘要**：
+
+针对现有表格基础模型无法原生处理图文非结构化模态、现有多模态表格基准方差大、掩盖调优收益的缺陷，本文推出含40个数据集（图像、文本-表格任务各半）的MulTaBench基准，侧重模态信号互补的预测场景。实验证实任务感知表征调优可跨模态、模型稳定提效，该基准为目前最大的图像-表格基准，可支撑多模态表格基础模型研发。
+
+---
+
+## 3. AnyFlow: Any-Step Video Diffusion Model with On-Policy Flow Map Distillation
 
 **作者**：Yuchao Gu, Guian Fang, Yuxin Jiang, Weijia Mao, Song Han…  
 **HF 投票**：59  
@@ -33,43 +45,31 @@ draft: false
 
 **AI 摘要**：
 
-针对一致性蒸馏的少步视频生成模型随测试采样步数增多性能下降、无法适配任意步数采样的问题，本文提出AnyFlow视频扩散蒸馏框架，将蒸馏目标从端点一致性映射改为任意时间间隔的流图过渡，辅以流图反向模拟实现高效同策略蒸馏。实验表明其少步生成性能比肩或优于同类方法，且性能可随采样步数提升。
-
----
-
-## 3. MulTaBench: Benchmarking Multimodal Tabular Learning with Text and Image
-
-**作者**：Alan Arazi, Eilam Shapira, Shoham Grunblat, Mor Ventura, Elad Hoffer…  
-**HF 投票**：54  
-**链接**：[arxiv](https://arxiv.org/abs/2605.10616) · [Hugging Face](https://huggingface.co/papers/2605.10616)
-
-**AI 摘要**：
-
-现有表格基础模型无法原生处理图文非结构化模态，且现有多模态表格基准存在结果方差大、掩盖任务专属调优增益的缺陷。本文推出含40个数据集的MulTaBench基准，均分图像-表格、文本-表格任务，侧重模态信号互补的预测场景，是目前规模最大的图像-表格基准。实验证实任务感知表征调优可跨模态、跨架构稳定提效，可为多模态表格基础模型研发提供支撑。
+针对一致性蒸馏的视频扩散模型采样步数增加时性能下降、无法适配任意步采样的问题，本文提出AnyFlow流图蒸馏框架：将蒸馏目标从端点一致性映射改为任意时间区间的流图转移，结合流图反向模拟实现高效同策略蒸馏，优化全ODE采样轨迹。实验表明，其少步生成性能不输现有一致性方法，且能随采样步数提升持续优化，适配多类架构与参数规模。
 
 ---
 
 ## 4. Training Long-Context Vision-Language Models Effectively with Generalization Beyond 128K Context
 
 **作者**：Zhaowei Wang, Lishu Luo, Haodong Duan, Weiwei Liu, Sijin Wu…  
-**HF 投票**：35  
+**HF 投票**：42  
 **链接**：[arxiv](https://arxiv.org/abs/2605.13831) · [Hugging Face](https://huggingface.co/papers/2605.13831)
 
 **AI 摘要**：
 
-本研究针对长上下文多模态大模型训练数据配比缺乏成熟方案的问题，经系列消融实验明确三大训练规律：均衡长度数据优于专攻目标长度、检索是核心瓶颈、长文档VQA训练可保留短上下文能力。基于此用5B token训得7B规模MMProLong，128K训练窗口可泛化至512K上下文，长文档VQA涨7.1%，适配多类零样本长上下文任务。
+针对长上下文多模态大模型训练数据配比缺乏系统性探索的问题，该研究经消融实验明确长文档VQA训练效果优于OCR转录，总结出序列长度均衡配置等三项关键训练原则，基于Qwen2.5-VL-7B仅用5B token训出MMProLong，上下文窗口从32K扩至128K，长文档VQA得分提7.1%，可零样本泛化到512K上下文及多类长上下文任务。
 
 ---
 
 ## 5. Predicting Decisions of AI Agents from Limited Interaction through Text-Tabular Modeling
 
 **作者**：Eilam Shapira, Moshe Tennenholtz, Roi Reichart  
-**HF 投票**：28  
+**HF 投票**：31  
 **链接**：[arxiv](https://arxiv.org/abs/2605.12411) · [Hugging Face](https://huggingface.co/papers/2605.12411)
 
 **AI 摘要**：
 
-针对陌生AI代理交互时对方决策逻辑黑箱难预测的问题，本文将其转化为目标自适应文本-表格预测任务，在表格基模型基础上新增取冻结小LLM隐层状态作为决策特征的Observer模块。在多代理谈判博弈测试中，模型效果优于直接大模型提示基线，K=16时预测AUC提4个点、报价误差降14%，方案有效性得到验证。
+针对有限交互下陌生AI代理协商决策难预测的问题，该研究提出目标自适应文本-表格预测框架，将游戏状态、交互历史、对话整合成表格样本，新增冻结LLM作为观察者提取隐态特征，而非直接用LLM做少样本预测。实验显示模型优于基线，K=16时决策AUC提4个百分点，议价报价误差降14%，验证了方案有效性。
 
 ---
 
@@ -81,7 +81,7 @@ draft: false
 
 **AI 摘要**：
 
-针对现有图像编辑基准任务难度低、评测粒度粗，奖励模型基准脱离RL优化实际场景，均无法贴合人类真实判断的问题，该工作推出统一评测套件：含2388个标注实例、覆盖6类难度递进任务、采用细粒度多维评测框架的Edit-Compass，及含2251个真实RL场景偏好对的EditReward-Compass，填补了相关评测空白。
+现有图像编辑及RL优化用奖励模型的领域基准，普遍存在难度低、评估粗、脱离实际场景的问题，无法适配前沿模型评测需求。本文推出统一评测套件：含2388个标注实例、覆盖6类梯度难度任务、采用细粒度多维评估的Edit-Compass，及含2251组偏好对、模拟真实RL场景的EditReward-Compass，填补了现有评测缺陷。
 
 ---
 
@@ -94,7 +94,7 @@ draft: false
 
 **AI 摘要**：
 
-该研究提出通信高效的安全强化学习框架，让智能体联合学习控制输出与动作触发时机，搭配运行时安全层，通过一步李雅普诺夫预测+预计算LQR备份兜底，安全保证强于仅保障期望安全的约束MDP方法。实验显示其采样间隔比传统基线高1.45-3.51倍，自适应时序保障稀疏控制安全，可跨环境迁移，适配高低维系统，鲁棒性优异。
+本文面向安全强化学习场景，提出可联合学习控制输入与低通信开销执行时机的策略，搭配基于李雅普诺夫单步预测、LQR备份的运行时保证层，安全约束强于仅做期望安全约束的MDP方法。实验显示其采样间隔较基线提升1.45-3.51倍，自适应时序保障稀疏采样下的稳定性，框架可跨环境迁移、适配高维系统且鲁棒性优异。
 
 ---
 
@@ -105,7 +105,7 @@ draft: false
 
 **AI 摘要**：
 
-针对无需反向传播的随机神经网络（RdNN）传统随机初始化忽略特征关联、性能受限的问题，本文提出Copula对齐权重初始化框架CAWI：基于拟合数据的Copula采样输入-隐层权重，保留RdNN输出层闭式解优势，可适配各类特征依赖。经83个分类基准及2个生物医学数据集验证，CAWI较传统初始化性能提升显著，代码已开源。
+针对无需反向传播的随机神经网络传统随机初始化忽略特征关联、拉低性能的问题，本文提出Copula对齐权重初始化框架CAWI：基于适配数据的Copula采样输入到隐层权重，可捕捉各类特征关联（含尾相关）且保留原闭式解优势。经85个多场景数据集验证，CAWI较传统初始化预测性能提升显著，代码已开源。
 
 ---
 
@@ -116,7 +116,7 @@ draft: false
 
 **AI 摘要**：
 
-针对联邦多模态图学习场景下的模态缺失异质性痛点，现有方案存在客户端补全缺乏全局语义、服务端聚合未适配更新可靠性的缺陷，本文提出FedMPO框架，采用拓扑感知跨模态补全、缺失感知噪声过滤、可靠性加权聚合策略。经6个数据集3类任务验证，其在高缺失、非IID场景下较基线最高提升4.10%、5.65%，性能优异。
+针对联邦多模态图学习场景下客户端模态缺失、本地补全缺乏全局语义、聚合时客户端更新可靠性不均的问题，本文提出FedMPO框架，采用拓扑感知跨模态补全、缺失感知去噪、可靠性加权聚合方案。经6个数据集3类任务验证，其在高缺失、非IID场景下性能较基线最高提升4.10%、5.65%。
 
 ---
 
@@ -127,17 +127,41 @@ draft: false
 
 **AI 摘要**：
 
-针对现有海洋极端现象预测AI黑箱、物理保真度低的问题，该研究提出海洋领域首个概念瓶颈模型OceanCBM，采用混合监督架构，中间层嵌入流体力学规定概念加自由概念，兼顾软物理约束与残差过程捕捉。实验表明其在不损失热含量预测精度的前提下，可获得稳定物理可解释表征，厘清了可解释性与性能的权衡关系。
+针对现有海洋预报机器学习模型黑箱化、难匹配真实物理机制的问题，本文提出首个面向海洋动力学时空预测与机理分析的概念瓶颈模型OceanCBM。采用混合监督训练，中间层嵌入地球流体力学预设概念加自由概念，兼顾软物理约束与残差过程拟合，可在不损失预测精度的前提下获得一致性更高的物理可解释表征，有效平衡可解释性与性能。
 
 ---
 
-## 11. Learning to Decide with AI Assistance under Human-Alignment
+# 🟢 OpenAI 官方动态
 
-**作者**：Nina Corvelo Benz, Eleni Straitouri, Manuel Gomez-Rodriguez  
-**链接**：[arxiv](https://arxiv.org/abs/2605.12646)
+## 11. Building a safe, effective sandbox to enable Codex on Windows
+
+**作者**：OpenAI  
+**链接**：[arxiv](https://openai.com/index/building-codex-windows-sandbox)
 
 **AI 摘要**：
 
-针对AI辅助高风险决策时，人难以仅靠AI置信度判断是否信任模型、且置信度对齐对最优决策学习复杂度的影响不明的问题，本文将二元决策场景转化为全反馈双臂在线上下文学习问题，推导学习后悔度下界，证明AI与人置信度对齐可降低决策学习复杂度，真人实验验证结论在非完美对齐下仍稳健。
+OpenAI针对Codex代码大模型在Windows平台的落地安全需求，研发了专用安全沙箱。该沙箱核心采用受控文件访问权限管控、网络边界限制两类机制，在规避运行安全风险的同时，可有效支撑基于Codex的智能代码代理高效执行各类编码任务，为代码大模型的端侧安全部署提供了可行实践参考。
+
+---
+
+## 12. Our response to the TanStack npm supply chain attack
+
+**作者**：OpenAI  
+**链接**：[arxiv](https://openai.com/index/our-response-to-the-tanstack-npm-supply-chain-attack)
+
+**AI 摘要**：
+
+本文是OpenAI针对TanStack“Mini Shai-Hulud”npm供应链攻击的官方回应，披露了事件影响范围与应急处置流程，介绍了已落地的系统、签名证书防护加固方案，提醒macOS用户需在2026年6月12日前更新旗下OpenAI应用，同时公布了后续针对软件供应链新型威胁的防御升级计划。
+
+---
+
+## 13. How finance teams use Codex
+
+**作者**：OpenAI  
+**链接**：[arxiv](https://openai.com/academy/how-finance-teams-use-codex)
+
+**AI 摘要**：
+
+本文聚焦代码大模型Codex在财务团队的落地应用，基于真实工作场景输入，明确Codex可支持财务人员完成管理业务报告（MBR）搭建、标准化汇报包生成、差异分析链路梳理、财务模型校验、多维度规划场景模拟五类核心工作，为财务数智化提效提供了可直接复用的实操方向。
 
 ---

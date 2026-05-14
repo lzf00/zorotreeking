@@ -6,12 +6,12 @@
  */
 
 export type Paper = {
-  source: "hf-daily" | "arxiv";
+  source: "hf-daily" | "arxiv" | "openai-blog" | "lillog";
   title: string;
   authors: string[];
-  url: string;          // arxiv 链接
-  hfUrl: string;        // hf 详情页
-  abstract: string;     // 英文原始 abstract
+  url: string;          // 原文链接
+  hfUrl: string;        // hf 详情页（blog 留空）
+  abstract: string;     // 英文原始内容（abstract / blog 第一段）
   publishedAt?: string; // YYYY-MM-DD
   upvotes?: number;
 };
