@@ -2,11 +2,16 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
 const feed = "https://www.zorotreeking.online/rss.xml";
-const readers = [
-  { name: "Feedly",      url: `https://feedly.com/i/subscription/feed/${encodeURIComponent(feed)}` },
-  { name: "Inoreader",   url: `https://www.inoreader.com/?add_feed=${encodeURIComponent(feed)}` },
-  { name: "NetNewsWire", url: `feed:${feed}` },
-  { name: "Reeder",      url: `reeder://subscribe/${encodeURIComponent(feed)}` },
+const webReaders = [
+  { name: "Feedly",         url: `https://feedly.com/i/subscription/feed/${encodeURIComponent(feed)}` },
+  { name: "Inoreader",      url: `https://www.inoreader.com/?add_feed=${encodeURIComponent(feed)}` },
+  { name: "The Old Reader", url: `https://theoldreader.com/feeds/subscribe?url=${encodeURIComponent(feed)}` },
+  { name: "NewsBlur",       url: `https://newsblur.com/?url=${encodeURIComponent(feed)}` },
+];
+const appReaders = [
+  { name: "Reeder",         url: `reeder://subscribe/${encodeURIComponent(feed)}` },
+  { name: "NetNewsWire",    url: `feed:${feed}` },
+  { name: "Unread",         url: `unread:${feed}` },
 ];
 ---
 
@@ -29,10 +34,21 @@ const readers = [
     </div>
 
     <div class="mt-12">
-      <p class="text-xs uppercase tracking-[0.16em] text-[var(--text-tertiary)] mb-4">Add to reader</p>
+      <p class="text-xs uppercase tracking-[0.16em] text-[var(--text-tertiary)] mb-4">Web readers</p>
       <div class="flex flex-wrap items-center justify-center gap-3">
-        {readers.map(r => (
+        {webReaders.map(r => (
           <a href={r.url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] px-4 py-2 text-sm hover:bg-[var(--bg-soft)] transition-colors">
+            {r.name}
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <div class="mt-8">
+      <p class="text-xs uppercase tracking-[0.16em] text-[var(--text-tertiary)] mb-4">Native apps <span class="normal-case tracking-normal text-[var(--text-tertiary)]/80">(requires the app installed)</span></p>
+      <div class="flex flex-wrap items-center justify-center gap-3">
+        {appReaders.map(r => (
+          <a href={r.url} class="inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] px-4 py-2 text-sm text-[var(--text-secondary)] hover:bg-[var(--bg-soft)] transition-colors">
             {r.name}
           </a>
         ))}

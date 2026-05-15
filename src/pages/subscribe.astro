@@ -2,11 +2,18 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
 const feed = "https://www.zorotreeking.online/rss.xml";
-const readers = [
-  { name: "Feedly",        url: `https://feedly.com/i/subscription/feed/${encodeURIComponent(feed)}` },
-  { name: "Inoreader",     url: `https://www.inoreader.com/?add_feed=${encodeURIComponent(feed)}` },
-  { name: "NetNewsWire",   url: `feed:${feed}` },
-  { name: "Reeder",        url: `reeder://subscribe/${encodeURIComponent(feed)}` },
+// 网页阅读器（任何浏览器点了都能直接跳到订阅页）
+const webReaders = [
+  { name: "Feedly",         url: `https://feedly.com/i/subscription/feed/${encodeURIComponent(feed)}` },
+  { name: "Inoreader",      url: `https://www.inoreader.com/?add_feed=${encodeURIComponent(feed)}` },
+  { name: "The Old Reader", url: `https://theoldreader.com/feeds/subscribe?url=${encodeURIComponent(feed)}` },
+  { name: "NewsBlur",       url: `https://newsblur.com/?url=${encodeURIComponent(feed)}` },
+];
+// 桌面 / 手机客户端：需本机已安装对应 app
+const appReaders = [
+  { name: "Reeder",         url: `reeder://subscribe/${encodeURIComponent(feed)}` },
+  { name: "NetNewsWire",    url: `feed:${feed}` },
+  { name: "Unread",         url: `unread:${feed}` },
 ];
 ---
 
@@ -29,12 +36,24 @@ const readers = [
       <p id="copy-hint" class="mt-2 text-xs text-[var(--text-tertiary)] h-4"></p>
     </div>
 
-    <!-- 一键添加到主流阅读器 -->
+    <!-- 一键添加到网页阅读器（任何浏览器都能用） -->
     <div class="mt-12">
-      <p class="text-xs uppercase tracking-[0.16em] text-[var(--text-tertiary)] mb-4">一键添加到阅读器</p>
+      <p class="text-xs uppercase tracking-[0.16em] text-[var(--text-tertiary)] mb-4">网页阅读器</p>
       <div class="flex flex-wrap items-center justify-center gap-3">
-        {readers.map(r => (
+        {webReaders.map(r => (
           <a href={r.url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] px-4 py-2 text-sm hover:bg-[var(--bg-soft)] transition-colors">
+            {r.name}
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <!-- 本机已安装客户端的用户 -->
+    <div class="mt-8">
+      <p class="text-xs uppercase tracking-[0.16em] text-[var(--text-tertiary)] mb-4">本机客户端 <span class="normal-case tracking-normal text-[var(--text-tertiary)]/80">（需先安装）</span></p>
+      <div class="flex flex-wrap items-center justify-center gap-3">
+        {appReaders.map(r => (
+          <a href={r.url} class="inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] px-4 py-2 text-sm text-[var(--text-secondary)] hover:bg-[var(--bg-soft)] transition-colors">
             {r.name}
           </a>
         ))}
