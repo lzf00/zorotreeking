@@ -29,7 +29,8 @@ export default defineConfig({
     },
     rehypePlugins: [
       rehypeSlug,
-      [rehypeAutolinkHeadings, { behavior: "wrap", properties: { className: ["heading-anchor"] } }],
+      // append: 不再把整个标题包成锚链，避免与"标题即外链"冲突；末尾追加一个隐形锚作 #fragment 定位
+      [rehypeAutolinkHeadings, { behavior: "append", properties: { className: ["heading-anchor"], ariaHidden: "true", tabIndex: -1 } }],
     ],
   },
   // 开发期把 /api/* 代理到生产 AI Agent（备案前唯一能拿到响应的环境）

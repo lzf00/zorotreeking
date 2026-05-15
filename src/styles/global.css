@@ -130,4 +130,12 @@
     font-style: italic;
     color: var(--text-secondary);
   }
+  /* 标题里若包含外链（digest 标题点击跳原文），不要下划线 */
+  .prose :where(h1, h2, h3, h4) a {
+    text-decoration: none;
+  }
+  /* autolink-headings 追加的锚点本身不可见 */
+  .prose a.heading-anchor {
+    display: none;
+  }
 }

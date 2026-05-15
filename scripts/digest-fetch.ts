@@ -213,7 +213,9 @@ async function buildAIDigest(date: string): Promise<void> {
     lines.push("");
     for (const p of grouped[sourceKey]) {
       globalIdx++;
-      lines.push(`## ${globalIdx}. ${sanitizeForMdx(p.title)}`);
+      // 标题本身是外链（点击新窗口打开 arxiv）。URL 中的 " 转义掉避免破属性。
+      const arxivHref = (p.url || "").replace(/"/g, "%22");
+      lines.push(`## <a href="${arxivHref}" target="_blank" rel="noopener noreferrer">${globalIdx}. ${sanitizeForMdx(p.title)}</a>`);
       lines.push("");
       if (p.authors.length > 0) {
         const authorStr = p.authors.slice(0, 5).join(", ") + (p.authors.length > 5 ? "…" : "");
@@ -222,9 +224,10 @@ async function buildAIDigest(date: string): Promise<void> {
       if (p.upvotes != null) {
         lines.push(`**HF 投票**：${p.upvotes}  `);
       }
-      const linkParts = [`[arxiv](${p.url})`];
-      if (p.hfUrl) linkParts.push(`[Hugging Face](${p.hfUrl})`);
-      lines.push(`**链接**：${linkParts.join(" · ")}`);
+      // 标题已是 arxiv 外链，只在有 HF 镜像时单独保留 HF
+      if (p.hfUrl) {
+        lines.push(`**Hugging Face**：[${p.hfUrl}](${p.hfUrl})`);
+      }
       lines.push("");
       lines.push("**AI 摘要**：");
       lines.push("");
@@ -293,14 +296,17 @@ async function buildInvestDigest(date: string): Promise<void> {
     for (const n of grouped[sourceKey]) {
       globalIdx++;
       const timeStr = new Date(n.publishedAt).toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" });
-      lines.push(`## ${globalIdx}. ${sanitizeForMdx(n.title)}`);
+      // 标题本身就是原文外链（新窗口）
+      const newsHref = (n.url || "").replace(/"/g, "%22");
+      if (newsHref) {
+        lines.push(`## <a href="${newsHref}" target="_blank" rel="noopener noreferrer">${globalIdx}. ${sanitizeForMdx(n.title)}</a>`);
+      } else {
+        lines.push(`## ${globalIdx}. ${sanitizeForMdx(n.title)}`);
+      }
       lines.push("");
       lines.push(`**时间**：${timeStr}  `);
       if (n.stocks && n.stocks.length > 0) {
         lines.push(`**涉及**：${n.stocks.slice(0, 5).join("、")}  `);
-      }
-      if (n.url) {
-        lines.push(`**原文**：[${label.replace(/^.\s/, "")}](${n.url})`);
       }
       lines.push("");
       lines.push(sanitizeForMdx(n.zhSummary));
