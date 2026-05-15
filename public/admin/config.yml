@@ -1,4 +1,12 @@
-# Decap CMS 配置（基于 GitHub 后端 + Cloudflare Worker OAuth 代理）
+# Decap CMS 配置（GitHub 后端 + Cloudflare Worker OAuth 代理）
+#
+# 字段约定（四个 collection 共用顺序，让认知一致）：
+#   1) 标题
+#   2) 编号 / URL（必填，技术性但用户须知）
+#   3) 时间
+#   4) 描述 / 正文 / 域专属字段
+#   5) 标签 / 分类（可选）
+#   6) 🌐 语言 / 草稿（默认值合理，常态不动）
 
 backend:
   name: github
@@ -18,16 +26,17 @@ site_url: https://www.zorotreeking.online
 display_url: https://www.zorotreeking.online
 logo_url: /favicon.svg
 
+# 全局默认 media 目录（被 photo collection 自定义覆盖到 /uploads/{slug}）
 media_folder: public/photos/uploads
 public_folder: /photos/uploads
 
 publish_mode: simple
 
-# ── 全站语言选项（在每篇文章顶部以 select 出现，默认中文） ──
-# 提示：新建文章时第一项就是"语言"，选好之后下面的字段标签会保持中文表头（这是 CMS UI 语言）
-# 但文章内容是按所选语言走（文件名带 .zh / .en，frontmatter lang 字段也跟着写）
-
 collections:
+
+  # ────────────────────────────────────────
+  # AI 学习
+  # ────────────────────────────────────────
   - name: ai
     label: "AI 学习"
     label_singular: "AI 文章"
@@ -36,51 +45,60 @@ collections:
     slug: "{{slug}}.{{fields.lang}}"
     extension: mdx
     format: frontmatter
-    summary: "[{{fields.lang}}] {{title}} · {{date | date('YYYY-MM-DD')}}"
+    summary: "{{title}} · {{date | date('YYYY-MM-DD')}}"
     sortable_fields: [date, title]
     view_filters:
       - { label: "仅中文", field: lang, pattern: "zh" }
       - { label: "仅英文", field: lang, pattern: "en" }
       - { label: "草稿", field: draft, pattern: true }
     fields:
-      - { label: "🌐 语言", name: lang, widget: select, options: [{label: "中文 / Chinese", value: zh}, {label: "English", value: en}], default: zh }
-      - { label: "跨语言关联 Key（中英文用同一个 slug）", name: translationKey, widget: string, hint: "例：hello-world" }
       - { label: 标题, name: title, widget: string }
-      - { label: 描述, name: description, widget: text, required: false }
+      - { label: 文章编号, name: translationKey, widget: string, hint: "中英文用同一个，例：rag-deep-dive" }
       - { label: 发布日期, name: date, widget: datetime, format: "YYYY-MM-DDTHH:mm:ssZ", date_format: "YYYY-MM-DD", time_format: false }
-      - { label: 更新日期, name: updated, widget: datetime, required: false, format: "YYYY-MM-DDTHH:mm:ssZ", date_format: "YYYY-MM-DD", time_format: false }
-      - { label: 标签, name: tags, widget: list, default: [], required: false }
+      - { label: 一句话描述, name: description, widget: text, required: false, hint: 用于列表 + SEO，可留空 }
       - { label: 分类, name: category, widget: select, options: [basics, paper, tool, applied, thoughts], default: thoughts }
+      - { label: 标签, name: tags, widget: list, default: [], required: false }
       - { label: 封面图 URL, name: cover, widget: string, required: false }
-      - { label: 草稿, name: draft, widget: boolean, default: false }
       - { label: 正文, name: body, widget: markdown }
+      - { label: 更新日期, name: updated, widget: datetime, required: false, format: "YYYY-MM-DDTHH:mm:ssZ", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: "🌐 语言", name: lang, widget: select, options: [{label: "中文", value: zh}, {label: "English", value: en}], default: zh }
+      - { label: 草稿, name: draft, widget: boolean, default: false }
 
+  # ────────────────────────────────────────
+  # 个人投资
+  # ────────────────────────────────────────
   - name: invest
     label: "个人投资"
+    label_singular: "投资文章"
     folder: src/content/invest
     create: true
     slug: "{{slug}}.{{fields.lang}}"
     extension: mdx
     format: frontmatter
-    summary: "[{{fields.lang}}] {{title}} · {{date | date('YYYY-MM-DD')}}"
+    summary: "{{title}} · {{date | date('YYYY-MM-DD')}}"
     sortable_fields: [date, title]
     view_filters:
       - { label: "仅中文", field: lang, pattern: "zh" }
       - { label: "仅英文", field: lang, pattern: "en" }
     fields:
-      - { label: "🌐 语言", name: lang, widget: select, options: [{label: "中文 / Chinese", value: zh}, {label: "English", value: en}], default: zh }
-      - { label: translationKey, name: translationKey, widget: string }
       - { label: 标题, name: title, widget: string }
-      - { label: 描述, name: description, widget: text, required: false }
+      - { label: 文章编号, name: translationKey, widget: string, hint: "中英文用同一个，例：2026-05-review" }
       - { label: 发布日期, name: date, widget: datetime, format: "YYYY-MM-DDTHH:mm:ssZ", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: 一句话描述, name: description, widget: text, required: false }
       - { label: 标签, name: tags, widget: list, default: [], required: false }
       - { label: "关联期间（如 2026-05）", name: period, widget: string, required: false }
-      - { label: "关联快照 YAML（filename without ext）", name: portfolio, widget: string, required: false }
-      - { label: 草稿, name: draft, widget: boolean, default: false }
+      - { label: "关联快照 YAML（不含扩展名）", name: portfolio, widget: string, required: false }
       - { label: 正文, name: body, widget: markdown }
+      - { label: "🌐 语言", name: lang, widget: select, options: [{label: "中文", value: zh}, {label: "English", value: en}], default: zh }
+      - { label: 草稿, name: draft, widget: boolean, default: false }
 
+  # ────────────────────────────────────────
+  # 摄影相册 —— 极简：图片为主，文字为辅
+  # 字段最少化；保存后到媒体库拖图，部署期自动扫 EXIF 出 manifest
+  # ────────────────────────────────────────
   - name: photo
     label: "摄影相册"
+    label_singular: "相册"
     folder: src/content/photo
     create: true
     slug: "{{fields.translationKey}}.{{fields.lang}}"
@@ -88,20 +106,20 @@ collections:
     format: frontmatter
     summary: "{{title}} · {{date | date('YYYY-MM-DD')}}"
     sortable_fields: [date, title]
-    # 上传的图片落到 public/photos/uploads/<相册编号>/，构建时由 scripts/build-photo-manifests.ts
-    # 扫一遍生成对应 manifest（含 EXIF / 尺寸）。所以"相册编号"是关键。
+    # 上传的图片落到 public/photos/uploads/<相册编号>/，部署期由
+    # scripts/build-photo-manifests.ts 扫一遍自动生成 manifest（EXIF + 尺寸）
     media_folder: "/public/photos/uploads/{{fields.translationKey}}"
     public_folder: "/photos/uploads/{{fields.translationKey}}"
     fields:
       - label: 标题
         name: title
         widget: string
-        hint: 显示在相册顶部的大字
+        hint: 显示在相册顶部的大字，例「初夏 · 上海」
       - label: 相册编号
         name: translationKey
         widget: string
-        pattern: ['^[a-z0-9][a-z0-9-]*$', '只能用小写字母、数字、短线']
-        hint: "URL 和图片文件夹名，例 2026-summer-shanghai"
+        pattern: ['^[a-z0-9][a-z0-9-]*$', '只能用小写字母 / 数字 / 短横线']
+        hint: "URL 和图片文件夹名（保存后用作上传目录）。例：2026-summer-shanghai"
       - label: 拍摄日期
         name: date
         widget: datetime
@@ -112,17 +130,11 @@ collections:
         name: location
         widget: string
         required: false
-      - label: 一句话描述
+      - label: 简介
         name: description
         widget: text
         required: false
-        hint: 显示在标题下、用于 SEO；可留空
-      - label: 随文文字
-        name: body
-        widget: markdown
-        required: false
-        hint: 拍摄背景或心得，会显示在大图区之上
-      # 折叠的高级选项：默认值已经合理，一般不用动
+        hint: 可写一段拍摄背景或心得（显示在大图区之上）。留空也无妨——图片才是重点。
       - label: "🌐 语言"
         name: lang
         widget: select
@@ -133,28 +145,32 @@ collections:
         widget: boolean
         default: false
 
+  # ────────────────────────────────────────
+  # 徒步路线
+  # ────────────────────────────────────────
   - name: hike
     label: "徒步路线"
+    label_singular: "路线"
     folder: src/content/hike
     create: true
     slug: "{{slug}}.{{fields.lang}}"
     extension: mdx
     format: frontmatter
-    summary: "[{{fields.lang}}] {{title}} · {{date | date('YYYY-MM-DD')}}"
+    summary: "{{title}} · {{date | date('YYYY-MM-DD')}}"
     sortable_fields: [date, title]
     fields:
-      - { label: "🌐 语言", name: lang, widget: select, options: [{label: "中文 / Chinese", value: zh}, {label: "English", value: en}], default: zh }
-      - { label: translationKey, name: translationKey, widget: string }
       - { label: 标题, name: title, widget: string }
-      - { label: 描述, name: description, widget: text, required: false }
+      - { label: 路线编号, name: translationKey, widget: string, hint: "中英文用同一个，例：lingshan-traverse" }
       - { label: 出行日期, name: date, widget: datetime, format: "YYYY-MM-DDTHH:mm:ssZ", date_format: "YYYY-MM-DD", time_format: false }
-      - { label: 标签, name: tags, widget: list, default: [], required: false }
       - { label: 地点, name: location, widget: string }
+      - { label: 一句话描述, name: description, widget: text, required: false }
       - { label: 距离 km, name: distanceKm, widget: number, required: false, value_type: float }
       - { label: 累计爬升 m, name: elevationGainM, widget: number, required: false, value_type: int }
       - { label: 用时（小时）, name: durationHours, widget: number, required: false, value_type: float }
       - { label: 难度, name: difficulty, widget: select, options: [easy, moderate, hard, expert], default: moderate }
-      - { label: "GPX 文件名（public/gpx 下）", name: gpx, widget: string, required: false }
-      - { label: 关联相册 slug, name: photoAlbum, widget: string, required: false }
-      - { label: 草稿, name: draft, widget: boolean, default: false }
+      - { label: 标签, name: tags, widget: list, default: [], required: false }
+      - { label: "GPX 文件名（放在 public/gpx 下，仅文件名）", name: gpx, widget: string, required: false }
+      - { label: 关联相册编号, name: photoAlbum, widget: string, required: false }
       - { label: 游记正文, name: body, widget: markdown }
+      - { label: "🌐 语言", name: lang, widget: select, options: [{label: "中文", value: zh}, {label: "English", value: en}], default: zh }
+      - { label: 草稿, name: draft, widget: boolean, default: false }
