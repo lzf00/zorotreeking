@@ -1,0 +1,69 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const feed = "https://www.zorotreeking.online/rss.xml";
+const readers = [
+  { name: "Feedly",      url: `https://feedly.com/i/subscription/feed/${encodeURIComponent(feed)}` },
+  { name: "Inoreader",   url: `https://www.inoreader.com/?add_feed=${encodeURIComponent(feed)}` },
+  { name: "NetNewsWire", url: `feed:${feed}` },
+  { name: "Reeder",      url: `reeder://subscribe/${encodeURIComponent(feed)}` },
+];
+---
+
+<BaseLayout title="Subscribe" description="Follow ZoroTreeking via RSS">
+  <section class="max-w-2xl mx-auto px-5 pt-20 sm:pt-28 pb-24 text-center">
+    <h1 class="text-4xl sm:text-6xl font-semibold tracking-tight leading-tight">Subscribe</h1>
+    <p class="mt-5 text-lg text-[var(--text-secondary)] leading-relaxed">
+      Follow new posts in any RSS reader.<br class="hidden sm:inline" />
+      Quiet. No algorithm.
+    </p>
+
+    <div class="mt-10 mx-auto max-w-md">
+      <div class="flex items-stretch rounded-xl border border-[var(--border)] bg-[var(--bg-soft)] overflow-hidden">
+        <code id="feed-url" class="flex-1 truncate text-sm font-mono px-4 py-3 text-left text-[var(--text-secondary)] select-all">{feed}</code>
+        <button id="copy-feed" type="button" class="px-4 py-3 text-sm font-medium border-l border-[var(--border)] hover:bg-[var(--bg-soft-2)] transition-colors whitespace-nowrap">
+          Copy
+        </button>
+      </div>
+      <p id="copy-hint" class="mt-2 text-xs text-[var(--text-tertiary)] h-4"></p>
+    </div>
+
+    <div class="mt-12">
+      <p class="text-xs uppercase tracking-[0.16em] text-[var(--text-tertiary)] mb-4">Add to reader</p>
+      <div class="flex flex-wrap items-center justify-center gap-3">
+        {readers.map(r => (
+          <a href={r.url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] px-4 py-2 text-sm hover:bg-[var(--bg-soft)] transition-colors">
+            {r.name}
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <p class="mt-12 text-sm text-[var(--text-tertiary)]">
+      Or view the <a href="/rss.xml" class="underline hover:text-[var(--text)] transition-colors">raw XML</a>.
+    </p>
+  </section>
+</BaseLayout>
+
+<script is:inline>
+  document.addEventListener("DOMContentLoaded", () => {
+    const btn = document.getElementById("copy-feed");
+    const url = document.getElementById("feed-url");
+    const hint = document.getElementById("copy-hint");
+    if (!btn || !url) return;
+    btn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(url.textContent || "");
+        if (hint) hint.textContent = "Copied to clipboard";
+        setTimeout(() => { if (hint) hint.textContent = ""; }, 1800);
+      } catch (e) {
+        const range = document.createRange();
+        range.selectNodeContents(url);
+        const sel = window.getSelection();
+        sel?.removeAllRanges(); sel?.addRange(range);
+        if (hint) hint.textContent = "Selected — press Cmd/Ctrl+C to copy";
+        setTimeout(() => { if (hint) hint.textContent = ""; }, 2200);
+      }
+    });
+  });
+</script>
