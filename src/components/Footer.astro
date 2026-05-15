@@ -5,12 +5,21 @@ const year = new Date().getFullYear();
 ---
 
 <footer class="mt-24 border-t border-[var(--border)]">
-  <div class="max-w-6xl mx-auto px-5 py-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-[var(--text-tertiary)]">
-    <p>© {year} {t("site.title")} · {t("site.tagline")}</p>
-    <p class="flex items-center gap-3">
-      <a href="/rss.xml" class="hover:text-[var(--text)] transition-colors">RSS</a>
-      <span>·</span>
-      <span>{t("footer.builtWith")}</span>
+  <div class="max-w-6xl mx-auto px-5 py-10">
+    <!-- 一大行衬线装饰 -->
+    <p class="font-serif italic text-2xl sm:text-3xl text-[var(--text-secondary)] mb-5 leading-snug">
+      Made slowly in 北京 · with curiosity & coffee.
     </p>
+    <div class="editorial-rule mb-4"></div>
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-[11px] uppercase tracking-[0.16em] font-mono text-[var(--text-tertiary)]">
+      <p>© {year} {t("site.title")}</p>
+      <p class="flex items-center gap-3">
+        <a href="/rss.xml" class="hover:text-[var(--text)] transition-colors">RSS</a>
+        <span>/</span>
+        <a href="/tag" class="hover:text-[var(--text)] transition-colors">Tags</a>
+        <span>/</span>
+        <span>{t("footer.builtWith")}</span>
+      </p>
+    </div>
   </div>
 </footer>

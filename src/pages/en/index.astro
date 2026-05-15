@@ -26,33 +26,65 @@ const latest = [
 const sectionLabel = {
   ai: t("nav.ai"), invest: t("nav.invest"), photo: t("nav.photo"), hike: t("nav.hike"),
 };
+const sectionAccent: Record<string, string> = {
+  ai: "#1d4ed8", invest: "#991b1b", photo: "#6b21a8", hike: "#166534",
+};
+
+const today = new Date().toISOString().slice(0, 10);
+const issue = String(aiPosts.length + investPosts.length + photoAlbums.length + hikes.length).padStart(2, "0");
 ---
 
 <BaseLayout>
-  <section class="max-w-6xl mx-auto px-5 pt-16 pb-10">
-    <h1 class="text-4xl sm:text-5xl font-bold tracking-tight leading-tight">{t("site.title")}</h1>
-    <p class="mt-4 text-lg text-[var(--text-secondary)]">{t("site.tagline")}</p>
+  <section class="max-w-6xl mx-auto px-5 pt-12 sm:pt-20 pb-8">
+    <div class="flex items-center justify-between text-[11px] uppercase tracking-[0.22em] font-mono text-[var(--text-tertiary)] animate-fade">
+      <span>Personal Journal · No. {issue}</span>
+      <span class="hidden sm:inline">{today}</span>
+    </div>
+    <div class="editorial-rule mt-3 mb-10 animate-fade delay-100"></div>
+
+    <h1 class="font-serif text-[14vw] sm:text-[8.5rem] leading-[0.88] tracking-tight animate-rise">
+      Zoro<span class="italic font-serif" style="color:#1d4ed8">treeking</span>
+    </h1>
+
+    <div class="mt-10 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 animate-rise delay-200">
+      <p class="font-serif italic text-2xl sm:text-3xl leading-snug max-w-[32ch] text-[var(--text-secondary)]">
+        Slow notes between<br />code and mountains.
+      </p>
+      <ul class="text-sm font-mono uppercase tracking-[0.14em] text-[var(--text-tertiary)] space-y-1">
+        <li><span style="color:#1d4ed8">●</span> AI Learning</li>
+        <li><span style="color:#991b1b">●</span> Investment</li>
+        <li><span style="color:#6b21a8">●</span> Photography</li>
+        <li><span style="color:#166534">●</span> Hiking</li>
+      </ul>
+    </div>
   </section>
-  <section class="max-w-6xl mx-auto px-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-    <SectionCard href={pathWithLang("/ai", lang)}     title={t("section.ai.title")}     desc={t("section.ai.desc")}     accent="ai"     count={aiPosts.length}     countLabel="posts" />
-    <SectionCard href={pathWithLang("/invest", lang)} title={t("section.invest.title")} desc={t("section.invest.desc")} accent="invest" count={investPosts.length} countLabel="posts" />
-    <SectionCard href={pathWithLang("/photo", lang)}  title={t("section.photo.title")}  desc={t("section.photo.desc")}  accent="photo"  count={photoAlbums.length}  countLabel="albums" />
-    <SectionCard href={pathWithLang("/hike", lang)}   title={t("section.hike.title")}   desc={t("section.hike.desc")}   accent="hike"   count={hikes.length}        countLabel="routes" />
+
+  <section class="max-w-6xl mx-auto px-5 mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6">
+    <SectionCard href={pathWithLang("/ai", lang)}     title={t("section.ai.title")}     desc={t("section.ai.desc")}     accent="ai"     count={aiPosts.length}     countLabel="posts"  index={0} letter="A" />
+    <SectionCard href={pathWithLang("/invest", lang)} title={t("section.invest.title")} desc={t("section.invest.desc")} accent="invest" count={investPosts.length} countLabel="posts"  index={1} letter="$" />
+    <SectionCard href={pathWithLang("/photo", lang)}  title={t("section.photo.title")}  desc={t("section.photo.desc")}  accent="photo"  count={photoAlbums.length}  countLabel="albums" index={2} letter="P" />
+    <SectionCard href={pathWithLang("/hike", lang)}   title={t("section.hike.title")}   desc={t("section.hike.desc")}   accent="hike"   count={hikes.length}        countLabel="routes" index={3} letter="H" />
   </section>
+
   {latest.length > 0 && (
-    <section class="max-w-6xl mx-auto px-5 mt-16">
-      <h2 class="text-xl font-semibold mb-5">{t("home.latest")}</h2>
+    <section class="max-w-6xl mx-auto px-5 mt-24 sm:mt-32 pb-20">
+      <div class="flex items-baseline justify-between mb-2 animate-fade delay-300">
+        <h2 class="font-serif text-3xl sm:text-4xl">{t("home.latest")}</h2>
+        <span class="text-[11px] uppercase tracking-[0.18em] font-mono text-[var(--text-tertiary)]">Recent</span>
+      </div>
+      <div class="editorial-rule mb-5 animate-fade delay-300"></div>
+
       <ul class="divide-y divide-[var(--border)]">
-        {latest.map(p => (
-          <li class="py-3 flex items-center gap-4">
-            <span class:list={["text-xs px-2 py-0.5 rounded-full shrink-0", {
-              "bg-blue-500/10 text-blue-600": p.section === "ai",
-              "bg-red-500/10 text-red-600": p.section === "invest",
-              "bg-violet-500/10 text-violet-600": p.section === "photo",
-              "bg-green-500/10 text-green-600": p.section === "hike",
-            }]}>{sectionLabel[p.section]}</span>
-            <a href={pathWithLang(`/${p.section === "invest" ? "invest" : p.section}/${p.data.translationKey}`, lang)} class="flex-1 truncate hover:underline">{p.data.title}</a>
-            <time class="text-xs text-[var(--text-tertiary)] shrink-0">{p.data.date.toISOString().slice(0, 10)}</time>
+        {latest.map((p, i) => (
+          <li class="py-4 sm:py-5 flex items-center gap-5 animate-rise" style={`animation-delay: ${360 + i * 60}ms`}>
+            <span class="text-xs font-mono w-6 text-[var(--text-tertiary)] shrink-0">{String(i + 1).padStart(2, "0")}</span>
+            <span class="text-[11px] uppercase tracking-[0.14em] font-mono shrink-0" style={`color: ${sectionAccent[p.section]}`}>
+              {sectionLabel[p.section]}
+            </span>
+            <a href={pathWithLang(`/${p.section}/${p.data.translationKey}`, lang)} class="flex-1 truncate font-serif text-lg sm:text-xl hover:italic transition-all">
+              {p.data.title}
+            </a>
+            <time class="text-xs text-[var(--text-tertiary)] shrink-0 font-mono">{p.data.date.toISOString().slice(0, 10)}</time>
           </li>
         ))}
       </ul>

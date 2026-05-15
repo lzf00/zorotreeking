@@ -20,7 +20,7 @@ const t = useTranslations(lang);
   <article class="max-w-prose mx-auto px-5 pt-12 pb-16">
     <header class="mb-6">
       <a href={pathWithLang("/invest", lang)} class="text-sm text-section-invest hover:underline">← {t("section.invest.title")}</a>
-      <h1 class="mt-3 text-3xl sm:text-4xl font-bold tracking-tight leading-tight">{entry.data.title}</h1>
+      <h1 class="mt-3 font-serif text-4xl sm:text-6xl leading-[0.95] tracking-tight">{entry.data.title}</h1>
       <div class="mt-3 flex items-center gap-3 text-xs text-[var(--text-tertiary)]">
         <time>{entry.data.date.toISOString().slice(0, 10)}</time>
         {entry.data.tags.map((tag) => <TagChip tag={tag} lang={lang} />)}

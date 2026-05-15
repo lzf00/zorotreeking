@@ -19,20 +19,20 @@ const nav = [
 ];
 ---
 
-<header class="sticky top-0 z-40 backdrop-blur-md bg-white/75 dark:bg-[#0b0d11]/75 border-b border-[var(--border)]">
+<header class="sticky top-0 z-40 backdrop-blur-md bg-[var(--bg)]/85 border-b border-[var(--border)]">
   <nav class="max-w-6xl mx-auto px-5 h-14 flex items-center justify-between gap-4">
-    <a href={pathWithLang("/", lang)} class="flex items-center gap-2 font-semibold tracking-tight">
-      <span class="w-7 h-7 rounded-md bg-black text-white dark:bg-white dark:text-black grid place-items-center text-sm font-bold">Z</span>
-      <span class="hidden sm:inline">{t("site.title")}</span>
+    <a href={pathWithLang("/", lang)} class="flex items-center gap-2.5 tracking-tight">
+      <span class="w-7 h-7 grid place-items-center text-base font-serif italic" style="border:1px solid currentColor; border-radius:2px">Z</span>
+      <span class="hidden sm:inline font-serif text-lg leading-none">{t("site.title")}</span>
     </a>
-    <ul class="flex items-center gap-4 sm:gap-5 text-sm">
+    <ul class="flex items-center gap-5 sm:gap-7 text-[13px] uppercase tracking-[0.14em] font-mono">
       {nav.slice(1, 5).map(item => (
         <li>
-          <a href={item.href} class:list={["hover:opacity-70 transition-opacity", item.color]}>{item.label}</a>
+          <a href={item.href} class:list={["hover:opacity-60 transition-opacity", item.color]}>{item.label}</a>
         </li>
       ))}
       <li class="hidden sm:block">
-        <a href={pathWithLang("/about", lang)} class="hover:opacity-70 transition-opacity text-[var(--text-secondary)]">{t("nav.about")}</a>
+        <a href={pathWithLang("/about", lang)} class="hover:opacity-60 transition-opacity text-[var(--text-secondary)]">{t("nav.about")}</a>
       </li>
     </ul>
     <div class="flex items-center gap-2">

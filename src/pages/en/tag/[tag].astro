@@ -36,7 +36,7 @@ const sectionLabel: Record<string, string> = {
 <BaseLayout title={`#${tag}`} description={`${t("tag.postsWith")} #${tag}`}>
   <section class="max-w-3xl mx-auto px-5 pt-12 pb-6">
     <a href={pathWithLang("/tag", lang)} class="text-sm text-[var(--text-tertiary)] hover:text-[var(--text-secondary)]">← {t("tag.allTags")}</a>
-    <h1 class="mt-2 text-3xl font-bold tracking-tight">#{tag}</h1>
+    <h1 class="mt-2 font-serif text-5xl sm:text-6xl leading-[0.95] tracking-tight">#{tag}</h1>
     <p class="mt-2 text-sm text-[var(--text-tertiary)]">{posts.length} {t("tag.count")}</p>
   </section>
   <section class="max-w-3xl mx-auto px-5">
