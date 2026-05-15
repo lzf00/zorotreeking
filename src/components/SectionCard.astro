@@ -6,12 +6,10 @@ interface Props {
   accent: "ai" | "invest" | "photo" | "hike";
   count?: number;
   countLabel?: string;
-  index?: number;        // 编号 / 入场延迟
-  letter?: string;       // 装饰大字（默认中英文首字符）
+  index?: number;
 }
-const { href, title, desc, accent, count, countLabel, index = 0, letter } = Astro.props;
+const { href, title, desc, accent, count, countLabel, index = 0 } = Astro.props;
 
-// 染料色 + hover 边
 const accentColor: Record<string, string> = {
   ai: "#1d4ed8",
   invest: "#991b1b",
@@ -19,44 +17,35 @@ const accentColor: Record<string, string> = {
   hike: "#166534",
 };
 const c = accentColor[accent];
-
-// 装饰大字符（取 title 第一个字符）
-const orn = letter ?? (title?.[0] || "·");
-
-// 罗马编号
-const roman = ["Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ"][index] ?? `${index + 1}.`;
 ---
 
 <a
   href={href}
-  class="group section-card relative block overflow-hidden rounded-none border-t border-[var(--border)] hover:border-current transition-colors duration-300 animate-rise"
-  style={`--accent: ${c}; animation-delay: ${120 + index * 90}ms`}
+  class="group relative block rounded-2xl bg-[var(--bg-soft)] hover:bg-[var(--bg-soft-2)] p-7 sm:p-8 flex flex-col gap-3 min-h-[200px] transition-colors duration-300 animate-rise"
+  style={`animation-delay: ${120 + index * 80}ms`}
 >
-  <!-- 大字装饰：右下角，透明描边 -->
-  <span aria-hidden="true" class="ornament-letter pointer-events-none absolute -right-2 -bottom-6 text-[180px] sm:text-[200px] leading-none select-none opacity-30 group-hover:opacity-60 transition-opacity duration-500"
-        style={`color: transparent; -webkit-text-stroke: 1px ${c};`}>
-    {orn}
-  </span>
+  <!-- 顶端：色点 + 计数 -->
+  <div class="flex items-center justify-between text-[12px] text-[var(--text-tertiary)]">
+    <span class="inline-flex items-center gap-2">
+      <span class="w-1.5 h-1.5 rounded-full" style={`background:${c}`}></span>
+      <span class="uppercase tracking-[0.12em]">{accent}</span>
+    </span>
+    {count !== undefined && <span class="tabular-nums">{count} {countLabel}</span>}
+  </div>
 
-  <div class="relative px-1 py-7 sm:py-8 flex flex-col gap-3 min-h-[180px]">
-    <!-- eyebrow: 罗马数字编号 + count -->
-    <div class="flex items-center justify-between text-[11px] uppercase tracking-[0.18em] text-[var(--text-tertiary)] font-mono">
-      <span>{roman}</span>
-      {count !== undefined && <span>{count} {countLabel}</span>}
-    </div>
+  <!-- 标题 -->
+  <h3 class="text-2xl sm:text-[28px] font-semibold tracking-tight leading-tight" style="color:var(--text)">
+    {title}
+  </h3>
 
-    <h3 class="font-serif text-3xl sm:text-4xl leading-none tracking-tight" style={`color: var(--text);`}>
-      <span class="bg-[length:0%_1px] bg-no-repeat bg-bottom group-hover:bg-[length:100%_1px] transition-[background-size] duration-500"
-            style={`background-image: linear-gradient(to right, ${c}, ${c});`}>
-        {title}
-      </span>
-    </h3>
+  <!-- 描述 -->
+  <p class="text-sm text-[var(--text-secondary)] leading-relaxed max-w-[28ch]">{desc}</p>
 
-    <p class="text-sm text-[var(--text-secondary)] leading-relaxed max-w-[28ch]">{desc}</p>
-
-    <div class="mt-auto pt-2 text-xs tracking-[0.12em] uppercase font-mono opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-         style={`color: ${c};`}>
-      Read →
-    </div>
+  <!-- 底部箭头：苹果风 → -->
+  <div class="mt-auto pt-2 inline-flex items-center gap-1 text-sm font-medium" style={`color:${c}`}>
+    <span class="group-hover:translate-x-0.5 transition-transform duration-200">了解更多</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-1 transition-transform duration-200">
+      <polyline points="9 18 15 12 9 6"/>
+    </svg>
   </div>
 </a>

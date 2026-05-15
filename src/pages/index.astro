@@ -35,71 +35,53 @@ const sectionAccent: Record<string, string> = {
   photo: "#6b21a8",
   hike: "#166534",
 };
-
-const today = new Date().toISOString().slice(0, 10);
-const issue = String(aiPosts.length + investPosts.length + photoAlbums.length + hikes.length).padStart(2, "0");
 ---
 
 <BaseLayout>
-  <!-- ── Editorial Hero ── -->
-  <section class="max-w-6xl mx-auto px-5 pt-12 sm:pt-20 pb-8">
-    <!-- 顶部 masthead 元信息 -->
-    <div class="flex items-center justify-between text-[11px] uppercase tracking-[0.22em] font-mono text-[var(--text-tertiary)] animate-fade">
-      <span>Personal Journal · No. {issue}</span>
-      <span class="hidden sm:inline">{today}</span>
-    </div>
-    <div class="editorial-rule mt-3 mb-10 animate-fade delay-100"></div>
-
-    <!-- 大标题：衬线 -->
-    <h1 class="font-serif text-[14vw] sm:text-[8.5rem] leading-[0.88] tracking-tight animate-rise">
-      Zoro<span class="italic font-serif" style="color: #1d4ed8">treeking</span>
+  <!-- ── Hero（Apple 风：大字、留白、清晰副标题） ── -->
+  <section class="max-w-5xl mx-auto px-5 pt-20 sm:pt-32 pb-16 sm:pb-24 text-center">
+    <h1 class="text-5xl sm:text-7xl font-semibold tracking-tight leading-[1.05] animate-rise">
+      在代码与山林之间，<br />
+      留一份缓慢的笔记。
     </h1>
-
-    <!-- 副标题：四个领域单独排，左右对照 -->
-    <div class="mt-10 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 animate-rise delay-200">
-      <p class="font-serif italic text-2xl sm:text-3xl leading-snug max-w-[28ch] text-[var(--text-secondary)]">
-        在代码与山林之间，<br />留一份缓慢的笔记。
-      </p>
-      <ul class="text-sm font-mono uppercase tracking-[0.14em] text-[var(--text-tertiary)] space-y-1">
-        <li><span style="color:#1d4ed8">●</span> AI Learning</li>
-        <li><span style="color:#991b1b">●</span> Investment</li>
-        <li><span style="color:#6b21a8">●</span> Photography</li>
-        <li><span style="color:#166534">●</span> Hiking</li>
-      </ul>
+    <p class="mt-6 text-lg sm:text-xl text-[var(--text-secondary)] max-w-2xl mx-auto leading-relaxed animate-rise delay-100">
+      关于 AI、投资、摄影、徒步的个人记录。
+    </p>
+    <div class="mt-10 flex items-center justify-center gap-4 animate-rise delay-200">
+      <a href={pathWithLang("/ai", lang)} class="inline-flex items-center gap-1.5 rounded-full bg-black dark:bg-white text-white dark:text-black px-5 py-2.5 text-sm font-medium hover:opacity-90 transition-opacity">
+        开始阅读
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+      <a href={pathWithLang("/about", lang)} class="inline-flex items-center text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text)] transition-colors">
+        关于我 →
+      </a>
     </div>
   </section>
 
-  <!-- ── 4 个栏目卡（无边框、用大字与 hairline 切分） ── -->
-  <section class="max-w-6xl mx-auto px-5 mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6">
-    <SectionCard href={pathWithLang("/ai", lang)}     title={t("section.ai.title")}     desc={t("section.ai.desc")}     accent="ai"     count={aiPosts.length}     countLabel="篇" index={0} letter="A" />
-    <SectionCard href={pathWithLang("/invest", lang)} title={t("section.invest.title")} desc={t("section.invest.desc")} accent="invest" count={investPosts.length} countLabel="篇" index={1} letter="$" />
-    <SectionCard href={pathWithLang("/photo", lang)}  title={t("section.photo.title")}  desc={t("section.photo.desc")}  accent="photo"  count={photoAlbums.length}  countLabel="组" index={2} letter="P" />
-    <SectionCard href={pathWithLang("/hike", lang)}   title={t("section.hike.title")}   desc={t("section.hike.desc")}   accent="hike"   count={hikes.length}        countLabel="条" index={3} letter="H" />
+  <!-- ── 四个栏目卡（2×2 圆角灰底，Apple 产品宫格风） ── -->
+  <section class="max-w-6xl mx-auto px-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+    <SectionCard href={pathWithLang("/ai", lang)}     title={t("section.ai.title")}     desc={t("section.ai.desc")}     accent="ai"     count={aiPosts.length}     countLabel="篇" index={0} />
+    <SectionCard href={pathWithLang("/invest", lang)} title={t("section.invest.title")} desc={t("section.invest.desc")} accent="invest" count={investPosts.length} countLabel="篇" index={1} />
+    <SectionCard href={pathWithLang("/photo", lang)}  title={t("section.photo.title")}  desc={t("section.photo.desc")}  accent="photo"  count={photoAlbums.length}  countLabel="组" index={2} />
+    <SectionCard href={pathWithLang("/hike", lang)}   title={t("section.hike.title")}   desc={t("section.hike.desc")}   accent="hike"   count={hikes.length}        countLabel="条" index={3} />
   </section>
 
-  <!-- ── 最近更新（编辑部列表，左侧色点 + 衬线标题 hover 描边） ── -->
+  <!-- ── 最近更新（极简列表） ── -->
   {latest.length > 0 && (
-    <section class="max-w-6xl mx-auto px-5 mt-24 sm:mt-32 pb-20">
-      <div class="flex items-baseline justify-between mb-2 animate-fade delay-300">
-        <h2 class="font-serif text-3xl sm:text-4xl">{t("home.latest")}</h2>
-        <span class="text-[11px] uppercase tracking-[0.18em] font-mono text-[var(--text-tertiary)]">Recent</span>
+    <section class="max-w-3xl mx-auto px-5 mt-24 sm:mt-32 pb-24">
+      <div class="flex items-baseline justify-between mb-6">
+        <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight">{t("home.latest")}</h2>
+        <span class="text-sm text-[var(--text-tertiary)]">{latest.length} 条</span>
       </div>
-      <div class="editorial-rule mb-5 animate-fade delay-300"></div>
-
       <ul class="divide-y divide-[var(--border)]">
         {latest.map((p, i) => (
-          <li class="py-4 sm:py-5 flex items-center gap-5 animate-rise" style={`animation-delay: ${360 + i * 60}ms`}>
-            <span class="text-xs font-mono w-6 text-[var(--text-tertiary)] shrink-0">{String(i + 1).padStart(2, "0")}</span>
-            <span
-              class="text-[11px] uppercase tracking-[0.14em] font-mono shrink-0"
-              style={`color: ${sectionAccent[p.section]}`}
-            >
-              {sectionLabel[p.section]}
-            </span>
-            <a href={pathWithLang(`/${p.section}/${p.data.translationKey}`, lang)} class="flex-1 truncate font-serif text-lg sm:text-xl hover:italic transition-all">
-              {p.data.title}
+          <li class="py-4 animate-rise" style={`animation-delay: ${100 + i * 50}ms`}>
+            <a href={pathWithLang(`/${p.section}/${p.data.translationKey}`, lang)} class="flex items-center gap-4 group">
+              <span class="w-1.5 h-1.5 rounded-full shrink-0" style={`background:${sectionAccent[p.section]}`}></span>
+              <span class="text-xs text-[var(--text-tertiary)] uppercase tracking-wide shrink-0 w-16">{sectionLabel[p.section]}</span>
+              <span class="flex-1 truncate text-[15px] group-hover:text-[var(--text)] text-[var(--text-secondary)] transition-colors">{p.data.title}</span>
+              <time class="text-xs text-[var(--text-tertiary)] shrink-0 tabular-nums">{p.data.date.toISOString().slice(0, 10)}</time>
             </a>
-            <time class="text-xs text-[var(--text-tertiary)] shrink-0 font-mono">{p.data.date.toISOString().slice(0, 10)}</time>
           </li>
         ))}
       </ul>
