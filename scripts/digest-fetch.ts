@@ -61,12 +61,35 @@ function todayInBeijing(): string {
 }
 
 /**
- * MDX 转义：MDX 把 `<` 后跟非字母字符当作错误的 JSX 起手
- * （`<1%` / `<a>` 没问题但 `<1`、`<x>` 都会炸）
- * 把不像 JSX 标签开头的 `<` 转成 `&lt;`
+ * MDX 转义：
+ *  - `<` 后跟非字母 → `&lt;`（不然被当作 JSX 标签开头）
+ *  - `{` `}` → `\{` `\}`（不然被当作 JSX 表达式块；arxiv 作者名 LaTeX 转义如 `{\o}`、`{\ae}` 频繁出现）
  */
 function sanitizeForMdx(s: string): string {
-  return s.replace(/<(?![a-zA-Z!/])/g, "&lt;");
+  return s
+    .replace(/<(?![a-zA-Z!/])/g, "&lt;")
+    .replace(/\{/g, "\\{")
+    .replace(/\}/g, "\\}");
+}
+
+/**
+ * 把 (source, url) 映射成稳定的 item slug，用于 feedback 按钮。
+ * 优先用 URL 中的长数字 ID（arxiv/同花顺/东方财富/量子位 都有）；
+ * 否则用 URL 最后一段路径；最后兜底用简单哈希。
+ */
+function itemSlug(source: string, url: string): string {
+  const safe = (s: string) => s.replace(/[^a-zA-Z0-9._-]+/g, "-").replace(/^-|-$/g, "").slice(0, 80);
+  if (!url) return `${source}-unknown`;
+  const numMatch = url.match(/(\d{6,})/);
+  if (numMatch) return `${source}-${numMatch[1]}`;
+  const arxivMatch = url.match(/arxiv\.org\/abs\/([\w.]+)/);
+  if (arxivMatch) return `arxiv-${safe(arxivMatch[1])}`;
+  const lastSeg = url.replace(/\/$/, "").split("/").pop() || "";
+  if (lastSeg) return `${source}-${safe(lastSeg)}`;
+  // 兜底
+  let h = 0;
+  for (let i = 0; i < url.length; i++) h = (h * 31 + url.charCodeAt(i)) | 0;
+  return `${source}-${(h >>> 0).toString(36)}`;
 }
 
 async function summarizeSafe(
@@ -178,6 +201,8 @@ async function buildAIDigest(date: string): Promise<void> {
   lines.push(`draft: false`);
   lines.push("---");
   lines.push("");
+  lines.push('import FeedbackButtons from "@/components/FeedbackButtons";');
+  lines.push("");
   lines.push(`> 由 cron 每日 08:00 北京自动从 HF Daily Papers + arxiv cs.LG 抓取，豆包翻译/摘要。仅供参考。`);
   lines.push("");
 
@@ -188,10 +213,11 @@ async function buildAIDigest(date: string): Promise<void> {
     lines.push("");
     for (const p of grouped[sourceKey]) {
       globalIdx++;
-      lines.push(`## ${globalIdx}. ${p.title}`);
+      lines.push(`## ${globalIdx}. ${sanitizeForMdx(p.title)}`);
       lines.push("");
       if (p.authors.length > 0) {
-        lines.push(`**作者**：${p.authors.slice(0, 5).join(", ")}${p.authors.length > 5 ? "…" : ""}  `);
+        const authorStr = p.authors.slice(0, 5).join(", ") + (p.authors.length > 5 ? "…" : "");
+        lines.push(`**作者**：${sanitizeForMdx(authorStr)}  `);
       }
       if (p.upvotes != null) {
         lines.push(`**HF 投票**：${p.upvotes}  `);
@@ -203,6 +229,8 @@ async function buildAIDigest(date: string): Promise<void> {
       lines.push("**AI 摘要**：");
       lines.push("");
       lines.push(sanitizeForMdx(p.zhSummary));
+      lines.push("");
+      lines.push(`<FeedbackButtons slug="item:${itemSlug(p.source, p.url)}" client:visible />`);
       lines.push("");
       lines.push("---");
       lines.push("");
@@ -252,6 +280,8 @@ async function buildInvestDigest(date: string): Promise<void> {
   lines.push(`draft: false`);
   lines.push("---");
   lines.push("");
+  lines.push('import FeedbackButtons from "@/components/FeedbackButtons";');
+  lines.push("");
   lines.push("> 由 cron 每日 08:00 北京自动从同花顺 + 东方财富抓取，豆包改写摘要。**仅作信息整理，不构成投资建议。**");
   lines.push("");
 
@@ -263,7 +293,7 @@ async function buildInvestDigest(date: string): Promise<void> {
     for (const n of grouped[sourceKey]) {
       globalIdx++;
       const timeStr = new Date(n.publishedAt).toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" });
-      lines.push(`## ${globalIdx}. ${n.title}`);
+      lines.push(`## ${globalIdx}. ${sanitizeForMdx(n.title)}`);
       lines.push("");
       lines.push(`**时间**：${timeStr}  `);
       if (n.stocks && n.stocks.length > 0) {
@@ -274,6 +304,8 @@ async function buildInvestDigest(date: string): Promise<void> {
       }
       lines.push("");
       lines.push(sanitizeForMdx(n.zhSummary));
+      lines.push("");
+      lines.push(`<FeedbackButtons slug="item:${itemSlug(n.source, n.url)}" client:visible />`);
       lines.push("");
       lines.push("---");
       lines.push("");
