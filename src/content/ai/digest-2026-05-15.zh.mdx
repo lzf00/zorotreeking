@@ -1,0 +1,253 @@
+---
+lang: zh
+translationKey: digest-2026-05-15
+title: "AI 每日精选 · 2026-05-15"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-05-15
+tags: [digest, auto, ai-papers]
+category: paper
+draft: false
+---
+
+> 由 cron 每日 08:00 北京自动从 HF Daily Papers + arxiv cs.LG 抓取，豆包翻译/摘要。仅供参考。
+
+# 🤗 Hugging Face Daily Papers
+
+## 1. Achieving Gold-Medal-Level Olympiad Reasoning via Simple and Unified Scaling
+
+**作者**：Yafu Li, Runzhe Zhan, Haoran Zhang, Shunkai Zhang, Yizhuo Li…  
+**HF 投票**：42  
+**链接**：[arxiv](https://arxiv.org/abs/2605.13301) · [Hugging Face](https://huggingface.co/papers/2605.13301)
+
+**AI 摘要**：
+
+本研究提出一套统一简易的奥赛求解器训练方案：先以反向困惑度课程监督微调，为推理基座注入证明搜索与自检能力；再通过两阶段强化学习放大相关能力，最后配合测试时缩放提效。据此训练的SU-01模型在IMO、IPhO等奥赛达到金牌级水平，支持超长推理轨迹，跨领域科学推理泛化性优异。
+
+---
+
+## 2. MemEye: A Visual-Centric Evaluation Framework for Multimodal Agent Memory
+
+**作者**：Minghao Guo, Qingyue Jiao, Zeru Shi, Yihao Quan, Boxuan Zhang…  
+**HF 投票**：27  
+**链接**：[arxiv](https://arxiv.org/abs/2605.15128) · [Hugging Face](https://huggingface.co/papers/2605.15128)
+
+**AI 摘要**：
+
+针对现有多模态智能体长时记忆评估忽视视觉证据留存、存在文本回答捷径、缺失时序视觉状态推理任务的问题，本文提出视觉中心评估框架MemEye，从视觉证据粒度、证据使用逻辑两个维度搭建8类生活场景基准，经多组测试发现现有架构难以留存细粒度视觉信息、处理时序变化，明确了该领域核心优化方向。
+
+---
+
+## 3. Self-Distilled Agentic Reinforcement Learning
+
+**作者**：Zhengxi Lu, Zhiyuan Yao, Zhuowen Han, Zi-Han Wang, Jinyang Wu…  
+**HF 投票**：23  
+**链接**：[arxiv](https://arxiv.org/abs/2605.15155) · [Hugging Face](https://huggingface.co/papers/2605.15155)
+
+**AI 摘要**：
+
+针对大模型智能体强化学习仅能提供粗粒度轨迹奖励、直接引入同策略自蒸馏（OPSD）会出现多轮不稳定、负例拒斥偏差的问题，本文提出SDAR方法：以强化学习为主干，将OPSD设为门控辅助目标，对教师认可的正样本强化蒸馏、负样本柔和衰减。在千问2.5/3系列三类任务上，SDAR较GRPO最高提10.2%，稳定性与性能均优于现有混合基线。
+
+---
+
+## 4. Warp-as-History: Generalizable Camera-Controlled Video Generation from One Training Video
+
+**作者**：Yifan Wang, Tong He  
+**HF 投票**：21  
+**链接**：[arxiv](https://arxiv.org/abs/2605.15182) · [Hugging Face](https://huggingface.co/papers/2605.15182)
+
+**AI 摘要**：
+
+针对现有相机可控视频生成需大规模标注训练或测试成本高的痛点，提出Warp-as-History接口：将相机诱导扭曲转换为对齐目标帧位置、筛选有效令牌的伪历史输入模型视觉历史通路，无需训练、改结构或测试优化即可实现冻结模型零样本相机控制，仅单条标注视频轻量LoRA微调还可提升效果、泛化到未知视频。
+
+---
+
+## 5. SANA-WM: Efficient Minute-Scale World Modeling with Hybrid Linear Diffusion Transformer
+
+**作者**：Haoyi Zhu, Haozhe Liu, Yuyang Zhao, Tian Ye, Junsong Chen…  
+**HF 投票**：16  
+**链接**：[arxiv](https://arxiv.org/abs/2605.15178) · [Hugging Face](https://huggingface.co/papers/2605.15178)
+
+**AI 摘要**：
+
+本文推出2.6B参数开源世界模型SANA-WM，支持分钟级720P高精度相机可控视频生成。其依托混合线性注意力、双分支相机控制、两阶段生成、专用标注管线四项核心设计，视觉质量比肩工业级基线，效率显著提升：量化版单RTX5090仅需34秒即可生成1分钟视频，动作精度更优，吞吐量达现有开源方案的36倍。
+
+---
+
+# 📄 arXiv cs.LG（机器学习）
+
+## 6. Learning When to Act: Communication-Efficient Reinforcement Learning via Run-Time Assurance
+
+**作者**：Adam Haroon, Erick J. Rodr\'iguez-Seda, Cody Fleming, Tristan Schuler  
+**链接**：[arxiv](https://arxiv.org/abs/2605.12561)
+
+**AI 摘要**：
+
+本文面向安全强化学习场景，提出可联合学习控制输入与低通信量决策时机的策略，搭配运行时保障层，通过一步李雅普诺夫预测加预存LQR备份兜底，安全保证强于仅约束期望安全的受限MDP方法。在倒立摆等三类实验中其采样间隔较传统基线高1.45-3.51倍，同平均速率的固定LQR会失稳，方案还支持稳定-通信权衡调节，适配高维系统且抗干扰性优异。
+
+---
+
+## 7. CAWI: Copula-Aligned Weight Initialization for Randomized Neural Networks
+
+**作者**：Mushir Akhtar, M. Tanveer, Mohd. Arshad  
+**链接**：[arxiv](https://arxiv.org/abs/2605.12580)
+
+**AI 摘要**：
+
+针对无需反向传播的随机神经网络（RdNN）传统初始化忽略特征间关联、导致性能下降的问题，本文提出Copula对齐权重初始化框架CAWI：基于数据拟合的多元Copula采样输入到隐层权重，适配特征的秩关联、尾依赖等特性，不改动原有训练范式。在83个通用分类基准、2个生物医学数据集上验证，CAWI较传统初始化性能显著提升，代码已开源。
+
+---
+
+## 8. Towards Robust Federated Multimodal Graph Learning under Modality Heterogeneity
+
+**作者**：Sirui Zhang, Haonan Wang, Xunkai Li, Zekai Chen, Shumeng Li…  
+**链接**：[arxiv](https://arxiv.org/abs/2605.12584)
+
+**AI 摘要**：
+
+针对联邦多模态图学习场景下数据孤岛、模态缺失痛点，以及现有方案本地补全缺全局语义、全局聚合未适配客户端可靠性差异的缺陷，本文提出FedMPO框架，采用拓扑感知跨模态生成、缺失感知噪声过滤、可靠性加权聚合三类策略。实验显示其在高缺失、非IID场景下较基线最高提升4.10%、5.65%，性能优于现有方案。（全文119字）
+
+---
+
+# 🟢 OpenAI 官方动态
+
+## 9. Sea's View on the Future of Agentic Software Development with Codex
+
+**作者**：OpenAI  
+**链接**：[arxiv](https://openai.com/index/sea-david-chen)
+
+**AI 摘要**：
+
+本观点由东南亚互联网巨头冬海（Sea Limited）首席产品官提出，阐释了相关决策的底层逻辑，明确了企业智能代理类软件开发的布局思路：将在全公司工程团队全面部署Codex代码生成工具，大幅提效研发流程，加快面向亚洲市场的AI原生软件落地，抢占区域智能软件赛道发展先机。
+
+---
+
+## 10. Work with Codex from anywhere
+
+**作者**：OpenAI  
+**链接**：[arxiv](https://openai.com/index/work-with-codex-from-anywhere)
+
+**AI 摘要**：
+
+本文推出可在ChatGPT移动端调用Codex的功能，突破了AI编程工具的使用场景限制。该功能支持跨设备、跨远程开发环境对Codex执行的编码任务进行实时管控，用户可随时查看任务进度、调整生成方向、审批输出结果，为开发者提供了便捷的移动化AI编程协作入口，大幅提升非固定办公场景的开发协作效率。
+
+---
+
+# 🪶 Anthropic News
+
+## 11. Introducing Claude Opus 4.7
+
+**作者**：Anthropic  
+**链接**：[arxiv](https://www.anthropic.com/news/claude-opus-4-7)
+
+**AI 摘要**：
+
+Anthropic最新大模型Claude Opus 4.7现已正式全面开放使用。该版本相较前代Opus 4.6实现了显著性能升级，优化重点集中在高阶软件工程方向，尤其针对该领域内难度最高的复杂任务，处理表现有突出增益，可更好支撑高难度代码开发、专业系统构建等落地场景。
+
+---
+
+## 12. Introducing Claude Design by Anthropic Labs
+
+**作者**：Anthropic  
+**链接**：[arxiv](https://www.anthropic.com/news/claude-design-anthropic-labs)
+
+**AI 摘要**：
+
+Anthropic实验室近期正式发布全新产品Claude Design，支持用户与旗下大模型Claude协作完成各类专业视觉创作，可覆盖设计稿、交互原型、演示幻灯片、单页宣传物料等多场景需求。该产品拓展了大模型的落地边界，也为无专业设计基础的用户提供了低成本产出高品质视觉作品的路径。
+
+---
+
+# 🟣 Google DeepMind
+
+## 13. AlphaEvolve: How our Gemini-powered coding agent is scaling impact across fields
+
+**作者**：Google DeepMind  
+**链接**：[arxiv](https://deepmind.google/blog/alphaevolve-impact/)
+
+**AI 摘要**：
+
+本文介绍智能编码代理AlphaEvolve，核心依托Gemini大模型能力打造，可适配多领域编码需求。目前该工具已在商业、基础设施、科研三大板块落地：商业场景可提效业务流程自动化开发，基建领域可辅助优化调度运维方案，科研场景能加速实验代码迭代，有效降低各领域编码门槛，规模化放大技术落地价值。
+
+---
+
+## 14. Enabling a new model for healthcare with AI co-clinician
+
+**作者**：Google DeepMind  
+**链接**：[arxiv](https://deepmind.google/blog/ai-co-clinician/)
+
+**AI 摘要**：
+
+本研究围绕AI协同临床医师的医疗新范式展开，核心探索AI辅助诊疗的落地可行路径，同时推进可深度配合临床医师工作的AI协同诊疗系统研发。研究旨在通过人机协同的诊疗模式补位临床服务能力，为优化医疗资源配置、提升普惠性医疗服务质量提供技术支撑与实践方向。
+
+---
+
+# 🤗 Hugging Face Blog
+
+## 15. Granite Embedding Multilingual R2: Open Apache 2.0 Multilingual Embeddings with 32K Context — Best Sub-100M Retrieval Quality
+
+**作者**：Hugging Face  
+**链接**：[arxiv](https://huggingface.co/blog/ibm-granite/granite-embedding-multilingual-r2)
+
+**AI 摘要**：
+
+本文推出面向检索优化的开源多语言嵌入模型Granite Embedding Multilingual R2，以Apache 2.0协议完全开放，参数量不足1亿，支持32K超长上下文窗口。实测其检索质量为当前1亿参数以下嵌入模型最优水平，适配多语言长文本处理需求，可低成本落地跨语言长文档检索、语义匹配等下游场景。
+
+---
+
+## 16. Unlocking asynchronicity in continuous batching
+
+**作者**：Hugging Face  
+**链接**：[arxiv](https://huggingface.co/blog/continuous_async)
+
+**AI 摘要**：
+
+这篇针对大模型推理中现有连续批处理采用同步调度、需等待同批次所有请求完成当前步再推进导致算力浪费的痛点，提出异步化连续批处理方案，解耦不同请求执行时序，异步调度推理计算、KV缓存管理环节。实测可降低调度等待开销超30%，吞吐量较基线提升40%~60%，更适配长短请求混合的高并发推理场景。
+
+---
+
+# 📰 The Gradient
+
+## 17. After Orthogonality: Virtue-Ethical Agency and AI Alignment
+
+**作者**：The Gradient  
+**链接**：[arxiv](https://thegradient.pub/virtue-ethics-ai-alignment/)
+
+**AI 摘要**：
+
+这篇针对AI正交性论题的德性伦理对齐研究，否定“理性主体必然以固定最终目标为导向”的传统假设：人类行为的理性源于适配包含行动范式、评价准则等要素的实践网络，而非锚定目标。文章提出，只有让AI决策逻辑匹配人类基于实践的行动逻辑，才能同时实现AI的伦理对齐与核心安全属性要求。
+
+---
+
+# ⚡ 量子位
+
+## 18. 数亿元融资落地！国内最早布局“人类学习”路线的具身公司，用人类视角重做具身智能
+
+**作者**：量子位  
+**链接**：[arxiv](https://www.qbitai.com/2026/05/417935.html)
+
+**AI 摘要**：
+
+具身智能企业深度机智是国内最早布局“人类学习”路线的团队，核心思路为让机器人先理解物理规律再行动，打造“数据-模型-算法-系统”全栈技术闭环，推出PhysBrain1.0具身智能基座，登顶五大国际权威具身榜单，成立一年获数亿元融资，其路线被验证为具身AGI的潜在可行路径。
+
+---
+
+## 19. 人手一个数据库，Kimi背后这套AI基建到底有多能扛？
+
+**作者**：量子位  
+**链接**：[arxiv](https://www.qbitai.com/2026/05/417731.html)
+
+**AI 摘要**：
+
+Kimi K2.6 Agent模式可直接输出带独立数据库、账号体系的可访问建站成品，覆盖开发、托管、运维全流程。但该模式要求为每个用户配独立数据库，多数实例长期低活跃，沿用传统云数据库成本极高，商业模式无法规模化，亟待破解成本、规模、性能的“不可能三角”。
+
+---
+
+## 20. 重生之我在AI时代当老板：让一群Agent互相PUA
+
+**作者**：量子位  
+**链接**：[arxiv](https://www.qbitai.com/2026/05/417816.html)
+
+**AI 摘要**：
+
+MiniMax新推出多智能体产品Mavis，设置统筹、执行、核验三类角色，可自主组建团队、内部协作完成任务，无需用户给出细粒度指令或中途反馈。测试中用户仅给出“基于技术博客做可嵌入文章的HTML专题页”的模糊需求，系统自主运行28分钟就交付了图文可交互的合格成品，大幅降低AI工具使用门槛。
+
+---
