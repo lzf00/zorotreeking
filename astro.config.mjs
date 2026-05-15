@@ -57,6 +57,11 @@ export default defineConfig({
           changeOrigin: true,
           headers: { Host: "www.zorotreeking.online" },
         },
+        "/api/feedback": {
+          target: "http://110.40.142.199",
+          changeOrigin: true,
+          headers: { Host: "www.zorotreeking.online" },
+        },
       },
     },
   },

@@ -1,8 +1,8 @@
 name: Daily digest
 
-# 每天 00:00 UTC = 08:00 北京时间，拉外部源 + LLM 摘要 + commit 推回 main
-# main 上的 push 会触发 deploy.yml 走部署链路（CI 默认会忽略 bot 自己的 commit 防止递归）
-# 也可以手动触发 (workflow_dispatch) 调试
+# 每天 00:00 UTC = 08:00 北京：拉外部源 → 豆包摘要 → commit + push 回 main
+# GitHub 安全规则：用 GITHUB_TOKEN 推的 commit 不触发 push event，所以
+# 我们这里跑完 fetch-and-commit 后显式调 deploy.yml（workflow_call）。
 
 on:
   schedule:
@@ -16,7 +16,7 @@ on:
         default: both
 
 permissions:
-  contents: write  # 需要写权限才能 commit + push 回 main
+  contents: write
 
 concurrency:
   group: daily-digest
@@ -26,6 +26,8 @@ jobs:
   fetch-and-commit:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    outputs:
+      committed: ${{ steps.commit.outputs.committed }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -43,7 +45,6 @@ jobs:
 
       - name: Run digest fetcher
         env:
-          # digest 默认走豆包（DOUBAO_API_KEY），ARK_API_KEY 作为兜底
           DOUBAO_API_KEY: ${{ secrets.DOUBAO_API_KEY }}
           ARK_API_KEY: ${{ secrets.ARK_API_KEY }}
         run: |
@@ -51,16 +52,25 @@ jobs:
           npx tsx scripts/digest-fetch.ts "$MODE"
 
       - name: Commit and push if changed
+        id: commit
         run: |
           git config user.name "zorotreeking-bot"
           git config user.email "bot@zorotreeking.online"
           git add src/content/ai/digest-*.mdx src/content/invest/digest-*.mdx 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "No new digest files. Nothing to commit."
+            echo "committed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           DATE_CN=$(date -u -d "+8 hours" +%Y-%m-%d 2>/dev/null || date -u +%Y-%m-%d)
-          # 不再加 [skip ci]：cron 提交也触发 deploy.yml，约 08:05 北京自动全栈上线
           git commit -m "chore(digest): daily auto digest $DATE_CN"
           git push origin HEAD:main
+          echo "committed=true" >> "$GITHUB_OUTPUT"
           echo "✓ pushed daily digest commit"
+
+  # 跑完后显式调 deploy.yml（GITHUB_TOKEN 推的 commit 不会自己触发 push event）
+  deploy:
+    needs: fetch-and-commit
+    if: needs.fetch-and-commit.outputs.committed == 'true'
+    uses: ./.github/workflows/deploy.yml
+    secrets: inherit
