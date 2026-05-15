@@ -1,6 +1,6 @@
 ---
 import { getCollection, type CollectionEntry } from "astro:content";
-import BaseLayout from "@/layouts/BaseLayout.astro";
+import PhotoLayout from "@/layouts/PhotoLayout.astro";
 import FeedbackButtons from "@/components/FeedbackButtons";
 import PhotoGallery from "@/components/PhotoGallery";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
@@ -17,22 +17,65 @@ const { Content } = await entry.render();
 const lang = "en" as const;
 const t = useTranslations(lang);
 const photos = loadPhotoManifest(entry.data.manifest);
+const cover = photos[0];
+const rest = photos.slice(1);
+const dateStr = entry.data.date.toISOString().slice(0, 10);
 ---
 
-<BaseLayout title={entry.data.title} description={entry.data.description}>
-  <article class="max-w-5xl mx-auto px-5 pt-12 pb-16">
-    <header class="mb-6">
-      <a href={pathWithLang("/photo", lang)} class="text-sm text-section-photo hover:underline">← {t("section.photo.title")}</a>
-      <h1 class="mt-3 font-serif text-4xl sm:text-6xl leading-[0.95] tracking-tight">{entry.data.title}</h1>
-      <div class="mt-2 flex items-center gap-3 text-sm text-[var(--text-tertiary)]">
-        <time>{entry.data.date.toISOString().slice(0, 10)}</time>
-        {entry.data.location && <><span>·</span><span>{entry.data.location}</span></>}
-        {entry.data.cameraSummary && <><span>·</span><span>{entry.data.cameraSummary}</span></>}
-        <span>·</span><span>{photos.length} photos</span>
+<PhotoLayout title={entry.data.title} description={entry.data.description}>
+  <div class="max-w-7xl mx-auto px-5 pt-6">
+    <a href={pathWithLang("/photo", lang)} class="text-xs uppercase tracking-[0.18em] text-white/55 hover:text-white transition-colors">
+      ← {t("section.photo.title")}
+    </a>
+  </div>
+
+  {cover && (
+    <section class="mt-6 mb-10">
+      <div class="w-full bg-black overflow-hidden">
+        <img src={cover.src} alt={cover.alt} class="w-full h-auto max-h-[88vh] object-contain mx-auto block" loading="eager" />
       </div>
-    </header>
-    {entry.body.trim().length > 0 && <div class="prose prose-neutral dark:prose-invert max-w-none mb-8"><Content /></div>}
-    {photos.length > 0 ? <PhotoGallery photos={photos} galleryId={`gallery-${entry.data.translationKey}`} client:only="react" /> : <p class="text-center text-[var(--text-tertiary)] py-12">manifest not found</p>}
-    <FeedbackButtons slug={`photo/${entry.data.translationKey}`} client:visible />
-  </article>
-</BaseLayout>
+    </section>
+  )}
+
+  <header class="max-w-3xl mx-auto px-5 text-center pb-2">
+    <h1 class="font-serif text-4xl sm:text-6xl leading-[1.05] tracking-tight text-white">{entry.data.title}</h1>
+    {entry.data.description && <p class="mt-4 text-base sm:text-lg text-white/65 leading-relaxed max-w-2xl mx-auto">{entry.data.description}</p>}
+    <div class="mt-6 inline-flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[11px] uppercase tracking-[0.16em] text-white/55 font-mono">
+      <time>{dateStr}</time>
+      {entry.data.location && <><span class="opacity-50">/</span><span>{entry.data.location}</span></>}
+      {entry.data.cameraSummary && <><span class="opacity-50">/</span><span>{entry.data.cameraSummary}</span></>}
+      <span class="opacity-50">/</span><span>{photos.length} frames</span>
+    </div>
+  </header>
+
+  {entry.body.trim().length > 0 && (
+    <section class="max-w-prose mx-auto px-5 mt-10 mb-12 text-[15.5px] leading-[1.85] text-white/75">
+      <Content />
+    </section>
+  )}
+
+  {rest.length > 0 ? (
+    <section class="max-w-7xl mx-auto px-2 sm:px-3 mt-12">
+      <PhotoGallery photos={rest} galleryId={`gallery-${entry.data.translationKey}`} client:only="react" />
+    </section>
+  ) : photos.length === 0 ? (
+    <section class="max-w-2xl mx-auto px-5 mt-16 mb-24 text-center text-white/55">
+      <p class="font-mono text-sm">No manifest yet.</p>
+      <p class="mt-2 text-sm">
+        Open <code class="text-white/80">/admin</code> → Photo album, upload images; the
+        deploy step will generate <code class="text-white/80">src/data/photo-manifest/{entry.data.manifest}.json</code> automatically.
+      </p>
+    </section>
+  ) : null}
+
+  <section class="max-w-3xl mx-auto px-5 mt-20 pb-24 text-center">
+    <div class="inline-block">
+      <FeedbackButtons slug={`photo/${entry.data.translationKey}`} client:visible />
+    </div>
+    <div class="mt-10">
+      <a href={pathWithLang("/photo", lang)} class="text-xs uppercase tracking-[0.18em] text-white/55 hover:text-white transition-colors">
+        ← {t("section.photo.title")}
+      </a>
+    </div>
+  </section>
+</PhotoLayout>

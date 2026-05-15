@@ -1,0 +1,56 @@
+---
+/**
+ * 摄影板块专用沉浸式 layout：
+ *   - 始终深色背景 (#0a0a0a)，与照片争抢更少
+ *   - Navbar 透明，仅在滚动时浮出（沿用全站 sticky）
+ *   - Footer 在底部以深色匹配
+ *   - 引入 BaseLayout 提供 meta / 字体 / Search / AIWidget
+ *
+ * 用法：<PhotoLayout title="..." description="..."><slot /></PhotoLayout>
+ */
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+}
+const { title, description, ogImage } = Astro.props;
+---
+
+<BaseLayout title={title} description={description} ogImage={ogImage}>
+  <div class="photo-immersive">
+    <slot />
+  </div>
+</BaseLayout>
+
+<style is:global>
+  /* 沉浸式：在 photo-immersive 包裹的页面内，整页强制深色 */
+  body:has(.photo-immersive) {
+    background: #0a0a0a !important;
+    color: #f0f0f0;
+  }
+  body:has(.photo-immersive) header {
+    background: rgba(10,10,10,0.7) !important;
+    border-bottom-color: rgba(255,255,255,0.08) !important;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+  body:has(.photo-immersive) header a,
+  body:has(.photo-immersive) header button,
+  body:has(.photo-immersive) header span {
+    color: #f0f0f0;
+  }
+  body:has(.photo-immersive) footer {
+    background: #0a0a0a;
+    border-top-color: rgba(255,255,255,0.08) !important;
+    color: rgba(255,255,255,0.55);
+  }
+  body:has(.photo-immersive) footer a:hover {
+    color: #fff !important;
+  }
+  /* 让 SearchModal / AIChat 圆形按钮在深底上也清晰 */
+  body:has(.photo-immersive) header .border {
+    border-color: rgba(255,255,255,0.16);
+  }
+</style>

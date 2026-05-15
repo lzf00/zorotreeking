@@ -1,40 +1,63 @@
 ---
 import { getCollection } from "astro:content";
-import BaseLayout from "@/layouts/BaseLayout.astro";
+import PhotoLayout from "@/layouts/PhotoLayout.astro";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
 import { loadPhotoManifest } from "@/lib/photo-manifests";
 
 const lang = "en" as const;
 const t = useTranslations(lang);
+
 const albums = (await getCollection("photo", (p) => p.data.lang === lang && !p.data.draft))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
 const enriched = albums.map((album) => {
   const manifest = loadPhotoManifest(album.data.manifest);
-  return { album, cover: manifest[0]?.thumb, count: manifest.length };
+  return { album, cover: manifest[0]?.src || manifest[0]?.thumb, count: manifest.length };
 });
+
+function colSpan(i: number) {
+  return i % 3 === 0 ? "lg:col-span-2" : "lg:col-span-1";
+}
+function aspect(i: number) {
+  return i % 3 === 0 ? "aspect-[16/9]" : "aspect-[4/5]";
+}
 ---
 
-<BaseLayout title={t("section.photo.title")} description={t("section.photo.desc")}>
-  <section class="max-w-6xl mx-auto px-5 pt-12 pb-6">
-    <h1 class="font-serif text-5xl sm:text-6xl leading-[0.95] tracking-tight" style="color:#6b21a8">{t("section.photo.title")}</h1>
-    <p class="mt-2 text-[var(--text-secondary)]">{t("section.photo.desc")}</p>
+<PhotoLayout title={t("section.photo.title")} description={t("section.photo.desc")}>
+  <section class="max-w-6xl mx-auto px-5 pt-16 sm:pt-24 pb-12 text-center">
+    <p class="text-[11px] uppercase tracking-[0.22em] text-white/45 font-mono">{enriched.length} albums</p>
+    <h1 class="mt-4 font-serif text-5xl sm:text-7xl leading-[0.95] tracking-tight text-white">{t("section.photo.title")}</h1>
+    <p class="mt-4 text-base sm:text-lg text-white/65 max-w-xl mx-auto leading-relaxed">{t("section.photo.desc")}</p>
   </section>
-  <section class="max-w-6xl mx-auto px-5">
-    {enriched.length === 0 ? <p class="py-12 text-center text-[var(--text-tertiary)]">No albums yet</p> : (
-      <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {enriched.map(({ album, cover, count }) => (
-          <li>
-            <a href={pathWithLang(`/photo/${album.data.translationKey}`, lang)} class="group block rounded-xl overflow-hidden border border-[var(--border)] hover:border-section-photo/50 transition-colors">
-              <div class="aspect-[4/3] bg-[var(--bg-soft)] overflow-hidden">
-                {cover ? <img src={cover} alt={album.data.title} loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" /> : <div class="w-full h-full grid place-items-center text-[var(--text-tertiary)]">—</div>}
+
+  <section class="max-w-7xl mx-auto px-2 sm:px-3 pb-24">
+    {enriched.length === 0 ? (
+      <div class="py-24 text-center text-white/55">
+        <p class="font-serif text-2xl mb-3">No albums yet</p>
+        <p class="text-sm leading-relaxed max-w-md mx-auto">
+          Open <a href="/admin" class="underline hover:text-white">/admin</a> → Photo album,
+          create an entry and upload images. The deploy step generates the manifest, then the album shows up here.
+        </p>
+      </div>
+    ) : (
+      <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
+        {enriched.map(({ album, cover, count }, i) => (
+          <li class={colSpan(i)}>
+            <a href={pathWithLang(`/photo/${album.data.translationKey}`, lang)} class="group relative block overflow-hidden bg-neutral-900">
+              <div class={`${aspect(i)} overflow-hidden`}>
+                {cover ? (
+                  <img src={cover} alt={album.data.title} loading="lazy" class="w-full h-full object-cover transition-transform duration-[800ms] ease-out group-hover:scale-[1.04]" />
+                ) : (
+                  <div class="w-full h-full grid place-items-center text-white/30 text-4xl font-serif">·</div>
+                )}
               </div>
-              <div class="p-4">
-                <h3 class="font-semibold tracking-tight group-hover:text-section-photo transition-colors">{album.data.title}</h3>
-                <div class="mt-1 flex items-center gap-2 text-xs text-[var(--text-tertiary)]">
+              <div class="absolute inset-x-0 bottom-0 p-4 sm:p-5 transition-all duration-300" style="background: linear-gradient(to top, rgba(0,0,0,0.78), rgba(0,0,0,0))">
+                <h3 class="font-serif text-xl sm:text-2xl leading-tight text-white">{album.data.title}</h3>
+                <div class="mt-1 flex items-center gap-2 text-[10.5px] uppercase tracking-[0.14em] font-mono text-white/65">
                   <time>{album.data.date.toISOString().slice(0, 10)}</time>
-                  <span>·</span><span>{count} photos</span>
-                  {album.data.location && <><span>·</span><span>{album.data.location}</span></>}
+                  <span class="opacity-50">/</span>
+                  <span>{count} frames</span>
+                  {album.data.location && <><span class="opacity-50">/</span><span class="normal-case tracking-normal">{album.data.location}</span></>}
                 </div>
               </div>
             </a>
@@ -43,4 +66,4 @@ const enriched = albums.map((album) => {
       </ul>
     )}
   </section>
-</BaseLayout>
+</PhotoLayout>

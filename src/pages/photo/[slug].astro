@@ -1,6 +1,6 @@
 ---
 import { getCollection, type CollectionEntry } from "astro:content";
-import BaseLayout from "@/layouts/BaseLayout.astro";
+import PhotoLayout from "@/layouts/PhotoLayout.astro";
 import FeedbackButtons from "@/components/FeedbackButtons";
 import PhotoGallery from "@/components/PhotoGallery";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
@@ -20,33 +20,93 @@ const { Content } = await entry.render();
 const lang = "zh" as const;
 const t = useTranslations(lang);
 const photos = loadPhotoManifest(entry.data.manifest);
+const cover = photos[0];
+const rest = photos.slice(1);
+const dateStr = entry.data.date.toISOString().slice(0, 10);
 ---
 
-<BaseLayout title={entry.data.title} description={entry.data.description}>
-  <article class="max-w-5xl mx-auto px-5 pt-12 pb-16">
-    <header class="mb-6">
-      <a href={pathWithLang("/photo", lang)} class="text-sm text-section-photo hover:underline">← {t("section.photo.title")}</a>
-      <h1 class="mt-3 font-serif text-4xl sm:text-6xl leading-[0.95] tracking-tight">{entry.data.title}</h1>
-      <div class="mt-2 flex items-center gap-3 text-sm text-[var(--text-tertiary)]">
-        <time>{entry.data.date.toISOString().slice(0, 10)}</time>
-        {entry.data.location && <><span>·</span><span>{entry.data.location}</span></>}
-        {entry.data.cameraSummary && <><span>·</span><span>{entry.data.cameraSummary}</span></>}
-        <span>·</span>
-        <span>{photos.length} 张</span>
+<PhotoLayout title={entry.data.title} description={entry.data.description}>
+
+  <!-- 顶部细返回条 -->
+  <div class="max-w-7xl mx-auto px-5 pt-6">
+    <a href={pathWithLang("/photo", lang)} class="text-xs uppercase tracking-[0.18em] text-white/55 hover:text-white transition-colors">
+      ← {t("section.photo.title")}
+    </a>
+  </div>
+
+  <!-- 全宽 cover hero -->
+  {cover && (
+    <section class="mt-6 mb-10">
+      <div class="w-full bg-black overflow-hidden">
+        <img
+          src={cover.src}
+          alt={cover.alt}
+          class="w-full h-auto max-h-[88vh] object-contain mx-auto block"
+          loading="eager"
+        />
       </div>
-    </header>
-    {entry.body.trim().length > 0 && (
-      <div class="prose prose-neutral dark:prose-invert max-w-none mb-8">
-        <Content />
-      </div>
-    )}
-    {photos.length > 0 ? (
-      <PhotoGallery photos={photos} galleryId={`gallery-${entry.data.translationKey}`} client:only="react" />
-    ) : (
-      <p class="text-center text-[var(--text-tertiary)] py-12">
-        manifest 文件不存在或为空：<code>src/data/photo-manifest/{entry.data.manifest}.json</code>
+    </section>
+  )}
+
+  <!-- 标题 + 元信息块（居中、克制） -->
+  <header class="max-w-3xl mx-auto px-5 text-center pb-2">
+    <h1 class="font-serif text-4xl sm:text-6xl leading-[1.05] tracking-tight text-white">
+      {entry.data.title}
+    </h1>
+    {entry.data.description && (
+      <p class="mt-4 text-base sm:text-lg text-white/65 leading-relaxed max-w-2xl mx-auto">
+        {entry.data.description}
       </p>
     )}
-    <FeedbackButtons slug={`photo/${entry.data.translationKey}`} client:visible />
-  </article>
-</BaseLayout>
+    <div class="mt-6 inline-flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[11px] uppercase tracking-[0.16em] text-white/55 font-mono">
+      <time>{dateStr}</time>
+      {entry.data.location && <><span class="opacity-50">/</span><span>{entry.data.location}</span></>}
+      {entry.data.cameraSummary && <><span class="opacity-50">/</span><span>{entry.data.cameraSummary}</span></>}
+      <span class="opacity-50">/</span>
+      <span>{photos.length} frames</span>
+    </div>
+  </header>
+
+  <!-- 可选随文文字（窄列） -->
+  {entry.body.trim().length > 0 && (
+    <section class="max-w-prose mx-auto px-5 mt-10 mb-12 text-[15.5px] leading-[1.85] text-white/75">
+      <Content />
+    </section>
+  )}
+
+  <!-- 主图集（PhotoSwipe 瀑布流；用第二张起，避免与 hero 重复） -->
+  {rest.length > 0 ? (
+    <section class="max-w-7xl mx-auto px-2 sm:px-3 mt-12">
+      <PhotoGallery photos={rest} galleryId={`gallery-${entry.data.translationKey}`} client:only="react" />
+    </section>
+  ) : photos.length === 0 ? (
+    <section class="max-w-2xl mx-auto px-5 mt-16 mb-24 text-center text-white/55">
+      <p class="font-mono text-sm">manifest 文件不存在或为空。</p>
+      <p class="mt-2 text-sm">
+        在 <code class="text-white/80">/admin</code> 选择「摄影相册」上传图片，
+        deploy 时会自动生成 <code class="text-white/80">src/data/photo-manifest/{entry.data.manifest}.json</code>。
+      </p>
+    </section>
+  ) : null}
+
+  <!-- 底部 feedback + 返回 -->
+  <section class="max-w-3xl mx-auto px-5 mt-20 pb-24 text-center">
+    <div class="inline-block">
+      <FeedbackButtons slug={`photo/${entry.data.translationKey}`} client:visible />
+    </div>
+    <div class="mt-10">
+      <a href={pathWithLang("/photo", lang)} class="text-xs uppercase tracking-[0.18em] text-white/55 hover:text-white transition-colors">
+        ← {t("section.photo.title")}
+      </a>
+    </div>
+  </section>
+
+</PhotoLayout>
+
+<style is:global>
+  /* 在 photo 详情页里，让 FeedbackButtons 的图标也跟随深底变色 */
+  body:has(.photo-immersive) .photo-immersive [aria-label="喜欢"],
+  body:has(.photo-immersive) .photo-immersive [aria-label="不喜欢"] {
+    color: rgba(255,255,255,0.7);
+  }
+</style>
