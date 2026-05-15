@@ -57,7 +57,8 @@ const photo = defineCollection({
   schema: z.object({
     ...i18nBase,
     location: z.string().optional(),
-    manifest: z.string(),  // 指向 src/data/photo-manifest/{name}.json
+    // 可选；省略时按 translationKey 找 src/data/photo-manifest/{key}.json
+    manifest: z.string().optional(),
     cameraSummary: z.string().optional(),
   }),
 });

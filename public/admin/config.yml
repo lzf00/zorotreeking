@@ -83,27 +83,55 @@ collections:
     label: "摄影相册"
     folder: src/content/photo
     create: true
-    slug: "{{slug}}.{{fields.lang}}"
+    slug: "{{fields.translationKey}}.{{fields.lang}}"
     extension: mdx
     format: frontmatter
-    summary: "[{{fields.lang}}] {{title}} · {{date | date('YYYY-MM-DD')}}"
+    summary: "{{title}} · {{date | date('YYYY-MM-DD')}}"
     sortable_fields: [date, title]
-    # 相册 collection 用单独的 media 目录：按 manifest 字段值分子文件夹
-    # 这样在 Decap 编辑相册时上传图片，会自动落到对应相册的子目录
-    media_folder: "/public/photos/uploads/{{fields.manifest}}"
-    public_folder: "/photos/uploads/{{fields.manifest}}"
+    # 上传的图片落到 public/photos/uploads/<相册编号>/，构建时由 scripts/build-photo-manifests.ts
+    # 扫一遍生成对应 manifest（含 EXIF / 尺寸）。所以"相册编号"是关键。
+    media_folder: "/public/photos/uploads/{{fields.translationKey}}"
+    public_folder: "/photos/uploads/{{fields.translationKey}}"
     fields:
-      - { label: "🌐 语言", name: lang, widget: select, options: [{label: "中文 / Chinese", value: zh}, {label: "English", value: en}], default: zh }
-      - { label: translationKey, name: translationKey, widget: string }
-      - { label: 标题, name: title, widget: string }
-      - { label: 描述, name: description, widget: text, required: false }
-      - { label: 拍摄日期, name: date, widget: datetime, format: "YYYY-MM-DDTHH:mm:ssZ", date_format: "YYYY-MM-DD", time_format: false }
-      - { label: 标签, name: tags, widget: list, default: [], required: false }
-      - { label: 拍摄地, name: location, widget: string, required: false }
-      - { label: 相机器材, name: cameraSummary, widget: string, required: false }
-      - { label: "manifest（src/data/photo-manifest/<x>.json）", name: manifest, widget: string }
-      - { label: 草稿, name: draft, widget: boolean, default: false }
-      - { label: 随文文字, name: body, widget: markdown }
+      - label: 标题
+        name: title
+        widget: string
+        hint: 显示在相册顶部的大字
+      - label: 相册编号
+        name: translationKey
+        widget: string
+        pattern: ['^[a-z0-9][a-z0-9-]*$', '只能用小写字母、数字、短线']
+        hint: "URL 和图片文件夹名，例 2026-summer-shanghai"
+      - label: 拍摄日期
+        name: date
+        widget: datetime
+        format: "YYYY-MM-DDTHH:mm:ssZ"
+        date_format: "YYYY-MM-DD"
+        time_format: false
+      - label: 拍摄地
+        name: location
+        widget: string
+        required: false
+      - label: 一句话描述
+        name: description
+        widget: text
+        required: false
+        hint: 显示在标题下、用于 SEO；可留空
+      - label: 随文文字
+        name: body
+        widget: markdown
+        required: false
+        hint: 拍摄背景或心得，会显示在大图区之上
+      # 折叠的高级选项：默认值已经合理，一般不用动
+      - label: "🌐 语言"
+        name: lang
+        widget: select
+        options: [{label: "中文", value: zh}, {label: "English", value: en}]
+        default: zh
+      - label: 草稿
+        name: draft
+        widget: boolean
+        default: false
 
   - name: hike
     label: "徒步路线"

@@ -11,7 +11,7 @@ const albums = (await getCollection("photo", (p) => p.data.lang === lang && !p.d
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
 const enriched = albums.map((album) => {
-  const manifest = loadPhotoManifest(album.data.manifest);
+  const manifest = loadPhotoManifest(album.data.manifest || album.data.translationKey);
   return { album, cover: manifest[0]?.src || manifest[0]?.thumb, count: manifest.length };
 });
 
@@ -43,7 +43,8 @@ function aspect(i: number) {
         <p class="font-serif text-2xl mb-3">还没有相册</p>
         <p class="text-sm leading-relaxed max-w-md mx-auto">
           打开 <a href="/admin" class="underline hover:text-white">/admin</a>
-          → 「摄影相册」，新建条目并上传图片；保存后 deploy 流程会自动生成 manifest，相册立刻出现在这里。
+          → 「摄影相册」 → 新建，填好标题和相册编号，再用页面里的媒体按钮把照片拖进来。
+          保存后部署会自动抽 EXIF 生成相册。
         </p>
       </div>
     ) : (

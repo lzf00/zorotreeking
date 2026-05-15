@@ -11,7 +11,7 @@ const albums = (await getCollection("photo", (p) => p.data.lang === lang && !p.d
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
 const enriched = albums.map((album) => {
-  const manifest = loadPhotoManifest(album.data.manifest);
+  const manifest = loadPhotoManifest(album.data.manifest || album.data.translationKey);
   return { album, cover: manifest[0]?.src || manifest[0]?.thumb, count: manifest.length };
 });
 
@@ -36,7 +36,8 @@ function aspect(i: number) {
         <p class="font-serif text-2xl mb-3">No albums yet</p>
         <p class="text-sm leading-relaxed max-w-md mx-auto">
           Open <a href="/admin" class="underline hover:text-white">/admin</a> → Photo album,
-          create an entry and upload images. The deploy step generates the manifest, then the album shows up here.
+          fill the title and album ID, drag your photos into the media library.
+          Deploy will extract EXIF and build the gallery automatically.
         </p>
       </div>
     ) : (
