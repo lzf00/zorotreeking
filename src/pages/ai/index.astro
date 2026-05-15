@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import TagChip from "@/components/TagChip.astro";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
 
 const lang = "zh" as const;
@@ -22,7 +23,7 @@ const posts = (await getCollection("ai", p => p.data.lang === lang && !p.data.dr
           <a href={pathWithLang(`/ai/${p.data.translationKey}`, lang)} class="block group">
             <div class="flex items-center gap-2 text-xs text-[var(--text-tertiary)] mb-1">
               <time>{p.data.date.toISOString().slice(0, 10)}</time>
-              {p.data.tags.slice(0, 3).map(tag => <span class="px-1.5 py-0.5 rounded bg-[var(--bg-soft)]">#{tag}</span>)}
+              {p.data.tags.slice(0, 3).map(tag => <TagChip tag={tag} lang={lang} />)}
             </div>
             <h2 class="text-lg font-semibold group-hover:text-section-ai transition-colors">{p.data.title}</h2>
             {p.data.description && <p class="mt-1 text-sm text-[var(--text-secondary)] line-clamp-2">{p.data.description}</p>}

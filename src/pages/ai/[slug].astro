@@ -3,6 +3,7 @@ import { getCollection, type CollectionEntry } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import FeedbackButtons from "@/components/FeedbackButtons";
 import TOC from "@/components/TOC.astro";
+import TagChip from "@/components/TagChip.astro";
 import Giscus from "@/components/Giscus.astro";
 import { estimateReadingTime } from "@/lib/reading-time";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
@@ -30,7 +31,7 @@ const readMins = estimateReadingTime(entry.body);
         <time>{entry.data.date.toISOString().slice(0, 10)}</time>
         <span>·</span>
         <span>{readMins} {t("post.readTime")}</span>
-        {entry.data.tags.map((tag) => <span class="px-1.5 py-0.5 rounded bg-[var(--bg-soft)]">#{tag}</span>)}
+        {entry.data.tags.map((tag) => <TagChip tag={tag} lang={lang} />)}
       </div>
     </header>
     <div class="prose prose-neutral dark:prose-invert max-w-none prose-headings:tracking-tight prose-a:text-section-ai prose-pre:bg-[#0d1117] prose-pre:rounded-xl prose-headings:scroll-mt-20">

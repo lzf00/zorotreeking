@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build",
+    "build": "astro build && pagefind --site dist",
     "preview": "astro preview",
     "check": "astro check",
     "astro": "astro"
@@ -37,6 +37,7 @@
     "@types/react": "^18.3.13",
     "@types/react-dom": "^18.3.1",
     "exifr": "^7.1.3",
+    "pagefind": "^1.5.2",
     "sharp": "^0.33.5",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2"

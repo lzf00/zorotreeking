@@ -1,0 +1,60 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { buildTagIndex, tagToSlug } from "@/lib/tags";
+import { useTranslations, pathWithLang } from "@/i18n/ui";
+
+export async function getStaticPaths() {
+  const lang = "zh" as const;
+  const { tags } = await buildTagIndex(lang);
+  return tags.map(({ tag, posts }) => ({
+    params: { tag: tagToSlug(tag) },
+    props: { tag, posts },
+  }));
+}
+
+const { tag, posts } = Astro.props as {
+  tag: string;
+  posts: Array<{ section: "ai" | "invest" | "photo" | "hike"; slug: string; title: string; description?: string; date: Date; tags: string[] }>;
+};
+const lang = "zh" as const;
+const t = useTranslations(lang);
+
+const sectionColor: Record<string, string> = {
+  ai: "text-section-ai",
+  invest: "text-section-invest",
+  photo: "text-section-photo",
+  hike: "text-section-hike",
+};
+const sectionLabel: Record<string, string> = {
+  ai: t("section.ai.title"),
+  invest: t("section.invest.title"),
+  photo: t("section.photo.title"),
+  hike: t("section.hike.title"),
+};
+---
+
+<BaseLayout title={`#${tag}`} description={`${t("tag.postsWith")} #${tag}`}>
+  <section class="max-w-3xl mx-auto px-5 pt-12 pb-6">
+    <a href={pathWithLang("/tag", lang)} class="text-sm text-[var(--text-tertiary)] hover:text-[var(--text-secondary)]">← {t("tag.allTags")}</a>
+    <h1 class="mt-2 text-3xl font-bold tracking-tight">#{tag}</h1>
+    <p class="mt-2 text-sm text-[var(--text-tertiary)]">{posts.length} {t("tag.count")}</p>
+  </section>
+  <section class="max-w-3xl mx-auto px-5">
+    <ul class="divide-y divide-[var(--border)]">
+      {posts.map((p) => (
+        <li class="py-5">
+          <a href={pathWithLang(`/${p.section}/${p.slug}`, lang)} class="block group">
+            <div class="flex items-center gap-2 text-xs text-[var(--text-tertiary)] mb-1">
+              <span class={sectionColor[p.section]}>{sectionLabel[p.section]}</span>
+              <span>·</span>
+              <time>{p.date.toISOString().slice(0, 10)}</time>
+            </div>
+            <h2 class={`text-lg font-semibold transition-colors group-hover:${sectionColor[p.section]}`}>{p.title}</h2>
+            {p.description && <p class="mt-1 text-sm text-[var(--text-secondary)] line-clamp-2">{p.description}</p>}
+          </a>
+        </li>
+      ))}
+      {posts.length === 0 && <li class="py-12 text-center text-[var(--text-tertiary)]">{t("tag.empty")}</li>}
+    </ul>
+  </section>
+</BaseLayout>

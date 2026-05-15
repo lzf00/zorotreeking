@@ -36,6 +36,12 @@ const nav = [
       </li>
     </ul>
     <div class="flex items-center gap-2">
+      <button id="open-search" type="button" aria-label={lang === "zh" ? "搜索" : "Search"} title={lang === "zh" ? "搜索 (/)": "Search (/)"} class="w-8 h-8 grid place-items-center rounded-full border border-[var(--border)] hover:bg-[var(--bg-soft)] transition-colors">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+      <a href="/rss.xml" aria-label="RSS" title="RSS" class="w-8 h-8 grid place-items-center rounded-full border border-[var(--border)] hover:bg-[var(--bg-soft)] transition-colors">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>
+      </a>
       <a href={switchHref} class="text-xs px-2.5 py-1 rounded-full border border-[var(--border)] hover:bg-[var(--bg-soft)] transition-colors">
         {t("lang.switch")}
       </a>
@@ -60,6 +66,11 @@ const nav = [
       btn?.addEventListener("click", () => {
         const isDark = document.documentElement.classList.toggle("dark");
         localStorage.setItem("theme", isDark ? "dark" : "light");
+      });
+      const searchBtn = document.getElementById("open-search");
+      searchBtn?.addEventListener("click", () => {
+        // 由 SearchModal 在 mount 时挂到 window
+        (window).__openSearch?.();
       });
     });
   })();

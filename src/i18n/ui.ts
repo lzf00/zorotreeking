@@ -27,6 +27,11 @@ export const ui = {
     "post.readTime": "分钟阅读",
     "post.draft": "草稿",
     "footer.builtWith": "由 Astro 构建",
+    "tag.title": "标签",
+    "tag.allTags": "全部标签",
+    "tag.postsWith": "带标签",
+    "tag.count": "篇",
+    "tag.empty": "暂无文章",
   },
   en: {
     "site.title": "ZoroTreeking",
@@ -52,6 +57,11 @@ export const ui = {
     "post.readTime": "min read",
     "post.draft": "Draft",
     "footer.builtWith": "Built with Astro",
+    "tag.title": "Tags",
+    "tag.allTags": "All tags",
+    "tag.postsWith": "Posts tagged",
+    "tag.count": "posts",
+    "tag.empty": "No posts yet",
   },
 } as const;
 

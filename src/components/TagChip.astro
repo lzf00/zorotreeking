@@ -1,0 +1,14 @@
+---
+import { pathWithLang, type Lang } from "@/i18n/ui";
+import { tagToSlug } from "@/lib/tags";
+
+interface Props {
+  tag: string;
+  lang: Lang;
+}
+
+const { tag, lang } = Astro.props;
+const href = pathWithLang(`/tag/${tagToSlug(tag)}`, lang);
+---
+
+<a href={href} class="px-1.5 py-0.5 rounded bg-[var(--bg-soft)] hover:bg-[var(--bg-soft-2,#ececef)] text-[var(--text-tertiary)] hover:text-[var(--text-secondary)] transition-colors no-underline">#{tag}</a>
