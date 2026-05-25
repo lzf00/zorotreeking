@@ -119,7 +119,7 @@ collections:
         name: translationKey
         widget: string
         pattern: ['^[a-z0-9][a-z0-9-]*$', '只能用小写字母 / 数字 / 短横线']
-        hint: "URL 和图片文件夹名（保存后用作上传目录）。例：2026-summer-shanghai"
+        hint: "URL 和图片文件夹名。⚠ 先填这一项再上传，例：2026-summer-shanghai"
       - label: 拍摄日期
         name: date
         widget: datetime
@@ -135,6 +135,20 @@ collections:
         widget: text
         required: false
         hint: 可写一段拍摄背景或心得（显示在大图区之上）。留空也无妨——图片才是重点。
+      - label: 照片
+        name: photos
+        widget: list
+        required: false
+        allow_add: true
+        summary: "{{fields.image}}"
+        hint: |
+          点 "Add 照片" 上传——文件会自动放到「相册编号」对应的文件夹。也可点右上角云图标批量拖入。
+          部署期会自动抽 EXIF + 尺寸生成相册，不需要手填什么。
+        field:
+          label: 图片
+          name: image
+          widget: image
+          choose_url: false
       - label: "🌐 语言"
         name: lang
         widget: select
