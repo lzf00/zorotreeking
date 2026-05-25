@@ -212,6 +212,19 @@
       color: #000 !important;
     }
 
+    /* ── Decap 媒体库模态：让"上传"成为视觉焦点 ── */
+    /* 上传按钮 = primary，已经被前面 button[type="submit"] 那条规则覆盖。
+       这里给主动作加更强的尺寸/间距，让它在一堆按钮里立刻显眼。 */
+    button[data-zt-role="primary-media"] {
+      background: var(--zt-accent) !important;
+      color: #fff !important;
+      border-radius: 9999px !important;
+      padding: 10px 22px !important;
+      font-weight: 600 !important;
+      font-size: 14px !important;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.12) !important;
+    }
+
     /* ── 浮动"回主站"按钮（沿用站点 Apple-style） ── */
     .back-to-site {
       position: fixed;
@@ -259,5 +272,38 @@
 
   <!-- Decap CMS via CDN -->
   <script src="https://unpkg.com/decap-cms@^3.5.0/dist/decap-cms.js"></script>
+
+  <!-- 后台 UX 精简：让媒体库只保留"上传 / 选用 / 搜索" -->
+  <script>
+    (function () {
+      // 按钮文字 → 处理动作
+      const HIDE_TEXTS = new Set(['复制', '下载', '删除已选中项目', 'Copy', 'Download', 'Delete selected']);
+      const PRIMARY_TEXTS = new Set(['上传', 'Upload']);
+
+      function trim(s) { return (s || '').replace(/\s+/g, ' ').trim(); }
+
+      function refine() {
+        // 处理 button & 自定义角色按钮（Decap 也有用 div role=button 的）
+        const candidates = document.querySelectorAll('button, [role="button"]');
+        candidates.forEach((el) => {
+          if (el.dataset.ztProcessed) return;
+          const text = trim(el.textContent);
+          if (HIDE_TEXTS.has(text)) {
+            el.style.display = 'none';
+            el.setAttribute('aria-hidden', 'true');
+          } else if (PRIMARY_TEXTS.has(text)) {
+            el.dataset.ztRole = 'primary-media';
+          }
+          el.dataset.ztProcessed = '1';
+        });
+      }
+
+      // Decap 媒体库是动态挂载，得用 observer
+      const obs = new MutationObserver(refine);
+      obs.observe(document.documentElement, { childList: true, subtree: true });
+      // 首屏也跑一次
+      document.addEventListener('DOMContentLoaded', refine);
+    })();
+  </script>
 </body>
 </html>
