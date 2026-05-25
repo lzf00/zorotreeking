@@ -60,10 +60,10 @@ const photo = defineCollection({
     // 可选；省略时按 translationKey 找 src/data/photo-manifest/{key}.json
     manifest: z.string().optional(),
     cameraSummary: z.string().optional(),
-    // Decap 上传后写在 frontmatter 的图片清单。页面不直接读它（图片由
-    // scripts/build-photo-manifests.ts 扫盘生成 manifest），但 schema 接受
-    // 它存在，避免任何严格校验报错。
-    photos: z.array(z.object({ image: z.string() })).optional(),
+    // Decap 上传后写在 frontmatter 的图片清单。页面不直接读它——图片由
+    // scripts/build-photo-manifests.ts 扫盘生成 manifest。这里只为容错，
+    // 不管 Decap 写成单字符串、字符串数组、对象数组都收。
+    photos: z.any().optional(),
   }),
 });
 

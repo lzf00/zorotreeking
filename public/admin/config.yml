@@ -137,18 +137,16 @@ collections:
         hint: 可写一段拍摄背景或心得（显示在大图区之上）。留空也无妨——图片才是重点。
       - label: 照片
         name: photos
-        widget: list
+        widget: image
         required: false
-        allow_add: true
-        summary: "{{fields.image}}"
+        allow_multiple: true
+        choose_url: false
+        media_library:
+          config:
+            multiple: true
         hint: |
-          点 "Add 照片" 上传——文件会自动放到「相册编号」对应的文件夹。也可点右上角云图标批量拖入。
-          部署期会自动抽 EXIF + 尺寸生成相册，不需要手填什么。
-        field:
-          label: 图片
-          name: image
-          widget: image
-          choose_url: false
+          点这里直接选本地照片（可一次多选，按住 ⌘ / Shift 多选即可）。
+          文件会自动放到「相册编号」对应的文件夹；部署期自动抽 EXIF + 尺寸生成相册。
       - label: "🌐 语言"
         name: lang
         widget: select
