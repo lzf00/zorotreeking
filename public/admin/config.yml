@@ -137,7 +137,7 @@ collections:
         hint: 可写一段拍摄背景或心得（显示在大图区之上）。留空也无妨——图片才是重点。
       - label: 照片
         name: photos
-        widget: image
+        widget: file
         required: false
         allow_multiple: true
         choose_url: false
@@ -145,8 +145,9 @@ collections:
           config:
             multiple: true
         hint: |
-          点这里直接选本地照片（可一次多选，按住 ⌘ / Shift 多选即可）。
-          文件会自动放到「相册编号」对应的文件夹；部署期自动抽 EXIF + 尺寸生成相册。
+          ① 单击方框 → 系统文件框，按 ⌘ / Shift 多选；
+          ② 也可直接把一组图拖进方框。
+          文件落到「相册编号」对应的文件夹，部署期自动抽 EXIF + 尺寸生成相册。
       - label: "🌐 语言"
         name: lang
         widget: select
