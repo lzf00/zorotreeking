@@ -273,19 +273,24 @@
   <!-- Decap CMS via CDN -->
   <script src="https://unpkg.com/decap-cms@^3.5.0/dist/decap-cms.js"></script>
 
-  <!-- 后台 UX 精简：让媒体库只保留"上传 / 选用 / 搜索" -->
+  <!-- 后台 UX 补丁：
+       1) 把媒体库不必要的按钮（复制/下载/删除）隐掉，让"上传"成为视觉主线
+       2) 给 Decap 的 <input type="file"> 加 multiple 属性，并把多文件
+          change 事件 拆成 N 次单文件 change 重新分发——绕过 Decap
+          handlePersist 里写死的 [...files][0] -->
   <script>
     (function () {
-      // 按钮文字 → 处理动作
-      const HIDE_TEXTS = new Set(['复制', '下载', '删除已选中项目', 'Copy', 'Download', 'Delete selected']);
+      // ── A. 按钮文字 → 显示/隐藏/标记 主按钮 ─────
+      const HIDE_TEXTS = new Set([
+        '复制', '下载', '删除已选中项目',
+        'Copy', 'Download', 'Delete selected',
+      ]);
       const PRIMARY_TEXTS = new Set(['上传', 'Upload']);
 
       function trim(s) { return (s || '').replace(/\s+/g, ' ').trim(); }
 
-      function refine() {
-        // 处理 button & 自定义角色按钮（Decap 也有用 div role=button 的）
-        const candidates = document.querySelectorAll('button, [role="button"]');
-        candidates.forEach((el) => {
+      function refineButtons(root) {
+        root.querySelectorAll('button, [role="button"]').forEach((el) => {
           if (el.dataset.ztProcessed) return;
           const text = trim(el.textContent);
           if (HIDE_TEXTS.has(text)) {
@@ -298,11 +303,84 @@
         });
       }
 
-      // Decap 媒体库是动态挂载，得用 observer
-      const obs = new MutationObserver(refine);
-      obs.observe(document.documentElement, { childList: true, subtree: true });
-      // 首屏也跑一次
-      document.addEventListener('DOMContentLoaded', refine);
+      // ── B. 多文件上传补丁 ─────────────────────────
+      // Decap bundle 里 file upload 按钮长这样：
+      //   <label class="nc-fileUploadButton">
+      //     <span>上传</span>
+      //     <input type="file" accept="image/*" onChange=...>
+      //   </label>
+      // 没有 multiple；handlePersist 又只取第一个文件。
+      // 补丁：给 input 加 multiple，拦 change，把多文件拆成 N 次单文件分发。
+      async function processMultiFiles(input, files) {
+        for (let i = 0; i < files.length; i++) {
+          const dt = new DataTransfer();
+          dt.items.add(files[i]);
+          try {
+            input.files = dt.files;
+          } catch (_) {
+            Object.defineProperty(input, 'files', {
+              value: dt.files, writable: true, configurable: true,
+            });
+          }
+          input.__ztSynthetic = true;
+          input.dispatchEvent(new Event('change', { bubbles: true }));
+          input.__ztSynthetic = false;
+          // 给 Decap 一点处理 + GitHub commit 的时间，避免并发把 SHA 撞坏
+          await new Promise((r) => setTimeout(r, 1500));
+        }
+      }
+
+      function shimInput(input) {
+        if (input.dataset.ztShimmed) return;
+        input.dataset.ztShimmed = '1';
+
+        if (!input.hasAttribute('multiple')) {
+          input.setAttribute('multiple', 'multiple');
+        }
+
+        input.addEventListener(
+          'change',
+          (e) => {
+            // 我们自己 dispatch 出来的合成 change，让它正常走
+            if (input.__ztSynthetic) return;
+
+            const files = Array.from(input.files || []);
+            if (files.length <= 1) return; // 单文件不拦
+
+            // 多文件：阻止 Decap 原始 handler 跑，自己拆开重发
+            e.stopImmediatePropagation();
+            e.preventDefault();
+            processMultiFiles(input, files).catch((err) => {
+              console.error('[zt] multi-upload failed', err);
+            });
+          },
+          true // capture phase：抢在 React 根 delegate 之前
+        );
+
+        console.log('[zt] file input shimmed →', input);
+      }
+
+      function scan(root) {
+        // file widget / 媒体库共用同一个 className
+        root.querySelectorAll('label.nc-fileUploadButton input[type="file"]')
+          .forEach(shimInput);
+        // 兜底：所有未处理的 file input 也补一遍
+        root.querySelectorAll('input[type="file"]:not([data-zt-shimmed])')
+          .forEach(shimInput);
+        refineButtons(root);
+      }
+
+      // 首屏 + 动态挂载都跑
+      const start = () => {
+        scan(document.documentElement);
+        const obs = new MutationObserver(() => scan(document.documentElement));
+        obs.observe(document.documentElement, { childList: true, subtree: true });
+      };
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', start);
+      } else {
+        start();
+      }
     })();
   </script>
 </body>
