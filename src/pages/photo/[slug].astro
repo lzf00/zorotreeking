@@ -4,7 +4,7 @@ import PhotoLayout from "@/layouts/PhotoLayout.astro";
 import FeedbackButtons from "@/components/FeedbackButtons";
 import PhotoGallery from "@/components/PhotoGallery";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
-import { loadPhotoManifest } from "@/lib/photo-manifests";
+import { loadPhotoManifest, resolveAlbumKey } from "@/lib/photo-manifests";
 
 export async function getStaticPaths() {
   const all = await getCollection("photo", (p) => p.data.lang === "zh" && !p.data.draft);
@@ -19,7 +19,7 @@ const { entry } = Astro.props;
 const { Content } = await entry.render();
 const lang = "zh" as const;
 const t = useTranslations(lang);
-const photos = loadPhotoManifest(entry.data.manifest || entry.data.translationKey);
+const photos = loadPhotoManifest(resolveAlbumKey(entry.data));
 const cover = photos[0];
 const rest = photos.slice(1);
 const dateStr = entry.data.date.toISOString().slice(0, 10);

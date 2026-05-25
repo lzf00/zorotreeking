@@ -2,7 +2,7 @@
 import { getCollection } from "astro:content";
 import PhotoLayout from "@/layouts/PhotoLayout.astro";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
-import { loadPhotoManifest } from "@/lib/photo-manifests";
+import { loadPhotoManifest, resolveAlbumKey } from "@/lib/photo-manifests";
 
 const lang = "en" as const;
 const t = useTranslations(lang);
@@ -11,7 +11,7 @@ const albums = (await getCollection("photo", (p) => p.data.lang === lang && !p.d
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
 const enriched = albums.map((album) => {
-  const manifest = loadPhotoManifest(album.data.manifest || album.data.translationKey);
+  const manifest = loadPhotoManifest(resolveAlbumKey(album.data));
   return { album, cover: manifest[0]?.src || manifest[0]?.thumb, count: manifest.length };
 });
 

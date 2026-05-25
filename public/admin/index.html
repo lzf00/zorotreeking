@@ -281,9 +281,12 @@
   <script>
     (function () {
       // ── A. 按钮文字 → 显示/隐藏/标记 主按钮 ─────
+      // 媒体库默认要点"选用已选中项目"把文件挂到当前字段。但我们的相册
+      // 是靠扫文件夹生成 manifest 的，frontmatter 里写不写文件路径都不影响
+      // 渲染——所以这一步对用户来说是多余的，隐了。
       const HIDE_TEXTS = new Set([
-        '复制', '下载', '删除已选中项目',
-        'Copy', 'Download', 'Delete selected',
+        '复制', '下载', '删除已选中项目', '选用已选中项目',
+        'Copy', 'Download', 'Delete selected', 'Insert selected',
       ]);
       const PRIMARY_TEXTS = new Set(['上传', 'Upload']);
 
@@ -328,6 +331,14 @@
           // 给 Decap 一点处理 + GitHub commit 的时间，避免并发把 SHA 撞坏
           await new Promise((r) => setTimeout(r, 1500));
         }
+        // 全部上传完，发个 Escape 关闭媒体库模态
+        // （用户不再需要"选用已选中项目"——文件已经落到正确文件夹，
+        // 部署时会自动扫盘出 manifest）
+        try {
+          document.dispatchEvent(
+            new KeyboardEvent('keydown', { key: 'Escape', code: 'Escape', keyCode: 27, which: 27, bubbles: true })
+          );
+        } catch (_) {}
       }
 
       function shimInput(input) {
