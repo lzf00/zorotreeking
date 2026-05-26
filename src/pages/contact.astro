@@ -1,0 +1,60 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { useTranslations } from "@/i18n/ui";
+const t = useTranslations("zh");
+---
+<BaseLayout title="投诉举报 / 联系" description="ZoroTreeking 投诉举报与联系信息">
+  <article class="max-w-prose mx-auto px-5 pt-16 pb-24">
+    <h1 class="font-serif text-5xl sm:text-6xl leading-[0.95] tracking-tight mb-6">投诉举报 / 联系</h1>
+
+    <div class="prose prose-neutral dark:prose-invert max-w-none">
+
+      <h2>主要联系方式</h2>
+      <p>
+        <strong>邮箱</strong>：<a href="mailto:1437066318@qq.com">1437066318@qq.com</a><br />
+        <strong>响应时限</strong>：48 小时内回复，紧急情况（违法有害内容、人身安全）尽快处理。<br />
+        <strong>网站负责人 / 安全管理员</strong>：Zoro（站点开办者）
+      </p>
+
+      <h2>受理范围</h2>
+      <ul>
+        <li>本站发布内容存在违法、不实、侵权情形</li>
+        <li>本站 AI 对话窗口输出涉及违法、不当信息</li>
+        <li>个人信息（IP/指纹）保护相关请求（如要求删除某条记录）</li>
+        <li>其他合规、版权、技术问题</li>
+      </ul>
+
+      <h2>举报应包含的信息</h2>
+      <ul>
+        <li>有问题的页面 URL 或截图</li>
+        <li>问题类型描述</li>
+        <li>联系方式（用于回复，可匿名但无法回复）</li>
+      </ul>
+
+      <h2>处理流程</h2>
+      <ol>
+        <li>收到举报后 24 小时内初步核实</li>
+        <li>核实属实的违法 / 有害内容：<strong>立即删除或隐藏</strong>，并保存处置记录</li>
+        <li>48 小时内通过邮件向举报人反馈处置结果</li>
+        <li>涉嫌违法犯罪的，第一时间向公安 / 网信部门报告并配合调查</li>
+      </ol>
+
+      <h2>本站数据收集与留存说明</h2>
+      <p class="text-sm">
+        本站不公开开放用户注册，不收集手机号 / 邮箱 / 真实姓名等敏感个人信息。
+        匿名访问行为记录（IP+UA 哈希指纹、访问路径、时间戳）保留不少于 6 个月，
+        用于安全审计与依法配合执法部门调取。AI 对话内容默认不长期保存；
+        命中敏感词过滤的记录保留哈希形式以备查证，不保留原文。
+      </p>
+
+      <h2>监管部门联系</h2>
+      <p class="text-sm">
+        <strong>中央网信办违法和不良信息举报中心</strong>：<a href="https://www.12377.cn/" target="_blank" rel="noopener noreferrer">https://www.12377.cn/</a><br />
+        <strong>工信部 ICP/IP 地址/域名信息备案管理系统</strong>：<a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">https://beian.miit.gov.cn/</a>
+      </p>
+
+      <hr />
+      <p class="text-sm text-[var(--text-tertiary)]">沪 ICP 备 2026021578 号-1</p>
+    </div>
+  </article>
+</BaseLayout>

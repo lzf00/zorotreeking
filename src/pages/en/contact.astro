@@ -1,0 +1,60 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { useTranslations } from "@/i18n/ui";
+const t = useTranslations("en");
+---
+<BaseLayout title="Contact / Abuse Report" description="ZoroTreeking abuse report and contact info">
+  <article class="max-w-prose mx-auto px-5 pt-16 pb-24">
+    <h1 class="font-serif text-5xl sm:text-6xl leading-[0.95] tracking-tight mb-6">Contact / Abuse Report</h1>
+
+    <div class="prose prose-neutral dark:prose-invert max-w-none">
+
+      <h2>Primary contact</h2>
+      <p>
+        <strong>Email</strong>: <a href="mailto:1437066318@qq.com">1437066318@qq.com</a><br />
+        <strong>Response time</strong>: within 48 hours; urgent issues (illegal content, personal safety) handled ASAP.<br />
+        <strong>Site operator / Security officer</strong>: Zoro (the owner)
+      </p>
+
+      <h2>Scope</h2>
+      <ul>
+        <li>Illegal, factually incorrect, or infringing content on this site</li>
+        <li>Inappropriate output from the AI chat widget</li>
+        <li>Personal-data requests (e.g. request deletion of a specific log)</li>
+        <li>Other compliance, copyright, or technical concerns</li>
+      </ul>
+
+      <h2>Please include in your report</h2>
+      <ul>
+        <li>URL or screenshot of the offending page</li>
+        <li>Description of the issue</li>
+        <li>Contact info for follow-up (anonymous is fine, but we can't reply)</li>
+      </ul>
+
+      <h2>Handling procedure</h2>
+      <ol>
+        <li>Initial review within 24 hours of receiving the report</li>
+        <li>Verified illegal / harmful content: <strong>removed immediately</strong>; handling record retained</li>
+        <li>Email response with the outcome within 48 hours</li>
+        <li>Suspected crimes are reported to and coordinated with relevant authorities</li>
+      </ol>
+
+      <h2>Data collection and retention</h2>
+      <p class="text-sm">
+        This site does not offer public account registration and does not collect phone numbers, email addresses or real names.
+        Anonymous access records (IP+UA hash fingerprint, path, timestamp) are kept for at least 6 months for
+        security audit and lawful disclosure to authorities. AI conversation content is not retained long-term;
+        records that hit the keyword filter are kept only as hashes, with the original text not stored.
+      </p>
+
+      <h2>Authorities (China)</h2>
+      <p class="text-sm">
+        <strong>Cyberspace Administration of China — illegal &amp; harmful info report center</strong>: <a href="https://www.12377.cn/" target="_blank" rel="noopener noreferrer">https://www.12377.cn/</a><br />
+        <strong>MIIT ICP filing system</strong>: <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">https://beian.miit.gov.cn/</a>
+      </p>
+
+      <hr />
+      <p class="text-sm text-[var(--text-tertiary)]">沪 ICP 备 2026021578 号-1</p>
+    </div>
+  </article>
+</BaseLayout>

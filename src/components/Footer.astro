@@ -1,18 +1,40 @@
 ---
 import { getLangFromUrl, useTranslations } from "@/i18n/ui";
-const t = useTranslations(getLangFromUrl(Astro.url));
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 const year = new Date().getFullYear();
 ---
 
 <footer class="mt-24 border-t border-[var(--border)]">
-  <div class="max-w-6xl mx-auto px-5 py-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-[var(--text-tertiary)]">
-    <p>© {year} {t("site.title")} · {t("site.tagline")}</p>
-    <p class="flex items-center gap-3">
-      <a href="/rss.xml" class="hover:text-[var(--text)] transition-colors">RSS</a>
-      <span>·</span>
-      <a href="/tag" class="hover:text-[var(--text)] transition-colors">Tags</a>
-      <span>·</span>
-      <span>{t("footer.builtWith")}</span>
-    </p>
+  <div class="max-w-6xl mx-auto px-5 py-8 flex flex-col gap-3 text-xs text-[var(--text-tertiary)]">
+
+    <!-- 第一行：版权 + 站点功能链接 -->
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+      <p>© {year} {t("site.title")} · {t("site.tagline")}</p>
+      <p class="flex flex-wrap items-center gap-x-3 gap-y-1">
+        <a href="/rss.xml" class="hover:text-[var(--text)] transition-colors">RSS</a>
+        <span>·</span>
+        <a href={lang === "zh" ? "/tag" : "/en/tag"} class="hover:text-[var(--text)] transition-colors">Tags</a>
+        <span>·</span>
+        <a href={lang === "zh" ? "/contact" : "/en/contact"} class="hover:text-[var(--text)] transition-colors">
+          {lang === "zh" ? "投诉举报" : "Contact"}
+        </a>
+        <span>·</span>
+        <span>{t("footer.builtWith")}</span>
+      </p>
+    </div>
+
+    <!-- 第二行：合规信息（ICP + 负责人 + 邮箱） -->
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 pt-2 border-t border-[var(--border-soft)] text-[11px]">
+      <p class="flex flex-wrap items-center gap-x-3 gap-y-1">
+        <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer" class="hover:text-[var(--text)] transition-colors">
+          沪 ICP 备 2026021578 号-1
+        </a>
+        <span class="opacity-50">·</span>
+        <span>{lang === "zh" ? "网站负责人：Zoro" : "Operator: Zoro"}</span>
+        <span class="opacity-50">·</span>
+        <a href="mailto:1437066318@qq.com" class="hover:text-[var(--text)] transition-colors">1437066318@qq.com</a>
+      </p>
+    </div>
   </div>
 </footer>
