@@ -16,6 +16,14 @@ const year = new Date().getFullYear();
         <span>·</span>
         <a href={lang === "zh" ? "/tag" : "/en/tag"} class="hover:text-[var(--text)] transition-colors">Tags</a>
         <span>·</span>
+        <a href={lang === "zh" ? "/terms" : "/en/terms"} class="hover:text-[var(--text)] transition-colors">
+          {lang === "zh" ? "使用条款" : "Terms"}
+        </a>
+        <span>·</span>
+        <a href={lang === "zh" ? "/privacy" : "/en/privacy"} class="hover:text-[var(--text)] transition-colors">
+          {lang === "zh" ? "隐私" : "Privacy"}
+        </a>
+        <span>·</span>
         <a href={lang === "zh" ? "/contact" : "/en/contact"} class="hover:text-[var(--text)] transition-colors">
           {lang === "zh" ? "投诉举报" : "Contact"}
         </a>

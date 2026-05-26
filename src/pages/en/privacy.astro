@@ -1,0 +1,90 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+const updated = "2026-05-26";
+---
+<BaseLayout title="Privacy Policy" description="ZoroTreeking privacy policy">
+  <article class="max-w-prose mx-auto px-5 pt-16 pb-24">
+    <h1 class="font-serif text-5xl sm:text-6xl leading-[0.95] tracking-tight mb-6">Privacy Policy</h1>
+    <p class="text-sm text-[var(--text-tertiary)] mb-8">Last updated: {updated}</p>
+
+    <div class="prose prose-neutral dark:prose-invert max-w-none">
+
+      <p><strong>The short version</strong>: no public registration, no phone / email / real name collection. We only log the minimum necessary for analytics, security and regulatory retention.</p>
+
+      <h2>1. What we collect</h2>
+      <table>
+        <thead><tr><th>Data</th><th>Purpose</th><th>Retention</th></tr></thead>
+        <tbody>
+          <tr><td>IP address</td><td>Required regulatory retention (≥ 6 months); lawful disclosure; anti-abuse</td><td>6 months</td></tr>
+          <tr><td>User-Agent</td><td>Device identification and dedupe</td><td>6 months</td></tr>
+          <tr><td>Path + timestamp</td><td>PV / UV analytics, content quality signals</td><td>6 months</td></tr>
+          <tr><td>Referrer</td><td>Understand inbound sources</td><td>6 months</td></tr>
+          <tr><td>Like / Dislike actions</td><td>Engagement metrics</td><td>Long-term, removable on request</td></tr>
+          <tr><td>AI chat content</td><td><strong>Only when blocked by the keyword filter</strong>: SHA-256 hash + matched terms. <strong>Original text not stored.</strong></td><td>6 months</td></tr>
+          <tr><td>Theme / search history</td><td>Local <code>localStorage</code> only, <strong>never uploaded</strong></td><td>Clear via browser</td></tr>
+        </tbody>
+      </table>
+
+      <h2>2. What we do not collect</h2>
+      <ul>
+        <li>Phone, email, real name (no registration)</li>
+        <li>Precise geolocation (only coarse IP-based country)</li>
+        <li>Payment data, biometrics</li>
+        <li>Third-party identities (except GitHub OAuth for /admin, owner-only)</li>
+      </ul>
+
+      <h2>3. Cookies &amp; local storage</h2>
+      <ul>
+        <li><strong>No</strong> third-party ad trackers, recommendation pixels, Baidu Tongji, Facebook Pixel, etc.</li>
+        <li>Only: theme preference + AI assistant session ID (expires on tab close)</li>
+        <li>All tracking is same-origin; nothing sent to third parties</li>
+      </ul>
+
+      <h2>4. Third-party endpoints</h2>
+      <p>The site loads from a few third-party hosts; visiting them exposes your IP to them per their own policies:</p>
+      <ul>
+        <li><strong>Google Fonts</strong> — serif &amp; sans-serif typefaces</li>
+        <li><strong>unpkg / jsdelivr</strong> — loads Decap CMS, KaTeX, highlight.js (only on <code>/admin</code> or article pages)</li>
+        <li><strong>Cloudflare Worker</strong> (decap-oauth.zoro1024111.workers.dev) — GitHub OAuth proxy, only on <code>/admin</code> login</li>
+      </ul>
+      <p>We do not actively share your data with them; they may log requests per their own terms.</p>
+
+      <h2>5. Access</h2>
+      <ul>
+        <li>Only the site owner Zoro accesses the data (via SSH + GitHub OAuth)</li>
+        <li>Not sold or shared</li>
+        <li>Exception: lawful requests from regulators / law enforcement</li>
+      </ul>
+
+      <h2>6. Security</h2>
+      <ul>
+        <li>HTTPS via Let's Encrypt; HSTS 1 year</li>
+        <li>SQLite database file mode 600, owner-only</li>
+        <li>Daily backups, 200-day retention</li>
+        <li>Per-IP rate limits on all API endpoints</li>
+        <li>Content-Security-Policy to mitigate XSS / clickjacking</li>
+      </ul>
+
+      <h2>7. Your rights</h2>
+      <p>Email <a href="mailto:1437066318@qq.com">1437066318@qq.com</a> at any time to:</p>
+      <ul>
+        <li>Query records about you (provide IP / time window to help locate)</li>
+        <li>Request deletion of your records (handled within 48h after verification)</li>
+        <li>Correct erroneous records</li>
+        <li>Export your data</li>
+      </ul>
+
+      <h2>8. Minors</h2>
+      <p>This site targets adults familiar with the internet. Users under 14 should browse with guardian supervision.</p>
+
+      <h2>9. Changes</h2>
+      <p>This policy may evolve. Updates take effect upon publication. Material changes (e.g. new data categories) are announced on the homepage for 7 days.</p>
+
+      <h2>10. Contact</h2>
+      <p><a href="mailto:1437066318@qq.com">1437066318@qq.com</a> · Operator: Zoro · <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">沪 ICP 备 2026021578 号-1</a></p>
+
+      <hr />
+      <p class="text-sm text-[var(--text-tertiary)]">Related: <a href="/en/terms">Terms</a> · <a href="/en/contact">Contact / Abuse</a></p>
+    </div>
+  </article>
+</BaseLayout>

@@ -1,0 +1,93 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+const updated = "2026-05-26";
+---
+<BaseLayout title="隐私政策" description="ZoroTreeking 隐私政策 / 数据处理说明">
+  <article class="max-w-prose mx-auto px-5 pt-16 pb-24">
+    <h1 class="font-serif text-5xl sm:text-6xl leading-[0.95] tracking-tight mb-6">隐私政策</h1>
+    <p class="text-sm text-[var(--text-tertiary)] mb-8">最后更新：{updated}</p>
+
+    <div class="prose prose-neutral dark:prose-invert max-w-none">
+
+      <p><strong>简要原则</strong>：本站不开放公开用户注册，不收集手机号、邮箱、真实姓名等敏感个人信息。我们只在为<strong>必要的统计、安全审计、合规留存</strong>所需的最小范围内记录访问行为。</p>
+
+      <h2>1. 我们收集什么</h2>
+      <table>
+        <thead>
+          <tr><th>数据</th><th>用途</th><th>留存</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>访问 IP 地址</td><td>合规留存（≥6 个月）；监管 / 执法部门依法调取；防爬虫与异常行为</td><td>6 个月</td></tr>
+          <tr><td>User-Agent</td><td>访问设备识别、去重统计</td><td>6 个月</td></tr>
+          <tr><td>访问路径与时间戳</td><td>PV / UV 统计、内容质量分析</td><td>6 个月</td></tr>
+          <tr><td>Referrer（来源 URL）</td><td>了解访客从哪里进入</td><td>6 个月</td></tr>
+          <tr><td>文章点赞 / 不喜欢操作</td><td>统计哪些内容受欢迎</td><td>长期，可应请求删除</td></tr>
+          <tr><td>AI 对话内容</td><td><strong>仅在命中敏感词过滤时</strong>保留 SHA-256 哈希（32 字符）+ 命中词，<strong>不保留原文</strong></td><td>6 个月</td></tr>
+          <tr><td>主题偏好 / 站内搜索</td><td>本地 localStorage，<strong>不上传服务器</strong></td><td>用户本地清缓存即可清除</td></tr>
+        </tbody>
+      </table>
+
+      <h2>2. 我们不收集什么</h2>
+      <ul>
+        <li>手机号、邮箱、姓名（站点没有注册功能）</li>
+        <li>地理位置（除非由 IP 反推国家级别的粗略归属）</li>
+        <li>支付、生物特征等高敏感信息</li>
+        <li>第三方平台账号（除访问 /admin 后台时通过 GitHub OAuth 验证，且仅本人可用）</li>
+      </ul>
+
+      <h2>3. Cookie 与本地存储</h2>
+      <ul>
+        <li><strong>不使用</strong>第三方广告追踪、推荐算法、Facebook Pixel、百度统计等</li>
+        <li>仅有的 cookie / localStorage 用于：① 浅色 / 深色主题偏好；② AI 助手会话 ID（关闭窗口失效，不跨设备）</li>
+        <li>所有跟踪都在<strong>同源</strong>之内完成，不会发给第三方</li>
+      </ul>
+
+      <h2>4. 第三方服务</h2>
+      <p>本站使用以下第三方资源，访问可能将 IP 暴露给对方：</p>
+      <ul>
+        <li><strong>Google Fonts</strong>（fonts.googleapis.com）：加载衬线与无衬线字体</li>
+        <li><strong>unpkg / jsdelivr</strong>：仅在访问 <code>/admin</code> 或文章详情页加载 Decap CMS、KaTeX、highlight.js 等 JS 库</li>
+        <li><strong>Cloudflare Worker</strong>（decap-oauth.zoro1024111.workers.dev）：仅在 <code>/admin</code> 登录时用于 GitHub OAuth 转发</li>
+      </ul>
+      <p>本站<strong>不主动</strong>把您的访问数据发给上述第三方；但他们可能根据自身条款记录请求日志。</p>
+
+      <h2>5. 谁能访问您的数据</h2>
+      <ul>
+        <li><strong>仅</strong>本站负责人 Zoro（站点开办者本人）通过 SSH + GitHub OAuth 双重认证后可访问</li>
+        <li>不对外公开、不出售、不向第三方共享</li>
+        <li>例外：依法收到监管部门或执法部门的<strong>合法书面调取要求</strong>时，我们会按法定范围提供</li>
+      </ul>
+
+      <h2>6. 数据安全</h2>
+      <ul>
+        <li>全站 HTTPS（Let's Encrypt 证书，自动续期），HSTS 强制 1 年</li>
+        <li>SQLite 数据库文件权限 600，仅 root / ai-agent 服务账号可读</li>
+        <li>每日异地备份，保留 200 天</li>
+        <li>API 接口配置限流（per-IP rate limit）防止滥用</li>
+        <li>Content-Security-Policy 防止 XSS、点击劫持</li>
+      </ul>
+
+      <h2>7. 您的权利</h2>
+      <p>您可以随时通过 <a href="mailto:1437066318@qq.com">1437066318@qq.com</a> 邮件请求：</p>
+      <ul>
+        <li>查询本站收集的关于您的数据（请提供 IP 或访问时间窗口辅助定位）</li>
+        <li>删除您的访问记录（验证身份后 48 小时内处理）</li>
+        <li>更正错误的记录</li>
+        <li>导出您的数据副本</li>
+      </ul>
+
+      <h2>8. 未成年人</h2>
+      <p>本站内容面向具有基本互联网使用能力的成年人。如您是 14 岁以下未成年人，请在监护人指导下访问。</p>
+
+      <h2>9. 政策修改</h2>
+      <p>本政策可能因法规变化、服务调整或安全考虑而更新。修改后在本页发布即生效。重大变更（如新增数据收集类型）将在首页公告 7 天。</p>
+
+      <h2>10. 联系</h2>
+      <p>对本政策有疑问、需要行使您的权利、或希望提出建议，请联系：</p>
+      <p><a href="mailto:1437066318@qq.com">1437066318@qq.com</a> · 网站负责人：Zoro · <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">沪 ICP 备 2026021578 号-1</a></p>
+
+      <hr />
+      <p class="text-sm text-[var(--text-tertiary)]">相关页面：<a href="/terms">使用条款</a> · <a href="/contact">投诉举报</a></p>
+    </div>
+  </article>
+</BaseLayout>
