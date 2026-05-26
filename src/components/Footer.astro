@@ -24,6 +24,10 @@ const year = new Date().getFullYear();
           {lang === "zh" ? "隐私" : "Privacy"}
         </a>
         <span>·</span>
+        <a href={lang === "zh" ? "/data" : "/en/data"} class="hover:text-[var(--text)] transition-colors">
+          {lang === "zh" ? "我的数据" : "My Data"}
+        </a>
+        <span>·</span>
         <a href={lang === "zh" ? "/contact" : "/en/contact"} class="hover:text-[var(--text)] transition-colors">
           {lang === "zh" ? "投诉举报" : "Contact"}
         </a>

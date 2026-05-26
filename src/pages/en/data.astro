@@ -1,0 +1,118 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+<BaseLayout title="My Data" description="View and delete the records this site keeps about you">
+  <article class="max-w-prose mx-auto px-5 pt-16 pb-24">
+    <h1 class="font-serif text-5xl sm:text-6xl leading-[0.95] tracking-tight mb-6">My Data</h1>
+    <p class="text-[var(--text-secondary)] mb-8">
+      This site only stores anonymous records about unregistered visitors (IP+UA hash fingerprint, paths, timestamps).
+      You can <strong>view everything we have about you</strong> and <strong>delete it all in one click</strong>.
+    </p>
+
+    <div class="prose prose-neutral dark:prose-invert max-w-none">
+
+      <section class="not-prose mb-10">
+        <button id="loadBtn" class="inline-flex items-center gap-2 rounded-full bg-black dark:bg-white text-white dark:text-black px-5 py-2.5 text-sm font-medium hover:opacity-90 transition-opacity">
+          Show my records
+        </button>
+        <span id="loadHint" class="ml-3 text-sm text-[var(--text-tertiary)]"></span>
+      </section>
+
+      <section id="dataBox" class="hidden not-prose mb-10">
+        <div class="rounded-2xl border border-[var(--border)] bg-[var(--bg-soft)] p-5">
+          <div class="text-xs uppercase tracking-[0.16em] text-[var(--text-tertiary)] font-mono mb-2">Your visitor fingerprint</div>
+          <code id="fp" class="font-mono text-sm select-all"></code>
+          <span id="ipPartial" class="ml-2 text-xs text-[var(--text-tertiary)]"></span>
+
+          <hr class="my-5 border-[var(--border)]" />
+
+          <div class="grid grid-cols-3 gap-3 mb-5" id="counts"></div>
+
+          <div class="text-xs uppercase tracking-[0.16em] text-[var(--text-tertiary)] font-mono mb-2">Last 10 paths</div>
+          <ul id="recent" class="text-sm font-mono space-y-1 text-[var(--text-secondary)]"></ul>
+        </div>
+
+        <div class="mt-6 flex items-center gap-3 flex-wrap">
+          <button id="deleteBtn" class="inline-flex items-center gap-2 rounded-full bg-red-600 hover:bg-red-700 text-white px-5 py-2.5 text-sm font-medium transition-colors">
+            Delete all my records
+          </button>
+          <span id="deleteHint" class="text-sm text-[var(--text-tertiary)]"></span>
+        </div>
+      </section>
+
+      <h2>Notes</h2>
+      <ul>
+        <li><strong>What is the fingerprint</strong>: SHA-256 of <code>IP|UA</code>, truncated to 32 chars. Same IP+UA hashes to the same fingerprint and <strong>cannot be reversed</strong> to recover the IP.</li>
+        <li><strong>What deletion does</strong>: removes rows from <code>feedback</code>, <code>pageviews</code>, <code>chat_filtered_log</code> where fingerprint matches yours. A moderation log entry is written (only your IP + counts, never the fingerprint).</li>
+        <li><strong>Will it record me again</strong>: yes, your next visit creates new rows. To <strong>stop</strong> recording, simply stop visiting.</li>
+        <li><strong>nginx access logs</strong>: server-level access logs (operator-only, retained ≤ 200 days) are <strong>not</strong> covered here. To remove from those, email <a href="mailto:1437066318@qq.com">1437066318@qq.com</a> with a time window.</li>
+        <li><strong>AI chat</strong>: AI assistant chat history lives in server memory; it disappears on restart or inactivity. You can also clear the current session from the AI widget.</li>
+      </ul>
+
+      <p class="text-sm text-[var(--text-tertiary)]">More help: <a href="mailto:1437066318@qq.com">1437066318@qq.com</a> · <a href="/en/privacy">Full privacy policy</a> · <a href="/en/contact">Abuse report</a></p>
+    </div>
+  </article>
+</BaseLayout>
+
+<script is:inline>
+  (() => {
+    const $ = (id) => document.getElementById(id);
+    const fmtTime = (ts) => new Date(ts * 1000).toLocaleString("en-US", { hour12: false });
+
+    async function loadMe() {
+      $("loadBtn").disabled = true;
+      $("loadHint").textContent = "Loading…";
+      try {
+        const r = await fetch("/api/data/me");
+        if (!r.ok) throw new Error(r.status);
+        const d = await r.json();
+        $("fp").textContent = d.fingerprint;
+        $("ipPartial").textContent = "IP approx: " + (d.ip_partial || "");
+        $("counts").innerHTML = [
+          ["Like / dislike",  d.counts.feedback],
+          ["Pageview records",  d.counts.pageviews],
+          ["Filtered chats",  d.counts.filtered_chats],
+        ].map(([l, n]) => `
+          <div class="rounded-xl bg-white dark:bg-neutral-900 border border-[var(--border)] p-3 text-center">
+            <div class="text-[11px] uppercase tracking-[0.12em] text-[var(--text-tertiary)]">${l}</div>
+            <div class="mt-1 text-2xl font-semibold tabular-nums">${n}</div>
+          </div>
+        `).join("");
+        const pv = d.recent_pageviews || [];
+        $("recent").innerHTML = pv.length
+          ? pv.map(p => `<li><span class="text-[var(--text-tertiary)]">${fmtTime(p.ts)}</span> &nbsp; ${p.path}</li>`).join("")
+          : '<li class="text-[var(--text-tertiary)]">none</li>';
+        $("dataBox").classList.remove("hidden");
+        $("loadHint").textContent = "Loaded";
+      } catch (e) {
+        $("loadHint").textContent = "Failed: " + e.message;
+        $("loadBtn").disabled = false;
+      }
+    }
+
+    async function deleteMe() {
+      if (!confirm("Are you sure you want to delete every record this site has about you? This cannot be undone.")) return;
+      $("deleteBtn").disabled = true;
+      $("deleteHint").textContent = "Working…";
+      try {
+        const r = await fetch("/api/data/delete", { method: "POST" });
+        const d = await r.json();
+        if (d.ok) {
+          $("deleteHint").innerHTML = `<span style="color:#16a34a">Deleted: feedback ${d.deleted.feedback} · pageviews ${d.deleted.pageviews} · filtered ${d.deleted.filtered_chats}</span>`;
+          setTimeout(loadMe, 400);
+        } else {
+          $("deleteHint").innerHTML = '<span style="color:#dc2626">Failed</span>';
+        }
+      } catch (e) {
+        $("deleteHint").innerHTML = `<span style="color:#dc2626">Error: ${e.message}</span>`;
+      } finally {
+        $("deleteBtn").disabled = false;
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      $("loadBtn").addEventListener("click", loadMe);
+      $("deleteBtn").addEventListener("click", deleteMe);
+    });
+  })();
+</script>

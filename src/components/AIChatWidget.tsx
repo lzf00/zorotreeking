@@ -199,13 +199,23 @@ export default function AIChatWidget() {
   }
 
   function clearHistory() {
-    if (!confirm("清空当前会话？")) return;
+    if (!confirm("清空当前会话？\n（同时通知服务器删除内存里的对话历史）")) return;
+    const oldSid = sessionId.current;
     sessionId.current = "";
     try {
       localStorage.removeItem(SESSION_KEY);
       localStorage.removeItem(HISTORY_KEY);
     } catch {}
     setMessages([]);
+    // 同步通知服务器清除内存里的 session 历史（隐私政策第 7 条）
+    if (oldSid) {
+      fetch("/api/chat/clear", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ session_id: oldSid }),
+        keepalive: true,
+      }).catch(() => {});
+    }
   }
 
   return (
