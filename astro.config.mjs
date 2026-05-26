@@ -33,37 +33,23 @@ export default defineConfig({
       [rehypeAutolinkHeadings, { behavior: "append", properties: { className: ["heading-anchor"], ariaHidden: "true", tabIndex: -1 } }],
     ],
   },
-  // 开发期把 /api/* 代理到生产 AI Agent（备案前唯一能拿到响应的环境）
-  // 若你想用本机的 ai-agent 跑，把下面 target 换成 http://127.0.0.1:8800 即可
+  // 开发期把 /api/* 代理到生产 AI Agent。
+  // 备案已下来，直接用 HTTPS 域名，不用再 IP + Host header 绕路。
+  // 若想用本机的 ai-agent 跑，把 target 换成 http://127.0.0.1:8800 即可。
   vite: {
     server: {
-      proxy: {
-        "/api/chat": {
-          target: "http://110.40.142.199",
-          changeOrigin: true,
-          headers: { Host: "www.zorotreeking.online" },
-        },
-        "/api/upload": {
-          target: "http://110.40.142.199",
-          changeOrigin: true,
-          headers: { Host: "www.zorotreeking.online" },
-        },
-        "/api/models": {
-          target: "http://110.40.142.199",
-          changeOrigin: true,
-          headers: { Host: "www.zorotreeking.online" },
-        },
-        "/api/new_session": {
-          target: "http://110.40.142.199",
-          changeOrigin: true,
-          headers: { Host: "www.zorotreeking.online" },
-        },
-        "/api/feedback": {
-          target: "http://110.40.142.199",
-          changeOrigin: true,
-          headers: { Host: "www.zorotreeking.online" },
-        },
-      },
+      proxy: (() => {
+        const target = "https://www.zorotreeking.online";
+        const common = { target, changeOrigin: true, secure: true };
+        return {
+          "/api/chat":        common,
+          "/api/upload":      common,
+          "/api/models":      common,
+          "/api/new_session": common,
+          "/api/feedback":    common,
+          "/api/track":       common,
+        };
+      })(),
     },
   },
 });
