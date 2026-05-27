@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import NetValueChart from "@/components/NetValueChart";
 import HoldingsPie from "@/components/HoldingsPie";
+import MarketIndicesGrid from "@/components/MarketIndicesGrid";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
 
 const lang = "zh" as const;
@@ -29,6 +30,15 @@ const posts = (await getCollection("invest", (p) => p.data.lang === lang && !p.d
   <section class="max-w-5xl mx-auto px-5 pt-12 pb-6">
     <h1 class="font-serif text-5xl sm:text-6xl leading-[0.95] tracking-tight" style="color:#991b1b">{t("section.invest.title")}</h1>
     <p class="mt-2 text-[var(--text-secondary)]">{t("section.invest.desc")}</p>
+  </section>
+
+  <!-- 今日大盘：A 股 5 + 港股 + 美股 = 7 个指数 实时报价 -->
+  <section class="max-w-5xl mx-auto px-5 pb-8">
+    <div class="flex items-baseline justify-between mb-3">
+      <h2 class="text-base font-semibold tracking-tight">今日大盘</h2>
+      <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">Live</span>
+    </div>
+    <MarketIndicesGrid client:load />
   </section>
 
   {latest && (
@@ -93,6 +103,11 @@ const posts = (await getCollection("invest", (p) => p.data.lang === lang && !p.d
       </div>
     </section>
   )}
+
+  <p class="max-w-5xl mx-auto px-5 mt-10 text-[11px] text-[var(--text-tertiary)] leading-relaxed">
+    本页行情由东方财富/新浪等公开接口提供，仅供参考；持仓与净值数据为个人学习日志，<strong>不构成任何投资建议</strong>。
+    历史业绩不代表未来表现，市场有风险，入市需谨慎。
+  </p>
 
   <section class="max-w-5xl mx-auto px-5 mt-10">
     <h2 class="text-xl font-semibold mb-4">复盘</h2>
