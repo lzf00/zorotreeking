@@ -69,17 +69,40 @@ jobs:
 
       - name: Verify required secrets
         run: |
-          # 前置自检：缺哪个 secret 明确报错，不再靠 ssh-keyscan 莫名失败
+          # 前置自检：缺哪个 secret 明确报错
           missing=()
           [ -z "$SSH_HOST" ]    && missing+=("SSH_HOST")
           [ -z "$SSH_USER" ]    && missing+=("SSH_USER")
           [ -z "$DEPLOY_PATH" ] && missing+=("DEPLOY_PATH")
           if [ -n "${missing[*]}" ]; then
             echo "❌ 缺少 GitHub Secret(s): ${missing[*]}"
-            echo "   到 repo Settings → Secrets and variables → Actions 配齐这 3 个"
             exit 1
           fi
-          echo "✓ 3 个部署 Secret 都配齐了（值已被 GH 自动遮蔽）"
+
+          # 打印每个 secret 的「长度 + sha8 指纹」，便于和本地预期对照
+          # 不会泄露内容（数字 + 8 位 hex 不会触发 GH 自动遮蔽）
+          # 期望长度（按 README 假设值）：
+          #   SSH_HOST    = "110.40.142.199"                   → 14
+          #   SSH_USER    = "root"                             →  4
+          #   DEPLOY_PATH = "/www/wwwroot/zorotreeking/dist"   → 30
+          fp() { printf "%s" "$1" | sha256sum | cut -c1-8; }
+          echo "  SSH_HOST    length=${#SSH_HOST}  fp=$(fp "$SSH_HOST")"
+          echo "  SSH_USER    length=${#SSH_USER}  fp=$(fp "$SSH_USER")"
+          echo "  DEPLOY_PATH length=${#DEPLOY_PATH}  fp=$(fp "$DEPLOY_PATH")"
+          # 字符诊断：开头 / 结尾若不是预期字符就报警（不暴露内容）
+          if printf "%s" "$SSH_HOST" | grep -qE "^[[:space:]]|[[:space:]]$|^http|/$"; then
+            echo "❌ SSH_HOST 看起来异常（含空白 / http 前缀 / 末尾斜杠）"
+            exit 1
+          fi
+          if printf "%s" "$SSH_USER" | grep -qE "^[[:space:]]|[[:space:]]$|/"; then
+            echo "❌ SSH_USER 含空白或斜杠"
+            exit 1
+          fi
+          if ! printf "%s" "$DEPLOY_PATH" | grep -qE "^/"; then
+            echo "❌ DEPLOY_PATH 必须以 / 开头"
+            exit 1
+          fi
+          echo "✓ 三个 secret 看起来格式 OK"
 
       - name: Setup SSH key
         env:
