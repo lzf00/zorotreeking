@@ -67,6 +67,20 @@ jobs:
           PUBLIC_GISCUS_CATEGORY_ID: ${{ vars.PUBLIC_GISCUS_CATEGORY_ID }}
         run: npm run build
 
+      - name: Verify required secrets
+        run: |
+          # 前置自检：缺哪个 secret 明确报错，不再靠 ssh-keyscan 莫名失败
+          missing=()
+          [ -z "$SSH_HOST" ]    && missing+=("SSH_HOST")
+          [ -z "$SSH_USER" ]    && missing+=("SSH_USER")
+          [ -z "$DEPLOY_PATH" ] && missing+=("DEPLOY_PATH")
+          if [ -n "${missing[*]}" ]; then
+            echo "❌ 缺少 GitHub Secret(s): ${missing[*]}"
+            echo "   到 repo Settings → Secrets and variables → Actions 配齐这 3 个"
+            exit 1
+          fi
+          echo "✓ 3 个部署 Secret 都配齐了（值已被 GH 自动遮蔽）"
+
       - name: Setup SSH key
         env:
           SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
@@ -76,7 +90,7 @@ jobs:
           # SSH_DEPLOY_KEY 是 base64 编码的单行字符串；解码后才是 OpenSSH 私钥
           echo "$SSH_DEPLOY_KEY" | base64 -d > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+          ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts 2>&1 | grep -v "^#" | head -5
           # 防止 secret 在日志里漏，但快速 sanity check：开头应是 ----BEGIN
           /usr/bin/head -c 30 ~/.ssh/deploy_key && echo "..."
 
