@@ -5,7 +5,29 @@ import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import MarketIndicesGrid from "@/components/MarketIndicesGrid";
 import LiveHoldings from "@/components/LiveHoldings";
+import StockSpotlight from "@/components/StockSpotlight";
+import SectorRanking from "@/components/SectorRanking";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
+
+// ── Phase C: AI 科创聚焦 + 创业板风向 ──
+const aiKechuangStocks = [
+  { secid: "1.688981", display_name: "中芯国际",   note: "晶圆代工龙头" },
+  { secid: "1.688256", display_name: "寒武纪",     note: "AI 加速芯片" },
+  { secid: "1.688041", display_name: "海光信息",   note: "国产 CPU / DCU" },
+  { secid: "1.601138", display_name: "工业富联",   note: "AI 服务器代工" },
+  { secid: "0.300474", display_name: "景嘉微",     note: "国产 GPU" },
+  { secid: "0.002463", display_name: "沪电股份",   note: "AI 服务器 PCB" },
+  { secid: "1.688008", display_name: "澜起科技",   note: "内存接口芯片" },
+  { secid: "0.300782", display_name: "卓胜微",     note: "射频前端" },
+];
+
+const chinextStocks = [
+  { secid: "0.300750", display_name: "宁德时代",   note: "动力电池" },
+  { secid: "0.300760", display_name: "迈瑞医疗",   note: "医疗器械" },
+  { secid: "0.300059", display_name: "东方财富",   note: "互联网券商" },
+  { secid: "0.300124", display_name: "汇川技术",   note: "工业自动化" },
+  { secid: "0.300274", display_name: "阳光电源",   note: "光伏逆变器" },
+];
 
 const lang = "zh" as const;
 const t = useTranslations(lang);
@@ -77,6 +99,33 @@ const latestPeriod = snapshots[snapshots.length - 1]?.data.period;
       <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">Live</span>
     </div>
     <LiveHoldings holdings={holdings} client:load />
+  </section>
+
+  <!-- C1 · AI 科创聚焦 -->
+  <section class="max-w-5xl mx-auto px-5 pb-8 mt-8">
+    <div class="flex items-baseline justify-between mb-3">
+      <h2 class="text-base font-semibold tracking-tight">🤖 AI · 科创聚焦</h2>
+      <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">Live</span>
+    </div>
+    <StockSpotlight stocks={aiKechuangStocks} client:visible />
+  </section>
+
+  <!-- C2 · 创业板风向 -->
+  <section class="max-w-5xl mx-auto px-5 pb-8">
+    <div class="flex items-baseline justify-between mb-3">
+      <h2 class="text-base font-semibold tracking-tight">🚀 创业板风向</h2>
+      <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">Live</span>
+    </div>
+    <StockSpotlight stocks={chinextStocks} client:visible />
+  </section>
+
+  <!-- C3 · 行业板块涨跌榜 -->
+  <section class="max-w-5xl mx-auto px-5 pb-8">
+    <div class="flex items-baseline justify-between mb-3">
+      <h2 class="text-base font-semibold tracking-tight">📊 行业板块涨跌</h2>
+      <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">Live</span>
+    </div>
+    <SectorRanking client:visible />
   </section>
 
   <p class="max-w-5xl mx-auto px-5 mt-4 text-[11px] text-[var(--text-tertiary)] leading-relaxed">
