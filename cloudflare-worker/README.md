@@ -30,7 +30,7 @@ Decap CMS 用的 GitHub OAuth 代理。两个端点：
 4. 在 Worker 详情 → **Settings** → **Variables** → 添加：
    - `GITHUB_CLIENT_ID` (Plaintext) = 第 1 步的 Client ID
    - `GITHUB_CLIENT_SECRET` (Encrypt) = 第 1 步的 Client Secret
-   - `ALLOWED_USERS` (Plaintext) = `lzf00`（只允许你登录）
+   - `ALLOWED_USERS` (Plaintext) = `<your-github-username>`（只允许你登录）
 5. **Save and deploy**
 
 ### 3. 把 Worker URL 回填到 Decap 配置
