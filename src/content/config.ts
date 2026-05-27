@@ -41,7 +41,7 @@ const investPortfolio = defineCollection({
     holdings: z.array(z.object({
       symbol: z.string(),
       name: z.string(),
-      market: z.enum(["A", "HK", "US", "ETF", "Crypto", "Cash", "Other"]),
+      market: z.enum(["A", "HK", "US", "ETF", "Fund", "Crypto", "Cash", "Other"]),
       shares: z.number(),
       costAvg: z.number(),
       lastPrice: z.number(),

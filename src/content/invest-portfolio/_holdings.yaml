@@ -1,24 +1,62 @@
-# 由 scripts/invest-snapshot.ts 读取的手动维护清单：列出当前持仓的标的、股数、成本
-# 不会被 Astro Content Collection 加载（下划线开头）
+# 由 /invest 页面的 LiveHoldings 组件读取的持仓底表。
+# 不会被 Astro Content Collection 加载（下划线开头）。
+#
+# 字段：
+#   symbol：基金代码（6 位数字；不带 sh/sz 前缀）
+#   shares：份额（占位值，按需直接改）
+#   costAvg：成本净值（占位值）
+#   market: Fund 表示开放式基金
+
 holdings:
-  - symbol: "sh510300"
-    name: "沪深300ETF"
-    market: ETF
+  - symbol: "006551"
+    name: "中庚价值领航混合"
+    market: Fund
+    shares: 7000
+    costAvg: 3.50
+  - symbol: "016708"
+    name: "华夏有色金属ETF联接C"
+    market: Fund
     shares: 8000
-    costAvg: 4.05
-  - symbol: "sh510500"
-    name: "中证500ETF"
-    market: ETF
-    shares: 3000
-    costAvg: 6.20
-  - symbol: "sh588000"
-    name: "科创50ETF"
-    market: ETF
+    costAvg: 1.05
+  - symbol: "022709"
+    name: "万家臻选混合C"
+    market: Fund
     shares: 5000
+    costAvg: 1.18
+  - symbol: "020274"
+    name: "富国中证细分化工产业主题ETF联接C"
+    market: Fund
+    shares: 12000
+    costAvg: 0.85
+  - symbol: "018173"
+    name: "华泰柏瑞中证电力全指ETF联接C"
+    market: Fund
+    shares: 10000
     costAvg: 0.95
-  - symbol: "sh513100"
-    name: "纳指ETF"
-    market: ETF
-    shares: 1500
-    costAvg: 3.30
-notes: "样例配置，便于演示组件渲染"
+  - symbol: "019005"
+    name: "国投瑞银白银期货(LOF)C"
+    market: Fund
+    shares: 6000
+    costAvg: 1.10
+  - symbol: "018392"
+    name: "南方上海金ETF联接C"
+    market: Fund
+    shares: 10000
+    costAvg: 1.05
+  - symbol: "012414"
+    name: "招商中证白酒指数(LOF)C"
+    market: Fund
+    shares: 5000
+    costAvg: 0.65
+  - symbol: "011840"
+    name: "天弘中证人工智能C"
+    market: Fund
+    shares: 9000
+    costAvg: 0.80
+  - symbol: "018178"
+    name: "华夏科创50指数增强C"
+    market: Fund
+    shares: 8000
+    costAvg: 1.10
+
+notes: "占位份额与成本——可直接编辑本文件，下次 build 后自动反映到 /invest 页面"

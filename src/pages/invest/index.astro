@@ -1,29 +1,58 @@
 ---
+import fs from "node:fs";
+import path from "node:path";
 import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import NetValueChart from "@/components/NetValueChart";
-import HoldingsPie from "@/components/HoldingsPie";
 import MarketIndicesGrid from "@/components/MarketIndicesGrid";
+import LiveHoldings from "@/components/LiveHoldings";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
 
 const lang = "zh" as const;
 const t = useTranslations(lang);
 
-const snapshots = (await getCollection("invest-portfolio"))
-  .sort((a, b) => a.data.period.localeCompare(b.data.period));
+// ── 读取持仓底表 _holdings.yaml ──
+// 用本地极简 YAML 解析（与 scripts/invest-snapshot.ts 风格一致，避免引依赖）。
+// 仅支持本文件的固定结构：- key: value
+const holdingsPath = path.resolve("./src/content/invest-portfolio/_holdings.yaml");
+const rawYaml = fs.readFileSync(holdingsPath, "utf-8");
 
-const baseValue = snapshots[0]?.data.totalValue ?? 1;
-const nvSeries = snapshots.map((s) => ({
-  period: s.data.period,
-  totalValue: s.data.totalValue,
-  netValue: Math.round((s.data.totalValue / baseValue) * 10000) / 10000,
-}));
+type Holding = { symbol: string; name: string; shares: number; costAvg: number };
+function parseHoldings(text: string): Holding[] {
+  const lines = text.split("\n").map(l => l.replace(/#.*$/, ""));
+  const out: Holding[] = [];
+  let cur: any = null;
+  let inHoldings = false;
+  for (const line of lines) {
+    if (/^holdings:/.test(line)) { inHoldings = true; continue; }
+    if (!inHoldings) continue;
+    if (/^\S/.test(line) && line.trim()) break; // 出到下一个顶级 key（如 notes:）
+    const dash = line.match(/^\s*-\s+symbol:\s*"?([^"]+)"?\s*$/);
+    if (dash) {
+      if (cur) out.push(cur);
+      cur = { symbol: dash[1], name: "", shares: 0, costAvg: 0 };
+      continue;
+    }
+    const kv = line.match(/^\s+(\w+):\s*"?([^"]+)"?\s*$/);
+    if (kv && cur) {
+      const [, k, v] = kv;
+      if (k === "name") cur.name = v;
+      else if (k === "shares") cur.shares = Number(v);
+      else if (k === "costAvg") cur.costAvg = Number(v);
+    }
+  }
+  if (cur) out.push(cur);
+  return out;
+}
+const holdings: Holding[] = parseHoldings(rawYaml);
 
-const latest = snapshots[snapshots.length - 1]?.data;
-const totalReturn = latest ? ((latest.totalValue / baseValue - 1) * 100).toFixed(2) : "0.00";
-
+// ── 复盘文章 ──
 const posts = (await getCollection("invest", (p) => p.data.lang === lang && !p.data.draft))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+// ── 历史月度快照 ──
+const snapshots = (await getCollection("invest-portfolio"))
+  .sort((a, b) => a.data.period.localeCompare(b.data.period));
+const latestPeriod = snapshots[snapshots.length - 1]?.data.period;
 ---
 
 <BaseLayout title={t("section.invest.title")} description={t("section.invest.desc")}>
@@ -32,7 +61,7 @@ const posts = (await getCollection("invest", (p) => p.data.lang === lang && !p.d
     <p class="mt-2 text-[var(--text-secondary)]">{t("section.invest.desc")}</p>
   </section>
 
-  <!-- 今日大盘：A 股 5 + 港股 + 美股 = 7 个指数 实时报价 -->
+  <!-- A · 今日大盘 -->
   <section class="max-w-5xl mx-auto px-5 pb-8">
     <div class="flex items-baseline justify-between mb-3">
       <h2 class="text-base font-semibold tracking-tight">今日大盘</h2>
@@ -41,74 +70,29 @@ const posts = (await getCollection("invest", (p) => p.data.lang === lang && !p.d
     <MarketIndicesGrid client:load />
   </section>
 
-  {latest && (
-    <section class="max-w-5xl mx-auto px-5">
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-        <div class="rounded-lg border border-[var(--border)] p-3">
-          <div class="text-xs text-[var(--text-tertiary)]">截至</div>
-          <div class="text-sm font-semibold">{latest.period}</div>
-        </div>
-        <div class="rounded-lg border border-[var(--border)] p-3">
-          <div class="text-xs text-[var(--text-tertiary)]">总市值</div>
-          <div class="text-base font-semibold">¥{latest.totalValue.toLocaleString()}</div>
-        </div>
-        <div class="rounded-lg border border-[var(--border)] p-3">
-          <div class="text-xs text-[var(--text-tertiary)]">累计收益</div>
-          <div class:list={["text-base font-semibold", parseFloat(totalReturn) >= 0 ? "text-section-invest" : "text-green-600"]}>
-            {parseFloat(totalReturn) >= 0 ? "+" : ""}{totalReturn}%
-          </div>
-        </div>
-        <div class="rounded-lg border border-[var(--border)] p-3">
-          <div class="text-xs text-[var(--text-tertiary)]">持仓数</div>
-          <div class="text-base font-semibold">{latest.holdings.length}</div>
-        </div>
-      </div>
+  <!-- B · 我的持仓（实时基金估值） -->
+  <section class="max-w-5xl mx-auto px-5 pb-8">
+    <div class="flex items-baseline justify-between mb-3">
+      <h2 class="text-base font-semibold tracking-tight">我的持仓（估算）</h2>
+      <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">Live</span>
+    </div>
+    <LiveHoldings holdings={holdings} client:load />
+  </section>
 
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <div class="rounded-xl border border-[var(--border)] p-4">
-          <h3 class="text-sm font-semibold mb-2">净值曲线（基期 = {snapshots[0].data.period}）</h3>
-          <NetValueChart data={nvSeries} client:visible />
-        </div>
-        <div class="rounded-xl border border-[var(--border)] p-4">
-          <h3 class="text-sm font-semibold mb-2">当前持仓分布</h3>
-          <HoldingsPie holdings={latest.holdings} client:visible />
-        </div>
-      </div>
-
-      <div class="mt-6 rounded-xl border border-[var(--border)] overflow-hidden">
-        <table class="w-full text-sm">
-          <thead class="bg-[var(--bg-soft)] text-xs text-[var(--text-secondary)]">
-            <tr>
-              <th class="text-left p-3 font-semibold">代码</th>
-              <th class="text-left p-3 font-semibold">名称</th>
-              <th class="text-right p-3 font-semibold">股数</th>
-              <th class="text-right p-3 font-semibold">现价</th>
-              <th class="text-right p-3 font-semibold">市值</th>
-              <th class="text-right p-3 font-semibold">权重</th>
-            </tr>
-          </thead>
-          <tbody>
-            {latest.holdings.map((h) => (
-              <tr class="border-t border-[var(--border)]">
-                <td class="p-3 font-mono text-xs">{h.symbol}</td>
-                <td class="p-3">{h.name}</td>
-                <td class="p-3 text-right tabular-nums">{h.shares.toLocaleString()}</td>
-                <td class="p-3 text-right tabular-nums">{h.lastPrice.toFixed(2)}</td>
-                <td class="p-3 text-right tabular-nums">¥{h.marketValue.toLocaleString()}</td>
-                <td class="p-3 text-right tabular-nums">{(h.weight * 100).toFixed(1)}%</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </section>
-  )}
-
-  <p class="max-w-5xl mx-auto px-5 mt-10 text-[11px] text-[var(--text-tertiary)] leading-relaxed">
-    本页行情由东方财富/新浪等公开接口提供，仅供参考；持仓与净值数据为个人学习日志，<strong>不构成任何投资建议</strong>。
+  <p class="max-w-5xl mx-auto px-5 mt-4 text-[11px] text-[var(--text-tertiary)] leading-relaxed">
+    本页行情由东方财富 / 天天基金等公开接口提供，仅供参考；持仓份额与成本为占位 / 学习日志，<strong>不构成任何投资建议</strong>。
     历史业绩不代表未来表现，市场有风险，入市需谨慎。
   </p>
 
+  <!-- 历史月度快照（保留作为复盘记录入口） -->
+  {latestPeriod && (
+    <section class="max-w-5xl mx-auto px-5 mt-10">
+      <h2 class="text-base font-semibold tracking-tight mb-2">月度快照</h2>
+      <p class="text-xs text-[var(--text-tertiary)] mb-3">最新快照：{latestPeriod}（每月由 cron 写入 <code>invest-portfolio/{`{YYYY-MM}`}.yaml</code>）</p>
+    </section>
+  )}
+
+  <!-- 复盘文章 -->
   <section class="max-w-5xl mx-auto px-5 mt-10">
     <h2 class="text-xl font-semibold mb-4">复盘</h2>
     {posts.length === 0 ? <p class="text-[var(--text-tertiary)]">还没有复盘文章</p> : (
