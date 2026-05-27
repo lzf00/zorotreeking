@@ -13,7 +13,7 @@
 
 - [ ] 域名注册商：腾讯云 DNSPod
 - [ ] 当前 NS：`f1g1ns1.dnspod.net` / `f1g1ns2.dnspod.net`
-- [ ] 已生效 A 记录：apex + www → `110.40.142.199`
+- [ ] 已生效 A 记录：apex + www → `<server-ip>`
 - [ ] 已生效 LE 证书：8 月 24 日到期
 - [ ] 备案号：沪 ICP 备 2026021578 号-1（**腾讯云备案要求源站在境内，CF 仅做边缘加速，不算"接入商变更"**——但仍建议同步告知腾讯云客服）
 
@@ -23,7 +23,7 @@
 
 1. [Cloudflare](https://dash.cloudflare.com) 注册账号 → Add site → 输入 `zorotreeking.online`
 2. 选 **Free** 套餐
-3. CF 会自动扫描现有 DNS：核对 apex / www / ai / invest / photo / hike 6 条 A 记录都被识别（均 → 110.40.142.199）
+3. CF 会自动扫描现有 DNS：核对 apex / www / ai / invest / photo / hike 6 条 A 记录都被识别（均 → <server-ip>）
 4. **暂时把云朵图标全部置灰**（DNS-only），不要立刻开橙色代理——先验证 DNS 切换后能拿响应
 5. 记下 CF 给的两个 NS：形如 `xxx.ns.cloudflare.com` / `yyy.ns.cloudflare.com`
 
@@ -52,7 +52,7 @@
 
 1. CF → IP Access Rules：把 CF 出口 IP 段 allowlist
 2. 腾讯云安全组 / nginx：只允许 [CF IP 段](https://www.cloudflare.com/ips/) 访问 80/443
-3. 此时直连 `110.40.142.199:443` 应被防火墙拦掉
+3. 此时直连 `<server-ip>:443` 应被防火墙拦掉
 
 ### Phase 5：缓存与 WAF 调优
 

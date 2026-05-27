@@ -18,9 +18,14 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  SSH_HOST: 110.40.142.199
-  SSH_USER: root
-  DEPLOY_PATH: /www/wwwroot/zorotreeking/dist
+  # 服务器信息走 Secrets，避免在公开仓库 / Actions 日志里直接泄露
+  # GitHub repo → Settings → Secrets and variables → Actions 配：
+  #   SSH_HOST       服务器 IP 或域名
+  #   SSH_USER       部署用户
+  #   DEPLOY_PATH    web 根目录绝对路径
+  SSH_HOST: ${{ secrets.SSH_HOST }}
+  SSH_USER: ${{ secrets.SSH_USER }}
+  DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
 
 jobs:
   build-and-deploy:
@@ -83,6 +88,7 @@ jobs:
 
       - name: Summary
         run: |
-          echo "Deployed to $DEPLOY_PATH on $SSH_HOST"
+          # 不打印 SSH_HOST / DEPLOY_PATH，防止公开 Actions 日志泄露
+          echo "Deployed ✓"
           echo "Triggered by: ${{ github.event_name }}"
           echo "Commit: ${{ github.sha }}"

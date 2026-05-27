@@ -6,16 +6,18 @@
 - 备案：沪 ICP 备 2026021578 号-1
 - 域名：`zorotreeking.online` + `www.` / `ai.` / `invest.` / `photo.` / `hike.`（4 子域 301 到主站对应栏目）
 - 技术栈：Astro 4 + MDX + TypeScript + Tailwind + React Islands + FastAPI（后台 AI / 统计 / 反馈）
-- 部署：腾讯云 VM + nginx + Let's Encrypt，GitHub Actions 自动 build + rsync
+- 部署：VPS + nginx + Let's Encrypt，GitHub Actions 自动 build + rsync
 - 双语：默认中文（`/`）+ 英文（`/en`）
 - 在线写文章：Decap CMS（`/admin/`），GitHub OAuth 登录（Cloudflare Worker 中转）
 - AI 助手：悬浮按钮 → 多模型聊天（DeepSeek / Kimi / 豆包 / Claude / GPT / Gemini / 通义千问 / 智谱 / AI Yingji）+ 联网搜索 + 文件上传
+
+> 投诉举报 / 联系方式见线上 [`/contact`](https://www.zorotreeking.online/contact)。
 
 ## 架构
 
 ```
 你 ─push─▶ GitHub
-              ├─ Actions: npm ci → 拉行情 → 扫照片 → astro build → rsync ─▶ 腾讯云 nginx
+              ├─ Actions: npm ci → 拉行情 → 扫照片 → astro build → rsync ─▶ VPS nginx
               └─ Decap admin（浏览器内）─▶ GitHub OAuth ─▶ Cloudflare Worker
                                               ▼
                                      拿到 token，直接通过 GitHub API
@@ -23,18 +25,18 @@
 
 线上：https://www.zorotreeking.online
   └─ nginx (443 HTTPS, LE 证书)
-     ├─ /            ─▶ Astro 静态站 dist/
+     ├─ /            ─▶ Astro 静态站
      ├─ /admin/      ─▶ Decap CMS
-     ├─ /api/chat/   ─▶ FastAPI (127.0.0.1:8800) AI 聊天（SSE 流）
+     ├─ /api/chat/   ─▶ FastAPI 反代 AI 聊天（SSE 流）
      ├─ /api/feedback, /api/track, /api/data/, /api/chat/clear
      │              ─▶ FastAPI 统计 / 反馈 / 数据主体权利
      └─ 4 个栏目子域名 → 301 redirect 到 apex /<section>/
 
-服务器：/opt/ai-agent/  FastAPI（systemd 单元 ai-agent.service）
-        └─ stats.db    SQLite（用量统计 / 反馈 / 拦截记录 / 处置记录）
+服务器：FastAPI 以 systemd 单元运行
+        └─ SQLite（用量统计 / 反馈 / 拦截记录 / 处置记录）
 ```
 
-**GitHub** 是源代码 + 工作流 + 身份验证的唯一真源。**Cloudflare** 只做一件事：跑 50 行的 OAuth 中转 Worker。**腾讯云 VM** 是 nginx + FastAPI 居所。**腾讯云 COS** 是 SQLite 异地备份目标。
+**GitHub** 是源代码 + 工作流 + 身份验证的唯一真源。**Cloudflare** 只做一件事：跑 OAuth 中转 Worker。**VPS** 是 nginx + FastAPI 居所。**对象存储**（COS / OSS / R2 / B2 任选）是 SQLite 异地备份目标。
 
 ## 写文章
 
@@ -128,7 +130,7 @@ src/
     ai/[slug].astro / invest/[slug].astro / photo/[slug].astro / hike/[slug].astro
     rss.xml.ts / sitemap.xml.ts
 
-AI_Agent/                          FastAPI 后端源码（部署到服务器 /opt/ai-agent/）
+AI_Agent/                          FastAPI 后端源码（部署到服务器）
   deepseek_chat_app.py             主程序：聊天 / 反馈 / 统计 / 合规 endpoints
   models.yaml                      多 LLM 路由配置
   sensitive_words.txt              对话敏感词过滤词表
@@ -151,7 +153,7 @@ git push origin main
 4. `tsx scripts/build-photo-manifests.ts` 扫 `public/photos/uploads/` 写 manifest
 5. `astro build` + `pagefind` 索引 → 生成 `dist/`
 6. SSH 私钥从 `SSH_DEPLOY_KEY` secret 解码
-7. `rsync dist/ → 腾讯云:/www/wwwroot/zorotreeking/dist/`
+7. `rsync dist/ → 服务器 web 根目录`
 
 ### 触发方式
 
@@ -166,35 +168,33 @@ FastAPI 不走 GitHub Actions，需要手动 sync：
 
 ```bash
 # 改完 AI_Agent/deepseek_chat_app.py 后
-scp AI_Agent/deepseek_chat_app.py root@110.40.142.199:/opt/ai-agent/
-ssh root@110.40.142.199 'systemctl restart ai-agent'
+scp AI_Agent/deepseek_chat_app.py <user>@<server>:<app-dir>/
+ssh <user>@<server> 'systemctl restart ai-agent'
 ```
 
-服务以 systemd 单元跑（`ai-agent.service`），监听 `127.0.0.1:8800`，nginx 反代到 `/api/*`。日志：`journalctl -u ai-agent -f`。
+服务以 systemd 单元跑（`ai-agent.service`），监听本机端口，nginx 反代到 `/api/*`。
 
-### nginx 配置
-
-位于服务器 `/www/server/panel/vhost/nginx/zorotreeking.conf`（由宝塔面板 include）。关键结构：
+### nginx 关键配置
 
 - `80` → 301 到 HTTPS + ACME 续期通道
 - `443` → 主站 + 所有 `/api/*` 反代
 - 4 个栏目子域 → 301 到 `https://www./<section>/`
-- 安全头从 `zorotreeking_security_headers.conf` include（HSTS / CSP / X-Frame / Referrer / Permissions）
+- 安全头从单独的 snippet include（HSTS / CSP / X-Frame / Referrer / Permissions）
 - 速率限制 5 个 zone（chat / upload / meta / feedback / track）
 - 缓存按内容类型分层（`_astro/` 1y / `photos/` 30d / `pagefind/` 1h / `rss.xml` 10m / HTML 5m / `admin/` no-cache）
-- 自动 IP blocklist：`zorotreeking_blocklist.conf`（由 anti-abuse 脚本维护）
+- 自动 IP blocklist：由 anti-abuse 脚本维护
 
 ## 在线后台（Decap CMS）
 
 **首次配置**：参考 `cloudflare-worker/README.md`。需要：
 
 1. 创建 GitHub OAuth App
-2. 部署 Cloudflare Worker（环境变量配 `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` / `ALLOWED_USERS=lzf00`）
+2. 部署 Cloudflare Worker（环境变量配 `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` / `ALLOWED_USERS`）
 3. 把 Worker URL 填到 `public/admin/config.yml` 的 `base_url`
 
 **日常用**：浏览器开 [`/admin/`](https://www.zorotreeking.online/admin/) 登录就能写文章。
 
-**安全**：OAuth Worker 限制 `ALLOWED_USERS=lzf00`，其他人哪怕用自己的 GitHub 登录也会被挡住。
+**安全**：OAuth Worker 限制 `ALLOWED_USERS`，其他人哪怕用自己的 GitHub 登录也会被挡住。
 
 ## 合规栈
 
@@ -203,19 +203,19 @@ ssh root@110.40.142.199 'systemctl restart ai-agent'
 | 维度 | 实现 |
 |---|---|
 | 实名注册 | 站点不开放公开注册（在 about + terms 明文声明） |
-| 日志留存 ≥6 月 | nginx logrotate 200 天 + SQLite 每日备份（本地保 200 份 + 异地推 COS） |
+| 日志留存 ≥6 月 | nginx logrotate 200 天 + SQLite 每日备份（本地保 200 份 + 异地推对象存储） |
 | 违法信息防范 | `sensitive_words.txt` 在 `/api/chat` 入口过滤，命中写 `chat_filtered_log` 拒发 LLM |
-| 个人信息保护 | HTTPS + HSTS + CSP 全站，文件 600 权限，`/api/admin/*` 公网 404，限频 5 个 zone |
-| 投诉举报 | Footer + `/about` + `/contact`：1437066318@qq.com，48 小时响应承诺 |
-| 配合执法 | `/api/admin/ip-trace?ip=...` 按 IP 反查 feedback / pageviews / chat_filtered_log；`moderation_log` 记每次处置 |
+| 个人信息保护 | HTTPS + HSTS + CSP 全站，关键文件 600 权限，`/api/admin/*` 公网 404，限频 5 个 zone |
+| 投诉举报 | Footer + `/about` + `/contact`：48 小时响应承诺 |
+| 配合执法 | `/api/admin/ip-trace` 按 IP 反查 feedback / pageviews / chat_filtered_log；`moderation_log` 记每次处置 |
 | 数据主体权利 | `/data`（zh+en）：访客自查 + 一键删除自己所有记录 |
-| 防爬 / 反爆破 | `anti-abuse.sh` 扫日志 → 写 nginx `geo` deny → 自动封 IP 24h |
+| 防爬 / 反爆破 | anti-abuse 脚本扫日志 → 写 nginx `geo` deny → 自动封 IP 24h |
 
 详细政策三文：[`/terms`](https://www.zorotreeking.online/terms) / [`/privacy`](https://www.zorotreeking.online/privacy) / [`/contact`](https://www.zorotreeking.online/contact)
 
 ## AI Agent 后端
 
-FastAPI 应用 `/opt/ai-agent/deepseek_chat_app.py`，提供：
+FastAPI 应用提供：
 
 - `POST /api/chat`：多模型对话（SSE 流），命中敏感词直接 400
 - `POST /api/upload`：文件附件（PDF / docx / 图片）
@@ -224,30 +224,29 @@ FastAPI 应用 `/opt/ai-agent/deepseek_chat_app.py`，提供：
 - `POST /api/track`：页面访问统计
 - `GET  /api/data/me` / `POST /api/data/delete`：访客自助查/删
 - `POST /api/chat/clear`：清自己的 chat session 内存
-- `GET  /admin` + `GET /api/admin/stats` + `GET /api/admin/moderation` + `GET /api/admin/ip-trace`：仅本机访问（nginx 公网 404）
+- `GET  /admin` + `GET /api/admin/stats` + `GET /api/admin/moderation` + `GET /api/admin/ip-trace`：**仅本机访问**（nginx 在公网层 404 拦掉，必须 SSH 进服务器或通过 SSH 隧道 forward 端口才能调）
 
 **SQLite 表**：`llm_calls` / `search_calls` / `feedback` / `pageviews` / `chat_filtered_log` / `moderation_log`。
 
-**配置文件**：
+**敏感配置**（不进 git，仅服务器本地）：
 
-- `/opt/ai-agent/.env`：LLM API keys（OpenAI / ARK / DashScope / Anthropic / Gemini …）
-- `/opt/ai-agent/models.yaml`：多 LLM 路由 + 价格表
-- `/opt/ai-agent/.env.offsite`：异地备份凭据（COS / OSS / S3 兼容）
+- LLM API keys → `.env`
+- 多 LLM 路由 + 价格表 → `models.yaml`
+- 异地备份凭据 → `.env.offsite`
 
 ## 备份
 
 ```
-本地：/opt/ai-agent/backup-stats.sh    每日 03:00 cron，sqlite3 .backup 复制 + gzip
-                                       目录 /opt/ai-agent/backups/  保留 200 份
+本地：每日 03:00 cron，sqlite3 .backup 复制 + gzip
+      保留 200 份，文件权限 600
 
-异地：/opt/ai-agent/backup-offsite.sh   每日 03:05 cron，推到腾讯云 COS
-                                       bucket: zorotreeking-backup-1301406326 (ap-nanjing)
-                                       凭据不配 → 静默 skip
+异地：每日 03:05 cron，推到对象存储（COS / OSS / R2 / B2 任选）
+      凭据从 .env.offsite 读，未配置时静默 skip
 
-日志：/etc/logrotate.d/zorotreeking     nginx 日志日轮转 + gzip 保留 200 天
+日志：nginx 日志日轮转 + gzip 保留 200 天
 ```
 
-恢复：从 COS 拉某天的 `stats-YYYYMMDD.db.gz` → `gunzip` → 替换 `/opt/ai-agent/stats.db` → `systemctl restart ai-agent`。
+恢复：从对象存储拉某天的 `stats-YYYYMMDD.db.gz` → `gunzip` → 替换 SQLite 主库 → 重启 FastAPI。
 
 ## 工具脚本
 
@@ -272,12 +271,12 @@ npx tsx scripts/digest-fetch.ts
 
 1. GitHub repo Settings 启用 Discussions
 2. 安装 [Giscus App](https://github.com/apps/giscus) 并选这个 repo
-3. 去 https://giscus.app 用 repo URL 获取 4 个 ID
+3. 去 https://giscus.app 获取 4 个 ID
 4. GitHub repo Settings → Secrets and variables → Actions → 加 4 个：
-   - `PUBLIC_GISCUS_REPO=lzf00/zorotreeking`
-   - `PUBLIC_GISCUS_REPO_ID=...`
+   - `PUBLIC_GISCUS_REPO`
+   - `PUBLIC_GISCUS_REPO_ID`
    - `PUBLIC_GISCUS_CATEGORY=Announcements`
-   - `PUBLIC_GISCUS_CATEGORY_ID=...`
+   - `PUBLIC_GISCUS_CATEGORY_ID`
 
 之后每篇 AI 文章底部自动出现评论区。
 
@@ -291,35 +290,6 @@ npx tsx scripts/digest-fetch.ts
 | 6 域名公网烟测 | ✅ apex / www / 4 子域全部 301 → HTTPS 主域 |
 | 安全响应头 | ✅ HSTS + CSP + X-Frame + Referrer + Permissions |
 | 合规栈（备案 6 条） | ✅ 全部落地 |
-| 异地备份 | ✅ 腾讯云 COS（南京）每日 03:05 |
+| 异地备份 | ✅ 每日 03:05 自动推 |
 | Cloudflare 前置 | ⏳ 文档就绪 [`docs/cloudflare-playbook.md`](docs/cloudflare-playbook.md)，未启用 |
 | `/admin` IP 白名单 | ⏳ 暂未启用 |
-
-## 维护手册速查
-
-```bash
-# 看后端日志
-ssh root@110.40.142.199 'journalctl -u ai-agent -f'
-
-# 看 nginx 访问 / 错误日志
-ssh root@110.40.142.199 'tail -f /www/wwwlogs/zorotreeking.log'
-ssh root@110.40.142.199 'tail -f /www/wwwlogs/zorotreeking.error.log'
-
-# 看每日备份是否成功
-ssh root@110.40.142.199 'tail -20 /var/log/zorotreeking-backup.log'
-
-# 看 anti-abuse 拉黑了哪些 IP
-ssh root@110.40.142.199 'cat /www/server/panel/vhost/nginx/zorotreeking_blocklist.conf'
-
-# 重启 FastAPI
-ssh root@110.40.142.199 'systemctl restart ai-agent'
-
-# 重载 nginx（改完 vhost 后）
-ssh root@110.40.142.199 'nginx -t && systemctl reload nginx'
-
-# 手动跑一次异地备份
-ssh root@110.40.142.199 '/opt/ai-agent/backup-offsite.sh'
-
-# 查某 IP 近 30 天在站点上的所有行为（仅本机）
-ssh root@110.40.142.199 'curl -sS "http://127.0.0.1:8800/api/admin/ip-trace?ip=1.2.3.4&days=30"'
-```
