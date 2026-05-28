@@ -1,0 +1,280 @@
+---
+lang: zh
+translationKey: digest-2026-05-28
+title: "AI 每日精选 · 2026-05-28"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-05-28
+tags: [digest, auto, ai-papers]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+> 由 cron 每日 08:00 北京自动从 HF Daily Papers + arxiv cs.LG 抓取，豆包翻译/摘要。仅供参考。
+
+# 🤗 Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2605.28816" target="_blank" rel="noopener noreferrer">1. Gamma-World: Generative Multi-Agent World Modeling Beyond Two Players</a>
+
+**作者**：Fangfu Liu, Kai He, Tianchang Shen, Tianshi Cao, Sanja Fidler…  
+**HF 投票**：24  
+**Hugging Face**：[https://huggingface.co/papers/2605.28816](https://huggingface.co/papers/2605.28816)
+
+**AI 摘要**：
+
+针对现有交互式生成世界模型多适配单智能体、难支撑多智能体交互的问题，本文提出Gamma-World多智能体世界模型：采用无参数单纯形旋转智能体编码保证智能体置换等价，设计稀疏枢纽注意力将跨智能体计算成本从二次降为线性，蒸馏出的因果模型可实现24FPS实时生成。效果优于基线，无需额外训练即可从2玩家泛化至4玩家。
+
+<FeedbackButtons slug="item:arxiv-2605.28816" client:visible />
+
+---
+
+## <a href="https://arxiv.org/abs/2605.28003" target="_blank" rel="noopener noreferrer">2. ResearchMath-14K: Scaling Research-Level Mathematics via Agents</a>
+
+**作者**：Guijin Son, Seungyeop Yi, Minju Gwak, Hyunwoo Ko, Wongi Jang…  
+**HF 投票**：23  
+**Hugging Face**：[https://huggingface.co/papers/2605.28003](https://huggingface.co/papers/2605.28003)
+
+**AI 摘要**：
+
+针对大模型能否独立解决前沿数学问题存疑、缺乏科研级数学数据集的痛点，团队构建了目前规模最大的14056道科研级数学题数据集ResearchMath-14K，配套生成22万条推理轨迹，经智能过滤后用于微调4B-30B参数的Qwen3模型，平均性能较基座提升9.2个百分点，证明过滤后的非完全正确解题尝试也可提供有效监督，数据集已公开。
+
+<FeedbackButtons slug="item:arxiv-2605.28003" client:visible />
+
+---
+
+## <a href="https://arxiv.org/abs/2605.28820" target="_blank" rel="noopener noreferrer">3. From Pixels to Words -- Towards Native One-Vision Models at Scale</a>
+
+**作者**：Haiwen Diao, Jiahao Wang, Penghao Wu, Yuhao Dong, Yuwei Niu…  
+**HF 投票**：14  
+**Hugging Face**：[https://huggingface.co/papers/2605.28820](https://huggingface.co/papers/2605.28820)
+
+**AI 摘要**：
+
+针对现有视觉语言模型多模块拼接导致像素信号碎片化、原生单图VLM难以适配多图、视频理解等场景的问题，本文提出端到端原生基础模型NEO-ov，无需外接编码器等组件，可原生实现统一时空建模。其性能追平拼接式同类模型，细粒度感知表现更优，相关架构分析、训练方案及代码已开源。
+
+<FeedbackButtons slug="item:arxiv-2605.28820" client:visible />
+
+---
+
+## <a href="https://arxiv.org/abs/2605.28691" target="_blank" rel="noopener noreferrer">4. OSP-Next: Efficient High-Quality Video Generation with Sparse Sequence Parallelism, HiF8 Quantization, and Reinforcement Learning</a>
+
+**作者**：Yunyang Ge, Xianyi He, Zezhong Zhang, Bin Lin, Bin Zhu…  
+**HF 投票**：10  
+**Hugging Face**：[https://huggingface.co/papers/2605.28691](https://huggingface.co/papers/2605.28691)
+
+**AI 摘要**：
+
+针对扩散Transformer全注意力二次复杂度限制视频生成效率的问题，本文提出OSP-Next文本转视频模型：采用混合全-稀疏注意力架构，配套稀疏序列并行（通信量降75%）、HiF8量化、Mix-GRPO强化学习调优。其VBench得分83.73%超Wan2.1基线，720P/768P 5秒视频生成单卡最高提速1.69倍、8卡提速超1.52倍，适配多硬件平台。
+
+<FeedbackButtons slug="item:arxiv-2605.28691" client:visible />
+
+---
+
+## <a href="https://arxiv.org/abs/2605.28814" target="_blank" rel="noopener noreferrer">5. Self-Improving Language Models with Bidirectional Evolutionary Search</a>
+
+**作者**：Guowei Xu, Zhenting Qi, Huangyuan Su, Weirui Ye, Himabindu Lakkaraju…  
+**HF 投票**：8  
+**Hugging Face**：[https://huggingface.co/papers/2605.28814](https://huggingface.co/papers/2605.28814)
+
+**AI 摘要**：
+
+针对大模型自改进主流搜索方法依赖稀疏验证信号、仅靠自回归生成导致探索范围受限的缺陷，本文提出双向进化搜索（BES）框架：正向通过进化算子重组局部轨迹拓展候选，反向递归分解任务生成密集中间反馈引导搜索。理论验证其可指数级降低采样需求，实验显示后训练增益稳定，推理解题性能优于现有开源框架。
+
+<FeedbackButtons slug="item:arxiv-2605.28814" client:visible />
+
+---
+
+# 📄 arXiv cs.LG（机器学习）
+
+## <a href="https://arxiv.org/abs/2605.26121" target="_blank" rel="noopener noreferrer">6. GEM: Geometric Entropy Mixing for Optimal LLM Data Curation</a>
+
+**作者**：Yue Min, Ziyun Qiao, Ruining Chen, Yujun Li  
+
+**AI 摘要**：
+
+当前大模型预训练效果愈发依赖数据配比而非规模，现有人工分类、欧氏聚类方法均存在固有缺陷。本文提出GEM几何熵混合框架，将数据治理转化为超球面带正则变分问题，用MM算法优化，辅以师生蒸馏适配大规模语料、GIS分数实现可解释分类。实验显示其结合现有配比策略后，下游精度最高提1.2%，达新SOTA，可提供稳定的数据配比参考。
+
+<FeedbackButtons slug="item:arxiv-2605.26121" client:visible />
+
+---
+
+## <a href="https://arxiv.org/abs/2605.26128" target="_blank" rel="noopener noreferrer">7. The Constraint Tax: Measuring Validity-Correctness Tradeoffs in Structured Outputs for Small Language Models</a>
+
+**作者**：Jaideep Ray  
+
+**AI 摘要**：
+
+本文针对端侧/低成本部署的3B以下小语言模型，证实“结构化输出硬约束不影响答案质量”的常规工程假设不成立，提出“约束税”指标量化约束引发的准确率损失。实测显示硬约束虽拉满格式合规率，但会大幅压低答案、工具调用可执行准确率，错误合规输出陡增。建议生产系统拆分披露多维度准确率指标，可采用“先自由推理后约束打包”的优化方案。
+
+<FeedbackButtons slug="item:arxiv-2605.26128" client:visible />
+
+---
+
+## <a href="https://arxiv.org/abs/2605.26130" target="_blank" rel="noopener noreferrer">8. AirCast-SR: A Foundation Model for Kilometer-Scale Atmospheric Super-Resolution via Latent Consistency Diffusion</a>
+
+**作者**：Somnath Luitel, Manmeet Singh, Joshua Durkee, Abdullah Al Fahad, Naveen Sudharsan…  
+
+**AI 摘要**：
+
+针对传统数值天气预报公里级预报算力成本过高的痛点，该研究提出气象超分辨率基础模型AirCast-SR，采用嵌入3D U-Net的潜一致性扩散框架，可将28公里分辨率预报降尺度到1公里。模型偏差极低，能保留10-100km尺度精细结构，无需微调即可零样本跨区域迁移，开源权重为公里级气象预报提供新范式。
+
+<FeedbackButtons slug="item:arxiv-2605.26130" client:visible />
+
+---
+
+# 🟢 OpenAI 官方动态
+
+## <a href="https://openai.com/index/cisco" target="_blank" rel="noopener noreferrer">9. Cisco and OpenAI redefine enterprise engineering with Codex</a>
+
+**作者**：OpenAI  
+
+**AI 摘要**：
+
+思科联合OpenAI探索大模型赋能企业工程的新路径，核心依托Codex大模型落地三大价值：支撑思科规模化开展AI原生开发，大幅提速AI防御相关研发工作，同时实现缺陷的自动化修复。此次合作验证了大模型在ToB研发场景的落地潜力，为企业级工程效能升级提供了可参考的实践范式。
+
+<FeedbackButtons slug="item:openai-blog-cisco" client:visible />
+
+---
+
+## <a href="https://openai.com/index/building-self-improving-tax-agents-with-codex" target="_blank" rel="noopener noreferrer">10. Building self-improving tax agents with Codex</a>
+
+**作者**：OpenAI  
+
+**AI 摘要**：
+
+OpenAI联合Thrive、Crete共同研发基于Codex大模型的自迭代税务代理系统，依托Codex的代码生成、规则校验能力适配复杂税务合规要求，实现全流程报税自动化，且系统可自主迭代优化处理逻辑。该方案既显著提升报税准确率，也大幅压缩涉税业务处理周期，为财税领域工作流提质增效提供了可行技术路径。
+
+<FeedbackButtons slug="item:openai-blog-building-self-improving-tax-agents-with-codex" client:visible />
+
+---
+
+# 🪶 Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-4-7" target="_blank" rel="noopener noreferrer">11. Introducing Claude Opus 4.7</a>
+
+**作者**：Anthropic  
+
+**AI 摘要**：
+
+Anthropic最新通用大模型Claude Opus 4.7现已正式全量开放。相较于前代版本Opus 4.6，该版本核心能力升级聚焦高级软件工程赛道，该领域整体处理表现实现显著跃升，其中针对难度最高的复杂软件工程任务，性能提升幅度尤为突出，可更好满足复杂代码开发等高端研发场景需求。
+
+<FeedbackButtons slug="item:anthropic-claude-opus-4-7" client:visible />
+
+---
+
+## <a href="https://www.anthropic.com/news/claude-design-anthropic-labs" target="_blank" rel="noopener noreferrer">12. Introducing Claude Design by Anthropic Labs</a>
+
+**作者**：Anthropic  
+
+**AI 摘要**：
+
+Anthropic实验室正式推出全新AI工具产品Claude Design。该产品支持用户与Claude大模型协同创作，无需深厚专业设计功底，就能产出设计稿、产品原型、演示幻灯片、单页宣传物料等各类精细化视觉作品，为用户落地创意、完成高质量视觉工作提供了高效的AI协作新方案。
+
+<FeedbackButtons slug="item:anthropic-claude-design-anthropic-labs" client:visible />
+
+---
+
+# 🟣 Google DeepMind
+
+## <a href="https://deepmind.google/blog/were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle-environmental-risks/" target="_blank" rel="noopener noreferrer">13. We’re launching the Google DeepMind Accelerator program in Asia Pacific to tackle environmental risks</a>
+
+**作者**：Google DeepMind  
+
+**AI 摘要**：
+
+谷歌DeepMind近期启动亚太区加速器项目，聚焦区域环境风险治理。项目将依托自身AI技术积累与产业资源，扶持深耕环境领域的本地创新团队，推动AI在气候应对、灾害防控、污染治理等场景落地，联动产学研力量高效提升亚太区域环境风险处置能力，助力区域可持续发展。
+
+<FeedbackButtons slug="item:deepmind-were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle" client:visible />
+
+---
+
+## <a href="https://deepmind.google/blog/fast-tracking-genetic-leads-to-reverse-cellular-aging/" target="_blank" rel="noopener noreferrer">14. Fast-tracking genetic leads to reverse cellular aging</a>
+
+**作者**：Google DeepMind  
+
+**AI 摘要**：
+
+本研究针对细胞衰老逆转的遗传靶点发掘需求，采用Co-Scientist智能工具开展筛选，成功定位到全新功能调控因子，可高效实现人类细胞的年轻化重编程。该路径大幅缩短了衰老相关遗传靶点的研发周期，为后续抗衰技术开发、衰老相关疾病防治提供了新的候选方向与技术支撑。
+
+<FeedbackButtons slug="item:deepmind-fast-tracking-genetic-leads-to-reverse-cellular-aging" client:visible />
+
+---
+
+# 🤗 Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/ibm-research/itbench-aa" target="_blank" rel="noopener noreferrer">15. ITBench-AA: Frontier Models Score Below 50% on the First Benchmark for Agentic Enterprise IT Tasks — by Artificial Analysis and IBM</a>
+
+**作者**：Hugging Face  
+
+**AI 摘要**：
+
+人工智能分析机构联合IBM发布首个面向智能体的企业级IT任务基准测试集ITBench-AA，专门评估大模型智能体处理运维、排障、配置管理等真实复杂企业IT任务的能力，测试显示当前前沿大模型在该基准上得分不足50%，暴露了现有大模型智能体在专业垂直企业场景落地的能力短板，可供后续技术优化参考。
+
+<FeedbackButtons slug="item:hf-blog-itbench-aa" client:visible />
+
+---
+
+## <a href="https://huggingface.co/blog/local-reachy-mini-conversation" target="_blank" rel="noopener noreferrer">16. Reachy Mini goes fully local</a>
+
+**作者**：Hugging Face  
+
+**AI 摘要**：
+
+当前你仅提供了该论文的标题《Reachy Mini实现全本地化运行》，未附上对应的英文摘要全文内容哦，请你补充完整摘要的具体文本，我会按照要求为你完成翻译提炼，突出核心方法与结论，将篇幅控制在120字左右。
+
+<FeedbackButtons slug="item:hf-blog-local-reachy-mini-conversation" client:visible />
+
+---
+
+# 📰 The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">17. After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+**作者**：The Gradient  
+
+**AI 摘要**：
+
+本文基于德性伦理主体视角研究AI对齐问题，反驳“理性主体需锚定固定终极目标”的传统预设，指出人类理性行动由包含行动倾向、评价标准等要素的实践网络校准。提出若要AI适配人类协作、服从需求，需让其决策逻辑匹配人类实践型行动逻辑，该路径可同时满足伦理对齐与核心安全要求。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+---
+
+# ⚡ 量子位
+
+## <a href="https://www.qbitai.com/2026/05/425881.html" target="_blank" rel="noopener noreferrer">18. 1400亿Agent入场，“流量”这条护城河要塌了</a>
+
+**作者**：量子位  
+
+**AI 摘要**：
+
+蚂蚁集团CEO在支付宝AI生态大会提出，Agent时代商业本质不变但决策主体发生迁移，1400亿级智能体将进入商业链路，传统流量逻辑失效，人流入口让位给智能体生态，其规模、协同与网络效应成新竞争壁垒，信任逻辑崛起，这已是全球科技、支付巨头共识的产业方向。
+
+<FeedbackButtons slug="item:qbitai-425881" client:visible />
+
+---
+
+## <a href="https://www.qbitai.com/2026/05/425870.html" target="_blank" rel="noopener noreferrer">19. 5秒完成3D场景编辑，北大&#038;港中文&#038;上海AI Lab搞出VGGT-Edit，120倍加速太炸了</a>
+
+**作者**：量子位  
+
+**AI 摘要**：
+
+针对现有3D重建模型编辑能力弱、传统转2D编辑法多视角不一致、速度慢的痛点，北大、港中文、上海AI Lab等团队推出原生3D编辑框架VGGT-Edit，直接在3D空间完成编辑，无需回退到2D处理。在DeltaScene测试集上其语义一致性等三项指标均超现有方法，单次编辑仅需5秒，最高提速120倍，适配AR/VR、机器人等场景需求。
+
+<FeedbackButtons slug="item:qbitai-425870" client:visible />
+
+---
+
+## <a href="https://www.qbitai.com/2026/05/425857.html" target="_blank" rel="noopener noreferrer">20. OpenAI挖来了个F1级别车手搞公关</a>
+
+**作者**：量子位  
+
+**AI 摘要**：
+
+OpenAI耗时半年，从优步总裁、苹果资深公关等一众头部候选人中，敲定前F1红牛车队车手Colin Fleming出任CMO。选中他核心有两点：一是经验扎实，曾在Salesforce任职13年，擅长把晦涩技术概念转化为大众易懂的叙事，助推企业级产品破圈；二是其跨界转型的勇气特质适配需求。
+
+<FeedbackButtons slug="item:qbitai-425857" client:visible />
+
+---
