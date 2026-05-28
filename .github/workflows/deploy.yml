@@ -35,6 +35,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # 显式拿 main 最新。daily-digest.yml 通过 workflow_call 触发 deploy
+          # 时，默认 checkout 的是调用者 dispatch 时的 ref —— 但 daily-digest
+          # 自己跑完会 push 一个新 commit，此时 main 已经超前。不指定 ref
+          # 会导致 deploy 检出 cron commit 之前的 SHA，缺当天的 digest。
+          ref: main
 
       - name: Setup Node 20
         uses: actions/setup-node@v4
