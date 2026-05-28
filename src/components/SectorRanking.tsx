@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 /**
  * 行业板块涨跌排行（细分行业 m:90 t:2）。
  * 每 60s 轮询，仅交易时段。
- * 上下两列：涨幅 Top 5 / 跌幅 Top 5
+ * 上下两列：涨幅 Top 10 / 跌幅 Top 10
  */
 
 type Sector = {
@@ -105,7 +105,7 @@ function SectorList({ title, items, color, arrow }: { title: string; items: Sect
     <div className="rounded-2xl border border-[var(--border)] overflow-hidden">
       <div className="px-4 py-3 bg-[var(--bg-soft)] flex items-baseline justify-between">
         <h3 className="text-sm font-semibold">{title}</h3>
-        <span className="text-[10px] font-mono uppercase tracking-wide" style={{ color }}>{arrow} Top 5</span>
+        <span className="text-[10px] font-mono uppercase tracking-wide" style={{ color }}>{arrow} Top 10</span>
       </div>
       <ul>
         {items.length === 0 && <li className="px-4 py-6 text-sm text-[var(--text-tertiary)] text-center">暂无数据</li>}
