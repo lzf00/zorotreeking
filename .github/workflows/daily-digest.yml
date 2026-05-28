@@ -64,9 +64,25 @@ jobs:
           fi
           DATE_CN=$(date -u -d "+8 hours" +%Y-%m-%d 2>/dev/null || date -u +%Y-%m-%d)
           git commit -m "chore(digest): daily auto digest $DATE_CN"
-          git push origin HEAD:main
+          # 防 race：fetch + rebase 之后再推；最多重试 3 次（应对手工 push 与
+          # cron 撞车导致 non-fast-forward 拒收）
+          PUSHED=0
+          for i in 1 2 3; do
+            git fetch origin main
+            git pull --rebase --autostash origin main || { git rebase --abort 2>/dev/null || true; }
+            if git push origin HEAD:main; then
+              PUSHED=1
+              echo "✓ pushed on attempt $i"
+              break
+            fi
+            echo "  push failed (attempt $i), backoff $((i*3))s + retry..."
+            sleep $((i * 3))
+          done
+          if [ "$PUSHED" != "1" ]; then
+            echo "❌ push failed after 3 attempts"
+            exit 1
+          fi
           echo "committed=true" >> "$GITHUB_OUTPUT"
-          echo "✓ pushed daily digest commit"
 
   # 跑完后显式调 deploy.yml（GITHUB_TOKEN 推的 commit 不会自己触发 push event）
   deploy:
