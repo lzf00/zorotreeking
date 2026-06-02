@@ -14,6 +14,15 @@ import { useTranslations, pathWithLang } from "@/i18n/ui";
 
 type Consensus = { target_price?: number; buy_count?: number; overweight_count?: number; total_ratings?: number; coverage?: number; error?: string };
 type Item = { title: string; date: string; snippet: string; error?: string };
+type ShortTrend = { date: string; amount_yi: number; ratio_market?: number | null };
+type CapitalFlow = {
+  market: "A" | "HK";
+  main_buy_yi?: number; main_sell_yi?: number;
+  short_amount_today_yi?: number; short_ratio_market_today?: number;
+  short_trend_5d?: ShortTrend[];
+  error?: string;
+};
+type Connect = { holding_pct?: number; error?: string };
 type Stock = {
   market: "A" | "HK";
   code: string; name: string;
@@ -27,7 +36,7 @@ type Stock = {
   main_net_10d_yi?: number; main_net_20d_yi?: number;
   currency?: string;
   emoji: string;
-  details?: { consensus?: Consensus; announcements?: Item[]; news?: Item[] };
+  details?: { consensus?: Consensus; capital_flow?: CapitalFlow; connect?: Connect; announcements?: Item[]; news?: Item[] };
   error?: string;
 };
 type Snapshot = { asOf: string; date: string; stocks: Record<string, Stock> };
@@ -227,6 +236,104 @@ const backText = stock?.market === "HK" ? "港股市场看板" : "市场深度�
               <div class={`mt-1 font-mono font-semibold ${colorClass(stock.main_net_20d_yi)}`}>{fmtYi(stock.main_net_20d_yi)}</div>
             </div>
           </div>
+        </section>
+      )}
+
+      <!-- 4.5 资金信号（A 股：主力买卖；港股：卖空压力）+ 北向/南向 -->
+      {(stock.details?.capital_flow || stock.details?.connect) && (
+        <section class="max-w-5xl mx-auto px-5 pb-8">
+          {stock.market === "A" ? (
+            <h2 class="text-base font-semibold tracking-tight mb-3">🏢 资金信号</h2>
+          ) : (
+            <h2 class="text-base font-semibold tracking-tight mb-3">📉 卖空压力 + 资金信号</h2>
+          )}
+
+          {/* A 股：主力买卖拆解 */}
+          {stock.market === "A" && stock.details?.capital_flow?.main_buy_yi != null && (
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-3">
+              <div class="border border-[var(--border)] rounded-lg p-3 text-center">
+                <div class="text-[10px] text-[var(--text-tertiary)]">今日主力买入</div>
+                <div class="mt-1 font-mono font-semibold text-red-600">+{stock.details.capital_flow.main_buy_yi.toFixed(2)} 亿</div>
+              </div>
+              <div class="border border-[var(--border)] rounded-lg p-3 text-center">
+                <div class="text-[10px] text-[var(--text-tertiary)]">今日主力卖出</div>
+                <div class="mt-1 font-mono font-semibold text-emerald-600">-{(stock.details.capital_flow.main_sell_yi ?? 0).toFixed(2)} 亿</div>
+              </div>
+              <div class="border border-[var(--border)] rounded-lg p-3 text-center">
+                {(() => {
+                  const buy = stock.details!.capital_flow!.main_buy_yi!;
+                  const sell = stock.details!.capital_flow!.main_sell_yi ?? 0;
+                  const net = buy - sell;
+                  const isUp = net > 0;
+                  return (
+                    <>
+                      <div class="text-[10px] text-[var(--text-tertiary)]">主力净额</div>
+                      <div class={`mt-1 font-mono font-semibold ${isUp ? "text-red-600" : net < 0 ? "text-emerald-600" : ""}`}>
+                        {isUp ? "+" : ""}{net.toFixed(2)} 亿
+                      </div>
+                    </>
+                  );
+                })()}
+              </div>
+            </div>
+          )}
+
+          {/* 港股：今日卖空 */}
+          {stock.market === "HK" && stock.details?.capital_flow?.short_amount_today_yi != null && (
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+              <div class="border border-[var(--border)] rounded-lg p-3">
+                <div class="text-[10px] text-[var(--text-tertiary)]">今日卖空金额</div>
+                <div class="mt-1 text-lg font-mono font-semibold">HK$ {stock.details.capital_flow.short_amount_today_yi.toFixed(2)} 亿</div>
+              </div>
+              {stock.details.capital_flow.short_ratio_market_today != null && (
+                <div class="border border-[var(--border)] rounded-lg p-3">
+                  <div class="text-[10px] text-[var(--text-tertiary)]">占市场卖空总额</div>
+                  <div class="mt-1 text-lg font-mono font-semibold">{stock.details.capital_flow.short_ratio_market_today.toFixed(2)}%</div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* 港股：近 5 日卖空趋势 */}
+          {stock.market === "HK" && stock.details?.capital_flow?.short_trend_5d && stock.details.capital_flow.short_trend_5d.length > 0 && (
+            <div class="border border-[var(--border)] rounded-lg overflow-hidden mb-3">
+              <div class="bg-[var(--surface-2)] px-3 py-2 text-xs text-[var(--text-secondary)] font-semibold">近 5 日卖空趋势</div>
+              <table class="w-full text-sm">
+                <thead class="text-[10px] text-[var(--text-tertiary)]">
+                  <tr><th class="text-left px-3 py-1.5">日期</th><th class="text-right px-3">卖空金额 (亿)</th><th class="text-right px-3">占市场比</th></tr>
+                </thead>
+                <tbody class="divide-y divide-[var(--border)]">
+                  {stock.details.capital_flow.short_trend_5d.map((t) => (
+                    <tr>
+                      <td class="px-3 py-1.5 font-mono text-xs">{t.date}</td>
+                      <td class="text-right px-3 font-mono">{t.amount_yi?.toFixed(2)}</td>
+                      <td class="text-right px-3 font-mono text-[var(--text-secondary)]">{t.ratio_market != null ? `${t.ratio_market.toFixed(2)}%` : "—"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {/* 北向 / 南向资金持股 */}
+          {stock.details?.connect?.holding_pct != null && (
+            <div class="border border-[var(--border)] rounded-lg p-3">
+              <div class="flex items-baseline justify-between">
+                <div>
+                  <div class="text-[10px] text-[var(--text-tertiary)]">{stock.market === "HK" ? "南向资金（港股通）持股占比" : "北向资金（沪深股通）持股占比"}</div>
+                  <div class="mt-1 text-lg font-mono font-semibold">{stock.details.connect.holding_pct.toFixed(2)}%</div>
+                </div>
+                <span class="text-[10px] text-[var(--text-tertiary)] font-mono">Wind</span>
+              </div>
+            </div>
+          )}
+
+          {stock.market === "A" && (!stock.details?.capital_flow?.main_buy_yi && !stock.details?.connect?.holding_pct) && (
+            <p class="text-xs text-[var(--text-tertiary)]">⏳ 资金信号数据缺失（Wind 当日未返回）</p>
+          )}
+          {stock.market === "HK" && (!stock.details?.capital_flow?.short_amount_today_yi && !stock.details?.connect?.holding_pct) && (
+            <p class="text-xs text-[var(--text-tertiary)]">⏳ 卖空/南向数据缺失（Wind 当日未返回）</p>
+          )}
         </section>
       )}
 
