@@ -13,8 +13,12 @@ import time
 from pathlib import Path
 
 
-# Wind CLI 入口
-WIND_SKILL_DIR = str(Path.home() / ".agents/skills/wind-mcp-skill")
+# Wind CLI 入口；本机默认 ~/.agents/skills/wind-mcp-skill，服务器走
+# 环境变量 WIND_SKILL_DIR=/opt/wind-mcp-skill 覆盖
+WIND_SKILL_DIR = os.environ.get(
+    "WIND_SKILL_DIR",
+    str(Path.home() / ".agents/skills/wind-mcp-skill"),
+)
 
 
 def _find_node() -> str:
