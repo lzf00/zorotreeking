@@ -1,0 +1,322 @@
+---
+/**
+ * /invest/stock/[code] — 单股深度面板
+ *
+ * 数据源：src/data/wind-stock-details.json（stock_pusher 在 15:30 写入）
+ * 单股 sections：行情快照 / 多周期 / 估值 / 资金流 / 一致预期 / 公告 / 新闻
+ *
+ * 灵感来自小红书"单股日报"格式，但维度更全 + 数据均来自 Wind 万得。
+ */
+import fs from "node:fs";
+import path from "node:path";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { useTranslations, pathWithLang } from "@/i18n/ui";
+
+type Consensus = { target_price?: number; buy_count?: number; overweight_count?: number; total_ratings?: number; coverage?: number; error?: string };
+type Item = { title: string; date: string; snippet: string; error?: string };
+type Stock = {
+  market: "A" | "HK";
+  code: string; name: string;
+  price: number; yesterday_close: number; open: number; high: number; low: number;
+  amount_yi: number; change_pct: number; amplitude: number;
+  turnover?: number;
+  chg_5d: number; chg_20d: number; chg_ytd: number;
+  pe_ttm?: number; pb?: number; dividend_yield?: number;
+  high_52w?: number; low_52w?: number;
+  main_net_today_yi?: number; main_net_5d_yi?: number; main_net_5d_pct?: number;
+  main_net_10d_yi?: number; main_net_20d_yi?: number;
+  currency?: string;
+  emoji: string;
+  details?: { consensus?: Consensus; announcements?: Item[]; news?: Item[] };
+  error?: string;
+};
+type Snapshot = { asOf: string; date: string; stocks: Record<string, Stock> };
+
+const snapshotPath = path.resolve("./src/data/wind-stock-details.json");
+let snap: Snapshot | null = null;
+try { snap = JSON.parse(fs.readFileSync(snapshotPath, "utf-8")); } catch { snap = null; }
+
+export async function getStaticPaths() {
+  const p = path.resolve("./src/data/wind-stock-details.json");
+  try {
+    const data: Snapshot = JSON.parse(fs.readFileSync(p, "utf-8"));
+    return Object.keys(data.stocks || {}).map((code) => ({ params: { code }, props: { code } }));
+  } catch {
+    return [];
+  }
+}
+
+const { code } = Astro.props as { code: string };
+const stock = snap?.stocks?.[code] || null;
+const lang = "zh" as const;
+const t = useTranslations(lang);
+
+function fmt(v: number | null | undefined, digits = 2, unit = ""): string {
+  if (v == null || !Number.isFinite(Number(v))) return "—";
+  return `${Number(v).toFixed(digits)}${unit}`;
+}
+function fmtPrice(v: number | null | undefined): string {
+  if (v == null || !Number.isFinite(Number(v)) || Number(v) === 0) return "—";
+  return Number(v).toFixed(2);
+}
+function fmtPct(v: number | null | undefined): string {
+  if (v == null) return "—";
+  const n = Number(v);
+  if (!Number.isFinite(n)) return "—";
+  return `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
+}
+function colorClass(v: number | null | undefined): string {
+  if (v == null || !Number.isFinite(Number(v))) return "text-[var(--text-tertiary)]";
+  const n = Number(v);
+  if (n > 0) return "text-red-600 dark:text-red-400";
+  if (n < 0) return "text-emerald-600 dark:text-emerald-400";
+  return "text-[var(--text-tertiary)]";
+}
+function fmtYi(v: number | null | undefined): string {
+  if (v == null || !Number.isFinite(Number(v))) return "—";
+  const n = Number(v);
+  return `${n >= 0 ? "+" : ""}${n.toFixed(2)} 亿`;
+}
+function baiduSearch(q: string): string {
+  return `https://www.baidu.com/s?wd=${encodeURIComponent(q)}`;
+}
+
+// 52 周价格分位
+const within52w = (price?: number, lo?: number, hi?: number) => {
+  if (!price || !lo || !hi || hi <= lo) return null;
+  return ((price - lo) / (hi - lo)) * 100;
+};
+const pct52w = stock ? within52w(stock.price, stock.low_52w, stock.high_52w) : null;
+
+// 一致预期目标价 vs 现价 上行空间
+const upside = (() => {
+  if (!stock?.details?.consensus?.target_price || !stock.price) return null;
+  return ((stock.details.consensus.target_price - stock.price) / stock.price) * 100;
+})();
+
+const currency = stock?.currency || "CNY";
+const ccySym = currency === "HKD" ? "HK$" : "¥";
+const backHref = stock?.market === "HK" ? pathWithLang("/invest/hk-market", lang) : pathWithLang("/invest/market", lang);
+const backText = stock?.market === "HK" ? "港股市场看板" : "市场深度看板";
+---
+
+<BaseLayout
+  title={stock ? `${stock.name} (${stock.code}) · 单股深度` : "单股深度"}
+  description={stock ? `${stock.name} 行情 · 多周期 · 估值 · 资金 · 一致预期 · 公告 · 新闻 · Wind 数据` : ""}
+>
+  <section class="max-w-5xl mx-auto px-5 pt-12 pb-4">
+    <a href={backHref} class="text-sm text-section-invest hover:underline">← {backText}</a>
+
+    {!stock && (
+      <div class="mt-8 text-center py-12">
+        <p class="text-[var(--text-secondary)]">未找到 <code class="text-xs font-mono">{code}</code> 的数据</p>
+        <p class="mt-2 text-xs text-[var(--text-tertiary)]">
+          单股详情仅在 stock_pusher 每个交易日 15:30 收盘后生成。
+        </p>
+      </div>
+    )}
+
+    {stock && (
+      <>
+        <!-- 头部：股票名 + 代码 + 现价 + 涨跌 -->
+        <div class="mt-3 flex flex-wrap items-baseline gap-x-4 gap-y-2">
+          <h1 class="font-serif text-3xl sm:text-4xl leading-[1] tracking-tight">{stock.name}</h1>
+          <span class="text-sm font-mono text-[var(--text-tertiary)]">{stock.code}</span>
+          <span class="text-xs px-2 py-0.5 rounded bg-[var(--surface-2)] text-[var(--text-secondary)]">{stock.market === "HK" ? "港股" : "A 股"}</span>
+        </div>
+        <div class="mt-3 flex items-baseline gap-3">
+          <span class="text-3xl font-mono font-semibold">{ccySym} {fmtPrice(stock.price)}</span>
+          <span class={`text-base font-mono font-semibold ${colorClass(stock.change_pct)}`}>
+            {fmtPct(stock.change_pct)}
+          </span>
+          <span class="text-xs text-[var(--text-tertiary)]">
+            {currency} · 数据时间 {snap?.asOf ? new Date(snap.asOf).toLocaleString("zh-CN", { month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" }) : ""}
+          </span>
+        </div>
+      </>
+    )}
+  </section>
+
+  {stock && (
+    <>
+      <!-- 1. 行情快照 -->
+      <section class="max-w-5xl mx-auto px-5 pb-8">
+        <h2 class="text-base font-semibold tracking-tight mb-3">📈 行情快照</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div class="border border-[var(--border)] rounded-lg p-3"><div class="text-[10px] text-[var(--text-tertiary)]">今开</div><div class="mt-0.5 font-mono">{fmtPrice(stock.open)}</div></div>
+          <div class="border border-[var(--border)] rounded-lg p-3"><div class="text-[10px] text-[var(--text-tertiary)]">昨收</div><div class="mt-0.5 font-mono">{fmtPrice(stock.yesterday_close)}</div></div>
+          <div class="border border-[var(--border)] rounded-lg p-3"><div class="text-[10px] text-[var(--text-tertiary)]">最高</div><div class="mt-0.5 font-mono">{fmtPrice(stock.high)}</div></div>
+          <div class="border border-[var(--border)] rounded-lg p-3"><div class="text-[10px] text-[var(--text-tertiary)]">最低</div><div class="mt-0.5 font-mono">{fmtPrice(stock.low)}</div></div>
+          <div class="border border-[var(--border)] rounded-lg p-3"><div class="text-[10px] text-[var(--text-tertiary)]">振幅</div><div class="mt-0.5 font-mono">{fmt(stock.amplitude, 2, "%")}</div></div>
+          {stock.turnover != null && stock.turnover > 0 && (
+            <div class="border border-[var(--border)] rounded-lg p-3"><div class="text-[10px] text-[var(--text-tertiary)]">换手</div><div class="mt-0.5 font-mono">{fmt(stock.turnover, 2, "%")}</div></div>
+          )}
+          <div class="border border-[var(--border)] rounded-lg p-3"><div class="text-[10px] text-[var(--text-tertiary)]">成交额</div><div class="mt-0.5 font-mono">{fmt(stock.amount_yi, 2, " 亿")}</div></div>
+          <div class="border border-[var(--border)] rounded-lg p-3">
+            <div class="text-[10px] text-[var(--text-tertiary)]">52 周区间</div>
+            <div class="mt-0.5 font-mono text-xs">{fmtPrice(stock.low_52w)} - {fmtPrice(stock.high_52w)}</div>
+            {pct52w != null && (
+              <div class="mt-1">
+                <div class="h-1.5 bg-[var(--surface-2)] rounded-full overflow-hidden">
+                  <div class="h-full bg-section-invest" style={`width: ${Math.max(0, Math.min(100, pct52w)).toFixed(1)}%`}></div>
+                </div>
+                <div class="mt-0.5 text-[10px] text-[var(--text-tertiary)] font-mono">位于 {pct52w.toFixed(0)}%</div>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. 多周期涨跌 -->
+      <section class="max-w-5xl mx-auto px-5 pb-8">
+        <h2 class="text-base font-semibold tracking-tight mb-3">📊 多周期涨跌</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div class="border border-[var(--border)] rounded-lg p-3 text-center">
+            <div class="text-[10px] text-[var(--text-tertiary)]">今日</div>
+            <div class={`mt-1 font-mono font-semibold ${colorClass(stock.change_pct)}`}>{fmtPct(stock.change_pct)}</div>
+          </div>
+          <div class="border border-[var(--border)] rounded-lg p-3 text-center">
+            <div class="text-[10px] text-[var(--text-tertiary)]">5 日</div>
+            <div class={`mt-1 font-mono font-semibold ${colorClass(stock.chg_5d)}`}>{fmtPct(stock.chg_5d)}</div>
+          </div>
+          <div class="border border-[var(--border)] rounded-lg p-3 text-center">
+            <div class="text-[10px] text-[var(--text-tertiary)]">20 日</div>
+            <div class={`mt-1 font-mono font-semibold ${colorClass(stock.chg_20d)}`}>{fmtPct(stock.chg_20d)}</div>
+          </div>
+          <div class="border border-[var(--border)] rounded-lg p-3 text-center">
+            <div class="text-[10px] text-[var(--text-tertiary)]">年初至今</div>
+            <div class={`mt-1 font-mono font-semibold ${colorClass(stock.chg_ytd)}`}>{fmtPct(stock.chg_ytd)}</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. 估值 -->
+      <section class="max-w-5xl mx-auto px-5 pb-8">
+        <h2 class="text-base font-semibold tracking-tight mb-3">📐 估值</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          <div class="border border-[var(--border)] rounded-lg p-3"><div class="text-[10px] text-[var(--text-tertiary)]">市盈率 PE (TTM)</div><div class="mt-0.5 text-lg font-mono">{stock.pe_ttm && stock.pe_ttm > 0 ? stock.pe_ttm.toFixed(2) : "—"}</div></div>
+          <div class="border border-[var(--border)] rounded-lg p-3"><div class="text-[10px] text-[var(--text-tertiary)]">市净率 PB</div><div class="mt-0.5 text-lg font-mono">{stock.pb && stock.pb > 0 ? stock.pb.toFixed(2) : "—"}</div></div>
+          {stock.dividend_yield != null && stock.dividend_yield > 0 && (
+            <div class="border border-[var(--border)] rounded-lg p-3"><div class="text-[10px] text-[var(--text-tertiary)]">股息率</div><div class="mt-0.5 text-lg font-mono text-red-600">{stock.dividend_yield.toFixed(2)}%</div></div>
+          )}
+        </div>
+      </section>
+
+      <!-- 4. 资金流（仅 A 股有） -->
+      {stock.market === "A" && (
+        <section class="max-w-5xl mx-auto px-5 pb-8">
+          <h2 class="text-base font-semibold tracking-tight mb-3">💰 主力资金净流入</h2>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="border border-[var(--border)] rounded-lg p-3 text-center">
+              <div class="text-[10px] text-[var(--text-tertiary)]">当日</div>
+              <div class={`mt-1 font-mono font-semibold ${colorClass(stock.main_net_today_yi)}`}>{fmtYi(stock.main_net_today_yi)}</div>
+            </div>
+            <div class="border border-[var(--border)] rounded-lg p-3 text-center">
+              <div class="text-[10px] text-[var(--text-tertiary)]">近 5 日</div>
+              <div class={`mt-1 font-mono font-semibold ${colorClass(stock.main_net_5d_yi)}`}>{fmtYi(stock.main_net_5d_yi)}</div>
+              {stock.main_net_5d_pct != null && (
+                <div class={`mt-0.5 text-[10px] font-mono ${colorClass(stock.main_net_5d_pct)}`}>{fmtPct(stock.main_net_5d_pct)} 占比</div>
+              )}
+            </div>
+            <div class="border border-[var(--border)] rounded-lg p-3 text-center">
+              <div class="text-[10px] text-[var(--text-tertiary)]">近 10 日</div>
+              <div class={`mt-1 font-mono font-semibold ${colorClass(stock.main_net_10d_yi)}`}>{fmtYi(stock.main_net_10d_yi)}</div>
+            </div>
+            <div class="border border-[var(--border)] rounded-lg p-3 text-center">
+              <div class="text-[10px] text-[var(--text-tertiary)]">近 20 日</div>
+              <div class={`mt-1 font-mono font-semibold ${colorClass(stock.main_net_20d_yi)}`}>{fmtYi(stock.main_net_20d_yi)}</div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      <!-- 5. 一致预期 -->
+      {stock.details?.consensus && !stock.details.consensus.error && (
+        <section class="max-w-5xl mx-auto px-5 pb-8">
+          <h2 class="text-base font-semibold tracking-tight mb-3">🎯 机构一致预期</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+            {stock.details.consensus.target_price != null && (
+              <div class="border border-[var(--border)] rounded-lg p-3 sm:col-span-2">
+                <div class="text-[10px] text-[var(--text-tertiary)]">一致目标价</div>
+                <div class="mt-0.5 flex items-baseline gap-2">
+                  <span class="text-xl font-mono font-semibold">{ccySym} {stock.details.consensus.target_price.toFixed(2)}</span>
+                  {upside != null && (
+                    <span class={`text-sm font-mono ${colorClass(upside)}`}>{upside >= 0 ? "↑" : "↓"} {Math.abs(upside).toFixed(1)}%</span>
+                  )}
+                </div>
+                {upside != null && (
+                  <div class="mt-1 text-[10px] text-[var(--text-tertiary)]">
+                    较现价 {ccySym} {stock.price?.toFixed(2)} 的上行空间
+                  </div>
+                )}
+              </div>
+            )}
+            {stock.details.consensus.buy_count != null && (
+              <div class="border border-[var(--border)] rounded-lg p-3 text-center">
+                <div class="text-[10px] text-[var(--text-tertiary)]">买入家数</div>
+                <div class="mt-1 text-xl font-mono font-semibold text-red-600">{stock.details.consensus.buy_count}</div>
+              </div>
+            )}
+            {stock.details.consensus.overweight_count != null && (
+              <div class="border border-[var(--border)] rounded-lg p-3 text-center">
+                <div class="text-[10px] text-[var(--text-tertiary)]">增持家数</div>
+                <div class="mt-1 text-xl font-mono font-semibold text-red-500">{stock.details.consensus.overweight_count}</div>
+              </div>
+            )}
+          </div>
+          {stock.details.consensus.total_ratings != null && (
+            <p class="mt-2 text-[11px] text-[var(--text-tertiary)]">
+              覆盖券商总评级 {stock.details.consensus.total_ratings} 家
+              {stock.details.consensus.buy_count != null && stock.details.consensus.overweight_count != null && (
+                <>
+                  · 买入 + 增持占比 {(((stock.details.consensus.buy_count + stock.details.consensus.overweight_count) / stock.details.consensus.total_ratings) * 100).toFixed(1)}%
+                </>
+              )}
+            </p>
+          )}
+        </section>
+      )}
+
+      <!-- 6. 公告 -->
+      {stock.details?.announcements && stock.details.announcements.length > 0 && (
+        <section class="max-w-5xl mx-auto px-5 pb-8">
+          <h2 class="text-base font-semibold tracking-tight mb-3">📋 近期公告</h2>
+          <ol class="space-y-3">
+            {stock.details.announcements.map((a) => a.error ? (
+              <li class="text-xs text-[var(--text-tertiary)]">⚠️ {a.error}</li>
+            ) : (
+              <li class="border border-[var(--border)] rounded-lg p-3">
+                <a href={baiduSearch(a.title)} target="_blank" rel="noopener noreferrer"
+                   class="font-medium text-section-invest hover:underline">{a.title}</a>
+                {a.date && <span class="ml-2 text-[10px] font-mono text-[var(--text-tertiary)]">{a.date}</span>}
+                {a.snippet && <p class="mt-2 text-sm text-[var(--text-secondary)] leading-relaxed">{a.snippet}…</p>}
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
+
+      <!-- 7. 相关新闻 -->
+      {stock.details?.news && stock.details.news.length > 0 && (
+        <section class="max-w-5xl mx-auto px-5 pb-12">
+          <h2 class="text-base font-semibold tracking-tight mb-3">📰 相关新闻</h2>
+          <ol class="space-y-3">
+            {stock.details.news.map((n) => n.error ? (
+              <li class="text-xs text-[var(--text-tertiary)]">⚠️ {n.error}</li>
+            ) : (
+              <li class="border border-[var(--border)] rounded-lg p-3">
+                <a href={baiduSearch(n.title)} target="_blank" rel="noopener noreferrer"
+                   class="font-medium text-section-invest hover:underline">{n.title}</a>
+                {n.date && <span class="ml-2 text-[10px] font-mono text-[var(--text-tertiary)]">{n.date}</span>}
+                {n.snippet && <p class="mt-2 text-sm text-[var(--text-secondary)] leading-relaxed">{n.snippet}…</p>}
+              </li>
+            ))}
+          </ol>
+          <p class="mt-3 text-[11px] text-[var(--text-tertiary)]">
+            标题为百度搜索链接（Wind 不返回原文 URL）。**仅供研究参考，不构成投资建议。**
+          </p>
+        </section>
+      )}
+    </>
+  )}
+</BaseLayout>

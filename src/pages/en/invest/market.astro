@@ -45,6 +45,13 @@ const watchlistSorted = snap?.watchlist
     )
   : [];
 
+let detailCodes = new Set<string>();
+try {
+  const detailsRaw = fs.readFileSync(path.resolve("./src/data/wind-stock-details.json"), "utf-8");
+  const dets = JSON.parse(detailsRaw);
+  detailCodes = new Set(Object.keys(dets.stocks || {}));
+} catch { /* no details file yet */ }
+
 // ── Archive list (English mdx only; will be empty for now since recap is zh-only) ──
 const recaps = (await getCollection("invest", (p) =>
   p.data.lang === lang && !p.data.draft && p.data.translationKey.startsWith("market-recap-")
@@ -181,8 +188,8 @@ function fmtAsOf(iso: string | undefined): string {
                 <th class="text-right">5D</th>
                 <th class="text-right">20D</th>
                 <th class="text-right">YTD</th>
-                <th class="text-right">Range</th>
                 <th class="text-right">5D main net (¥100M)</th>
+                <th class="text-right">Detail</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-[var(--border)]">
@@ -200,9 +207,13 @@ function fmtAsOf(iso: string | undefined): string {
                   <td class={`text-right font-mono ${colorClass(s.chg_5d)}`}>{fmtPct(s.chg_5d)}</td>
                   <td class={`text-right font-mono ${colorClass(s.chg_20d)}`}>{fmtPct(s.chg_20d)}</td>
                   <td class={`text-right font-mono ${colorClass(s.chg_ytd)}`}>{fmtPct(s.chg_ytd)}</td>
-                  <td class="text-right font-mono text-[var(--text-secondary)]">{s.amplitude?.toFixed(2)}%</td>
                   <td class={`text-right font-mono ${colorClass(s.main_net_5d_yi)}`}>
                     {s.main_net_5d_yi != null ? `${s.main_net_5d_yi >= 0 ? "+" : ""}${s.main_net_5d_yi.toFixed(1)}` : "--"}
+                  </td>
+                  <td class="text-right">
+                    {detailCodes.has(s.code) ? (
+                      <a href={pathWithLang(`/invest/stock/${s.code}`, lang)} class="text-section-invest hover:underline text-xs">View→</a>
+                    ) : <span class="text-[10px] text-[var(--text-tertiary)]">—</span>}
                   </td>
                 </tr>
               ))}

@@ -1,0 +1,213 @@
+---
+/**
+ * /invest/hk-market — 港股市场看板
+ *
+ * 数据源：src/data/wind-hk-market-latest.json
+ *   由 stock_pusher 每个交易日 15:30 收盘后调 Wind global_stock_data 拉取
+ */
+import fs from "node:fs";
+import path from "node:path";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { useTranslations, pathWithLang } from "@/i18n/ui";
+
+const lang = "zh" as const;
+const t = useTranslations(lang);
+
+type HKIndex = { code: string; name: string; price: number; change_amount: number; change_pct: number; emoji: string };
+type HKStock = {
+  code: string; name: string; price: number;
+  yesterday_close: number; open: number; high: number; low: number;
+  amount_yi: number; change_pct: number; amplitude: number;
+  chg_5d: number; chg_20d: number; chg_ytd: number;
+  pe_ttm?: number; pb?: number;
+  high_52w?: number; low_52w?: number;
+  emoji: string; error?: string;
+};
+type HKHot = { name: string; code: string; price: number; change_pct: number; error?: string };
+type Snapshot = { asOf: string; date: string; indices: HKIndex[]; watchlist: HKStock[]; hotStocks: HKHot[] };
+
+const snapshotPath = path.resolve("./src/data/wind-hk-market-latest.json");
+let snap: Snapshot | null = null;
+try { snap = JSON.parse(fs.readFileSync(snapshotPath, "utf-8")); } catch { snap = null; }
+
+const watchlistSorted = snap?.watchlist
+  ? [...snap.watchlist].sort((a, b) =>
+      (a.error ? 1 : 0) - (b.error ? 1 : 0) || (b.change_pct ?? 0) - (a.change_pct ?? 0)
+    )
+  : [];
+
+// 判断哪些股票有 detail 页（看 wind-stock-details.json 有没有）
+let detailCodes = new Set<string>();
+try {
+  const detailsRaw = fs.readFileSync(path.resolve("./src/data/wind-stock-details.json"), "utf-8");
+  const dets = JSON.parse(detailsRaw);
+  detailCodes = new Set(Object.keys(dets.stocks || {}));
+} catch { /* no details file yet */ }
+
+function fmtPrice(v: number | null | undefined): string {
+  if (v == null || !Number.isFinite(Number(v)) || Number(v) === 0) return "--";
+  return Number(v).toFixed(2);
+}
+function fmtPct(v: number | null | undefined): string {
+  if (v == null) return "--";
+  const n = Number(v);
+  if (!Number.isFinite(n)) return "--";
+  return `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
+}
+function colorClass(v: number | null | undefined): string {
+  if (v == null || !Number.isFinite(Number(v))) return "text-[var(--text-tertiary)]";
+  const n = Number(v);
+  if (n > 0) return "text-red-600 dark:text-red-400";
+  if (n < 0) return "text-emerald-600 dark:text-emerald-400";
+  return "text-[var(--text-tertiary)]";
+}
+function fmtAsOf(iso: string | undefined): string {
+  if (!iso) return "—";
+  try {
+    const d = new Date(iso);
+    return d.toLocaleString("zh-CN", { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false });
+  } catch { return iso; }
+}
+---
+
+<BaseLayout
+  title="港股市场看板"
+  description="港股观察池、恒生指数、港股涨幅榜 · Wind 数据每日 15:30 更新"
+>
+  <section class="max-w-5xl mx-auto px-5 pt-12 pb-4">
+    <a href={pathWithLang("/invest", lang)} class="text-sm text-section-invest hover:underline">← {t("section.invest.title")}</a>
+    <h1 class="mt-3 font-serif text-4xl sm:text-5xl leading-[0.95] tracking-tight" style="color:#991b1b">
+      港股市场看板
+    </h1>
+    <p class="mt-2 text-[var(--text-secondary)]">
+      港股观察池 · 恒生指数 · 涨幅榜
+    </p>
+    <p class="mt-2 text-xs text-[var(--text-tertiary)]">
+      数据来源 <strong>Wind 万得</strong> · 每个交易日 15:30 收盘后自动更新
+      {snap && (<> · 最新 <time>{fmtAsOf(snap.asOf)}</time></>)}
+    </p>
+  </section>
+
+  {!snap && (
+    <section class="max-w-5xl mx-auto px-5 py-12 text-center">
+      <p class="text-[var(--text-secondary)]">⏳ 还没有港股快照数据。</p>
+      <p class="mt-2 text-xs text-[var(--text-tertiary)]">
+        等 stock_pusher 配置好 <code class="text-[10px]">HK_STOCK_CODES</code> 并在交易日 15:30 后生成。
+      </p>
+    </section>
+  )}
+
+  {snap && (
+    <>
+      <!-- 1. 港股大盘 -->
+      <section class="max-w-5xl mx-auto px-5 pb-8">
+        <div class="flex items-baseline justify-between mb-3">
+          <h2 class="text-base font-semibold tracking-tight">📈 港股大盘</h2>
+          <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">Wind</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="text-[var(--text-tertiary)] text-xs">
+              <tr><th class="text-left py-2">指数</th><th class="text-right">点位</th><th class="text-right">涨跌</th></tr>
+            </thead>
+            <tbody class="divide-y divide-[var(--border)]">
+              {snap.indices.map((idx) => (
+                <tr class="hover:bg-[var(--surface-2)]">
+                  <td class="py-2.5"><span>{idx.emoji}</span> <span class="font-medium">{idx.name}</span></td>
+                  <td class="text-right font-mono">{fmtPrice(idx.price)}</td>
+                  <td class={`text-right font-mono ${colorClass(idx.change_pct)}`}>
+                    {idx.change_amount >= 0 ? "+" : ""}{idx.change_amount?.toFixed(2)} ({fmtPct(idx.change_pct)})
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 2. 港股观察池 -->
+      <section class="max-w-5xl mx-auto px-5 pb-8">
+        <div class="flex items-baseline justify-between mb-3">
+          <h2 class="text-base font-semibold tracking-tight">🔍 港股观察池</h2>
+          <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">Wind · HKD</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="text-[var(--text-tertiary)] text-xs">
+              <tr>
+                <th class="text-left py-2">股票</th>
+                <th class="text-right">现价</th>
+                <th class="text-right">今日</th>
+                <th class="text-right">5日</th>
+                <th class="text-right">20日</th>
+                <th class="text-right">年初至今</th>
+                <th class="text-right">PE TTM</th>
+                <th class="text-right">详情</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-[var(--border)]">
+              {watchlistSorted.map((s) => s.error ? (
+                <tr><td colspan="8" class="py-2.5 text-xs text-[var(--text-tertiary)]">⚠️ {s.code}: {s.error}</td></tr>
+              ) : (
+                <tr class="hover:bg-[var(--surface-2)]">
+                  <td class="py-2.5">
+                    <span>{s.emoji}</span>
+                    <span class="ml-1 font-medium">{s.name}</span>
+                    <span class="ml-2 text-[10px] font-mono text-[var(--text-tertiary)]">{s.code}</span>
+                  </td>
+                  <td class="text-right font-mono">HK$ {fmtPrice(s.price)}</td>
+                  <td class={`text-right font-mono font-semibold ${colorClass(s.change_pct)}`}>{fmtPct(s.change_pct)}</td>
+                  <td class={`text-right font-mono ${colorClass(s.chg_5d)}`}>{fmtPct(s.chg_5d)}</td>
+                  <td class={`text-right font-mono ${colorClass(s.chg_20d)}`}>{fmtPct(s.chg_20d)}</td>
+                  <td class={`text-right font-mono ${colorClass(s.chg_ytd)}`}>{fmtPct(s.chg_ytd)}</td>
+                  <td class="text-right font-mono text-[var(--text-secondary)]">{s.pe_ttm && s.pe_ttm > 0 ? s.pe_ttm.toFixed(1) : "—"}</td>
+                  <td class="text-right">
+                    {detailCodes.has(s.code) ? (
+                      <a href={pathWithLang(`/invest/stock/${s.code}`, lang)} class="text-section-invest hover:underline text-xs">详情→</a>
+                    ) : <span class="text-[10px] text-[var(--text-tertiary)]">—</span>}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p class="mt-3 text-[11px] text-[var(--text-tertiary)] leading-relaxed">
+          观察池来自 <code class="text-[10px]">stock_pusher/.env HK_STOCK_CODES</code>。<strong>仅作研究记录，不构成投资建议。</strong>
+        </p>
+      </section>
+
+      <!-- 3. 港股涨幅榜 -->
+      <section class="max-w-5xl mx-auto px-5 pb-12">
+        <div class="flex items-baseline justify-between mb-3">
+          <h2 class="text-base font-semibold tracking-tight">🔥 港股涨幅榜 TOP5</h2>
+          <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">Wind · 含仙股</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="text-[var(--text-tertiary)] text-xs">
+              <tr><th class="text-left py-2 w-10">#</th><th class="text-left">股票</th><th class="text-right">现价</th><th class="text-right">涨幅</th></tr>
+            </thead>
+            <tbody class="divide-y divide-[var(--border)]">
+              {snap.hotStocks.map((h, i) => h.error ? (
+                <tr><td colspan="4" class="py-2.5 text-xs text-[var(--text-tertiary)]">⚠️ {h.error}</td></tr>
+              ) : (
+                <tr class="hover:bg-[var(--surface-2)]">
+                  <td class="py-2.5 text-[var(--text-tertiary)] font-mono">{i + 1}</td>
+                  <td>
+                    <span class="font-medium">{h.name}</span>
+                    <span class="ml-2 text-[10px] font-mono text-[var(--text-tertiary)]">{h.code}</span>
+                  </td>
+                  <td class="text-right font-mono">HK$ {fmtPrice(h.price)}</td>
+                  <td class={`text-right font-mono font-semibold ${colorClass(h.change_pct)}`}>{fmtPct(h.change_pct)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p class="mt-3 text-[11px] text-[var(--text-tertiary)]">
+          涨幅榜含小盘 / 仙股，仅供市场温度参考，请自行评估流动性 / 风险。
+        </p>
+      </section>
+    </>
+  )}
+</BaseLayout>
