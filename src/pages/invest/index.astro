@@ -91,6 +91,24 @@ const latestPeriod = snapshots[snapshots.length - 1]?.data.period;
     <p class="mt-2 text-[var(--text-secondary)]">{t("section.invest.desc")}</p>
   </section>
 
+  <!-- NEW · Wind 市场深度看板入口 -->
+  <section class="max-w-5xl mx-auto px-5 pb-6">
+    <a href={pathWithLang("/invest/market", lang)}
+       class="group block border border-[var(--border)] rounded-lg p-4 hover:border-section-invest transition-colors">
+      <div class="flex items-baseline justify-between">
+        <div>
+          <div class="text-base font-semibold tracking-tight group-hover:text-section-invest">
+            📊 Wind 市场深度看板 →
+          </div>
+          <p class="mt-1 text-sm text-[var(--text-secondary)]">
+            A 股观察池（5/20 日 · 主力资金）· 涨幅榜 · 申万一级板块 · 财经要闻
+          </p>
+        </div>
+        <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide shrink-0 ml-3">Wind · 每日 15:30</span>
+      </div>
+    </a>
+  </section>
+
   <!-- A · 今日大盘 -->
   <section class="max-w-5xl mx-auto px-5 pb-8">
     <div class="flex items-baseline justify-between mb-3">

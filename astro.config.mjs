@@ -48,6 +48,10 @@ export default defineConfig({
           "/api/new_session": common,
           "/api/feedback":    common,
           "/api/track":       common,
+          // 投资页 React islands 走 /api/market/{indices,funds,sentiment,sectors,quote}
+          "/api/market":      common,
+          // 数据主体权利页（合规栈）走 /api/data/{me,delete}
+          "/api/data":        common,
         };
       })(),
     },
