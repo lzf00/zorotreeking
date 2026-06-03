@@ -1,8 +1,19 @@
 name = "decap-oauth"
 main = "src/index.js"
-compatibility_date = "2026-01-01"
+compatibility_date = "2026-05-13"
+preview_urls = false
 
-# 环境变量在 dashboard 配置：
-#   GITHUB_CLIENT_ID      （可见）
-#   GITHUB_CLIENT_SECRET  （Secret，加密）
-#   ALLOWED_USERS         （可见，逗号分隔的 GitHub username 白名单）
+# 非敏感 vars 在这里声明（dashboard 也会有同样的值，本地与远端保持一致）
+[vars]
+GITHUB_CLIENT_ID = "Ov23liKrRNS3CgTIvBsc"
+ALLOWED_USERS = "lzf00"
+
+# Secrets 仅在 dashboard / `wrangler secret put` 中维护，不写本文件：
+#   GITHUB_CLIENT_SECRET   （加密）
+
+# 启用日志，可在 dashboard 看 worker invocation
+[observability]
+enabled = true
+
+[observability.logs]
+enabled = true
