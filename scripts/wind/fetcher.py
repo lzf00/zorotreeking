@@ -17,12 +17,9 @@ from pathlib import Path
 from urllib.parse import quote
 
 
+# 模块 logger 不自己加 handler，依赖入口 (run_open/close/now) 配置 root logger。
+# 单独脚本直接 import 此模块时，basicConfig 仍能兜底（PY 3.2+ NullHandler 不报错）。
 log = logging.getLogger("wind.fetcher")
-if not log.handlers:
-    _h = logging.StreamHandler()
-    _h.setFormatter(logging.Formatter("%(message)s"))
-    log.addHandler(_h)
-log.setLevel(logging.INFO)
 
 
 # Wind CLI 入口；本机默认 ~/.agents/skills/wind-mcp-skill，服务器走

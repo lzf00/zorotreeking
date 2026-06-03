@@ -27,12 +27,8 @@ from pathlib import Path
 from typing import Optional
 
 
+# 模块 logger 不自己加 handler，依赖入口配置 root（避免双 handler 重复输出）
 log = logging.getLogger("wind.publisher")
-if not log.handlers:
-    _h = logging.StreamHandler()
-    _h.setFormatter(logging.Formatter("%(message)s"))
-    log.addHandler(_h)
-log.setLevel(logging.INFO)
 
 
 def _build_mdx(title: str, content: str, data: dict, sentiment_summary: str) -> str:

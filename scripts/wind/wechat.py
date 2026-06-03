@@ -16,12 +16,8 @@ import urllib.parse
 import urllib.request
 
 
+# 模块 logger 不自己加 handler，依赖入口配置 root
 log = logging.getLogger("wind.wechat")
-if not log.handlers:
-    _h = logging.StreamHandler()
-    _h.setFormatter(logging.Formatter("%(message)s"))
-    log.addHandler(_h)
-log.setLevel(logging.INFO)
 
 
 def _make_ssl_ctx() -> ssl.SSLContext:
