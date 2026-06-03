@@ -1,0 +1,280 @@
+---
+lang: zh
+translationKey: digest-2026-06-03
+title: "AI 每日精选 · 2026-06-03"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-06-03
+tags: [digest, auto, ai-papers]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+> 由 cron 每日 08:00 北京自动从 HF Daily Papers + arxiv cs.LG 抓取，豆包翻译/摘要。仅供参考。
+
+# 🤗 Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.01249" target="_blank" rel="noopener noreferrer">1. Trust Region On-Policy Distillation</a>
+
+**作者**：Xingrun Xing, Haoqing Wang, Boyan Gao, Ziheng Li, Yehui Tang  
+**HF 投票**：18  
+**Hugging Face**：[https://huggingface.co/papers/2606.01249](https://huggingface.co/papers/2606.01249)
+
+**AI 摘要**：
+
+针对大语言模型同策略蒸馏（OPD）在师生分布差异较大时梯度不可靠、易优化失败的问题，该研究提出信任域同策略蒸馏方法TrOPD：仅在教师监督可靠的信任域执行蒸馏，对异常域用梯度裁剪等降低不可靠监督的负面影响，同时引入异策略引导鼓励探索可靠区。实验显示其在数学推理、代码生成等任务上全面优于现有最优OPD基线。
+
+<FeedbackButtons slug="item:arxiv-2606.01249" client:visible />
+
+---
+
+## <a href="https://arxiv.org/abs/2606.03985" target="_blank" rel="noopener noreferrer">2. Humanoid-GPT: Scaling Data and Structure for Zero-Shot Motion Tracking</a>
+
+**作者**：Zekun Qi, Xuchuan Chen, Dairu Liu, Chenghuai Lin, Yunrui Lian…  
+**HF 投票**：8  
+**Hugging Face**：[https://huggingface.co/papers/2606.03985](https://huggingface.co/papers/2606.03985)
+
+**AI 摘要**：
+
+本文提出面向人形全身控制的类GPT因果注意力Transformer模型Humanoid-GPT，针对此前浅层MLP跟踪器数据稀缺、灵活度与泛化性难以兼顾的痛点，在整合主流动捕数据集与自研大规模采集数据的20亿帧重定向语料上预训练。实验证实，该模型可跟踪高动态复杂动作，在未见任务上实现前所未有的零样本泛化，刷新领域性能前沿。
+
+<FeedbackButtons slug="item:arxiv-2606.03985" client:visible />
+
+---
+
+## <a href="https://arxiv.org/abs/2606.02754" target="_blank" rel="noopener noreferrer">3. Ψ-Bench: Evaluating Persona-Sensitive Influencing in Persuasive Dialogues</a>
+
+**作者**：Peixuan Han, Hongyi Du, Jiayu Liu, Yihang Sun, Yutong Liu…  
+**HF 投票**：8  
+**Hugging Face**：[https://huggingface.co/papers/2606.02754](https://huggingface.co/papers/2606.02754)
+
+**AI 摘要**：
+
+现有大模型的个性化能力多局限于被动响应用户偏好，缺乏主动说服引导的相关评估。对此研究提出Ψ-Bench基准，设置三类真实说服对话场景，基于对话历史生成用户画像模拟受众，测试10款前沿大模型。结果显示当前顶尖模型说服能力仍有较大提升空间，接入用户画像可使性能平均提升18.24%，凸显个性化信息对主动说服的价值。
+
+<FeedbackButtons slug="item:arxiv-2606.02754" client:visible />
+
+---
+
+## <a href="https://arxiv.org/abs/2606.01717" target="_blank" rel="noopener noreferrer">4. Decentralized Instruction Tuning: Conflict-Aware Splitting and Weight Merging</a>
+
+**作者**：Minsik Choi, Geewook Kim  
+**HF 投票**：6  
+**Hugging Face**：[https://huggingface.co/papers/2606.01717](https://huggingface.co/papers/2606.01717)
+
+**AI 摘要**：
+
+针对大模型（含多模态）指令调优面临梯度干扰、同步带宽开销高的瓶颈，本文提出分布式调优框架MERIT：先估算数据集间梯度冲突，沿PCA高冲突轴拆分任务，各分区无通信独立微调后仅做一次token加权参数合并，兼具方差降低、隐式正则效果。在多模态、纯文本多组任务上，其性能优于或追平集中式联合训练，成本开销极低。
+
+<FeedbackButtons slug="item:arxiv-2606.01717" client:visible />
+
+---
+
+## <a href="https://arxiv.org/abs/2606.03979" target="_blank" rel="noopener noreferrer">5. Language Models Need Sleep: Learning to Self-Modify and Consolidate Memories</a>
+
+**作者**：Ali Behrouz, Farnoosh Hashemi, Vahab Mirrokni  
+**HF 投票**：4  
+**Hugging Face**：[https://huggingface.co/papers/2606.03979](https://huggingface.co/papers/2606.03979)
+
+**AI 摘要**：
+
+现有大模型难以实现持续学习，无法将上下文短期知识有效沉淀为长期参数记忆。受人类学习机制启发，本文提出“睡眠”范式：一是记忆巩固阶段，通过广义蒸馏将小模型记忆迁移至大模型，转化为稳定长期知识；二是“做梦”阶段，无监督用强化学习生成合成数据自优化，实验验证该范式在多类任务上效果优异。
+
+<FeedbackButtons slug="item:arxiv-2606.03979" client:visible />
+
+---
+
+# 📄 arXiv cs.LG（机器学习）
+
+## <a href="https://arxiv.org/abs/2606.02595" target="_blank" rel="noopener noreferrer">6. Human-in-the-Loop Contextual Bandits for Short-Term Rental Dynamic Pricing: Structural Equivalence of Historical Warm-Up and Approval-Gated Live Learning</a>
+
+**作者**：Oleg Miroshnichenko  
+
+**AI 摘要**：
+
+针对短租动态定价风险高、需可解释、预订反馈稀疏，纯在线老虎机学习冷启动周期过长的痛点，该研究提出人在环门控老虎机框架：算法生成定价建议后由人类审核调整，基于四年真实生产数据验证历史定价数据与在线预热数据结构等价，可将冷启动从150轮压缩至30轮，该结论适用于所有需人类审批的高风险领域，证实强制人监管是统计资产而非部署约束。
+
+<FeedbackButtons slug="item:arxiv-2606.02595" client:visible />
+
+---
+
+## <a href="https://arxiv.org/abs/2606.02596" target="_blank" rel="noopener noreferrer">7. Spectral Asymptotics of Neural Network Loss Landscapes: An Exact Decomposition of the Curvature Exponent</a>
+
+**作者**：Anherutowa Calvo  
+
+**AI 摘要**：
+
+本文针对卷积、注意力、MLP层曲率指数α存在系统性差异的问题，证明谱对齐分解公式，将α拆解为特征基与梯度奇异方向对齐度的函数，推导得到α、梯度秩衰减γ、海森衰减指数s的代数恒等式，跨多架构数据集实测误差仅约2%，基于此设计的谱牛顿优化器在视觉任务上性能优于AdamW。
+
+<FeedbackButtons slug="item:arxiv-2606.02596" client:visible />
+
+---
+
+## <a href="https://arxiv.org/abs/2606.02597" target="_blank" rel="noopener noreferrer">8. Making Brain-Computer Interfaces More Secure</a>
+
+**作者**：Md Fahimul Kabir Chowdhury, Gahangir Hossain  
+
+**AI 摘要**：
+
+该研究针对当前EEG型脑机接口普遍侧重分类精度、安全鲁棒性研究不足，易被微小对抗攻击干扰致误判的问题，提出轻量定制CNN架构，经两套EEG数据集测试，在梯度对抗攻击场景下，其分类表现始终优于EEGNet等三款专用基线模型，抗扰动鲁棒性更优，为提升脑机接口部署可靠性提供了新方向。
+
+<FeedbackButtons slug="item:arxiv-2606.02597" client:visible />
+
+---
+
+# 🟢 OpenAI 官方动态
+
+## <a href="https://openai.com/index/travelers" target="_blank" rel="noopener noreferrer">9. Travelers deploys AI-powered claims countrywide with OpenAI</a>
+
+**作者**：OpenAI  
+
+**AI 摘要**：
+
+保险企业Travelers联合OpenAI研发的AI理赔助手目前已完成全国范围落地部署。该工具可全程引导用户完成理赔申请提交，提供7×24小时不间断服务，还能在业务需求峰值期弹性扩容支撑运营，既大幅优化了用户理赔体验，也有效降低运营成本，提升了高峰时段的业务承载与响应效率。
+
+<FeedbackButtons slug="item:openai-blog-travelers" client:visible />
+
+---
+
+## <a href="https://openai.com/index/codex-for-every-role-tool-workflow" target="_blank" rel="noopener noreferrer">10. Codex for every role, tool, and workflow</a>
+
+**作者**：OpenAI  
+
+**AI 摘要**：
+
+本研究聚焦AI工具Codex的多场景适配升级，针对分析师、营销、设计、投资等各岗位的差异化工作需求，推出适配不同角色、工具栈与工作流的全新插件、站点资源与标注功能，可大幅降低各职能团队用AI提效的落地门槛，无需复杂定制即可嵌入日常流程，助力全岗位效能提升。
+
+<FeedbackButtons slug="item:openai-blog-codex-for-every-role-tool-workflow" client:visible />
+
+---
+
+# 🪶 Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-4-8" target="_blank" rel="noopener noreferrer">11. Introducing Claude Opus 4.8</a>
+
+**作者**：Anthropic  
+
+**AI 摘要**：
+
+最新推出的Claude Opus 4.8是Opus系列旗舰大模型的迭代版本，核心性能实现多维度提升：在代码开发、智能体任务、专业领域作业三类核心场景的表现明显优于前代，同时优化了长周期任务的处理一致性，可稳定承接耗时久、流程复杂的持续性工作需求。
+
+<FeedbackButtons slug="item:anthropic-claude-opus-4-8" client:visible />
+
+---
+
+## <a href="https://www.anthropic.com/news/claude-design-anthropic-labs" target="_blank" rel="noopener noreferrer">12. Introducing Claude Design by Anthropic Labs</a>
+
+**作者**：Anthropic  
+
+**AI 摘要**：
+
+Anthropic实验室最新推出旗下新产品Claude Design，核心功能为支持用户与Claude大模型协作完成专业级视觉产出，覆盖设计稿、交互原型、演示幻灯片、单页宣传物料等多类场景。该产品将大模型能力边界从文本生成拓展到可视化创作领域，可大幅降低非设计用户产出高品质视觉内容的门槛。
+
+<FeedbackButtons slug="item:anthropic-claude-design-anthropic-labs" client:visible />
+
+---
+
+# 🟣 Google DeepMind
+
+## <a href="https://deepmind.google/blog/were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle-environmental-risks/" target="_blank" rel="noopener noreferrer">13. We’re launching the Google DeepMind Accelerator program in Asia Pacific to tackle environmental risks</a>
+
+**作者**：Google DeepMind  
+
+**AI 摘要**：
+
+谷歌DeepMind正式启动亚太区加速器项目，核心目标为依托AI技术应对各类环境风险。该项目将依托DeepMind的技术积累，扶持亚太区域深耕环保领域的科创团队，推动AI在气候灾害预警、生态保护、污染治理等场景落地，助力区域提升环境风险应对能力，探索AI赋能环境治理的可行路径。
+
+<FeedbackButtons slug="item:deepmind-were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle" client:visible />
+
+---
+
+## <a href="https://deepmind.google/blog/fast-tracking-genetic-leads-to-reverse-cellular-aging/" target="_blank" rel="noopener noreferrer">14. Fast-tracking genetic leads to reverse cellular aging</a>
+
+**作者**：Google DeepMind  
+
+**AI 摘要**：
+
+这篇题为《加速挖掘遗传靶点逆转细胞衰老》的研究中，生物学家借助Co-Scientist科研工具筛选，成功找到一批此前未被发现的新型调控因子，可有效实现人类细胞年轻化重编程。该成果大幅提升了衰老相关遗传靶点发掘效率，为后续抗衰技术研发、细胞治疗落地提供了全新可行思路。
+
+<FeedbackButtons slug="item:deepmind-fast-tracking-genetic-leads-to-reverse-cellular-aging" client:visible />
+
+---
+
+# 🤗 Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/Hcompany/holo31" target="_blank" rel="noopener noreferrer">15. Holo3.1: Fast &amp; Local Computer Use Agents</a>
+
+**作者**：Hugging Face  
+
+**AI 摘要**：
+
+针对现有云端计算机操作智能体时延高、隐私风险大的痛点推出的Holo3.1，是主打低时延的本地端操作智能体。技术上优化了端侧轻量化UI识别模型、操作决策推理链路，全程无需云端交互，普通消费级硬件即可运行。实测较同类云端方案响应速度提升3倍以上，隐私风险大幅降低，可适配办公自动化等多场景。
+
+<FeedbackButtons slug="item:hf-blog-holo31" client:visible />
+
+---
+
+## <a href="https://huggingface.co/blog/JetBrains/mellum2-launch" target="_blank" rel="noopener noreferrer">16. Introducing Mellum2: A 12B Mixture-of-Experts Model by JetBrains</a>
+
+**作者**：Hugging Face  
+
+**AI 摘要**：
+
+JetBrains推出的Mellum2是120亿参数量的混合专家（MoE）大模型，单轮推理仅激活约19亿参数，算力开销远低于同规模稠密模型。实测其在代码生成、多语言理解、工具调用等任务表现优于同激活量级稠密模型，主要为JetBrains全系列IDE的智能编码辅助功能提供底层支撑。
+
+<FeedbackButtons slug="item:hf-blog-mellum2-launch" client:visible />
+
+---
+
+# 📰 The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">17. After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+**作者**：The Gradient  
+
+**AI 摘要**：
+
+这篇AI对齐领域论文以德性伦理为基础，反驳“理性主体必然锚定固定目标”的正交性假设前提，指出人类理性行动并非指向预设最终目标，而是适配由行动、评价标准等构成的实践网络逻辑。论文提出AI决策逻辑需匹配人类实践型“类型签名”，才能既契合人类伦理要求，也能保障核心安全属性。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+---
+
+# ⚡ 量子位
+
+## <a href="https://www.qbitai.com/2026/06/428407.html" target="_blank" rel="noopener noreferrer">18. 刚刚，Anthropic提交了招股书！</a>
+
+**作者**：量子位  
+
+**AI 摘要**：
+
+Anthropic已于6月1日秘密向美国SEC提交S-1招股草案，正式启动IPO流程，发行股数、定价暂未确定，待SEC审核完成后即可推进上市。该公司2021年由OpenAI出走团队创立，主打AI安全，先后获谷歌、亚马逊等大额战略投资，最新估值近万亿美元，与OpenAI、SpaceX并称美股拟上市“AI御三家”。
+
+<FeedbackButtons slug="item:qbitai-428407" client:visible />
+
+---
+
+## <a href="https://www.qbitai.com/2026/06/428335.html" target="_blank" rel="noopener noreferrer">19. 刚刚，Meta Skill来了</a>
+
+**作者**：量子位  
+
+**AI 摘要**：
+
+近期星标破2000的爆火AI Agent项目OpenSquilla，此前主打智能模型路由功能，可实现单任务Token成本较同类产品低60%-90%，被戏称顶级“守财奴”。其最新推出Meta Skill（元技能）功能，可整合多个子技能端到端打通长程工作流，解决了过往复杂流程需人工反复调用单个技能、搭建门槛高的痛点，大幅降低复杂场景自动化落地难度。
+
+<FeedbackButtons slug="item:qbitai-428335" client:visible />
+
+---
+
+## <a href="https://www.qbitai.com/2026/06/428092.html" target="_blank" rel="noopener noreferrer">20. MiniMax M3一手实测：老黄PPT上74个Logo，我以为能难住它</a>
+
+**作者**：量子位  
+
+**AI 摘要**：
+
+MiniMax M3上线后调整Token计费周限额平息争议，是国内首个同时具备长上下文、多模态、强编码能力的开源模型，性能对标GPT、Claude等海外闭源旗舰，SWE-Bench Pro得分59%超GPT-5.5，1M上下文计算量仅上代1/20、解码提速超15倍，售价仅海外旗舰十分之一，配套对标Claude Code的MiniMax Code工具，获业内大佬推荐。
+
+<FeedbackButtons slug="item:qbitai-428092" client:visible />
+
+---
