@@ -62,11 +62,15 @@ function todayInBeijing(): string {
 
 /**
  * MDX 转义：
+ *  - 危险 HTML 标签（script/iframe/style/object/embed/link/meta/base）的 `<` → `&lt;`
+ *    （MDX 编译会把这些标签当作 JSX 组件渲染，若外部 RSS 原文含 `<script>` 会被执行）
  *  - `<` 后跟非字母 → `&lt;`（不然被当作 JSX 标签开头）
  *  - `{` `}` → `\{` `\}`（不然被当作 JSX 表达式块；arxiv 作者名 LaTeX 转义如 `{\o}`、`{\ae}` 频繁出现）
  */
 function sanitizeForMdx(s: string): string {
+  const DANGEROUS_TAGS = /<(\/?)(script|iframe|style|object|embed|link|meta|base)\b/gi;
   return s
+    .replace(DANGEROUS_TAGS, "&lt;$1$2")
     .replace(/<(?![a-zA-Z!/])/g, "&lt;")
     .replace(/\{/g, "\\{")
     .replace(/\}/g, "\\}");

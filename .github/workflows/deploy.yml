@@ -51,11 +51,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # 用新浪财经实时报价刷新当月持仓 YAML（仅 CI workspace 内生效，不 commit）
-      # 这一步失败不阻塞 deploy——用 git 中已有的 YAML 兜底
-      - name: Refresh portfolio quotes
-        continue-on-error: true
-        run: npx tsx scripts/invest-snapshot.ts
+      # NOTE: scripts/invest-snapshot.ts 不再在每次 build 跑。
+      # 它原本设计是月末归档持仓快照（每月一次），但每次 build 跑会：
+      #   1) 当前 _holdings.yaml 全是基金（market: Fund），脚本 filter 只匹配 A/ETF，noop；
+      #   2) 万一未来改成真实股票持仓，每次 build 都会把当月真实份额写入静态文件公开。
+      # 月末归档改为手动触发：`npx tsx scripts/invest-snapshot.ts 2026-06` 本地跑后 commit。
 
       # 扫描 public/photos/uploads/<album>/，生成对应 manifest（含尺寸 + EXIF）
       # Decap 上线编辑相册时上传的图会落到这些子目录，构建时自动归档进 manifest

@@ -141,6 +141,13 @@ _SSL_CTX = ssl.create_default_context()
 GITHUB_API_BASE = "https://api.github.com"
 
 
+class _GHHTTPError(RuntimeError):
+    """带 HTTP 状态码的 GitHub API 异常，供上层做 retry 判断。"""
+    def __init__(self, status: int, method: str, path: str, body: str):
+        super().__init__(f"GitHub API {method} {path} → HTTP {status}: {body[:400]}")
+        self.status = status
+
+
 def _gh_api(method: str, path: str, token: str, payload: Optional[dict] = None,
             timeout: int = 30) -> dict:
     body = None
@@ -167,24 +174,21 @@ def _gh_api(method: str, path: str, token: str, payload: Optional[dict] = None,
             err_body = e.read().decode("utf-8", errors="replace")
         except Exception:
             pass
-        raise RuntimeError(f"GitHub API {method} {path} → HTTP {e.code}: {err_body[:400]}")
+        raise _GHHTTPError(e.code, method, path, err_body) from None
 
 
 def _push_via_github_api(repo_owner: str, repo_name: str, branch: str,
-                          files: list[tuple[str, str]], message: str, token: str) -> bool:
+                          files: list[tuple[str, str]], message: str, token: str,
+                          max_attempts: int = 3) -> bool:
     """
     用 GitHub Git Data API 一次性 commit 多个文件。
     files: [(repo_relative_path, content_text), ...]
+
+    race-safe：steps 1-2 取 base_sha 与 PATCH ref 之间若被人插队 push，
+    GitHub 返回 422 "Update is not a fast forward"——此时重新走步骤 1-2 + 4-6，
+    最多 max_attempts 轮。blob 内容与 ref 无关，提前上传一次复用即可。
     """
-    # 1. 拿 main ref
-    ref = _gh_api("GET", f"/repos/{repo_owner}/{repo_name}/git/refs/heads/{branch}", token)
-    base_sha = ref["object"]["sha"]
-
-    # 2. 拿 base tree sha
-    commit_obj = _gh_api("GET", f"/repos/{repo_owner}/{repo_name}/git/commits/{base_sha}", token)
-    base_tree_sha = commit_obj["tree"]["sha"]
-
-    # 3. 上传每份文件为 blob
+    # ① blob 上传（与 base_sha 无关，只做一次）
     tree_entries = []
     for path, text in files:
         blob = _gh_api(
@@ -198,27 +202,45 @@ def _push_via_github_api(repo_owner: str, repo_name: str, branch: str,
             "sha": blob["sha"],
         })
 
-    # 4. 建 tree
-    tree = _gh_api(
-        "POST", f"/repos/{repo_owner}/{repo_name}/git/trees", token,
-        {"base_tree": base_tree_sha, "tree": tree_entries},
-    )
-    new_tree_sha = tree["sha"]
+    # ② tree → commit → ref 包在 retry 循环里
+    last_err: Optional[_GHHTTPError] = None
+    for attempt in range(1, max_attempts + 1):
+        ref = _gh_api("GET", f"/repos/{repo_owner}/{repo_name}/git/refs/heads/{branch}", token)
+        base_sha = ref["object"]["sha"]
+        commit_obj = _gh_api("GET", f"/repos/{repo_owner}/{repo_name}/git/commits/{base_sha}", token)
+        base_tree_sha = commit_obj["tree"]["sha"]
 
-    # 5. 建 commit（committer 元信息走 token 对应账号）
-    commit = _gh_api(
-        "POST", f"/repos/{repo_owner}/{repo_name}/git/commits", token,
-        {"message": message, "tree": new_tree_sha, "parents": [base_sha]},
-    )
-    new_commit_sha = commit["sha"]
+        tree = _gh_api(
+            "POST", f"/repos/{repo_owner}/{repo_name}/git/trees", token,
+            {"base_tree": base_tree_sha, "tree": tree_entries},
+        )
+        new_tree_sha = tree["sha"]
 
-    # 6. 更新 ref
-    _gh_api(
-        "PATCH", f"/repos/{repo_owner}/{repo_name}/git/refs/heads/{branch}", token,
-        {"sha": new_commit_sha, "force": False},
-    )
-    log.info(f"✅ 已通过 GitHub API 提交 {len(files)} 个文件 → commit {new_commit_sha[:8]}")
-    return True
+        commit = _gh_api(
+            "POST", f"/repos/{repo_owner}/{repo_name}/git/commits", token,
+            {"message": message, "tree": new_tree_sha, "parents": [base_sha]},
+        )
+        new_commit_sha = commit["sha"]
+
+        try:
+            _gh_api(
+                "PATCH", f"/repos/{repo_owner}/{repo_name}/git/refs/heads/{branch}", token,
+                {"sha": new_commit_sha, "force": False},
+            )
+            log.info(f"✅ 已通过 GitHub API 提交 {len(files)} 个文件 → commit {new_commit_sha[:8]}"
+                     + (f"（第 {attempt} 次成功）" if attempt > 1 else ""))
+            return True
+        except _GHHTTPError as e:
+            # 422 = fast-forward 失败（被人插队 push 了）；409 = ref 已被改；都重试
+            if e.status in (409, 422) and attempt < max_attempts:
+                log.warning(f"⚠️  ref PATCH 失败 HTTP {e.status}（第 {attempt}/{max_attempts} 次），"
+                            f"重新拉 base_sha 重建 commit 再试")
+                last_err = e
+                continue
+            raise
+
+    # 理论上不会走到这里（要么 return True 要么 raise）
+    raise last_err if last_err else RuntimeError("unreachable")
 
 
 def publish_to_zorotreeking(title: str, content: str, data: dict,
