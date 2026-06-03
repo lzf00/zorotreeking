@@ -11,14 +11,24 @@
 
 ```
 scripts/wind/
-  fetcher.py        Wind MCP CLI 调用 + 数据聚合（fetch_all_data / build_report）
-  publisher.py      写文件到 src/content/invest/ + src/data/ + git commit/push
-  wechat.py         pushplus / Server酱 推送
+  fetcher.py        Wind MCP CLI 调用 + 并发数据聚合（fetch_all_data / build_report）
+  publisher.py      写文件到 src/content/invest/ + src/data/，支持 GitHub API / 本地 git 两种模式
+  wechat.py         pushplus / Server酱 推送（默认开 SSL 校验）
   holidays.py       交易日历（每年 11~12 月更新次年）
-  run_open.py       systemd 入口：开盘版
-  run_close.py      systemd 入口：收盘版
+  run_open.py       systemd 入口：开盘版（10:30 BJT，A 股 + 微信，不归档）
+  run_close.py      systemd 入口：收盘版（15:30 BJT，A 股 + 港股 + 单股深度 + 归档）
+  test_fetcher.py   纯函数单元测试（无 Wind 依赖，`python3 test_fetcher.py` 直跑）
+  .env.example      环境变量模板
   requirements.txt  python-dotenv（其余用标准库）
 ```
+
+## 性能
+
+`fetch_all_data` 使用 `ThreadPoolExecutor` 并发执行（默认 5 worker），实测：
+- 开盘版（A 股 6 维）：**~10 秒**（原串行 ~60s）
+- 收盘版（A 股 + 港股 + 10 只单股深度）：**~90 秒**（原串行 ~400s）
+
+`WIND_MAX_WORKERS` env 可调，太高（>10）会触发 Wind "并发请求次数超限"。
 
 ## 数据流
 
@@ -82,6 +92,9 @@ After=network-online.target
 Type=oneshot
 WorkingDirectory=/opt/wind-recap
 EnvironmentFile=/opt/wind-recap/.env
+# PATH 必须显式指定，否则子进程找不到 node（systemd 默认 PATH 只有 /usr/bin:/bin）
+# 如果 node 装在 nvm，把 /root/.nvm/versions/node/v22/bin 加到前面
+Environment=PATH=/usr/local/bin:/usr/bin:/bin
 ExecStart=/usr/bin/python3 /opt/wind-recap/run_open.py
 TimeoutSec=600
 
@@ -98,6 +111,12 @@ WantedBy=timers.target
 ```
 
 收盘版同结构，OnCalendar 改 `Mon..Fri *-*-* 07:30:00 UTC`（15:30 BJT），ExecStart 改 `run_close.py`。
+
+**变量覆盖**：所有路径 / 行为都可以通过 `.env` 调（避免改 systemd unit）：
+- `NODE_BIN=/path/to/node` 显式指定 node（nvm 路径找不到时）
+- `WIND_SKILL_DIR=/opt/wind-mcp-skill` skill 安装位置
+- `WIND_MAX_WORKERS=5` 并发拉取 worker 数（太高会触发 Wind 限流）
+- `SKIP_SSL_VERIFY=1` 微信推送跳过 SSL 校验（mac LibreSSL 调试用）
 
 ## 故障排查
 

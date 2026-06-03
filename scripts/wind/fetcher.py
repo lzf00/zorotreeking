@@ -5,12 +5,24 @@
 """
 
 import datetime
+import glob
 import json
+import logging
 import os
 import shutil
 import subprocess
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
+from urllib.parse import quote
+
+
+log = logging.getLogger("wind.fetcher")
+if not log.handlers:
+    _h = logging.StreamHandler()
+    _h.setFormatter(logging.Formatter("%(message)s"))
+    log.addHandler(_h)
+log.setLevel(logging.INFO)
 
 
 # Wind CLI 入口；本机默认 ~/.agents/skills/wind-mcp-skill，服务器走
@@ -20,12 +32,27 @@ WIND_SKILL_DIR = os.environ.get(
     str(Path.home() / ".agents/skills/wind-mcp-skill"),
 )
 
+# 并发拉取的最大 worker 数（避免 Wind 后端 "并发请求次数超限"）
+# 实测 4-6 比较稳；环境变量 WIND_MAX_WORKERS 可覆盖
+WIND_MAX_WORKERS = int(os.environ.get("WIND_MAX_WORKERS", "5"))
+
 
 def _find_node() -> str:
-    """定位 node 可执行文件；launchd 的 PATH 很窄，需多路径兜底"""
+    """
+    定位 node 可执行文件，优先级：
+    1. NODE_BIN 环境变量（强制覆盖）
+    2. PATH 中的 node
+    3. 常见系统路径（mac homebrew、Linux /usr/local、/usr）
+    4. nvm 路径（~/.nvm/versions/node/*/bin/node 取最新）
+    """
+    forced = os.environ.get("NODE_BIN", "").strip()
+    if forced and os.path.exists(forced):
+        return forced
+
     p = shutil.which("node")
     if p:
         return p
+
     for candidate in [
         "/opt/homebrew/opt/node@22/bin/node",
         "/opt/homebrew/bin/node",
@@ -34,17 +61,24 @@ def _find_node() -> str:
     ]:
         if os.path.exists(candidate):
             return candidate
+
+    # nvm（mac + linux 通用）
+    nvm_versions = sorted(glob.glob(str(Path.home() / ".nvm/versions/node/*/bin/node")))
+    if nvm_versions:
+        return nvm_versions[-1]  # 取最新版本
+
     return "node"  # 兜底；找不到时会在调用处报清晰错误
 
 
 NODE_BIN = _find_node()
 WIND_CLI = [NODE_BIN, "scripts/cli.mjs"]
 
-# 给 Wind CLI 子进程一个完整 PATH（launchd 默认 PATH 只有 /usr/bin:/bin）
+# 给 Wind CLI 子进程一个完整 PATH（launchd / systemd 默认 PATH 很窄）
 _EXTRA_PATH = ":".join([
     "/opt/homebrew/bin",
     "/opt/homebrew/opt/node@22/bin",
     "/usr/local/bin",
+    str(Path.home() / ".nvm/versions/node/v22/bin"),  # nvm 兜底
 ])
 
 # A 股大盘指数（Wind code -> 显示名）
@@ -83,11 +117,14 @@ def _fmt_price(value) -> str:
 
 
 def _to_float(value, default=0.0) -> float:
-    """安全转 float（Wind 字段可能是 str / number / None）"""
+    """安全转 float（Wind 字段可能是 str / number / None）；NaN 也兜底"""
     try:
         if value is None or value == "":
             return default
-        return float(value)
+        v = float(value)
+        if v != v:  # NaN 检测（NaN != NaN）
+            return default
+        return v
     except (ValueError, TypeError):
         return default
 
@@ -118,7 +155,13 @@ def _limit_tag(name: str, code: str, pct: float) -> str:
 
 
 def _to_wind(code: str) -> str:
-    """sh600519 -> 600519.SH；已是 Wind 格式则原样大写"""
+    """
+    标准化为 Wind 格式代码
+    - 600519.SH / sh600519 / 600519 → 600519.SH
+    - 6 位纯数字 → 按起首数字推断（6→SH，0/3→SZ，4/8/9→BJ）
+    - 已含 . 后缀直接 upper
+    - 无法识别返回原始 upper（调用方会拿到 Wind 错误，能定位）
+    """
     code = (code or "").strip()
     if not code:
         return ""
@@ -131,24 +174,33 @@ def _to_wind(code: str) -> str:
         return f"{c[2:]}.SZ"
     if c.startswith("bj"):
         return f"{c[2:]}.BJ"
+    # 纯数字：按 A 股代码规则推断后缀
+    if c.isdigit() and len(c) == 6:
+        first = c[0]
+        if first == "6":
+            return f"{c}.SH"
+        if first in ("0", "3"):
+            return f"{c}.SZ"
+        if first in ("4", "8", "9"):
+            return f"{c}.BJ"
+    log.warning(f"⚠️ _to_wind: 无法识别代码格式 {code!r}，原样返回")
     return code.upper()
 
 
 # -------------------- Wind CLI 调用 --------------------
 
 def _wind_call(server_type: str, tool_name: str, params: dict,
-               timeout: int = 60, retries: int = 2):
+               timeout: int = 60, retries: int = 3, base_delay: float = 1.5):
     """
     调用 Wind CLI 子进程
     返回解析后的 inner['data']（具体结构因工具而异）
-    失败抛 RuntimeError
+    失败抛 RuntimeError；指数退避：base_delay * 2^i (1.5s → 3s → 6s)
     """
     cmd = WIND_CLI + ["call", server_type, tool_name,
                       json.dumps(params, ensure_ascii=False)]
-    # 给子进程注入完整 PATH（兼容 launchd / cron 等窄 PATH 环境）
+    # 给子进程注入完整 PATH（兼容 launchd / cron / systemd 等窄 PATH 环境）
     env = os.environ.copy()
     env["PATH"] = f"{_EXTRA_PATH}:{env.get('PATH','')}"
-    last_err = None
     for i in range(retries):
         try:
             r = subprocess.run(
@@ -174,10 +226,10 @@ def _wind_call(server_type: str, tool_name: str, params: dict,
                 raise RuntimeError(f"data error: {inner['error']}")
             return inner.get("data")
         except Exception as e:
-            last_err = e
             if i < retries - 1:
-                print(f"  ⚠️ Wind 调用 {server_type}.{tool_name} 失败重试: {e}")
-                time.sleep(1.5)
+                delay = base_delay * (2 ** i)
+                log.warning(f"⚠️ Wind 调用 {server_type}.{tool_name} 失败（第 {i+1}/{retries} 次），{delay:.1f}s 后重试: {e}")
+                time.sleep(delay)
             else:
                 raise RuntimeError(f"{server_type}.{tool_name} -> {e}") from e
 
@@ -295,7 +347,8 @@ def get_market_sentiment() -> dict:
                     sentiment["limit_up"] = int(_to_float(v))
                 elif "跌停" in k and "家数" in k and sentiment["limit_down"] is None:
                     sentiment["limit_down"] = int(_to_float(v))
-                elif "主力" in k and "净" in k and sentiment["main_flow_yi"] is None:
+                # 必须有"额"——避免命中"主力净买入家数"等非金额字段
+                elif "主力" in k and "净" in k and "额" in k and sentiment["main_flow_yi"] is None:
                     amt = _to_float(v)
                     # Wind 主力净流入可能返回元或亿元，按量级判断
                     sentiment["main_flow_yi"] = amt / 1e8 if abs(amt) > 1e6 else amt
@@ -305,12 +358,17 @@ def get_market_sentiment() -> dict:
         return sentiment
 
 
-def get_top_news(top_k: int = 3, snippet_len: int = 60) -> list:
-    """财经要闻 TOP N（标题 + 日期 + 短摘要）"""
+def get_top_news(query: str = "今日A股市场重要新闻", top_k: int = 3,
+                  snippet_len: int = 60) -> list:
+    """
+    财经要闻 TOP N（标题 + 日期 + 短摘要）
+    - 默认拉今日市场要闻
+    - 传 query 可定向（如某只股票名）拉相关新闻
+    """
     try:
         outer = _wind_call(
             "financial_docs", "get_financial_news",
-            {"query": "今日A股市场重要新闻", "top_k": top_k},
+            {"query": query, "top_k": top_k},
             timeout=60,
         )
         items = (outer or {}).get("items", [])
@@ -713,67 +771,84 @@ def fetch_stock_detail(wind_code: str, name: str = "") -> dict:
         "capital_flow": get_stock_capital_flow(wind_code, name, market=market),
         "connect": get_connect_holding(wind_code, name, market=market),
         "announcements": get_company_announcements(name or wind_code, top_k=3),
-        "news": get_top_news_for(name or wind_code, top_k=3),
+        "news": get_top_news(query=name or wind_code, top_k=3, snippet_len=80),
     }
 
 
-def get_top_news_for(query_keyword: str, top_k: int = 3, snippet_len: int = 80) -> list:
-    """与某关键词相关的财经新闻 TOP N"""
-    try:
-        outer = _wind_call(
-            "financial_docs", "get_financial_news",
-            {"query": f"{query_keyword}", "top_k": top_k},
-            timeout=60,
-        )
-        items = (outer or {}).get("items", [])
-        result = []
-        for it in items[:top_k]:
-            title = (it.get("title") or "").strip()
-            date = (it.get("date") or "").strip()
-            raw = (it.get("content") or "").strip()
-            snippet = " ".join(raw.split())[:snippet_len]
-            if title:
-                result.append({"title": title, "date": date, "snippet": snippet})
-        return result
-    except Exception as e:
-        return [{"error": str(e)}]
+def _parallel_run(tasks: dict, max_workers: int = None) -> dict:
+    """
+    并发执行多个无参 lambda；返回 {key: result}，单个任务失败保留 {"error": str}。
+    tasks: {"key": callable_with_no_args, ...}
+    """
+    if max_workers is None:
+        max_workers = WIND_MAX_WORKERS
+    results = {}
+    with ThreadPoolExecutor(max_workers=max_workers) as ex:
+        future_to_key = {ex.submit(fn): key for key, fn in tasks.items()}
+        for fut in as_completed(future_to_key):
+            key = future_to_key[fut]
+            try:
+                results[key] = fut.result()
+            except Exception as e:
+                log.error(f"❌ 并发任务 {key} 失败: {e}")
+                results[key] = {"error": str(e)}
+    return results
 
 
 def fetch_all_data(stock_codes: list, hk_stock_codes: list = None,
                    detail_codes: list = None) -> dict:
     """
-    一次拉取生成日报所需的全部数据。
-    供 build_report 和 zorotreeking_publisher 共用，避免重复 Wind 调用。
+    一次拉取生成日报所需的全部数据（并发执行，避免 5-7 分钟串行）。
+    供 build_report 和 publisher 共用，避免重复 Wind 调用。
+
+    并发策略：
+    - 第一波：所有"全市场"维度 + watchlist 数据并发跑
+    - 第二波（依赖第一波 name_map）：单股深度详情并发跑
 
     Args:
         stock_codes:    A 股观察池
         hk_stock_codes: 港股观察池（None 则跳过）
-        detail_codes:   需要单股深度详情的 wind 代码列表（None 则跳过；通常 = watchlist 全部）
+        detail_codes:   需要单股深度详情的 wind 代码列表（None 则跳过）
     """
-    out = {
-        "asOf": datetime.datetime.now().isoformat(),
-        "indices": get_indexes(),
-        "sentiment": get_market_sentiment(),
-        "watchlist": get_stock_data(stock_codes),
-        "hot_stocks": get_hot_stocks(),
-        "sectors": get_sector_ranking(),
-        "news": get_top_news(top_k=3, snippet_len=60),
+    t0 = time.time()
+    log.info(f"📊 fetch_all_data: A={len(stock_codes)} HK={len(hk_stock_codes or [])} detail={len(detail_codes or [])}")
+
+    # —— 第一波：全市场视图 + watchlist —— #
+    wave1 = {
+        "indices": get_indexes,
+        "sentiment": get_market_sentiment,
+        "watchlist": lambda: get_stock_data(stock_codes),
+        "hot_stocks": get_hot_stocks,
+        "sectors": get_sector_ranking,
+        "news": lambda: get_top_news(top_k=3, snippet_len=60),
     }
     if hk_stock_codes:
-        out["hk_indices"] = get_hk_indexes()
-        out["hk_watchlist"] = get_hk_stock_data(hk_stock_codes)
-        out["hk_hot_stocks"] = get_hk_hot_stocks()
+        wave1["hk_indices"] = get_hk_indexes
+        wave1["hk_watchlist"] = lambda: get_hk_stock_data(hk_stock_codes)
+        wave1["hk_hot_stocks"] = get_hk_hot_stocks
+
+    r1 = _parallel_run(wave1)
+    out = {"asOf": datetime.datetime.now().isoformat(), **r1}
+    log.info(f"📊 第一波完成 {time.time() - t0:.1f}s ({len(wave1)} 个任务)")
+
+    # —— 第二波：单股深度 —— #
     if detail_codes:
-        # detail_codes 是 wind 代码列表；name 用 watchlist 已拉到的中文简称
-        name_map = {s["code"]: s.get("name", "") for s in out["watchlist"] if "code" in s}
-        if hk_stock_codes:
-            for s in out.get("hk_watchlist", []):
-                if "code" in s:
-                    name_map[s["code"]] = s.get("name", "")
-        details = {}
-        for code in detail_codes:
-            details[code] = fetch_stock_detail(code, name_map.get(code, ""))
-        out["details"] = details
+        # name 映射来自第一波的 watchlist（A + HK，code 互不冲突）
+        watchlist = out.get("watchlist", [])
+        hk_watchlist = out.get("hk_watchlist", [])
+        name_map = {}
+        for s in (list(watchlist) + list(hk_watchlist) if isinstance(watchlist, list) else []):
+            if isinstance(s, dict) and "code" in s:
+                name_map[s["code"]] = s.get("name", "")
+
+        wave2 = {
+            code: (lambda c=code, n=name_map.get(code, ""): fetch_stock_detail(c, n))
+            for code in detail_codes
+        }
+        out["details"] = _parallel_run(wave2)
+        log.info(f"📊 第二波完成 {time.time() - t0:.1f}s ({len(wave2)} 只股票详情)")
+
+    log.info(f"✅ fetch_all_data 总耗时 {time.time() - t0:.1f}s")
     return out
 
 
@@ -894,8 +969,43 @@ def build_report(stock_codes: list, prefetched: dict = None) -> tuple:
         )
     lines.append("")
 
-    # 6. 财经要闻 TOP3（标题做成百度搜索链接 + 60 字摘要）
-    from urllib.parse import quote
+    # 6. 港股大盘 + 自选股（仅当 data 含 hk_indices / hk_watchlist 时显示）
+    hk_indices = data.get("hk_indices") or []
+    hk_watchlist = data.get("hk_watchlist") or []
+    # 排除 error 占位
+    hk_indices_valid = [x for x in hk_indices if isinstance(x, dict) and "error" not in x]
+    hk_watchlist_valid = [x for x in hk_watchlist if isinstance(x, dict) and "error" not in x]
+    if hk_indices_valid or hk_watchlist_valid:
+        lines.append("## 🇭🇰 港股大盘")
+        lines.append("")
+        if hk_indices_valid:
+            lines.append("| 指数 | 点位 | 涨跌 |")
+            lines.append("|------|------|------|")
+            for idx in hk_indices_valid:
+                lines.append(
+                    f"| {idx['emoji']} {idx['name']} "
+                    f"| {idx['price']:.2f} "
+                    f"| **{idx['change_amount']:+.2f}** ({idx['change_pct']:+.2f}%) |"
+                )
+        lines.append("")
+
+        if hk_watchlist_valid:
+            lines.append("### 港股观察池")
+            lines.append("")
+            lines.append("| 股票 | 现价 | 今日 | 5日 | 20日 |")
+            lines.append("|------|------|------|-----|------|")
+            sorted_hk = sorted(hk_watchlist_valid, key=lambda x: -x.get("change_pct", 0))
+            for s in sorted_hk:
+                lines.append(
+                    f"| {s['emoji']} {s['name']} "
+                    f"| HK$ {_fmt_price(s['price'])} "
+                    f"| **{s['change_pct']:+.2f}%** "
+                    f"| {_fmt_pct(s.get('chg_5d'))} "
+                    f"| {_fmt_pct(s.get('chg_20d'))} |"
+                )
+            lines.append("")
+
+    # 7. 财经要闻 TOP3（标题做成百度搜索链接 + 60 字摘要）
     lines.append("## 📰 今日要闻")
     lines.append("")
     news = data["news"]

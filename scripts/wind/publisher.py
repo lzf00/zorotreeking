@@ -1,37 +1,38 @@
 """
 zorotreeking 网站发布器
-将 stock_pusher 生成的日报数据写入 zorotreeking repo 并自动 git push 触发 CI 部署
+将 scripts/wind 生成的日报数据写入 zorotreeking repo 并触发 CI 部署。
 
-写入两份文件：
-1. src/content/invest/market-recap-YYYY-MM-DD.zh.mdx    （日报全文，作为内容归档）
-2. src/data/wind-market-latest.json                     （结构化数据，给 /invest/market 页面用）
+写入的文件（按数据可用性）：
+1. src/content/invest/market-recap-YYYY-MM-DD.zh.mdx   日报全文 mdx 归档
+2. src/data/wind-market-latest.json                    A 股看板结构化数据
+3. src/data/wind-hk-market-latest.json                 港股看板（含 hk_indices 时）
+4. src/data/wind-stock-details.json                    单股深度（含 details 时）
 
-仅在收盘版（15:30）触发，开盘版（10:30）不归档。
+推送模式（自动选择）：
+- GITHUB_TOKEN 存在 → GitHub Git Data API（一次原子提交多文件，避开国内 github.com:443 被墙）
+- 否则            → 本地 git push（开发机模式）
+
+触发时机：run_close.py 在收盘后调用；force=True 跳过任何时段检查。
 """
 
-import base64
 import datetime
 import json
+import logging
 import os
 import ssl
 import subprocess
-import urllib.parse
+import urllib.error
 import urllib.request
 from pathlib import Path
 from typing import Optional
 
 
-def _is_archive_window(now: datetime.datetime = None) -> bool:
-    """
-    判断当前是否在归档时段（收盘后）
-    - 15:00 ~ 23:59 之间触发的推送视为收盘版
-    - 10:30 开盘版不归档
-    手动 --now 任意时间触发也会归档（便于测试）
-    """
-    if now is None:
-        now = datetime.datetime.now()
-    hour = now.hour
-    return hour >= 15  # 15:00 之后视为收盘归档
+log = logging.getLogger("wind.publisher")
+if not log.handlers:
+    _h = logging.StreamHandler()
+    _h.setFormatter(logging.Formatter("%(message)s"))
+    log.addHandler(_h)
+log.setLevel(logging.INFO)
 
 
 def _build_mdx(title: str, content: str, data: dict, sentiment_summary: str) -> str:
@@ -62,14 +63,13 @@ draft: false
 
 
 def _build_sentiment_summary(data: dict) -> str:
-    """构造一句 description 摘要，用于 mdx frontmatter 和列表页"""
+    """构造一句 description 摘要，用于 mdx frontmatter 和列表页（3 个指数都说一下）"""
     parts = []
+    # 取所有有效指数（默认上证/深成/创业板）
     for idx in data.get("indices", []):
         if "error" in idx:
             continue
         parts.append(f"{idx['name']} {idx['change_pct']:+.2f}%")
-        if len(parts) >= 1:  # 只取上证
-            break
 
     s = data.get("sentiment", {})
     lu = s.get("limit_up")
@@ -221,7 +221,7 @@ def _push_via_github_api(repo_owner: str, repo_name: str, branch: str,
         "PATCH", f"/repos/{repo_owner}/{repo_name}/git/refs/heads/{branch}", token,
         {"sha": new_commit_sha, "force": False},
     )
-    print(f"✅ 已通过 GitHub API 提交 {len(files)} 个文件 → commit {new_commit_sha[:8]}")
+    log.info(f"✅ 已通过 GitHub API 提交 {len(files)} 个文件 → commit {new_commit_sha[:8]}")
     return True
 
 
@@ -238,12 +238,11 @@ def publish_to_zorotreeking(title: str, content: str, data: dict,
         dry_run:  只写文件不 git push（用于本地验证）
 
     Returns:
-        True 表示成功（或被时段过滤跳过），False 表示真失败
+        True 表示成功，False 表示真失败
+    Note:
+        以前有时段检查 `_is_archive_window`，现已删除——run_open / run_close 拆分后由调用方决定。
+        force 参数保留兼容，无实际作用。
     """
-    if not force and not _is_archive_window():
-        print("ℹ️  publisher: 非收盘时段（<15:00），跳过归档")
-        return True
-
     now = datetime.datetime.now()
     date_str = now.strftime("%Y-%m-%d")
     sentiment_summary = _build_sentiment_summary(data)
@@ -272,21 +271,21 @@ def publish_to_zorotreeking(title: str, content: str, data: dict,
         return _publish_via_local_git(payloads, date_str, dry_run)
 
 
-def _publish_via_api(payloads: list[tuple[str, str]], date_str: str,
+def _publish_via_api(payloads: list, date_str: str,
                      token: str, dry_run: bool) -> bool:
     repo_full = os.getenv("GITHUB_REPO", "lzf00/zorotreeking").strip()
     if "/" not in repo_full:
-        print(f"❌ GITHUB_REPO 格式错（应为 owner/name）：{repo_full}")
+        log.error(f"❌ GITHUB_REPO 格式错（应为 owner/name）：{repo_full}")
         return False
     owner, name = repo_full.split("/", 1)
     branch = os.getenv("GITHUB_BRANCH", "main").strip()
 
-    print(f"📝 publisher (API mode): {len(payloads)} 个文件 → {owner}/{name}@{branch}")
+    log.info(f"📝 publisher (API mode): {len(payloads)} 个文件 → {owner}/{name}@{branch}")
     for path, _ in payloads:
-        print(f"   - {path}")
+        log.info(f"   - {path}")
 
     if dry_run:
-        print("🧪 dry_run=True，跳过 API 提交")
+        log.info("🧪 dry_run=True，跳过 API 提交")
         return True
 
     try:
@@ -298,11 +297,11 @@ def _publish_via_api(payloads: list[tuple[str, str]], date_str: str,
         )
         return True
     except Exception as e:
-        print(f"❌ publisher API push 失败: {e}")
+        log.error(f"❌ publisher API push 失败: {e}")
         return False
 
 
-def _publish_via_local_git(payloads: list[tuple[str, str]], date_str: str,
+def _publish_via_local_git(payloads: list, date_str: str,
                            dry_run: bool) -> bool:
     repo_path = os.getenv("ZOROTREEKING_REPO_PATH", "").strip()
     if repo_path:
@@ -310,7 +309,7 @@ def _publish_via_local_git(payloads: list[tuple[str, str]], date_str: str,
     else:
         repo = Path(__file__).resolve().parents[2]
     if not (repo / ".git").exists():
-        print(f"⚠️  publisher: {repo} 不是 git repo，跳过")
+        log.warning(f"⚠️  publisher: {repo} 不是 git repo，跳过")
         return False
 
     try:
@@ -318,33 +317,33 @@ def _publish_via_local_git(payloads: list[tuple[str, str]], date_str: str,
             p = repo / rel_path
             p.parent.mkdir(parents=True, exist_ok=True)
             p.write_text(text, encoding="utf-8")
-        print(f"📝 publisher (local-git): 写入 {len(payloads)} 个文件到 {repo}")
+        log.info(f"📝 publisher (local-git): 写入 {len(payloads)} 个文件到 {repo}")
         for p_rel, _ in payloads:
-            print(f"   - {p_rel}")
+            log.info(f"   - {p_rel}")
     except Exception as e:
-        print(f"❌ 写文件失败: {e}")
+        log.error(f"❌ 写文件失败: {e}")
         return False
 
     if dry_run:
-        print("🧪 dry_run=True，跳过 git push")
+        log.info("🧪 dry_run=True，跳过 git push")
         return True
 
     try:
         r = _run_git(repo, "pull", "--rebase", "--autostash", "origin", "main", check=False)
         if r.returncode != 0:
-            print(f"⚠️  git pull 失败但继续: {r.stderr.strip()[:200]}")
+            log.warning(f"⚠️  git pull 失败但继续: {r.stderr.strip()[:200]}")
         _run_git(repo, "add", *[rel for rel, _ in payloads])
         r_status = _run_git(repo, "status", "--porcelain", check=False)
         if not r_status.stdout.strip():
-            print("ℹ️  无变化，跳过 commit")
+            log.info("ℹ️  无变化，跳过 commit")
             return True
         _run_git(repo, "commit", "-m", f"auto: market recap {date_str} (Wind)")
         r_push = _run_git(repo, "push", "origin", "main", check=False)
         if r_push.returncode != 0:
-            print(f"❌ git push 失败: {r_push.stderr.strip()[:300]}")
+            log.error(f"❌ git push 失败: {r_push.stderr.strip()[:300]}")
             return False
-        print(f"✅ 已推送 ({date_str})")
+        log.info(f"✅ 已推送 ({date_str})")
         return True
     except subprocess.CalledProcessError as e:
-        print(f"❌ git 操作失败: {e.stderr or e}")
+        log.error(f"❌ git 操作失败: {e.stderr or e}")
         return False
