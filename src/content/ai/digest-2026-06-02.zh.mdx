@@ -17,261 +17,173 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 ## <a href="https://arxiv.org/abs/2606.02437" target="_blank" rel="noopener noreferrer">1. On the Scaling of PEFT: Towards Million Personal Models of Trillion Parameters</a>
 
-**作者**：Mind Lab, Song Cao, Vic Cao, Kaijie Chen, Bunny Fan…  
-**HF 投票**：42  
-**Hugging Face**：[https://huggingface.co/papers/2606.02437](https://huggingface.co/papers/2606.02437)
-
-**AI 摘要**：
+*📄 HF ★ 42 · Mind Lab, Song Cao, Vic Cao… · [HF 镜像](https://huggingface.co/papers/2606.02437)*
 
 本文重新定位参数高效微调（PEFT）的作用：并非仅为全量微调的低成本替代，而是通用大基座上承载偏好、技能等个性化特征的持久适配层。研究从基座能力升级、最小可靠适配器尺寸、多实例共存三个维度展开，配套研发适配器管理系统MinT，验证PEFT可作为万亿参数基座下百万级个性化模型的紧凑实现载体。
 
 <FeedbackButtons slug="item:arxiv-2606.02437" client:visible />
 
----
-
 ## <a href="https://arxiv.org/abs/2605.30351" target="_blank" rel="noopener noreferrer">2. VideoMLA: Low-Rank Latent KV Cache for Minute-Scale Autoregressive Video Diffusion</a>
 
-**作者**：Hidir Yesiltepe, Jiazhen Hu, Tuna Han Salih Meral, Adil Kaan Akan, Kaan Oktay…  
-**HF 投票**：17  
-**Hugging Face**：[https://huggingface.co/papers/2605.30351](https://huggingface.co/papers/2605.30351)
-
-**AI 摘要**：
+*📄 HF ★ 17 · Hidir Yesiltepe, Jiazhen Hu, Tuna Han Salih Meral… · [HF 镜像](https://huggingface.co/papers/2605.30351)*
 
 针对分钟级自回归视频扩散逐头KV缓存占存高、现有优化未触及核心结构的问题，本文提出VideoMLA，用共享低秩内容隐变量+解耦3D-RoPE位置键替换逐头KV，修正了该类方法原有低秩假设的解释偏差。实测KV存储降92.7%，长视频生成效果最优，单B200吞吐量提1.23倍，短序列表现追平基线。
 
 <FeedbackButtons slug="item:arxiv-2605.30351" client:visible />
 
----
-
 ## <a href="https://arxiv.org/abs/2605.30611" target="_blank" rel="noopener noreferrer">3. Crafter: A Multi-Agent Harness for Editable Scientific Figure Generation from Diverse Inputs</a>
 
-**作者**：Haozhe Zhao, Shuzheng Si, Zhenhailong Wang, Zheng Wang, Liang Chen…  
-**HF 投票**：15  
-**Hugging Face**：[https://huggingface.co/papers/2605.30611](https://huggingface.co/papers/2605.30611)
-
-**AI 摘要**：
+*📄 HF ★ 15 · Haozhe Zhao, Shuzheng Si, Zhenhailong Wang… · [HF 镜像](https://huggingface.co/papers/2605.30611)*
 
 针对现有科研绘图自动化工具仅支持单类图表、仅接受文本输入、输出不可编辑的痛点，该研究提出多智能体框架Crafter，无需调整架构即可适配多类图表、多输入形式，配套CraftEditor可将输出栅格图转可编辑SVG，还构建了评测基准CraftBench。实验显示其生成、转换效果均优于现有基线，相关资源已开源。
 
 <FeedbackButtons slug="item:arxiv-2605.30611" client:visible />
 
----
-
 ## <a href="https://arxiv.org/abs/2606.02404" target="_blank" rel="noopener noreferrer">4. K-BrowseComp: A Web Browsing Agent Benchmark Grounded in Korean Contexts</a>
 
-**作者**：Nahyun Lee, Dongkeun Yoon, Guijin Son, Geewook Kim, Dayoon Ko…  
-**HF 投票**：14  
-**Hugging Face**：[https://huggingface.co/papers/2606.02404](https://huggingface.co/papers/2606.02404)
-
-**AI 摘要**：
+*📄 HF ★ 14 · Nahyun Lee, Dongkeun Yoon, Guijin Son… · [HF 镜像](https://huggingface.co/papers/2606.02404)*
 
 当前大模型评估正从基础能力转向组合式智能体能力，但韩语智能体基准稀缺。研究推出K-BrowseComp韩语网页浏览智能体基准，含300道母语者人工验证题、100道针对失效模式生成的对抗诊断题。测试显示前沿通用大模型准确率最高仅45.67%，韩国本土大模型最高仅10.33%，对抗集上最强模型仅26%，相关数据代码已开源。
 
 <FeedbackButtons slug="item:arxiv-2606.02404" client:visible />
 
----
-
 ## <a href="https://arxiv.org/abs/2606.02482" target="_blank" rel="noopener noreferrer">5. X-Stream: Exploring MLLMs as Multiplexers for Multi-Stream Understanding</a>
 
-**作者**：Peiwen Sun, Xudong Lu, Huadai Liu, Yang Bo, Dongming Wu…  
-**HF 投票**：13  
-**Hugging Face**：[https://huggingface.co/papers/2606.02482](https://huggingface.co/papers/2606.02482)
-
-**AI 摘要**：
+*📄 HF ★ 13 · Peiwen Sun, Xudong Lu, Huadai Liu… · [HF 镜像](https://huggingface.co/papers/2606.02482)*
 
 针对现有视频理解基准仅适配单流范式，无法满足体育直播、自动驾驶等场景跨流推理评估需求，该研究推出首个多流理解基准X-Stream，含4220条经双验证的问答对，覆盖三类场景11项子任务。研究将多模态大模型视作复用器评测，发现当前SOTA模型多流任务得分仅约50%、主动能力薄弱，可为后续多流智能体研发提供评估支撑与实证指导。
 
 <FeedbackButtons slug="item:arxiv-2606.02482" client:visible />
 
----
-
 # 📄 arXiv cs.LG（机器学习）
 
 ## <a href="https://arxiv.org/abs/2606.00079" target="_blank" rel="noopener noreferrer">6. BitsMoE: Efficient Spectral Energy-Guided Bit Allocation for MoE LLM Quantization</a>
 
-**作者**：Jiayu Zhao, Zihan Teng, Minhao Fan, Tianrui Ma, Wentao Ren…  
-
-**AI 摘要**：
+*📄 Jiayu Zhao, Zihan Teng, Minhao Fan…*
 
 针对MoE大模型部署内存占用高、现有超低比特量化精度损失大的问题，本文提出谱能引导的MoE量化框架BitsMoE：将每层经SVD分解为免量化的共享基（保留专家间共性结构）与专家专属量化单元，通过整数线性规划在固定比特预算下最优分配位宽。实验显示2比特量化时较GPTQ精度升27.83个点，量化提速12.3倍、解码提速1.76倍。
 
 <FeedbackButtons slug="item:arxiv-2606.00079" client:visible />
 
----
-
 ## <a href="https://arxiv.org/abs/2606.00081" target="_blank" rel="noopener noreferrer">7. DAStatFormer: A Hybrid Multibranch Transformer with Statistical Feature Integration for DAS-Based Pattern Recognitions</a>
 
-**作者**：Michel Dione (CERI SN - IMT Nord Europe), Jerry Lonlac (CERI SN - IMT Nord Europe), H\'el\`ene Louis (CERI SN - IMT Nord Europe), Anthony Fleury (CERI SN - IMT Nord Europe), Stephane Lecoeuche  
-
-**AI 摘要**：
+*📄 Michel Dione (CERI SN - IMT Nord Europe), Jerry Lonlac (CERI SN - IMT Nord Europe), H\'el\`ene Louis (CERI SN - IMT Nord Europe)…*
 
 针对分布式声传感（DAS）数据维度高、模式复杂，现有分类算法长距离依赖捕获不足、算力成本高的问题，提出混合多分支Transformer DAStatFormer：先提取ANOVA筛选的多域统计特征大幅降维，分域用专属注意力分支处理后自适应门控融合。实验显示其最高准确率达99.4%，参数量、推理成本远低于同类模型，适配大规模实时DAS监测。
 
 <FeedbackButtons slug="item:arxiv-2606.00081" client:visible />
 
----
-
 ## <a href="https://arxiv.org/abs/2606.00082" target="_blank" rel="noopener noreferrer">8. Hoeffding Concept Bottleneck Models with Applications to Overhead Images</a>
 
-**作者**：Cl\'ement B\'enard, Manon Arfib, Christophe Labreuche, Victor Qu\'etu  
-
-**AI 摘要**：
+*📄 Cl\'ement B\'enard, Manon Arfib, Christophe Labreuche…*
 
 针对高风险计算机视觉任务对深度学习可解释性的需求，以及现有概念瓶颈模型（CBM）线性聚合概念导致可解释性下降、易信息泄露、难拟合非线性关系的缺陷，该研究提出霍夫丁概念瓶颈模型（HCBM），基于梯度提升树的霍夫丁函数分解实现概念得分的非线性稀疏聚合，可抗概念间泄露，性能优于标准线性CBM，还可适配目标检测，在航拍图像任务中表现优异。
 
 <FeedbackButtons slug="item:arxiv-2606.00082" client:visible />
 
----
-
 # 🟢 OpenAI 官方动态
 
 ## <a href="https://openai.com/index/our-views-on-ai-policy-and-political-advocacy" target="_blank" rel="noopener noreferrer">9. Our views on AI policy and political advocacy</a>
 
-**作者**：OpenAI  
-
-**AI 摘要**：
+*📄 OpenAI*
 
 近年AI监管趋严、企业政治关联争议频发的背景下，这份文件是相关企业针对AI政策制定、政治参与倡导领域发布的官方立场说明。其核心主张包括三方面：相关工作全程秉持公开透明原则；支持经充分论证的审慎监管规则，高度重视AI安全治理；同时明确无任何外部政治团体可代表该企业发声，主动划清立场边界。
 
 <FeedbackButtons slug="item:openai-blog-our-views-on-ai-policy-and-political-advocacy" client:visible />
 
----
-
 ## <a href="https://openai.com/index/stargate-michigan-data-center" target="_blank" rel="noopener noreferrer">10. Building the infrastructure for the Intelligence Age in Michigan</a>
 
-**作者**：OpenAI  
-
-**AI 摘要**：
+*📄 OpenAI*
 
 近日OpenAI为搭建智能时代基础设施，在密歇根州破土动工其“星门（Stargate）”计划项下的1GW超大型数据中心项目。该项目一方面将夯实AI算力底座、扩大AI服务可及性，另一方面将为当地创造就业岗位、配套支持社区发展，也为密歇根抢占智能时代产业发展先机提供核心支撑。
 
 <FeedbackButtons slug="item:openai-blog-stargate-michigan-data-center" client:visible />
 
----
-
 # 🪶 Anthropic News
 
 ## <a href="https://www.anthropic.com/news/claude-opus-4-8" target="_blank" rel="noopener noreferrer">11. Introducing Claude Opus 4.8</a>
 
-**作者**：Anthropic  
-
-**AI 摘要**：
+*📄 Anthropic*
 
 本次Anthropic推出的Claude Opus 4.8是Opus级大模型的最新迭代、也是该系列当前最强版本。该模型针对核心能力做了迭代优化，在编程开发、智能体任务、各行业专业场景工作中表现均有显著提升，同时优化了长时任务处理的一致性，能够可靠支撑持续运行的高复杂度工作流需求。
 
 <FeedbackButtons slug="item:anthropic-claude-opus-4-8" client:visible />
 
----
-
 ## <a href="https://www.anthropic.com/news/claude-design-anthropic-labs" target="_blank" rel="noopener noreferrer">12. Introducing Claude Design by Anthropic Labs</a>
 
-**作者**：Anthropic  
-
-**AI 摘要**：
+*📄 Anthropic*
 
 Anthropic实验室正式发布全新产品Claude Design。作为大模型Claude的配套创作工具，它支持用户与Claude协同产出高完成度的专业视觉作品，适用场景涵盖平面设计、交互原型、演示幻灯片、单页宣传物料等，可降低设计门槛，帮助无专业设计能力的用户快速完成视觉内容生产。
 
 <FeedbackButtons slug="item:anthropic-claude-design-anthropic-labs" client:visible />
 
----
-
 # 🟣 Google DeepMind
 
 ## <a href="https://deepmind.google/blog/were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle-environmental-risks/" target="_blank" rel="noopener noreferrer">13. We’re launching the Google DeepMind Accelerator program in Asia Pacific to tackle environmental risks</a>
 
-**作者**：Google DeepMind  
-
-**AI 摘要**：
+*📄 Google DeepMind*
 
 谷歌DeepMind近日启动亚太区加速器项目，聚焦应对区域气候灾害、生物多样性退化、污染等环境风险。项目将联动亚太本地科研、科创主体，落地AI大模型、深度学习技术在环境监测、风险预警、减污降碳等场景的应用，探索AI赋能区域环境治理、绿色发展的可复制落地方案。
 
 <FeedbackButtons slug="item:deepmind-were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle" client:visible />
 
----
-
 ## <a href="https://deepmind.google/blog/fast-tracking-genetic-leads-to-reverse-cellular-aging/" target="_blank" rel="noopener noreferrer">14. Fast-tracking genetic leads to reverse cellular aging</a>
 
-**作者**：Google DeepMind  
-
-**AI 摘要**：
+*📄 Google DeepMind*
 
 本研究聚焦细胞衰老逆转的遗传靶点快速发掘，核心方法为生物学家采用名为Co-Scientist的AI辅助科研系统开展筛选，最终成功挖掘出此前未被报道的新型调控因子，经验证可有效实现人类细胞年轻化重编程。该路径大幅压缩抗衰靶点研发周期，为衰老干预及相关疾病治疗研究提供了新方向。
 
 <FeedbackButtons slug="item:deepmind-fast-tracking-genetic-leads-to-reverse-cellular-aging" client:visible />
 
----
-
 # 🤗 Hugging Face Blog
 
 ## <a href="https://huggingface.co/blog/JetBrains/mellum2-launch" target="_blank" rel="noopener noreferrer">15. Introducing Mellum2: A 12B Mixture-of-Experts Model by JetBrains</a>
 
-**作者**：Hugging Face  
-
-**AI 摘要**：
+*📄 Hugging Face*
 
 JetBrains发布120亿参数量的混合专家（MoE）大模型Mellum2，采用稀疏激活设计，单步仅激活36亿参数，主打代码场景优化。它在多语言代码生成、理解、调试等基准测试中，性能追平甚至超过700亿参数级密集型大模型，推理成本仅为同性能密集模型的1/3，后续将适配其全系列IDE的智能代码辅助场景。
 
 <FeedbackButtons slug="item:hf-blog-mellum2-launch" client:visible />
 
----
-
 ## <a href="https://huggingface.co/blog/ibm-research/agent-logic-and-scalable-ai-adoption" target="_blank" rel="noopener noreferrer">16. Beyond LLMs: Why Scalable Enterprise AI Adoption Depends on Agent Logic</a>
 
-**作者**：Hugging Face  
-
-**AI 摘要**：
+*📄 Hugging Face*
 
 本文围绕“超越大模型”的企业AI落地议题，指出仅依托大模型部署时普遍存在幻觉频发、难适配复杂业务流程、可追溯性弱等痛点，单靠大模型无法支撑规模化推广。提出需以智能体逻辑为核心，整合工具调用、流程编排等组件对齐业务规则，可显著提升企业AI可靠性，是企业级AI规模化落地的核心支撑。
 
 <FeedbackButtons slug="item:hf-blog-agent-logic-and-scalable-ai-adoption" client:visible />
 
----
-
 # 📰 The Gradient
 
 ## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">17. After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
 
-**作者**：The Gradient  
-
-**AI 摘要**：
+*📄 The Gradient*
 
 这篇从美德伦理视角展开的AI对齐研究，批判了理性主体需绑定固定终极目标的传统假设，提出人类理性行动本质是匹配由行为规则、评价体系、资源框架等构成的实践网络，而非指向预设目标。研究指出，要实现AI与人类协作、符合伦理要求及核心安全属性，需让AI决策逻辑与人类这套实践驱动的推理范式同构。
 
 <FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
 
----
-
 # ⚡ 量子位
 
 ## <a href="https://www.qbitai.com/2026/06/427729.html" target="_blank" rel="noopener noreferrer">18. 机器人运控训练步入分钟级时代！清华AIR开源UniLab：3分钟训好人形，速度暴涨10倍，Mac上也能跑</a>
 
-**作者**：量子位  
-
-**AI 摘要**：
+*📄 量子位*
 
 针对现有机器人运控强化学习框架高度绑定英伟达GPU、资源利用率低的痛点，清华AIR联合多机构推出UniLab训练架构，采用“CPU并行高保真仿真+GPU专注策略训练”的异步异构方案，经共享内存消弭空转与传输延迟，实现端到端3-10倍提速，人形训练仅需3分钟，可脱离英伟达生态在Mac运行。
 
 <FeedbackButtons slug="item:qbitai-427729" client:visible />
 
----
-
 ## <a href="https://www.qbitai.com/2026/06/427730.html" target="_blank" rel="noopener noreferrer">19. Qwen3.7-Plus上线！多模态智能体新基座，一键复刻桌面端专业软件</a>
 
-**作者**：量子位  
-
-**AI 摘要**：
+*📄 量子位*
 
 6月2日阿里巴巴发布多模态大模型Qwen3.7-Plus，其文本、视觉能力大幅提升，位列全球视觉榜Vision Arena全球前五、中国第一。该模型实现多模态混合智能体突破，打通“看、想、写、做、验”统一工作流，可完成一键复刻APP、桌面专业软件等复杂任务，目前已上线阿里云百炼并对外开放API服务。
 
 <FeedbackButtons slug="item:qbitai-427730" client:visible />
 
----
-
 ## <a href="https://www.qbitai.com/2026/06/427472.html" target="_blank" rel="noopener noreferrer">20. 云端模型如何落地物理世界？招商局狮子山人工智能实验室用LiOS打通具身智能全链路</a>
 
-**作者**：量子位  
-
-**AI 摘要**：
+*📄 量子位*
 
 叠衣服是具身智能柔性操作的试金石：衣物为无定型柔性体，操作需覆盖感知、双臂协同、接触控制、长程执行等能力，难度随初始状态、衣物品类、操作要求陡增。此前行业方案多仅适配理想仿真或规整初始场景，招商局狮子山AI实验室推出LiOS，打通云端具身模型落地物理世界的全链路。
 

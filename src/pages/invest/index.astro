@@ -9,6 +9,7 @@ import StockSpotlight from "@/components/StockSpotlight";
 import SectorRanking from "@/components/SectorRanking";
 import MarketSentiment from "@/components/MarketSentiment";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
+import { extractDigestHighlights } from "@/lib/digest-highlights";
 
 // ── Phase C: AI 科创聚焦 + 创业板风向 ──
 const aiKechuangStocks = [
@@ -189,15 +190,25 @@ const latestPeriod = snapshots[snapshots.length - 1]?.data.period;
     <h2 class="text-xl font-semibold mb-4">复盘</h2>
     {posts.length === 0 ? <p class="text-[var(--text-tertiary)]">还没有复盘文章</p> : (
       <ul class="divide-y divide-[var(--border)]">
-        {posts.map((p) => (
-          <li class="py-4">
-            <a href={pathWithLang(`/invest/${p.data.translationKey}`, lang)} class="block group">
-              <div class="text-xs text-[var(--text-tertiary)] mb-1"><time>{p.data.date.toISOString().slice(0, 10)}</time></div>
-              <h3 class="text-base font-semibold group-hover:text-section-invest transition-colors">{p.data.title}</h3>
-              {p.data.description && <p class="mt-1 text-sm text-[var(--text-secondary)]">{p.data.description}</p>}
-            </a>
-          </li>
-        ))}
+        {posts.map((p) => {
+          const highlights = extractDigestHighlights(p.body, 3);
+          return (
+            <li class="py-4">
+              <a href={pathWithLang(`/invest/${p.data.translationKey}`, lang)} class="block group">
+                <div class="text-xs text-[var(--text-tertiary)] mb-1"><time>{p.data.date.toISOString().slice(0, 10)}</time></div>
+                <h3 class="text-base font-semibold group-hover:text-section-invest transition-colors">{p.data.title}</h3>
+                {p.data.description && <p class="mt-1 text-sm text-[var(--text-secondary)]">{p.data.description}</p>}
+                {highlights.length > 0 && (
+                  <ul class="mt-2 space-y-0.5">
+                    {highlights.map(h => (
+                      <li class="text-xs text-[var(--text-tertiary)] line-clamp-1">· {h}</li>
+                    ))}
+                  </ul>
+                )}
+              </a>
+            </li>
+          );
+        })}
       </ul>
     )}
   </section>

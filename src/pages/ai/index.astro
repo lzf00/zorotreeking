@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import TagChip from "@/components/TagChip.astro";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
+import { extractDigestHighlights } from "@/lib/digest-highlights";
 
 const lang = "zh" as const;
 const t = useTranslations(lang);
@@ -18,18 +19,28 @@ const posts = (await getCollection("ai", p => p.data.lang === lang && !p.data.dr
   </section>
   <section class="max-w-3xl mx-auto px-5">
     <ul class="divide-y divide-[var(--border)]">
-      {posts.map(p => (
-        <li class="py-5">
-          <a href={pathWithLang(`/ai/${p.data.translationKey}`, lang)} class="block group">
-            <div class="flex items-center gap-2 text-xs text-[var(--text-tertiary)] mb-1">
-              <time>{p.data.date.toISOString().slice(0, 10)}</time>
-              {p.data.tags.slice(0, 3).map(tag => <TagChip tag={tag} lang={lang} />)}
-            </div>
-            <h2 class="text-lg font-semibold group-hover:text-section-ai transition-colors">{p.data.title}</h2>
-            {p.data.description && <p class="mt-1 text-sm text-[var(--text-secondary)] line-clamp-2">{p.data.description}</p>}
-          </a>
-        </li>
-      ))}
+      {posts.map(p => {
+        const highlights = extractDigestHighlights(p.body, 3);
+        return (
+          <li class="py-5">
+            <a href={pathWithLang(`/ai/${p.data.translationKey}`, lang)} class="block group">
+              <div class="flex items-center gap-2 text-xs text-[var(--text-tertiary)] mb-1">
+                <time>{p.data.date.toISOString().slice(0, 10)}</time>
+                {p.data.tags.slice(0, 3).map(tag => <TagChip tag={tag} lang={lang} />)}
+              </div>
+              <h2 class="text-lg font-semibold group-hover:text-section-ai transition-colors">{p.data.title}</h2>
+              {p.data.description && <p class="mt-1 text-sm text-[var(--text-secondary)] line-clamp-2">{p.data.description}</p>}
+              {highlights.length > 0 && (
+                <ul class="mt-2 space-y-0.5">
+                  {highlights.map(h => (
+                    <li class="text-xs text-[var(--text-tertiary)] line-clamp-1">· {h}</li>
+                  ))}
+                </ul>
+              )}
+            </a>
+          </li>
+        );
+      })}
       {posts.length === 0 && <li class="py-12 text-center text-[var(--text-tertiary)]">还没有文章</li>}
     </ul>
   </section>

@@ -17,223 +17,147 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 ## <a href="https://arxiv.org/abs/2605.20708" target="_blank" rel="noopener noreferrer">1. Rethinking Cross-Layer Information Routing in Diffusion Transformers</a>
 
-**作者**：Chao Xu, Maohua Li, Qirui Li, Yixuan Xu, Yanke Zhou…  
-**HF 投票**：37  
-**Hugging Face**：[https://huggingface.co/papers/2605.20708](https://huggingface.co/papers/2605.20708)
-
-**AI 摘要**：
+*📄 HF ★ 37 · Chao Xu, Maohua Li, Qirui Li… · [HF 镜像](https://huggingface.co/papers/2605.20708)*
 
 本文先对扩散Transformer（DiT）跨层信息流做系统实证分析，发现其沿用的原生残差结构存在前向幅值膨胀、反向梯度衰减、块冗余问题，进而提出可即插即用的扩散自适应路由（DAR），实现步长自适应的非增量子层输出聚合。ImageNet实验显示其将SiT-XL/2的FID降2.11，训练迭代减87.5%，兼容现有优化方案，可适配文生图微调、蒸馏场景。
 
 <FeedbackButtons slug="item:arxiv-2605.20708" client:visible />
 
----
-
 ## <a href="https://arxiv.org/abs/2605.21573" target="_blank" rel="noopener noreferrer">2. Lens: Rethinking Training Efficiency for Foundational Text-to-Image Models</a>
 
-**作者**：Dong Chen, Fangyun Wei, Ziyu Wan, Dongdong Chen, Jiawei Zhang…  
-**HF 投票**：28  
-**Hugging Face**：[https://huggingface.co/papers/2605.21573](https://huggingface.co/papers/2605.21573)
-
-**AI 摘要**：
+*📄 HF ★ 28 · Dong Chen, Fangyun Wei, Ziyu Wan… · [HF 镜像](https://huggingface.co/papers/2605.21573)*
 
 本文提出3.8B参数文生图模型Lens，效果比肩甚至超越6B+参数的同类SOTA，训练算力仅为Z-Image的19.3%。其效率核心来自高信息密度稠密标注数据集、多分辨率批次训练的训练策略，以及语义VAE、强语言编码器的架构设计，经RL对齐、蒸馏加速优化后，支持多语言、多比例生成，单H100生成1024²图像最快仅0.84秒。
 
 <FeedbackButtons slug="item:arxiv-2605.21573" client:visible />
 
----
-
 ## <a href="https://arxiv.org/abs/2605.18018" target="_blank" rel="noopener noreferrer">3. See What I Mean: Aligning Vision and Language Representations for Video Fine-grained Object Understanding</a>
 
-**作者**：Boyuan Sun, Bowen Yin, Yuanming Li, Xihan Wei, Qibin Hou  
-**HF 投票**：21  
-**Hugging Face**：[https://huggingface.co/papers/2605.18018](https://huggingface.co/papers/2605.18018)
-
-**AI 摘要**：
+*📄 HF ★ 21 · Boyuan Sun, Bowen Yin, Yuanming Li… · [HF 镜像](https://huggingface.co/papers/2605.18018)*
 
 针对多模态大模型对物体名词的视觉激活分散、现有细粒度视频物体理解需依赖显式视觉提示的问题，本文提出SWIM训练策略，构建配套NL-Refer标注数据集，训练阶段用掩码监督对齐跨模态注意力，推理仅需文本提示即可自动定位目标，性能优于视觉提示类方法，跨模态对齐效果显著提升。
 
 <FeedbackButtons slug="item:arxiv-2605.18018" client:visible />
 
----
-
 ## <a href="https://arxiv.org/abs/2605.23463" target="_blank" rel="noopener noreferrer">4. StepAudio 2.5 Technical Report</a>
 
-**作者**：Bin Lin, Bo Zhao, Boyong Wu, Chao Yan, Chen Wu…  
-**HF 投票**：19  
-**Hugging Face**：[https://huggingface.co/papers/2605.23463](https://huggingface.co/papers/2605.23463)
-
-**AI 摘要**：
+*📄 HF ★ 19 · Bin Lin, Bo Zhao, Boyong Wu… · [HF 镜像](https://huggingface.co/papers/2605.23463)*
 
 针对现有统一音语模型在语音识别（ASR）、语音合成（TTS）、实时口语交互三类任务上性能不及专用系统的痛点，StepAudio 2.5基于音文统一表征思路，以定制化人类反馈强化学习（RLHF）为核心优化手段，配合专用解码策略，让同一共享骨干适配三类任务模式，在三类任务基准测试中均达SOTA，验证了单基础模型可兼顾多类语音场景部署需求。
 
 <FeedbackButtons slug="item:arxiv-2605.23463" client:visible />
 
----
-
 ## <a href="https://arxiv.org/abs/2605.21195" target="_blank" rel="noopener noreferrer">5. RankE: End-to-End Post-Training for Discrete Text-to-Image Generation with Decoder Co-Evolution</a>
 
-**作者**：Siyong Jian, Siyuan Li, Luyuan Zhang, Zedong Wang, Xin Jin…  
-**HF 投票**：9  
-**Hugging Face**：[https://huggingface.co/papers/2605.21195](https://huggingface.co/papers/2605.21195)
-
-**AI 摘要**：
+*📄 HF ★ 9 · Siyong Jian, Siyuan Li, Luyuan Zhang… · [HF 镜像](https://huggingface.co/papers/2605.21195)*
 
 针对离散自回归文生图现有后训练仅优化生成策略、冻结VQ解码器，会引发潜在协变量偏移，导致图文对齐提升但生成画质下降的问题，本文提出首个端到端后训练框架RankE，通过交替优化协同演化策略与解码器，搭配排序对齐目标和参数空间稳定性正则，破解了原有保真-对齐权衡，在两款大模型上同时提升FID画质分与CLIP对齐分。
 
 <FeedbackButtons slug="item:arxiv-2605.21195" client:visible />
 
----
-
 # 🟢 OpenAI 官方动态
 
 ## <a href="https://openai.com/index/gartner-2026-agentic-coding-leader" target="_blank" rel="noopener noreferrer">6. OpenAI named a Leader in enterprise coding agents by Gartner</a>
 
-**作者**：OpenAI  
-
-**AI 摘要**：
+*📄 OpenAI*
 
 近日Gartner发布2026年企业级AI编码代理魔力象限报告，OpenAI跻身最高等级的领导者象限。旗下编码大模型Codex凭借突出的技术创新性、成熟的企业级大规模部署能力获得评审认可。该评级是智能编码赛道的权威认证，标志着OpenAI在该领域的技术实力与商业化落地能力均处于行业第一梯队。
 
 <FeedbackButtons slug="item:openai-blog-gartner-2026-agentic-coding-leader" client:visible />
 
----
-
 ## <a href="https://openai.com/index/virgin-atlantic" target="_blank" rel="noopener noreferrer">7. How Virgin Atlantic ships faster with Codex</a>
 
-**作者**：OpenAI  
-
-**AI 摘要**：
+*📄 OpenAI*
 
 本案例介绍维珍大西洋航空借助Codex智能编程工具，在假日出行季的固定上线期限前顺利推出改版移动应用。此次开发不仅实现了近乎全覆盖的单元测试，上线后更是零最高优先级（P1）缺陷，充分验证了Codex在紧工期场景下，可同时保障交付效率与产品质量的实用价值。
 
 <FeedbackButtons slug="item:openai-blog-virgin-atlantic" client:visible />
 
----
-
 # 🪶 Anthropic News
 
 ## <a href="https://www.anthropic.com/news/claude-opus-4-7" target="_blank" rel="noopener noreferrer">8. Introducing Claude Opus 4.7</a>
 
-**作者**：Anthropic  
-
-**AI 摘要**：
+*📄 Anthropic*
 
 Anthropic旗下最新大模型产品Claude Opus 4.7现已正式开放通用访问。相较于前代版本Opus 4.6，该版本核心升级聚焦高阶软件工程领域能力，尤其在处理该领域最高难度任务时性能提升突出，可更好适配复杂编码、系统架构设计等高门槛的专业开发场景需求。
 
 <FeedbackButtons slug="item:anthropic-claude-opus-4-7" client:visible />
 
----
-
 ## <a href="https://www.anthropic.com/news/claude-design-anthropic-labs" target="_blank" rel="noopener noreferrer">9. Introducing Claude Design by Anthropic Labs</a>
 
-**作者**：Anthropic  
-
-**AI 摘要**：
+*📄 Anthropic*
 
 Anthropic实验室正式推出旗下新产品Claude Design，该产品主打人机协同创作能力，支持用户与Claude大模型协作完成各类可视化内容产出，覆盖设计方案、产品原型、演示幻灯片、单页宣传物料等多个场景，最终生成的成品完成度较高，为大模型落地视觉创作赛道提供了新路径。
 
 <FeedbackButtons slug="item:anthropic-claude-design-anthropic-labs" client:visible />
 
----
-
 # 🟣 Google DeepMind
 
 ## <a href="https://deepmind.google/blog/were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle-environmental-risks/" target="_blank" rel="noopener noreferrer">10. We’re launching the Google DeepMind Accelerator program in Asia Pacific to tackle environmental risks</a>
 
-**作者**：Google DeepMind  
-
-**AI 摘要**：
+*📄 Google DeepMind*
 
 谷歌DeepMind正式启动亚太区专属加速器项目，核心目标是依托前沿AI技术应对区域各类环境风险。项目将联动区域内科研机构、技术开发者、产业及公共部门合作伙伴，输出强化学习、大模型等AI技术支持，聚焦气候灾害预警、生态保护、碳排放管控等场景，为亚太本土环境痛点提供落地解决方案。
 
 <FeedbackButtons slug="item:deepmind-were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle" client:visible />
 
----
-
 ## <a href="https://deepmind.google/blog/fast-tracking-genetic-leads-to-reverse-cellular-aging/" target="_blank" rel="noopener noreferrer">11. Fast-tracking genetic leads to reverse cellular aging</a>
 
-**作者**：Google DeepMind  
-
-**AI 摘要**：
+*📄 Google DeepMind*
 
 本研究旨在快速挖掘逆转细胞衰老的遗传靶点，生物学家借助Co-Scientist这一AI科研协作系统开展筛选工作，成功发现了可有效实现人类细胞年轻化的全新调控因子。该成果大幅压缩了抗衰老靶点的研发周期，为后续衰老干预技术、老年病防治方案的研发提供了全新候选方向。
 
 <FeedbackButtons slug="item:deepmind-fast-tracking-genetic-leads-to-reverse-cellular-aging" client:visible />
 
----
-
 # 🤗 Hugging Face Blog
 
 ## <a href="https://huggingface.co/blog/nvidia/nemotron-labs-diffusion" target="_blank" rel="noopener noreferrer">12. Towards Speed-of-Light Text Generation with Nemotron-Labs Diffusion Language Models</a>
 
-**作者**：Hugging Face  
-
-**AI 摘要**：
+*📄 Hugging Face*
 
 本文针对传统自回归大模型逐token生成延迟高的痛点，由英伟达Nemotron实验室推出扩散架构语言模型，摒弃逐词生成逻辑，支持并行输出完整文本序列，推理效率较主流自回归模型跃升数倍，实现接近实时的“光速级”文本生成，为高响应要求的交互文本场景提供新路径。
 
 <FeedbackButtons slug="item:hf-blog-nemotron-labs-diffusion" client:visible />
 
----
-
 ## <a href="https://huggingface.co/blog/Dharma-AI/specialization-beats-scale" target="_blank" rel="noopener noreferrer">13. Specialization Beats Scale: A Strategic Variable Most AI Procurement Decisions Overlook</a>
 
-**作者**：Hugging Face  
-
-**AI 摘要**：
+*📄 Hugging Face*
 
 这篇《专精优于规模：AI采购决策最易忽视的战略变量》研究指出，当前多数AI采购盲目偏好高算力大参数通用大模型，经多场景实测验证，针对特定业务微调的垂直领域中小专精模型，在准确率、部署成本、业务适配性上表现均显著优于同场景通用大模型，建议将领域专精度设为AI采购核心评估指标，无需盲目追模型规模。
 
 <FeedbackButtons slug="item:hf-blog-specialization-beats-scale" client:visible />
 
----
-
 # 📰 The Gradient
 
 ## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">14. After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
 
-**作者**：The Gradient  
-
-**AI 摘要**：
+*📄 The Gradient*
 
 这篇反思正交性假说的德性伦理视角AI对齐研究，反驳“理性主体需锚定固定最终目标”的预设，指出人类理性行为并非指向既定目标，而是适配由行动、评价标准、资源等构成的自洽实践网络。研究提出，要实现AI与人类协作、保障安全，需让AI决策逻辑与人类这套实践逻辑同构，兼顾伦理要求与安全需求。
 
 <FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
 
----
-
 # ⚡ 量子位
 
 ## <a href="https://www.qbitai.com/2026/05/424277.html" target="_blank" rel="noopener noreferrer">15. Claude 通过率不到4%，SaaS-Bench撕碎了Computer-Use的「全自动办公」幻想</a>
 
-**作者**：量子位  
-
-**AI 摘要**：
+*📄 量子位*
 
 近日UniPat AI发布面向真实办公场景的SaaS-Bench评测集，针对Claude等主流主打计算机使用能力的大模型开展实测，结果显示所有参测模型的办公任务完全通过率最高仅为3.8%。这一结果直接戳破了此前AI可实现全自动办公的乐观幻想，证明相关技术距离真正落地仍有非常大的差距。
 
 <FeedbackButtons slug="item:qbitai-424277" client:visible />
 
----
-
 ## <a href="https://www.qbitai.com/2026/05/423455.html" target="_blank" rel="noopener noreferrer">16. 华为具身大脑一号位创业，用认知科学造世界模型，获亿元级融资</a>
 
-**作者**：量子位  
-
-**AI 摘要**：
+*📄 量子位*
 
 前华为云AI算法创新Lab主任、“华为具身大脑一号位”朱森华创立具脑磐石，主打以认知神经科学研发可推演、记忆、自我更新的认知世界模型，打造类人机器人大脑，区别于行业主流VLA技术路线，近期完成亿元级融资。世界模型已是当前全球AI领域资本与顶尖人才共同押注的核心赛道。
 
 <FeedbackButtons slug="item:qbitai-423455" client:visible />
 
----
-
 ## <a href="https://www.qbitai.com/2026/05/423441.html" target="_blank" rel="noopener noreferrer">17. 未来推理将吃掉70%算力，30%留给训练丨硅谷投资人张璐@AIGC2026</a>
 
-**作者**：量子位  
-
-**AI 摘要**：
+*📄 量子位*
 
 硅谷投资人张璐在2026中国AIGC产业峰会上判断：AI算力需求重心将从训练转向推理，未来推理将占七成算力；数据中心通信耗电可达计算的百倍，通信技术价值被普遍低估。当前物理AI核心瓶颈是高质量真实数据，值得押注的方向为优质数据及医疗、太空、纳米机器人三大应用赛道。
 

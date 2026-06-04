@@ -314,7 +314,7 @@ function fmtAsOf(iso: string | undefined): string {
               </a>
               {n.date && <span class="ml-2 text-[10px] font-mono text-[var(--text-tertiary)]">{n.date}</span>}
               {n.snippet && (
-                <p class="mt-2 text-sm text-[var(--text-secondary)] leading-relaxed">
+                <p class="mt-2 text-sm text-[var(--text-secondary)] leading-relaxed line-clamp-3" title={n.snippet}>
                   {n.snippet}…
                 </p>
               )}

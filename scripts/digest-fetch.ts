@@ -221,25 +221,21 @@ async function buildAIDigest(date: string): Promise<void> {
       const arxivHref = (p.url || "").replace(/"/g, "%22");
       lines.push(`## <a href="${arxivHref}" target="_blank" rel="noopener noreferrer">${globalIdx}. ${sanitizeForMdx(p.title)}</a>`);
       lines.push("");
+      // meta 合并单行：📄 HF ★ N · 作者前 3 个… · [HF 镜像](url)
+      const metaParts: string[] = [];
+      if (p.upvotes != null) metaParts.push(`HF ★ ${p.upvotes}`);
       if (p.authors.length > 0) {
-        const authorStr = p.authors.slice(0, 5).join(", ") + (p.authors.length > 5 ? "…" : "");
-        lines.push(`**作者**：${sanitizeForMdx(authorStr)}  `);
+        const authorStr = p.authors.slice(0, 3).join(", ") + (p.authors.length > 3 ? "…" : "");
+        metaParts.push(sanitizeForMdx(authorStr));
       }
-      if (p.upvotes != null) {
-        lines.push(`**HF 投票**：${p.upvotes}  `);
+      if (p.hfUrl) metaParts.push(`[HF 镜像](${p.hfUrl})`);
+      if (metaParts.length > 0) {
+        lines.push(`*📄 ${metaParts.join(" · ")}*`);
+        lines.push("");
       }
-      // 标题已是 arxiv 外链，只在有 HF 镜像时单独保留 HF
-      if (p.hfUrl) {
-        lines.push(`**Hugging Face**：[${p.hfUrl}](${p.hfUrl})`);
-      }
-      lines.push("");
-      lines.push("**AI 摘要**：");
-      lines.push("");
       lines.push(sanitizeForMdx(p.zhSummary));
       lines.push("");
       lines.push(`<FeedbackButtons slug="item:${itemSlug(p.source, p.url)}" client:visible />`);
-      lines.push("");
-      lines.push("---");
       lines.push("");
     }
   }
@@ -308,16 +304,16 @@ async function buildInvestDigest(date: string): Promise<void> {
         lines.push(`## ${globalIdx}. ${sanitizeForMdx(n.title)}`);
       }
       lines.push("");
-      lines.push(`**时间**：${timeStr}  `);
+      // meta 合并单行：🕐 时间 · 涉及：A, B, C
+      const metaParts: string[] = [`🕐 ${timeStr}`];
       if (n.stocks && n.stocks.length > 0) {
-        lines.push(`**涉及**：${n.stocks.slice(0, 5).join("、")}  `);
+        metaParts.push(`涉及：${n.stocks.slice(0, 5).join("、")}`);
       }
+      lines.push(`*${metaParts.join(" · ")}*`);
       lines.push("");
       lines.push(sanitizeForMdx(n.zhSummary));
       lines.push("");
       lines.push(`<FeedbackButtons slug="item:${itemSlug(n.source, n.url)}" client:visible />`);
-      lines.push("");
-      lines.push("---");
       lines.push("");
     }
   }

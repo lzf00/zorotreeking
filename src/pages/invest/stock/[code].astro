@@ -415,7 +415,7 @@ const backText = stock?.market === "HK" ? "港股市场看板" : "市场深度�
                 <a href={baiduSearch(n.title)} target="_blank" rel="noopener noreferrer"
                    class="font-medium text-section-invest hover:underline">{n.title}</a>
                 {n.date && <span class="ml-2 text-[10px] font-mono text-[var(--text-tertiary)]">{n.date}</span>}
-                {n.snippet && <p class="mt-2 text-sm text-[var(--text-secondary)] leading-relaxed">{n.snippet}…</p>}
+                {n.snippet && <p class="mt-2 text-sm text-[var(--text-secondary)] leading-relaxed line-clamp-3" title={n.snippet}>{n.snippet}…</p>}
               </li>
             ))}
           </ol>
