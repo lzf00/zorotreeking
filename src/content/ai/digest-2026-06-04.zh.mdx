@@ -1,0 +1,280 @@
+---
+lang: zh
+translationKey: digest-2026-06-04
+title: "AI 每日精选 · 2026-06-04"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-06-04
+tags: [digest, auto, ai-papers]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+> 由 cron 每日 08:00 北京自动从 HF Daily Papers + arxiv cs.LG 抓取，豆包翻译/摘要。仅供参考。
+
+# 🤗 Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.02800" target="_blank" rel="noopener noreferrer">1. Cosmos 3: Omnimodal World Models for Physical AI</a>
+
+**作者**：Aditi, Niket Agarwal, Arslan Ali, Jon Allen, Martin Antolini…  
+**HF 投票**：17  
+**Hugging Face**：[https://huggingface.co/papers/2606.02800](https://huggingface.co/papers/2606.02800)
+
+**AI 摘要**：
+
+英伟达推出面向实体AI的全模态世界模型Cosmos3，采用混合Transformer统一架构，支持灵活输入输出配置，可联合处理生成语言、图像、音视频、动作序列，打通多模态能力边界。该模型在多类理解、生成任务上达新SOTA，可作为具身智能通用骨干，相关子模型拿下多个开源赛道榜首，全套研发资源已开放。
+
+<FeedbackButtons slug="item:arxiv-2606.02800" client:visible />
+
+---
+
+## <a href="https://arxiv.org/abs/2606.02060" target="_blank" rel="noopener noreferrer">2. Where Do Deep-Research Agents Go Wrong? Span-Level Error Localization in Agent Trajectories</a>
+
+**作者**：Jiaming Wang, Ziteng Feng, Jiangtao Wu, Ruihao Li, Qianqian Xie…  
+**HF 投票**：12  
+**Hugging Face**：[https://huggingface.co/papers/2606.02060](https://huggingface.co/papers/2606.02060)
+
+**AI 摘要**：
+
+针对深度研究智能体仅靠最终结果评估无法定位轨迹错误的痛点，团队收集2790条真实运行轨迹，标注后构建含1000实例的错误定位基准TELBench，还提出以主张为核心的DRIFT审计框架，通过匹配主张与轨迹证据定位错误。实验显示DRIFT可将错误定位、首错准确率最高提30个百分点，为智能体可靠性研究提供过程视角。
+
+<FeedbackButtons slug="item:arxiv-2606.02060" client:visible />
+
+---
+
+## <a href="https://arxiv.org/abs/2606.04527" target="_blank" rel="noopener noreferrer">3. Echo-Infinity: Learning Evolving Memory for Real-Time Infinite Video Generation</a>
+
+**作者**：Yuxuan Bian, Zeyue Xue, Songchun Zhang, Shiyi Zhang, Weiyang Jin…  
+**HF 投票**：10  
+**Hugging Face**：[https://huggingface.co/papers/2606.04527](https://huggingface.co/papers/2606.04527)
+
+**AI 摘要**：
+
+本文提出面向实时无限视频生成的自回归框架Echo-Infinity：一是借鉴人类记忆巩固机制，用可学习演化记忆替代手工KV缓存策略，以恒定开销处理任意长度历史；二是设计统一相对RoPE方案，破解预训练长度限制、消弭训练推理偏差。该方案性能达SOTA，首次实现24小时超百万帧实时生成，为无限视频生成提供可行路径。
+
+<FeedbackButtons slug="item:arxiv-2606.04527" client:visible />
+
+---
+
+## <a href="https://arxiv.org/abs/2606.03503" target="_blank" rel="noopener noreferrer">4. ThoughtFold: Folding Reasoning Chains via Introspective Preference Learning</a>
+
+**作者**：Ziyan Liu, Xueda Shen, Yuzhe Gu, Songyang Gao, Kuikun Liu…  
+**HF 投票**：10  
+**Hugging Face**：[https://huggingface.co/papers/2606.03503](https://huggingface.co/papers/2606.03503)
+
+**AI 摘要**：
+
+针对大推理模型采用结果导向的思维链强化学习易强化冗余探索、引发过思考的缺陷，本文提出ThoughtFold框架：通过内省策略识别正确推理轨迹中的冗余生成候选子轨迹，再用掩码偏好优化惩罚冗余、拼接核心推理段，折叠压缩推理链。实验显示其可将目标7B模型推理token消耗降56%，同时维持最优精度。
+
+<FeedbackButtons slug="item:arxiv-2606.03503" client:visible />
+
+---
+
+## <a href="https://arxiv.org/abs/2606.05008" target="_blank" rel="noopener noreferrer">5. M^3Eval: Multi-Modal Memory Evaluation through Cognitively-Grounded Video Tasks</a>
+
+**作者**：Jie Huang, Ruixun Liu, Sirui Sun, Xinyi Yang, Yin Li…  
+**HF 投票**：7  
+**Hugging Face**：[https://huggingface.co/papers/2606.05008](https://huggingface.co/papers/2606.05008)
+
+**AI 摘要**：
+
+针对当前多模态长视频理解领域缺乏系统记忆能力评估的空白，本文提出首个基于认知心理学的多模态记忆评测基准M³Eval，设计了可拆分不同记忆维度的专属任务。对主流模型测试发现，其普遍存在并行视频流表征易纠缠、记忆干扰模式异于人类、时间溯源弱、符号记忆不足等问题，可为后续模型记忆机制优化提供支撑。
+
+<FeedbackButtons slug="item:arxiv-2606.05008" client:visible />
+
+---
+
+# 📄 arXiv cs.LG（机器学习）
+
+## <a href="https://arxiv.org/abs/2606.03995" target="_blank" rel="noopener noreferrer">6. Early Detection of Alzheimer's Disease Using Explainable Machine Learning on Clinical Biomarkers: A Multi-Class Classification Study Using the Alzheimer's Disease Neuroimaging Initiative (ADNI) Dataset</a>
+
+**作者**：Afshan Hashmi  
+
+**AI 摘要**：
+
+该研究针对阿尔茨海默病早筛需求，基于ADNI数据集8项常规临床特征，构建可解释XGBoost三分类模型，区分正常认知、轻度认知障碍与AD，用SMOTE处理类别不平衡、SHAP做特征解释。测试集宏AUC达0.982，性能优异，明确了不同类别的核心预测特征，仅靠常规临床指标即可实现高精度、临床合理的AD筛查。
+
+<FeedbackButtons slug="item:arxiv-2606.03995" client:visible />
+
+---
+
+## <a href="https://arxiv.org/abs/2606.04028" target="_blank" rel="noopener noreferrer">7. Novel Aspects of IEEE SA P3109 Arithmetic Formats for Machine Learning</a>
+
+**作者**：Andrew Fitzgibbon, Christoph M. Wintersteiger, Jeffrey Sarnoff  
+
+**AI 摘要**：
+
+本文梳理面向机器学习的IEEE P3109浮点标准草案的新特性：其定义可参数化配置的二进制浮点格式族，适配低比特场景下的高效数值表示；运算无异常、内置随机舍入等多类舍入饱和模式，统一共缩放因子块运算规则，新增kappa近似指标规范厂商近似实现，所有标准定义均经形式化验证。
+
+<FeedbackButtons slug="item:arxiv-2606.04028" client:visible />
+
+---
+
+## <a href="https://arxiv.org/abs/2606.04029" target="_blank" rel="noopener noreferrer">8. Position: Deployed Reinforcement Learning should be Continual</a>
+
+**作者**：Parnian Behdin, Kevin Roice, Golnaz Mesbahi  
+
+**AI 摘要**：
+
+这是一篇强化学习（RL）立场论文，指出当前落地RL普遍采用“先训后固化”范式，仅在性能退化时才重启训练，存在明显局限。文章核心主张为带评估奖励信号的落地RL本质是持续学习问题，部署后存在四类非平稳因素要求模型持续适配，还结合真实成功案例，给出了替换旧范式的优势与推进路径。
+
+<FeedbackButtons slug="item:arxiv-2606.04029" client:visible />
+
+---
+
+# 🟢 OpenAI 官方动态
+
+## <a href="https://openai.com/index/introducing-new-capabilities-to-gpt-rosalind" target="_blank" rel="noopener noreferrer">9. Introducing new capabilities to GPT-Rosalind</a>
+
+**作者**：OpenAI  
+
+**AI 摘要**：
+
+本次升级针对生命科学领域专用大模型GPT-Rosalind展开，重点拓展四项核心能力：提升生物专业问题的推理精度、补充药物化学领域全链条专业知识、新增基因组学数据深度分析功能、支持实验全流程方案设计与落地。升级后模型可覆盖基础研究、新药研发等多场景，有效赋能生命科学研究提质提效。
+
+<FeedbackButtons slug="item:openai-blog-introducing-new-capabilities-to-gpt-rosalind" client:visible />
+
+---
+
+## <a href="https://openai.com/index/wasmer" target="_blank" rel="noopener noreferrer">10. How Wasmer used Codex to build a Node.js runtime for the edge</a>
+
+**作者**：OpenAI  
+
+**AI 摘要**：
+
+本文介绍WebAssembly运行时服务商Wasmer的开发实践：团队采用搭载GPT-5.5的Codex大模型辅助工具，研发面向边缘场景的Node.js运行时，开发效率较传统模式提升10至20倍，原本需数月完成的研发交付周期被压缩至数周，验证了大模型对底层工具链开发的显著提效作用。
+
+<FeedbackButtons slug="item:openai-blog-wasmer" client:visible />
+
+---
+
+# 🪶 Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-4-8" target="_blank" rel="noopener noreferrer">11. Introducing Claude Opus 4.8</a>
+
+**作者**：Anthropic  
+
+**AI 摘要**：
+
+Claude Opus 4.8是面向高端应用场景的Opus系列大模型的最新升级款。该版本在编码开发、智能体任务、各领域专业工作三类核心场景下的性能均有显著提升，同时大幅增强了长周期复杂任务的处理稳定性与输出一致性，可更好适配高难度、长跨度的连续工作需求。
+
+<FeedbackButtons slug="item:anthropic-claude-opus-4-8" client:visible />
+
+---
+
+## <a href="https://www.anthropic.com/news/claude-design-anthropic-labs" target="_blank" rel="noopener noreferrer">12. Introducing Claude Design by Anthropic Labs</a>
+
+**作者**：Anthropic  
+
+**AI 摘要**：
+
+Anthropic实验室最新发布面向创作场景的AI生产力工具Claude Design，支持用户与Claude大模型协同完成专业视觉内容创作，可输出设计稿、交互原型、演示幻灯片、单页宣传物料等多类精良视觉成果。该工具无需用户掌握专业设计技能，大幅降低优质视觉内容创作门槛，适配多类办公、展示场景需求。
+
+<FeedbackButtons slug="item:anthropic-claude-design-anthropic-labs" client:visible />
+
+---
+
+# 🟣 Google DeepMind
+
+## <a href="https://deepmind.google/blog/were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle-environmental-risks/" target="_blank" rel="noopener noreferrer">13. We’re launching the Google DeepMind Accelerator program in Asia Pacific to tackle environmental risks</a>
+
+**作者**：Google DeepMind  
+
+**AI 摘要**：
+
+谷歌DeepMind近期在亚太地区推出专项加速器项目，核心定位为应对区域各类环境风险。项目依托自身领先的AI技术积累，为亚太区聚焦环境领域的科创团队、研究主体提供技术支持、资源对接等扶持，推动AI在气候建模、灾害预警、生态保护等场景落地，提升区域环境风险应对效能。
+
+<FeedbackButtons slug="item:deepmind-were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle" client:visible />
+
+---
+
+## <a href="https://deepmind.google/blog/fast-tracking-genetic-leads-to-reverse-cellular-aging/" target="_blank" rel="noopener noreferrer">14. Fast-tracking genetic leads to reverse cellular aging</a>
+
+**作者**：Google DeepMind  
+
+**AI 摘要**：
+
+本研究瞄准逆转细胞衰老的遗传靶点挖掘需求，核心方法为生物学家借助Co-Scientist工具开展筛选工作，最终成功发现了一批尚未被报道的新型调控因子，验证证实这些因子可有效实现人类细胞的年轻化重编程，为后续抗衰老技术研发、衰老相关疾病干预提供了全新的研究方向与候选靶点。
+
+<FeedbackButtons slug="item:deepmind-fast-tracking-genetic-leads-to-reverse-cellular-aging" client:visible />
+
+---
+
+# 🤗 Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/Dharma-AI/direct-preference-optimization-beyond-chatbots" target="_blank" rel="noopener noreferrer">15. Direct Preference Optimization Beyond Chatbots</a>
+
+**作者**：Hugging Face  
+
+**AI 摘要**：
+
+当前你仅提供了这篇《聊天机器人之外的直接偏好优化》的论文标题，未附上摘要的具体内容，请你补充完整摘要的原文文本，我会按照要求提炼核心方法、核心结论，输出120字左右的简洁清晰的中文总结。
+
+<FeedbackButtons slug="item:hf-blog-direct-preference-optimization-beyond-chatbots" client:visible />
+
+---
+
+## <a href="https://huggingface.co/blog/adding-mcp-tools-to-reachy-mini" target="_blank" rel="noopener noreferrer">16. Adding MCP Tools to Reachy Mini</a>
+
+**作者**：Hugging Face  
+
+**AI 摘要**：
+
+当前你仅提供了论文标题，未粘贴该摘要的具体内容，请补充完整这篇论文摘要的英文原文，我会按照要求提炼核心方法、结论，输出120字左右、信息准确的清晰中文总结。
+
+<FeedbackButtons slug="item:hf-blog-adding-mcp-tools-to-reachy-mini" client:visible />
+
+---
+
+# 📰 The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">17. After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+**作者**：The Gradient  
+
+**AI 摘要**：
+
+本文从德性伦理视角研究AI对齐问题，反驳“理性主体必然指向固定目标”的预设，提出人类理性本质是将行动适配到包含规范、评价标准、配套资源的自驱动实践网络中。要实现AI适配人类伦理要求、满足核心安全属性、支持人机协作，需让AI决策逻辑匹配人类这种基于实践的行动逻辑。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+---
+
+# ⚡ 量子位
+
+## <a href="https://www.qbitai.com/2026/06/428790.html" target="_blank" rel="noopener noreferrer">18. LeCun 10亿押注的方向，全球领先视觉大模型团队早已布局</a>
+
+**作者**：量子位  
+
+**AI 摘要**：
+
+推出全球首个视觉大模型Grounding DINO的深圳视启未来团队，已提前布局LeCun豪掷10亿美元押注的世界模型赛道，主攻难度更高的隐空间世界模型：在抽象表征空间学习动作与世界状态的因果规律，解决物理世界智能体交互成本高、样本效率低的痛点，支撑智能体实现预判决策。
+
+<FeedbackButtons slug="item:qbitai-428790" client:visible />
+
+---
+
+## <a href="https://www.qbitai.com/2026/06/428791.html" target="_blank" rel="noopener noreferrer">19. 一个GPT Plus会员的钱，够机器人跑一个月世界模型了</a>
+
+**作者**：量子位  
+
+**AI 摘要**：
+
+智在无界发布全球首个可在百TOPS级端侧芯片运行的隐式世界模型Being-H-Flash。在日分拣千件快递的机器人场景中，它月算力成本仅150元，和GPT Plus会员价相当，仅为英伟达Cosmos方案的2%，比VLA架构Pi0.5便宜70%；可在Orin NX端侧芯片实现近20FPS实时运行，兼容英伟达及国产AI芯片，无需云端部署。
+
+<FeedbackButtons slug="item:qbitai-428791" client:visible />
+
+---
+
+## <a href="https://www.qbitai.com/2026/06/428778.html" target="_blank" rel="noopener noreferrer">20. 戴盟机器人完成亿元融资，阿里通义多模态大牛加盟攻关物理世界模型</a>
+
+**作者**：量子位  
+
+**AI 摘要**：
+
+具身智能企业戴盟机器人近期完成亿元A轮融资，由汇川产投、中国电信联合投资。阿里通义前多模态专家原玮浩已加盟任首席AI科学家，团队主打触觉智能路线，核心攻关融合触觉、接触状态的物理世界模型，融资将投向模型研发、相关数据集搭建及商业闭环落地。
+
+<FeedbackButtons slug="item:qbitai-428778" client:visible />
+
+---
