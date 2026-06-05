@@ -51,12 +51,20 @@ jobs:
           MODE="${{ github.event.inputs.mode || 'both' }}"
           npx tsx scripts/digest-fetch.ts "$MODE"
 
+      - name: Refresh post embeddings (incremental)
+        env:
+          DOUBAO_API_KEY: ${{ secrets.DOUBAO_API_KEY }}
+          ARK_API_KEY: ${{ secrets.ARK_API_KEY }}
+        # 失败不阻塞 commit 流程；缺 embedding 时 related-posts 自动 fallback tag
+        continue-on-error: true
+        run: npx tsx scripts/generate-embeddings.ts
+
       - name: Commit and push if changed
         id: commit
         run: |
           git config user.name "zorotreeking-bot"
           git config user.email "bot@zorotreeking.online"
-          git add src/content/ai/digest-*.mdx src/content/invest/digest-*.mdx 2>/dev/null || true
+          git add src/content/ai/digest-*.mdx src/content/invest/digest-*.mdx src/data/embeddings.json 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "No new digest files. Nothing to commit."
             echo "committed=false" >> "$GITHUB_OUTPUT"
