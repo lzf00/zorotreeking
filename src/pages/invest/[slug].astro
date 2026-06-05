@@ -17,7 +17,14 @@ const lang = "zh" as const;
 const t = useTranslations(lang);
 ---
 
-<BaseLayout title={entry.data.title} description={entry.data.description}>
+<BaseLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  ogType="article"
+  publishedTime={entry.data.date}
+  modifiedTime={entry.data.updated}
+  tags={entry.data.tags}
+  ogImage={entry.data.cover}>
   <article class="max-w-2xl mx-auto px-6 sm:px-8 pt-12 sm:pt-20 pb-24 sm:pb-32">
 
     <a href={pathWithLang("/invest", lang)}

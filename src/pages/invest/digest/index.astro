@@ -1,0 +1,82 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { useTranslations, pathWithLang } from "@/i18n/ui";
+import { extractDigestHighlights } from "@/lib/digest-highlights";
+
+const lang = "zh" as const;
+const t = useTranslations(lang);
+
+const isDigest = (p: { data: { tags?: string[]; translationKey: string } }) =>
+  (p.data.tags ?? []).includes("digest") || p.data.translationKey.startsWith("digest-");
+
+const digests = (await getCollection("invest", (p) => p.data.lang === lang && !p.data.draft))
+  .filter(isDigest)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const groups: Record<string, typeof digests> = {};
+for (const d of digests) {
+  const ym = d.data.date.toISOString().slice(0, 7);
+  (groups[ym] ??= []).push(d);
+}
+const months = Object.keys(groups).sort().reverse();
+---
+
+<BaseLayout
+  title={`投资资讯日报 · 归档`}
+  description={`${digests.length} 期自动日报，cron 每日 08:00 抓同花顺 / 东方财富 / Yahoo Finance，AI 改写`}>
+  <section class="max-w-3xl mx-auto px-5 pt-12 pb-8">
+    <a href={pathWithLang("/invest", lang)}
+       class="inline-block text-[11px] uppercase tracking-[0.2em] text-zinc-500 hover:text-section-invest transition-colors mb-6">
+      ← {t("section.invest.title")}
+    </a>
+    <div class="text-[11px] uppercase tracking-[0.2em] text-zinc-500 font-mono mb-3">Auto Digest</div>
+    <h1 class="text-3xl sm:text-5xl leading-tight tracking-tight font-semibold text-section-invest">
+      投资资讯日报 · 归档
+    </h1>
+    <p class="mt-4 text-base sm:text-lg leading-relaxed text-zinc-500 font-light">
+      {digests.length} 期，cron 每日 08:00 北京抓同花顺 7×24、东方财富、Yahoo Finance，AI 改写摘要。<strong>仅作信息整理，不构成投资建议。</strong>
+    </p>
+  </section>
+
+  <section class="max-w-3xl mx-auto px-5 pb-24">
+    {months.map(ym => (
+      <div class="mt-10">
+        <h2 class="text-xs uppercase tracking-[0.2em] text-zinc-400 font-mono mb-4 pb-2 border-b border-[var(--border)]">
+          {ym}
+        </h2>
+        <ul class="divide-y divide-[var(--border)]">
+          {groups[ym].map(d => {
+            const highlights = extractDigestHighlights(d.body, 2);
+            return (
+              <li class="py-4">
+                <div class="flex items-baseline justify-between gap-3">
+                  <h3 class="text-base font-semibold">
+                    <a href={pathWithLang(`/invest/${d.data.translationKey}`, lang)}
+                       class="hover:text-section-invest transition-colors">
+                      {d.data.title}
+                    </a>
+                  </h3>
+                  <time class="text-xs text-zinc-500 tabular-nums shrink-0">{d.data.date.toISOString().slice(0, 10)}</time>
+                </div>
+                {d.data.description && (
+                  <p class="mt-1 text-sm text-[var(--text-secondary)] line-clamp-1">{d.data.description}</p>
+                )}
+                {highlights.length > 0 && (
+                  <ul class="mt-1.5 space-y-0.5">
+                    {highlights.map(h => (
+                      <li class="text-xs text-zinc-400 line-clamp-1">· {h}</li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    ))}
+    {digests.length === 0 && (
+      <p class="py-12 text-center text-zinc-500">还没有日报</p>
+    )}
+  </section>
+</BaseLayout>

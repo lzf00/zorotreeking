@@ -7,6 +7,11 @@ import { useTranslations, pathWithLang, defaultLang } from "@/i18n/ui";
 const lang = defaultLang;
 const t = useTranslations(lang);
 
+// digest 类自动日报不进首页"最近更新"——首页只展示原创笔记。
+// 判断标准：tags 含 "digest" 或 translationKey 以 "digest-" 开头。
+const isDigest = (p: { data: { tags?: string[]; translationKey: string } }) =>
+  (p.data.tags ?? []).includes("digest") || p.data.translationKey.startsWith("digest-");
+
 const [aiPosts, investPosts, photoAlbums, hikes] = await Promise.all([
   getCollection("ai", (p) => p.data.lang === lang && !p.data.draft),
   getCollection("invest", (p) => p.data.lang === lang && !p.data.draft),
@@ -14,9 +19,13 @@ const [aiPosts, investPosts, photoAlbums, hikes] = await Promise.all([
   getCollection("hike", (p) => p.data.lang === lang && !p.data.draft),
 ]);
 
+// 栏目卡片展示的"原创数"也用过滤后的，避免"AI 23 篇"骗访客
+const aiOriginal = aiPosts.filter(p => !isDigest(p));
+const investOriginal = investPosts.filter(p => !isDigest(p));
+
 const latest = [
-  ...aiPosts.map(p => ({ ...p, section: "ai" as const })),
-  ...investPosts.map(p => ({ ...p, section: "invest" as const })),
+  ...aiOriginal.map(p => ({ ...p, section: "ai" as const })),
+  ...investOriginal.map(p => ({ ...p, section: "invest" as const })),
   ...photoAlbums.map(p => ({ ...p, section: "photo" as const })),
   ...hikes.map(p => ({ ...p, section: "hike" as const })),
 ]
@@ -60,8 +69,8 @@ const sectionAccent: Record<string, string> = {
 
   <!-- ── 四个栏目卡（2×2 圆角灰底，Apple 产品宫格风） ── -->
   <section class="max-w-6xl mx-auto px-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-    <SectionCard href={pathWithLang("/ai", lang)}     title={t("section.ai.title")}     desc={t("section.ai.desc")}     accent="ai"     count={aiPosts.length}     countLabel="篇" index={0} />
-    <SectionCard href={pathWithLang("/invest", lang)} title={t("section.invest.title")} desc={t("section.invest.desc")} accent="invest" count={investPosts.length} countLabel="篇" index={1} />
+    <SectionCard href={pathWithLang("/ai", lang)}     title={t("section.ai.title")}     desc={t("section.ai.desc")}     accent="ai"     count={aiOriginal.length}     countLabel="篇" index={0} />
+    <SectionCard href={pathWithLang("/invest", lang)} title={t("section.invest.title")} desc={t("section.invest.desc")} accent="invest" count={investOriginal.length} countLabel="篇" index={1} />
     <SectionCard href={pathWithLang("/photo", lang)}  title={t("section.photo.title")}  desc={t("section.photo.desc")}  accent="photo"  count={photoAlbums.length}  countLabel="组" index={2} />
     <SectionCard href={pathWithLang("/hike", lang)}   title={t("section.hike.title")}   desc={t("section.hike.desc")}   accent="hike"   count={hikes.length}        countLabel="条" index={3} />
   </section>

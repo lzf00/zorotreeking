@@ -25,8 +25,26 @@ function stripHtml(s: string): string {
     .trim();
 }
 
+// 量子位偶尔会发软广 / 跨界资讯（汽车、足球、电商）。
+// 这里按标题做粗筛——命中任意关键词就跳过。
+const BLACKLIST = [
+  "比亚迪", "蔚来", "理想汽车", "小鹏",
+  "足球", "篮球", "奥运", "世界杯",
+  "618", "双 11", "双十一", "电商", "直播带货",
+  "新车", "续航", "百公里", "马力", "驾驶", "城市 NOA",
+  "新片", "电影", "票房", "综艺",
+  "招聘", "面试题",
+];
+
+function isBlacklisted(title: string): boolean {
+  const t = title.toLowerCase();
+  return BLACKLIST.some((kw) => t.includes(kw.toLowerCase()));
+}
+
 export async function fetchQbitAI(topN = 4): Promise<Paper[]> {
-  const url = `https://www.qbitai.com/wp-json/wp/v2/posts?per_page=${topN}&orderby=date`;
+  // 多拉几篇当 buffer，过滤后再截 topN。
+  const fetchN = Math.max(topN * 3, 12);
+  const url = `https://www.qbitai.com/wp-json/wp/v2/posts?per_page=${fetchN}&orderby=date`;
   const resp = await fetch(url, { headers: { "User-Agent": UA } });
   if (!resp.ok) throw new Error(`qbitai ${resp.status}`);
 
@@ -41,6 +59,8 @@ export async function fetchQbitAI(topN = 4): Promise<Paper[]> {
 
   return data
     .filter((p) => p.title?.rendered && p.link)
+    .filter((p) => !isBlacklisted(stripHtml(p.title!.rendered!)))
+    .slice(0, topN)
     .map((p) => {
       const title = stripHtml(p.title!.rendered!);
       const excerpt = stripHtml(p.excerpt?.rendered ?? "");

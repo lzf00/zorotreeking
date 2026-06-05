@@ -2,7 +2,15 @@
 import type { MarkdownHeading } from "astro";
 interface Props { headings: MarkdownHeading[]; label?: string }
 const { headings, label = "目录" } = Astro.props;
-const items = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+
+// Digest 这种"几十个 H2"的页面，全列 TOC 长得离谱。
+// 策略：H2 超过 6 个且有 H1 分组 → 只显示 H1（来源分组）；否则正常 h2+h3。
+const allH1 = headings.filter((h) => h.depth === 1);
+const allH2 = headings.filter((h) => h.depth === 2);
+const useH1Grouping = allH2.length > 6 && allH1.length > 0;
+const items = useH1Grouping
+  ? allH1
+  : headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 ---
 
 {items.length > 0 && (

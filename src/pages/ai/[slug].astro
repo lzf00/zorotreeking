@@ -21,7 +21,14 @@ const t = useTranslations(lang);
 const readMins = estimateReadingTime(entry.body);
 ---
 
-<BaseLayout title={entry.data.title} description={entry.data.description}>
+<BaseLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  ogType="article"
+  publishedTime={entry.data.date}
+  modifiedTime={entry.data.updated}
+  tags={entry.data.tags}
+  ogImage={entry.data.cover}>
   <TOC headings={headings} label="目录" />
   <article class="max-w-2xl mx-auto px-6 sm:px-8 pt-12 sm:pt-20 pb-24 sm:pb-32">
 

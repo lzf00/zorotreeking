@@ -33,7 +33,14 @@ const elevationGainM = entry.data.elevationGainM ?? stats?.elevationGainM;
 const diffLabel = { easy: "Easy", moderate: "Moderate", hard: "Hard", expert: "Expert" };
 ---
 
-<BaseLayout title={entry.data.title} description={entry.data.description}>
+<BaseLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  ogType="article"
+  publishedTime={entry.data.date}
+  modifiedTime={entry.data.updated}
+  tags={entry.data.tags}
+  ogImage={entry.data.cover}>
   <article class="max-w-3xl mx-auto px-5 pt-12 pb-16">
     <header class="mb-6">
       <a href={pathWithLang("/hike", lang)} class="text-sm text-section-hike hover:underline">← {t("section.hike.title")}</a>

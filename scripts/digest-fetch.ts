@@ -194,6 +194,25 @@ async function buildAIDigest(date: string): Promise<void> {
     (grouped[s.source] ??= []).push(s);
   }
 
+  // tag 主题化：digest + auto 保留，按 source 自动派生具体主题 tag。
+  // 老的 [digest, auto, ai-papers] 三个固定 tag 检索没价值。
+  const sourceTagMap: Record<string, string> = {
+    "hf-daily": "hf-papers",
+    "hf-blog": "hf-blog",
+    "arxiv": "arxiv",
+    "openai-blog": "openai",
+    "anthropic": "anthropic",
+    "google-research": "google-research",
+    "deepmind": "deepmind",
+    "thegradient": "the-gradient",
+    "lillog": "lil-log",
+    "qbitai": "qbitai",
+  };
+  const themeTags = Array.from(new Set(
+    Object.keys(grouped).map((k) => sourceTagMap[k] ?? k).filter(Boolean),
+  ));
+  const tagList = ["digest", "auto", ...themeTags].slice(0, 8);
+
   const lines: string[] = [];
   lines.push("---");
   lines.push(`lang: zh`);
@@ -201,7 +220,7 @@ async function buildAIDigest(date: string): Promise<void> {
   lines.push(`title: "AI 每日精选 · ${date}"`);
   lines.push(`description: "${summaries.length} 篇论文 · 多源聚合 + AI 摘要"`);
   lines.push(`date: ${date}`);
-  lines.push(`tags: [digest, auto, ai-papers]`);
+  lines.push(`tags: [${tagList.join(", ")}]`);
   lines.push(`category: paper`);
   lines.push(`draft: false`);
   lines.push("---");
@@ -273,13 +292,24 @@ async function buildInvestDigest(date: string): Promise<void> {
   }
 
   const lines: string[] = [];
+  // tag 主题化：按本批新闻里出现的 source 派生具体标签
+  const investSourceTagMap: Record<string, string> = {
+    "10jqka": "tonghuashun",
+    "eastmoney": "eastmoney",
+    "yahoo-finance": "yahoo",
+  };
+  const themeTags = Array.from(new Set(
+    Object.keys(grouped).map((k) => investSourceTagMap[k] ?? k).filter(Boolean),
+  ));
+  const tagList = ["digest", "auto", "market-news", ...themeTags].slice(0, 8);
+
   lines.push("---");
   lines.push(`lang: zh`);
   lines.push(`translationKey: digest-${date}`);
   lines.push(`title: "投资资讯日报 · ${date}"`);
   lines.push(`description: "${items.length} 条快讯 · 多源聚合 + AI 改写"`);
   lines.push(`date: ${date}`);
-  lines.push(`tags: [digest, auto, market-news]`);
+  lines.push(`tags: [${tagList.join(", ")}]`);
   lines.push(`draft: false`);
   lines.push("---");
   lines.push("");

@@ -312,6 +312,10 @@ function fmtAsOf(iso: string | undefined): string {
                  class="font-medium text-section-invest hover:underline">
                 {n.title}
               </a>
+              <span class="ml-1.5 text-[10px] font-mono uppercase tracking-wider text-[var(--text-tertiary)] align-middle"
+                    title="Wind 不返回原文 URL，标题跳转到百度搜索">
+                ↗ 搜索
+              </span>
               {n.date && <span class="ml-2 text-[10px] font-mono text-[var(--text-tertiary)]">{n.date}</span>}
               {n.snippet && (
                 <p class="mt-2 text-sm text-[var(--text-secondary)] leading-relaxed line-clamp-3" title={n.snippet}>
@@ -321,9 +325,6 @@ function fmtAsOf(iso: string | undefined): string {
             </li>
           ))}
         </ol>
-        <p class="mt-3 text-[11px] text-[var(--text-tertiary)]">
-          标题为百度搜索链接（Wind 新闻接口不返回原文 URL）
-        </p>
       </section>
     </>
   )}
