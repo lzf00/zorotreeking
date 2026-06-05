@@ -36,7 +36,7 @@ const appReaders = [
           id="buttondown-form"
           action={`https://buttondown.com/api/emails/embed-subscribe/${buttondownUser}`}
           method="post"
-          target="_blank"
+          target="buttondown-sink"
           class="flex items-stretch rounded-xl border border-[var(--border)] overflow-hidden">
           <input
             id="buttondown-email"
@@ -52,10 +52,13 @@ const appReaders = [
             订阅邮件
           </button>
         </form>
+        <iframe name="buttondown-sink" title="buttondown response sink"
+                class="hidden" aria-hidden="true" tabindex="-1"></iframe>
         <p id="buttondown-hint" class="mt-2 text-xs text-[var(--text-tertiary)]">每周不超过 2 封，可一键退订。由 Buttondown 托管。</p>
-        <p id="buttondown-ok" class="mt-2 text-xs text-green-600 hidden">
-          ✓ 已提交！请去你的邮箱点击 Buttondown 发来的<strong>确认链接</strong>完成订阅（也可能进了垃圾邮件箱）。
-        </p>
+        <div id="buttondown-ok" class="mt-3 text-sm text-green-600 hidden items-start gap-2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span>已提交！请去邮箱点击 Buttondown 发来的<strong>确认链接</strong>完成订阅（可能在垃圾邮件箱）</span>
+        </div>
       </div>
 
       <div class="mt-12 flex items-center gap-3 max-w-md mx-auto">
@@ -109,16 +112,17 @@ const appReaders = [
 
 <script is:inline>
   document.addEventListener("DOMContentLoaded", () => {
-    // Buttondown 订阅：form 真 POST 到新 tab，inline 同时显示反馈。
+    // Buttondown 订阅：form POST 进 hidden iframe，原页 inline 显示反馈，
+    // 用户看不到 Buttondown 的空白响应页。
     const fm = document.getElementById("buttondown-form");
     const okMsg = document.getElementById("buttondown-ok");
     const hintMsg = document.getElementById("buttondown-hint");
     const emailIn = document.getElementById("buttondown-email");
     if (fm && okMsg) {
       fm.addEventListener("submit", () => {
-        // 让 form 正常 submit（target="_blank" 打开 buttondown），同时 inline 反馈
         setTimeout(() => {
           okMsg.classList.remove("hidden");
+          okMsg.classList.add("flex");
           hintMsg && hintMsg.classList.add("hidden");
           if (emailIn) emailIn.value = "";
         }, 150);
