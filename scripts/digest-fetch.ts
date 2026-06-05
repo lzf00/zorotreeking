@@ -40,20 +40,21 @@ import { summarizeToChinese } from "./lib/llm.ts";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CONTENT_DIR = path.join(ROOT, "src", "content");
 
+// Section 标题不带 emoji——详情页在 prose 里把它弱化为 uppercase 小字。
 const SOURCE_LABEL: Record<string, string> = {
-  "hf-daily": "🤗 Hugging Face Daily Papers",
-  "hf-blog": "🤗 Hugging Face Blog",
-  "arxiv": "📄 arXiv cs.LG（机器学习）",
-  "openai-blog": "🟢 OpenAI 官方动态",
-  "anthropic": "🪶 Anthropic News",
-  "google-research": "🟦 Google Research",
-  "deepmind": "🟣 Google DeepMind",
-  "thegradient": "📰 The Gradient",
-  "lillog": "✍️ Lil'Log（Lilian Weng）",
-  "qbitai": "⚡ 量子位",
-  "10jqka": "📱 同花顺 7×24",
-  "eastmoney": "🟢 东方财富 7×24",
-  "yahoo-finance": "📈 Yahoo Finance",
+  "hf-daily": "Hugging Face Daily Papers",
+  "hf-blog": "Hugging Face Blog",
+  "arxiv": "arXiv cs.LG",
+  "openai-blog": "OpenAI",
+  "anthropic": "Anthropic News",
+  "google-research": "Google Research",
+  "deepmind": "Google DeepMind",
+  "thegradient": "The Gradient",
+  "lillog": "Lil'Log",
+  "qbitai": "量子位",
+  "10jqka": "同花顺 7×24",
+  "eastmoney": "东方财富 7×24",
+  "yahoo-finance": "Yahoo Finance",
 };
 
 function todayInBeijing(): string {
@@ -210,18 +211,17 @@ async function buildAIDigest(date: string): Promise<void> {
   lines.push(`> 由 cron 每日 08:00 北京自动从 HF Daily Papers + arxiv cs.LG 抓取，豆包翻译/摘要。仅供参考。`);
   lines.push("");
 
-  let globalIdx = 0;
   for (const sourceKey of Object.keys(grouped)) {
     const label = SOURCE_LABEL[sourceKey] || sourceKey;
     lines.push(`# ${label}`);
     lines.push("");
     for (const p of grouped[sourceKey]) {
-      globalIdx++;
       // 标题本身是外链（点击新窗口打开 arxiv）。URL 中的 " 转义掉避免破属性。
+      // 不带编号——苹果 newsroom 每篇 article 独立，编号是 noise。
       const arxivHref = (p.url || "").replace(/"/g, "%22");
-      lines.push(`## <a href="${arxivHref}" target="_blank" rel="noopener noreferrer">${globalIdx}. ${sanitizeForMdx(p.title)}</a>`);
+      lines.push(`## <a href="${arxivHref}" target="_blank" rel="noopener noreferrer">${sanitizeForMdx(p.title)}</a>`);
       lines.push("");
-      // meta 合并单行：📄 HF ★ N · 作者前 3 个… · [HF 镜像](url)
+      // meta 合并单行：HF ★ N · 作者前 3 个… · HF 镜像
       const metaParts: string[] = [];
       if (p.upvotes != null) metaParts.push(`HF ★ ${p.upvotes}`);
       if (p.authors.length > 0) {
@@ -230,7 +230,7 @@ async function buildAIDigest(date: string): Promise<void> {
       }
       if (p.hfUrl) metaParts.push(`[HF 镜像](${p.hfUrl})`);
       if (metaParts.length > 0) {
-        lines.push(`*📄 ${metaParts.join(" · ")}*`);
+        lines.push(`*${metaParts.join(" · ")}*`);
         lines.push("");
       }
       lines.push(sanitizeForMdx(p.zhSummary));
@@ -288,24 +288,22 @@ async function buildInvestDigest(date: string): Promise<void> {
   lines.push("> 由 cron 每日 08:00 北京自动从同花顺 + 东方财富抓取，豆包改写摘要。**仅作信息整理，不构成投资建议。**");
   lines.push("");
 
-  let globalIdx = 0;
   for (const sourceKey of Object.keys(grouped)) {
     const label = SOURCE_LABEL[sourceKey] || sourceKey;
     lines.push(`# ${label}`);
     lines.push("");
     for (const n of grouped[sourceKey]) {
-      globalIdx++;
       const timeStr = new Date(n.publishedAt).toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" });
-      // 标题本身就是原文外链（新窗口）
+      // 标题本身就是原文外链（新窗口）；不带编号
       const newsHref = (n.url || "").replace(/"/g, "%22");
       if (newsHref) {
-        lines.push(`## <a href="${newsHref}" target="_blank" rel="noopener noreferrer">${globalIdx}. ${sanitizeForMdx(n.title)}</a>`);
+        lines.push(`## <a href="${newsHref}" target="_blank" rel="noopener noreferrer">${sanitizeForMdx(n.title)}</a>`);
       } else {
-        lines.push(`## ${globalIdx}. ${sanitizeForMdx(n.title)}`);
+        lines.push(`## ${sanitizeForMdx(n.title)}`);
       }
       lines.push("");
-      // meta 合并单行：🕐 时间 · 涉及：A, B, C
-      const metaParts: string[] = [`🕐 ${timeStr}`];
+      // meta 合并单行：时间 · 涉及：A, B, C
+      const metaParts: string[] = [timeStr];
       if (n.stocks && n.stocks.length > 0) {
         metaParts.push(`涉及：${n.stocks.slice(0, 5).join("、")}`);
       }

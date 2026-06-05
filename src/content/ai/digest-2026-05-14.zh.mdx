@@ -11,177 +11,177 @@ draft: false
 
 > 由 cron 每日 08:00 北京自动从 HF Daily Papers + arxiv cs.LG 抓取，豆包翻译/摘要。仅供参考。
 
-# 🤗 Hugging Face Daily Papers
+# Hugging Face Daily Papers
 
-## <a href="https://arxiv.org/abs/2605.10616" target="_blank" rel="noopener noreferrer">1. MulTaBench: Benchmarking Multimodal Tabular Learning with Text and Image</a>
+## <a href="https://arxiv.org/abs/2605.10616" target="_blank" rel="noopener noreferrer">MulTaBench: Benchmarking Multimodal Tabular Learning with Text and Image</a>
 
-*📄 HF ★ 81 · Alan Arazi, Eilam Shapira, Shoham Grunblat… · [HF 镜像](https://huggingface.co/papers/2605.10616)*
+*HF 81 · Alan Arazi, Eilam Shapira, Shoham Grunblat… · [HF 镜像](https://huggingface.co/papers/2605.10616)*
 
 针对现有表格基础模型不原生支持图文非结构化模态、现有多模态表格基准存在评估偏差的问题，本文推出含40个数据集的MulTaBench基准，均分图像-表格、文本-表格任务，侧重模态信号互补场景。实验验证任务感知表示调优增益跨模态、模型等均通用，可支撑多模态表格基础模型研发。
 
 ---
 
-## <a href="https://arxiv.org/abs/2605.13779" target="_blank" rel="noopener noreferrer">2. MinT: Managed Infrastructure for Training and Serving Millions of LLMs</a>
+## <a href="https://arxiv.org/abs/2605.13779" target="_blank" rel="noopener noreferrer">MinT: Managed Infrastructure for Training and Serving Millions of LLMs</a>
 
-*📄 HF ★ 66 · Mind Lab, Song Cao, Vic Cao… · [HF 镜像](https://huggingface.co/papers/2605.13779)*
+*HF 66 · Mind Lab, Song Cao, Vic Cao… · [HF 镜像](https://huggingface.co/papers/2605.13779)*
 
 本文提出面向LoRA微调与在线服务的托管基础设施MinT，无需生成合并全量 checkpoint，常驻基座模型仅流转LoRA适配器，从适配超大规模基座、压缩流转开销、解耦策略存储与算力工作集三个维度优化，可支撑百万级LoRA策略库，在共享1T参数级基座的前提下，大幅提升训练、加载、多策略并行效率，降低显存占用。
 
 ---
 
-## <a href="https://arxiv.org/abs/2605.13724" target="_blank" rel="noopener noreferrer">3. AnyFlow: Any-Step Video Diffusion Model with On-Policy Flow Map Distillation</a>
+## <a href="https://arxiv.org/abs/2605.13724" target="_blank" rel="noopener noreferrer">AnyFlow: Any-Step Video Diffusion Model with On-Policy Flow Map Distillation</a>
 
-*📄 HF ★ 62 · Yuchao Gu, Guian Fang, Yuxin Jiang… · [HF 镜像](https://huggingface.co/papers/2605.13724)*
+*HF 62 · Yuchao Gu, Guian Fang, Yuxin Jiang… · [HF 镜像](https://huggingface.co/papers/2605.13724)*
 
 针对一致性蒸馏的少步视频生成模型采样步数增加时性能下降、无法适配任意步数采样的问题，本文提出AnyFlow任意步视频扩散蒸馏框架，将蒸馏目标从端点一致性映射改为任意时间区间的流图迁移，结合流图反向模拟实现高效同策略蒸馏。实验表明，其少步生成性能不逊于同类方法，且性能可随采样步数预算同步提升。
 
 ---
 
-## <a href="https://arxiv.org/abs/2605.13831" target="_blank" rel="noopener noreferrer">4. Training Long-Context Vision-Language Models Effectively with Generalization Beyond 128K Context</a>
+## <a href="https://arxiv.org/abs/2605.13831" target="_blank" rel="noopener noreferrer">Training Long-Context Vision-Language Models Effectively with Generalization Beyond 128K Context</a>
 
-*📄 HF ★ 48 · Zhaowei Wang, Lishu Luo, Haodong Duan… · [HF 镜像](https://huggingface.co/papers/2605.13831)*
+*HF 48 · Zhaowei Wang, Lishu Luo, Haodong Duan… · [HF 镜像](https://huggingface.co/papers/2605.13831)*
 
 针对长上下文多模态大模型训练的长数据配比方案欠缺问题，本文经系统消融实验明确3项训练优化准则，仅用5B token对Qwen2.5-VL-7B做持续预训练，推出MMProLong。其将上下文窗口从32K拓展至128K，长文档VQA精度提7.1%，无需额外训练即可外推至512K上下文，适配多类长场景，提供了可落地的训练范式。
 
 ---
 
-## <a href="https://arxiv.org/abs/2605.12411" target="_blank" rel="noopener noreferrer">5. Predicting Decisions of AI Agents from Limited Interaction through Text-Tabular Modeling</a>
+## <a href="https://arxiv.org/abs/2605.12411" target="_blank" rel="noopener noreferrer">Predicting Decisions of AI Agents from Limited Interaction through Text-Tabular Modeling</a>
 
-*📄 HF ★ 35 · Eilam Shapira, Moshe Tennenholtz, Roi Reichart · [HF 镜像](https://huggingface.co/papers/2605.12411)*
+*HF 35 · Eilam Shapira, Moshe Tennenholtz, Roi Reichart · [HF 镜像](https://huggingface.co/papers/2605.12411)*
 
 本文针对AI智能体与陌生对手交互时的决策预测问题，提出目标自适应文本-表格建模框架，新增冻结小模型隐态作为观察者特征，仅用隐层信息而非输出。测试中模型效果优于直接大模型提示基线，交互16次时预测AUC提升4个点，报价误差降14%，验证了框架及隐态特征的有效性。
 
 ---
 
-# 📄 arXiv cs.LG（机器学习）
+# arXiv cs.LG（机器学习）
 
-## <a href="https://arxiv.org/abs/2605.12561" target="_blank" rel="noopener noreferrer">6. Learning When to Act: Communication-Efficient Reinforcement Learning via Run-Time Assurance</a>
+## <a href="https://arxiv.org/abs/2605.12561" target="_blank" rel="noopener noreferrer">Learning When to Act: Communication-Efficient Reinforcement Learning via Run-Time Assurance</a>
 
-*📄 Adam Haroon, Erick J. Rodr\'iguez-Seda, Cody Fleming…*
+*Adam Haroon, Erick J. Rodr\'iguez-Seda, Cody Fleming…*
 
 该研究面向安全强化学习，跳出“智能体该做什么”的常规思路，转而研究“何时需要决策”的问题，联合学习控制输入与低通信开销的决策时序，搭配逐点李亚普诺夫安全护盾和运行时保障层，可提供更强安全保证。实验显示其采样间隔较传统基线最高提3.51倍，同速率固定LQR完全失稳，方案还支持跨环境迁移、适配高维系统，鲁棒性优异。
 
 ---
 
-## <a href="https://arxiv.org/abs/2605.12580" target="_blank" rel="noopener noreferrer">7. CAWI: Copula-Aligned Weight Initialization for Randomized Neural Networks</a>
+## <a href="https://arxiv.org/abs/2605.12580" target="_blank" rel="noopener noreferrer">CAWI: Copula-Aligned Weight Initialization for Randomized Neural Networks</a>
 
-*📄 Mushir Akhtar, M. Tanveer, Mohd. Arshad*
+*Mushir Akhtar, M. Tanveer, Mohd. Arshad*
 
 针对无反向传播的随机神经网络传统初始化无视特征依赖、劣化性能的问题，本文提出Copula对齐权重初始化框架CAWI：基于数据拟合的Copula采样输入-隐层权重，捕捉特征关联、非对称及尾依赖特性，保留原输出层闭式解优势。经83个通用分类基准、2个生物医学数据集验证，该方法相较传统初始化性能提升显著。
 
 ---
 
-## <a href="https://arxiv.org/abs/2605.12584" target="_blank" rel="noopener noreferrer">8. Towards Robust Federated Multimodal Graph Learning under Modality Heterogeneity</a>
+## <a href="https://arxiv.org/abs/2605.12584" target="_blank" rel="noopener noreferrer">Towards Robust Federated Multimodal Graph Learning under Modality Heterogeneity</a>
 
-*📄 Sirui Zhang, Haonan Wang, Xunkai Li…*
+*Sirui Zhang, Haonan Wang, Xunkai Li…*
 
 针对联邦多模态图学习的模态异质性痛点，现有方案存在客户端补全缺全局语义、服务端聚合受更新可靠性差异干扰的问题，本文提出FedMPO框架，采用拓扑感知跨模态生成、缺失感知信号滤波、可靠性加权聚合设计。6个数据集3类任务实验显示，其在高缺失、非IID场景下较基线最高提升4.10%、5.65%，性能显著领先。
 
 ---
 
-# 🟢 OpenAI 官方动态
+# OpenAI 官方动态
 
-## <a href="https://openai.com/index/building-codex-windows-sandbox" target="_blank" rel="noopener noreferrer">9. Building a safe, effective sandbox to enable Codex on Windows</a>
+## <a href="https://openai.com/index/building-codex-windows-sandbox" target="_blank" rel="noopener noreferrer">Building a safe, effective sandbox to enable Codex on Windows</a>
 
-*📄 OpenAI*
+*OpenAI*
 
 OpenAI针对Windows平台部署Codex的安全需求，打造了专用安全沙箱方案，核心通过精细化管控文件访问权限、限制网络访问边界两类机制实现安全隔离。该方案既保障了Codex编码代理的运行效率，又可规避代码执行时的系统篡改、未授权数据调取、恶意联网等风险，为大模型代码工具在Windows端的安全落地提供了可行路径。
 
 ---
 
-## <a href="https://openai.com/index/our-response-to-the-tanstack-npm-supply-chain-attack" target="_blank" rel="noopener noreferrer">10. Our response to the TanStack npm supply chain attack</a>
+## <a href="https://openai.com/index/our-response-to-the-tanstack-npm-supply-chain-attack" target="_blank" rel="noopener noreferrer">Our response to the TanStack npm supply chain attack</a>
 
-*📄 OpenAI*
+*OpenAI*
 
 针对TanStack“Mini Shai-Hulud”npm供应链攻击事件，OpenAI公开了官方处置详情：已完成自身系统、签名证书的安全加固，排查明确了事件影响范围，同时要求所有macOS端用户务必在2026年6月12日前更新OpenAI旗下应用。后续OpenAI将升级防御体系，应对持续演变的软件供应链安全风险。
 
 ---
 
-# 🪶 Anthropic News
+# Anthropic News
 
-## <a href="https://www.anthropic.com/news/claude-opus-4-7" target="_blank" rel="noopener noreferrer">11. Introducing Claude Opus 4.7</a>
+## <a href="https://www.anthropic.com/news/claude-opus-4-7" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 4.7</a>
 
-*📄 Anthropic*
+*Anthropic*
 
 最新大模型Claude Opus 4.7现已全面开放使用。相较前代版本Opus 4.6，该版本核心能力提升集中在高阶软件工程领域，尤其是处理高难度复杂开发任务的表现有显著增益，可更好适配复杂编码、系统设计、疑难问题排查等专业开发场景需求。
 
 ---
 
-## <a href="https://www.anthropic.com/news/claude-design-anthropic-labs" target="_blank" rel="noopener noreferrer">12. Introducing Claude Design by Anthropic Labs</a>
+## <a href="https://www.anthropic.com/news/claude-design-anthropic-labs" target="_blank" rel="noopener noreferrer">Introducing Claude Design by Anthropic Labs</a>
 
-*📄 Anthropic*
+*Anthropic*
 
 Anthropic实验室正式发布全新产品Claude Design。该产品支持用户与Claude协同开展创作，能够产出完成度较高的各类专业视觉成果，适用场景涵盖设计方案、交互原型、演示幻灯片、单页宣传材料等，为有视觉内容产出需求的用户提供了便捷的AI协作创作工具。
 
 ---
 
-# 🟣 Google DeepMind
+# Google DeepMind
 
-## <a href="https://deepmind.google/blog/alphaevolve-impact/" target="_blank" rel="noopener noreferrer">13. AlphaEvolve: How our Gemini-powered coding agent is scaling impact across fields</a>
+## <a href="https://deepmind.google/blog/alphaevolve-impact/" target="_blank" rel="noopener noreferrer">AlphaEvolve: How our Gemini-powered coding agent is scaling impact across fields</a>
 
-*📄 Google DeepMind*
+*Google DeepMind*
 
 本文介绍智能编码代理AlphaEvolve，其核心算法以Gemini大模型为底座，可高效完成代码生成、调试、场景适配等复杂任务。目前该系统已实现跨域规模化落地，在商业运营提效、基础设施运维迭代、前沿科学研究辅助三大场景均取得显著价值，验证了大模型驱动的编码代理具备极强的泛化落地潜力。
 
 ---
 
-## <a href="https://deepmind.google/blog/ai-co-clinician/" target="_blank" rel="noopener noreferrer">14. Enabling a new model for healthcare with AI co-clinician</a>
+## <a href="https://deepmind.google/blog/ai-co-clinician/" target="_blank" rel="noopener noreferrer">Enabling a new model for healthcare with AI co-clinician</a>
 
-*📄 Google DeepMind*
+*Google DeepMind*
 
 本文探索AI赋能医疗新范式，重点研究AI辅助诊疗落地路径，开发“AI协诊医师”新型模型。该模型定位为临床医生的协作伙伴而非替代者，可补足医生认知边界、降低误诊漏诊率、提升诊疗效率，为适配一线临床流程、推动传统医疗向人机协同新型服务模式转型提供可行方向。
 
 ---
 
-# 🤗 Hugging Face Blog
+# Hugging Face Blog
 
-## <a href="https://huggingface.co/blog/amazon/foundation-model-building-blocks" target="_blank" rel="noopener noreferrer">15. Building Blocks for Foundation Model Training and Inference on AWS</a>
+## <a href="https://huggingface.co/blog/amazon/foundation-model-building-blocks" target="_blank" rel="noopener noreferrer">Building Blocks for Foundation Model Training and Inference on AWS</a>
 
-*📄 Hugging Face*
+*Hugging Face*
 
 本文聚焦基础模型云原生训推需求，梳理AWS平台大模型全流程技术支撑组件：训练侧整合分布式算力集群、并行训练框架优化、弹性存储模块；推理侧配套低延迟部署、自动扩缩容、成本管控套件。实测该方案算力利用率提升超30%，训推成本最高降40%，为云原生大模型落地提供标准化参考。
 
 ---
 
-## <a href="https://huggingface.co/blog/allenai/emo" target="_blank" rel="noopener noreferrer">16. EMO: Pretraining mixture of experts for emergent modularity</a>
+## <a href="https://huggingface.co/blog/allenai/emo" target="_blank" rel="noopener noreferrer">EMO: Pretraining mixture of experts for emergent modularity</a>
 
-*📄 Hugging Face*
+*Hugging Face*
 
 本文提出EMO预训练框架，针对现有大模型参数冗余、模块化程度低的痛点，采用无人工预设分工的稀疏混合专家架构，仅靠输入特征驱动动态路由分配计算资源。实验显示其预训练后会自发涌现功能模块化特性，同类型任务自动路由至固定专家组，多任务精度追平原生稠密大模型，推理成本最高降40%，模块可迁移性更强。
 
 ---
 
-# 📰 The Gradient
+# The Gradient
 
-## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">17. After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
 
-*📄 The Gradient*
+*The Gradient*
 
 这篇AI对齐领域论文质疑目标导向的理性预设：提出人类理性行动并非锚定终极目标，而是适配由行动、倾向、评价标准、资源构成的实践规范网络。若要实现AI与人类协作兼容，需让AI决策逻辑匹配人类的实践型行动逻辑，该路径既符合人类伦理诉求，也能保障AI核心安全属性。
 
 ---
 
-# ⚡ 量子位
+# 量子位
 
-## <a href="https://www.qbitai.com/2026/05/417754.html" target="_blank" rel="noopener noreferrer">18. Robotaxi第一股又涨疯了</a>
+## <a href="https://www.qbitai.com/2026/05/417754.html" target="_blank" rel="noopener noreferrer">Robotaxi第一股又涨疯了</a>
 
-*📄 量子位*
+*量子位*
 
 作为Robotaxi第一股，文远知行近日公布行业最大规模部署计划：5年内投用20万台Robotaxi。其Q1业绩支撑充足：总营收同比增58%，产品收入暴涨116%，35%毛利率领跑行业，注册用户翻倍，出海12国40城已有区域实现单车盈亏平衡，印证L4自动驾驶已进入商业化兑现阶段。
 
 ---
 
-## <a href="https://www.qbitai.com/2026/05/417753.html" target="_blank" rel="noopener noreferrer">19. 腾讯开源 Agent 记忆技术方案，Token 消耗最高降低 61%</a>
+## <a href="https://www.qbitai.com/2026/05/417753.html" target="_blank" rel="noopener noreferrer">腾讯开源 Agent 记忆技术方案，Token 消耗最高降低 61%</a>
 
-*📄 量子位*
+*量子位*
 
 腾讯近日开源TencentDB Agent Memory，适配主流Agent框架可一键部署。针对Agent长任务传统优化方案易出现的上下文膨胀、成本高、状态混乱问题，采用结构化任务画布留存关键执行关系、非核心信息外置存储仅留索引的压缩方案，实测多场景最高降61%Token消耗，任务成功率最高提升51%。
 
 ---
 
-## <a href="https://www.qbitai.com/2026/05/417748.html" target="_blank" rel="noopener noreferrer">20. 阿里 AI 应用新进展：悟空开始逐步规模化放量</a>
+## <a href="https://www.qbitai.com/2026/05/417748.html" target="_blank" rel="noopener noreferrer">阿里 AI 应用新进展：悟空开始逐步规模化放量</a>
 
-*📄 量子位*
+*量子位*
 
 阿里2026财年Q4财报显示其全栈AI投入已进入规模商业化回报周期，旗下企业级AI Agent平台“悟空”正逐步规模化放量。该产品可自主规划步骤、调用工具完成全链路任务，适配企业内部系统，已在电商、制造等多行业落地，显著降本提效，后续还将覆盖更多场景迭代优化。
 

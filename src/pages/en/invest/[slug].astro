@@ -16,19 +16,62 @@ const { Content } = await entry.render();
 const lang = "en" as const;
 const t = useTranslations(lang);
 ---
+
 <BaseLayout title={entry.data.title} description={entry.data.description}>
-  <article class="max-w-prose mx-auto px-5 pt-12 pb-16">
-    <header class="mb-6">
-      <a href={pathWithLang("/invest", lang)} class="text-sm text-section-invest hover:underline">← {t("section.invest.title")}</a>
-      <h1 class="mt-3 font-serif text-4xl sm:text-6xl leading-[0.95] tracking-tight">{entry.data.title}</h1>
-      <div class="mt-3 flex items-center gap-3 text-xs text-[var(--text-tertiary)]">
+  <article class="max-w-2xl mx-auto px-6 sm:px-8 pt-12 sm:pt-20 pb-24 sm:pb-32">
+
+    <a href={pathWithLang("/invest", lang)}
+       class="inline-block text-[11px] uppercase tracking-[0.2em] text-zinc-500 hover:text-section-invest transition-colors mb-10 sm:mb-16">
+      ← {t("section.invest.title")}
+    </a>
+
+    <header class="mb-16 sm:mb-24">
+      <h1 class="font-serif text-5xl sm:text-7xl leading-[1.02] tracking-tight font-normal text-[#1d1d1f] dark:text-zinc-100">
+        {entry.data.title}
+      </h1>
+      {entry.data.description && (
+        <p class="mt-8 text-lg sm:text-2xl leading-relaxed text-zinc-500 dark:text-zinc-400 font-light">
+          {entry.data.description}
+        </p>
+      )}
+      <div class="mt-10 flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] uppercase tracking-[0.15em] text-zinc-500 font-mono">
         <time>{entry.data.date.toISOString().slice(0, 10)}</time>
         {entry.data.tags.map((tag) => <TagChip tag={tag} lang={lang} />)}
       </div>
     </header>
-    <div class="prose prose-neutral dark:prose-invert max-w-none prose-headings:tracking-tight prose-a:text-section-invest">
+
+    <div class="prose prose-zinc dark:prose-invert max-w-none
+                prose-headings:tracking-tight prose-headings:scroll-mt-20
+                prose-h1:text-[11px] prose-h1:uppercase prose-h1:tracking-[0.2em]
+                prose-h1:font-medium prose-h1:font-sans
+                prose-h1:text-zinc-500 dark:prose-h1:text-zinc-400
+                prose-h1:mt-24 prose-h1:mb-12 prose-h1:pb-3
+                prose-h1:border-b prose-h1:border-zinc-100 dark:prose-h1:border-zinc-800
+                prose-h2:font-serif prose-h2:text-2xl sm:prose-h2:text-[28px]
+                prose-h2:leading-[1.2] prose-h2:tracking-tight
+                prose-h2:font-normal prose-h2:mt-16 prose-h2:mb-3
+                prose-h2:text-[#1d1d1f] dark:prose-h2:text-zinc-100
+                prose-a:no-underline prose-a:font-normal prose-a:text-inherit
+                hover:prose-a:text-section-invest
+                prose-em:not-italic prose-em:text-[11px] prose-em:uppercase
+                prose-em:tracking-[0.1em] prose-em:font-mono prose-em:font-normal
+                prose-em:text-zinc-500
+                prose-em:block prose-em:mb-8
+                prose-p:text-[17px] sm:prose-p:text-[18px] prose-p:leading-[1.75]
+                prose-p:text-zinc-700 dark:prose-p:text-zinc-300
+                prose-p:font-normal prose-p:my-6
+                prose-blockquote:border-l-2 prose-blockquote:border-zinc-200
+                dark:prose-blockquote:border-zinc-800
+                prose-blockquote:font-light prose-blockquote:not-italic
+                prose-blockquote:text-zinc-500 prose-blockquote:my-10
+                prose-blockquote:pl-6 prose-blockquote:py-0
+                prose-hr:hidden
+                prose-pre:bg-[#0d1117] prose-pre:rounded-xl">
       <Content />
     </div>
-    <FeedbackButtons slug={`invest/${entry.data.translationKey}`} client:visible />
+
+    <div class="mt-24 pt-12 border-t border-zinc-100 dark:border-zinc-800">
+      <FeedbackButtons slug={`invest/${entry.data.translationKey}`} client:visible />
+    </div>
   </article>
 </BaseLayout>

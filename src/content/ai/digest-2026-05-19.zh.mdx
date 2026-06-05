@@ -13,177 +13,177 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 > 由 cron 每日 08:00 北京自动从 HF Daily Papers + arxiv cs.LG 抓取，豆包翻译/摘要。仅供参考。
 
-# 🤗 Hugging Face Daily Papers
+# Hugging Face Daily Papers
 
-## <a href="https://arxiv.org/abs/2605.18661" target="_blank" rel="noopener noreferrer">1. AI for Auto-Research: Roadmap & User Guide</a>
+## <a href="https://arxiv.org/abs/2605.18661" target="_blank" rel="noopener noreferrer">AI for Auto-Research: Roadmap & User Guide</a>
 
-*📄 HF ★ 18 · Lingdong Kong, Xian Sun, Wei Chow… · [HF 镜像](https://huggingface.co/papers/2605.18661)*
+*HF 18 · Lingdong Kong, Xian Sun, Wei Chow… · [HF 镜像](https://huggingface.co/papers/2605.18661)*
 
 本文梳理截至2026年4月的AI自动化科研进展，将科研全流程划分为创作、写作、验证、传播四阶段开展系统性分析。研究指出AI仅在结构化、检索支撑、工具调用类任务表现可靠，在原创选题、科研判断、复杂实验等环节能力不足，全自动产出尚未达到顶会录用标准，最优落地范式是人类主导的人机协作，还配套发布了分类体系、基准及实操指南。
 
 <FeedbackButtons slug="item:arxiv-2605.18661" client:visible />
 
-## <a href="https://arxiv.org/abs/2605.14278" target="_blank" rel="noopener noreferrer">2. KVPO: ODE-Native GRPO for Autoregressive Video Alignment via KV Semantic Exploration</a>
+## <a href="https://arxiv.org/abs/2605.14278" target="_blank" rel="noopener noreferrer">KVPO: ODE-Native GRPO for Autoregressive Video Alignment via KV Semantic Exploration</a>
 
-*📄 HF ★ 16 · Ruicheng Zhang, Kaixi Cong, Jun Zhou… · [HF 镜像](https://huggingface.co/papers/2605.14278)*
+*HF 16 · Ruicheng Zhang, Kaixi Cong, Jun Zhou… · [HF 镜像](https://huggingface.co/papers/2605.14278)*
 
 针对现有强化学习方法做流式自回归视频生成的人类偏好对齐时，与蒸馏模型ODE动力学不匹配、仅扰动低层级外观的问题，提出KVPO框架：将探索源迁移到历史KV缓存实现语义探索，基于轨迹速度能量设计适配ODE的速度场代理策略。实验证明其在长短视频场景下均显著提升视觉、运动质量与文视频对齐效果。
 
 <FeedbackButtons slug="item:arxiv-2605.14278" client:visible />
 
-## <a href="https://arxiv.org/abs/2605.14368" target="_blank" rel="noopener noreferrer">3. Where Should Diffusion Enter a Language Model? Geometry-Guided Hidden-State Replacement</a>
+## <a href="https://arxiv.org/abs/2605.14368" target="_blank" rel="noopener noreferrer">Where Should Diffusion Enter a Language Model? Geometry-Guided Hidden-State Replacement</a>
 
-*📄 HF ★ 11 · Injin Kong, Hyoungjoon Lee, Yohan Jo · [HF 镜像](https://huggingface.co/papers/2605.14368)*
+*HF 11 · Injin Kong, Hyoungjoon Lee, Yohan Jo · [HF 镜像](https://huggingface.co/papers/2605.14368)*
 
 针对连续扩散语言模型性能弱于自回归Transformer的问题，该研究提出混合架构DiHAL：通过几何代理为预训练Transformer各层打分，选取适配扩散的隐层接口，用扩散桥替换下层、保留上层与原语言头，规避连续转离散的直接恢复问题。8B规模大模型实验显示，该几何评分可精准定位浅层插入位，隐层恢复效果优于现有扩散基线，验证了隐层几何指导扩散插入的可行性。
 
 <FeedbackButtons slug="item:arxiv-2605.14368" client:visible />
 
-## <a href="https://arxiv.org/abs/2605.18739" target="_blank" rel="noopener noreferrer">4. LongLive-2.0: An NVFP4 Parallel Infrastructure for Long Video Generation</a>
+## <a href="https://arxiv.org/abs/2605.18739" target="_blank" rel="noopener noreferrer">LongLive-2.0: An NVFP4 Parallel Infrastructure for Long Video Generation</a>
 
-*📄 HF ★ 9 · Yukang Chen, Luozhou Wang, Wei Huang… · [HF 镜像](https://huggingface.co/papers/2605.18739)*
+*HF 9 · Yukang Chen, Luozhou Wang, Wei Huang… · [HF 镜像](https://huggingface.co/papers/2605.18739)*
 
 LongLive-2.0是全球首个长视频生成全流程NVFP4并行系统，针对速度、内存瓶颈设计。训练端采用均衡序列并行自回归方案+NVFP4精度，无需额外蒸馏即可将扩散模型微调为多轮交互式自回归模型，适配少步实时生成。推理端经量化、异步解码等优化，训练最高提速2.15倍、推理提1.84倍，5B参数版本推理达45.7FPS且指标优异。
 
 <FeedbackButtons slug="item:arxiv-2605.18739" client:visible />
 
-## <a href="https://arxiv.org/abs/2605.17672" target="_blank" rel="noopener noreferrer">5. Stop When Reasoning Converges: Semantic-Preserving Early Exit for Reasoning Models</a>
+## <a href="https://arxiv.org/abs/2605.17672" target="_blank" rel="noopener noreferrer">Stop When Reasoning Converges: Semantic-Preserving Early Exit for Reasoning Models</a>
 
-*📄 HF ★ 7 · Dehai Min, Giovanni Vaccarino, Huiyi Chen… · [HF 镜像](https://huggingface.co/papers/2605.17672)*
+*HF 7 · Dehai Min, Giovanni Vaccarino, Huiyi Chen… · [HF 镜像](https://huggingface.co/papers/2605.17672)*
 
 针对大推理模型易过度推理、现有答案层面早停方案易提前退出损害精度与推理链完整性的问题，本文提出即插即用的PUMA早停框架：先通过轻量检测器识别推理步骤语义冗余，再结合答案验证确认安全终止。多基准多模型测试显示，其平均减少26.2%的token消耗，同时保留推理精度与链条质量，泛用性强。
 
 <FeedbackButtons slug="item:arxiv-2605.17672" client:visible />
 
-# 📄 arXiv cs.LG（机器学习）
+# arXiv cs.LG（机器学习）
 
-## <a href="https://arxiv.org/abs/2605.15206" target="_blank" rel="noopener noreferrer">6. AgentStop: Terminating Local AI Agents Early to Save Energy in Consumer Devices</a>
+## <a href="https://arxiv.org/abs/2605.15206" target="_blank" rel="noopener noreferrer">AgentStop: Terminating Local AI Agents Early to Save Energy in Consumer Devices</a>
 
-*📄 Dzung Pham, Kleomenis Katevas, Ali Shahin Shamsabadi…*
+*Dzung Pham, Kleomenis Katevas, Ali Shahin Shamsabadi…*
 
 针对消费级设备上本地LLM智能体因多步推理、失败重试导致无效算力浪费、功耗过高的问题，本文提出轻量效率监管模块AgentStop：依托token级对数概率等低成本运行信号预判任务成功率，提前终止大概率失败的执行轨迹。实测在网页问答、编码基准任务中可降低15%-20%无效能耗，仅带来不足5%的性能损失，适配本地隐私优先的智能体落地需求。
 
 <FeedbackButtons slug="item:arxiv-2605.15206" client:visible />
 
-## <a href="https://arxiv.org/abs/2605.15207" target="_blank" rel="noopener noreferrer">7. TeamTR: Trust-Region Fine-Tuning for Multi-Agent LLM Coordination</a>
+## <a href="https://arxiv.org/abs/2605.15207" target="_blank" rel="noopener noreferrer">TeamTR: Trust-Region Fine-Tuning for Multi-Agent LLM Coordination</a>
 
-*📄 Yi Xie, Siao Liu, Falong Fan…*
+*Yi Xie, Siao Liu, Falong Fan…*
 
 针对多智能体大模型协同序贯微调存在上下文分布偏移、性能反逊于单模型基线的问题，研究证实旧采样评估惩罚随智能体数平方增长，据此提出信任域微调框架TeamTR：每次组件更新后重采轨迹，控制单智能体分布散度，保障性能提升下界。实验显示其平均性能超基线7.1%，缓解协同退化，支持组件即插即用。
 
 <FeedbackButtons slug="item:arxiv-2605.15207" client:visible />
 
-## <a href="https://arxiv.org/abs/2605.15208" target="_blank" rel="noopener noreferrer">8. Quantization Undoes Alignment: Bias Emergence in Compressed LLMs Across Models and Precision Levels</a>
+## <a href="https://arxiv.org/abs/2605.15208" target="_blank" rel="noopener noreferrer">Quantization Undoes Alignment: Bias Emergence in Compressed LLMs Across Models and Precision Levels</a>
 
-*📄 Plawan Kumar Rath, Rahul Maliakkal*
+*Plawan Kumar Rath, Rahul Maliakkal*
 
 针对现有大模型量化压缩对公平性影响研究不足的问题，测试3款指令微调大模型5个量化精度档位表现，基于BBQ偏见基准完成91万余条推理。结果显示精度越低偏见新增占比越高，3位量化达6-21%，传统困惑度指标无法识别这类公平性退化，提示部署前需专门开展偏见检测。
 
 <FeedbackButtons slug="item:arxiv-2605.15208" client:visible />
 
-# 🟢 OpenAI 官方动态
+# OpenAI 官方动态
 
-## <a href="https://openai.com/index/dell-codex-enterprise-partnership" target="_blank" rel="noopener noreferrer">9. OpenAI and Dell partner to bring Codex to hybrid and on-premise enterprise environments</a>
+## <a href="https://openai.com/index/dell-codex-enterprise-partnership" target="_blank" rel="noopener noreferrer">OpenAI and Dell partner to bring Codex to hybrid and on-premise enterprise environments</a>
 
-*📄 OpenAI*
+*OpenAI*
 
 OpenAI与戴尔正式达成合作，将OpenAI旗下的Codex代码大模型适配到企业混合部署、本地部署的IT架构中。这一合作面向企业级客户，解决公有云部署AI编码工具的数据安全顾虑，支持企业在自有数据、内部工作流内安全落地AI编码智能体，兼顾研发提效与数据合规要求。
 
 <FeedbackButtons slug="item:openai-blog-dell-codex-enterprise-partnership" client:visible />
 
-## <a href="https://openai.com/index/malta-chatgpt-plus-partnership" target="_blank" rel="noopener noreferrer">10. OpenAI and Malta partner to bring ChatGPT Plus to all citizens</a>
+## <a href="https://openai.com/index/malta-chatgpt-plus-partnership" target="_blank" rel="noopener noreferrer">OpenAI and Malta partner to bring ChatGPT Plus to all citizens</a>
 
-*📄 OpenAI*
+*OpenAI*
 
 OpenAI与马耳他达成官方合作，面向该国全体公民开放ChatGPT Plus使用权限，同时配套提供AI专项培训。该项目旨在帮助民众掌握实用AI技能、建立AI负责任使用意识，是全球少有的国家层面推动生成式AI普惠的实践，为公共领域AI普及落地提供了参考路径。
 
 <FeedbackButtons slug="item:openai-blog-malta-chatgpt-plus-partnership" client:visible />
 
-# 🪶 Anthropic News
+# Anthropic News
 
-## <a href="https://www.anthropic.com/news/claude-opus-4-7" target="_blank" rel="noopener noreferrer">11. Introducing Claude Opus 4.7</a>
+## <a href="https://www.anthropic.com/news/claude-opus-4-7" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 4.7</a>
 
-*📄 Anthropic*
+*Anthropic*
 
 Anthropic旗下最新大模型Claude Opus 4.7现已正式全面开放商用。相比前代版本Opus 4.6，该版本核心升级聚焦高阶软件工程能力，尤其在业内公认难度最高的复杂软件工程类任务上性能提升突出，更适配高难度代码开发、复杂系统搭建等专业开发场景需求。
 
 <FeedbackButtons slug="item:anthropic-claude-opus-4-7" client:visible />
 
-## <a href="https://www.anthropic.com/news/claude-design-anthropic-labs" target="_blank" rel="noopener noreferrer">12. Introducing Claude Design by Anthropic Labs</a>
+## <a href="https://www.anthropic.com/news/claude-design-anthropic-labs" target="_blank" rel="noopener noreferrer">Introducing Claude Design by Anthropic Labs</a>
 
-*📄 Anthropic*
+*Anthropic*
 
 Anthropic实验室近期正式发布全新产品Claude Design，核心定位是支持用户与Claude大模型协同完成专业级视觉内容创作，可产出设计稿、产品原型、演示幻灯片、单页宣传物料等成品。该产品无需用户掌握复杂专业设计工具，既降低非设计人员的视觉产出门槛，也能为专业设计师提效，简化视觉生产链路。
 
 <FeedbackButtons slug="item:anthropic-claude-design-anthropic-labs" client:visible />
 
-# 🟣 Google DeepMind
+# Google DeepMind
 
-## <a href="https://deepmind.google/blog/alphaevolve-impact/" target="_blank" rel="noopener noreferrer">13. AlphaEvolve: How our Gemini-powered coding agent is scaling impact across fields</a>
+## <a href="https://deepmind.google/blog/alphaevolve-impact/" target="_blank" rel="noopener noreferrer">AlphaEvolve: How our Gemini-powered coding agent is scaling impact across fields</a>
 
-*📄 Google DeepMind*
+*Google DeepMind*
 
 本文聚焦自研编码代理工具AlphaEvolve，核心采用Gemini大模型赋能的专用算法架构，可快速适配不同领域的差异化编码需求，目前已在商业开发、基础设施运维、科研创新三大场景落地，大幅提升跨领域编码效率、降低编码门槛，验证了大模型驱动的智能编码工具可实现跨领域规模化价值输出。
 
 <FeedbackButtons slug="item:deepmind-alphaevolve-impact" client:visible />
 
-## <a href="https://deepmind.google/blog/ai-co-clinician/" target="_blank" rel="noopener noreferrer">14. Enabling a new model for healthcare with AI co-clinician</a>
+## <a href="https://deepmind.google/blog/ai-co-clinician/" target="_blank" rel="noopener noreferrer">Enabling a new model for healthcare with AI co-clinician</a>
 
-*📄 Google DeepMind*
+*Google DeepMind*
 
 本研究聚焦AI增强型医疗的落地路径攻关，核心任务是研发可与临床医师深度协同的“AI协诊员”工具，旨在构建人机协同的新型医疗服务范式。该模式既可为临床医师减负提效，也能提升基层诊疗均质化水平，为缓解医疗资源供需错配、普惠优质医疗服务提供可行技术方向。
 
 <FeedbackButtons slug="item:deepmind-ai-co-clinician" client:visible />
 
-# 🤗 Hugging Face Blog
+# Hugging Face Blog
 
-## <a href="https://huggingface.co/blog/nvidia/cosmos-fine-tuning-for-robot-video-generation" target="_blank" rel="noopener noreferrer">15. Fine-Tuning NVIDIA Cosmos Predict 2.5 with LoRA/DoRA for Robot Video Generation</a>
+## <a href="https://huggingface.co/blog/nvidia/cosmos-fine-tuning-for-robot-video-generation" target="_blank" rel="noopener noreferrer">Fine-Tuning NVIDIA Cosmos Predict 2.5 with LoRA/DoRA for Robot Video Generation</a>
 
-*📄 Hugging Face*
+*Hugging Face*
 
 该研究针对机器人操作场景视频生成需求，以英伟达Cosmos Predict 2.5通用视频大模型为基座，采用LoRA、DoRA两种参数高效微调策略完成域适配，仅需微调不足1%的模型参数，即可生成动作逻辑合规、物理属性一致的机器人操作视频，效果媲美全量微调，大幅降低机器人视觉预测任务的落地成本。
 
 <FeedbackButtons slug="item:hf-blog-cosmos-fine-tuning-for-robot-video-generation" client:visible />
 
-## <a href="https://huggingface.co/blog/PaddlePaddle/paddleocr-transformers" target="_blank" rel="noopener noreferrer">16. PaddleOCR 3.5: Running OCR and Document Parsing Tasks with a Transformers Backend</a>
+## <a href="https://huggingface.co/blog/PaddlePaddle/paddleocr-transformers" target="_blank" rel="noopener noreferrer">PaddleOCR 3.5: Running OCR and Document Parsing Tasks with a Transformers Backend</a>
 
-*📄 Hugging Face*
+*Hugging Face*
 
 本次推出的PaddleOCR 3.5版本核心采用Transformers作为骨干后端，可同时覆盖通用OCR识别与复杂版式文档解析任务。相比旧版本，其多语种识别、复杂表单/文档解析精度明显提升，同时适配端边云多场景部署需求，推理效率同步优化，可有效降低产业级文档智能应用的落地门槛。
 
 <FeedbackButtons slug="item:hf-blog-paddleocr-transformers" client:visible />
 
-# 📰 The Gradient
+# The Gradient
 
-## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">17. After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
 
-*📄 The Gradient*
+*The Gradient*
 
 这篇德性伦理视角的AI对齐研究指出，人类理性行动并非围绕固定终极目标展开，而是适配由行动、行为倾向、评价标准等构成的实践网络。论文主张理性AI不应采取目标导向架构，其决策逻辑需匹配人类的实践型行动逻辑，才能实现人机顺畅协作，同时保障AI安全与伦理对齐。
 
 <FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
 
-# ⚡ 量子位
+# 量子位
 
-## <a href="https://www.qbitai.com/2026/05/419901.html" target="_blank" rel="noopener noreferrer">18. 5.20 明天见！拿好这份参会指南｜AIGC2026峰会</a>
+## <a href="https://www.qbitai.com/2026/05/419901.html" target="_blank" rel="noopener noreferrer">5.20 明天见！拿好这份参会指南｜AIGC2026峰会</a>
 
-*📄 量子位*
+*量子位*
 
 5月20日周三09:30，中国AIGC产业峰会将正式举办，08:30起可签到，早到可领伴手礼等福利，因当日早高峰建议提前规划出行路线。本次峰会覆盖Agent落地、系统智能、开源模型、国产算力等议题，设Agent主题圆桌，20位一线行业嘉宾到场，还将发布年度榜单、产业全景图谱。
 
 <FeedbackButtons slug="item:qbitai-419901" client:visible />
 
-## <a href="https://www.qbitai.com/2026/05/419822.html" target="_blank" rel="noopener noreferrer">19. Qwen最新3.7 Max预览版空降！两代超大杯并行迭代，林俊旸走了但还在加速</a>
+## <a href="https://www.qbitai.com/2026/05/419822.html" target="_blank" rel="noopener noreferrer">Qwen最新3.7 Max预览版空降！两代超大杯并行迭代，林俊旸走了但还在加速</a>
 
-*📄 量子位*
+*量子位*
 
 阿里近期低调上线Qwen3.7系列两款预览版，采用两代超大杯并行迭代策略，节奏远超预期。Max版居大模型竞技场文本榜全球第13，为前15中唯一国产模型，数学、编码等4个细分赛道进全球前十；Plus版居视觉榜全球第16，两款均为同赛道国产第一，官方即将推出正式版。
 
 <FeedbackButtons slug="item:qbitai-419822" client:visible />
 
-## <a href="https://www.qbitai.com/2026/05/419597.html" target="_blank" rel="noopener noreferrer">20. 百度无人车新纪录：周订单破35万！李彦宏：开始单城盈利了</a>
+## <a href="https://www.qbitai.com/2026/05/419597.html" target="_blank" rel="noopener noreferrer">百度无人车新纪录：周订单破35万！李彦宏：开始单城盈利了</a>
 
-*📄 量子位*
+*量子位*
 
 百度Robotaxi业务萝卜快跑最新运营数据显示：周订单峰值破35万、日均最高5万单，一季度全无人驾驶服务量达320万单，同比增长129%；累计服务订单超2200万，自动驾驶总里程达3.3亿公里，已覆盖全球27座城市，国内核心城市已实现单车盈亏平衡，商业化进展超预期。
 

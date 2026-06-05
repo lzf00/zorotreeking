@@ -13,177 +13,177 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 > 由 cron 每日 08:00 北京自动从 HF Daily Papers + arxiv cs.LG 抓取，豆包翻译/摘要。仅供参考。
 
-# 🤗 Hugging Face Daily Papers
+# Hugging Face Daily Papers
 
-## <a href="https://arxiv.org/abs/2605.14678" target="_blank" rel="noopener noreferrer">1. π-Bench: Evaluating Proactive Personal Assistant Agents in Long-Horizon Workflows</a>
+## <a href="https://arxiv.org/abs/2605.14678" target="_blank" rel="noopener noreferrer">π-Bench: Evaluating Proactive Personal Assistant Agents in Long-Horizon Workflows</a>
 
-*📄 HF ★ 37 · Haoran Zhang, Luxin Xu, Zhilin Wang… · [HF 镜像](https://huggingface.co/papers/2605.14678)*
+*HF 37 · Haoran Zhang, Luxin Xu, Zhilin Wang… · [HF 镜像](https://huggingface.co/papers/2605.14678)*
 
 针对现有个人助理智能体基准缺乏长周期多轮隐式用户意图评测的短板，该研究推出π-Bench基准：覆盖5类用户人设的100项多轮任务，嵌入隐式意图、任务依赖、跨会话特性，同步评测智能体主动性与长周期任务完成度。实验显示当前主动助理仍存性能瓶颈，任务完成与主动性能力分离，历史交互可提升后续主动意图识别效果。
 
 <FeedbackButtons slug="item:arxiv-2605.14678" client:visible />
 
-## <a href="https://arxiv.org/abs/2605.21850" target="_blank" rel="noopener noreferrer">2. ACC: Compiling Agent Trajectories for Long-Context Training</a>
+## <a href="https://arxiv.org/abs/2605.21850" target="_blank" rel="noopener noreferrer">ACC: Compiling Agent Trajectories for Long-Context Training</a>
 
-*📄 HF ★ 36 · Qisheng Su, Zhen Fang, Shiting Huang… · [HF 镜像](https://huggingface.co/papers/2605.21850)*
+*HF 36 · Qisheng Su, Zhen Fang, Shiting Huang… · [HF 镜像](https://huggingface.co/papers/2605.21850)*
 
 针对大模型长上下文训练成本高、现有Agent微调未利用轨迹中分散长语境证据的问题，本文提出ACC方法，无需额外标注即可将多轮Agent轨迹整合为长上下文QA对，直接监督长距离推理。实验显示，经ACC训练的30B参数Qwen3，长依赖基准性能涨点显著，追平235B参数版水平，且通用能力不受损。
 
 <FeedbackButtons slug="item:arxiv-2605.21850" client:visible />
 
-## <a href="https://arxiv.org/abs/2605.22718" target="_blank" rel="noopener noreferrer">3. WorldKV: Efficient World Memory with World Retrieval and Compression</a>
+## <a href="https://arxiv.org/abs/2605.22718" target="_blank" rel="noopener noreferrer">WorldKV: Efficient World Memory with World Retrieval and Compression</a>
 
-*📄 HF ★ 19 · Jung Yi, Minjae Kim, Paul Hyunbin Cho… · [HF 镜像](https://huggingface.co/papers/2605.22718)*
+*HF 19 · Jung Yi, Minjae Kim, Paul Hyunbin Cho… · [HF 镜像](https://huggingface.co/papers/2605.22718)*
 
 针对自回归视频扩散生成难兼顾场景一致性与实时性的痛点，提出免训练框架WorldKV：一是通过相机/动作匹配检索已逐出的历史KV缓存块，无需重编码直接插回注意力窗口；二是按与锚帧的键相似度压缩冗余token，减半单块存储。测试显示其吞吐量较全KV缓存翻倍，一致性表现持平，无需微调性能比肩需训练的基线方案。
 
 <FeedbackButtons slug="item:arxiv-2605.22718" client:visible />
 
-## <a href="https://arxiv.org/abs/2605.22642" target="_blank" rel="noopener noreferrer">4. Spreadsheet-RL: Advancing Large Language Model Agents on Realistic Spreadsheet Tasks via Reinforcement Learning</a>
+## <a href="https://arxiv.org/abs/2605.22642" target="_blank" rel="noopener noreferrer">Spreadsheet-RL: Advancing Large Language Model Agents on Realistic Spreadsheet Tasks via Reinforcement Learning</a>
 
-*📄 HF ★ 15 · Banghao Chi, Yining Xie, Mingyuan Wu… · [HF 镜像](https://huggingface.co/papers/2605.22642)*
+*HF 15 · Banghao Chi, Yining Xie, Mingyuan Wu… · [HF 镜像](https://huggingface.co/papers/2605.22642)*
 
 针对现有通用大模型提示驱动的电子表格智能体难以处理真实场景复杂多步任务的痛点，该研究提出Spreadsheet-RL强化学习微调框架，配套自动数据集采集管道、领域专用基准与适配Excel的多轮交互训练环境，训练后Qwen3-4B模型在通用、领域电子表格任务的Pass@1准确率均提升近1倍，落地潜力优异。
 
 <FeedbackButtons slug="item:arxiv-2605.22642" client:visible />
 
-## <a href="https://arxiv.org/abs/2605.20910" target="_blank" rel="noopener noreferrer">5. FlowLong: Inference-time Long Video Generation via Manifold-constrained Tweedie Matching</a>
+## <a href="https://arxiv.org/abs/2605.20910" target="_blank" rel="noopener noreferrer">FlowLong: Inference-time Long Video Generation via Manifold-constrained Tweedie Matching</a>
 
-*📄 HF ★ 11 · Jangho Park, Geon Yeong Park, Gihyun Kwon… · [HF 镜像](https://huggingface.co/papers/2605.20910)*
+*HF 11 · Jangho Park, Geon Yeong Park, Gihyun Kwon… · [HF 镜像](https://huggingface.co/papers/2605.20910)*
 
 针对现有免训练长视频生成方案的痛点：双向类绑定特定架构、长时质量衰减，自回归类误差漂移、动作重复，本文提出架构无关、无需额外训练的推理方案FlowLong：采用重叠滑窗生成，经流形约束的Tweedie匹配融合相邻窗，高噪阶段随机采样同步轨迹、低噪转确定性采样保细节。该方法生成视频可达原生窗口数倍长，质量与时序一致性优于基线，还可拓展至音视频联合生成、文本转3DGS场景。
 
 <FeedbackButtons slug="item:arxiv-2605.20910" client:visible />
 
-# 📄 arXiv cs.LG（机器学习）
+# arXiv cs.LG（机器学习）
 
-## <a href="https://arxiv.org/abs/2605.20187" target="_blank" rel="noopener noreferrer">6. Neural Estimation of Pairwise Mutual Information in Masked Discrete Sequence Models</a>
+## <a href="https://arxiv.org/abs/2605.20187" target="_blank" rel="noopener noreferrer">Neural Estimation of Pairwise Mutual Information in Masked Discrete Sequence Models</a>
 
-*📄 Jai Sharma, Yifan Wang, Bryan Li*
+*Jai Sharma, Yifan Wang, Bryan Li*
 
 针对掩码扩散模型无变量依赖显式表征、制约效率与可解释性的痛点，本文提出成对互信息神经估计框架：基于预训练模型隐状态，以模型自身条件分布计算的真实互信息监督，单前向传播即可得到全互信息矩阵，支撑互信息引导的并行解码。实验显示其在数独、蛋白质生成任务上可还原结构约束，推理前向传播次数降3-5倍，性能优于熵基并行方案。
 
 <FeedbackButtons slug="item:arxiv-2605.20187" client:visible />
 
-## <a href="https://arxiv.org/abs/2605.20188" target="_blank" rel="noopener noreferrer">7. GraphDiffMed: Knowledge-Constrained Differential Attention with Pharmacological Graph Priors for Medication Recommendation</a>
+## <a href="https://arxiv.org/abs/2605.20188" target="_blank" rel="noopener noreferrer">GraphDiffMed: Knowledge-Constrained Differential Attention with Pharmacological Graph Priors for Medication Recommendation</a>
 
-*📄 Krati Saxena, Tomohiro Shibata*
+*Krati Saxena, Tomohiro Shibata*
 
 针对电子病历用药推荐存在的长时序噪声、临床异质性处理难，现有方法难兼顾时序建模与药理知识融合、抗噪性弱的问题，本文提出GraphDiffMed框架：通过诊内、跨诊双尺度差分注意力过滤冗余信号，训练中引入药理约束。在MIMIC-III数据集上其性能优于基线，推荐质量、排序和安全性更优，最优配置仅需人口统计辅助特征，代码已开源。
 
 <FeedbackButtons slug="item:arxiv-2605.20188" client:visible />
 
-## <a href="https://arxiv.org/abs/2605.20234" target="_blank" rel="noopener noreferrer">8. TabPFN-MT: A Natively Multitask In-Context Learner for Tabular Data</a>
+## <a href="https://arxiv.org/abs/2605.20234" target="_blank" rel="noopener noreferrer">TabPFN-MT: A Natively Multitask In-Context Learner for Tabular Data</a>
 
-*📄 Cormac Cureton, Narges Armanfard*
+*Cormac Cureton, Narges Armanfard*
 
 针对现有表格领域PFN单任务设计、多目标推理成本高且无法共享任务信息的缺陷，本文提出多任务上下文学习模型TabPFN-MT：基于多目标合成先验训练，搭配扩展y编码器与共享解码头，支持多任务同步推理。千样本以内中小数据集测试显示，其多任务表格学习性能达新SOTA，推理成本从O(T)降至O(1)，精度平均排名最高，也可对标最新单任务集成模型。
 
 <FeedbackButtons slug="item:arxiv-2605.20234" client:visible />
 
-# 🟢 OpenAI 官方动态
+# OpenAI 官方动态
 
-## <a href="https://openai.com/index/adventhealth" target="_blank" rel="noopener noreferrer">9. AdventHealth advances whole-person care with OpenAI</a>
+## <a href="https://openai.com/index/adventhealth" target="_blank" rel="noopener noreferrer">AdventHealth advances whole-person care with OpenAI</a>
 
-*📄 OpenAI*
+*OpenAI*
 
 美国医疗服务机构AdventHealth落地面向医疗场景定制的专用版ChatGPT，通过AI工具优化内部诊疗全流程。该方案可切实降低医护人员的行政事务负担，减少其在非临床琐事上的时间消耗，从而让医护能将更多精力投入直接患者照护，助力机构实现“全人照护”的服务升级目标。
 
 <FeedbackButtons slug="item:openai-blog-adventhealth" client:visible />
 
-## <a href="https://openai.com/index/ramp" target="_blank" rel="noopener noreferrer">10. How Ramp engineers accelerate code review with Codex</a>
+## <a href="https://openai.com/index/ramp" target="_blank" rel="noopener noreferrer">How Ramp engineers accelerate code review with Codex</a>
 
-*📄 OpenAI*
+*OpenAI*
 
 金融科技企业Ramp的工程师团队落地搭载GPT-5.5的Codex大模型优化代码评审流程。此前团队获取实质性评审反馈需数小时，拖慢迭代节奏；引入该工具后仅需数分钟即可拿到有效反馈，大幅压缩评审周期，显著提升研发交付效率，为大模型赋能研发效能场景提供了可参考的落地实践。
 
 <FeedbackButtons slug="item:openai-blog-ramp" client:visible />
 
-# 🪶 Anthropic News
+# Anthropic News
 
-## <a href="https://www.anthropic.com/news/claude-opus-4-7" target="_blank" rel="noopener noreferrer">11. Introducing Claude Opus 4.7</a>
+## <a href="https://www.anthropic.com/news/claude-opus-4-7" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 4.7</a>
 
-*📄 Anthropic*
+*Anthropic*
 
 Anthropic推出的最新大模型Claude Opus 4.7现已正式开放通用访问。相较于前代Opus 4.6，该版本针对高阶软件工程场景做了针对性优化，相关任务的整体处理能力有显著提升，其中难度最高的复杂软件工程类任务的性能增益尤为突出，更适配高难度研发场景的使用需求。
 
 <FeedbackButtons slug="item:anthropic-claude-opus-4-7" client:visible />
 
-## <a href="https://www.anthropic.com/news/claude-design-anthropic-labs" target="_blank" rel="noopener noreferrer">12. Introducing Claude Design by Anthropic Labs</a>
+## <a href="https://www.anthropic.com/news/claude-design-anthropic-labs" target="_blank" rel="noopener noreferrer">Introducing Claude Design by Anthropic Labs</a>
 
-*📄 Anthropic*
+*Anthropic*
 
 Anthropic实验室正式推出新产品Claude Design，该工具主打人机协同创作能力，支持用户与Claude配合完成各类高品质视觉内容制作，可覆盖设计稿、产品原型、演示幻灯片、单页宣传物料等多类常用视觉产出，为用户提供便捷高效的智能设计辅助。
 
 <FeedbackButtons slug="item:anthropic-claude-design-anthropic-labs" client:visible />
 
-# 🟣 Google DeepMind
+# Google DeepMind
 
-## <a href="https://deepmind.google/blog/were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle-environmental-risks/" target="_blank" rel="noopener noreferrer">13. We’re launching the Google DeepMind Accelerator program in Asia Pacific to tackle environmental risks</a>
+## <a href="https://deepmind.google/blog/were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle-environmental-risks/" target="_blank" rel="noopener noreferrer">We’re launching the Google DeepMind Accelerator program in Asia Pacific to tackle environmental risks</a>
 
-*📄 Google DeepMind*
+*Google DeepMind*
 
 谷歌DeepMind近期正式启动亚太区加速器项目，核心定位是依托其领先的AI技术能力应对区域各类环境风险。项目将联动亚太本地科研机构、科创企业与公共部门，聚焦极端天气预警、生态修复、碳减排管控等场景，落地适配区域特征的解决方案，提升亚太地区气候应对韧性。
 
 <FeedbackButtons slug="item:deepmind-were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle" client:visible />
 
-## <a href="https://deepmind.google/blog/fast-tracking-genetic-leads-to-reverse-cellular-aging/" target="_blank" rel="noopener noreferrer">14. Fast-tracking genetic leads to reverse cellular aging</a>
+## <a href="https://deepmind.google/blog/fast-tracking-genetic-leads-to-reverse-cellular-aging/" target="_blank" rel="noopener noreferrer">Fast-tracking genetic leads to reverse cellular aging</a>
 
-*📄 Google DeepMind*
+*Google DeepMind*
 
 该研究围绕逆转细胞衰老的遗传靶点发掘需求，创新性采用名为Co-Scientist的科研辅助工具开展筛选，大幅压缩靶点发掘周期，成功挖掘到全新调控因子，实验验证其可有效实现人类细胞年轻化重编程。这一成果既为抗衰老研究提供了新候选靶点，也为辅助科研工具赋能生物医学探索提供了参考。
 
 <FeedbackButtons slug="item:deepmind-fast-tracking-genetic-leads-to-reverse-cellular-aging" client:visible />
 
-# 🤗 Hugging Face Blog
+# Hugging Face Blog
 
-## <a href="https://huggingface.co/blog/allenai/olmoearth-v1-1" target="_blank" rel="noopener noreferrer">15. OlmoEarth v1.1: A more efficient family of Earth observation models</a>
+## <a href="https://huggingface.co/blog/allenai/olmoearth-v1-1" target="_blank" rel="noopener noreferrer">OlmoEarth v1.1: A more efficient family of Earth observation models</a>
 
-*📄 Hugging Face*
+*Hugging Face*
 
 艾伦人工智能研究所推出的OlmoEarth v1.1是新一代高效地球观测模型家族，针对前代架构和预训练策略做了优化，采用轻量化多模态遥感预训练范式，同等精度下训练算力开销较同规模遥感大模型降低35%。在土地分类、灾害检测等十余项下游任务中精度领先现有SOTA模型2%~4%，可适配边缘端部署，大幅降低遥感智能应用落地门槛。
 
 <FeedbackButtons slug="item:hf-blog-olmoearth-v1-1" client:visible />
 
-## <a href="https://huggingface.co/blog/ettin-reranker" target="_blank" rel="noopener noreferrer">16. Introducing the Ettin Reranker Family</a>
+## <a href="https://huggingface.co/blog/ettin-reranker" target="_blank" rel="noopener noreferrer">Introducing the Ettin Reranker Family</a>
 
-*📄 Hugging Face*
+*Hugging Face*
 
 本文推出面向信息检索与大模型RAG场景的Ettin重排序器家族，覆盖多档参数规模，采用多语言跨域对比学习预训练、任务适配微调方案，在10余项公开基准上准确率较同规格现有模型提升3%~7%，推理延迟降20%以上，可适配端侧、云端不同部署需求。
 
 <FeedbackButtons slug="item:hf-blog-ettin-reranker" client:visible />
 
-# 📰 The Gradient
+# The Gradient
 
-## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">17. After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
 
-*📄 The Gradient*
+*The Gradient*
 
 这篇反思正交性假说的AI对齐研究，以德性伦理为视角，反驳了理性主体需锚定固定最终目标的传统假设，提出人类理性本质是将行动适配到含规范、评价体系的实践网络的模式。要实现AI与人类协作合规、满足安全对齐要求，AI决策逻辑需与人类基于实践的行动逻辑同构，兼顾伦理价值与基础安全属性。
 
 <FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
 
-# ⚡ 量子位
+# 量子位
 
-## <a href="https://www.qbitai.com/2026/05/422511.html" target="_blank" rel="noopener noreferrer">18. 顶流里最快！智谱，你是在「喷」代码吧</a>
+## <a href="https://www.qbitai.com/2026/05/422511.html" target="_blank" rel="noopener noreferrer">顶流里最快！智谱，你是在「喷」代码吧</a>
 
-*📄 量子位*
+*量子位*
 
 智谱新推出GLM-5.1-highspeed高速API，官方称其为当前顶流大模型中速度最快的代码生成API，速率达400tokens/s，基础版GLM-5.1本身也是开源模型里代码能力最强的一档。实测显示，它十几秒就能输出符合复杂交互式动效网页需求的完整代码，还可快速响应迭代调优需求。
 
 <FeedbackButtons slug="item:qbitai-422511" client:visible />
 
-## <a href="https://www.qbitai.com/2026/05/422455.html" target="_blank" rel="noopener noreferrer">19. 80集短剧，3天拍完：当电影人下场做Agent，影视生产迎来了“最懂行”的解法</a>
+## <a href="https://www.qbitai.com/2026/05/422455.html" target="_blank" rel="noopener noreferrer">80集短剧，3天拍完：当电影人下场做Agent，影视生产迎来了“最懂行”的解法</a>
 
-*📄 量子位*
+*量子位*
 
 当前AI视频工具多主打单段炫技式画面生成，无法适配影视工业化全链路需求。深耕行业20年的影视团队推出AI影视Agent产品MovieFlow Studio，具备全链路生产闭环、防内容视觉漂移的企业级资产库、千人级协同管理三大核心能力，破解行业“有笔无生产线”痛点，推动AI影视落地工业化生产。
 
 <FeedbackButtons slug="item:qbitai-422455" client:visible />
 
-## <a href="https://www.qbitai.com/2026/05/422088.html" target="_blank" rel="noopener noreferrer">20. 39万！雷军发布小米最贵SUV</a>
+## <a href="https://www.qbitai.com/2026/05/422088.html" target="_blank" rel="noopener noreferrer">39万！雷军发布小米最贵SUV</a>
 
-*📄 量子位*
+*量子位*
 
 小米发布YU7系列SUV，含高性能GT版与标准版两款车型。GT版号称“原汁原味的GT”，首搭新一代V8s EVO超级电机，零百加速2.92秒，纽北SUV圈速较原榜首领先14秒，售价39万。标准版为完整配置款非减配版，起售价23.35万，比特斯拉Model Y低3万元，切入中端新能源SUV市场参与竞争。
 

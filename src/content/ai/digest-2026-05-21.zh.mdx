@@ -13,177 +13,177 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 > 由 cron 每日 08:00 北京自动从 HF Daily Papers + arxiv cs.LG 抓取，豆包翻译/摘要。仅供参考。
 
-# 🤗 Hugging Face Daily Papers
+# Hugging Face Daily Papers
 
-## <a href="https://arxiv.org/abs/2605.19660" target="_blank" rel="noopener noreferrer">1. OScaR: The Occam's Razor for Extreme KV Cache Quantization in LLMs and Beyond</a>
+## <a href="https://arxiv.org/abs/2605.19660" target="_blank" rel="noopener noreferrer">OScaR: The Occam's Razor for Extreme KV Cache Quantization in LLMs and Beyond</a>
 
-*📄 HF ★ 15 · Zunhai Su, Rui Yang, Chao Zhang… · [HF 镜像](https://huggingface.co/papers/2605.19660)*
+*HF 15 · Zunhai Su, Rui Yang, Chao Zhang… · [HF 镜像](https://huggingface.co/papers/2605.19660)*
 
 针对大模型长上下文、多模态部署中KV缓存的内存瓶颈，以及现有逐通道量化极端压缩效果差的问题，本文定位核心缺陷为令牌范数不平衡，提出轻量化KV压缩框架OScaR，通过通道旋转加全令牌缩放消解误差，搭配优化CUDA内核。实测INT2量化近无损，相较BF16基线解码最高提速3倍，显存降5.3倍、吞吐升4.1倍，适配各类文本、多模态大模型。
 
 <FeedbackButtons slug="item:arxiv-2605.19660" client:visible />
 
-## <a href="https://arxiv.org/abs/2605.20630" target="_blank" rel="noopener noreferrer">2. Evaluating Temporal Semantic Caching and Workflow Optimization in Agentic Plan-Execute Pipelines</a>
+## <a href="https://arxiv.org/abs/2605.20630" target="_blank" rel="noopener noreferrer">Evaluating Temporal Semantic Caching and Workflow Optimization in Agentic Plan-Execute Pipelines</a>
 
-*📄 HF ★ 7 · Alimurtaza Mustafa Merchant, Krish Veera, Sajal Kumar Goyla… · [HF 镜像](https://huggingface.co/papers/2605.20630)*
+*HF 7 · Alimurtaza Mustafa Merchant, Krish Veera, Sajal Kumar Goyla… · [HF 镜像](https://huggingface.co/papers/2605.20630)*
 
 针对工业资产运维智能体规划执行管线延迟高、现有通用大模型缓存适配性差的问题，本文在AssetOpsBench基准上测试提出两套互补优化方案：时序语义缓存、结合磁盘级工具发现缓存与依赖感知并行执行的MCP工作流优化。结果显示，MCP优化提效1.67倍、降延40%，缓存命中时提效达30.6倍，同时明确了纯语义缓存适配参数化工业查询的失效问题。
 
 <FeedbackButtons slug="item:arxiv-2605.20630" client:visible />
 
-## <a href="https://arxiv.org/abs/2605.19376" target="_blank" rel="noopener noreferrer">3. Generative Recursive Reasoning</a>
+## <a href="https://arxiv.org/abs/2605.19376" target="_blank" rel="noopener noreferrer">Generative Recursive Reasoning</a>
 
-*📄 HF ★ 7 · Junyeob Baek, Mingyu Jo, Minsu Kim… · [HF 镜像](https://huggingface.co/papers/2605.19376)*
+*HF 7 · Junyeob Baek, Mingyu Jo, Minsu Kim… · [HF 镜像](https://huggingface.co/papers/2605.19376)*
 
 现有递归推理模型多为确定性，仅沿单条潜态轨迹迭代优化、输出单一预测，存在局限。本文提出生成式递归推理框架GRAM，将递归潜推理转化为概率多轨迹计算，采用摊销变分推断训练，支持条件推理及无输入场景下的无条件生成。其在结构化推理、多解约束满足任务上表现优于确定性基线，还可通过调整递归深度、并行采样轨迹实现推理时算力缩放。
 
 <FeedbackButtons slug="item:arxiv-2605.19376" client:visible />
 
-## <a href="https://arxiv.org/abs/2605.21487" target="_blank" rel="noopener noreferrer">4. Uni-Edit: Intelligent Editing Is A General Task For Unified Model Tuning</a>
+## <a href="https://arxiv.org/abs/2605.21487" target="_blank" rel="noopener noreferrer">Uni-Edit: Intelligent Editing Is A General Task For Unified Model Tuning</a>
 
-*📄 HF ★ 4 · Dian Zheng, Manyuan Zhang, Hongyu Li… · [HF 镜像](https://huggingface.co/papers/2605.21487)*
+*HF 4 · Dian Zheng, Manyuan Zhang, Hongyu Li… · [HF 镜像](https://huggingface.co/papers/2605.21487)*
 
 现有统一多模态模型提升图像理解、生成、编辑能力依赖的混合多任务训练存在固有冲突，需复杂多阶段流程，仅能实现性能权衡而非互促。本文提出Uni-Edit，将智能编辑作为通用调优任务，构建含复杂推理指令的148k数据集，单任务单阶段训练即可同步提升三类能力，经实验验证效果显著。
 
 <FeedbackButtons slug="item:arxiv-2605.21487" client:visible />
 
-## <a href="https://arxiv.org/abs/2605.20668" target="_blank" rel="noopener noreferrer">5. On the limits and opportunities of AI reviewers: Reviewing the reviews of Nature-family papers with 45 expert scientists</a>
+## <a href="https://arxiv.org/abs/2605.20668" target="_blank" rel="noopener noreferrer">On the limits and opportunities of AI reviewers: Reviewing the reviews of Nature-family papers with 45 expert scientists</a>
 
-*📄 HF ★ 2 · Seungone Kim, Dongkeun Yoon, Kiril Gashteovski… · [HF 镜像](https://huggingface.co/papers/2605.20668)*
+*HF 2 · Seungone Kim, Dongkeun Yoon, Kiril Gashteovski… · [HF 镜像](https://huggingface.co/papers/2605.20668)*
 
 针对AI审稿人能力存疑、现有评估仅对标人类判决的不足，该研究邀请45名跨领域专家耗时469小时，对82篇Nature系列论文的人类与3款AI审稿意见的三类核心指标做标注评估。结果显示GPT-5.2表现优于单篇最高评分人类审稿人，所有AI表现均优于低分人类，还可发现26%人类未提及的问题，但存在特有缺陷，现阶段仅可作为人类审稿的补充。
 
 <FeedbackButtons slug="item:arxiv-2605.20668" client:visible />
 
-# 📄 arXiv cs.LG（机器学习）
+# arXiv cs.LG（机器学习）
 
-## <a href="https://arxiv.org/abs/2605.18793" target="_blank" rel="noopener noreferrer">6. Dimensional Balance Improves Large Scale Spatiotemporal Prediction Performance</a>
+## <a href="https://arxiv.org/abs/2605.18793" target="_blank" rel="noopener noreferrer">Dimensional Balance Improves Large Scale Spatiotemporal Prediction Performance</a>
 
-*📄 Jing Chen, Shixiang Pan, Yujie Fan…*
+*Jing Chen, Shixiang Pan, Yujie Fan…*
 
 针对现有时空预测方法性能提升有限、跨域迁移性弱的痛点，该研究以时空熵为指标诊断时空复杂度不匹配瓶颈，提出可扩展自适应框架：通过低秩嵌入压缩空间维度保留关键结构，扩展时域捕捉长程依赖缓解累积误差。多领域测试显示精度提升显著、通用性强，代码已开源。
 
 <FeedbackButtons slug="item:arxiv-2605.18793" client:visible />
 
-## <a href="https://arxiv.org/abs/2605.18794" target="_blank" rel="noopener noreferrer">7. Robust Basis Spline Decoupling for the Compression of Transformer Models</a>
+## <a href="https://arxiv.org/abs/2605.18794" target="_blank" rel="noopener noreferrer">Robust Basis Spline Decoupling for the Compression of Transformer Models</a>
 
-*📄 Joppe De Jonghe, Van Tien Pham, Mariya Ishteva*
+*Joppe De Jonghe, Van Tien Pham, Mariya Ishteva*
 
 针对现有张量解耦的神经网络压缩方法依赖多项式、分段线性参数化，存在数值不稳定或表达性有限的问题，本文提出基于B样条的解耦框架，设计融合归一化与Tikhonov正则的鲁棒交替最小二乘算法R-CMTF-BSD。实验验证其在视觉、Swin Transformer上可大幅减参同时保持精度，是结构化网络压缩的有效方案。
 
 <FeedbackButtons slug="item:arxiv-2605.18794" client:visible />
 
-## <a href="https://arxiv.org/abs/2605.18795" target="_blank" rel="noopener noreferrer">8. HELLoRA: Hot Experts Layer-Level Low-Rank Adaptation for Mixture-of-Experts Models</a>
+## <a href="https://arxiv.org/abs/2605.18795" target="_blank" rel="noopener noreferrer">HELLoRA: Hot Experts Layer-Level Low-Rank Adaptation for Mixture-of-Experts Models</a>
 
-*📄 Jia Wei, Zhonghao Zhang, Ping Chen…*
+*Jia Wei, Zhonghao Zhang, Ping Chen…*
 
 针对现有LoRA多适配稠密大模型参数高效微调场景、未利用MoE稀疏激活特性的问题，本文提出HELLoRA方法：仅为每层激活频率最高的专家挂载LoRA模块，还可搭配LoRI形成更省参数的HELLoRI。在三类MoE基座、数学推理等三类任务上，该方法较常规LoRA可降超8成可训练参数、提近10%精度，同时提升训练效率，验证了激活感知适配器部署对MoE微调的实用价值。
 
 <FeedbackButtons slug="item:arxiv-2605.18795" client:visible />
 
-# 🟢 OpenAI 官方动态
+# OpenAI 官方动态
 
-## <a href="https://openai.com/index/model-disproves-discrete-geometry-conjecture" target="_blank" rel="noopener noreferrer">9. An OpenAI model has disproved a central conjecture in discrete geometry</a>
+## <a href="https://openai.com/index/model-disproves-discrete-geometry-conjecture" target="_blank" rel="noopener noreferrer">An OpenAI model has disproved a central conjecture in discrete geometry</a>
 
-*📄 OpenAI*
+*OpenAI*
 
 OpenAI研发的AI模型攻克了离散几何领域悬置80年的经典单位距离难题，推翻了该领域此前公认的核心相关猜想。这一成果既突破了长期困扰数学家的纯理论瓶颈，也标志着人工智能驱动数学研究取得里程碑式进展，为AI跨界攻坚基础科学前沿未知问题提供了全新可行思路。
 
 <FeedbackButtons slug="item:openai-blog-model-disproves-discrete-geometry-conjecture" client:visible />
 
-## <a href="https://openai.com/index/the-next-phase-of-education-for-countries" target="_blank" rel="noopener noreferrer">10. The next phase of OpenAI’s Education for Countries</a>
+## <a href="https://openai.com/index/the-next-phase-of-education-for-countries" target="_blank" rel="noopener noreferrer">The next phase of OpenAI’s Education for Countries</a>
 
-*📄 OpenAI*
+*OpenAI*
 
 本文介绍OpenAI“面向国家的教育行动计划”进入下一阶段，核心推进方向为扩大AI技术在各级各类校园场景的落地应用，具体举措包括搭建多元新合作生态、开展教师AI应用专项培训、开发适配教学需求的专用工具，项目最终目标是覆盖全球范围，切实提升整体学习成效。
 
 <FeedbackButtons slug="item:openai-blog-the-next-phase-of-education-for-countries" client:visible />
 
-# 🪶 Anthropic News
+# Anthropic News
 
-## <a href="https://www.anthropic.com/news/claude-opus-4-7" target="_blank" rel="noopener noreferrer">11. Introducing Claude Opus 4.7</a>
+## <a href="https://www.anthropic.com/news/claude-opus-4-7" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 4.7</a>
 
-*📄 Anthropic*
+*Anthropic*
 
 Anthropic最新大模型Claude Opus 4.7现已全面开放使用。该版本相较于前代Opus 4.6实现了明显升级，核心提升集中在高阶软件工程方向，对复杂度最高的开发类任务处理能力增益尤为突出，可更好支撑高难度代码开发、复杂系统调试等专业软件工程场景。
 
 <FeedbackButtons slug="item:anthropic-claude-opus-4-7" client:visible />
 
-## <a href="https://www.anthropic.com/news/claude-design-anthropic-labs" target="_blank" rel="noopener noreferrer">12. Introducing Claude Design by Anthropic Labs</a>
+## <a href="https://www.anthropic.com/news/claude-design-anthropic-labs" target="_blank" rel="noopener noreferrer">Introducing Claude Design by Anthropic Labs</a>
 
-*📄 Anthropic*
+*Anthropic*
 
 Anthropic实验室近期发布全新产品Claude Design，这款工具主打人机协作式视觉创作能力，支持用户与Claude大模型配合，高效产出设计稿、交互原型、演示幻灯片、单页宣传物料等多种规范化视觉作品，可大幅降低非专业设计用户制作优质可视化内容的门槛。
 
 <FeedbackButtons slug="item:anthropic-claude-design-anthropic-labs" client:visible />
 
-# 🟣 Google DeepMind
+# Google DeepMind
 
-## <a href="https://deepmind.google/blog/fast-tracking-genetic-leads-to-reverse-cellular-aging/" target="_blank" rel="noopener noreferrer">13. Fast-tracking genetic leads to reverse cellular aging</a>
+## <a href="https://deepmind.google/blog/fast-tracking-genetic-leads-to-reverse-cellular-aging/" target="_blank" rel="noopener noreferrer">Fast-tracking genetic leads to reverse cellular aging</a>
 
-*📄 Google DeepMind*
+*Google DeepMind*
 
 这项研究聚焦逆转细胞衰老的遗传靶点挖掘需求，生物学家借助Co-Scientist AI智能科研工具开展筛选，成功发掘出新型调控因子，实现人类细胞有效年轻化。该成果既为抗衰研究提供了全新干预靶标，也验证了AI辅助工具在遗传筛选研究中的高效性，可加快衰老相关转化研究的推进。
 
 <FeedbackButtons slug="item:deepmind-fast-tracking-genetic-leads-to-reverse-cellular-aging" client:visible />
 
-## <a href="https://deepmind.google/blog/simulate-real-world-places-with-project-genie-and-street-view/" target="_blank" rel="noopener noreferrer">14. Simulate real-world places with Project Genie and Street View</a>
+## <a href="https://deepmind.google/blog/simulate-real-world-places-with-project-genie-and-street-view/" target="_blank" rel="noopener noreferrer">Simulate real-world places with Project Genie and Street View</a>
 
-*📄 Google DeepMind*
+*Google DeepMind*
 
 谷歌本次推出两项服务更新：一是面向全球范围放开Google AI Ultra订阅服务的使用权限，覆盖更多区域的付费用户；二是上线搭载谷歌街景数据支撑的「Genie项目」新功能，依托真实空间采集信息，可实现对现实世界各类地点的高保真模拟，为空间相关AI应用提供新的底层支撑。
 
 <FeedbackButtons slug="item:deepmind-simulate-real-world-places-with-project-genie-and-street-view" client:visible />
 
-# 🤗 Hugging Face Blog
+# Hugging Face Blog
 
-## <a href="https://huggingface.co/blog/allenai/olmoearth-v1-1" target="_blank" rel="noopener noreferrer">15. OlmoEarth v1.1: A more efficient family of Earth observation models</a>
+## <a href="https://huggingface.co/blog/allenai/olmoearth-v1-1" target="_blank" rel="noopener noreferrer">OlmoEarth v1.1: A more efficient family of Earth observation models</a>
 
-*📄 Hugging Face*
+*Hugging Face*
 
 本次推出的OlmoEarth v1.1为升级版对地观测模型家族，针对现有遥感模型算力开销高、下游适配性弱的痛点，优化了轻量化骨干架构与多模态预训练策略，基于海量多源公开遥感数据完成预训练。实测显示，其相比旧版、同参数通用CV模型，在遥感分类、变化检测等典型下游任务上精度与推理效率均有明显提升，更适配端侧落地场景。
 
 <FeedbackButtons slug="item:hf-blog-olmoearth-v1-1" client:visible />
 
-## <a href="https://huggingface.co/blog/ettin-reranker" target="_blank" rel="noopener noreferrer">16. Introducing the Ettin Reranker Family</a>
+## <a href="https://huggingface.co/blog/ettin-reranker" target="_blank" rel="noopener noreferrer">Introducing the Ettin Reranker Family</a>
 
-*📄 Hugging Face*
+*Hugging Face*
 
 当前仅提供了该论文的标题，未附上摘要的具体英文正文内容，请你补充完整《Introducing the Ettin Reranker Family》的摘要原文，我才能为你完成翻译提炼，输出120字左右、突出核心方法与结论的简洁中文总结哦。
 
 <FeedbackButtons slug="item:hf-blog-ettin-reranker" client:visible />
 
-# 📰 The Gradient
+# The Gradient
 
-## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">17. After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
 
-*📄 The Gradient*
+*The Gradient*
 
 基于美德伦理视角的AI对齐研究反驳“理性主体需锚定固定目标”的常见预设，指出人类行动的理性本质是适配由行动、评价标准、资源等构成的实践网络，而非指向终极目标。研究提出，若要AI适配人类协作、伦理要求及核心安全属性，需让AI决策逻辑和人类基于实践的行动逻辑同构。
 
 <FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
 
-# ⚡ 量子位
+# 量子位
 
-## <a href="https://www.qbitai.com/2026/05/420761.html" target="_blank" rel="noopener noreferrer">18. 刚刚，马斯克公开SpaceX招股书！</a>
+## <a href="https://www.qbitai.com/2026/05/420761.html" target="_blank" rel="noopener noreferrer">刚刚，马斯克公开SpaceX招股书！</a>
 
-*📄 量子位*
+*量子位*
 
 马斯克诉OpenAI因过诉讼时效败诉后，旋即提交合并了xAI、X的SpaceX纳斯达克IPO申请，拟最高募资750亿美元、估值超2万亿美元，若通过将成全球最大IPO。其火箭发射业务仍亏损，核心盈利来自星链，AI业务巨亏但仍持续大额投入。OpenAI也计划近期秘密递表，双方开启IPO竞速。
 
 <FeedbackButtons slug="item:qbitai-420761" client:visible />
 
-## <a href="https://www.qbitai.com/2026/05/420753.html" target="_blank" rel="noopener noreferrer">19. 智象未来超两千亿参数图像大模型HiDream-O1-Image-Pro发布，融资持续提速</a>
+## <a href="https://www.qbitai.com/2026/05/420753.html" target="_blank" rel="noopener noreferrer">智象未来超两千亿参数图像大模型HiDream-O1-Image-Pro发布，融资持续提速</a>
 
-*📄 量子位*
+*量子位*
 
 5月19日智象未来开放日发布超2000亿参数图像大模型HiDream-O1-Image-Pro，该模型采用原生全模态UiT架构，打通多模态底层表征融合，突破传统架构模态分离编码瓶颈，多项基准测试刷新SOTA。同时智象半月内再获亿级融资，资本市场看好其全模态大模型赛道布局潜力。
 
 <FeedbackButtons slug="item:qbitai-420753" client:visible />
 
-## <a href="https://www.qbitai.com/2026/05/420743.html" target="_blank" rel="noopener noreferrer">20. 太初元碁洪源：异构计算能力将成为未来AI算力基础设施的重要方向｜AIGC2026</a>
+## <a href="https://www.qbitai.com/2026/05/420743.html" target="_blank" rel="noopener noreferrer">太初元碁洪源：异构计算能力将成为未来AI算力基础设施的重要方向｜AIGC2026</a>
 
-*📄 量子位*
+*量子位*
 
 在量子位主办的AIGC2026峰会上，太初元碁首席产品官洪源指出，当前AI落地真实业务场景后Token成为核心消耗单位，算力已成产业发展关键瓶颈。未来算力需攻克异构单元协同调度、压降通信成本等问题，国产算力不能仅追单点性能，更要强化大规模集群服务、计算效率与生态易用性。
 

@@ -13,177 +13,177 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 > 由 cron 每日 08:00 北京自动从 HF Daily Papers + arxiv cs.LG 抓取，豆包翻译/摘要。仅供参考。
 
-# 🤗 Hugging Face Daily Papers
+# Hugging Face Daily Papers
 
-## <a href="https://arxiv.org/abs/2605.31584" target="_blank" rel="noopener noreferrer">1. LongTraceRL: Learning Long-Context Reasoning from Search Agent Trajectories with Rubric Rewards</a>
+## <a href="https://arxiv.org/abs/2605.31584" target="_blank" rel="noopener noreferrer">LongTraceRL: Learning Long-Context Reasoning from Search Agent Trajectories with Rubric Rewards</a>
 
-*📄 HF ★ 22 · Nianyi Lin, Jiajie Zhang, Lei Hou… · [HF 镜像](https://huggingface.co/papers/2605.31584)*
+*HF 22 · Nianyi Lin, Jiajie Zhang, Lei Hou… · [HF 镜像](https://huggingface.co/papers/2605.31584)*
 
 针对大模型长上下文推理易被冗余内容干扰、现有相关强化学习方法存在干扰项混淆度低、奖励稀疏仅关注结果的缺陷，研究者提出LongTraceRL：依托搜索代理轨迹构建分层高混淆干扰项训练语料，设计仅针对正确答案的实体级规则奖励监督中间推理步骤。实验显示该方法在多尺度模型、5类长上下文基准上均优于基线，推理更有证据支撑。
 
 <FeedbackButtons slug="item:arxiv-2605.31584" client:visible />
 
-## <a href="https://arxiv.org/abs/2605.30819" target="_blank" rel="noopener noreferrer">2. Function2Scene: 3D Indoor Scene Layout from Functional Specifications</a>
+## <a href="https://arxiv.org/abs/2605.30819" target="_blank" rel="noopener noreferrer">Function2Scene: 3D Indoor Scene Layout from Functional Specifications</a>
 
-*📄 HF ★ 20 · Ruiqi Wang, Qimin Chen, Daniel Ritchie… · [HF 镜像](https://huggingface.co/papers/2605.30819)*
+*HF 20 · Ruiqi Wang, Qimin Chen, Daniel Ritchie… · [HF 镜像](https://huggingface.co/papers/2605.30819)*
 
 针对现有文本驱动3D室内场景生成多聚焦家具配置、忽视实际使用需求的问题，该研究提出Function2Scene框架：输入描述使用者、活动需求的功能文本，解析生成多维度设计约束，结合几何测量、多模态大模型迭代校验优化布局。经30个专业设计案例测试，94.3%的对比场景中其结果优于现有基线，更贴合使用功能。
 
 <FeedbackButtons slug="item:arxiv-2605.30819" client:visible />
 
-## <a href="https://arxiv.org/abs/2605.31604" target="_blank" rel="noopener noreferrer">3. Representation Forcing for Bottleneck-Free Unified Multimodal Models</a>
+## <a href="https://arxiv.org/abs/2605.31604" target="_blank" rel="noopener noreferrer">Representation Forcing for Bottleneck-Free Unified Multimodal Models</a>
 
-*📄 HF ★ 18 · Yuqing Wang, Zhijie Lin, Ceyuan Yang… · [HF 镜像](https://huggingface.co/papers/2605.31604)*
+*HF 18 · Yuqing Wang, Zhijie Lin, Ceyuan Yang… · [HF 镜像](https://huggingface.co/papers/2605.31604)*
 
 针对现有统一多模态模型依赖独立预训练VAE存在结构瓶颈、直接移除VAE会拉低生成质量的问题，本文提出表征强迫（RF）技术：让解码器先自回归预测视觉表征作为中间token，引导同骨干内的像素扩散，无需外部生成隐空间。实验显示，RF方案生成效果追平SOTA VAE类统一模型，图像理解性能更优，为端到端无瓶颈统一多模态模型研发提供可行路径。
 
 <FeedbackButtons slug="item:arxiv-2605.31604" client:visible />
 
-## <a href="https://arxiv.org/abs/2605.31264" target="_blank" rel="noopener noreferrer">4. COLLEAGUE.SKILL: Automated AI Skill Generation via Expert Knowledge Distillation</a>
+## <a href="https://arxiv.org/abs/2605.31264" target="_blank" rel="noopener noreferrer">COLLEAGUE.SKILL: Automated AI Skill Generation via Expert Knowledge Distillation</a>
 
-*📄 HF ★ 16 · Tianyi Zhou, Dongrui Liu, Leitao Yuan… · [HF 镜像](https://huggingface.co/papers/2605.31264)*
+*HF 16 · Tianyi Zhou, Dongrui Liu, Leitao Yuan… · [HF 镜像](https://huggingface.co/papers/2605.31264)*
 
 针对现有大模型智能体难以将零散异构的角色/个人经验转化为可复用技能的痛点，本文提出COLLEAGUE.SKILL专家知识蒸馏系统：将目标专家素材蒸馏为含能力、行为双轨的版本化技能包，支持自然语言调整、跨端部署。该开源系统已获18.5k GitHub星，沉淀215项社区贡献技能，验证了人格化技能可封装为可解释、可修正的标准化包。
 
 <FeedbackButtons slug="item:arxiv-2605.31264" client:visible />
 
-## <a href="https://arxiv.org/abs/2605.31075" target="_blank" rel="noopener noreferrer">5. Task-Focused Memorization for Multimodal Agents</a>
+## <a href="https://arxiv.org/abs/2605.31075" target="_blank" rel="noopener noreferrer">Task-Focused Memorization for Multimodal Agents</a>
 
-*📄 HF ★ 12 · Tao Zou, Yichen He, Tian Qiu… · [HF 镜像](https://huggingface.co/papers/2605.31075)*
+*HF 12 · Tao Zou, Yichen He, Tian Qiu… · [HF 镜像](https://huggingface.co/papers/2605.31075)*
 
 针对多模态智能体面临流式多模态观测信息过载、难以筛选待记忆内容的核心痛点，本文提出基于强化学习的任务聚焦记忆框架TaskMem：采用两阶段训练，先优化记忆保真度，部署后结合实时任务奖励微调大模型适配层，仅留存任务相关内容。在三个流式基准上，仅靠记忆答题的VQA准确率较基线最高提升7.0%。
 
 <FeedbackButtons slug="item:arxiv-2605.31075" client:visible />
 
-# 📄 arXiv cs.LG（机器学习）
+# arXiv cs.LG（机器学习）
 
-## <a href="https://arxiv.org/abs/2605.30358" target="_blank" rel="noopener noreferrer">6. QASM-Eval: A Dataset to Train and Evaluate LLMs on OpenQASM-3 Beyond Quantum Circuits</a>
+## <a href="https://arxiv.org/abs/2605.30358" target="_blank" rel="noopener noreferrer">QASM-Eval: A Dataset to Train and Evaluate LLMs on OpenQASM-3 Beyond Quantum Circuits</a>
 
-*📄 Zhenxiao Fu, Lei Jiang, Fan Chen*
+*Zhenxiao Fu, Lei Jiang, Fan Chen*
 
 针对NISQ时代量子编程需调用OpenQASM3硬件导向特性，但缺乏对应大语言模型训练评估数据集的缺口，该工作推出首个面向该场景的QASM-Eval数据集，包含100项专家验证测试任务、4000项训练任务，覆盖多类硬件相关编程场景，配套自动校验工具。评测显示现有主流大模型OpenQASM3编程表现较差，用该数据集微调后性能提升显著，可为量子编程大模型开发提供基础支撑。
 
 <FeedbackButtons slug="item:arxiv-2605.30358" client:visible />
 
-## <a href="https://arxiv.org/abs/2605.30374" target="_blank" rel="noopener noreferrer">7. Gait2Hip-60: A Unified Deep Learning Benchmark for Predicting Hip Muscle Forces and Joint Moments from Multi-Cadence Gait Kinematics</a>
+## <a href="https://arxiv.org/abs/2605.30374" target="_blank" rel="noopener noreferrer">Gait2Hip-60: A Unified Deep Learning Benchmark for Predicting Hip Muscle Forces and Joint Moments from Multi-Cadence Gait Kinematics</a>
 
-*📄 Jiaqi Zhang, Ji Hou, Qing Sun…*
+*Jiaqi Zhang, Ji Hou, Qing Sun…*
 
 针对步态下髋部肌力、关节力矩的传统肌骨仿真耗时、难落地临床的痛点，该研究构建含60名健康人多步频步态数据的Gait2Hip-60基准，统一协议对比三类序列模型，发现Transformer预测精度最优，零样本迁移至9例股骨头坏死患者仍具中等预测能力，可为相关应用提供基线，后续需提升病理场景泛化性。
 
 <FeedbackButtons slug="item:arxiv-2605.30374" client:visible />
 
-## <a href="https://arxiv.org/abs/2605.30376" target="_blank" rel="noopener noreferrer">8. Unicorn: Scaling High-Dimensional Time Series Forecasting via Universal Correlation Modeling</a>
+## <a href="https://arxiv.org/abs/2605.30376" target="_blank" rel="noopener noreferrer">Unicorn: Scaling High-Dimensional Time Series Forecasting via Universal Correlation Modeling</a>
 
-*📄 Haochen Yuan, Yichen Song, Yunbo Wang…*
+*Haochen Yuan, Yichen Song, Yunbo Wang…*
 
 针对现有时间序列预测模型“通道独立忽略关联、通道依赖难跨异质数据集泛化”的矛盾，本文提出Unicorn高维时序可扩展多数据集预训练框架，核心采用隐式原型码本解耦关联建模与通道身份，将异质通道映射到共享隐空间学习通用可迁移交互模式。实验显示其性能显著优于现有SOTA，少样本迁移优势突出，为多元时序基础模型提供可扩展路径。
 
 <FeedbackButtons slug="item:arxiv-2605.30376" client:visible />
 
-# 🟢 OpenAI 官方动态
+# OpenAI 官方动态
 
-## <a href="https://openai.com/index/boston-childrens-hospital" target="_blank" rel="noopener noreferrer">9. Boston Children’s uses AI to unlock new diagnoses</a>
+## <a href="https://openai.com/index/boston-childrens-hospital" target="_blank" rel="noopener noreferrer">Boston Children’s uses AI to unlock new diagnoses</a>
 
-*📄 OpenAI*
+*OpenAI*
 
 波士顿儿童医院将OpenAI的AI技术落地到临床场景中，核心用于优化患者诊疗服务质量、降低院内运营负担。目前该应用已取得明确成效，累计辅助确诊超过40例此前难以识别的罕见病病例，为AI技术在儿科诊疗、罕见病筛查等细分医疗场景的落地提供了可参考的实践经验。
 
 <FeedbackButtons slug="item:openai-blog-boston-childrens-hospital" client:visible />
 
-## <a href="https://openai.com/index/braintrust" target="_blank" rel="noopener noreferrer">10. How Braintrust turns customer requests into code with Codex</a>
+## <a href="https://openai.com/index/braintrust" target="_blank" rel="noopener noreferrer">How Braintrust turns customer requests into code with Codex</a>
 
-*📄 OpenAI*
+*OpenAI*
 
 本文介绍Braintrust团队的研发效率优化方案：将Codex的代码生成能力与GPT-5.5的自然语言语义理解能力结合，搭建从客户需求到可执行代码的自动化转化链路。该方案可自动生成实验验证代码与业务逻辑初版，既加快了实验迭代速度，也大幅压缩需求落地的编码周期，整体研发效率提升显著。
 
 <FeedbackButtons slug="item:openai-blog-braintrust" client:visible />
 
-# 🪶 Anthropic News
+# Anthropic News
 
-## <a href="https://www.anthropic.com/news/claude-opus-4-8" target="_blank" rel="noopener noreferrer">11. Introducing Claude Opus 4.8</a>
+## <a href="https://www.anthropic.com/news/claude-opus-4-8" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 4.8</a>
 
-*📄 Anthropic*
+*Anthropic*
 
 本次发布的Claude Opus 4.8是Opus层级大模型的最新迭代升级版本。该版本针对核心能力做了定向优化，在代码任务、智能体任务、专业场景工作三类场景下性能均有显著增强，同时提升了长流程任务的处理稳定性，可更可靠支撑周期长、环节多的持续性复杂工作需求。
 
 <FeedbackButtons slug="item:anthropic-claude-opus-4-8" client:visible />
 
-## <a href="https://www.anthropic.com/news/claude-design-anthropic-labs" target="_blank" rel="noopener noreferrer">12. Introducing Claude Design by Anthropic Labs</a>
+## <a href="https://www.anthropic.com/news/claude-design-anthropic-labs" target="_blank" rel="noopener noreferrer">Introducing Claude Design by Anthropic Labs</a>
 
-*📄 Anthropic*
+*Anthropic*
 
 Anthropic实验室正式推出全新产品Claude Design，该产品支持用户与Claude大模型协作创作，可产出设计稿、交互原型、演示幻灯片、单页宣传物料等多类打磨完成的高质量可视化成果，进一步拓展了Claude的能力边界，为创意设计、商务办公等场景的AI协作提供了实用新工具。
 
 <FeedbackButtons slug="item:anthropic-claude-design-anthropic-labs" client:visible />
 
-# 🟣 Google DeepMind
+# Google DeepMind
 
-## <a href="https://deepmind.google/blog/were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle-environmental-risks/" target="_blank" rel="noopener noreferrer">13. We’re launching the Google DeepMind Accelerator program in Asia Pacific to tackle environmental risks</a>
+## <a href="https://deepmind.google/blog/were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle-environmental-risks/" target="_blank" rel="noopener noreferrer">We’re launching the Google DeepMind Accelerator program in Asia Pacific to tackle environmental risks</a>
 
-*📄 Google DeepMind*
+*Google DeepMind*
 
 谷歌DeepMind正式启动亚太区加速器项目，聚焦应对区域各类环境风险。项目面向亚太深耕环境科技领域的初创团队开放，将为入选者提供AI技术支持、专属算力配额、行业专家指导及产业资源对接，加快AI在气候应对、灾害预警、生态保护等场景的落地，助力提升亚太环境风险防控效能。
 
 <FeedbackButtons slug="item:deepmind-were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle" client:visible />
 
-## <a href="https://deepmind.google/blog/fast-tracking-genetic-leads-to-reverse-cellular-aging/" target="_blank" rel="noopener noreferrer">14. Fast-tracking genetic leads to reverse cellular aging</a>
+## <a href="https://deepmind.google/blog/fast-tracking-genetic-leads-to-reverse-cellular-aging/" target="_blank" rel="noopener noreferrer">Fast-tracking genetic leads to reverse cellular aging</a>
 
-*📄 Google DeepMind*
+*Google DeepMind*
 
 这篇研究围绕逆转细胞衰老的遗传靶点发掘展开，核心方法为生物学家借助Co-Scientist智能工具开展高效筛选，突破传统筛选的效率瓶颈，成功定位到一批全新调控因子，经验证可有效实现人类细胞年轻化。该成果大幅压缩抗衰靶点研发周期，为后续抗衰干预方案开发提供了全新候选方向。
 
 <FeedbackButtons slug="item:deepmind-fast-tracking-genetic-leads-to-reverse-cellular-aging" client:visible />
 
-# 🤗 Hugging Face Blog
+# Hugging Face Blog
 
-## <a href="https://huggingface.co/blog/torch-profiler" target="_blank" rel="noopener noreferrer">15. Profiling in PyTorch (Part 1): A Beginner&apos;s Guide to torch.profiler</a>
+## <a href="https://huggingface.co/blog/torch-profiler" target="_blank" rel="noopener noreferrer">Profiling in PyTorch (Part 1): A Beginner&apos;s Guide to torch.profiler</a>
 
-*📄 Hugging Face*
+*Hugging Face*
 
 这是PyTorch性能剖析系列的第一篇入门指南，面向新手讲解torch.profiler工具的基础用法，涵盖配置启动、数据采集、结果解读等全流程操作，可获取模型训练/推理时的算子耗时、显存占用、CPU/GPU负载等核心性能数据，帮助开发者快速定位运行瓶颈，为模型效率优化提供明确依据。
 
 <FeedbackButtons slug="item:hf-blog-torch-profiler" client:visible />
 
-## <a href="https://huggingface.co/blog/ibm-research/itbench-aa" target="_blank" rel="noopener noreferrer">16. ITBench-AA: Frontier Models Score Below 50% on the First Benchmark for Agentic Enterprise IT Tasks — by Artificial Analysis and IBM</a>
+## <a href="https://huggingface.co/blog/ibm-research/itbench-aa" target="_blank" rel="noopener noreferrer">ITBench-AA: Frontier Models Score Below 50% on the First Benchmark for Agentic Enterprise IT Tasks — by Artificial Analysis and IBM</a>
 
-*📄 Hugging Face*
+*Hugging Face*
 
 这份由Artificial Analysis联合IBM推出的成果，发布了全球首个面向企业IT智能体任务的基准测试集ITBench-AA，覆盖运维排障、资源调度等真实企业IT场景，用于测试大模型智能体的工具调用、复杂推理等专业能力。实测显示当前前沿大模型在该基准得分不足50%，说明现有大模型落地企业级IT智能体场景仍有明显短板。
 
 <FeedbackButtons slug="item:hf-blog-itbench-aa" client:visible />
 
-# 📰 The Gradient
+# The Gradient
 
-## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">17. After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
 
-*📄 The Gradient*
+*The Gradient*
 
 这篇AI对齐研究反驳了正交性假说默认的“理性智能体需锚定固定最终目标”前提，引入德性伦理实践框架指出：人类理性体现为行动匹配含评价准则、行动倾向等的实践网络，而非指向特定终极目标。文章提出AI决策逻辑需匹配人类实践型行动逻辑，才能适配协作要求，同时满足伦理对齐与核心安全需求。
 
 <FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
 
-# ⚡ 量子位
+# 量子位
 
-## <a href="https://www.qbitai.com/2026/05/427104.html" target="_blank" rel="noopener noreferrer">18. DDIM之父宋佳铭，宣布离职</a>
+## <a href="https://www.qbitai.com/2026/05/427104.html" target="_blank" rel="noopener noreferrer">DDIM之父宋佳铭，宣布离职</a>
 
-*📄 量子位*
+*量子位*
 
 扩散模型核心技术DDIM提出者宋佳铭近期宣布从Luma AI离职。2023年他从英伟达离职加入Luma任首席科学家，三年间推动公司完成3D生成、文生视频、多模态基础模型三次关键技术转向，助力Luma凭Dream Machine、Uni-1.1等跻身全球多模态第一梯队，此次离职正值公司发展关键期。
 
 <FeedbackButtons slug="item:qbitai-427104" client:visible />
 
-## <a href="https://www.qbitai.com/2026/05/427005.html" target="_blank" rel="noopener noreferrer">19. 别光给Agent加Tool了，它根本选不明白！复旦×通义提出全新CUA训练范式</a>
+## <a href="https://www.qbitai.com/2026/05/427005.html" target="_blank" rel="noopener noreferrer">别光给Agent加Tool了，它根本选不明白！复旦×通义提出全新CUA训练范式</a>
 
-*📄 量子位*
+*量子位*
 
 针对智能体同时接入GUI操作与工具调用时不会做路径选择、准确率不升反降的问题，复旦联合通义提出ToolCUA训练范式，适配GUI-Tool混合动作空间，让模型可自主判断不同场景的最优操作路径。其8B版本在OSWorld-MCP基准准确率达46.85%，超Claude 4 Sonnet、逼近Claude 4.5 Sonnet，相关资源已全部开源。
 
 <FeedbackButtons slug="item:qbitai-427005" client:visible />
 
-## <a href="https://www.qbitai.com/2026/05/426991.html" target="_blank" rel="noopener noreferrer">20. 英伟达版「MacBook Pro」曝光：老黄自研了CPU！</a>
+## <a href="https://www.qbitai.com/2026/05/426991.html" target="_blank" rel="noopener noreferrer">英伟达版「MacBook Pro」曝光：老黄自研了CPU！</a>
 
-*📄 量子位*
+*量子位*
 
 英伟达将于5月28日台北Computex展会上发布自研PC新品，联合微软、Arm推出搭载N1X芯片的Arm架构Windows笔记本。该芯片对标苹果M系列，由英伟达联合联发科研发、采用台积电3nm工艺，集成20核CPU、性能等同桌面RTX5070的Blackwell GPU，配128GB共享内存，标志英伟达正式入局消费级PC市场。
 
