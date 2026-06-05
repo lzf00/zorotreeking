@@ -29,6 +29,9 @@ interface Props {
   stocks: StockSeed[];
   /** 是否显示业务说明列 */
   showNote?: boolean;
+  /** SSR 兜底：服务端从 wind-market-latest.json 映射好的 quotes（按 secid 索引） */
+  initialQuotes?: Record<string, Quote>;
+  initialUpdated?: number;
 }
 
 const POLL_MS = 60_000;
@@ -40,9 +43,11 @@ function isATradingHours(d: Date = new Date()): boolean {
   return (t >= 570 && t <= 690) || (t >= 780 && t <= 900);
 }
 
-export default function StockSpotlight({ stocks, showNote = true }: Props) {
-  const [quotes, setQuotes] = useState<Record<string, Quote> | null>(null);
-  const [updated, setUpdated] = useState<number | null>(null);
+export default function StockSpotlight({ stocks, showNote = true, initialQuotes, initialUpdated }: Props) {
+  const [quotes, setQuotes] = useState<Record<string, Quote> | null>(
+    initialQuotes && Object.keys(initialQuotes).length > 0 ? initialQuotes : null,
+  );
+  const [updated, setUpdated] = useState<number | null>(initialUpdated ?? null);
   const [error, setError] = useState<string | null>(null);
   const inFlight = useRef(false);
 

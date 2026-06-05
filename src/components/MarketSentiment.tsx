@@ -43,8 +43,13 @@ function fmtYi(n: number): string {
   return `${yi.toFixed(2)} 亿`;
 }
 
-export default function MarketSentiment() {
-  const [data, setData] = useState<Resp | null>(null);
+interface Props {
+  /** SSR 兜底：服务端从 wind-market-latest.json sentiment 映射好 */
+  initialData?: Resp;
+}
+
+export default function MarketSentiment({ initialData }: Props = {}) {
+  const [data, setData] = useState<Resp | null>(initialData ?? null);
   const [error, setError] = useState<string | null>(null);
   const inFlight = useRef(false);
 

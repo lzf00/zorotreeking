@@ -31,8 +31,13 @@ function isATradingHours(d: Date = new Date()): boolean {
   return (t >= 570 && t <= 690) || (t >= 780 && t <= 900);
 }
 
-export default function SectorRanking() {
-  const [data, setData] = useState<Resp | null>(null);
+interface Props {
+  /** SSR 兜底：服务端从 wind-market-latest.json sectors 映射好 */
+  initialData?: Resp;
+}
+
+export default function SectorRanking({ initialData }: Props = {}) {
+  const [data, setData] = useState<Resp | null>(initialData ?? null);
   const [error, setError] = useState<string | null>(null);
   const inFlight = useRef(false);
 

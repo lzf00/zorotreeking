@@ -93,11 +93,14 @@ const latestPeriod = snapshots[snapshots.length - 1]?.data.period;
 // ── 看板 SSR 兜底快照：构建时读 src/data/wind-market-latest.json ──
 // 由服务器 Wind cron (15:30 BJT) 推到 repo。无 JS / 爬虫看到这份；客户端 JS 进来后 fetch /api/market 覆盖。
 let initialIndices: any[] = [];
+let initialSectors: any = undefined;
+let initialSentiment: any = undefined;
 let snapshotAsOf: string | undefined;
 try {
   const raw = fs.readFileSync(path.resolve("./src/data/wind-market-latest.json"), "utf-8");
   const wind = JSON.parse(raw);
   snapshotAsOf = wind.asOf || wind.date;
+
   initialIndices = (wind.indices || []).map((i: any) => ({
     code: i.code,
     name: i.name,
@@ -107,6 +110,27 @@ try {
     change: i.change_amount,
     change_pct: i.change_pct,
   }));
+
+  // 板块涨跌排行：Wind 的 sectors 是已按 change_pct 排序的，取前 10 / 后 10
+  const sectors = (wind.sectors || []).map((s: any) => ({
+    code: s.code, name: s.name, price: null, change_pct: s.change_pct,
+  }));
+  const up = [...sectors].filter((s) => (s.change_pct ?? 0) > 0).slice(0, 10);
+  const down = [...sectors].filter((s) => (s.change_pct ?? 0) < 0).sort((a, b) => (a.change_pct ?? 0) - (b.change_pct ?? 0)).slice(0, 10);
+  if (sectors.length > 0) {
+    initialSectors = { ok: true, ts: 0, total: sectors.length, top_up: up, top_down: down };
+  }
+
+  // 涨跌停家数
+  if (wind.sentiment && (wind.sentiment.limit_up != null || wind.sentiment.limit_down != null)) {
+    initialSentiment = {
+      ok: true, ts: 0,
+      breadth: {
+        limit_up: wind.sentiment.limit_up ?? 0,
+        limit_down: wind.sentiment.limit_down ?? 0,
+      },
+    };
+  }
 } catch { /* 没快照文件就走纯客户端 */ }
 ---
 
@@ -157,7 +181,7 @@ try {
       <h2 class="text-base font-semibold tracking-tight">市场情绪</h2>
       <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">Live</span>
     </div>
-    <MarketSentiment client:visible />
+    <MarketSentiment initialData={initialSentiment} client:visible />
   </section>
 
   <!-- B · 我的持仓（实时基金估值） -->
@@ -193,7 +217,7 @@ try {
       <h2 class="text-base font-semibold tracking-tight">📊 行业板块涨跌</h2>
       <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">Live</span>
     </div>
-    <SectorRanking client:visible />
+    <SectorRanking initialData={initialSectors} client:visible />
   </section>
 
   <p class="max-w-5xl mx-auto px-5 mt-4 text-[11px] text-[var(--text-tertiary)] leading-relaxed">

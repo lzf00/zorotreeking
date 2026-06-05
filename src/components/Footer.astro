@@ -12,6 +12,15 @@ const year = new Date().getFullYear();
     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
       <p>© {year} {t("site.title")} · {t("site.tagline")}</p>
       <p class="flex flex-wrap items-center gap-x-3 gap-y-1">
+        <button type="button" class="hover:text-[var(--text)] transition-colors cursor-pointer"
+                onclick="window.__openSearch?.()">
+          {lang === "zh" ? "搜索 /" : "Search /"}
+        </button>
+        <span>·</span>
+        <a href={lang === "zh" ? "/subscribe" : "/en/subscribe"} class="hover:text-[var(--text)] transition-colors">
+          {lang === "zh" ? "订阅" : "Subscribe"}
+        </a>
+        <span>·</span>
         <a href="/rss.xml" class="hover:text-[var(--text)] transition-colors">RSS</a>
         <span>·</span>
         <a href={lang === "zh" ? "/tag" : "/en/tag"} class="hover:text-[var(--text)] transition-colors">Tags</a>
