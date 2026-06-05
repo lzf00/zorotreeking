@@ -2,7 +2,7 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
 const feed = "https://www.zorotreeking.online/rss.xml";
-const buttondownUser = import.meta.env.PUBLIC_BUTTONDOWN_USERNAME;
+const buttondownUser = import.meta.env.PUBLIC_BUTTONDOWN_USERNAME || "zifei";
 const webReaders = [
   { name: "Feedly",         url: `https://feedly.com/i/subscription/feed/${encodeURIComponent(feed)}` },
   { name: "Inoreader",      url: `https://www.inoreader.com/?add_feed=${encodeURIComponent(feed)}` },

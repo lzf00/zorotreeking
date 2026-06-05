@@ -2,10 +2,10 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
 const feed = "https://www.zorotreeking.online/rss.xml";
-// Buttondown 邮件订阅。注册账号后把 username 设到 GitHub
-// repo Variables → PUBLIC_BUTTONDOWN_USERNAME，build 时注入即可。
-// 未配置时 email form 不渲染——纯 RSS 兜底。
-const buttondownUser = import.meta.env.PUBLIC_BUTTONDOWN_USERNAME;
+// Buttondown 邮件订阅。username 是公开 handle（buttondown.com/<username>），
+// 默认值 "zifei" 直接 hardcode；如需换 newsletter 在 GitHub repo Variables
+// 设 PUBLIC_BUTTONDOWN_USERNAME 覆盖即可。
+const buttondownUser = import.meta.env.PUBLIC_BUTTONDOWN_USERNAME || "zifei";
 // 网页阅读器（任何浏览器点了都能直接跳到订阅页）
 const webReaders = [
   { name: "Feedly",         url: `https://feedly.com/i/subscription/feed/${encodeURIComponent(feed)}` },
