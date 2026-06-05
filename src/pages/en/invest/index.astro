@@ -68,11 +68,14 @@ const posts = (await getCollection("invest", (p) => p.data.lang === lang && !p.d
       <ul class="divide-y divide-[var(--border)]">
         {posts.map((p) => (
           <li class="py-4">
-            <a href={pathWithLang(`/invest/${p.data.translationKey}`, lang)} class="block group">
-              <div class="text-xs text-[var(--text-tertiary)] mb-1"><time>{p.data.date.toISOString().slice(0, 10)}</time></div>
-              <h3 class="text-base font-semibold group-hover:text-section-invest transition-colors">{p.data.title}</h3>
-              {p.data.description && <p class="mt-1 text-sm text-[var(--text-secondary)]">{p.data.description}</p>}
-            </a>
+            <div class="text-xs text-[var(--text-tertiary)] mb-1"><time>{p.data.date.toISOString().slice(0, 10)}</time></div>
+            <h3 class="text-base font-semibold">
+              <a href={pathWithLang(`/invest/${p.data.translationKey}`, lang)}
+                 class="hover:text-section-invest transition-colors">
+                {p.data.title}
+              </a>
+            </h3>
+            {p.data.description && <p class="mt-1 text-sm text-[var(--text-secondary)]">{p.data.description}</p>}
           </li>
         ))}
       </ul>

@@ -194,18 +194,21 @@ const latestPeriod = snapshots[snapshots.length - 1]?.data.period;
           const highlights = extractDigestHighlights(p.body, 3);
           return (
             <li class="py-4">
-              <a href={pathWithLang(`/invest/${p.data.translationKey}`, lang)} class="block group">
-                <div class="text-xs text-[var(--text-tertiary)] mb-1"><time>{p.data.date.toISOString().slice(0, 10)}</time></div>
-                <h3 class="text-base font-semibold group-hover:text-section-invest transition-colors">{p.data.title}</h3>
-                {p.data.description && <p class="mt-1 text-sm text-[var(--text-secondary)]">{p.data.description}</p>}
-                {highlights.length > 0 && (
-                  <ul class="mt-2 space-y-0.5">
-                    {highlights.map(h => (
-                      <li class="text-xs text-[var(--text-tertiary)] line-clamp-1">· {h}</li>
-                    ))}
-                  </ul>
-                )}
-              </a>
+              <div class="text-xs text-[var(--text-tertiary)] mb-1"><time>{p.data.date.toISOString().slice(0, 10)}</time></div>
+              <h3 class="text-base font-semibold">
+                <a href={pathWithLang(`/invest/${p.data.translationKey}`, lang)}
+                   class="hover:text-section-invest transition-colors">
+                  {p.data.title}
+                </a>
+              </h3>
+              {p.data.description && <p class="mt-1 text-sm text-[var(--text-secondary)]">{p.data.description}</p>}
+              {highlights.length > 0 && (
+                <ul class="mt-2 space-y-0.5">
+                  {highlights.map(h => (
+                    <li class="text-xs text-[var(--text-tertiary)] line-clamp-1">· {h}</li>
+                  ))}
+                </ul>
+              )}
             </li>
           );
         })}

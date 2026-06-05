@@ -43,15 +43,18 @@ const sectionLabel: Record<string, string> = {
     <ul class="divide-y divide-[var(--border)]">
       {posts.map((p) => (
         <li class="py-5">
-          <a href={pathWithLang(`/${p.section}/${p.slug}`, lang)} class="block group">
-            <div class="flex items-center gap-2 text-xs text-[var(--text-tertiary)] mb-1">
-              <span class={sectionColor[p.section]}>{sectionLabel[p.section]}</span>
-              <span>·</span>
-              <time>{p.date.toISOString().slice(0, 10)}</time>
-            </div>
-            <h2 class={`text-lg font-semibold transition-colors group-hover:${sectionColor[p.section]}`}>{p.title}</h2>
-            {p.description && <p class="mt-1 text-sm text-[var(--text-secondary)] line-clamp-2">{p.description}</p>}
-          </a>
+          <div class="flex items-center gap-2 text-xs text-[var(--text-tertiary)] mb-1">
+            <span class={sectionColor[p.section]}>{sectionLabel[p.section]}</span>
+            <span>·</span>
+            <time>{p.date.toISOString().slice(0, 10)}</time>
+          </div>
+          <h2 class="text-lg font-semibold">
+            <a href={pathWithLang(`/${p.section}/${p.slug}`, lang)}
+               class={`transition-colors hover:${sectionColor[p.section]}`}>
+              {p.title}
+            </a>
+          </h2>
+          {p.description && <p class="mt-1 text-sm text-[var(--text-secondary)] line-clamp-2">{p.description}</p>}
         </li>
       ))}
       {posts.length === 0 && <li class="py-12 text-center text-[var(--text-tertiary)]">{t("tag.empty")}</li>}

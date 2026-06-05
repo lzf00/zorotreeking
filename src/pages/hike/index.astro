@@ -27,20 +27,23 @@ const diffColor = {
       <ul class="divide-y divide-[var(--border)]">
         {hikes.map((h) => (
           <li class="py-5">
-            <a href={pathWithLang(`/hike/${h.data.translationKey}`, lang)} class="block group">
-              <div class="flex items-center gap-2 text-xs text-[var(--text-tertiary)] mb-1.5">
-                <time>{h.data.date.toISOString().slice(0, 10)}</time>
-                <span>·</span>
-                <span>{h.data.location}</span>
-                <span class:list={["px-2 py-0.5 rounded-full", diffColor[h.data.difficulty]]}>{diffLabel[h.data.difficulty]}</span>
-              </div>
-              <h2 class="text-lg font-semibold group-hover:text-section-hike transition-colors">{h.data.title}</h2>
-              <div class="mt-2 flex items-center gap-4 text-sm text-[var(--text-secondary)]">
-                {h.data.distanceKm != null && <span>📏 {h.data.distanceKm} km</span>}
-                {h.data.elevationGainM != null && <span>⛰️ +{h.data.elevationGainM} m</span>}
-                {h.data.durationHours != null && <span>⏱ {h.data.durationHours} h</span>}
-              </div>
-            </a>
+            <div class="flex items-center gap-2 text-xs text-[var(--text-tertiary)] mb-1.5">
+              <time>{h.data.date.toISOString().slice(0, 10)}</time>
+              <span>·</span>
+              <span>{h.data.location}</span>
+              <span class:list={["px-2 py-0.5 rounded-full", diffColor[h.data.difficulty]]}>{diffLabel[h.data.difficulty]}</span>
+            </div>
+            <h2 class="text-lg font-semibold">
+              <a href={pathWithLang(`/hike/${h.data.translationKey}`, lang)}
+                 class="hover:text-section-hike transition-colors">
+                {h.data.title}
+              </a>
+            </h2>
+            <div class="mt-2 flex items-center gap-4 text-sm text-[var(--text-secondary)]">
+              {h.data.distanceKm != null && <span>📏 {h.data.distanceKm} km</span>}
+              {h.data.elevationGainM != null && <span>⛰️ +{h.data.elevationGainM} m</span>}
+              {h.data.durationHours != null && <span>⏱ {h.data.durationHours} h</span>}
+            </div>
           </li>
         ))}
       </ul>
