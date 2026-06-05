@@ -33,12 +33,13 @@ const appReaders = [
       <!-- 邮件订阅（Buttondown 托管） -->
       <div class="mt-10 mx-auto max-w-md">
         <form
+          id="buttondown-form"
           action={`https://buttondown.com/api/emails/embed-subscribe/${buttondownUser}`}
           method="post"
-          target="popupwindow"
-          onsubmit={`window.open('https://buttondown.com/${buttondownUser}', 'popupwindow')`}
+          target="_blank"
           class="flex items-stretch rounded-xl border border-[var(--border)] overflow-hidden">
           <input
+            id="buttondown-email"
             type="email"
             name="email"
             required
@@ -51,7 +52,10 @@ const appReaders = [
             订阅邮件
           </button>
         </form>
-        <p class="mt-2 text-xs text-[var(--text-tertiary)]">每周不超过 2 封，可一键退订。由 Buttondown 托管。</p>
+        <p id="buttondown-hint" class="mt-2 text-xs text-[var(--text-tertiary)]">每周不超过 2 封，可一键退订。由 Buttondown 托管。</p>
+        <p id="buttondown-ok" class="mt-2 text-xs text-green-600 hidden">
+          ✓ 已提交！请去你的邮箱点击 Buttondown 发来的<strong>确认链接</strong>完成订阅（也可能进了垃圾邮件箱）。
+        </p>
       </div>
 
       <div class="mt-12 flex items-center gap-3 max-w-md mx-auto">
@@ -105,6 +109,22 @@ const appReaders = [
 
 <script is:inline>
   document.addEventListener("DOMContentLoaded", () => {
+    // Buttondown 订阅：form 真 POST 到新 tab，inline 同时显示反馈。
+    const fm = document.getElementById("buttondown-form");
+    const okMsg = document.getElementById("buttondown-ok");
+    const hintMsg = document.getElementById("buttondown-hint");
+    const emailIn = document.getElementById("buttondown-email");
+    if (fm && okMsg) {
+      fm.addEventListener("submit", () => {
+        // 让 form 正常 submit（target="_blank" 打开 buttondown），同时 inline 反馈
+        setTimeout(() => {
+          okMsg.classList.remove("hidden");
+          hintMsg && hintMsg.classList.add("hidden");
+          if (emailIn) emailIn.value = "";
+        }, 150);
+      });
+    }
+
     const btn = document.getElementById("copy-feed");
     const url = document.getElementById("feed-url");
     const hint = document.getElementById("copy-hint");

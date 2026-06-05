@@ -27,12 +27,12 @@ const appReaders = [
     {buttondownUser && (
       <div class="mt-10 mx-auto max-w-md">
         <form
+          id="buttondown-form"
           action={`https://buttondown.com/api/emails/embed-subscribe/${buttondownUser}`}
           method="post"
-          target="popupwindow"
-          onsubmit={`window.open('https://buttondown.com/${buttondownUser}', 'popupwindow')`}
+          target="_blank"
           class="flex items-stretch rounded-xl border border-[var(--border)] overflow-hidden">
-          <input type="email" name="email" required placeholder="your@email.com"
+          <input id="buttondown-email" type="email" name="email" required placeholder="your@email.com"
             class="flex-1 bg-transparent text-sm px-4 py-3 outline-none placeholder:text-[var(--text-tertiary)]" />
           <input type="hidden" name="embed" value="1" />
           <button type="submit"
@@ -40,7 +40,10 @@ const appReaders = [
             Subscribe
           </button>
         </form>
-        <p class="mt-2 text-xs text-[var(--text-tertiary)]">≤ 2 emails / week. Unsubscribe anytime. Hosted by Buttondown.</p>
+        <p id="buttondown-hint" class="mt-2 text-xs text-[var(--text-tertiary)]">≤ 2 emails / week. Unsubscribe anytime. Hosted by Buttondown.</p>
+        <p id="buttondown-ok" class="mt-2 text-xs text-green-600 hidden">
+          ✓ Submitted! Check your inbox for the <strong>confirmation link</strong> from Buttondown (it might be in spam).
+        </p>
       </div>
 
       <div class="mt-12 flex items-center gap-3 max-w-md mx-auto">
@@ -90,6 +93,20 @@ const appReaders = [
 
 <script is:inline>
   document.addEventListener("DOMContentLoaded", () => {
+    const fm = document.getElementById("buttondown-form");
+    const okMsg = document.getElementById("buttondown-ok");
+    const hintMsg = document.getElementById("buttondown-hint");
+    const emailIn = document.getElementById("buttondown-email");
+    if (fm && okMsg) {
+      fm.addEventListener("submit", () => {
+        setTimeout(() => {
+          okMsg.classList.remove("hidden");
+          hintMsg && hintMsg.classList.add("hidden");
+          if (emailIn) emailIn.value = "";
+        }, 150);
+      });
+    }
+
     const btn = document.getElementById("copy-feed");
     const url = document.getElementById("feed-url");
     const hint = document.getElementById("copy-hint");
