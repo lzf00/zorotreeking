@@ -2,6 +2,7 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
 const feed = "https://www.zorotreeking.online/rss.xml";
+const buttondownUser = import.meta.env.PUBLIC_BUTTONDOWN_USERNAME;
 const webReaders = [
   { name: "Feedly",         url: `https://feedly.com/i/subscription/feed/${encodeURIComponent(feed)}` },
   { name: "Inoreader",      url: `https://www.inoreader.com/?add_feed=${encodeURIComponent(feed)}` },
@@ -19,9 +20,35 @@ const appReaders = [
   <section class="max-w-2xl mx-auto px-5 pt-20 sm:pt-28 pb-24 text-center">
     <h1 class="text-4xl sm:text-6xl font-semibold tracking-tight leading-tight">Subscribe</h1>
     <p class="mt-5 text-lg text-[var(--text-secondary)] leading-relaxed">
-      Follow new posts in any RSS reader.<br class="hidden sm:inline" />
-      Quiet. No algorithm.
+      New posts pushed automatically. Quiet. No algorithm.<br class="hidden sm:inline" />
+      Email or any RSS reader.
     </p>
+
+    {buttondownUser && (
+      <div class="mt-10 mx-auto max-w-md">
+        <form
+          action={`https://buttondown.com/api/emails/embed-subscribe/${buttondownUser}`}
+          method="post"
+          target="popupwindow"
+          onsubmit={`window.open('https://buttondown.com/${buttondownUser}', 'popupwindow')`}
+          class="flex items-stretch rounded-xl border border-[var(--border)] overflow-hidden">
+          <input type="email" name="email" required placeholder="your@email.com"
+            class="flex-1 bg-transparent text-sm px-4 py-3 outline-none placeholder:text-[var(--text-tertiary)]" />
+          <input type="hidden" name="embed" value="1" />
+          <button type="submit"
+            class="px-5 py-3 text-sm font-medium bg-black text-white dark:bg-white dark:text-black hover:opacity-90 transition-opacity whitespace-nowrap">
+            Subscribe
+          </button>
+        </form>
+        <p class="mt-2 text-xs text-[var(--text-tertiary)]">≤ 2 emails / week. Unsubscribe anytime. Hosted by Buttondown.</p>
+      </div>
+
+      <div class="mt-12 flex items-center gap-3 max-w-md mx-auto">
+        <div class="flex-1 h-px bg-[var(--border)]"></div>
+        <span class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)]">or RSS</span>
+        <div class="flex-1 h-px bg-[var(--border)]"></div>
+      </div>
+    )}
 
     <div class="mt-10 mx-auto max-w-md">
       <div class="flex items-stretch rounded-xl border border-[var(--border)] bg-[var(--bg-soft)] overflow-hidden">

@@ -33,9 +33,15 @@ function isATradingHours(d: Date = new Date()): boolean {
   return (t >= 570 && t <= 690) || (t >= 780 && t <= 900);
 }
 
-export default function MarketIndicesGrid() {
-  const [data, setData] = useState<Index[] | null>(null);
-  const [updated, setUpdated] = useState<number | null>(null);
+interface Props {
+  /** 服务端兜底数据。SSR 时直接渲染这份；hydrate 后 useEffect 拉 /api/market 覆盖 */
+  initialIndices?: Index[];
+  initialUpdated?: number;
+}
+
+export default function MarketIndicesGrid({ initialIndices, initialUpdated }: Props = {}) {
+  const [data, setData] = useState<Index[] | null>(initialIndices && initialIndices.length > 0 ? initialIndices : null);
+  const [updated, setUpdated] = useState<number | null>(initialUpdated ?? null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const inFlight = useRef(false);

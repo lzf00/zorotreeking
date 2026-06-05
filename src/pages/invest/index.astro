@@ -89,6 +89,25 @@ const latestDigest = digests[0];
 const snapshots = (await getCollection("invest-portfolio"))
   .sort((a, b) => a.data.period.localeCompare(b.data.period));
 const latestPeriod = snapshots[snapshots.length - 1]?.data.period;
+
+// ── 看板 SSR 兜底快照：构建时读 src/data/wind-market-latest.json ──
+// 由服务器 Wind cron (15:30 BJT) 推到 repo。无 JS / 爬虫看到这份；客户端 JS 进来后 fetch /api/market 覆盖。
+let initialIndices: any[] = [];
+let snapshotAsOf: string | undefined;
+try {
+  const raw = fs.readFileSync(path.resolve("./src/data/wind-market-latest.json"), "utf-8");
+  const wind = JSON.parse(raw);
+  snapshotAsOf = wind.asOf || wind.date;
+  initialIndices = (wind.indices || []).map((i: any) => ({
+    code: i.code,
+    name: i.name,
+    market: i.code?.endsWith?.(".HK") ? "HK" :
+            (i.code?.endsWith?.(".SH") || i.code?.endsWith?.(".SZ")) ? "A" : "US",
+    price: i.price,
+    change: i.change_amount,
+    change_pct: i.change_pct,
+  }));
+} catch { /* 没快照文件就走纯客户端 */ }
 ---
 
 <BaseLayout title={t("section.invest.title")} description={t("section.invest.desc")}>
@@ -129,7 +148,7 @@ const latestPeriod = snapshots[snapshots.length - 1]?.data.period;
       <h2 class="text-base font-semibold tracking-tight">今日大盘</h2>
       <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">Live</span>
     </div>
-    <MarketIndicesGrid client:load />
+    <MarketIndicesGrid initialIndices={initialIndices} client:load />
   </section>
 
   <!-- D · 市场情绪：成交额 / 涨跌家数 / 涨停跌停 -->

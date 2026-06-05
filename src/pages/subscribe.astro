@@ -2,6 +2,10 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
 const feed = "https://www.zorotreeking.online/rss.xml";
+// Buttondown 邮件订阅。注册账号后把 username 设到 GitHub
+// repo Variables → PUBLIC_BUTTONDOWN_USERNAME，build 时注入即可。
+// 未配置时 email form 不渲染——纯 RSS 兜底。
+const buttondownUser = import.meta.env.PUBLIC_BUTTONDOWN_USERNAME;
 // 网页阅读器（任何浏览器点了都能直接跳到订阅页）
 const webReaders = [
   { name: "Feedly",         url: `https://feedly.com/i/subscription/feed/${encodeURIComponent(feed)}` },
@@ -21,9 +25,41 @@ const appReaders = [
   <section class="max-w-2xl mx-auto px-5 pt-20 sm:pt-28 pb-24 text-center">
     <h1 class="text-4xl sm:text-6xl font-semibold tracking-tight leading-tight">订阅</h1>
     <p class="mt-5 text-lg text-[var(--text-secondary)] leading-relaxed">
-      用任意 RSS 阅读器关注本站更新——<br class="hidden sm:inline" />
-      新文章会自动推送给你，不打扰，无算法。
+      新文章自动推送，不打扰，无算法。<br class="hidden sm:inline" />
+      邮件订阅或任意 RSS 阅读器都可。
     </p>
+
+    {buttondownUser && (
+      <!-- 邮件订阅（Buttondown 托管） -->
+      <div class="mt-10 mx-auto max-w-md">
+        <form
+          action={`https://buttondown.com/api/emails/embed-subscribe/${buttondownUser}`}
+          method="post"
+          target="popupwindow"
+          onsubmit={`window.open('https://buttondown.com/${buttondownUser}', 'popupwindow')`}
+          class="flex items-stretch rounded-xl border border-[var(--border)] overflow-hidden">
+          <input
+            type="email"
+            name="email"
+            required
+            placeholder="your@email.com"
+            class="flex-1 bg-transparent text-sm px-4 py-3 outline-none placeholder:text-[var(--text-tertiary)]"
+          />
+          <input type="hidden" name="embed" value="1" />
+          <button type="submit"
+            class="px-5 py-3 text-sm font-medium bg-black text-white dark:bg-white dark:text-black hover:opacity-90 transition-opacity whitespace-nowrap">
+            订阅邮件
+          </button>
+        </form>
+        <p class="mt-2 text-xs text-[var(--text-tertiary)]">每周不超过 2 封，可一键退订。由 Buttondown 托管。</p>
+      </div>
+
+      <div class="mt-12 flex items-center gap-3 max-w-md mx-auto">
+        <div class="flex-1 h-px bg-[var(--border)]"></div>
+        <span class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)]">或 RSS</span>
+        <div class="flex-1 h-px bg-[var(--border)]"></div>
+      </div>
+    )}
 
     <!-- Feed URL + 一键复制 -->
     <div class="mt-10 mx-auto max-w-md">

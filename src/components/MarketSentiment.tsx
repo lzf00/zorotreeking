@@ -36,11 +36,11 @@ function isATradingHours(d: Date = new Date()): boolean {
 }
 
 function fmtYi(n: number): string {
-  // 以"亿"为单位显示，1 亿 = 1e8
+  // 以"亿"为单位显示，1 亿 = 1e8。统一 2 位小数，与个股页 / StockSpotlight 一致。
   if (n <= 0) return "—";
   const yi = n / 1e8;
   if (yi >= 10000) return `${(yi / 10000).toFixed(2)} 万亿`;
-  return `${yi.toFixed(0)} 亿`;
+  return `${yi.toFixed(2)} 亿`;
 }
 
 export default function MarketSentiment() {

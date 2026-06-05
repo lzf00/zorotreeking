@@ -165,7 +165,7 @@ function fmtAsOf(iso: string | undefined): string {
             <div class="text-xs text-[var(--text-tertiary)]">💰 Main capital net flow</div>
             <div class={`mt-1 text-2xl font-semibold font-mono ${colorClass(snap.sentiment?.main_flow_yi)}`}>
               {snap.sentiment?.main_flow_yi != null
-                ? `${snap.sentiment.main_flow_yi >= 0 ? "+" : ""}${snap.sentiment.main_flow_yi.toFixed(1)} ¥100M`
+                ? `${snap.sentiment.main_flow_yi >= 0 ? "+" : ""}${snap.sentiment.main_flow_yi.toFixed(2)} ¥100M`
                 : "—"}
             </div>
           </div>
@@ -208,7 +208,7 @@ function fmtAsOf(iso: string | undefined): string {
                   <td class={`text-right font-mono ${colorClass(s.chg_20d)}`}>{fmtPct(s.chg_20d)}</td>
                   <td class={`text-right font-mono ${colorClass(s.chg_ytd)}`}>{fmtPct(s.chg_ytd)}</td>
                   <td class={`text-right font-mono ${colorClass(s.main_net_5d_yi)}`}>
-                    {s.main_net_5d_yi != null ? `${s.main_net_5d_yi >= 0 ? "+" : ""}${s.main_net_5d_yi.toFixed(1)}` : "--"}
+                    {s.main_net_5d_yi != null ? `${s.main_net_5d_yi >= 0 ? "+" : ""}${s.main_net_5d_yi.toFixed(2)}` : "--"}
                   </td>
                   <td class="text-right">
                     {detailCodes.has(s.code) ? (
