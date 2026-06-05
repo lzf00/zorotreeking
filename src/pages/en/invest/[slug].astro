@@ -24,7 +24,7 @@ const t = useTranslations(lang);
   publishedTime={entry.data.date}
   modifiedTime={entry.data.updated}
   tags={entry.data.tags}
-  ogImage={entry.data.cover}>
+  ogImage={entry.data.cover ?? `/og/invest/${entry.data.translationKey}.png`}>
   <article class="max-w-2xl mx-auto px-6 sm:px-8 pt-12 sm:pt-20 pb-24 sm:pb-32">
 
     <a href={pathWithLang("/invest", lang)}

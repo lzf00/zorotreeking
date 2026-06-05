@@ -40,7 +40,7 @@ const diffLabel = { easy: "Easy", moderate: "Moderate", hard: "Hard", expert: "E
   publishedTime={entry.data.date}
   modifiedTime={entry.data.updated}
   tags={entry.data.tags}
-  ogImage={entry.data.cover}>
+  ogImage={entry.data.cover ?? `/og/hike/${entry.data.translationKey}.png`}>
   <article class="max-w-3xl mx-auto px-5 pt-12 pb-16">
     <header class="mb-6">
       <a href={pathWithLang("/hike", lang)} class="text-sm text-section-hike hover:underline">← {t("section.hike.title")}</a>
