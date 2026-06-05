@@ -1,0 +1,121 @@
+---
+/**
+ * 文章页底部 navigation + 推荐。读完之后不让访客"走"。
+ *
+ * Props:
+ *   prev / next：上一篇 / 下一篇（PostRef | undefined）
+ *   related：相关推荐数组
+ *   section：决定 url 前缀 + 主题色（"ai" | "invest" | "hike"）
+ *   lang："zh" | "en"
+ *   archiveLink：可选；digest 类文章传 "/ai/digest" 让读者去归档页
+ */
+import type { PostRef } from "@/lib/related-posts";
+import { pathWithLang } from "@/i18n/ui";
+
+interface Props {
+  prev?: PostRef;
+  next?: PostRef;
+  related: PostRef[];
+  section: "ai" | "invest" | "hike";
+  lang: "zh" | "en";
+  archiveLabel?: string;
+  archiveHref?: string;
+}
+
+const { prev, next, related, section, lang, archiveLabel, archiveHref } = Astro.props;
+
+const sectionHover: Record<string, string> = {
+  ai: "hover:text-section-ai",
+  invest: "hover:text-section-invest",
+  hike: "hover:text-section-hike",
+};
+const sectionBorder: Record<string, string> = {
+  ai: "hover:border-section-ai",
+  invest: "hover:border-section-invest",
+  hike: "hover:border-section-hike",
+};
+const t = (zh: string, en: string) => (lang === "zh" ? zh : en);
+---
+
+<nav class="mt-20" aria-label={t("文章导航", "Article navigation")}>
+  {/* 上一篇 / 下一篇 */}
+  {(prev || next) && (
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-12">
+      {prev ? (
+        <a href={pathWithLang(`/${section}/${prev.translationKey}`, lang)}
+           class={`group block border border-[var(--border)] rounded-lg p-4 transition-colors ${sectionBorder[section]}`}>
+          <div class="text-[11px] uppercase tracking-[0.18em] text-zinc-500 font-mono mb-1.5">
+            ← {t("上一篇", "Previous")}
+          </div>
+          <div class={`text-sm font-semibold leading-snug line-clamp-2 group-${sectionHover[section]} transition-colors`}>
+            {prev.title}
+          </div>
+          <time class="mt-1.5 block text-[11px] text-zinc-500 font-mono tabular-nums">
+            {prev.date.toISOString().slice(0, 10)}
+          </time>
+        </a>
+      ) : <div></div>}
+
+      {next ? (
+        <a href={pathWithLang(`/${section}/${next.translationKey}`, lang)}
+           class={`group block border border-[var(--border)] rounded-lg p-4 sm:text-right transition-colors ${sectionBorder[section]}`}>
+          <div class="text-[11px] uppercase tracking-[0.18em] text-zinc-500 font-mono mb-1.5">
+            {t("下一篇", "Next")} →
+          </div>
+          <div class={`text-sm font-semibold leading-snug line-clamp-2 group-${sectionHover[section]} transition-colors`}>
+            {next.title}
+          </div>
+          <time class="mt-1.5 block text-[11px] text-zinc-500 font-mono tabular-nums">
+            {next.date.toISOString().slice(0, 10)}
+          </time>
+        </a>
+      ) : <div></div>}
+    </div>
+  )}
+
+  {/* 相关阅读 */}
+  {related.length > 0 && (
+    <div>
+      <div class="text-[11px] uppercase tracking-[0.2em] text-zinc-500 font-mono mb-4 pb-2 border-b border-[var(--border)]">
+        {t("相关阅读", "Related")}
+      </div>
+      <ul class="space-y-3">
+        {related.map((r) => (
+          <li>
+            <a href={pathWithLang(`/${section}/${r.translationKey}`, lang)}
+               class="group block py-2">
+              <div class="flex items-baseline justify-between gap-3">
+                <span class={`text-sm font-medium group-${sectionHover[section]} transition-colors line-clamp-1`}>
+                  {r.title}
+                </span>
+                <time class="text-[11px] text-zinc-500 font-mono tabular-nums shrink-0">
+                  {r.date.toISOString().slice(0, 10)}
+                </time>
+              </div>
+              {r.description && (
+                <p class="mt-0.5 text-xs text-[var(--text-secondary)] line-clamp-1">{r.description}</p>
+              )}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )}
+
+  {/* digest 归档入口（仅当 archiveHref 传入时显示） */}
+  {archiveHref && archiveLabel && (
+    <a href={archiveHref}
+       class={`mt-8 group block border border-[var(--border)] rounded-lg p-4 transition-colors ${sectionBorder[section]}`}>
+      <div class="flex items-center justify-between gap-3">
+        <div>
+          <div class="text-[11px] uppercase tracking-[0.18em] text-zinc-500 font-mono mb-1">
+            {t("归档", "Archive")}
+          </div>
+          <div class={`text-sm font-semibold group-${sectionHover[section]} transition-colors`}>
+            {archiveLabel} →
+          </div>
+        </div>
+      </div>
+    </a>
+  )}
+</nav>

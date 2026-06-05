@@ -32,6 +32,37 @@ const latest = [
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
   .slice(0, 6);
 
+// ── 首页"精选阅读" 3 张大卡（首屏内容钩子）──
+// 选 1: 最近的原创长文（按 body 长度 + 原创优先）
+// 选 2: 本周最新 digest（让访客感知"今天就有新内容"）
+// 选 3: 一篇摄影 / 徒步（让访客看到非文字内容）
+function pickHero() {
+  const originals = [
+    ...aiOriginal.map(p => ({ ...p, section: "ai" as const })),
+    ...investOriginal.map(p => ({ ...p, section: "invest" as const })),
+  ].sort((a, b) => (b.body?.length ?? 0) - (a.body?.length ?? 0));
+
+  const latestDigest = [
+    ...aiPosts.filter(isDigest).map(p => ({ ...p, section: "ai" as const })),
+    ...investPosts.filter(isDigest).map(p => ({ ...p, section: "invest" as const })),
+  ].sort((a, b) => b.data.date.getTime() - a.data.date.getTime())[0];
+
+  const latestVisual = [
+    ...photoAlbums.map(p => ({ ...p, section: "photo" as const })),
+    ...hikes.map(p => ({ ...p, section: "hike" as const })),
+  ].sort((a, b) => b.data.date.getTime() - a.data.date.getTime())[0];
+
+  return [originals[0], latestDigest, latestVisual].filter(Boolean).slice(0, 3);
+}
+const featured = pickHero();
+
+const sectionGradient: Record<string, string> = {
+  ai: "from-blue-50 to-blue-100/40 dark:from-blue-950/40 dark:to-blue-900/20",
+  invest: "from-red-50 to-red-100/40 dark:from-red-950/40 dark:to-red-900/20",
+  photo: "from-purple-50 to-purple-100/40 dark:from-purple-950/40 dark:to-purple-900/20",
+  hike: "from-green-50 to-green-100/40 dark:from-green-950/40 dark:to-green-900/20",
+};
+
 const sectionLabel = {
   ai: t("nav.ai"),
   invest: t("nav.invest"),
@@ -66,6 +97,49 @@ const sectionAccent: Record<string, string> = {
       </a>
     </div>
   </section>
+
+  <!-- ── 精选阅读（首屏内容钩子，3 张大卡）── -->
+  {featured.length > 0 && (
+    <section class="max-w-6xl mx-auto px-5 mb-12 sm:mb-16">
+      <div class="flex items-baseline justify-between mb-5">
+        <h2 class="text-lg sm:text-xl font-semibold tracking-tight">精选阅读</h2>
+        <span class="text-[11px] uppercase tracking-[0.15em] text-[var(--text-tertiary)] font-mono">FEATURED</span>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
+        {featured.map((p, i) => {
+          const sec = p.section;
+          const isDg = (p.data.tags ?? []).includes("digest") || p.data.translationKey.startsWith("digest-");
+          return (
+            <a href={pathWithLang(`/${sec}/${p.data.translationKey}`, lang)}
+               class={`group relative rounded-2xl bg-gradient-to-br ${sectionGradient[sec]} p-6 sm:p-7 min-h-[200px] flex flex-col justify-between transition-transform hover:scale-[1.02] hover:-translate-y-0.5 animate-rise`}
+               style={`animation-delay: ${i * 100}ms`}>
+              <div>
+                <div class="flex items-center gap-2 mb-3">
+                  <span class="w-1.5 h-1.5 rounded-full" style={`background:${sectionAccent[sec]}`}></span>
+                  <span class="text-[10px] uppercase tracking-[0.18em] font-mono text-[var(--text-tertiary)]">
+                    {sectionLabel[sec]}{isDg ? " · DAILY" : ""}
+                  </span>
+                </div>
+                <h3 class="text-lg sm:text-xl font-semibold leading-snug tracking-tight line-clamp-3"
+                    style={`color:${sectionAccent[sec]}`}>
+                  {p.data.title}
+                </h3>
+                {p.data.description && (
+                  <p class="mt-2 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed line-clamp-2">
+                    {p.data.description}
+                  </p>
+                )}
+              </div>
+              <div class="mt-4 flex items-center justify-between text-[11px] text-[var(--text-tertiary)] font-mono">
+                <time>{p.data.date.toISOString().slice(0, 10)}</time>
+                <span class="group-hover:translate-x-1 transition-transform">→</span>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </section>
+  )}
 
   <!-- ── 四个栏目卡（2×2 圆角灰底，Apple 产品宫格风） ── -->
   <section class="max-w-6xl mx-auto px-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">

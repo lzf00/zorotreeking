@@ -6,19 +6,24 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import FeedbackButtons from "@/components/FeedbackButtons";
 import GpxMap from "@/components/GpxMap";
 import ElevationChart from "@/components/ElevationChart";
+import PostFooter from "@/components/PostFooter.astro";
 import { parseGpx } from "@/lib/gpx";
+import { getAdjacentPosts, getRelatedPosts } from "@/lib/related-posts";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
 
 export async function getStaticPaths() {
   const all = await getCollection("hike", (p) => p.data.lang === "zh" && !p.data.draft);
-  return all.map((entry) => ({ params: { slug: entry.data.translationKey }, props: { entry } }));
+  return all.map((entry) => ({ params: { slug: entry.data.translationKey }, props: { entry, all } }));
 }
 
-interface Props { entry: CollectionEntry<"hike"> }
-const { entry } = Astro.props;
+interface Props { entry: CollectionEntry<"hike">; all: CollectionEntry<"hike">[] }
+const { entry, all } = Astro.props;
 const { Content } = await entry.render();
 const lang = "zh" as const;
 const t = useTranslations(lang);
+
+const { prev, next } = getAdjacentPosts(entry as any, all as any);
+const related = getRelatedPosts(entry as any, all as any, 3);
 
 let stats: ReturnType<typeof parseGpx> | null = null;
 if (entry.data.gpx) {
@@ -88,5 +93,9 @@ const diffLabel = { easy: "轻松", moderate: "中等", hard: "困难", expert: 
       </div>
     )}
     <FeedbackButtons slug={`hike/${entry.data.translationKey}`} client:visible />
+
+    <PostFooter
+      prev={prev} next={next} related={related}
+      section="hike" lang={lang} />
   </article>
 </BaseLayout>

@@ -3,18 +3,24 @@ import { getCollection, type CollectionEntry } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import FeedbackButtons from "@/components/FeedbackButtons";
 import TagChip from "@/components/TagChip.astro";
+import PostFooter from "@/components/PostFooter.astro";
+import { getAdjacentPosts, getRelatedPosts } from "@/lib/related-posts";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
 
 export async function getStaticPaths() {
   const all = await getCollection("invest", (p) => p.data.lang === "zh" && !p.data.draft);
-  return all.map((entry) => ({ params: { slug: entry.data.translationKey }, props: { entry } }));
+  return all.map((entry) => ({ params: { slug: entry.data.translationKey }, props: { entry, all } }));
 }
 
-interface Props { entry: CollectionEntry<"invest"> }
-const { entry } = Astro.props;
+interface Props { entry: CollectionEntry<"invest">; all: CollectionEntry<"invest">[] }
+const { entry, all } = Astro.props;
 const { Content } = await entry.render();
 const lang = "zh" as const;
 const t = useTranslations(lang);
+
+const { prev, next } = getAdjacentPosts(entry as any, all as any);
+const related = getRelatedPosts(entry as any, all as any, 3);
+const isDigest = (entry.data.tags ?? []).includes("digest") || entry.data.translationKey.startsWith("digest-");
 ---
 
 <BaseLayout
@@ -80,5 +86,11 @@ const t = useTranslations(lang);
     <div class="mt-24 pt-12 border-t border-zinc-100 dark:border-zinc-800">
       <FeedbackButtons slug={`invest/${entry.data.translationKey}`} client:visible />
     </div>
+
+    <PostFooter
+      prev={prev} next={next} related={related}
+      section="invest" lang={lang}
+      archiveLabel={isDigest ? "查看全部投资资讯日报" : undefined}
+      archiveHref={isDigest ? pathWithLang("/invest/digest", lang) : undefined} />
   </article>
 </BaseLayout>

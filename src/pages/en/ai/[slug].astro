@@ -5,20 +5,26 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 import TOC from "@/components/TOC.astro";
 import TagChip from "@/components/TagChip.astro";
 import Giscus from "@/components/Giscus.astro";
+import PostFooter from "@/components/PostFooter.astro";
 import { estimateReadingTime } from "@/lib/reading-time";
+import { getAdjacentPosts, getRelatedPosts } from "@/lib/related-posts";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
 
 export async function getStaticPaths() {
   const all = await getCollection("ai", (p) => p.data.lang === "en" && !p.data.draft);
-  return all.map((entry) => ({ params: { slug: entry.data.translationKey }, props: { entry } }));
+  return all.map((entry) => ({ params: { slug: entry.data.translationKey }, props: { entry, all } }));
 }
 
-interface Props { entry: CollectionEntry<"ai"> }
-const { entry } = Astro.props;
+interface Props { entry: CollectionEntry<"ai">; all: CollectionEntry<"ai">[] }
+const { entry, all } = Astro.props;
 const { Content, headings } = await entry.render();
 const lang = "en" as const;
 const t = useTranslations(lang);
 const readMins = estimateReadingTime(entry.body);
+
+const { prev, next } = getAdjacentPosts(entry as any, all as any);
+const related = getRelatedPosts(entry as any, all as any, 3);
+const isDigest = (entry.data.tags ?? []).includes("digest") || entry.data.translationKey.startsWith("digest-");
 ---
 
 <BaseLayout
@@ -87,6 +93,13 @@ const readMins = estimateReadingTime(entry.body);
     <div class="mt-24 pt-12 border-t border-zinc-100 dark:border-zinc-800">
       <FeedbackButtons slug={`ai/${entry.data.translationKey}`} client:visible />
     </div>
+
+    <PostFooter
+      prev={prev} next={next} related={related}
+      section="ai" lang={lang}
+      archiveLabel={isDigest ? "Browse all AI daily digests" : undefined}
+      archiveHref={isDigest ? pathWithLang("/ai/digest", lang) : undefined} />
+
     <Giscus />
   </article>
 </BaseLayout>
