@@ -249,6 +249,38 @@ def _rows_to_dicts(data: dict) -> list:
     return [dict(zip(cols, row)) for row in data.get("rows", [])]
 
 
+def get_kline_closes(wind_code: str, n: int = 5, hk: bool = False) -> list:
+    """
+    取近 n 个交易日收盘价（含今天，时间升序）。前端 sparkline 用。
+
+    Wind tool: stock_data.get_stock_kline (A 股) / global_stock_data.get_global_stock_kline (港股)
+    返回字段顺序：[TIME, OPEN, MATCH(收盘), HIGH, LOW, ...]
+    """
+    today = datetime.datetime.now()
+    # 拉 14 天保险（含周末 + 节假日），最后截 n 个
+    begin = today - datetime.timedelta(days=14)
+    server = "global_stock_data" if hk else "stock_data"
+    tool = "get_global_stock_kline" if hk else "get_stock_kline"
+    try:
+        data = _wind_call(server, tool, {
+            "windcode": wind_code,
+            "begin_date": begin.strftime("%Y%m%d"),
+            "end_date": today.strftime("%Y%m%d"),
+        }, retries=2)
+        rows = data.get("rows", [])
+        cols = [c.get("name") for c in data.get("columns", [])]
+        if "MATCH" not in cols:
+            return []
+        idx = cols.index("MATCH")
+        closes = [_to_float(r[idx]) for r in rows if r and r[idx] is not None]
+        # 过滤 0（停牌 / 异常）后取最后 n 个
+        closes = [c for c in closes if c > 0]
+        return closes[-n:]
+    except Exception as e:
+        log.warning(f"⚠️ get_kline_closes({wind_code}) 失败: {e}")
+        return []
+
+
 # -------------------- 业务取数 --------------------
 
 def get_stock_data(stock_codes: list) -> list:
@@ -307,6 +339,8 @@ def get_stock_data(stock_codes: list) -> list:
                 "main_net_5d_pct": _to_float(d.get("近5日主力净流入占比")) * 100,
                 "main_net_10d_yi": main_net_10d / 1e8 if main_net_10d else 0,
                 "main_net_20d_yi": main_net_20d / 1e8 if main_net_20d else 0,
+                # 近 5 日收盘价序列，前端 sparkline 用（含今天，时间升序）
+                "kline_5d": get_kline_closes(wind_code, n=5, hk=False),
                 "emoji": _emoji(chg_pct),
             })
         except Exception as e:
@@ -579,6 +613,7 @@ def get_hk_stock_data(stock_codes: list) -> list:
                 "pb": _to_float(d.get("市净率")),
                 "high_52w": _to_float(d.get("52周最高")),
                 "low_52w": _to_float(d.get("52周最低")),
+                "kline_5d": get_kline_closes(wind_code, n=5, hk=True),
                 "currency": "HKD",
                 "emoji": _emoji(chg_pct),
             })
@@ -759,16 +794,19 @@ def get_connect_holding(wind_code: str, name: str = "", market: str = "A") -> di
 
 def fetch_stock_detail(wind_code: str, name: str = "") -> dict:
     """
-    单股深度数据：一致预期 + 资金信号 + 北向/南向 + 公告 + 相关新闻
+    单股深度数据：一致预期 + 资金信号 + 北向/南向 + 公告 + 相关新闻 + 20 日 K 线
     （行情、估值、自有资金流等已经在 get_stock_data 的 watchlist 中拿到，这里只补 NL 维度）
     """
     market = "HK" if wind_code.upper().endswith(".HK") else "A"
+    hk = market == "HK"
     return {
         "consensus": get_stock_consensus(wind_code, name),
         "capital_flow": get_stock_capital_flow(wind_code, name, market=market),
         "connect": get_connect_holding(wind_code, name, market=market),
         "announcements": get_company_announcements(name or wind_code, top_k=3),
         "news": get_top_news(query=name or wind_code, top_k=3, snippet_len=80),
+        # 近 20 日收盘价（个股页 sparkline 用）；失败为空数组
+        "kline_20d": get_kline_closes(wind_code, n=20, hk=hk),
     }
 
 

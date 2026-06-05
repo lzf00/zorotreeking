@@ -1,0 +1,55 @@
+---
+/**
+ * 迷你 sparkline（SVG polyline，无 JS）。
+ * 用于表格行内嵌入近 5 日收盘价走势。
+ *
+ * 颜色：起点 < 终点 → 红涨（A 股配色），起点 > 终点 → 绿跌。
+ * data 长度 < 2 时不渲染。
+ *
+ * Usage:
+ *   <Sparkline data={[1268, 1278, 1281, 1290, 1272]} width={56} height={18} />
+ */
+interface Props {
+  data: number[];
+  width?: number;
+  height?: number;
+  /** A 股配色 = "cn"（红涨绿跌）；标准 = "std"（绿涨红跌） */
+  scheme?: "cn" | "std";
+  /** 显式覆盖颜色（命中时忽略 scheme + 涨跌方向） */
+  stroke?: string;
+}
+const { data, width = 56, height = 18, scheme = "cn", stroke } = Astro.props;
+
+const clean = (data || []).filter((x) => Number.isFinite(x) && x > 0);
+if (clean.length < 2) { /* 不渲染 */ }
+
+const max = Math.max(...clean);
+const min = Math.min(...clean);
+const range = max - min || 1;
+const padX = 1;
+const padY = 2;
+const inner = (i: number) => padX + (i / (clean.length - 1 || 1)) * (width - 2 * padX);
+const yOf = (v: number) => padY + (1 - (v - min) / range) * (height - 2 * padY);
+const points = clean.map((v, i) => `${inner(i).toFixed(1)},${yOf(v).toFixed(1)}`).join(" ");
+
+const isUp = clean[clean.length - 1] >= clean[0];
+const color = stroke ?? (
+  scheme === "cn"
+    ? (isUp ? "#dc2626" : "#16a34a")  // 红涨绿跌（A 股）
+    : (isUp ? "#16a34a" : "#dc2626")  // 绿涨红跌
+);
+---
+
+{clean.length >= 2 && (
+  <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}
+       aria-label={`近 ${clean.length} 日走势`} class="inline-block align-middle">
+    <polyline
+      fill="none"
+      stroke={color}
+      stroke-width="1.2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      points={points}
+    />
+  </svg>
+)}

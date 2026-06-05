@@ -10,6 +10,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import Sparkline from "@/components/Sparkline.astro";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
 
 type Consensus = { target_price?: number; buy_count?: number; overweight_count?: number; total_ratings?: number; coverage?: number; error?: string };
@@ -36,7 +37,7 @@ type Stock = {
   main_net_10d_yi?: number; main_net_20d_yi?: number;
   currency?: string;
   emoji: string;
-  details?: { consensus?: Consensus; capital_flow?: CapitalFlow; connect?: Connect; announcements?: Item[]; news?: Item[] };
+  details?: { consensus?: Consensus; capital_flow?: CapitalFlow; connect?: Connect; announcements?: Item[]; news?: Item[]; kline_20d?: number[] };
   error?: string;
 };
 type Snapshot = { asOf: string; date: string; stocks: Record<string, Stock> };
@@ -178,7 +179,16 @@ const backText = stock?.market === "HK" ? "港股市场看板" : "市场深度�
 
       <!-- 2. 多周期涨跌 -->
       <section class="max-w-5xl mx-auto px-5 pb-8">
-        <h2 class="text-base font-semibold tracking-tight mb-3">📊 多周期涨跌</h2>
+        <div class="flex items-baseline justify-between mb-3">
+          <h2 class="text-base font-semibold tracking-tight">📊 多周期涨跌</h2>
+          {stock.details?.kline_20d && stock.details.kline_20d.length >= 2 && (
+            <div class="flex items-center gap-2 text-[10px] text-[var(--text-tertiary)] font-mono uppercase tracking-wider">
+              <span>近 {stock.details.kline_20d.length} 日</span>
+              <Sparkline data={stock.details.kline_20d} width={140} height={28}
+                scheme={(stock.code || "").endsWith(".HK") ? "std" : "cn"} />
+            </div>
+          )}
+        </div>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <div class="border border-[var(--border)] rounded-lg p-3 text-center">
             <div class="text-[10px] text-[var(--text-tertiary)]">今日</div>

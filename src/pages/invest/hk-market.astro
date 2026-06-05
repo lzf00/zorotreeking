@@ -8,6 +8,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import Sparkline from "@/components/Sparkline.astro";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
 
 const lang = "zh" as const;
@@ -21,6 +22,7 @@ type HKStock = {
   chg_5d: number; chg_20d: number; chg_ytd: number;
   pe_ttm?: number; pb?: number;
   high_52w?: number; low_52w?: number;
+  kline_5d?: number[];
   emoji: string; error?: string;
 };
 type HKHot = { name: string; code: string; price: number; change_pct: number; error?: string };
@@ -137,6 +139,7 @@ function fmtAsOf(iso: string | undefined): string {
               <tr>
                 <th class="text-left py-2">股票</th>
                 <th class="text-right">现价</th>
+                <th class="text-center">5日走势</th>
                 <th class="text-right">今日</th>
                 <th class="text-right">5日</th>
                 <th class="text-right">20日</th>
@@ -147,7 +150,7 @@ function fmtAsOf(iso: string | undefined): string {
             </thead>
             <tbody class="divide-y divide-[var(--border)]">
               {watchlistSorted.map((s) => s.error ? (
-                <tr><td colspan="8" class="py-2.5 text-xs text-[var(--text-tertiary)]">⚠️ {s.code}: {s.error}</td></tr>
+                <tr><td colspan="9" class="py-2.5 text-xs text-[var(--text-tertiary)]">⚠️ {s.code}: {s.error}</td></tr>
               ) : (
                 <tr class="hover:bg-[var(--surface-2)]">
                   <td class="py-2.5">
@@ -156,6 +159,11 @@ function fmtAsOf(iso: string | undefined): string {
                     <span class="ml-2 text-[10px] font-mono text-[var(--text-tertiary)]">{s.code}</span>
                   </td>
                   <td class="text-right font-mono">HK$ {fmtPrice(s.price)}</td>
+                  <td class="text-center">
+                    {s.kline_5d && s.kline_5d.length >= 2
+                      ? <Sparkline data={s.kline_5d} width={64} height={20} scheme="std" />
+                      : <span class="text-[10px] text-[var(--text-tertiary)]">—</span>}
+                  </td>
                   <td class={`text-right font-mono font-semibold ${colorClass(s.change_pct)}`}>{fmtPct(s.change_pct)}</td>
                   <td class={`text-right font-mono ${colorClass(s.chg_5d)}`}>{fmtPct(s.chg_5d)}</td>
                   <td class={`text-right font-mono ${colorClass(s.chg_20d)}`}>{fmtPct(s.chg_20d)}</td>
