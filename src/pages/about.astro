@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import ContentPulse from "@/components/ContentPulse.astro";
 import { useTranslations } from "@/i18n/ui";
 const t = useTranslations("zh");
 ---
@@ -15,6 +16,11 @@ const t = useTranslations("zh");
         <li><strong>徒步</strong>：路线轨迹、海拔曲线、出行游记</li>
       </ul>
       <p>所有内容均为个人原创或学习整理，欢迎留言交流。</p>
+    </div>
+
+    <ContentPulse />
+
+    <div class="prose prose-neutral dark:prose-invert max-w-none">
       <hr />
       <h2 class="font-serif text-3xl mt-10 mb-4">合规信息</h2>
       <p class="text-sm text-[var(--text-secondary)]">本站为<strong>个人非经营性站点</strong>，不提供商业服务、交易、公开用户注册或第三方内容上传功能。AI 对话窗口仅供学习交流，输入内容经过敏感词过滤后转发给大模型；点赞 / 访问统计仅留存 IP+UA 哈希指纹与时间戳，不收集手机号、邮箱、真实姓名。</p>

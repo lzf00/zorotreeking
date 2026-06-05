@@ -1,0 +1,174 @@
+---
+/**
+ * 本站心跳图：过去 365 天的内容产出热力图（GitHub 草地图风格）。
+ *
+ * 每个小方块代表一天，颜色：
+ *   - 灰色：当天没更新
+ *   - 蓝色：当天有原创 / digest（AI 学习类）
+ *   - 红色：投资类
+ *   - 紫色：摄影
+ *   - 绿色：徒步
+ * 如果当天同时有多类，按 visual > 原创 > digest 的优先级取色（让"真内容"
+ * 主导视觉），强度 (深浅) 看当天总篇数。
+ *
+ * 工作机制：build 时从 astro:content 取所有 collection 的 date 字段，
+ * 算出过去 365 天每天的 {ai, invest, photo, hike, digest} 分布，
+ * 渲染纯 SVG（无 JS，hover 用 title）。
+ */
+import { getCollection } from "astro:content";
+
+const lang = "zh" as const;
+
+// 收集所有 collection 的 (date, section, isDigest) 元组
+type Item = { date: Date; section: "ai" | "invest" | "photo" | "hike"; digest: boolean };
+const items: Item[] = [];
+
+const isDg = (p: { data: { tags?: string[]; translationKey: string } }) =>
+  (p.data.tags ?? []).includes("digest") || p.data.translationKey.startsWith("digest-");
+
+for (const p of await getCollection("ai", (p) => p.data.lang === lang && !p.data.draft)) {
+  items.push({ date: p.data.date, section: "ai", digest: isDg(p) });
+}
+for (const p of await getCollection("invest", (p) => p.data.lang === lang && !p.data.draft)) {
+  items.push({ date: p.data.date, section: "invest", digest: isDg(p) });
+}
+for (const p of await getCollection("photo", (p) => p.data.lang === lang && !p.data.draft)) {
+  items.push({ date: p.data.date, section: "photo", digest: false });
+}
+for (const p of await getCollection("hike", (p) => p.data.lang === lang && !p.data.draft)) {
+  items.push({ date: p.data.date, section: "hike", digest: false });
+}
+
+// 按日期分组
+const byDay: Record<string, Item[]> = {};
+for (const it of items) {
+  const key = it.date.toISOString().slice(0, 10);
+  (byDay[key] ??= []).push(it);
+}
+
+// 构造过去 N 周的方格列表（N = 53 周覆盖一年）
+const WEEKS = 53;
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+// 把"今天"对齐到本周末（星期六），让最右一列是当前周
+const startOfThisWeek = new Date(today);
+startOfThisWeek.setDate(today.getDate() - today.getDay()); // 周日
+const start = new Date(startOfThisWeek);
+start.setDate(start.getDate() - (WEEKS - 1) * 7);
+
+interface Cell { date: string; items: Item[] }
+const weeks: Cell[][] = [];
+for (let w = 0; w < WEEKS; w++) {
+  const week: Cell[] = [];
+  for (let d = 0; d < 7; d++) {
+    const cur = new Date(start);
+    cur.setDate(start.getDate() + w * 7 + d);
+    if (cur > today) break;
+    const key = cur.toISOString().slice(0, 10);
+    week.push({ date: key, items: byDay[key] ?? [] });
+  }
+  weeks.push(week);
+}
+
+// 颜色：取当天最"重"的 section，强度看数量
+function colorOf(its: Item[]): string {
+  if (its.length === 0) return "var(--pulse-empty)";
+  // 优先级：原创 > digest，section 优先级 photo > hike > ai-original > invest-original > digest
+  const hasPhoto = its.some((x) => x.section === "photo");
+  const hasHike = its.some((x) => x.section === "hike");
+  const hasOriginal = its.some((x) => !x.digest && (x.section === "ai" || x.section === "invest"));
+  const hasInvestOriginal = its.some((x) => x.section === "invest" && !x.digest);
+  const intensity = Math.min(4, its.length);
+  if (hasPhoto) return `var(--pulse-photo-${intensity})`;
+  if (hasHike) return `var(--pulse-hike-${intensity})`;
+  if (hasInvestOriginal) return `var(--pulse-invest-${intensity})`;
+  if (hasOriginal) return `var(--pulse-ai-${intensity})`;
+  // 只剩 digest
+  return `var(--pulse-digest-${intensity})`;
+}
+
+const SIZE = 11;
+const GAP = 3;
+const WIDTH = WEEKS * (SIZE + GAP);
+const HEIGHT = 7 * (SIZE + GAP);
+
+const totalDays = items.length;
+const activeDays = Object.keys(byDay).length;
+---
+
+<style>
+  :root {
+    --pulse-empty: #ebedf0;
+    --pulse-ai-1: #c7d2fe;
+    --pulse-ai-2: #818cf8;
+    --pulse-ai-3: #4f46e5;
+    --pulse-ai-4: #1d4ed8;
+    --pulse-invest-1: #fecaca;
+    --pulse-invest-2: #f87171;
+    --pulse-invest-3: #dc2626;
+    --pulse-invest-4: #991b1b;
+    --pulse-photo-1: #e9d5ff;
+    --pulse-photo-2: #c084fc;
+    --pulse-photo-3: #9333ea;
+    --pulse-photo-4: #6b21a8;
+    --pulse-hike-1: #bbf7d0;
+    --pulse-hike-2: #4ade80;
+    --pulse-hike-3: #16a34a;
+    --pulse-hike-4: #166534;
+    --pulse-digest-1: #dbeafe;
+    --pulse-digest-2: #93c5fd;
+    --pulse-digest-3: #60a5fa;
+    --pulse-digest-4: #3b82f6;
+  }
+  .dark {
+    --pulse-empty: #1f2937;
+  }
+</style>
+
+<section class="my-12">
+  <div class="flex items-baseline justify-between mb-4">
+    <div>
+      <h3 class="text-base font-semibold tracking-tight">本站心跳</h3>
+      <p class="mt-1 text-xs text-[var(--text-tertiary)]">
+        过去 {WEEKS} 周 · 累计 {totalDays} 篇 · 活跃 {activeDays} 天
+      </p>
+    </div>
+  </div>
+
+  <div class="overflow-x-auto">
+    <svg width={WIDTH} height={HEIGHT} viewBox={`0 0 ${WIDTH} ${HEIGHT}`} class="block">
+      {weeks.map((week, wi) =>
+        week.map((cell, di) => {
+          const x = wi * (SIZE + GAP);
+          const y = di * (SIZE + GAP);
+          const n = cell.items.length;
+          const sec = (() => {
+            if (n === 0) return "空";
+            const tags: string[] = [];
+            const orig = cell.items.filter((x) => !x.digest);
+            const dig = cell.items.filter((x) => x.digest);
+            if (orig.length > 0) tags.push(`${orig.length} 篇原创`);
+            if (dig.length > 0) tags.push(`${dig.length} 篇 digest`);
+            return tags.join(" · ");
+          })();
+          return (
+            <rect x={x} y={y} width={SIZE} height={SIZE} rx="2"
+                  fill={colorOf(cell.items)}>
+              <title>{cell.date} · {sec}</title>
+            </rect>
+          );
+        }),
+      )}
+    </svg>
+  </div>
+
+  {/* 图例 */}
+  <div class="mt-3 flex items-center flex-wrap gap-x-4 gap-y-1 text-[10px] text-[var(--text-tertiary)] font-mono uppercase tracking-wider">
+    <span class="flex items-center gap-1"><i class="w-2.5 h-2.5 rounded-sm" style="background:var(--pulse-empty)"></i>空</span>
+    <span class="flex items-center gap-1"><i class="w-2.5 h-2.5 rounded-sm" style="background:var(--pulse-ai-3)"></i>AI 原创</span>
+    <span class="flex items-center gap-1"><i class="w-2.5 h-2.5 rounded-sm" style="background:var(--pulse-invest-3)"></i>投资</span>
+    <span class="flex items-center gap-1"><i class="w-2.5 h-2.5 rounded-sm" style="background:var(--pulse-photo-3)"></i>摄影</span>
+    <span class="flex items-center gap-1"><i class="w-2.5 h-2.5 rounded-sm" style="background:var(--pulse-hike-3)"></i>徒步</span>
+    <span class="flex items-center gap-1"><i class="w-2.5 h-2.5 rounded-sm" style="background:var(--pulse-digest-2)"></i>digest</span>
+  </div>
+</section>
