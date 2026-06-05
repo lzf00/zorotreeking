@@ -6,6 +6,9 @@ import TOC from "@/components/TOC.astro";
 import TagChip from "@/components/TagChip.astro";
 import Giscus from "@/components/Giscus.astro";
 import PostFooter from "@/components/PostFooter.astro";
+import ReadingProgress from "@/components/ReadingProgress.astro";
+import ShareSidebar from "@/components/ShareSidebar";
+import SubscribeCTA from "@/components/SubscribeCTA.astro";
 import { estimateReadingTime } from "@/lib/reading-time";
 import { getAdjacentPosts, getRelatedPosts } from "@/lib/related-posts";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
@@ -35,6 +38,10 @@ const isDigest = (entry.data.tags ?? []).includes("digest") || entry.data.transl
   modifiedTime={entry.data.updated}
   tags={entry.data.tags}
   ogImage={entry.data.cover ?? `/og/ai/${entry.data.translationKey}.png`}>
+  <ReadingProgress title={entry.data.title} section="ai"
+    backHref={pathWithLang("/ai", lang)} backLabel={t("section.ai.title")} />
+  <ShareSidebar title={entry.data.title}
+    url={new URL(Astro.url.pathname, Astro.site).toString()} client:idle />
   <TOC headings={headings} label="Contents" />
   <article class="max-w-2xl mx-auto px-6 sm:px-8 pt-12 sm:pt-20 pb-24 sm:pb-32">
 
@@ -93,6 +100,8 @@ const isDigest = (entry.data.tags ?? []).includes("digest") || entry.data.transl
     <div class="mt-24 pt-12 border-t border-zinc-100 dark:border-zinc-800">
       <FeedbackButtons slug={`ai/${entry.data.translationKey}`} client:visible />
     </div>
+
+    <SubscribeCTA section="ai" lang={lang} />
 
     <PostFooter
       prev={prev} next={next} related={related}

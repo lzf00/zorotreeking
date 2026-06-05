@@ -1,0 +1,88 @@
+---
+/**
+ * 文章阅读进度条 + 滚过 hero 后的迷你 sticky 标题栏。
+ *
+ * 设计：
+ *   - 顶部 3px 进度条，颜色随 section 主题色
+ *   - 越过页面顶部 ~400px 后，固定显示一个迷你 navbar 含文章标题
+ *   - 移动端简化为只有进度条
+ *
+ * Props:
+ *   title    文章标题
+ *   section  "ai" | "invest" | "hike" 决定颜色
+ *   backHref 返回栏目列表的链接（点 mini navbar 时跳）
+ *   backLabel "AI 学习" 这种栏目名
+ */
+interface Props {
+  title: string;
+  section: "ai" | "invest" | "hike" | "photo";
+  backHref: string;
+  backLabel: string;
+}
+const { title, section, backHref, backLabel } = Astro.props;
+
+const sectionHex = {
+  ai: "#1d4ed8",
+  invest: "#991b1b",
+  hike: "#166534",
+  photo: "#6b21a8",
+};
+const color = sectionHex[section];
+---
+
+<!-- 顶部进度条 -->
+<div id="reading-progress" class="fixed top-0 left-0 right-0 h-[3px] z-[60] pointer-events-none">
+  <div id="reading-progress-bar"
+       class="h-full origin-left scale-x-0 transition-transform duration-75 ease-out"
+       style={`background:${color}`}></div>
+</div>
+
+<!-- sticky mini navbar：滚过 hero 后显示 -->
+<div id="reading-sticky"
+     class="fixed top-0 left-0 right-0 z-50 opacity-0 -translate-y-full transition-all duration-200 ease-out
+            bg-[var(--bg)]/90 backdrop-blur border-b border-[var(--border)]
+            hidden sm:block"
+     aria-hidden="true">
+  <div class="max-w-6xl mx-auto px-5 h-12 flex items-center gap-3">
+    <a href={backHref}
+       class="text-[11px] uppercase tracking-[0.18em] text-zinc-500 font-mono hover:text-[var(--text)] shrink-0 transition-colors">
+      ← {backLabel}
+    </a>
+    <span class="text-zinc-300 dark:text-zinc-700">·</span>
+    <span class="text-sm font-medium truncate" style={`color:${color}`}>{title}</span>
+  </div>
+</div>
+
+<script is:inline>
+  document.addEventListener("DOMContentLoaded", () => {
+    const bar = document.getElementById("reading-progress-bar");
+    const sticky = document.getElementById("reading-sticky");
+    if (!bar) return;
+
+    const calc = () => {
+      const h = document.documentElement;
+      const scrollTop = window.scrollY || h.scrollTop;
+      const docHeight = h.scrollHeight - h.clientHeight;
+      const pct = docHeight > 0 ? Math.min(1, Math.max(0, scrollTop / docHeight)) : 0;
+      bar.style.transform = `scaleX(${pct})`;
+
+      if (sticky) {
+        if (scrollTop > 400) {
+          sticky.style.opacity = "1";
+          sticky.style.transform = "translateY(0)";
+        } else {
+          sticky.style.opacity = "0";
+          sticky.style.transform = "translateY(-100%)";
+        }
+      }
+    };
+    let rafId = 0;
+    const onScroll = () => {
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => { calc(); rafId = 0; });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    calc();
+  });
+</script>

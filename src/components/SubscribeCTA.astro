@@ -1,0 +1,82 @@
+---
+/**
+ * 文章页底嵌入的轻量订阅 CTA banner。
+ *
+ * 设计：紧凑一行 = "喜欢这篇？留邮箱"标语 + email input + 订阅按钮 + 微小法律行。
+ * 不抢戏（不是大卡片），但读完一篇文章时读者第一眼能看到。
+ *
+ * 复用 /subscribe 的 Buttondown embed-subscribe endpoint。提交后 hidden iframe
+ * 收响应，原页 inline 显示 "✓ 已提交" 反馈（同一份脚本逻辑）。
+ *
+ * 仅当 PUBLIC_BUTTONDOWN_USERNAME 配置时渲染（fallback 默认 "zifei"）。
+ */
+interface Props {
+  section?: "ai" | "invest" | "hike" | "photo";
+  lang?: "zh" | "en";
+}
+const { section = "ai", lang = "zh" } = Astro.props;
+const buttondownUser = import.meta.env.PUBLIC_BUTTONDOWN_USERNAME || "zifei";
+
+const sectionAccent: Record<string, string> = {
+  ai: "#1d4ed8", invest: "#991b1b", hike: "#166534", photo: "#6b21a8",
+};
+const accent = sectionAccent[section];
+const t = (zh: string, en: string) => (lang === "zh" ? zh : en);
+// 给同页 form 一个独有 id 避免和 /subscribe 页全局 id 冲突
+const formId = `cta-buttondown-form-${section}`;
+const okId = `cta-buttondown-ok-${section}`;
+const emailId = `cta-buttondown-email-${section}`;
+const sinkName = `cta-buttondown-sink-${section}`;
+---
+
+{buttondownUser && (
+  <aside class="mt-16 sm:mt-20 rounded-2xl border border-[var(--border)] p-6 sm:p-7
+                bg-[var(--bg-soft)] dark:bg-zinc-900/40">
+    <div class="flex items-start gap-2 mb-1">
+      <span class="w-1.5 h-1.5 rounded-full mt-2 shrink-0" style={`background:${accent}`}></span>
+      <p class="text-sm sm:text-base font-semibold leading-snug">
+        {t("喜欢这篇？", "Like this post?")}
+        <span class="font-normal text-[var(--text-secondary)]">
+          {t("留个邮箱，新文章自动推送，每周不超过 2 封。", "Get new posts in your inbox. ≤ 2/week, unsubscribe anytime.")}
+        </span>
+      </p>
+    </div>
+
+    <form id={formId}
+          action={`https://buttondown.com/api/emails/embed-subscribe/${buttondownUser}`}
+          method="post"
+          target={sinkName}
+          class="mt-3 flex items-stretch rounded-lg border border-[var(--border)] overflow-hidden bg-[var(--bg)] max-w-md">
+      <input id={emailId} type="email" name="email" required
+             placeholder={t("your@email.com", "your@email.com")}
+             class="flex-1 bg-transparent text-sm px-3 py-2 outline-none placeholder:text-[var(--text-tertiary)]" />
+      <input type="hidden" name="embed" value="1" />
+      <button type="submit"
+              class="px-4 py-2 text-xs font-medium bg-black text-white dark:bg-white dark:text-black hover:opacity-90 transition-opacity whitespace-nowrap">
+        {t("订阅", "Subscribe")}
+      </button>
+    </form>
+    <iframe name={sinkName} title="buttondown response sink" class="hidden" aria-hidden="true" tabindex="-1"></iframe>
+
+    <div id={okId} class="mt-3 text-xs text-green-600 hidden items-center gap-1.5">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      <span>{t("已提交，请去邮箱点击确认链接", "Submitted — check your inbox for the confirmation link")}</span>
+    </div>
+
+    <script is:inline define:vars={{ formId, okId, emailId }}>
+      document.addEventListener("DOMContentLoaded", () => {
+        const fm = document.getElementById(formId);
+        const ok = document.getElementById(okId);
+        const em = document.getElementById(emailId);
+        if (!fm || !ok) return;
+        fm.addEventListener("submit", () => {
+          setTimeout(() => {
+            ok.classList.remove("hidden");
+            ok.classList.add("flex");
+            if (em) em.value = "";
+          }, 150);
+        });
+      });
+    </script>
+  </aside>
+)}

@@ -1,0 +1,62 @@
+---
+/**
+ * 列表页文章卡（带视觉钩子）。
+ *
+ * 设计：左侧 section 色块 thumbnail（72×72px，含 emoji + section 字），右侧标题 + 描述。
+ * 没 cover 字段也优雅工作——靠纯色块 + 大字母 thumbnail 代替图片。
+ *
+ * Props:
+ *   href、title、description、date、section、cover (optional)、tags (optional)
+ */
+interface Props {
+  href: string;
+  title: string;
+  description?: string;
+  date: Date;
+  section: "ai" | "invest" | "hike" | "photo";
+  cover?: string;
+  tags?: string[];
+}
+const { href, title, description, date, section, cover, tags } = Astro.props;
+
+const sectionConfig = {
+  ai: { bg: "bg-blue-50 dark:bg-blue-950/40", text: "text-section-ai", letter: "AI" },
+  invest: { bg: "bg-red-50 dark:bg-red-950/40", text: "text-section-invest", letter: "投" },
+  hike: { bg: "bg-green-50 dark:bg-green-950/40", text: "text-section-hike", letter: "山" },
+  photo: { bg: "bg-purple-50 dark:bg-purple-950/40", text: "text-section-photo", letter: "影" },
+} as const;
+const cfg = sectionConfig[section];
+const dateStr = date.toISOString().slice(0, 10);
+---
+
+<a href={href} class="group flex items-start gap-4 py-4 sm:py-5">
+  {/* 左侧 thumbnail：有 cover 用 cover；没就用 section 色块 + 大字 */}
+  <div class="shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden">
+    {cover ? (
+      <img src={cover} alt="" class="w-full h-full object-cover" loading="lazy" />
+    ) : (
+      <div class={`w-full h-full ${cfg.bg} flex items-center justify-center`}>
+        <span class={`text-2xl sm:text-3xl font-serif font-semibold ${cfg.text}`}>{cfg.letter}</span>
+      </div>
+    )}
+  </div>
+
+  {/* 右侧文字 */}
+  <div class="flex-1 min-w-0">
+    <div class="flex items-center gap-2 text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide mb-1">
+      <time>{dateStr}</time>
+      {tags && tags.length > 0 && (
+        <>
+          <span class="text-zinc-300 dark:text-zinc-700">·</span>
+          <span class="truncate">{tags.slice(0, 2).join(" · ")}</span>
+        </>
+      )}
+    </div>
+    <h3 class={`text-base sm:text-lg font-semibold leading-snug line-clamp-2 group-hover:${cfg.text} transition-colors`}>
+      {title}
+    </h3>
+    {description && (
+      <p class="mt-1 text-sm text-[var(--text-secondary)] line-clamp-2">{description}</p>
+    )}
+  </div>
+</a>

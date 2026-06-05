@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import TagChip from "@/components/TagChip.astro";
+import PostCard from "@/components/PostCard.astro";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
 import { extractDigestHighlights } from "@/lib/digest-highlights";
 
@@ -25,22 +26,19 @@ const latestDigest = digests[0];
     <p class="mt-2 text-[var(--text-secondary)]">{t("section.ai.desc")}</p>
   </section>
 
-  <!-- 原创笔记列表 -->
+  <!-- 原创笔记列表（PostCard 带 section 色块 thumbnail） -->
   <section class="max-w-3xl mx-auto px-5">
     <ul class="divide-y divide-[var(--border)]">
       {posts.map(p => (
-        <li class="py-5">
-          <div class="flex items-center gap-2 text-xs text-[var(--text-tertiary)] mb-1">
-            <time>{p.data.date.toISOString().slice(0, 10)}</time>
-            {p.data.tags.slice(0, 3).map(tag => <TagChip tag={tag} lang={lang} />)}
-          </div>
-          <h2 class="text-lg font-semibold">
-            <a href={pathWithLang(`/ai/${p.data.translationKey}`, lang)}
-               class="hover:text-section-ai transition-colors">
-              {p.data.title}
-            </a>
-          </h2>
-          {p.data.description && <p class="mt-1 text-sm text-[var(--text-secondary)] line-clamp-2">{p.data.description}</p>}
+        <li>
+          <PostCard
+            href={pathWithLang(`/ai/${p.data.translationKey}`, lang)}
+            title={p.data.title}
+            description={p.data.description}
+            date={p.data.date}
+            section="ai"
+            cover={p.data.cover}
+            tags={p.data.tags} />
         </li>
       ))}
       {posts.length === 0 && <li class="py-12 text-center text-[var(--text-tertiary)]">原创笔记还在路上。</li>}
