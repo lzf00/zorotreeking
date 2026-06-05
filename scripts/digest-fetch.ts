@@ -227,8 +227,6 @@ async function buildAIDigest(date: string): Promise<void> {
   lines.push("");
   lines.push('import FeedbackButtons from "@/components/FeedbackButtons";');
   lines.push("");
-  lines.push(`> 由 cron 每日 08:00 北京自动从 HF Daily Papers + arxiv cs.LG 抓取，豆包翻译/摘要。仅供参考。`);
-  lines.push("");
 
   for (const sourceKey of Object.keys(grouped)) {
     const label = SOURCE_LABEL[sourceKey] || sourceKey;
