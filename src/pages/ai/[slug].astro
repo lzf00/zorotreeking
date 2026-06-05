@@ -30,12 +30,12 @@ const readMins = estimateReadingTime(entry.body);
       ← {t("section.ai.title")}
     </a>
 
-    <header class="mb-16 sm:mb-24">
-      <h1 class="font-serif text-5xl sm:text-7xl leading-[1.02] tracking-tight font-normal text-[#1d1d1f] dark:text-zinc-100">
+    <header class="mb-14 sm:mb-20">
+      <h1 class="text-3xl sm:text-5xl leading-tight tracking-tight font-semibold text-section-ai">
         {entry.data.title}
       </h1>
       {entry.data.description && (
-        <p class="mt-8 text-lg sm:text-2xl leading-relaxed text-zinc-500 dark:text-zinc-400 font-light">
+        <p class="mt-5 text-base sm:text-lg leading-relaxed text-zinc-500 dark:text-zinc-400 font-light">
           {entry.data.description}
         </p>
       )}
@@ -54,9 +54,9 @@ const readMins = estimateReadingTime(entry.body);
                 prose-h1:text-zinc-500 dark:prose-h1:text-zinc-400
                 prose-h1:mt-24 prose-h1:mb-12 prose-h1:pb-3
                 prose-h1:border-b prose-h1:border-zinc-100 dark:prose-h1:border-zinc-800
-                prose-h2:font-serif prose-h2:text-2xl sm:prose-h2:text-[28px]
-                prose-h2:leading-[1.2] prose-h2:tracking-tight
-                prose-h2:font-normal prose-h2:mt-16 prose-h2:mb-3
+                prose-h2:text-xl sm:prose-h2:text-[22px]
+                prose-h2:leading-snug prose-h2:tracking-tight
+                prose-h2:font-semibold prose-h2:mt-14 prose-h2:mb-3
                 prose-h2:text-[#1d1d1f] dark:prose-h2:text-zinc-100
                 prose-a:no-underline prose-a:font-normal prose-a:text-inherit
                 hover:prose-a:text-section-ai
