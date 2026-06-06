@@ -1,0 +1,128 @@
+---
+lang: zh
+translationKey: digest-2026-06-06
+title: "AI 每日精选 · 2026-06-06"
+description: "13 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-06-06
+tags: [digest, auto, arxiv, openai, anthropic, deepmind, the-gradient, qbitai]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.05169" target="_blank" rel="noopener noreferrer">The Evaluation Blind Spot: A Stereological Theory of Benchmark Coverage for Large Language Models</a>
+
+*Jason Z Wang*
+
+本文提出大语言模型基准覆盖的体视学理论，实证发现主流榜单有效维度仅2.86-4.80，评估盲区远超得分差距，排名波动极强：前二模型互换率近半，92%的数据集拆分都会更换榜首。研究还提出子模贪心选基准算法，仅4个核心基准即可稳定排序，7个可达90%覆盖度，同时解决了1995年提出的Gardner 1.5号理论问题。
+
+<FeedbackButtons slug="item:arxiv-2606.05169" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.05170" target="_blank" rel="noopener noreferrer">ERRORQUAKE: Heavy-Tailed Error Severity Distributions in Open-Weight Large Language Models</a>
+
+*Jason Z Wang*
+
+针对现有开源大语言模型评测仅统计错误率、忽略错误严重度差异的问题，研究团队构建跨8领域、5难度层级的Errorquake-10k评测基准，对21款开源大模型的错误严重度分布建模。研究发现相同准确率下模型严重度分布差异显著，该指标与错误率信息不冗余，高严重度错误多为信息捏造，建议将其纳入常规评测维度。
+
+<FeedbackButtons slug="item:arxiv-2606.05170" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.05186" target="_blank" rel="noopener noreferrer">Staged Factorial Screening for Budget-Constrained Micro-Pretraining</a>
+
+*Felipe Chavarro Polania*
+
+本文面向预算受限的微预训练候选配方筛选场景，提出分阶段析因筛选方法，经613组不同时长、硬件的对照实验验证：该方法可在短预算下快速定位高惩罚参数方向、锚定优解，相较随机搜索具备因子归因能力，24小时实验周期内桥接模型导向的方案表现最优，不存在通用硬件排序。
+
+<FeedbackButtons slug="item:arxiv-2606.05186" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/endava-frontiers" target="_blank" rel="noopener noreferrer">How Endava is redesigning software delivery around AI agents</a>
+
+*OpenAI*
+
+这份行业实践报告介绍了科技服务商Endava围绕AI智能体重构软件交付模式的落地经验：该企业部署ChatGPT企业版、Codex等AI工具，既大幅提升软件交付效率、实现常规工作流自动化降本提效，也同步在全公司推进AI原生文化建设，为行业AI赋能研发交付提供了可参考路径。
+
+<FeedbackButtons slug="item:openai-blog-endava-frontiers" client:visible />
+
+## <a href="https://openai.com/index/chatgpt-memory-dreaming" target="_blank" rel="noopener noreferrer">Dreaming: Better memory for a more helpful ChatGPT</a>
+
+*OpenAI*
+
+这篇面向ChatGPT体验优化的研究，针对现有版本跨会话易遗忘用户偏好、上下文关联性弱的痛点，提出名为“Dreaming”的新型记忆系统。该系统可持久留存用户个性化交互偏好，跨会话维持上下文的新鲜度与适配性，能有效降低用户重复交代需求的成本，大幅提升ChatGPT的交互友好度。
+
+<FeedbackButtons slug="item:openai-blog-chatgpt-memory-dreaming" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-4-8" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 4.8</a>
+
+*Anthropic*
+
+本次推出的Claude Opus 4.8是Anthropic旗下Opus系列高端大模型的最新迭代版本。该模型完成了核心能力升级，在代码开发、智能体任务执行、专业领域工作三类场景下性能表现显著提升，同时优化了运行稳定性，可稳定支撑长周期复杂工作的持续处理需求。
+
+<FeedbackButtons slug="item:anthropic-claude-opus-4-8" client:visible />
+
+## <a href="https://www.anthropic.com/news/expanding-project-glasswing" target="_blank" rel="noopener noreferrer">Expanding Project Glasswing</a>
+
+*Anthropic*
+
+本次公开了跨境网络治理项目“玻璃翼（Project Glasswing）”的扩容计划：该项目主打多主体联合打击虚假信息、跨境有害内容传播，本次将合作范围拓展至15个以上国家的约150家新机构，可进一步扩大治理覆盖半径，强化全球多主体协同处置网络生态问题的整体效能。
+
+<FeedbackButtons slug="item:anthropic-expanding-project-glasswing" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle-environmental-risks/" target="_blank" rel="noopener noreferrer">We’re launching the Google DeepMind Accelerator program in Asia Pacific to tackle environmental risks</a>
+
+*Google DeepMind*
+
+谷歌DeepMind近期面向亚太地区启动加速器项目，聚焦应对气候变化、生物多样性退化、极端灾害预警等环境风险。项目将依托DeepMind在强化学习、大模型等领域的前沿AI技术，联动本地科研、政企生态伙伴，推动AI在环境治理场景落地，为亚太区域环境风险防控、生态保护提供适配技术方案。
+
+<FeedbackButtons slug="item:deepmind-were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle" client:visible />
+
+## <a href="https://deepmind.google/blog/fast-tracking-genetic-leads-to-reverse-cellular-aging/" target="_blank" rel="noopener noreferrer">Fast-tracking genetic leads to reverse cellular aging</a>
+
+*Google DeepMind*
+
+这篇题为《挖掘遗传线索加速逆转细胞衰老》的研究，核心方法是生物学家借助Co-Scientist智能科研系统开展筛选，成功识别出一批此前未被报道的新型调控因子，可高效实现人类细胞的年轻化重编程，为后续抗衰干预方案开发、衰老相关疾病防治提供了全新的潜在靶点方向。
+
+<FeedbackButtons slug="item:deepmind-fast-tracking-genetic-leads-to-reverse-cellular-aging" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+这篇AI对齐研究从德性伦理视角出发，挑战“理性主体以固定最终目标为行动导向”的传统假设，指出人类理性的本质是行动匹配包含行为规范、评价标准在内的实践网络，而非指向特定目标。研究提出，要实现AI安全合规、契合人类伦理、可协同的对齐目标，需让AI决策逻辑匹配人类这类基于实践的行动逻辑。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/06/431056.html" target="_blank" rel="noopener noreferrer">港股鞋王千百度，一夜完成AI数据公司转型</a>
+
+*量子位*
+
+港股鞋履企业千百度近日宣布收购国内头部AI数据服务商本原智数控股权，落地“鞋履+AI数据”双主业布局。本原智数是国内少数具备大模型、具身智能数据服务能力的稀缺盈利AI供应商，千百度将保持其独立中立运营，依托实业现金流切入高增长AI数据赛道，谋求长期价值。
+
+<FeedbackButtons slug="item:qbitai-431056" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/431045.html" target="_blank" rel="noopener noreferrer">有人靠CPU把AI算力密度卷到了新高度</a>
+
+*量子位*
+
+当前您仅提供了论文标题，摘要正文内容为空，无法完成对应翻译提炼和总结工作~ 麻烦您补充完整该篇英文论文摘要的具体文本内容，我会按照要求突出核心方法、结论，为您生成120字左右的清晰中文总结哦。
+
+<FeedbackButtons slug="item:qbitai-431045" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/431033.html" target="_blank" rel="noopener noreferrer">智源&#038;清华合作成果登上Science：脑科学多模态基础模型Brainμ支撑揭示“记忆-睡眠”调控的神经机制</a>
+
+*量子位*
+
+智源与清华联合研究成果登《科学》，解答记忆重放是否调控睡眠结构的神经科学长期谜题，证实睡眠中记忆重激活可调控睡眠动态，为“记忆-睡眠”双向作用机制提供新实证。研究依托智源自研脑科学多模态基础模型Brainμ完成多源神经数据分析，验证了AI大模型赋能基础生命科学研究的潜力。
+
+<FeedbackButtons slug="item:qbitai-431033" client:visible />
