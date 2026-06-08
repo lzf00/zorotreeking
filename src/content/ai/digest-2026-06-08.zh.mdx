@@ -1,0 +1,188 @@
+---
+lang: zh
+translationKey: digest-2026-06-08
+title: "AI 每日精选 · 2026-06-08"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-06-08
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.05761" target="_blank" rel="noopener noreferrer">SubtleMemory: A Benchmark for Fine-Grained Relational Memory Discrimination in Long-Horizon AI Agents</a>
+
+*HF ★ 11 · Wenxuan Wang, Haoyu Sun, Fukuan Hou… · [HF 镜像](https://huggingface.co/papers/2606.05761)*
+
+针对现有长时记忆基准未覆盖长程AI智能体记忆关联利用能力的空白，研究团队推出SubtleMemory细粒度关联记忆判别基准：将关联受控的记忆变体嵌入真实交互历史，覆盖10段长历史、1522个测例。测试11类主流记忆系统/智能体后发现，当前系统该能力普遍薄弱，团队还配套了分阶段能力诊断协议。
+
+<FeedbackButtons slug="item:arxiv-2606.05761" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.05806" target="_blank" rel="noopener noreferrer">When Tools Fail: Benchmarking Dynamic Replanning and Anomaly Recovery in LLM Agents</a>
+
+*HF ★ 11 · Dongsheng Zhu, Xuchen Ma, Yucheng Shen… · [HF 镜像](https://huggingface.co/papers/2606.05806)*
+
+现有大模型工具集成推理基准仅覆盖理想运行场景，未考虑真实工具故障问题。该研究推出ToolMaze基准，按DAG拓扑复杂度、「显式/隐式、瞬时/永久」2×2工具扰动分类设计，可区分系统重规划与盲目试错。测试显示工具扰动普遍拉低模型性能，隐式语义故障下扰动恢复率骤降37%、跌幅最突出，且模型容错能力随规模提升速度远慢于基础任务，动态重规划是当前未突破的核心瓶颈。
+
+<FeedbackButtons slug="item:arxiv-2606.05806" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.07514" target="_blank" rel="noopener noreferrer">UniSHARP: Universal Sharp Monocular View Synthesis</a>
+
+*HF ★ 10 · Meixi Song, Dizhe Zhang, Hao Ren… · [HF 镜像](https://huggingface.co/papers/2606.07514)*
+
+本文针对现有SHARP视图合成方法仅适配针孔透视相机的局限，提出通用单目视图合成方法UniSHARP：将透视、鱼眼、全景等不同成像模式的输入统一映射到全向隐空间，在特征、高斯空间做隐式对齐实现通用渲染。团队还构建了分视场层级的多成像系统评测基准，实验显示其性能大幅优于同类方法。
+
+<FeedbackButtons slug="item:arxiv-2606.07514" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.06953" target="_blank" rel="noopener noreferrer">LIMMT: Less is More for Motion Tracking</a>
+
+*HF ★ 4 · Yu Guan, Zekun Qi, Chenghuai Lin… · [HF 镜像](https://huggingface.co/papers/2606.06953)*
+
+针对物理驱动人形动作跟踪任务，该研究首次开展数据为中心的相关探索，提出LIMMT框架，从物理可行性、多样性、复杂度三个维度定义动作数据质量，而非仅剔除低质错误片段。实验证实，仅用AMASS数据集不足3%的优质数据训练，跟踪效果优于全量数据集，框架还可用于网采动捕数据清洗，有效性得到验证。
+
+<FeedbackButtons slug="item:arxiv-2606.06953" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.07433" target="_blank" rel="noopener noreferrer">Watch, Remember, Reason: Human-View Video Understanding with MLLMs</a>
+
+*HF ★ 4 · Jiahao Meng, Yue Tan, Qi Xu… · [HF 镜像](https://huggingface.co/papers/2606.07433)*
+
+本文是多模态大模型（MLLM）视频理解领域综述，针对长时序、多模态、知识密集的视频场景痛点，提出“观看-记忆-推理”的类人视角统一分析框架，系统解构视频MLLM感知、记忆、推理全链路，梳理核心技术挑战、代表性方法、多场景应用及数据集基准，指明可扩展、可溯源的视频智能发展方向，配套开源项目持续跟进相关研究。
+
+<FeedbackButtons slug="item:arxiv-2606.07433" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.06546" target="_blank" rel="noopener noreferrer">Elmes*: Automated Construction of Fine-Grained Evaluation Rubrics for Large Language Models in Long-Tail Educational Scenarios</a>
+
+*Tao Liu, Ye Lu, Ruohua Zhang…*
+
+针对现有大模型教育场景评估重通用正确性、手动评分规则难以适配长尾教学场景的问题，研究提出端到端框架Elmes*，结合多智能体交互与自进化模块构建场景化细粒度评估规则，搭建了覆盖多学科多场景的Edu-330基准。实验证实大模型教育能力多维度，教育专用模型InnoSpark表现最优，LLM评委效率高但存在偏好偏差，该框架可支撑可扩展的教学导向大模型评估。
+
+<FeedbackButtons slug="item:arxiv-2606.06546" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.06547" target="_blank" rel="noopener noreferrer">FAIR-Calib: Frontier-Aware Instability-Reweighted Calibration for Post-Training Quantization of Diffusion Large Language Models</a>
+
+*Haoyu Huang, Linlin Yang, Sheng Xu…*
+
+针对扩散大语言模型“稳定性滞后”、训练后量化误差易扰动边界脆弱决策并被锁定放大的问题，本文提出FAIR-Calib两阶段量化框架：先通过全精度模型预估结合边界命中与掩蔽阶段可靠性的位置先验，再分层重加权校准隐状态均方误差，无需昂贵端到端扩散推演。W4A4量化下在多基准上优于现有SOTA，显著降低边界决策翻转。
+
+<FeedbackButtons slug="item:arxiv-2606.06547" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.06554" target="_blank" rel="noopener noreferrer">Multi-Scale Feature Attention Network for Polymer Classification using THz Dual-Comb Spectroscopy</a>
+
+*Roshni Mahtani, Il\'an Carretero, Laura Monroy…*
+
+针对再生塑料聚合物识别传统技术性能不足的问题，该研究采用太赫兹双梳光谱采集12类涵盖纯料、多层膜、共混物、生物聚合物的光谱数据，提出适配该类数据的多尺度特征注意力网络，通过多模块组合提取关键特征，分类准确率达85.2%，优于现有主流模型，验证了该方案的实用价值。
+
+<FeedbackButtons slug="item:arxiv-2606.06554" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/endava-frontiers" target="_blank" rel="noopener noreferrer">How Endava is redesigning software delivery around AI agents</a>
+
+*OpenAI*
+
+本文介绍科技服务企业Endava围绕AI代理重构软件交付模式的实践：其通过落地AI代理工具链，结合ChatGPT企业版、Codex的大模型能力，既实现了软件交付效率提升、开发全流程工作流自动化，也同步在全公司推行AI原生文化建设，为科技交付的AI化转型提供可参考的落地路径。
+
+<FeedbackButtons slug="item:openai-blog-endava-frontiers" client:visible />
+
+## <a href="https://openai.com/index/chatgpt-memory-dreaming" target="_blank" rel="noopener noreferrer">Dreaming: Better memory for a more helpful ChatGPT</a>
+
+*OpenAI*
+
+这篇研究聚焦大语言模型对话的跨会话记忆痛点，推出名为“Dreaming”的新型记忆系统落地到ChatGPT中。该系统可长效留存用户个性化偏好，打破会话间的上下文隔断，保障交互信息的鲜活性与适配性，显著提升ChatGPT的回复匹配度与实用价值，为通用对话大模型的体验优化提供了可行方向。
+
+<FeedbackButtons slug="item:openai-blog-chatgpt-memory-dreaming" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-4-8" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 4.8</a>
+
+*Anthropic*
+
+本次Anthropic发布的Claude Opus 4.8是其Opus级高性能大模型的最新升级款。相较于前代，该模型在三类核心场景下性能提升明显：编程开发任务、智能体类任务、各领域专业工作，同时大幅优化了长时运行稳定性，处理长周期复杂多步任务的一致性显著增强，可适配更复杂的长时效工作需求。
+
+<FeedbackButtons slug="item:anthropic-claude-opus-4-8" client:visible />
+
+## <a href="https://www.anthropic.com/news/expanding-project-glasswing" target="_blank" rel="noopener noreferrer">Expanding Project Glasswing</a>
+
+*Anthropic*
+
+本篇《扩展Glasswing项目》披露了该项目的最新扩围安排：作为聚焦网络威胁情报共享的跨机构协作项目，本次Glasswing将把合作覆盖范围拓展至全球15个以上国家的约150家新机构。扩围完成后可进一步提升跨国跨行业情报流转效率，强化参与方的网络安全协同防御能力，惠及更多领域的机构主体。
+
+<FeedbackButtons slug="item:anthropic-expanding-project-glasswing" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle-environmental-risks/" target="_blank" rel="noopener noreferrer">We’re launching the Google DeepMind Accelerator program in Asia Pacific to tackle environmental risks</a>
+
+*Google DeepMind*
+
+谷歌DeepMind正式启动亚太区加速器专项，核心目标是依托自身AI技术积淀应对区域各类环境风险。项目将联动亚太本地科研机构、科创企业与公共部门，聚焦极端天气预警、生态修复、减碳管控等场景，开发适配区域特征的AI环境解决方案，提升亚太地区环境风险防范与应急处置效能。
+
+<FeedbackButtons slug="item:deepmind-were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle" client:visible />
+
+## <a href="https://deepmind.google/blog/fast-tracking-genetic-leads-to-reverse-cellular-aging/" target="_blank" rel="noopener noreferrer">Fast-tracking genetic leads to reverse cellular aging</a>
+
+*Google DeepMind*
+
+这篇研究聚焦逆转细胞衰老的遗传靶点快速挖掘，生物学家借助Co-Scientist智能科研工具开展筛选，成功识别出可有效实现人类细胞年轻化的全新调控因子。该成果既为抗衰研究及衰老相关疾病干预提供了全新候选靶点，也验证了智能科研工具在生物医学基础研究中的提效价值。
+
+<FeedbackButtons slug="item:deepmind-fast-tracking-genetic-leads-to-reverse-cellular-aging" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/build-small-hackathon/amazingdigitaldentures" target="_blank" rel="noopener noreferrer">Amazing Digital Dentures (a failed project)</a>
+
+*Hugging Face*
+
+目前您仅提供了项目标题《神奇数字义齿（失败项目）》，缺少摘要的核心正文内容，无法获悉该项目的研发路径、采用的技术方法、失败诱因、相关结论等关键信息，请您补充完整摘要的具体内容，我会按要求为您提炼核心要点，完成120字左右的清晰总结。
+
+<FeedbackButtons slug="item:hf-blog-amazingdigitaldentures" client:visible />
+
+## <a href="https://huggingface.co/blog/nvidia/nemotron-3-5-content-safety" target="_blank" rel="noopener noreferrer">Nemotron 3.5 Content Safety: Customizable Multimodal Safety for Global Enterprise AI</a>
+
+*Hugging Face*
+
+本文介绍Nemotron 3.5内容安全方案，面向全球企业级AI打造，核心为可定制多模态安全架构，支持跨文本、图像等多模态风险识别，可适配不同地区监管规则与企业个性化合规需求，检测准确率优于通用安全模型，能大幅降低企业自定义安全策略的研发成本，适配生成式AI规模化落地需求。
+
+<FeedbackButtons slug="item:hf-blog-nemotron-3-5-content-safety" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+这篇基于美德伦理的AI对齐研究，反驳“理性主体需以固定目标为行动导向”的预设，指出人类理性本质是行动适配由行为、评价标准等构成的实践网络，而非指向终极目标。研究提出AI对齐核心路径是让AI决策逻辑与人类实践型行动逻辑同构，可同时满足伦理对齐与核心安全要求。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/06/432055.html" target="_blank" rel="noopener noreferrer">高通点赞广汽埃安N60智驾大赛获亚军，文远知行WRD 3.0亮相高通峰会</a>
+
+*量子位*
+
+2026高通汽车技术与合作峰会上，文远知行基于骁龙SA8650平台开发的L2++一段式端到端智驾方案WRD 3.0、配套量产车型广汽埃安N60亮相，获高通高管点赞。该车型上月首参中国智驾大赛即获亚军，同技术方案创赛事五连冠纪录，依托自研仿真模型，可兼顾复杂场景智驾的安全性与通行效率。
+
+<FeedbackButtons slug="item:qbitai-432055" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/431931.html" target="_blank" rel="noopener noreferrer">有余凯不投的地平线离职创业员工吗？</a>
+
+*量子位*
+
+地平线创始人余凯一反硬科技行业大厂封杀离职创业员工的惯例，对离职创业的前核心员工多给予投资支持。目前至少14位地平线核心技术、管理骨干离职创业，余凯已投资其中大部分，涵盖叮当动力、无界动力等项目，双方守分寸互相支持，形成少见的生态接力式良性关系。
+
+<FeedbackButtons slug="item:qbitai-431931" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/431694.html" target="_blank" rel="noopener noreferrer">马斯克39页SpaceX计划，人类史上最伟大的PPT</a>
+
+*量子位*
+
+SpaceX启动史上最大规模IPO，拟募资750亿美元，估值1.77万亿美元，持股82.4%的马斯克有望成为人类首位万亿富翁。招股书将马斯克薪酬与“市值达7.5万亿美元、实现火星百万移民”绑定，对应9年前曾遭嘲讽的39页“多行星物种”计划，如今该计划已兑现大半，被称为人类史上最伟大的PPT。
+
+<FeedbackButtons slug="item:qbitai-431694" client:visible />
