@@ -1,0 +1,188 @@
+---
+lang: zh
+translationKey: digest-2026-06-09
+title: "AI 每日精选 · 2026-06-09"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-06-09
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.07297" target="_blank" rel="noopener noreferrer">SWE-Explore: Benchmarking How Coding Agents Explore Repositories</a>
+
+*HF ★ 24 · Shaoqiu Zhang, Yuhang Wang, Jialiang Liang… · [HF 镜像](https://huggingface.co/papers/2606.07297)*
+
+针对现有代码智能体基准仅评判任务成败、忽略仓库探索等细粒度能力的问题，该研究提出SWE-Explore基准：覆盖203个开源仓库、10种语言的848个任务，以成功解题的智能体轨迹提炼行级真值，固定行数预算下评估相关代码召回排序能力。实测显示智能体探索效果远超传统检索，当前文件级定位已较成熟，行级覆盖、排序效率是核心性能差距来源。
+
+<FeedbackButtons slug="item:arxiv-2606.07297" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.07082" target="_blank" rel="noopener noreferrer">On the Geometry of On-Policy Distillation</a>
+
+*HF ★ 15 · Zhennan Shen, Yanshu Li, Qingyu Yin… · [HF 镜像](https://huggingface.co/papers/2606.07082)*
+
+针对用于提升大语言模型推理能力的同策略蒸馏（OPD）训练动力学不明的问题，研究通过参数空间诊断，对比OPD、监督微调、可验证奖励强化学习的更新轨迹发现：OPD具备独有的更新几何特征，属宽松非主更新区间，存在子空间锁定效应，并非另外两种训练范式的中间态。（全文119字）
+
+<FeedbackButtons slug="item:arxiv-2606.07082" client:visible />
+
+## <a href="https://arxiv.org/abs/2509.10078" target="_blank" rel="noopener noreferrer">Human Psychometric Questionnaires Mischaracterize LLM Behavior</a>
+
+*HF ★ 13 · Woojung Song, Dongmin Choi, Yoonah Park… · [HF 镜像](https://huggingface.co/papers/2509.10078)*
+
+本研究验证人类心理测量问卷能否可靠表征大模型实际交互行为：对比8个开源大模型的两类人格、价值观画像——量表自评结果与日常用户查询下价值导向回答的生成概率，发现二者差异显著。问卷的高一致性源于模型识别题目显性词汇线索，给出符合社会期待的回答，无法反映实际交互表现，问卷不适用于大模型行为预测，生成式画像更准确。
+
+<FeedbackButtons slug="item:arxiv-2509.10078" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.09669" target="_blank" rel="noopener noreferrer">SpatialWorld: Benchmarking Interactive Spatial Reasoning of Multimodal Agents in Real-World Tasks</a>
+
+*HF ★ 3 · Hongcheng Gao, Hailong Qu, Jingyi Tang… · [HF 镜像](https://huggingface.co/papers/2606.09669)*
+
+现有多模态大模型空间推理测评多为被动静态或限定仿真场景，无法评估通用交互式空间理解能力。该研究推出SpatialWorld基准，整合8类仿真后端，覆盖760项真实场景标注任务，设统一交互接口与验证标准。实测15个先进模型发现，最强GPT-5成功率仅17.4%，开源Qwen-3.5仅14.1%，凸显当前模型交互式空间推理短板，该基准可为后续研究提供可靠测试支撑。
+
+<FeedbackButtons slug="item:arxiv-2606.09669" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.08415" target="_blank" rel="noopener noreferrer">CoVEBench: Can Video Editing Models Handle Complex Instructions?</a>
+
+*HF ★ 3 · Jiangtao Wu, Jiaming Wang, Yiwen He… · [HF 镜像](https://huggingface.co/papers/2606.08415)*
+
+针对现有文本引导视频编辑基准仅支持孤立简单任务、无法评估真实场景多耦合编辑需求的缺陷，本文推出组合视频编辑基准CoVEBench，含416个源视频、626条多维度编辑指令及近万细粒度校验项，结合大模型判分与自动指标评估。测试显示当前模型处理组合编辑时普遍漏改、破坏保留内容或出伪影，该基准可助力面向真实需求的编辑技术发展。
+
+<FeedbackButtons slug="item:arxiv-2606.08415" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.06546" target="_blank" rel="noopener noreferrer">Elmes*: Automated Construction of Fine-Grained Evaluation Rubrics for Large Language Models in Long-Tail Educational Scenarios</a>
+
+*Tao Liu, Ye Lu, Ruohua Zhang…*
+
+针对现有教育大模型评测仅关注通用正确性、手动评分规则难适配长尾教学场景的问题，本文提出Elmes*端到端框架，结合多智能体交互与自进化模块，自动生成细粒度场景化评测规则，搭建覆盖330类教学场景的Edu-330基准。实验证实该框架可支撑规模化精准评测，主流大模型教育能力各有短板，AI判分可对标人类排名但存在自有偏好。
+
+<FeedbackButtons slug="item:arxiv-2606.06546" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.06547" target="_blank" rel="noopener noreferrer">FAIR-Calib: Frontier-Aware Instability-Reweighted Calibration for Post-Training Quantization of Diffusion Large Language Models</a>
+
+*Haoyu Huang, Linlin Yang, Sheng Xu…*
+
+针对扩散大语言模型迭代生成时令牌不可逆提交，训练后量化误差易翻转写入边界临界决策并被锁存放大的问题，本文提出两阶段后训练量化框架FAIR-Calib：先由全精度教师模型得到结合边界命中、掩码阶段可靠性的位置先验，再分层最小化加权隐状态MSE校准，优先保护边界脆弱状态。其在W4A4精度下多基准优于现有SOTA，有效减少边界决策翻转。
+
+<FeedbackButtons slug="item:arxiv-2606.06547" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.06554" target="_blank" rel="noopener noreferrer">Multi-Scale Feature Attention Network for Polymer Classification using THz Dual-Comb Spectroscopy</a>
+
+*Roshni Mahtani, Il\'an Carretero, Laura Monroy…*
+
+针对现有回收塑料聚合物识别技术鲁棒性不足的问题，本研究采用太赫兹双梳光谱采集12类纯聚合物、多层膜、共混物等样本的光谱数据，提出适配该数据的多尺度特征注意力网络，通过特征门控、多尺度卷积、注意力机制提取关键频谱特征，分类准确率达85.2%，优于现有主流模型，验证了该方案的应用潜力。
+
+<FeedbackButtons slug="item:arxiv-2606.06554" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/openai-submits-confidential-s-1" target="_blank" rel="noopener noreferrer">Confidential submission of draft S-1 to the SEC</a>
+
+*OpenAI*
+
+本次披露显示，OpenAI已正式向美国证券交易委员会（SEC）秘密提交S-1招股书草案，这是企业筹备赴美上市的核心前置程序。目前OpenAI尚未敲定后续上市相关流程的具体推进时间，整体上市进程仍处于早期保密阶段，后续动作待官方进一步公布。
+
+<FeedbackButtons slug="item:openai-blog-openai-submits-confidential-s-1" client:visible />
+
+## <a href="https://openai.com/index/built-to-benefit-everyone-our-plan" target="_blank" rel="noopener noreferrer">Built to benefit everyone: our plan</a>
+
+*OpenAI*
+
+这是OpenAI面向通用人工智能（AGI）时代的发展规划声明，核心锚定普惠导向，围绕技术可及性、安全风险防控、发展成果共享三大方向搭建治理框架，旨在规避AGI研发落地的潜在风险，避免技术红利向少数群体倾斜，最终实现AGI发展成果惠及全体公众的目标。
+
+<FeedbackButtons slug="item:openai-blog-built-to-benefit-everyone-our-plan" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-4-8" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 4.8</a>
+
+*Anthropic*
+
+本次发布的Claude Opus 4.8是Claude旗下高端Opus层级大模型的最新迭代款，相较前代核心性能在三大场景明显提升：代码开发任务、智能体自主执行任务、各类专业领域工作处理，同时优化了长周期任务运行的一致性，可更稳定支撑流程复杂、耗时较长的连续工作需求，适用场景进一步拓宽。
+
+<FeedbackButtons slug="item:anthropic-claude-opus-4-8" client:visible />
+
+## <a href="https://www.anthropic.com/news/expanding-project-glasswing" target="_blank" rel="noopener noreferrer">Expanding Project Glasswing</a>
+
+*Anthropic*
+
+本次工作旨在推进Project Glasswing的扩围计划。作为此前已落地的跨国协同项目，Glasswing此前已在多国开展对应服务，本次扩围计划覆盖超过15个国家，新增纳入约150家合作机构，可进一步拓展项目覆盖范围，强化跨机构跨区域的协作能力，放大项目的落地价值与社会效能。
+
+<FeedbackButtons slug="item:anthropic-expanding-project-glasswing" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle-environmental-risks/" target="_blank" rel="noopener noreferrer">We’re launching the Google DeepMind Accelerator program in Asia Pacific to tackle environmental risks</a>
+
+*Google DeepMind*
+
+谷歌DeepMind正式启动亚太区加速器项目，核心聚焦环境风险应对领域。项目将为亚太区域深耕环境科技的研究者、初创团队提供AI技术支撑、算力资源与产业对接渠道，助力其用AI破解气候灾害预警、生态修复、污染防控等现实环境难题，推动亚太地区环境治理智能化升级。
+
+<FeedbackButtons slug="item:deepmind-were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle" client:visible />
+
+## <a href="https://deepmind.google/blog/fast-tracking-genetic-leads-to-reverse-cellular-aging/" target="_blank" rel="noopener noreferrer">Fast-tracking genetic leads to reverse cellular aging</a>
+
+*Google DeepMind*
+
+该研究聚焦逆转细胞衰老的遗传靶点研发，创新采用Co-Scientist智能科研辅助工具开展筛选，成功发现了一批可实现人类细胞年轻化的全新调控因子。成果大幅压缩了衰老相关遗传靶点的挖掘周期，既为细胞衰老干预提供了新的候选作用位点，也为抗衰老领域高通量靶点筛选提供了新思路。
+
+<FeedbackButtons slug="item:deepmind-fast-tracking-genetic-leads-to-reverse-cellular-aging" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/openenv-agentic-rl" target="_blank" rel="noopener noreferrer">The Open Source Community is backing OpenEnv for Agentic RL</a>
+
+*Hugging Face*
+
+本次工作聚焦面向智能体强化学习（Agentic RL）的开源环境工具OpenEnv，针对现有同类环境碎片化、场景适配性不足的痛点，支持多模态交互、长时序决策、多智能体协作等主流Agentic RL研发场景。目前已获开源社区广泛贡献支持，可降低七成环境搭建成本，大幅提升相关方向的研发落地效率。
+
+<FeedbackButtons slug="item:hf-blog-openenv-agentic-rl" client:visible />
+
+## <a href="https://huggingface.co/blog/nvidia/nemotron-3-5-content-safety" target="_blank" rel="noopener noreferrer">Nemotron 3.5 Content Safety: Customizable Multimodal Safety for Global Enterprise AI</a>
+
+*Hugging Face*
+
+当前你仅提供了论文标题，未附上对应的摘要正文内容，无法基于原文信息准确提炼该研究的核心方法、结论等关键内容。麻烦你补充完整摘要的具体文本，我会按照要求为你生成120字左右、突出方法和核心结论的简洁中文总结。
+
+<FeedbackButtons slug="item:hf-blog-nemotron-3-5-content-safety" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+本文从美德伦理视角研究AI对齐问题，打破“理性主体必有固定终局目标”的传统假设，提出人类理性行为本质是适配包含行动、评价标准等要素的实践网络而非指向特定目标。主张让AI决策逻辑匹配人类实践驱动的“类型签名”，该路径既有助于对齐人类福祉等伦理目标，也能保障核心安全属性。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/06/432631.html" target="_blank" rel="noopener noreferrer">腾讯想让企业打开AI的方式只剩一个</a>
+
+*量子位*
+
+当前企业AI落地普遍存在“个人用着爽、组织无感知”的痛点，大量AI应用仅服务员工单点提效，未融入协同流程。腾讯在2026云AI产业应用大会上发布WorkBuddy企业版，首次定义企业AI办公统一入口，转向赋能超级团队，推动AI升级为组织级协同生产力。
+
+<FeedbackButtons slug="item:qbitai-432631" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/432587.html" target="_blank" rel="noopener noreferrer">蚂蚁集团推出海外AI支付解决方案 商户可实现全球智能体运营</a>
+
+*量子位*
+
+近期蚂蚁集团完成AI支付全域布局，上线全球首个面向个人的AI钱包，搭建全栈AI原生支付基础设施；同时蚂蚁国际推出移动智能体协议AMP，破解AI智能体跨境交易支付安全、商户跨市场运营等核心痛点，为AI出海、跨境商家提供“一次构建、全球运营”的智能体商业落地通道。
+
+<FeedbackButtons slug="item:qbitai-432587" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/432489.html" target="_blank" rel="noopener noreferrer">高德发布ABot-Earth0.5：跨越2D蒸馏模式，以3D原生驱动高一致性场景生成</a>
+
+*量子位*
+
+高德发布全球首个可工程落地的3D原生城市世界模型ABot-Earth0.5，摒弃传统2D蒸馏3D的技术路径，依托自有3D数据训练，通过首创3DGS压缩生成框架、滑窗推理、跨域自适应模块突破落地难点。输入卫星图或文字即可在消费级单卡快速生成高一致性3D城市场景，效率较传统模式提升约1000倍。
+
+<FeedbackButtons slug="item:qbitai-432489" client:visible />
