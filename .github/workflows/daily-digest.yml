@@ -91,6 +91,9 @@ jobs:
         env:
           DOUBAO_API_KEY: ${{ secrets.DOUBAO_API_KEY }}
           ARK_API_KEY: ${{ secrets.ARK_API_KEY }}
+          # ARK embedding 多数模型必须走 endpoint 调用，在 console 创建后
+          # 把 ep-xxxxxxxx-xxxxx 配到 GitHub repo Variables → DOUBAO_EMBEDDING_MODEL
+          DOUBAO_EMBEDDING_MODEL: ${{ vars.DOUBAO_EMBEDDING_MODEL }}
         continue-on-error: true
         run: npx tsx scripts/generate-embeddings.ts
 
