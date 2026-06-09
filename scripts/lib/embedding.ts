@@ -9,8 +9,9 @@
  * 前端 lib/related-posts.ts 加载后算 cosine 相似度。
  */
 
-const EMBED_URL = "https://ark.cn-beijing.volces.com/api/v3/embeddings";
-// 模型 ID 可用 DOUBAO_EMBEDDING_MODEL env 覆盖（未来换模型不用改代码）
+// 多模态 endpoint，doubao-embedding-vision 必须走这个 URL（纯文本 endpoint 不支持）；
+// 请求体改用 [{type:"text",text:"..."}] 结构。
+const EMBED_URL = "https://ark.cn-beijing.volces.com/api/v3/embeddings/multimodal";
 const EMBED_MODEL = process.env.DOUBAO_EMBEDDING_MODEL || "doubao-embedding-large-text-250515";
 
 export async function embed(text: string, opts: { timeoutMs?: number } = {}): Promise<number[]> {
@@ -32,7 +33,9 @@ export async function embed(text: string, opts: { timeoutMs?: number } = {}): Pr
       },
       body: JSON.stringify({
         model: EMBED_MODEL,
-        input: [input],
+        // doubao-embedding-vision /multimodal 端点：input 是带类型的对象，
+        // 纯文本场景传 [{type:"text", text:"..."}]
+        input: [{ type: "text", text: input }],
         encoding_format: "float",
       }),
       signal: controller.signal,
@@ -41,9 +44,17 @@ export async function embed(text: string, opts: { timeoutMs?: number } = {}): Pr
       const t = await resp.text();
       throw new Error(`embed API ${resp.status} [model=${EMBED_MODEL}]: ${t.slice(0, 500)}`);
     }
-    const data = (await resp.json()) as { data?: { embedding?: number[] }[] };
-    const vec = data.data?.[0]?.embedding;
-    if (!vec || vec.length === 0) throw new Error("empty embedding from API");
+    // /multimodal 响应有两种已知形态：
+    //   A. { data: { embedding: [...] } }              (单条 input)
+    //   B. { data: [ { embedding: [...] }, ... ] }     (批量 input)
+    // 兼容两种
+    const data = (await resp.json()) as
+      | { data?: { embedding?: number[] } | { embedding?: number[] }[] };
+    const raw = data.data;
+    const vec = Array.isArray(raw) ? raw[0]?.embedding : raw?.embedding;
+    if (!vec || vec.length === 0) {
+      throw new Error(`empty embedding from API; raw: ${JSON.stringify(data).slice(0, 200)}`);
+    }
     return vec;
   } finally {
     clearTimeout(timer);
