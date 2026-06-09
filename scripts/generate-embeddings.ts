@@ -89,7 +89,7 @@ async function main() {
   }
 
   // 读 cache
-  let cache: Cache = { model: "doubao-embedding-large-text-240915", dim: 0, items: {} };
+  let cache: Cache = { model: "doubao-embedding-large-text-250515", dim: 0, items: {} };
   try {
     cache = JSON.parse(await fs.readFile(OUTFILE, "utf-8"));
   } catch {

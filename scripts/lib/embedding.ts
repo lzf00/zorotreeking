@@ -10,7 +10,8 @@
  */
 
 const EMBED_URL = "https://ark.cn-beijing.volces.com/api/v3/embeddings";
-const EMBED_MODEL = "doubao-embedding-large-text-240915";
+// 模型 ID 可用 DOUBAO_EMBEDDING_MODEL env 覆盖（未来换模型不用改代码）
+const EMBED_MODEL = process.env.DOUBAO_EMBEDDING_MODEL || "doubao-embedding-large-text-250515";
 
 export async function embed(text: string, opts: { timeoutMs?: number } = {}): Promise<number[]> {
   const apiKey = process.env.DOUBAO_API_KEY || process.env.ARK_API_KEY;
