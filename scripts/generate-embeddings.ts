@@ -122,7 +122,14 @@ async function main() {
       await new Promise((r) => setTimeout(r, 200));
     } catch (e: any) {
       failed++;
-      console.warn(`  [${i + 1}/${todo.length}] ✗ ${fullKey}: ${e?.message?.slice(0, 100)}`);
+      console.warn(`  [${i + 1}/${todo.length}] ✗ ${fullKey}: ${e?.message ?? String(e)}`);
+      // 前 3 篇就连续 404 → 模型名 / endpoint 配错，提前 fail-fast 避免浪费时间
+      if (failed >= 3 && misses === 0) {
+        console.error("\n[embeddings] 连续 3 篇失败且无成功，可能模型 ID 错或账号未开通。提前退出。");
+        console.error("[embeddings] 当前使用模型:", process.env.DOUBAO_EMBEDDING_MODEL || "doubao-embedding-large-text-250515");
+        console.error("[embeddings] 请去 https://console.volcengine.com/ark/region:ark+cn-beijing/endpoint 看可用 endpoint ID");
+        break;
+      }
     }
   }
 

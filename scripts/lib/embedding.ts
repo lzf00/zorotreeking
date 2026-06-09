@@ -39,7 +39,7 @@ export async function embed(text: string, opts: { timeoutMs?: number } = {}): Pr
     });
     if (!resp.ok) {
       const t = await resp.text();
-      throw new Error(`embed API ${resp.status}: ${t.slice(0, 200)}`);
+      throw new Error(`embed API ${resp.status} [model=${EMBED_MODEL}]: ${t.slice(0, 500)}`);
     }
     const data = (await resp.json()) as { data?: { embedding?: number[] }[] };
     const vec = data.data?.[0]?.embedding;
