@@ -1,0 +1,188 @@
+---
+lang: zh
+translationKey: digest-2026-06-10
+title: "AI 每日精选 · 2026-06-10"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-06-10
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.09967" target="_blank" rel="noopener noreferrer">ABot-Earth 0.5: Generative 3D Earth Model</a>
+
+*HF ★ 37 · Ming Qian, Tianjian Ouyang, Mingchao Sun… · [HF 镜像](https://huggingface.co/papers/2606.09967)*
+
+本文发布生成式3D地球框架ABot-Earth 0.5，采用基于3D高斯溅射（3DGS）的新型生成模型，经真实城市重建数据集训练后，仅输入卫星影像即可生成高保真3D场景，每平方公里生成耗时不足10分钟。框架自带层级LOD结构支持网页端实时交互，可缩小仿真到现实的域差，大幅降低大规模3D重建的技术与成本门槛，适配无人机导航等具身AI应用。
+
+<FeedbackButtons slug="item:arxiv-2606.09967" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.09730" target="_blank" rel="noopener noreferrer">SearchSwarm: Towards Delegation Intelligence in Agentic LLMs for Long-Horizon Deep Research</a>
+
+*HF ★ 12 · Pu Ning, Quan Chen, Kun Tao… · [HF 镜像](https://huggingface.co/papers/2606.09730)*
+
+针对大模型上下文窗口有限、长周期复杂任务的主从代理框架所需的委托智能缺乏训练数据的问题，本文面向深度调研场景设计引导框架，生成带正确任务拆分、委托决策的执行轨迹作为监督微调数据，训练出的SearchSwarm-30B模型在中英文BrowseComp测评中获同规模最优结果，相关资源将开源。
+
+<FeedbackButtons slug="item:arxiv-2606.09730" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.10572" target="_blank" rel="noopener noreferrer">One Token per Multimodal Evidence: Latent Memory for Resource-Constrained QA</a>
+
+*HF ★ 9 · Zhi Zheng, Ziqiao Meng, Hao Luan… · [HF 镜像](https://huggingface.co/papers/2606.10572)*
+
+针对现有QA系统外部内存存储原始图文、检索后输入大模型导致token开销高、存储压力大，不适用于资源受限场景的问题，本文提出潜态内存范式：用小型压缩模型将每条图文证据转为单条高维潜token，统一潜空间检索后直接输入大模型生成，端到端训练压缩器。其性能媲美先进RAG基线，生成token消耗降3-10倍，WebQA图文QA性能达最优。
+
+<FeedbackButtons slug="item:arxiv-2606.10572" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.11182" target="_blank" rel="noopener noreferrer">EEVEE: Towards Test-time Prompt Learning in the Real World for Self-Improving Agents</a>
+
+*HF ★ 7 · Weixian Xu, Shilong Liu, Mengdi Wang · [HF 镜像](https://huggingface.co/papers/2606.11182)*
+
+针对现有大模型智能体测试时提示学习仅适配单数据集、无法应对现实异构任务流的缺陷，提出首个多数据集测试时提示学习框架EEVEE：引入输入路由划分任务集群匹配对应提示配置，采用路由-提示协同进化策略优化。实验显示其异构流鲁棒性优异，多基准平均得分较现有SOTA最高提升48.2%，兼顾单基准学习能力与效率。
+
+<FeedbackButtons slug="item:arxiv-2606.11182" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.10646" target="_blank" rel="noopener noreferrer">How Does Reasoning Flow? Tracing Attention-Induced Information Flow for Targeted RL in LLMs</a>
+
+*HF ★ 5 · Zhichen Dong, Yang Li, Yuhan Sun… · [HF 镜像](https://huggingface.co/papers/2606.10646)*
+
+针对大模型强化学习中现有token级信用分配忽略信息传播全局结构的痛点，本文提出FlowTracer框架：基于聚合注意力权重构建token级有向无环图，追踪指向答案的推理流，结合流量守恒推导各token全局贡献度，据此优化奖励分配，精准定位高价值推理节点，在多类推理任务上实现稳定性能提升。
+
+<FeedbackButtons slug="item:arxiv-2606.10646" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.07550" target="_blank" rel="noopener noreferrer">Offline Reinforcement Learning for Plasma Control in Nuclear Fusion: Codebase and Benchmark</a>
+
+*Yang Fu, Haomin Bao, Rohit Sonker…*
+
+针对核聚变等离子体控制真机试错成本高、离线强化学习研究缺乏标准化基准的问题，该文推出RL4F专用基准，基于真实托卡马克DIII-D的历史数据构建评测环境，覆盖4类全剖面跟踪控制任务。统一评测后发现离线基于模型的强化学习整体表现最优，无算法通吃所有任务，凸显动力学建模的核心价值，全套资源已开源。
+
+<FeedbackButtons slug="item:arxiv-2606.07550" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.07553" target="_blank" rel="noopener noreferrer">MedicalRec: Medical recommender system for image classification without retraining</a>
+
+*Roghayeh Taghavi, Aysa Hasanazde Bashkandi, Amir Ali Bengari…*
+
+针对医疗图像分类领域人工试选适配模型算力能耗高的痛点，该研究整理3000篇相关论文，构建含5000余条皮肤癌、肿瘤等五类任务模型测试记录的公开数据集MedicalRec-Bench，开发基于Transformer的无需重训的模型推荐系统MedicalRec，分4个特征维度版本，最高HitRate@100达75.5%，相关资源已开源。
+
+<FeedbackButtons slug="item:arxiv-2606.07553" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.07557" target="_blank" rel="noopener noreferrer">SPIN: Decentralized Swarm Control via Tensorized Policy Coordination</a>
+
+*Zhaowen Fan*
+
+针对资源受限边缘端分布式多智能体集群协同存在的联合动作空间指数爆炸、通信延迟高的瓶颈，本文提出SPIN框架：将集群拓扑建模为压缩张量网络，把联合策略张量分解为矩阵乘积态链，将计算复杂度从指数级降至线性，搭配离线预训练的神经符号控制管线，运行时可零样本适配行为。实验验证其在跟踪、区域覆盖等任务中表现稳定，为低功耗边缘集群智能提供可行路径。
+
+<FeedbackButtons slug="item:arxiv-2606.07557" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/nextdoor" target="_blank" rel="noopener noreferrer">How engineers at Nextdoor use Codex to build without limits</a>
+
+*OpenAI*
+
+本文介绍美国邻里社交平台Nextdoor工程师团队的研发提效实践：核心方法是将Codex代码大模型与GPT-5.5结合，应用于排查难复现的疑难技术问题、支撑跨平台开发两大场景。该方案大幅降低非核心事务的研发消耗，让团队可聚焦产品价值落地，有效突破原有开发产能边界，实现低约束创新。
+
+<FeedbackButtons slug="item:openai-blog-nextdoor" client:visible />
+
+## <a href="https://openai.com/index/notion" target="_blank" rel="noopener noreferrer">What Codex unlocks for Notion</a>
+
+*OpenAI*
+
+本文介绍了效率工具Notion落地OpenAI Codex代码大模型的实践路径：依托Codex的代码与语义理解能力，可通过单次提示直接生成产品需求规格，还落地了适配网页端的AI语音输入功能，有效降低小团队研发门槛，大幅放大工程产能，为大模型在生产力工具赛道的落地提供了参考。
+
+<FeedbackButtons slug="item:openai-blog-notion" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-fable-5-mythos-5" target="_blank" rel="noopener noreferrer">Claude Fable 5 and Claude Mythos 5</a>
+
+*Anthropic*
+
+Anthropic正式官宣推出Claude Fable 5大模型，该产品隶属于Claude Mythos 5序列的Mythos级旗舰产品，经过多轮安全对齐迭代与风险校验，已达到全场景通用开放的安全要求，无需额外权限即可面向普通用户、企业客户开放使用，是其高端大模型落地通用场景的核心新品。
+
+<FeedbackButtons slug="item:anthropic-claude-fable-5-mythos-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/expanding-project-glasswing" target="_blank" rel="noopener noreferrer">Expanding Project Glasswing</a>
+
+*Anthropic*
+
+当前公开的玻璃翼（Project Glasswing）项目扩张工作内容精简，核心举措为将项目覆盖范围拓展至15个以上国家的约150家新合作机构。本次扩容大幅提升了项目的跨境辐射能力，可触达更多元的参与主体，为后续项目落地相关服务、拓展应用场景打下基础。
+
+<FeedbackButtons slug="item:anthropic-expanding-project-glasswing" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/fluid-natural-voice-translation-with-gemini-35-live-translate/" target="_blank" rel="noopener noreferrer">Fluid, natural voice translation with Gemini 3.5 Live Translate</a>
+
+*Google DeepMind*
+
+本成果为谷歌推出的Gemini 3.5实时翻译功能，核心特点是支持近实时响应，且译出语音自然流畅，贴近真人交流质感。目前该能力已正式接入Google AI Studio、谷歌翻译、Google Meet三大产品，可覆盖开发者调试、日常翻译、线上会议同传等多元场景，有效提升跨语言语音交互的效率与体验。
+
+<FeedbackButtons slug="item:deepmind-fluid-natural-voice-translation-with-gemini-35-live-translate" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-gemma-4-12b-a-unified-encoder-free-multimodal-model/" target="_blank" rel="noopener noreferrer">Introducing Gemma 4 12B: a unified, encoder-free multimodal model</a>
+
+*Google DeepMind*
+
+谷歌最新发布的Gemma 4 12B是无编码器架构的统一多模态大模型，核心创新为摒弃独立视觉编码器，直接将多模态感知能力内嵌至大语言模型骨干中。其图文推理、跨模态理解性能优于同量级带独立编码器的同类模型，部署更轻量化，可适配云侧、端侧各类多模态落地场景。
+
+<FeedbackButtons slug="item:deepmind-introducing-gemma-4-12b-a-unified-encoder-free-multimodal-model" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/ServiceNow-AI/code-switching" target="_blank" rel="noopener noreferrer">Can Voice Agents Handle Bilingual Customers? Benchmarking Frontier ASR on Code-Switched Speech</a>
+
+*Hugging Face*
+
+本文针对语音代理是否适配双语用户的问题，对前沿自动语音识别（ASR）系统开展语码切换语音基准测试：构建覆盖不同语码混合比例、口音、应用场景的专用测试集，测试发现当前主流ASR在语码切换场景下准确率较单语场景降幅显著，尤其小语种、高混合比例场景性能骤降，明确了现有语音产品的双语适配缺口，也为ASR多场景优化提供了基准参考。
+
+<FeedbackButtons slug="item:hf-blog-code-switching" client:visible />
+
+## <a href="https://huggingface.co/blog/CohereLabs/introducing-north-mini-code" target="_blank" rel="noopener noreferrer">Introducing North Mini Code: Cohere’s First Model For Developers</a>
+
+*Hugging Face*
+
+本文介绍Cohere面向开发者推出的首款代码专用大模型North Mini Code，该模型主打轻量化高适配，支持多主流编程语言的代码生成、调试、逻辑查错、性能优化等核心开发场景，低资源环境下也能稳定输出高准确率代码，可有效降低开发者编码负担、提升研发效率，补全了Cohere垂类代码模型布局。
+
+<FeedbackButtons slug="item:hf-blog-introducing-north-mini-code" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+这篇美德伦理视角的AI对齐研究，推翻“理性主体需锚定固定目标”的传统预设，指出人类理性行为并非指向终极目标，而是依托含行动范式、评价规则的实践网络动态调整。论文提出AI决策逻辑需匹配人类实践型决策的“类型签名”，既能对齐人类福祉等伦理要求，也可保障AI核心安全属性。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/06/433590.html" target="_blank" rel="noopener noreferrer">刚刚，Claude Mythos 5发布！5000万行代码1天搞定</a>
+
+*量子位*
+
+Anthropic最新发布两款同源旗舰大模型：带安全防护、面向全用户的Claude Fable 5，触发风险提问会降级调用旧模型；无安全限制、仅对受信任用户开放的满血版Mythos 5，主打顶级网安攻防、生物科研能力。二者自主运行时长超前代，API价较此前砍半，百万输入/输出Token仅10、50美元，标志前沿AI进入权限时代。
+
+<FeedbackButtons slug="item:qbitai-433590" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/433565.html" target="_blank" rel="noopener noreferrer">内蒙跑通AI逆袭新解法</a>
+
+*量子位*
+
+腾讯汤道生、姚顺雨近期公开对谈明确，AI竞争已脱离参数、算力规模的单一比拼，进入模型、产品、场景、组织多维度协同阶段，Token效率、能耗成本成为行业共性痛点。结合国家能源局此前“AI+能源”推进会判断，电力系统已从AI配套转为核心主体基建，能量管理直接决定AI产业落地上限。
+
+<FeedbackButtons slug="item:qbitai-433565" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/433560.html" target="_blank" rel="noopener noreferrer">理想智驾一号位创业，落户北京亦庄了</a>
+
+*量子位*
+
+前理想智驾一号位郎咸朋联合前阿里副总裁任庚创办的具身智能企业昆仑行，近日落地北京亦庄。该公司对标特斯拉人形机器人，兼顾本体与智能大脑研发，注册仅10天估值超10亿美元跻身独角兽，成立即获顶级资本投资，两周核心团队到岗、两月完成研发体系搭建，两位创始人分别具备产业操盘、智驾技术的互补背景。
+
+<FeedbackButtons slug="item:qbitai-433560" client:visible />
