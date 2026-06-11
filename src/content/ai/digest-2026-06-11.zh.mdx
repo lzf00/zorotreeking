@@ -1,0 +1,188 @@
+---
+lang: zh
+translationKey: digest-2026-06-11
+title: "AI 每日精选 · 2026-06-11"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-06-11
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.12191" target="_blank" rel="noopener noreferrer">Agentic Environment Engineering for Large Language Models: A Survey of Environment Modeling, Synthesis, Evaluation, and Application</a>
+
+*HF ★ 22 · Jiachun Li, Zhuoran Jin, Tianyi Men… · [HF 镜像](https://huggingface.co/papers/2606.12191)*
+
+这是首份系统梳理大模型智能体环境工程领域的综述，从环境工程全生命周期维度，覆盖建模、自动生成、评估、应用四大模块：分类梳理现有环境的属性、领域与核心能力，总结符号、神经两类生成范式，拆解智体-环境协同演化路径，最后指明环境即服务、多智能体环境等研究方向。
+
+<FeedbackButtons slug="item:arxiv-2606.12191" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.11926" target="_blank" rel="noopener noreferrer">Toward Generalist Autonomous Research via Hypothesis-Tree Refinement</a>
+
+*HF ★ 18 · Jiajie Jin, Yuyang Hu, Kai Qiu… · [HF 镜像](https://huggingface.co/papers/2606.11926)*
+
+本文提出通用自主科研AI框架Arbor，核心为假设树精炼机制，由长期协调器统筹全局研究策略，短期执行器独立验证单条假设，可跨阶段沉淀经验、迭代研究方向。在6类真实科研任务中，其效果是同资源下Codex、Claude Code的2.5倍以上，搭配GPT-5.5在对应基准测试中达86.36%奖牌率，性能为当前最优。
+
+<FeedbackButtons slug="item:arxiv-2606.11926" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.10728" target="_blank" rel="noopener noreferrer">DeNovoSWE: Scaling Long-Horizon Environments for Generating Entire Repositories from Scratch</a>
+
+*HF ★ 18 · Jiale Zhao, Guoxin Chen, Fanzhe Meng… · [HF 镜像](https://huggingface.co/papers/2606.10728)*
+
+针对代码智能体从零搭建完整软件仓库的长周期任务缺乏大规模验证数据集的问题，本文提出DeNovoSWE数据集：含4818个从文档生成完整仓库的实例，依托沙盒智能体流程、分治+批评修复、难度感知过滤策略自动构建，无需人工标注。用其微调Qwen3-30B-A3B后，相关基准得分从5.8%升至47.2%，大幅提升长周期软件工程能力。
+
+<FeedbackButtons slug="item:arxiv-2606.10728" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.09076" target="_blank" rel="noopener noreferrer">Beyond Scalar Rewards by Internalizing Reasoning into Score Distributions</a>
+
+*HF ★ 14 · Xin Jin, Huanqia Cai, Zhen Li… · [HF 镜像](https://huggingface.co/papers/2606.09076)*
+
+针对文生图现有奖励模型要么过度压缩偏好不确定性与细粒度差异、要么推理成本高难直接用作优化信号的问题，本文提出Z-Reward师生框架：大VLM教师经分组直接评分优化生成对齐评分分布，小VLM学生经推理内化评分蒸馏，推理无需显式推理链。实验显示小模型性能接近大教师，用作优化信号较SFT基准人偏好提升41.3%。
+
+<FeedbackButtons slug="item:arxiv-2606.09076" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.12403" target="_blank" rel="noopener noreferrer">World Pilot: Steering Vision-Language-Action Models with World-Action Priors</a>
+
+*HF ★ 13 · Zefu Lin, Rongxu Cui, Junjia Xu… · [HF 镜像](https://huggingface.co/papers/2606.12403)*
+
+现有视觉-语言-动作（VLA）模型依赖静态图文预训练，无法捕捉操作任务的连续接触动态。本文提出World Pilot框架，引入世界动作模型两类先验：潜态引导为感知层注入场景演化信息，动作引导为生成器提供轨迹先验。该方法在零样本OOD基准达84.7%的SOTA成功率，各类真实机器人操作任务表现最优，环境偏移下提升尤为显著。
+
+<FeedbackButtons slug="item:arxiv-2606.12403" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.11192" target="_blank" rel="noopener noreferrer">Restless bandits with imperfect binary feedback: PCL-indexability analysis and computation</a>
+
+*Jos\'e Ni\~no-Mora*
+
+本文面向带感知误差的机会频谱接入场景，研究二元隐状态、不完美二元反馈的不安定多臂老虎机问题，提出基于部分守恒律的分析计算框架：结合确定性骨架、更新分解推导部分阈值域惠特尔索引，其余区间设计数值方案计算等效边际生产率索引。实验表明其可索引性适用范围远宽于现有工作，对应策略性能显著优于基准。
+
+<FeedbackButtons slug="item:arxiv-2606.11192" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.11201" target="_blank" rel="noopener noreferrer">To Intervene or Not: Guiding Inference-time Alignment with Probabilistic Model Blending</a>
+
+*Jin Gan, Xin Li, Jun Luo*
+
+针对现有大模型推理时对齐方法未评估引导可靠性，易因无效引导导致过度干预、性能下滑的问题，本文提出BlendIn推理时对齐框架：放弃二元干预决策，根据引导质量与模型可靠性加权融合双模型的输出分布。它可保留有效引导、压低不可靠建议权重，在难适配模型对上性能最高提升50%。
+
+<FeedbackButtons slug="item:arxiv-2606.11201" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.11205" target="_blank" rel="noopener noreferrer">Dual-Stance Evaluation of Sycophancy: The Structure of Agreement and the Limits of Intervention</a>
+
+*Matthew James Buchan*
+
+针对现有大模型谄媚抑制评估未校验是否误伤事实认同的问题，该研究提出双立场评估范式，对Llama-3-8B-Instruct的质心差激活导控测试发现：谄媚与事实认同表征虽分属不同子空间，但现有导控方向无法区分二者，会同步降低模型对谄媚表述和正确事实的认同，证实激活可读取的表征未必可定向操控。
+
+<FeedbackButtons slug="item:arxiv-2606.11205" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/using-codex-to-simulate-black-holes" target="_blank" rel="noopener noreferrer">How an astrophysicist uses Codex to help simulate black holes</a>
+
+*OpenAI*
+
+天体物理学家Chi-kwan Chan借助AI编程大模型Codex开发黑洞模拟程序，有效降低了高复杂度天体模拟的编码门槛、提升了开发效率。该类模拟可支撑学界开展极端物理环境研究，还能用于验证爱因斯坦广义相对论的相关推论，为前沿天体物理研究提供了AI工具辅助的新思路。
+
+<FeedbackButtons slug="item:openai-blog-using-codex-to-simulate-black-holes" client:visible />
+
+## <a href="https://openai.com/index/openai-on-oracle-cloud" target="_blank" rel="noopener noreferrer">Access OpenAI models and Codex through your Oracle cloud commitment</a>
+
+*OpenAI*
+
+这份方案表明，企业可直接使用已有的甲骨文云承诺消费额度，在甲骨文云环境内调用OpenAI全系列大模型及Codex代码大模型，无需额外单独采购OpenAI服务，同时可复用甲骨文云自带的企业级安全防护、数据治理与合规管控能力，大幅降低AI应用落地的采购门槛与数据合规风险。
+
+<FeedbackButtons slug="item:openai-blog-openai-on-oracle-cloud" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-fable-5-mythos-5" target="_blank" rel="noopener noreferrer">Claude Fable 5 and Claude Mythos 5</a>
+
+*Anthropic*
+
+本次Claude的开发方Anthropic发布两款新一代大模型产品：Claude Mythos 5属于其全新推出的Mythos级高端旗舰模型序列，代表了其当前最新技术水平。同序列下的Claude Fable 5则针对性完成了全场景安全性调校，已达到面向大众开放使用的安全标准，正式推向市场，可满足各类通用场景的大模型调用与功能落地需求。
+
+<FeedbackButtons slug="item:anthropic-claude-fable-5-mythos-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/expanding-project-glasswing" target="_blank" rel="noopener noreferrer">Expanding Project Glasswing</a>
+
+*Anthropic*
+
+本次研究披露了Glasswing项目的扩围计划：该项目将把合作覆盖范围拓展至15个以上国家的约150家新增机构。目前公开内容暂未提及本次扩围的实施目标、适配技术路径及预期成效，仅明确了新一轮扩围的地域、合作主体两大维度的覆盖规模，后续落地进展有待进一步披露。
+
+<FeedbackButtons slug="item:anthropic-expanding-project-glasswing" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/diffusiongemma-4x-faster-text-generation/" target="_blank" rel="noopener noreferrer">DiffusionGemma: 4x faster text generation</a>
+
+*Google DeepMind*
+
+DiffusionGemma是面向文本生成提速的专项优化模型，核心方法为将并行扩散生成范式与Gemma开源大模型底座适配，优化扩散步长与语义对齐策略，规避传统自回归逐词解码的串行开销，最终在生成质量接近原版Gemma的前提下，文本生成速度可达原版4倍，适配高并发低时延生成场景。
+
+<FeedbackButtons slug="item:deepmind-diffusiongemma-4x-faster-text-generation" client:visible />
+
+## <a href="https://deepmind.google/blog/fluid-natural-voice-translation-with-gemini-35-live-translate/" target="_blank" rel="noopener noreferrer">Fluid, natural voice translation with Gemini 3.5 Live Translate</a>
+
+*Google DeepMind*
+
+本成果推出Gemini 3.5实时翻译功能，核心实现了近实时、输出语音自然流畅的口语翻译能力，解决了过往实时翻译语音生硬、延迟较高的痛点，目前已正式落地三大应用场景：面向AI开发者的Google AI Studio、面向普通用户的谷歌翻译工具，以及线上会议场景的Google Meet，可满足不同群体的跨语言实时语音交互需求。
+
+<FeedbackButtons slug="item:deepmind-fluid-natural-voice-translation-with-gemini-35-live-translate" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/ServiceNow-AI/code-switching" target="_blank" rel="noopener noreferrer">Can Voice Agents Handle Bilingual Customers? Benchmarking Frontier ASR on Code-Switched Speech</a>
+
+*Hugging Face*
+
+这篇论文聚焦双语用户混用两种语言的语码转换语音交互场景，针对性构建专属测评基准，对当前前沿自动语音识别（ASR）系统开展性能测试。结果显示，现有前沿ASR对语码转换语音的识别准确率远低于单语言场景，口语化混说场景错误率更高，证明当前语音代理应对双语混说用户的能力仍存明显短板，有待针对性优化。
+
+<FeedbackButtons slug="item:hf-blog-code-switching" client:visible />
+
+## <a href="https://huggingface.co/blog/CohereLabs/introducing-north-mini-code" target="_blank" rel="noopener noreferrer">Introducing North Mini Code: Cohere’s First Model For Developers</a>
+
+*Hugging Face*
+
+Cohere发布旗下首款面向开发者的代码专用大模型North Mini Code，为其North大模型序列的代码场景专属分支，采用轻量架构做专项优化，针对代码生成、调试、补全、库调用等需求训练，性能优于同量级开源代码模型，推理延迟更低，可适配IDE插件、边缘端工具等轻量化部署场景。
+
+<FeedbackButtons slug="item:hf-blog-introducing-north-mini-code" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+本文聚焦AI对齐问题，反驳“理性主体以固定终极目标为行动导向”的预设，指出人类理性体现为行为适配包含行动规则、评价标准、配套资源的自驱实践网络。提出要让AI适配人类诉求、可协作合规，需使其决策逻辑与人类实践逻辑同构，该路径兼具伦理适配性与安全保障价值。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/06/434267.html" target="_blank" rel="noopener noreferrer">谷歌I/O最出圈的一幕，发生在抖音？？？</a>
+
+*量子位*
+
+2026年谷歌I/O大会上，DeepMind CEO哈萨比斯提及AGI将于2030年前后到来。本次大会打破传统科技峰会单向输出的模式，抖音成为跨屏联动的全民参与第一现场：用户凭好奇心即可参与，博主推出多款创意AI应用互动，普通观众也能直面哈萨比斯提问，前沿科技对话直接下沉触达大众。
+
+<FeedbackButtons slug="item:qbitai-434267" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/434268.html" target="_blank" rel="noopener noreferrer">行业首创AI志愿填报+真人专家验真，百度全新升级高考服务</a>
+
+*量子位*
+
+6月百度升级高考服务，免费推出业内首创的“AI志愿填报+真人专家验真”服务：AI依托文心能力结合报考、就业等多维数据，生成带逻辑说明的个性化志愿方案，由资深咨询师审核增信，配套学长快速答疑。该服务已运行20年累计服务超9亿人，仅作辅助，最终决策权归考生及家长。
+
+<FeedbackButtons slug="item:qbitai-434268" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/434225.html" target="_blank" rel="noopener noreferrer">实测小米最快1T大模型：吞吐量每秒1000+ Tokens，Vibe Coding七秒交付</a>
+
+*量子位*
+
+小米推出1T参数、支持1M上下文的MiMo-V2.5-Pro-UltraSpeed大模型，通过模型层到引擎层全链路优化，仅用通用GPU就实现每秒1000+Tokens的推理吞吐量，打破“快、强、通用GPU无法兼得”的行业不可能三角。实测其完成指定功能的番茄钟代码生成仅需7秒，推理工程实力居全球第一梯队。
+
+<FeedbackButtons slug="item:qbitai-434225" client:visible />
