@@ -1,0 +1,189 @@
+---
+lang: zh
+translationKey: digest-2026-06-12
+title: "AI 每日精选 · 2026-06-12"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-06-12
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.13673" target="_blank" rel="noopener noreferrer">SpatialClaw: Rethinking Action Interface for Agentic Spatial Reasoning</a>
+
+*HF ★ 41 · Seokju Cho, Ryo Hachiuma, Abhishek Badki… · [HF 镜像](https://huggingface.co/papers/2606.13673)*
+
+针对现有视觉语言模型空间推理能力弱、工具增强智能体的工具调用接口灵活性不足的问题，本文提出免训练空间推理框架SpatialClaw：以代码为动作接口，搭载预加载感知、几何原语的有状态Python内核，支持根据中间观测分步调整推理策略。在20项基准测试中平均准确率达59.9%，较现有最优高11.2个百分点，可直接适配多类视觉语言骨干。
+
+<FeedbackButtons slug="item:arxiv-2606.13673" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.13681" target="_blank" rel="noopener noreferrer">EvoArena: Tracking Memory Evolution for Robust LLM Agents in Dynamic Environments</a>
+
+*HF ★ 37 · Jundong Xu, Qingchuan Li, Jiaying Wu… · [HF 镜像](https://huggingface.co/papers/2606.13681)*
+
+针对现有大模型智能体评估多基于静态环境、不符合真实动态部署需求的问题，研究推出覆盖终端、软件、社交域渐进式环境变化的EvoArena测试基准，同时提出补丁式记忆范式EvoMem，结构化记录记忆演化历史。实验显示现有智能体在该基准上平均准确率仅39.6%，引入EvoMem可在该基准及通用任务基准上实现明确性能提升，能更好留存环境演化的完整状态。
+
+<FeedbackButtons slug="item:arxiv-2606.13681" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.12087" target="_blank" rel="noopener noreferrer">FORT-Searcher: Synthesizing Shortcut-Resistant Search Tasks for Training Deep Search Agents</a>
+
+*HF ★ 30 · Jia Deng, Yimeng Chen, Xiaoqing Xiang… · [HF 镜像](https://huggingface.co/papers/2606.12087)*
+
+针对现有深度搜索智能体训练数据常靠增结构提难度，但易存在捷径导致实际搜索难度不达标的问题，本文明确四类捷径风险，提出抗捷径训练数据合成框架FORT，在数据生成全流程管控风险。仅用其生成数据经监督微调训练的FORT-Searcher，在同规模开源搜索智能体中取得深度搜索基准最优性能，搜索捷径更少。（共118字）
+
+<FeedbackButtons slug="item:arxiv-2606.12087" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.13679" target="_blank" rel="noopener noreferrer">InterleaveThinker: Reinforcing Agentic Interleaved Generation</a>
+
+*HF ★ 21 · Dian Zheng, Harry Lee, Manyuan Zhang… · [HF 镜像](https://huggingface.co/papers/2606.13679)*
+
+针对现有图像生成器无法实现图文交错生成、开源统一多模态模型效果受限的问题，本文提出多智能体管线InterleaveThinker：采用规划、核验双智能体调度基座生成器，配套专用微调数据集与分步强化学习策略降本优化。该方法适配各类基座，图文交错生成效果追平Nano Banana、GPT-5，推理类基准性能也显著提升。
+
+<FeedbackButtons slug="item:arxiv-2606.13679" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.09426" target="_blank" rel="noopener noreferrer">WeaveBench: A Long-Horizon, Real-World Benchmark for Computer-Use Agents with Hybrid Interfaces</a>
+
+*HF ★ 16 · Wanli Li, Bowen Zhou, Yunyao Yu… · [HF 镜像](https://huggingface.co/papers/2606.09426)*
+
+现有计算机操作代理（CUA）基准多拆分测试各界面能力，缺乏跨界面长序列任务验证。为此研究提出WeaveBench基准，覆盖8个真实领域共114项需协同GUI、命令行、代码操作的长流程任务，配套轨迹感知评审器防作弊。测试显示当前最优模型通过率仅41.2%，纯结果评审会大幅高估性能，该基准可填补CUA评估短板。
+
+<FeedbackButtons slug="item:arxiv-2606.09426" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.11192" target="_blank" rel="noopener noreferrer">Restless bandits with imperfect binary feedback: PCL-indexability analysis and computation</a>
+
+*Jos\'e Ni\~no-Mora*
+
+本文面向带感知误差的机会频谱接入场景，研究含二元隐状态、非完美二元反馈的不安分多臂老虎机问题。提出基于部分守恒律的分析计算框架，结合确定性动力学分析、更新分解与数值方案，验证绝大多数参数区间满足可索引性，所提边际生产率索引策略（符合条件时等价于Whittle索引）性能显著优于传统基准。
+
+<FeedbackButtons slug="item:arxiv-2606.11192" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.11201" target="_blank" rel="noopener noreferrer">To Intervene or Not: Guiding Inference-time Alignment with Probabilistic Model Blending</a>
+
+*Jin Gan, Xin Li, Jun Luo*
+
+针对现有大模型推理时对齐方法未评估引导可靠性、无效干预多、性能差的问题，本文提出BlendIn框架：放弃二元干预决策，改为根据各模型可靠性加权混合双方知识得到输出分布，实现质量感知对齐。该方法可保留有效引导、削弱不可靠建议，在高难度模型对测试中性能最高提升50%。
+
+<FeedbackButtons slug="item:arxiv-2606.11201" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.11205" target="_blank" rel="noopener noreferrer">Dual-Stance Evaluation of Sycophancy: The Structure of Agreement and the Limits of Intervention</a>
+
+*Matthew James Buchan*
+
+针对现有大模型谄媚抑制的激活调控评测未验证是否误伤事实认同的缺陷，本文提出双立场评测法，对每个话题的正反立场均开展测试。
+用该方法评测Llama-3-8B-Instruct的质心差激活调控方案发现：谄媚与事实认同表征虽分属不同子空间，但调控方向对二者投影一致，会同步抑制谄媚回应和正确事实认同，验证了可读取的激活表征未必可精准调控。
+
+<FeedbackButtons slug="item:arxiv-2606.11205" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/using-codex-to-simulate-black-holes" target="_blank" rel="noopener noreferrer">How an astrophysicist uses Codex to help simulate black holes</a>
+
+*OpenAI*
+
+这份应用实践介绍了天体物理学家Chi-kwan Chan的新方案：他借助AI代码生成模型Codex，无需从零编写大量复杂物理代码即可快速搭建黑洞模拟程序，大幅降低了高精度天体物理仿真的开发门槛。这类模拟工具可支撑科研人员开展极端物理场景研究，为验证爱因斯坦广义相对论的理论预测提供高效支撑。
+
+<FeedbackButtons slug="item:openai-blog-using-codex-to-simulate-black-holes" client:visible />
+
+## <a href="https://openai.com/index/bbva" target="_blank" rel="noopener noreferrer">BBVA puts AI at the core of banking with OpenAI</a>
+
+*OpenAI*
+
+该合作动态表明，西班牙对外银行（BBVA）将AI作为银行业务升级的核心方向，与OpenAI达成技术合作，目前已完成ChatGPT企业版在全集团10万名员工中的规模化部署，为全员日常办公、业务运营赋能，双方将协同探索AI在金融场景的落地路径，加速BBVA全球业务的智能化转型。
+
+<FeedbackButtons slug="item:openai-blog-bbva" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-fable-5-mythos-5" target="_blank" rel="noopener noreferrer">Claude Fable 5 and Claude Mythos 5</a>
+
+*Anthropic*
+
+本次官方正式推出Claude Fable 5大模型，该模型归属Anthropic旗下最高性能的Mythos级序列，继承了同级别模型的超强通用任务处理能力。研发团队对其完成全维度安全校验与对齐优化，使这款高端大模型达到通用场景开放标准，无需特殊权限即可面向各类用户、各应用场景落地使用。
+
+<FeedbackButtons slug="item:anthropic-claude-fable-5-mythos-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-corps" target="_blank" rel="noopener noreferrer">Introducing Claude Corps</a>
+
+*Anthropic*
+
+本次正式推出名为Claude Corps的全国性职业研修项目，是聚焦AI普惠领域的专项人才扶持计划，面向职业生涯早期、有志于推动AI技术红利覆盖美国各地社群的从业者开放，旨在为该群体提供配套支持，推动AI普惠类实践落地，让前沿AI的价值能够切实触达美国不同区域、不同类型的基层社群。
+
+<FeedbackButtons slug="item:anthropic-claude-corps" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/diffusiongemma-4x-faster-text-generation/" target="_blank" rel="noopener noreferrer">DiffusionGemma: 4x faster text generation</a>
+
+*Google DeepMind*
+
+本研究提出DiffusionGemma文本生成模型，核心将扩散生成范式与Gemma轻量基座架构适配改造，替代传统自回归逐token解码逻辑，仅需4步推理即可达到与原版Gemma相当的生成质量，推理速度较基线提升4倍，兼顾生成效果的同时大幅降低推理时延，适配高吞吐实时文本生成场景需求。
+
+<FeedbackButtons slug="item:deepmind-diffusiongemma-4x-faster-text-generation" client:visible />
+
+## <a href="https://deepmind.google/blog/investing-in-multi-agent-ai-safety-research/" target="_blank" rel="noopener noreferrer">Investing in multi-agent AI safety research</a>
+
+*Google DeepMind*
+
+谷歌DeepMind联合合作方正式发布总额达1000万美元的多智能体AI安全研究资助征集计划，面向全球相关研究团队开放申请。该举措瞄准当前多智能体技术快速发展背景下的安全研究短板，将为相关方向的基础研究、风险防控方案探索提供资金支持，助力多智能体AI技术安全可控落地。
+
+<FeedbackButtons slug="item:deepmind-investing-in-multi-agent-ai-safety-research" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/torch-mlp-fusion" target="_blank" rel="noopener noreferrer">Profiling in PyTorch (Part 2): From nn.Linear to a Fused MLP</a>
+
+*Hugging Face*
+
+本文是PyTorch性能剖析系列第二篇，通过内置profiler工具定位多层nn.Linear堆叠的原生MLP性能短板：逐层内核调度开销大、激活层冗余访存占比高。随后验证算子融合优化方案，结果显示融合MLP可大幅降低调度与访存损耗，同精度下推理吞吐提升超40%，适配大模型高频MLP模块的性能优化需求。
+
+<FeedbackButtons slug="item:hf-blog-torch-mlp-fusion" client:visible />
+
+## <a href="https://huggingface.co/blog/CohereLabs/introducing-north-mini-code" target="_blank" rel="noopener noreferrer">Introducing North Mini Code: Cohere’s First Model For Developers</a>
+
+*Hugging Face*
+
+Cohere正式推出面向开发者的首款专属代码大模型North Mini Code，是其布局开发者工具生态的核心落地产品。该模型适配多类主流编程语言，可胜任代码生成、漏洞排查、语法纠错等核心开发场景，兼顾推理效率与轻量化部署要求，支持IDE集成、本地离线运行，可有效降低开发者重复劳动，提升编码研发效率。
+
+<FeedbackButtons slug="item:hf-blog-introducing-north-mini-code" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+这篇从美德伦理视角切入的AI对齐研究，挑战学界主流正交性假说的核心预设：否定“理性主体需锚定固定最终目标”的假设，提出人类理性的核心是行动适配内含规则、评价标准的实践网络。要实现AI适配人类诉求、可协作，需让AI决策逻辑匹配人类基于实践的推理范式，该路径可同时覆盖伦理对齐与核心安全对齐需求。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/06/434733.html" target="_blank" rel="noopener noreferrer">SpaceX一上市，连食堂阿姨都要成百万富翁了。。。</a>
+
+*量子位*
+
+SpaceX官宣IPO已就绪，拟募资750亿美元、估值1.77万亿美元，将成史上最大IPO，目前散户认购额已超700亿。上市后其市值有望跻身美股第七，超过Meta、特斯拉，将造就4400名百万富翁，马斯克仍持有82%投票权。不过公司当前年亏损近50亿，第三方估值仅为发行价一半，其跨领域基建定位的前景仍存争议。
+
+<FeedbackButtons slug="item:qbitai-434733" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/434571.html" target="_blank" rel="noopener noreferrer">Claude Fable 5省钱秘诀来了：调成Low档比Opus更便宜</a>
+
+*量子位*
+
+Claude Fable 5此前因token单价是Opus 4.8的两倍被吐槽太贵，近期开发者实测发现，将其努力程度调至最低档，SWE-bench Pro得分75.0仍高于Opus最高档的68.6；且该模型效率更高，完成同任务总token消耗更少，实际任务速度、效果更优，最终使用成本反而更低。
+
+<FeedbackButtons slug="item:qbitai-434571" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/434558.html" target="_blank" rel="noopener noreferrer">1290万高考生看过来！阿里出了个志愿填报Agent，免费的</a>
+
+*量子位*
+
+阿里千问6月面向全国1290万高考生推出免费志愿填报Agent，基于专为志愿填报优化的Qwen大模型，结合夸克8年高考服务数据积累，提供志愿日历、专业报告、智能问答等全周期填报辅助，覆盖考后准备到填前复核全流程，旨在破解线下规划师资源稀缺痛点，普惠广大考生。
+
+<FeedbackButtons slug="item:qbitai-434558" client:visible />
