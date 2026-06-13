@@ -1,0 +1,146 @@
+---
+lang: zh
+translationKey: digest-2026-06-13
+title: "AI 每日精选 · 2026-06-13"
+description: "15 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-06-13
+tags: [digest, auto, arxiv, openai, anthropic, deepmind, hf-blog, the-gradient]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.11192" target="_blank" rel="noopener noreferrer">Restless bandits with imperfect binary feedback: PCL-indexability analysis and computation</a>
+
+*Jos\'e Ni\~no-Mora*
+
+本文面向机会频谱接入感知误差场景，研究带二值隐状态、非完美反馈的不安分多臂老虎机。提出基于部分守恒律的分析框架，结合确定性骨架、更新分解等方法，部分阈值域推导可索引性闭式，其余域设计高效数值方案计算等价于Whittle指数的MP指数。实验显示可索引性适用范围远广于前人工作，MP策略性能显著更优。
+
+<FeedbackButtons slug="item:arxiv-2606.11192" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.11201" target="_blank" rel="noopener noreferrer">To Intervene or Not: Guiding Inference-time Alignment with Probabilistic Model Blending</a>
+
+*Jin Gan, Xin Li, Jun Luo*
+
+推理时对齐仅在输出生成阶段干预、成本更低，但现有方案未评估引导可靠性，易因无效引导引发过度干预、性能下滑。本文提出BlendIn框架，摒弃二元干预决策，按引导模型可信度加权融合双模型输出分布，保留有效引导、削弱不可靠建议影响，测试中最高实现50%的性能提升。
+
+<FeedbackButtons slug="item:arxiv-2606.11201" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.11205" target="_blank" rel="noopener noreferrer">Dual-Stance Evaluation of Sycophancy: The Structure of Agreement and the Limits of Intervention</a>
+
+*Matthew James Buchan*
+
+针对大模型减谄媚激活调控的现有评估未检验是否误伤事实认同的问题，本文提出双立场评估法，同步测试各话题正反立场，在Llama-3-8B-Instruct上验证质心差调控方法。结果显示，尽管谄媚认同与事实认同的表征子空间几何独立，但调控方向无法区分二者，会同步降低模型对正确事实的认同，证明激活可读不等于可精准干预。
+
+<FeedbackButtons slug="item:arxiv-2606.11205" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/academy-courses-applying-ai-at-work" target="_blank" rel="noopener noreferrer">New OpenAI Academy courses for the next era of work</a>
+
+*OpenAI*
+
+为适配AI驱动的职场新形态，OpenAI面向新一代工作场景需求推出三门学院新课。课程聚焦三大核心方向：帮助学习者搭建实用AI技能体系、掌握可复用的AI工作流搭建方法、落地智能体在日常工作场景的应用，可有效提升从业者AI工具实操能力，适配AI时代的工作范式变革。
+
+<FeedbackButtons slug="item:openai-blog-academy-courses-applying-ai-at-work" client:visible />
+
+## <a href="https://openai.com/index/preply" target="_blank" rel="noopener noreferrer">How Preply combines AI and human tutors to personalize learning</a>
+
+*OpenAI*
+
+在线语言教育平台Preply探索AI与真人讲师协同的个性化学习方案：平台接入OpenAI技术能力，可自动生成对应课程的AI总结，还能结合不同学习者的学习情况，输出针对性反馈、配套定制化语言练习。这套模式兼顾真人教学的适配性和AI的效率优势，能显著提升语言学习的个性化程度与学习效果。
+
+<FeedbackButtons slug="item:openai-blog-preply" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener noreferrer">Statement on the US government directive to suspend access to Fable 5 and Mythos 5</a>
+
+*Anthropic*
+
+本内容为美国政府限制访问Fable 5、Mythos 5的官方声明摘要。美方通过出台出口管制行政指令的方式，明确要求全面暂停所有外籍人士对上述两款技术产品的访问权限，管制无地域豁免，无论相关外籍人员身处美国境内或是境外，均受该禁令约束，覆盖范围极广。
+
+<FeedbackButtons slug="item:anthropic-fable-mythos-access" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-corps" target="_blank" rel="noopener noreferrer">Introducing Claude Corps</a>
+
+*Anthropic*
+
+由Claude开发方推出的Claude Corps是一项全国性研修奖学金项目，定向面向处于职业发展早期、有志于推动AI技术普惠的人群开放。项目核心目的是支持相关青年人才发挥专长，将AI发展带来的各类益处拓展覆盖至美国各地社区，让更广泛的群体能共享AI发展红利。
+
+<FeedbackButtons slug="item:anthropic-claude-corps" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/diffusiongemma-4x-faster-text-generation/" target="_blank" rel="noopener noreferrer">DiffusionGemma: 4x faster text generation</a>
+
+*Google DeepMind*
+
+DiffusionGemma是基于扩散架构优化的大语言模型，针对传统自回归大模型逐词解码效率偏低的痛点，用并行生成逻辑替代逐词推理流程。实测显示其文本生成速度可达同体量原生Gemma的4倍，同时生成质量与原版基本持平，较好平衡了生成效率与效果，适配高吞吐量文本生成需求。
+
+<FeedbackButtons slug="item:deepmind-diffusiongemma-4x-faster-text-generation" client:visible />
+
+## <a href="https://deepmind.google/blog/investing-in-multi-agent-ai-safety-research/" target="_blank" rel="noopener noreferrer">Investing in multi-agent AI safety research</a>
+
+*Google DeepMind*
+
+谷歌DeepMind联合行业、学术合作方近日宣布推出总额1000万美元的专项资助计划，面向全球公开征集多智能体AI安全领域的研究项目。该举措瞄准当前多智能体交互、协同场景下尚未被充分覆盖的安全风险研究空白，定向支持相关技术攻关，为多智能体系统的规模化落地筑牢安全屏障。
+
+<FeedbackButtons slug="item:deepmind-investing-in-multi-agent-ai-safety-research" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/olmo-eval" target="_blank" rel="noopener noreferrer">olmo-eval: An evaluation workbench for the model development loop</a>
+
+*Hugging Face*
+
+你目前仅提供了这篇模型评估工作台相关论文的标题，未附上对应的英文摘要正文内容，请你补充完整的摘要文本，我才能按要求为你翻译提炼核心方法、结论，输出120字左右的精简中文总结哦。
+
+<FeedbackButtons slug="item:hf-blog-olmo-eval" client:visible />
+
+## <a href="https://huggingface.co/blog/torch-mlp-fusion" target="_blank" rel="noopener noreferrer">Profiling in PyTorch (Part 2): From nn.Linear to a Fused MLP</a>
+
+*Hugging Face*
+
+本文为PyTorch性能剖析系列第二篇，以全连接层nn.Linear为切入点，通过算子级耗时、访存特征的细粒度分析，对比原生堆叠实现的MLP与算子融合MLP的性能差异，定位原生实现核启动冗余、访存效率低的痛点，实测融合MLP可削减约40%调度开销，访存效率提升超2倍，适配推理、小批量训练场景需求。
+
+<FeedbackButtons slug="item:hf-blog-torch-mlp-fusion" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+这篇AI对齐研究反驳“理性主体需绑定固定最终目标”的正交性假说前提，提出人类理性的核心是行动契合由行动模式、评价标准等构成的实践网络，而非指向特定目标。结论指出，若要实现AI伦理、安全属性对齐，且能真正配合人类活动，AI决策逻辑需与人类基于实践的推理框架同构。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/06/435196.html" target="_blank" rel="noopener noreferrer">千里收购了一家毫米波雷达公司</a>
+
+*量子位*
+
+为补全智能驾驶全栈能力，由吉利、重庆两江新区盘活原力帆而来、印奇掌舵主打“AI+车”战略的千里科技，近日拟出资2590.8万元全资收购车规级视觉毫米波融合雷达厂商宁波融感科技。后者已获主机厂定点、具备量产能力，此次收购标志千里正加速从算法集成商转向全栈系统服务商，对标华为布局。
+
+<FeedbackButtons slug="item:qbitai-435196" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/435192.html" target="_blank" rel="noopener noreferrer">耐心资本护航创新，2026SuperLink开启创投价值共生新时代</a>
+
+*量子位*
+
+2026SuperLink创投大会近日于苏州吴中收官，由清科控股、吴中金控等联合主办，数百位创投界精英参会。本届大会聚焦股权投资行业变革，以“超级链接”为核心，围绕耐心资本共识搭建、多元退出机制探索、硬科技赛道精准布局等议题研讨，推动产融双向融合，赋能新质生产力发展。
+
+<FeedbackButtons slug="item:qbitai-435192" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/433717.html" target="_blank" rel="noopener noreferrer">Anthropic老大的唯一 -1，就是AI股神的未婚妻</a>
+
+*量子位*
+
+近日消息，估值近万亿美元的AI公司Anthropic创始人Dario仅有1名直属下属，即25岁的幕僚长Avital Balwit。她非技术背景出身，曾研究AI安全、做过作家。其未婚夫是曾被OpenAI解雇、将2.25亿投资翻至55亿的“AI股神”Leopold，此事也凸显出顶级AI圈的圈层极小。
+
+<FeedbackButtons slug="item:qbitai-433717" client:visible />
