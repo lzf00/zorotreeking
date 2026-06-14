@@ -1,0 +1,120 @@
+---
+lang: zh
+translationKey: digest-2026-06-14
+title: "AI 每日精选 · 2026-06-14"
+description: "12 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-06-14
+tags: [digest, auto, openai, anthropic, deepmind, hf-blog, the-gradient, qbitai]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# OpenAI
+
+## <a href="https://openai.com/index/academy-courses-applying-ai-at-work" target="_blank" rel="noopener noreferrer">New OpenAI Academy courses for the next era of work</a>
+
+*OpenAI*
+
+OpenAI面向AI技术驱动的下一个工作时代，全新推出三门学院官方课程。课程聚焦AI能力的实际工作场景落地，旨在帮助学习者掌握实用AI技能，搭建可复制的标准化AI工作流，学会将AI智能代理灵活应用到日常工作中，助力从业者快速适配新型工作范式。
+
+<FeedbackButtons slug="item:openai-blog-academy-courses-applying-ai-at-work" client:visible />
+
+## <a href="https://openai.com/index/preply" target="_blank" rel="noopener noreferrer">How Preply combines AI and human tutors to personalize learning</a>
+
+*OpenAI*
+
+在线语言教育平台Preply主打AI与真人教师融合的个性化学习路径，近期接入OpenAI技术落地三类配套功能：自动生成对应课程的复盘总结、为学习者输出个性化学习反馈，以及匹配针对性语言练习。这套方案既保留真人教学的互动适配优势，又借助AI补齐课后服务效率短板，进一步提升个性化学习效果。
+
+<FeedbackButtons slug="item:openai-blog-preply" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener noreferrer">Statement on the US government directive to suspend access to Fable 5 and Mythos 5</a>
+
+*Anthropic*
+
+本为针对美国政府出口管制指令的官方声明：美方近日出台管制新规，要求全面暂停所有外籍人士对Fable 5、Mythos 5两类产品的访问权限，管制范围不受地域限制，无论相关外籍人员身处美国境内还是境外，均需执行该禁令，是美方收紧相关科技出口管制的最新举措。
+
+<FeedbackButtons slug="item:anthropic-fable-mythos-access" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-corps" target="_blank" rel="noopener noreferrer">Introducing Claude Corps</a>
+
+*Anthropic*
+
+官方正式推出名为Claude Corps的美国全国性人才研修fellowship项目，定向面向职业早期群体开放，核心招募要求为申请者需对推动AI技术红利覆盖美国各地社区有高度热忱。项目旨在通过扶持相关青年从业者，进一步拓展AI技术普惠的落地广度与受众覆盖范围。
+
+<FeedbackButtons slug="item:anthropic-claude-corps" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/diffusiongemma-4x-faster-text-generation/" target="_blank" rel="noopener noreferrer">DiffusionGemma: 4x faster text generation</a>
+
+*Google DeepMind*
+
+本文提出新型文本生成模型DiffusionGemma，摒弃传统大语言模型自回归逐词生成的逻辑，采用扩散式并行解码架构，在保证通用文本、日常对话等任务生成质量与谷歌原生Gemma持平的前提下，推理速度提升4倍，还可兼容现有量化、蒸馏等加速方案，适配云服务、端侧部署等多类落地场景。
+
+<FeedbackButtons slug="item:deepmind-diffusiongemma-4x-faster-text-generation" client:visible />
+
+## <a href="https://deepmind.google/blog/investing-in-multi-agent-ai-safety-research/" target="_blank" rel="noopener noreferrer">Investing in multi-agent AI safety research</a>
+
+*Google DeepMind*
+
+谷歌DeepMind联合合作方宣布推出总额1000万美元的专项资助计划，面向多智能体AI安全领域招募研究项目。该举措意在填补当前单智能体安全研究的覆盖盲区，针对性解决多智能体场景下的协作冲突、有害协同、对齐偏差等特有风险，为多智能体系统的规模化安全落地提供研究支撑。
+
+<FeedbackButtons slug="item:deepmind-investing-in-multi-agent-ai-safety-research" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/olmo-eval" target="_blank" rel="noopener noreferrer">olmo-eval: An evaluation workbench for the model development loop</a>
+
+*Hugging Face*
+
+olmo-eval是艾伦人工智能研究所推出的面向大模型开发全流程的专用评估工作台，针对现有评估工具与训练迭代脱节、评测维度零散的痛点，整合多维度能力测评、训练中动态评估、结果溯源分析等功能，支持自定义评测集适配不同训练阶段需求，可大幅降低评估成本，加速模型迭代，为开源大模型OLMO的优化提供核心支撑。
+
+<FeedbackButtons slug="item:hf-blog-olmo-eval" client:visible />
+
+## <a href="https://huggingface.co/blog/torch-mlp-fusion" target="_blank" rel="noopener noreferrer">Profiling in PyTorch (Part 2): From nn.Linear to a Fused MLP</a>
+
+*Hugging Face*
+
+本文为PyTorch性能分析系列第二篇，先拆解原生nn.Linear堆叠实现的多层感知机（MLP）的性能瓶颈，定位到内核启动冗余、层间显存往返开销问题，提出将多层Linear+激活逻辑合并为单内核的算子融合方案，实测融合后MLP显存访问效率大幅提升，端到端运行速度较原生实现提优30%以上，给出了PyTorch环境下的融合落地参考。
+
+<FeedbackButtons slug="item:hf-blog-torch-mlp-fusion" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+本文针对AI对齐领域的正交性假说展开反思，从美德伦理视角提出：理性人类并非以固定终极目标指引行动，而是让行为适配包含行动规则、评价标准等的实践网络。若要实现AI与人类有效协作、契合人类能动性要求，需让AI决策逻辑与人类实践逻辑同构，这既关乎伦理对齐，也关乎核心安全性能。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/06/435483.html" target="_blank" rel="noopener noreferrer">HuggingFace CEO力荐，Bengio团队也押注：这个1500美元训出的HRM模型，凭什么火了？</a>
+
+*量子位*
+
+Sapient Intelligence推出的1B参数量HRM-Text非蒸馏、微调或套壳现有大模型，走隐式递归推理路线，预训练阶段不堆参数做知识仓库，而是聚焦强化推理核心，训练成本仅1500美元，在MATH等多项基准测试中表现远超同规模模型，无需额外后处理，获行业广泛认可，相关资源已开源，验证了新推理架构的可行性。
+
+<FeedbackButtons slug="item:qbitai-435483" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/435455.html" target="_blank" rel="noopener noreferrer">Agent终于长出了身体：Jiuwen Symbiosis背后的思考与实践</a>
+
+*量子位*
+
+此前AI行业长期聚焦大模型参数、推理能力升级，忽略实体交互短板，大模型陷入“缸中之脑”困境，契合莫拉维克悖论指出的AI实现运动感知等基础实体能力难度远高于逻辑任务的结论。近日openJiuwen社区开源专为高阶实体AI打造的Jiuwen Symbiosis共生架构，为AI赋予物理世界感知行动能力，推动智能从数字向真实场景落地。
+
+<FeedbackButtons slug="item:qbitai-435455" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/435394.html" target="_blank" rel="noopener noreferrer">2026智源大会开幕：推动AI、物理世界和生命科学“三体互动”</a>
+
+*量子位*
+
+2026年6月12日第八届北京智源大会开幕，聚焦AI、物理世界、生命科学“三体互动”方向。大会汇聚Whitfield Diffie、Andrew Barto等中外顶尖学界、产业界代表，围绕世界模型、智能体、AI安全等前沿议题交流。会上智源发布大模型、智能体等最新技术成果，其已累计开源模型超200个，全球下载量破10亿次。
+
+<FeedbackButtons slug="item:qbitai-435394" client:visible />
