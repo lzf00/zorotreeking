@@ -1,0 +1,188 @@
+---
+lang: zh
+translationKey: digest-2026-06-15
+title: "AI 每日精选 · 2026-06-15"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-06-15
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.12384" target="_blank" rel="noopener noreferrer">APPO: Agentic Procedural Policy Optimization</a>
+
+*HF ★ 28 · Xucong Wang, Ziyu Ma, Yong Wang… · [HF 镜像](https://huggingface.co/papers/2606.12384)*
+
+针对现有智能体强化学习工具调用方法依赖粗粒度单元做信用分配、无法准确定位关键中间决策的问题，本文发现关键决策点分散于全序列，单词元熵无法可靠反映其影响，据此提出APPO算法：用结合词元不确定性与后续收益的分支得分选探索点，搭配过程级优势缩放分配信用，在13个基准上较基线提升近4个点，兼顾调用效率与可解释性。
+
+<FeedbackButtons slug="item:arxiv-2606.12384" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.06036" target="_blank" rel="noopener noreferrer">Memory is Reconstructed, Not Retrieved: Graph Memory for LLM Agents</a>
+
+*HF ★ 25 · Shuo Ji, Yibo Li, Bryan Hooi · [HF 镜像](https://huggingface.co/papers/2606.06036)*
+
+本文针对大模型智能体长交互推理短板，以及现有记忆增强方案静态“先检索后推理”范式适配性差的问题，提出MRAgent框架：以关联记忆图存储记忆，将推理嵌入访问流程，主动迭代调整检索路径。在两个长时记忆基准上性能较基线最高提升23%，同时大幅降低token与耗时成本。
+
+<FeedbackButtons slug="item:arxiv-2606.06036" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.13707" target="_blank" rel="noopener noreferrer">Orchestra-o1: Omnimodal Agent Orchestration</a>
+
+*HF ★ 23 · Fan Zhang, Vireo Zhang, Shengju Qian… · [HF 镜像](https://huggingface.co/papers/2606.13707)*
+
+针对现有多智能体编排框架模态适配范围窄、难处理多模态异构交互复杂任务的问题，本文提出全模态智能体编排框架Orchestra-o1，搭载模态感知任务拆解、子代理在线专化、子任务并行执行机制，配套DA-GRPO强化学习方法训练的8B版本，在OmniGAIA基准准确率超次优方案10.3%，开源全模态智能体性能达当前最优。
+
+<FeedbackButtons slug="item:arxiv-2606.13707" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.14502" target="_blank" rel="noopener noreferrer">From Chatbot to Digital Colleague: The Paradigm Shift Toward Persistent Autonomous AI</a>
+
+*HF ★ 21 · Yongheng Zhang, Ziang Liu, Jiaxuan Zhu… · [HF 镜像](https://huggingface.co/papers/2606.14502)*
+
+本文提出大语言模型正经历从聊天机器人到可持久自主工作的“数字同事”范式跃迁，核心沿两大维度演进：认知层从仅靠下一词预测的“快思考”，升级为具备推理、反思能力的深思型大模型；执行层从临时调用工具，升级为带持久工作空间、可复用技能的工作站系统，配套数据、评估体系也同步适配。
+
+<FeedbackButtons slug="item:arxiv-2606.14502" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.13432" target="_blank" rel="noopener noreferrer">OmniDirector: General Multi-Shot Camera Cloning without Cross-Paired Data</a>
+
+*HF ★ 18 · Jiwen Liu, Shujuan Li, Zhixue Fang… · [HF 镜像](https://huggingface.co/papers/2606.13432)*
+
+针对现有视频相机运动克隆方法无法适配多镜头生成、依赖稀缺交叉配对数据导致复杂运动复刻效果差的问题，本文提出将相机参数编码为网格运动视频的通用表征，搭建OmniDirector统一框架，依托百万级网格-视频对训练，搭配层级提示扩展模块融合多类控制信号，经实验验证性能与可控性优异，可实现导演级的多镜头视频运镜可控生成。
+
+<FeedbackButtons slug="item:arxiv-2606.13432" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.13705" target="_blank" rel="noopener noreferrer">Can Editing 1 Neuron Fix Repetition Loops in LLMs?</a>
+
+*Aristotelis Lazaridis, Aman Sharma, Dylan Bates…*
+
+针对Gemma系列指令微调模型在长事实列举任务中最高95%概率出现重复循环的问题，研究通过逐层消融、神经元归因定位到少量MLP神经元（大模型为路由专家），最小仅修改单个神经元权重即可消除重复且不影响通用性能，但该方法无法根除长推理时的“厄运循环”，后者本质是知识缺失问题，权重编辑无法补全缺失事实。
+
+<FeedbackButtons slug="item:arxiv-2606.13705" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.13740" target="_blank" rel="noopener noreferrer">Efficient On-Device Diffusion LLM Inference with Mobile NPU</a>
+
+*Tuowei Wang, Yanfan Sun, Ju Ren*
+
+扩散大语言模型（dLLM）可并行生成多token，适配端侧低延迟需求，但存在移动端推理算力开销高、移动NPU难利用的痛点。本文提出首个移动端NPU优化的dLLM推理框架llada.cpp，通过多块投机解码、双路渐进修正、交换优化内存运行时三项技术适配NPU特性，实测LLaDA-8B推理时延较CPU基线降17-42倍，且保留生成质量。
+
+<FeedbackButtons slug="item:arxiv-2606.13740" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.13741" target="_blank" rel="noopener noreferrer">High-Frequency Pricing at Scale for E-Commerce</a>
+
+*Stefan Birr, Tobias Huelden, Mones Raslan…*
+
+本文针对时尚电商大促需求波动大、定价时效要求高的痛点，推出“预测-优化”架构定价工具：用梯度提升树做日粒度需求预测，搭配多目标优化框架，覆盖超500万商品，将定价时长从小时级压至分钟级。经欧洲电商Zalando23-24年12个市场A/B测试验证，较原有方案利润提升约6%，销量营收持平，现已全量上线。
+
+<FeedbackButtons slug="item:arxiv-2606.13741" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/introducing-openai-partner-network" target="_blank" rel="noopener noreferrer">Introducing the OpenAI Partner Network</a>
+
+*OpenAI*
+
+OpenAI正式推出合作伙伴网络计划，将投入1.5亿美元专项资金面向全球合作伙伴提供扶持，核心目标是加速企业级AI技术的落地采用、场景部署及行业数字化转型。该计划既能够降低不同领域企业接入AI能力的门槛，也将进一步拓展OpenAI的企业级服务生态，推动AI技术规模化商用。
+
+<FeedbackButtons slug="item:openai-blog-introducing-openai-partner-network" client:visible />
+
+## <a href="https://openai.com/index/academy-courses-applying-ai-at-work" target="_blank" rel="noopener noreferrer">New OpenAI Academy courses for the next era of work</a>
+
+*OpenAI*
+
+为适配AI驱动的新一代工作范式，OpenAI近期推出三门学院系列新课程。课程聚焦实用AI能力落地，面向职场学习者设置三类核心内容：掌握实操性AI技能、搭建可复用的标准化AI工作流、落地智能体技术在日常工作场景的应用，助力学习者完成AI时代能力升级，适配未来职场需求。
+
+<FeedbackButtons slug="item:openai-blog-academy-courses-applying-ai-at-work" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener noreferrer">Statement on the US government directive to suspend access to Fable 5 and Mythos 5</a>
+
+*Anthropic*
+
+本声明针对美国政府出口管制指令作出说明：美政府最新出台管制规则，要求全面暂停所有外籍人员对Fable 5、Mythos 5的访问权限，管制不受地域限制，无论相关外籍人员身处美国境内还是境外均适用。该措施是美国收紧敏感技术对外流通限制的最新举措，覆盖范围极广，将直接影响外籍群体对两类资源的使用。
+
+<FeedbackButtons slug="item:anthropic-fable-mythos-access" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-corps" target="_blank" rel="noopener noreferrer">Introducing Claude Corps</a>
+
+*Anthropic*
+
+本次推出的Claude Corps是美国全国性人才扶持 fellowship 项目，面向职业生涯早期、有志于推动AI技术红利覆盖美国各地各类社区的从业者开放，旨在通过专项支持动员青年人才落地普惠AI应用，拓展AI公共价值，缩小不同群体间的AI受益差距。
+
+<FeedbackButtons slug="item:anthropic-claude-corps" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/diffusiongemma-4x-faster-text-generation/" target="_blank" rel="noopener noreferrer">DiffusionGemma: 4x faster text generation</a>
+
+*Google DeepMind*
+
+DiffusionGemma是面向文本生成效率优化的新型模型，针对扩散式文本生成原有迭代步数多、延迟高的痛点，将扩散生成逻辑适配谷歌Gemma轻量架构，通过裁剪迭代冗余步骤、优化词汇空间映射效率，在主流评测中生成质量与同参数原生自回归Gemma持平的前提下，推理速度可达基线的4倍，可适配实时对话、批量内容生产等低延迟需求场景。
+
+<FeedbackButtons slug="item:deepmind-diffusiongemma-4x-faster-text-generation" client:visible />
+
+## <a href="https://deepmind.google/blog/investing-in-multi-agent-ai-safety-research/" target="_blank" rel="noopener noreferrer">Investing in multi-agent AI safety research</a>
+
+*Google DeepMind*
+
+谷歌DeepMind联合合作方宣布启动总额1000万美元的专项资助申报通道，面向学界业界征集多智能体AI安全方向的研究项目。当前多智能体交互、协同场景快速落地，该资助意在填补相关领域研究缺口，针对性解决多智能体博弈、协作过程中的潜在风险，为复杂AI系统安全落地提供支撑。
+
+<FeedbackButtons slug="item:deepmind-investing-in-multi-agent-ai-safety-research" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/olmo-eval" target="_blank" rel="noopener noreferrer">olmo-eval: An evaluation workbench for the model development loop</a>
+
+*Hugging Face*
+
+本文推出面向大模型开发迭代全链路的专用评估工作台olmo-eval，针对传统评估工具零散、与训练流程脱节、反馈滞后的痛点，内置多维度能力评测集，支持训练过程自动插点测评、可视化输出性能变化。该工具可大幅降低评估成本，加速OLMo系列模型迭代，也可复用于其他开源大模型研发。
+
+<FeedbackButtons slug="item:hf-blog-olmo-eval" client:visible />
+
+## <a href="https://huggingface.co/blog/torch-mlp-fusion" target="_blank" rel="noopener noreferrer">Profiling in PyTorch (Part 2): From nn.Linear to a Fused MLP</a>
+
+*Hugging Face*
+
+这是PyTorch性能剖析系列第二篇，聚焦从原生nn.Linear堆叠MLP到融合MLP的性能优化逻辑。文中通过PyTorch自带剖析工具拆解原生MLP的内核调度、访存冗余等开销，对比测试融合MLP的运行效率，最终验证融合方案可减少约40%无效访存，端到端速度较原生实现提升30%以上，同时给出融合算子适用场景与调优指南。
+
+<FeedbackButtons slug="item:hf-blog-torch-mlp-fusion" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+这篇反思正交性论题的AI对齐研究，从美德伦理视角出发，驳斥“理性智能体必然以固定终局目标为行动导向”的预设，提出人类理性行动本质是适配包含行动规则、评价标准等要素的实践网络，主张AI决策逻辑需与人类这类实践逻辑同构，才能同时满足伦理对齐要求、保障核心安全属性。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/06/435531.html" target="_blank" rel="noopener noreferrer">Agent时代，华为云开始重新造地基了</a>
+
+*量子位*
+
+针对当前Agent响应慢、易失忆，仅调Prompt或换模型无法根治、底层基建适配不足的痛点，华为云在6月INSPIRE创想者大会发布整套Agent新基建：AICS灵衢智算集群可将推理时延压至10ms内，最高支持10万卡协同；AMS记忆存储采用分层设计、提供PB级空间，针对性解决Agent落地核心卡点。
+
+<FeedbackButtons slug="item:qbitai-435531" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/435520.html" target="_blank" rel="noopener noreferrer">智源大会 | 天工AI重新定义世界模型，公布Matrix-Game 3.5 最新技术突破</a>
+
+*量子位*
+
+第8届智源大会上世界模型成为核心议题，昆仑万维Skywork首席科学家刘扬在分论坛公布Matrix-Game 3.5最新技术突破，提出“状态-动作联合生成”的世界模型新框架。其采用双向DiT预训练后蒸馏为因果模型的路线，可实现25FPS实时交互，3.5版预计2026年7月发布，近期将公开技术细节报告。
+
+<FeedbackButtons slug="item:qbitai-435520" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/435483.html" target="_blank" rel="noopener noreferrer">HuggingFace CEO力荐，Bengio团队也押注：这个1500美元训出的HRM模型，凭什么火了？</a>
+
+*量子位*
+
+Sapient Intelligence推出的HRM-Text采用潜递归推理架构，10亿参量仅花1500美元、用16块H100训练不到两天就完成预训练，未采用蒸馏、微调、RLHF或显式思维链数据，走轻量化推理核心而非大容量知识存储路线，多项推理基准成绩亮眼，获行业权威认可，相关资源已全开放。
+
+<FeedbackButtons slug="item:qbitai-435483" client:visible />
