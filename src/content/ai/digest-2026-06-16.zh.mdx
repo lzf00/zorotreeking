@@ -1,0 +1,188 @@
+---
+lang: zh
+translationKey: digest-2026-06-16
+title: "AI 每日精选 · 2026-06-16"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-06-16
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.16993" target="_blank" rel="noopener noreferrer">DreamX-World 1.0: A General-Purpose Interactive World Model</a>
+
+*HF ★ 50 · DreamX Team, Yancheng Bai, Rui Chen… · [HF 镜像](https://huggingface.co/papers/2606.16993)*
+
+DreamX-World 1.0是通用交互式文/图转视频长时序可控世界模型，适配写实、游戏等多领域，支持相机控制、旧区域复访等交互。团队搭建多源数据引擎，提出E-PRoPE轻量编码，结合生成优化、记忆持久化、事件调优等技术，经效率优化后8张RTX 5090可达16FPS，综合得分84.76，优于现有同类模型。
+
+<FeedbackButtons slug="item:arxiv-2606.16993" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.11176" target="_blank" rel="noopener noreferrer">Data Journalist Agent: Transforming Data into Verifiable Multimodal Stories</a>
+
+*HF ★ 44 · Kevin Qinghong Lin, Batu EI, Yuhong Shi… · [HF 镜像](https://huggingface.co/papers/2606.11176)*
+
+针对数据新闻生产耗时长、现有智能体仅能处理单环节的痛点，研究推出多智能体框架Data2Story，可实现所有内容要素溯源核验，还能按需生成适配读者需求的互动多模态内容。测试显示其产出的可溯源多媒体作品透明性突出，水准接近专业作品，仅编辑立意、创意设计弱于人类，可作为记者辅助工具。
+
+<FeedbackButtons slug="item:arxiv-2606.11176" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.14066" target="_blank" rel="noopener noreferrer">FastContext: Training Efficient Repository Explorer for Coding Agents</a>
+
+*HF ★ 27 · Shaoqiu Zhang, Maoquan Wang, Yuling Shi… · [HF 镜像](https://huggingface.co/papers/2606.14066)*
+
+针对大模型代码智能体的代码仓检索瓶颈（耗token、混入无关片段），微软提出FastContext专用检索子智能体，将检索与任务求解解耦，用4B-30B专用模型经参考轨迹预训练、任务奖励微调，并行调用工具返回精准代码区间。集成后SWE系列任务准确率最高提升5.5%，token消耗最多降60%，额外开销极低，验证了检索求解拆分的有效性。
+
+<FeedbackButtons slug="item:arxiv-2606.14066" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.16281" target="_blank" rel="noopener noreferrer">Who Should Lead Decoding Now? Tracking Reliable Trajectories for Ensembling Masked Diffusion Language Models</a>
+
+*HF ★ 16 · Heecheol Yun, Joonhyung Park, Joowon Kim… · [HF 镜像](https://huggingface.co/papers/2606.16281)*
+
+针对掩码扩散语言模型（MDLM）能力各异、现有知识融合方案缺位的问题，团队首先发现MDLM成功生成的答案相关位置置信度动态稳定，不可靠解码轨迹可通过其他模型的优质中间态修正。据此提出轨迹迭代集成框架TIE，逐解码步选轨迹更可靠的模型，跨模型传递部分去噪序列，分阶段发挥不同模型优势，在多类推理任务上表现优异，为MDLM集成提供了实用方案。
+
+<FeedbackButtons slug="item:arxiv-2606.16281" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.17049" target="_blank" rel="noopener noreferrer">BRDFusion: Physics Meets Generation for Urban Scene Inverse Rendering</a>
+
+*HF ★ 14 · Yi-Ruei Liu, Jie-Ying Lee, Zheng-Hui Huang… · [HF 镜像](https://huggingface.co/papers/2606.17049)*
+
+针对城市场景逆渲染现有物理方法易出伪影、生成类方法可控性不足的痛点，本文提出BRDFusion融合框架：逆渲染阶段用物理建模恢复一致显式场景属性，靠生成先验消解优化歧义；前向渲染时物理模块保障可控性，生成模块去噪修伪影。该方法效果优于基线，支持新视角重光照、场景编辑等功能，适配内容创作、自动驾驶仿真等场景。
+
+<FeedbackButtons slug="item:arxiv-2606.17049" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.14801" target="_blank" rel="noopener noreferrer">QPILOTS: Efficient Test-Time Q-Steering for Flow Policies</a>
+
+*Yifan Ruan, Chenyang Cao, Andreas Burger…*
+
+针对流匹配、扩散策略与时序差分强化学习结合时，多步去噪反向传播梯度不稳定的痛点，本文提出QPILOTS方法：不改动原策略，推理时将去噪中间噪声动作先投影为最终干净动作估计，再计算评价器梯度引导去噪，分两个实现版本。该方法在50项离线转在线RL任务平均成功率达90%，引导冻结预训练VLA大模型时表现也优于或持平同类推理方法。
+
+<FeedbackButtons slug="item:arxiv-2606.14801" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.14865" target="_blank" rel="noopener noreferrer">GRAPE: Guided Parameter-Space Evolution for Compact Adversarial Robustness</a>
+
+*Zhiyuan Ye (University of Science and Technology of China), Xiangyu Zhou (China Mobile), Ji Qi (China Mobile)…*
+
+针对现有对抗训练多从初始阶段就固定参数空间优化的局限，该文提出GRAPE训练框架：先稳定当前暴露参数空间的鲁棒优化，渐进释放可优化维度，用对抗谱利用得分引导新增容量向高压模块倾斜。CIFAR-10实验显示，同算力下ResNet-18的PGD-20鲁棒精度从51.7%升至56.94%，参数量降21.4%，证实参数空间开放路径本身即可提升鲁棒性。
+
+<FeedbackButtons slug="item:arxiv-2606.14865" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.14898" target="_blank" rel="noopener noreferrer">\{\alpha\}-Fair Insurance Pricing: A Fairness Continuum</a>
+
+*Tianhe Zhang, Xiguang Liu, Peng Shi*
+
+针对保险定价长期存在的精算公平（按个体风险定价保盈利）与互助公平（群体风险共担保普惠）的核心矛盾，本文提出α-FISP定价框架：通过带跨群体补贴约束的优化建模，以参数α调节两类公平权重，形成公平连续谱，同时保障偿付能力。该框架有理论支撑、计算简便，适配美国各州差异化的公平监管要求。
+
+<FeedbackButtons slug="item:arxiv-2606.14898" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/introducing-openai-partner-network" target="_blank" rel="noopener noreferrer">Introducing the OpenAI Partner Network</a>
+
+*OpenAI*
+
+OpenAI近期正式推出合作伙伴网络计划，配套投入1.5亿美元专项支持资金，覆盖全球范围内的合作方，核心目的是加速企业级AI技术的落地普及、场景部署以及企业数字化转型进程，此举可进一步打通AI技术从研发到产业落地的链路，降低各行业企业应用AI的门槛。
+
+<FeedbackButtons slug="item:openai-blog-introducing-openai-partner-network" client:visible />
+
+## <a href="https://openai.com/index/academy-courses-applying-ai-at-work" target="_blank" rel="noopener noreferrer">New OpenAI Academy courses for the next era of work</a>
+
+*OpenAI*
+
+OpenAI面向AI驱动的下一代工作形态，最新推出三门学院官方课程。课程重点聚焦实操性AI技能培养，教授可标准化复用的AI工作流搭建方法，同时覆盖智能体在各类日常工作场景的落地应用技巧，旨在帮助学习者快速掌握AI工具能力、适配数智化工作模式，为职场人应对转型期的工作新要求提供系统学习路径。
+
+<FeedbackButtons slug="item:openai-blog-academy-courses-applying-ai-at-work" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener noreferrer">Statement on the US government directive to suspend access to Fable 5 and Mythos 5</a>
+
+*Anthropic*
+
+本文件是相关主体针对美国政府出口管制新指令发布的官方声明。本次美政府出台的管制措施明确，对Fable 5、Mythos 5的访问权限施加严格限制，所有外籍人员无论身处美国境内还是境外，均被暂停访问上述两类管控对象，管制覆盖范围无地域豁免空间，执行无特殊例外。
+
+<FeedbackButtons slug="item:anthropic-fable-mythos-access" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-corps" target="_blank" rel="noopener noreferrer">Introducing Claude Corps</a>
+
+*Anthropic*
+
+新推出的Claude Corps是一项覆盖全美的人才扶持fellowship项目，面向处于职业发展早期、有志于推动AI普惠的申请者开放，核心目标是支持入选者将AI技术的发展红利推广到美国各地社区，让不同区域的普通群体都能切实享受到AI技术带来的价值与便利。
+
+<FeedbackButtons slug="item:anthropic-claude-corps" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/diffusiongemma-4x-faster-text-generation/" target="_blank" rel="noopener noreferrer">DiffusionGemma: 4x faster text generation</a>
+
+*Google DeepMind*
+
+本文推出DiffusionGemma文本生成模型，创新性采用扩散架构替代传统大语言模型的自回归解码逻辑，规避逐词生成的串行延迟瓶颈，实测推理速度达同量级原版Gemma的4倍，同时生成质量与原版基本持平，可适配通用问答、长文创作等场景，为大模型效率优化提供了扩散路径的新方案。
+
+<FeedbackButtons slug="item:deepmind-diffusiongemma-4x-faster-text-generation" client:visible />
+
+## <a href="https://deepmind.google/blog/investing-in-multi-agent-ai-safety-research/" target="_blank" rel="noopener noreferrer">Investing in multi-agent AI safety research</a>
+
+*Google DeepMind*
+
+谷歌DeepMind联合合作方正式发布总额1000万美元的资助号召，定向支持多智能体AI安全领域的学术与技术研究。当前多智能体系统在协作、博弈类场景应用拓展迅速，对应安全风险防控研究尚存明显缺口，该资金将填补领域研究空白，助力多智能体技术实现安全可控落地。
+
+<FeedbackButtons slug="item:deepmind-investing-in-multi-agent-ai-safety-research" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/olmo-eval" target="_blank" rel="noopener noreferrer">olmo-eval: An evaluation workbench for the model development loop</a>
+
+*Hugging Face*
+
+olmo-eval是面向大模型迭代开发闭环打造的开源评估工作台，针对现有评估工具零散、与训练链路脱节、反馈滞后的痛点，内置覆盖推理、安全等多维度的数百项评测基准，支持训练节点自动触发评估、输出可落地的调优分析报告，已支撑全系列OLMo开源模型开发，可大幅降低迭代评估成本。
+
+<FeedbackButtons slug="item:hf-blog-olmo-eval" client:visible />
+
+## <a href="https://huggingface.co/blog/torch-mlp-fusion" target="_blank" rel="noopener noreferrer">Profiling in PyTorch (Part 2): From nn.Linear to a Fused MLP</a>
+
+*Hugging Face*
+
+本文是PyTorch性能剖析系列第二篇，先通过剖析工具定位原生nn.Linear堆叠加激活构成的MLP的性能瓶颈：多内核启动冗余、中间张量显存读写开销大。随后采用算子融合技术，将多层计算合并为单内核融合MLP，实测可降30%以上端到端延迟，显存带宽占用减近4成，大幅提升MLP训练、推理性能。
+
+<FeedbackButtons slug="item:hf-blog-torch-mlp-fusion" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+这篇基于德性伦理视角的AI对齐研究，挑战传统目标导向的理性假设，提出理性人与理想理性AI均不应预设固定最终目标：人类行为的合理性源于适配含行动规范、评价标准等要素的实践网络，而非指向特定目的。研究指出，若要AI适配、协同人类主体，需让AI决策逻辑匹配人类基于实践的推理“类型签名”，可同时保障AI伦理对齐与核心安全。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/06/435859.html" target="_blank" rel="noopener noreferrer">从技术向运营生产力“质变”：神州数码以AI for Process构建AI落地产业的“飞轮”</a>
+
+*量子位*
+
+当前企业AI落地普遍遇冷，多数停留在概念验证或试点阶段，仅7%完成全组织部署，远不及个人AI应用顺畅。神州数码提出“AI for Process”核心路径，将智能体融入核心业务流，统一数据语义、规则认知，沉淀复用专家经验并持续迭代，实现从技术到运营生产力的质变，构建产业AI落地飞轮。
+
+<FeedbackButtons slug="item:qbitai-435859" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/435853.html" target="_blank" rel="noopener noreferrer">沙利文权威认证：范式 Rise vGPU 获评 Tier 1 领先平台</a>
+
+*量子位*
+
+2026年6月弗若斯特沙利文发布AI基础设施管理白皮书，评定范式Rise vGPU为最高成熟度Tier1领先平台，其ModelHub位列企业级模型管理平台第一。当前国内AI落地遇异构算力瓶颈，行业核心竞争力已从单芯片性能转向集群协同，范式产品符合三大Tier1准入标准，可破解算力痛点，推动行业进入算力编排新纪元。
+
+<FeedbackButtons slug="item:qbitai-435853" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/435848.html" target="_blank" rel="noopener noreferrer">校企共推AI4S 上海交通大学与太初元碁签署合作协议</a>
+
+*量子位*
+
+6月15日上海交通大学与太初元碁签署AI4S领域合作协议。太初元碁提供国产AI训练算力集群及7×24小时运维技术支持，交大赵海团队依托该算力，在已有脑启发大模型成果基础上攻关AGI大模型核心技术，打造AI4S领域AGI基座，助力前沿科研突破。
+
+<FeedbackButtons slug="item:qbitai-435848" client:visible />
