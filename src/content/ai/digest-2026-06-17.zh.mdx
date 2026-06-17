@@ -1,0 +1,188 @@
+---
+lang: zh
+translationKey: digest-2026-06-17
+title: "AI 每日精选 · 2026-06-17"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-06-17
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.17861" target="_blank" rel="noopener noreferrer">GameCraft-Bench: Can Agents Build Playable Games End-to-End in a Real Game Engine?</a>
+
+*HF ★ 23 · Tongxu Luo, Rongsheng Wang, Jiaxi Bi… · [HF 镜像](https://huggingface.co/papers/2606.17861)*
+
+针对端到端游戏生成这一编码智能体新兴应用场景，研究团队明确其引擎适配、输出完整、可交互验证三大评测要求，提出交互导向的评测框架，构建包含15类共140个Godot引擎任务的GameCraft-Bench基准。实测显示前沿编码智能体最高通过率仅41.46%，普遍存在内容不全、交互反馈失效等问题，该任务仍极具挑战。
+
+<FeedbackButtons slug="item:arxiv-2606.17861" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.17200" target="_blank" rel="noopener noreferrer">ACE-Ego-0: Unifying Egocentric Human and Robotic Data for VLA Pretraining</a>
+
+*HF ★ 21 · Hao Li, Ganlong Zhao, Yufei Liu… · [HF 镜像](https://huggingface.co/papers/2606.17200)*
+
+针对视觉-语言-动作（VLA）模型预训练机器人轨迹采集成本高、人-机器人异构数据难联合训练的痛点，提出ACE-Ego-0统一预训练框架：将第一视角人类视频转为机器人格式伪动作轨迹，配套统一动作表征、可靠性感知损失优化训练。基于超6000小时混合数据训练后，模型在多项机器人操纵任务达SOTA，真实双手机械臂迁移表现优异。
+
+<FeedbackButtons slug="item:arxiv-2606.17200" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.17628" target="_blank" rel="noopener noreferrer">OPD-Evolver: Cultivating Holistic Agent Evolver via On-Policy Distillation</a>
+
+*HF ★ 17 · Guibin Zhang, Xun Xu, Yanwei Yue… · [HF 镜像](https://huggingface.co/papers/2606.17628)*
+
+针对现有记忆型自进化智能体仅能存储经验，缺乏经验筛选、应用、沉淀及知识库维护的全链条进化能力问题，本文提出基于同策略自蒸馏的快慢双循环协同进化框架OPD-Evolver：快环依托四级记忆交互实现测试时快速进化，慢环通过结果校准归因和事后蒸馏将四项核心能力嵌入可部署策略。实测性能较现有方案最高提升11.5%，9B参数版本可对标数百亿参数大模型。
+
+<FeedbackButtons slug="item:arxiv-2606.17628" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.16428" target="_blank" rel="noopener noreferrer">LectūraAgents: A Multi-Agent Framework for Adaptive Personalized AI-Assisted Learning and Embodied Teaching</a>
+
+*HF ★ 15 · Jaward Sesay, Yue Yu, Siwei Dong… · [HF 镜像](https://huggingface.co/papers/2606.16428)*
+
+针对现有教育智能体多侧重授课内容自动化、缺乏适配个体的多模态具身教学能力的问题，研究提出多智能体框架LectūraAgents，采用类师生协作的层级架构，配套自适应具身教学机制、教学动作-语音对齐算法，经多学段课程测试与教育专家验证，内容质量、个性化水平等均优于现有方案，可支撑规模化个性化学习。
+
+<FeedbackButtons slug="item:arxiv-2606.16428" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.09030" target="_blank" rel="noopener noreferrer">TRIAGE: Dialectical Reasoning for Explainable Risk Prediction on Irregularly Sampled Medical Time Series with LLMs</a>
+
+*HF ★ 15 · Hyeongwon Jang, Gyouk Chu, Changhun Kim… · [HF 镜像](https://huggingface.co/papers/2606.09030)*
+
+针对大模型用于不规则采样医疗时间序列风险预测时，易将分级临床风险极化为过置信二分类结果，校准度、跨患者可比性不足的问题，本文提出TRIAGE框架，引导大模型做辩证推理、输出带临床依据的连续风险分。测试显示其AUPRC平均提升3.3%，校准误差降低81%，推理依据的临床质量较基线高20%。
+
+<FeedbackButtons slug="item:arxiv-2606.09030" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.17057" target="_blank" rel="noopener noreferrer">Correct When Paired, Wrong When Split: Decoupling and Editing Modality-Specific Neurons in MLLMs</a>
+
+*Tingchao Fu, Wenkai Wang, Fanxiao Li…*
+
+针对多模态大模型现有知识编辑的解耦失效痛点：多模态输入触发时知识更新生效，拆为单模态输入就恢复旧知识，研究首先探明成因是实体知识分散在各模态专属通路，多模态定向更新未传导至单模态回路。进而提出DECODE方法，通过定位解耦模态专属神经元组做定向编辑，实验验证其可适配不同模态触发的知识更新，有效解决解耦失效问题。
+
+<FeedbackButtons slug="item:arxiv-2606.17057" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.17093" target="_blank" rel="noopener noreferrer">Diagnosing and Repairing Shape-Prior Shortcuts in Long-Range Single-Shot Fringe Projection Profilometry</a>
+
+*Adam Haroon, Anush Lakshman, Cody Fleming…*
+
+针对超1米远程单帧条纹投影轮廓术现有深度学习方法信噪比低、依赖形状先验捷径、精度差的问题，该研究结合机制可解释性与共形不确定性量化定位失效根源，提出PhiCalNet架构：先输出包裹相位，再经固定可微校准层映射为深度，从结构层面规避捷径。在1.5-2.1m测试集上，MAE较基线降3.3倍至4.46mm，剔除高不确定像素后RMSE进一步降64%。
+
+<FeedbackButtons slug="item:arxiv-2606.17093" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.17106" target="_blank" rel="noopener noreferrer">Informative Missingness to Generate Irregular Clinical Time Series</a>
+
+*Hadi Mehdizavareh, Gabriele Santangelo, Giovanna Nicora…*
+
+针对电子病历检验时间序列的非随机缺失本身携带临床信息的特性，本文改进TimeDiff扩散框架，在MIMIC-III衍生的DACMI数据集上联合建模检验数值与观测缺失模式。实验显示生成数据可很好匹配真实患者的指标分布、值与缺失的关联特征，能捕捉生理状态与临床检验决策的依存关系，可作为临床基础模型的前置组件。
+
+<FeedbackButtons slug="item:arxiv-2606.17106" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/deployment-simulation" target="_blank" rel="noopener noreferrer">Predicting model behavior before release by simulating deployment</a>
+
+*OpenAI*
+
+针对AI模型正式发布前难以预判落地真实表现、现有安全评估准度不足的行业痛点，OpenAI提出部署模拟技术：在模型上线前调用真实对话数据开展仿真部署测试，可提前预判模型实际运行时的行为特征，显著提升安全评估准确性，从源头降低模型上线后的不可控安全风险。
+
+<FeedbackButtons slug="item:openai-blog-deployment-simulation" client:visible />
+
+## <a href="https://openai.com/index/introducing-openai-partner-network" target="_blank" rel="noopener noreferrer">Introducing the OpenAI Partner Network</a>
+
+*OpenAI*
+
+本文介绍OpenAI正式推出合作伙伴网络计划，将投入总计1.5亿美元专项资金，为全球各类合作伙伴提供资源支持，核心目标是推动各行业企业加快前沿AI技术的落地应用、规模化部署及数智化转型。该举措既降低企业接入AI能力的门槛，也将助力OpenAI拓展ToB业务生态、扩大商业化覆盖。
+
+<FeedbackButtons slug="item:openai-blog-introducing-openai-partner-network" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener noreferrer">Statement on the US government directive to suspend access to Fable 5 and Mythos 5</a>
+
+*Anthropic*
+
+这份声明专门对美国政府最新发布的出口管制指令作出公示：美方已正式出台相关管制规定，将Fable 5与Mythos 5纳入管制范畴，要求全面暂停所有外籍人员对二者的访问权限，该禁令不受地域限制，无论相关外籍人员身处美国境内还是境外，管制要求均具备效力。
+
+<FeedbackButtons slug="item:anthropic-fable-mythos-access" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-corps" target="_blank" rel="noopener noreferrer">Introducing Claude Corps</a>
+
+*Anthropic*
+
+由AI企业Anthropic推出的Claude Corps是美国全国性fellowship项目，专门面向初入职场、有志于推动AI普惠的从业者开放。项目旨在吸纳相关领域青年人才参与，推动将AI技术的发展红利覆盖到美国各地的基层社区，让更多普通群体都能切实享受到AI技术发展带来的各类便利与实际收益。
+
+<FeedbackButtons slug="item:anthropic-claude-corps" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/unlocking-uk-house-building-with-ai-accelerated-planning/" target="_blank" rel="noopener noreferrer">Unlocking UK house-building with AI-accelerated planning</a>
+
+*Google DeepMind*
+
+针对英国住房建设长期受规划审批效率低、决策周期长制约的痛点，英国政府联合谷歌DeepMind研发AI驱动的规划审批原型系统，核心是通过AI技术优化住房项目的合规核查、资质研判等决策环节，大幅压缩规划审核耗时，打通住房供给堵点，为英国加快住房落地、完成建房目标提供支撑。
+
+<FeedbackButtons slug="item:deepmind-unlocking-uk-house-building-with-ai-accelerated-planning" client:visible />
+
+## <a href="https://deepmind.google/blog/diffusiongemma-4x-faster-text-generation/" target="_blank" rel="noopener noreferrer">DiffusionGemma: 4x faster text generation</a>
+
+*Google DeepMind*
+
+DiffusionGemma是基于扩散架构的新型大语言模型，针对传统自回归大模型逐token推理效率低的痛点，采用并行扩散解码策略，大幅压缩离散扩散采样所需步数，在生成质量与同参数规模Gemma模型持平的前提下，文本生成速度达自回归架构的4倍，更适配高吞吐、低时延的文本生成落地场景。
+
+<FeedbackButtons slug="item:deepmind-diffusiongemma-4x-faster-text-generation" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/olmo-eval" target="_blank" rel="noopener noreferrer">olmo-eval: An evaluation workbench for the model development loop</a>
+
+*Hugging Face*
+
+本文推出面向大语言模型开发全链路闭环的olmo-eval开源评测工作台，解决现有评测与训练流程脱节、维度碎片化的痛点，支持训练全节点多维度自动化评测，覆盖能力、安全、运行效率等维度，可帮助开发者快速定位训练问题、压缩迭代周期，也支持自定义规则适配个性化开发需求。
+
+<FeedbackButtons slug="item:hf-blog-olmo-eval" client:visible />
+
+## <a href="https://huggingface.co/blog/torch-mlp-fusion" target="_blank" rel="noopener noreferrer">Profiling in PyTorch (Part 2): From nn.Linear to a Fused MLP</a>
+
+*Hugging Face*
+
+本文是PyTorch性能剖析系列第二篇，通过官方剖析工具定位堆叠nn.Linear实现的原生MLP存在内核调用频繁、访存冗余的核心瓶颈，验证算子融合优化的实际效果：融合后MLP访存开销降低超60%，训练、推理性能提升40%以上，为同类访存密集型算子的优化提供可落地的参考路径。
+
+<FeedbackButtons slug="item:hf-blog-torch-mlp-fusion" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+这篇AI对齐研究从德性伦理视角反驳正交性假说的底层预设，提出：人类理性行为并非指向固定终极目标，而是适配由行动、倾向、评价标准等构成的实践网络；理性AI也不应预设固定目标，需让其决策逻辑匹配人类实践型行动逻辑，才能既对齐人类福祉等伦理要求，也满足核心安全需求。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/06/436085.html" target="_blank" rel="noopener noreferrer">刚刚，Fable-5之下，智谱开源的GLM-5.2拿下AI编程第一！</a>
+
+*量子位*
+
+智谱开源的GLM-5.2在AI编程赛道表现突出：编程能力位列开源界第一、全球第二，仅次于Claude Fable 5，拿下Design Arena品味评测全球第一，八项权威基准测试表现亮眼，成功挤下谷歌Gemini跻身全球AI编程“御三家”，实测接近Claude Opus 4.8，支持1M上下文可处理大项目长程任务。
+
+<FeedbackButtons slug="item:qbitai-436085" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/436082.html" target="_blank" rel="noopener noreferrer">英特尔晒出未来芯片&#8221;三张底牌&#8221;：CFET、氮化镓+硅集成、钌互连</a>
+
+*量子位*
+
+英特尔在2026年VLSI国际研讨会上公布，18A制程首个性能增强版18A-P已进入风险试产，符合原定进度。该版本经多技术协同优化，可实现同功耗性能升9%或同性能耗降18%，热阻、过孔电阻显著下降，兼容现有18A设计规则，同时披露CFET、氮化镓+硅集成、钌互连三大长期技术储备。
+
+<FeedbackButtons slug="item:qbitai-436082" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/436077.html" target="_blank" rel="noopener noreferrer">许锦波率分子之心完成逾亿美元融资，定义全球AI蛋白质产业新基建</a>
+
+*量子位*
+
+“AI蛋白质折叠奠基人”许锦波创立的分子之心近期完成累计超亿美元A轮融资，资方覆盖财务、产业、引导类多元资本。当前全球AI蛋白赛道已从实验室模型跑分转向产业落地竞争，分子之心凭借从结构预测到蛋白从头设计的代差技术，确立了全球AI蛋白质产业新基建定义者的地位。
+
+<FeedbackButtons slug="item:qbitai-436077" client:visible />
