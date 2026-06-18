@@ -25,7 +25,9 @@ const IMAGE_RE = /\.(jpe?g|png|webp|avif)$/i;
 
 type PhotoEntry = {
   src: string;
+  srcWebp?: string;       // 同图 .webp 版本（sharp 生成，质量 80，体积通常 -40%）
   thumb: string;
+  thumbWebp?: string;
   width: number;
   height: number;
   alt: string;
@@ -82,6 +84,7 @@ async function main() {
 
       let width = 0;
       let height = 0;
+      let webpRelative: string | undefined;
       if (sharp) {
         try {
           const meta = await sharp(buf).rotate().metadata();
@@ -89,6 +92,30 @@ async function main() {
           height = meta.height || 0;
         } catch (e) {
           console.warn(`[photo-manifests] ${albumSlug}/${f}: sharp failed`, e);
+        }
+
+        // 生成 .webp（增量：已存在且 mtime 比原图新就跳过）
+        const ext = path.extname(f);
+        if (ext.toLowerCase() === ".jpg" || ext.toLowerCase() === ".jpeg" || ext.toLowerCase() === ".png") {
+          const webpName = path.basename(f, ext) + ".webp";
+          const webpPath = path.join(albumDir, webpName);
+          let needGen = true;
+          try {
+            const srcStat = await fs.stat(inputPath);
+            const webpStat = await fs.stat(webpPath);
+            if (webpStat.mtimeMs >= srcStat.mtimeMs) needGen = false;
+          } catch {
+            /* webp 不存在 → 生成 */
+          }
+          if (needGen) {
+            try {
+              await sharp(buf).rotate().webp({ quality: 80 }).toFile(webpPath);
+              console.log(`    + ${webpName}`);
+            } catch (e) {
+              console.warn(`    ✗ webp gen failed ${webpName}:`, e);
+            }
+          }
+          webpRelative = `/photos/uploads/${albumSlug}/${webpName}`;
         }
       }
 
@@ -105,7 +132,9 @@ async function main() {
 
       entries.push({
         src: `/photos/uploads/${albumSlug}/${f}`,
+        srcWebp: webpRelative,
         thumb: `/photos/uploads/${albumSlug}/${f}`,
+        thumbWebp: webpRelative,
         width,
         height,
         alt: path.basename(f, path.extname(f)),

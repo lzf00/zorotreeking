@@ -14,7 +14,9 @@ type Exif = {
 
 type Photo = {
   src: string;
+  srcWebp?: string;
   thumb: string;
+  thumbWebp?: string;
   width: number;
   height: number;
   alt: string;
@@ -115,19 +117,22 @@ export default function PhotoGallery({ photos, galleryId }: Props) {
         return (
           <a
             key={i}
-            href={p.src}
+            href={p.srcWebp || p.src}
             data-pswp-width={p.width}
             data-pswp-height={p.height}
             data-exif={p.exif ? JSON.stringify(p.exif) : undefined}
             aria-label={p.alt}
             className="block group relative overflow-hidden bg-black/40"
           >
-            <img
-              src={p.thumb}
-              alt={p.alt}
-              loading="lazy"
-              className="w-full h-auto block transition-transform duration-[600ms] group-hover:scale-[1.03]"
-            />
+            <picture>
+              {p.thumbWebp && <source type="image/webp" srcSet={p.thumbWebp} />}
+              <img
+                src={p.thumb}
+                alt={p.alt}
+                loading="lazy"
+                className="w-full h-auto block transition-transform duration-[600ms] group-hover:scale-[1.03]"
+              />
+            </picture>
             {/* hover EXIF overlay：底部细条，淡入 */}
             {exifLine && (
               <div className="absolute inset-x-0 bottom-0 px-3 py-2 text-[10.5px] font-mono tracking-wide leading-snug text-white/90 opacity-0 group-hover:opacity-100 transition-opacity duration-200" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.75), rgba(0,0,0,0))" }}>

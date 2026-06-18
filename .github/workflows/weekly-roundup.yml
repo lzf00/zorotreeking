@@ -1,0 +1,73 @@
+name: Weekly roundup
+
+# 每周日北京 09:00 = UTC 周日 01:00：聚合本周新内容 + 豆包 LLM 生成观察文 + 推 main
+# GitHub safety: 用 GITHUB_TOKEN push 的 commit 不触发 push event，所以
+# 显式调 deploy.yml workflow_call。
+
+on:
+  schedule:
+    - cron: "0 1 * * 0"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: weekly-roundup
+  cancel-in-progress: false
+
+jobs:
+  generate-and-commit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      committed: ${{ steps.commit.outputs.committed }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Run weekly roundup
+        env:
+          DOUBAO_API_KEY: ${{ secrets.DOUBAO_API_KEY }}
+          ARK_API_KEY: ${{ secrets.ARK_API_KEY }}
+        run: npx tsx scripts/weekly-roundup.ts
+
+      - name: Commit and push if changed
+        id: commit
+        run: |
+          git config user.name "zorotreeking-bot"
+          git config user.email "bot@zorotreeking.online"
+          git add src/content/ai/weekly-*.zh.mdx 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No new weekly file."
+            echo "committed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          WEEK=$(date -u -d "+1 hours" +%G-W%V 2>/dev/null || date -u +%G-W%V)
+          git commit -m "chore(weekly): roundup $WEEK"
+          for i in 1 2 3; do
+            git fetch origin main
+            git pull --rebase --autostash origin main || { git rebase --abort 2>/dev/null || true; }
+            if git push origin HEAD:main; then
+              echo "committed=true" >> "$GITHUB_OUTPUT"
+              break
+            fi
+            sleep $((i * 3))
+          done
+
+  deploy:
+    needs: generate-and-commit
+    if: needs.generate-and-commit.outputs.committed == 'true'
+    uses: ./.github/workflows/deploy.yml
+    secrets: inherit

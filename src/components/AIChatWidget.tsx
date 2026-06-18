@@ -32,7 +32,13 @@ const SESSION_KEY = "zoro-chat-session";
 const HISTORY_KEY = "zoro-chat-history";
 const MODEL_KEY = "zoro-chat-model";
 
-const SUGGESTED = ["这个站是关于什么的？", "今日股市行情", "今日 AI 资讯"];
+const SUGGESTED = [
+  "这个站是关于什么的？",
+  "推荐一篇本周值得读的 AI 论文",
+  "今日大盘 + 我的观察池怎么样？",
+  "最近有哪些徒步路线？",
+  "用一句话总结本站的内容定位",
+];
 
 type ModelsInfo = {
   models: string[];
@@ -354,8 +360,10 @@ export default function AIChatWidget() {
             {messages.length === 0 && (
               <div style={{ textAlign: "center", color: "var(--text-tertiary, #9ca3af)", fontSize: "13px", paddingTop: "20px" }}>
                 <div style={{ fontSize: "28px", marginBottom: "8px" }}>👋</div>
-                <div>嗨，我是 ZoroTreeking 的 AI 助手</div>
-                <div style={{ marginTop: "4px", fontSize: "12px" }}>问我点什么吧</div>
+                <div style={{ color: "var(--text, #111827)", fontWeight: 500 }}>嗨，我是 ZoroTreeking 的 AI 助手</div>
+                <div style={{ marginTop: "6px", fontSize: "12px", lineHeight: 1.5 }}>
+                  可以问我关于这个站的内容、推荐文章，<br/>或开网搜查今日行情、最新 AI 资讯。
+                </div>
                 <div style={{ marginTop: "16px", display: "flex", flexDirection: "column", gap: "6px" }}>
                   {SUGGESTED.map((s, i) => (
                     <button key={i} onClick={() => send(s)} disabled={sending}

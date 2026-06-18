@@ -1,0 +1,120 @@
+---
+/**
+ * /changelog 站点更新日志。
+ * Build 时读 git log 自动生成（按月分组，过滤 trivial commits）。
+ * 让访客一眼看到"这站还活着 + 我在改什么"。
+ */
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { execSync } from "node:child_process";
+
+type Commit = { hash: string; date: string; subject: string; type: string };
+
+// 拿 git log；失败（CI 没装 git / 浅克隆）静默兜底
+let commits: Commit[] = [];
+try {
+  const raw = execSync(
+    'git log --pretty=format:"%h|%ad|%s" --date=short --no-merges',
+    { encoding: "utf-8", maxBuffer: 4 * 1024 * 1024 },
+  );
+  commits = raw.trim().split("\n").map((line) => {
+    const [hash, date, ...rest] = line.split("|");
+    const subject = rest.join("|");
+    // 抽 conventional commits 前缀作 type
+    const m = subject.match(/^(\w+)(?:\([^)]+\))?:\s*(.+)/);
+    return {
+      hash,
+      date,
+      subject: m ? m[2] : subject,
+      type: m ? m[1] : "other",
+    };
+  });
+} catch (e) {
+  console.warn("[changelog] git log unavailable:", (e as Error).message);
+}
+
+// 过滤掉太琐碎的 type（chore: 自动 commit、auto: 等）但保留有意义的
+const TYPE_LABEL: Record<string, { label: string; color: string; show: boolean }> = {
+  feat: { label: "新功能", color: "#1d4ed8", show: true },
+  fix: { label: "修复", color: "#dc2626", show: true },
+  refactor: { label: "重构", color: "#7c3aed", show: true },
+  style: { label: "样式", color: "#0891b2", show: true },
+  perf: { label: "性能", color: "#ea580c", show: true },
+  docs: { label: "文档", color: "#65a30d", show: true },
+  chore: { label: "杂项", color: "#71717a", show: false },
+  auto: { label: "自动", color: "#a1a1aa", show: false },
+};
+
+const meaningful = commits.filter((c) => {
+  const cfg = TYPE_LABEL[c.type];
+  // 默认显示有 type 标记的；纯自动提交（auto: ... / chore(digest): ...）默认折叠
+  if (c.subject.includes("daily auto digest")) return false;
+  if (c.subject.includes("market recap")) return false;
+  if (c.subject.includes("refresh embeddings")) return false;
+  if (c.subject.includes("refresh post vectors")) return false;
+  return cfg ? cfg.show : true;
+});
+
+// 按月分组
+const byMonth: Record<string, Commit[]> = {};
+for (const c of meaningful) {
+  const ym = c.date.slice(0, 7); // "2026-06"
+  (byMonth[ym] ??= []).push(c);
+}
+const months = Object.keys(byMonth).sort().reverse();
+
+const autoCount = commits.length - meaningful.length;
+---
+
+<BaseLayout title="更新日志" description="ZoroTreeking 站点的版本变更与功能演进记录。">
+  <article class="max-w-2xl mx-auto px-6 sm:px-8 pt-12 sm:pt-20 pb-24 sm:pb-32">
+
+    <header class="mb-14 sm:mb-16">
+      <div class="text-[11px] uppercase tracking-[0.2em] text-zinc-500 font-mono mb-3">CHANGELOG</div>
+      <h1 class="text-3xl sm:text-5xl leading-tight tracking-tight font-semibold text-[#1d1d1f] dark:text-zinc-100">
+        站点更新日志
+      </h1>
+      <p class="mt-5 text-base sm:text-lg leading-relaxed text-[var(--text-secondary)] font-light">
+        从 git log 自动生成，按月归档。隐藏了 {autoCount} 条 cron 自动提交（digest / 市场快照 / embeddings 等）。
+      </p>
+    </header>
+
+    {months.length === 0 && (
+      <p class="text-[var(--text-tertiary)]">还没有 commit 记录 · build 环境可能没拿到 git 历史。</p>
+    )}
+
+    {months.map((ym) => (
+      <section class="mb-12">
+        <h2 class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4 pb-2 border-b border-[var(--border)]">
+          {ym}
+        </h2>
+        <ul class="space-y-3">
+          {byMonth[ym].map((c) => {
+            const cfg = TYPE_LABEL[c.type] ?? { label: c.type, color: "#71717a", show: true };
+            return (
+              <li class="flex items-start gap-3">
+                <span class="shrink-0 mt-0.5 inline-flex items-center px-2 py-0.5 rounded text-[10px] uppercase tracking-wider font-mono font-medium"
+                      style={`background:${cfg.color}1a;color:${cfg.color}`}>
+                  {cfg.label}
+                </span>
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm leading-snug">{c.subject}</p>
+                  <p class="mt-0.5 text-[11px] text-[var(--text-tertiary)] font-mono">
+                    <time>{c.date}</time> · <code>{c.hash}</code>
+                  </p>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+    ))}
+
+    <footer class="mt-16 pt-8 border-t border-[var(--border)]">
+      <p class="text-sm text-[var(--text-tertiary)] leading-relaxed">
+        本页内容由 build 时执行 <code>git log</code> 自动生成。源代码：
+        <a href="https://github.com/lzf00/zorotreeking" target="_blank" rel="noopener noreferrer" class="hover:text-[var(--text)] transition-colors">github.com/lzf00/zorotreeking</a>
+      </p>
+    </footer>
+
+  </article>
+</BaseLayout>
