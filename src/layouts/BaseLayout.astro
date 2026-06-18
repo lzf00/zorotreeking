@@ -22,6 +22,62 @@ const t = useTranslations(lang);
 const fullTitle = title ? `${title} · ${t("site.title")}` : `${t("site.title")} — ${t("site.tagline")}`;
 const desc = description ?? t("site.tagline");
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+
+// ── JSON-LD 结构化数据（schema.org） ──
+// 让 Google / Bing / 微信分享等理解每个页面的语义。
+// Article 页输出 Article，首页输出 WebSite + Person，about 输出 Person，其它 WebPage。
+const siteName = "ZoroTreeking";
+const author = {
+  "@type": "Person",
+  name: "Zifei Liu",
+  alternateName: "Zoro",
+  url: new URL("/about", Astro.site).toString(),
+  sameAs: ["https://github.com/lzf00"],
+};
+
+let jsonLd: object | null = null;
+if (ogType === "article") {
+  jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: title ?? siteName,
+    description: desc,
+    image: ogImage ? new URL(ogImage, Astro.site).toString() : undefined,
+    datePublished: publishedTime?.toISOString(),
+    dateModified: (modifiedTime ?? publishedTime)?.toISOString(),
+    author,
+    publisher: { "@type": "Organization", name: siteName, url: Astro.site?.toString() },
+    mainEntityOfPage: { "@type": "WebPage", "@id": canonical },
+    keywords: tags?.join(", "),
+    inLanguage: lang === "zh" ? "zh-CN" : "en",
+  };
+} else if (Astro.url.pathname === "/" || Astro.url.pathname === "/en/" || Astro.url.pathname === "/en") {
+  jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: siteName,
+    url: Astro.site?.toString(),
+    description: t("site.tagline"),
+    inLanguage: lang === "zh" ? "zh-CN" : "en",
+    author,
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${Astro.site?.toString().replace(/\/$/, "")}/?q={search_term_string}`,
+      },
+      "query-input": "required name=search_term_string",
+    },
+  };
+} else if (Astro.url.pathname === "/about" || Astro.url.pathname === "/about/" ||
+           Astro.url.pathname === "/en/about" || Astro.url.pathname === "/en/about/") {
+  jsonLd = {
+    "@context": "https://schema.org",
+    ...author,
+    description: desc,
+    image: ogImage ? new URL(ogImage, Astro.site).toString() : undefined,
+  };
+}
 ---
 
 <!doctype html>
@@ -47,6 +103,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
       <meta property="article:modified_time" content={modifiedTime.toISOString()} />
     )}
     {ogType === "article" && tags && tags.map((t) => <meta property="article:tag" content={t} />)}
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd, (_, v) => v === undefined ? undefined : v)} />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -63,6 +120,36 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
     <AIChatWidget client:idle />
     <!-- 全站搜索 modal（pagefind，仅在空闲时加载） -->
     <SearchModal client:idle />
+    <!-- 代码块复制按钮（mdx 文章里的 <pre> 自动加 copy） -->
+    <script is:inline>
+      document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll("article pre").forEach((pre) => {
+          if (pre.querySelector(".code-copy-btn")) return;
+          pre.style.position = "relative";
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "code-copy-btn";
+          btn.setAttribute("aria-label", "复制代码");
+          btn.textContent = "Copy";
+          btn.style.cssText = "position:absolute;top:8px;right:8px;font-size:11px;padding:3px 8px;border-radius:6px;background:rgba(255,255,255,0.08);color:#9ca3af;border:1px solid rgba(255,255,255,0.12);cursor:pointer;font-family:'JetBrains Mono',monospace;opacity:0;transition:opacity 0.15s,background 0.15s";
+          pre.addEventListener("mouseenter", () => { btn.style.opacity = "1"; });
+          pre.addEventListener("mouseleave", () => { btn.style.opacity = "0"; });
+          btn.addEventListener("click", async () => {
+            const code = pre.querySelector("code")?.textContent || pre.textContent || "";
+            try {
+              await navigator.clipboard.writeText(code);
+              btn.textContent = "✓ Copied";
+              btn.style.color = "#16a34a";
+              setTimeout(() => { btn.textContent = "Copy"; btn.style.color = "#9ca3af"; }, 1600);
+            } catch {
+              btn.textContent = "✗ failed";
+              setTimeout(() => { btn.textContent = "Copy"; }, 1600);
+            }
+          });
+          pre.appendChild(btn);
+        });
+      });
+    </script>
     <!-- 轻量页面访问统计：每次浏览发一个 POST，失败静默 -->
     <script is:inline>
       (() => {
