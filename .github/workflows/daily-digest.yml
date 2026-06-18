@@ -14,6 +14,14 @@ on:
         type: choice
         options: [both, ai, invest]
         default: both
+      translate_all:
+        description: "强制全量回填 en 翻译（默认只翻译缺 en 的 zh）"
+        type: boolean
+        default: false
+      skip_fetch:
+        description: "跳过 digest fetch，只跑 翻译/embedding（节省额度）"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -25,7 +33,8 @@ concurrency:
 jobs:
   fetch-and-commit:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # 全量回填翻译 60 篇 ≈ 30-50 分钟（每篇 LLM call 30-60s）；预留 90 min
+    timeout-minutes: 90
     outputs:
       committed: ${{ steps.commit.outputs.committed }}
     steps:
@@ -44,6 +53,7 @@ jobs:
         run: npm ci
 
       - name: Run digest fetcher
+        if: github.event.inputs.skip_fetch != 'true'
         env:
           DOUBAO_API_KEY: ${{ secrets.DOUBAO_API_KEY }}
           ARK_API_KEY: ${{ secrets.ARK_API_KEY }}
@@ -84,14 +94,20 @@ jobs:
           fi
           echo "committed=true" >> "$GITHUB_OUTPUT"
 
-      # 新 zh digest 翻译成 en（增量，每天 2 篇 ≈ ¥0.02）
-      - name: Translate new digests zh → en
-        timeout-minutes: 10
+      # 新 zh digest 翻译成 en。增量默认；workflow_dispatch translate_all=true 时回填历史
+      - name: Translate digests zh → en
+        timeout-minutes: 60
         env:
           DOUBAO_API_KEY: ${{ secrets.DOUBAO_API_KEY }}
           ARK_API_KEY: ${{ secrets.ARK_API_KEY }}
         continue-on-error: true
-        run: npx tsx scripts/translate-digest.ts
+        run: |
+          if [ "${{ github.event.inputs.translate_all }}" = "true" ]; then
+            echo "🌐 全量回填模式（--all）"
+            npx tsx scripts/translate-digest.ts --all
+          else
+            npx tsx scripts/translate-digest.ts
+          fi
 
       # embedding 增量更新（独立 step，失败不影响 digest commit；
       # 即使超时被 cancel，新 digest mdx 已经在 main 上了）
