@@ -105,6 +105,16 @@ if (ogType === "article") {
     )}
     {ogType === "article" && tags && tags.map((t) => <meta property="article:tag" content={t} />)}
     {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd, (_, v) => v === undefined ? undefined : v)} />}
+    {/* 搜索引擎站长验证（GitHub repo Variables 配后自动注入） */}
+    {import.meta.env.PUBLIC_GOOGLE_VERIFICATION && (
+      <meta name="google-site-verification" content={import.meta.env.PUBLIC_GOOGLE_VERIFICATION} />
+    )}
+    {import.meta.env.PUBLIC_BAIDU_VERIFICATION && (
+      <meta name="baidu-site-verification" content={import.meta.env.PUBLIC_BAIDU_VERIFICATION} />
+    )}
+    {import.meta.env.PUBLIC_BING_VERIFICATION && (
+      <meta name="msvalidate.01" content={import.meta.env.PUBLIC_BING_VERIFICATION} />
+    )}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/favicon.svg" />
     <link rel="manifest" href="/manifest.webmanifest" />
@@ -117,8 +127,15 @@ if (ogType === "article") {
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   </head>
   <body class="min-h-screen flex flex-col">
+    <!-- A11y skip-to-content：键盘用户按 Tab 第一个出现这个；视觉默认隐藏，focus 时浮在左上角 -->
+    <a href="#main-content"
+       class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[999]
+              focus:px-4 focus:py-2 focus:rounded-lg focus:bg-black focus:text-white
+              focus:text-sm focus:font-medium focus:shadow-lg">
+      跳到正文 / Skip to content
+    </a>
     <Navbar />
-    <main class="flex-1">
+    <main id="main-content" class="flex-1" tabindex="-1">
       <slot />
     </main>
     <Footer />

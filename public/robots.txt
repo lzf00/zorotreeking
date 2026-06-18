@@ -1,0 +1,21 @@
+# https://www.zorotreeking.online/robots.txt
+# 默认全允许，列出 sitemap 让搜索引擎发现。
+
+User-agent: *
+Allow: /
+
+# 后台 / 接口禁爬（站内已经做了 noindex，再加一层防御）
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_astro/
+
+# AI 训练爬虫：默认允许（个人博客可见性优先）。
+# 如果不想被特定 AI 训练，把对应 User-agent 取消注释 + Disallow:
+# User-agent: GPTBot
+# Disallow: /
+# User-agent: ClaudeBot
+# Disallow: /
+# User-agent: CCBot
+# Disallow: /
+
+Sitemap: https://www.zorotreeking.online/sitemap.xml

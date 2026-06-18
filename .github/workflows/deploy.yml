@@ -129,6 +129,12 @@ jobs:
             -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new" \
             dist/ "$SSH_USER@$SSH_HOST:$DEPLOY_PATH/"
 
+      # 通知 IndexNow（Bing/Yandex/Naver/Seznam）新增/改动 URL，加速索引
+      # 失败不阻塞 deploy
+      - name: Ping IndexNow
+        continue-on-error: true
+        run: npx tsx scripts/indexnow-ping.ts
+
       - name: Summary
         run: |
           # 不打印 SSH_HOST / DEPLOY_PATH，防止公开 Actions 日志泄露
