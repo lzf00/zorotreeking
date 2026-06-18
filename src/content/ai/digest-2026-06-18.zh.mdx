@@ -1,0 +1,188 @@
+---
+lang: zh
+translationKey: digest-2026-06-18
+title: "AI 每日精选 · 2026-06-18"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-06-18
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.18363" target="_blank" rel="noopener noreferrer">Guava: An Effective and Universal Harness for Embodied Manipulation</a>
+
+*HF ★ 15 · Haowen Liu, Xirui Li, Shaoxiong Yao… · [HF 镜像](https://huggingface.co/papers/2606.18363)*
+
+针对具身操纵的模型调度框架设计标准缺失问题，本文提出通用框架Guava，经系统探索智能体工作流、动作与观测空间，明确三大核心设计要素：感知-推理-动作迭代循环、语义动作抽象、多模态观测。仅用不到2千条仿真轨迹即可将具身能力蒸馏至4B开源小模型，性能比肩前沿闭源模型、泛化性优异，证明该框架可作为模型无关的高效具身接口。
+
+<FeedbackButtons slug="item:arxiv-2606.18363" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.18101" target="_blank" rel="noopener noreferrer">Trust the Right Teacher: Quality-Aware Self-Distillation for GUI Grounding</a>
+
+*HF ★ 10 · Jingyuan Huang, Zuming Huang, Yucheng Shi… · [HF 镜像](https://huggingface.co/papers/2606.18101)*
+
+本文聚焦GUI定位任务，针对现有同策略自蒸馏中学生生成前缀偏离目标时教师坐标信号不可靠的缺陷，提出质量感知自蒸馏方法：通过软正确性感知门控降权低质信号，搭配教师概率缩放校准监督强度，二者互补增效，在6个基准测试中均优于基线，可稳定提升基础模型性能。
+
+<FeedbackButtons slug="item:arxiv-2606.18101" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.16533" target="_blank" rel="noopener noreferrer">Kairos: A Native World Model Stack for Physical AI</a>
+
+*HF ★ 8 · Kairos Team, Fei Wang, Shan You… · [HF 镜像](https://huggingface.co/papers/2606.16533)*
+
+针对实体AI对世界模型自主习得知识、长期维持状态、高效落地部署的核心需求，本文提出Kairos原生世界模型栈：采用跨具身数据课程的原生预训练范式，搭载混合线性时序注意力统一架构，搭配部署感知的系统协同设计，可数学保障长时序状态传播误差可控，实测性能顶尖、效率与能力平衡优异，可作为实体智能的核心运行底座。
+
+<FeedbackButtons slug="item:arxiv-2606.16533" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.19338" target="_blank" rel="noopener noreferrer">Beyond the Current Observation: Evaluating Multimodal Large Language Models in Controllable Non-Markov Games</a>
+
+*HF ★ 3 · Shengyuan Ding, Xilin Wei, Xinyu Fang… · [HF 镜像](https://huggingface.co/papers/2606.19338)*
+
+针对现有多模态大模型决策基准无法隔离评测非马尔可夫场景记忆推理能力的缺陷，本文提出RNG-Bench评测集，包含两类非马尔可夫游戏、多难度梯度，配套决斗评测协议与记忆缺口指标，可拆分遗忘与决策失误。测试显示前沿多模态大模型远未达标，错误多来自遗忘，针对性微调Qwen3.5-9B可提性能且不损通用能力。
+
+<FeedbackButtons slug="item:arxiv-2606.19338" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.19336" target="_blank" rel="noopener noreferrer">Learning User Simulators with Turing Rewards</a>
+
+*HF ★ 1 · Yingshan Susan Wang, Cedegao E. Zhang, Linlu Qiu… · [HF 镜像](https://huggingface.co/papers/2606.19336)*
+
+针对现有用户模拟器多通过匹配真实响应训练的不足，该文提出基于图灵测试的强化学习框架Turing-RL：用大模型作为判别器，依据用户历史判断生成回复与真人回复的混淆度作为奖励，训练模拟器输出难与真人区分的回复。在对话、Reddit论坛两个领域测试，其LLM、人工评估效果均优于基线，证明优化不可区分性比匹配响应更适合训练用户模拟器。
+
+<FeedbackButtons slug="item:arxiv-2606.19336" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.18283" target="_blank" rel="noopener noreferrer">Gaussian Mixture Attention: Linear-Time Sequence Mixing via Probabilistic Latent Routing</a>
+
+*Yongchao Huang, Hassan Raza*
+
+针对Transformer标准点积注意力O(N²)复杂度的长上下文瓶颈，本文提出高斯混合注意力GMA：无需显式做Q-K两两比对，通过K个可学习高斯混合组件实现隐式路由，复杂度降至固定K下的O(NK)线性级。实验显示其长上下文分类性能可比基线，因果版优于现有线性注意力变种，但仍弱于优化后的SDPA、Mamba，是可解释的线性时间注意力备选方案。
+
+<FeedbackButtons slug="item:arxiv-2606.18283" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.18284" target="_blank" rel="noopener noreferrer">Breaking the Solver Bottleneck: Training Task Generators at the Learnable Frontier</a>
+
+*Lorenz Wolf, Connor Watts, Roger Creus Castanyer…*
+
+针对强化学习训练缺适配当前模型难度的有效任务、带求解器的任务生成效率极低的痛点，该文提出PROPEL摊销框架：预训练轻量激活探针作为任务通过率代理，将生成评估简化为单次前向传播，打破求解器瓶颈。实验显示，数学、代码、软件工程领域适配目标难度的有效任务占比均提升约1倍，跨模型、未见数据场景均有效。
+
+<FeedbackButtons slug="item:arxiv-2606.18284" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.18286" target="_blank" rel="noopener noreferrer">CODEBLOCK: Learning to Supervise Code at the Right Granularity</a>
+
+*Zhijie Deng, Ling Li, Jinlong Pang…*
+
+针对代码大模型监督微调全token训练效率低、直接套用NLP token级选择会破坏代码结构的问题，该文提出结构感知的稀疏监督框架CodeBlock：先筛选优质指令对，将代码拆成语法完整块，结合逻辑token效用、数据流依赖重排选高价值块，仅对选中块算损失，完整响应仍作上下文。6个代码生成基准测试显示，其pass@1优于全量微调及现有基线，仅需1.9%的监督token。
+
+<FeedbackButtons slug="item:arxiv-2606.18286" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/ai-chemist-improves-reaction" target="_blank" rel="noopener noreferrer">A near-autonomous AI chemist improves a challenging reaction in medicinal chemistry</a>
+
+*OpenAI*
+
+OpenAI联合Molecule.one研发的搭载GPT-5.4的近自主AI化学家，成功优化了药物合成领域难度较高的关键反应，推动药物化学研究进展。该成果打破了传统药用反应优化依赖人工试错、周期冗长的瓶颈，可大幅降低药物研发成本、提升效率，也为AI落地实体化学实验场景提供了新参考范式。
+
+<FeedbackButtons slug="item:openai-blog-ai-chemist-improves-reaction" client:visible />
+
+## <a href="https://openai.com/index/introducing-life-sci-bench" target="_blank" rel="noopener noreferrer">Introducing LifeSciBench</a>
+
+*OpenAI*
+
+本研究推出面向生命科学领域的专用评测基准LifeSciBench，该基准由生命科学领域专家全程参与撰写、评审，可针对性评估AI系统在真实生命科学研究场景下的各类任务处理能力、研究决策水平，填补了专业级生科研究场景AI评测工具的缺口，可为相关AI研发提供标准化校验依据。
+
+<FeedbackButtons slug="item:openai-blog-introducing-life-sci-bench" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener noreferrer">Statement on the US government directive to suspend access to Fable 5 and Mythos 5</a>
+
+*Anthropic*
+
+本声明围绕美国政府针对算力工具的权限管控新规作出说明：美方近期发布出口管制类行政指令，对Fable 5、Mythos 5两款产品的访问权限作出严格限制，所有非美籍人员无论身处美国境内还是境外，均被暂停访问上述两款产品的全部权限，管制覆盖所有外籍群体，无地域豁免空间。
+
+<FeedbackButtons slug="item:anthropic-fable-mythos-access" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-corps" target="_blank" rel="noopener noreferrer">Introducing Claude Corps</a>
+
+*Anthropic*
+
+本次披露正式推出Claude Corps全国性带资研修扶持项目，面向职业早期群体开放招募，核心选拔要求为申请者需对推动AI技术惠及美国各地社群抱有高度热忱，项目将为符合条件的青年从业者提供配套资源支持，助力拓宽AI普惠覆盖场景、释放AI技术的公共价值。
+
+<FeedbackButtons slug="item:anthropic-claude-corps" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/unlocking-uk-house-building-with-ai-accelerated-planning/" target="_blank" rel="noopener noreferrer">Unlocking UK house-building with AI-accelerated planning</a>
+
+*Google DeepMind*
+
+英国政府联合谷歌DeepMind开展住房建设规划赋能项目，核心是研发AI驱动的规划工作原型，依托人工智能技术大幅缩短住房项目相关规划决策的耗时，旨在破解长期制约英国住房供给的规划审批效率偏低堵点，有效释放国内住房建设供给潜力。
+
+<FeedbackButtons slug="item:deepmind-unlocking-uk-house-building-with-ai-accelerated-planning" client:visible />
+
+## <a href="https://deepmind.google/blog/diffusiongemma-4x-faster-text-generation/" target="_blank" rel="noopener noreferrer">DiffusionGemma: 4x faster text generation</a>
+
+*Google DeepMind*
+
+本次公开的DiffusionGemma是面向低时延需求的新型大语言模型，针对传统自回归架构逐token生成效率偏低的痛点，摒弃逐词输出的固有模式，采用扩散生成范式优化推理路径，仅需少量迭代步即可输出完整序列，在生成质量与原生Gemma模型基本持平的前提下，实现了4倍推理速度提升，可适配高并发对话、实时内容生成等落地场景。
+
+<FeedbackButtons slug="item:deepmind-diffusiongemma-4x-faster-text-generation" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/molmomotion" target="_blank" rel="noopener noreferrer">MolmoMotion: Language-guided 3D motion forecasting</a>
+
+*Hugging Face*
+
+《MolmoMotion》针对3D运动预测领域现有方法仅依赖历史序列、无法响应语义指令的痛点，提出语言引导的跨模态预测框架，通过设计语言-运动对齐模块结合时空Transformer建模时序关联，配套构建了标注数据集，在公开基准上性能超现有SOTA约12%，可灵活生成符合指令的3D运动，适配人机交互、动画生成等场景。
+
+<FeedbackButtons slug="item:hf-blog-molmomotion" client:visible />
+
+## <a href="https://huggingface.co/blog/amazon/strands-lerobot-hub-to-hardware" target="_blank" rel="noopener noreferrer">From the Hugging Face Hub to robot hardware with Strands Agents and LeRobot</a>
+
+*Hugging Face*
+
+本研究推出结合Strands Agents框架与LeRobot库的工具链，打通Hugging Face Hub开源AI资源到实体机器人硬件的落地链路：可直接复用Hub内预训练多模态大模型、具身智能策略等资源，无需重复训练即可适配多类通用机器人硬件，大幅降低具身应用部署门槛，方便开发者快速将开源模型落地到实体机器人完成实操任务。
+
+<FeedbackButtons slug="item:hf-blog-strands-lerobot-hub-to-hardware" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+本文从美德伦理主体视角开展AI对齐研究，反驳“理性主体需锚定固定最终目标”的传统假设，提出人类理性源于行为适配包含准则、资源、评价体系的实践网络。要实现AI适配人类诉求、可协同，需让AI决策逻辑与人类实践型行动逻辑同构，可同时满足伦理对齐与核心安全对齐需求。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/06/436468.html" target="_blank" rel="noopener noreferrer">国产算力正在进入Token标准化时代</a>
+
+*量子位*
+
+当前国产AI芯片出货已占国内市场半壁江山，但适配难、调优贵等问题导致部分智算中心算力使用率不足50%，核心瓶颈是异构算力向标准化Token转化的工程化能力。2026年6月是石科技在无锡牵头举办产业论坛，联合学界、超算中心及上下游企业，专攻该转化环节，补全国产算力落地短板。
+
+<FeedbackButtons slug="item:qbitai-436468" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/436456.html" target="_blank" rel="noopener noreferrer">刚刚，北京建了一座AI工厂：目标10万P算力，日产10万亿Token！</a>
+
+*量子位*
+
+九章云极近日在北京发布AI工厂战略，核心包含10万P算力的训练工厂、日均产能10万亿Token的Token工厂：前者打磨各行业专业模型，后者封装可计量、稳定交付的专业Token。项目目标实现千倍综合降本，孵化千个高价值AI应用，破解企业大模型落地痛点，推动智算云从供给算力转向输出可落地智能。
+
+<FeedbackButtons slug="item:qbitai-436456" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/436435.html" target="_blank" rel="noopener noreferrer">AI转型最大的门槛，不是技术，是人</a>
+
+*量子位*
+
+浪潮信息董事长彭震在AIEC2026大会上提出，AI转型最大门槛并非技术而是人。当前88%的企业已有AI常态化应用场景，但仅1/3能推进规模化落地，核心卡点是组织、文化、流程适配不足，包括员工对AI的情绪抗拒、认知偏差。他提出Humagent概念，主张将Agent视同人力，以组织为转型主战场。
+
+<FeedbackButtons slug="item:qbitai-436435" client:visible />
