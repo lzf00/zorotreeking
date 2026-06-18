@@ -1,30 +1,125 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import ContentPulse from "@/components/ContentPulse.astro";
+import { aboutData } from "@/data/about";
 import { useTranslations } from "@/i18n/ui";
+
 const t = useTranslations("en");
+const { name, alias, photo, contact, en } = aboutData;
+const tagline = en?.tagline ?? aboutData.tagline;
+const intro = en?.intro ?? aboutData.intro;
+const now = en?.now ?? aboutData.now;
+const timeline = en?.timeline ?? aboutData.timeline;
+
+const initials = name
+  .split(/\s+/)
+  .map((s) => s[0])
+  .join("")
+  .slice(0, 2)
+  .toUpperCase();
 ---
+
 <BaseLayout title={t("nav.about")}>
-  <article class="max-w-prose mx-auto px-5 pt-16 pb-16">
-    <h1 class="font-serif text-5xl sm:text-6xl leading-[0.95] tracking-tight mb-6">About</h1>
-    <div class="prose prose-neutral dark:prose-invert max-w-none">
-      <p>Welcome to <strong>ZoroTreeking</strong>. A personal site where I keep notes and records across four interests:</p>
-      <ul>
-        <li><strong>AI Learning</strong> — paper notes, tool experiments, technical thoughts</li>
-        <li><strong>Investment</strong> — account reviews and monthly records (personal learning log, not investment advice)</li>
-        <li><strong>Photography</strong> — albums organized by theme, location and year</li>
-        <li><strong>Hiking</strong> — route tracks, elevation profiles, trip logs</li>
+  <article class="max-w-3xl mx-auto px-5 pt-12 sm:pt-20 pb-16">
+
+    <header class="flex flex-col sm:flex-row items-start gap-6 sm:gap-8 mb-14 sm:mb-16">
+      {photo ? (
+        <img src={photo} alt={name}
+             class="w-32 h-32 sm:w-40 sm:h-40 rounded-2xl object-cover shrink-0" />
+      ) : (
+        <div class="w-32 h-32 sm:w-40 sm:h-40 rounded-2xl shrink-0
+                    bg-gradient-to-br from-blue-100 via-purple-100 to-green-100
+                    dark:from-blue-950/40 dark:via-purple-950/40 dark:to-green-950/40
+                    flex items-center justify-center"
+             aria-hidden="true">
+          <span class="font-serif text-5xl sm:text-6xl text-zinc-700 dark:text-zinc-200">{initials}</span>
+        </div>
+      )}
+      <div class="flex-1 min-w-0">
+        <h1 class="font-serif text-4xl sm:text-5xl leading-[1.05] tracking-tight">{name}</h1>
+        {alias && (
+          <p class="mt-1 text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-[0.18em]">
+            a.k.a. {alias}
+          </p>
+        )}
+        <p class="mt-4 text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed font-light">
+          {tagline}
+        </p>
+      </div>
+    </header>
+
+    <section class="mb-16 sm:mb-20">
+      {intro.split("\n\n").map((p) => (
+        <p class="text-[17px] sm:text-[18px] leading-[1.75] text-zinc-700 dark:text-zinc-300 mb-5 last:mb-0">
+          {p}
+        </p>
+      ))}
+    </section>
+
+    <section class="mb-16 sm:mb-20">
+      <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4 pb-2 border-b border-[var(--border)]">
+        NOW
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div class="rounded-xl border border-[var(--border)] p-4 sm:p-5 bg-blue-50/40 dark:bg-blue-950/20">
+          <div class="text-xs font-semibold text-section-ai mb-1.5">🛠 Working on</div>
+          <p class="text-sm leading-relaxed text-[var(--text-secondary)]">{now.working}</p>
+        </div>
+        <div class="rounded-xl border border-[var(--border)] p-4 sm:p-5 bg-purple-50/40 dark:bg-purple-950/20">
+          <div class="text-xs font-semibold text-section-photo mb-1.5">📖 Reading</div>
+          <p class="text-sm leading-relaxed text-[var(--text-secondary)]">{now.reading}</p>
+        </div>
+        <div class="rounded-xl border border-[var(--border)] p-4 sm:p-5 bg-green-50/40 dark:bg-green-950/20">
+          <div class="text-xs font-semibold text-section-hike mb-1.5">🎯 This year</div>
+          <p class="text-sm leading-relaxed text-[var(--text-secondary)]">{now.aiming}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mb-16 sm:mb-20">
+      <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4 pb-2 border-b border-[var(--border)]">
+        TIMELINE
+      </div>
+      <ol class="relative border-l border-[var(--border)] ml-2 space-y-5">
+        {timeline.map((tl) => (
+          <li class="ml-5 relative">
+            <span class="absolute -left-[26px] top-1.5 w-2.5 h-2.5 rounded-full bg-zinc-300 dark:bg-zinc-700 ring-4 ring-[var(--bg)]"></span>
+            <div class="text-[11px] font-mono text-[var(--text-tertiary)] uppercase tracking-wider mb-0.5">{tl.year}</div>
+            <div class="text-[15px] text-zinc-700 dark:text-zinc-300 leading-snug">{tl.what}</div>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <ContentPulse />
+
+    <section class="mb-16 mt-4">
+      <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4 pb-2 border-b border-[var(--border)]">
+        CONNECT
+      </div>
+      <ul class="flex flex-wrap items-center gap-3">
+        <li><a href={`mailto:${contact.email}`} class="inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] px-4 py-2 text-sm hover:bg-[var(--bg-soft)] transition-colors">📮 Email</a></li>
+        <li><a href={contact.github} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] px-4 py-2 text-sm hover:bg-[var(--bg-soft)] transition-colors">⌬ GitHub</a></li>
+        <li><a href={contact.rss} class="inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] px-4 py-2 text-sm hover:bg-[var(--bg-soft)] transition-colors">📡 RSS</a></li>
+        <li><a href="/en/subscribe" class="inline-flex items-center gap-1.5 rounded-full bg-black dark:bg-white text-white dark:text-black px-4 py-2 text-sm hover:opacity-90 transition-opacity">✉️ Subscribe</a></li>
       </ul>
-      <p>All content is personal, original or curated. Feel free to leave a comment.</p>
-      <hr />
-      <h2 class="font-serif text-3xl mt-10 mb-4">Compliance</h2>
-      <p class="text-sm text-[var(--text-secondary)]">This is a <strong>non-commercial personal site</strong>: no commerce, no public account registration, no third-party content uploads. The AI chat widget is for study and conversation only — user input is screened by a keyword filter before being forwarded to the LLM. Like / pageview tracking stores only an IP+UA hash fingerprint and a timestamp; no phone numbers, email addresses or real names are collected.</p>
-      <ul class="text-sm text-[var(--text-secondary)]">
-        <li><strong>ICP filing</strong>: <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">沪 ICP 备 2026021578 号-1</a></li>
-        <li><strong>Site operator / Security officer</strong>: Zoro (the owner)</li>
-        <li><strong>Abuse / complaint email</strong>: <a href="mailto:1437066318@qq.com">1437066318@qq.com</a> (response within 48 hours)</li>
-        <li><strong>Log retention</strong>: access logs and interaction records are kept ≥ 6 months and provided to regulators / law enforcement upon lawful request</li>
-      </ul>
-      <p class="text-sm text-[var(--text-secondary)]">Full complaint procedure on the <a href="/en/contact">Contact page</a>. Open-sourced on <a href="https://github.com/lzf00/zorotreeking">GitHub</a>, built with Astro 4, deployed automatically.</p>
-    </div>
+    </section>
+
+    <section class="pt-8 border-t border-[var(--border)] text-xs text-[var(--text-tertiary)] space-y-2 leading-relaxed">
+      <p>
+        This is a <strong>non-commercial personal site</strong>: no commerce, no public account registration, no third-party content uploads. The AI chat widget is for study only — input is filtered before being forwarded to an LLM. Like / pageview tracking stores only an IP+UA hash fingerprint and a timestamp; no phone numbers, emails, or real names are collected.
+      </p>
+      <p>
+        <strong>ICP filing:</strong> <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer" class="hover:text-[var(--text)] transition-colors">沪 ICP 备 2026021578 号-1</a> ·
+        <strong>Operator:</strong> Zoro ·
+        <strong>Abuse:</strong> <a href={`mailto:${contact.email}`} class="hover:text-[var(--text)] transition-colors">{contact.email}</a> (≤48h response) ·
+        Logs retained ≥ 6 months for regulatory compliance ·
+        Full procedure on <a href="/en/contact" class="hover:text-[var(--text)] transition-colors">Contact page</a>
+      </p>
+      <p>
+        Open-sourced on <a href={contact.github + "/zorotreeking"} target="_blank" rel="noopener noreferrer" class="hover:text-[var(--text)] transition-colors">GitHub</a>, built with Astro 4, CI-deployed.
+      </p>
+    </section>
+
   </article>
 </BaseLayout>

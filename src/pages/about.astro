@@ -1,36 +1,149 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import ContentPulse from "@/components/ContentPulse.astro";
+import { aboutData } from "@/data/about";
 import { useTranslations } from "@/i18n/ui";
-const t = useTranslations("zh");
----
-<BaseLayout title={t("nav.about")}>
-  <article class="max-w-prose mx-auto px-5 pt-16 pb-16">
-    <h1 class="font-serif text-5xl sm:text-6xl leading-[0.95] tracking-tight mb-6">关于</h1>
-    <div class="prose prose-neutral dark:prose-invert max-w-none">
-      <p>欢迎来到 <strong>ZoroTreeking</strong>。这是我个人的学习与生活记录站点，沉淀四个方向的内容：</p>
-      <ul>
-        <li><strong>AI 学习</strong>：论文笔记、工具实践、技术思考</li>
-        <li><strong>个人投资</strong>：账户复盘、策略学习、月度记录（个人学习日志，非投资建议）</li>
-        <li><strong>摄影</strong>：相册按主题、地点、年份归档</li>
-        <li><strong>徒步</strong>：路线轨迹、海拔曲线、出行游记</li>
-      </ul>
-      <p>所有内容均为个人原创或学习整理，欢迎留言交流。</p>
-    </div>
 
+const t = useTranslations("zh");
+const { name, alias, tagline, photo, intro, now, timeline, contact } = aboutData;
+
+// initials 兜底头像
+const initials = name
+  .split(/\s+/)
+  .map((s) => s[0])
+  .join("")
+  .slice(0, 2)
+  .toUpperCase();
+---
+
+<BaseLayout title={t("nav.about")}>
+  <article class="max-w-3xl mx-auto px-5 pt-12 sm:pt-20 pb-16">
+
+    {/* ── Hero：头像 + 名字 + tagline ── */}
+    <header class="flex flex-col sm:flex-row items-start gap-6 sm:gap-8 mb-14 sm:mb-16">
+      {photo ? (
+        <img src={photo} alt={name}
+             class="w-32 h-32 sm:w-40 sm:h-40 rounded-2xl object-cover shrink-0" />
+      ) : (
+        <div class="w-32 h-32 sm:w-40 sm:h-40 rounded-2xl shrink-0
+                    bg-gradient-to-br from-blue-100 via-purple-100 to-green-100
+                    dark:from-blue-950/40 dark:via-purple-950/40 dark:to-green-950/40
+                    flex items-center justify-center"
+             aria-hidden="true">
+          <span class="font-serif text-5xl sm:text-6xl text-zinc-700 dark:text-zinc-200">{initials}</span>
+        </div>
+      )}
+      <div class="flex-1 min-w-0">
+        <h1 class="font-serif text-4xl sm:text-5xl leading-[1.05] tracking-tight">{name}</h1>
+        {alias && (
+          <p class="mt-1 text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-[0.18em]">
+            a.k.a. {alias}
+          </p>
+        )}
+        <p class="mt-4 text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed font-light">
+          {tagline}
+        </p>
+      </div>
+    </header>
+
+    {/* ── 自述 ── */}
+    <section class="mb-16 sm:mb-20">
+      {intro.split("\n\n").map((p) => (
+        <p class="text-[17px] sm:text-[18px] leading-[1.75] text-zinc-700 dark:text-zinc-300 mb-5 last:mb-0">
+          {p}
+        </p>
+      ))}
+    </section>
+
+    {/* ── Now：三块当下状态 ── */}
+    <section class="mb-16 sm:mb-20">
+      <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4 pb-2 border-b border-[var(--border)]">
+        NOW
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div class="rounded-xl border border-[var(--border)] p-4 sm:p-5 bg-blue-50/40 dark:bg-blue-950/20">
+          <div class="text-xs font-semibold text-section-ai mb-1.5">🛠 正在做</div>
+          <p class="text-sm leading-relaxed text-[var(--text-secondary)]">{now.working}</p>
+        </div>
+        <div class="rounded-xl border border-[var(--border)] p-4 sm:p-5 bg-purple-50/40 dark:bg-purple-950/20">
+          <div class="text-xs font-semibold text-section-photo mb-1.5">📖 正在读</div>
+          <p class="text-sm leading-relaxed text-[var(--text-secondary)]">{now.reading}</p>
+        </div>
+        <div class="rounded-xl border border-[var(--border)] p-4 sm:p-5 bg-green-50/40 dark:bg-green-950/20">
+          <div class="text-xs font-semibold text-section-hike mb-1.5">🎯 今年目标</div>
+          <p class="text-sm leading-relaxed text-[var(--text-secondary)]">{now.aiming}</p>
+        </div>
+      </div>
+    </section>
+
+    {/* ── 时间线 ── */}
+    <section class="mb-16 sm:mb-20">
+      <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4 pb-2 border-b border-[var(--border)]">
+        TIMELINE
+      </div>
+      <ol class="relative border-l border-[var(--border)] ml-2 space-y-5">
+        {timeline.map((tl) => (
+          <li class="ml-5 relative">
+            <span class="absolute -left-[26px] top-1.5 w-2.5 h-2.5 rounded-full bg-zinc-300 dark:bg-zinc-700 ring-4 ring-[var(--bg)]"></span>
+            <div class="text-[11px] font-mono text-[var(--text-tertiary)] uppercase tracking-wider mb-0.5">{tl.year}</div>
+            <div class="text-[15px] text-zinc-700 dark:text-zinc-300 leading-snug">{tl.what}</div>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    {/* ── 心跳图（站点产出热力图） ── */}
     <ContentPulse />
 
-    <div class="prose prose-neutral dark:prose-invert max-w-none">
-      <hr />
-      <h2 class="font-serif text-3xl mt-10 mb-4">合规信息</h2>
-      <p class="text-sm text-[var(--text-secondary)]">本站为<strong>个人非经营性站点</strong>，不提供商业服务、交易、公开用户注册或第三方内容上传功能。AI 对话窗口仅供学习交流，输入内容经过敏感词过滤后转发给大模型；点赞 / 访问统计仅留存 IP+UA 哈希指纹与时间戳，不收集手机号、邮箱、真实姓名。</p>
-      <ul class="text-sm text-[var(--text-secondary)]">
-        <li><strong>ICP 备案</strong>：<a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">沪 ICP 备 2026021578 号-1</a></li>
-        <li><strong>网站负责人 / 安全管理员</strong>：Zoro（站点开办者本人）</li>
-        <li><strong>投诉举报邮箱</strong>：<a href="mailto:1437066318@qq.com">1437066318@qq.com</a>（48 小时内响应）</li>
-        <li><strong>日志留存</strong>：访问日志与互动记录保留不少于 6 个月，依法配合监管与执法部门调取</li>
+    {/* ── 联系 ── */}
+    <section class="mb-16 mt-4">
+      <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4 pb-2 border-b border-[var(--border)]">
+        CONNECT
+      </div>
+      <ul class="flex flex-wrap items-center gap-3">
+        <li>
+          <a href={`mailto:${contact.email}`}
+             class="inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] px-4 py-2 text-sm hover:bg-[var(--bg-soft)] transition-colors">
+            📮 Email
+          </a>
+        </li>
+        <li>
+          <a href={contact.github} target="_blank" rel="noopener noreferrer"
+             class="inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] px-4 py-2 text-sm hover:bg-[var(--bg-soft)] transition-colors">
+            ⌬ GitHub
+          </a>
+        </li>
+        <li>
+          <a href={contact.rss}
+             class="inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] px-4 py-2 text-sm hover:bg-[var(--bg-soft)] transition-colors">
+            📡 RSS
+          </a>
+        </li>
+        <li>
+          <a href="/subscribe"
+             class="inline-flex items-center gap-1.5 rounded-full bg-black dark:bg-white text-white dark:text-black px-4 py-2 text-sm hover:opacity-90 transition-opacity">
+            ✉️ 订阅邮件
+          </a>
+        </li>
       </ul>
-      <p class="text-sm text-[var(--text-secondary)]">详细投诉举报流程见 <a href="/contact">投诉举报页</a>。站点开源于 <a href="https://github.com/lzf00/zorotreeking">GitHub</a>，由 Astro 4 构建，自动化部署。</p>
-    </div>
+    </section>
+
+    {/* ── 合规信息（折叠为低存在感小字） ── */}
+    <section class="pt-8 border-t border-[var(--border)] text-xs text-[var(--text-tertiary)] space-y-2 leading-relaxed">
+      <p>
+        本站为<strong>个人非经营性站点</strong>，不提供商业服务、交易、公开用户注册或第三方内容上传功能。AI 对话窗口仅供学习交流，输入内容经过敏感词过滤后转发给大模型；点赞 / 访问统计仅留存 IP+UA 哈希指纹与时间戳，不收集手机号、邮箱、真实姓名。
+      </p>
+      <p>
+        <strong>ICP 备案：</strong><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer" class="hover:text-[var(--text)] transition-colors">沪 ICP 备 2026021578 号-1</a> ·
+        <strong>负责人：</strong>Zoro ·
+        <strong>投诉举报：</strong><a href={`mailto:${contact.email}`} class="hover:text-[var(--text)] transition-colors">{contact.email}</a>（48 小时内响应）·
+        日志留存不少于 6 个月，依法配合监管 ·
+        详细流程见 <a href="/contact" class="hover:text-[var(--text)] transition-colors">投诉举报页</a>
+      </p>
+      <p>
+        站点开源于 <a href={contact.github + "/zorotreeking"} target="_blank" rel="noopener noreferrer" class="hover:text-[var(--text)] transition-colors">GitHub</a>，由 Astro 4 构建，CI 自动化部署。
+      </p>
+    </section>
+
   </article>
 </BaseLayout>
