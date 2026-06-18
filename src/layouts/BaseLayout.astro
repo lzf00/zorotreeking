@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar.astro";
 import Footer from "@/components/Footer.astro";
 import AIChatWidget from "@/components/AIChatWidget";
 import SearchModal from "@/components/SearchModal";
+import ArticleImageLightbox from "@/components/ArticleImageLightbox.astro";
 import { getLangFromUrl, useTranslations } from "@/i18n/ui";
 
 interface Props {
@@ -120,6 +121,8 @@ if (ogType === "article") {
     <AIChatWidget client:idle />
     <!-- 全站搜索 modal（pagefind，仅在空闲时加载） -->
     <SearchModal client:idle />
+    <!-- 文章正文图片 lightbox（点击放大） -->
+    <ArticleImageLightbox />
     <!-- 代码块复制按钮（mdx 文章里的 <pre> 自动加 copy） -->
     <script is:inline>
       document.addEventListener("DOMContentLoaded", () => {

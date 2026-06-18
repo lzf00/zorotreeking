@@ -84,6 +84,15 @@ jobs:
           fi
           echo "committed=true" >> "$GITHUB_OUTPUT"
 
+      # 新 zh digest 翻译成 en（增量，每天 2 篇 ≈ ¥0.02）
+      - name: Translate new digests zh → en
+        timeout-minutes: 10
+        env:
+          DOUBAO_API_KEY: ${{ secrets.DOUBAO_API_KEY }}
+          ARK_API_KEY: ${{ secrets.ARK_API_KEY }}
+        continue-on-error: true
+        run: npx tsx scripts/translate-digest.ts
+
       # embedding 增量更新（独立 step，失败不影响 digest commit；
       # 即使超时被 cancel，新 digest mdx 已经在 main 上了）
       - name: Refresh post embeddings (incremental)
@@ -97,16 +106,16 @@ jobs:
         continue-on-error: true
         run: npx tsx scripts/generate-embeddings.ts
 
-      - name: Commit embeddings.json if changed
+      - name: Commit embeddings.json + en translations if changed
         continue-on-error: true
         run: |
-          if [ -z "$(git status --porcelain src/data/embeddings.json)" ]; then
-            echo "embeddings.json 没变化，跳过"
+          git add src/data/embeddings.json src/content/ai/digest-*.en.mdx src/content/invest/digest-*.en.mdx 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "embeddings + 翻译都没变化，跳过"
             exit 0
           fi
-          git add src/data/embeddings.json
           DATE_CN=$(date -u -d "+8 hours" +%Y-%m-%d 2>/dev/null || date -u +%Y-%m-%d)
-          git commit -m "chore(embeddings): refresh post vectors $DATE_CN"
+          git commit -m "chore(ai): refresh embeddings + en translations $DATE_CN"
           for i in 1 2 3; do
             git fetch origin main
             git pull --rebase --autostash origin main || { git rebase --abort 2>/dev/null || true; }

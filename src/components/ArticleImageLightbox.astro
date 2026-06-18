@@ -1,0 +1,100 @@
+---
+/**
+ * 文章正文 <img> 的零依赖 lightbox。
+ *
+ * 行为：
+ *   - 给 article .prose img 加 cursor:zoom-in
+ *   - 点击 → 全屏黑底显示原图 + 淡入动画
+ *   - 点击图外 / 按 ESC → 关闭
+ *   - 滚动锁定（lightbox 打开时 body overflow:hidden）
+ *
+ * 不抢资源：纯内联 CSS + JS，不引外部库（PhotoSwipe 5 太重了，
+ * 文章场景用不上 zoom/pinch/slide 等高级功能）。
+ *
+ * 用法：BaseLayout 末尾 <ArticleImageLightbox /> 即可全站接入。
+ */
+---
+
+<div id="img-lightbox" class="img-lightbox" aria-hidden="true">
+  <img id="img-lightbox-img" alt="" />
+  <button id="img-lightbox-close" type="button" aria-label="关闭">×</button>
+</div>
+
+<style is:global>
+  article .prose img { cursor: zoom-in; transition: opacity 0.15s; }
+  article .prose img:hover { opacity: 0.9; }
+
+  .img-lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.92);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    opacity: 0;
+    transition: opacity 0.18s ease-out;
+    cursor: zoom-out;
+  }
+  .img-lightbox.is-open { display: flex; opacity: 1; }
+  .img-lightbox img {
+    max-width: 92vw;
+    max-height: 88vh;
+    object-fit: contain;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+  }
+  #img-lightbox-close {
+    position: absolute;
+    top: 18px;
+    right: 22px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  #img-lightbox-close:hover { background: rgba(255, 255, 255, 0.18); }
+</style>
+
+<script is:inline>
+  document.addEventListener("DOMContentLoaded", () => {
+    const lb = document.getElementById("img-lightbox");
+    const lbImg = document.getElementById("img-lightbox-img");
+    const closeBtn = document.getElementById("img-lightbox-close");
+    if (!lb || !lbImg) return;
+
+    function open(src, alt) {
+      lbImg.src = src;
+      lbImg.alt = alt || "";
+      lb.classList.add("is-open");
+      lb.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+    function close() {
+      lb.classList.remove("is-open");
+      lb.setAttribute("aria-hidden", "true");
+      lbImg.src = "";
+      document.body.style.overflow = "";
+    }
+
+    document.querySelectorAll("article .prose img").forEach((img) => {
+      // 已经在 <a> 里的不接管（避免破坏现有链接）
+      if (img.closest("a")) return;
+      img.addEventListener("click", (e) => {
+        e.preventDefault();
+        open(img.currentSrc || img.src, img.alt);
+      });
+    });
+
+    lb.addEventListener("click", (e) => { if (e.target === lb || e.target === closeBtn) close(); });
+    closeBtn?.addEventListener("click", close);
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && lb.classList.contains("is-open")) close();
+    });
+  });
+</script>

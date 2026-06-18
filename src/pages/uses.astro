@@ -1,0 +1,54 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { usesData } from "@/data/uses";
+
+const { intro, groups, footer } = usesData;
+---
+
+<BaseLayout title="Uses" description="ZoroTreeking 站长的工具栈：编辑器、终端、浏览器、AI、硬件、站点本身。">
+  <article class="max-w-2xl mx-auto px-6 sm:px-8 pt-12 sm:pt-20 pb-24 sm:pb-32">
+
+    <header class="mb-14 sm:mb-20">
+      <div class="text-[11px] uppercase tracking-[0.2em] text-zinc-500 font-mono mb-3">/uses</div>
+      <h1 class="text-3xl sm:text-5xl leading-tight tracking-tight font-semibold text-[#1d1d1f] dark:text-zinc-100">
+        我在用的工具
+      </h1>
+      <p class="mt-5 text-base sm:text-lg leading-relaxed text-[var(--text-secondary)] font-light">
+        {intro}
+      </p>
+    </header>
+
+    {groups.map((g) => (
+      <section class="mb-12">
+        <h2 class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-3 pb-2 border-b border-[var(--border)]">
+          {g.title}
+        </h2>
+        <ul class="divide-y divide-[var(--border)]">
+          {g.items.map((it) => (
+            <li class="py-3">
+              <div class="flex items-baseline justify-between gap-3">
+                {it.url ? (
+                  <a href={it.url} target="_blank" rel="noopener noreferrer"
+                     class="font-medium hover:underline">{it.name}</a>
+                ) : (
+                  <span class="font-medium">{it.name}</span>
+                )}
+                {it.note && (
+                  <span class="text-sm text-[var(--text-secondary)] text-right shrink min-w-0">{it.note}</span>
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+
+    <footer class="mt-16 pt-8 border-t border-[var(--border)]">
+      <p class="text-sm text-[var(--text-tertiary)] leading-relaxed">{footer}</p>
+      <p class="mt-4 text-[11px] uppercase tracking-[0.18em] text-[var(--text-tertiary)] font-mono">
+        Inspired by <a href="https://uses.tech" target="_blank" rel="noopener noreferrer" class="hover:text-[var(--text)] transition-colors">uses.tech</a>
+      </p>
+    </footer>
+
+  </article>
+</BaseLayout>
