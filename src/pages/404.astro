@@ -1,44 +1,108 @@
 ---
+import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
 
 const lang = "zh" as const;
 const t = useTranslations(lang);
+
+// 取最近 4 篇文章（原创优先 + 最新 digest），让走丢的访客有出路
+const isDigest = (p: { data: { tags?: string[]; translationKey: string } }) =>
+  (p.data.tags ?? []).includes("digest") || p.data.translationKey.startsWith("digest-");
+
+const [ai, invest] = await Promise.all([
+  getCollection("ai", (p) => p.data.lang === lang && !p.data.draft),
+  getCollection("invest", (p) => p.data.lang === lang && !p.data.draft),
+]);
+const all = [
+  ...ai.map((p) => ({ ...p, section: "ai" as const })),
+  ...invest.map((p) => ({ ...p, section: "invest" as const })),
+].sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+// 一半原创 + 一半最新 digest
+const originals = all.filter((p) => !isDigest(p)).slice(0, 2);
+const digests = all.filter((p) => isDigest(p)).slice(0, 2);
+const suggested = [...originals, ...digests].slice(0, 4);
+
+const sectionAccent: Record<string, string> = {
+  ai: "#1d4ed8",
+  invest: "#991b1b",
+};
+const sectionLabel: Record<string, string> = {
+  ai: t("nav.ai"),
+  invest: t("nav.invest"),
+};
 ---
 
-<BaseLayout title="页面走丢了 · 404">
-  <section class="max-w-prose mx-auto px-5 pt-24 pb-16 text-center">
-    <div class="text-[120px] sm:text-[160px] font-bold leading-none tracking-tight bg-gradient-to-br from-section-ai via-section-photo to-section-hike bg-clip-text text-transparent">
-      404
-    </div>
-    <h1 class="mt-2 text-2xl font-semibold tracking-tight">这页好像走丢了</h1>
-    <p class="mt-3 text-[var(--text-secondary)]">
-      链接可能已失效，或者文章被搬走了。试试从下面入口找找看：
-    </p>
+<BaseLayout title="404 · 这页走丢了">
+  <section class="max-w-3xl mx-auto px-6 pt-20 sm:pt-28 pb-12">
 
-    <div class="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-xl mx-auto">
-      <a href={pathWithLang("/ai", lang)} class="rounded-xl border border-[var(--border)] p-4 hover:border-section-ai/50 hover:bg-[var(--bg-soft)] transition-all group">
+    {/* 极简大字 404，serif + 渐变 */}
+    <div class="text-center">
+      <div class="font-serif text-[140px] sm:text-[200px] leading-[0.85] tracking-tighter
+                  bg-gradient-to-br from-section-ai via-section-photo to-section-hike
+                  bg-clip-text text-transparent select-none">
+        404
+      </div>
+      <h1 class="mt-6 text-2xl sm:text-3xl font-semibold tracking-tight">这页走丢了</h1>
+      <p class="mt-3 text-base text-[var(--text-secondary)] leading-relaxed max-w-md mx-auto">
+        链接可能已失效，或者文章被搬走了。试试下面的入口，或<button
+          type="button" onclick="window.__openSearch?.()" class="underline hover:text-[var(--text)] transition-colors">直接搜索</button>。
+      </p>
+    </div>
+
+    {/* 推荐继续读 */}
+    {suggested.length > 0 && (
+      <section class="mt-14">
+        <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4 pb-2 border-b border-[var(--border)]">
+          换个思路 · Suggested
+        </div>
+        <ul class="divide-y divide-[var(--border)]">
+          {suggested.map((p) => (
+            <li class="py-3">
+              <a href={pathWithLang(`/${p.section}/${p.data.translationKey}`, lang)}
+                 class="group flex items-center gap-4">
+                <span class="w-1.5 h-1.5 rounded-full shrink-0" style={`background:${sectionAccent[p.section]}`}></span>
+                <span class="text-xs text-[var(--text-tertiary)] uppercase tracking-wide shrink-0 w-16">{sectionLabel[p.section]}</span>
+                <span class="flex-1 truncate text-[15px] text-[var(--text-secondary)] group-hover:text-[var(--text)] transition-colors">
+                  {p.data.title}
+                </span>
+                <time class="text-xs text-[var(--text-tertiary)] font-mono tabular-nums shrink-0">
+                  {p.data.date.toISOString().slice(0, 10)}
+                </time>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    {/* 4 栏目卡 */}
+    <section class="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <a href={pathWithLang("/ai", lang)} class="rounded-xl border border-[var(--border)] p-4 text-center hover:border-section-ai/50 hover:bg-[var(--bg-soft)] transition-all group">
         <div class="text-2xl mb-1">🧠</div>
         <div class="text-sm font-medium group-hover:text-section-ai transition-colors">{t("nav.ai")}</div>
       </a>
-      <a href={pathWithLang("/invest", lang)} class="rounded-xl border border-[var(--border)] p-4 hover:border-section-invest/50 hover:bg-[var(--bg-soft)] transition-all group">
+      <a href={pathWithLang("/invest", lang)} class="rounded-xl border border-[var(--border)] p-4 text-center hover:border-section-invest/50 hover:bg-[var(--bg-soft)] transition-all group">
         <div class="text-2xl mb-1">📊</div>
         <div class="text-sm font-medium group-hover:text-section-invest transition-colors">{t("nav.invest")}</div>
       </a>
-      <a href={pathWithLang("/photo", lang)} class="rounded-xl border border-[var(--border)] p-4 hover:border-section-photo/50 hover:bg-[var(--bg-soft)] transition-all group">
+      <a href={pathWithLang("/photo", lang)} class="rounded-xl border border-[var(--border)] p-4 text-center hover:border-section-photo/50 hover:bg-[var(--bg-soft)] transition-all group">
         <div class="text-2xl mb-1">📷</div>
         <div class="text-sm font-medium group-hover:text-section-photo transition-colors">{t("nav.photo")}</div>
       </a>
-      <a href={pathWithLang("/hike", lang)} class="rounded-xl border border-[var(--border)] p-4 hover:border-section-hike/50 hover:bg-[var(--bg-soft)] transition-all group">
+      <a href={pathWithLang("/hike", lang)} class="rounded-xl border border-[var(--border)] p-4 text-center hover:border-section-hike/50 hover:bg-[var(--bg-soft)] transition-all group">
         <div class="text-2xl mb-1">🥾</div>
         <div class="text-sm font-medium group-hover:text-section-hike transition-colors">{t("nav.hike")}</div>
       </a>
-    </div>
+    </section>
 
-    <div class="mt-8 text-sm">
-      <a href={pathWithLang("/", lang)} class="text-[var(--text-secondary)] hover:text-[var(--text)] hover:underline transition-colors">
-        ← 回到首页
+    <div class="mt-10 text-center text-sm">
+      <a href={pathWithLang("/", lang)}
+         class="text-[var(--text-tertiary)] hover:text-[var(--text)] transition-colors">
+        ← 回首页
       </a>
     </div>
+
   </section>
 </BaseLayout>

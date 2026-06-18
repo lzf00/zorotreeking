@@ -106,6 +106,11 @@ if (ogType === "article") {
     {ogType === "article" && tags && tags.map((t) => <meta property="article:tag" content={t} />)}
     {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd, (_, v) => v === undefined ? undefined : v)} />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#1d1d1f" />
+    <link rel="alternate" type="application/rss+xml" title="ZoroTreeking · RSS" href="/rss.xml" />
+    <link rel="alternate" type="application/atom+xml" title="ZoroTreeking · Atom" href="/atom.xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <!-- editorial 字体组合：Instrument Serif（display）+ Inter（body）+ JetBrains Mono（code） -->
