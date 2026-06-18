@@ -1,0 +1,48 @@
+name: Lighthouse CI
+
+# Deploy 完成后 5 分钟跑一次 Lighthouse，对比性能预算，未达标发邮件/Issue。
+# 由 deploy.yml workflow_run 触发；也支持 workflow_dispatch 手动跑。
+
+on:
+  workflow_run:
+    workflows: ["Build & Deploy"]
+    types: [completed]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  lhci:
+    # 仅在 deploy 成功后跑
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Wait for deploy propagate
+        run: sleep 60
+
+      - name: Run Lighthouse CI
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+        # assert 失败的话 exit code 非 0；assert 设了 warn 不会 fail，error 才 fail
+        run: |
+          npm install -g @lhci/cli@0.13.x
+          lhci autorun || true
+
+      - name: Upload reports as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci/
+          retention-days: 14

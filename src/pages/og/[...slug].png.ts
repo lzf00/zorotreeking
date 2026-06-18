@@ -58,7 +58,9 @@ export const GET: APIRoute = async ({ props }) => {
     ? entry.data.date.toISOString().slice(0, 10)
     : String(entry.data.date).slice(0, 10);
 
+  // satori 类型严格，但运行时接受我们这个 object-tree；强制 cast 即可
   const svg = await satori(
+    // @ts-expect-error satori ReactNode 类型限定过严，运行时支持纯 object tree
     {
       type: "div",
       props: {
@@ -190,7 +192,8 @@ export const GET: APIRoute = async ({ props }) => {
   );
 
   const png = new Resvg(svg).render().asPng();
-  return new Response(png, {
+  // Buffer extends Uint8Array → 转 BodyInit 兼容类型
+  return new Response(new Uint8Array(png), {
     headers: {
       "Content-Type": "image/png",
       "Cache-Control": "public, max-age=31536000, immutable",

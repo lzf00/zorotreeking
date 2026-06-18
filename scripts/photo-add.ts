@@ -137,7 +137,8 @@ function formatShutter(t: number): string {
 }
 
 async function uploadToR2(key: string, body: Buffer, contentType: string) {
-  // 仅在用到 R2 时按需 import，避免 SDK 进入正常依赖
+  // 仅在用到 R2 时按需 import，避免 SDK 进入正常依赖。
+  // @ts-expect-error optional dep；user 用 R2 时 npm i @aws-sdk/client-s3 即可
   const { S3Client, PutObjectCommand } = await import("@aws-sdk/client-s3");
   const client = new S3Client({
     region: "auto",

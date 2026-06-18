@@ -28,12 +28,13 @@ export function parseGpx(xml: string): GpxStats {
   const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@_" });
   const data = parser.parse(xml);
 
-  const trks = [].concat(data?.gpx?.trk ?? []);
+  // fast-xml-parser 返回结构不可预测，全部当 any 处理
+  const trks: any[] = ([] as any[]).concat(data?.gpx?.trk ?? []);
   const points: GpxPoint[] = [];
   for (const trk of trks) {
-    const segs = [].concat(trk?.trkseg ?? []);
+    const segs: any[] = ([] as any[]).concat(trk?.trkseg ?? []);
     for (const seg of segs) {
-      const pts = [].concat(seg?.trkpt ?? []);
+      const pts: any[] = ([] as any[]).concat(seg?.trkpt ?? []);
       for (const p of pts) {
         const lat = parseFloat(p["@_lat"]);
         const lng = parseFloat(p["@_lon"]);

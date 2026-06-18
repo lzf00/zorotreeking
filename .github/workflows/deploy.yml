@@ -61,6 +61,10 @@ jobs:
         continue-on-error: true
         run: npx tsx scripts/build-photo-manifests.ts
 
+      - name: Astro type-check
+        # type error 提前拦，避免红线 build 上线
+        run: npx astro check
+
       - name: Build site
         env:
           # Giscus 评论：值来自 GitHub repo Settings → Variables。

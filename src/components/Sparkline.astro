@@ -20,7 +20,7 @@ interface Props {
 }
 const { data, width = 56, height = 18, scheme = "cn", stroke } = Astro.props;
 
-const clean = (data || []).filter((x) => Number.isFinite(x) && x > 0);
+const clean: number[] = (data || []).filter((x: number) => Number.isFinite(x) && x > 0);
 if (clean.length < 2) { /* 不渲染 */ }
 
 const max = Math.max(...clean);
@@ -30,7 +30,7 @@ const padX = 1;
 const padY = 2;
 const inner = (i: number) => padX + (i / (clean.length - 1 || 1)) * (width - 2 * padX);
 const yOf = (v: number) => padY + (1 - (v - min) / range) * (height - 2 * padY);
-const points = clean.map((v, i) => `${inner(i).toFixed(1)},${yOf(v).toFixed(1)}`).join(" ");
+const points = clean.map((v: number, i: number) => `${inner(i).toFixed(1)},${yOf(v).toFixed(1)}`).join(" ");
 
 const isUp = clean[clean.length - 1] >= clean[0];
 const color = stroke ?? (
