@@ -1,0 +1,188 @@
+---
+lang: zh
+translationKey: digest-2026-06-19
+title: "AI 每日精选 · 2026-06-19"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-06-19
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.19704" target="_blank" rel="noopener noreferrer">Beyond Static Leaderboards: Predictive Validity for the Evaluation of LLM Agents</a>
+
+*HF ★ 15 · Dhaval C. Patel, Kaoutar El Maghraoui, Shuxin Lin… · [HF 镜像](https://huggingface.co/papers/2606.19704)*
+
+针对现有LLM智能体静态排行榜指标片面、排名泛化性差的问题，本文汇总14项工业智能体基准并行研究及7项过往基准数据，证实总得分排名在分布外场景稳定性极差。据此提出以样本内外排名相关性的预测效度替代样本内均分排序，配套12层测量体系与3项可证伪分布外标准，给出下一代基准设计方向。
+
+<FeedbackButtons slug="item:arxiv-2606.19704" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.20515" target="_blank" rel="noopener noreferrer">S-Agent: Spatial Tool-Use Elicits Reasoning for Spatial Intelligence</a>
+
+*HF ★ 13 · Yalun Dai, Hao Li, Shulin Tian… · [HF 镜像](https://huggingface.co/papers/2606.20515)*
+
+现有多模态大模型（VLM）及工具增强智能体多依赖孤立静态视觉输入，缺乏连续3D场景空间推理能力。该研究提出S-Agent空间工具智能体范式，将空间推理转化为时空证据累积，通过VLM语义规划、层级空间工具抽提3D证据、双记忆机制跨帧整合信息，可免训练提升各类VLM性能，经微调的8B规模版本性能超同量级基线，比肩顶尖闭源模型。
+
+<FeedbackButtons slug="item:arxiv-2606.20515" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.19195" target="_blank" rel="noopener noreferrer">Moebius: 0.2B Lightweight Image Inpainting Framework with 10B-Level Performance</a>
+
+*HF ★ 11 · Kangsheng Duan, Ziyang Xu, Wenyu Liu… · [HF 镜像](https://huggingface.co/papers/2606.19195)*
+
+针对10B级图像补全大模型算力成本高、难以落地的问题，本文提出0.22B参数的轻量补全框架Moebius：通过引入Local-λ混合交互块重构扩散骨干压缩参数量，搭配隐空间自适应多粒度蒸馏解锁小模型性能。实验显示其补全质量媲美11.9B的工业大模型，参数仅为后者2%，推理提速超15倍，大幅降低部署门槛。
+
+<FeedbackButtons slug="item:arxiv-2606.19195" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.20506" target="_blank" rel="noopener noreferrer">FreeStyle: Free Control of Style-Content Dual-Reference Generation from Community LoRA Mining</a>
+
+*HF ★ 8 · Jinghong Lan, Wei Cheng, Yunuo Chen… · [HF 镜像](https://huggingface.co/papers/2606.20506)*
+
+针对风格-内容双参考图像生成缺高质量三元组训练数据、易出现风格参考语义泄漏的痛点，本文提出FreeStyle框架：挖掘社区LoRA构建大规模数据集，采用两阶段课程训练搭配注意力约束、频率感知RoPE调制机制抑制泄漏，配套专用评测基准。实验显示该模型在风格匹配、内容保留、抗泄漏上实现了优异平衡。
+
+<FeedbackButtons slug="item:arxiv-2606.20506" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.20563" target="_blank" rel="noopener noreferrer">JanusMesh: Fast and Zero-Shot 3D Visual Illusion Generation via Cross-Space Denoising</a>
+
+*HF ★ 5 · Siang-Ling Zhang, Huai-Hsun Cheng, Tsung-Ju Yang… · [HF 镜像](https://huggingface.co/papers/2606.20563)*
+
+本文提出零样本、免训练的文本驱动3D视错觉生成框架JanusMesh，针对现有方案效率低、色彩过饱和、几何接缝明显、语义泄露等问题，分两阶段生成：先通过跨空间双分支去噪完成朝向对齐与SDF融合保障几何无缝，再用视角条件纹理合成模块聚合2D扩散先验，仅需3-5分钟即可生成高保真双语义3D错觉，性能显著优于现有方法。
+
+<FeedbackButtons slug="item:arxiv-2606.20563" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.19361" target="_blank" rel="noopener noreferrer">Computational Identifiability</a>
+
+*Lucius E. J. Bynum, Rajesh Ranganath, Kyunghyun Cho*
+
+针对因果领域传统可识别性依赖无限数据、渐近性等理想化假设的局限，本文提出“计算可识别性”框架：通过有限计算搜索经验估计器，在指定搜索假设、流程下得到符合误差容限的估计器即判定可识别。实验表明该框架可解决小样本、模糊图准则、混合观测干预数据等场景下的细粒度实际识别问题。
+
+<FeedbackButtons slug="item:arxiv-2606.19361" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.19363" target="_blank" rel="noopener noreferrer">When to Trust, How to Distill: Multi-Foundation Model Guidance for Lightweight, Robust Scientific Time Series Forecasting</a>
+
+*Rupasree Dey, Abdul Matin, Nathan Orwick…*
+
+针对时序基础模型在科学领域面临零样本分布偏移、算力过高难落地边缘的问题，本文提出Guard多教师蒸馏框架：动态选择适配的教师模型，搭配不确定门控机制在教师置信度不足时自动减弱蒸馏强度。在4类气候相关时序任务测试中，该方法较基线显著降低误差，即便教师零样本表现不佳也可提取有效知识，所得轻量模型适配边缘部署需求。
+
+<FeedbackButtons slug="item:arxiv-2606.19363" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.19364" target="_blank" rel="noopener noreferrer">Closing the Social-Semantic Gap: SPSD for Edge-Based Prompt Compression in Cloud LLM Inference</a>
+
+*Abhinit Sen, Ajeet Kumar, Manaranjan Pradhan*
+
+针对大模型云推理prefill阶段能耗高、用户prompt含大量对推理无用的社交冗余（即“社会语义鸿沟”）问题，本文提出边缘侧SPSD方案：用4比特量化小模型压缩prompt，安全场景设规则直接透传。实测平均单调用省99.9token，回复质量非劣于原输入，单调用可省70-270微瓦时能耗，有效降低云推理成本。
+
+<FeedbackButtons slug="item:arxiv-2606.19364" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/chatgpt-enterprise-spend-controls" target="_blank" rel="noopener noreferrer">New usage analytics and updated spend controls for enterprises</a>
+
+*OpenAI*
+
+OpenAI针对ChatGPT企业版用户此前成本管控粗放、使用情况难追踪的痛点，推出两项全新管理功能：一是升级消费管控工具，实现AI使用成本的精细化调控，规避超支风险；二是新增使用数据分析能力，可直观呈现内部AI调用、场景分布等情况，助力企业控本降负，更安心地规模化部署应用AI。
+
+<FeedbackButtons slug="item:openai-blog-chatgpt-enterprise-spend-controls" client:visible />
+
+## <a href="https://openai.com/index/improving-health-intelligence-in-chatgpt" target="_blank" rel="noopener noreferrer">Improving health intelligence in ChatGPT</a>
+
+*OpenAI*
+
+本研究聚焦ChatGPT的健康智能能力优化，核心方案为推出GPT-5.5 Instant升级版本：一方面强化逻辑推理能力、优化上下文关联感知、提升回答表达清晰度，另一方面引入医师参与的全流程效果评估机制，最终实现ChatGPT健康与康养类回答的专业度、适配性全面升级，可有效支撑健康类智能交互场景应用。
+
+<FeedbackButtons slug="item:openai-blog-improving-health-intelligence-in-chatgpt" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener noreferrer">Statement on the US government directive to suspend access to Fable 5 and Mythos 5</a>
+
+*Anthropic*
+
+本文件是针对美国政府Fable 5、Mythos 5访问限制指令的公开声明。美方最新出口管制新规明确：所有外籍人员无论身处美境内外，均被暂停访问上述两类资源的权限。两款资源具体信息暂未披露，推测属高敏感AI技术资产，该管制进一步收紧了外籍人员接触美前沿技术资源的限制。
+
+<FeedbackButtons slug="item:anthropic-fable-mythos-access" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-corps" target="_blank" rel="noopener noreferrer">Introducing Claude Corps</a>
+
+*Anthropic*
+
+官方全新推出全国性青年研修资助项目Claude Corps，专门面向职业生涯早期、有志于将AI技术发展红利惠及全美各地社区的群体设立。项目旨在聚集有AI普惠热情的青年人才，推动AI正向价值下沉落地，让更多不同区域的社群都能切实享受到AI发展带来的多元利好。
+
+<FeedbackButtons slug="item:anthropic-claude-corps" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/unlocking-uk-house-building-with-ai-accelerated-planning/" target="_blank" rel="noopener noreferrer">Unlocking UK house-building with AI-accelerated planning</a>
+
+*Google DeepMind*
+
+英国住房供需缺口较大，核心堵点是传统规划审批流程繁琐、决策周期偏长。为此英国政府联合谷歌DeepMind开发AI赋能的规划审批原型工具，依托AI技术提速住房项目规划决策流程，预计将有效缩短审批周期，为破解建房供给瓶颈、优化政务审批数字化落地提供新实践方向。
+
+<FeedbackButtons slug="item:deepmind-unlocking-uk-house-building-with-ai-accelerated-planning" client:visible />
+
+## <a href="https://deepmind.google/blog/securing-the-future-of-ai-agents/" target="_blank" rel="noopener noreferrer">Securing the future of AI agents</a>
+
+*Google DeepMind*
+
+这篇聚焦AI代理安全的研究，核心提出AI管控路线图方案，通过将传统成熟安全防护手段与实时动态监测机制相结合，针对性强化内部系统的安全防御能力。该方案兼顾现有防护经验积累与动态风险响应效率，可为AI代理长期安全迭代、规模化落地部署提供攻防兼备的安全实践框架。
+
+<FeedbackButtons slug="item:deepmind-securing-the-future-of-ai-agents" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/ServiceNow/mosaicleaks" target="_blank" rel="noopener noreferrer">MosaicLeaks: Can your research agent keep a secret?</a>
+
+*Hugging Face*
+
+这篇论文聚焦大模型驱动的科研智能体保密漏洞，提出名为MosaicLeaks的新型攻击手段：诱导智能体将涉密研究数据碎片化输出，拼接还原即可获取完整敏感信息。测试显示当前主流科研智能体的内置保密机制几乎无法抵御该攻击，未公开科研成果、核心参数泄露风险极高，为科研智能体隐私防护提出新安全挑战。
+
+<FeedbackButtons slug="item:hf-blog-mosaicleaks" client:visible />
+
+## <a href="https://huggingface.co/blog/peft-beyond-lora" target="_blank" rel="noopener noreferrer">Beyond LoRA: Can you beat the most popular fine-tuning technique?</a>
+
+*Hugging Face*
+
+这篇综述聚焦大模型参数高效微调主流方案LoRA的性能突破路径，系统梳理正交分解、动态秩调整、多低秩空间融合、跨层参数共享等优于原生LoRA的改进技术，验证了合理优化可在参数量相当的前提下，显著提升下游任务适配精度，同时保留LoRA低存储、易部署的核心优势。
+
+<FeedbackButtons slug="item:hf-blog-peft-beyond-lora" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+这篇从美德伦理视角出发的AI对齐研究，反驳“理性主体以固定最终目标为行动导向”的预设，指出人类理性核心是让行动适配包含行为规范、评价标准等要素的实践网络；提出要实现AI与人类协作兼容，需让AI决策逻辑和人类实践型行动逻辑同构，该思路兼顾伦理对齐与基础安全保障。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/06/436842.html" target="_blank" rel="noopener noreferrer">GPT发AI原创新成果了</a>
+
+*量子位*
+
+OpenAI联合Molecule.one发布新成果：将GPT-5.4对接化学智能体Maria及配套高通量实验室，仅给定“改进重要反应”的开放目标，系统即可自主定研究方向、设计实验、分析数据，近乎自主优化了药物合成常用的Chan-Lam偶联反应，解决了伯磺酰胺与硼酸偶联产率低的痛点，是有机化学领域首个AI近自主完成的发现，仅实验环节由人工执行。
+
+<FeedbackButtons slug="item:qbitai-436842" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/436813.html" target="_blank" rel="noopener noreferrer">全球首个人形机器人通用小脑来了！全球最大规模2万小时人类动作数据，实现零样本泛化</a>
+
+*量子位*
+
+银河通用发布全球首个人形机器人通用小脑基础模型AstraBrain-WBC 0.5，首次将大模型规模化训练范式引入人形机器人实时运控领域。该模型参数量8000万，经20亿帧人类动作数据训练，验证了运控领域缩放定律，可毫秒级完成全身协同控制，实现运动能力零样本泛化，推动人形机器人运控迈入基础模型时代。
+
+<FeedbackButtons slug="item:qbitai-436813" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/436758.html" target="_blank" rel="noopener noreferrer">AI看病成为医患新包袱？补上「多轮追问」，通用AI才迈得过医疗关</a>
+
+*量子位*
+
+当前不少患者依赖通用AI自查病情，携带AI生成的诊断结果就医，反而推高医患沟通成本，通用AI直接用于医疗判断可靠性不足。百川智能推出医疗增强大模型Baichuan-M4，对通用大模型做结构性重构与医疗专项增强，最新评测中综合表现全球领先，幻觉率降至3.3%，更适配临床需求。
+
+<FeedbackButtons slug="item:qbitai-436758" client:visible />
