@@ -1,0 +1,146 @@
+---
+lang: zh
+translationKey: digest-2026-06-20
+title: "AI 每日精选 · 2026-06-20"
+description: "15 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-06-20
+tags: [digest, auto, arxiv, openai, anthropic, deepmind, hf-blog, the-gradient]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.19361" target="_blank" rel="noopener noreferrer">Computational Identifiability</a>
+
+*Lucius E. J. Bynum, Rajesh Ranganath, Kyunghyun Cho*
+
+现有因果可识别性理论多基于无限数据、渐近性等理想假设，实用局限明显。本文提出“计算可识别性”框架：通过有限计算搜索实证估计器，若结果满足预设误差容限，即判定满足可识别性要求。实验证明该框架可解决小样本、因果图模糊、混合观测-干预数据等场景下的细粒度识别问题，相关代码已开源。
+
+<FeedbackButtons slug="item:arxiv-2606.19361" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.19363" target="_blank" rel="noopener noreferrer">When to Trust, How to Distill: Multi-Foundation Model Guidance for Lightweight, Robust Scientific Time Series Forecasting</a>
+
+*Rupasree Dey, Abdul Matin, Nathan Orwick…*
+
+针对时序大模型应用于科学时序预测场景时存在分布偏移、算力过高难以边缘部署的问题，本文提出多教师蒸馏框架Guard，包含动态选择适配教师的上下文路由、教师置信度与域特征不符时自动削弱蒸馏强度的不确定门控机制。四类气候相关任务验证显示，该方法较基线显著降低误差，所得轻量模型适配边缘部署需求。
+
+<FeedbackButtons slug="item:arxiv-2606.19363" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.19364" target="_blank" rel="noopener noreferrer">Closing the Social-Semantic Gap: SPSD for Edge-Based Prompt Compression in Cloud LLM Inference</a>
+
+*Abhinit Sen, Ajeet Kumar, Manaranjan Pradhan*
+
+针对云端大模型推理预填充阶段能耗高、用户提示多含对推理无价值的社交冗余（即社会语义鸿沟）问题，本文提出SPSD边缘端提示压缩流水线，采用4比特量化小模型在端侧蒸馏压缩提示后再上传云端。实验显示单调用平均省99.9个输入token，回复质量与原提示无显著差异，单调用能耗降70~270微瓦时，安全场景设规则旁路规避风险。
+
+<FeedbackButtons slug="item:arxiv-2606.19364" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/chatgpt-enterprise-spend-controls" target="_blank" rel="noopener noreferrer">New usage analytics and updated spend controls for enterprises</a>
+
+*OpenAI*
+
+OpenAI近日面向ChatGPT企业版用户上线两类管理功能升级：新增使用数据分析模块、优化升级支出管控工具。两类功能从使用效能监测、成本管控两大维度出发，可帮助企业清晰掌握AI部署的投入产出情况，降低规模化落地AI的成本顾虑，支撑企业稳妥推进内部AI应用扩量。
+
+<FeedbackButtons slug="item:openai-blog-chatgpt-enterprise-spend-controls" client:visible />
+
+## <a href="https://openai.com/index/improving-health-intelligence-in-chatgpt" target="_blank" rel="noopener noreferrer">Improving health intelligence in ChatGPT</a>
+
+*OpenAI*
+
+本篇研究针对ChatGPT在健康咨询场景下回答专业度、适配性不足的痛点，提出通过GPT-5.5 Instant版本实现健康智能升级：核心优化路径包括强化模型推理能力、提升上下文关联匹配精度、优化表达清晰度，同时引入医师参与的输出效果评估校准机制。升级后ChatGPT健康类回应逻辑更严谨、适配性更强，专业可靠性与实用价值显著提升。
+
+<FeedbackButtons slug="item:openai-blog-improving-health-intelligence-in-chatgpt" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener noreferrer">Statement on the US government directive to suspend access to Fable 5 and Mythos 5</a>
+
+*Anthropic*
+
+本文件是针对美国政府出口管制新要求的相关声明：美方近日正式发布出口管制指令，明确要求全面暂停所有外籍人员对Fable 5、Mythos 5两类AI工具的访问权限，该项限制不受地域约束，无论相关外籍人员身处美国境内或是境外，均需遵守该准入禁令，违规访问将违反美出口管制规定。
+
+<FeedbackButtons slug="item:anthropic-fable-mythos-access" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-corps" target="_blank" rel="noopener noreferrer">Introducing Claude Corps</a>
+
+*Anthropic*
+
+本次推出的「Claude Corps」是一项全美性职业扶持奖学金项目，面向处于职业生涯早期、有志于将AI发展利好传递到美国各地社区的青年群体设立，旨在集聚相关领域青年人才，进一步拓展AI技术普惠价值的覆盖范围，让更多普通社区享受到AI发展的实际益处。
+
+<FeedbackButtons slug="item:anthropic-claude-corps" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/unlocking-uk-house-building-with-ai-accelerated-planning/" target="_blank" rel="noopener noreferrer">Unlocking UK house-building with AI-accelerated planning</a>
+
+*Google DeepMind*
+
+英国政府联合谷歌DeepMind研发AI驱动的住房规划原型工具，瞄准当前英国住房建设审批流程冗长、落地效率低的堵点，旨在压缩住房项目的规划决策周期。该尝试也是AI技术落地公共政务审批、民生基建场景的新探索，预期可有效提速规划流程，释放英国住房建设供给潜力。
+
+<FeedbackButtons slug="item:deepmind-unlocking-uk-house-building-with-ai-accelerated-planning" client:visible />
+
+## <a href="https://deepmind.google/blog/securing-the-future-of-ai-agents/" target="_blank" rel="noopener noreferrer">Securing the future of AI agents</a>
+
+*Google DeepMind*
+
+这篇聚焦AI代理未来安全的研究，核心提出AI控制路线图以防护内部系统安全。该方案兼顾安全合规要求与动态风险响应效率，融合传统安全防护措施与实时监测机制，可针对性补齐AI代理落地的内部安全短板，为其长期规模化安全部署、防控运行风险提供了清晰的实施框架。
+
+<FeedbackButtons slug="item:deepmind-securing-the-future-of-ai-agents" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/ServiceNow/mosaicleaks" target="_blank" rel="noopener noreferrer">MosaicLeaks: Can your research agent keep a secret?</a>
+
+*Hugging Face*
+
+当前你仅提供了该论文的标题，未附上摘要的具体正文内容，请补充完整这篇摘要的全部文本信息，我才能按照要求提炼其核心研究方法、核心结论，完成120字左右、重点突出的精简中文总结。
+
+<FeedbackButtons slug="item:hf-blog-mosaicleaks" client:visible />
+
+## <a href="https://huggingface.co/blog/peft-beyond-lora" target="_blank" rel="noopener noreferrer">Beyond LoRA: Can you beat the most popular fine-tuning technique?</a>
+
+*Hugging Face*
+
+这篇论文针对参数高效微调主流方案LoRA，系统对比十余种LoRA改进变体与全微调方案，在NLP、CV、多模态三类任务、不同参数规模基座上开展全维度评测。结果显示暂无改进方案能全场景稳定超越标准LoRA，后者在泛用性、鲁棒性、调参效率的平衡表现仍最优，仅特定任务场景可按需选用对应改进变体。
+
+<FeedbackButtons slug="item:hf-blog-peft-beyond-lora" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+本文挑战AI对齐领域的正交性假说预设，从美德伦理视角展开讨论：反驳“理性主体需锚定固定终局目标”的认知，指出人类行动合理性源于适配含行动倾向、评价标准等要素的实践网络，而非指向特定目标。提出若要AI适配人类主体性，其决策逻辑需与人类实践型行动逻辑同构，这既关乎伦理对齐，也能保障AI核心安全。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/06/436864.html" target="_blank" rel="noopener noreferrer">我把昨晚的梦输入AI，它居然直接把我拉进去玩儿了一把？！</a>
+
+*量子位*
+
+阿里ATH推出开放式世界模型HappyOyster 1.0，区别于Sora等只能产出固定、不可交互、长时易崩坏的文生视频素材，它可实时构建可演绎、可探索、可互动的动态数字世界。用户输入梦境内容即可进入生成场景，自主操控角色完成转向、豚跳等动作，交互体验突破传统文生视频上限。
+
+<FeedbackButtons slug="item:qbitai-436864" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/436842.html" target="_blank" rel="noopener noreferrer">GPT发AI原创新成果了</a>
+
+*量子位*
+
+OpenAI联合Molecule.one发布新成果：将GPT-5.4对接化学AI代理Maria及配套高通量实验系统，仅给定“改进重要类属反应”的宽泛目标，就近乎自主完成药物合成常用Chan-Lam偶联反应的优化，解决伯磺酰胺与硼酸偶联产率低的痛点，方案超出化学家预期，是有机化学领域首个AI近自主科研发现，可拓宽药物合成路径，实验实操由人类完成验证。
+
+<FeedbackButtons slug="item:qbitai-436842" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/436813.html" target="_blank" rel="noopener noreferrer">全球首个人形机器人通用小脑来了！全球最大规模2万小时人类动作数据，实现零样本泛化</a>
+
+*量子位*
+
+银河通用近日发布全球首个人形机器人通用小脑AstraBrain-WBC 0.5。该模型首次将大模型规模化训练范式引入人形机器人实时运控领域，基于2万小时人类动作数据训练，参数达8000万，验证了缩放定律，可实现毫秒级全身协同控制，具备零样本泛化能力，推动人形机器人运动控制迈入基础模型时代。
+
+<FeedbackButtons slug="item:qbitai-436813" client:visible />
