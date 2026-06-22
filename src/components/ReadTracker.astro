@@ -1,0 +1,87 @@
+---
+/**
+ * LocalStorage 记录"读过的文章"，列表页显示淡化 + ✓ 标记。
+ *
+ * 工作机制：
+ *   - 文章详情页 BaseLayout 加载完，记录 location.pathname 到 localStorage.zoro:read
+ *   - 列表页加载完，扫所有 <a href="/{section}/{slug}"> 检查是否在 read set
+ *   - 命中 → 加 .post-read class（opacity-60 + 行末加 ✓ marker）
+ *
+ * 隐私：仅 localStorage 本地存，不上传任何数据。
+ */
+---
+
+<script is:inline>
+  (function () {
+    const KEY = "zoro:read";
+    function loadSet() {
+      try { return new Set(JSON.parse(localStorage.getItem(KEY) || "[]")); }
+      catch { return new Set(); }
+    }
+    function saveSet(s) {
+      try { localStorage.setItem(KEY, JSON.stringify([...s].slice(-500))); } catch {}
+    }
+    function isArticle() {
+      // 文章详情：/ai/xxx /invest/xxx /hike/xxx /photo/xxx，但不是列表（路径段恰好 2 段）
+      const p = location.pathname.replace(/\/$/, "");
+      const parts = p.split("/").filter(Boolean);
+      // /ai (1 段) / /ai/digest (2 段但是列表) / /ai/some-key (2 段是文章) / /ai/digest/foo（3 段?）
+      // 简化：白名单 4 个 collection prefix；2 段且 [1] 不是 "digest" 算文章
+      if (parts.length !== 2) return false;
+      const SECTIONS = ["ai", "invest", "hike", "photo"];
+      if (!SECTIONS.includes(parts[0])) return false;
+      if (parts[1] === "digest") return false;
+      return true;
+    }
+
+    // 文章详情页：3 秒后认为"读过"（防止瞬间打开就关导致误标）
+    if (isArticle()) {
+      setTimeout(() => {
+        const s = loadSet();
+        s.add(location.pathname.replace(/\/$/, ""));
+        saveSet(s);
+      }, 3000);
+    }
+
+    // 列表页：标记已读链接
+    document.addEventListener("DOMContentLoaded", () => {
+      const s = loadSet();
+      if (s.size === 0) return;
+      document.querySelectorAll('a[href]').forEach((a) => {
+        try {
+          const u = new URL(a.href, location.origin);
+          // 仅同站
+          if (u.host !== location.host) return;
+          const path = u.pathname.replace(/\/$/, "");
+          if (s.has(path)) {
+            a.classList.add("post-read");
+          }
+        } catch {}
+      });
+    });
+  })();
+</script>
+
+<style is:global>
+  /* 已读样式：淡化 + 行末 ✓ */
+  a.post-read {
+    opacity: 0.55;
+    transition: opacity 0.2s;
+  }
+  a.post-read:hover {
+    opacity: 1;
+  }
+  a.post-read::after {
+    content: " ✓";
+    color: #16a34a;
+    font-size: 0.85em;
+    margin-left: 0.25em;
+  }
+  /* card 类元素只淡化，不加 ✓（避免破坏布局） */
+  a.post-read.group::after,
+  a.post-read[class*="rounded-"]::after,
+  a.post-read[class*="border"]::after {
+    content: "";
+    margin: 0;
+  }
+</style>

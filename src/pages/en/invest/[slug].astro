@@ -7,6 +7,7 @@ import PostFooter from "@/components/PostFooter.astro";
 import ReadingProgress from "@/components/ReadingProgress.astro";
 import ShareSidebar from "@/components/ShareSidebar";
 import SubscribeCTA from "@/components/SubscribeCTA.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
 import { getAdjacentPosts, getRelatedPosts } from "@/lib/related-posts";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
 
@@ -40,10 +41,8 @@ const isDigest = (entry.data.tags ?? []).includes("digest") || entry.data.transl
     url={new URL(Astro.url.pathname, Astro.site).toString()} client:idle />
   <article class="max-w-2xl mx-auto px-6 sm:px-8 pt-12 sm:pt-20 pb-24 sm:pb-32">
 
-    <a href={pathWithLang("/invest", lang)}
-       class="inline-block text-[11px] uppercase tracking-[0.2em] text-zinc-500 hover:text-section-invest transition-colors mb-10 sm:mb-16">
-      ← {t("section.invest.title")}
-    </a>
+    <Breadcrumb section="invest" sectionLabel={t("section.invest.title")}
+                isDigest={isDigest} currentTitle={entry.data.title} lang={lang} />
 
     <header class="mb-14 sm:mb-20">
       <h1 class="text-3xl sm:text-5xl leading-tight tracking-tight font-semibold text-section-invest">

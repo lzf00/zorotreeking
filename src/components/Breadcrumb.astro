@@ -1,0 +1,65 @@
+---
+/**
+ * 文章页面包屑：首页 / 栏目 / [归档?] / 当前
+ *
+ * Props:
+ *   section "ai" | "invest" | "hike" | "photo"
+ *   sectionLabel "AI 学习" / "个人投资" / ...
+ *   isDigest 是否 digest（true 则插入"日报归档"中间一级）
+ *   currentTitle 当前文章标题（仅作为视觉锚点，最末一级不可点击）
+ *   lang "zh" | "en"
+ *
+ * 同时输出 schema.org BreadcrumbList JSON-LD，Google 富结果识别。
+ */
+import { pathWithLang } from "@/i18n/ui";
+
+interface Props {
+  section: "ai" | "invest" | "hike" | "photo";
+  sectionLabel: string;
+  isDigest?: boolean;
+  currentTitle: string;
+  lang: "zh" | "en";
+}
+const { section, sectionLabel, isDigest = false, currentTitle, lang } = Astro.props;
+
+const home = pathWithLang("/", lang);
+const sectionHref = pathWithLang(`/${section}`, lang);
+const digestHref = pathWithLang(`/${section}/digest`, lang);
+const digestLabel = lang === "zh" ? "日报归档" : "Digest archive";
+const homeLabel = lang === "zh" ? "首页" : "Home";
+
+const items: Array<{ label: string; href?: string }> = [
+  { label: homeLabel, href: home },
+  { label: sectionLabel, href: sectionHref },
+];
+if (isDigest) items.push({ label: digestLabel, href: digestHref });
+items.push({ label: currentTitle });
+
+const sitePrefix = Astro.site?.toString().replace(/\/$/, "") ?? "";
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: items.map((it, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    name: it.label,
+    item: it.href ? `${sitePrefix}${it.href}` : undefined,
+  })),
+};
+---
+
+<nav aria-label={lang === "zh" ? "面包屑" : "Breadcrumb"}
+     class="text-[11px] uppercase tracking-[0.18em] text-zinc-500 font-mono mb-6 flex flex-wrap items-center gap-1.5">
+  {items.map((it, i) => (
+    <>
+      {i > 0 && <span class="text-zinc-300 dark:text-zinc-700">/</span>}
+      {it.href ? (
+        <a href={it.href} class="hover:text-[var(--text)] transition-colors">{it.label}</a>
+      ) : (
+        <span class="text-[var(--text-secondary)] truncate max-w-[20ch] sm:max-w-[40ch]">{it.label}</span>
+      )}
+    </>
+  ))}
+</nav>
+
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd, (_, v) => v === undefined ? undefined : v)}></script>

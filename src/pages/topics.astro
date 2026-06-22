@@ -1,0 +1,138 @@
+---
+/**
+ * /topics 标签 + 关键词云。
+ *
+ * 两个视图：
+ *   - 标签云：所有 mdx 的 tags 频次，字号 = 频次（min 11 → max 36），点击进 /tag/[tag]
+ *   - 字数 / 篇数饼图：每个 collection 的内容体量对比（横向 bar）
+ */
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import { pathWithLang } from "@/i18n/ui";
+
+// 拉所有 zh 内容
+const [ai, invest, hike, photo] = await Promise.all([
+  getCollection("ai", (p) => p.data.lang === "zh" && !p.data.draft),
+  getCollection("invest", (p) => p.data.lang === "zh" && !p.data.draft),
+  getCollection("hike", (p) => p.data.lang === "zh" && !p.data.draft),
+  getCollection("photo", (p) => p.data.lang === "zh" && !p.data.draft),
+]);
+
+interface Entry { tags?: string[]; body?: string; section: string }
+const all: Entry[] = [
+  ...ai.map((p) => ({ tags: p.data.tags ?? [], body: p.body ?? "", section: "ai" })),
+  ...invest.map((p) => ({ tags: p.data.tags ?? [], body: p.body ?? "", section: "invest" })),
+  ...hike.map((p) => ({ tags: p.data.tags ?? [], body: p.body ?? "", section: "hike" })),
+  ...photo.map((p) => ({ tags: p.data.tags ?? [], body: p.body ?? "", section: "photo" })),
+];
+
+// ── 标签云：统计 tag 频次 ──
+const tagCount = new Map<string, number>();
+for (const e of all) {
+  for (const t of e.tags ?? []) {
+    if (!t) continue;
+    tagCount.set(t, (tagCount.get(t) ?? 0) + 1);
+  }
+}
+const tags = [...tagCount.entries()]
+  .sort((a, b) => b[1] - a[1]);
+
+const maxC = tags[0]?.[1] ?? 1;
+const minC = tags[tags.length - 1]?.[1] ?? 1;
+function fontSize(c: number): number {
+  if (maxC === minC) return 20;
+  // 线性映射到 11..36 px
+  return Math.round(11 + ((c - minC) / (maxC - minC)) * 25);
+}
+
+// ── 内容体量：每个 collection 总字数 ──
+function approxChineseWordCount(text: string): number {
+  // 中文字符算 1 词，英文按空格切
+  let cn = 0;
+  let asciiText = text.replace(/[一-鿿]/g, () => { cn++; return ""; });
+  const enWords = asciiText.split(/\s+/).filter((s) => /[a-zA-Z]/.test(s)).length;
+  return cn + enWords;
+}
+const collectionStats = ["ai", "invest", "hike", "photo"].map((c) => {
+  const list = all.filter((e) => e.section === c);
+  const words = list.reduce((s, e) => s + approxChineseWordCount(e.body ?? ""), 0);
+  return { collection: c, count: list.length, words };
+});
+const maxWords = Math.max(...collectionStats.map((s) => s.words), 1);
+const sectionLabel: Record<string, string> = { ai: "AI 学习", invest: "个人投资", hike: "徒步", photo: "摄影" };
+const sectionColor: Record<string, string> = {
+  ai: "#1d4ed8", invest: "#991b1b", hike: "#166534", photo: "#6b21a8",
+};
+---
+
+<BaseLayout title="主题与关键词" description={`${tags.length} 个标签 · ${all.length} 篇内容的关键词云与体量对比`}>
+  <article class="max-w-3xl mx-auto px-6 sm:px-8 pt-12 sm:pt-20 pb-24">
+
+    <header class="mb-12">
+      <div class="text-[11px] uppercase tracking-[0.2em] text-zinc-500 font-mono mb-3">TOPICS</div>
+      <h1 class="text-3xl sm:text-5xl leading-tight tracking-tight font-semibold">主题与关键词</h1>
+      <p class="mt-4 text-base sm:text-lg leading-relaxed text-[var(--text-secondary)] font-light">
+        共 {tags.length} 个标签 · {all.length} 篇内容。字号大小 = 该标签出现的篇数。
+      </p>
+    </header>
+
+    {/* ── 标签云 ── */}
+    <section class="mb-16">
+      <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-5 pb-2 border-b border-[var(--border)]">
+        Tag cloud
+      </div>
+      <div class="flex flex-wrap gap-x-3 gap-y-2 items-baseline">
+        {tags.map(([tag, n]) => (
+          <a href={pathWithLang(`/tag/${tag}`, "zh")}
+             class="text-[var(--text-secondary)] hover:text-[var(--text)] transition-colors leading-none"
+             style={`font-size:${fontSize(n)}px`}
+             title={`${n} 篇`}>
+            {tag}
+            <sup class="ml-0.5 text-[10px] text-[var(--text-tertiary)] font-mono">{n}</sup>
+          </a>
+        ))}
+        {tags.length === 0 && (
+          <p class="text-[var(--text-tertiary)]">还没有 tag 数据。</p>
+        )}
+      </div>
+    </section>
+
+    {/* ── 体量对比 ── */}
+    <section class="mb-16">
+      <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-5 pb-2 border-b border-[var(--border)]">
+        每板块体量
+      </div>
+      <ul class="space-y-3">
+        {collectionStats.map((s) => {
+          const pct = Math.round((s.words / maxWords) * 100);
+          return (
+            <li>
+              <div class="flex items-baseline justify-between mb-1">
+                <a href={pathWithLang(`/${s.collection}`, "zh")}
+                   class="text-sm font-medium hover:underline"
+                   style={`color:${sectionColor[s.collection]}`}>
+                  {sectionLabel[s.collection]}
+                </a>
+                <span class="text-[11px] text-[var(--text-tertiary)] font-mono tabular-nums">
+                  {s.count} 篇 · {s.words.toLocaleString()} 词
+                </span>
+              </div>
+              <div class="h-1.5 bg-[var(--bg-soft)] rounded-full overflow-hidden">
+                <div class="h-full rounded-full transition-all"
+                     style={`width:${pct}%;background:${sectionColor[s.collection]}`}></div>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+
+    <footer class="mt-16 pt-8 border-t border-[var(--border)] text-sm text-[var(--text-tertiary)] leading-relaxed">
+      <p>
+        Tag 自动维护：digest cron 按 source 派生 tag（hf-papers / arxiv / openai 等），
+        原创文章自己 frontmatter 里 tag。点击任意 tag 进对应 <code>/tag/[name]</code> 索引页。
+      </p>
+    </footer>
+
+  </article>
+</BaseLayout>

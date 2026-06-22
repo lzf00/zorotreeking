@@ -31,6 +31,9 @@ type PhotoEntry = {
   width: number;
   height: number;
   alt: string;
+  /** GPS 坐标（WGS84）；从 EXIF GPSLatitude/Longitude 取，无则 undefined */
+  lat?: number;
+  lng?: number;
   exif?: {
     camera?: string;
     lens?: string;
@@ -120,6 +123,7 @@ async function main() {
       }
 
       let exifData: any = {};
+      let gpsData: any = null;
       if (exifr) {
         try {
           exifData = await exifr.parse(buf, {
@@ -127,6 +131,12 @@ async function main() {
           }) || {};
         } catch {
           // 部分文件可能没 EXIF，忽略
+        }
+        // GPS 单独抽（exifr.gps 返回 { latitude, longitude }，自动处理 N/S/E/W）
+        try {
+          gpsData = await exifr.gps(buf);
+        } catch {
+          // 没 GPS 忽略
         }
       }
 
@@ -138,6 +148,8 @@ async function main() {
         width,
         height,
         alt: path.basename(f, path.extname(f)),
+        lat: gpsData?.latitude,
+        lng: gpsData?.longitude,
         exif: {
           camera: exifData?.Make && exifData?.Model ? `${exifData.Make} ${exifData.Model}`.trim() : exifData?.Model,
           lens: exifData?.LensModel,

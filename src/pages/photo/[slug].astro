@@ -3,6 +3,7 @@ import { getCollection, type CollectionEntry } from "astro:content";
 import PhotoLayout from "@/layouts/PhotoLayout.astro";
 import FeedbackButtons from "@/components/FeedbackButtons";
 import PhotoGallery from "@/components/PhotoGallery";
+import PhotoMap from "@/components/PhotoMap";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
 import { loadPhotoManifest, resolveAlbumKey } from "@/lib/photo-manifests";
 
@@ -23,6 +24,10 @@ const photos = loadPhotoManifest(resolveAlbumKey(entry.data));
 const cover = photos[0];
 const rest = photos.slice(1);
 const dateStr = entry.data.date.toISOString().slice(0, 10);
+// 有 GPS 的照片提出来给地图用
+const geoPoints = photos
+  .filter((p: any) => Number.isFinite(p.lat) && Number.isFinite(p.lng))
+  .map((p: any) => ({ lat: p.lat, lng: p.lng, thumb: p.thumb, alt: p.alt, src: p.src }));
 ---
 
 <PhotoLayout title={entry.data.title} description={entry.data.description}>
@@ -78,6 +83,13 @@ const dateStr = entry.data.date.toISOString().slice(0, 10);
   {rest.length > 0 ? (
     <section class="max-w-7xl mx-auto px-2 sm:px-3 mt-12">
       <PhotoGallery photos={rest} galleryId={`gallery-${entry.data.translationKey}`} client:only="react" />
+    </section>
+  ) : null}
+
+  {/* GPS 地图（有点的话） */}
+  {geoPoints.length > 0 ? (
+    <section class="max-w-5xl mx-auto px-5 mt-12">
+      <PhotoMap points={geoPoints} client:visible />
     </section>
   ) : photos.length === 0 ? (
     <section class="max-w-2xl mx-auto px-5 mt-16 mb-24 text-center text-white/55">
