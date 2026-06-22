@@ -1,0 +1,154 @@
+---
+lang: zh
+translationKey: digest-2026-06-22
+title: "AI 每日精选 · 2026-06-22"
+description: "16 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-06-22
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, the-gradient]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.19534" target="_blank" rel="noopener noreferrer">PerceptionDLM: Parallel Region Perception with Multimodal Diffusion Language Models</a>
+
+*HF ★ 26 · Yueyi Sun, Yuhao Wang, Jason Li… · [HF 镜像](https://huggingface.co/papers/2606.19534)*
+
+针对现有多模态大模型依赖自回归生成、多区域感知效率低的问题，本文提出多模态扩散语言模型PerceptionDLM，通过高效提示、结构化注意力掩码实现序列与令牌级并行生成多区域描述，同步构建多区域描述评测基准ParaDLC-Bench。实验证明，该模型在保持区域描述性能竞争力的同时大幅提升多区域感知速度，是首个用扩散语言模型实现并行区域感知的方案，相关资源已开源。
+
+<FeedbackButtons slug="item:arxiv-2606.19534" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.19651" target="_blank" rel="noopener noreferrer">BrainG3N: A Dual-Purpose Tokenizer for Controllable 3D Brain MRI Generation</a>
+
+*HF ★ 2 · Max Van Puyvelde, Ibrahim Gulluk, Wim Van Criekinge… · [HF 镜像](https://huggingface.co/papers/2606.19651)*
+
+针对3D脑MRI潜扩散现有分词器重重建、丢失临床信息的痛点，本文提出双用途分词器BrainG3N：冻结用3.5万余多模态多疾病样本预训练的3D掩码自编码器编码器提取临床特征，搭配独立CNN解码器完成重建。该模型在23项临床任务中21项超/持平SOTA，同时支持可控生成与病程预测，兼顾下游任务和生成需求。
+
+<FeedbackButtons slug="item:arxiv-2606.19651" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.18847" target="_blank" rel="noopener noreferrer">WorldLines: Benchmarking and Modeling Long-Horizon Stateful Embodied Agents</a>
+
+*HF ★ 2 · Yehang Zhang, Jianchong Su, Haojian Huang… · [HF 镜像](https://huggingface.co/papers/2606.18847)*
+
+针对现有长时记忆基准多侧重语言类问答、具身智能基准多聚焦短任务、未覆盖动态环境长时记忆能力评测的不足，该研究推出WorldLines长时程具身家庭辅助基准，构建长时序家庭交互轨迹生成评测样本，还提出ObsMem记忆框架支撑状态感知决策。实验表明当前方案仍存部分可观测、状态覆写等难点，ObsMem为该场景提供更优参考架构。
+
+<FeedbackButtons slug="item:arxiv-2606.18847" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.18829" target="_blank" rel="noopener noreferrer">GateMem: Benchmarking Memory Governance in Multi-Principal Shared-Memory Agents</a>
+
+*HF ★ 1 · Zhe Ren, Yibo Yang, Yimeng Chen… · [HF 镜像](https://huggingface.co/papers/2606.18829)*
+
+现有大模型智能体内存基准多适配单用户场景，缺乏多主体共享内存场景的测评能力。本文推出覆盖医疗、办公、教育、家居场景的GateMem基准，可同步测评合法请求效用、跨边界访问控制、删除后主动遗忘三类核心能力。测试表明现有方案均无法同时满足三类要求：长上下文方案治理效果好但token成本高，检索类方案成本低却易发生信息泄露，距可靠共享部署仍有较大差距。
+
+<FeedbackButtons slug="item:arxiv-2606.18829" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/samsung-electronics-chatgpt-codex-deployment" target="_blank" rel="noopener noreferrer">Samsung Electronics brings ChatGPT and Codex to employees</a>
+
+*OpenAI*
+
+三星电子近日面向全球员工正式部署OpenAI旗下ChatGPT企业版与Codex代码大模型，这是OpenAI目前落地规模最大的企业级AI商用项目之一。本次部署可为员工在办公、代码开发、内容创作等场景提供AI支撑，也体现了头部科技企业加速将生成式AI融入内部运营的趋势。
+
+<FeedbackButtons slug="item:openai-blog-samsung-electronics-chatgpt-codex-deployment" client:visible />
+
+## <a href="https://openai.com/index/chatgpt-enterprise-spend-controls" target="_blank" rel="noopener noreferrer">New usage analytics and updated spend controls for enterprises</a>
+
+*OpenAI*
+
+OpenAI近期为ChatGPT企业版上线两大新功能：一是全新使用行为分析模块，可拆解不同部门、场景的AI调用明细；二是升级后的支出管控工具，支持灵活设置成本阈值、权限分级。两类工具共同解决企业规模化部署AI时的成本不可控问题，降低落地风险，助力企业放心推进AI应用落地。
+
+<FeedbackButtons slug="item:openai-blog-chatgpt-enterprise-spend-controls" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener noreferrer">Statement on the US government directive to suspend access to Fable 5 and Mythos 5</a>
+
+*Anthropic*
+
+这份是相关主体针对美国政府出口管制新规发布的专门声明。核心内容为美国政府已正式出台出口管制指令，将全面暂停所有外籍人员对Fable 5、Mythos 5两类管制对象的访问权限，无论对应外籍人员当前身处美国境内还是境外，该管制是美国对外技术限制政策的最新落地举措。
+
+<FeedbackButtons slug="item:anthropic-fable-mythos-access" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-corps" target="_blank" rel="noopener noreferrer">Introducing Claude Corps</a>
+
+*Anthropic*
+
+Anthropic正式推出美国全国性人才项目「Claude Corps」，该项目属于专项研习计划（fellowship），面向职业发展早期、有志于推动AI技术普惠、希望将AI发展红利切实覆盖美国各地基层社区的从业者开放申请，旨在吸纳青年力量落地AI民生价值，缩小不同群体的AI技术获益差距。
+
+<FeedbackButtons slug="item:anthropic-claude-corps" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/unlocking-uk-house-building-with-ai-accelerated-planning/" target="_blank" rel="noopener noreferrer">Unlocking UK house-building with AI-accelerated planning</a>
+
+*Google DeepMind*
+
+为破解英国住房建设规划审批周期长、供应不足的痛点，英国政府联合谷歌DeepMind开发AI驱动的规划审批原型系统。该方案核心是依托AI技术提速住房建设相关行政决策流程，旨在打通住房建设流程堵点，压缩规划审批耗时，提升住宅供给效率，当前项目仍处于原型研发阶段。
+
+<FeedbackButtons slug="item:deepmind-unlocking-uk-house-building-with-ai-accelerated-planning" client:visible />
+
+## <a href="https://deepmind.google/blog/securing-the-future-of-ai-agents/" target="_blank" rel="noopener noreferrer">Securing the future of AI agents</a>
+
+*Google DeepMind*
+
+这篇题为《保障AI代理的未来》的研究，针对AI代理规模化落地的安全痛点，提出以AI管控路线图为核心的防护方案：通过融合传统安全防护机制与实时动态监测能力，全方位筑牢AI代理运行的内部系统安全防线，为AI代理长期合规、可持续发展提供体系化安全支撑。
+
+<FeedbackButtons slug="item:deepmind-securing-the-future-of-ai-agents" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/ServiceNow/mosaicleaks" target="_blank" rel="noopener noreferrer">MosaicLeaks: Can your research agent keep a secret?</a>
+
+*Hugging Face*
+
+这篇论文回应大模型科研智能体能否保密的疑问，披露名为MosaicLeaks的新型泄露攻击：攻击者可诱导智能体将涉密未公开研究成果、实验数据拆分成多块独立输出，拼接即可还原完整涉密内容。测试显示现有智能体常规保密防护几乎都可被该方法绕过，提示科研场景需针对性增设分块输出关联审计机制。
+
+<FeedbackButtons slug="item:hf-blog-mosaicleaks" client:visible />
+
+## <a href="https://huggingface.co/blog/peft-beyond-lora" target="_blank" rel="noopener noreferrer">Beyond LoRA: Can you beat the most popular fine-tuning technique?</a>
+
+*Hugging Face*
+
+本文针对大模型主流参数高效微调技术LoRA的性能上限展开探究，梳理LoRA固有秩约束、全场景适配能力有限等短板，汇总对比近年各类改进、替代方案，验证得部分定制方案在少样本、多模态等特定场景下精度、效率优于标准LoRA，但通用场景下LoRA仍凭易用性、部署优势暂无可撼动的通用替代。
+
+<FeedbackButtons slug="item:hf-blog-peft-beyond-lora" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+该文从德性伦理视角反思AI正交性假说，反驳“理性智能体必然以固定目标为行动导向”的传统认知，指出人类理性本质是行动适配包含规则、评价标准、资源的社会实践网络。提出要实现AI与人类顺畅协作，需让AI决策逻辑匹配人类基于实践的行动逻辑，该路径既适配伦理价值对齐，也可保障AI核心安全。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/06/437235.html" target="_blank" rel="noopener noreferrer">入选ECCV 2026！清华开源空间模型打败Gemini：真正的空间智能是在世界变化中持续学习</a>
+
+*量子位*
+
+清华团队研发的流式空间智能模型Spatial-TTT已入选ECCV 2026。该模型针对动态场景空间理解需求，无需依赖无限扩展上下文，可在观看视频时动态构建更新空间记忆。仅2B参数的它在多项空间智能基准上超越GPT-5、Gemini-3-pro等闭源模型，最长可处理120分钟流式视频，为多模态大模型落地真实场景提供关键支撑。
+
+<FeedbackButtons slug="item:qbitai-437235" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/437198.html" target="_blank" rel="noopener noreferrer">具身赛道现状素描：脑子灵，模型好，不是百亿，就是独角</a>
+
+*量子位*
+
+国内具身智能赛道2026年融资热度攀升，全年规模有望创新高。超五成资金流向主打“软件定义硬件、模型定义本体”的具身大脑企业，这类企业融资节奏极快、单轮融资金额远超同阶段其他赛道均值，目前大多仍处早期融资阶段，机器人本体、核心零部件赛道融资占比偏低。
+
+<FeedbackButtons slug="item:qbitai-437198" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/437141.html" target="_blank" rel="noopener noreferrer">2026年，1800个DeepSeek跟我一起守护艾泽拉斯</a>
+
+*量子位*
+
+近日有Reddit用户搭建《魔兽世界》巫妖王之怒版本私服，基于现成服务端机器人模块改造，将内置AI聊天接口接入DeepSeek API，实现1800个可自主做任务、组队、自然聊天的AI玩家，拟真度高，运行成本极低，1800个AI满负载月费仅约340元，相关帖成社区热帖，玩家接受度远高于官方疑似人机。
+
+<FeedbackButtons slug="item:qbitai-437141" client:visible />
