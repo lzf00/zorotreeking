@@ -35,7 +35,7 @@ import { fetchQbitAI } from "./digest-sources/ai-qbitai.ts";
 import { fetchTongHuaShunNews, type NewsItem } from "./digest-sources/invest.ts";
 import { fetchEastmoneyNews } from "./digest-sources/invest-eastmoney.ts";
 import { fetchYahooFinance } from "./digest-sources/invest-yahoo.ts";
-import { summarizeToChinese } from "./lib/llm.ts";
+import { summarizeToChinese, digestTLDR, generateDigestCoverUrl, type DigestTLDR } from "./lib/llm.ts";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CONTENT_DIR = path.join(ROOT, "src", "content");
@@ -95,6 +95,58 @@ function itemSlug(source: string, url: string): string {
   let h = 0;
   for (let i = 0; i < url.length; i++) h = (h * 31 + url.charCodeAt(i)) | 0;
   return `${source}-${(h >>> 0).toString(36)}`;
+}
+
+/**
+ * 把 doubao 生成的封面 URL 下载到 public/covers/digest-{kind}-{date}.webp。
+ * 失败返回 null。永远不抛错，digest 主流程不会被这一步阻塞。
+ */
+async function downloadCover(remoteUrl: string, kind: "ai" | "invest", date: string): Promise<string | null> {
+  try {
+    const resp = await fetch(remoteUrl);
+    if (!resp.ok) return null;
+    const buf = Buffer.from(await resp.arrayBuffer());
+    const coversDir = path.join(ROOT, "public", "covers");
+    await fs.mkdir(coversDir, { recursive: true });
+    const filename = `digest-${kind}-${date}.${guessImageExt(remoteUrl) || "png"}`;
+    await fs.writeFile(path.join(coversDir, filename), buf);
+    return `/covers/${filename}`;
+  } catch (e) {
+    console.warn("[downloadCover] failed:", (e as Error).message);
+    return null;
+  }
+}
+function guessImageExt(url: string): string | null {
+  const m = url.match(/\.(png|jpe?g|webp)(?:\?|$)/i);
+  return m ? m[1].toLowerCase().replace("jpeg", "jpg") : null;
+}
+
+/**
+ * 把 TL;DR + tags 渲染成 MDX 顶部的浓缩区。无 TL;DR 时返回空数组。
+ */
+function renderTLDR(tldr: DigestTLDR | null): string[] {
+  if (!tldr || !tldr.summary?.length) return [];
+  const lines: string[] = [];
+  lines.push('<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">');
+  lines.push('  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>');
+  lines.push('  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">');
+  for (const s of tldr.summary) {
+    lines.push(`    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">${escapeJsxText(s)}</li>`);
+  }
+  lines.push('  </ul>');
+  if (tldr.tags?.length) {
+    lines.push('  <div className="mt-4 flex flex-wrap gap-2">');
+    for (const tag of tldr.tags) {
+      lines.push(`    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">${escapeJsxText(tag)}</span>`);
+    }
+    lines.push('  </div>');
+  }
+  lines.push('</div>');
+  lines.push('');
+  return lines;
+}
+function escapeJsxText(s: string): string {
+  return s.replace(/\\/g, "\\\\").replace(/\{/g, "\\{").replace(/\}/g, "\\}").replace(/</g, "&lt;");
 }
 
 async function summarizeSafe(
@@ -213,6 +265,19 @@ async function buildAIDigest(date: string): Promise<void> {
   ));
   const tagList = ["digest", "auto", ...themeTags].slice(0, 8);
 
+  // ── TL;DR：浓缩到 3 句话 + 5 个 emoji 标签 ────────────────────
+  console.log("  generating TL;DR + cover…");
+  const titleBrief = summaries.map((p, i) => `${i + 1}. [${p.source}] ${p.title}`).join("\n");
+  const tldr = await digestTLDR("ai", titleBrief).catch(() => null);
+
+  // ── 封面图：豆包 seedream 出一张抽象插画 ──────────────────────
+  let coverPath: string | null = null;
+  const coverHint = `AI 每日精选 · ${date}：` +
+    (tldr?.tags?.join("，") || summaries.slice(0, 3).map((p) => p.title).join("；"));
+  const remoteUrl = await generateDigestCoverUrl(coverHint).catch(() => null);
+  if (remoteUrl) coverPath = await downloadCover(remoteUrl, "ai", date);
+  if (coverPath) console.log(`  cover saved: ${coverPath}`);
+
   const lines: string[] = [];
   lines.push("---");
   lines.push(`lang: zh`);
@@ -222,11 +287,14 @@ async function buildAIDigest(date: string): Promise<void> {
   lines.push(`date: ${date}`);
   lines.push(`tags: [${tagList.join(", ")}]`);
   lines.push(`category: paper`);
+  if (coverPath) lines.push(`cover: "${coverPath}"`);
   lines.push(`draft: false`);
   lines.push("---");
   lines.push("");
   lines.push('import FeedbackButtons from "@/components/FeedbackButtons";');
   lines.push("");
+  // TL;DR 浓缩区（不阻塞主流程，没有就不渲染）
+  for (const l of renderTLDR(tldr)) lines.push(l);
 
   for (const sourceKey of Object.keys(grouped)) {
     const label = SOURCE_LABEL[sourceKey] || sourceKey;
@@ -301,6 +369,17 @@ async function buildInvestDigest(date: string): Promise<void> {
   ));
   const tagList = ["digest", "auto", "market-news", ...themeTags].slice(0, 8);
 
+  // ── TL;DR + 封面图 ─────────────────────────────────────────────
+  console.log("  generating TL;DR + cover…");
+  const titleBrief = items.map((n, i) => `${i + 1}. [${n.source}] ${n.title}`).join("\n");
+  const tldr = await digestTLDR("invest", titleBrief).catch(() => null);
+  let coverPath: string | null = null;
+  const coverHint = `投资资讯日报 · ${date}：` +
+    (tldr?.tags?.join("，") || items.slice(0, 3).map((n) => n.title).join("；"));
+  const remoteUrl = await generateDigestCoverUrl(coverHint).catch(() => null);
+  if (remoteUrl) coverPath = await downloadCover(remoteUrl, "invest", date);
+  if (coverPath) console.log(`  cover saved: ${coverPath}`);
+
   lines.push("---");
   lines.push(`lang: zh`);
   lines.push(`translationKey: digest-${date}`);
@@ -308,6 +387,7 @@ async function buildInvestDigest(date: string): Promise<void> {
   lines.push(`description: "${items.length} 条快讯 · 多源聚合 + AI 改写"`);
   lines.push(`date: ${date}`);
   lines.push(`tags: [${tagList.join(", ")}]`);
+  if (coverPath) lines.push(`cover: "${coverPath}"`);
   lines.push(`draft: false`);
   lines.push("---");
   lines.push("");
@@ -315,6 +395,8 @@ async function buildInvestDigest(date: string): Promise<void> {
   lines.push("");
   lines.push("> 由 cron 每日 08:00 北京自动从同花顺 + 东方财富抓取，豆包改写摘要。**仅作信息整理，不构成投资建议。**");
   lines.push("");
+  // TL;DR
+  for (const l of renderTLDR(tldr)) lines.push(l);
 
   for (const sourceKey of Object.keys(grouped)) {
     const label = SOURCE_LABEL[sourceKey] || sourceKey;

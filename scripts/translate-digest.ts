@@ -1,8 +1,11 @@
 /**
- * 把 src/content/{ai,invest}/digest-*.zh.mdx 翻译成对应 .en.mdx。
+ * 把 src/content/{ai,invest,photo,hike}/*.zh.mdx 翻译成对应 .en.mdx。
  *
  * 增量：只翻译 .en.mdx 不存在的 zh 文件。daily-digest cron 跑完后立即处理
- * 当天的两篇新 digest。历史回填用：npx tsx scripts/translate-digest.ts --all
+ * 新增的 zh 文章（包括人工写的非 digest 文章）。历史回填用：
+ *   npx tsx scripts/translate-digest.ts --all
+ *
+ * 并发：默认 1（避免触发豆包 QPS）；用 --concurrency=N 提高（建议 ≤ 3）。
  *
  * 失败处理：单篇翻译失败跳过（下次重试），不阻塞整个流程。
  * 缺 DOUBAO_API_KEY 直接 return 不报错。
@@ -14,6 +17,20 @@ import { chat } from "./lib/llm.ts";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const FORCE_ALL = process.argv.includes("--all");
+const COLLECTIONS = ["ai", "invest", "photo", "hike"] as const;
+const CONCURRENCY = (() => {
+  const m = process.argv.find((a) => a.startsWith("--concurrency="));
+  if (!m) return 1;
+  const n = parseInt(m.split("=")[1], 10);
+  return Number.isFinite(n) && n >= 1 && n <= 5 ? n : 1;
+})();
+// 一次最多翻多少篇（防止首次回填触发 Actions 90 分钟超时）
+const LIMIT = (() => {
+  const m = process.argv.find((a) => a.startsWith("--limit="));
+  if (!m) return Infinity;
+  const n = parseInt(m.split("=")[1], 10);
+  return Number.isFinite(n) && n > 0 ? n : Infinity;
+})();
 
 const SYS_PROMPT = `You are a translator turning Chinese MDX articles into natural, fluent English.
 
@@ -39,7 +56,7 @@ async function translateOne(srcText: string): Promise<string> {
 
 async function findZhToTranslate(): Promise<Array<{ srcPath: string; dstPath: string; rel: string }>> {
   const targets: Array<{ srcPath: string; dstPath: string; rel: string }> = [];
-  for (const col of ["ai", "invest"]) {
+  for (const col of COLLECTIONS) {
     const dir = path.join(ROOT, "src", "content", col);
     let files: string[] = [];
     try {
@@ -48,7 +65,7 @@ async function findZhToTranslate(): Promise<Array<{ srcPath: string; dstPath: st
       continue;
     }
     for (const f of files) {
-      if (!f.startsWith("digest-") || !f.endsWith(".zh.mdx")) continue;
+      if (!f.endsWith(".zh.mdx")) continue;
       const dstName = f.replace(/\.zh\.mdx$/, ".en.mdx");
       const srcPath = path.join(dir, f);
       const dstPath = path.join(dir, dstName);
@@ -63,7 +80,13 @@ async function findZhToTranslate(): Promise<Array<{ srcPath: string; dstPath: st
       targets.push({ srcPath, dstPath, rel: `${col}/${f}` });
     }
   }
-  return targets;
+  // 按修改时间倒序：新文章先翻
+  const withStat = await Promise.all(targets.map(async (t) => ({
+    ...t, mtime: (await fs.stat(t.srcPath)).mtimeMs,
+  })));
+  withStat.sort((a, b) => b.mtime - a.mtime);
+  const sliced = Number.isFinite(LIMIT) ? withStat.slice(0, LIMIT) : withStat;
+  return sliced.map(({ srcPath, dstPath, rel }) => ({ srcPath, dstPath, rel }));
 }
 
 async function main() {
@@ -74,28 +97,38 @@ async function main() {
   }
 
   const todo = await findZhToTranslate();
-  console.log(`[translate] 待翻译 ${todo.length} 篇${FORCE_ALL ? "（强制全量）" : "（增量：仅缺 en 镜像）"}`);
+  console.log(`[translate] 待翻译 ${todo.length} 篇${FORCE_ALL ? "（强制全量）" : "（增量：仅缺 en 镜像）"} · 并发 ${CONCURRENCY}`);
   if (todo.length === 0) return;
 
-  let ok = 0, failed = 0;
-  for (let i = 0; i < todo.length; i++) {
+  let ok = 0, failed = 0, done = 0;
+  // 简易并发池
+  async function worker(i: number) {
     const { srcPath, dstPath, rel } = todo[i];
     try {
       const src = await fs.readFile(srcPath, "utf-8");
-      console.log(`  [${i + 1}/${todo.length}] 翻译 ${rel}`);
+      // 太短的文章（photo 的 mdx body 几乎为空）翻译输出阈值放宽
+      const minOut = src.length < 500 ? 100 : 200;
+      console.log(`  [${++done}/${todo.length}] 翻译 ${rel}`);
       const out = await translateOne(src);
-      if (!out || out.length < 200) throw new Error(`output 太短(${out.length})`);
-      // 简单 sanity：开头必须是 ---（frontmatter）
+      if (!out || out.length < minOut) throw new Error(`output 太短(${out.length})`);
       if (!out.trimStart().startsWith("---")) throw new Error("output 缺 frontmatter");
       await fs.writeFile(dstPath, out + (out.endsWith("\n") ? "" : "\n"), "utf-8");
       ok++;
-      // 限流 1 秒，避免触发豆包 QPS
-      if (i < todo.length - 1) await new Promise((r) => setTimeout(r, 1000));
     } catch (e: any) {
       failed++;
       console.warn(`  ✗ ${rel}: ${e?.message?.slice(0, 200)}`);
     }
   }
+  let idx = 0;
+  async function spawn() {
+    while (idx < todo.length) {
+      const cur = idx++;
+      await worker(cur);
+      // 节流 600ms 避豆包 QPS
+      await new Promise((r) => setTimeout(r, 600));
+    }
+  }
+  await Promise.all(Array.from({ length: CONCURRENCY }, () => spawn()));
   console.log(`\n[translate] 成功 ${ok} · 失败 ${failed}`);
 }
 

@@ -68,7 +68,7 @@ jobs:
         run: |
           git config user.name "zorotreeking-bot"
           git config user.email "bot@zorotreeking.online"
-          git add src/content/ai/digest-*.mdx src/content/invest/digest-*.mdx 2>/dev/null || true
+          git add src/content/ai/digest-*.mdx src/content/invest/digest-*.mdx public/covers/digest-*.* 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "No new digest files. Nothing to commit."
             echo "committed=false" >> "$GITHUB_OUTPUT"
@@ -125,7 +125,7 @@ jobs:
       - name: Commit embeddings.json + en translations if changed
         continue-on-error: true
         run: |
-          git add src/data/embeddings.json src/content/ai/digest-*.en.mdx src/content/invest/digest-*.en.mdx 2>/dev/null || true
+          git add src/data/embeddings.json src/content/ai/*.en.mdx src/content/invest/*.en.mdx src/content/photo/*.en.mdx src/content/hike/*.en.mdx 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "embeddings + 翻译都没变化，跳过"
             exit 0

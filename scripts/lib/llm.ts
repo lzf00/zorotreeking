@@ -76,3 +76,100 @@ export async function summarizeToChinese(
   }
   return out;
 }
+
+/**
+ * 给整篇 digest 出 TL;DR：3 句话总结 + 5 个 emoji 标签。
+ * 用于在 digest 文章顶部插一个超浓缩区，让读者 3 秒看完决定要不要往下翻。
+ *
+ * 返回 { summary: string[3], tags: string[5] }，失败时返回 null（不阻塞主流程）。
+ */
+export type DigestTLDR = { summary: string[]; tags: string[] };
+export async function digestTLDR(
+  kind: "ai" | "invest",
+  itemsBrief: string,
+): Promise<DigestTLDR | null> {
+  const sysPrompt = kind === "ai"
+    ? "你是 AI 领域的资深编辑，把今天的 AI 行业资讯快速浓缩。"
+    : "你是财经栏目主编，把今天的市场资讯快速浓缩。";
+  const userPrompt = `今日 ${kind === "ai" ? "AI" : "投资"}资讯条目（标题列表）：
+
+${itemsBrief}
+
+请输出严格 JSON（不要 markdown 代码块包裹，不要解释）：
+{
+  "summary": ["第1句话总结今日要点", "第2句话总结另一要点", "第3句话总结另一要点"],
+  "tags": ["📈 emoji 短标签1", "🔥 emoji 短标签2", "🧠 emoji 短标签3", "💡 emoji 短标签4", "⚡ emoji 短标签5"]
+}
+
+要求：summary 每句 25-40 字、直击要点；tags 每个 emoji + 2-4 字主题。`;
+
+  try {
+    const raw = await chat(
+      [
+        { role: "system", content: sysPrompt },
+        { role: "user", content: userPrompt },
+      ],
+      { temperature: 0.4, maxTokens: 1200, timeoutMs: 60_000 },
+    );
+    const m = raw.match(/\{[\s\S]*\}/);
+    if (!m) return null;
+    const obj = JSON.parse(m[0]) as DigestTLDR;
+    if (!Array.isArray(obj.summary) || !Array.isArray(obj.tags)) return null;
+    return {
+      summary: obj.summary.slice(0, 3).map((s) => String(s).slice(0, 80)),
+      tags: obj.tags.slice(0, 5).map((s) => String(s).slice(0, 20)),
+    };
+  } catch (e) {
+    console.warn("[digestTLDR] failed:", (e as Error).message);
+    return null;
+  }
+}
+
+/**
+ * 豆包 seedream 文生图：给当天 digest 出一张抽象封面图。
+ * 返回 URL（豆包返回的临时图床链接）或 null（失败不阻塞主流程）。
+ *
+ * 调用方拿到 URL 后自行 fetch + 落到 public/covers/digest-YYYY-MM-DD.webp，
+ * 不然 URL 一段时间后会失效。
+ */
+const IMAGE_URL = "https://ark.cn-beijing.volces.com/api/v3/images/generations";
+const IMAGE_MODEL = "doubao-seedream-3-0-t2i-250415";
+
+export async function generateDigestCoverUrl(promptHint: string): Promise<string | null> {
+  const apiKey = process.env[API_KEY_ENV] || process.env.ARK_API_KEY;
+  if (!apiKey) {
+    console.warn("[generateDigestCoverUrl] no API key, skip");
+    return null;
+  }
+  const prompt = `抽象艺术封面插画，主题：${promptHint}。极简风格、低饱和度、冷暖对比、轻微纹理、留白充足。横版构图。不要包含任何文字、字母、数字。`;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 60_000);
+  try {
+    const resp = await fetch(IMAGE_URL, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: IMAGE_MODEL,
+        prompt,
+        size: "1024x576",
+        response_format: "url",
+        n: 1,
+      }),
+      signal: controller.signal,
+    });
+    if (!resp.ok) {
+      console.warn(`[generateDigestCoverUrl] ${resp.status}: ${(await resp.text()).slice(0, 200)}`);
+      return null;
+    }
+    const data = (await resp.json()) as { data?: Array<{ url?: string }> };
+    return data.data?.[0]?.url ?? null;
+  } catch (e) {
+    console.warn("[generateDigestCoverUrl] failed:", (e as Error).message);
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
+}

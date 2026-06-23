@@ -1,0 +1,99 @@
+---
+/**
+ * /now —— "我最近在做什么"
+ *
+ * 受 Derek Sivers 的 nownownow.com 约定启发：比 About 鲜活、比博客松，
+ * 每月 / 每周更新一次手头的事和关注的事。
+ *
+ * 编辑：直接改这个文件的下方的 sections 数据，然后 push 部署。
+ */
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+// ──────────────────────────────────────────────────────────────
+// 每次更新只需要改这里 —————————————————————————————————
+const updated = "2026-06-23";
+const sections: Array<{ icon: string; title: string; items: string[] }> = [
+  {
+    icon: "🏗️",
+    title: "在做",
+    items: [
+      "把 zorotreeking.online 当作个人 PM 演练场：每周加一个新功能，从 SEO 性能到 AI 自动化",
+      "AI 每日精选自动化流水线（arXiv + HF + 官方博客）已稳定跑 1 个月，正在补英文版",
+      "投资跟单：A 股 + 港股 + 美股 + ETF 仓位月度复盘",
+    ],
+  },
+  {
+    icon: "📚",
+    title: "在读 / 在看",
+    items: [
+      "DeepSeek-V3 技术报告 + Doubao 1.5 Pro 多模态分析",
+      "《硅谷钢铁侠》二刷",
+      "B 站 Hi Smart 的拍摄技巧合集",
+    ],
+  },
+  {
+    icon: "🤔",
+    title: "在思考",
+    items: [
+      "embedding-based 推荐比标签推荐好在哪、什么时候反而更差",
+      "AI 数字工人在中小企业能跑通的最小闭环长什么样",
+      "如何把博客的「写作 → 翻译 → 推送」做成一条 zero-touch 流水线",
+    ],
+  },
+  {
+    icon: "✋",
+    title: "停掉的",
+    items: [
+      "Twitter / X 重度刷屏（每日 30 分钟封顶）",
+      "为了写而写的 \"日更\"——质量门槛比频率重要",
+    ],
+  },
+];
+// ──────────────────────────────────────────────────────────────
+---
+
+<BaseLayout title="Now" description="我最近在做什么 · 在看什么 · 在想什么">
+  <main class="max-w-2xl mx-auto px-6 pt-12 sm:pt-20 pb-24">
+
+    <header class="mb-14">
+      <p class="text-[11px] uppercase tracking-[0.18em] text-zinc-500 font-mono">/now</p>
+      <h1 class="mt-3 font-serif text-4xl sm:text-5xl tracking-tight leading-[1.05]">
+        我最近在做什么
+      </h1>
+      <p class="mt-4 text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed font-light">
+        这一页约定俗成叫 <code class="text-sm">/now</code> ——
+        比 <a href="/about/" class="underline hover:no-underline">about</a> 鲜活，
+        比博客松，记录此时此刻手头的事和关注的事。
+        <a href="https://nownownow.com" rel="external nofollow" class="underline hover:no-underline" target="_blank">了解格式 →</a>
+      </p>
+      <p class="mt-3 text-xs text-zinc-500 font-mono">最后更新 · {updated}</p>
+    </header>
+
+    <div class="space-y-12">
+      {sections.map((s) => (
+        <section>
+          <h2 class="flex items-center gap-3 text-lg font-semibold tracking-tight mb-4">
+            <span aria-hidden="true">{s.icon}</span>
+            <span>{s.title}</span>
+          </h2>
+          <ul class="space-y-3 ml-8">
+            {s.items.map((item) => (
+              <li class="text-[15.5px] leading-[1.75] text-zinc-700 dark:text-zinc-300 relative">
+                <span class="absolute -left-5 top-[10px] w-1 h-1 rounded-full bg-zinc-400"></span>
+                <Fragment set:html={item} />
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+
+    <footer class="mt-20 pt-8 border-t border-[var(--border)] text-sm text-zinc-500 leading-relaxed">
+      <p>
+        这是一个 <a href="https://nownownow.com/about" rel="external nofollow" class="underline hover:no-underline" target="_blank">"now" 风格的页面</a>，
+        约一个月更新一次。想看更结构化的介绍请看 <a href="/about/" class="underline hover:no-underline">about</a>。
+      </p>
+    </footer>
+
+  </main>
+</BaseLayout>
