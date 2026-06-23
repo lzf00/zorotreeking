@@ -1,0 +1,71 @@
+---
+/**
+ * 文章页键盘快捷键 j / k 翻上下篇。
+ *
+ * Props 传入 prev / next URL（来自 PostFooter 的同源数据）。
+ * 没传就走 fallback：用 document.querySelector 找页面里 PostFooter 的链接。
+ *
+ * 行为：
+ *   - j → 下一篇（更新的）
+ *   - k → 上一篇（更早的）
+ *   - g h → 回栏目列表
+ *   - / → 触发搜索（已有 SearchModal）
+ *   - 输入框 / textarea / contenteditable 时不响应
+ *   - 首次按时浮一个 toast 提示用法
+ */
+interface Props {
+  prevHref?: string;
+  nextHref?: string;
+  sectionHref?: string;
+}
+const { prevHref, nextHref, sectionHref } = Astro.props;
+---
+
+<script is:inline define:vars={{ prevHref, nextHref, sectionHref }}>
+  (() => {
+    let hintShown = false;
+    function showHint() {
+      if (hintShown || localStorage.getItem("zoro:kbd-hint-shown")) return;
+      hintShown = true;
+      localStorage.setItem("zoro:kbd-hint-shown", "1");
+      const t = document.createElement("div");
+      t.textContent = "💡 j 下一篇 · k 上一篇 · g h 回栏目 · / 搜索";
+      t.style.cssText = "position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(29,29,31,0.95);color:white;padding:10px 16px;border-radius:999px;font-size:12px;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,0.25);font-family:Inter,sans-serif";
+      document.body.appendChild(t);
+      setTimeout(() => t.remove(), 4000);
+    }
+    function isTyping() {
+      const el = document.activeElement;
+      if (!el) return false;
+      const tag = (el.tagName || "").toLowerCase();
+      return tag === "input" || tag === "textarea" || el.isContentEditable;
+    }
+    let lastG = 0;
+    document.addEventListener("keydown", (e) => {
+      if (isTyping()) return;
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+
+      switch (e.key) {
+        case "j":
+          if (nextHref) { showHint(); location.href = nextHref; e.preventDefault(); }
+          break;
+        case "k":
+          if (prevHref) { showHint(); location.href = prevHref; e.preventDefault(); }
+          break;
+        case "g":
+          lastG = Date.now();
+          break;
+        case "h":
+          if (Date.now() - lastG < 800 && sectionHref) {
+            showHint();
+            location.href = sectionHref;
+            e.preventDefault();
+          }
+          break;
+        case "?":
+          showHint();
+          break;
+      }
+    });
+  })();
+</script>

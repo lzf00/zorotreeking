@@ -1,13 +1,14 @@
 ---
 import { getCollection, type CollectionEntry } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import FeedbackButtons from "@/components/FeedbackButtons";
+import StarRating from "@/components/StarRating";
 import TagChip from "@/components/TagChip.astro";
 import PostFooter from "@/components/PostFooter.astro";
 import ReadingProgress from "@/components/ReadingProgress.astro";
 import ShareSidebar from "@/components/ShareSidebar";
 import SubscribeCTA from "@/components/SubscribeCTA.astro";
 import Breadcrumb from "@/components/Breadcrumb.astro";
+import KeyboardNav from "@/components/KeyboardNav.astro";
 import { getAdjacentPosts, getRelatedPosts } from "@/lib/related-posts";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
 
@@ -37,6 +38,10 @@ const isDigest = (entry.data.tags ?? []).includes("digest") || entry.data.transl
   ogImage={entry.data.cover ?? `/og/invest/${entry.data.translationKey}.png`}>
   <ReadingProgress title={entry.data.title} section="invest"
     backHref={pathWithLang("/invest", lang)} backLabel={t("section.invest.title")} />
+  <KeyboardNav
+    prevHref={prev ? pathWithLang(`/invest/${prev.translationKey}`, lang) : undefined}
+    nextHref={next ? pathWithLang(`/invest/${next.translationKey}`, lang) : undefined}
+    sectionHref={pathWithLang("/invest", lang)} />
   <ShareSidebar title={entry.data.title}
     url={new URL(Astro.url.pathname, Astro.site).toString()} client:idle />
   <article class="max-w-2xl mx-auto px-6 sm:px-8 pt-12 sm:pt-20 pb-24 sm:pb-32">
@@ -90,7 +95,7 @@ const isDigest = (entry.data.tags ?? []).includes("digest") || entry.data.transl
     </div>
 
     <div class="mt-24 pt-12 border-t border-zinc-100 dark:border-zinc-800">
-      <FeedbackButtons slug={`invest/${entry.data.translationKey}`} client:visible />
+      <StarRating slug={`invest/${entry.data.translationKey}`} client:visible label="Rate this" />
     </div>
 
     <SubscribeCTA section="invest" lang={lang} />

@@ -1,7 +1,7 @@
 ---
 import { getCollection, type CollectionEntry } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import FeedbackButtons from "@/components/FeedbackButtons";
+import StarRating from "@/components/StarRating";
 import TOC from "@/components/TOC.astro";
 import TagChip from "@/components/TagChip.astro";
 import Giscus from "@/components/Giscus.astro";
@@ -10,6 +10,7 @@ import ReadingProgress from "@/components/ReadingProgress.astro";
 import ShareSidebar from "@/components/ShareSidebar";
 import SubscribeCTA from "@/components/SubscribeCTA.astro";
 import Breadcrumb from "@/components/Breadcrumb.astro";
+import KeyboardNav from "@/components/KeyboardNav.astro";
 import { estimateReadingTime } from "@/lib/reading-time";
 import { getAdjacentPosts, getRelatedPosts } from "@/lib/related-posts";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
@@ -41,6 +42,10 @@ const isDigest = (entry.data.tags ?? []).includes("digest") || entry.data.transl
   ogImage={entry.data.cover ?? `/og/ai/${entry.data.translationKey}.png`}>
   <ReadingProgress title={entry.data.title} section="ai"
     backHref={pathWithLang("/ai", lang)} backLabel={t("section.ai.title")} />
+  <KeyboardNav
+    prevHref={prev ? pathWithLang(`/ai/${prev.translationKey}`, lang) : undefined}
+    nextHref={next ? pathWithLang(`/ai/${next.translationKey}`, lang) : undefined}
+    sectionHref={pathWithLang("/ai", lang)} />
   <ShareSidebar title={entry.data.title}
     url={new URL(Astro.url.pathname, Astro.site).toString()} client:idle />
   <TOC headings={headings} label="Contents" />
@@ -97,7 +102,7 @@ const isDigest = (entry.data.tags ?? []).includes("digest") || entry.data.transl
     </div>
 
     <div class="mt-24 pt-12 border-t border-zinc-100 dark:border-zinc-800">
-      <FeedbackButtons slug={`ai/${entry.data.translationKey}`} client:visible />
+      <StarRating slug={`ai/${entry.data.translationKey}`} client:visible label="Rate this" />
     </div>
 
     <SubscribeCTA section="ai" lang={lang} />

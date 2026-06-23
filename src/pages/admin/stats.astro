@@ -1,0 +1,208 @@
+---
+/**
+ * /admin/stats —— 个人访问数据看板（基于 /api/track 落库的数据）
+ *
+ * 鉴权：noindex + 前端密码门（同 /admin/feedback）。
+ *      若要更严，给 nginx 加 basic auth 把整个 /admin/ 路径锁住。
+ *
+ * 数据源：GET /api/admin/stats?key={pw}
+ *   返回（约定）：
+ *     {
+ *       total_pv: number,
+ *       total_uv: number,
+ *       today_pv: number,
+ *       today_uv: number,
+ *       by_day:    [{ date: "2026-06-22", pv: number, uv: number }, ...],   // 近 30 天
+ *       top_paths: [{ path: "/ai/...", pv: number }, ...],                  // top 20
+ *       top_refs:  [{ referrer: "google.com", pv: number }, ...]            // top 10
+ *     }
+ *   未实现 → 显示 "后端未启用 /api/admin/stats" 提示卡片。
+ */
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="访问看板" description="个人访问数据看板" noindex>
+  <main class="max-w-5xl mx-auto px-6 pt-12 pb-32">
+    <h1 class="text-2xl font-semibold tracking-tight">访问看板</h1>
+    <p class="mt-2 text-sm text-zinc-500">
+      基于 <code>/api/track</code> 的访问日志聚合。仅本人查看 · 不被搜索引擎索引。
+    </p>
+
+    <div id="gate" class="mt-10">
+      <label class="block text-xs uppercase tracking-[0.18em] text-zinc-500 mb-2">查看口令</label>
+      <input id="gate-pw" type="password" autocomplete="off" autofocus
+             class="w-full max-w-sm px-3 py-2 border border-zinc-200 dark:border-zinc-800 rounded-md
+                    bg-white dark:bg-zinc-900 text-sm focus:outline-none focus:ring-1 focus:ring-amber-400"
+             placeholder="输入口令后回车" />
+      <p id="gate-err" class="mt-2 text-xs text-red-500 hidden">口令错误。</p>
+    </div>
+
+    <div id="board" class="hidden mt-10">
+      <!-- 顶部数字 -->
+      <div id="kpis" class="grid grid-cols-2 sm:grid-cols-4 gap-4"></div>
+      <!-- 30 天趋势 -->
+      <section id="trend-section" class="mt-10 hidden">
+        <h2 class="text-sm font-semibold tracking-[0.12em] uppercase text-zinc-500 mb-3">最近 30 天</h2>
+        <svg id="trend" viewBox="0 0 600 140" class="w-full h-32 bg-zinc-50/40 dark:bg-zinc-900/40 rounded"></svg>
+      </section>
+      <!-- top paths + refs -->
+      <div class="mt-10 grid md:grid-cols-2 gap-8">
+        <section id="top-paths-section" class="hidden">
+          <h2 class="text-sm font-semibold tracking-[0.12em] uppercase text-zinc-500 mb-3">热门页面</h2>
+          <table class="w-full text-sm">
+            <tbody id="top-paths"></tbody>
+          </table>
+        </section>
+        <section id="top-refs-section" class="hidden">
+          <h2 class="text-sm font-semibold tracking-[0.12em] uppercase text-zinc-500 mb-3">流量来源</h2>
+          <table class="w-full text-sm">
+            <tbody id="top-refs"></tbody>
+          </table>
+        </section>
+      </div>
+      <!-- 失败 / 降级 -->
+      <div id="empty" class="hidden mt-10 p-6 border border-dashed border-zinc-300 dark:border-zinc-700 rounded-lg bg-zinc-50/50 dark:bg-zinc-900/40">
+        <p class="text-sm font-medium text-zinc-700 dark:text-zinc-300">后端未启用 <code>/api/admin/stats</code></p>
+        <p class="mt-2 text-xs text-zinc-500 leading-relaxed">
+          需要在 FastAPI 后端实现一个聚合 <code>/api/track</code> 落库数据的接口。建议结构：
+        </p>
+        <pre class="mt-3 text-[11px] bg-zinc-100 dark:bg-zinc-800 rounded p-3 overflow-x-auto">{`GET /api/admin/stats?key=zoro-stats-2026
+→ {
+  total_pv, total_uv,
+  today_pv, today_uv,
+  by_day:    [{ date, pv, uv }],     // 近 30 天
+  top_paths: [{ path, pv }],          // top 20
+  top_refs:  [{ referrer, pv }]       // top 10
+}`}</pre>
+        <p class="mt-3 text-xs text-zinc-500">实现后此页自动渲染数据。</p>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<script is:inline>
+  const PW_HASH = "dda2cfcdc90a2e5fee01495a0d0396911b8caeb98851ec343e99d5f58e5f8c26";
+  const PW_PLAIN_FOR_API = "zoro-stats-2026";   // 后端鉴权用同一口令
+  const LS_KEY = "zoro:admin:gate";
+
+  async function sha256(s) {
+    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
+    return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, "0")).join("");
+  }
+  function $(id) { return document.getElementById(id); }
+
+  function fmt(n) {
+    if (n == null) return "—";
+    if (n < 1000) return String(n);
+    if (n < 10000) return (n / 1000).toFixed(1) + "k";
+    return (n / 10000).toFixed(2) + "w";
+  }
+
+  function renderKpis(d) {
+    $("kpis").innerHTML = [
+      ["总 PV", fmt(d.total_pv)],
+      ["总 UV", fmt(d.total_uv)],
+      ["今日 PV", fmt(d.today_pv)],
+      ["今日 UV", fmt(d.today_uv)],
+    ].map(([k, v]) => `
+      <div class="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+        <div class="text-xs uppercase tracking-[0.14em] text-zinc-500">${k}</div>
+        <div class="mt-2 text-2xl font-semibold tabular-nums">${v}</div>
+      </div>
+    `).join("");
+  }
+
+  function renderTrend(byDay) {
+    if (!byDay?.length) return;
+    $("trend-section").classList.remove("hidden");
+    const svg = $("trend");
+    const w = 600, h = 140, pad = 14;
+    const maxPV = Math.max(1, ...byDay.map((d) => d.pv));
+    const step = (w - pad * 2) / Math.max(1, byDay.length - 1);
+    const xs = byDay.map((_, i) => pad + i * step);
+    const ys = byDay.map((d) => h - pad - (d.pv / maxPV) * (h - pad * 2));
+    const path = xs.map((x, i) => `${i === 0 ? "M" : "L"}${x.toFixed(1)},${ys[i].toFixed(1)}`).join(" ");
+    const area = `${path} L${xs[xs.length-1].toFixed(1)},${h - pad} L${xs[0].toFixed(1)},${h - pad} Z`;
+    svg.innerHTML = `
+      <path d="${area}" fill="rgba(245,158,11,0.18)" />
+      <path d="${path}" fill="none" stroke="#f59e0b" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" />
+      ${byDay.map((d, i) => `<circle cx="${xs[i].toFixed(1)}" cy="${ys[i].toFixed(1)}" r="2" fill="#f59e0b"><title>${d.date}: PV ${d.pv} · UV ${d.uv}</title></circle>`).join("")}
+      <text x="${pad}" y="${h - 2}" font-size="9" fill="#a1a1aa">${byDay[0].date}</text>
+      <text x="${w - pad}" y="${h - 2}" font-size="9" fill="#a1a1aa" text-anchor="end">${byDay[byDay.length - 1].date}</text>
+    `;
+  }
+
+  function renderTopPaths(rows) {
+    if (!rows?.length) return;
+    $("top-paths-section").classList.remove("hidden");
+    const max = rows[0].pv || 1;
+    $("top-paths").innerHTML = rows.map((r) => `
+      <tr class="border-b border-zinc-50 dark:border-zinc-900">
+        <td class="py-1.5 pr-3 truncate max-w-[260px]">
+          <a href="${r.path}" class="text-amber-700 dark:text-amber-400 hover:underline text-xs">${r.path}</a>
+        </td>
+        <td class="py-1.5 w-24">
+          <div class="h-1.5 rounded-full bg-amber-100 dark:bg-amber-900/30 overflow-hidden">
+            <div class="h-full bg-amber-500" style="width:${(r.pv / max * 100).toFixed(0)}%"></div>
+          </div>
+        </td>
+        <td class="py-1.5 pl-3 text-right text-xs tabular-nums text-zinc-500">${fmt(r.pv)}</td>
+      </tr>
+    `).join("");
+  }
+
+  function renderTopRefs(rows) {
+    if (!rows?.length) return;
+    $("top-refs-section").classList.remove("hidden");
+    const max = rows[0].pv || 1;
+    $("top-refs").innerHTML = rows.map((r) => `
+      <tr class="border-b border-zinc-50 dark:border-zinc-900">
+        <td class="py-1.5 pr-3 truncate max-w-[200px] text-xs">${r.referrer || "(直接访问)"}</td>
+        <td class="py-1.5 w-24">
+          <div class="h-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
+            <div class="h-full bg-zinc-400 dark:bg-zinc-500" style="width:${(r.pv / max * 100).toFixed(0)}%"></div>
+          </div>
+        </td>
+        <td class="py-1.5 pl-3 text-right text-xs tabular-nums text-zinc-500">${fmt(r.pv)}</td>
+      </tr>
+    `).join("");
+  }
+
+  async function loadStats() {
+    $("board").classList.remove("hidden");
+    try {
+      const r = await fetch(`/api/admin/stats?key=${encodeURIComponent(PW_PLAIN_FOR_API)}`);
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      const d = await r.json();
+      renderKpis(d);
+      renderTrend(d.by_day);
+      renderTopPaths(d.top_paths);
+      renderTopRefs(d.top_refs);
+    } catch (_) {
+      renderKpis({ total_pv: null, total_uv: null, today_pv: null, today_uv: null });
+      $("empty").classList.remove("hidden");
+    }
+  }
+
+  (async () => {
+    if (sessionStorage.getItem(LS_KEY) === "1") {
+      $("gate").classList.add("hidden");
+      await loadStats();
+      return;
+    }
+    const input = $("gate-pw"), err = $("gate-err");
+    input?.addEventListener("keydown", async (e) => {
+      if (e.key !== "Enter") return;
+      e.preventDefault();
+      const h = await sha256(input.value);
+      if (h === PW_HASH) {
+        sessionStorage.setItem(LS_KEY, "1");
+        $("gate").classList.add("hidden");
+        await loadStats();
+      } else {
+        err?.classList.remove("hidden");
+        input.value = "";
+      }
+    });
+  })();
+</script>

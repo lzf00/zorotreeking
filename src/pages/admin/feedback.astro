@@ -1,0 +1,237 @@
+---
+/**
+ * /admin/feedback —— 文章热度看板（哪些 paper / digest / post 被点 👍 最多）
+ *
+ * 实现：build 时拉所有 collection 条目列出 slug，
+ *       客户端用 4 并发 fetch /api/feedback?slug=... 汇总 likes/dislikes，
+ *       再按 likes 排序。无需后端新增接口。
+ *
+ * 鉴权：noindex + 密码门（同 /admin/stats），口令 SHA-256 写在前端，纯前端门禁。
+ *       不是真正的安全防御，只挡爬虫和路过的人。真要锁，去 nginx 加 basic auth。
+ */
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+// 收集所有 zh 文章 → 给客户端排序
+const ai = await getCollection("ai", (p) => p.data.lang === "zh" && !p.data.draft);
+const invest = await getCollection("invest", (p) => p.data.lang === "zh" && !p.data.draft);
+const photo = await getCollection("photo", (p) => p.data.lang === "zh" && !p.data.draft);
+
+type Row = { slug: string; title: string; section: string; date: string; href: string };
+const rows: Row[] = [
+  ...ai.map((p) => ({
+    slug: `ai/${p.data.translationKey}`,
+    title: p.data.title,
+    section: "ai",
+    date: p.data.date.toISOString().slice(0, 10),
+    href: `/ai/${p.data.translationKey}/`,
+  })),
+  ...invest.map((p) => ({
+    slug: `invest/${p.data.translationKey}`,
+    title: p.data.title,
+    section: "invest",
+    date: p.data.date.toISOString().slice(0, 10),
+    href: `/invest/${p.data.translationKey}/`,
+  })),
+  ...photo.map((p) => ({
+    slug: `photo/${p.data.translationKey}`,
+    title: p.data.title,
+    section: "photo",
+    date: p.data.date.toISOString().slice(0, 10),
+    href: `/photo/${p.data.translationKey}/`,
+  })),
+];
+---
+
+<BaseLayout title="Feedback 看板" description="文章 / digest 热度排行" noindex>
+  <main class="max-w-4xl mx-auto px-6 pt-12 pb-32">
+    <h1 class="text-2xl font-semibold tracking-tight">Feedback 看板</h1>
+    <p class="mt-2 text-sm text-zinc-500">
+      文章 / digest 的 👍 / 👎 排行，数据来自 <code>/api/feedback</code>。
+      仅本人查看 · 不被搜索引擎索引。
+    </p>
+
+    <!-- 密码门 -->
+    <div id="gate" class="mt-10">
+      <label class="block text-xs uppercase tracking-[0.18em] text-zinc-500 mb-2">查看口令</label>
+      <input id="gate-pw" type="password" autocomplete="off" autofocus
+             class="w-full max-w-sm px-3 py-2 border border-zinc-200 dark:border-zinc-800 rounded-md
+                    bg-white dark:bg-zinc-900 text-sm focus:outline-none focus:ring-1 focus:ring-amber-400"
+             placeholder="输入口令后回车" />
+      <p id="gate-err" class="mt-2 text-xs text-red-500 hidden">口令错误。</p>
+    </div>
+
+    <!-- 主体 -->
+    <div id="board" class="hidden mt-10 space-y-6">
+      <div class="flex items-center gap-3 text-sm text-zinc-500">
+        <span id="progress">加载中…</span>
+        <button id="refresh"
+                class="ml-auto px-3 py-1 text-xs border border-zinc-200 dark:border-zinc-800 rounded hover:bg-zinc-50 dark:hover:bg-zinc-900">
+          刷新
+        </button>
+      </div>
+
+      <div class="flex gap-2 text-xs">
+        <button data-filter="all" class="filter-btn px-2 py-1 rounded border border-zinc-300 dark:border-zinc-700 font-medium bg-zinc-100 dark:bg-zinc-800">全部</button>
+        <button data-filter="ai" class="filter-btn px-2 py-1 rounded border border-zinc-200 dark:border-zinc-800 text-zinc-500">AI</button>
+        <button data-filter="invest" class="filter-btn px-2 py-1 rounded border border-zinc-200 dark:border-zinc-800 text-zinc-500">投资</button>
+        <button data-filter="photo" class="filter-btn px-2 py-1 rounded border border-zinc-200 dark:border-zinc-800 text-zinc-500">影像</button>
+      </div>
+
+      <table class="w-full text-sm">
+        <thead class="text-xs uppercase tracking-[0.12em] text-zinc-400 border-b border-zinc-100 dark:border-zinc-800">
+          <tr>
+            <th class="text-left py-2 pr-2 w-8">#</th>
+            <th class="text-left py-2">标题</th>
+            <th class="text-right py-2 px-3">👍</th>
+            <th class="text-right py-2 px-3">👎</th>
+            <th class="text-right py-2 px-3">净值</th>
+            <th class="text-right py-2 pl-3">日期</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+  </main>
+</BaseLayout>
+
+<script is:inline define:vars={{ rowsData: rows }}>
+  // 口令哈希（明文："zoro-stats-2026"）。改口令把下面这个 hex 换掉。
+  // 不是安全防御，只是不让搜索/爬虫直接看到内容。
+  const PW_HASH = "dda2cfcdc90a2e5fee01495a0d0396911b8caeb98851ec343e99d5f58e5f8c26";
+  const LS_KEY = "zoro:admin:gate";
+
+  async function sha256(s) {
+    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
+    return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, "0")).join("");
+  }
+
+  async function tryUnlock(pw) {
+    const h = await sha256(pw);
+    if (h === PW_HASH) {
+      sessionStorage.setItem(LS_KEY, "1");
+      return true;
+    }
+    return false;
+  }
+
+  async function poolMap(items, fn, concurrency = 4) {
+    const results = new Array(items.length);
+    let i = 0, done = 0;
+    const total = items.length;
+    const progressEl = document.getElementById("progress");
+    return new Promise((resolve) => {
+      function next() {
+        if (i >= items.length) {
+          if (done === total) resolve(results);
+          return;
+        }
+        const idx = i++;
+        Promise.resolve(fn(items[idx], idx))
+          .then((v) => { results[idx] = v; })
+          .catch(() => { results[idx] = null; })
+          .finally(() => {
+            done++;
+            if (progressEl) progressEl.textContent = `已拉取 ${done} / ${total}`;
+            next();
+          });
+      }
+      for (let k = 0; k < Math.min(concurrency, items.length); k++) next();
+      if (items.length === 0) resolve(results);
+    });
+  }
+
+  let allData = [];
+  let currentFilter = "all";
+
+  function render() {
+    const tbody = document.getElementById("rows");
+    if (!tbody) return;
+    let filtered = allData;
+    if (currentFilter !== "all") filtered = allData.filter((r) => r.section === currentFilter);
+    filtered = filtered
+      .filter((r) => r.likes > 0 || r.dislikes > 0)
+      .sort((a, b) => (b.likes - b.dislikes) - (a.likes - a.dislikes) || b.likes - a.likes);
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="6" class="text-center py-12 text-zinc-400">暂无投票数据</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = filtered.map((r, i) => `
+      <tr class="border-b border-zinc-50 dark:border-zinc-900 hover:bg-zinc-50/50 dark:hover:bg-zinc-900/40">
+        <td class="py-2 pr-2 text-zinc-400 font-mono text-xs">${i + 1}</td>
+        <td class="py-2 pr-3">
+          <a href="${r.href}" class="text-section-${r.section} hover:underline">${escapeHtml(r.title)}</a>
+          <span class="ml-2 text-[10px] uppercase tracking-[0.1em] text-zinc-400">${r.section}</span>
+        </td>
+        <td class="py-2 px-3 text-right font-mono">${r.likes}</td>
+        <td class="py-2 px-3 text-right font-mono text-zinc-400">${r.dislikes}</td>
+        <td class="py-2 px-3 text-right font-mono ${r.likes - r.dislikes > 0 ? 'text-emerald-600' : r.likes - r.dislikes < 0 ? 'text-rose-500' : 'text-zinc-400'}">${r.likes - r.dislikes > 0 ? '+' : ''}${r.likes - r.dislikes}</td>
+        <td class="py-2 pl-3 text-right text-xs text-zinc-400 font-mono">${r.date}</td>
+      </tr>
+    `).join("");
+  }
+  function escapeHtml(s) {
+    return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  }
+
+  async function loadAll() {
+    const board = document.getElementById("board");
+    const progressEl = document.getElementById("progress");
+    board.classList.remove("hidden");
+    if (progressEl) progressEl.textContent = "开始拉取…";
+    const fetched = await poolMap(rowsData, async (row) => {
+      try {
+        const r = await fetch(`/api/feedback?slug=${encodeURIComponent(row.slug)}`);
+        if (!r.ok) return { ...row, likes: 0, dislikes: 0 };
+        const j = await r.json();
+        return { ...row, likes: j.likes ?? 0, dislikes: j.dislikes ?? 0 };
+      } catch {
+        return { ...row, likes: 0, dislikes: 0 };
+      }
+    }, 4);
+    allData = fetched.filter(Boolean);
+    if (progressEl) progressEl.textContent = `共 ${allData.length} 篇，按净 👍 排序`;
+    render();
+  }
+
+  function bind() {
+    document.querySelectorAll(".filter-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        currentFilter = btn.getAttribute("data-filter");
+        document.querySelectorAll(".filter-btn").forEach((b) => {
+          b.classList.remove("font-medium", "bg-zinc-100", "dark:bg-zinc-800");
+          b.classList.add("text-zinc-500");
+        });
+        btn.classList.add("font-medium", "bg-zinc-100", "dark:bg-zinc-800");
+        btn.classList.remove("text-zinc-500");
+        render();
+      });
+    });
+    document.getElementById("refresh")?.addEventListener("click", loadAll);
+  }
+
+  (async () => {
+    if (sessionStorage.getItem(LS_KEY) === "1") {
+      document.getElementById("gate").classList.add("hidden");
+      bind();
+      await loadAll();
+      return;
+    }
+    const input = document.getElementById("gate-pw");
+    const errEl = document.getElementById("gate-err");
+    input?.addEventListener("keydown", async (e) => {
+      if (e.key !== "Enter") return;
+      e.preventDefault();
+      const ok = await tryUnlock(input.value);
+      if (ok) {
+        document.getElementById("gate").classList.add("hidden");
+        bind();
+        await loadAll();
+      } else {
+        errEl?.classList.remove("hidden");
+        input.value = "";
+      }
+    });
+  })();
+</script>

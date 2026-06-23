@@ -16,9 +16,10 @@ interface Props {
   publishedTime?: Date;     // 文章发布时间（仅 article 用）
   modifiedTime?: Date;
   tags?: string[];          // article:tag
+  noindex?: boolean;        // 后台/管理页用
 }
 
-const { title, description, ogImage, ogType = "website", publishedTime, modifiedTime, tags } = Astro.props;
+const { title, description, ogImage, ogType = "website", publishedTime, modifiedTime, tags, noindex } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const fullTitle = title ? `${title} · ${t("site.title")}` : `${t("site.title")} — ${t("site.tagline")}`;
@@ -94,6 +95,7 @@ if (ogType === "article") {
     <title>{fullTitle}</title>
     <meta name="description" content={desc} />
     <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="alternate" hreflang="zh" href={new URL(Astro.url.pathname.replace(/^\/en(\/|$)/, "/"), Astro.site).toString()} />
     <link rel="alternate" hreflang="en" href={new URL(Astro.url.pathname.startsWith("/en") ? Astro.url.pathname : `/en${Astro.url.pathname}`, Astro.site).toString()} />
     <meta property="og:title" content={fullTitle} />
