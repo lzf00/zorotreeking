@@ -1,0 +1,162 @@
+---
+lang: zh
+translationKey: digest-2026-06-23
+title: "AI 每日精选 · 2026-06-23"
+description: "17 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-06-23
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, the-gradient]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.22807" target="_blank" rel="noopener noreferrer">KaLM-Reranker-V1: Fast but Not Late Interaction for Compressed Document Reranking</a>
+
+*HF ★ 18 · Xinping Zhao, Jiaxin Xu, Ziqi Dai… · [HF 镜像](https://huggingface.co/papers/2606.22807)*
+
+针对现有检索重排器查询、文档联合编码耦合度高、部署效率灵活性不足的问题，本文提出KaLM-Reranker-V1重排器：采用编解码架构，文档预编码用套娃嵌入池化，解码端处理查询指令，通过交叉注意力保留强相关性建模能力，解耦计算提效。三款参数规模的版本在多基准测试中性能达SOTA，最小0.27B版本也可对标7-12B嵌入模型。
+
+<FeedbackButtons slug="item:arxiv-2606.22807" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.20781" target="_blank" rel="noopener noreferrer">World Action Models: A Survey</a>
+
+*HF ★ 12 · Qiuhong Shen, Shihua Zhang, Yue Liao… · [HF 镜像](https://huggingface.co/papers/2606.20781)*
+
+这是世界动作模型（WAMs）领域的综述，先明确WAMs作为具身预测动作模型的边界，厘清其与通用世界模型、视频生成模型等的差异。从生成内容、技术拆解两个维度梳理现有工作，指出WAMs并非带动作头的视频生成器，需在表征丰富度与算力、标注成本间权衡，当前趋势是精简未来生成内容，仅保留控制必需信息。
+
+<FeedbackButtons slug="item:arxiv-2606.20781" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.20097" target="_blank" rel="noopener noreferrer">HydraHead: From Head-Level Functional Heterogeneity to Specialized Attention Hybridization</a>
+
+*HF ★ 12 · Zhentao Tan, Wei Chen, Jingyi Shen… · [HF 镜像](https://huggingface.co/papers/2606.20097)*
+
+针对注意力二次复杂度制约长上下文处理、现有分层混合注意力融合效果不佳的问题，本文发现同层注意力头存在功能异质性，据此提出沿头维度混合全注意力与线性注意力的HydraHead架构，搭配可解释性选头、尺度归一化融合策略，仅用15B令牌训练，长上下文性能较基线提升69%，同体量接近原生256K上下文的Qwen3.5。
+
+<FeedbackButtons slug="item:arxiv-2606.20097" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.21649" target="_blank" rel="noopener noreferrer">EvoEmbedding: Evolvable Representations for Long-Context Retrieval and Agentic Memory</a>
+
+*HF ★ 10 · Chang Nie, Chaoyou Fu, Junlan Feng… · [HF 镜像](https://huggingface.co/papers/2606.21649)*
+
+现有嵌入模型为静态，编码文本时忽略上下文与时序，不适配动态长文本场景。本文提出EvoEmbedding，通过持续更新的隐记忆与输入联合生成动态嵌入，配套180K训练集、内存队列防表征崩溃、分段批处理提速3.8倍。实验显示其长上下文检索效果优于更大参数的专用模型，泛化性强，搭载它的简易RAG性能超过专用智能体记忆系统。
+
+<FeedbackButtons slug="item:arxiv-2606.21649" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.18844" target="_blank" rel="noopener noreferrer">Learning from Your Own Mistakes: Constructing Learnable Micro-Reflective Trajectories for Self-Distillation</a>
+
+*HF ★ 9 · Zhilin Huang, Hang Gao, Ziqiang Dong… · [HF 镜像](https://huggingface.co/papers/2606.18844)*
+
+针对现有大模型自蒸馏仅做隐式分布对齐、无细粒度错误修正的缺陷，本文提出轨迹增强策略优化（TAPO）：对比同查询的对错推理路径，保留错误前缀并插入自然语言诊断与修正逻辑，配套难度感知样本筛选、解耦优势估计防梯度污染。在AIME、HMMT等数学推理数据集上，TAPO同训练步数下优于GRPO，同时提升首遍推理与纠错能力。
+
+<FeedbackButtons slug="item:arxiv-2606.18844" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/patch-the-planet" target="_blank" rel="noopener noreferrer">Patch the Planet: a Daybreak initiative to support open source maintainers</a>
+
+*OpenAI*
+
+OpenAI推出归属于Daybreak项目矩阵的“修补星球（Patch the Planet）”计划，面向开源项目维护者提供安全支持。该计划结合AI能力与专家评审双机制，可帮助维护者高效完成漏洞发现、有效性验证及修复全流程工作，解决开源团队安全人力不足、排查效率低的痛点，有望降低运维成本，补齐开源生态通用安全短板。
+
+<FeedbackButtons slug="item:openai-blog-patch-the-planet" client:visible />
+
+## <a href="https://openai.com/index/daybreak-securing-the-world" target="_blank" rel="noopener noreferrer">Daybreak: Tools for securing every organization in the world</a>
+
+*OpenAI*
+
+OpenAI推出面向全球各类组织的普惠安全工具套件Daybreak，核心包含Codex Security、GPT-5.5-Cyber两款产品，可规模化完成漏洞主动发现、有效性验证及补丁部署全流程作业，大幅降低企业漏洞运维门槛，提升组织网络安全攻防响应效率与防护覆盖范围。
+
+<FeedbackButtons slug="item:openai-blog-daybreak-securing-the-world" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener noreferrer">Statement on the US government directive to suspend access to Fable 5 and Mythos 5</a>
+
+*Anthropic*
+
+本声明针对美国政府最新出口管制指令作出说明：美政府近期出台管制新规，要求所有外籍人士无论身处美国境内还是境外，均不得访问Fable 5与Mythos 5两款产品。该管制无地域豁免，所有非美籍主体均受约束，反映出美国在相关技术领域的出口管制进一步收紧的态势。
+
+<FeedbackButtons slug="item:anthropic-fable-mythos-access" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-corps" target="_blank" rel="noopener noreferrer">Introducing Claude Corps</a>
+
+*Anthropic*
+
+Anthropic正式推出名为Claude Corps的全国性人才资助项目，面向处于职业生涯早期、有志于将AI发展红利普惠至美国各地社区的群体开放招募。项目计划支持具备公共服务意识的年轻人才，推动AI技术价值下沉覆盖更多群体，探索AI普惠落地路径，惠及普通民众，为AI公共服务领域储备青年力量。
+
+<FeedbackButtons slug="item:anthropic-claude-corps" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/unlocking-uk-house-building-with-ai-accelerated-planning/" target="_blank" rel="noopener noreferrer">Unlocking UK house-building with AI-accelerated planning</a>
+
+*Google DeepMind*
+
+针对英国住房建设中长期存在的规划审批效率低、阻碍住房供应的痛点，英国政府与谷歌DeepMind展开合作，研发AI驱动的规划审批原型工具，核心目标是依托AI技术大幅压缩建房相关规划决策的耗时，打通住房供应堵点，同时探索AI技术在政务审批场景的落地可行性。
+
+<FeedbackButtons slug="item:deepmind-unlocking-uk-house-building-with-ai-accelerated-planning" client:visible />
+
+## <a href="https://deepmind.google/blog/securing-the-future-of-ai-agents/" target="_blank" rel="noopener noreferrer">Securing the future of AI agents</a>
+
+*Google DeepMind*
+
+这篇聚焦AI代理未来安全保障的论文提出，可通过构建AI控制路线图实现内部系统安全防护。该路线图核心融合传统成熟安全防护机制与实时动态监测能力，兼顾基础安全兜底与AI代理运行特性的动态响应需求，可为AI代理规模化安全落地、长期可靠发展提供系统性的可落地安全框架指引。
+
+<FeedbackButtons slug="item:deepmind-securing-the-future-of-ai-agents" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/PaddlePaddle/pp-ocrv6" target="_blank" rel="noopener noreferrer">PP-OCRv6 on Hugging Face: 50-Language OCR from 1.5M to 34.5M Parameters</a>
+
+*Hugging Face*
+
+百度飞桨PP-OCRv6现已上线Hugging Face平台，支持50种语言文字识别，参数量覆盖1.5M到34.5M全区间。团队针对多场景部署优化了模型架构与多语言字符集适配，兼顾推理速度与识别精度，小参数适配端侧低算力设备，大参数可满足服务端高精度OCR需求。
+
+<FeedbackButtons slug="item:hf-blog-pp-ocrv6" client:visible />
+
+## <a href="https://huggingface.co/blog/ServiceNow/mosaicleaks" target="_blank" rel="noopener noreferrer">MosaicLeaks: Can your research agent keep a secret?</a>
+
+*Hugging Face*
+
+这篇聚焦大模型驱动的科研智能体隐私风险，提出MosaicLeaks新型攻击手段：将敏感信息拆分为无关联碎片，伪装成普通科研任务素材分批输入，诱使智能体自主拼接还原涉密内容。实测显示，带常规安全防护的主流科研智能体敏感信息泄露率最高超90%，现有对齐机制几乎无法抵御这类攻击，需针对性优化隐私防护逻辑。
+
+<FeedbackButtons slug="item:hf-blog-mosaicleaks" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+这篇AI对齐领域研究反驳“理性主体需以固定终极目标为导向”的预设，指出人类理性并非指向特定目标，而是让行动适配包含行动倾向、评价标准等要素的实践网络。研究提出，要实现AI与人类协作、符合人类诉求，需让AI决策逻辑匹配人类基于实践的行动逻辑，这既关乎伦理对齐，也决定核心安全性能。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/06/437330.html" target="_blank" rel="noopener noreferrer">小扎「蒸馏员工」计划紧急喊停！私聊数据都泄露了…</a>
+
+*量子位*
+
+Meta今年4月推出MCI项目，强制收集员工键鼠操作等工作数据训练AI，原本宣称仅监控指定办公软件、配套隐私保护措施。近期该项目发生2级数据泄露事故，4.5万份含员工私聊、绩效的敏感数据一度全员可见，项目已紧急叫停，内部士气跌至谷底，官方称暂未发现数据被不当访问，正推进调查，CTO已出面应对员工质疑。
+
+<FeedbackButtons slug="item:qbitai-437330" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/437317.html" target="_blank" rel="noopener noreferrer">阿里发布视频生成模型HappyHorse 1.1：五大维度全面升级</a>
+
+*量子位*
+
+6月22日阿里巴巴发布视频生成模型HappyHorse1.1，较1.0在动态表现力、主体一致性、指令遵循、视觉质感、音频五大维度系统性升级：优化运动建模，支持9张角色参考图控制“变脸”，提示词理解、画面真实感、音频适配性均大幅提升。生成规格仍为3-15秒、最高1080p，已覆盖多内容生产场景，可通过三大官方渠道接入。
+
+<FeedbackButtons slug="item:qbitai-437317" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/437249.html" target="_blank" rel="noopener noreferrer">DeepSeek缺Agent人才缺疯了！负责人各种贴广告</a>
+
+*量子位*
+
+DeepSeek负责Agent非模型核心组件Harness（类比汽车操控系统，符合Model+Harness=Agent公式）的Harness部门缺口较大，负责人崔添翼公开直聘三类岗位：可实习的研究员、工程师，及全职产品经理。其中研究员需探索技术前沿、推进模型与Harness适配、搭建评测体系，消息发出后已有不少网友主动自荐。
+
+<FeedbackButtons slug="item:qbitai-437249" client:visible />
