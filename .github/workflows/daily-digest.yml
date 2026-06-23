@@ -18,8 +18,16 @@ on:
         description: "强制全量回填 en 翻译（默认只翻译缺 en 的 zh）"
         type: boolean
         default: false
+      translate_limit:
+        description: "本次翻译最多处理多少篇（默认 25，防 60min 超时；填 0 = 不限）"
+        type: string
+        default: "25"
       skip_fetch:
         description: "跳过 digest fetch，只跑 翻译/embedding（节省额度）"
+        type: boolean
+        default: false
+      backfill_meta:
+        description: "回填历史 digest 的 TL;DR + 封面（默认 off）"
         type: boolean
         default: false
 
@@ -68,7 +76,7 @@ jobs:
         run: |
           git config user.name "zorotreeking-bot"
           git config user.email "bot@zorotreeking.online"
-          git add src/content/ai/digest-*.mdx src/content/invest/digest-*.mdx public/covers/digest-*.* 2>/dev/null || true
+          git add src/content/ai/digest-*.mdx src/content/invest/digest-*.mdx 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "No new digest files. Nothing to commit."
             echo "committed=false" >> "$GITHUB_OUTPUT"
@@ -94,19 +102,37 @@ jobs:
           fi
           echo "committed=true" >> "$GITHUB_OUTPUT"
 
-      # 新 zh digest 翻译成 en。增量默认；workflow_dispatch translate_all=true 时回填历史
-      - name: Translate digests zh → en
-        timeout-minutes: 60
+      # 历史 digest 回填 TL;DR + cover（默认 off，dispatch backfill_meta=true 时开）
+      - name: Backfill digest TL;DR + cover (history)
+        if: github.event.inputs.backfill_meta == 'true'
+        timeout-minutes: 50
+        env:
+          DOUBAO_API_KEY: ${{ secrets.DOUBAO_API_KEY }}
+          ARK_API_KEY: ${{ secrets.ARK_API_KEY }}
+        continue-on-error: true
+        run: npx tsx scripts/backfill-digest-meta.ts
+
+      # 新 zh 文章翻译成 en。
+      # cron：增量翻译，每次最多 translate_limit 篇（默认 25），防 60min 超时；
+      # dispatch translate_all=true 时强制重写全部；translate_limit=0 时不限制
+      - name: Translate posts zh → en
+        timeout-minutes: 55
         env:
           DOUBAO_API_KEY: ${{ secrets.DOUBAO_API_KEY }}
           ARK_API_KEY: ${{ secrets.ARK_API_KEY }}
         continue-on-error: true
         run: |
-          if [ "${{ github.event.inputs.translate_all }}" = "true" ]; then
-            echo "🌐 全量回填模式（--all）"
-            npx tsx scripts/translate-digest.ts --all
+          LIMIT="${{ github.event.inputs.translate_limit }}"
+          if [ -z "$LIMIT" ] || [ "$LIMIT" = "0" ]; then
+            LIMIT_FLAG=""
           else
-            npx tsx scripts/translate-digest.ts
+            LIMIT_FLAG="--limit=$LIMIT"
+          fi
+          if [ "${{ github.event.inputs.translate_all }}" = "true" ]; then
+            echo "🌐 全量回填模式（--all $LIMIT_FLAG）"
+            npx tsx scripts/translate-digest.ts --all $LIMIT_FLAG
+          else
+            npx tsx scripts/translate-digest.ts $LIMIT_FLAG
           fi
 
       # embedding 增量更新（独立 step，失败不影响 digest commit；
@@ -125,7 +151,10 @@ jobs:
       - name: Commit embeddings.json + en translations if changed
         continue-on-error: true
         run: |
-          git add src/data/embeddings.json src/content/ai/*.en.mdx src/content/invest/*.en.mdx src/content/photo/*.en.mdx src/content/hike/*.en.mdx 2>/dev/null || true
+          git add src/data/embeddings.json \
+                  src/content/ai/*.en.mdx src/content/invest/*.en.mdx src/content/photo/*.en.mdx src/content/hike/*.en.mdx \
+                  src/content/ai/digest-*.zh.mdx src/content/invest/digest-*.zh.mdx \
+                  2>/dev/null || true
           if git diff --cached --quiet; then
             echo "embeddings + 翻译都没变化，跳过"
             exit 0

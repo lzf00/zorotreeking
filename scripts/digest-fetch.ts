@@ -35,7 +35,8 @@ import { fetchQbitAI } from "./digest-sources/ai-qbitai.ts";
 import { fetchTongHuaShunNews, type NewsItem } from "./digest-sources/invest.ts";
 import { fetchEastmoneyNews } from "./digest-sources/invest-eastmoney.ts";
 import { fetchYahooFinance } from "./digest-sources/invest-yahoo.ts";
-import { summarizeToChinese, digestTLDR, generateDigestCoverUrl, type DigestTLDR } from "./lib/llm.ts";
+import { summarizeToChinese, digestTLDR, type DigestTLDR } from "./lib/llm.ts";
+import { pickCoverFromLibrary } from "./lib/cover-picker.ts";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CONTENT_DIR = path.join(ROOT, "src", "content");
@@ -95,30 +96,6 @@ function itemSlug(source: string, url: string): string {
   let h = 0;
   for (let i = 0; i < url.length; i++) h = (h * 31 + url.charCodeAt(i)) | 0;
   return `${source}-${(h >>> 0).toString(36)}`;
-}
-
-/**
- * 把 doubao 生成的封面 URL 下载到 public/covers/digest-{kind}-{date}.webp。
- * 失败返回 null。永远不抛错，digest 主流程不会被这一步阻塞。
- */
-async function downloadCover(remoteUrl: string, kind: "ai" | "invest", date: string): Promise<string | null> {
-  try {
-    const resp = await fetch(remoteUrl);
-    if (!resp.ok) return null;
-    const buf = Buffer.from(await resp.arrayBuffer());
-    const coversDir = path.join(ROOT, "public", "covers");
-    await fs.mkdir(coversDir, { recursive: true });
-    const filename = `digest-${kind}-${date}.${guessImageExt(remoteUrl) || "png"}`;
-    await fs.writeFile(path.join(coversDir, filename), buf);
-    return `/covers/${filename}`;
-  } catch (e) {
-    console.warn("[downloadCover] failed:", (e as Error).message);
-    return null;
-  }
-}
-function guessImageExt(url: string): string | null {
-  const m = url.match(/\.(png|jpe?g|webp)(?:\?|$)/i);
-  return m ? m[1].toLowerCase().replace("jpeg", "jpg") : null;
 }
 
 /**
@@ -266,17 +243,13 @@ async function buildAIDigest(date: string): Promise<void> {
   const tagList = ["digest", "auto", ...themeTags].slice(0, 8);
 
   // ── TL;DR：浓缩到 3 句话 + 5 个 emoji 标签 ────────────────────
-  console.log("  generating TL;DR + cover…");
+  console.log("  generating TL;DR…");
   const titleBrief = summaries.map((p, i) => `${i + 1}. [${p.source}] ${p.title}`).join("\n");
   const tldr = await digestTLDR("ai", titleBrief).catch(() => null);
 
-  // ── 封面图：豆包 seedream 出一张抽象插画 ──────────────────────
-  let coverPath: string | null = null;
-  const coverHint = `AI 每日精选 · ${date}：` +
-    (tldr?.tags?.join("，") || summaries.slice(0, 3).map((p) => p.title).join("；"));
-  const remoteUrl = await generateDigestCoverUrl(coverHint).catch(() => null);
-  if (remoteUrl) coverPath = await downloadCover(remoteUrl, "ai", date);
-  if (coverPath) console.log(`  cover saved: ${coverPath}`);
+  // ── 封面图：从本站相册库随机选一张（同一天选同一张） ───────────
+  const coverPath = await pickCoverFromLibrary(`ai-${date}`).catch(() => null);
+  if (coverPath) console.log(`  cover picked: ${coverPath}`);
 
   const lines: string[] = [];
   lines.push("---");
@@ -369,16 +342,12 @@ async function buildInvestDigest(date: string): Promise<void> {
   ));
   const tagList = ["digest", "auto", "market-news", ...themeTags].slice(0, 8);
 
-  // ── TL;DR + 封面图 ─────────────────────────────────────────────
-  console.log("  generating TL;DR + cover…");
+  // ── TL;DR + 封面图（封面图来自本站相册库） ─────────────────────
+  console.log("  generating TL;DR…");
   const titleBrief = items.map((n, i) => `${i + 1}. [${n.source}] ${n.title}`).join("\n");
   const tldr = await digestTLDR("invest", titleBrief).catch(() => null);
-  let coverPath: string | null = null;
-  const coverHint = `投资资讯日报 · ${date}：` +
-    (tldr?.tags?.join("，") || items.slice(0, 3).map((n) => n.title).join("；"));
-  const remoteUrl = await generateDigestCoverUrl(coverHint).catch(() => null);
-  if (remoteUrl) coverPath = await downloadCover(remoteUrl, "invest", date);
-  if (coverPath) console.log(`  cover saved: ${coverPath}`);
+  const coverPath = await pickCoverFromLibrary(`invest-${date}`).catch(() => null);
+  if (coverPath) console.log(`  cover picked: ${coverPath}`);
 
   lines.push("---");
   lines.push(`lang: zh`);

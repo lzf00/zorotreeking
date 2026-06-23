@@ -125,51 +125,5 @@ ${itemsBrief}
   }
 }
 
-/**
- * 豆包 seedream 文生图：给当天 digest 出一张抽象封面图。
- * 返回 URL（豆包返回的临时图床链接）或 null（失败不阻塞主流程）。
- *
- * 调用方拿到 URL 后自行 fetch + 落到 public/covers/digest-YYYY-MM-DD.webp，
- * 不然 URL 一段时间后会失效。
- */
-const IMAGE_URL = "https://ark.cn-beijing.volces.com/api/v3/images/generations";
-const IMAGE_MODEL = "doubao-seedream-3-0-t2i-250415";
-
-export async function generateDigestCoverUrl(promptHint: string): Promise<string | null> {
-  const apiKey = process.env[API_KEY_ENV] || process.env.ARK_API_KEY;
-  if (!apiKey) {
-    console.warn("[generateDigestCoverUrl] no API key, skip");
-    return null;
-  }
-  const prompt = `抽象艺术封面插画，主题：${promptHint}。极简风格、低饱和度、冷暖对比、轻微纹理、留白充足。横版构图。不要包含任何文字、字母、数字。`;
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 60_000);
-  try {
-    const resp = await fetch(IMAGE_URL, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: IMAGE_MODEL,
-        prompt,
-        size: "1024x576",
-        response_format: "url",
-        n: 1,
-      }),
-      signal: controller.signal,
-    });
-    if (!resp.ok) {
-      console.warn(`[generateDigestCoverUrl] ${resp.status}: ${(await resp.text()).slice(0, 200)}`);
-      return null;
-    }
-    const data = (await resp.json()) as { data?: Array<{ url?: string }> };
-    return data.data?.[0]?.url ?? null;
-  } catch (e) {
-    console.warn("[generateDigestCoverUrl] failed:", (e as Error).message);
-    return null;
-  } finally {
-    clearTimeout(timer);
-  }
-}
+// generateDigestCoverUrl 已废弃：改从本站相册取图（pickCoverFromLibrary）
+// 详见 scripts/lib/cover-picker.ts
