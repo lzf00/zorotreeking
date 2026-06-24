@@ -45,12 +45,15 @@ Rules:
 4) Output ONLY the translated MDX, no explanations, no markdown fence wrapping the whole thing.`;
 
 async function translateOne(srcText: string): Promise<string> {
+  // AI digest 单篇 ~12-15KB，翻译产出 token 数会更大（英文比中文 token 多 ~1.5x），
+  // maxTokens 必须给足 32K，否则输出被截断导致 sanity check 失败。
+  // timeout 也给足 5 min（大文件 + reasoning model 思考耗时长）。
   return chat(
     [
       { role: "system", content: SYS_PROMPT },
       { role: "user", content: srcText },
     ],
-    { temperature: 0.2, maxTokens: 16000, timeoutMs: 180_000 },
+    { temperature: 0.2, maxTokens: 32000, timeoutMs: 300_000 },
   );
 }
 
@@ -104,20 +107,34 @@ async function main() {
   // 简易并发池
   async function worker(i: number) {
     const { srcPath, dstPath, rel } = todo[i];
-    try {
-      const src = await fs.readFile(srcPath, "utf-8");
-      // 太短的文章（photo 的 mdx body 几乎为空）翻译输出阈值放宽
-      const minOut = src.length < 500 ? 100 : 200;
-      console.log(`  [${++done}/${todo.length}] 翻译 ${rel}`);
-      const out = await translateOne(src);
-      if (!out || out.length < minOut) throw new Error(`output 太短(${out.length})`);
-      if (!out.trimStart().startsWith("---")) throw new Error("output 缺 frontmatter");
-      await fs.writeFile(dstPath, out + (out.endsWith("\n") ? "" : "\n"), "utf-8");
-      ok++;
-    } catch (e: any) {
-      failed++;
-      console.warn(`  ✗ ${rel}: ${e?.message?.slice(0, 200)}`);
+    const src = await fs.readFile(srcPath, "utf-8");
+    // 翻译产出至少要是原文 30%（豆包偶尔输出空或半截）
+    const minOut = Math.max(src.length < 500 ? 100 : 200, Math.floor(src.length * 0.3));
+    console.log(`  [${++done}/${todo.length}] 翻译 ${rel} (in=${src.length}B)`);
+    let lastErr = "";
+    for (let attempt = 1; attempt <= 2; attempt++) {
+      try {
+        const out = await translateOne(src);
+        if (!out) throw new Error(`空输出 (尝试${attempt})`);
+        if (out.length < minOut) throw new Error(`输出太短 ${out.length}<${minOut} (尝试${attempt})`);
+        if (!out.trimStart().startsWith("---")) {
+          // 打印前 200 字符方便诊断
+          throw new Error(`缺 frontmatter，前 200B: ${out.slice(0, 200).replace(/\n/g, " ")}`);
+        }
+        await fs.writeFile(dstPath, out + (out.endsWith("\n") ? "" : "\n"), "utf-8");
+        ok++;
+        if (attempt > 1) console.log(`    ✓ 重试 #${attempt} 成功，out=${out.length}B`);
+        return;
+      } catch (e: any) {
+        lastErr = e?.message?.slice(0, 300) || String(e);
+        if (attempt < 2) {
+          console.warn(`    ⚠ ${rel} 尝试 ${attempt} 失败：${lastErr.slice(0, 120)}，重试…`);
+          await new Promise((r) => setTimeout(r, 1500));
+        }
+      }
     }
+    failed++;
+    console.warn(`  ✗ ${rel}: ${lastErr}`);
   }
   let idx = 0;
   async function spawn() {
