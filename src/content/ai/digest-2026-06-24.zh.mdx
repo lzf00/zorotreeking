@@ -1,0 +1,205 @@
+---
+lang: zh
+translationKey: digest-2026-06-24
+title: "AI 每日精选 · 2026-06-24"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-06-24
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.webp"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">HuggingFace、OpenAI、Anthropic、DeepMind等头部机构集中发布多项AI技术、产品及政策相关动态</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">arXiv及开源社区公开智能体、6G、脑机认证、联邦学习等多领域前沿研究成果</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内AI产业动态活跃，WAIC奖项发布、高通布局物理AI、正行创新完成近亿美元融资</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠智能体研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥大模型更新</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡交叉前沿</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡产业动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📰监管风向</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.24530" target="_blank" rel="noopener noreferrer">NatureBench: Can Coding Agents Match the Published SOTA of Nature-Family Papers?</a>
+
+*HF ★ 24 · Yuru Wang, Lejun Cheng, Yuxin Zuo… · [HF 镜像](https://huggingface.co/papers/2606.24530)*
+
+本研究推出跨学科基准NatureBench，含从Nature系列论文提炼的90项任务，配套NatureGym流水线构建标准化容器环境，解决过往基准环境碎片化、可信度低的问题。禁用网络搜索测试10款前沿编码智能体，发现最强模型仅17.8%任务超现有SOTA，成功多靠转成熟悉的监督预测问题而非原创，失败主因是方法选错、算力不足，相关资源已开源。
+
+<FeedbackButtons slug="item:arxiv-2606.24530" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.24597" target="_blank" rel="noopener noreferrer">Qwen-AgentWorld: Language World Models for General Agents</a>
+
+*HF ★ 22 · Yuxin Zuo, Zikai Xiao, Li Sheng… · [HF 镜像](https://huggingface.co/papers/2606.24597)*
+
+本文提出面向通用智能体的语言世界模型Qwen-AgentWorld，基于千万级跨7领域真实交互轨迹，经三阶段训练推出两款参数规格模型，配套自研测评基准AgentWorldBench验证，性能显著优于现有前沿模型。同时验证两类应用范式：作为独立模拟器可提升智能体强化学习效果，作为预训练预热方案可提升7类下游智能体任务表现。
+
+<FeedbackButtons slug="item:arxiv-2606.24597" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.19930" target="_blank" rel="noopener noreferrer">MobileForge: Annotation-Free Adaptation for Mobile GUI Agents with Hierarchical Feedback-Guided Policy Optimization</a>
+
+*HF ★ 15 · Guangyi Liu, Pengxiang Zhao, Gao Wu… · [HF 镜像](https://huggingface.co/papers/2606.19930)*
+
+针对基于MLLM的移动端GUI代理适配真实应用标注成本高、无标注学习框架零散、优化信号粗糙的痛点，本文提出无标注适配系统MobileForge：搭载真实应用交互的任务生成评估模块，采用分层反馈引导的策略优化方法，无需人工标注即可完成适配，性能接近闭域专用GUI模型，跨域测试达当前公开方案最优。
+
+<FeedbackButtons slug="item:arxiv-2606.19930" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.19926" target="_blank" rel="noopener noreferrer">MemGUI-Agent: An End-to-End Long-Horizon Mobile GUI Agent with Proactive Context Management</a>
+
+*HF ★ 14 · Guangyi Liu, Gao Wu, Congxiao Liu… · [HF 镜像](https://huggingface.co/papers/2606.19926)*
+
+针对MLLM驱动的移动GUI智能体在长周期任务中，ReAct式被动积累记录导致提示爆炸、关键跨应用信息丢失的问题，本文提出MemGUI-Agent：通过ConAct框架将上下文管理与UI操作同列为策略输出项，维护三类结构化上下文压缩提示规模，配套2956条标注轨迹的MemGUI-3K数据集训练，其8B版本在两项基准上获同参数开源最优性能。
+
+<FeedbackButtons slug="item:arxiv-2606.19926" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.22875" target="_blank" rel="noopener noreferrer">FedOT: Ownership Verification and Leakage Tracing via Watermarks for Federated LDMs</a>
+
+*HF ★ 7 · Wenlong Cheng, Yuan Gan, Yunqiu Xu… · [HF 镜像](https://huggingface.co/papers/2606.22875)*
+
+针对联邦学习训练的隐扩散模型（LDM）易被恶意参与者泄露倒卖、现有水印方案无法溯源泄露源、且易通过更换VAE解码器擦除的问题，本文提出FedOT框架：设计分段水印分别用于所有权验证与恶意客户端溯源；新增隐向量变换绑定VAE与U-Net潜空间，换VAE会导致生成画质严重失效。实验证实其验权、溯源性能优异。
+
+<FeedbackButtons slug="item:arxiv-2606.22875" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.20670" target="_blank" rel="noopener noreferrer">Towards CSI-Native Foundation Models: A Channel-Adaptive Roadmap for 6G</a>
+
+*Chenyu Zhang, Xinchen Lyu, Chenshan Ren…*
+
+针对现有6G无线基础模型未将信道状态信息（CSI）视为传播响应、无法捕捉无线环境空时频固有几何特征的缺陷，本文提出信道自适应的CSI原生基础模型路线，构建统一框架对齐预训练等模块与三类信道约束。实验验证该方案多维度性能优于基线，导频开销仅7.01%，净频谱效率较现有最优方案提升15.5%，可支撑高效无线接入。
+
+<FeedbackButtons slug="item:arxiv-2606.20670" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.20673" target="_blank" rel="noopener noreferrer">NeuroShield: A Device-Agnostic Foundation Model for EEG Authentication</a>
+
+*Matin Fallahi, Patricia Arias-Cabarcos, Thorsten Strufe*
+
+针对现有EEG身份认证模型绑定训练时的采集设置、复用性差的痛点，本文提出设备无关的基础模型NeuroShield。其采用双阶段Transformer架构，可从可变通道、时长的EEG中提取身份判别嵌入，经1.5万余受试者数据预训练，微调后等错误率较SOTA低0.44-8.06个百分点，适配未见过的采集配置，已开源。
+
+<FeedbackButtons slug="item:arxiv-2606.20673" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.20743" target="_blank" rel="noopener noreferrer">Massive Activations Are Architecturally Robust: A Controlled Scratch/Commitment Residual Stream Test</a>
+
+*Maruthi Vemula (University of North Carolina at Chapel Hill)*
+
+为验证Transformer中集中于序列起始token的大激活异常值，是残差流兼具读写双重角色的偶然产物还是功能必需，研究者提出将残差流拆分为可覆写计算流、只读解码累加器的Ledger残差架构。实验发现拆分后解码通道仍重构同类异常激活，稀疏惩罚反而强化其特征，证明大激活是有功能的架构稳健特征，而非偶然产物。
+
+<FeedbackButtons slug="item:arxiv-2606.20743" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/helping-build-shared-standards-for-advanced-ai" target="_blank" rel="noopener noreferrer">Helping build shared standards for advanced AI</a>
+
+*OpenAI*
+
+OpenAI正推进前沿AI领域共享标准建设，核心举措包括搭建适配先进AI的统一评估框架、推广规范化安全实践，同时依托Appia基金会推动全球跨主体协作。此举旨在破解当前前沿AI领域标准不统一、安全风险协同防控难的痛点，为全球AI产业安全合规、有序发展筑牢共识基础。
+
+<FeedbackButtons slug="item:openai-blog-helping-build-shared-standards-for-advanced-ai" client:visible />
+
+## <a href="https://openai.com/index/gpt-5-immunology-mystery" target="_blank" rel="noopener noreferrer">How GPT-5 helped immunologist Derya Unutmaz solve a 3-year-old mystery</a>
+
+*OpenAI*
+
+免疫学家德亚·乌努特马兹困扰长达3年的T细胞行为相关免疫学谜题，近期借助GPT-5 Pro的跨域信息整合、关联推理能力成功破解。这一突破不仅补充了T细胞作用机制的相关认知空白，更将为后续癌症治疗、自身免疫性疾病方向的科研工作提供新的研究支撑与思路参考。
+
+<FeedbackButtons slug="item:openai-blog-gpt-5-immunology-mystery" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener noreferrer">Statement on the US government directive to suspend access to Fable 5 and Mythos 5</a>
+
+*Anthropic*
+
+本声明针对美国政府最新出口管制指令作出说明：美政府明确要求，所有外籍人士无论身处美国境内还是境外，均被暂停访问Fable 5、Mythos 5两类受限工具。该指令是美国收紧前沿技术对外管控的最新举措，将直接影响相关领域外籍研发人员的技术使用，也可能对跨国技术协作造成阻碍。
+
+<FeedbackButtons slug="item:anthropic-fable-mythos-access" client:visible />
+
+## <a href="https://www.anthropic.com/news/introducing-claude-tag" target="_blank" rel="noopener noreferrer">Introducing Claude Tag</a>
+
+*Anthropic*
+
+本次推出的Claude Tag是AI安全领域头部研发企业Anthropic的全新产品。Anthropic长期聚焦AI安全赛道，核心研发目标是打造具备高运行可靠性、内在机理可解释、输出行为可管控可引导的AI系统，此次发布的Claude Tag也将沿该技术路线落地，为用户提供更安全可控、符合预期的AI交互服务。
+
+<FeedbackButtons slug="item:anthropic-introducing-claude-tag" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/unlocking-uk-house-building-with-ai-accelerated-planning/" target="_blank" rel="noopener noreferrer">Unlocking UK house-building with AI-accelerated planning</a>
+
+*Google DeepMind*
+
+这项研究针对英国住房建设审批慢的核心痛点，核心举措是英国政府联合谷歌DeepMind研发AI驱动的规划审批原型系统，依托AI技术赋能政务规划流程，加快住房相关行政决策效率。该方案有望大幅压缩新建住房项目审批周期，破解英国住房供给落地慢、供应不足的长期难题，为政务审批提速提供新的技术路径。
+
+<FeedbackButtons slug="item:deepmind-unlocking-uk-house-building-with-ai-accelerated-planning" client:visible />
+
+## <a href="https://deepmind.google/blog/securing-the-future-of-ai-agents/" target="_blank" rel="noopener noreferrer">Securing the future of AI agents</a>
+
+*Google DeepMind*
+
+《保障AI代理的未来安全》一文聚焦AI代理规模化落地的安全痛点，提出构建AI控制路线图加固内部系统的方案，核心是融合传统安全防护机制与实时动态监测能力，既依托成熟防护经验保障基础安全，又能快速响应AI代理运行中的突发风险，为AI代理安全体系建设提供了可行框架。
+
+<FeedbackButtons slug="item:deepmind-securing-the-future-of-ai-agents" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/ibm-research/cuga-apps" target="_blank" rel="noopener noreferrer">Build real agentic apps using CUGA: two dozen working examples on a lightweight harness</a>
+
+*Hugging Face*
+
+本文提出轻量级自主智能体开发框架CUGA，配套轻量运行适配套件，已落地24个可直接运行的自主智能体应用实例。经实测，该框架可大幅降低具备主动决策、自主执行能力的智能体应用开发门槛，多场景实例验证了其通用性与易用性，适合快速落地实用型自主智能体产品。
+
+<FeedbackButtons slug="item:hf-blog-cuga-apps" client:visible />
+
+## <a href="https://huggingface.co/blog/huggingface-hub-release-ci" target="_blank" rel="noopener noreferrer">Shipping huggingface_hub every week with AI, open tools, and a human in the loop</a>
+
+*Hugging Face*
+
+Hugging Face针对旗下核心开源组件huggingface_hub推出每周迭代机制，采用AI自动化处理、全链路开源工具支撑结合人在回路校验的模式，可快速响应全球开发者社区需求，高效完成功能上线、漏洞修复、适配优化等工作，有效提升仓库易用性与稳定性，进一步降低开发者调用AI模型、数据集的门槛。
+
+<FeedbackButtons slug="item:hf-blog-huggingface-hub-release-ci" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+本文反思AI对齐主流正交性假设，从德性伦理视角指出：理性人类及AI都无需预设固定最终目标，人类理性行动并非指向预设目标，而是适配含行动倾向、评价标准等的自驱动实践网络。要实现AI与人类协同、保障安全，需让AI决策逻辑匹配人类实践型行动逻辑，兼顾伦理对齐与核心安全要求。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/06/437698.html" target="_blank" rel="noopener noreferrer">2026世界人工智能大会SAIL奖TOP30及青年优秀论文奖TOP20发布</a>
+
+*量子位*
+
+2026世界人工智能大会两大奖项入围名单正式发布。其中大会最高荣誉SAIL奖经多轮遴选评出TOP30，该奖项聚焦技术突破、应用创新等维度甄选标杆前沿成果，是全球AI技术迭代与产业落地的核心风向标。面向40岁以下青年学者的优秀论文奖评出TOP20，旨在发掘AI青年科研人才，激励领域深耕创新。
+
+<FeedbackButtons slug="item:qbitai-437698" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/432494.html" target="_blank" rel="noopener noreferrer">智能座舱之王「转身」物理AI，高通需要被重估了</a>
+
+*量子位*
+
+此前被公认为“智能座舱之王”的高通，正加速布局物理AI赛道：其未炒作算力、全栈自研等概念，仅用三年半就实现舱驾融合方案从芯片发布到零跑、北汽等品牌车型量产落地，还联合生态伙伴推出车端AI Claw计划，已成为物理AI落地先行者，市场价值有待重估。
+
+<FeedbackButtons slug="item:qbitai-432494" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/437694.html" target="_blank" rel="noopener noreferrer">正行创新完成近亿美元天使轮融资，正大集团、华勤技术等多家上市企业联合加持</a>
+
+*量子位*
+
+具身智能企业正行创新近期完成近亿美元天使轮融资，获正大集团、华勤技术等多家上市公司及头部机构参投。本轮资金将用于引育核心人才、迭代世界动作模型等核心技术、推进零售与工业场景落地。公司由连续创业者姚颂、清华学者于超等发起，主攻物理智能，目标推进人形机器人规模化商用。
+
+<FeedbackButtons slug="item:qbitai-437694" client:visible />
