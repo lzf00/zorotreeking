@@ -74,7 +74,10 @@ function hashSeed(s: string): number {
  * 给一篇 digest 选一张相册图作 cover。
  *
  * @param seed 通常传 digest 日期（YYYY-MM-DD），同一篇 digest 多次重跑会选到同一张
- * @returns 站内路径如 "/photos/uploads/hudieren/xxx.webp"，或 null
+ * @returns 站内路径如 "/photos/uploads/hudieren/xxx.jpeg"，或 null
+ *
+ * 兼容性：优先返回 jpg/png，回退 webp。OG 分享（微信/QQ/Telegram 部分版本）
+ * 对 webp 兼容不佳，cover 用 jpg 最稳；站内显示 cover 时再用 srcWebp 节流。
  */
 export async function pickCoverFromLibrary(seed: string): Promise<string | null> {
   const pool = await loadAllHorizontalPhotos();
@@ -84,5 +87,6 @@ export async function pickCoverFromLibrary(seed: string): Promise<string | null>
   }
   const idx = hashSeed(seed) % pool.length;
   const pick = pool[idx];
-  return pick.srcWebp || pick.src || null;
+  // src 是 jpeg/png 原图；srcWebp 是 sharp 转的 webp
+  return pick.src || pick.srcWebp || null;
 }

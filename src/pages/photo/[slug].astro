@@ -30,7 +30,8 @@ const geoPoints = photos
   .map((p: any) => ({ lat: p.lat, lng: p.lng, thumb: p.thumb, alt: p.alt, src: p.src }));
 ---
 
-<PhotoLayout title={entry.data.title} description={entry.data.description}>
+<PhotoLayout title={entry.data.title} description={entry.data.description}
+             ogImage={entry.data.cover ?? cover?.src}>
 
   <!-- 顶部细返回条 -->
   <div class="max-w-7xl mx-auto px-5 pt-6">
