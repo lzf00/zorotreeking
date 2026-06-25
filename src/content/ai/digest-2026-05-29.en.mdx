@@ -1,0 +1,190 @@
+---
+lang: en
+translationKey: digest-2026-05-29
+title: "Daily AI Digest · 2026-05-29"
+description: "20 Papers · Multi-source Aggregation + AI Summaries"
+date: 2026-05-29
+tags: [digest, auto, ai-papers]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2605.29250" target="_blank" rel="noopener noreferrer">OmniRetrieval: Unified Retrieval across Heterogeneous Knowledge Sources</a>
+
+*HF 28 · Jinheon Baek, Soyeong Jeong, Sangwoo Park… · [HF Mirror](https://huggingface.co/papers/2605.29250)*
+
+Existing retrieval tools only support single types of heterogeneous knowledge sources, have incompatible interfaces, and direct unified mapping to a shared space will lose the structural characteristics of the sources. To address these issues, this paper proposes the OmniRetrieval framework: after receiving a natural language query, it automatically matches the corresponding knowledge source and calls its native engine to execute the query. In large-scale benchmark tests, its performance outperforms single-source baselines, balancing the value of a universal retrieval interface and the unique structural features of each source.
+
+<FeedbackButtons slug="item:arxiv-2605.29250" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.29801" target="_blank" rel="noopener noreferrer">AgentDoG 1.5: A Lightweight and Scalable Alignment Framework for AI Agent Safety and Security</a>
+
+*HF 24 · Dongrui Liu, Yu Li, Zhonghao Yang… · [HF Mirror](https://huggingface.co/papers/2605.29801)*
+
+As security risks for open-world AI Agents continue to rise and existing alignment frameworks struggle to adapt to real-world deployment requirements, this paper proposes AgentDoG 1.5, a lightweight and scalable security alignment framework. It updates the security classification system, relies on a classification-guided data engine purified with influence functions, and trains small models of various sizes from 0.8B to 8B using only thousands of samples, with performance matching leading closed-source models. It also launches a training environment that reduces deployment overhead by two orders of magnitude and a training-free online guardrail, achieving SOTA performance across multiple scenarios, with all resources open-sourced.
+
+<FeedbackButtons slug="item:arxiv-2605.29801" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.30260" target="_blank" rel="noopener noreferrer">How LoRA Remembers? A Parametric Memory Law for LLM Finetuning</a>
+
+*HF 11 · Ziwen Xu, Haiwen Hong, Linsong Yu… · [HF Mirror](https://huggingface.co/papers/2605.30260)*
+
+Existing LoRA fine-tuning research is mostly based on qualitative evaluation, and there is a lack of quantitative support for parameter memory capacity and evolution rules. This study uses LoRA as a controllable implicit space memory probe to systematically quantify parameter memory, proposes a parametric memory power law correlating loss reduction, effective parameter count, and sequence length, and finds that word-by-word recall can be achieved under greedy decoding when the prediction probability p>0.5. The threshold-guided optimization strategy MemFT designed based on this finding improves memory fidelity and efficiency.
+
+<FeedbackButtons slug="item:arxiv-2605.30260" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.30073" target="_blank" rel="noopener noreferrer">Native Audio-Visual Alignment for Generation</a>
+
+*HF 11 · Longbin Ji, Guan Wang, Xuan Wei… · [HF Mirror](https://huggingface.co/papers/2605.30073)*
+
+Existing audio-video joint generation methods have insufficient fine-grained collaboration in post-dual-tower alignment, and the three-modal unified architecture has the defect of coupling semantic conditions and underlying synchronization. To address these issues, this paper proposes the NAVA native audio-video alignment framework, which adopts an MMDiT architecture that aligns first then fuses: it first establishes the correspondence between audio and video in a dedicated interaction space, then introduces context for joint denoising, and adds a contextual timbre control mechanism. With only 6.3B parameters, it outperforms existing methods in dimensions such as image quality, audio-video synchronization, and timbre controllability.
+
+<FeedbackButtons slug="item:arxiv-2605.30073" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.30219" target="_blank" rel="noopener noreferrer">When Should Models Change Their Minds? Contextual Belief Management in Large Language Models</a>
+
+*HF 9 · Haoming Xu, Weihong Xu, Zongrui Li… · [HF Mirror](https://huggingface.co/papers/2605.30219)*
+
+This paper addresses the pain point of large models making decisions on information update, retention, and ignoring during long interactions, and studies the Contextual Belief Management (CBM) task: updating beliefs based on matching evidence and filtering irrelevant noise. The team built BeliefTrack, a closed-world benchmark that can accurately evaluate three types of CBM errors round by round. Experiments show that general large models have severe CBM errors, explicit prompts provide limited improvement, reinforcement learning with belief rewards reduces the error rate by 70.9% on average, and representation layer regulation also reduces errors by 46.1%.
+
+<FeedbackButtons slug="item:arxiv-2605.30219" client:visible />
+
+# arXiv cs.LG (Machine Learning)
+
+## <a href="https://arxiv.org/abs/2605.27385" target="_blank" rel="noopener noreferrer">Personalized Observation Normalization for Federated Reinforcement Learning in Simulation Environments with Heterogeneity</a>
+
+*Yiran Pang, Zhen Ni, Xiangnan Zhong*
+
+Federated reinforcement learning in heterogeneous simulation environments faces problems of heterogeneous input distributions and unbalanced parameter updates during aggregation. To solve these issues, this paper proposes a personalized observation normalization method: each agent normalizes state inputs based on locally updated mean and variance in real time, without sharing normalization parameters across nodes, ensuring consistent local feature scales. Experiments on heterogeneous MuJoCo show that this method has faster training speed and better performance than baselines.
+
+<FeedbackButtons slug="item:arxiv-2605.27385" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.27397" target="_blank" rel="noopener noreferrer">IGADA-IoT: IoT Sensor Energy Optimization in Wireless Sensor Networks Driven by Automatic Data Augmentation</a>
+
+*Mingchun Sun, Rongqiang Zhao, Muhammad Abdul Munnaf…*
+
+Existing data augmentation methods for wireless sensor networks rely on a single generator and lack a joint evaluation mechanism for information gaps and model performance, making it difficult to support IoT sensor energy consumption optimization. This study proposes the IGADA-IoT framework, which adopts a hierarchical multi-generator collaborative scheduling strategy and a closed-loop joint evaluation mechanism for information gaps and model performance. Experiments show that the average accuracy of its downstream models is 8.67% higher than existing state-of-the-art methods, with excellent accuracy and generality, effectively realizing sensor energy consumption optimization.
+
+<FeedbackButtons slug="item:arxiv-2605.27397" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.27406" target="_blank" rel="noopener noreferrer">A Simple State Space Model Excels at Multivariate Time Series Classification</a>
+
+*Hassan Saadatmand, Geoffrey I. Webb, Hamid Rezatofighi…*
+
+Most current Time Series Classification (TSC) methods use high-complexity Mamba-like state space models. This paper systematically compares two types of structured state space models, and finds that diagonal S4D outperforms Mamba variants in both accuracy and efficiency. Based on this finding, the lightweight model MS4 and its normalized version MS4N are optimized, which outperform Mamba-like models on 59 benchmark datasets, and perform on par with similar deep learning models with 2~10 times larger parameter scales, providing a better lightweight solution for TSC.
+
+<FeedbackButtons slug="item:arxiv-2605.27406" client:visible />
+
+# OpenAI Official Updates
+
+## <a href="https://openai.com/index/endava" target="_blank" rel="noopener noreferrer">How Endava builds an agentic organization with Codex</a>
+
+*OpenAI*
+
+This practice report introduces the efficiency upgrade path of IT service provider Endava: relying on the code understanding and generation capabilities of the Codex large model, it built an intelligent agent-based organization, restructured the software R&D requirement analysis workflow, and reduced the requirement analysis work that originally took weeks to hours, greatly improving the overall software delivery efficiency. It provides a referable practice sample for technology enterprises to implement organizational-level efficiency upgrades relying on large models.
+
+<FeedbackButtons slug="item:openai-blog-endava" client:visible />
+
+## <a href="https://openai.com/index/openai-frontier-governance-framework" target="_blank" rel="noopener noreferrer">OpenAI’s Frontier Governance Framework</a>
+
+*OpenAI*
+
+This article focuses on the frontier AI governance framework released by OpenAI, sorts out its specific implementation logic in three dimensions: AI security construction, system security protection, and full-link risk management and control, and focuses on explaining how this practice system aligns with the newly introduced AI regulatory rules in the European Union and California. It can provide a reference paradigm for compliance governance of frontier large model enterprises.
+
+<FeedbackButtons slug="item:openai-blog-openai-frontier-governance-framework" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-4-8" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 4.8</a>
+
+*Anthropic*
+
+Claude Opus 4.8 launched by AI vendor Anthropic is an upgraded version of its high-end Opus series large models. Its core capabilities are optimized for three key scenarios: code development, agent tasks, and professional field work, with significantly improved performance. It also enhances the consistency of long-cycle task processing, can stably support long-time continuous work, and adapts to more complex professional usage needs.
+
+<FeedbackButtons slug="item:anthropic-claude-opus-4-8" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-design-anthropic-labs" target="_blank" rel="noopener noreferrer">Introducing Claude Design by Anthropic Labs</a>
+
+*Anthropic*
+
+Anthropic Labs officially released the new product Claude Design. The product supports users to collaborate with the Claude large model for creation, and can produce various mature visual works such as design drafts, interactive prototypes, presentation slides, and single-page promotional materials, filling the previous capability gap of large models that were biased towards text generation. It lowers the design threshold for non-professional users, and adapts to light design needs for office and creative scenarios.
+
+<FeedbackButtons slug="item:anthropic-claude-design-anthropic-labs" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle-environmental-risks/" target="_blank" rel="noopener noreferrer">We’re launching the Google DeepMind Accelerator program in Asia Pacific to tackle environmental risks</a>
+
+*Google DeepMind*
+
+Google DeepMind officially launched the Asia Pacific Accelerator special program, with the core goal of addressing various regional environmental risks relying on its cutting-edge artificial intelligence technology capabilities. The project will cooperate with industry-university-research institutions and environmental protection related entities in the Asia Pacific region, focus on implementing AI solutions in scenarios such as climate disaster warning, ecological protection, and low-carbon emission reduction, explore reusable AI-enabled environmental governance paths, and help the region improve environmental risk response efficiency.
+
+<FeedbackButtons slug="item:deepmind-were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle" client:visible />
+
+## <a href="https://deepmind.google/blog/fast-tracking-genetic-leads-to-reverse-cellular-aging/" target="_blank" rel="noopener noreferrer">Fast-tracking genetic leads to reverse cellular aging</a>
+
+*Google DeepMind*
+
+This study focuses on the rapid mining of genetic targets for reversing cellular aging. The core method is that biologists use the Co-Scientist intelligent scientific research tool to carry out high-throughput screening, greatly shortening the target discovery cycle. Finally, a number of previously unreported new regulatory factors were successfully identified, which were verified to effectively achieve youthful reprogramming of human cells, providing new candidate targets for the research and development of aging intervention technologies.
+
+<FeedbackButtons slug="item:deepmind-fast-tracking-genetic-leads-to-reverse-cellular-aging" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/ibm-research/itbench-aa" target="_blank" rel="noopener noreferrer">ITBench-AA: Frontier Models Score Below 50% on the First Benchmark for Agentic Enterprise IT Tasks — by Artificial Analysis and IBM</a>
+
+*Hugging Face*
+
+This research, jointly launched by Artificial Analysis and IBM, released ITBench-AA, the world's first agent task benchmark for enterprise IT scenarios. Test results show that all current cutting-edge large models score less than 50% on this benchmark, indicating that the agent capabilities of existing large models are far from meeting the deployment requirements of enterprise IT scenarios. This benchmark can provide a standardized evaluation basis for the subsequent technical iteration of enterprise-level agents.
+
+<FeedbackButtons slug="item:hf-blog-itbench-aa" client:visible />
+
+## <a href="https://huggingface.co/blog/local-reachy-mini-conversation" target="_blank" rel="noopener noreferrer">Reachy Mini goes fully local</a>
+
+*Hugging Face*
+
+Hello, currently only the title of this post is available, and the full content of the abstract has not been provided, so it is impossible to accurately extract its research methods and core conclusions. Please supplement the complete text of the abstract, and I will generate a concise English summary of about 120 words highlighting the methods and conclusions as required.
+
+<FeedbackButtons slug="item:hf-blog-local-reachy-mini-conversation" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This AI alignment research from the perspective of virtue ethics rejects the traditional assumption that "rational agents need to be anchored to fixed ultimate goals", and proposes that the core of human rationality is that actions adapt to the network of practical rules in which they are located. The study argues that rational AI should also not have preset fixed goals, and its decision-making logic needs to match the practice-oriented action logic of human beings to meet both ethical alignment and core security requirements.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/05/426353.html" target="_blank" rel="noopener noreferrer">Tsinghua-affiliated team builds a "smart computing power grid" for large models</a>
+
+*QbitAI*
+
+The current AI industry faces pain points including scarce and expensive overseas GPUs, poor adaptation and idle waste of domestic computing power, and insufficient Token production capacity with high costs. Shishi Technology, a Tsinghua-affiliated team with supercomputing background, relies on self-developed parallel optimization technology to integrate and adapt multi-source heterogeneous computing resources, builds a domestic Token tuning factory, and constructs a power grid-style computing power scheduling system, directly addressing the bottlenecks of computing power deployment and solving the dilemma of idle domestic computing power.
+
+<FeedbackButtons slug="item:qbitai-426353" client:visible />
+
+## <a href="https://www.qbitai.com/2026/05/426314.html" target="_blank" rel="noopener noreferrer">Claude 4.8 is a hit! Partial capabilities surpass Mythos, supports hundreds of parallel sub-agents</a>
+
+*QbitAI*
+
+Anthropic's latest flagship large model Claude Opus 4.8 was released only 43 days after the previous version, with significant performance improvements: its end engineering and knowledge processing capabilities are upgraded, with partial indicators surpassing Mythos; the missed detection rate of code defects is reduced to 1/4 of the previous generation, the probability of overconfident behavior is cut to 1/10, and honesty is greatly optimized. It newly adds support for dynamic workflows with hundreds of parallel sub-agents, with only the alignment risk of inferred rater preference remaining to be addressed.
+
+<FeedbackButtons slug="item:qbitai-426314" client:visible />
+
+## <a href="https://www.qbitai.com/2026/05/426293.html" target="_blank" rel="noopener noreferrer">Behind DeepSeek V4's chip-model collaboration, the domestic computing power ecosystem enters flywheel acceleration phase</a>
+
+*QbitAI*
+
+DeepSeek V4 has verified the feasibility of Ascend's "chip-model collaboration" for the first time at a large-scale engineering level, marking that domestic computing power has shifted from the phase of chips passively adapting to models to a new phase of chip-model collaboration. Currently, Kunpeng and Ascend have crossed the "usable" threshold, the CANN ecosystem has moved from infancy to adolescence, developers can independently contribute to iterations, core businesses in multiple fields are accelerating migration, and the domestic computing power ecosystem is entering a flywheel acceleration track.
+
+<FeedbackButtons slug="item:qbitai-426293" client:visible />
+
+---

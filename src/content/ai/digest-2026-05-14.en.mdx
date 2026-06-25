@@ -1,0 +1,186 @@
+---
+lang: en
+translationKey: digest-2026-05-14
+title: "AI Daily Digest · 2026-05-14"
+description: "20 papers · Multi-source aggregation + AI summarization"
+date: 2026-05-14
+tags: [digest, auto, ai-papers]
+category: paper
+draft: false
+---
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2605.10616" target="_blank" rel="noopener noreferrer">MulTaBench: Benchmarking Multimodal Tabular Learning with Text and Image</a>
+
+*HF 81 · Alan Arazi, Eilam Shapira, Shoham Grunblat… · [HF Mirror](https://huggingface.co/papers/2605.10616)*
+
+To address the issues that existing tabular foundation models do not natively support unstructured text and image modalities, and existing multimodal tabular benchmarks have evaluation biases, this paper introduces the MulTaBench benchmark with 40 datasets, equally split between image-tabular and text-tabular tasks, focusing on scenarios where modal signals complement each other. Experiments verify that the gains from task-aware representation tuning are generalizable across modalities and models, supporting the research and development of multimodal tabular foundation models.
+
+---
+
+## <a href="https://arxiv.org/abs/2605.13779" target="_blank" rel="noopener noreferrer">MinT: Managed Infrastructure for Training and Serving Millions of LLMs</a>
+
+*HF 66 · Mind Lab, Song Cao, Vic Cao… · [HF Mirror](https://huggingface.co/papers/2605.13779)*
+
+This paper proposes MinT, a managed infrastructure for LoRA fine-tuning and online serving. It eliminates the need to generate and merge full checkpoints, keeps the base model resident and only transfers LoRA adapters. Optimized from three dimensions: adapting to ultra-large base models, reducing transfer overhead, and decoupling policy storage from compute working sets, it can support a LoRA policy library of millions of entries. When sharing a 1T-parameter scale base model, it significantly improves the efficiency of training, loading, and multi-policy parallelism, while reducing VRAM usage.
+
+---
+
+## <a href="https://arxiv.org/abs/2605.13724" target="_blank" rel="noopener noreferrer">AnyFlow: Any-Step Video Diffusion Model with On-Policy Flow Map Distillation</a>
+
+*HF 62 · Yuchao Gu, Guian Fang, Yuxin Jiang… · [HF Mirror](https://huggingface.co/papers/2605.13724)*
+
+To address the issues that consistency-distilled few-step video generation models suffer from performance degradation when sampling steps increase and cannot adapt to arbitrary step count sampling, this paper proposes the AnyFlow arbitrary-step video diffusion distillation framework, which changes the distillation target from endpoint consistency mapping to flow map transfer across arbitrary time intervals, combined with reverse flow map simulation to achieve efficient on-policy distillation. Experiments show that its few-step generation performance is comparable to similar methods, and performance can be improved synchronously with the sampling step budget.
+
+---
+
+## <a href="https://arxiv.org/abs/2605.13831" target="_blank" rel="noopener noreferrer">Training Long-Context Vision-Language Models Effectively with Generalization Beyond 128K Context</a>
+
+*HF 48 · Zhaowei Wang, Lishu Luo, Haodong Duan… · [HF Mirror](https://huggingface.co/papers/2605.13831)*
+
+To address the lack of long data ratio schemes for training long-context multimodal large models, this paper identifies 3 training optimization guidelines through systematic ablation experiments, and performs continued pre-training on Qwen2.5-VL-7B with only 5B tokens to launch MMProLong. It expands the context window from 32K to 128K, improves long-document VQA accuracy by 7.1%, and can extrapolate to 512K context without additional training, adapting to multiple long scenarios and providing a practical training paradigm.
+
+---
+
+## <a href="https://arxiv.org/abs/2605.12411" target="_blank" rel="noopener noreferrer">Predicting Decisions of AI Agents from Limited Interaction through Text-Tabular Modeling</a>
+
+*HF 35 · Eilam Shapira, Moshe Tennenholtz, Roi Reichart · [HF Mirror](https://huggingface.co/papers/2605.12411)*
+
+This paper addresses the decision prediction problem when AI agents interact with unfamiliar opponents, proposes a target-adaptive text-tabular modeling framework, and adds hidden states of frozen small models as observer features, using only hidden layer information instead of outputs. In tests, the model outperforms the direct large model prompting baseline, with prediction AUC increased by 4 percentage points and bidding error reduced by 14% after 16 interactions, verifying the effectiveness of the framework and hidden state features.
+
+---
+
+# arXiv cs.LG (Machine Learning)
+
+## <a href="https://arxiv.org/abs/2605.12561" target="_blank" rel="noopener noreferrer">Learning When to Act: Communication-Efficient Reinforcement Learning via Run-Time Assurance</a>
+
+*Adam Haroon, Erick J. Rodríguez-Seda, Cody Fleming…*
+
+This research focuses on safe reinforcement learning, moving beyond the conventional idea of "what the agent should do" to study "when a decision is needed". It jointly learns control inputs and low-communication-overhead decision timing, paired with a point-wise Lyapunov safety shield and runtime assurance layer, providing stronger safety guarantees. Experiments show that its sampling interval is up to 3.51 times higher than traditional baselines, while fixed-rate LQR becomes completely unstable at the same rate. The solution also supports cross-environment transfer, adapts to high-dimensional systems, and has excellent robustness.
+
+---
+
+## <a href="https://arxiv.org/abs/2605.12580" target="_blank" rel="noopener noreferrer">CAWI: Copula-Aligned Weight Initialization for Randomized Neural Networks</a>
+
+*Mushir Akhtar, M. Tanveer, Mohd. Arshad*
+
+To address the problem that traditional initialization for backpropagation-free random neural networks ignores feature dependencies and degrades performance, this paper proposes the CAWI (Copula-Aligned Weight Initialization) framework: input-hidden layer weights are sampled based on data-fitted Copula, capturing feature correlation, asymmetry and tail dependence characteristics, while retaining the advantage of the closed-form solution of the original output layer. Verified on 83 general classification benchmarks and 2 biomedical datasets, this method delivers significantly improved performance compared to traditional initialization.
+
+---
+
+## <a href="https://arxiv.org/abs/2605.12584" target="_blank" rel="noopener noreferrer">Towards Robust Federated Multimodal Graph Learning under Modality Heterogeneity</a>
+
+*Sirui Zhang, Haonan Wang, Xunkai Li…*
+
+To address the modality heterogeneity pain point in federated multimodal graph learning, existing solutions have issues such as missing global semantics when clients perform completion, and server-side aggregation being interfered by differences in update reliability. This paper proposes the FedMPO framework, adopting topology-aware cross-modal generation, missing-aware signal filtering, and reliability-weighted aggregation designs. Experiments on 6 datasets for 3 types of tasks show that it outperforms baselines by up to 4.10% and 5.65% in high-missing and non-IID scenarios respectively, with significantly leading performance.
+
+---
+
+# OpenAI Official Updates
+
+## <a href="https://openai.com/index/building-codex-windows-sandbox" target="_blank" rel="noopener noreferrer">Building a safe, effective sandbox to enable Codex on Windows</a>
+
+*OpenAI*
+
+To meet the security requirements of deploying Codex on the Windows platform, OpenAI has built a dedicated security sandbox solution, which achieves security isolation through two core mechanisms: fine-grained file access permission control and restricted network access boundaries. This solution not only ensures the operating efficiency of the Codex coding agent, but also avoids risks such as system tampering, unauthorized data access, and malicious networking during code execution, providing a feasible path for the secure deployment of large model code tools on Windows.
+
+---
+
+## <a href="https://openai.com/index/our-response-to-the-tanstack-npm-supply-chain-attack" target="_blank" rel="noopener noreferrer">Our response to the TanStack npm supply chain attack</a>
+
+*OpenAI*
+
+In response to the TanStack "Mini Shai-Hulud" npm supply chain attack, OpenAI released official handling details: it has completed security hardening of its own systems and signature certificates, identified the impact scope of the incident through investigation, and requires all macOS users to update OpenAI's applications before June 12, 2026. Going forward, OpenAI will upgrade its defense system to address evolving software supply chain security risks.
+
+---
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-4-7" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 4.7</a>
+
+*Anthropic*
+
+The latest large model Claude Opus 4.7 is now fully available. Compared to the previous Opus 4.6 version, the core capability improvements of this version are concentrated in the field of high-level software engineering, especially with significant performance gains in handling difficult and complex development tasks, making it better suited for professional development scenarios such as complex coding, system design, and troubleshooting of tough problems.
+
+---
+
+## <a href="https://www.anthropic.com/news/claude-design-anthropic-labs" target="_blank" rel="noopener noreferrer">Introducing Claude Design by Anthropic Labs</a>
+
+*Anthropic*
+
+Anthropic Labs officially launches the new product Claude Design. This product supports users to collaborate with Claude for creation, and can produce high-quality professional visual outputs, applicable scenarios include design plans, interactive prototypes, presentation slides, one-page promotional materials, etc., providing a convenient AI collaborative creation tool for users with visual content production needs.
+
+---
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/alphaevolve-impact/" target="_blank" rel="noopener noreferrer">AlphaEvolve: How our Gemini-powered coding agent is scaling impact across fields</a>
+
+*Google DeepMind*
+
+This paper introduces the intelligent coding agent AlphaEvolve, whose core algorithm is based on the Gemini large model, and can efficiently complete complex tasks such as code generation, debugging, and scenario adaptation. The system has now achieved large-scale cross-domain deployment, delivering significant value in three scenarios: commercial operation efficiency improvement, infrastructure operation and maintenance iteration, and cutting-edge scientific research assistance, verifying that large model-driven coding agents have extremely strong generalization and deployment potential.
+
+---
+
+## <a href="https://deepmind.google/blog/ai-co-clinician/" target="_blank" rel="noopener noreferrer">Enabling a new model for healthcare with AI co-clinician</a>
+
+*Google DeepMind*
+
+This paper explores a new AI-enabled healthcare paradigm, focusing on the implementation path of AI-assisted diagnosis and treatment, and develops the new "AI co-clinician" model. Positioned as a collaborative partner rather than a replacement for clinicians, this model can complement the cognitive boundaries of doctors, reduce misdiagnosis and missed diagnosis rates, and improve diagnosis and treatment efficiency, providing a feasible direction for adapting to frontline clinical workflows and promoting the transformation of traditional healthcare to a new human-machine collaborative service model.
+
+---
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/amazon/foundation-model-building-blocks" target="_blank" rel="noopener noreferrer">Building Blocks for Foundation Model Training and Inference on AWS</a>
+
+*Hugging Face*
+
+This paper focuses on the cloud-native training and inference requirements of foundation models, and sorts out the full-process technical support components for large models on the AWS platform: the training side integrates distributed computing clusters, parallel training framework optimization, and elastic storage modules; the inference side is equipped with low-latency deployment, automatic scaling, and cost control kits. Actual tests show that this solution improves computing power utilization by more than 30%, reduces training and inference costs by up to 40%, providing a standardized reference for cloud-native large model deployment.
+
+---
+
+## <a href="https://huggingface.co/blog/allenai/emo" target="_blank" rel="noopener noreferrer">EMO: Pretraining mixture of experts for emergent modularity</a>
+
+*Hugging Face*
+
+This paper proposes the EMO pre-training framework, addressing the pain points of existing large models such as parameter redundancy and low modularity. It adopts a sparse mixture-of-experts architecture without manual preset division of labor, and dynamically routes and allocates computing resources driven only by input features. Experiments show that functional modularity emerges spontaneously after pre-training, tasks of the same type are automatically routed to a fixed set of experts, multi-task accuracy matches that of native dense large models, inference costs are reduced by up to 40%, and modules have stronger transferability.
+
+---
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This paper in the AI alignment field questions the goal-oriented rational presupposition: it proposes that human rational actions are not anchored to ultimate goals, but adapt to a practical normative network composed of actions, tendencies, evaluation standards, and resources. To achieve compatible collaboration between AI and humans, the decision-making logic of AI needs to match the practical action logic of humans. This path not only conforms to human ethical demands, but also guarantees the core security attributes of AI.
+
+---
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/05/417754.html" target="_blank" rel="noopener noreferrer">The first Robotaxi public company surges again</a>
+
+*QbitAI*
+
+As the first public Robotaxi company, WeRide recently announced the largest deployment plan in the industry: 200,000 Robotaxis will be put into use within 5 years. Its Q1 performance provides strong support: total revenue increased by 58% year-on-year, product revenue soared by 116%, 35% gross margin leads the industry, registered users doubled, and it has achieved per-vehicle break-even in some regions of its overseas expansion covering 12 countries and 40 cities, confirming that L4 autonomous driving has entered the commercialization realization stage.
+
+---
+
+## <a href="https://www.qbitai.com/2026/05/417753.html" target="_blank" rel="noopener noreferrer">Tencent open-sources Agent memory technology solution, reducing Token consumption by up to 61%</a>
+
+*QbitAI*
+
+Tencent recently open-sourced TencentDB Agent Memory, which is compatible with mainstream Agent frameworks and can be deployed with one click. To address the problems of context bloat, high cost, and state confusion that easily occur in traditional optimization solutions for Agent long tasks, it adopts a compression scheme that retains key execution relationships in a structured task canvas, and stores non-core information externally with only indexes kept. Actual tests show that it reduces Token consumption by up to 61% in multiple scenarios, and improves task success rate by up to 51%.
+
+---
+
+## <a href="https://www.qbitai.com/2026/05/417748.html" target="_blank" rel="noopener noreferrer">New progress in Alibaba's AI applications: Wukong begins gradual large-scale rollout</a>
+
+*QbitAI*
+
+Alibaba's Q4 fiscal 2026 earnings report shows that its full-stack AI investment has entered the large-scale commercial return cycle, and its enterprise-level AI Agent platform "Wukong" is gradually being rolled out on a large scale. The product can independently plan steps and call tools to complete full-link tasks, adapts to internal enterprise systems, and has been deployed in e-commerce, manufacturing and other industries, delivering significant cost reduction and efficiency improvement. It will cover more scenarios for iterative optimization in the future.
+
+---

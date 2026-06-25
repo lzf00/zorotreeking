@@ -1,0 +1,190 @@
+---
+lang: en
+translationKey: digest-2026-05-26
+title: "Daily AI Picks · 2026-05-26"
+description: "20 papers · Multi-source aggregation + AI-generated summaries"
+date: 2026-05-26
+tags: [digest, auto, ai-papers]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2605.25604" target="_blank" rel="noopener noreferrer">DVAO: Dynamic Variance-adaptive Advantage Optimization for Multi-reward Reinforcement Learning</a>
+
+*HF 30 · Guochao Jiang, Jingyi Song, Guofeng Quan… · [HF Mirror](https://huggingface.co/papers/2605.25604)*
+
+To address the flaws of existing scalarization methods in large model multi-reward RL alignment scenarios, including unstable training, reliance on static hyperparameters, and ignorance of objective correlations, this paper proposes DVAO (Dynamic Variance-adaptive Advantage Optimization), which dynamically adjusts fusion weights based on the variance of reward experience within rolling groups, limiting the amplitude of advantages to ensure stable training. It outperforms baselines on reasoning and tool use benchmarks for the Qwen series of models, delivers a better Pareto frontier, and has strong training robustness.
+
+<FeedbackButtons slug="item:arxiv-2605.25604" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.25874" target="_blank" rel="noopener noreferrer">WBench: A Comprehensive Multi-turn Benchmark for Interactive Video World Model Evaluation</a>
+
+*HF 29 · Kaining Ying, Hengrui Hu, Siyu Ren… · [HF Mirror](https://huggingface.co/papers/2605.25874)*
+
+To solve the problems of incomplete coverage and lack of unified standards in existing interactive video world model evaluation benchmarks, this research launches WBench, a multi-turn interaction evaluation benchmark covering 5 core evaluation dimensions, including 289 test cases, over a thousand turns of interaction, adaptable to multiple input interfaces, and adopting 22 manually verified automatic metrics. After testing 20 SOTA models, it was found that no model performs excellently across all dimensions; the study also provides diagnosis of the strengths and weaknesses of each model, and all relevant resources are open sourced.
+
+<FeedbackButtons slug="item:arxiv-2605.25874" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.24830" target="_blank" rel="noopener noreferrer">Macaron-A2UI: A Model for Generative UI in Personal Agents</a>
+
+*HF 26 · Fancy Kong, Congjie Zheng, Murphy Zhuang… · [HF Mirror](https://huggingface.co/papers/2605.24830)*
+
+To address the pure text interaction bottleneck of personal assistants, this paper proposes Macaron-A2UI, a generative UI model that can simultaneously output natural language and lightweight executable UI operations, adapting to multiple interaction scenarios such as information collection and preference confirmation. The team built a large-scale generative UI corpus and the A2UI-Bench evaluation benchmark; the optimal model trained via LoRA fine-tuning and reward reinforcement learning scores 75.6 without explicit mode prompts, outperforming the current strongest baseline, with relevant resources open sourced.
+
+<FeedbackButtons slug="item:arxiv-2605.24830" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.23204" target="_blank" rel="noopener noreferrer">AutoResearch AI: Towards AI-Powered Research Automation for Scientific Discovery</a>
+
+*HF 14 · Guiyao Tie, Jiawen Shi, Dingjie Song… · [HF Mirror](https://huggingface.co/papers/2605.23204)*
+
+This is a review paper in the field of AI research automation, defining the development lineage of this direction as AutoResearch (AI-driven scientific research workflow automation), which can be divided into two categories: human-led prompt-based assistance, and AI-led exploration that has not yet reached strong autonomy. The review sorts out five core modules of scientific research workflows, proposes five evaluation dimensions such as innovativeness and effectiveness, clarifies that its autonomy is constrained by domain: it only has high credibility in structured, easily verifiable scenarios, and still has limitations in complex scenarios.
+
+<FeedbackButtons slug="item:arxiv-2605.23204" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.24938" target="_blank" rel="noopener noreferrer">Your Embedding Model is SMARTer Than You Think</a>
+
+*HF 12 · Jianrui Zhang, Hyun Jung Lee, Sukanta Ganguly… · [HF Mirror](https://huggingface.co/papers/2605.24938)*
+
+To address the pain points of single-vector multimodal retrieval losing fine-grained information, and multi-vector solutions requiring additional training and often ignoring global representations, this paper proposes the SMART framework: it leverages the pre-hidden layer features of single-vector models implicitly shaped by contrastive training, directly performs late interaction during inference, delivers plug-and-play cross-modal performance improvements, and lightweight post-training allows single-vector models to outperform multi-vector SOTAs, with excellent performance on benchmarks including MMEB-V2, and the code is open sourced.
+
+<FeedbackButtons slug="item:arxiv-2605.24938" client:visible />
+
+# arXiv cs.LG (Machine Learning)
+
+## <a href="https://arxiv.org/abs/2605.22863" target="_blank" rel="noopener noreferrer">Latent Cache Flow: Model-to-Model Communication Without Text</a>
+
+*Maximillian Rossi, Prajwal Raghunath, Eugene Wu*
+
+To address the problems of high latency and large information loss in existing text communication between large model agents, as well as the previous KV cache exchange solution C2C adapter having large parameters and requiring consistent context which is not suitable for multi-agent scenarios, this research proposes the LCF solution: it compresses KV via joint translation to reduce the adapter size to 4% of C2C, and can transmit summaries of new information missing from the target model to adapt to heterogeneous contexts. Experiments show that its accuracy under the same context is better than C2C, and in heterogeneous context scenarios it is 23% more accurate and 8.5x faster than text communication.
+
+<FeedbackButtons slug="item:arxiv-2605.22863" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.22864" target="_blank" rel="noopener noreferrer">Reading Calibrated Uncertainty from Language Model Trajectories</a>
+
+*Aliai Eusebi, Alexander Herzog, Xiaoyu Liang…*
+
+To address the existing flaws in large language model uncertainty evaluation: the default maximum softmax probability (MSP) has poor calibration, and activation probes only take static snapshots with weak interpretability, this paper extracts 11 scale-invariant geometric features, tracks the cumulative representation trajectory updated by each layer's MLP, and uses sparse linear probes to evaluate uncertainty. This method outperforms MSP on selective abstention tasks, with AURC improved by up to 21 points, and can also trace the layer where errors occur.
+
+<FeedbackButtons slug="item:arxiv-2605.22864" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.22868" target="_blank" rel="noopener noreferrer">FusionSense: Tri-Stage Near-Sensor Learning for Runtime-Adaptive Multimodal Edge Intelligence</a>
+
+*Sanggeon Yun, Ryozo Masukawa, Minhyoung Na…*
+
+To address the problems of existing multimodal edge intelligence solutions either relying on server-side fusion, or using single-modal near-sensor filtering that ignores cross-modal correlations, leading to transmission redundancy or missed detection, this paper proposes the FusionSense three-stage near-sensor learning framework: first train the downstream fusion model on the server, then generate necessity labels for each modality, and finally compress to obtain a lightweight edge fusion model embedded with near-sensor prediction. Actual tests show that its energy efficiency is up to 33x higher than existing baselines, and quality loss is reduced by 92.3% at a fixed 30% data reduction rate.
+
+<FeedbackButtons slug="item:arxiv-2605.22868" client:visible />
+
+# OpenAI Official Updates
+
+## <a href="https://openai.com/index/grupo-folha-grupo-uol-partnership" target="_blank" rel="noopener noreferrer">OpenAI, Grupo Folha and Grupo UOL announce strategic content partnership</a>
+
+*OpenAI*
+
+OpenAI recently reached a strategic content partnership with two leading Brazilian media groups, Grupo Folha and Grupo UOL. The two parties will integrate authoritative local Brazilian news content produced by the two organizations into ChatGPT, and ChatGPT will include clear source citations when outputting relevant news in the future to ensure information transparency. This partnership not only expands the reach channels for high-quality Brazilian news, but also effectively improves the credibility of ChatGPT's news-related outputs.
+
+<FeedbackButtons slug="item:openai-blog-grupo-folha-grupo-uol-partnership" client:visible />
+
+## <a href="https://openai.com/index/virgin-atlantic" target="_blank" rel="noopener noreferrer">How Virgin Atlantic ships faster with Codex</a>
+
+*OpenAI*
+
+This article introduces the development practice of Virgin Atlantic: to launch the revised mobile app before the fixed deadline of the holiday travel season, the team used OpenAI Codex as a development assistance tool, and finally not only completed delivery on schedule, but also achieved nearly 100% unit test coverage, with no P1-level critical defects after launch, verifying Codex's enabling effect for high-quality software development under tight deadlines.
+
+<FeedbackButtons slug="item:openai-blog-virgin-atlantic" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-4-7" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 4.7</a>
+
+*Anthropic*
+
+The newly launched flagship large model of the Claude series, Opus 4.7, is now officially fully open for general access. Compared to the previous generation Opus 4.6, the model's capability upgrades focus on the advanced software engineering field, achieving outstanding performance gains especially on high-complexity, high-difficulty tasks in this field, with significant overall performance improvement, which can better support implementation needs such as complex code development and technical research and development.
+
+<FeedbackButtons slug="item:anthropic-claude-opus-4-7" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-design-anthropic-labs" target="_blank" rel="noopener noreferrer">Introducing Claude Design by Anthropic Labs</a>
+
+*Anthropic*
+
+Anthropic Labs officially released its new product Claude Design. The core capability of this product is to support users to collaborate with the Claude large model on visual creation, and can generate various types of visual outputs such as high-completion design solutions, interactive prototypes, presentation slides, and single-page promotional materials. This tool fills the gap of Claude's original text-biased capabilities, can provide convenient professional-level visual production support for users with different design foundations, and further expands the application scenarios of large models.
+
+<FeedbackButtons slug="item:anthropic-claude-design-anthropic-labs" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle-environmental-risks/" target="_blank" rel="noopener noreferrer">We’re launching the Google DeepMind Accelerator program in Asia Pacific to tackle environmental risks</a>
+
+*Google DeepMind*
+
+Relying on its own AI technology advantages, Google DeepMind officially launched the Asia Pacific accelerator program, focusing on addressing core environmental risks in the Asia Pacific region such as climate warming, extreme natural disasters, and biodiversity decline. The program will provide technical, computing power and industrial resource support for startup teams in relevant fields, promote the implementation of AI in scenarios such as environmental monitoring, risk early warning, and ecological governance, and improve the resilience of the Asia Pacific region in responding to environmental risks.
+
+<FeedbackButtons slug="item:deepmind-were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle" client:visible />
+
+## <a href="https://deepmind.google/blog/fast-tracking-genetic-leads-to-reverse-cellular-aging/" target="_blank" rel="noopener noreferrer">Fast-tracking genetic leads to reverse cellular aging</a>
+
+*Google DeepMind*
+
+This study aims to accelerate the discovery of genetic clues that can reversely regulate cellular aging. Biologists carried out screening with the help of the Co-Scientist research assistance system, and successfully found new regulatory factors, which have been verified to effectively rejuvenate human cells. This result shortens the research and development cycle of aging-related genetic targets, and provides a new candidate direction for anti-aging technology research and development and intervention treatment of aging-related diseases.
+
+<FeedbackButtons slug="item:deepmind-fast-tracking-genetic-leads-to-reverse-cellular-aging" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/agent-glossary" target="_blank" rel="noopener noreferrer">Harness, Scaffold, and the AI Agent Terms Worth Getting Right</a>
+
+*Hugging Face*
+
+Aiming at the pain points of mixed use of terms and vague definitions in the current AI Agent field, this article systematically sorts out the applicable boundaries, corresponding capability levels and technical adaptation scenarios of high-frequency core terms such as "Harness" and "Scaffold", and proposes a clear term specification framework, which can effectively reduce ambiguity in domain communication and provide basic support for the systematic research and implementation of AI Agents.
+
+<FeedbackButtons slug="item:hf-blog-agent-glossary" client:visible />
+
+## <a href="https://huggingface.co/blog/nvidia/nemotron-labs-diffusion" target="_blank" rel="noopener noreferrer">Towards Speed-of-Light Text Generation with Nemotron-Labs Diffusion Language Models</a>
+
+*Hugging Face*
+
+This paper targets the demand for light-speed low-latency text generation, and launches the Nemotron-Labs diffusion language model solution. Aiming at the pain point of traditional autoregressive large models generating word by word with high inference latency, this model adopts the diffusion paradigm to realize parallel decoding, greatly reducing inference time. Tests show that while its generation quality matches mainstream autoregressive models, its speed achieves an order of magnitude jump, which can provide technical support for highly real-time text applications.
+
+<FeedbackButtons slug="item:hf-blog-nemotron-labs-diffusion" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This AI alignment study challenging the orthogonality hypothesis starts from the perspective of virtue ethics, criticizes the generally presupposed goal-oriented rational framework, and proposes that the core of human rational action is to match the practice network including actions, tendencies, and evaluation standards, rather than pursuing fixed end goals. To make AI adapt to human collaboration and compliance requirements, its decision-making logic needs to match the "type signature" of human practice, and this path can take both ethical alignment and basic safety into account.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/05/424794.html" target="_blank" rel="noopener noreferrer">Dai Wenjun from JD JoyInside: The ultimate form of AI is not chat, but integration into every item in your home | AIGC2026</a>
+
+*QbitAI*
+
+At the 2026 China AIGC Industry Summit, Dai Wenjun, head of JD's JoyInside business, proposed that AI has entered the "AI World" era, will break away from single forms such as chat and screens, be deeply integrated into various household terminals, and can actively perceive and meet user needs without requiring users to actively adapt. Relying on advantages such as large models and supply chains, JD is implanting AI capabilities into hardware via attached intelligence, to reconstruct the home human-computer interaction experience.
+
+<FeedbackButtons slug="item:qbitai-424794" client:visible />
+
+## <a href="https://www.qbitai.com/2026/05/424610.html" target="_blank" rel="noopener noreferrer">Self-driving cars break down when encountering water? Waymo launches large-scale recall, suspends Robotaxi services in multiple cities</a>
+
+*QbitAI*
+
+Recently, Waymo has had two consecutive self-driving car water wading accidents in two months: in April, a vehicle detected standing water but still drove in at low speed and was swept away, and recently an empty vehicle in Atlanta was trapped in a waterlogged section. The company has recalled nearly 3800 vehicles equipped with 5th and 6th generation autonomous driving systems, currently only relying on official weather warnings and geofencing for temporary traffic restriction, has not solved the core defect of wading perception, and has suspended Robotaxi services in multiple cities.
+
+<FeedbackButtons slug="item:qbitai-424610" client:visible />
+
+## <a href="https://www.qbitai.com/2026/05/424605.html" target="_blank" rel="noopener noreferrer">Building a super hub for the venture capital ecosystem, 2026 Investment Circle SuperLink Conference scheduled for June</a>
+
+*QbitAI*
+
+The venture capital industry has now shifted to the value logic of deeply empowering industries and ecological collaboration. The 2026 Investment Circle SuperLink Conference, co-hosted by Zero2IPO Holdings, Investment Circle and Wuzhong Financial Holding, is scheduled to be held in Wuzhong, Suzhou on June 10-11. As a strategic upgrade of the China Fund Partners Conference, it focuses on three core links: connections, capital, and future, sets up ten scenarios covering the entire venture capital chain, and aims to build a super hub for the venture capital ecosystem.
+
+<FeedbackButtons slug="item:qbitai-424605" client:visible />
+
+---

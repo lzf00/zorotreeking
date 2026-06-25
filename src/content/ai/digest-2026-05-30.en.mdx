@@ -1,0 +1,148 @@
+---
+lang: en
+translationKey: digest-2026-05-30
+title: "Daily AI Picks · 2026-05-30"
+description: "15 papers · Multi-source aggregation + AI summarization"
+date: 2026-05-30
+tags: [digest, auto, ai-papers]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# arXiv cs.LG (Machine Learning)
+
+## <a href="https://arxiv.org/abs/2605.28839" target="_blank" rel="noopener noreferrer">One Mask to Rule Them All: On Hidden Facts after Editing and How to Find Them</a>
+
+*Ali Holmov, Paul Youssef, Nandi Schoots…*
+
+This paper addresses the unclear internal mechanism of Transformer knowledge editing methods such as ROME and MEMIT. By training compact binary masks to locate the weight subsets that edits rely on, it verifies that different factual edits share the same functional weight subspace, and edits actually suppress rather than overwrite original knowledge, which is the reason why associated facts cannot be updated synchronously. The identified public subspace can be used for the detection and defense of malicious edits.
+
+<FeedbackButtons slug="item:arxiv-2605.28839" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.28850" target="_blank" rel="noopener noreferrer">Representation Signatures and Risk-Feedback Alignment in LLM Trading Agents</a>
+
+*Weicheng Xue*
+
+This paper studies the financial decision alignment characteristics and representation dynamics of LLM trading agents: experiments are carried out based on the auditable testbed TradeArena, which can accurately capture measurable representation drift signals before model failure; structured risk feedback can be used as an alignment signal without fine-tuning but has no universal gain, and LLMs have blind spots in concentrated exposure of associated assets. The study verifies that auditable risk feedback combined with representation trajectories can effectively identify the financial reasoning state of LLMs.
+
+<FeedbackButtons slug="item:arxiv-2605.28850" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.28860" target="_blank" rel="noopener noreferrer">Mechanistic origins of catastrophic forgetting: why RL preserves circuits better than SFT?</a>
+
+*Jeanmely Rojas Nunez, Viraj Sawant, Nathan Allen…*
+
+Aiming at the problem that large models are prone to catastrophic forgetting during fine-tuning, and there is no mechanistic explanation for the existing conclusion that RL retains old capabilities better than SFT, this study proposes a head-level metric "differential circuit vulnerability". In the fine-tuning scenario of Qwen2.5-3B-Instruct for scientific question answering, the comparison finds that SFT adapts to tasks faster but causes more severe circuit damage and forgetting, while RL adapts slower but retains more basic circuits, which is the mechanistic root of RL's anti-forgetting performance.
+
+<FeedbackButtons slug="item:arxiv-2605.28860" client:visible />
+
+# OpenAI Official Updates
+
+## <a href="https://openai.com/index/boston-childrens-hospital" target="_blank" rel="noopener noreferrer">Boston Children’s uses AI to unlock new diagnoses</a>
+
+*OpenAI*
+
+Boston Children's Hospital has introduced OpenAI-related artificial intelligence technology for clinical scenario implementation, which not only optimizes patients' diagnosis and treatment experience and reduces hospital operational burden, but also relies on AI's advantage in capturing rare disease characteristics. It has currently assisted in the diagnosis of more than 40 rare disease cases, providing a referable implementation practice for AI-enabled clinical diagnosis and treatment and solving the industry pain point of difficult rare disease diagnosis.
+
+<FeedbackButtons slug="item:openai-blog-boston-childrens-hospital" client:visible />
+
+## <a href="https://openai.com/index/braintrust" target="_blank" rel="noopener noreferrer">How Braintrust turns customer requests into code with Codex</a>
+
+*OpenAI*
+
+This article introduces Braintrust's engineering efficiency improvement solution: its engineers combine Codex's code generation capability with GPT-5.5's semantic understanding capability, implementing two core scenarios: converting customer requirements into code and development-side experimental verification. This greatly reduces the full-link time consumption of requirement disassembly, code writing, and experimental tuning, significantly improving R&D response speed and delivery efficiency.
+
+<FeedbackButtons slug="item:openai-blog-braintrust" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-4-8" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 4.8</a>
+
+*Anthropic*
+
+The newly released Claude Opus 4.8 is an upgraded iteration of the Opus-level large model. This version has targeted optimizations for model capability adaptability and long-process operation stability, with significant performance improvements in three core scenarios: code development, agent tasks, and professional field work. It also greatly improves the processing consistency of long-cycle continuous tasks, which can better support high-complexity long-term work requirements.
+
+<FeedbackButtons slug="item:anthropic-claude-opus-4-8" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-design-anthropic-labs" target="_blank" rel="noopener noreferrer">Introducing Claude Design by Anthropic Labs</a>
+
+*Anthropic*
+
+Anthropic Labs has recently officially launched its new product Claude Design. Relying on the interactive capability of the Claude large model, this product supports users to collaborate with AI to complete various high-completeness visual content creation, covering scenarios including professional design drafts, product prototypes, presentation slides, single-page promotional materials, etc. It can effectively lower the threshold for visual content creation and improve the work efficiency of relevant practitioners.
+
+<FeedbackButtons slug="item:anthropic-claude-design-anthropic-labs" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle-environmental-risks/" target="_blank" rel="noopener noreferrer">We’re launching the Google DeepMind Accelerator program in Asia Pacific to tackle environmental risks</a>
+
+*Google DeepMind*
+
+Google DeepMind has recently launched its Asia-Pacific accelerator program, with the core goal of addressing various environmental risks such as climate and ecology. Relying on its own AI technology accumulation, it supports scientific and technological innovation teams and research institutions in the Asia-Pacific region, focusing on scenarios such as climate disaster early warning, ecological protection, and carbon emission control, to develop and implement targeted AI solutions, helping the region improve its environmental risk prevention and control capabilities and support green development.
+
+<FeedbackButtons slug="item:deepmind-were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle" client:visible />
+
+## <a href="https://deepmind.google/blog/fast-tracking-genetic-leads-to-reverse-cellular-aging/" target="_blank" rel="noopener noreferrer">Fast-tracking genetic leads to reverse cellular aging</a>
+
+*Google DeepMind*
+
+This study focuses on the demand for mining genetic targets for reversing cellular aging. Researchers used the intelligent auxiliary tool Co-Scientist to carry out screening, and successfully found a number of new regulatory factors that can effectively rejuvenate human cells, greatly shortening the R&D cycle of aging-related genetic targets, and providing new candidate directions for the subsequent development of anti-aging intervention technologies and related drugs.
+
+<FeedbackButtons slug="item:deepmind-fast-tracking-genetic-leads-to-reverse-cellular-aging" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/torch-profiler" target="_blank" rel="noopener noreferrer">Profiling in PyTorch (Part 1): A Beginner&apos;s Guide to torch.profiler</a>
+
+*Hugging Face*
+
+This article is the first part of the beginner's tutorial for the PyTorch performance profiling module torch.profiler, focusing on this official built-in tool: it sorts out its core capabilities of accurately locating model operation bottlenecks such as operator time consumption, CPU/GPU resource utilization, and memory anomalies, explains the practical steps of basic API configuration and result interpretation, lowers the threshold for beginners to perform performance tuning, and helps developers quickly identify inefficient code and optimize model operation efficiency.
+
+<FeedbackButtons slug="item:hf-blog-torch-profiler" client:visible />
+
+## <a href="https://huggingface.co/blog/ibm-research/itbench-aa" target="_blank" rel="noopener noreferrer">ITBench-AA: Frontier Models Score Below 50% on the First Benchmark for Agentic Enterprise IT Tasks — by Artificial Analysis and IBM</a>
+
+*Hugging Face*
+
+ITBench-AA, jointly launched by Artificial Analysis and IBM, is the world's first agent-oriented benchmark for enterprise-level IT tasks, covering multiple types of task requirements such as IT operation and maintenance and resource scheduling in real scenarios. Actual tests show that the current cutting-edge large models have a comprehensive score of less than 50% on this benchmark, exposing the capability shortcomings of existing large models in implementing complex enterprise IT scenarios, and also providing an objective reference for the subsequent R&D and optimization of agents in the IT field.
+
+<FeedbackButtons slug="item:hf-blog-itbench-aa" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This paper focuses on the AI alignment problem, refuting the mainstream presupposition that "rational agents must be anchored to fixed ultimate goals" from the perspective of virtue ethics, pointing out that the core of human rational action is to adapt to the practical network including action tendencies and evaluation standards rather than pointing to a single goal. Based on this, it proposes an AI alignment idea: the AI decision-making logic needs to match the practical action logic of human beings, which is not only conducive to aligning with human ethical requirements, but also can ensure the core security attributes of AI.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/05/426643.html" target="_blank" rel="noopener noreferrer">NVIDIA and Tsinghua University Team Propose Gamma-World: World Models Move from "Single-player Play" to "Multi-player Coexistence"</a>
+
+*QbitAI*
+
+Currently, single-agent video world models are relatively mature, but multi-agent shared scenarios need to meet three consistency requirements: time, cross-view, and interaction. Existing architectures have structural defects that cannot be solved by adding data or expanding model scale, and previous similar attempts also have limitations. NVIDIA, together with Tsinghua University and other teams, proposed Gamma-World, starting from two underlying components: RoPE extension and attention topology, providing a systematic solution for multi-agent world modeling.
+
+<FeedbackButtons slug="item:qbitai-426643" client:visible />
+
+## <a href="https://www.qbitai.com/2026/05/426557.html" target="_blank" rel="noopener noreferrer">4nm! BYD's Self-developed AI Chip is Here: Process Matches NVIDIA, Computing Power Outperforms Tesla</a>
+
+*QbitAI*
+
+BYD's self-developed, fully process-independent and controllable automotive-grade 4nm intelligent driving chip Xuanji A3 has entered mass production. Its process is on par with NVIDIA Thor, belonging to the global T0 echelon and leading domestic similar products. The combined computing power of three chips exceeds 2100TOPS, unit power consumption is 20% lower than that of general-purpose GPUs, and the computing power utilization rate is doubled when matched with self-developed algorithms, far exceeding the previous external expectation that it only targets mid-to-low-end intelligent driving chips.
+
+<FeedbackButtons slug="item:qbitai-426557" client:visible />
+
+## <a href="https://www.qbitai.com/2026/05/426552.html" target="_blank" rel="noopener noreferrer">Lightsail Technology Reaches Strategic Cooperation with Tencent Travel Services, Launches New Round of Pre-sales</a>
+
+*QbitAI*
+
+On May 29, Lightsail Technology announced a strategic cooperation with Tencent Travel Services. Tencent Travel will integrate the travel service capabilities of Lightsail's AI full-sensing wearable devices, and related functions are expected to go online in early June. The device topped JD.com's AI headset bestseller list as soon as it went on sale previously, holding the top spot for 8 consecutive days. The first batch has been sold out and a new round of pre-sales has been launched. Purchasers of designated models on JD.com before May 31 can enjoy 6 benefits including a 200 RMB discount. This cooperation will expand the travel scenario boundaries of AI wearables.
+
+<FeedbackButtons slug="item:qbitai-426552" client:visible />
+
+---

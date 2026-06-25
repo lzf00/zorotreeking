@@ -1,0 +1,164 @@
+---
+lang: en
+translationKey: digest-2026-05-25
+title: "Daily AI Picks · 2026-05-25"
+description: "17 papers · multi-source aggregation + AI summaries"
+date: 2026-05-25
+tags: [digest, auto, ai-papers]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2605.20708" target="_blank" rel="noopener noreferrer">Rethinking Cross-Layer Information Routing in Diffusion Transformers</a>
+
+*HF 37 · Chao Xu, Maohua Li, Qirui Li… · [HF Mirror](https://huggingface.co/papers/2605.20708)*
+
+This paper first conducts a systematic empirical analysis of cross-layer information flow in Diffusion Transformers (DiT), finding that the native residual structure they adopt suffers from forward amplitude expansion, reverse gradient attenuation, and block redundancy issues. It then proposes a plug-and-play Diffusion Adaptive Routing (DAR) mechanism, which implements step-adaptive aggregation of non-incremental sublayer outputs. ImageNet experiments show that it reduces the FID of SiT-XL/2 by 2.11, cuts training iterations by 87.5%, is compatible with existing optimization solutions, and can be adapted to text-to-image fine-tuning and distillation scenarios.
+
+<FeedbackButtons slug="item:arxiv-2605.20708" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.21573" target="_blank" rel="noopener noreferrer">Lens: Rethinking Training Efficiency for Foundational Text-to-Image Models</a>
+
+*HF 28 · Dong Chen, Fangyun Wei, Ziyu Wan… · [HF Mirror](https://huggingface.co/papers/2605.21573)*
+
+This paper proposes Lens, a 3.8B parameter text-to-image model that matches or even outperforms similar SOTA models with 6B+ parameters, while requiring only 19.3% of the training computing power of Z-Image. Its efficiency comes from three core sources: a high-information-density densely labeled dataset, a multi-resolution batch training strategy, and architectural designs including a semantic VAE and a powerful language encoder. After optimization via RL alignment and distillation acceleration, it supports multi-language, multi-aspect-ratio generation, and can produce 1024² images on a single H100 in as fast as 0.84 seconds.
+
+<FeedbackButtons slug="item:arxiv-2605.21573" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.18018" target="_blank" rel="noopener noreferrer">See What I Mean: Aligning Vision and Language Representations for Video Fine-grained Object Understanding</a>
+
+*HF 21 · Boyuan Sun, Bowen Yin, Yuanming Li… · [HF Mirror](https://huggingface.co/papers/2605.18018)*
+
+To address the issues that multimodal large models have scattered visual activation for object nouns, and existing fine-grained video object understanding relies on explicit visual prompts, this paper proposes the SWIM training strategy and builds a supporting NL-Refer labeled dataset. It uses mask supervision to align cross-modal attention during the training phase, and can automatically locate targets during inference with only text prompts. Its performance outperforms visual prompt-based methods, with significantly improved cross-modal alignment effects.
+
+<FeedbackButtons slug="item:arxiv-2605.18018" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.23463" target="_blank" rel="noopener noreferrer">StepAudio 2.5 Technical Report</a>
+
+*HF 19 · Bin Lin, Bo Zhao, Boyong Wu… · [HF Mirror](https://huggingface.co/papers/2605.23463)*
+
+To address the pain point that existing unified speech-language models underperform dedicated systems in three task categories: Automatic Speech Recognition (ASR), Text-to-Speech (TTS), and real-time spoken interaction, StepAudio 2.5 is built on the idea of unified speech-text representation, uses customized Reinforcement Learning from Human Feedback (RLHF) as the core optimization method, paired with a dedicated decoding strategy, allowing the same shared backbone to adapt to all three task modes. It achieves SOTA in all three task benchmarks, verifying that a single base model can meet deployment requirements for multiple speech scenarios.
+
+<FeedbackButtons slug="item:arxiv-2605.23463" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.21195" target="_blank" rel="noopener noreferrer">RankE: End-to-End Post-Training for Discrete Text-to-Image Generation with Decoder Co-Evolution</a>
+
+*HF 9 · Siyong Jian, Siyuan Li, Luyuan Zhang… · [HF Mirror](https://huggingface.co/papers/2605.21195)*
+
+To address the problem that existing post-training for discrete autoregressive text-to-image models only optimizes the generation strategy and freezes the VQ decoder, which causes potential covariate shift, leading to improved text-image alignment but reduced generated image quality, this paper proposes RankE, the first end-to-end post-training framework. Through alternating optimization of the co-evolution strategy and decoder, paired with a ranking alignment objective and parameter space stability regularization, it breaks the original fidelity-alignment tradeoff, and simultaneously improves FID (image quality score) and CLIP alignment score on two large models.
+
+<FeedbackButtons slug="item:arxiv-2605.21195" client:visible />
+
+# Official OpenAI Updates
+
+## <a href="https://openai.com/index/gartner-2026-agentic-coding-leader" target="_blank" rel="noopener noreferrer">OpenAI named a Leader in enterprise coding agents by Gartner</a>
+
+*OpenAI*
+
+Recently, Gartner released its 2026 Magic Quadrant report for enterprise AI coding agents, and OpenAI has entered the highest-level Leader quadrant. Its coding large model Codex was recognized by reviewers for its outstanding technological innovation and mature enterprise-scale large-scale deployment capabilities. This rating is an authoritative certification in the intelligent coding track, indicating that OpenAI's technical strength and commercialization implementation capabilities in this field are both in the industry's first echelon.
+
+<FeedbackButtons slug="item:openai-blog-gartner-2026-agentic-coding-leader" client:visible />
+
+## <a href="https://openai.com/index/virgin-atlantic" target="_blank" rel="noopener noreferrer">How Virgin Atlantic ships faster with Codex</a>
+
+*OpenAI*
+
+This case introduces how Virgin Atlantic used the Codex intelligent programming tool to successfully launch its revised mobile app before the fixed launch deadline during the holiday travel season. This development not only achieved near-full coverage of unit tests, but also had zero Priority 1 (P1) defects after launch, fully verifying Codex's practical value of ensuring both delivery efficiency and product quality in tight deadline scenarios.
+
+<FeedbackButtons slug="item:openai-blog-virgin-atlantic" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-4-7" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 4.7</a>
+
+*Anthropic*
+
+Anthropic's latest large model product Claude Opus 4.7 is now officially available for general access. Compared to the previous generation Opus 4.6, the core upgrades of this version focus on advanced software engineering capabilities, with particularly prominent performance improvements when handling the most difficult tasks in this field, which can better adapt to the needs of high-threshold professional development scenarios such as complex coding and system architecture design.
+
+<FeedbackButtons slug="item:anthropic-claude-opus-4-7" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-design-anthropic-labs" target="_blank" rel="noopener noreferrer">Introducing Claude Design by Anthropic Labs</a>
+
+*Anthropic*
+
+Anthropic Labs has officially launched its new product Claude Design, which focuses on human-machine collaborative creation capabilities, supporting users to collaborate with the Claude large model to produce various types of visual content, covering multiple scenarios such as design proposals, product prototypes, presentation slides, and single-page promotional materials. The final generated products have high completion degrees, providing a new path for large models to enter the visual creation track.
+
+<FeedbackButtons slug="item:anthropic-claude-design-anthropic-labs" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle-environmental-risks/" target="_blank" rel="noopener noreferrer">We’re launching the Google DeepMind Accelerator program in Asia Pacific to tackle environmental risks</a>
+
+*Google DeepMind*
+
+Google DeepMind has officially launched its exclusive accelerator program for the Asia-Pacific region, with the core goal of addressing various regional environmental risks relying on cutting-edge AI technology. The program will collaborate with regional scientific research institutions, technology developers, industry and public sector partners, provide AI technical support including reinforcement learning and large models, focus on scenarios such as climate disaster early warning, ecological protection, and carbon emission control, to provide implemented solutions for local environmental pain points in the Asia-Pacific region.
+
+<FeedbackButtons slug="item:deepmind-were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle" client:visible />
+
+## <a href="https://deepmind.google/blog/fast-tracking-genetic-leads-to-reverse-cellular-aging/" target="_blank" rel="noopener noreferrer">Fast-tracking genetic leads to reverse cellular aging</a>
+
+*Google DeepMind*
+
+This research aims to quickly identify genetic targets for reversing cellular aging. Biologists carried out screening work using the Co-Scientist AI scientific research collaboration system, and successfully discovered new regulatory factors that can effectively rejuvenate human cells. This achievement greatly shortens the R&D cycle of anti-aging targets, providing new candidate directions for the subsequent development of aging intervention technologies and geriatric disease prevention and treatment plans.
+
+<FeedbackButtons slug="item:deepmind-fast-tracking-genetic-leads-to-reverse-cellular-aging" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/nemotron-labs-diffusion" target="_blank" rel="noopener noreferrer">Towards Speed-of-Light Text Generation with Nemotron-Labs Diffusion Language Models</a>
+
+*Hugging Face*
+
+This paper addresses the pain point of high latency in traditional autoregressive large models that generate tokens one by one. NVIDIA's Nemotron Labs has launched a diffusion architecture language model that abandons the word-by-word generation logic, supports parallel output of complete text sequences, and its inference efficiency is several times higher than that of mainstream autoregressive models, achieving near-real-time "speed-of-light" text generation, providing a new path for interactive text scenarios with high response requirements.
+
+<FeedbackButtons slug="item:hf-blog-nemotron-labs-diffusion" client:visible />
+
+## <a href="https://huggingface.co/blog/Dharma-AI/specialization-beats-scale" target="_blank" rel="noopener noreferrer">Specialization Beats Scale: A Strategic Variable Most AI Procurement Decisions Overlook</a>
+
+*Hugging Face*
+
+This study points out that most current AI procurement blindly prefers general large models with high computing power and large parameters. Verified by multi-scenario actual measurements, small and medium-sized specialized models in vertical fields fine-tuned for specific businesses perform significantly better than general large models in the same scenario in terms of accuracy, deployment cost, and business adaptability. It is recommended to set domain specialization as the core evaluation indicator for AI procurement, and there is no need to blindly pursue model scale.
+
+<FeedbackButtons slug="item:hf-blog-specialization-beats-scale" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This AI alignment research from the virtue ethics perspective reflects on the orthogonality hypothesis, refutes the presupposition that "rational agents need to anchor to a fixed final goal", and points out that human rational behavior is not directed at a predetermined goal, but adapts to a self-consistent practice network composed of actions, evaluation standards, resources, etc. The study proposes that to achieve AI-human collaboration and ensure safety, the AI decision-making logic needs to be isomorphic to this set of human practice logic, taking into account both ethical requirements and security needs.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/05/424277.html" target="_blank" rel="noopener noreferrer">Claude has a pass rate of less than 4%, SaaS-Bench shatters the "fully automated office" fantasy of Computer-Use</a>
+
+*QbitAI*
+
+Recently, UniPat AI released SaaS-Bench, an evaluation set for real office scenarios, and conducted actual tests on mainstream large models focusing on computer use capabilities such as Claude. The results show that the highest full pass rate for office tasks among all tested models is only 3.8%. This result directly punctures the previous optimistic fantasy that AI can realize fully automated office work, proving that related technologies still have a very large gap before actual deployment.
+
+<FeedbackButtons slug="item:qbitai-424277" client:visible />
+
+## <a href="https://www.qbitai.com/2026/05/423455.html" target="_blank" rel="noopener noreferrer">Former head of Huawei's embodied brain starts a business, builds world models with cognitive science, secures 100-million-yuan financing</a>
+
+*QbitAI*
+
+Senhua Zhu, former director of Huawei Cloud AI Algorithm Innovation Lab and "head of Huawei's embodied brain", founded Judian Panshi, which focuses on using cognitive neuroscience to develop cognitive world models that can deduce, memorize, and self-update, to build human-like robot brains, different from the industry's mainstream VLA technology route. It recently completed 100-million-yuan level financing. World models are already the core track that capital and top talents in the global AI field are jointly betting on.
+
+<FeedbackButtons slug="item:qbitai-423455" client:visible />
+
+## <a href="https://www.qbitai.com/2026/05/423441.html" target="_blank" rel="noopener noreferrer">Inference will consume 70% of computing power in the future, 30% left for training | Silicon Valley investor Lu Zhang @ AIGC 2026</a>
+
+*QbitAI*
+
+Silicon Valley investor Lu Zhang stated at the 2026 China AIGC Industry Summit that the focus of AI computing power demand will shift from training to inference, with inference accounting for 70% of computing power in the future; the power consumption of data center communication can be 100 times that of computing, and the value of communication technology is generally underestimated. The current core bottleneck of physical AI is high-quality real data, and the directions worth betting on are high-quality data and three major application tracks: medical care, space, and nanorobots.
+
+<FeedbackButtons slug="item:qbitai-423441" client:visible />
+
+---

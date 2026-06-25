@@ -1,0 +1,190 @@
+---
+lang: en
+translationKey: digest-2026-05-28
+title: "Daily AI Digest · 2026-05-28"
+description: "20 papers · multi-source aggregation + AI summaries"
+date: 2026-05-28
+tags: [digest, auto, ai-papers]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2605.28816" target="_blank" rel="noopener noreferrer">Gamma-World: Generative Multi-Agent World Modeling Beyond Two Players</a>
+
+*HF 24 · Fangfu Liu, Kai He, Tianchang Shen… · [HF Mirror](https://huggingface.co/papers/2605.28816)*
+
+Existing interactive generative world models are mostly adapted for single agents and struggle to support multi-agent interactions. To address this issue, this paper proposes Gamma-World, a multi-agent world model: it uses parameter-free simplex rotation agent encoding to ensure agent permutation equivalence, designs sparse hub attention to reduce cross-agent computational cost from quadratic to linear, and the distilled causal model supports real-time generation at 24FPS. It outperforms baselines and can generalize from 2-player to 4-player scenarios without additional training.
+
+<FeedbackButtons slug="item:arxiv-2605.28816" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.28003" target="_blank" rel="noopener noreferrer">ResearchMath-14K: Scaling Research-Level Mathematics via Agents</a>
+
+*HF 23 · Guijin Son, Seungyeop Yi, Minju Gwak… · [HF Mirror](https://huggingface.co/papers/2605.28003)*
+
+There are doubts about whether large models can independently solve cutting-edge mathematical problems, and there is a lack of research-grade mathematics datasets. To tackle this pain point, the team built ResearchMath-14K, the largest research-grade math dataset to date with 14,056 problems, paired with 220,000 generated reasoning trajectories. After intelligent filtering, the data was used to fine-tune 4B-30B parameter Qwen3 models, improving average performance by 9.2 percentage points over the base model, proving that filtered, not fully correct problem-solving attempts can also provide effective supervision. The dataset has been publicly released.
+
+<FeedbackButtons slug="item:arxiv-2605.28003" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.28820" target="_blank" rel="noopener noreferrer">From Pixels to Words -- Towards Native One-Vision Models at Scale</a>
+
+*HF 14 · Haiwen Diao, Jiahao Wang, Penghao Wu… · [HF Mirror](https://huggingface.co/papers/2605.28820)*
+
+Existing vision-language models rely on multi-module splicing leading to fragmented pixel signals, while native single-image VLMs are difficult to adapt to scenarios such as multi-image and video understanding. To address this issue, this paper proposes NEO-ov, an end-to-end native foundation model that natively implements unified spatiotemporal modeling without external components such as encoders. Its performance matches spliced models of the same type, with better fine-grained perception performance. Relevant architecture analysis, training schemes and code have been open-sourced.
+
+<FeedbackButtons slug="item:arxiv-2605.28820" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.28691" target="_blank" rel="noopener noreferrer">OSP-Next: Efficient High-Quality Video Generation with Sparse Sequence Parallelism, HiF8 Quantization, and Reinforcement Learning</a>
+
+*HF 10 · Yunyang Ge, Xianyi He, Zezhong Zhang… · [HF Mirror](https://huggingface.co/papers/2605.28691)*
+
+The quadratic complexity of full attention in diffusion Transformers limits video generation efficiency. To address this issue, this paper proposes the OSP-Next text-to-video model: it adopts a hybrid full-sparse attention architecture, paired with sparse sequence parallelism (reducing communication volume by 75%), HiF8 quantization, and Mix-GRPO reinforcement learning tuning. It achieves a VBench score of 83.73%, outperforming the Wan2.1 baseline. For generating 5-second 720P/768P videos, it delivers a maximum speedup of 1.69x on a single card and over 1.52x on 8 cards, adapting to multiple hardware platforms.
+
+<FeedbackButtons slug="item:arxiv-2605.28691" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.28814" target="_blank" rel="noopener noreferrer">Self-Improving Language Models with Bidirectional Evolutionary Search</a>
+
+*HF 8 · Guowei Xu, Zhenting Qi, Huangyuan Su… · [HF Mirror](https://huggingface.co/papers/2605.28814)*
+
+Mainstream search methods for LLM self-improvement rely on sparse verification signals, and rely solely on autoregressive generation leading to limited exploration scope. To address these flaws, this paper proposes the Bidirectional Evolutionary Search (BES) framework: the forward direction expands candidates by recombining local trajectories through evolutionary operators, and the reverse direction recursively decomposes tasks to generate dense intermediate feedback to guide search. Theoretical verification shows it can reduce sampling requirements exponentially, experiments show stable post-training gains, and its reasoning and problem-solving performance outperforms existing open-source frameworks.
+
+<FeedbackButtons slug="item:arxiv-2605.28814" client:visible />
+
+# arXiv cs.LG (Machine Learning)
+
+## <a href="https://arxiv.org/abs/2605.26121" target="_blank" rel="noopener noreferrer">GEM: Geometric Entropy Mixing for Optimal LLM Data Curation</a>
+
+*Yue Min, Ziyun Qiao, Ruining Chen…*
+
+The pre-training performance of current large models increasingly depends on data ratio rather than scale, and existing manual classification and Euclidean clustering methods have inherent flaws. This paper proposes the GEM geometric entropy mixing framework, which transforms data governance into a regularized variational problem on a hypersphere, optimized using the MM algorithm, paired with teacher-student distillation to adapt to large-scale corpora and GIS scores to achieve interpretable classification. Experiments show that when combined with existing ratio strategies, it improves downstream accuracy by up to 1.2%, achieving a new SOTA, and can provide stable data ratio references.
+
+<FeedbackButtons slug="item:arxiv-2605.26121" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.26128" target="_blank" rel="noopener noreferrer">The Constraint Tax: Measuring Validity-Correctness Tradeoffs in Structured Outputs for Small Language Models</a>
+
+*Jaideep Ray*
+
+This paper targets small language models under 3B parameters for edge/low-cost deployment, confirming that the common engineering assumption that "hard constraints on structured output do not affect answer quality" is invalid, and proposes the "constraint tax" metric to quantify the accuracy loss caused by constraints. Actual tests show that while hard constraints achieve full format compliance rate, they significantly reduce the executable accuracy of answers and tool calls, leading to a sharp increase in incorrectly compliant outputs. It is recommended that production systems split and disclose multi-dimensional accuracy indicators, and adopt the optimization scheme of "free reasoning first, then constrained packaging".
+
+<FeedbackButtons slug="item:arxiv-2605.26128" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.26130" target="_blank" rel="noopener noreferrer">AirCast-SR: A Foundation Model for Kilometer-Scale Atmospheric Super-Resolution via Latent Consistency Diffusion</a>
+
+*Somnath Luitel, Manmeet Singh, Joshua Durkee…*
+
+Traditional numerical weather prediction for kilometer-scale forecasts has excessively high computing costs. To address this pain point, this research proposes AirCast-SR, a meteorological super-resolution foundation model that adopts a latent consistency diffusion framework embedded with 3D U-Net, which can downscale 28km resolution forecasts to 1km. The model has extremely low bias, can retain fine structures at the 10-100km scale, supports zero-shot cross-region transfer without fine-tuning, and its open-source weights provide a new paradigm for kilometer-scale weather forecasting.
+
+<FeedbackButtons slug="item:arxiv-2605.26130" client:visible />
+
+# OpenAI Official Updates
+
+## <a href="https://openai.com/index/cisco" target="_blank" rel="noopener noreferrer">Cisco and OpenAI redefine enterprise engineering with Codex</a>
+
+*OpenAI*
+
+Cisco and OpenAI are exploring new paths to empower enterprise engineering with large models, relying on the Codex large model to deliver three core values: supporting Cisco to carry out AI-native development at scale, significantly accelerating R&D work related to AI defense, and realizing automated defect repair. This collaboration verifies the implementation potential of large models in ToB R&D scenarios, and provides a referable practical paradigm for enterprise-level engineering efficiency upgrading.
+
+<FeedbackButtons slug="item:openai-blog-cisco" client:visible />
+
+## <a href="https://openai.com/index/building-self-improving-tax-agents-with-codex" target="_blank" rel="noopener noreferrer">Building self-improving tax agents with Codex</a>
+
+*OpenAI*
+
+OpenAI, together with Thrive and Crete, has jointly developed a self-iterating tax agent system based on the Codex large model. Relying on Codex's code generation and rule verification capabilities to adapt to complex tax compliance requirements, it realizes full-process tax filing automation, and the system can independently iterate and optimize its processing logic. This solution not only significantly improves tax filing accuracy, but also greatly shortens the processing cycle of tax-related businesses, providing a feasible technical path for improving the quality and efficiency of workflows in the finance and taxation field.
+
+<FeedbackButtons slug="item:openai-blog-building-self-improving-tax-agents-with-codex" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-4-7" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 4.7</a>
+
+*Anthropic*
+
+Anthropic's latest general-purpose large model Claude Opus 4.7 is now officially fully available. Compared with the previous generation Opus 4.6, the core capability upgrade of this version focuses on the advanced software engineering track, with a significant leap in overall processing performance in this field. The performance improvement is particularly prominent for the most difficult complex software engineering tasks, which can better meet the needs of high-end R&D scenarios such as complex code development.
+
+<FeedbackButtons slug="item:anthropic-claude-opus-4-7" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-design-anthropic-labs" target="_blank" rel="noopener noreferrer">Introducing Claude Design by Anthropic Labs</a>
+
+*Anthropic*
+
+Anthropic Labs has officially launched a new AI tool product Claude Design. This product supports users to co-create with the Claude large model, and can produce various refined visual works such as design drafts, product prototypes, presentation slides, and single-page promotional materials without strong professional design skills, providing an efficient new AI collaboration solution for users to realize their ideas and complete high-quality visual work.
+
+<FeedbackButtons slug="item:anthropic-claude-design-anthropic-labs" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle-environmental-risks/" target="_blank" rel="noopener noreferrer">We’re launching the Google DeepMind Accelerator program in Asia Pacific to tackle environmental risks</a>
+
+*Google DeepMind*
+
+Google DeepMind has recently launched an accelerator program in the Asia-Pacific region, focusing on regional environmental risk governance. The project will rely on its own AI technology accumulation and industrial resources to support local innovative teams deeply engaged in the environmental field, promote the implementation of AI in scenarios such as climate response, disaster prevention and control, and pollution control, and link the strength of industry, academia and research to efficiently improve the environmental risk handling capacity of the Asia-Pacific region and contribute to regional sustainable development.
+
+<FeedbackButtons slug="item:deepmind-were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle" client:visible />
+
+## <a href="https://deepmind.google/blog/fast-tracking-genetic-leads-to-reverse-cellular-aging/" target="_blank" rel="noopener noreferrer">Fast-tracking genetic leads to reverse cellular aging</a>
+
+*Google DeepMind*
+
+This research addresses the demand for discovering genetic targets for cellular aging reversal, uses the Co-Scientist intelligent tool for screening, and successfully locates new functional regulatory factors that can efficiently achieve rejuvenation reprogramming of human cells. This path greatly shortens the R&D cycle of aging-related genetic targets, providing new candidate directions and technical support for the subsequent development of anti-aging technologies and the prevention and treatment of aging-related diseases.
+
+<FeedbackButtons slug="item:deepmind-fast-tracking-genetic-leads-to-reverse-cellular-aging" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/ibm-research/itbench-aa" target="_blank" rel="noopener noreferrer">ITBench-AA: Frontier Models Score Below 50% on the First Benchmark for Agentic Enterprise IT Tasks — by Artificial Analysis and IBM</a>
+
+*Hugging Face*
+
+Artificial analysis institutions, together with IBM, have released ITBench-AA, the first agent-oriented benchmark for enterprise-level IT tasks, which is specifically designed to evaluate the ability of LLM agents to handle real and complex enterprise IT tasks such as operation and maintenance, troubleshooting, and configuration management. Tests show that current cutting-edge large models score less than 50% on this benchmark, exposing the capability shortcomings of existing LLM agents when deployed in professional vertical enterprise scenarios, which can be used as a reference for subsequent technical optimization.
+
+<FeedbackButtons slug="item:hf-blog-itbench-aa" client:visible />
+
+## <a href="https://huggingface.co/blog/local-reachy-mini-conversation" target="_blank" rel="noopener noreferrer">Reachy Mini goes fully local</a>
+
+*Hugging Face*
+
+Currently, only the title of the work *Reachy Mini achieves fully local operation* is provided, and the corresponding full English abstract text is not attached. Please supplement the specific content of the abstract, and I will complete the translation and refinement as required, highlighting the core methods and conclusions, and controlling the length to about 120 words.
+
+<FeedbackButtons slug="item:hf-blog-local-reachy-mini-conversation" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This paper studies AI alignment from the perspective of virtue-ethical agency, refutes the traditional assumption that "rational agents need to be anchored to fixed ultimate goals", and points out that human rational actions are calibrated by a practical network including elements such as action tendencies and evaluation standards. It proposes that for AI to adapt to human collaboration and comply with demands, its decision-making logic needs to match the practical action logic of humans. This path can meet both ethical alignment and core security requirements at the same time.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/05/425881.html" target="_blank" rel="noopener noreferrer">140 Billion Agents Are Coming, The "Traffic" Moat Is About to Collapse</a>
+
+*QbitAI*
+
+The CEO of Ant Group proposed at the Alipay AI Ecology Conference that the essence of business remains unchanged in the Agent era, but the decision-making subject has shifted. 140 billion intelligent agents will enter the commercial chain, the traditional traffic logic will become invalid, and the user traffic entrance will give way to the agent ecosystem, whose scale, collaboration and network effects will become new competitive barriers, and the trust logic is rising. This is already an industry direction agreed by global technology and payment giants.
+
+<FeedbackButtons slug="item:qbitai-425881" client:visible />
+
+## <a href="https://www.qbitai.com/2026/05/425870.html" target="_blank" rel="noopener noreferrer">3D Scene Editing Completed in 5 Seconds, Peking University&#038;CUHK&#038;Shanghai AI Lab Launched VGGT-Edit with Up to 120x Speedup</a>
+
+*QbitAI*
+
+Existing 3D reconstruction models have weak editing capabilities, and traditional 2D conversion editing methods have problems such as multi-view inconsistency and slow speed. To address these pain points, teams from Peking University, the Chinese University of Hong Kong, Shanghai AI Laboratory and others launched the native 3D editing framework VGGT-Edit, which completes editing directly in 3D space without falling back to 2D processing. On the DeltaScene test set, it outperforms existing methods in three indicators including semantic consistency, with a single edit taking only 5 seconds, a maximum speedup of 120x, adapting to the needs of scenarios such as AR/VR and robotics.
+
+<FeedbackButtons slug="item:qbitai-425870" client:visible />
+
+## <a href="https://www.qbitai.com/2026/05/425857.html" target="_blank" rel="noopener noreferrer">OpenAI Hired an F1 Driver to Lead PR</a>
+
+*QbitAI*
+
+OpenAI spent half a year selecting from a group of top candidates including Uber executives and senior Apple PR staff, and finally appointed Colin Fleming, former F1 Red Bull Racing driver, as CMO. There are two core reasons for selecting him: first, he has solid experience, having worked at Salesforce for 13 years, and is good at translating obscure technical concepts into narratives that are easy for the public to understand, helping enterprise-level products break out of niche markets; second, his courage and trait of cross-border transformation match the company's needs.
+
+<FeedbackButtons slug="item:qbitai-425857" client:visible />
+
+---
