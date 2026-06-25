@@ -1,0 +1,190 @@
+---
+lang: en
+translationKey: digest-2026-06-02
+title: "Daily AI Digest · 2026-06-02"
+description: "20 papers · multi-source aggregation + AI-generated summaries"
+date: 2026-06-02
+tags: [digest, auto, ai-papers]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.02437" target="_blank" rel="noopener noreferrer">On the Scaling of PEFT: Towards Million Personal Models of Trillion Parameters</a>
+
+*HF 42 · Mind Lab, Song Cao, Vic Cao… · [HF Mirror](https://huggingface.co/papers/2606.02437)*
+
+This paper redefines the role of Parameter-Efficient Fine-Tuning (PEFT): it is not just a low-cost alternative to full fine-tuning, but a persistent adaptation layer that carries personalized features such as preferences and skills on general large base models. The study is carried out from three dimensions: base capability upgrade, minimum reliable adapter size, and multi-instance coexistence. The supporting adapter management system MinT is also developed, verifying that PEFT can serve as a compact implementation carrier for millions of personalized models built on trillion-parameter base models.
+
+<FeedbackButtons slug="item:arxiv-2606.02437" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.30351" target="_blank" rel="noopener noreferrer">VideoMLA: Low-Rank Latent KV Cache for Minute-Scale Autoregressive Video Diffusion</a>
+
+*HF 17 · Hidir Yesiltepe, Jiazhen Hu, Tuna Han Salih Meral… · [HF Mirror](https://huggingface.co/papers/2605.30351)*
+
+To address the high memory footprint of per-head KV cache for minute-scale autoregressive video diffusion, and the issue that existing optimizations do not touch the core structure, this paper proposes VideoMLA, which replaces per-head KV with shared low-rank content latent variables + decoupled 3D-RoPE position keys, correcting the interpretation bias of the original low-rank assumption in such methods. Tests show KV storage is reduced by 92.7%, long video generation performance is optimal, throughput on a single B200 is increased by 1.23x, and short sequence performance matches the baseline.
+
+<FeedbackButtons slug="item:arxiv-2605.30351" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.30611" target="_blank" rel="noopener noreferrer">Crafter: A Multi-Agent Harness for Editable Scientific Figure Generation from Diverse Inputs</a>
+
+*HF 15 · Haozhe Zhao, Shuzheng Si, Zhenhailong Wang… · [HF Mirror](https://huggingface.co/papers/2605.30611)*
+
+To address the pain points of existing scientific drawing automation tools that only support a single type of chart, only accept text input, and produce non-editable outputs, this study proposes the multi-agent framework Crafter. It can adapt to multiple types of charts and multiple input forms without architectural adjustments. The supporting CraftEditor can convert output raster images to editable SVG, and the team also built the evaluation benchmark CraftBench. Experiments show its generation and conversion performance outperforms existing baselines, and relevant resources have been open-sourced.
+
+<FeedbackButtons slug="item:arxiv-2605.30611" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.02404" target="_blank" rel="noopener noreferrer">K-BrowseComp: A Web Browsing Agent Benchmark Grounded in Korean Contexts</a>
+
+*HF 14 · Nahyun Lee, Dongkeun Yoon, Guijin Son… · [HF Mirror](https://huggingface.co/papers/2606.02404)*
+
+Current large model evaluation is shifting from basic capabilities to compositional agent capabilities, but Korean agent benchmarks are scarce. The study launches K-BrowseComp, a Korean web browsing agent benchmark, including 300 manually verified questions by native speakers and 100 adversarial diagnostic questions generated for failure modes. Tests show that the highest accuracy of cutting-edge general large models is only 45.67%, the highest of local Korean large models is only 10.33%, and the strongest model only scores 26% on the adversarial set. Relevant data and code have been open-sourced.
+
+<FeedbackButtons slug="item:arxiv-2606.02404" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.02482" target="_blank" rel="noopener noreferrer">X-Stream: Exploring MLLMs as Multiplexers for Multi-Stream Understanding</a>
+
+*HF 13 · Peiwen Sun, Xudong Lu, Huadai Liu… · [HF Mirror](https://huggingface.co/papers/2606.02482)*
+
+Existing video understanding benchmarks only adapt to the single-stream paradigm, which cannot meet the cross-stream reasoning evaluation needs of scenarios such as sports live broadcasts and autonomous driving. To address this, the study launches X-Stream, the first multi-stream understanding benchmark, containing 4220 doubly verified question-answer pairs, covering 11 subtasks across 3 scenarios. The study evaluates multimodal large models as multiplexers, finding that current SOTA models only score around 50% on multi-stream tasks and have weak active capabilities, which can provide evaluation support and empirical guidance for subsequent multi-stream agent research and development.
+
+<FeedbackButtons slug="item:arxiv-2606.02482" client:visible />
+
+# arXiv cs.LG (Machine Learning)
+
+## <a href="https://arxiv.org/abs/2606.00079" target="_blank" rel="noopener noreferrer">BitsMoE: Efficient Spectral Energy-Guided Bit Allocation for MoE LLM Quantization</a>
+
+*Jiayu Zhao, Zihan Teng, Minhao Fan…*
+
+To address the high memory footprint of MoE large model deployment and the large accuracy loss of existing ultra-low bit quantization, this paper proposes BitsMoE, a spectral energy-guided MoE quantization framework: each layer is decomposed via SVD into quantization-free shared bases (preserving common structure across experts) and expert-specific quantization units, and bit width is optimally allocated under a fixed bit budget through integer linear programming. Experiments show that for 2-bit quantization, accuracy is 27.83 percentage points higher than GPTQ, quantization speed is increased by 12.3x, and decoding speed is increased by 1.76x.
+
+<FeedbackButtons slug="item:arxiv-2606.00079" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.00081" target="_blank" rel="noopener noreferrer">DAStatFormer: A Hybrid Multibranch Transformer with Statistical Feature Integration for DAS-Based Pattern Recognitions</a>
+
+*Michel Dione (CERI SN - IMT Nord Europe), Jerry Lonlac (CERI SN - IMT Nord Europe), H\'el\`ene Louis (CERI SN - IMT Nord Europe)…*
+
+To address the high dimensionality and complex patterns of Distributed Acoustic Sensing (DAS) data, as well as the insufficient long-range dependency capture and high computing cost of existing classification algorithms, the hybrid multi-branch Transformer DAStatFormer is proposed: it first extracts multi-domain statistical features filtered by ANOVA to greatly reduce dimensionality, processes them with domain-specific attention branches, then performs adaptive gated fusion. Experiments show its maximum accuracy reaches 99.4%, with parameter count and inference cost far lower than similar models, making it suitable for large-scale real-time DAS monitoring.
+
+<FeedbackButtons slug="item:arxiv-2606.00081" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.00082" target="_blank" rel="noopener noreferrer">Hoeffding Concept Bottleneck Models with Applications to Overhead Images</a>
+
+*Cl\'ement B\'enard, Manon Arfib, Christophe Labreuche…*
+
+In response to the demand for deep learning interpretability in high-risk computer vision tasks, and the flaws of existing Concept Bottleneck Models (CBM) where linear aggregation of concepts leads to reduced interpretability, high risk of information leakage, and difficulty fitting nonlinear relationships, this study proposes Hoeffding Concept Bottleneck Models (HCBM). Based on Hoeffding function decomposition of gradient boosting trees, it implements nonlinear sparse aggregation of concept scores, resists leakage between concepts, outperforms standard linear CBMs, can also adapt to object detection, and delivers excellent performance on aerial image tasks.
+
+<FeedbackButtons slug="item:arxiv-2606.00082" client:visible />
+
+# OpenAI Official Updates
+
+## <a href="https://openai.com/index/our-views-on-ai-policy-and-political-advocacy" target="_blank" rel="noopener noreferrer">Our views on AI policy and political advocacy</a>
+
+*OpenAI*
+
+Against the background of tightening AI regulation and frequent disputes over corporate political affiliations in recent years, this document is the official position statement issued by OpenAI in the fields of AI policy formulation and political participation advocacy. Its core claims cover three aspects: all relevant work adheres to the principle of openness and transparency throughout the process; it supports well-reasoned and prudent regulatory rules, and attaches great importance to AI security governance; at the same time, it clarifies that no external political group can speak on behalf of the enterprise, actively drawing clear boundaries for its position.
+
+<FeedbackButtons slug="item:openai-blog-our-views-on-ai-policy-and-political-advocacy" client:visible />
+
+## <a href="https://openai.com/index/stargate-michigan-data-center" target="_blank" rel="noopener noreferrer">Building the infrastructure for the Intelligence Age in Michigan</a>
+
+*OpenAI*
+
+Recently, to build infrastructure for the Intelligence Age, OpenAI has broken ground on a 1GW ultra-large data center project under its "Stargate" initiative in Michigan. On the one hand, the project will consolidate the AI computing power foundation and expand the accessibility of AI services; on the other hand, it will create local jobs and support community development with supporting facilities, also providing core support for Michigan to seize the first-mover advantage in industrial development in the Intelligence Age.
+
+<FeedbackButtons slug="item:openai-blog-stargate-michigan-data-center" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-4-8" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 4.8</a>
+
+*Anthropic*
+
+The Claude Opus 4.8 launched by Anthropic this time is the latest iteration of the Opus-class large model, and also the strongest version of the series to date. The model has iterative optimizations for core capabilities, with significantly improved performance in programming development, agent tasks, and professional scenarios across various industries. It also optimizes the consistency of long-term task processing, and can reliably support the demand for continuously running high-complexity workflows.
+
+<FeedbackButtons slug="item:anthropic-claude-opus-4-8" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-design-anthropic-labs" target="_blank" rel="noopener noreferrer">Introducing Claude Design by Anthropic Labs</a>
+
+*Anthropic*
+
+Anthropic Labs has officially released the new product Claude Design. As a supporting creation tool for the Claude large model, it supports users to collaborate with Claude to produce high-completion professional visual works. Applicable scenarios include graphic design, interactive prototypes, presentation slides, single-page promotional materials, etc. It lowers the threshold for design, helping users without professional design skills to complete visual content production quickly.
+
+<FeedbackButtons slug="item:anthropic-claude-design-anthropic-labs" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle-environmental-risks/" target="_blank" rel="noopener noreferrer">We’re launching the Google DeepMind Accelerator program in Asia Pacific to tackle environmental risks</a>
+
+*Google DeepMind*
+
+Google DeepMind recently launched its Asia Pacific accelerator program, focusing on addressing regional environmental risks such as climate disasters, biodiversity degradation, and pollution. The project will collaborate with local scientific research and technology innovation entities in the Asia Pacific, implement applications of large AI models and deep learning technologies in scenarios such as environmental monitoring, risk early warning, pollution and carbon reduction, and explore replicable implementation solutions for AI-enabled regional environmental governance and green development.
+
+<FeedbackButtons slug="item:deepmind-were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle" client:visible />
+
+## <a href="https://deepmind.google/blog/fast-tracking-genetic-leads-to-reverse-cellular-aging/" target="_blank" rel="noopener noreferrer">Fast-tracking genetic leads to reverse cellular aging</a>
+
+*Google DeepMind*
+
+This study focuses on the rapid discovery of genetic targets for reversing cellular aging. The core method is that biologists use the AI-assisted scientific research system called Co-Scientist to carry out screening, and finally successfully discover previously unreported novel regulatory factors, which have been verified to effectively achieve rejuvenation reprogramming of human cells. This approach greatly shortens the R&D cycle of anti-aging targets, providing a new direction for research on aging intervention and treatment of related diseases.
+
+<FeedbackButtons slug="item:deepmind-fast-tracking-genetic-leads-to-reverse-cellular-aging" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/JetBrains/mellum2-launch" target="_blank" rel="noopener noreferrer">Introducing Mellum2: A 12B Mixture-of-Experts Model by JetBrains</a>
+
+*Hugging Face*
+
+JetBrains has released Mellum2, a 12B parameter Mixture-of-Experts (MoE) large model, which adopts a sparse activation design, activating only 3.6B parameters per step, focusing on code scenario optimization. In benchmark tests of multilingual code generation, understanding, debugging, etc., its performance matches or even exceeds 70B parameter dense large models, with inference cost only 1/3 of dense models with the same performance. It will later be adapted to the intelligent code assistance scenarios of its full line of IDEs.
+
+<FeedbackButtons slug="item:hf-blog-mellum2-launch" client:visible />
+
+## <a href="https://huggingface.co/blog/ibm-research/agent-logic-and-scalable-ai-adoption" target="_blank" rel="noopener noreferrer">Beyond LLMs: Why Scalable Enterprise AI Adoption Depends on Agent Logic</a>
+
+*Hugging Face*
+
+This article focuses on the enterprise AI implementation topic of "beyond LLMs", pointing out that when deploying only relying on large models, there are common pain points such as frequent hallucinations, difficulty adapting to complex business processes, and weak traceability, so large models alone cannot support large-scale promotion. It proposes that taking agent logic as the core, integrating components such as tool calling and process orchestration to align with business rules, can significantly improve the reliability of enterprise AI, and is the core support for large-scale implementation of enterprise-level AI.
+
+<FeedbackButtons slug="item:hf-blog-agent-logic-and-scalable-ai-adoption" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This AI alignment research from the perspective of virtue ethics criticizes the traditional assumption that rational agents must be bound to fixed ultimate goals, and proposes that human rational action is essentially matching the practice network composed of behavioral rules, evaluation systems, resource frameworks, etc., rather than pointing to preset goals. The study points out that to realize AI collaboration with humans, compliance with ethical requirements and core security attributes, the AI decision-making logic needs to be isomorphic to this practice-driven reasoning paradigm of humans.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Qbitai
+
+## <a href="https://www.qbitai.com/2026/06/427729.html" target="_blank" rel="noopener noreferrer">Robot motion control training enters the minute-level era! Tsinghua AIR open-sources UniLab: train a humanoid robot in 3 minutes, speed increased by 10x, runs even on Mac</a>
+
+*Qbitai*
+
+To address the pain points of existing robot motion control reinforcement learning frameworks that are highly bound to NVIDIA GPUs and have low resource utilization, Tsinghua AIR, together with multiple institutions, launched the UniLab training architecture, adopting an asynchronous heterogeneous solution of "CPU parallel high-fidelity simulation + GPU focused strategy training". It eliminates idle time and transmission delay via shared memory, achieving 3-10x end-to-end speedup, humanoid training takes only 3 minutes, and it can run on Mac without relying on the NVIDIA ecosystem.
+
+<FeedbackButtons slug="item:qbitai-427729" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/427730.html" target="_blank" rel="noopener noreferrer">Qwen3.7-Plus launched! New base for multimodal agents, replicate desktop professional software with one click</a>
+
+*Qbitai*
+
+On June 2, Alibaba released the multimodal large model Qwen3.7-Plus, with greatly improved text and vision capabilities, ranking top 5 globally and first in China on the global vision ranking Vision Arena. The model has achieved a breakthrough in multimodal hybrid agents, opening up a unified workflow of "perceive, think, write, execute, verify", and can complete complex tasks such as replicating apps and desktop professional software with one click. It is now launched on Alibaba Cloud Bailian with open API services.
+
+<FeedbackButtons slug="item:qbitai-427730" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/427472.html" target="_blank" rel="noopener noreferrer">How do cloud models land in the physical world? China Merchants Group Lion Rock Artificial Intelligence Laboratory connects the full embodied intelligence link with LiOS</a>
+
+*Qbitai*
+
+Folding clothes is a touchstone for flexible operation in embodied intelligence: clothes are amorphous flexible objects, and the operation requires capabilities including perception, dual-arm coordination, contact control, long-range execution, etc. The difficulty increases sharply with the initial state, clothing category, and operation requirements. Previous industry solutions mostly only adapt to ideal simulation or regular initial scenarios. China Merchants Group Lion Rock AI Laboratory has launched LiOS, connecting the full link for cloud embodied models to land in the physical world.
+
+<FeedbackButtons slug="item:qbitai-427472" client:visible />
+
+---

@@ -1,0 +1,190 @@
+---
+lang: en
+translationKey: digest-2026-06-01
+title: "AI Daily Digest · 2026-06-01"
+description: "20 papers · multi-source aggregation + AI summaries"
+date: 2026-06-01
+tags: [digest, auto, ai-papers]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2605.31584" target="_blank" rel="noopener noreferrer">LongTraceRL: Learning Long-Context Reasoning from Search Agent Trajectories with Rubric Rewards</a>
+
+*HF 22 · Nianyi Lin, Jiajie Zhang, Lei Hou… · [HF Mirror](https://huggingface.co/papers/2605.31584)*
+
+To address the flaws that large models' long-context reasoning is easily disrupted by redundant content, and existing related reinforcement learning methods have low distractor confusion and sparse rewards that only focus on final results, researchers proposed LongTraceRL: it constructs hierarchical high-confusion distractor training corpora based on search agent trajectories, and designs entity-level rubric rewards targeting only correct answers to supervise intermediate reasoning steps. Experiments show that the method outperforms baselines on multi-scale models and 5 types of long-context benchmarks, with more evidence-supported reasoning outputs.
+
+<FeedbackButtons slug="item:arxiv-2605.31584" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.30819" target="_blank" rel="noopener noreferrer">Function2Scene: 3D Indoor Scene Layout from Functional Specifications</a>
+
+*HF 20 · Ruiqi Wang, Qimin Chen, Daniel Ritchie… · [HF Mirror](https://huggingface.co/papers/2605.30819)*
+
+To address the problem that existing text-driven 3D indoor scene generation mostly focuses on furniture configuration and ignores actual usage requirements, this study proposes the Function2Scene framework: it takes functional text describing users and activity needs as input, parses and generates multi-dimensional design constraints, and iteratively verifies and optimizes layouts combined with geometric measurements and multimodal large models. Tested on 30 professional design cases, its results outperform existing baselines in 94.3% of comparative scenarios, and better match practical functional requirements.
+
+<FeedbackButtons slug="item:arxiv-2605.30819" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.31604" target="_blank" rel="noopener noreferrer">Representation Forcing for Bottleneck-Free Unified Multimodal Models</a>
+
+*HF 18 · Yuqing Wang, Zhijie Lin, Ceyuan Yang… · [HF Mirror](https://huggingface.co/papers/2605.31604)*
+
+To address the problem that existing unified multimodal models rely on independently pre-trained VAEs which bring structural bottlenecks, while directly removing VAEs will reduce generation quality, this paper proposes Representation Forcing (RF) technology: it lets the decoder first autoregressively predict visual representations as intermediate tokens, guiding pixel diffusion within the same backbone without requiring an external generative latent space. Experiments show that the RF solution achieves generation performance on par with SOTA VAE-based unified models, and delivers better image understanding performance, providing a feasible path for the development of end-to-end bottleneck-free unified multimodal models.
+
+<FeedbackButtons slug="item:arxiv-2605.31604" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.31264" target="_blank" rel="noopener noreferrer">COLLEAGUE.SKILL: Automated AI Skill Generation via Expert Knowledge Distillation</a>
+
+*HF 16 · Tianyi Zhou, Dongrui Liu, Leitao Yuan… · [HF Mirror](https://huggingface.co/papers/2605.31264)*
+
+To address the pain point that existing large model agents struggle to convert scattered, heterogeneous role/personal experience into reusable skills, this paper proposes the COLLEAGUE.SKILL expert knowledge distillation system: it distills target expert materials into versioned skill packages with dual tracks of capability and behavior, supporting natural language adjustment and cross-end deployment. This open-source system has earned 18.5k GitHub stars and accumulated 215 community-contributed skills, verifying that personalized skills can be encapsulated into interpretable, modifiable standardized packages.
+
+<FeedbackButtons slug="item:arxiv-2605.31264" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.31075" target="_blank" rel="noopener noreferrer">Task-Focused Memorization for Multimodal Agents</a>
+
+*HF 12 · Tao Zou, Yichen He, Tian Qiu… · [HF Mirror](https://huggingface.co/papers/2605.31075)*
+
+To address the core pain point of multimodal agents facing information overload from streaming multimodal observations and difficulty filtering content to be memorized, this paper proposes TaskMem, a reinforcement learning-based task-focused memory framework: it adopts two-stage training, first optimizing memory fidelity, then fine-tuning the large model adaptation layer combined with real-time task rewards after deployment to only retain task-related content. On three streaming benchmarks, the VQA accuracy of answering only relying on memory is up to 7.0% higher than baselines.
+
+<FeedbackButtons slug="item:arxiv-2605.31075" client:visible />
+
+# arXiv cs.LG (Machine Learning)
+
+## <a href="https://arxiv.org/abs/2605.30358" target="_blank" rel="noopener noreferrer">QASM-Eval: A Dataset to Train and Evaluate LLMs on OpenQASM-3 Beyond Quantum Circuits</a>
+
+*Zhenxiao Fu, Lei Jiang, Fan Chen*
+
+To address the gap that quantum programming in the NISQ era requires calling OpenQASM3 hardware-oriented features, but lacks corresponding training and evaluation datasets for large language models, this work launches QASM-Eval, the first dataset for this scenario, containing 100 expert-validated test tasks and 4000 training tasks, covering multiple types of hardware-related programming scenarios, and supporting automatic verification tools. Evaluation shows that existing mainstream large models perform poorly on OpenQASM3 programming, and their performance improves significantly after fine-tuning with this dataset, which can provide basic support for the development of quantum programming large models.
+
+<FeedbackButtons slug="item:arxiv-2605.30358" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.30374" target="_blank" rel="noopener noreferrer">Gait2Hip-60: A Unified Deep Learning Benchmark for Predicting Hip Muscle Forces and Joint Moments from Multi-Cadence Gait Kinematics</a>
+
+*Jiaqi Zhang, Ji Hou, Qing Sun…*
+
+To address the pain point that traditional musculoskeletal simulation of hip muscle forces and joint moments during gait is time-consuming and difficult to implement in clinical settings, this study constructs the Gait2Hip-60 benchmark containing multi-cadence gait data from 60 healthy subjects, compares three types of sequence models under a unified protocol, finds that Transformer has the best prediction accuracy, and still delivers moderate prediction performance when zero-shot transferred to 9 patients with femoral head necrosis. It can provide a baseline for related applications, and the generalization to pathological scenarios needs to be improved in subsequent work.
+
+<FeedbackButtons slug="item:arxiv-2605.30374" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.30376" target="_blank" rel="noopener noreferrer">Unicorn: Scaling High-Dimensional Time Series Forecasting via Universal Correlation Modeling</a>
+
+*Haochen Yuan, Yichen Song, Yunbo Wang…*
+
+To address the contradiction of existing time series forecasting models that "channel independence ignores correlations, while channel dependence is difficult to generalize across heterogeneous datasets", this paper proposes Unicorn, a scalable multi-dataset pre-training framework for high-dimensional time series. Its core uses an implicit prototype codebook to decouple correlation modeling and channel identity, mapping heterogeneous channels to a shared latent space to learn general transferable interaction patterns. Experiments show that its performance is significantly better than existing SOTA, with outstanding few-shot transfer advantages, providing a scalable path for multivariate time series foundation models.
+
+<FeedbackButtons slug="item:arxiv-2605.30376" client:visible />
+
+# OpenAI Official News
+
+## <a href="https://openai.com/index/boston-childrens-hospital" target="_blank" rel="noopener noreferrer">Boston Children’s uses AI to unlock new diagnoses</a>
+
+*OpenAI*
+
+Boston Children's Hospital has implemented OpenAI's AI technology in clinical scenarios, mainly to optimize the quality of patient diagnosis and treatment services and reduce internal operational burden of the hospital. The application has achieved clear results so far, assisting in the diagnosis of more than 40 previously unidentifiable rare disease cases, providing referable practical experience for the implementation of AI technology in segmented medical scenarios such as pediatric diagnosis and treatment and rare disease screening.
+
+<FeedbackButtons slug="item:openai-blog-boston-childrens-hospital" client:visible />
+
+## <a href="https://openai.com/index/braintrust" target="_blank" rel="noopener noreferrer">How Braintrust turns customer requests into code with Codex</a>
+
+*OpenAI*
+
+This article introduces the R&D efficiency optimization solution of the Braintrust team: combining Codex's code generation capability with GPT-5.5's natural language semantic understanding capability to build an automated conversion link from customer requirements to executable code. This solution can automatically generate experimental verification code and the first version of business logic, which not only speeds up experimental iteration speed, but also greatly shortens the coding cycle for requirement implementation, delivering a significant improvement in overall R&D efficiency.
+
+<FeedbackButtons slug="item:openai-blog-braintrust" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-4-8" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 4.8</a>
+
+*Anthropic*
+
+The newly released Claude Opus 4.8 is the latest iterative upgrade of the Opus-tier large model. This version has targeted optimizations for core capabilities, with significantly enhanced performance in three scenarios: code tasks, agent tasks, and professional scenario work, while improving processing stability for long-process tasks, which can more reliably support demand for continuous complex work with long cycles and multiple links.
+
+<FeedbackButtons slug="item:anthropic-claude-opus-4-8" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-design-anthropic-labs" target="_blank" rel="noopener noreferrer">Introducing Claude Design by Anthropic Labs</a>
+
+*Anthropic*
+
+Anthropic Labs officially launched a new product Claude Design, which supports users to collaborate with the Claude large model for creation, and can produce various types of polished high-quality visual outputs such as design drafts, interactive prototypes, presentation slides, and single-page promotional materials, further expanding the capability boundary of Claude, and providing a new practical tool for AI collaboration in scenarios such as creative design and business office.
+
+<FeedbackButtons slug="item:anthropic-claude-design-anthropic-labs" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle-environmental-risks/" target="_blank" rel="noopener noreferrer">We’re launching the Google DeepMind Accelerator program in Asia Pacific to tackle environmental risks</a>
+
+*Google DeepMind*
+
+Google DeepMind officially launches the Asia-Pacific accelerator program, focusing on addressing various regional environmental risks. The program is open to startups deeply engaged in the environmental technology field in the Asia-Pacific region, and will provide selected participants with AI technical support, exclusive computing quota, industry expert guidance and industrial resource connection, accelerate the implementation of AI in scenarios such as climate response, disaster early warning, and ecological protection, and help improve the effectiveness of environmental risk prevention and control in the Asia-Pacific region.
+
+<FeedbackButtons slug="item:deepmind-were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle" client:visible />
+
+## <a href="https://deepmind.google/blog/fast-tracking-genetic-leads-to-reverse-cellular-aging/" target="_blank" rel="noopener noreferrer">Fast-tracking genetic leads to reverse cellular aging</a>
+
+*Google DeepMind*
+
+This study focuses on the discovery of genetic targets for reversing cellular aging. The core method is that biologists use the Co-Scientist intelligent tool to carry out efficient screening, breaking through the efficiency bottleneck of traditional screening, and successfully locating a number of new regulatory factors, which have been verified to effectively rejuvenate human cells. This result greatly shortens the R&D cycle of anti-aging targets, providing a new candidate direction for the subsequent development of anti-aging intervention programs.
+
+<FeedbackButtons slug="item:deepmind-fast-tracking-genetic-leads-to-reverse-cellular-aging" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/torch-profiler" target="_blank" rel="noopener noreferrer">Profiling in PyTorch (Part 1): A Beginner&apos;s Guide to torch.profiler</a>
+
+*Hugging Face*
+
+This is the first introductory guide to the PyTorch performance profiling series, explaining the basic usage of the torch.profiler tool for beginners, covering the full process of configuration startup, data collection, result interpretation, etc. It can obtain core performance data such as operator time consumption, video memory usage, CPU/GPU load during model training/inference, helping developers quickly locate operation bottlenecks and providing a clear basis for model efficiency optimization.
+
+<FeedbackButtons slug="item:hf-blog-torch-profiler" client:visible />
+
+## <a href="https://huggingface.co/blog/ibm-research/itbench-aa" target="_blank" rel="noopener noreferrer">ITBench-AA: Frontier Models Score Below 50% on the First Benchmark for Agentic Enterprise IT Tasks — by Artificial Analysis and IBM</a>
+
+*Hugging Face*
+
+This result, released by Artificial Analysis in partnership with IBM, launches ITBench-AA, the world's first benchmark test set for enterprise IT agent tasks, covering real enterprise IT scenarios such as operation and maintenance troubleshooting and resource scheduling, used to test professional capabilities of large model agents such as tool calling and complex reasoning. Actual tests show that current cutting-edge large models score less than 50% on this benchmark, indicating that there is still an obvious short board for existing large models to be implemented in enterprise-level IT agent scenarios.
+
+<FeedbackButtons slug="item:hf-blog-itbench-aa" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This AI alignment research refutes the default premise of the orthogonality hypothesis that "rational agents need to anchor fixed final goals", and introduces the virtue ethics practice framework to point out that human rationality is reflected in actions matching a practice network including evaluation criteria, action tendencies, etc., rather than pointing to specific ultimate goals. The article proposes that AI decision-making logic needs to match human practical action logic to meet collaboration requirements, while satisfying ethical alignment and core security needs.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/05/427104.html" target="_blank" rel="noopener noreferrer">Jiaming Song, father of DDIM, announces departure</a>
+
+*QbitAI*
+
+Jiaming Song, the creator of the core diffusion model technology DDIM, recently announced his departure from Luma AI. He left Nvidia to join Luma as Chief Scientist in 2023, and promoted the company to complete three key technological shifts in 3D generation, text-to-video, and multimodal foundation models in three years, helping Luma rank among the first echelon of global multimodal companies with products such as Dream Machine and Uni-1.1. His departure comes at a critical period of the company's development.
+
+<FeedbackButtons slug="item:qbitai-427104" client:visible />
+
+## <a href="https://www.qbitai.com/2026/05/427005.html" target="_blank" rel="noopener noreferrer">Stop just adding tools to Agent, it can't choose the right one at all! Fudan × Tongyi proposes new CUA training paradigm</a>
+
+*QbitAI*
+
+To address the problem that agents cannot choose the right path when accessing both GUI operations and tool calls, resulting in accuracy dropping instead of rising, Fudan University and Tongyi proposed the new ToolCUA training paradigm, which adapts to the GUI-Tool hybrid action space, allowing the model to independently judge the optimal operation path for different scenarios. Its 8B version achieves 46.85% accuracy on the OSWorld-MCP benchmark, outperforming Claude 4 Sonnet and approaching Claude 4.5 Sonnet, and all related resources have been open-sourced.
+
+<FeedbackButtons slug="item:qbitai-427005" client:visible />
+
+## <a href="https://www.qbitai.com/2026/05/426991.html" target="_blank" rel="noopener noreferrer">Nvidia's version of "MacBook Pro" exposed: Jensen Huang self-developed a CPU!</a>
+
+*QbitAI*
+
+Nvidia will release self-developed new PC products at the Taipei Computex exhibition on May 28, launching an Arm architecture Windows notebook equipped with N1X chip in cooperation with Microsoft and Arm. This chip is benchmarked against Apple's M series, co-developed by Nvidia and MediaTek, using TSMC's 3nm process, integrating a 20-core CPU, a Blackwell GPU with performance equivalent to the desktop RTX 5070, and equipped with 128GB of shared memory, marking Nvidia's official entry into the consumer PC market.
+
+<FeedbackButtons slug="item:qbitai-426991" client:visible />
+
+---

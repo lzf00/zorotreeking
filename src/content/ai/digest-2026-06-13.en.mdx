@@ -1,0 +1,146 @@
+---
+lang: en
+translationKey: digest-2026-06-13
+title: "Daily AI Digest · 2026-06-13"
+description: "15 papers · multi-source aggregation + AI summaries"
+date: 2026-06-13
+tags: [digest, auto, arxiv, openai, anthropic, deepmind, hf-blog, the-gradient]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.11192" target="_blank" rel="noopener noreferrer">Restless bandits with imperfect binary feedback: PCL-indexability analysis and computation</a>
+
+*José Niño-Mora*
+
+This paper studies restless multi-armed bandits with binary hidden states and imperfect feedback for the opportunistic spectrum access scenario with sensing errors. It proposes an analytical framework based on partial conservation laws, combining methods including deterministic skeleton and renewal decomposition, derives closed-form indexability in partial threshold domains, and designs an efficient numerical scheme for remaining domains to compute the MP index equivalent to the Whittle index. Experiments show that the applicable scope of indexability is far wider than that of previous work, and the MP strategy delivers significantly better performance.
+
+<FeedbackButtons slug="item:arxiv-2606.11192" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.11201" target="_blank" rel="noopener noreferrer">To Intervene or Not: Guiding Inference-time Alignment with Probabilistic Model Blending</a>
+
+*Jin Gan, Xin Li, Jun Luo*
+
+Inference-time alignment only intervenes in the output generation phase with lower cost, but existing solutions do not evaluate guidance reliability, which easily leads to excessive intervention and performance degradation caused by invalid guidance. This paper proposes the BlendIn framework, which abandons binary intervention decisions, weights and fuses the output distributions of two models according to the credibility of the guidance model, retains effective guidance and reduces the impact of unreliable suggestions, achieving a maximum performance improvement of 50% in tests.
+
+<FeedbackButtons slug="item:arxiv-2606.11201" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.11205" target="_blank" rel="noopener noreferrer">Dual-Stance Evaluation of Sycophancy: The Structure of Agreement and the Limits of Intervention</a>
+
+*Matthew James Buchan*
+
+Existing evaluations of activation regulation for reducing large model sycophancy do not test whether factual agreement is mistakenly impaired. To address this issue, this paper proposes a dual-stance evaluation method that simultaneously tests positive and negative stances for each topic, and verifies the centroid difference regulation method on Llama-3-8B-Instruct. Results show that although the representation subspaces of sycophantic agreement and factual agreement are geometrically independent, the regulation direction cannot distinguish between the two, and will simultaneously reduce the model's agreement with correct facts, proving that activation interpretability does not equal precise intervenability.
+
+<FeedbackButtons slug="item:arxiv-2606.11205" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/academy-courses-applying-ai-at-work" target="_blank" rel="noopener noreferrer">New OpenAI Academy courses for the next era of work</a>
+
+*OpenAI*
+
+To adapt to the new AI-driven workplace paradigm, OpenAI has launched three new Academy courses tailored to the needs of next-generation work scenarios. The courses focus on three core directions: helping learners build a practical AI skill system, master reusable AI workflow construction methods, and implement agent applications in daily work scenarios, which can effectively improve practitioners' practical ability to use AI tools and adapt to work paradigm changes in the AI era.
+
+<FeedbackButtons slug="item:openai-blog-academy-courses-applying-ai-at-work" client:visible />
+
+## <a href="https://openai.com/index/preply" target="_blank" rel="noopener noreferrer">How Preply combines AI and human tutors to personalize learning</a>
+
+*OpenAI*
+
+Online language education platform Preply has explored a personalized learning solution that combines AI and human tutors: the platform integrates OpenAI's technical capabilities to automatically generate AI summaries for corresponding courses, and can also output targeted feedback and supporting customized language exercises based on different learners' learning progress. This model combines the adaptability of human teaching with the efficiency advantage of AI, significantly improving the personalization level and learning effect of language learning.
+
+<FeedbackButtons slug="item:openai-blog-preply" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener noreferrer">Statement on the US government directive to suspend access to Fable 5 and Mythos 5</a>
+
+*Anthropic*
+
+This content is a summary of the official statement on the US government's restriction of access to Fable 5 and Mythos 5. The US has issued an export control administrative order, explicitly requiring a full suspension of access rights to the two aforementioned technical products for all foreign nationals. The control has no territorial exemption, and all relevant foreign nationals, whether located inside or outside the US, are bound by the ban, covering an extremely wide scope.
+
+<FeedbackButtons slug="item:anthropic-fable-mythos-access" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-corps" target="_blank" rel="noopener noreferrer">Introducing Claude Corps</a>
+
+*Anthropic*
+
+Launched by Claude's developer, Claude Corps is a national research scholarship program open specifically to people in the early stages of their careers who are committed to promoting inclusive access to AI technology. The core goal of the program is to support relevant young talents to leverage their expertise and extend the various benefits brought by AI development to communities across the US, so that a wider range of groups can share the dividends of AI development.
+
+<FeedbackButtons slug="item:anthropic-claude-corps" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/diffusiongemma-4x-faster-text-generation/" target="_blank" rel="noopener noreferrer">DiffusionGemma: 4x faster text generation</a>
+
+*Google DeepMind*
+
+DiffusionGemma is a large language model optimized based on diffusion architecture. Addressing the pain point of low word-by-word decoding efficiency of traditional autoregressive large models, it replaces the word-by-word reasoning process with parallel generation logic. Actual tests show that its text generation speed can reach 4 times that of native Gemma of the same size, while generation quality is basically consistent with the original version, striking a good balance between generation efficiency and effect to meet high-throughput text generation demands.
+
+<FeedbackButtons slug="item:deepmind-diffusiongemma-4x-faster-text-generation" client:visible />
+
+## <a href="https://deepmind.google/blog/investing-in-multi-agent-ai-safety-research/" target="_blank" rel="noopener noreferrer">Investing in multi-agent AI safety research</a>
+
+*Google DeepMind*
+
+Google DeepMind, together with industry and academic partners, recently announced the launch of a special funding program totaling $10 million, which openly solicits research projects in the field of multi-agent AI safety worldwide. This initiative targets the currently undercovered research gaps in safety risks in multi-agent interaction and collaboration scenarios, and provides targeted support for relevant technical research, to build a solid safety barrier for large-scale deployment of multi-agent systems.
+
+<FeedbackButtons slug="item:deepmind-investing-in-multi-agent-ai-safety-research" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/olmo-eval" target="_blank" rel="noopener noreferrer">olmo-eval: An evaluation workbench for the model development loop</a>
+
+*Hugging Face*
+
+Only the title of this paper on the model evaluation workbench has been provided so far, with no corresponding English abstract attached. Please supplement the full abstract text, and I will then be able to translate and refine its core methods and conclusions as required to output a concise Chinese summary of around 120 words.
+
+<FeedbackButtons slug="item:hf-blog-olmo-eval" client:visible />
+
+## <a href="https://huggingface.co/blog/torch-mlp-fusion" target="_blank" rel="noopener noreferrer">Profiling in PyTorch (Part 2): From nn.Linear to a Fused MLP</a>
+
+*Hugging Face*
+
+This article is the second part of the PyTorch performance profiling series. Taking the fully connected layer nn.Linear as the entry point, it conducts fine-grained analysis of operator-level time consumption and memory access characteristics, compares the performance differences between natively stacked MLP and operator-fused MLP, and locates the pain points of redundant kernel startup and low memory access efficiency in native implementations. Actual tests show that the fused MLP can reduce scheduling overhead by about 40% and improve memory access efficiency by more than 2 times, which is suitable for inference and small-batch training scenarios.
+
+<FeedbackButtons slug="item:hf-blog-torch-mlp-fusion" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This AI alignment research refutes the premise of the orthogonality hypothesis that "rational agents must be bound to a fixed final goal", and proposes that the core of human rationality is that actions fit into a practice network composed of action patterns, evaluation standards, etc., rather than pointing to specific goals. The conclusion points out that to achieve AI ethical and safety attribute alignment and enable AI to truly cooperate with human activities, AI decision-making logic needs to be isomorphic to the human practice-based reasoning framework.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/06/435196.html" target="_blank" rel="noopener noreferrer">Qianli acquires a millimeter-wave radar company</a>
+
+*QbitAI*
+
+To complete its full-stack intelligent driving capabilities, Qianli Technology, which was formed by Geely and Chongqing Liangjiang New Area after reviving the former Lifan, led by Yin Qi and focusing on the "AI + vehicle" strategy, recently plans to fully acquire Ningbo Ronggan Technology, an automotive-grade visual millimeter-wave fusion radar manufacturer, for 25.908 million yuan. The latter has already obtained designated orders from automakers and has mass production capacity. This acquisition marks that Qianli is accelerating its transformation from an algorithm integrator to a full-stack system service provider, benchmarking against Huawei's layout.
+
+<FeedbackButtons slug="item:qbitai-435196" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/435192.html" target="_blank" rel="noopener noreferrer">Patient capital escorts innovation, 2026 SuperLink ushers in a new era of venture capital value co-creation</a>
+
+*QbitAI*
+
+The 2026 SuperLink Venture Capital Conference recently concluded in Wuzhong, Suzhou. Co-hosted by Zero2IPO Holdings, Wuzhong Financial Holdings and other institutions, the conference was attended by hundreds of elites from the venture capital industry. This year's conference focuses on the transformation of the equity investment industry, takes "super connection" as the core, holds discussions on topics such as building consensus on patient capital, exploring diversified exit mechanisms, and precise layout of hard technology tracks, to promote two-way integration of industry and finance and empower the development of new quality productive forces.
+
+<FeedbackButtons slug="item:qbitai-435192" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/433717.html" target="_blank" rel="noopener noreferrer">Anthropic CEO's only direct report is the fiancée of the "AI stock god"</a>
+
+*QbitAI*
+
+Recent news shows that Dario Amodei, founder of AI company Anthropic valued at nearly $1 trillion, has only one direct subordinate, 25-year-old chief of staff Avital Balwit. She does not have a technical background, has previously researched AI safety and worked as a writer. Her fiancé is Leopold Aschenbrenner, the "AI stock god" who was once fired by OpenAI and turned a $225 million investment into $5.5 billion. This incident also highlights that the top AI circle is extremely small.
+
+<FeedbackButtons slug="item:qbitai-433717" client:visible />

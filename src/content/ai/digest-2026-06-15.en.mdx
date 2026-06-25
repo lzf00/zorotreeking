@@ -1,0 +1,188 @@
+---
+lang: en
+translationKey: digest-2026-06-15
+title: "AI Daily Digest · 2026-06-15"
+description: "20 papers · multi-source aggregation + AI summaries"
+date: 2026-06-15
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.12384" target="_blank" rel="noopener noreferrer">APPO: Agentic Procedural Policy Optimization</a>
+
+*HF ★ 28 · Xucong Wang, Ziyu Ma, Yong Wang… · [HF Mirror](https://huggingface.co/papers/2606.12384)*
+
+Existing reinforcement learning agent tool calling methods rely on coarse-grained units for credit assignment and cannot accurately locate key intermediate decisions. To address this, the paper finds that key decision points are scattered across the entire sequence, and single-token entropy cannot reliably reflect their impact. Based on this, the APPO algorithm is proposed: it selects exploration points using branch scores that combine token uncertainty and subsequent returns, paired with process-level advantage scaling for credit assignment. It outperforms the baseline by nearly 4 percentage points across 13 benchmarks, balancing both calling efficiency and interpretability.
+
+<FeedbackButtons slug="item:arxiv-2606.12384" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.06036" target="_blank" rel="noopener noreferrer">Memory is Reconstructed, Not Retrieved: Graph Memory for LLM Agents</a>
+
+*HF ★ 25 · Shuo Ji, Yibo Li, Bryan Hooi · [HF Mirror](https://huggingface.co/papers/2606.06036)*
+
+To address the shortcomings of LLM agents in long-interaction reasoning and the poor adaptability of existing memory augmentation solutions' static "retrieve first, reason later" paradigm, this paper proposes the MRAgent framework: it stores memories in an associative memory graph, embeds reasoning into the access process, and actively iterates and adjusts retrieval paths. It achieves up to a 23% performance improvement over baselines on two long-term memory benchmarks, while significantly reducing token and time costs.
+
+<FeedbackButtons slug="item:arxiv-2606.06036" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.13707" target="_blank" rel="noopener noreferrer">Orchestra-o1: Omnimodal Agent Orchestration</a>
+
+*HF ★ 23 · Fan Zhang, Vireo Zhang, Shengju Qian… · [HF Mirror](https://huggingface.co/papers/2606.13707)*
+
+Existing multi-agent orchestration frameworks have narrow modal adaptation ranges and struggle to handle complex tasks with multimodal heterogeneous interactions. To solve this, this paper proposes Orchestra-o1, a full-modal agent orchestration framework equipped with modality-aware task decomposition, online specialization of sub-agents, and parallel subtask execution mechanisms. Paired with the 8B version trained with the DA-GRPO reinforcement learning method, it outperforms the second-best solution by 10.3% in accuracy on the OmniGAIA benchmark, delivering state-of-the-art performance for open-source full-modal agents.
+
+<FeedbackButtons slug="item:arxiv-2606.13707" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.14502" target="_blank" rel="noopener noreferrer">From Chatbot to Digital Colleague: The Paradigm Shift Toward Persistent Autonomous AI</a>
+
+*HF ★ 21 · Yongheng Zhang, Ziang Liu, Jiaxuan Zhu… · [HF Mirror](https://huggingface.co/papers/2606.14502)*
+
+This paper proposes that large language models are undergoing a paradigm shift from chatbots to persistent, autonomous "digital colleagues", evolving along two core dimensions: at the cognitive layer, they upgrade from "fast thinking" that only relies on next-token prediction to deliberate LLMs with reasoning and reflection capabilities; at the execution layer, they upgrade from temporary tool calling to workstation systems with persistent workspaces and reusable skills, with supporting data and evaluation systems also adapting synchronously.
+
+<FeedbackButtons slug="item:arxiv-2606.14502" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.13432" target="_blank" rel="noopener noreferrer">OmniDirector: General Multi-Shot Camera Cloning without Cross-Paired Data</a>
+
+*HF ★ 18 · Jiwen Liu, Shujuan Li, Zhixue Fang… · [HF Mirror](https://huggingface.co/papers/2606.13432)*
+
+Existing video camera motion cloning methods cannot adapt to multi-shot generation, and rely on scarce cross-paired data leading to poor reproduction effects for complex motions. This paper proposes encoding camera parameters as a general representation of grid motion videos, builds the unified OmniDirector framework, trains it on millions of grid-video pairs, and integrates multiple types of control signals with a hierarchical prompt expansion module. Experimental verification confirms its excellent performance and controllability, enabling director-level controlled generation of multi-shot video camera movements.
+
+<FeedbackButtons slug="item:arxiv-2606.13432" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.13705" target="_blank" rel="noopener noreferrer">Can Editing 1 Neuron Fix Repetition Loops in LLMs?</a>
+
+*Aristotelis Lazaridis, Aman Sharma, Dylan Bates…*
+
+Gemma series instruction-tuned models have up to a 95% probability of repetition loops in long fact listing tasks. Through layer-wise ablation and neuron attribution, the study locates a small number of MLP neurons (routing experts for large models). Modifying the weight of just a single neuron can eliminate repetition without affecting general performance, but this method cannot eradicate "doom loops" during long reasoning, which are essentially knowledge deficit problems that weight editing cannot compensate for missing facts.
+
+<FeedbackButtons slug="item:arxiv-2606.13705" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.13740" target="_blank" rel="noopener noreferrer">Efficient On-Device Diffusion LLM Inference with Mobile NPU</a>
+
+*Tuowei Wang, Yanfan Sun, Ju Ren*
+
+Diffusion large language models (dLLM) can generate multiple tokens in parallel, adapting to low-latency requirements on end devices, but they face the pain points of high computing overhead for mobile inference and difficulty leveraging mobile NPUs. This paper proposes llada.cpp, the first dLLM inference framework optimized for mobile NPUs, which adapts to NPU characteristics through three technologies: multi-block speculative decoding, dual-path progressive correction, and swap-optimized memory runtime. Actual tests show that the inference latency of LLaDA-8B is 17-42 times lower than the CPU baseline, while retaining generation quality.
+
+<FeedbackButtons slug="item:arxiv-2606.13740" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.13741" target="_blank" rel="noopener noreferrer">High-Frequency Pricing at Scale for E-Commerce</a>
+
+*Stefan Birr, Tobias Huelden, Mones Raslan…*
+
+To address the pain points of large demand fluctuations and high pricing timeliness requirements during fashion e-commerce promotions, this paper launches a "forecast-optimization" architecture pricing tool: it uses gradient boosting trees for daily granularity demand forecasting, paired with a multi-objective optimization framework, covering over 5 million products, and reduces pricing time from hours to minutes. Verified by A/B tests in 12 markets of European e-commerce platform Zalando from 2023 to 2024, it increases profit by about 6% compared with the original solution, while sales volume and revenue remain flat, and it has now been fully launched.
+
+<FeedbackButtons slug="item:arxiv-2606.13741" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/introducing-openai-partner-network" target="_blank" rel="noopener noreferrer">Introducing the OpenAI Partner Network</a>
+
+*OpenAI*
+
+OpenAI officially launches its Partner Network program, which will allocate $150 million in special funds to provide support for global partners, with the core goal of accelerating the adoption, scenario deployment, and industry digital transformation of enterprise-level AI technology. The program will lower the threshold for enterprises in different fields to access AI capabilities, and further expand OpenAI's enterprise-level service ecosystem to promote large-scale commercial use of AI technology.
+
+<FeedbackButtons slug="item:openai-blog-introducing-openai-partner-network" client:visible />
+
+## <a href="https://openai.com/index/academy-courses-applying-ai-at-work" target="_blank" rel="noopener noreferrer">New OpenAI Academy courses for the next era of work</a>
+
+*OpenAI*
+
+To adapt to the new AI-driven work paradigm, OpenAI has recently launched three new Academy series courses. Focused on practical AI capability implementation, the courses set three core contents for workplace learners: mastering practical AI skills, building reusable standardized AI workflows, and implementing agent technology in daily work scenarios, helping learners upgrade their capabilities in the AI era and adapt to future workplace needs.
+
+<FeedbackButtons slug="item:openai-blog-academy-courses-applying-ai-at-work" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener noreferrer">Statement on the US government directive to suspend access to Fable 5 and Mythos 5</a>
+
+*Anthropic*
+
+This statement addresses the US government's export control directive: the latest US government control rules require a full suspension of access to Fable 5 and Mythos 5 for all foreign nationals, with no geographic restrictions, applicable regardless of whether the relevant foreign nationals are located inside or outside the United States. This measure is the latest move by the US to tighten restrictions on the flow of sensitive technology to foreign parties, with an extremely wide coverage that will directly affect the use of these two resources by foreign groups.
+
+<FeedbackButtons slug="item:anthropic-fable-mythos-access" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-corps" target="_blank" rel="noopener noreferrer">Introducing Claude Corps</a>
+
+*Anthropic*
+
+The newly launched Claude Corps is a US national talent support fellowship program, open to early-career practitioners who are committed to promoting the coverage of AI technology dividends across various communities in the United States. It aims to mobilize young talents to implement inclusive AI applications through special support, expand the public value of AI, and narrow the gap in AI benefits between different groups.
+
+<FeedbackButtons slug="item:anthropic-claude-corps" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/diffusiongemma-4x-faster-text-generation/" target="_blank" rel="noopener noreferrer">DiffusionGemma: 4x faster text generation</a>
+
+*Google DeepMind*
+
+DiffusionGemma is a new model optimized for text generation efficiency. Addressing the pain points of many iteration steps and high latency of original diffusion-based text generation, it adapts the diffusion generation logic to Google's lightweight Gemma architecture, cuts redundant iteration steps and optimizes vocabulary space mapping efficiency. While its generation quality is on par with the native autoregressive Gemma of the same parameter size in mainstream evaluations, its inference speed can reach 4 times that of the baseline, adapting to low-latency demand scenarios such as real-time conversation and batch content production.
+
+<FeedbackButtons slug="item:deepmind-diffusiongemma-4x-faster-text-generation" client:visible />
+
+## <a href="https://deepmind.google/blog/investing-in-multi-agent-ai-safety-research/" target="_blank" rel="noopener noreferrer">Investing in multi-agent AI safety research</a>
+
+*Google DeepMind*
+
+Google DeepMind and partners announced the launch of a special funding application channel with a total amount of $10 million, soliciting research projects in the field of multi-agent AI safety from academia and industry. As multi-agent interaction and collaboration scenarios are rapidly being deployed, this funding aims to fill the research gap in related fields, targeted at solving potential risks in the process of multi-agent game and collaboration, and providing support for the safe deployment of complex AI systems.
+
+<FeedbackButtons slug="item:deepmind-investing-in-multi-agent-ai-safety-research" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/olmo-eval" target="_blank" rel="noopener noreferrer">olmo-eval: An evaluation workbench for the model development loop</a>
+
+*Hugging Face*
+
+This paper launches olmo-eval, a dedicated evaluation workbench for the entire LLM development and iteration chain. Addressing the pain points of scattered traditional evaluation tools, disconnection from training processes and delayed feedback, it has built-in multi-dimensional capability evaluation sets, supports automatic checkpoint evaluation during training and visual output of performance changes. This tool can greatly reduce evaluation costs, accelerate the iteration of the OLMo series of models, and can also be reused for the research and development of other open-source large models.
+
+<FeedbackButtons slug="item:hf-blog-olmo-eval" client:visible />
+
+## <a href="https://huggingface.co/blog/torch-mlp-fusion" target="_blank" rel="noopener noreferrer">Profiling in PyTorch (Part 2): From nn.Linear to a Fused MLP</a>
+
+*Hugging Face*
+
+This is the second part of the PyTorch performance profiling series, focusing on the performance optimization logic from native nn.Linear stacked MLP to fused MLP. The paper uses PyTorch's built-in profiling tool to break down the overhead of native MLP such as kernel scheduling and redundant memory access, compares and tests the operating efficiency of fused MLP, and finally verifies that the fused solution can reduce invalid memory access by about 40%, and the end-to-end speed is improved by more than 30% compared with the native implementation. It also provides applicable scenarios and tuning guidelines for fused operators.
+
+<FeedbackButtons slug="item:hf-blog-torch-mlp-fusion" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This AI alignment study reflecting on the orthogonality thesis starts from the perspective of virtue ethics, refutes the presupposition that "rational agents are necessarily guided by fixed end goals", and proposes that the essence of human rational action is to adapt to a practical network including action rules, evaluation standards and other elements. It argues that AI decision-making logic needs to be isomorphic to this type of human practical logic to meet ethical alignment requirements and guarantee core security attributes at the same time.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/06/435531.html" target="_blank" rel="noopener noreferrer">In the Agent Era, HUAWEI CLOUD is rebuilding the foundation</a>
+
+*QbitAI*
+
+Addressing the pain points of current agents such as slow response, easy memory loss, which cannot be fundamentally solved only by adjusting prompts or changing models due to insufficient underlying infrastructure adaptation, HUAWEI CLOUD released a complete set of new agent infrastructure at the June INSPIRE Innovator Conference: the AICS Lingqu intelligent computing cluster can reduce inference latency to less than 10ms, supporting up to 100,000 card collaboration; the AMS memory storage adopts a layered design and provides PB-level space, targeted at solving the core bottlenecks of agent deployment.
+
+<FeedbackButtons slug="item:qbitai-435531" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/435520.html" target="_blank" rel="noopener noreferrer">Zhiyuan Conference | Tiangong AI redefines world models, announces latest technical breakthroughs of Matrix-Game 3.5</a>
+
+*QbitAI*
+
+World models became the core topic at the 8th Zhiyuan Conference. Liu Yang, Chief Scientist at Kunlun Wanwei Skywork, announced the latest technical breakthroughs of Matrix-Game 3.5 at a sub-forum, proposing a new world model framework of "state-action joint generation". It adopts the route of bidirectional DiT pre-training followed by distillation into a causal model, which can achieve 25FPS real-time interaction. Version 3.5 is expected to be released in July 2026, and technical detail reports will be made public soon.
+
+<FeedbackButtons slug="item:qbitai-435520" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/435483.html" target="_blank" rel="noopener noreferrer">Endorsed by Hugging Face CEO, backed by Bengio's team: why is this HRM model trained for only $1500 going viral?</a>
+
+*QbitAI*
+
+HRM-Text launched by Sapient Intelligence adopts a latent recursive reasoning architecture. The 1B parameter model completed pre-training in less than two days with 16 H100 GPUs at a cost of only $1500, without using distillation, fine-tuning, RLHF or explicit chain-of-thought data. It adopts the route of lightweight reasoning core instead of large-capacity knowledge storage, delivers outstanding performance on multiple reasoning benchmarks, has obtained industry authoritative recognition, and related resources are fully open.
+
+<FeedbackButtons slug="item:qbitai-435483" client:visible />

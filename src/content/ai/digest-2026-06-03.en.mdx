@@ -1,0 +1,190 @@
+---
+lang: en
+translationKey: digest-2026-06-03
+title: "AI Daily Digest · 2026-06-03"
+description: "20 papers · Multi-source aggregation + AI-generated summaries"
+date: 2026-06-03
+tags: [digest, auto, ai-papers]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.01249" target="_blank" rel="noopener noreferrer">Trust Region On-Policy Distillation</a>
+
+*HF 18 · Xingrun Xing, Haoqing Wang, Boyan Gao… · [HF Mirror](https://huggingface.co/papers/2606.01249)*
+
+To address the issues of unreliable gradients and frequent optimization failures of on-policy distillation (OPD) for large language models when the distribution gap between teacher and student is large, this study proposes TrOPD, a trust region on-policy distillation method: it only performs distillation in the trust region where teacher supervision is reliable, uses gradient clipping and other measures in abnormal regions to reduce the negative impact of unreliable supervision, and introduces off-policy guidance to encourage exploration of reliable regions. Experiments show that it outperforms existing state-of-the-art OPD baselines across tasks such as mathematical reasoning and code generation.
+
+<FeedbackButtons slug="item:arxiv-2606.01249" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.03985" target="_blank" rel="noopener noreferrer">Humanoid-GPT: Scaling Data and Structure for Zero-Shot Motion Tracking</a>
+
+*HF 8 · Zekun Qi, Xuchuan Chen, Dairu Liu… · [HF Mirror](https://huggingface.co/papers/2606.03985)*
+
+This paper proposes Humanoid-GPT, a GPT-like causal attention Transformer model for full-body humanoid control. To solve the pain points of previous shallow MLP trackers, such as data scarcity and difficulty in balancing flexibility and generalization, the model is pre-trained on a 2 billion-frame retargeting corpus that integrates mainstream motion capture datasets and self-developed large-scale collected data. Experiments confirm that the model can track highly dynamic complex motions, achieve unprecedented zero-shot generalization on unseen tasks, and set a new state-of-the-art in the field.
+
+<FeedbackButtons slug="item:arxiv-2606.03985" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.02754" target="_blank" rel="noopener noreferrer">Ψ-Bench: Evaluating Persona-Sensitive Influencing in Persuasive Dialogues</a>
+
+*HF 8 · Peixuan Han, Hongyi Du, Jiayu Liu… · [HF Mirror](https://huggingface.co/papers/2606.02754)*
+
+The personalization capabilities of existing large models are mostly limited to passively responding to user preferences, and there is a lack of evaluation for active persuasion and guidance. To address this, this study proposes the Ψ-Bench benchmark, which sets up three types of real persuasive dialogue scenarios, generates user personas based on dialogue history to simulate audiences, and tests 10 cutting-edge large models. The results show that the persuasion ability of current top models still has large room for improvement, and integrating user personas can improve performance by an average of 18.24%, highlighting the value of personalized information for active persuasion.
+
+<FeedbackButtons slug="item:arxiv-2606.02754" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.01717" target="_blank" rel="noopener noreferrer">Decentralized Instruction Tuning: Conflict-Aware Splitting and Weight Merging</a>
+
+*HF 6 · Minsik Choi, Geewook Kim · [HF Mirror](https://huggingface.co/papers/2606.01717)*
+
+To address the bottlenecks faced by instruction tuning for large models (including multimodal ones), such as gradient interference and high synchronization bandwidth costs, this paper proposes MERIT, a distributed tuning framework: it first estimates gradient conflicts between datasets, splits tasks along high-conflict PCA axes, and performs a single token-weighted parameter merge after independent fine-tuning of each partition without communication, which has both variance reduction and implicit regularization effects. On multiple groups of multimodal and text-only tasks, its performance is better than or on par with centralized joint training, with extremely low cost overhead.
+
+<FeedbackButtons slug="item:arxiv-2606.01717" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.03979" target="_blank" rel="noopener noreferrer">Language Models Need Sleep: Learning to Self-Modify and Consolidate Memories</a>
+
+*HF 4 · Ali Behrouz, Farnoosh Hashemi, Vahab Mirrokni · [HF Mirror](https://huggingface.co/papers/2606.03979)*
+
+Existing large models struggle with continuous learning, and cannot effectively consolidate short-term contextual knowledge into long-term parametric memory. Inspired by human learning mechanisms, this paper proposes a "sleep" paradigm: first, the memory consolidation phase, which transfers memory from small models to large models via generalized distillation and converts it into stable long-term knowledge; second, the "dreaming" phase, which uses reinforcement learning to generate synthetic data for unsupervised self-optimization. Experiments verify that this paradigm achieves excellent performance on multiple types of tasks.
+
+<FeedbackButtons slug="item:arxiv-2606.03979" client:visible />
+
+# arXiv cs.LG (Machine Learning)
+
+## <a href="https://arxiv.org/abs/2606.02595" target="_blank" rel="noopener noreferrer">Human-in-the-Loop Contextual Bandits for Short-Term Rental Dynamic Pricing: Structural Equivalence of Historical Warm-Up and Approval-Gated Live Learning</a>
+
+*Oleg Miroshnichenko*
+
+To address the pain points of short-term rental dynamic pricing, including high risk, requirement for interpretability, sparse booking feedback, and excessively long cold start cycle for pure online bandit learning, this study proposes a human-in-the-loop gated bandit framework: the algorithm generates pricing recommendations that are then reviewed and adjusted by humans. Based on four years of real production data, it verifies that historical pricing data and online warm-up data are structurally equivalent, which can reduce the cold start period from 150 rounds to 30 rounds. This conclusion applies to all high-risk fields requiring human approval, confirming that mandatory human supervision is a statistical asset rather than a deployment constraint.
+
+<FeedbackButtons slug="item:arxiv-2606.02595" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.02596" target="_blank" rel="noopener noreferrer">Spectral Asymptotics of Neural Network Loss Landscapes: An Exact Decomposition of the Curvature Exponent</a>
+
+*Anherutowa Calvo*
+
+This paper addresses the problem of systematic differences in the curvature exponent α across convolutional, attention, and MLP layers. It proves a spectral alignment decomposition formula that decomposes α into a function of the alignment degree between the feature basis and the singular directions of the gradient, and derives an algebraic identity for α, gradient rank decay γ, and Hessian decay exponent s. The measured error across multiple architectures and datasets is only about 2%, and the spectral Newton optimizer designed based on this outperforms AdamW on visual tasks.
+
+<FeedbackButtons slug="item:arxiv-2606.02596" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.02597" target="_blank" rel="noopener noreferrer">Making Brain-Computer Interfaces More Secure</a>
+
+*Md Fahimul Kabir Chowdhury, Gahangir Hossain*
+
+This study addresses the issue that current EEG-based brain-computer interfaces generally focus on classification accuracy, have insufficient research on security and robustness, and are susceptible to interference from tiny adversarial attacks leading to misjudgments. It proposes a lightweight customized CNN architecture, which was tested on two sets of EEG datasets. In gradient adversarial attack scenarios, its classification performance consistently outperforms three specialized baseline models including EEGNet, with better anti-disturbance robustness, providing a new direction for improving the deployment reliability of brain-computer interfaces.
+
+<FeedbackButtons slug="item:arxiv-2606.02597" client:visible />
+
+# OpenAI Official Updates
+
+## <a href="https://openai.com/index/travelers" target="_blank" rel="noopener noreferrer">Travelers deploys AI-powered claims countrywide with OpenAI</a>
+
+*OpenAI*
+
+The AI claims assistant co-developed by insurance company Travelers and OpenAI has now been fully deployed nationwide. This tool can guide users through the entire claim submission process, provide 24/7 uninterrupted service, and also elastically scale to support operations during peak business demand periods. It not only greatly optimizes the user's claims experience, but also effectively reduces operating costs and improves business carrying capacity and response efficiency during peak hours.
+
+<FeedbackButtons slug="item:openai-blog-travelers" client:visible />
+
+## <a href="https://openai.com/index/codex-for-every-role-tool-workflow" target="_blank" rel="noopener noreferrer">Codex for every role, tool, and workflow</a>
+
+*OpenAI*
+
+This research focuses on the multi-scenario adaptation upgrade of the AI tool Codex. Targeting the differentiated work needs of roles such as analysts, marketing, design, and investment, it launches new plugins, site resources, and annotation functions adapted to different roles, tool stacks, and workflows. It can greatly lower the implementation threshold for various functional teams to improve efficiency with AI, can be embedded into daily processes without complex customization, and helps improve the efficiency of all positions.
+
+<FeedbackButtons slug="item:openai-blog-codex-for-every-role-tool-workflow" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-4-8" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 4.8</a>
+
+*Anthropic*
+
+The newly launched Claude Opus 4.8 is an iterative version of the Opus series flagship large model, with multi-dimensional improvements in core performance: its performance in three core scenarios of code development, agent tasks, and professional field work is significantly better than the previous generation, while optimizing the processing consistency of long-cycle tasks, and can stably handle long-running, complex-process continuous work requirements.
+
+<FeedbackButtons slug="item:anthropic-claude-opus-4-8" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-design-anthropic-labs" target="_blank" rel="noopener noreferrer">Introducing Claude Design by Anthropic Labs</a>
+
+*Anthropic*
+
+Anthropic Labs has newly launched its new product Claude Design, whose core function is to support users to collaborate with the Claude large model to complete professional-grade visual outputs, covering multiple scenarios such as design drafts, interactive prototypes, presentation slides, and single-page promotional materials. This product expands the capability boundary of large models from text generation to the field of visual creation, which can greatly lower the threshold for non-design users to produce high-quality visual content.
+
+<FeedbackButtons slug="item:anthropic-claude-design-anthropic-labs" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle-environmental-risks/" target="_blank" rel="noopener noreferrer">We’re launching the Google DeepMind Accelerator program in Asia Pacific to tackle environmental risks</a>
+
+*Google DeepMind*
+
+Google DeepMind has officially launched its Asia Pacific accelerator program, with the core goal of addressing various environmental risks relying on AI technology. The program will leverage DeepMind's technical accumulation to support scientific and innovation teams in the Asia Pacific region that are deeply engaged in the environmental protection field, promote the implementation of AI in scenarios such as climate disaster early warning, ecological protection, and pollution control, help the region improve its environmental risk response capacity, and explore feasible paths for AI-enabled environmental governance.
+
+<FeedbackButtons slug="item:deepmind-were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle" client:visible />
+
+## <a href="https://deepmind.google/blog/fast-tracking-genetic-leads-to-reverse-cellular-aging/" target="_blank" rel="noopener noreferrer">Fast-tracking genetic leads to reverse cellular aging</a>
+
+*Google DeepMind*
+
+In this study titled "Fast-tracking genetic leads to reverse cellular aging", biologists used the Co-Scientist research tool for screening and successfully identified a number of previously undiscovered novel regulatory factors that can effectively achieve reprogramming of human cells to a younger state. This achievement greatly improves the efficiency of discovering aging-related genetic targets, providing a new feasible idea for subsequent anti-aging technology research and development and the implementation of cell therapy.
+
+<FeedbackButtons slug="item:deepmind-fast-tracking-genetic-leads-to-reverse-cellular-aging" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/Hcompany/holo31" target="_blank" rel="noopener noreferrer">Holo3.1: Fast &amp; Local Computer Use Agents</a>
+
+*Hugging Face*
+
+Holo3.1, launched to address the pain points of high latency and high privacy risk of existing cloud-based computer operation agents, is a local operation agent focusing on low latency. Technically, it optimizes the end-side lightweight UI recognition model and operation decision reasoning pipeline, requires no cloud interaction throughout the process, and can run on ordinary consumer-grade hardware. Actual measurements show that its response speed is more than 3 times higher than similar cloud solutions, with greatly reduced privacy risks, and it can be adapted to multiple scenarios such as office automation.
+
+<FeedbackButtons slug="item:hf-blog-holo31" client:visible />
+
+## <a href="https://huggingface.co/blog/JetBrains/mellum2-launch" target="_blank" rel="noopener noreferrer">Introducing Mellum2: A 12B Mixture-of-Experts Model by JetBrains</a>
+
+*Hugging Face*
+
+Mellum2 launched by JetBrains is a 12B parameter Mixture-of-Experts (MoE) large model, with only about 1.9B parameters activated per inference round, and its computing cost is far lower than dense models of the same scale. Actual measurements show that its performance on tasks such as code generation, multilingual understanding, and tool calling is better than dense models of the same activation parameter scale, and it mainly provides underlying support for the intelligent coding assistance functions of JetBrains' full series of IDEs.
+
+<FeedbackButtons slug="item:hf-blog-mellum2-launch" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This paper in the field of AI alignment is based on virtue ethics, refutes the orthogonality assumption premise that "rational agents are necessarily anchored to fixed goals", and points out that human rational actions are not directed at preset final goals, but adapt to the logic of the practice network composed of actions, evaluation standards, etc. The paper proposes that the AI decision-making logic needs to match the human practical "type signature" to not only meet human ethical requirements, but also guarantee core security attributes.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/06/428407.html" target="_blank" rel="noopener noreferrer">Anthropic has just filed its prospectus!</a>
+
+*QbitAI*
+
+Anthropic confidentially submitted its draft S-1 prospectus to the US SEC on June 1, officially launching its IPO process. The number of shares to be issued and pricing have not yet been determined, and the listing can be advanced after SEC review is completed. Founded in 2021 by a team that left OpenAI, the company focuses on AI safety, has received large strategic investments from Google, Amazon and others successively, has a latest valuation of nearly one trillion US dollars, and is known as one of the "AI Big Three" upcoming US IPOs along with OpenAI and SpaceX.
+
+<FeedbackButtons slug="item:qbitai-428407" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/428335.html" target="_blank" rel="noopener noreferrer">Meta Skill has just been released</a>
+
+*QbitAI*
+
+The recently viral AI Agent project OpenSquilla, which has received over 2000 GitHub stars, previously focused on intelligent model routing functionality, which can reduce per-task token costs by 60%-90% compared to similar products, and is jokingly called the top "miser". Its newly launched Meta Skill function can integrate multiple sub-skills to connect long workflows end-to-end, solving the previous pain points of complex processes requiring manual repeated invocation of individual skills and high construction thresholds, greatly reducing the difficulty of implementing automation in complex scenarios.
+
+<FeedbackButtons slug="item:qbitai-428335" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/428092.html" target="_blank" rel="noopener noreferrer">First-hand test of MiniMax M3: I thought the 74 logos on Jensen Huang's PPT would stump it</a>
+
+*QbitAI*
+
+After its launch, MiniMax M3 adjusted its weekly token billing limit to resolve disputes. It is the first open-source model in China that simultaneously has long context, multimodal, and strong coding capabilities, with performance comparable to overseas closed-source flagships such as GPT and Claude. It scores 59% on SWE-Bench Pro, surpassing GPT-5.5, the computing cost for 1M context is only 1/20 of the previous generation, and decoding speed is increased by more than 15 times. Its price is only one-tenth of overseas flagships, and it is paired with the MiniMax Code tool that matches Claude Code, which has been recommended by industry leaders.
+
+<FeedbackButtons slug="item:qbitai-428092" client:visible />
+
+---

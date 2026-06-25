@@ -1,0 +1,188 @@
+---
+lang: en
+translationKey: digest-2026-06-11
+title: "Daily AI Picks · 2026-06-11"
+description: "20 papers · Multi-source aggregation + AI summaries"
+date: 2026-06-11
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.12191" target="_blank" rel="noopener noreferrer">Agentic Environment Engineering for Large Language Models: A Survey of Environment Modeling, Synthesis, Evaluation, and Application</a>
+
+*HF ★ 22 · Jiachun Li, Zhuoran Jin, Tianyi Men… · [HF Mirror](https://huggingface.co/papers/2606.12191)*
+
+This is the first systematic review covering the field of agentic environment engineering for large language models. From the full lifecycle perspective of environment engineering, it covers four core modules: modeling, automatic generation, evaluation, and application. It categorizes and sorts the attributes, domains and core capabilities of existing environments, summarizes two generation paradigms of symbolic and neural types, breaks down the co-evolution path of agent-environment collaboration, and finally points out research directions including Environment-as-a-Service and multi-agent environments.
+
+<FeedbackButtons slug="item:arxiv-2606.12191" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.11926" target="_blank" rel="noopener noreferrer">Toward Generalist Autonomous Research via Hypothesis-Tree Refinement</a>
+
+*HF ★ 18 · Jiajie Jin, Yuyang Hu, Kai Qiu… · [HF Mirror](https://huggingface.co/papers/2606.11926)*
+
+This paper proposes Arbor, a generalist autonomous scientific research AI framework, with hypothesis-tree refinement mechanism as its core. A long-term coordinator oversees the overall research strategy, while short-term executors independently verify individual hypotheses, enabling cross-stage experience accumulation and iterative optimization of research directions. Across 6 types of real-world scientific research tasks, its performance is over 2.5 times that of Codex and Claude Code under the same resource conditions. When paired with GPT-5.5, it achieves an 86.36% medal rate on corresponding benchmarks, delivering state-of-the-art performance.
+
+<FeedbackButtons slug="item:arxiv-2606.11926" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.10728" target="_blank" rel="noopener noreferrer">DeNovoSWE: Scaling Long-Horizon Environments for Generating Entire Repositories from Scratch</a>
+
+*HF ★ 18 · Jiale Zhao, Guoxin Chen, Fanzhe Meng… · [HF Mirror](https://huggingface.co/papers/2606.10728)*
+
+To address the lack of large-scale verification datasets for long-horizon tasks where code agents build complete software repositories from scratch, this paper proposes the DeNovoSWE dataset. It contains 4818 instances of generating complete repositories from documentation, constructed automatically via a sandboxed agent workflow, divide-and-conquer plus critique-based repair, and difficulty-aware filtering strategies, with no manual annotation required. After fine-tuning Qwen3-30B-A3B with this dataset, the relevant benchmark score rose from 5.8% to 47.2%, significantly improving long-horizon software engineering capabilities.
+
+<FeedbackButtons slug="item:arxiv-2606.10728" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.09076" target="_blank" rel="noopener noreferrer">Beyond Scalar Rewards by Internalizing Reasoning into Score Distributions</a>
+
+*HF ★ 14 · Xin Jin, Huanqia Cai, Zhen Li… · [HF Mirror](https://huggingface.co/papers/2606.09076)*
+
+To address the problem that existing text-to-image reward models either overcompress preference uncertainty and fine-grained differences, or have high inference costs making them difficult to use directly as optimization signals, this paper proposes the Z-Reward teacher-student framework. A large VLM teacher optimizes the generation-aligned score distribution via grouped direct scoring, while a small VLM student distills scores through reasoning internalization, requiring no explicit reasoning chain during inference. Experiments show that the small model's performance is close to that of the large teacher, and when used as an optimization signal, it improves human preference by 41.3% compared to the SFT baseline.
+
+<FeedbackButtons slug="item:arxiv-2606.09076" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.12403" target="_blank" rel="noopener noreferrer">World Pilot: Steering Vision-Language-Action Models with World-Action Priors</a>
+
+*HF ★ 13 · Zefu Lin, Rongxu Cui, Junjia Xu… · [HF Mirror](https://huggingface.co/papers/2606.12403)*
+
+Existing Vision-Language-Action (VLA) models rely on static image-text pre-training and cannot capture the continuous contact dynamics of manipulation tasks. This paper proposes the World Pilot framework, which introduces two types of priors from world action models: latent state guidance injects scene evolution information into the perception layer, and action guidance provides trajectory priors for the generator. This method achieves a state-of-the-art 84.7% success rate on zero-shot out-of-distribution benchmarks, delivers the best performance across various real robot manipulation tasks, and shows particularly significant improvements under environment shifts.
+
+<FeedbackButtons slug="item:arxiv-2606.12403" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.11192" target="_blank" rel="noopener noreferrer">Restless bandits with imperfect binary feedback: PCL-indexability analysis and computation</a>
+
+*José Niño-Mora*
+
+Targeting opportunistic spectrum access scenarios with perception errors, this paper studies the restless multi-armed bandit problem with binary hidden states and imperfect binary feedback, and proposes an analysis and computation framework based on partial conservation laws. It combines deterministic skeletons and renewal decomposition to derive Whittle indices for partial threshold domains, and designs numerical schemes for other intervals to calculate equivalent marginal productivity indices. Experiments show that its indexability applicable range is much wider than existing works, and the corresponding strategy performance is significantly better than baselines.
+
+<FeedbackButtons slug="item:arxiv-2606.11192" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.11201" target="_blank" rel="noopener noreferrer">To Intervene or Not: Guiding Inference-time Alignment with Probabilistic Model Blending</a>
+
+*Jin Gan, Xin Li, Jun Luo*
+
+To address the problem that existing LLM inference-time alignment methods do not evaluate guidance reliability, which easily leads to over-intervention and performance degradation due to invalid guidance, this paper proposes the BlendIn inference-time alignment framework. It abandons binary intervention decisions, and weights and fuses the output distributions of two models based on guidance quality and model reliability. It can retain effective guidance, reduce the weight of unreliable suggestions, and deliver up to 50% performance improvement on hard-to-adapt model pairs.
+
+<FeedbackButtons slug="item:arxiv-2606.11201" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.11205" target="_blank" rel="noopener noreferrer">Dual-Stance Evaluation of Sycophancy: The Structure of Agreement and the Limits of Intervention</a>
+
+*Matthew James Buchan*
+
+To address the problem that existing evaluations of LLM sycophancy suppression do not verify whether they accidentally harm factual agreement, this study proposes a dual-stance evaluation paradigm. Centroid difference activation steering tests on Llama-3-8B-Instruct found that although sycophancy and factual agreement representations belong to different subspaces, existing steering directions cannot distinguish between the two, and will simultaneously reduce the model's agreement with sycophantic statements and correct facts, confirming that activations of readable representations are not necessarily directionally controllable.
+
+<FeedbackButtons slug="item:arxiv-2606.11205" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/using-codex-to-simulate-black-holes" target="_blank" rel="noopener noreferrer">How an astrophysicist uses Codex to help simulate black holes</a>
+
+*OpenAI*
+
+Astrophysicist Chi-kwan Chan used the AI programming large model Codex to develop black hole simulation programs, effectively lowering the coding threshold for highly complex astrophysical simulations and improving development efficiency. Such simulations can support the academic community in researching extreme physical environments, and can also be used to verify relevant inferences of Einstein's general theory of relativity, providing a new AI-assisted idea for cutting-edge astrophysics research.
+
+<FeedbackButtons slug="item:openai-blog-using-codex-to-simulate-black-holes" client:visible />
+
+## <a href="https://openai.com/index/openai-on-oracle-cloud" target="_blank" rel="noopener noreferrer">Access OpenAI models and Codex through your Oracle cloud commitment</a>
+
+*OpenAI*
+
+This solution indicates that enterprises can directly use their existing Oracle Cloud committed spend credits to call the full range of OpenAI large models and the Codex code large model within the Oracle Cloud environment, no need to purchase OpenAI services separately. At the same time, they can reuse Oracle Cloud's built-in enterprise-grade security protection, data governance, and compliance control capabilities, greatly reducing the procurement threshold and data compliance risks for AI application implementation.
+
+<FeedbackButtons slug="item:openai-blog-openai-on-oracle-cloud" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-fable-5-mythos-5" target="_blank" rel="noopener noreferrer">Claude Fable 5 and Claude Mythos 5</a>
+
+*Anthropic*
+
+Claude developer Anthropic has released two new-generation large model products: Claude Mythos 5 belongs to its newly launched Mythos-tier high-end flagship model series, representing its current latest technological level. Claude Fable 5, which is also in the same series, has undergone targeted full-scenario security tuning, has reached the safety standard for public access, and is officially launched to the market, meeting the needs of LLM invocation and function implementation for various general scenarios.
+
+<FeedbackButtons slug="item:anthropic-claude-fable-5-mythos-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/expanding-project-glasswing" target="_blank" rel="noopener noreferrer">Expanding Project Glasswing</a>
+
+*Anthropic*
+
+This announcement discloses the expansion plan for Project Glasswing: the project will expand its cooperation coverage to about 150 new institutions in more than 15 countries. The currently public content does not mention the implementation goals, adapted technical paths, and expected effects of this expansion, only clarifying the coverage scale of the new round of expansion in two dimensions: region and cooperative entities. Follow-up implementation progress is to be further disclosed.
+
+<FeedbackButtons slug="item:anthropic-expanding-project-glasswing" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/diffusiongemma-4x-faster-text-generation/" target="_blank" rel="noopener noreferrer">DiffusionGemma: 4x faster text generation</a>
+
+*Google DeepMind*
+
+DiffusionGemma is a specially optimized model for text generation speedup. Its core method is adapting the parallel diffusion generation paradigm to the Gemma open-source large model base, optimizing diffusion step size and semantic alignment strategies, avoiding the serial overhead of traditional autoregressive word-by-word decoding. Finally, under the premise that generation quality is close to the original Gemma, the text generation speed can reach 4 times that of the original version, suitable for high-concurrency low-latency generation scenarios.
+
+<FeedbackButtons slug="item:deepmind-diffusiongemma-4x-faster-text-generation" client:visible />
+
+## <a href="https://deepmind.google/blog/fluid-natural-voice-translation-with-gemini-35-live-translate/" target="_blank" rel="noopener noreferrer">Fluid, natural voice translation with Gemini 3.5 Live Translate</a>
+
+*Google DeepMind*
+
+This achievement launches the Gemini 3.5 real-time translation function, which core realizes near-real-time spoken language translation capability with natural and smooth voice output, solving the pain points of stiff voice and high latency in previous real-time translation. It is now officially launched in three application scenarios: Google AI Studio for AI developers, Google Translate tool for general users, and Google Meet for online meeting scenarios, meeting the cross-language real-time voice interaction needs of different groups.
+
+<FeedbackButtons slug="item:deepmind-fluid-natural-voice-translation-with-gemini-35-live-translate" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/ServiceNow-AI/code-switching" target="_blank" rel="noopener noreferrer">Can Voice Agents Handle Bilingual Customers? Benchmarking Frontier ASR on Code-Switched Speech</a>
+
+*Hugging Face*
+
+This paper focuses on code-switched speech interaction scenarios where bilingual users mix two languages, constructs a dedicated evaluation benchmark, and conducts performance tests on current cutting-edge Automatic Speech Recognition (ASR) systems. The results show that the recognition accuracy of existing cutting-edge ASR for code-switched speech is far lower than that of monolingual scenarios, with even higher error rates in colloquial mixed speech scenarios, proving that current voice agents still have obvious shortcomings in dealing with bilingual mixed speech users, and targeted optimization is needed.
+
+<FeedbackButtons slug="item:hf-blog-code-switching" client:visible />
+
+## <a href="https://huggingface.co/blog/CohereLabs/introducing-north-mini-code" target="_blank" rel="noopener noreferrer">Introducing North Mini Code: Cohere’s First Model For Developers</a>
+
+*Hugging Face*
+
+Cohere has released North Mini Code, its first code-specific large model for developers, which is the code scenario exclusive branch of its North large model series. It adopts a lightweight architecture for special optimization, trained for needs such as code generation, debugging, completion, and library calling. Its performance is better than open-source code models of the same size, with lower inference latency, suitable for lightweight deployment scenarios such as IDE plugins and edge-side tools.
+
+<FeedbackButtons slug="item:hf-blog-introducing-north-mini-code" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This paper focuses on the AI alignment problem, refutes the presupposition that "rational agents act guided by fixed ultimate goals", and points out that human rationality is reflected in behaviors adapting to a self-driven practice network including action rules, evaluation standards, and supporting resources. It proposes that to make AI adapt to human demands, be collaborative and compliant, its decision-making logic needs to be isomorphic with human practice logic, and this path has both ethical adaptability and security guarantee value.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/06/434267.html" target="_blank" rel="noopener noreferrer">The most viral moment of Google I/O happened on Douyin???</a>
+
+*QbitAI*
+
+At the 2026 Google I/O Conference, DeepMind CEO Demis Hassabis mentioned that AGI will arrive around 2030. This conference broke the one-way output mode of traditional technology summits, and Douyin became the first site for cross-screen linkage and public participation: users can participate based on curiosity, bloggers launched a variety of creative AI application interactions, ordinary audiences can also ask Hassabis questions directly, and cutting-edge technology dialogues directly reach the general public.
+
+<FeedbackButtons slug="item:qbitai-434267" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/434268.html" target="_blank" rel="noopener noreferrer">Industry-first AI college application filling + real expert verification, Baidu fully upgrades college entrance examination services</a>
+
+*QbitAI*
+
+In June, Baidu upgraded its college entrance examination service, launching the industry's first free "AI college application filling + real expert verification" service: relying on Wenxin capabilities combined with multi-dimensional data such as application information and employment data, the AI generates personalized application plans with logical explanations, which are reviewed and verified by senior consultants, with supporting quick Q&A from senior students. This service has been running for 20 years and has served more than 900 million people accumulatively, it is for auxiliary use only, and the final decision-making power belongs to candidates and their parents.
+
+<FeedbackButtons slug="item:qbitai-434268" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/434225.html" target="_blank" rel="noopener noreferrer">Test of Xiaomi's fastest 1T large model: throughput over 1000 Tokens per second, Vibe Coding delivers results in 7 seconds</a>
+
+*QbitAI*
+
+Xiaomi launched the MiMo-V2.5-Pro-UltraSpeed large model with 1T parameters and 1M context support. Through full-link optimization from the model layer to the engine layer, it achieves an inference throughput of over 1000 Tokens per second using only general-purpose GPUs, breaking the industry's "impossible triangle" that "speed, power, and general-purpose GPU compatibility cannot be achieved at the same time". Tests show that it only takes 7 seconds to generate tomato clock code with specified functions, and its inference engineering capability is in the world's first tier.
+
+<FeedbackButtons slug="item:qbitai-434225" client:visible />

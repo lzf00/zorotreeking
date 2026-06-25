@@ -1,0 +1,120 @@
+---
+lang: en
+translationKey: digest-2026-06-14
+title: "AI Daily Digest · 2026-06-14"
+description: "12 papers · multi-source aggregation + AI summaries"
+date: 2026-06-14
+tags: [digest, auto, openai, anthropic, deepmind, hf-blog, the-gradient, qbitai]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# OpenAI
+
+## <a href="https://openai.com/index/academy-courses-applying-ai-at-work" target="_blank" rel="noopener noreferrer">New OpenAI Academy courses for the next era of work</a>
+
+*OpenAI*
+
+OpenAI has launched three new official Academy courses for the upcoming AI-driven work era. The courses focus on the implementation of AI capabilities in real work scenarios, aiming to help learners master practical AI skills, build replicable standardized AI workflows, learn to flexibly apply AI agents to daily work, and help professionals quickly adapt to the new work paradigm.
+
+<FeedbackButtons slug="item:openai-blog-academy-courses-applying-ai-at-work" client:visible />
+
+## <a href="https://openai.com/index/preply" target="_blank" rel="noopener noreferrer">How Preply combines AI and human tutors to personalize learning</a>
+
+*OpenAI*
+
+Online language education platform Preply focuses on personalized learning paths that integrate AI and human tutors. It recently integrated OpenAI technology to launch three supporting features: automatic generation of review summaries for corresponding courses, delivery of personalized learning feedback to learners, and matching of targeted language exercises. This solution retains the interactive adaptation advantages of human teaching, while making up for the efficiency shortcomings of after-school services with AI, further improving the effect of personalized learning.
+
+<FeedbackButtons slug="item:openai-blog-preply" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener noreferrer">Statement on the US government directive to suspend access to Fable 5 and Mythos 5</a>
+
+*Anthropic*
+
+This is the official statement in response to the US government's export control directive: the US recently introduced new control regulations requiring a full suspension of access to Fable 5 and Mythos 5 products for all foreign nationals. The scope of control is not restricted by region, and the ban applies regardless of whether the relevant foreign personnel are inside or outside the US, marking the latest measure by the US to tighten relevant technology export controls.
+
+<FeedbackButtons slug="item:anthropic-fable-mythos-access" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-corps" target="_blank" rel="noopener noreferrer">Introducing Claude Corps</a>
+
+*Anthropic*
+
+Anthropic has officially launched a national talent fellowship program called Claude Corps, which is open to early-career groups. The core recruitment requirement is that applicants have a strong passion for promoting the benefits of AI technology to cover communities across the United States. The program aims to further expand the implementation breadth and audience coverage of inclusive AI technology by supporting relevant young practitioners.
+
+<FeedbackButtons slug="item:anthropic-claude-corps" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/diffusiongemma-4x-faster-text-generation/" target="_blank" rel="noopener noreferrer">DiffusionGemma: 4x faster text generation</a>
+
+*Google DeepMind*
+
+This paper proposes a new text generation model DiffusionGemma, which abandons the autoregressive word-by-word generation logic of traditional large language models and adopts a diffusion-based parallel decoding architecture. While ensuring that the generation quality for general text, daily conversations and other tasks is on par with Google's native Gemma, its inference speed is 4 times faster. It is also compatible with existing acceleration solutions such as quantization and distillation, adapting to various implementation scenarios including cloud services and end-side deployment.
+
+<FeedbackButtons slug="item:deepmind-diffusiongemma-4x-faster-text-generation" client:visible />
+
+## <a href="https://deepmind.google/blog/investing-in-multi-agent-ai-safety-research/" target="_blank" rel="noopener noreferrer">Investing in multi-agent AI safety research</a>
+
+*Google DeepMind*
+
+Google DeepMind and its partners announced the launch of a special $10 million funding program to recruit research projects in the field of multi-agent AI safety. This initiative aims to fill the current coverage gap of single-agent safety research, specifically address unique risks in multi-agent scenarios such as collaboration conflicts, harmful coordination, and alignment deviations, and provide research support for the large-scale safe implementation of multi-agent systems.
+
+<FeedbackButtons slug="item:deepmind-investing-in-multi-agent-ai-safety-research" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/olmo-eval" target="_blank" rel="noopener noreferrer">olmo-eval: An evaluation workbench for the model development loop</a>
+
+*Hugging Face*
+
+olmo-eval is a dedicated evaluation workbench for the full process of large model development launched by the Allen Institute for AI. Targeting the pain points of existing evaluation tools being disconnected from training iterations and scattered evaluation dimensions, it integrates multi-dimensional capability evaluation, dynamic in-training evaluation, result traceability analysis and other functions, supports custom evaluation sets to adapt to the needs of different training stages, can greatly reduce evaluation costs, accelerate model iteration, and provides core support for the optimization of the open-source large model OLMO.
+
+<FeedbackButtons slug="item:hf-blog-olmo-eval" client:visible />
+
+## <a href="https://huggingface.co/blog/torch-mlp-fusion" target="_blank" rel="noopener noreferrer">Profiling in PyTorch (Part 2): From nn.Linear to a Fused MLP</a>
+
+*Hugging Face*
+
+This is the second part of the PyTorch performance analysis series. It first disassembles the performance bottlenecks of multi-layer perceptrons (MLP) implemented by stacking native nn.Linear, identifies the problems of redundant kernel startup and inter-layer VRAM round-trip overhead, and proposes an operator fusion solution that combines multi-layer Linear + activation logic into a single kernel. Actual tests show that the VRAM access efficiency of the fused MLP is greatly improved, and the end-to-end running speed is more than 30% higher than the native implementation, providing a reference for fusion implementation in the PyTorch environment.
+
+<FeedbackButtons slug="item:hf-blog-torch-mlp-fusion" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This paper reflects on the orthogonality hypothesis in the field of AI alignment, and proposes from the perspective of virtue ethics: rational humans do not guide their actions with fixed ultimate goals, but adapt their behaviors to a practical network including action rules and evaluation standards. To achieve effective collaboration between AI and humans and meet the requirements of human agency, AI decision-making logic needs to be isomorphic to human practical logic, which is related to both ethical alignment and core security performance.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/06/435483.html" target="_blank" rel="noopener noreferrer">Highly recommended by Hugging Face CEO, also backed by Bengio's team: Why is this HRM model trained for $1,500 going viral?</a>
+
+*QbitAI*
+
+The 1B-parameter HRM-Text launched by Sapient Intelligence is not a distillation, fine-tuned or rebranded version of existing large models, and adopts an implicit recursive reasoning route. Instead of stacking parameters to build a knowledge warehouse during pre-training, it focuses on strengthening the core reasoning capability. With a training cost of only $1,500, it far outperforms models of the same size in multiple benchmark tests such as MATH without additional post-processing, and has been widely recognized by the industry. Relevant resources have been open sourced, verifying the feasibility of the new reasoning architecture.
+
+<FeedbackButtons slug="item:qbitai-435483" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/435455.html" target="_blank" rel="noopener noreferrer">Agents finally have physical bodies: Thoughts and practices behind Jiuwen Symbiosis</a>
+
+*QbitAI*
+
+Previously, the AI industry has long focused on upgrading large model parameters and reasoning capabilities, ignoring the shortboard of physical interaction, leading large models to fall into the "brain in a vat" dilemma, which aligns with the conclusion of Moravec's paradox that it is far more difficult for AI to achieve basic physical capabilities such as motion perception than logical tasks. Recently, the openJiuwen community open sourced the Jiuwen Symbiosis architecture specially built for high-level physical AI, endowing AI with the ability to perceive and act in the physical world, and promoting the implementation of intelligence from digital to real scenarios.
+
+<FeedbackButtons slug="item:qbitai-435455" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/435394.html" target="_blank" rel="noopener noreferrer">2026 Zhiyuan Conference opens: Promoting the "three-body interaction" of AI, the physical world and life sciences</a>
+
+*QbitAI*
+
+On June 12, 2026, the 8th Beijing Zhiyuan Conference opened, focusing on the direction of "three-body interaction" between AI, the physical world and life sciences. The conference brought together top academic and industry representatives from China and abroad, including Whitfield Diffie and Andrew Barto, to exchange views on cutting-edge topics such as world models, intelligent agents, and AI safety. At the conference, Zhiyuan released the latest technological achievements such as large models and intelligent agents. It has cumulatively open sourced more than 200 models, with global downloads exceeding 1 billion times.
+
+<FeedbackButtons slug="item:qbitai-435394" client:visible />

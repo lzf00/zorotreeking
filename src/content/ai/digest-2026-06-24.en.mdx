@@ -1,0 +1,205 @@
+---
+lang: en
+translationKey: digest-2026-06-24
+title: "AI Daily Digest · 2026-06-24"
+description: "20 papers · Multi-source aggregation + AI summaries"
+date: 2026-06-24
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.webp"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's highlights in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading institutions including HuggingFace, OpenAI, Anthropic, and DeepMind have collectively released multiple updates related to AI technology, products, and policies</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Cutting-edge research results across fields including agents, 6G, brain-computer authentication, and federated learning have been released on arXiv and the open source community</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">The domestic AI industry is seeing high activity: WAIC awards announced, Qualcomm lays out physical AI, Zhengxing Innovation closes nearly $100 million in financing</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Agent Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 LLM Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡 Cross-disciplinary Frontier</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Industry Trends</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📰 Regulatory Directions</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.24530" target="_blank" rel="noopener noreferrer">NatureBench: Can Coding Agents Match the Published SOTA of Nature-Family Papers?</a>
+
+*HF ★ 24 · Yuru Wang, Lejun Cheng, Yuxin Zuo… · [HF Mirror](https://huggingface.co/papers/2606.24530)*
+
+This study introduces NatureBench, an interdisciplinary benchmark containing 90 tasks extracted from Nature-series papers, paired with the NatureGym pipeline to build a standardized container environment, solving the problems of fragmented environments and low credibility of previous benchmarks. 10 cutting-edge coding agents were tested with web search disabled, and the strongest model only outperformed existing SOTA on 17.8% of tasks. Successes mostly came from converting problems to familiar supervised prediction tasks rather than original innovation, while failures were mainly caused by wrong method selection and insufficient computing power. Relevant resources have been open sourced.
+
+<FeedbackButtons slug="item:arxiv-2606.24530" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.24597" target="_blank" rel="noopener noreferrer">Qwen-AgentWorld: Language World Models for General Agents</a>
+
+*HF ★ 22 · Yuxin Zuo, Zikai Xiao, Li Sheng… · [HF Mirror](https://huggingface.co/papers/2606.24597)*
+
+This paper proposes Qwen-AgentWorld, a language world model for general agents. Trained on tens of millions of real interaction trajectories across 7 domains via a three-stage training process, two model variants of different parameter sizes are released. Verified by the self-developed evaluation benchmark AgentWorldBench, its performance is significantly better than existing cutting-edge models. Two application paradigms are also validated: as an independent simulator, it can improve the reinforcement learning effect of agents, and as a pre-training warm-up solution, it can improve the performance of 7 types of downstream agent tasks.
+
+<FeedbackButtons slug="item:arxiv-2606.24597" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.19930" target="_blank" rel="noopener noreferrer">MobileForge: Annotation-Free Adaptation for Mobile GUI Agents with Hierarchical Feedback-Guided Policy Optimization</a>
+
+*HF ★ 15 · Guangyi Liu, Pengxiang Zhao, Gao Wu… · [HF Mirror](https://huggingface.co/papers/2606.19930)*
+
+Aiming at the pain points of high annotation cost for adapting MLLM-based mobile GUI agents to real applications, fragmented annotation-free learning frameworks, and rough optimization signals, this paper proposes MobileForge, an annotation-free adaptation system: it is equipped with a task generation and evaluation module for real application interaction, adopts a hierarchical feedback-guided policy optimization method, completes adaptation without manual annotation, has performance close to closed-domain dedicated GUI models, and achieves the best performance among current public solutions in cross-domain tests.
+
+<FeedbackButtons slug="item:arxiv-2606.19930" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.19926" target="_blank" rel="noopener noreferrer">MemGUI-Agent: An End-to-End Long-Horizon Mobile GUI Agent with Proactive Context Management</a>
+
+*HF ★ 14 · Guangyi Liu, Gao Wu, Congxiao Liu… · [HF Mirror](https://huggingface.co/papers/2606.19926)*
+
+To address the problems of prompt explosion and loss of key cross-application information caused by ReAct-style passive accumulation of records during long-cycle tasks for MLLM-driven mobile GUI agents, this paper proposes MemGUI-Agent: through the ConAct framework, context management and UI operations are listed as policy output items together, maintaining three types of structured context to compress the prompt scale. Trained on the MemGUI-3K dataset with 2956 annotated trajectories, its 8B version achieves the best open-source performance for the same parameter size on two benchmarks.
+
+<FeedbackButtons slug="item:arxiv-2606.19926" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.22875" target="_blank" rel="noopener noreferrer">FedOT: Ownership Verification and Leakage Tracing via Watermarks for Federated LDMs</a>
+
+*HF ★ 7 · Wenlong Cheng, Yuan Gan, Yunqiu Xu… · [HF Mirror](https://huggingface.co/papers/2606.22875)*
+
+Aiming at the problems that latent diffusion models (LDM) trained via federated learning are vulnerable to leakage and resale by malicious participants, existing watermarking solutions cannot trace the leakage source, and are easily erased by replacing the VAE decoder, this paper proposes the FedOT framework: it designs segmented watermarks for ownership verification and malicious client tracing respectively; adds latent vector transformation to bind the VAE and U-Net latent space, so replacing the VAE will lead to serious degradation of generated image quality. Experiments confirm its excellent performance in ownership verification and tracing.
+
+<FeedbackButtons slug="item:arxiv-2606.22875" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.20670" target="_blank" rel="noopener noreferrer">Towards CSI-Native Foundation Models: A Channel-Adaptive Roadmap for 6G</a>
+
+*Chenyu Zhang, Xinchen Lyu, Chenshan Ren…*
+
+Aiming at the defect that existing 6G wireless foundation models do not treat Channel State Information (CSI) as a propagation response and cannot capture the inherent spatial-temporal-frequency geometric features of the wireless environment, this paper proposes a channel-adaptive roadmap for CSI-native foundation models, building a unified framework to align modules such as pre-training with three types of channel constraints. Experiments verify that this scheme outperforms baselines in multiple dimensions, with pilot overhead of only 7.01%, and net spectrum efficiency improved by 15.5% compared with the current optimal solution, which can support efficient wireless access.
+
+<FeedbackButtons slug="item:arxiv-2606.20670" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.20673" target="_blank" rel="noopener noreferrer">NeuroShield: A Device-Agnostic Foundation Model for EEG Authentication</a>
+
+*Matin Fallahi, Patricia Arias-Cabarcos, Thorsten Strufe*
+
+Aiming at the pain point that existing EEG identity authentication models are bound to the acquisition settings during training and have poor reusability, this paper proposes NeuroShield, a device-agnostic foundation model. It adopts a two-stage Transformer architecture, which can extract identity-discriminative embeddings from EEG with variable channels and duration. Pre-trained on data from more than 15,000 subjects, its equal error rate after fine-tuning is 0.44-8.06 percentage points lower than SOTA, adapts to unseen acquisition configurations, and has been open sourced.
+
+<FeedbackButtons slug="item:arxiv-2606.20673" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.20743" target="_blank" rel="noopener noreferrer">Massive Activations Are Architecturally Robust: A Controlled Scratch/Commitment Residual Stream Test</a>
+
+*Maruthi Vemula (University of North Carolina at Chapel Hill)*
+
+To verify whether the large activation outliers concentrated in the start-of-sequence tokens in Transformers are an accidental product of the residual stream serving both read and write roles, or functionally necessary, researchers proposed the Ledger residual architecture, which splits the residual stream into an overwritable computation stream and a read-only decoding accumulator. Experiments found that after splitting, the decoding channel still reconstructs similar abnormal activations, and sparse penalties instead strengthen their features, proving that large activations are functionally valid, architecturally robust features rather than accidental products.
+
+<FeedbackButtons slug="item:arxiv-2606.20743" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/helping-build-shared-standards-for-advanced-ai" target="_blank" rel="noopener noreferrer">Helping build shared standards for advanced AI</a>
+
+*OpenAI*
+
+OpenAI is promoting the construction of shared standards in the cutting-edge AI field, with core initiatives including building a unified evaluation framework adapted to advanced AI, promoting standardized security practices, and promoting global cross-stakeholder collaboration through the Appia Foundation. This initiative aims to solve the current pain points of inconsistent standards and difficulty in collaborative prevention and control of security risks in the cutting-edge AI field, and lay a consensus foundation for the safe, compliant and orderly development of the global AI industry.
+
+<FeedbackButtons slug="item:openai-blog-helping-build-shared-standards-for-advanced-ai" client:visible />
+
+## <a href="https://openai.com/index/gpt-5-immunology-mystery" target="_blank" rel="noopener noreferrer">How GPT-5 helped immunologist Derya Unutmaz solve a 3-year-old mystery</a>
+
+*OpenAI*
+
+Immunologist Derya Unutmaz's 3-year-long immunology puzzle related to T cell behavior was recently successfully solved with the help of GPT-5 Pro's cross-domain information integration and correlational reasoning capabilities. This breakthrough not only fills the gap in understanding of T cell action mechanisms, but also provides new research support and ideas for subsequent scientific research in cancer treatment and autoimmune diseases.
+
+<FeedbackButtons slug="item:openai-blog-gpt-5-immunology-mystery" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener noreferrer">Statement on the US government directive to suspend access to Fable 5 and Mythos 5</a>
+
+*Anthropic*
+
+This statement explains the latest US government export control directive: the US government explicitly requires that all foreign nationals, whether located inside or outside the US, are suspended from accessing the two restricted tools Fable 5 and Mythos 5. This directive is the latest measure by the US to tighten external control over cutting-edge technologies, which will directly affect the technology use of foreign R&D personnel in relevant fields, and may also hinder cross-border technical collaboration.
+
+<FeedbackButtons slug="item:anthropic-fable-mythos-access" client:visible />
+
+## <a href="https://www.anthropic.com/news/introducing-claude-tag" target="_blank" rel="noopener noreferrer">Introducing Claude Tag</a>
+
+*Anthropic*
+
+The newly launched Claude Tag is a brand new product from Anthropic, a leading R&D enterprise in the AI security field. Anthropic has long focused on the AI security track, with the core R&D goal of building AI systems with high operational reliability, interpretable internal mechanisms, and controllable and guidable output behavior. The newly released Claude Tag will also be implemented along this technical route, providing users with safer, more controllable and expected AI interaction services.
+
+<FeedbackButtons slug="item:anthropic-introducing-claude-tag" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/unlocking-uk-house-building-with-ai-accelerated-planning/" target="_blank" rel="noopener noreferrer">Unlocking UK house-building with AI-accelerated planning</a>
+
+*Google DeepMind*
+
+This research targets the core pain point of slow housing construction approval in the UK. The core initiative is that the UK government has collaborated with Google DeepMind to develop an AI-driven planning approval prototype system, empowering government planning processes with AI technology to accelerate the efficiency of housing-related administrative decision-making. This solution is expected to significantly shorten the approval cycle of new housing projects, solve the long-standing problem of slow housing supply and insufficient supply in the UK, and provide a new technical path for accelerating government approval.
+
+<FeedbackButtons slug="item:deepmind-unlocking-uk-house-building-with-ai-accelerated-planning" client:visible />
+
+## <a href="https://deepmind.google/blog/securing-the-future-of-ai-agents/" target="_blank" rel="noopener noreferrer">Securing the future of AI agents</a>
+
+*Google DeepMind*
+
+The article *Securing the future of AI agents* focuses on the security pain points of large-scale deployment of AI agents, and proposes a solution of building an AI control roadmap to strengthen internal systems. The core is to integrate traditional security protection mechanisms with real-time dynamic monitoring capabilities, relying on mature protection experience to ensure basic security while being able to quickly respond to unexpected risks during the operation of AI agents, providing a feasible framework for the construction of AI agent security systems.
+
+<FeedbackButtons slug="item:deepmind-securing-the-future-of-ai-agents" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/ibm-research/cuga-apps" target="_blank" rel="noopener noreferrer">Build real agentic apps using CUGA: two dozen working examples on a lightweight harness</a>
+
+*Hugging Face*
+
+This paper proposes CUGA, a lightweight autonomous agent development framework, paired with a lightweight runtime adaptation suite, and 24 directly runnable autonomous agent application examples have been implemented. Tests show that this framework can greatly reduce the development threshold for agent applications with active decision-making and autonomous execution capabilities. Multi-scenario examples verify its versatility and ease of use, making it suitable for rapid deployment of practical autonomous agent products.
+
+<FeedbackButtons slug="item:hf-blog-cuga-apps" client:visible />
+
+## <a href="https://huggingface.co/blog/huggingface-hub-release-ci" target="_blank" rel="noopener noreferrer">Shipping huggingface_hub every week with AI, open tools, and a human in the loop</a>
+
+*Hugging Face*
+
+Hugging Face has launched a weekly iteration mechanism for its core open source component huggingface_hub, adopting a model of AI automated processing, full-link open source tool support combined with human-in-the-loop verification, which can quickly respond to the needs of the global developer community, efficiently complete function launches, vulnerability fixes, adaptation optimization and other work, effectively improving the usability and stability of the repository, and further lowering the threshold for developers to call AI models and datasets.
+
+<FeedbackButtons slug="item:hf-blog-huggingface-hub-release-ci" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This paper reflects on the mainstream orthogonality assumption in AI alignment, and points out from the perspective of virtue ethics that neither rational humans nor AI need to presuppose fixed final goals. Rational human actions are not directed at preset goals, but adapt to a self-driven practice network including action tendencies, evaluation standards, etc. To realize AI-human collaboration and ensure security, the decision-making logic of AI needs to match the practical action logic of human beings, taking into account both ethical alignment and core security requirements.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/06/437698.html" target="_blank" rel="noopener noreferrer">2026 WAIC SAIL Award TOP 30 and Outstanding Young Paper Award TOP 20 announced</a>
+
+*QbitAI*
+
+The shortlists for two major awards of the 2026 World Artificial Intelligence Conference (WAIC) have been officially released. Among them, the SAIL Award, the highest honor of the conference, selected the TOP 30 after multiple rounds of selection. This award focuses on dimensions such as technological breakthroughs and application innovation to select benchmark cutting-edge achievements, and is a core indicator of global AI technology iteration and industrial implementation. The Outstanding Paper Award for young scholars under 40 selected the TOP 20, aiming to discover young AI scientific research talents and encourage in-depth innovation in the field.
+
+<FeedbackButtons slug="item:qbitai-437698" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/432494.html" target="_blank" rel="noopener noreferrer">The 'King of Smart Cockpits' pivots to physical AI, Qualcomm is due for revaluation</a>
+
+*QbitAI*
+
+Qualcomm, previously recognized as the "King of Smart Cockpits", is accelerating its layout in the physical AI track: instead of hyping concepts such as computing power and full-stack self-research, it only took three and a half years to realize the mass production of cabin-driving fusion solutions from chip release to installation in models from brands such as Leapmotor and BAIC Motor. It also launched the in-vehicle AI Claw plan in collaboration with ecological partners, and has become a pioneer in the implementation of physical AI, so its market value is waiting to be re-evaluated.
+
+<FeedbackButtons slug="item:qbitai-432494" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/437694.html" target="_blank" rel="noopener noreferrer">Zhengxing Innovation closes nearly $100 million angel round financing, with joint support from CP Group, Huaqin Technology and other listed enterprises</a>
+
+*QbitAI*
+
+Embodied intelligence enterprise Zhengxing Innovation recently closed nearly $100 million in angel round financing, with participation from multiple listed companies and leading institutions including CP Group and Huaqin Technology. The funds raised in this round will be used to recruit and cultivate core talents, iterate core technologies such as the world action model, and promote deployment in retail and industrial scenarios. The company was founded by serial entrepreneur Yao Song, Tsinghua scholar Yu Chao and others, focusing on physical intelligence, with the goal of promoting large-scale commercial use of humanoid robots.
+
+<FeedbackButtons slug="item:qbitai-437694" client:visible />
