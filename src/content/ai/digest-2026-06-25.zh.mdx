@@ -1,0 +1,205 @@
+---
+lang: zh
+translationKey: digest-2026-06-25
+title: "AI 每日精选 · 2026-06-25"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-06-25
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.webp"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI联合博通推出LLM专用推理芯片，谷歌Gemini 3.5 Flash新增电脑操控能力，Anthropic推出Claude Tag并回应美政府访问限制</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">文本生成视频、多模态代码智能、Agent内存系统、MoE架构等多个AI细分领域发布最新研究成果</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">字节豆包收费版上线引发用户热议，Momenta冲刺世界模型赛道IPO，深圳将举办下一代算力底座主题活动</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥大厂动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔬科研进展</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡功能上新</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏭产业动向</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡算力基建</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.26058" target="_blank" rel="noopener noreferrer">DomainShuttle: Freeform Open Domain Subject-driven Text-to-video Generation</a>
+
+*HF ★ 19 · Nan Chen, Yiyang Cai, Rongchang Xie… · [HF 镜像](https://huggingface.co/papers/2606.26058)*
+
+现有开放领域主体驱动文生视频方法多侧重域内场景主体保真，跨域场景下的编辑适配性不足。本文提出DomainShuttle框架，通过特征解耦的Domain-MoT模块、视频-参考双RoPE空间建模、跨对一致损失三大核心设计，可灵活适配域内、跨域两类生成场景，在主体保真度和生成灵活性上均显著优于现有方案。
+
+<FeedbackButtons slug="item:arxiv-2606.26058" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.15932" target="_blank" rel="noopener noreferrer">Beyond NL2Code: A Structured Survey of Multimodal Code Intelligence</a>
+
+*HF ★ 18 · Xuanle Zhao, Qiushi Sun, Jingyu Xiao… · [HF 镜像](https://huggingface.co/papers/2606.15932)*
+
+该多模态代码智能综述针对现有文本转代码大模型无法适配截图、图表等视觉输入的真实编程场景的问题，先按代码在任务中的角色界定领域范畴，再将相关基准、方法划分为GUI、科学可视化等四大类系统梳理，最后提出四个以验证为核心的未来研究方向，推动领域从单输出模仿转向证据支撑的可执行系统。
+
+<FeedbackButtons slug="item:arxiv-2606.15932" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.25041" target="_blank" rel="noopener noreferrer">Wan-Streamer v0.1: End-to-end Real-time Interactive Foundation Models</a>
+
+*HF ★ 15 · Lianghua Huang, Zhifan Wu, Wei Wang… · [HF 镜像](https://huggingface.co/papers/2606.25041)*
+
+本次推出的Wan-Streamer v0.1是原生流式端到端实时交互基座模型，摒弃传统级联多模块架构，采用单Transformer加块因果注意力机制，统一完成音视文多模态的感知、推理、生成与跨模态同步。经全栈流式优化后，模型侧延迟仅200ms，叠加常规网络总交互延迟约550ms，可支持亚秒级全双工音视频交互。
+
+<FeedbackButtons slug="item:arxiv-2606.25041" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.24849" target="_blank" rel="noopener noreferrer">IV-CoT: Implicit Visual Chain-of-Thought for Structure-Aware Text-to-Image Generation</a>
+
+*HF ★ 10 · Zixuan Li, Haokun Lin, Yicheng Xiao… · [HF 镜像](https://huggingface.co/papers/2606.24849)*
+
+针对多模态大模型文生图对结构类提示（物体数量、空间关系、属性绑定等）遵循度不足的痛点，本文提出隐式视觉思维链IV-CoT框架，将视觉条件查询拆为结构-语义级联，仅训练时引入草图监督引导结构建模，推理无需额外中间步骤，单前向即可完成隐式推理，在两项基准测试上效果领先，结构与语义查询互补提升结构感知生成能力。
+
+<FeedbackButtons slug="item:arxiv-2606.24849" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.24775" target="_blank" rel="noopener noreferrer">Are We Ready For An Agent-Native Memory System?</a>
+
+*HF ★ 6 · Wei Zhou, Xuanhe Zhou, Shaokun Han… · [HF 镜像](https://huggingface.co/papers/2606.24775)*
+
+当前大模型智能体内存已发展为支持信息全生命周期管理的数据系统，但现有评估仅关注端到端任务指标，系统层面的成本、架构适配性、动态更新鲁棒性等问题被忽视。本文从数据管理视角将智能体内存拆解为四大核心模块，评测12种主流系统及2个基线，发现无通用最优架构，内存结构需匹配负载瓶颈，局部维护性价比远高于全局重组，为原生智能体内存研发指明方向。
+
+<FeedbackButtons slug="item:arxiv-2606.24775" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.23739" target="_blank" rel="noopener noreferrer">Systematic Exploration of 4-Expert Heterogeneous Mixture-of-Experts via Automated Pipeline Search</a>
+
+*Yashkumar R Lukhi, Harsh Rameshbhai Moradiya, Radu Timofte…*
+
+该研究针对4专家异构混合专家架构，开发自动化大规模搜索管线，基于LEMUR数据集自动组合基础架构生成候选模型，经28天运行完成千余模型评测。研究发现原枚举逻辑存在锚定AirNet的搜索空间偏差，提出分层随机采样修复方案；明确AirNet搭配ShuffleNet、MobileNetV3精度最优，两类低产架构可排除，相关成果已开源。
+
+<FeedbackButtons slug="item:arxiv-2606.23739" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.23740" target="_blank" rel="noopener noreferrer">Weight-Space Geometry of Offline Reasoning Training</a>
+
+*Aleksandr Nikolich, Igor Kiselev, Vladimir Platonov…*
+
+本研究对比离线推理蒸馏6种常用训练损失的权重更新机制差异，基于Qwen3-4B仅作用于注意力层的LoRA，在相同数学推理数据上训练后多维度分析权重更新特征。结果显示SFT、RFT、RIFT更新高度重合、精度接近；DFT、离线GRPO依次偏离SFT方向；DPO处于近正交子空间精度最高，但学习率仅为其余方法1/10，效果归因待后续验证。
+
+<FeedbackButtons slug="item:arxiv-2606.23740" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.23741" target="_blank" rel="noopener noreferrer">A Survey on Federated Causal Discovery and Inference</a>
+
+*Xianjie Guo, Yuwei Wang, Guodu Xiang…*
+
+本综述聚焦数据分散、隐私约束下传统因果分析难落地，且新兴联邦因果研究缺系统梳理的痛点，构建多维度分类体系梳理联邦因果发现、因果推断的技术脉络，首次明确二者是联邦因果推理流程中互补的前后阶段，总结领域共性技术难题，指明未来研究方向，为研究者提供入门参考。
+
+<FeedbackButtons slug="item:arxiv-2606.23741" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/openai-broadcom-jalapeno-inference-chip" target="_blank" rel="noopener noreferrer">OpenAI and Broadcom unveil LLM-optimized inference chip</a>
+
+*OpenAI*
+
+OpenAI联合博通正式推出定制AI芯片“Jalapeño”，该产品专为大语言模型（LLM）推理场景优化设计，核心目标是提升LLM推理环节的运行性能、能效水平，同时适配AI系统的规模化部署需求，为破解当前大模型落地的推理算力、成本瓶颈提供了新的硬件支撑。
+
+<FeedbackButtons slug="item:openai-blog-openai-broadcom-jalapeno-inference-chip" client:visible />
+
+## <a href="https://openai.com/index/helping-build-shared-standards-for-advanced-ai" target="_blank" rel="noopener noreferrer">Helping build shared standards for advanced AI</a>
+
+*OpenAI*
+
+OpenAI正推进先进AI领域共享标准建设工作，核心依托Appia基金会落地三类关键举措：搭建适配前沿AI特性的专业评估框架、推广统一合规的AI安全实践规范、推动跨国家跨主体的全球协同合作，旨在补全当前先进AI发展的规则缺口，为全行业安全有序发展提供公共基础支撑。
+
+<FeedbackButtons slug="item:openai-blog-helping-build-shared-standards-for-advanced-ai" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener noreferrer">Statement on the US government directive to suspend access to Fable 5 and Mythos 5</a>
+
+*Anthropic*
+
+这份是针对美国政府出口管制新规发布的相关声明，核心内容为：美政府本次出台的管制指令明确要求，所有非美籍人员无论身处美国境内还是境外，均被暂停访问Fable 5、Mythos 5的全部权限，管制覆盖全体外籍群体且不受地域限制，凸显美国相关技术领域出口管制进一步收紧的态势。
+
+<FeedbackButtons slug="item:anthropic-fable-mythos-access" client:visible />
+
+## <a href="https://www.anthropic.com/news/introducing-claude-tag" target="_blank" rel="noopener noreferrer">Introducing Claude Tag</a>
+
+*Anthropic*
+
+AI安全研究厂商Anthropic近期正式推出全新产品Claude Tag。作为长期深耕AI对齐领域的机构，Anthropic核心研发方向是打造高可靠性、可解释、可被用户精准操控的AI系统，本次推出的Claude Tag是其安全技术落地的新载体，将落地其安全设计理念，为用户提供更可控、风险更低的大模型使用体验。
+
+<FeedbackButtons slug="item:anthropic-introducing-claude-tag" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/introducing-computer-use-in-gemini-3-5-flash/" target="_blank" rel="noopener noreferrer">Introducing computer use in Gemini 3.5 Flash</a>
+
+*Google DeepMind*
+
+谷歌最新发布的Gemini 3.5 Flash新增原生计算机操作能力，通过端到端微调适配键鼠交互、GUI界面识别逻辑，同时优化低延迟推理链路，可跨系统操作各类办公、编程软件。实测其自动化操作准确率较前代同规模模型提升超40%，操作延迟控制在2秒内，可直接落地智能办公RPA、消费级智能助手等场景。
+
+<FeedbackButtons slug="item:deepmind-introducing-computer-use-in-gemini-3-5-flash" client:visible />
+
+## <a href="https://deepmind.google/blog/unlocking-uk-house-building-with-ai-accelerated-planning/" target="_blank" rel="noopener noreferrer">Unlocking UK house-building with AI-accelerated planning</a>
+
+*Google DeepMind*
+
+为破解英国住房建设审批效率低、落地慢的痛点，英国政府与谷歌DeepMind达成合作，共同研发AI驱动的城建规划原型系统。该工具核心目标是压缩住房项目的规划决策周期，破除当前住房供给的审批瓶颈，也为AI在公共政务审批、城建管理领域的落地提供实践参考。
+
+<FeedbackButtons slug="item:deepmind-unlocking-uk-house-building-with-ai-accelerated-planning" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/accelerating-fine-tuning-nvidia-nemo-automodel" target="_blank" rel="noopener noreferrer">Accelerating Transformers Fine-Tuning with NVIDIA NeMo AutoModel</a>
+
+*Hugging Face*
+
+当前仅提供了论文标题，未附上摘要的具体正文内容，请您补充完整该篇论文摘要的文本信息，我会按照要求为您翻译提炼核心内容，输出120字左右、重点突出核心方法与研究结论的简洁中文总结。
+
+<FeedbackButtons slug="item:hf-blog-accelerating-fine-tuning-nvidia-nemo-automodel" client:visible />
+
+## <a href="https://huggingface.co/blog/ffasr-leaderboard" target="_blank" rel="noopener noreferrer">Introducing the FFASR Leaderboard: Benchmarking ASR in the Real World</a>
+
+*Hugging Face*
+
+本文推出FFASR语音识别（ASR）排行榜，打造面向真实场景的ASR评测基准。该基准摒弃传统实验室理想数据集，采集覆盖多口音、复杂噪声、远近场、低资源语种的真实场景语音，可客观反映ASR模型落地性能，填补了真实场景ASR评测空白，为相关研究与产业应用提供贴合实用的参考标尺。
+
+<FeedbackButtons slug="item:hf-blog-ffasr-leaderboard" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+这篇从德性伦理视角展开的AI对齐研究提出：人类理性行动并非指向预设终极目标，而是适配由行动逻辑、评价准则、资源等构成的社会实践网络。主张放弃给AI预设固定目标的对齐思路，要求AI决策逻辑匹配人类基于实践的行动“类型特征”，该路径既关乎AI伦理对齐，也决定其核心安全属性。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/06/438297.html" target="_blank" rel="noopener noreferrer">聚焦GW级Token工厂，解码下一代算力底座｜6月30日，深圳</a>
+
+*量子位*
+
+2026年AI产业焦点从模型参数竞赛转向Token生产效率，算力评价标准、智算产业链均面临重构。6月30日将在深圳举办中国智算产业生态发展年会，信通院、英特尔等机构专家将围绕Token时代算力新范式、底座优化等议题分享，还将发布Token产业全景报告，目前已开放参会报名。
+
+<FeedbackButtons slug="item:qbitai-438297" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/438204.html" target="_blank" rel="noopener noreferrer">豆包收费版第一天，我：充值…又得充值？我要再充值！</a>
+
+*量子位*
+
+豆包近日上线三档付费专业版（月费68-500元），学生专享38元/月，免费用户权益不受影响还可限免体验新功能。实测显示，付费版接入2.1系列大模型，新增办公Agent模式，授权后可自动操作本地设备完成办公任务，对普通用户友好，但存在易过度运算、额度消耗快的问题，轻度使用性价比尚可。
+
+<FeedbackButtons slug="item:qbitai-438204" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/438179.html" target="_blank" rel="noopener noreferrer">世界模型混战，Momenta率先冲刺IPO</a>
+
+*量子位*
+
+曾以智能辅助驾驶市占率第一、获跨国车企认可的自动驾驶厂商Momenta，正冲刺港股IPO，主打物理AI赛道，有望成为该领域上市第一股。当前世界模型作为物理AI核心基座仍处技术混战阶段，四类差异化路径并行，均瞄准理解物理世界的核心目标，尚未形成统一共识。
+
+<FeedbackButtons slug="item:qbitai-438179" client:visible />
