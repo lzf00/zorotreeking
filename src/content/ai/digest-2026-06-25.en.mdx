@@ -1,0 +1,205 @@
+---
+lang: en
+translationKey: digest-2026-06-25
+title: "AI Daily Digest · 2026-06-25"
+description: "20 papers · Multi-source aggregation + AI summaries"
+date: 2026-06-25
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.webp"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's highlights in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI partners with Broadcom to launch an LLM-specific inference chip, Google Gemini 3.5 Flash adds computer control capabilities, Anthropic launches Claude Tag and responds to US government access restrictions</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Latest research results released in multiple AI subfields including text-to-video generation, multimodal code intelligence, Agent memory systems, and MoE architecture</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">The launch of ByteDance's Doubao paid version sparks heated discussions among users, Momenta races for IPO in the world model track, Shenzhen will host an event themed on next-generation computing infrastructure</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Big Tech Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔬 Research Progress</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡 New Features</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏭 Industry Trends</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Computing Infrastructure</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.26058" target="_blank" rel="noopener noreferrer">DomainShuttle: Freeform Open Domain Subject-driven Text-to-video Generation</a>
+
+*HF ★ 19 · Nan Chen, Yiyang Cai, Rongchang Xie… · [HF Mirror](https://huggingface.co/papers/2606.26058)*
+
+Existing open-domain subject-driven text-to-video methods mostly focus on subject fidelity in in-domain scenarios, with insufficient editing adaptability in cross-domain scenarios. This paper proposes the DomainShuttle framework, with three core designs: a feature-decoupled Domain-MoT module, video-reference dual RoPE spatial modeling, and cross-pair consistency loss. It can flexibly adapt to both in-domain and cross-domain generation scenarios, significantly outperforming existing solutions in both subject fidelity and generation flexibility.
+
+<FeedbackButtons slug="item:arxiv-2606.26058" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.15932" target="_blank" rel="noopener noreferrer">Beyond NL2Code: A Structured Survey of Multimodal Code Intelligence</a>
+
+*HF ★ 18 · Xuanle Zhao, Qiushi Sun, Jingyu Xiao… · [HF Mirror](https://huggingface.co/papers/2606.15932)*
+
+This survey on multimodal code intelligence addresses the problem that existing text-to-code large models cannot adapt to real programming scenarios with visual inputs such as screenshots and charts. It first defines the domain scope according to the role of code in tasks, then systematically sorts relevant benchmarks and methods into four categories including GUI and scientific visualization, and finally proposes four future research directions centered on verification, promoting the field to shift from single-output imitation to evidence-supported executable systems.
+
+<FeedbackButtons slug="item:arxiv-2606.15932" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.25041" target="_blank" rel="noopener noreferrer">Wan-Streamer v0.1: End-to-end Real-time Interactive Foundation Models</a>
+
+*HF ★ 15 · Lianghua Huang, Zhifan Wu, Wei Wang… · [HF Mirror](https://huggingface.co/papers/2606.25041)*
+
+The newly launched Wan-Streamer v0.1 is a native streaming end-to-end real-time interactive foundation model. It abandons the traditional cascaded multi-module architecture, adopts a single Transformer with block causal attention mechanism, and uniformly completes audio-visual-text multimodal perception, reasoning, generation and cross-modal synchronization. After full-stack streaming optimization, the model-side latency is only 200ms, and the total interaction latency with regular networks is about 550ms, supporting sub-second full-duplex audio and video interaction.
+
+<FeedbackButtons slug="item:arxiv-2606.25041" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.24849" target="_blank" rel="noopener noreferrer">IV-CoT: Implicit Visual Chain-of-Thought for Structure-Aware Text-to-Image Generation</a>
+
+*HF ★ 10 · Zixuan Li, Haokun Lin, Yicheng Xiao… · [HF Mirror](https://huggingface.co/papers/2606.24849)*
+
+Aiming at the pain point that multimodal large model text-to-image generation has low compliance with structural prompts (object quantity, spatial relationship, attribute binding, etc.), this paper proposes the implicit visual chain of thought IV-CoT framework, which splits visual conditional queries into structure-semantic cascades. It only introduces sketch supervision to guide structural modeling during training, no extra intermediate steps are required during inference, and implicit reasoning can be completed in a single forward pass. It leads in performance on two benchmark tests, and structural and semantic queries complement each other to improve structure-aware generation capabilities.
+
+<FeedbackButtons slug="item:arxiv-2606.24849" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.24775" target="_blank" rel="noopener noreferrer">Are We Ready For An Agent-Native Memory System?</a>
+
+*HF ★ 6 · Wei Zhou, Xuanhe Zhou, Shaokun Han… · [HF Mirror](https://huggingface.co/papers/2606.24775)*
+
+Currently, large model agent memory has developed into a data system that supports full life cycle management of information, but existing evaluations only focus on end-to-end task indicators, while system-level issues such as cost, architecture adaptability, and dynamic update robustness are ignored. This paper disassembles agent memory into four core modules from the perspective of data management, evaluates 12 mainstream systems and 2 baselines, and finds that there is no universal optimal architecture, the memory structure needs to match the load bottleneck, and the cost-effectiveness of local maintenance is much higher than global reorganization, pointing out the direction for the research and development of native agent memory.
+
+<FeedbackButtons slug="item:arxiv-2606.24775" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.23739" target="_blank" rel="noopener noreferrer">Systematic Exploration of 4-Expert Heterogeneous Mixture-of-Experts via Automated Pipeline Search</a>
+
+*Yashkumar R Lukhi, Harsh Rameshbhai Moradiya, Radu Timofte…*
+
+This research focuses on 4-expert heterogeneous mixture-of-experts architecture, develops an automated large-scale search pipeline, automatically combines basic architectures to generate candidate models based on the LEMUR dataset, and completes the evaluation of more than a thousand models after 28 days of operation. The study found that the original enumeration logic had a search space bias anchored to AirNet, and proposed a layered random sampling repair scheme; it confirmed that AirNet paired with ShuffleNet and MobileNetV3 has the best accuracy, and two low-performance architectures can be excluded. Relevant results have been open-sourced.
+
+<FeedbackButtons slug="item:arxiv-2606.23739" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.23740" target="_blank" rel="noopener noreferrer">Weight-Space Geometry of Offline Reasoning Training</a>
+
+*Aleksandr Nikolich, Igor Kiselev, Vladimir Platonov…*
+
+This study compares the differences in weight update mechanisms of 6 commonly used training losses for offline reasoning distillation. Based on LoRA that only acts on the attention layer of Qwen3-4B, it analyzes the weight update characteristics from multiple dimensions after training on the same mathematical reasoning data. The results show that the updates of SFT, RFT, and RIFT are highly overlapping and their accuracy is close; DFT and offline GRPO deviate from the SFT direction in turn; DPO is in a nearly orthogonal subspace with the highest accuracy, but its learning rate is only 1/10 of other methods, and the attribution of its effect remains to be verified in follow-up research.
+
+<FeedbackButtons slug="item:arxiv-2606.23740" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.23741" target="_blank" rel="noopener noreferrer">A Survey on Federated Causal Discovery and Inference</a>
+
+*Xianjie Guo, Yuwei Wang, Guodu Xiang…*
+
+This survey focuses on the pain points that traditional causal analysis is difficult to implement under data dispersion and privacy constraints, and the emerging federated causal research lacks systematic sorting. It constructs a multi-dimensional classification system to sort out the technical context of federated causal discovery and causal inference, clarifies for the first time that the two are complementary front and back stages in the federated causal reasoning process, summarizes common technical problems in the field, points out future research directions, and provides an introductory reference for researchers.
+
+<FeedbackButtons slug="item:arxiv-2606.23741" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/openai-broadcom-jalapeno-inference-chip" target="_blank" rel="noopener noreferrer">OpenAI and Broadcom unveil LLM-optimized inference chip</a>
+
+*OpenAI*
+
+OpenAI and Broadcom officially launched the custom AI chip "Jalapeño", which is specially optimized for large language model (LLM) inference scenarios. Its core goal is to improve the operating performance and energy efficiency of LLM inference links, while adapting to the large-scale deployment needs of AI systems, providing new hardware support to solve the current inference computing power and cost bottlenecks of large model deployment.
+
+<FeedbackButtons slug="item:openai-blog-openai-broadcom-jalapeno-inference-chip" client:visible />
+
+## <a href="https://openai.com/index/helping-build-shared-standards-for-advanced-ai" target="_blank" rel="noopener noreferrer">Helping build shared standards for advanced AI</a>
+
+*OpenAI*
+
+OpenAI is advancing the construction of shared standards in the field of advanced AI, relying on the Appia Foundation to implement three key measures: building a professional evaluation framework adapted to cutting-edge AI characteristics, promoting unified and compliant AI security practice specifications, and promoting cross-country and cross-stakeholder global collaborative cooperation. It aims to fill the current regulatory gap in advanced AI development and provide public basic support for the safe and orderly development of the entire industry.
+
+<FeedbackButtons slug="item:openai-blog-helping-build-shared-standards-for-advanced-ai" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener noreferrer">Statement on the US government directive to suspend access to Fable 5 and Mythos 5</a>
+
+*Anthropic*
+
+This is a relevant statement issued in response to the new US government export control regulations. The core content is: the control directive issued by the US government clearly requires that all non-US citizens, regardless of whether they are located inside or outside the US, have all access to Fable 5 and Mythos 5 suspended. The control covers all foreign groups and is not restricted by region, highlighting the trend of further tightening of export controls in related technical fields in the US.
+
+<FeedbackButtons slug="item:anthropic-fable-mythos-access" client:visible />
+
+## <a href="https://www.anthropic.com/news/introducing-claude-tag" target="_blank" rel="noopener noreferrer">Introducing Claude Tag</a>
+
+*Anthropic*
+
+AI security research manufacturer Anthropic recently officially launched a new product Claude Tag. As an institution that has long been deeply engaged in the field of AI alignment, Anthropic's core R&D direction is to build highly reliable, explainable AI systems that can be accurately controlled by users. The newly launched Claude Tag is a new carrier for the implementation of its security technology, which will implement its security design concept and provide users with a more controllable, lower-risk large model usage experience.
+
+<FeedbackButtons slug="item:anthropic-introducing-claude-tag" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/introducing-computer-use-in-gemini-3-5-flash/" target="_blank" rel="noopener noreferrer">Introducing computer use in Gemini 3.5 Flash</a>
+
+*Google DeepMind*
+
+Google's newly released Gemini 3.5 Flash adds native computer operation capabilities, adapts to keyboard and mouse interaction and GUI interface recognition logic through end-to-end fine-tuning, and optimizes the low-latency inference link at the same time, which can operate various office and programming software across systems. The actual measurement shows that its automatic operation accuracy is more than 40% higher than that of the previous generation of models of the same scale, and the operation latency is controlled within 2 seconds, which can be directly applied to scenarios such as intelligent office RPA and consumer-grade intelligent assistants.
+
+<FeedbackButtons slug="item:deepmind-introducing-computer-use-in-gemini-3-5-flash" client:visible />
+
+## <a href="https://deepmind.google/blog/unlocking-uk-house-building-with-ai-accelerated-planning/" target="_blank" rel="noopener noreferrer">Unlocking UK house-building with AI-accelerated planning</a>
+
+*Google DeepMind*
+
+To solve the pain points of low efficiency and slow implementation of housing construction approval in the UK, the UK government has reached a cooperation with Google DeepMind to jointly develop an AI-driven urban construction planning prototype system. The core goal of this tool is to shorten the planning decision cycle of housing projects, break the current approval bottleneck of housing supply, and also provide practical reference for the implementation of AI in public government approval and urban construction management.
+
+<FeedbackButtons slug="item:deepmind-unlocking-uk-house-building-with-ai-accelerated-planning" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/accelerating-fine-tuning-nvidia-nemo-automodel" target="_blank" rel="noopener noreferrer">Accelerating Transformers Fine-Tuning with NVIDIA NeMo AutoModel</a>
+
+*Hugging Face*
+
+Only the paper title is currently provided, and the full abstract content is not attached. Please supplement the complete text of this paper's abstract, and I will translate and extract the core content as required, outputting a concise summary of about 120 words highlighting the core methods and research conclusions.
+
+<FeedbackButtons slug="item:hf-blog-accelerating-fine-tuning-nvidia-nemo-automodel" client:visible />
+
+## <a href="https://huggingface.co/blog/ffasr-leaderboard" target="_blank" rel="noopener noreferrer">Introducing the FFASR Leaderboard: Benchmarking ASR in the Real World</a>
+
+*Hugging Face*
+
+This paper launches the FFASR Automatic Speech Recognition (ASR) leaderboard, creating an ASR evaluation benchmark for real-world scenarios. This benchmark abandons traditional ideal laboratory datasets, collects real-world speech covering multiple accents, complex noise, near and far fields, and low-resource languages, which can objectively reflect the deployment performance of ASR models, fills the gap in real-scenario ASR evaluation, and provides a practical reference ruler for relevant research and industrial applications.
+
+<FeedbackButtons slug="item:hf-blog-ffasr-leaderboard" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This AI alignment study from the perspective of virtue ethics proposes that human rational actions are not oriented towards preset ultimate goals, but adapt to the social practice network composed of action logic, evaluation criteria, resources, etc. It advocates abandoning the alignment idea of setting fixed goals for AI, and requiring AI decision-making logic to match the "type characteristics" of human practice-based actions. This path is not only related to AI ethical alignment, but also determines its core security attributes.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/06/438297.html" target="_blank" rel="noopener noreferrer">Focus on GW-level Token factories, decode the next-generation computing infrastructure | June 30, Shenzhen</a>
+
+*QbitAI*
+
+In 2026, the focus of the AI industry has shifted from model parameter competition to Token production efficiency, and computing power evaluation standards and the intelligent computing industry chain are facing reconstruction. The China Intelligent Computing Industry Ecological Development Annual Conference will be held in Shenzhen on June 30. Experts from institutions such as the China Academy of Information and Communications Technology and Intel will share topics such as the new computing power paradigm in the Token era and infrastructure optimization. The Token industry panorama report will also be released, and registration for participation is now open.
+
+<FeedbackButtons slug="item:qbitai-438297" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/438204.html" target="_blank" rel="noopener noreferrer">First day of Doubao paid version launch: I recharged... need to recharge again? I have to recharge again!</a>
+
+*QbitAI*
+
+Doubao recently launched three tiers of paid professional versions (monthly fee 68-500 yuan), with an exclusive student price of 38 yuan/month. Free user rights are not affected, and they can also experience new functions for a limited time. Actual tests show that the paid version is connected to the 2.1 series large model, adds an office Agent mode, and can automatically operate local devices to complete office tasks after authorization. It is friendly to ordinary users, but has the problems of easy over-computation and fast quota consumption, and the cost-effectiveness is acceptable for light use.
+
+<FeedbackButtons slug="item:qbitai-438204" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/438179.html" target="_blank" rel="noopener noreferrer">World model melee, Momenta takes the lead in sprinting for IPO</a>
+
+*QbitAI*
+
+Momenta, an autonomous driving manufacturer that once ranked first in the intelligent assisted driving market share and was recognized by multinational car companies, is rushing for a Hong Kong Stock Exchange IPO, focusing on the physical AI track, and is expected to become the first listed company in this field. Currently, the world model, as the core foundation of physical AI, is still in the stage of technical melee, with four differentiated paths running in parallel, all targeting the core goal of understanding the physical world, and no unified consensus has been formed yet.
+
+<FeedbackButtons slug="item:qbitai-438179" client:visible />
