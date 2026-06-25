@@ -1,0 +1,188 @@
+---
+lang: en
+translationKey: digest-2026-06-08
+title: "AI Daily Digest · 2026-06-08"
+description: "20 papers · Multi-source aggregation + AI summaries"
+date: 2026-06-08
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.05761" target="_blank" rel="noopener noreferrer">SubtleMemory: A Benchmark for Fine-Grained Relational Memory Discrimination in Long-Horizon AI Agents</a>
+
+*HF ★ 11 · Wenxuan Wang, Haoyu Sun, Fukuan Hou… · [HF Mirror](https://huggingface.co/papers/2606.05761)*
+
+To address the gap that existing long-term memory benchmarks do not cover the ability of long-horizon AI agents to leverage memory associations, the research team launched SubtleMemory, a fine-grained relational memory discrimination benchmark: it embeds association-controlled memory variants into real interaction histories, covering 10 long history segments and 1522 test cases. After testing 11 mainstream memory systems/agents, the team found that this capability is generally weak in current systems, and also provides a phased capability diagnosis protocol.
+
+<FeedbackButtons slug="item:arxiv-2606.05761" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.05806" target="_blank" rel="noopener noreferrer">When Tools Fail: Benchmarking Dynamic Replanning and Anomaly Recovery in LLM Agents</a>
+
+*HF ★ 11 · Dongsheng Zhu, Xuchen Ma, Yucheng Shen… · [HF Mirror](https://huggingface.co/papers/2606.05806)*
+
+Existing LLM tool integration reasoning benchmarks only cover ideal operation scenarios and do not consider real tool failure issues. This research launched the ToolMaze benchmark, designed based on DAG topology complexity and a 2×2 tool perturbation classification of "explicit/implicit, transient/permanent", which can distinguish between system replanning and blind trial and error. Tests show that tool perturbations generally reduce model performance, with the perturbation recovery rate dropping sharply by 37% under implicit semantic failures, the most significant decline. Moreover, the improvement of model fault tolerance with scale is far slower than that of basic tasks, and dynamic replanning is the core bottleneck that has not been broken through at present.
+
+<FeedbackButtons slug="item:arxiv-2606.05806" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.07514" target="_blank" rel="noopener noreferrer">UniSHARP: Universal Sharp Monocular View Synthesis</a>
+
+*HF ★ 10 · Meixi Song, Dizhe Zhang, Hao Ren… · [HF Mirror](https://huggingface.co/papers/2606.07514)*
+
+Aiming at the limitation that existing SHARP view synthesis methods only adapt to pinhole perspective cameras, this paper proposes UniSHARP, a universal monocular view synthesis method: it uniformly maps inputs from different imaging modes such as perspective, fisheye, and panoramic to an omnidirectional latent space, and performs implicit alignment in feature and Gaussian spaces to achieve universal rendering. The team also built a multi-imaging system evaluation benchmark divided by field of view levels, and experiments show that its performance is significantly better than similar methods.
+
+<FeedbackButtons slug="item:arxiv-2606.07514" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.06953" target="_blank" rel="noopener noreferrer">LIMMT: Less is More for Motion Tracking</a>
+
+*HF ★ 4 · Yu Guan, Zekun Qi, Chenghuai Lin… · [HF Mirror](https://huggingface.co/papers/2606.06953)*
+
+For the physics-driven humanoid motion tracking task, this research carried out the first data-centric related exploration, proposed the LIMMT framework, which defines motion data quality from three dimensions: physical feasibility, diversity, and complexity, instead of only removing low-quality erroneous clips. Experiments confirm that training with less than 3% of high-quality data from the AMASS dataset achieves better tracking performance than using the full dataset. The framework can also be used for cleaning motion capture data collected online, and its effectiveness has been verified.
+
+<FeedbackButtons slug="item:arxiv-2606.06953" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.07433" target="_blank" rel="noopener noreferrer">Watch, Remember, Reason: Human-View Video Understanding with MLLMs</a>
+
+*HF ★ 4 · Jiahao Meng, Yue Tan, Qi Xu… · [HF Mirror](https://huggingface.co/papers/2606.07433)*
+
+This paper is a review in the field of Multimodal Large Language Model (MLLM) video understanding. Aiming at the pain points of long-sequence, multimodal, knowledge-intensive video scenarios, it proposes a unified human-view analysis framework of "watch-remember-reason", systematically deconstructs the full link of perception, memory, and reasoning of video MLLMs, sorts out core technical challenges, representative methods, multi-scenario applications and dataset benchmarks, points out the development direction of scalable and traceable video intelligence, and supports an open source project that continuously follows up related research.
+
+<FeedbackButtons slug="item:arxiv-2606.07433" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.06546" target="_blank" rel="noopener noreferrer">Elmes*: Automated Construction of Fine-Grained Evaluation Rubrics for Large Language Models in Long-Tail Educational Scenarios</a>
+
+*Tao Liu, Ye Lu, Ruohua Zhang…*
+
+Aiming at the problem that existing LLM evaluation for educational scenarios focuses on general correctness, and manual scoring rules are difficult to adapt to long-tail teaching scenarios, the research proposes an end-to-end framework Elmes*, which combines multi-agent interaction and self-evolution modules to build scenario-specific fine-grained evaluation rules, and builds the Edu-330 benchmark covering multiple disciplines and scenarios. Experiments confirm that LLMs have multi-dimensional educational capabilities, the education-specific model InnoSpark performs the best, and LLM judges are efficient but have preference biases. This framework can support scalable teaching-oriented LLM evaluation.
+
+<FeedbackButtons slug="item:arxiv-2606.06546" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.06547" target="_blank" rel="noopener noreferrer">FAIR-Calib: Frontier-Aware Instability-Reweighted Calibration for Post-Training Quantization of Diffusion Large Language Models</a>
+
+*Haoyu Huang, Linlin Yang, Sheng Xu…*
+
+Aiming at the problem of "stability lag" in diffusion large language models, where post-training quantization errors easily disturb boundary fragile decisions and are locked and amplified, this paper proposes the FAIR-Calib two-stage quantization framework: first, the position prior combining boundary hit and masking stage reliability is estimated through the full-precision model, and then the hidden state mean square error is calibrated by hierarchical reweighting, without expensive end-to-end diffusion inference. It outperforms existing SOTA on multiple benchmarks under W4A4 quantization, and significantly reduces boundary decision flipping.
+
+<FeedbackButtons slug="item:arxiv-2606.06547" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.06554" target="_blank" rel="noopener noreferrer">Multi-Scale Feature Attention Network for Polymer Classification using THz Dual-Comb Spectroscopy</a>
+
+*Roshni Mahtani, Il\'an Carretero, Laura Monroy…*
+
+Aiming at the insufficient performance of traditional technologies for recycled plastic polymer identification, this research uses terahertz dual-comb spectroscopy to collect spectral data of 12 categories including pure materials, multilayer films, blends, and biopolymers, proposes a multi-scale feature attention network adapted to this type of data, extracts key features through multi-module combination, achieves a classification accuracy of 85.2%, outperforms existing mainstream models, and verifies the practical value of this solution.
+
+<FeedbackButtons slug="item:arxiv-2606.06554" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/endava-frontiers" target="_blank" rel="noopener noreferrer">How Endava is redesigning software delivery around AI agents</a>
+
+*OpenAI*
+
+This article introduces the practice of technology service company Endava in reconstructing software delivery models around AI agents: by implementing an AI agent toolchain, combined with the LLM capabilities of ChatGPT Enterprise and Codex, it not only improves software delivery efficiency and automates the full development workflow, but also promotes AI-native culture construction across the company, providing a reference implementation path for the AI transformation of technology delivery.
+
+<FeedbackButtons slug="item:openai-blog-endava-frontiers" client:visible />
+
+## <a href="https://openai.com/index/chatgpt-memory-dreaming" target="_blank" rel="noopener noreferrer">Dreaming: Better memory for a more helpful ChatGPT</a>
+
+*OpenAI*
+
+This research focuses on the pain point of cross-session memory in large language model conversations, and launches a new memory system called "Dreaming" implemented in ChatGPT. This system can permanently retain users' personalized preferences, break the context barrier between sessions, ensure the freshness and adaptability of interaction information, significantly improve the response matching degree and practical value of ChatGPT, and provide a feasible direction for experience optimization of general conversational large models.
+
+<FeedbackButtons slug="item:openai-blog-chatgpt-memory-dreaming" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-4-8" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 4.8</a>
+
+*Anthropic*
+
+The Claude Opus 4.8 released by Anthropic this time is the latest upgrade of its Opus-level high-performance large model. Compared with the previous generation, the model has significantly improved performance in three core scenarios: programming development tasks, agent tasks, and professional work in various fields. At the same time, it has greatly optimized long-term operation stability, and the consistency of handling long-cycle complex multi-step tasks has been significantly enhanced, which can adapt to more complex long-term work needs.
+
+<FeedbackButtons slug="item:anthropic-claude-opus-4-8" client:visible />
+
+## <a href="https://www.anthropic.com/news/expanding-project-glasswing" target="_blank" rel="noopener noreferrer">Expanding Project Glasswing</a>
+
+*Anthropic*
+
+This article "Expanding Project Glasswing" discloses the latest expansion arrangement of the project: as a cross-institutional collaboration project focusing on cyber threat intelligence sharing, Glasswing will expand its cooperation coverage to about 150 new institutions in more than 15 countries around the world. After the expansion is completed, it can further improve the efficiency of cross-border and cross-industry intelligence circulation, strengthen the cybersecurity collaborative defense capabilities of participants, and benefit institutional entities in more fields.
+
+<FeedbackButtons slug="item:anthropic-expanding-project-glasswing" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle-environmental-risks/" target="_blank" rel="noopener noreferrer">We’re launching the Google DeepMind Accelerator program in Asia Pacific to tackle environmental risks</a>
+
+*Google DeepMind*
+
+Google DeepMind officially launches the Asia Pacific Accelerator Program, with the core goal of relying on its own AI technology accumulation to address various regional environmental risks. The project will link local scientific research institutions, technology startups and public sectors in Asia Pacific, focus on scenarios such as extreme weather early warning, ecological restoration, and carbon reduction management, develop AI environmental solutions adapted to regional characteristics, and improve the effectiveness of environmental risk prevention and emergency response in the Asia Pacific region.
+
+<FeedbackButtons slug="item:deepmind-were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle" client:visible />
+
+## <a href="https://deepmind.google/blog/fast-tracking-genetic-leads-to-reverse-cellular-aging/" target="_blank" rel="noopener noreferrer">Fast-tracking genetic leads to reverse cellular aging</a>
+
+*Google DeepMind*
+
+This research focuses on the rapid mining of genetic targets for reversing cellular aging. Biologists used the Co-Scientist intelligent research tool for screening, and successfully identified new regulatory factors that can effectively rejuvenate human cells. This achievement not only provides new candidate targets for anti-aging research and intervention of aging-related diseases, but also verifies the efficiency value of intelligent research tools in basic biomedical research.
+
+<FeedbackButtons slug="item:deepmind-fast-tracking-genetic-leads-to-reverse-cellular-aging" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/build-small-hackathon/amazingdigitaldentures" target="_blank" rel="noopener noreferrer">Amazing Digital Dentures (a failed project)</a>
+
+*Hugging Face*
+
+Only the project title *Amazing Digital Dentures (a failed project)* is provided at present, and the core content of the abstract is missing. Key information such as the project's R&D path, adopted technical methods, causes of failure, and relevant conclusions cannot be obtained. Please supplement the specific content of the complete abstract, and I will extract the core points as required to complete a clear summary of about 120 words.
+
+<FeedbackButtons slug="item:hf-blog-amazingdigitaldentures" client:visible />
+
+## <a href="https://huggingface.co/blog/nvidia/nemotron-3-5-content-safety" target="_blank" rel="noopener noreferrer">Nemotron 3.5 Content Safety: Customizable Multimodal Safety for Global Enterprise AI</a>
+
+*Hugging Face*
+
+This article introduces the Nemotron 3.5 content safety solution, built for global enterprise AI, with a customizable multimodal safety architecture as the core. It supports cross-modal risk identification across text, images and other modalities, can adapt to regulatory rules in different regions and personalized compliance needs of enterprises. Its detection accuracy is better than general safety models, which can greatly reduce the R&D cost of enterprise custom security policies, and adapt to the large-scale deployment needs of generative AI.
+
+<FeedbackButtons slug="item:hf-blog-nemotron-3-5-content-safety" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This AI alignment research based on virtue ethics refutes the presupposition that "rational agents need to take fixed goals as action guidance", pointing out that the essence of human rationality is that actions adapt to the practice network composed of behaviors, evaluation standards, etc., rather than pointing to the ultimate goal. The study proposes that the core path of AI alignment is to make the AI decision logic isomorphic with human practical action logic, which can meet both ethical alignment and core security requirements at the same time.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/06/432055.html" target="_blank" rel="noopener noreferrer">Qualcomm praises GAC Aion N60 winning runner-up in intelligent driving competition, WeRide WRD 3.0 unveiled at Qualcomm Summit</a>
+
+*QbitAI*
+
+At the 2026 Qualcomm Automotive Technology and Cooperation Summit, WeRide's L2++ one-stage end-to-end intelligent driving solution WRD 3.0 developed based on the Snapdragon SA8650 platform, and its supporting mass-produced model GAC Aion N60 were unveiled, winning praise from Qualcomm executives. This model won the runner-up in the China Intelligent Driving Competition when it participated for the first time last month, and the same technical solution has set a record of five consecutive championships in the competition. Relying on the self-developed simulation model, it can balance the safety and traffic efficiency of intelligent driving in complex scenarios.
+
+<FeedbackButtons slug="item:qbitai-432055" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/431931.html" target="_blank" rel="noopener noreferrer">Are there any ex-Horizon employees who left to start businesses that Yu Kai didn't invest in?</a>
+
+*QbitAI*
+
+Yu Kai, founder of Horizon Robotics, goes against the common practice in the hard tech industry where large companies block former employees from starting businesses, and mostly provides investment support to former core employees who leave to start their own businesses. At present, at least 14 core technical and management backbones of Horizon have left to start businesses, and Yu Kai has invested in most of them, covering projects such as Dingdong Power and Wujie Power. The two sides maintain proper boundaries and support each other, forming a rare benign ecological relay relationship.
+
+<FeedbackButtons slug="item:qbitai-431931" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/431694.html" target="_blank" rel="noopener noreferrer">Musk's 39-page SpaceX plan, the greatest PPT in human history</a>
+
+*QbitAI*
+
+SpaceX has launched the largest IPO in history, planning to raise 75 billion US dollars with a valuation of 1.77 trillion US dollars. Musk, who holds 82.4% of the shares, is expected to become the first trillionaire in human history. The prospectus ties Musk's compensation to "reaching a market value of 7.5 trillion US dollars and achieving the goal of settling 1 million people on Mars". The corresponding 39-page "multiplanetary species" plan that was ridiculed 9 years ago has now been mostly fulfilled, and is known as the greatest PPT in human history.
+
+<FeedbackButtons slug="item:qbitai-431694" client:visible />

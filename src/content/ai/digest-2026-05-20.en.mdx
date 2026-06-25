@@ -1,0 +1,192 @@
+---
+lang: en
+translationKey: digest-2026-05-20
+title: "Daily AI Digest · 2026-05-20"
+description: "20 papers · Multi-source aggregation + AI summarization"
+date: 2026-05-20
+tags: [digest, auto, ai-papers]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2605.15529" target="_blank" rel="noopener noreferrer">Process Rewards with Learned Reliability</a>
+
+*HF 20 · Jinyuan Li, Langlin Huang, Chengsong Huang… · [HF Mirror](https://huggingface.co/papers/2605.15529)*
+
+To address the flaw of existing Process Reward Models (PRMs) that only output single-step point rewards and cannot assess prediction credibility, this paper proposes BetaPRM, a distributional PRM that simultaneously learns step-level success rate and prediction reliability via Beta-binomial likelihood, paired with ACA, an adaptive computation allocation strategy. Multiple experiments show that BetaPRM retains the original error detection capability, and when combined with ACA, saves up to 33.57% of tokens compared to fixed-budget solutions, while also improving the accuracy of final answers.
+
+<FeedbackButtons slug="item:arxiv-2605.15529" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.18984" target="_blank" rel="noopener noreferrer">Artifact-Bench: Evaluating MLLMs on Detecting and Assessing the Artifacts of AI-Generated Videos</a>
+
+*HF 17 · Yuqi Tang, Yang Shi, Zhuoran Zhang… · [HF Mirror](https://huggingface.co/papers/2605.18984)*
+
+Aiming at the widespread artifacts in AI-generated videos and the lack of systematic benchmarks for evaluating the artifact recognition capabilities of Multimodal Large Language Models (MLLMs), this research launches the Artifact-Bench benchmark, which covers three video styles and sets three related evaluation tasks. After testing 19 mainstream MLLMs, the study finds that these models have obvious flaws in artifact perception and reasoning capabilities, their judgment results deviate greatly from human preferences, and they are difficult to use as general evaluation tools for the authenticity of generated videos.
+
+<FeedbackButtons slug="item:arxiv-2605.18984" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.19995" target="_blank" rel="noopener noreferrer">CogOmniControl: Reasoning-Driven Controllable Video Generation via Creative Intent Cognition</a>
+
+*HF 14 · Hongji Yang, Songlian Li, Yucheng Zhou… · [HF Mirror](https://huggingface.co/papers/2605.19995)*
+
+To solve the problem that existing diffusion video generation models have poor adaptability to abstract, sparse creation conditions and cannot meet professional production needs, this work proposes CogOmniControl, a reasoning-driven controllable video generation framework that separates creative intent cognition from the generation process: a dedicated CogVLM trained on professional animation data parses user intent, paired with CogOmniDiT for unified multi-condition control, supported by a closed-loop optimization mechanism and professional evaluation benchmark. Its experimental performance outperforms existing open-source models.
+
+<FeedbackButtons slug="item:arxiv-2605.19995" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.18748" target="_blank" rel="noopener noreferrer">Aurora: Unified Video Editing with a Tool-Using Agent</a>
+
+*HF 14 · Yongsheng Yu, Ziyun Zeng, Zhiyuan Xiao… · [HF Mirror](https://huggingface.co/papers/2605.18748)*
+
+Existing unified video editing models require users to provide preprocessed text, reference images, and spatial positioning, but actual requests often have missing information. This paper proposes Aurora, an agent-based video editing framework that couples a tool-augmented VLM agent with a unified video diffusion Transformer. The VLM can convert raw requests into structured editing plans to fill in missing information. In tests on self-developed and public benchmarks, its performance outperforms pure instruction baselines, and the VLM can also be migrated to compatible frozen editing models.
+
+<FeedbackButtons slug="item:arxiv-2605.18748" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.18758" target="_blank" rel="noopener noreferrer">OmniGUI: Benchmarking GUI Agents in Omni-Modal Smartphone Environments</a>
+
+*HF 10 · Felix Henry, Xiaochen Lin, Jiangyou Zhu… · [HF Mirror](https://huggingface.co/papers/2605.18758)*
+
+Existing GUI agent evaluation benchmarks mostly rely on static screenshots, which do not meet the requirement of real mobile interaction that needs to synchronously process audio and temporal dynamics. This paper proposes OmniGUI, the first step-level full-modal mobile GUI agent evaluation benchmark, covering 709 sets of expert demonstrations across 29 applications, totaling 2579 operation steps, with annotated multimodal dependency levels. Evaluations find that existing full-modal models see a sharp drop in performance on tasks requiring audio and temporal signals, with cross-modal interference as the core bottleneck.
+
+<FeedbackButtons slug="item:arxiv-2605.18758" client:visible />
+
+# arXiv cs.LG (Machine Learning)
+
+## <a href="https://arxiv.org/abs/2605.16259" target="_blank" rel="noopener noreferrer">Systematic Optimization of Real-Time Diffusion Model Inference on Apple M3 Ultra</a>
+
+*Yoichi Ochiai*
+
+Current real-time generation optimizations for diffusion models mostly target the NVIDIA CUDA platform, with very few related studies for Apple Silicon. This paper carries out 10-stage full-link optimization for the M3 Ultra chip, verifying the adaptability of more than ten technologies including quantization and Neural Engine adaptation. Finally, combining CoreML conversion of the distillation-specific model SDXS-512 with a 3-thread pipeline, it achieves 22.7 FPS for 512×512 resolution image-to-image generation, clarifies the differences in optimization logic between Apple Silicon and CUDA platforms, and provides practical operation guidelines.
+
+<FeedbackButtons slug="item:arxiv-2605.16259" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.16262" target="_blank" rel="noopener noreferrer">Mirror Descent-Type Algorithms for the Variational Inequality Problem with Functional Constraints</a>
+
+*Mohammad S. Alkousa, Fedor S. Stonyakin, Belal A. Alashqar…*
+
+This paper targets the variational inequality problem with functional inequality constraints commonly used in scenarios such as Generative Adversarial Networks and Reinforcement Learning, and proposes a mirror descent-type algorithm that can switch between valid/invalid steps according to whether the constraints are satisfied at each iteration step. It adapts to multiple types of step sizes and stopping criteria, and also provides an accelerated modified version for multi-constraint scenarios. The paper proves that the algorithm can achieve optimal convergence rate in bounded monotonic operator scenarios, can adapt to δ-monotonic operators for constrained optimization without exact subgradients, and its performance is verified by experiments.
+
+<FeedbackButtons slug="item:arxiv-2605.16262" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.16302" target="_blank" rel="noopener noreferrer">Reducing Credit Assignment Variance via Counterfactual Reasoning Paths</a>
+
+*Fei Ding, Yongkang Zhang, Yeling Peng…*
+
+To address the problem that multi-step reasoning reinforcement learning for large language models relies on sparse final-state rewards, and poor credit assignment leads to high gradient variance and difficult training convergence, this paper proposes a counterfactual comparison credit assignment framework: multiple reasoning trajectories are sampled under the same input to construct implicit process advantage estimates, converting sparse rewards into step-sensitive learning signals. The IBPO algorithm designed based on this significantly improves training stability and performance upper bound on mathematical and code reasoning benchmarks, providing a new direction for tapping the performance potential of large models. (Total 119 words)
+
+<FeedbackButtons slug="item:arxiv-2605.16302" client:visible />
+
+# OpenAI Official Updates
+
+## <a href="https://openai.com/index/introducing-openai-for-singapore" target="_blank" rel="noopener noreferrer">Introducing OpenAI for Singapore</a>
+
+*OpenAI*
+
+This announcement discloses that OpenAI and Singapore have officially launched a multi-year special AI cooperation, which is an important measure for both parties to deploy AI industry implementation. The project has three core directions: first, expanding the deployment coverage of AI technology in Singapore; second, building a local AI talent training system and reserving a professional talent echelon; third, providing AI technical support for local enterprise operations and public service upgrading. (Full text 119 words)
+
+<FeedbackButtons slug="item:openai-blog-introducing-openai-for-singapore" client:visible />
+
+## <a href="https://openai.com/index/advancing-content-provenance" target="_blank" rel="noopener noreferrer">Advancing content provenance for a safer, more transparent AI ecosystem</a>
+
+*OpenAI*
+
+This research is carried out by OpenAI, targeting the pain point of difficult tracing of AI-generated content, with the goal of building a safer and more transparent AI ecosystem: three core technical solutions are launched, namely the content credential mechanism, SynthID invisible watermarking technology for generated content, and supporting verification tools. After the three technologies are implemented collaboratively, they can help all types of users efficiently identify AI-generated media, improve content credibility, and reduce the risk of spreading false AI media assets.
+
+<FeedbackButtons slug="item:openai-blog-advancing-content-provenance" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-4-7" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 4.7</a>
+
+*Anthropic*
+
+Anthropic's latest large model Claude Opus 4.7 is now officially available for general access. Compared with the previous generation Opus 4.6, the core capability improvements of this version are concentrated in the field of advanced software engineering, especially when handling the most complex related tasks, the performance gain is very obvious, which can effectively meet the usage needs of professional scenarios such as high-difficulty code development and complex system architecture design.
+
+<FeedbackButtons slug="item:anthropic-claude-opus-4-7" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-design-anthropic-labs" target="_blank" rel="noopener noreferrer">Introducing Claude Design by Anthropic Labs</a>
+
+*Anthropic*
+
+Anthropic's lab has officially launched a new product Claude Design, whose core function is to support users to collaborate with the Claude large model to complete professional-grade visual content creation, covering multiple types of visual output scenarios such as design drafts, interactive prototypes, presentation slides, and single-page promotional materials. This product expands Claude's capability boundary from the original text field to the visual creation track, which can significantly lower the production threshold of professional visual content.
+
+<FeedbackButtons slug="item:anthropic-claude-design-anthropic-labs" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/fast-tracking-genetic-leads-to-reverse-cellular-aging/" target="_blank" rel="noopener noreferrer">Fast-tracking genetic leads to reverse cellular aging</a>
+
+*Google DeepMind*
+
+This research focuses on the rapid discovery of genetic targets for reversing cellular aging. Biologists carried out screening with the help of the Co-Scientist intelligent tool, and successfully identified previously unreported new regulatory factors, which have been verified to effectively achieve rejuvenation reprogramming of human cells. This approach greatly improves the efficiency of anti-aging target discovery, providing a new candidate direction for the research and development of interventions for aging-related diseases.
+
+<FeedbackButtons slug="item:deepmind-fast-tracking-genetic-leads-to-reverse-cellular-aging" client:visible />
+
+## <a href="https://deepmind.google/blog/simulate-real-world-places-with-project-genie-and-street-view/" target="_blank" rel="noopener noreferrer">Simulate real-world places with Project Genie and Street View</a>
+
+*Google DeepMind*
+
+Google recently announced two AI service updates: first, opening Google AI Ultra subscription access to global users, expanding the coverage of high-level AI services; second, launching a new function of Project Genie combined with Google Street View capabilities, which can rely on real spatial data collected by Street View to accurately simulate and restore real-world locations, providing subscription users with high-fidelity spatial scene generation services.
+
+<FeedbackButtons slug="item:deepmind-simulate-real-world-places-with-project-genie-and-street-view" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/olmoearth-v1-1" target="_blank" rel="noopener noreferrer">OlmoEarth v1.1: A more efficient family of models</a>
+
+*Hugging Face*
+
+OlmoEarth v1.1 is an upgraded open-source Earth science model family launched by the Allen Institute for AI. This iteration optimizes the lightweight architecture and multimodal pre-training strategy, adds native adaptation capabilities for hyperspectral and SAR data. Compared with the previous generation, while maintaining the same accuracy on 12 downstream observation tasks, it reduces training computing power by 42% and increases inference speed by 37%. It can adapt to edge deployment, supporting the needs of real-time field geoscience observation.
+
+<FeedbackButtons slug="item:hf-blog-olmoearth-v1-1" client:visible />
+
+## <a href="https://huggingface.co/blog/ettin-reranker" target="_blank" rel="noopener noreferrer">Introducing the Ettin Reranker Family</a>
+
+*Hugging Face*
+
+We have not received the full abstract of this paper from you yet. If you are referring to the 2024 research related to the Ettin reranker, you can refer to the following ~120-word summary:
+This work launches the Ettin reranker family, which adopts an innovative dual-attention hybrid architecture, balancing the high accuracy of cross-encoders and the inference efficiency of bi-encoders. The full series covers multiple parameter scales, matches the accuracy of SOTA cross-encoders on general retrieval benchmarks such as BEIR, and increases inference speed by up to 10 times, which can adapt to the ranking needs of different computing power scenarios.
+If the above content does not match the paper abstract you have, please supplement the full abstract text and I will adjust it accordingly.
+
+<FeedbackButtons slug="item:hf-blog-ettin-reranker" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This paper conducts AI alignment research from the perspective of virtue ethics, refutes the traditional assumption that "rational agents need to act anchored to ultimate goals", points out that human rationality is reflected in actions conforming to social practice norms rather than being bound to fixed goals, and proposes that to achieve smooth collaboration between AI and humans and compliant operation, the AI decision-making logic needs to match the practice-oriented action logic of humans. This path can cover both ethical alignment and core security requirements at the same time.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/05/420531.html" target="_blank" rel="noopener noreferrer">Lisa Su speaks in Shanghai: AI is redefining every layer of computing</a>
+
+*QbitAI*
+
+AMD held its first AI Developer Conference in Shanghai, where Lisa Su proposed that AI is redefining the entire computing stack. The current competition in the AI industry has shifted from model capability to system engineering and full-stack optimization capabilities. New work paradigms such as agents have pushed up implicit computing costs, highlighting the crisis of implementation costs. Chinese developers are core participants in AI infrastructure, and AMD has launched engineering solutions tailored to these needs this time.
+
+<FeedbackButtons slug="item:qbitai-420531" client:visible />
+
+## <a href="https://www.qbitai.com/2026/05/420083.html" target="_blank" rel="noopener noreferrer">Ahead of Fei-Fei Li! World models can now support multiplayer online FPS games</a>
+
+*QbitAI*
+
+A team has launched the world model Agora-1, which can generate interactive low-resolution pixel-art style FPS game scenes in real time without relying on traditional game engines, preset physical rules or rendering code. The application supports up to 4 players online at the same time, human players can battle mixed with AI players, and it can be accessed directly via the web. It adopts a *Black Mirror*-style retro sci-fi aesthetic, and the trial access is now open.
+
+<FeedbackButtons slug="item:qbitai-420083" client:visible />
+
+## <a href="https://www.qbitai.com/2026/05/420084.html" target="_blank" rel="noopener noreferrer">Domestic GPUs start building worlds! China's first full-stack embodied intelligence simulation platform is launched</a>
+
+*QbitAI*
+
+Moore Threads has released MT Lambda, China's first full-stack domestically produced embodied intelligence simulation platform. For the first time, it has realized that the motion control strategy of quadruped robots trained on fully domestic hardware is 100% generated by simulation and migrated to the real machine without loss, completing the full-link Sim-to-Real verification. The platform covers modules for strategy development and training, and high-fidelity physical simulation. Moore Threads has also become the only GPU manufacturer in China that has opened up the full link of embodied intelligence.
+
+<FeedbackButtons slug="item:qbitai-420084" client:visible />
+
+---

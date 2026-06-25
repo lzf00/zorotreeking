@@ -1,0 +1,190 @@
+---
+lang: en
+translationKey: digest-2026-05-19
+title: "Daily AI Highlights · 2026-05-19"
+description: "20 Papers · Multi-source Aggregation + AI Summaries"
+date: 2026-05-19
+tags: [digest, auto, ai-papers]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2605.18661" target="_blank" rel="noopener noreferrer">AI for Auto-Research: Roadmap & User Guide</a>
+
+*HF 18 · Lingdong Kong, Xian Sun, Wei Chow… · [HF Mirror](https://huggingface.co/papers/2605.18661)*
+
+This paper sorts out the progress of AI-automated scientific research as of April 2026, and systematically analyzes the entire research process by dividing it into four stages: ideation, writing, validation, and dissemination. The study points out that AI only performs reliably on structured, retrieval-supported, and tool-calling tasks, and lacks capability in links such as original topic selection, research judgment, and complex experiments. Fully automated output has not yet met the acceptance standards of top conferences, and the optimal implementation paradigm is human-led human-machine collaboration. The paper also releases a supporting classification system, benchmarks, and practical operation guides.
+
+<FeedbackButtons slug="item:arxiv-2605.18661" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.14278" target="_blank" rel="noopener noreferrer">KVPO: ODE-Native GRPO for Autoregressive Video Alignment via KV Semantic Exploration</a>
+
+*HF 16 · Ruicheng Zhang, Kaixi Cong, Jun Zhou… · [HF Mirror](https://huggingface.co/papers/2605.14278)*
+
+To address the problems that existing reinforcement learning methods have when performing human preference alignment for streaming autoregressive video generation: mismatch with the ODE dynamics of the distilled model, and only perturbing low-level appearance, the KVPO framework is proposed: it migrates the exploration source to the historical KV cache to realize semantic exploration, and designs an ODE-adapted velocity field proxy strategy based on trajectory velocity energy. Experiments prove that it significantly improves visual quality, motion quality, and text-video alignment effects in both long and short video scenarios.
+
+<FeedbackButtons slug="item:arxiv-2605.14278" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.14368" target="_blank" rel="noopener noreferrer">Where Should Diffusion Enter a Language Model? Geometry-Guided Hidden-State Replacement</a>
+
+*HF 11 · Injin Kong, Hyoungjoon Lee, Yohan Jo · [HF Mirror](https://huggingface.co/papers/2605.14368)*
+
+To address the problem that continuous diffusion language models underperform autoregressive Transformers, this study proposes the hybrid architecture DiHAL: it scores each layer of the pre-trained Transformer through a geometric proxy, selects hidden layer interfaces suitable for diffusion, replaces the lower layers with diffusion bridges while retaining the upper layers and the original language head, avoiding the direct recovery problem of continuous-to-discrete conversion. Experiments on 8B-scale large models show that this geometric score can accurately locate the shallow insertion position, and the hidden layer recovery effect is better than existing diffusion baselines, verifying the feasibility of using hidden layer geometry to guide diffusion insertion.
+
+<FeedbackButtons slug="item:arxiv-2605.14368" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.18739" target="_blank" rel="noopener noreferrer">LongLive-2.0: An NVFP4 Parallel Infrastructure for Long Video Generation</a>
+
+*HF 9 · Yukang Chen, Luozhou Wang, Wei Huang… · [HF Mirror](https://huggingface.co/papers/2605.18739)*
+
+LongLive-2.0 is the world's first full-process NVFP4 parallel system for long video generation, designed to address speed and memory bottlenecks. The training side adopts a balanced sequence parallel autoregressive scheme + NVFP4 precision, which can fine-tune diffusion models into multi-round interactive autoregressive models without additional distillation, adapting to few-step real-time generation. The inference side is optimized with quantization, asynchronous decoding, etc., delivering up to 2.15x faster training and 1.84x faster inference; the 5B parameter version achieves 45.7 FPS inference with excellent metrics.
+
+<FeedbackButtons slug="item:arxiv-2605.18739" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.17672" target="_blank" rel="noopener noreferrer">Stop When Reasoning Converges: Semantic-Preserving Early Exit for Reasoning Models</a>
+
+*HF 7 · Dehai Min, Giovanni Vaccarino, Huiyi Chen… · [HF Mirror](https://huggingface.co/papers/2605.17672)*
+
+To address the problems that large reasoning models are prone to over-reasoning, and existing answer-level early stopping schemes tend to exit prematurely, damaging accuracy and reasoning chain integrity, this paper proposes the plug-and-play PUMA early stopping framework: it first identifies semantic redundancy in reasoning steps through a lightweight detector, then combines answer verification to confirm safe termination. Tests on multiple benchmarks and models show that it reduces token consumption by an average of 26.2%, while retaining reasoning accuracy and chain quality, with strong generalizability.
+
+<FeedbackButtons slug="item:arxiv-2605.17672" client:visible />
+
+# arXiv cs.LG (Machine Learning)
+
+## <a href="https://arxiv.org/abs/2605.15206" target="_blank" rel="noopener noreferrer">AgentStop: Terminating Local AI Agents Early to Save Energy in Consumer Devices</a>
+
+*Dzung Pham, Kleomenis Katevas, Ali Shahin Shamsabadi…*
+
+To address the problem of invalid computing power waste and excessive power consumption caused by multi-step reasoning and failed retries of local LLM agents on consumer devices, this paper proposes the lightweight efficiency supervision module AgentStop: it relies on low-cost operating signals such as token-level log probability to predict task success rate, and terminates execution trajectories with high probability of failure in advance. Actual measurements show that it can reduce invalid energy consumption by 15%-20% in web Q&A and coding benchmark tasks, with only less than 5% performance loss, adapting to the implementation needs of local privacy-first agents.
+
+<FeedbackButtons slug="item:arxiv-2605.15206" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.15207" target="_blank" rel="noopener noreferrer">TeamTR: Trust-Region Fine-Tuning for Multi-Agent LLM Coordination</a>
+
+*Yi Xie, Siao Liu, Falong Fan…*
+
+To address the problems of context distribution shift and performance being worse than single-model baselines in sequential fine-tuning for multi-agent LLM collaboration, the study confirms that the old sampling evaluation penalty grows with the square of the number of agents. Based on this, the trust region fine-tuning framework TeamTR is proposed: it resamples trajectories after each component update, controls the distribution divergence of individual agents, and guarantees the lower bound of performance improvement. Experiments show that its average performance exceeds the baseline by 7.1%, alleviates collaborative degradation, and supports plug-and-play components.
+
+<FeedbackButtons slug="item:arxiv-2605.15207" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.15208" target="_blank" rel="noopener noreferrer">Quantization Undoes Alignment: Bias Emergence in Compressed LLMs Across Models and Precision Levels</a>
+
+*Plawan Kumar Rath, Rahul Maliakkal*
+
+To address the insufficient research on the impact of large model quantization and compression on fairness, this study tests the performance of 3 instruction-tuned large models across 5 quantization precision levels, completing more than 910,000 inferences based on the BBQ bias benchmark. The results show that the lower the precision, the higher the proportion of newly added bias, reaching 6-21% for 3-bit quantization. Traditional perplexity indicators cannot identify this type of fairness degradation, indicating that special bias detection is required before deployment.
+
+<FeedbackButtons slug="item:arxiv-2605.15208" client:visible />
+
+# OpenAI Official Updates
+
+## <a href="https://openai.com/index/dell-codex-enterprise-partnership" target="_blank" rel="noopener noreferrer">OpenAI and Dell partner to bring Codex to hybrid and on-premise enterprise environments</a>
+
+*OpenAI*
+
+OpenAI and Dell have officially reached a cooperation to adapt OpenAI's Codex code large model to hybrid and on-premise IT architectures for enterprises. This cooperation targets enterprise customers, addresses data security concerns of deploying AI coding tools on public clouds, supports enterprises to safely implement AI coding agents within their own data and internal workflows, balancing R&D efficiency improvement and data compliance requirements.
+
+<FeedbackButtons slug="item:openai-blog-dell-codex-enterprise-partnership" client:visible />
+
+## <a href="https://openai.com/index/malta-chatgpt-plus-partnership" target="_blank" rel="noopener noreferrer">OpenAI and Malta partner to bring ChatGPT Plus to all citizens</a>
+
+*OpenAI*
+
+OpenAI has reached an official cooperation with Malta to open ChatGPT Plus access to all citizens of the country, along with supporting special AI training. This project aims to help the public master practical AI skills and build awareness of responsible AI use. It is one of the few national-level practices in the world to promote generative AI inclusion, providing a reference path for AI popularization and implementation in the public sector.
+
+<FeedbackButtons slug="item:openai-blog-malta-chatgpt-plus-partnership" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-4-7" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 4.7</a>
+
+*Anthropic*
+
+Anthropic's latest large model Claude Opus 4.7 is now officially fully available for commercial use. Compared to the previous generation Opus 4.6, the core upgrades of this version focus on high-level software engineering capabilities, with particularly outstanding performance improvements on complex software engineering tasks recognized as the most difficult in the industry, making it more suitable for the needs of professional development scenarios such as high-difficulty code development and complex system construction.
+
+<FeedbackButtons slug="item:anthropic-claude-opus-4-7" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-design-anthropic-labs" target="_blank" rel="noopener noreferrer">Introducing Claude Design by Anthropic Labs</a>
+
+*Anthropic*
+
+Anthropic Labs recently officially released the new product Claude Design, whose core positioning is to support users to collaborate with the Claude large model to complete professional-grade visual content creation, which can produce finished products such as design drafts, product prototypes, presentation slides, and single-page promotional materials. This product does not require users to master complex professional design tools, which not only lowers the threshold for visual production for non-designers, but also improves efficiency for professional designers and simplifies the visual production chain.
+
+<FeedbackButtons slug="item:anthropic-claude-design-anthropic-labs" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/alphaevolve-impact/" target="_blank" rel="noopener noreferrer">AlphaEvolve: How our Gemini-powered coding agent is scaling impact across fields</a>
+
+*Google DeepMind*
+
+This article focuses on the self-developed coding agent tool AlphaEvolve, which adopts a dedicated algorithm architecture empowered by the Gemini large model, and can quickly adapt to differentiated coding needs in different fields. It has currently been implemented in three major scenarios: commercial development, infrastructure operation and maintenance, and scientific research innovation, greatly improving cross-domain coding efficiency and lowering the coding threshold, verifying that large model-driven intelligent coding tools can achieve cross-domain large-scale value output.
+
+<FeedbackButtons slug="item:deepmind-alphaevolve-impact" client:visible />
+
+## <a href="https://deepmind.google/blog/ai-co-clinician/" target="_blank" rel="noopener noreferrer">Enabling a new model for healthcare with AI co-clinician</a>
+
+*Google DeepMind*
+
+This study focuses on tackling the implementation path of AI-enhanced healthcare, with the core task of developing an "AI co-clinician" tool that can deeply collaborate with clinicians, aiming to build a new human-machine collaborative medical service paradigm. This model can not only reduce the burden and improve efficiency for clinicians, but also improve the homogenization level of primary diagnosis and treatment, providing a feasible technical direction for alleviating the mismatch between supply and demand of medical resources and making high-quality medical services universally accessible.
+
+<FeedbackButtons slug="item:deepmind-ai-co-clinician" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/cosmos-fine-tuning-for-robot-video-generation" target="_blank" rel="noopener noreferrer">Fine-Tuning NVIDIA Cosmos Predict 2.5 with LoRA/DoRA for Robot Video Generation</a>
+
+*Hugging Face*
+
+This study targets the demand for video generation for robot operation scenarios, taking NVIDIA's Cosmos Predict 2.5 general-purpose video large model as the base, and adopts two parameter-efficient fine-tuning strategies, LoRA and DoRA, to complete domain adaptation. Only fine-tuning less than 1% of the model parameters is required to generate robot operation videos with compliant action logic and consistent physical properties, with effects comparable to full fine-tuning, greatly reducing the implementation cost of robot visual prediction tasks.
+
+<FeedbackButtons slug="item:hf-blog-cosmos-fine-tuning-for-robot-video-generation" client:visible />
+
+## <a href="https://huggingface.co/blog/PaddlePaddle/paddleocr-transformers" target="_blank" rel="noopener noreferrer">PaddleOCR 3.5: Running OCR and Document Parsing Tasks with a Transformers Backend</a>
+
+*Hugging Face*
+
+The newly launched PaddleOCR 3.5 version adopts Transformers as the core backend, which can cover both general OCR recognition and complex layout document parsing tasks. Compared with the old version, its accuracy in multilingual recognition and complex form/document parsing is significantly improved, while adapting to the deployment needs of end, edge, and cloud multi-scenarios, with synchronized optimization of inference efficiency, which can effectively lower the implementation threshold of industrial-grade document intelligence applications.
+
+<FeedbackButtons slug="item:hf-blog-paddleocr-transformers" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This AI alignment research from the perspective of virtue ethics points out that human rational action is not centered around fixed ultimate goals, but adapts to a practical network composed of actions, behavioral tendencies, evaluation standards, etc. The paper argues that rational AI should not adopt a goal-oriented architecture, and its decision-making logic needs to match human practical action logic to achieve smooth human-machine collaboration, while ensuring AI safety and ethical alignment.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/05/419901.html" target="_blank" rel="noopener noreferrer">See you tomorrow on May 20th! Get this participation guide | AIGC 2026 Summit</a>
+
+*QbitAI*
+
+The China AIGC Industry Summit will officially kick off at 09:30 on Wednesday, May 20th. Check-in starts at 08:30, and early attendees can receive perks such as souvenirs. It is recommended to plan your travel route in advance due to the morning rush hour that day. This summit covers topics such as Agent implementation, system intelligence, open source models, and domestic computing power. It will feature an Agent-themed roundtable, with 20 frontline industry guests in attendance, and will also release annual rankings and an industry panorama map.
+
+<FeedbackButtons slug="item:qbitai-419901" client:visible />
+
+## <a href="https://www.qbitai.com/2026/05/419822.html" target="_blank" rel="noopener noreferrer">Qwen's latest 3.7 Max preview version is launched unexpectedly! Two generations of top-tier models are iterated in parallel, progress is still accelerating even after Lin Junyang's departure</a>
+
+*QbitAI*
+
+Alibaba recently quietly launched two preview versions of the Qwen 3.7 series, adopting a parallel iteration strategy for two generations of top-tier models, with a pace far exceeding expectations. The Max version ranks 13th globally on the LMSYS Chatbot Arena text list, being the only domestic model in the top 15, and ranks in the global top 10 in 4 sub-tracks such as mathematics and coding; the Plus version ranks 16th globally on the visual list. Both are the top domestic models in their respective tracks, and the official will launch the official version soon.
+
+<FeedbackButtons slug="item:qbitai-419822" client:visible />
+
+## <a href="https://www.qbitai.com/2026/05/419597.html" target="_blank" rel="noopener noreferrer">Baidu's self-driving car sets new record: weekly orders exceed 350,000! Li Yanhong: Single-city profitability has been achieved</a>
+
+*QbitAI*
+
+The latest operating data of Baidu's Robotaxi business Apollo Go shows that the weekly order peak exceeds 350,000, with a maximum of 50,000 orders per day. The fully driverless service volume reached 3.2 million orders in the first quarter, a year-on-year increase of 129%; the cumulative service orders exceed 22 million, and the total autonomous driving mileage reaches 330 million kilometers, covering 27 cities around the world. Per-vehicle break-even has been achieved in core domestic cities, and commercialization progress exceeds expectations.
+
+<FeedbackButtons slug="item:qbitai-419597" client:visible />
+
+---

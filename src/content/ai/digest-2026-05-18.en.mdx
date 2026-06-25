@@ -1,0 +1,164 @@
+---
+lang: en
+translationKey: digest-2026-05-18
+title: "AI Daily Digest · 2026-05-18"
+description: "17 papers · Multi-source aggregation + AI generated summaries"
+date: 2026-05-18
+tags: [digest, auto, ai-papers]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2605.13527" target="_blank" rel="noopener noreferrer">MMSkills: Towards Multimodal Skills for General Visual Agents</a>
+
+*HF 35 · Kangning Zhang, Shuai Shao, Qingyao Li… · [HF Mirror](https://huggingface.co/papers/2605.13527)*
+
+Existing reusable skills for visual agents are mostly in text and code formats, lacking multimodal procedural knowledge. To address this issue, the paper proposes the MMSkills framework, paired with a trajectory-to-skill generator and a branch-loaded skill invocation mechanism that binds text operation workflows with multi-view keyframes and state cards. Experiments show it generally improves the performance of multimodal agents of different sizes on GUI and game benchmarks, verifying the complementary value of external multimodal procedural knowledge.
+
+<FeedbackButtons slug="item:arxiv-2605.13527" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.16257" target="_blank" rel="noopener noreferrer">DexJoCo: A Benchmark and Toolkit for Task-Oriented Dexterous Manipulation on MuJoCo</a>
+
+*HF 20 · Hanwen Wang, Weizhi Zhao, Xiangyu Wang… · [HF Mirror](https://huggingface.co/papers/2605.16257)*
+
+Existing dexterous hand manipulation benchmarks fail to reflect their operational advantages over parallel grippers, and their evaluation systems are incomplete. To solve this, this paper proposes DexJoCo, a task-oriented dexterous manipulation benchmark and toolkit on the MuJoCo platform, covering 11 types of tasks including tool use and dual-arm collaboration, paired with a low-cost data collection system and 1.1k trajectories, supporting domain randomization evaluation. The team tested mainstream existing models in multiple scenarios, identified common shortcomings of current policies, and pointed out core challenges for subsequent research on dexterous hand robot learning.
+
+<FeedbackButtons slug="item:arxiv-2605.16257" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.15726" target="_blank" rel="noopener noreferrer">Nudging Beyond the Comfort Zone: Efficient Strategy-Guided Exploration for RLVR</a>
+
+*HF 19 · Chanuk Lee, Sangwoo Park, Minki Kang… · [HF Mirror](https://huggingface.co/papers/2605.15726)*
+
+Existing Reinforcement Learning with Verifiable Rewards (RLVR) for large models suffers from low exploration efficiency and high computing cost. To address this pain point, this paper proposes the NudgeRL framework: it injects lightweight policy context into sampled trajectories through a policy fine-tuning mechanism to guide the generation of diverse reasoning paths, then designs a unified objective that splits cross-context and same-context rewards to distill exploration capabilities back to the base policy. On 5 mathematical benchmarks, it outperforms GRPO with 8 times the sampling budget, and also beats expert-guided RL baselines, with significantly improved efficiency.
+
+<FeedbackButtons slug="item:arxiv-2605.15726" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.14333" target="_blank" rel="noopener noreferrer">InsightTok: Improving Text and Face Fidelity in Discrete Tokenization for Autoregressive Image Generation</a>
+
+*HF 19 · Yang Yue, Fangyun Wei, Tianyu He… · [HF Mirror](https://huggingface.co/papers/2605.14333)*
+
+Discrete tokenization-based autoregressive image generation suffers from blurred text and distorted faces. To solve this pain point, this study proposes the InsightTok discrete visual tokenization framework, adding a local content-aware perceptual loss to optimize the training objective. Under the configuration of 16x downsampling and 16k codebook, its text and face reconstruction effects are better than existing tokenizers. When migrated to autoregressive generation, it can produce images with clearer text and more realistic faces without losing general reconstruction quality.
+
+<FeedbackButtons slug="item:arxiv-2605.14333" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.15824" target="_blank" rel="noopener noreferrer">FashionChameleon: Towards Real-Time and Interactive Human-Garment Video Customization</a>
+
+*HF 10 · Quanjian Song, Yefeng Shen, Mengting Chen… · [HF Mirror](https://huggingface.co/papers/2605.15824)*
+
+Existing clothing-level portrait video customization solutions have high latency and cannot support interactive style control. To address this pain point, this paper proposes the FashionChameleon real-time interactive generation framework, relying on three technologies: a teacher model for context learning with a single clothing pair, stream distillation for efficiency improvement, and training-free KV cache rescheduling. It supports interactive clothing change during generation while maintaining motion coherence, running at 23.8 FPS on a single GPU, 30-180 times faster than existing solutions, suitable for e-commerce and content creation scenarios.
+
+<FeedbackButtons slug="item:arxiv-2605.15824" client:visible />
+
+# OpenAI Official Updates
+
+## <a href="https://openai.com/index/malta-chatgpt-plus-partnership" target="_blank" rel="noopener noreferrer">OpenAI and Malta partner to bring ChatGPT Plus to all citizens</a>
+
+*OpenAI*
+
+Recently, OpenAI has reached an inclusive AI implementation partnership with Malta, the world's first full ChatGPT Plus coverage project for all citizens. The two parties will provide ChatGPT Plus access to all Maltese citizens, paired with AI-related training services. The core goal is to expand the accessibility of high-quality AI tools, help the public master practical AI skills and build awareness of responsible AI use, and also provide a reference for other regions to explore the promotion path of inclusive AI in the public sector.
+
+<FeedbackButtons slug="item:openai-blog-malta-chatgpt-plus-partnership" client:visible />
+
+## <a href="https://openai.com/academy/codex-for-work/how-business-operations-teams-use-codex" target="_blank" rel="noopener noreferrer">How business operations teams use Codex</a>
+
+*OpenAI*
+
+This study focuses on the implementation value of Codex in enterprise business operation scenarios, and sorts out clear usage paths for operation teams: it can automatically generate various office documents such as project initiation briefings, strategic update materials, leadership decision packages, and progress notifications based on real work inputs. This application can reduce the time spent by operation staff on copywriting, improve the efficiency and standardization of material production, and provide directly reusable practical references for the digital and intelligent upgrade of enterprise operations.
+
+<FeedbackButtons slug="item:openai-blog-how-business-operations-teams-use-codex" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-4-7" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 4.7</a>
+
+*Anthropic*
+
+The latest large model Claude Opus 4.7 is now officially fully available. Compared with the previous version Opus 4.6, this model has achieved a significant upgrade in advanced software engineering capabilities, with particularly prominent performance gains for the most complex tasks in this field, which can better meet the usage needs of professional software engineering scenarios such as high-difficulty code development and complex system tuning.
+
+<FeedbackButtons slug="item:anthropic-claude-opus-4-7" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-design-anthropic-labs" target="_blank" rel="noopener noreferrer">Introducing Claude Design by Anthropic Labs</a>
+
+*Anthropic*
+
+Anthropic Labs has officially launched a new product Claude Design. This product supports users to collaborate with the Claude large model for visual creation, and can output various visual works with high completion, such as design drafts, interactive prototypes, presentation slides, and single-page promotional materials, breaking Claude's previous capability boundary that was biased towards text processing, and expanding the implementation scenarios of generative AI.
+
+<FeedbackButtons slug="item:anthropic-claude-design-anthropic-labs" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/alphaevolve-impact/" target="_blank" rel="noopener noreferrer">AlphaEvolve: How our Gemini-powered coding agent is scaling impact across fields</a>
+
+*Google DeepMind*
+
+This result focuses on the cross-domain implementation value of the intelligent programming agent AlphaEvolve. The tool is corely driven by the Gemini large model's exclusive algorithm adapted to multiple industries, which can realize large-scale capability output. It has been verified in three scenarios: business operation efficiency improvement, infrastructure operation and maintenance optimization, and cutting-edge scientific research assistance, confirming the feasibility of large model programming agents to output productivity to multiple fields.
+
+<FeedbackButtons slug="item:deepmind-alphaevolve-impact" client:visible />
+
+## <a href="https://deepmind.google/blog/ai-co-clinician/" target="_blank" rel="noopener noreferrer">Enabling a new model for healthcare with AI co-clinician</a>
+
+*Google DeepMind*
+
+This study focuses on the new service paradigm of AI-enabled healthcare, explores the implementable path of AI-enhanced clinical diagnosis and treatment, and focuses on the technical research and development and clinical scenario adaptation system of the "AI co-clinician", aiming to fill the gap of medical resources through human-machine collaboration, improve diagnosis and treatment efficiency and decision-making accuracy, and provide technical and practical support for building a new model of high-quality and accessible inclusive medical care.
+
+<FeedbackButtons slug="item:deepmind-ai-co-clinician" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/ibm-granite/granite-embedding-multilingual-r2" target="_blank" rel="noopener noreferrer">Granite Embedding Multilingual R2: Open Apache 2.0 Multilingual Embeddings with 32K Context — Best Sub-100M Retrieval Quality</a>
+
+*Hugging Face*
+
+The newly launched Granite Embedding Multilingual R2 is a multilingual embedding model, fully open source under the Apache 2.0 license. The model has less than 100 million parameters, supports up to 32K context input, and outperforms competing products of the same size in multilingual retrieval tasks according to actual measurements. It is the solution with the best retrieval quality among embedding models under 100 million parameters currently available, and can be widely adapted to various long-text multilingual retrieval scenarios.
+
+<FeedbackButtons slug="item:hf-blog-granite-embedding-multilingual-r2" client:visible />
+
+## <a href="https://huggingface.co/blog/continuous_async" target="_blank" rel="noopener noreferrer">Unlocking asynchronicity in continuous batching</a>
+
+*Hugging Face*
+
+Currently, only the title of this post is provided, with no accompanying main abstract content. Key information including core technical methods, experimental setup, and final results is missing, so translation and summarization cannot be completed. Please supplement the full abstract text of this post, and I will generate a concise ~120-word Chinese summary highlighting the methods and conclusions as required.
+
+<FeedbackButtons slug="item:hf-blog-continuous_async" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This paper focuses on the topic of AI alignment, challenges the underlying assumptions of the orthogonality thesis, refutes the view that "rational agents need to be oriented by fixed ultimate goals", and proposes that human rationality originates from action adaptation to social practice systems with inherent norms. It argues that AI decision-making logic needs to match the practice-oriented action logic of human beings to adapt to human agency, while achieving ethical alignment and core safety requirements.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/05/418969.html" target="_blank" rel="noopener noreferrer">A quadruped robot dethrones NVIDIA from its computing power throne</a>
+
+*QbitAI*
+
+Previously, consumer-grade quadruped robots generally focused on motion capabilities, had weak perception computing power, mostly adopted mainstream NVIDIA solutions, and lacked the ability to independently understand the environment. Weilan Technology's newly released BabyAlpha A3 deviates from NVIDIA's technical path, adopts a 6-core heterogeneous computing cluster, is equipped with a high-spec perception system, has a computing efficiency more than 10 times the industry average, can run a 7B-parameter large model locally on the device, driving consumer-grade robots to move from the "just moving" era to the new stage of "environmental understanding capability".
+
+<FeedbackButtons slug="item:qbitai-418969" client:visible />
+
+## <a href="https://www.qbitai.com/2026/05/418964.html" target="_blank" rel="noopener noreferrer">World University Supercomputer Competition launches first "Talent Matchmaking" segment, building a talent supply and demand bridge between the arena and the workplace</a>
+
+*QbitAI*
+
+From May 16 to 20, the ASC26 World University Supercomputing Finals kicked off in Wuxi, with 25 top university teams from around the world competing on high-difficulty questions in multiple fields under a 5000W power consumption limit. This year's competition launches the first "Talent Matchmaking" segment, linking leading supercomputing and AI enterprises to build a direct bridge from the competition arena to the workplace, solving the supply and demand mismatch between industrial hiring difficulties and student employment difficulties, and attracting young talents to participate in domestic computing power construction.
+
+<FeedbackButtons slug="item:qbitai-418964" client:visible />
+
+## <a href="https://www.qbitai.com/2026/05/418836.html" target="_blank" rel="noopener noreferrer">Catch up on Agents, multimodality, applications and computing power all in one day, summit highlights here | Join us on site for AI on May 20</a>
+
+*QbitAI*
+
+The AI industry is developing at a high speed in 2026, and the public generally has confusion about AI application paths and entry opportunities. The 4th China AIGC Industry Summit will be held on May 20, gathering 18 heavyweight global guests from industry, academia and research, covering core topics such as Agent commercialization, multimodal technology, scenario implementation, and computing infrastructure. It will also release annual lists and industry maps, presenting the core trends of the annual AI industry in one stop.
+
+<FeedbackButtons slug="item:qbitai-418836" client:visible />
+
+---

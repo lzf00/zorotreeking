@@ -1,0 +1,188 @@
+---
+lang: en
+translationKey: digest-2026-06-10
+title: "AI Daily Digest · 2026-06-10"
+description: "20 papers · multi-source aggregation + AI-generated summaries"
+date: 2026-06-10
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.09967" target="_blank" rel="noopener noreferrer">ABot-Earth 0.5: Generative 3D Earth Model</a>
+
+*HF ★ 37 · Ming Qian, Tianjian Ouyang, Mingchao Sun… · [HF Mirror](https://huggingface.co/papers/2606.09967)*
+
+This paper releases ABot-Earth 0.5, a generative 3D Earth framework that adopts a novel generative model based on 3D Gaussian Splatting (3DGS). Trained on real urban reconstruction datasets, it can generate high-fidelity 3D scenes with only satellite imagery as input, taking less than 10 minutes to generate content per square kilometer. The framework comes with a hierarchical LOD structure that supports real-time web-side interaction, reduces the sim-to-real domain gap, significantly lowers the technical and cost thresholds for large-scale 3D reconstruction, and is compatible with embodied AI applications such as drone navigation.
+
+<FeedbackButtons slug="item:arxiv-2606.09967" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.09730" target="_blank" rel="noopener noreferrer">SearchSwarm: Towards Delegation Intelligence in Agentic LLMs for Long-Horizon Deep Research</a>
+
+*HF ★ 12 · Pu Ning, Quan Chen, Kun Tao… · [HF Mirror](https://huggingface.co/papers/2606.09730)*
+
+To address the issues of large models' limited context windows and the lack of training data for delegation intelligence required by master-slave agent frameworks for long-cycle complex tasks, this paper designs a guidance framework for deep research scenarios. It generates execution trajectories with correct task splitting and delegation decisions as supervised fine-tuning data. The trained SearchSwarm-30B model achieves state-of-the-art performance among models of the same scale on both Chinese and English BrowseComp benchmarks, and related resources will be open-sourced.
+
+<FeedbackButtons slug="item:arxiv-2606.09730" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.10572" target="_blank" rel="noopener noreferrer">One Token per Multimodal Evidence: Latent Memory for Resource-Constrained QA</a>
+
+*HF ★ 9 · Zhi Zheng, Ziqiao Meng, Hao Luan… · [HF Mirror](https://huggingface.co/papers/2606.10572)*
+
+To solve the problem that existing QA systems store original text and images in external memory, and input retrieved content to large models resulting in high token overhead and storage pressure, which is unsuitable for resource-constrained scenarios, this paper proposes a latent memory paradigm: a small compression model converts each piece of text-image evidence into a single high-dimensional latent token, which is directly input to the large model for generation after retrieval in the unified latent space, with the compressor trained end-to-end. Its performance matches that of advanced RAG baselines, while generation token consumption is reduced by 3-10 times, and it achieves state-of-the-art performance on the WebQA text-image QA task.
+
+<FeedbackButtons slug="item:arxiv-2606.10572" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.11182" target="_blank" rel="noopener noreferrer">EEVEE: Towards Test-time Prompt Learning in the Real World for Self-Improving Agents</a>
+
+*HF ★ 7 · Weixian Xu, Shilong Liu, Mengdi Wang · [HF Mirror](https://huggingface.co/papers/2606.11182)*
+
+To address the defect that existing test-time prompt learning for LLM agents only adapts to single datasets and cannot cope with real-world heterogeneous task streams, this paper proposes EEVEE, the first multi-dataset test-time prompt learning framework: it introduces input routing to divide task clusters and match corresponding prompt configurations, and adopts a routing-prompt co-evolution strategy for optimization. Experiments show that it has excellent robustness to heterogeneous streams, with the average score across multiple benchmarks up to 48.2% higher than existing SOTA methods, balancing both single-benchmark learning capability and efficiency.
+
+<FeedbackButtons slug="item:arxiv-2606.11182" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.10646" target="_blank" rel="noopener noreferrer">How Does Reasoning Flow? Tracing Attention-Induced Information Flow for Targeted RL in LLMs</a>
+
+*HF ★ 5 · Zhichen Dong, Yang Li, Yuhan Sun… · [HF Mirror](https://huggingface.co/papers/2606.10646)*
+
+To address the pain point that existing token-level credit allocation in LLM reinforcement learning ignores the global structure of information propagation, this paper proposes the FlowTracer framework: it builds a token-level directed acyclic graph based on aggregated attention weights, traces the reasoning flow pointing to the answer, derives the global contribution of each token combined with flow conservation, and optimizes reward allocation accordingly to accurately locate high-value reasoning nodes, achieving stable performance improvements on multiple types of reasoning tasks.
+
+<FeedbackButtons slug="item:arxiv-2606.10646" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.07550" target="_blank" rel="noopener noreferrer">Offline Reinforcement Learning for Plasma Control in Nuclear Fusion: Codebase and Benchmark</a>
+
+*Yang Fu, Haomin Bao, Rohit Sonker…*
+
+To address the high trial-and-error cost of real-world nuclear fusion plasma control and the lack of standardized benchmarks for offline reinforcement learning research, this paper launches the RL4F dedicated benchmark, which builds an evaluation environment based on historical data from the real DIII-D tokamak, covering 4 types of full-profile tracking control tasks. After unified evaluation, it is found that offline model-based reinforcement learning has the best overall performance, and no algorithm works well for all tasks, highlighting the core value of dynamic modeling. All resources have been open-sourced.
+
+<FeedbackButtons slug="item:arxiv-2606.07550" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.07553" target="_blank" rel="noopener noreferrer">MedicalRec: Medical recommender system for image classification without retraining</a>
+
+*Roghayeh Taghavi, Aysa Hasanazde Bashkandi, Amir Ali Bengari…*
+
+To address the pain point of high computing power and energy consumption of manually selecting suitable models in the field of medical image classification, this study collates 3000 related papers, builds the public dataset MedicalRec-Bench containing more than 5000 model test records for 5 types of tasks including skin cancer and tumor detection, and develops the Transformer-based retraining-free model recommendation system MedicalRec, which is available in 4 feature dimension versions, with the highest HitRate@100 reaching 75.5%. Related resources have been open-sourced.
+
+<FeedbackButtons slug="item:arxiv-2606.07553" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.07557" target="_blank" rel="noopener noreferrer">SPIN: Decentralized Swarm Control via Tensorized Policy Coordination</a>
+
+*Zhaowen Fan*
+
+To address the bottlenecks of exponential explosion of joint action space and high communication delay in distributed multi-agent swarm collaboration on resource-constrained edge devices, this paper proposes the SPIN framework: it models the swarm topology as a compressed tensor network, decomposes the joint policy tensor into a matrix product state chain, reduces the computational complexity from exponential to linear, and is paired with an offline pre-trained neuro-symbolic control pipeline that supports zero-shot behavior adaptation at runtime. Experiments verify its stable performance in tasks such as tracking and area coverage, providing a feasible path for low-power edge swarm intelligence.
+
+<FeedbackButtons slug="item:arxiv-2606.07557" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/nextdoor" target="_blank" rel="noopener noreferrer">How engineers at Nextdoor use Codex to build without limits</a>
+
+*OpenAI*
+
+This article introduces the R&D efficiency improvement practice of the engineering team at Nextdoor, a US neighborhood social platform: the core method is to combine the Codex large code model with GPT-5.5, applied to two major scenarios: troubleshooting hard-to-reproduce technical problems and supporting cross-platform development. This solution greatly reduces R&D consumption of non-core affairs, allowing the team to focus on product value delivery, effectively breaking through the original development capacity boundary and realizing low-constraint innovation.
+
+<FeedbackButtons slug="item:openai-blog-nextdoor" client:visible />
+
+## <a href="https://openai.com/index/notion" target="_blank" rel="noopener noreferrer">What Codex unlocks for Notion</a>
+
+*OpenAI*
+
+This article introduces the practice path of productivity tool Notion implementing OpenAI's Codex large code model: relying on Codex's code and semantic understanding capabilities, product requirement specifications can be generated directly with a single prompt, and an AI voice input function adapted to the web side has also been launched, effectively lowering the R&D threshold for small teams, greatly amplifying engineering capacity, and providing a reference for the implementation of large models in the productivity tool track.
+
+<FeedbackButtons slug="item:openai-blog-notion" client:visiblevisible}}
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-fable-5-mythos-5" target="_blank" rel="noopener noreferrer">Claude Fable 5 and Claude Mythos 5</a>
+
+*Anthropic*
+
+Anthropic officially announced the launch of the Claude Fable 5 large model, which is a Mythos-level flagship product under the Claude Mythos 5 series. After multiple rounds of security alignment iterations and risk verification, it has met the security requirements for full-scenario general opening, and can be opened to ordinary users and enterprise customers without additional permissions, making it the core new product for its high-end large model to be implemented in general scenarios.
+
+<FeedbackButtons slug="item:anthropic-claude-fable-5-mythos-5" client:visible/>
+
+## <a href="https://www.anthropic.com/news/expanding-project-glasswing" target="_blank" rel="noopener noreferrer">Expanding Project Glasswing</a>
+
+*Anthropic*
+
+The currently public expansion of Project Glasswing has a streamlined work content, with the core measure being to expand the project's coverage to about 150 new partner institutions in more than 15 countries. This expansion greatly improves the project's cross-border radiation capacity, can reach more diverse participants, and lays a foundation for the subsequent implementation of related services and expansion of application scenarios of the project.
+
+<FeedbackButtons slug="item:anthropic-expanding-project-glasswing" client:visible/>
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/fluid-natural-voice-translation-with-gemini-35-live-translate/" target="_blank" rel="noopener noreferrer">Fluid, natural voice translation with Gemini 3.5 Live Translate</a>
+
+*Google DeepMind*
+
+This achievement is the Gemini 3.5 real-time translation function launched by Google, with core features of near-real-time response and natural, smooth translated speech close to the texture of real human communication. At present, this capability has been officially integrated into three products: Google AI Studio, Google Translate, and Google Meet, which can cover multiple scenarios such as developer debugging, daily translation, and online conference simultaneous interpretation, effectively improving the efficiency and experience of cross-language voice interaction.
+
+<FeedbackButtons slug="item:deepmind-fluid-natural-voice-translation-with-gemini-35-live-translate" client:visible/>
+
+## <a href="https://deepmind.google/blog/introducing-gemma-4-12b-a-unified-encoder-free-multimodal-model/" target="_blank" rel="noopener noreferrer">Introducing Gemma 4 12B: a unified, encoder-free multimodal model</a>
+
+*Google DeepMind*
+
+Google's newly released Gemma 4 12B is a unified multimodal large model with an encoder-free architecture. Its core innovation is abandoning the independent visual encoder and directly embedding multimodal perception capabilities into the backbone of the large language model. Its image-text reasoning and cross-modal understanding performance are better than similar models of the same scale with independent encoders, it is lighter to deploy, and can adapt to various multimodal implementation scenarios on the cloud and end sides.
+
+<FeedbackButtons slug="item:deepmind-introducing-gemma-4-12b-a-unified-encoder-free-multimodal-model" client:visible/>
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/ServiceNow-AI/code-switching" target="_blank" rel="noopener noreferrer">Can Voice Agents Handle Bilingual Customers? Benchmarking Frontier ASR on Code-Switched Speech</a>
+
+*Hugging Face*
+
+Aiming at the problem of whether voice agents are suitable for bilingual users, this paper conducts a code-switched speech benchmark test on cutting-edge automatic speech recognition (ASR) systems: a dedicated test set covering different code mixing ratios, accents, and application scenarios is built. The test finds that the accuracy of current mainstream ASR in code-switched scenarios is significantly lower than that in monolingual scenarios, especially in scenarios with small languages and high mixing ratios, the performance drops sharply, clarifying the bilingual adaptation gap of existing voice products, and also providing a benchmark reference for multi-scenario optimization of ASR.
+
+<FeedbackButtons slug="item:hf-blog-code-switching" client:visible/>
+
+## <a href="https://huggingface.co/blog/CohereLabs/introducing-north-mini-code" target="_blank" rel="noopener noreferrer">Introducing North Mini Code: Cohere’s First Model For Developers</a>
+
+*Hugging Face*
+
+This article introduces North Mini Code, the first code-specific large model launched by Cohere for developers. The model focuses on lightweight and high adaptability, supports core development scenarios such as code generation, debugging, logic error checking, and performance optimization for multiple mainstream programming languages, and can stably output high-accuracy code even in low-resource environments, effectively reducing the coding burden of developers, improving R&D efficiency, and completing Cohere's vertical code model layout.
+
+<FeedbackButtons slug="item:hf-blog-introducing-north-mini-code" client:visible/>
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This AI alignment study from the perspective of virtue ethics overturns the traditional assumption that "rational agents need to be anchored to fixed goals", pointing out that human rational behavior is not directed at an ultimate goal, but dynamically adjusted based on a practical network including action paradigms and evaluation rules. The paper proposes that AI decision-making logic needs to match the "type signature" of human practical decision-making, which can not only align with ethical requirements such as human well-being, but also ensure the core security attributes of AI.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible/>
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/06/433590.html" target="_blank" rel="noopener noreferrer">Claude Mythos 5 Just Released! 50 Million Lines of Code Completed in One Day</a>
+
+*QbitAI*
+
+Anthropic has recently released two flagship large models of the same origin: Claude Fable 5, which has security protection and is open to all users, will downgrade to call older models when risky questions are triggered; and the full-capacity Mythos 5 without security restrictions, which is only open to trusted users, focusing on top-level cybersecurity offense and defense and biological research capabilities. The autonomous running time of the two models is ahead of previous generations, and the API price is halved compared with previous ones, with 1 million input/output tokens costing only $10 and $50 respectively, marking that cutting-edge AI has entered the permission era.
+
+<FeedbackButtons slug="item:qbitai-433590" client:visible/>
+
+## <a href="https://www.qbitai.com/2026/06/433565.html" target="_blank" rel="noopener noreferrer">Inner Mongolia Pioneers New Solution for AI Development Breakthroughs</a>
+
+*QbitAI*
+
+Tencent's Tang Daosheng and Yao Shunyu made it clear in a recent public dialogue that AI competition has moved away from the single competition of parameter and computing power scale, and entered a multi-dimensional collaboration stage of models, products, scenarios, and organizations, with token efficiency and energy cost becoming common pain points in the industry. Judging from the previous "AI + Energy" promotion meeting of the National Energy Administration, the power system has changed from an AI supporting facility to a core main infrastructure, and energy management directly determines the upper limit of the implementation of the AI industry.
+
+<FeedbackButtons slug="item:qbitai-433565" client:visible/>
+
+## <a href="https://www.qbitai.com/2026/06/433560.html" target="_blank" rel="noopener noreferrer">Former Head of Li Auto's Autonomous Driving Launches Startup, Settles in Beijing E-Town</a>
+
+*QbitAI*
+
+Kunlun Xing, an embodied intelligence enterprise co-founded by Lang Xianpeng, former head of Li Auto's autonomous driving division, and Ren Geng, former vice president of Alibaba, has recently settled in Beijing E-Town. The company benchmarks Tesla's humanoid robots, and focuses on the research and development of both the body and the intelligent brain. Only 10 days after registration, its valuation exceeded $1 billion, making it a unicorn. It received top-tier capital investment as soon as it was established, assembled its core team in two weeks, and completed the construction of its R&D system in two months. The two founders have complementary backgrounds in industrial operation and autonomous driving technology respectively.
+
+<FeedbackButtons slug="item:qbitai-433560" client:visible/>

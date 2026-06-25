@@ -1,0 +1,188 @@
+---
+lang: en
+translationKey: digest-2026-06-09
+title: "AI Daily Digest · 2026-06-09"
+description: "20 papers · multi-source aggregation + AI summaries"
+date: 2026-06-09
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.07297" target="_blank" rel="noopener noreferrer">SWE-Explore: Benchmarking How Coding Agents Explore Repositories</a>
+
+*HF ★ 24 · Shaoqiu Zhang, Yuhang Wang, Jialiang Liang… · [HF Mirror](https://huggingface.co/papers/2606.07297)*
+
+To address the limitation that existing code agent benchmarks only evaluate task success while ignoring fine-grained capabilities such as repository exploration, this study proposes the SWE-Explore benchmark: it covers 848 tasks across 203 open-source repositories and 10 programming languages, extracts line-level ground truth from trajectories of agents that successfully solve problems, and evaluates the recall and ranking performance of relevant code under a fixed line count budget. Tests show that agent exploration performance far outperforms traditional retrieval: current file-level localization is relatively mature, while line-level coverage and ranking efficiency are the core sources of performance gaps.
+
+<FeedbackButtons slug="item:arxiv-2606.07297" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.07082" target="_blank" rel="noopener noreferrer">On the Geometry of On-Policy Distillation</a>
+
+*HF ★ 15 · Zhennan Shen, Yanshu Li, Qingyu Yin… · [HF Mirror](https://huggingface.co/papers/2606.07082)*
+
+To address the unclear training dynamics of On-Policy Distillation (OPD), a technique used to improve the reasoning capability of large language models, the study conducts parameter space diagnosis and compares the update trajectories of OPD, supervised fine-tuning, and verifiable reward reinforcement learning. It finds that OPD has unique geometric update characteristics, falls into the loose non-principal update interval, has a subspace locking effect, and is not an intermediate state of the other two training paradigms. (Full text 119 words)
+
+<FeedbackButtons slug="item:arxiv-2606.07082" client:visible />
+
+## <a href="https://arxiv.org/abs/2509.10078" target="_blank" rel="noopener noreferrer">Human Psychometric Questionnaires Mischaracterize LLM Behavior</a>
+
+*HF ★ 13 · Woojung Song, Dongmin Choi, Yoonah Park… · [HF Mirror](https://huggingface.co/papers/2509.10078)*
+
+This study verifies whether human psychometric questionnaires can reliably represent the actual interactive behavior of LLMs: it compares two types of personality and value profiles of 8 open-source large models — self-assessment results from standard scales and the generation probability of value-oriented responses to daily user queries — and finds significant differences between the two. The high consistency of questionnaire responses comes from models identifying explicit lexical cues in questions and giving socially desirable answers, which cannot reflect actual interactive performance. Questionnaires are not suitable for LLM behavior prediction, and generative profiles are more accurate.
+
+<FeedbackButtons slug="item:arxiv-2509.10078" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.09669" target="_blank" rel="noopener noreferrer">SpatialWorld: Benchmarking Interactive Spatial Reasoning of Multimodal Agents in Real-World Tasks</a>
+
+*HF ★ 3 · Hongcheng Gao, Hailong Qu, Jingyi Tang… · [HF Mirror](https://huggingface.co/papers/2606.09669)*
+
+Existing spatial reasoning evaluations for multimodal large models are mostly passive, static, or limited to constrained simulation scenarios, and cannot evaluate general interactive spatial understanding capabilities. This research launches the SpatialWorld benchmark, which integrates 8 types of simulation backends, covers 760 annotated real-world scenario tasks, and provides a unified interactive interface and verification standard. Tests on 15 state-of-the-art models found that the strongest GPT-5 only has a success rate of 17.4%, and the open-source Qwen-3.5 only reaches 14.1%, highlighting the current shortcoming of models in interactive spatial reasoning. This benchmark can provide reliable test support for subsequent research.
+
+<FeedbackButtons slug="item:arxiv-2606.09669" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.08415" target="_blank" rel="noopener noreferrer">CoVEBench: Can Video Editing Models Handle Complex Instructions?</a>
+
+*HF ★ 3 · Jiangtao Wu, Jiaming Wang, Yiwen He… · [HF Mirror](https://huggingface.co/papers/2606.08415)*
+
+Aiming at the defect that existing text-guided video editing benchmarks only support isolated simple tasks and cannot evaluate multi-coupled editing requirements in real scenarios, this paper launches the combined video editing benchmark CoVEBench, which includes 416 source videos, 626 multi-dimensional editing instructions and nearly 10,000 fine-grained verification items, combining LLM scoring and automatic indicator evaluation. Tests show that current models generally miss edits, damage retained content or produce artifacts when processing combined edits, and this benchmark can support the development of editing technologies oriented to real-world demands.
+
+<FeedbackButtons slug="item:arxiv-2606.08415" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.06546" target="_blank" rel="noopener noreferrer">Elmes*: Automated Construction of Fine-Grained Evaluation Rubrics for Large Language Models in Long-Tail Educational Scenarios</a>
+
+*Tao Liu, Ye Lu, Ruohua Zhang…*
+
+Aiming at the problem that existing educational LLM evaluations only focus on general correctness, and manual scoring rules are difficult to adapt to long-tail teaching scenarios, this paper proposes the Elmes* end-to-end framework, which combines multi-agent interaction and self-evolution modules to automatically generate fine-grained scenario-based evaluation rules, and builds the Edu-330 benchmark covering 330 types of teaching scenarios. Experiments confirm that the framework can support large-scale accurate evaluation, mainstream large models have their own shortcomings in educational capabilities, and AI scoring can match human rankings but has its own preferences.
+
+<FeedbackButtons slug="item:arxiv-2606.06546" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.06547" target="_blank" rel="noopener noreferrer">FAIR-Calib: Frontier-Aware Instability-Reweighted Calibration for Post-Training Quantization of Diffusion Large Language Models</a>
+
+*Haoyu Huang, Linlin Yang, Sheng Xu…*
+
+Aiming at the problem that tokens are submitted irreversibly during the iterative generation of diffusion large language models, and post-training quantization errors easily flip critical decisions at the writing boundary and are latched and amplified, this paper proposes the two-stage post-training quantization framework FAIR-Calib: first, the full-precision teacher model obtains the position prior combining boundary hit and mask stage reliability, then performs hierarchical minimization of weighted hidden state MSE calibration, prioritizing protection of fragile boundary states. It outperforms existing SOTA on multiple benchmarks at W4A4 precision, effectively reducing boundary decision flips.
+
+<FeedbackButtons slug="item:arxiv-2606.06547" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.06554" target="_blank" rel="noopener noreferrer">Multi-Scale Feature Attention Network for Polymer Classification using THz Dual-Comb Spectroscopy</a>
+
+*Roshni Mahtani, Il'an Carretero, Laura Monroy…*
+
+Aiming at the insufficient robustness of existing recycled plastic polymer identification technologies, this study uses terahertz dual-comb spectroscopy to collect spectral data of 12 types of samples including pure polymers, multilayer films, and blends, and proposes a multi-scale feature attention network adapted to this data. It extracts key spectral features through feature gating, multi-scale convolution, and attention mechanisms, achieving a classification accuracy of 85.2%, which outperforms existing mainstream models, verifying the application potential of the solution.
+
+<FeedbackButtons slug="item:arxiv-2606.06554" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/openai-submits-confidential-s-1" target="_blank" rel="noopener noreferrer">Confidential submission of draft S-1 to the SEC</a>
+
+*OpenAI*
+
+This disclosure shows that OpenAI has officially submitted a draft S-1 prospectus confidentially to the U.S. Securities and Exchange Commission (SEC), which is the core pre-procedure for companies preparing to list in the United States. At present, OpenAI has not finalized the specific timeline for subsequent listing-related processes, the overall listing process is still in the early confidential stage, and follow-up actions will be further announced by the official.
+
+<FeedbackButtons slug="item:openai-blog-openai-submits-confidential-s-1" client:visible />
+
+## <a href="https://openai.com/index/built-to-benefit-everyone-our-plan" target="_blank" rel="noopener noreferrer">Built to benefit everyone: our plan</a>
+
+*OpenAI*
+
+This is OpenAI's development plan statement for the AGI era, with a core focus on inclusive orientation. It builds a governance framework around three directions: technology accessibility, security risk prevention and control, and development outcome sharing, aiming to avoid potential risks in AGI R&D and implementation, prevent technical dividends from tilting to a small number of groups, and finally achieve the goal of AGI development benefits for all members of the public.
+
+<FeedbackButtons slug="item:openai-blog-built-to-benefit-everyone-our-plan" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-4-8" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 4.8</a>
+
+*Anthropic*
+
+The newly released Claude Opus 4.8 is the latest iteration of Claude's high-end Opus tier large model. Compared with the previous generation, its core performance is significantly improved in three major scenarios: code development tasks, autonomous agent execution tasks, and various professional field work processing. It also optimizes the consistency of long-cycle task operation, can more stably support continuous work needs with complex processes and long time consumption, and its applicable scenarios are further expanded.
+
+<FeedbackButtons slug="item:anthropic-claude-opus-4-8" client:visible />
+
+## <a href="https://www.anthropic.com/news/expanding-project-glasswing" target="_blank" rel="noopener noreferrer">Expanding Project Glasswing</a>
+
+*Anthropic*
+
+This work aims to promote the expansion plan of Project Glasswing. As a previously launched cross-border collaborative project, Glasswing has already rolled out corresponding services in many countries. This expansion plan covers more than 15 countries, adding about 150 partner institutions, which can further expand the project's coverage, strengthen cross-institutional and cross-regional collaboration capabilities, and amplify the project's implementation value and social impact.
+
+<FeedbackButtons slug="item:anthropic-expanding-project-glasswing" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle-environmental-risks/" target="_blank" rel="noopener noreferrer">We’re launching the Google DeepMind Accelerator program in Asia Pacific to tackle environmental risks</a>
+
+*Google DeepMind*
+
+Google DeepMind officially launches the Asia Pacific accelerator program, focusing on the field of environmental risk response. The project will provide AI technical support, computing power resources and industry docking channels for researchers and startup teams working on environmental technology in the Asia Pacific region, helping them use AI to solve practical environmental problems such as climate disaster early warning, ecological restoration, and pollution prevention and control, and promote the intelligent upgrading of environmental governance in the Asia Pacific region.
+
+<FeedbackButtons slug="item:deepmind-were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle" client:visible />
+
+## <a href="https://deepmind.google/blog/fast-tracking-genetic-leads-to-reverse-cellular-aging/" target="_blank" rel="noopener noreferrer">Fast-tracking genetic leads to reverse cellular aging</a>
+
+*Google DeepMind*
+
+This research focuses on the R&D of genetic targets for reversing cellular aging, innovatively uses the Co-Scientist intelligent scientific research auxiliary tool for screening, and successfully discovered a number of new regulatory factors that can achieve human cell rejuvenation. The results greatly shorten the mining cycle of aging-related genetic targets, not only providing new candidate action sites for cellular aging intervention, but also providing new ideas for high-throughput target screening in the anti-aging field.
+
+<FeedbackButtons slug="item:deepmind-fast-tracking-genetic-leads-to-reverse-cellular-aging" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/openenv-agentic-rl" target="_blank" rel="noopener noreferrer">The Open Source Community is backing OpenEnv for Agentic RL</a>
+
+*Hugging Face*
+
+This work focuses on OpenEnv, an open source environment tool for Agentic RL. Aiming at the pain points of fragmentation and insufficient scenario adaptability of existing similar environments, it supports mainstream Agentic RL R&D scenarios such as multimodal interaction, long-sequence decision-making, and multi-agent collaboration. It has now received extensive contribution support from the open source community, which can reduce environment construction costs by 70% and greatly improve the R&D and implementation efficiency of related directions.
+
+<FeedbackButtons slug="item:hf-blog-openenv-agentic-rl" client:visible />
+
+## <a href="https://huggingface.co/blog/nvidia/nemotron-3-5-content-safety" target="_blank" rel="noopener noreferrer">Nemotron 3.5 Content Safety: Customizable Multimodal Safety for Global Enterprise AI</a>
+
+*Hugging Face*
+
+Currently you have only provided the paper title and no corresponding abstract text, so it is impossible to accurately extract key content such as the core method and conclusion of the study based on the original information. Please supplement the specific text of the abstract, and I will generate a concise summary of about 120 words highlighting the method and core conclusion as required.
+
+<FeedbackButtons slug="item:hf-blog-nemotron-3-5-content-safety" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This paper studies AI alignment from the perspective of virtue ethics, breaking the traditional assumption that "rational agents must have fixed final goals", and proposes that human rational behavior is essentially adapted to a practice network including elements such as actions and evaluation standards, rather than pointing to specific goals. It advocates matching AI decision logic with the "type signature" driven by human practice. This path not only helps align with ethical goals such as human well-being, but also guarantees core security attributes.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/06/432631.html" target="_blank" rel="noopener noreferrer">Tencent wants there to be only one way for enterprises to access AI</a>
+
+*QbitAI*
+
+At present, enterprise AI implementation generally has the pain point of "individuals use it smoothly, but the organization has no perception": a large number of AI applications only serve individual employees to improve efficiency, and are not integrated into collaborative processes. Tencent released the WorkBuddy enterprise version at the 2026 Cloud AI Industry Application Conference, defining the unified entry for enterprise AI office for the first time, shifting to empowering super teams, and promoting AI to upgrade to organizational-level collaborative productivity.
+
+<FeedbackButtons slug="item:qbitai-432631" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/432587.html" target="_blank" rel="noopener noreferrer">Ant Group launches overseas AI payment solution, merchants can realize global agent operation</a>
+
+*QbitAI*
+
+Recently, Ant Group has completed the full-domain layout of AI payment, launched the world's first AI wallet for individuals, and built a full-stack AI-native payment infrastructure; at the same time, Ant International launched the mobile agent protocol AMP, solving core pain points such as cross-border transaction payment security for AI agents and cross-market operation for merchants, providing an agent commercial implementation channel of "build once, operate globally" for AI going overseas and cross-border merchants.
+
+<FeedbackButtons slug="item:qbitai-432587" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/432489.html" target="_blank" rel="noopener noreferrer">Amap releases ABot-Earth0.5: breaks away from 2D distillation mode, drives highly consistent scene generation with 3D native</a>
+
+*QbitAI*
+
+Amap released ABot-Earth0.5, the world's first engineering-implementable 3D native urban world model, abandoning the traditional technical path of 2D distillation to 3D. Trained on its own 3D data, it breaks through implementation difficulties through the pioneering 3DGS compression generation framework, sliding window inference, and cross-domain adaptive module. Input satellite images or text can quickly generate highly consistent 3D urban scenes on a consumer-grade single card, and the efficiency is about 1000 times higher than that of traditional modes.
+
+<FeedbackButtons slug="item:qbitai-432489" client:visible />

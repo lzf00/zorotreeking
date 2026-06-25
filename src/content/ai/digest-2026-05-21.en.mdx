@@ -1,0 +1,190 @@
+---
+lang: en
+translationKey: digest-2026-05-21
+title: "Daily AI Picks · 2026-05-21"
+description: "20 papers · multi-source aggregation + AI summaries"
+date: 2026-05-21
+tags: [digest, auto, ai-papers]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2605.19660" target="_blank" rel="noopener noreferrer">OScaR: The Occam's Razor for Extreme KV Cache Quantization in LLMs and Beyond</a>
+
+*HF 15 · Zunhai Su, Rui Yang, Chao Zhang… · [HF Mirror](https://huggingface.co/papers/2605.19660)*
+
+To address the memory bottleneck of KV cache in long-context and multimodal LLM deployment, as well as the poor extreme compression performance of existing per-channel quantization methods, this paper identifies token norm imbalance as the core flaw. It proposes OScaR, a lightweight KV compression framework that eliminates errors through channel rotation and full-token scaling, paired with optimized CUDA kernels. Tests show INT2 quantization is nearly lossless: compared to the BF16 baseline, decoding speed is up to 3x faster, VRAM usage is reduced by 5.3x, throughput is increased by 4.1x, and it adapts to all types of text and multimodal LLMs.
+
+<FeedbackButtons slug="item:arxiv-2605.19660" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.20630" target="_blank" rel="noopener noreferrer">Evaluating Temporal Semantic Caching and Workflow Optimization in Agentic Plan-Execute Pipelines</a>
+
+*HF 7 · Alimurtaza Mustafa Merchant, Krish Veera, Sajal Kumar Goyla… · [HF Mirror](https://huggingface.co/papers/2605.20630)*
+
+To solve the high latency of planning-execution pipelines for industrial asset operation and maintenance agents, and the poor adaptability of existing general LLM caches, this paper tests and proposes two complementary optimization schemes on the AssetOpsBench benchmark: temporal semantic caching, and MCP workflow optimization that combines disk-level tool discovery caching and dependency-aware parallel execution. Results show MCP optimization improves efficiency by 1.67x and reduces latency by 40%, reaching 30.6x efficiency improvement when cache hits, while also identifying the failure problem of pure semantic caches when adapting to parameterized industrial queries.
+
+<FeedbackButtons slug="item:arxiv-2605.20630" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.19376" target="_blank" rel="noopener noreferrer">Generative Recursive Reasoning</a>
+
+*HF 7 · Junyeob Baek, Mingyu Jo, Minsu Kim… · [HF Mirror](https://huggingface.co/papers/2605.19376)*
+
+Most existing recursive reasoning models are deterministic, with limitations as they only iteratively optimize along a single latent trajectory and output a single prediction. This paper proposes GRAM, a generative recursive reasoning framework that converts recursive latent reasoning into probabilistic multi-trajectory computation, trained via amortized variational inference, supporting conditional reasoning and unconditional generation in input-free scenarios. It outperforms deterministic baselines on structured reasoning and multi-solution constraint satisfaction tasks, and can achieve inference-time compute scaling by adjusting recursion depth and sampling trajectories in parallel.
+
+<FeedbackButtons slug="item:arxiv-2605.19376" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.21487" target="_blank" rel="noopener noreferrer">Uni-Edit: Intelligent Editing Is A General Task For Unified Model Tuning</a>
+
+*HF 4 · Dian Zheng, Manyuan Zhang, Hongyu Li… · [HF Mirror](https://huggingface.co/papers/2605.21487)*
+
+Existing unified multimodal models rely on hybrid multi-task training to improve image understanding, generation and editing capabilities, which has inherent conflicts, requires complex multi-stage processes, and only achieves performance trade-offs rather than mutual enhancement. This paper proposes Uni-Edit, which takes intelligent editing as a general tuning task, builds a 148k dataset containing complex reasoning instructions, and can improve the three capabilities simultaneously through single-task single-stage training, with significant effects verified by experiments.
+
+<FeedbackButtons slug="item:arxiv-2605.21487" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.20668" target="_blank" rel="noopener noreferrer">On the limits and opportunities of AI reviewers: Reviewing the reviews of Nature-family papers with 45 expert scientists</a>
+
+*HF 2 · Seungone Kim, Dongkeun Yoon, Kiril Gashteovski… · [HF Mirror](https://huggingface.co/papers/2605.20668)*
+
+To address the doubt over AI reviewer capabilities and the flaw of existing evaluations only benchmarking against human verdicts, this study invited 45 cross-domain experts who spent 469 hours labeling and evaluating three core metrics of review comments from humans and 3 AI systems for 82 Nature-family papers. Results show GPT-5.2 outperforms the highest-scoring human reviewer per paper, all AI systems perform better than low-scoring humans, and can also detect 26% of issues not mentioned by humans, but have unique defects, and can only serve as a supplement to human review at the current stage.
+
+<FeedbackButtons slug="item:arxiv-2605.20668" client:visible />
+
+# arXiv cs.LG (Machine Learning)
+
+## <a href="https://arxiv.org/abs/2605.18793" target="_blank" rel="noopener noreferrer">Dimensional Balance Improves Large Scale Spatiotemporal Prediction Performance</a>
+
+*Jing Chen, Shixiang Pan, Yujie Fan…*
+
+To address the pain points of limited performance improvement and weak cross-domain transferability of existing spatiotemporal prediction methods, this study uses spatiotemporal entropy as an indicator to diagnose the bottleneck of spatiotemporal complexity mismatch, and proposes a scalable adaptive framework: it compresses spatial dimensions via low-rank embedding to retain key structures, and expands the time domain to capture long-range dependencies to reduce cumulative errors. Tests across multiple domains show significant accuracy improvement and strong generality, and the code has been open sourced.
+
+<FeedbackButtons slug="item:arxiv-2605.18793" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.18794" target="_blank" rel="noopener noreferrer">Robust Basis Spline Decoupling for the Compression of Transformer Models</a>
+
+*Joppe De Jonghe, Van Tien Pham, Mariya Ishteva*
+
+Existing tensor decoupling-based neural network compression methods rely on polynomial and piecewise linear parameterization, which have problems of numerical instability or limited expressiveness. This paper proposes a B-spline based decoupling framework, and designs R-CMTF-BSD, a robust alternating least squares algorithm integrating normalization and Tikhonov regularization. Experiments verify that it can greatly reduce parameters while maintaining accuracy on vision tasks and Swin Transformer, making it an effective solution for structured network compression.
+
+<FeedbackButtons slug="item:arxiv-2605.18794" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.18795" target="_blank" rel="noopener noreferrer">HELLoRA: Hot Experts Layer-Level Low-Rank Adaptation for Mixture-of-Experts Models</a>
+
+*Jia Wei, Zhonghao Zhang, Ping Chen…*
+
+Existing LoRA is mostly adapted to parameter-efficient fine-tuning scenarios for dense LLMs, and does not leverage the sparse activation characteristics of MoE models. To address this, this paper proposes the HELLoRA method: it only attaches LoRA modules to the experts with the highest activation frequency per layer, and can also be paired with LoRI to form HELLoRI which saves more parameters. On three types of MoE base models and three types of tasks including mathematical reasoning, this method reduces trainable parameters by over 80% and improves accuracy by nearly 10% compared to conventional LoRA, while also improving training efficiency, verifying the practical value of activation-aware adapter deployment for MoE fine-tuning.
+
+<FeedbackButtons slug="item:arxiv-2605.18795" client:visible />
+
+# OpenAI Official Updates
+
+## <a href="https://openai.com/index/model-disproves-discrete-geometry-conjecture" target="_blank" rel="noopener noreferrer">An OpenAI model has disproved a central conjecture in discrete geometry</a>
+
+*OpenAI*
+
+The AI model developed by OpenAI has solved the classic unit distance problem that has been unresolved in the field of discrete geometry for 80 years, disproving the previously recognized core conjecture in the field. This achievement not only breaks through the pure theoretical bottleneck that has plagued mathematicians for a long time, but also marks a milestone progress in AI-driven mathematical research, providing a new feasible approach for AI to tackle cutting-edge unknown problems in basic science across disciplines.
+
+<FeedbackButtons slug="item:openai-blog-model-disproves-discrete-geometry-conjecture" client:visible />
+
+## <a href="https://openai.com/index/the-next-phase-of-education-for-countries" target="_blank" rel="noopener noreferrer">The next phase of OpenAI’s Education for Countries</a>
+
+*OpenAI*
+
+This article introduces that OpenAI's "Education for Countries" initiative has entered its next phase, with the core direction of expanding the implementation of AI technology in various campus scenarios at all levels. Specific measures include building a diverse new cooperation ecosystem, carrying out special training for teachers on AI applications, and developing special tools adapted to teaching needs. The ultimate goal of the project is to cover the whole world and effectively improve overall learning outcomes.
+
+<FeedbackButtons slug="item:openai-blog-the-next-phase-of-education-for-countries" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-4-7" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 4.7</a>
+
+*Anthropic*
+
+Anthropic's latest large model Claude Opus 4.7 is now fully available. This version is a significant upgrade over the previous Opus 4.6, with core improvements focused on high-level software engineering capabilities. Its processing ability for the most complex development tasks is particularly prominent, and it can better support professional software engineering scenarios such as high-difficulty code development and complex system debugging.
+
+<FeedbackButtons slug="item:anthropic-claude-opus-4-7" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-design-anthropic-labs" target="_blank" rel="noopener noreferrer">Introducing Claude Design by Anthropic Labs</a>
+
+*Anthropic*
+
+Anthropic Labs recently released a new product Claude Design, which focuses on human-machine collaborative visual creation capabilities. It supports users to work with the Claude large model to efficiently produce various standardized visual works such as design drafts, interactive prototypes, presentation slides, and single-page promotional materials, which can greatly lower the threshold for non-professional design users to create high-quality visual content.
+
+<FeedbackButtons slug="item:anthropic-claude-design-anthropic-labs" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/fast-tracking-genetic-leads-to-reverse-cellular-aging/" target="_blank" rel="noopener noreferrer">Fast-tracking genetic leads to reverse cellular aging</a>
+
+*Google DeepMind*
+
+This study focuses on the demand for mining genetic targets for reversing cellular aging. Biologists used the Co-Scientist AI intelligent research tool for screening, successfully discovered new regulatory factors, and achieved effective rejuvenation of human cells. This achievement not only provides new intervention targets for anti-aging research, but also verifies the high efficiency of AI-assisted tools in genetic screening research, which can accelerate the progress of aging-related translational research.
+
+<FeedbackButtons slug="item:deepmind-fast-tracking-genetic-leads-to-reverse-cellular-aging" client:visible />
+
+## <a href="https://deepmind.google/blog/simulate-real-world-places-with-project-genie-and-street-view/" target="_blank" rel="noopener noreferrer">Simulate real-world places with Project Genie and Street View</a>
+
+*Google DeepMind*
+
+Google has launched two service updates: first, it has rolled out Google AI Ultra subscription service globally, covering paid users in more regions; second, it has launched a new feature of "Project Genie" supported by Google Street View data, which relies on real spatial collection information to achieve high-fidelity simulation of various locations in the real world, providing new underlying support for spatial-related AI applications.
+
+<FeedbackButtons slug="item:deepmind-simulate-real-world-places-with-project-genie-and-street-view" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/olmoearth-v1-1" target="_blank" rel="noopener noreferrer">OlmoEarth v1.1: A more efficient family of Earth observation models</a>
+
+*Hugging Face*
+
+The newly launched OlmoEarth v1.1 is an upgraded family of Earth observation models. Addressing the pain points of high computing cost and weak downstream adaptability of existing remote sensing models, it has optimized the lightweight backbone architecture and multimodal pre-training strategy, and completed pre-training based on massive multi-source public remote sensing data. Tests show that compared to the old version and general CV models with the same parameters, its accuracy and inference efficiency are significantly improved on typical downstream tasks such as remote sensing classification and change detection, making it more suitable for edge deployment scenarios.
+
+<FeedbackButtons slug="item:hf-blog-olmoearth-v1-1" client:visible />
+
+## <a href="https://huggingface.co/blog/ettin-reranker" target="_blank" rel="noopener noreferrer">Introducing the Ettin Reranker Family</a>
+
+*Hugging Face*
+
+Currently only the title of this paper is provided, the specific English text of the abstract is not attached. Please supplement the full abstract of *Introducing the Ettin Reranker Family* so that I can complete the translation and extraction, and output a concise Chinese summary of around 120 words highlighting the core methods and conclusions.
+
+<FeedbackButtons slug="item:hf-blog-ettin-reranker" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+AI alignment research from the perspective of virtue ethics refutes the common assumption that "rational agents need to be anchored to fixed goals", pointing out that the rational nature of human action is to adapt to the practice network composed of actions, evaluation standards, resources, etc., rather than pointing to an ultimate goal. The study proposes that for AI to adapt to human collaboration, ethical requirements and core security attributes, the AI decision-making logic needs to be isomorphic with the human practice-based action logic.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/05/420761.html" target="_blank" rel="noopener noreferrer">Elon Musk has just released SpaceX's prospectus!</a>
+
+*QbitAI*
+
+After losing the lawsuit against OpenAI due to expired statute of limitations, Elon Musk immediately submitted a NASDAQ IPO application for SpaceX, which has merged xAI and X, planning to raise up to $75 billion with a valuation of over $2 trillion. If approved, it will become the world's largest IPO. Its rocket launch business is still losing money, with core profits coming from Starlink, while the AI business is losing heavily but still receives continuous large investment. OpenAI also plans to file confidentially soon, with the two sides starting an IPO race.
+
+<FeedbackButtons slug="item:qbitai-420761" client:visible />
+
+## <a href="https://www.qbitai.com/2026/05/420753.html" target="_blank" rel="noopener noreferrer">Zhixiang Future releases HiDream-O1-Image-Pro, an image LLM with over 200B parameters, financing continues to accelerate</a>
+
+*QbitAI*
+
+On May 19, Zhixiang Future released the HiDream-O1-Image-Pro image large model with over 200 billion parameters at its open day. The model adopts a native full-modal UiT architecture, enables underlying multimodal representation fusion, breaks through the modal separate encoding bottleneck of traditional architectures, and sets new SOTA on multiple benchmark tests. Meanwhile, Zhixiang has received another 100-million-level financing within half a month, and the capital market is optimistic about its layout potential in the full-modal large model track.
+
+<FeedbackButtons slug="item:qbitai-420753" client:visible />
+
+## <a href="https://www.qbitai.com/2026/05/420743.html" target="_blank" rel="noopener noreferrer">Hong Yuan from Taichu Yuanqi: Heterogeneous computing capability will be a key direction for future AI computing infrastructure | AIGC2026</a>
+
+*QbitAI*
+
+At the AIGC2026 summit hosted by QbitAI, Hong Yuan, Chief Product Officer of Taichu Yuanqi, pointed out that after AI is deployed in real business scenarios, tokens have become the core consumption unit, and computing power has become a key bottleneck for industrial development. Future computing power needs to solve problems such as collaborative scheduling of heterogeneous units and reduction of communication costs. Domestic computing power should not only pursue single-point performance, but also strengthen large-scale cluster services, computing efficiency and ecosystem usability.
+
+<FeedbackButtons slug="item:qbitai-420743" client:visible />
+
+---

@@ -1,0 +1,128 @@
+---
+lang: en
+translationKey: digest-2026-06-06
+title: "AI Daily Digest · 2026-06-06"
+description: "13 papers · multi-source aggregation + AI summaries"
+date: 2026-06-06
+tags: [digest, auto, arxiv, openai, anthropic, deepmind, the-gradient, qbitai]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.05169" target="_blank" rel="noopener noreferrer">The Evaluation Blind Spot: A Stereological Theory of Benchmark Coverage for Large Language Models</a>
+
+*Jason Z Wang*
+
+This paper proposes a stereological theory for LLM benchmark coverage. Empirical results show that mainstream leaderboards only have 2.86-4.80 effective dimensions, evaluation blind spots are far larger than score gaps, and ranking volatility is extremely high: the top two models swap positions nearly half the time, and 92% of dataset splits will change the top-ranked model. The study also proposes a submodular greedy benchmark selection algorithm: only 4 core benchmarks can achieve stable ranking, 7 can reach 90% coverage, and it also solves the Gardner Problem 1.5 proposed in 1995.
+
+<FeedbackButtons slug="item:arxiv-2606.05169" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.05170" target="_blank" rel="noopener noreferrer">ERRORQUAKE: Heavy-Tailed Error Severity Distributions in Open-Weight Large Language Models</a>
+
+*Jason Z Wang*
+
+To address the limitation that existing open-source LLM evaluations only count error rates and ignore differences in error severity, the research team built the Errorquake-10k evaluation benchmark covering 8 domains and 5 difficulty levels, modeling the error severity distribution of 21 open-source large models. The study found that models with the same accuracy have significantly different severity distributions, this indicator is not redundant with error rate information, and high-severity errors are mostly hallucinations. It is recommended to include error severity as a regular evaluation dimension.
+
+<FeedbackButtons slug="item:arxiv-2606.05170" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.05186" target="_blank" rel="noopener noreferrer">Staged Factorial Screening for Budget-Constrained Micro-Pretraining</a>
+
+*Felipe Chavarro Polania*
+
+Targeting the candidate recipe screening scenario for budget-constrained micro-pretraining, this paper proposes a staged factorial screening method, validated by 613 controlled experiments with different durations and hardware: this method can quickly locate high-penalty parameter directions and anchor optimal solutions under tight budgets, has factor attribution capabilities compared to random search, model-guided solutions perform best within a 24-hour experimental cycle, and there is no universal hardware ranking.
+
+<FeedbackButtons slug="item:arxiv-2606.05186" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/endava-frontiers" target="_blank" rel="noopener noreferrer">How Endava is redesigning software delivery around AI agents</a>
+
+*OpenAI*
+
+This industry practice report introduces the implementation experience of technology service provider Endava in restructuring its software delivery model around AI agents. The company deployed AI tools including ChatGPT Enterprise and Codex, which not only greatly improved software delivery efficiency and automated conventional workflows to cut costs and boost efficiency, but also promoted AI-native culture building across the company, providing a referenceable path for AI-enabled R&D and delivery in the industry.
+
+<FeedbackButtons slug="item:openai-blog-endava-frontiers" client:visible />
+
+## <a href="https://openai.com/index/chatgpt-memory-dreaming" target="_blank" rel="noopener noreferrer">Dreaming: Better memory for a more helpful ChatGPT</a>
+
+*OpenAI*
+
+This research on ChatGPT experience optimization targets the pain points of the current version that it easily forgets user preferences across sessions and has weak contextual relevance, and proposes a new memory system called "Dreaming". This system can permanently retain users' personalized interaction preferences, maintain context freshness and adaptability across sessions, effectively reduce the cost of users repeating requirements, and greatly improve the interaction friendliness of ChatGPT.
+
+<FeedbackButtons slug="item:openai-blog-chatgpt-memory-dreaming" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-4-8" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 4.8</a>
+
+*Anthropic*
+
+The newly launched Claude Opus 4.8 is the latest iteration of Anthropic's high-end Opus series large models. The model has completed core capability upgrades, with significantly improved performance in three scenarios: code development, AI agent task execution, and professional field work. It also optimizes operating stability, and can stably support continuous processing of long-cycle complex work.
+
+<FeedbackButtons slug="item:anthropic-claude-opus-4-8" client:visible />
+
+## <a href="https://www.anthropic.com/news/expanding-project-glasswing" target="_blank" rel="noopener noreferrer">Expanding Project Glasswing</a>
+
+*Anthropic*
+
+This announcement discloses the expansion plan for cross-border network governance project Project Glasswing. The project focuses on multi-stakeholder joint efforts to combat disinformation and cross-border harmful content dissemination. This expansion extends the cooperation scope to around 150 new institutions in more than 15 countries, which can further expand governance coverage, and enhance the overall effectiveness of global multi-stakeholder collaborative handling of online ecological issues.
+
+<FeedbackButtons slug="item:anthropic-expanding-project-glasswing" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle-environmental-risks/" target="_blank" rel="noopener noreferrer">We’re launching the Google DeepMind Accelerator program in Asia Pacific to tackle environmental risks</a>
+
+*Google DeepMind*
+
+Google DeepMind recently launched an accelerator program for the Asia-Pacific region, focusing on addressing environmental risks such as climate change, biodiversity degradation, and extreme disaster early warning. The program will rely on DeepMind's cutting-edge AI technologies in fields including reinforcement learning and large models, collaborate with local scientific research, government and enterprise partners to promote the implementation of AI in environmental governance scenarios, providing adapted technical solutions for environmental risk prevention and ecological protection in the Asia-Pacific region.
+
+<FeedbackButtons slug="item:deepmind-were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle" client:visible />
+
+## <a href="https://deepmind.google/blog/fast-tracking-genetic-leads-to-reverse-cellular-aging/" target="_blank" rel="noopener noreferrer">Fast-tracking genetic leads to reverse cellular aging</a>
+
+*Google DeepMind*
+
+In this study, biologists conducted screening using the Co-Scientist intelligent research system, successfully identifying a batch of previously unreported novel regulatory factors that can efficiently achieve rejuvenation reprogramming of human cells, providing new potential target directions for subsequent development of anti-aging intervention programs and prevention and treatment of aging-related diseases.
+
+<FeedbackButtons slug="item:deepmind-fast-tracking-genetic-leads-to-reverse-cellular-aging" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This AI alignment research starts from the perspective of virtue ethics, challenging the traditional assumption that "rational agents act guided by fixed ultimate goals", pointing out that the essence of human rationality is that actions match a practical network including behavioral norms and evaluation standards, rather than targeting specific goals. The study proposes that to achieve AI alignment goals of safety, compliance, conformity to human ethics and collaborative capability, AI decision-making logic needs to match this practice-based action logic of humans.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/06/431056.html" target="_blank" rel="noopener noreferrer">Hong Kong-listed shoe king C.banner completes transformation into AI data company overnight</a>
+
+*QbitAI*
+
+Hong Kong-listed footwear enterprise C.banner recently announced the acquisition of a stake in leading domestic AI data service provider Benyuan Zhishu, implementing a dual main business layout of "footwear + AI data". Benyuan Zhishu is one of the few profitable AI suppliers in China with data service capabilities for large models and embodied intelligence. C.banner will maintain its independent and neutral operation, leveraging cash flow from its physical business to enter the high-growth AI data track for long-term value.
+
+<FeedbackButtons slug="item:qbitai-431056" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/431045.html" target="_blank" rel="noopener noreferrer">Someone has pushed AI computing power density to a new height using CPUs</a>
+
+*QbitAI*
+
+Currently only the article title is provided, the main content of the abstract is empty, so the corresponding translation refinement and summarization work cannot be completed~ Please supplement the specific text of this article's abstract, and I will highlight core methods and conclusions as required to generate a clear English summary of around 120 words for you.
+
+<FeedbackButtons slug="item:qbitai-431045" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/431033.html" target="_blank" rel="noopener noreferrer">BAAI & Tsinghua collaborative work published in *Science*: Brain science multimodal foundation model Brainμ supports revealing the neural mechanism of "memory-sleep" regulation</a>
+
+*QbitAI*
+
+The joint research result of the Beijing Academy of Artificial Intelligence (BAAI) and Tsinghua University was published in *Science*, solving the long-standing neuroscience puzzle of whether memory replay regulates sleep structure, confirming that memory reactivation during sleep can regulate sleep dynamics, providing new empirical evidence for the two-way interaction mechanism between memory and sleep. The research relied on BAAI's self-developed brain science multimodal foundation model Brainμ to complete multi-source neural data analysis, verifying the potential of large AI models to empower basic life science research.
+
+<FeedbackButtons slug="item:qbitai-431033" client:visible />

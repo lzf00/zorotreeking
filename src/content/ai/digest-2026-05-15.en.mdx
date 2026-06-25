@@ -1,0 +1,190 @@
+---
+lang: en
+translationKey: digest-2026-05-15
+title: "Daily AI Picks · 2026-05-15"
+description: "20 papers · Multi-source aggregation + AI summaries"
+date: 2026-05-15
+tags: [digest, auto, ai-papers]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2605.13301" target="_blank" rel="noopener noreferrer">Achieving Gold-Medal-Level Olympiad Reasoning via Simple and Unified Scaling</a>
+
+*HF 88 · Yafu Li, Runzhe Zhan, Haoran Zhang… · [HF Mirror](https://huggingface.co/papers/2605.13301)*
+
+This study proposes a simple and unified upgrade framework for Olympiad-level reasoning models: first, inject rigorous proof search and self-checking capabilities via reverse-perplexity curriculum supervised fine-tuning, then amplify performance through two-stage reinforcement learning, and finally pair it with a test-time scaling strategy. The SU-01 model, trained on a 30B parameter backbone, achieves gold-medal performance in recent math and science Olympiads including IMO and IPhO, and can generalize to other scientific reasoning domains.
+
+<FeedbackButtons slug="item:arxiv-2605.13301" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.15128" target="_blank" rel="noopener noreferrer">MemEye: A Visual-Centric Evaluation Framework for Multimodal Agent Memory</a>
+
+*HF 46 · Minghao Guo, Qingyue Jiao, Zeru Shi… · [HF Mirror](https://huggingface.co/papers/2605.15128)*
+
+Addressing the pain points of existing long-term memory evaluations for multimodal agents: no verification of visual evidence retention, existence of text reasoning shortcuts, and lack of temporal visual state reasoning tasks, this study proposes MemEye, a visual-centric evaluation framework that builds benchmarks for 8 types of daily scenarios across two dimensions. After testing 13 memory methods and 4 types of large vision models, the research finds that existing architectures have insufficient fine-grained visual retention and temporal state reasoning capabilities, and identifies three core optimization directions.
+
+<FeedbackButtons slug="item:arxiv-2605.15128" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.15155" target="_blank" rel="noopener noreferrer">Self-Distilled Agentic Reinforcement Learning</a>
+
+*HF 44 · Zhengxi Lu, Zhiyuan Yao, Zhuowen Han… · [HF Mirror](https://huggingface.co/papers/2605.15155)*
+
+To solve the problems of coarse trajectory rewards during RL fine-tuning for large model agents, multi-round instability and negative sample rejection bias when directly combining on-policy self-distillation, this paper proposes the SDAR method: take RL as the backbone, set self-distillation as a gated auxiliary objective, strengthen positive sample distillation, and soft-attenuate unreasonable negative rejection. Experiments show that it outperforms GRPO by up to 10.2% on three types of tasks, and its performance and stability across model scales are better than existing hybrid baselines.
+
+<FeedbackButtons slug="item:arxiv-2605.15155" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.15178" target="_blank" rel="noopener noreferrer">SANA-WM: Efficient Minute-Scale World Modeling with Hybrid Linear Diffusion Transformer</a>
+
+*HF 37 · Haoyi Zhu, Haozhe Liu, Yuyang Zhao… · [HF Mirror](https://huggingface.co/papers/2605.15178)*
+
+This study launches the open-source 2.6B parameter world model SANA-WM, which can generate 1 minute of 720P high-fidelity video with precise camera control. It adopts four core designs: hybrid linear attention, dual-branch camera control, two-stage generation, and robust annotation. Its image quality is on par with industrial-grade baselines, and efficiency is greatly improved: the distilled and quantized version only takes 34 seconds to generate 1 minute of video on a single RTX 5090, with 36 times the throughput of existing open-source solutions.
+
+<FeedbackButtons slug="item:arxiv-2605.15178" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.15141" target="_blank" rel="noopener noreferrer">Causal Forcing++: Scalable Few-Step Autoregressive Diffusion Distillation for Real-Time Interactive Video Generation</a>
+
+*HF 34 · Min Zhao, Hongzhou Zhu, Kaiwen Zheng… · [HF Mirror](https://huggingface.co/papers/2605.15141)*
+
+To meet the low latency requirement of real-time interactive video generation, this paper proposes the Causal Forcing++ distillation framework: addressing the bottlenecks of poor initialization alignment and high cost of existing few-step autoregressive diffusion models, it adopts causal consistency distillation, supervised by single-step online teacher ODE signals, no need to pre-store full trajectories. Under 2-step frame-level generation, its metrics outperform 4-step SOTA, first frame latency is reduced by 50%, second-order training cost is cut by 75%, and it can also be extended to action-conditioned world model generation.
+
+<FeedbackButtons slug="item:arxiv-2605.15141" client:visible />
+
+# arXiv cs.LG (Machine Learning)
+
+## <a href="https://arxiv.org/abs/2605.13923" target="_blank" rel="noopener noreferrer">Vision-Based Runtime Monitoring under Varying Specifications using Semantic Latent Representations</a>
+
+*Bardh Hoxha, Oliver Sch\"on, Hideki Okamoto…*
+
+This paper addresses the problem of certifiable runtime monitoring of temporal logic for past time signals from visual inputs under partial observability, and proposes two reusable solutions: semantic basis monitoring and rolling prediction monitoring. Only one conformal calibration is needed to cover all target formula fragments, no retraining per formula is required. Experiments show that the rolling solution has tighter certification bounds in short time domains, while the semantic basis solution is 4 times more accurate in long time domains. Both solutions have passed coverage verification on Waymo real driving data.
+
+<FeedbackButtons slug="item:arxiv-2605.13923" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.13930" target="_blank" rel="noopener noreferrer">Mechanistic Interpretability of EEG Foundation Models via Sparse Autoencoders</a>
+
+*William Lehn-Schi\{\o\}ler, Magnus Ruud Kj\{\ae\}r, Rahul Thapa…*
+
+Addressing the problem that EEG foundation models have excellent performance but opaque internal mechanisms, which hinders clinical trust, this study uses TopK sparse autoencoders to extract sparse feature dictionaries for three EEG Transformers with different architectures, evaluates feature attributes combined with clinical labels, proposes a cross-architecture general hyperparameter process and steering selectivity measurement method, clarifies three types of feature operation modes, locates representation defects such as age-pathology confusion, and can also map hidden layer interventions to interpretable physiological spectrum features.
+
+<FeedbackButtons slug="item:arxiv-2605.13930" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.13932" target="_blank" rel="noopener noreferrer">Rethinking Molecular OOD Generalization via Target-Aware Source Selection</a>
+
+*Zhuohao Lin, Kun Li, Jiameng Chen…*
+
+Addressing the problems of distorted out-of-distribution (OOD) generalization evaluation and negative transfer prone to occur in cross-domain adaptation for molecular property prediction in AI drug discovery, this study proposes the SCOPE-BENCH evaluation benchmark based on clustering and partitioning of physicochemical descriptors, as well as the POMA multi-source adaptation framework: select near-source data via reinforcement learning, and align domain distributions at dual scales. Experiments show that the error of existing SOTA models increases by an average of 5.9 times on the new benchmark, POMA can reduce the mean absolute error by up to 11.2%, and improve generalization performance by an average of 6.2%.
+
+<FeedbackButtons slug="item:arxiv-2605.13932" client:visible />
+
+# OpenAI Official Updates
+
+## <a href="https://openai.com/index/sea-david-chen" target="_blank" rel="noopener noreferrer">Sea's View on the Future of Agentic Software Development with Codex</a>
+
+*OpenAI*
+
+This content focuses on industry judgments and layouts of Sea Limited: the group's Chief Product Officer disclosed his judgment on the future of software development under the agent paradigm, confirmed that the Codex large code model has been fully deployed across all engineering teams of the company, greatly improving R&D efficiency, accelerating the launch of AI-native software development for the Asian market, and seizing the first-mover advantage in the regional AI application track.
+
+<FeedbackButtons slug="item:openai-blog-sea-david-chen" client:visible />
+
+## <a href="https://openai.com/index/work-with-codex-from-anywhere" target="_blank" rel="noopener noreferrer">Work with Codex from anywhere</a>
+
+*OpenAI*
+
+This article breaks the original usage scenario limitations of Codex and launches a full-scenario usage solution: users can call Codex's coding capabilities anytime, anywhere via the ChatGPT mobile app, support full-process management of coding tasks across devices and remote environments, monitor task progress in real time, dynamically adjust task directions, and approve and confirm task outputs, significantly improving the flexibility and processing efficiency of remote coding collaboration.
+
+<FeedbackButtons slug="item:openai-blog-work-with-codex-from-anywhere" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-4-7" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 4.7</a>
+
+*Anthropic*
+
+The latest large model Claude Opus 4.7 is now officially fully available. This version is an iterative upgrade of the previous Opus 4.6, with core capability improvements concentrated in the field of high-level software engineering. Its overall performance on related tasks is significantly better than the previous generation, especially with the most prominent performance gain on the most complex, extremely difficult software engineering tasks, which can better support high-difficulty code development needs.
+
+<FeedbackButtons slug="item:anthropic-claude-opus-4-7" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-design-anthropic-labs" target="_blank" rel="noopener noreferrer">Introducing Claude Design by Anthropic Labs</a>
+
+*Anthropic*
+
+Anthropic Labs officially launches the new product Claude Design. This product supports users to collaborate with the Claude large model on visual creation, and can efficiently produce high-completion visual results of multiple categories, including design solutions, interactive prototypes, presentation slides, single-page promotional materials, etc., providing a more convenient new path for visual content production for individuals and teams.
+
+<FeedbackButtons slug="item:anthropic-claude-design-anthropic-labs" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/alphaevolve-impact/" target="_blank" rel="noopener noreferrer">AlphaEvolve: How our Gemini-powered coding agent is scaling impact across fields</a>
+
+*Google DeepMind*
+
+Relevant research discloses that AlphaEvolve is an intelligent coding agent powered by the Gemini large model, relying on Gemini-specific dedicated algorithms to optimize and upgrade coding capabilities. It has now achieved large-scale value penetration in three major fields: commercial scenario implementation, infrastructure operation and maintenance, and cutting-edge scientific research, fully verifying that large model-driven intelligent coding agents have strong cross-domain implementation versatility and practical value.
+
+<FeedbackButtons slug="item:deepmind-alphaevolve-impact" client:visible />
+
+## <a href="https://deepmind.google/blog/ai-co-clinician/" target="_blank" rel="noopener noreferrer">Enabling a new model for healthcare with AI co-clinician</a>
+
+*Google DeepMind*
+
+This study focuses on the new paradigm of AI-enabled healthcare, with two core pieces of work: first, sorting out feasible implementation paths for AI-assisted diagnosis and treatment, solving implementation pain points such as clinical adaptation and data compliance; second, developing an "AI co-clinician" system that can collaborate with clinicians, exploring standardized processes for human-machine collaborative diagnosis and treatment, providing technical support for building a precise and efficient new medical service system.
+
+<FeedbackButtons slug="item:deepmind-ai-co-clinician" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/ibm-granite/granite-embedding-multilingual-r2" target="_blank" rel="noopener noreferrer">Granite Embedding Multilingual R2: Open Apache 2.0 Multilingual Embeddings with 32K Context — Best Sub-100M Retrieval Quality</a>
+
+*Hugging Face*
+
+The newly released Granite Multilingual R2 multilingual embedding model is fully open source under the Apache 2.0 license, with less than 100 million parameters, supports a 32K super long context window, and meets the needs of multilingual semantic representation. Testing shows its retrieval accuracy is the best among current multilingual embedding models under 100 million parameters, suitable for scenarios such as long text cross-language retrieval and multilingual RAG, and can achieve high-performance semantic matching at low computing cost.
+
+<FeedbackButtons slug="item:hf-blog-granite-embedding-multilingual-r2" client:visible />
+
+## <a href="https://huggingface.co/blog/continuous_async" target="_blank" rel="noopener noreferrer">Unlocking asynchronicity in continuous batching</a>
+
+*Hugging Face*
+
+This paper addresses the problems of redundant intra-batch synchronous waiting and low resource utilization under heterogeneous requests in existing large model inference continuous batching, proposes an asynchronous continuous batching framework that decouples the temporal dependencies of request scheduling, operator execution, and result return, eliminating synchronization overhead. Testing shows that this solution improves throughput by 32% and reduces tail latency by 38% compared to traditional continuous batching, suitable for mixed multi-load deployment scenarios.
+
+<FeedbackButtons slug="item:hf-blog-continuous_async" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This paper studies the AI alignment problem from the perspective of virtue ethics, challenging the traditional assumption that "rational agents must have fixed ultimate goals": it proposes that human rational action is essentially adapted to a practical network including elements such as action logic and evaluation standards, rather than anchored to specific goals. To realize AI-human collaboration and ensure safety, the AI decision logic needs to match the human practice-based action paradigm, which is of great significance for both ethical alignment and basic safety.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/05/417958.html" target="_blank" rel="noopener noreferrer">Ubiquitous AI: The Future of AI Indicated by OpenClaw</a>
+
+*QbitAI*
+
+The OpenClaw launched by Qualcomm realizes a paradigm shift for AI agents, pushing AI from passive dialogue assistants to active systems that can understand intentions and proactively execute tasks. It has excellent energy efficiency, can run seamlessly across devices, can run on a lightweight development board costing only $59, and can complete functions such as information push, transaction management, content processing, etc., confirming the judgment that "AI is the new UI". This type of AI coworker is becoming the industry development direction.
+
+<FeedbackButtons slug="item:qbitai-417958" client:visible />
+
+## <a href="https://www.qbitai.com/2026/05/417943.html" target="_blank" rel="noopener noreferrer">NVIDIA gives Jensen Huang's children a raise! Annual salary of millions of dollars, "based on ability not identity"</a>
+
+*QbitAI*
+
+Fiscal 2026 documents submitted by NVIDIA to the US SEC show that Jensen Huang's daughter, Minshan Huang, Senior Director of Omniverse, has a total compensation of $1.232 million, up from the previous year; his son, Shengbin Huang, Product Management Director in the robotics field, has a total compensation of $1.32 million, a significant year-on-year increase. NVIDIA emphasized that the compensation evaluation of the two is unrelated to Jensen Huang, and their treatment terms are exactly the same as non-related employees in the same positions.
+
+<FeedbackButtons slug="item:qbitai-417943" client:visible />
+
+## <a href="https://www.qbitai.com/2026/05/417935.html" target="_blank" rel="noopener noreferrer">Tens of millions of yuan in financing closed! The earliest domestic embodied company laying out the "human learning" route, rebuilding embodied intelligence from the human perspective</a>
+
+*QbitAI*
+
+Domestic embodied large model company Deep Wit is the earliest team in China to systematically lay out the "human learning" route for embodied intelligence, focusing on the logic of "understanding physical laws first before execution", building a full-stack technology closed loop centered on PhysBrain 1.0, topping five international authoritative embodied intelligence rankings, and has raised hundreds of millions of yuan in cumulative financing one year after its establishment. Its route is regarded as a potential feasible path for embodied AGI.
+
+<FeedbackButtons slug="item:qbitai-417935" client:visible />
+
+---

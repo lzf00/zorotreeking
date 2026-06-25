@@ -1,0 +1,190 @@
+---
+lang: en
+translationKey: digest-2026-05-22
+title: "AI Daily Digest · 2026-05-22"
+description: "20 papers · Multi-source aggregation + AI summarization"
+date: 2026-05-22
+tags: [digest, auto, ai-papers]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2605.14678" target="_blank" rel="noopener noreferrer">π-Bench: Evaluating Proactive Personal Assistant Agents in Long-Horizon Workflows</a>
+
+*HF 37 · Haoran Zhang, Luxin Xu, Zhilin Wang… · [HF Mirror](https://huggingface.co/papers/2605.14678)*
+
+Addressing the shortcoming of existing personal assistant agent benchmarks that lack evaluation of long-cycle multi-round implicit user intents, this study launches the π-Bench benchmark: it includes 100 multi-round tasks covering 5 types of user personas, incorporates implicit intents, task dependencies, and cross-session features, and simultaneously evaluates agent proactivity and long-cycle task completion rates. Experiments show that current proactive assistants still have performance bottlenecks, with task completion and proactivity capabilities decoupled, and historical interactions can improve subsequent proactive intent recognition performance.
+
+<FeedbackButtons slug="item:arxiv-2605.14678" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.21850" target="_blank" rel="noopener noreferrer">ACC: Compiling Agent Trajectories for Long-Context Training</a>
+
+*HF 36 · Qisheng Su, Zhen Fang, Shiting Huang… · [HF Mirror](https://huggingface.co/papers/2605.21850)*
+
+To solve the problems of high cost for long-context training of large models and the fact that existing agent fine-tuning does not utilize scattered long-context evidence in trajectories, this paper proposes the ACC method, which can integrate multi-round agent trajectories into long-context QA pairs without additional annotation, directly supervising long-range reasoning. Experiments show that the 30B-parameter Qwen3 trained with ACC achieves significant performance gains on long-dependency benchmarks, matching the performance of the 235B-parameter version, without compromising its general capabilities.
+
+<FeedbackButtons slug="item:arxiv-2605.21850" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.22718" target="_blank" rel="noopener noreferrer">WorldKV: Efficient World Memory with World Retrieval and Compression</a>
+
+*HF 19 · Jung Yi, Minjae Kim, Paul Hyunbin Cho… · [HF Mirror](https://huggingface.co/papers/2605.22718)*
+
+Addressing the pain point that autoregressive video diffusion generation struggles to balance scene consistency and real-time performance, the training-free framework WorldKV is proposed: first, it retrieves evicted historical KV cache blocks through camera/action matching, and inserts them directly back into the attention window without re-encoding; second, it compresses redundant tokens based on key similarity with anchor frames, cutting single block storage in half. Tests show its throughput doubles compared to full KV caching, with consistent consistency performance, and its performance without fine-tuning is on par with trained baseline solutions.
+
+<FeedbackButtons slug="item:arxiv-2605.22718" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.22642" target="_blank" rel="noopener noreferrer">Spreadsheet-RL: Advancing Large Language Model Agents on Realistic Spreadsheet Tasks via Reinforcement Learning</a>
+
+*HF 15 · Banghao Chi, Yining Xie, Mingyuan Wu… · [HF Mirror](https://huggingface.co/papers/2605.22642)*
+
+To solve the pain point that existing general LLM prompt-driven spreadsheet agents struggle to handle complex multi-step tasks in real scenarios, this study proposes the Spreadsheet-RL reinforcement learning fine-tuning framework, paired with an automatic dataset collection pipeline, domain-specific benchmarks, and an Excel-adapted multi-round interactive training environment. The trained Qwen3-4B model sees nearly a 1x improvement in Pass@1 accuracy on both general and domain-specific spreadsheet tasks, with excellent deployment potential.
+
+<FeedbackButtons slug="item:arxiv-2605.22642" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.20910" target="_blank" rel="noopener noreferrer">FlowLong: Inference-time Long Video Generation via Manifold-constrained Tweedie Matching</a>
+
+*HF 11 · Jangho Park, Geon Yeong Park, Gihyun Kwon… · [HF Mirror](https://huggingface.co/papers/2605.20910)*
+
+Addressing the pain points of existing training-free long video generation solutions: bidirectional methods are tied to specific architectures and suffer from long-term quality degradation, while autoregressive methods have error drift and repeated actions, this paper proposes the architecture-agnostic, no-additional-training inference solution FlowLong: it uses overlapping sliding window generation, fuses adjacent windows via manifold-constrained Tweedie matching, uses random sampling to synchronize trajectories in the high-noise phase, and switches to deterministic sampling to preserve details in the low-noise phase. This method can generate videos several times longer than the native window length, with better quality and temporal consistency than baselines, and can also be extended to audio-video joint generation and text-to-3DGS scenarios.
+
+<FeedbackButtons slug="item:arxiv-2605.20910" client:visible />
+
+# arXiv cs.LG (Machine Learning)
+
+## <a href="https://arxiv.org/abs/2605.20187" target="_blank" rel="noopener noreferrer">Neural Estimation of Pairwise Mutual Information in Masked Discrete Sequence Models</a>
+
+*Jai Sharma, Yifan Wang, Bryan Li*
+
+Addressing the pain point that masked diffusion models lack explicit representations of variable dependencies, which limits efficiency and interpretability, this paper proposes a neural pairwise mutual information estimation framework: based on the hidden states of the pre-trained model, supervised by the real mutual information calculated from the model's own conditional distribution, a single forward pass can obtain the full mutual information matrix, supporting mutual information-guided parallel decoding. Experiments show that it can restore structural constraints on Sudoku and protein generation tasks, reduces the number of inference forward passes by 3-5 times, and outperforms entropy-based parallel solutions.
+
+<FeedbackButtons slug="item:arxiv-2605.20187" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.20188" target="_blank" rel="noopener noreferrer">GraphDiffMed: Knowledge-Constrained Differential Attention with Pharmacological Graph Priors for Medication Recommendation</a>
+
+*Krati Saxena, Tomohiro Shibata*
+
+To solve the problems of difficult handling of long-sequence noise and clinical heterogeneity in electronic medical record medication recommendation, and that existing methods struggle to balance temporal modeling and pharmacological knowledge integration with weak noise resistance, this paper proposes the GraphDiffMed framework: it filters redundant signals through dual-scale differential attention for intra-consultation and cross-consultation, and introduces pharmacological constraints during training. It outperforms baselines on the MIMIC-III dataset, with better recommendation quality, ranking and safety, and its optimal configuration only requires demographic auxiliary features. The code has been open-sourced.
+
+<FeedbackButtons slug="item:arxiv-2605.20188" client:visible />
+
+## <a href="https://arxiv.org/abs/2605.20234" target="_blank" rel="noopener noreferrer">TabPFN-MT: A Natively Multitask In-Context Learner for Tabular Data</a>
+
+*Cormac Cureton, Narges Armanfard*
+
+Addressing the shortcomings of existing tabular domain PFNs that are designed for single tasks, have high multi-objective inference costs and cannot share task information, this paper proposes the multi-task in-context learning model TabPFN-MT: trained on multi-objective synthetic priors, paired with an extended y encoder and shared decoding head, supporting simultaneous multi-task inference. Tests on small and medium datasets with fewer than 1,000 samples show that its multi-task tabular learning performance achieves a new SOTA, reduces inference cost from O(T) to O(1), has the highest average accuracy ranking, and can also match the performance of the latest single-task ensemble models.
+
+<FeedbackButtons slug="item:arxiv-2605.20234" client:visible />
+
+# OpenAI Official Updates
+
+## <a href="https://openai.com/index/adventhealth" target="_blank" rel="noopener noreferrer">AdventHealth advances whole-person care with OpenAI</a>
+
+*OpenAI*
+
+US healthcare provider AdventHealth has deployed a custom version of ChatGPT tailored for medical scenarios, optimizing the entire internal diagnosis and treatment process with AI tools. This solution can effectively reduce the administrative burden on medical staff, cut down the time they spend on non-clinical trivialities, so that medical staff can devote more energy to direct patient care, helping the institution achieve the service upgrade goal of "whole-person care".
+
+<FeedbackButtons slug="item:openai-blog-adventhealth" client:visible />
+
+## <a href="https://openai.com/index/ramp" target="_blank" rel="noopener noreferrer">How Ramp engineers accelerate code review with Codex</a>
+
+*OpenAI*
+
+The engineering team of fintech company Ramp has deployed the Codex large model powered by GPT-5.5 to optimize the code review process. Previously, the team needed hours to obtain substantive review feedback, slowing down the iteration pace; after introducing this tool, effective feedback can be obtained in just a few minutes, greatly shortening the review cycle and significantly improving R&D delivery efficiency, providing a referential implementation practice for large models empowering R&D efficiency scenarios.
+
+<FeedbackButtons slug="item:openai-blog-ramp" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-4-7" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 4.7</a>
+
+*Anthropic*
+
+Anthropic's latest large model Claude Opus 4.7 is now officially available for general access. Compared to the previous generation Opus 4.6, this version has been specifically optimized for high-level software engineering scenarios, with significantly improved overall processing capabilities for related tasks, with particularly prominent performance gains for the most difficult complex software engineering tasks, making it more suitable for the needs of high-difficulty R&D scenarios.
+
+<FeedbackButtons slug="item:anthropic-claude-opus-4-7" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-design-anthropic-labs" target="_blank" rel="noopener noreferrer">Introducing Claude Design by Anthropic Labs</a>
+
+*Anthropic*
+
+Anthropic Labs has officially launched the new product Claude Design, which focuses on human-machine collaborative creation capabilities, supporting users to work with Claude to complete various high-quality visual content production, covering multiple common visual outputs such as design drafts, product prototypes, presentation slides, and single-page promotional materials, providing users with convenient and efficient intelligent design assistance.
+
+<FeedbackButtons slug="item:anthropic-claude-design-anthropic-labs" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle-environmental-risks/" target="_blank" rel="noopener noreferrer">We’re launching the Google DeepMind Accelerator program in Asia Pacific to tackle environmental risks</a>
+
+*Google DeepMind*
+
+Google DeepMind has recently officially launched its Asia Pacific accelerator program, which is positioned to rely on its leading AI technical capabilities to address various regional environmental risks. The program will collaborate with local Asia Pacific research institutions, tech startups and public departments, focus on scenarios such as extreme weather warning, ecological restoration, and carbon emission reduction management, implement solutions adapted to regional characteristics, and improve climate resilience in the Asia Pacific region.
+
+<FeedbackButtons slug="item:deepmind-were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle" client:visible />
+
+## <a href="https://deepmind.google/blog/fast-tracking-genetic-leads-to-reverse-cellular-aging/" target="_blank" rel="noopener noreferrer">Fast-tracking genetic leads to reverse cellular aging</a>
+
+*Google DeepMind*
+
+This research focuses on the demand for discovering genetic targets for reversing cellular aging, innovatively uses the research assistance tool named Co-Scientist for screening, greatly shortening the target discovery cycle, and successfully excavates new regulatory factors, which have been experimentally verified to effectively achieve rejuvenation reprogramming of human cells. This achievement not only provides new candidate targets for anti-aging research, but also provides a reference for auxiliary scientific research tools empowering biomedical exploration.
+
+<FeedbackButtons slug="item:deepmind-fast-tracking-genetic-leads-to-reverse-cellular-aging" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/olmoearth-v1-1" target="_blank" rel="noopener noreferrer">OlmoEarth v1.1: A more efficient family of Earth observation models</a>
+
+*Hugging Face*
+
+OlmoEarth v1.1 launched by the Allen Institute for AI is a new generation of efficient Earth observation model family, optimized for the previous generation's architecture and pre-training strategy, adopting a lightweight multimodal remote sensing pre-training paradigm, reducing training computing cost by 35% compared to remote sensing large models of the same scale under the same accuracy. It outperforms existing SOTA models by 2%~4% in accuracy on more than 10 downstream tasks such as land classification and disaster detection, can be adapted for edge deployment, and greatly lowers the threshold for deploying remote sensing intelligent applications.
+
+<FeedbackButtons slug="item:hf-blog-olmoearth-v1-1" client:visible />
+
+## <a href="https://huggingface.co/blog/ettin-reranker" target="_blank" rel="noopener noreferrer">Introducing the Ettin Reranker Family</a>
+
+*Hugging Face*
+
+This paper launches the Ettin reranker family for information retrieval and LLM RAG scenarios, covering multiple parameter scales, adopting multilingual cross-domain contrastive learning pre-training and task-adaptive fine-tuning schemes. Its accuracy is 3%~7% higher than existing models of the same specification on more than 10 public benchmarks, with inference latency reduced by more than 20%, and it can adapt to different deployment requirements on end devices and the cloud.
+
+<FeedbackButtons slug="item:hf-blog-ettin-reranker" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This AI alignment research reflecting on the orthogonality thesis, from the perspective of virtue ethics, refutes the traditional assumption that rational agents need to be anchored to fixed final goals, and proposes that human rationality is essentially a pattern of adapting actions to a practical network containing normative and evaluative systems. To achieve compliant collaboration between AI and humans and meet safety alignment requirements, AI decision logic needs to be isomorphic to human practice-based action logic, taking into account both ethical values and basic safety attributes.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/05/422511.html" target="_blank" rel="noopener noreferrer">The fastest among top-tier models! Zhipu, are you "spitting out" code?</a>
+
+*QbitAI*
+
+Zhipu AI has newly launched the GLM-5.1-highspeed high-speed API, which is officially claimed to be the fastest code generation API among current top-tier large models, with a speed of 400 tokens/s. The basic version of GLM-5.1 itself is also among the open source models with the strongest code capabilities. Actual tests show that it can output complete code that meets the requirements of complex interactive dynamic effect web pages in more than ten seconds, and can also quickly respond to iteration and tuning requirements.
+
+<FeedbackButtons slug="item:qbitai-422511" client:visible />
+
+## <a href="https://www.qbitai.com/2026/05/422455.html" target="_blank" rel="noopener noreferrer">80-episode short drama, filmed in 3 days: When filmmakers enter the Agent space, film and television production gets the "most knowledgeable" solution</a>
+
+*QbitAI*
+
+Most current AI video tools focus on single-segment flashy screen generation, which cannot adapt to the full-link needs of film and television industrialization. A film and television team with 20 years of deep industry experience has launched the AI film and television agent product MovieFlow Studio, which has three core capabilities: full-link production closed loop, enterprise-level asset library that prevents content visual drift, and thousand-person level collaborative management, solving the industry's pain point of "having a pen but no production line", and promoting the industrialized production of AI film and television.
+
+<FeedbackButtons slug="item:qbitai-422455" client:visible />
+
+## <a href="https://www.qbitai.com/2026/05/422088.html" target="_blank" rel="noopener noreferrer">390,000 yuan! Lei Jun releases Xiaomi's most expensive SUV</a>
+
+*QbitAI*
+
+Xiaomi has released the YU7 series SUV, including two models: the high-performance GT version and the standard version. The GT version, known as the "authentic GT", is the first to be equipped with the new generation V8s EVO super motor, with a 0-100km/h acceleration time of 2.92 seconds, and its Nürburgring SUV lap time is 14 seconds faster than the previous top record holder, priced at 390,000 yuan. The standard version is a fully configured model, not a cut-down version, with a starting price of 233,500 yuan, 30,000 yuan lower than the Tesla Model Y, entering the mid-range new energy SUV market to compete.
+
+<FeedbackButtons slug="item:qbitai-422088" client:visible />
+
+---

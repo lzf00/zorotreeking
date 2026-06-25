@@ -1,0 +1,189 @@
+---
+lang: en
+translationKey: digest-2026-06-05
+title: "Daily AI Digest · 2026-06-05"
+description: "20 papers · Multi-source aggregation + AI-generated summaries"
+date: 2026-06-05
+tags: [digest, auto, ai-papers]
+category: paper
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.05259" target="_blank" rel="noopener noreferrer">VideoKR: Towards Knowledge- and Reasoning-Intensive Video Understanding</a>
+
+*HF 20 · Lin Fu, Zheyuan Yang, Yang Wang… · [HF Mirror](https://huggingface.co/papers/2606.05259)*
+
+This paper introduces VideoKR, the first large-scale training corpus for knowledge- and reasoning-intensive video understanding, covering 145,000 professional domain videos and 315,000 reasoning samples, paired with a human-in-the-loop high-quality sample generation pipeline and expert-annotated test set. Experiments show that models trained on this corpus outperform existing solutions on knowledge-intensive video reasoning tasks while maintaining competitive performance on general tasks, verifying the core role of data design in the development of video reasoning.
+
+<FeedbackButtons slug="item:arxiv-2606.05259" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.05275" target="_blank" rel="noopener noreferrer">Personal AI Agent for Camera Roll VQA</a>
+
+*HF 11 · Thao Nguyen, Krishna Kumar Singh, Donghyun Kim… · [HF Mirror](https://huggingface.co/papers/2606.05275)*
+
+This study focuses on the visual question answering scenario for personal camera rolls. First, the team built the labeled camroll dataset covering 50 users, 31,000 images, and 2,500 Q&A pairs, then designed camroll-agent, an intelligent agent equipped with hierarchical memory and a lightweight retrieval tool. Experiments prove its performance outperforms multiple long-context understanding baselines, while clarifying that personalized visual memory reasoning requires solutions different from conventional long text memory, filling a relevant research gap.
+
+<FeedbackButtons slug="item:arxiv-2606.05275" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.04703" target="_blank" rel="noopener noreferrer">Rethinking Continual Experience Internalization for Self-Evolving LLM Agents</a>
+
+*HF 8 · Jingwen Chen, Wenkai Yang, Shengda Fan… · [HF Mirror](https://huggingface.co/papers/2606.04703)*
+
+Aiming at the problem that existing LLM experience internalization methods only adapt to single iterations and suffer from capability collapse during multi-round learning, this study optimizes from three dimensions: selecting abstract, transferable principle-level experience instead of instance-level experience, adopting step-by-step experience injection matching intermediate decision states instead of global injection, and using off-policy distillation of high-quality teacher trajectories instead of on-policy distillation. The final stable and sustainable experience internalization scheme provides clear guidance for the research and development of self-evolving continuous learning large models.
+
+<FeedbackButtons slug="item:arxiv-2606.04703" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.06042" target="_blank" rel="noopener noreferrer">LoomVideo: Unifying Multimodal Inputs into Video Generation and Editing</a>
+
+*HF 6 · Jianzong Wu, Hao Lian, Jiongfan Yang… · [HF Mirror](https://huggingface.co/papers/2606.06042)*
+
+Aiming at the pain points of existing unified video generation and editing models: excessive parameter size and high computing overhead from concatenated conditional tokens, this paper proposes LoomVideo, a unified architecture with 5B parameters: it replaces conventional text encoders with multimodal large models, adopts designs such as zero-overhead scaling and overlay conditional injection, and negative time RoPE. Tests show its performance reaches SOTA level, with inference speed at least 5.41x faster than models with similar capabilities, showing particularly prominent advantages in e-commerce and fashion generation scenarios.
+
+<FeedbackButtons slug="item:arxiv-2606.06042" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.06416" target="_blank" rel="noopener noreferrer">Unsupervised Skill Discovery for Agentic Data Analysis</a>
+
+*HF 6 · Zhisong Qiu, Kangqi Song, Shengwei Tang… · [HF Mirror](https://huggingface.co/papers/2606.06416)*
+
+Aiming at the challenge of unsupervised mining of reusable skills for data analysis agents, this paper proposes DataCOPE, an unsupervised verification-guided skill discovery framework: it extracts verification signals from exploration trajectories, iteratively coordinates three modules: trajectory generation, unsupervised verification, and contrastive skill distillation, and adapts different verifiers for two analysis scenarios: reporting and reasoning. Tests show that it outperforms baselines by an average of 9.71% and 32.30% respectively on the two types of tasks, with better generalization performance.
+
+<FeedbackButtons slug="item:arxiv-2606.06416" client:visible />
+
+# arXiv cs.LG (Machine Learning)
+
+## <a href="https://arxiv.org/abs/2606.03995" target="_blank" rel="noopener noreferrer">Early Detection of Alzheimer's Disease Using Explainable Machine Learning on Clinical Biomarkers: A Multi-Class Classification Study Using the Alzheimer's Disease Neuroimaging Initiative (ADNI) Dataset</a>
+
+*Afshan Hashmi*
+
+This study addresses the demand for early screening of Alzheimer's disease, building an explainable XGBoost three-class classification model based on 8 routine clinical features from the ADNI dataset to distinguish normal cognition, mild cognitive impairment, and Alzheimer's disease. It uses SMOTE to handle class imbalance and SHAP analysis to measure feature importance. The model achieves a macro AUC of 0.982 on the test set with excellent performance, identifies core predictive features corresponding to each category, and its clinical validity is verified. Subsequent research will integrate speech biomarkers to expand multimodal detection capabilities.
+
+<FeedbackButtons slug="item:arxiv-2606.03995" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.04028" target="_blank" rel="noopener noreferrer">Novel Aspects of IEEE SA P3109 Arithmetic Formats for Machine Learning</a>
+
+*Andrew Fitzgibbon, Christoph M. Wintersteiger, Jeffrey Sarnoff*
+
+This paper introduces the draft IEEE P3109 floating-point standard for machine learning, proposing parameterized low-bit floating-point formats with configurable bit width, precision, sign, and infinity support. It defines multiple rounding and saturation modes including stochastic rounding, adopts a no-exception return value design to improve computing throughput, and adds a kappa approximation metric to adapt to vendors' approximate implementation needs. All rules are generated through formal verification and can be efficiently adapted to AI computing scenarios.
+
+<FeedbackButtons slug="item:arxiv-2606.04028" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.04029" target="_blank" rel="noopener noreferrer">Position: Deployed Reinforcement Learning should be Continual</a>
+
+*Parnian Behdin, Kevin Roice, Golnaz Mesbahi*
+
+This is a position paper on reinforcement learning (RL), pointing out the limitations of the current mainstream deployment paradigm of "fixed operation after training, retraining only when performance degrades". It proposes that RL systems that continue to receive reward signals after deployment essentially belong to the continuous RL problem, and need to continuously adapt to four types of non-stationary factors after deployment. Combined with real-world successful cases, the paper clarifies the advantages of shifting to the continuous RL paradigm and the direction of advancement.
+
+<FeedbackButtons slug="item:arxiv-2606.04029" client:visible />
+
+# OpenAI Official Updates
+
+## <a href="https://openai.com/index/endava-frontiers" target="_blank" rel="noopener noreferrer">How Endava is redesigning software delivery around AI agents</a>
+
+*OpenAI*
+
+This content introduces the practice of enterprise technology service provider Endava to reconstruct its software delivery system around AI agents: its core implementation tools include AI agents, ChatGPT Enterprise, and the Codex large model, which not only directly accelerates the entire software delivery process and automates routine workflows to reduce costs, but also simultaneously promotes the construction of an AI-native culture across the entire enterprise, building a long-term implementation system for AI-enabled R&D.
+
+<FeedbackButtons slug="item:openai-blog-endava-frontiers" client:visible />
+
+## <a href="https://openai.com/index/chatgpt-memory-dreaming" target="_blank" rel="noopener noreferrer">Dreaming: Better memory for a more helpful ChatGPT</a>
+
+*OpenAI*
+
+This research on ChatGPT interaction experience optimization addresses the pain points of the current version: easy forgetting of user preferences across sessions and low context matching. It proposes a new memory system called "Dreaming". This system can persistently retain users' personalized interaction preferences, ensure the timeliness and relevance of context across session scenarios, improve the adaptation of ChatGPT's responses, and provide users with interaction services that better meet their needs.
+
+<FeedbackButtons slug="item:openai-blog-chatgpt-memory-dreaming" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-4-8" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 4.8</a>
+
+*Anthropic*
+
+Anthropic's newly launched Claude Opus 4.8 is an upgraded version of the Opus series large models, with multi-dimensional improvements in core capabilities: its performance on coding tasks, agent tasks, and professional domain work is significantly better than the previous generation, while operational consistency is greatly optimized. It can stably support continuous processing of long-cycle complex tasks, and better adapts to high-level usage needs in scenarios such as development and professional office work.
+
+<FeedbackButtons slug="item:anthropic-claude-opus-4-8" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-design-anthropic-labs" target="_blank" rel="noopener noreferrer">Introducing Claude Design by Anthropic Labs</a>
+
+*Anthropic*
+
+Anthropic Labs has officially released its new self-developed product Claude Design. The Claude large model, which previously focused on text interaction capabilities, has added visual collaboration functions, supporting users to collaboratively produce highly complete and high-quality various visual work results. Applicable scenarios cover design drafts, interactive prototypes, presentation slides, single-page promotional materials, etc., further expanding the application boundary of generative AI.
+
+<FeedbackButtons slug="item:anthropic-claude-design-anthropic-labs" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle-environmental-risks/" target="_blank" rel="noopener noreferrer">We’re launching the Google DeepMind Accelerator program in Asia Pacific to tackle environmental risks</a>
+
+*Google DeepMind*
+
+Google DeepMind recently launched a special accelerator program in the Asia-Pacific region, with the core goal of addressing various environmental risks. The program will provide DeepMind's AI technical support, computing resources, and industry docking channels for local scientific and innovation teams and research institutions in the environmental field, focusing on supporting the implementation of technologies in directions such as climate modeling, disaster early warning, and ecological monitoring. It is expected to improve the intelligent level of environmental risk prevention and control in the Asia-Pacific region.
+
+<FeedbackButtons slug="item:deepmind-were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle" client:visible />
+
+## <a href="https://deepmind.google/blog/fast-tracking-genetic-leads-to-reverse-cellular-aging/" target="_blank" rel="noopener noreferrer">Fast-tracking genetic leads to reverse cellular aging</a>
+
+*Google DeepMind*
+
+This study focuses on the rapid discovery of genetic clues for reversing cellular aging. The core method is that biologists use the Co-Scientist research assistance tool for screening, and finally successfully discovered a variety of previously unreported novel regulatory factors. Experiments have verified that they can effectively achieve rejuvenation reprogramming of human cells, providing new candidate targets for aging intervention and anti-aging drug research and development.
+
+<FeedbackButtons slug="item:deepmind-fast-tracking-genetic-leads-to-reverse-cellular-aging" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/nemotron-3-5-content-safety" target="_blank" rel="noopener noreferrer">Nemotron 3.5 Content Safety: Customizable Multimodal Safety for Global Enterprise AI</a>
+
+*Hugging Face*
+
+This paper introduces the Nemotron 3.5 multimodal content security solution for global enterprise AI scenarios, which supports enterprises to customize audit dimensions and thresholds in combination with local compliance requirements and their own business rules, and can accurately identify various risks in multimodal input and output such as text and images. Tests show that this solution has a lower false positive and missed detection rate than general security tools, can effectively reduce the compliance risk of enterprise AI implementation, and adapts to the deployment needs of enterprise-level generative AI.
+
+<FeedbackButtons slug="item:hf-blog-nemotron-3-5-content-safety" client:visible />
+
+## <a href="https://huggingface.co/blog/ServiceNow-AI/eva-bench-data" target="_blank" rel="noopener noreferrer">EVA-Bench Data 2.0: 3 Domains, 121 Tools, 213 Scenarios</a>
+
+*Hugging Face*
+
+EVA-Bench Data 2.0 is a new evaluation benchmark for large language model tool calling capabilities, covering three fields: general life, vertical industries, and cutting-edge scientific research, with a total of 121 tools with different functions and 213 real implementation scenarios included.
+Compared with similar benchmarks, its scenario complexity, tool diversity, and task authenticity are all higher, which can accurately quantify the ability of large models to call tools to solve practical problems, providing reliable evaluation support for the iterative optimization of tool-use large models.
+
+<FeedbackButtons slug="item:hf-blog-eva-bench-data" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This research in the field of AI alignment refutes the presupposition that "rational agents act oriented towards fixed ultimate goals", pointing out that the core of human rational action is adaptation to the practical normative network composed of action paradigms, evaluation criteria, and resource systems. The study proposes that for AI to be collaborative and obedient to human will, its decision-making logic needs to match human practical action logic. This path not only helps align with ethical goals such as human well-being, but also guarantees the core security attributes of AI.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/06/429192.html" target="_blank" rel="noopener noreferrer">Reassessing BYD, Starting from Intelligent Driving</a>
+
+*QbitAI*
+
+Currently, the domestic intelligent driving industry is crowded in competing for technology but generally avoids accident liability, leading to high user concerns and extremely low actual usage rate of assisted driving. BYD is the first to break the deadlock by launching a 1-year full liability guarantee for urban navigation assisted driving, clarifying the responsibility boundary and converting technical confidence into a commercial commitment. This is expected to become a watershed for the intelligent driving industry from savage growth to mature responsibility, promoting the industry to build a healthy ecosystem.
+
+<FeedbackButtons slug="item:qbitai-429192" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/429186.html" target="_blank" rel="noopener noreferrer">Chinese Youth Football Team Wins Championship, BYD Partners with Young Footballers to Go Global</a>
+
+*QbitAI*
+
+Recently, the Italian SIGISMONDI International Youth Cup, known as the U12 "Little World Cup" which brings together 48 top youth training teams from around the world, concluded. The Chinese U12 youth football team won all 7 matches, defeating the Premier League Everton youth training team in the final via penalty shootout to win the championship, scoring 21 goals and conceding only 2 throughout the tournament. BYD officially announced a cooperation with the team in 2025, and will sponsor multiple teams to participate in international competitions, supporting young footballers to pursue their dreams on the global stage.
+
+<FeedbackButtons slug="item:qbitai-429186" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/429130.html" target="_blank" rel="noopener noreferrer">At CVPR 2026, NVIDIA, Tesla, Waymo Listen to Chinese Company's Presentation on Physical AI</a>
+
+*QbitAI*
+
+At the first workshop on embodied intelligence foundation model deployment at CVPR 2026, XPeng, as the only invited Chinese enterprise, shared the stage with global first-tier physical AI players including Tesla, NVIDIA, and Waymo. This time, XPeng publicly demonstrated its complete world model technology map for the first time, with results based on a series of academic papers including X-World. Its fully mass-produced and verified complete physical AI technology stack has been recognized by top global industry and academic circles.
+
+<FeedbackButtons slug="item:qbitai-429130" client:visible />
