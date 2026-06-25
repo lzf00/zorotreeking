@@ -1,0 +1,171 @@
+---
+lang: en
+translationKey: digest-2026-06-22
+title: "AI Daily Digest · 2026-06-22"
+description: "16 papers · Multi-source aggregation + AI summaries"
+date: 2026-06-22
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, the-gradient]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.webp"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's highlights in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Multiple cutting-edge AI research papers were released today; Tsinghua's open-source spatial model accepted to ECCV 2026 outperforms Gemini</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Rich enterprise-side updates: Samsung opens access to ChatGPT and Codex for employees, Anthropic launches Claude Corps and governance features</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">The embodied AI track continues to gain popularity, with new progress disclosed in AI safety, alignment, real-world applications and other directions</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Enterprise Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Embodied Intelligence</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔒 Safety & Alignment</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡 Industrial Applications</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.19534" target="_blank" rel="noopener noreferrer">PerceptionDLM: Parallel Region Perception with Multimodal Diffusion Language Models</a>
+
+*HF ★ 26 · Yueyi Sun, Yuhao Wang, Jason Li… · [HF Mirror](https://huggingface.co/papers/2606.19534)*
+
+To address the issues that existing multimodal large models rely on autoregressive generation and have low multi-region perception efficiency, this paper proposes PerceptionDLM, a multimodal diffusion language model. It implements sequence and token-level parallel generation of multi-region descriptions through efficient prompting and structured attention masks, and simultaneously builds ParaDLC-Bench, a multi-region description evaluation benchmark. Experiments show that the model maintains competitive region description performance while greatly improving multi-region perception speed, making it the first solution to achieve parallel region perception using a diffusion language model. Relevant resources have been open-sourced.
+
+<FeedbackButtons slug="item:arxiv-2606.19534" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.19651" target="_blank" rel="noopener noreferrer">BrainG3N: A Dual-Purpose Tokenizer for Controllable 3D Brain MRI Generation</a>
+
+*HF ★ 2 · Max Van Puyvelde, Ibrahim Gulluk, Wim Van Criekinge… · [HF Mirror](https://huggingface.co/papers/2606.19651)*
+
+Aiming at the pain point that existing tokenizers for 3D brain MRI latent diffusion prioritize reconstruction but lose clinical information, this paper proposes BrainG3N, a dual-purpose tokenizer: it freezes the encoder of a 3D masked autoencoder pre-trained on more than 35,000 multimodal multi-disease samples to extract clinical features, paired with an independent CNN decoder to complete reconstruction. The model outperforms or matches SOTA in 21 out of 23 clinical tasks, while supporting controllable generation and disease progression prediction, balancing downstream task and generation requirements.
+
+<FeedbackButtons slug="item:arxiv-2606.19651" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.18847" target="_blank" rel="noopener noreferrer">WorldLines: Benchmarking and Modeling Long-Horizon Stateful Embodied Agents</a>
+
+*HF ★ 2 · Yehang Zhang, Jianchong Su, Haojian Huang… · [HF Mirror](https://huggingface.co/papers/2606.18847)*
+
+Existing long-term memory benchmarks mostly focus on language Q&A, and embodied intelligence benchmarks mostly focus on short tasks, failing to cover the evaluation of long-term memory capabilities in dynamic environments. To address this gap, this research launches WorldLines, a long-horizon embodied home assistance benchmark, constructs long-sequence home interaction trajectory generation evaluation samples, and also proposes the ObsMem memory framework to support state-aware decision making. Experiments show that current solutions still have difficulties such as partial observability and state overwriting, and ObsMem provides a better reference architecture for this scenario.
+
+<FeedbackButtons slug="item:arxiv-2606.18847" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.18829" target="_blank" rel="noopener noreferrer">GateMem: Benchmarking Memory Governance in Multi-Principal Shared-Memory Agents</a>
+
+*HF ★ 1 · Zhe Ren, Yibo Yang, Yimeng Chen… · [HF Mirror](https://huggingface.co/papers/2606.18829)*
+
+Most existing memory benchmarks for large model agents are adapted to single-user scenarios, lacking evaluation capabilities for multi-principal shared memory scenarios. This paper launches the GateMem benchmark covering medical, office, education, and home scenarios, which can simultaneously evaluate three core capabilities: utility of legitimate requests, cross-boundary access control, and active forgetting after deletion. Tests show that none of the existing solutions can meet all three requirements at the same time: long-context solutions have good governance effects but high token costs, while retrieval-based solutions have low costs but are prone to information leakage, leaving a large gap from reliable shared deployment.
+
+<FeedbackButtons slug="item:arxiv-2606.18829" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/samsung-electronics-chatgpt-codex-deployment" target="_blank" rel="noopener noreferrer">Samsung Electronics brings ChatGPT and Codex to employees</a>
+
+*OpenAI*
+
+Samsung Electronics has officially deployed OpenAI's ChatGPT Enterprise and Codex code large model for global employees recently, making it one of the largest enterprise AI commercial projects OpenAI has landed to date. This deployment can provide AI support for employees in scenarios such as office work, code development, and content creation, and also reflects the trend of leading tech companies accelerating the integration of generative AI into internal operations.
+
+<FeedbackButtons slug="item:openai-blog-samsung-electronics-chatgpt-codex-deployment" client:visible />
+
+## <a href="https://openai.com/index/chatgpt-enterprise-spend-controls" target="_blank" rel="noopener noreferrer">New usage analytics and updated spend controls for enterprises</a>
+
+*OpenAI*
+
+OpenAI recently launched two new features for ChatGPT Enterprise: first, a new usage behavior analysis module that can break down AI call details by different departments and scenarios; second, upgraded spend control tools that support flexible setting of cost thresholds and permission grading. The two tools jointly solve the problem of uncontrollable costs when enterprises deploy AI at scale, reduce implementation risks, and help enterprises promote AI application deployment with confidence.
+
+<FeedbackButtons slug="item:openai-blog-chatgpt-enterprise-spend-controls" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener noreferrer">Statement on the US government directive to suspend access to Fable 5 and Mythos 5</a>
+
+*Anthropic*
+
+This is a special statement issued by the relevant entity in response to the new US government export control regulations. The core content is that the US government has officially issued an export control directive that will fully suspend all non-US citizens' access to Fable 5 and Mythos 5, two regulated objects, regardless of whether the corresponding non-US citizens are currently inside or outside the US. This control is the latest implementation of the US's foreign technology restriction policy.
+
+<FeedbackButtons slug="item:anthropic-fable-mythos-access" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-corps" target="_blank" rel="noopener noreferrer">Introducing Claude Corps</a>
+
+*Anthropic*
+
+Anthropic officially launches Claude Corps, a nationwide talent program in the US. This program is a special fellowship open to early-career practitioners who are committed to promoting inclusive AI technology and hope to bring the dividends of AI development to grassroots communities across the US. It aims to recruit young talents to realize the livelihood value of AI and narrow the gap in AI technology benefits between different groups.
+
+<FeedbackButtons slug="item:anthropic-claude-corps" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/unlocking-uk-house-building-with-ai-accelerated-planning/" target="_blank" rel="noopener noreferrer">Unlocking UK house-building with AI-accelerated planning</a>
+
+*Google DeepMind*
+
+To solve the pain points of long planning approval cycles and insufficient supply of housing construction in the UK, the UK government has partnered with Google DeepMind to develop an AI-driven planning approval prototype system. The core of the solution is to speed up the administrative decision-making process related to housing construction relying on AI technology, aiming to unblock the blocking points in the housing construction process, reduce planning approval time, and improve housing supply efficiency. The project is still in the prototype R&D stage at present.
+
+<FeedbackButtons slug="item:deepmind-unlocking-uk-house-building-with-ai-accelerated-planning" client:visible />
+
+## <a href="https://deepmind.google/blog/securing-the-future-of-ai-agents/" target="_blank" rel="noopener noreferrer">Securing the future of AI agents</a>
+
+*Google DeepMind*
+
+This research titled *Securing the future of AI agents* addresses the security pain points of large-scale deployment of AI agents, and proposes a protection solution centered on the AI governance roadmap: by integrating traditional security protection mechanisms with real-time dynamic monitoring capabilities, it comprehensively builds the internal system security defense line for AI agent operation, providing systematic security support for the long-term compliant and sustainable development of AI agents.
+
+<FeedbackButtons slug="item:deepmind-securing-the-future-of-ai-agents" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/ServiceNow/mosaicleaks" target="_blank" rel="noopener noreferrer">MosaicLeaks: Can your research agent keep a secret?</a>
+
+*Hugging Face*
+
+This paper responds to the question of whether large model research agents can keep secrets, disclosing a new type of leakage attack called MosaicLeaks: attackers can induce agents to split confidential unreleased research results and experimental data into multiple independent outputs, which can be spliced to restore the complete confidential content. Tests show that almost all conventional confidentiality protections of existing agents can be bypassed by this method, suggesting that targeted auditing mechanisms for associated block outputs need to be added in research scenarios.
+
+<FeedbackButtons slug="item:hf-blog-mosaicleaks" client:visible />
+
+## <a href="https://huggingface.co/blog/peft-beyond-lora" target="_blank" rel="noopener noreferrer">Beyond LoRA: Can you beat the most popular fine-tuning technique?</a>
+
+*Hugging Face*
+
+This paper explores the performance upper limit of LoRA, the mainstream parameter-efficient fine-tuning technology for large models, sorts out LoRA's inherent shortcomings such as rank constraints and limited full-scenario adaptation capability, summarizes and compares various improved and alternative solutions in recent years. It verifies that some customized solutions outperform standard LoRA in accuracy and efficiency in specific scenarios such as few-shot learning and multimodal tasks, but LoRA still has no unshakable general alternative in general scenarios due to its ease of use and deployment advantages.
+
+<FeedbackButtons slug="item:hf-blog-peft-beyond-lora" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This paper reflects on the AI orthogonality hypothesis from the perspective of virtue ethics, refutes the traditional cognition that "rational agents are necessarily guided by fixed goals", and points out that the essence of human rationality is that actions adapt to the social practice network including rules, evaluation standards and resources. It proposes that to achieve smooth collaboration between AI and humans, the AI's decision-making logic needs to match the human practice-based action logic. This path is not only suitable for ethical value alignment, but also can guarantee the core security of AI.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/06/437235.html" target="_blank" rel="noopener noreferrer">Accepted to ECCV 2026! Tsinghua's open-source spatial model beats Gemini: True spatial intelligence is continuous learning in a changing world</a>
+
+*QbitAI*
+
+The streaming spatial intelligence model Spatial-TTT developed by Tsinghua University's team has been accepted to ECCV 2026. Designed for spatial understanding needs in dynamic scenarios, the model does not rely on infinitely expanding context, and can dynamically construct and update spatial memory while watching videos. With only 2B parameters, it outperforms closed-source models such as GPT-5 and Gemini-3-pro on multiple spatial intelligence benchmarks, and can process up to 120 minutes of streaming video, providing key support for multimodal large models to land in real scenarios.
+
+<FeedbackButtons slug="item:qbitai-437235" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/437198.html" target="_blank" rel="noopener noreferrer">A sketch of the current embodied AI landscape: Smart brains, strong models, either valued at tens of billions or are unicorns</a>
+
+*QbitAI*
+
+The financing popularity of China's embodied intelligence track has risen in 2026, and the full-year scale is expected to hit a new high. More than 50% of the funds flow to embodied brain enterprises focusing on "software defines hardware, models define ontology". These enterprises have extremely fast financing rhythms, and the single-round financing amount far exceeds the average of other tracks at the same stage. Most of them are still in the early financing stage, while the financing proportion of the robot body and core component tracks is low.
+
+<FeedbackButtons slug="item:qbitai-437198" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/437141.html" target="_blank" rel="noopener noreferrer">In 2026, 1800 DeepSeek instances guard Azeroth with me</a>
+
+*QbitAI*
+
+Recently, a Reddit user set up a private server for *World of Warcraft: Wrath of the Lich King*, modified based on the ready-made server robot module, and connected the built-in AI chat interface to the DeepSeek API, realizing 1800 AI players that can independently do quests, team up, and chat naturally. The simulation degree is high, and the operating cost is extremely low: the monthly fee for 1800 AIs at full load is only about 340 yuan. The related post became a hot post in the community, and player acceptance is much higher than official suspected bots.
+
+<FeedbackButtons slug="item:qbitai-437141" client:visible />

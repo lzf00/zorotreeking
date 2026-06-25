@@ -1,0 +1,179 @@
+---
+lang: en
+translationKey: digest-2026-06-23
+title: "Daily AI Digest · 2026-06-23"
+description: "17 papers · multi-source aggregation + AI summarization"
+date: 2026-06-23
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, the-gradient]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.webp"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second daily recap</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Multiple cutting-edge AI research papers released, multiple new models including Alibaba's HappyHorse and PP-OCRv6 officially launched</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Anthropic launches Claude Corps, US government orders suspension of access to Fable 5 and other products, Meta's distillation program is halted</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">DeepSeek is in urgent need of Agent-oriented talents, AI technology is applied to the field of UK housing construction planning</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📈 New Models</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Big Tech Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔒 Security & Compliance</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Practical Applications</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.22807" target="_blank" rel="noopener noreferrer">KaLM-Reranker-V1: Fast but Not Late Interaction for Compressed Document Reranking</a>
+
+*HF ★ 18 · Xinping Zhao, Jiaxin Xu, Ziqi Dai… · [HF Mirror](https://huggingface.co/papers/2606.22807)*
+
+To address the issues of high coupling between query and document joint encoding, and insufficient deployment efficiency and flexibility in existing retrieval rerankers, this paper proposes the KaLM-Reranker-V1 reranker: it adopts an encoder-decoder architecture, uses nested embedding pooling for document pre-encoding, processes query instructions on the decoder side, retains strong correlation modeling capability through cross-attention, and improves efficiency by decoupling computation. The three versions with different parameter sizes achieve SOTA performance on multiple benchmarks, and the smallest 0.27B version can also match the performance of 7-12B embedding models.
+
+<FeedbackButtons slug="item:arxiv-2606.22807" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.20781" target="_blank" rel="noopener noreferrer">World Action Models: A Survey</a>
+
+*HF ★ 12 · Qiuhong Shen, Shihua Zhang, Yue Liao… · [HF Mirror](https://huggingface.co/papers/2606.20781)*
+
+This is a survey in the field of World Action Models (WAMs). It first clarifies the boundaries of WAMs as embodied predictive action models, and distinguishes them from general world models, video generation models, etc. It sorts out existing work from two dimensions: generated content and technical decomposition, pointing out that WAMs are not video generators with action heads, and a trade-off needs to be made between representation richness, computing power, and annotation cost. The current trend is to simplify future generated content and only retain information necessary for control.
+
+<FeedbackButtons slug="item:arxiv-2606.20781" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.20097" target="_blank" rel="noopener noreferrer">HydraHead: From Head-Level Functional Heterogeneity to Specialized Attention Hybridization</a>
+
+*HF ★ 12 · Zhentao Tan, Wei Chen, Jingyi Shen… · [HF Mirror](https://huggingface.co/papers/2606.20097)*
+
+To address the issues that the quadratic complexity of attention restricts long context processing, and existing hierarchical hybrid attention has poor fusion effect, this paper finds that attention heads in the same layer have functional heterogeneity. Based on this, the HydraHead architecture is proposed, which mixes full attention and linear attention along the head dimension, paired with interpretable head selection and scale normalization fusion strategies. Trained with only 15B tokens, its long context performance is 69% higher than the baseline, and it is close to the native 256K context Qwen 3.5 of the same size.
+
+<FeedbackButtons slug="item:arxiv-2606.20097" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.21649" target="_blank" rel="noopener noreferrer">EvoEmbedding: Evolvable Representations for Long-Context Retrieval and Agentic Memory</a>
+
+*HF ★ 10 · Chang Nie, Chaoyou Fu, Junlan Feng… · [HF Mirror](https://huggingface.co/papers/2606.21649)*
+
+Existing embedding models are static, ignoring context and timing when encoding text, which is not suitable for dynamic long text scenarios. This paper proposes EvoEmbedding, which generates dynamic embeddings jointly through continuously updated implicit memory and input. It is equipped with a 180K training set, a memory queue to prevent representation collapse, and segmented batch processing to speed up by 3.8 times. Experiments show that its long context retrieval effect is better than that of dedicated models with larger parameters, and it has strong generalization. A simple RAG equipped with it outperforms dedicated agent memory systems.
+
+<FeedbackButtons slug="item:arxiv-2606.21649" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.18844" target="_blank" rel="noopener noreferrer">Learning from Your Own Mistakes: Constructing Learnable Micro-Reflective Trajectories for Self-Distillation</a>
+
+*HF ★ 9 · Zhilin Huang, Hang Gao, Ziqiang Dong… · [HF Mirror](https://huggingface.co/papers/2606.18844)*
+
+To address the defect that existing large model self-distillation only performs implicit distribution alignment without fine-grained error correction, this paper proposes Trajectory Augmentation Policy Optimization (TAPO): it compares correct and wrong reasoning paths for the same query, retains the error prefix and inserts natural language diagnosis and correction logic, paired with difficulty-aware sample screening and decoupled advantage estimation to prevent gradient pollution. On mathematical reasoning datasets such as AIME and HMMT, TAPO outperforms GRPO under the same number of training steps, while improving both first-pass reasoning and error correction capabilities.
+
+<FeedbackButtons slug="item:arxiv-2606.18844" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/patch-the-planet" target="_blank" rel="noopener noreferrer">Patch the Planet: a Daybreak initiative to support open source maintainers</a>
+
+*OpenAI*
+
+OpenAI has launched the "Patch the Planet" program under the Daybreak project portfolio, providing security support for open source project maintainers. The program combines the dual mechanisms of AI capabilities and expert review, which can help maintainers efficiently complete the whole process of vulnerability discovery, validity verification and remediation, solving the pain points of open source teams such as insufficient security manpower and low investigation efficiency. It is expected to reduce operation and maintenance costs and fill the general security gaps in the open source ecosystem.
+
+<FeedbackButtons slug="item:openai-blog-patch-the-planet" client:visible />
+
+## <a href="https://openai.com/index/daybreak-securing-the-world" target="_blank" rel="noopener noreferrer">Daybreak: Tools for securing every organization in the world</a>
+
+*OpenAI*
+
+OpenAI has launched Daybreak, an inclusive security tool suite for various organizations around the world. Its core includes two products, Codex Security and GPT-5.5-Cyber, which can complete the whole process of active vulnerability discovery, validity verification and patch deployment at scale, greatly lowering the threshold for enterprise vulnerability operation and maintenance, and improving the organization's cybersecurity attack and defense response efficiency and protection coverage.
+
+<FeedbackButtons slug="item:openai-blog-daybreak-securing-the-world" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener noreferrer">Statement on the US government directive to suspend access to Fable 5 and Mythos 5</a>
+
+*Anthropic*
+
+This statement explains the latest export control directive of the US government: the US government has recently issued new control regulations requiring all foreign nationals, whether inside or outside the US, to be prohibited from accessing the two products Fable 5 and Mythos 5. There is no territorial exemption for this control, and all non-US entities are bound, reflecting the trend of further tightening of US export controls in relevant technical fields.
+
+<FeedbackButtons slug="item:anthropic-fable-mythos-access" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-corps" target="_blank" rel="noopener noreferrer">Introducing Claude Corps</a>
+
+*Anthropic*
+
+Anthropic has officially launched a national talent funding program called Claude Corps, which is open for recruitment to people in the early stages of their careers who are interested in bringing the dividends of AI development to communities across the United States. The program plans to support young talents with public service awareness, promote the value of AI technology to cover more groups, explore the implementation path of AI inclusion, benefit the general public, and reserve youth power for the field of AI public services.
+
+<FeedbackButtons slug="item:anthropic-claude-corps" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/unlocking-uk-house-building-with-ai-accelerated-planning/" target="_blank" rel="noopener noreferrer">Unlocking UK house-building with AI-accelerated planning</a>
+
+*Google DeepMind*
+
+In response to the long-standing pain point of low planning approval efficiency in UK housing construction that hinders housing supply, the UK government has cooperated with Google DeepMind to develop an AI-driven planning approval prototype tool. The core goal is to rely on AI technology to greatly reduce the time spent on housing-related planning decisions, unblock housing supply bottlenecks, and explore the feasibility of applying AI technology in government approval scenarios.
+
+<FeedbackButtons slug="item:deepmind-unlocking-uk-house-building-with-ai-accelerated-planning" client:visible />
+
+## <a href="https://deepmind.google/blog/securing-the-future-of-ai-agents/" target="_blank" rel="noopener noreferrer">Securing the future of AI agents</a>
+
+*Google DeepMind*
+
+This paper focusing on the future security of AI agents proposes that internal system security protection can be achieved by building an AI control roadmap. The core of this roadmap integrates traditional mature security protection mechanisms and real-time dynamic monitoring capabilities, taking into account both basic security guarantees and the dynamic response requirements of AI agent operating characteristics. It can provide systematic and implementable security framework guidance for the large-scale safe deployment and long-term reliable development of AI agents.
+
+<FeedbackButtons slug="item:deepmind-securing-the-future-of-ai-agents" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/PaddlePaddle/pp-ocrv6" target="_blank" rel="noopener noreferrer">PP-OCRv6 on Hugging Face: 50-Language OCR from 1.5M to 34.5M Parameters</a>
+
+*Hugging Face*
+
+Baidu PaddlePaddle's PP-OCRv6 is now available on the Hugging Face platform, supporting 50 languages for text recognition, with parameter sizes covering the full range from 1.5M to 34.5M. The team has optimized the model architecture and multilingual character set adaptation for multi-scenario deployment, balancing inference speed and recognition accuracy. Small parameter versions are suitable for end-side devices with low computing power, and large parameter versions can meet the needs of high-precision OCR on the server side.
+
+<FeedbackButtons slug="item:hf-blog-pp-ocrv6" client:visible />
+
+## <a href="https://huggingface.co/blog/ServiceNow/mosaicleaks" target="_blank" rel="noopener noreferrer">MosaicLeaks: Can your research agent keep a secret?</a>
+
+*Hugging Face*
+
+This article focuses on the privacy risks of large model-driven research agents, and proposes a new attack method called MosaicLeaks: sensitive information is split into unrelated fragments, disguised as ordinary research task materials and input in batches, tricking the agent into independently splicing and restoring confidential content. Actual tests show that the sensitive information leakage rate of mainstream research agents with conventional security protection is as high as over 90%, and existing alignment mechanisms can hardly resist such attacks, requiring targeted optimization of privacy protection logic.
+
+<FeedbackButtons slug="item:hf-blog-mosaicleaks" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This research in the field of AI alignment refutes the presupposition that "rational agents need to be oriented towards fixed ultimate goals", pointing out that human rationality is not directed at specific goals, but adapts actions to a practical network including action tendencies, evaluation standards and other elements. The study proposes that to achieve AI collaboration with humans and meet human demands, the AI decision-making logic needs to match human practice-based action logic, which is related to both ethical alignment and core security performance.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/06/437330.html" target="_blank" rel="noopener noreferrer">Zuckerberg's "employee distillation" program urgently halted! Private chat data leaked…</a>
+
+*QbitAI*
+
+Meta launched the MCI project in April this year, which compulsorily collects employee work data such as keyboard and mouse operations to train AI. It originally claimed that it only monitors specified office software and is equipped with privacy protection measures. Recently, a Level 2 data breach occurred in the project, and 45,000 pieces of sensitive data including employee private chats and performance were visible to all staff for a period of time. The project has been urgently halted, internal morale has hit rock bottom. The official stated that no improper access to data has been found so far, the investigation is ongoing, and the CTO has come forward to respond to employee questions.
+
+<FeedbackButtons slug="item:qbitai-437330" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/437317.html" target="_blank" rel="noopener noreferrer">Alibaba releases video generation model HappyHorse 1.1: comprehensive upgrade in five dimensions</a>
+
+*QbitAI*
+
+On June 22, Alibaba released the video generation model HappyHorse 1.1, which is a systematic upgrade from version 1.0 in five dimensions: dynamic expressiveness, subject consistency, instruction following, visual texture, and audio. It optimizes motion modeling, supports "face changing" controlled by 9 character reference images, and has greatly improved prompt understanding, picture realism, and audio adaptability. The generation specification remains 3-15 seconds, up to 1080p, has covered multiple content production scenarios, and can be accessed through three official channels.
+
+<FeedbackButtons slug="item:qbitai-437317" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/437249.html" target="_blank" rel="noopener noreferrer">DeepSeek is desperately short of Agent talents! The person in charge is posting ads everywhere</a>
+
+*QbitAI*
+
+DeepSeek's Harness department, which is responsible for Harness, the core non-model component of Agent (analogous to a car's control system, fitting the formula Model + Harness = Agent), has a large talent gap. The person in charge Cui Tianyi publicly recruits for three positions: intern researchers, engineers, and full-time product managers. Researchers are required to explore cutting-edge technologies, promote the adaptation of models and Harness, and build an evaluation system. After the news was released, many netizens took the initiative to recommend themselves.
+
+<FeedbackButtons slug="item:qbitai-437249" client:visible />

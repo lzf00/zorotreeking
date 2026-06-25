@@ -1,0 +1,205 @@
+---
+lang: en
+translationKey: digest-2026-06-18
+title: "AI Daily Digest · 2026-06-18"
+description: "20 papers · Multi-source aggregation + AI summaries"
+date: 2026-06-18
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.webp"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's content in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Cutting-edge research results in multiple AI subfields including embodied manipulation, multimodal large models, and biomedicine have been released intensively</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Anthropic launches Claude Corps, DiffusionGemma achieves 4x faster generation, and multiple AI application tools are launched in quick succession</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">China's domestic computing power industry enters the Token standardization era, a 100,000 PFLOPS-level AI factory launched in Beijing with a daily output of 10 trillion Tokens</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Product Launch</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Computing Power Progress</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Embodied Intelligence</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡 Industry Applications</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.18363" target="_blank" rel="noopener noreferrer">Guava: An Effective and Universal Harness for Embodied Manipulation</a>
+
+*HF ★ 15 · Haowen Liu, Xirui Li, Shaoxiong Yao… · [HF Mirror](https://huggingface.co/papers/2606.18363)*
+
+To address the lack of design standards for model scheduling frameworks for embodied manipulation, this paper proposes the universal framework Guava. Through systematic exploration of agent workflows, action and observation spaces, the team identified three core design elements: the perception-reasoning-action iterative loop, semantic action abstraction, and multimodal observation. Using fewer than 2,000 simulation trajectories, it can distill embodied capabilities into a 4B open-source small model, with performance on par with cutting-edge closed-source models and excellent generalization, proving the framework can serve as an efficient model-agnostic embodied interface.
+
+<FeedbackButtons slug="item:arxiv-2606.18363" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.18101" target="_blank" rel="noopener noreferrer">Trust the Right Teacher: Quality-Aware Self-Distillation for GUI Grounding</a>
+
+*HF ★ 10 · Jingyuan Huang, Zuming Huang, Yucheng Shi… · [HF Mirror](https://huggingface.co/papers/2606.18101)*
+
+This paper focuses on the GUI grounding task. Aiming at the flaw that teacher coordinate signals are unreliable when student-generated prefixes deviate from the target in existing same-policy self-distillation, the paper proposes a quality-aware self-distillation method: it downweights low-quality signals through a soft correctness-aware gating mechanism, paired with teacher probability scaling to calibrate supervision intensity. The two components complement each other to improve performance, outperforming baselines in all 6 benchmark tests, and can stably improve base model performance.
+
+<FeedbackButtons slug="item:arxiv-2606.18101" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.16533" target="_blank" rel="noopener noreferrer">Kairos: A Native World Model Stack for Physical AI</a>
+
+*HF ★ 8 · Kairos Team, Fei Wang, Shan You… · [HF Mirror](https://huggingface.co/papers/2606.16533)*
+
+Aiming at the core requirements of physical AI for world models to autonomously acquire knowledge, maintain long-term states, and be deployed efficiently, this paper proposes Kairos, a native world model stack. It adopts a native pre-training paradigm with cross-embodiment data curriculum, is equipped with a unified hybrid linear temporal attention architecture, and paired with deployment-aware system co-design. It can mathematically guarantee controllable errors in long-term state propagation, delivers top measured performance and an excellent balance between efficiency and capability, and can serve as the core operating base for physical intelligence.
+
+<FeedbackButtons slug="item:arxiv-2606.16533" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.19338" target="_blank" rel="noopener noreferrer">Beyond the Current Observation: Evaluating Multimodal Large Language Models in Controllable Non-Markov Games</a>
+
+*HF ★ 3 · Shengyuan Ding, Xilin Wei, Xinyu Fang… · [HF Mirror](https://huggingface.co/papers/2606.19338)*
+
+Aiming at the flaw that existing multimodal large model decision-making benchmarks cannot isolate and evaluate memory reasoning capabilities in non-Markovian scenarios, this paper proposes the RNG-Bench evaluation set, which includes two types of non-Markovian games with multiple difficulty gradients, paired with a duel evaluation protocol and memory gap indicator that can distinguish between forgetting and decision-making errors. Tests show cutting-edge multimodal large models are far from meeting the standard, with most errors coming from forgetting. Targeted fine-tuning of Qwen3.5-9B can improve performance without compromising general capabilities.
+
+<FeedbackButtons slug="item:arxiv-2606.19338" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.19336" target="_blank" rel="noopener noreferrer">Learning User Simulators with Turing Rewards</a>
+
+*HF ★ 1 · Yingshan Susan Wang, Cedegao E. Zhang, Linlu Qiu… · [HF Mirror](https://huggingface.co/papers/2606.19336)*
+
+Aiming at the shortcoming that most existing user simulators are trained by matching real responses, this paper proposes Turing-RL, a reinforcement learning framework based on the Turing test: it uses a large model as a discriminator, and uses the degree of confusion between generated replies and real human replies judged based on user history as the reward, to train the simulator to output replies that are difficult to distinguish from real humans. Tested in two domains, dialogue and Reddit forums, its performance in both LLM and human evaluations outperforms baselines, proving that optimizing indistinguishability is more suitable for training user simulators than matching responses.
+
+<FeedbackButtons slug="item:arxiv-2606.19336" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.18283" target="_blank" rel="noopener noreferrer">Gaussian Mixture Attention: Linear-Time Sequence Mixing via Probabilistic Latent Routing</a>
+
+*Yongchao Huang, Hassan Raza*
+
+Aiming at the long context bottleneck of Transformer's standard dot-product attention with O(N²) complexity, this paper proposes Gaussian Mixture Attention (GMA): it eliminates the need for explicit pairwise Q-K comparison, implements implicit routing through K learnable Gaussian mixture components, reducing complexity to linear O(NK) with fixed K. Experiments show its long context classification performance is comparable to baselines, and the causal version outperforms existing linear attention variants, though it is still weaker than optimized SDPA and Mamba, making it an interpretable linear-time attention alternative.
+
+<FeedbackButtons slug="item:arxiv-2606.18283" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.18284" target="_blank" rel="noopener noreferrer">Breaking the Solver Bottleneck: Training Task Generators at the Learnable Frontier</a>
+
+*Lorenz Wolf, Connor Watts, Roger Creus Castanyer…*
+
+Aiming at the pain points that reinforcement learning training lacks effective tasks adapted to the current model difficulty, and task generation with solvers is extremely inefficient, this paper proposes the PROPEL amortization framework: it pre-trains a lightweight activation probe as a proxy for task pass rate, simplifying generation evaluation to a single forward pass, breaking the solver bottleneck. Experiments show the proportion of effective tasks adapted to the target difficulty in the fields of mathematics, code, and software engineering has approximately doubled, and it is effective across models and unseen data scenarios.
+
+<FeedbackButtons slug="item:arxiv-2606.18284" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.18286" target="_blank" rel="noopener noreferrer">CODEBLOCK: Learning to Supervise Code at the Right Granularity</a>
+
+*Zhijie Deng, Ling Li, Jinlong Pang…*
+
+Aiming at the problems of low efficiency of full-token training for supervised fine-tuning of code large models, and that directly applying NLP token-level selection will damage code structure, this paper proposes CodeBlock, a structure-aware sparse supervision framework: it first filters high-quality instruction pairs, splits code into syntactically complete blocks, combines logical token utility and data flow dependencies to reorder and select high-value blocks, only calculates loss for selected blocks, while the full response is still used as context. Tests on 6 code generation benchmarks show its pass@1 outperforms full fine-tuning and existing baselines, requiring only 1.9% of supervised tokens.
+
+<FeedbackButtons slug="item:arxiv-2606.18286" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/ai-chemist-improves-reaction" target="_blank" rel="noopener noreferrer">A near-autonomous AI chemist improves a challenging reaction in medicinal chemistry</a>
+
+*OpenAI*
+
+The near-autonomous AI chemist equipped with GPT-5.4, developed by OpenAI in partnership with Molecule.one, has successfully optimized a high-difficulty key reaction in the field of pharmaceutical synthesis, advancing medicinal chemistry research. This achievement breaks the bottleneck of traditional pharmaceutical reaction optimization that relies on manual trial and error and has long cycles, can greatly reduce drug R&D costs and improve efficiency, and also provides a new reference paradigm for AI deployment in physical chemical experiment scenarios.
+
+<FeedbackButtons slug="item:openai-blog-ai-chemist-improves-reaction" client:visible />
+
+## <a href="https://openai.com/index/introducing-life-sci-bench" target="_blank" rel="noopener noreferrer">Introducing LifeSciBench</a>
+
+*OpenAI*
+
+This research launches LifeSciBench, a dedicated evaluation benchmark for the life sciences field. The benchmark was written and reviewed with full participation from life sciences experts, and can targeted evaluate the task processing capabilities and research decision-making level of AI systems in real life science research scenarios, filling the gap of professional-grade AI evaluation tools for life science research scenarios, and providing a standardized verification basis for related AI R&D.
+
+<FeedbackButtons slug="item:openai-blog-introducing-life-sci-bench" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener noreferrer">Statement on the US government directive to suspend access to Fable 5 and Mythos 5</a>
+
+*Anthropic*
+
+This statement explains the new US government regulations on access control for computing power tools: the US recently issued an export control administrative order that imposes strict restrictions on access to the two products Fable 5 and Mythos 5. All non-US citizens, regardless of whether they are inside or outside the United States, have been suspended from all access to the two products. The control covers all foreign nationals, with no territorial exemptions.
+
+<FeedbackButtons slug="item:anthropic-fable-mythos-access" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-corps" target="_blank" rel="noopener noreferrer">Introducing Claude Corps</a>
+
+*Anthropic*
+
+This announcement officially launches Claude Corps, a national funded training support program, open for recruitment to early-career groups. The core selection requirement is that applicants have a strong passion for promoting AI technology to benefit communities across the United States. The program will provide supporting resource support for eligible young practitioners, helping to expand AI inclusive coverage scenarios and unlock the public value of AI technology.
+
+<FeedbackButtons slug="item:anthropic-claude-corps" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/unlocking-uk-house-building-with-ai-accelerated-planning/" target="_blank" rel="noopener noreferrer">Unlocking UK house-building with AI-accelerated planning</a>
+
+*Google DeepMind*
+
+The UK government is partnering with Google DeepMind on a housing construction planning empowerment project, the core of which is to develop an AI-driven planning work prototype, relying on artificial intelligence technology to greatly reduce the time spent on planning decisions related to housing projects. It aims to solve the long-standing bottleneck of low planning approval efficiency that restricts UK housing supply, and effectively unlock the domestic housing construction supply potential.
+
+<FeedbackButtons slug="item:deepmind-unlocking-uk-house-building-with-ai-accelerated-planning" client:visible />
+
+## <a href="https://deepmind.google/blog/diffusiongemma-4x-faster-text-generation/" target="_blank" rel="noopener noreferrer">DiffusionGemma: 4x faster text generation</a>
+
+*Google DeepMind*
+
+The newly released DiffusionGemma is a new large language model for low-latency requirements. Aiming at the pain point of low efficiency of token-by-token generation of traditional autoregressive architectures, it abandons the inherent word-by-word output mode, adopts the diffusion generation paradigm to optimize the inference path, and can output complete sequences with only a small number of iteration steps. On the premise that the generation quality is basically the same as that of the native Gemma model, it achieves a 4x inference speed improvement, which can be adapted to deployment scenarios such as high-concurrency dialogue and real-time content generation.
+
+<FeedbackButtons slug="item:deepmind-diffusiongemma-4x-faster-text-generation" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/molmomotion" target="_blank" rel="noopener noreferrer">MolmoMotion: Language-guided 3D motion forecasting</a>
+
+*Hugging Face*
+
+MolmoMotion addresses the pain point that existing methods in the 3D motion prediction field only rely on historical sequences and cannot respond to semantic instructions, and proposes a language-guided cross-modal prediction framework. By designing a language-motion alignment module combined with a spatio-temporal Transformer to model temporal correlations, and supporting it with a constructed labeled dataset, its performance on public benchmarks exceeds the existing SOTA by approximately 12%. It can flexibly generate 3D motions that comply with instructions, suitable for scenarios such as human-computer interaction and animation generation.
+
+<FeedbackButtons slug="item:hf-blog-molmomotion" client:visible />
+
+## <a href="https://huggingface.co/blog/amazon/strands-lerobot-hub-to-hardware" target="_blank" rel="noopener noreferrer">From the Hugging Face Hub to robot hardware with Strands Agents and LeRobot</a>
+
+*Hugging Face*
+
+This research launches a toolchain combining the Strands Agents framework and the LeRobot library, opening up the deployment path from Hugging Face Hub open-source AI resources to physical robot hardware: it can directly reuse resources such as pre-trained multimodal large models and embodied intelligence strategies in the Hub, adapt to multiple types of general robot hardware without retraining, greatly lowering the deployment threshold for embodied applications, and making it convenient for developers to quickly deploy open-source models to physical robots to complete practical tasks.
+
+<FeedbackButtons slug="item:hf-blog-strands-lerobot-hub-to-hardware" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This paper conducts AI alignment research from the perspective of virtue ethics agency, refutes the traditional assumption that "rational agents need to be anchored to fixed final goals", and proposes that human rationality originates from the adaptation of behavior to a practical network including norms, resources, and evaluation systems. To realize AI that adapts to human demands and is collaborative, the AI decision-making logic needs to be isomorphic with human practical action logic, which can meet the needs of both ethical alignment and core safety alignment at the same time.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/06/436468.html" target="_blank" rel="noopener noreferrer">Domestic computing power in China is entering the Token standardization era</a>
+
+*QbitAI*
+
+Currently, domestic AI chip shipments account for half of the Chinese domestic market, but problems such as difficult adaptation and high tuning costs have led to a computing power utilization rate of less than 50% in some intelligent computing centers. The core bottleneck is the engineering capability to convert heterogeneous computing power into standardized Tokens. In June 2026, Shishi Technology took the lead in holding an industry forum in Wuxi, partnering with academia, supercomputing centers, and upstream and downstream enterprises to focus on this conversion link and fill the gaps in domestic computing power deployment.
+
+<FeedbackButtons slug="item:qbitai-436468" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/436456.html" target="_blank" rel="noopener noreferrer">An AI factory has just been built in Beijing: targeting 100,000 PFLOPS of computing power, daily output of 10 trillion Tokens!</a>
+
+*QbitAI*
+
+DataCanvas recently released its AI factory strategy in Beijing, the core of which includes a 100,000 PFLOPS training factory and a Token factory with an average daily output of 10 trillion Tokens: the former develops professional models for various industries, while the latter encapsulates measurable, stably deliverable professional Tokens. The project aims to achieve a thousand-fold comprehensive cost reduction, incubate a thousand high-value AI applications, solve the pain points of enterprise large model deployment, and promote intelligent computing clouds to shift from supplying computing power to outputting deployable intelligence.
+
+<FeedbackButtons slug="item:qbitai-436456" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/436435.html" target="_blank" rel="noopener noreferrer">The biggest threshold for AI transformation is not technology, but people</a>
+
+*QbitAI*
+
+Peng Zhen, Chairman of Inspur Information, proposed at the AIEC 2026 conference that the biggest threshold for AI transformation is not technology, but people. Currently, 88% of enterprises already have regular AI application scenarios, but only one-third can promote large-scale deployment. The core bottleneck is insufficient adaptation of organization, culture, and processes, including employees' emotional resistance to AI and cognitive biases. He proposed the concept of Humagent, advocating that Agents be treated as human resources, with the organization as the main battlefield for transformation.
+
+<FeedbackButtons slug="item:qbitai-436435" client:visible />

@@ -1,0 +1,205 @@
+---
+lang: en
+translationKey: digest-2026-06-16
+title: "Daily AI Digest · 2026-06-16"
+description: "20 papers · Multi-source aggregation + AI-generated summaries"
+date: 2026-06-16
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.webp"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second daily overview</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI launches partner network and new workplace courses, responds to US government directive suspending access to Fable 5 and other products; Anthropic releases Claude Corps</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Multiple cutting-edge AI technological achievements released, covering world models, generation acceleration, multi-agent safety, inverse rendering and other fields</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">The implementation of China's domestic AI industry accelerates, covering fields including computing power certification, university-enterprise AI4S cooperation, and intelligent industry processes</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤝 Big Tech Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Performance Optimization</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡 Safety & Alignment</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📈 Industry Implementation</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.16993" target="_blank" rel="noopener noreferrer">DreamX-World 1.0: A General-Purpose Interactive World Model</a>
+
+*HF ★ 50 · DreamX Team, Yancheng Bai, Rui Chen… · [HF Mirror](https://huggingface.co/papers/2606.16993)*
+
+DreamX-World 1.0 is a general-purpose interactive text/image-to-video long-sequence controllable world model, adapted to multiple fields such as realistic scenes and games, supporting interactions including camera control and revisiting old areas. The team built a multi-source data engine, proposed lightweight E-PRoPE encoding, combined with technologies such as generation optimization, memory persistence, and event tuning. After efficiency optimization, it can reach 16 FPS on 8 RTX 5090 GPUs, with a comprehensive score of 84.76, outperforming existing similar models.
+
+<FeedbackButtons slug="item:arxiv-2606.16993" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.11176" target="_blank" rel="noopener noreferrer">Data Journalist Agent: Transforming Data into Verifiable Multimodal Stories</a>
+
+*HF ★ 44 · Kevin Qinghong Lin, Batu EI, Yuhong Shi… · [HF Mirror](https://huggingface.co/papers/2606.11176)*
+
+To address the pain points of long production cycles for data journalism and existing agents only being able to handle single links in the process, the research introduces the multi-agent framework Data2Story, which enables traceability and verification of all content elements, and can generate interactive multimodal content tailored to reader needs on demand. Tests show that the traceable multimedia works it produces have outstanding transparency, with quality close to professional works, only lagging behind humans in editorial conception and creative design, making it suitable as an auxiliary tool for journalists.
+
+<FeedbackButtons slug="item:arxiv-2606.11176" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.14066" target="_blank" rel="noopener noreferrer">FastContext: Training Efficient Repository Explorer for Coding Agents</a>
+
+*HF ★ 27 · Shaoqiu Zhang, Maoquan Wang, Yuling Shi… · [HF Mirror](https://huggingface.co/papers/2606.14066)*
+
+To address the code repository retrieval bottleneck of large model code agents (high token consumption, inclusion of irrelevant fragments), Microsoft proposes the FastContext dedicated retrieval sub-agent, which decouples retrieval from task solving. It uses 4B-30B dedicated models pre-trained on reference trajectories and fine-tuned with task rewards, calling tools in parallel to return accurate code intervals. After integration, the accuracy of SWE series tasks is improved by up to 5.5%, token consumption is reduced by up to 60%, with extremely low additional overhead, verifying the effectiveness of separating retrieval and solving.
+
+<FeedbackButtons slug="item:arxiv-2606.14066" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.16281" target="_blank" rel="noopener noreferrer">Who Should Lead Decoding Now? Tracking Reliable Trajectories for Ensembling Masked Diffusion Language Models</a>
+
+*HF ★ 16 · Heecheol Yun, Joonhyung Park, Joowon Kim… · [HF Mirror](https://huggingface.co/papers/2606.16281)*
+
+To address the problem that Masked Diffusion Language Models (MDLM) have varying capabilities and lack existing knowledge fusion solutions, the team first discovered that the confidence of answer-related positions successfully generated by MDLM is dynamically stable, and unreliable decoding trajectories can be corrected by high-quality intermediate states of other models. Based on this, the Trajectory Iterative Ensemble (TIE) framework is proposed, which selects the model with more reliable trajectories at each decoding step, transfers partially denoised sequences across models, and leverages the advantages of different models in stages. It performs excellently on multiple types of reasoning tasks, providing a practical solution for MDLM integration.
+
+<FeedbackButtons slug="item:arxiv-2606.16281" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.17049" target="_blank" rel="noopener noreferrer">BRDFusion: Physics Meets Generation for Urban Scene Inverse Rendering</a>
+
+*HF ★ 14 · Yi-Ruei Liu, Jie-Ying Lee, Zheng-Hui Huang… · [HF Mirror](https://huggingface.co/papers/2606.17049)*
+
+To address the pain points that existing physical methods for urban scene inverse rendering are prone to artifacts and generative methods lack sufficient controllability, this paper proposes the BRDFusion fusion framework: in the inverse rendering stage, physical modeling is used to recover consistent explicit scene attributes, and generative priors are used to eliminate optimization ambiguity; during forward rendering, the physical module ensures controllability, and the generative module denoises and corrects artifacts. This method outperforms baselines, supports functions such as new view relighting and scene editing, and is suitable for scenarios such as content creation and autonomous driving simulation.
+
+<FeedbackButtons slug="item:arxiv-2606.17049" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.14801" target="_blank" rel="noopener noreferrer">QPILOTS: Efficient Test-Time Q-Steering for Flow Policies</a>
+
+*Yifan Ruan, Chenyang Cao, Andreas Burger…*
+
+To address the pain point of unstable multi-step denoising backpropagation gradients when combining flow matching, diffusion policies and temporal difference reinforcement learning, this paper proposes the QPILOTS method: without modifying the original policy, during inference, the intermediate noisy denoising action is first projected into a final clean action estimate, then the critic gradient is calculated to guide denoising, with two implementation versions. The method achieves an average success rate of 90% on 50 offline-to-online RL tasks, and also outperforms or matches similar inference methods when guiding frozen pre-trained VLA large models.
+
+<FeedbackButtons slug="item:arxiv-2606.14801" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.14865" target="_blank" rel="noopener noreferrer">GRAPE: Guided Parameter-Space Evolution for Compact Adversarial Robustness</a>
+
+*Zhiyuan Ye (University of Science and Technology of China), Xiangyu Zhou (China Mobile), Ji Qi (China Mobile)…*
+
+To address the limitation that existing adversarial training mostly fixes the parameter space for optimization from the initial stage, this paper proposes the GRAPE training framework: first stabilize the robust optimization of the currently exposed parameter space, gradually release optimizable dimensions, and use adversarial spectrum utilization scores to guide new capacity to tilt towards high-pressure modules. Experiments on CIFAR-10 show that under the same computing power, the PGD-20 robust accuracy of ResNet-18 increases from 51.7% to 56.94%, with parameter count reduced by 21.4%, confirming that the parameter space opening path itself can improve robustness.
+
+<FeedbackButtons slug="item:arxiv-2606.14865" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.14898" target="_blank" rel="noopener noreferrer">\{\alpha\}-Fair Insurance Pricing: A Fairness Continuum</a>
+
+*Tianhe Zhang, Xiguang Liu, Peng Shi*
+
+To address the long-standing core contradiction in insurance pricing between actuarial fairness (pricing based on individual risk to ensure profitability) and mutual fairness (group risk sharing to ensure inclusiveness), this paper proposes the α-FISP pricing framework: through optimization modeling with cross-group subsidy constraints, the parameter α adjusts the weights of the two types of fairness, forming a fairness continuum while ensuring solvency. The framework has theoretical support, is simple to calculate, and adapts to differentiated fair regulatory requirements across US states.
+
+<FeedbackButtons slug="item:arxiv-2606.14898" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/introducing-openai-partner-network" target="_blank" rel="noopener noreferrer">Introducing the OpenAI Partner Network</a>
+
+*OpenAI*
+
+OpenAI has recently officially launched its Partner Network program, with a dedicated supporting fund of $150 million, covering partners worldwide. The core goal is to accelerate the popularization of enterprise-level AI technology implementation, scenario deployment, and the process of enterprise digital transformation. This move will further open up the link from AI technology R&D to industrial implementation, lowering the threshold for enterprises in various industries to apply AI.
+
+<FeedbackButtons slug="item:openai-blog-introducing-openai-partner-network" client:visible />
+
+## <a href="https://openai.com/index/academy-courses-applying-ai-at-work" target="_blank" rel="noopener noreferrer">New OpenAI Academy courses for the next era of work</a>
+
+*OpenAI*
+
+For the next era of AI-driven work, OpenAI has newly launched three official Academy courses. The courses focus on cultivating practical AI skills, teaching methods for building standardized and reusable AI workflows, while covering application skills for implementing agents in various daily work scenarios. They aim to help learners quickly master AI tool capabilities and adapt to digital-intelligent work models, providing a systematic learning path for professionals to meet new work requirements in the transition period.
+
+<FeedbackButtons slug="item:openai-blog-academy-courses-applying-ai-at-work" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener noreferrer">Statement on the US government directive to suspend access to Fable 5 and Mythos 5</a>
+
+*Anthropic*
+
+This document is an official statement issued by the relevant entity in response to the new US government export control directive. The control measures introduced by the US government explicitly impose strict restrictions on access to Fable 5 and Mythos 5. All foreign nationals, whether located inside or outside the United States, have their access to the two above-mentioned controlled products suspended, with no territorial exemptions or special exceptions in the implementation of the controls.
+
+<FeedbackButtons slug="item:anthropic-fable-mythos-access" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-corps" target="_blank" rel="noopener noreferrer">Introducing Claude Corps</a>
+
+*Anthropic*
+
+The newly launched Claude Corps is a nationwide talent support fellowship program in the US, open to early-career applicants who are committed to promoting AI inclusion. Its core goal is to support selected fellows to extend the development dividends of AI technology to communities across the United States, so that ordinary groups in different regions can truly enjoy the value and convenience brought by AI technology.
+
+<FeedbackButtons slug="item:anthropic-claude-corps" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/diffusiongemma-4x-faster-text-generation/" target="_blank" rel="noopener noreferrer">DiffusionGemma: 4x faster text generation</a>
+
+*Google DeepMind*
+
+This post introduces the DiffusionGemma text generation model, which innovatively uses a diffusion architecture to replace the autoregressive decoding logic of traditional large language models, avoiding the serial latency bottleneck of word-by-word generation. Measured inference speed is 4 times that of the original Gemma of the same size, while generation quality is basically the same as the original. It is suitable for scenarios such as general Q&A and long-form content creation, providing a new diffusion-based solution for large model efficiency optimization.
+
+<FeedbackButtons slug="item:deepmind-diffusiongemma-4x-faster-text-generation" client:visible />
+
+## <a href="https://deepmind.google/blog/investing-in-multi-agent-ai-safety-research/" target="_blank" rel="noopener noreferrer">Investing in multi-agent AI safety research</a>
+
+*Google DeepMind*
+
+Google DeepMind, together with partners, has officially launched a $10 million funding call, specifically supporting academic and technical research in the field of multi-agent AI safety. Currently, the application of multi-agent systems in collaboration and game scenarios is expanding rapidly, and there is still a clear gap in corresponding safety risk prevention and control research. This funding will fill the research gap in the field and help the safe and controllable implementation of multi-agent technology.
+
+<FeedbackButtons slug="item:deepmind-investing-in-multi-agent-ai-safety-research" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/olmo-eval" target="_blank" rel="noopener noreferrer">olmo-eval: An evaluation workbench for the model development loop</a>
+
+*Hugging Face*
+
+olmo-eval is an open-source evaluation workbench built for the iterative development cycle of large models. To address the pain points of existing evaluation tools being fragmented, disconnected from the training pipeline, and having delayed feedback, it has built-in hundreds of evaluation benchmarks covering multiple dimensions such as reasoning and safety, supports automatic evaluation triggering at training nodes, and outputs actionable tuning analysis reports. It has supported the development of the full series of OLMo open-source models, and can greatly reduce iterative evaluation costs.
+
+<FeedbackButtons slug="item:hf-blog-olmo-eval" client:visible />
+
+## <a href="https://huggingface.co/blog/torch-mlp-fusion" target="_blank" rel="noopener noreferrer">Profiling in PyTorch (Part 2): From nn.Linear to a Fused MLP</a>
+
+*Hugging Face*
+
+This post is the second in the PyTorch performance profiling series. It first uses profiling tools to locate the performance bottlenecks of MLPs composed of stacked native nn.Linear layers and activation functions: redundant multi-kernel launches and high memory read/write overhead for intermediate tensors. Then it uses operator fusion technology to merge multi-layer computations into a single-kernel fused MLP. Measurements show that it can reduce end-to-end latency by more than 30%, and reduce memory bandwidth usage by nearly 40%, greatly improving MLP training and inference performance.
+
+<FeedbackButtons slug="item:hf-blog-torch-mlp-fusion" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This AI alignment research from the perspective of virtue ethics challenges the traditional goal-oriented rationality assumption, proposing that neither rational humans nor ideally rational AI should have preset fixed final goals: the rationality of human behavior comes from adapting to a practical network including action norms, evaluation standards and other elements, rather than pointing to a specific purpose. The study points out that if AI is to adapt to and collaborate with human agents, its decision-making logic needs to match the "type signature" of human practice-based reasoning, which can ensure both AI ethical alignment and core safety at the same time.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/06/435859.html" target="_blank" rel="noopener noreferrer">From Technology to Operational Productivity "Qualitative Change": Digital China Builds "Flywheel" for Industrial AI Implementation with AI for Process</a>
+
+*QbitAI*
+
+Currently, enterprise AI implementation is generally facing headwinds, with most staying at the proof of concept or pilot stage, only 7% have completed full-organization deployment, far less smooth than personal AI applications. Digital China proposes the core path of "AI for Process", integrating agents into core business flows, unifying data semantics and rule cognition, precipitating and reusing expert experience and continuously iterating, realizing the qualitative change from technology to operational productivity, and building the flywheel for industrial AI implementation.
+
+<FeedbackButtons slug="item:qbitai-435859" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/435853.html" target="_blank" rel="noopener noreferrer">Frost & Sullivan Official Certification: Paradigm Rise vGPU Rated as Tier 1 Leading Platform</a>
+
+*QbitAI*
+
+In June 2026, Frost & Sullivan released the AI Infrastructure Management White Paper, rating Paradigm Rise vGPU as the highest maturity Tier 1 leading platform, and its ModelHub ranks first among enterprise-level model management platforms. Currently, domestic AI implementation is facing heterogeneous computing power bottlenecks, and the core competitiveness of the industry has shifted from single-chip performance to cluster collaboration. Paradigm's products meet the three major Tier 1 access standards, can solve computing power pain points, and push the industry into a new era of computing power orchestration.
+
+<FeedbackButtons slug="item:qbitai-435853" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/435848.html" target="_blank" rel="noopener noreferrer">University and Enterprise Jointly Promote AI4S: Shanghai Jiao Tong University and Taichu Yuanqi Sign Cooperation Agreement</a>
+
+*QbitAI*
+
+On June 15, Shanghai Jiao Tong University and Taichu Yuanqi signed a cooperation agreement in the field of AI4S. Taichu Yuanqi provides domestic AI training computing power clusters and 7×24 hour operation and maintenance technical support. Relying on this computing power, the team led by Zhao Hai from Shanghai Jiao Tong University will tackle the core technology of AGI large models based on existing brain-inspired large model achievements, build an AGI foundation for the AI4S field, and facilitate cutting-edge scientific research breakthroughs.
+
+<FeedbackButtons slug="item:qbitai-435848" client:visible />

@@ -1,0 +1,205 @@
+---
+lang: en
+translationKey: digest-2026-06-17
+title: "AI Daily Digest · 2026-06-17"
+description: "20 papers · Multi-source aggregation + AI-generated summaries"
+date: 2026-06-17
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.webp"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's highlights in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">More than 10 cutting-edge AI technical papers were released today, covering multiple fields including multi-agent systems, medical AI, and multimodal large models</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Frequent updates from large model vendors: OpenAI launches its partner network, Zhipu AI's GLM-5.2 tops the AI programming leaderboard</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Significant progress in AI industry implementation, including housing planning applications, protein sector financing, and chip technology breakthroughs</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📄 Cutting-edge Papers</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Large Model Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧬 BioAI</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💻 Chip Technology</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏗️ Industry Implementation</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.17861" target="_blank" rel="noopener noreferrer">GameCraft-Bench: Can Agents Build Playable Games End-to-End in a Real Game Engine?</a>
+
+*HF ★ 23 · Tongxu Luo, Rongsheng Wang, Jiaxi Bi… · [HF Mirror](https://huggingface.co/papers/2606.17861)*
+
+Targeting end-to-end game generation, an emerging application scenario for coding agents, the research team defined three core evaluation requirements: engine compatibility, complete output, and interactive verifiability. They proposed an interaction-oriented evaluation framework and built the GameCraft-Bench benchmark, which includes 140 Godot engine tasks across 15 categories. Tests show that the highest pass rate of cutting-edge coding agents is only 41.46%, with common issues including incomplete content and invalid interactive feedback, indicating this task remains extremely challenging.
+
+<FeedbackButtons slug="item:arxiv-2606.17861" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.17200" target="_blank" rel="noopener noreferrer">ACE-Ego-0: Unifying Egocentric Human and Robotic Data for VLA Pretraining</a>
+
+*HF ★ 21 · Hao Li, Ganlong Zhao, Yufei Liu… · [HF Mirror](https://huggingface.co/papers/2606.17200)*
+
+To address the pain points of high cost for robot trajectory collection for vision-language-action (VLA) model pre-training and difficulty in joint training of heterogeneous human-robot data, the unified pre-training framework ACE-Ego-0 is proposed: it converts first-person human videos into pseudo-action trajectories in robot format, paired with unified action representation and reliability-aware loss to optimize training. After training on over 6000 hours of mixed data, the model achieves SOTA on multiple robot manipulation tasks, with excellent transfer performance on real dual-arm robotic manipulators.
+
+<FeedbackButtons slug="item:arxiv-2606.17200" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.17628" target="_blank" rel="noopener noreferrer">OPD-Evolver: Cultivating Holistic Agent Evolver via On-Policy Distillation</a>
+
+*HF ★ 17 · Guibin Zhang, Xun Xu, Yanwei Yue… · [HF Mirror](https://huggingface.co/papers/2606.17628)*
+
+Existing memory-based self-evolving agents can only store experience, lacking end-to-end evolution capabilities covering experience filtering, application, accumulation, and knowledge base maintenance. To solve this problem, this paper proposes OPD-Evolver, a fast-slow dual-loop collaborative evolution framework based on on-policy self-distillation: the fast loop realizes fast evolution during testing relying on four-level memory interaction, and the slow loop embeds four core capabilities into deployable policies through result calibration attribution and post-hoc distillation. The measured performance is up to 11.5% higher than existing solutions, and the 9B parameter version can match large models with hundreds of billions of parameters.
+
+<FeedbackButtons slug="item:arxiv-2606.17628" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.16428" target="_blank" rel="noopener noreferrer">LectūraAgents: A Multi-Agent Framework for Adaptive Personalized AI-Assisted Learning and Embodied Teaching</a>
+
+*HF ★ 15 · Jaward Sesay, Yue Yu, Siwei Dong… · [HF Mirror](https://huggingface.co/papers/2606.16428)*
+
+Existing educational agents mostly focus on automating teaching content, lacking adaptive personalized multimodal embodied teaching capabilities. To address this, the research proposes the multi-agent framework LectūraAgents, which adopts a hierarchical architecture similar to teacher-student collaboration, paired with an adaptive embodied teaching mechanism and teaching action-speech alignment algorithm. Tested across multiple school grade courses and verified by education experts, it outperforms existing solutions in content quality, personalization level and other aspects, and can support large-scale personalized learning.
+
+<FeedbackButtons slug="item:arxiv-2606.16428" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.09030" target="_blank" rel="noopener noreferrer">TRIAGE: Dialectical Reasoning for Explainable Risk Prediction on Irregularly Sampled Medical Time Series with LLMs</a>
+
+*HF ★ 15 · Hyeongwon Jang, Gyouk Chu, Changhun Kim… · [HF Mirror](https://huggingface.co/papers/2606.09030)*
+
+When large models are used for risk prediction on irregularly sampled medical time series, they tend to polarize graded clinical risks into overconfident binary classification results, with insufficient calibration and cross-patient comparability. To solve this problem, this paper proposes the TRIAGE framework, which guides large models to perform dialectical reasoning and output continuous risk scores with clinical evidence. Tests show that its AUPRC increases by an average of 3.3%, calibration error is reduced by 81%, and the clinical quality of reasoning basis is 20% higher than the baseline.
+
+<FeedbackButtons slug="item:arxiv-2606.09030" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.17057" target="_blank" rel="noopener noreferrer">Correct When Paired, Wrong When Split: Decoupling and Editing Modality-Specific Neurons in MLLMs</a>
+
+*Tingchao Fu, Wenkai Wang, Fanxiao Li…*
+
+A key pain point of existing knowledge editing for multimodal large models is decoupling failure: knowledge updates take effect when triggered by multimodal input, but old knowledge is restored when split into single-modal input. The research first identifies the cause: entity knowledge is scattered in modality-specific pathways, and multimodal targeted updates are not transmitted to single-modal circuits. The DECODE method is then proposed, which performs targeted editing by locating and decoupling modality-specific neuron groups. Experiments verify that it can adapt to knowledge updates triggered by different modalities, effectively solving the decoupling failure problem.
+
+<FeedbackButtons slug="item:arxiv-2606.17057" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.17093" target="_blank" rel="noopener noreferrer">Diagnosing and Repairing Shape-Prior Shortcuts in Long-Range Single-Shot Fringe Projection Profilometry</a>
+
+*Adam Haroon, Anush Lakshman, Cody Fleming…*
+
+Existing deep learning methods for long-range single-shot fringe projection profilometry over 1 meter suffer from low signal-to-noise ratio, reliance on shape-prior shortcuts, and poor accuracy. This study combines mechanistic interpretability and conformal uncertainty quantification to locate the root cause of failure, and proposes the PhiCalNet architecture: it first outputs wrapped phase, which is then mapped to depth through a fixed differentiable calibration layer, avoiding shortcuts at the structural design level. On the 1.5-2.1m test set, MAE is reduced 3.3 times to 4.46mm compared to the baseline, and RMSE is further reduced by 64% after removing high-uncertainty pixels.
+
+<FeedbackButtons slug="item:arxiv-2606.17093" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.17106" target="_blank" rel="noopener noreferrer">Informative Missingness to Generate Irregular Clinical Time Series</a>
+
+*Hadi Mehdizavareh, Gabriele Santangelo, Giovanna Nicora…*
+
+Given the characteristic that non-random missing values in lab test time series from electronic medical records carry clinical information themselves, this paper improves the TimeDiff diffusion framework, jointly modeling test values and observation missing patterns on the DACMI dataset derived from MIMIC-III. Experiments show that the generated data well matches the indicator distribution of real patients and the correlation features between values and missingness, can capture the dependency between physiological state and clinical testing decisions, and can be used as a pre-component for clinical foundation models.
+
+<FeedbackButtons slug="item:arxiv-2606.17106" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/deployment-simulation" target="_blank" rel="noopener noreferrer">Predicting model behavior before release by simulating deployment</a>
+
+*OpenAI*
+
+To address the industry pain point that it is difficult to predict the real-world performance of AI models before official release and existing security evaluations have insufficient accuracy, OpenAI proposes deployment simulation technology: before the model goes online, real conversation data is used to carry out simulated deployment tests, which can predict the behavior characteristics of the model during actual operation in advance, significantly improve the accuracy of security evaluation, and reduce uncontrollable security risks after the model goes online from the source.
+
+<FeedbackButtons slug="item:openai-blog-deployment-simulation" client:visible />
+
+## <a href="https://openai.com/index/introducing-openai-partner-network" target="_blank" rel="noopener noreferrer">Introducing the OpenAI Partner Network</a>
+
+*OpenAI*
+
+This article introduces that OpenAI officially launches its Partner Network program, which will invest a total of $150 million in special funds to provide resource support for various partners around the world. The core goal is to promote enterprises in all industries to accelerate the implementation, large-scale deployment and digital-intelligent transformation of cutting-edge AI technology. This measure not only lowers the threshold for enterprises to access AI capabilities, but also helps OpenAI expand its ToB business ecosystem and increase commercial coverage.
+
+<FeedbackButtons slug="item:openai-blog-introducing-openai-partner-network" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener noreferrer">Statement on the US government directive to suspend access to Fable 5 and Mythos 5</a>
+
+*Anthropic*
+
+This statement specifically announces the latest export control directive issued by the US government: the US has officially issued relevant control regulations, including Fable 5 and Mythos 5 in the scope of control, requiring a full suspension of access rights for all foreign personnel to both models. The ban is not geographically restricted, and the control requirements are effective regardless of whether the relevant foreign personnel are located inside or outside the United States.
+
+<FeedbackButtons slug="item:anthropic-fable-mythos-access" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-corps" target="_blank" rel="noopener noreferrer">Introducing Claude Corps</a>
+
+*Anthropic*
+
+Claude Corps, launched by AI company Anthropic, is a national fellowship program in the United States, open specifically to early-career practitioners who aspire to promote AI inclusion. The program aims to recruit young talents in relevant fields to participate, promote the coverage of AI technology development dividends to grassroots communities across the United States, so that more ordinary groups can actually enjoy the various conveniences and practical benefits brought by the development of AI technology.
+
+<FeedbackButtons slug="item:anthropic-claude-corps" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/unlocking-uk-house-building-with-ai-accelerated-planning/" target="_blank" rel="noopener noreferrer">Unlocking UK house-building with AI-accelerated planning</a>
+
+*Google DeepMind*
+
+UK housing construction has long been constrained by low planning approval efficiency and long decision-making cycles. To address this pain point, the UK government has collaborated with Google DeepMind to develop an AI-driven planning approval prototype system, whose core is to optimize decision-making links for housing projects such as compliance verification and qualification judgment through AI technology, greatly reducing planning review time, unblocking housing supply bottlenecks, and providing support for the UK to accelerate housing delivery and meet housing construction targets.
+
+<FeedbackButtons slug="item:deepmind-unlocking-uk-house-building-with-ai-accelerated-planning" client:visible />
+
+## <a href="https://deepmind.google/blog/diffusiongemma-4x-faster-text-generation/" target="_blank" rel="noopener noreferrer">DiffusionGemma: 4x faster text generation</a>
+
+*Google DeepMind*
+
+DiffusionGemma is a new large language model based on diffusion architecture. To address the pain point of low per-token inference efficiency of traditional autoregressive large models, it adopts a parallel diffusion decoding strategy, greatly reducing the number of steps required for discrete diffusion sampling. While its generation quality is on par with the Gemma model of the same parameter scale, its text generation speed is 4 times that of autoregressive architectures, making it more suitable for high-throughput, low-latency text generation implementation scenarios.
+
+<FeedbackButtons slug="item:deepmind-diffusiongemma-4x-faster-text-generation" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/olmo-eval" target="_blank" rel="noopener noreferrer">olmo-eval: An evaluation workbench for the model development loop</a>
+
+*Hugging Face*
+
+This article launches the olmo-eval open-source evaluation workbench for the full closed loop of large language model development, solving the pain points of existing evaluations being disconnected from the training process and having fragmented dimensions. It supports multi-dimensional automated evaluation at all training nodes, covering capabilities, security, operating efficiency and other dimensions, which can help developers quickly locate training problems and shorten iteration cycles, and also supports custom rules to adapt to personalized development needs.
+
+<FeedbackButtons slug="item:hf-blog-olmo-eval" client:visible />
+
+## <a href="https://huggingface.co/blog/torch-mlp-fusion" target="_blank" rel="noopener noreferrer">Profiling in PyTorch (Part 2): From nn.Linear to a Fused MLP</a>
+
+*Hugging Face*
+
+This article is the second part of the PyTorch performance profiling series. It uses official profiling tools to locate the core bottlenecks of native MLPs implemented with stacked nn.Linear: frequent kernel calls and redundant memory access. It verifies the actual effect of operator fusion optimization: after fusion, the memory access overhead of MLP is reduced by more than 60%, and training and inference performance is improved by more than 40%, providing a practical reference path for the optimization of similar memory-intensive operators.
+
+<FeedbackButtons slug="item:hf-blog-torch-mlp-fusion" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This AI alignment research refutes the underlying premise of the orthogonality hypothesis from the perspective of virtue ethics, proposing that: human rational behavior is not directed at a fixed ultimate goal, but adapts to a practical network composed of actions, tendencies, evaluation standards, etc.; rational AI should also not have preset fixed goals, and its decision-making logic needs to match human practical action logic, so that it can both align with ethical requirements such as human well-being and meet core security needs.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/06/436085.html" target="_blank" rel="noopener noreferrer">Just in: Second only to Fable-5, Zhipu AI's open-source GLM-5.2 takes first place in AI programming!</a>
+
+*QbitAI*
+
+Zhipu AI's open-source GLM-5.2 delivers outstanding performance in the AI programming track: its programming capability ranks first among open-source models and second globally, only behind Claude Fable 5. It won first place globally in the Design Arena taste evaluation, delivered excellent performance in eight authoritative benchmark tests, successfully outperformed Google Gemini to enter the global top 3 AI programming models, with measured performance close to Claude Opus 4.8, and supports 1M context to handle long-range tasks for large projects.
+
+<FeedbackButtons slug="item:qbitai-436085" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/436082.html" target="_blank" rel="noopener noreferrer">Intel reveals three "hidden cards" for future chips: CFET, gallium nitride + silicon integration, ruthenium interconnect</a>
+
+*QbitAI*
+
+Intel announced at the 2026 VLSI International Symposium that the first performance-enhanced version of the 18A process, 18A-P, has entered risk trial production, in line with the original schedule. Optimized through the collaboration of multiple technologies, this version can achieve 9% higher performance at the same power consumption or 18% lower power consumption at the same performance, with significantly reduced thermal resistance and via resistance, and is compatible with existing 18A design rules. At the same time, Intel disclosed three long-term technology reserves: CFET, gallium nitride + silicon integration, and ruthenium interconnect.
+
+<FeedbackButtons slug="item:qbitai-436082" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/436077.html" target="_blank" rel="noopener noreferrer">Jianbo Xu leads Molecule Mind to complete over $100 million in financing, defining new infrastructure for the global AI protein industry</a>
+
+*QbitAI*
+
+Molecule Mind, founded by "father of AI protein folding" Jianbo Xu, recently completed a Series A financing of over $100 million in total, with investors covering diversified capital including financial, industrial and government-guided funds. The global AI protein track has now shifted from lab model benchmarking to industry implementation competition. With its generation-leading technology covering from structure prediction to de novo protein design, Molecule Mind has established its position as the definer of new infrastructure for the global AI protein industry.
+
+<FeedbackButtons slug="item:qbitai-436077" client:visible />

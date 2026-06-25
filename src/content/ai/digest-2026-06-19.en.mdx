@@ -1,0 +1,205 @@
+---
+lang: en
+translationKey: digest-2026-06-19
+title: "Daily AI Picks · 2026-06-19"
+description: "20 papers · Multi-source aggregation + AI summaries"
+date: 2026-06-19
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.webp"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's highlights in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">More than 10 cutting-edge AI academic results were released today, covering core areas such as large model Agents, multimodal generation, and fine-tuning optimization</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Multiple leading AI vendors announced new updates, including OpenAI's upgraded medical capabilities and Anthropic's launch of enterprise-grade Claude Corps</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">AI application implementation sees another breakthrough: the world's first general cerebellum for humanoid robots is released, covering multiple scenarios including planning and healthcare</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📈 Technical Progress</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Vendor Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Embodied Intelligence</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡 Medical AI</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Scenario Implementation</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.19704" target="_blank" rel="noopener noreferrer">Beyond Static Leaderboards: Predictive Validity for the Evaluation of LLM Agents</a>
+
+*HF ★ 15 · Dhaval C. Patel, Kaoutar El Maghraoui, Shuxin Lin… · [HF Mirror](https://huggingface.co/papers/2606.19704)*
+
+To address the limitations of existing LLM agent static leaderboards, which have one-sided metrics and poor ranking generalizability, this paper aggregates data from 14 parallel studies on industrial agent benchmarks and 7 historical benchmark datasets, confirming that total score rankings have extremely poor stability in out-of-distribution scenarios. Accordingly, it proposes using the predictive validity of in-sample and out-of-sample ranking correlation to replace in-sample average score ranking, paired with a 12-layer measurement system and 3 falsifiable out-of-distribution criteria, providing a design direction for next-generation benchmarks.
+
+<FeedbackButtons slug="item:arxiv-2606.19704" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.20515" target="_blank" rel="noopener noreferrer">S-Agent: Spatial Tool-Use Elicits Reasoning for Spatial Intelligence</a>
+
+*HF ★ 13 · Yalun Dai, Hao Li, Shulin Tian… · [HF Mirror](https://huggingface.co/papers/2606.20515)*
+
+Existing vision large language models (VLMs) and tool-augmented agents mostly rely on isolated static visual inputs and lack spatial reasoning capabilities for continuous 3D scenes. This research proposes the S-Agent spatial tool agent paradigm, which converts spatial reasoning into spatiotemporal evidence accumulation: it uses VLM semantic planning, hierarchical spatial tools to extract 3D evidence, and a dual-memory mechanism to integrate information across frames. It can improve the performance of various VLMs without training, and the fine-tuned 8B parameter version outperforms baselines of the same scale, matching the performance of top closed-source models.
+
+<FeedbackButtons slug="item:arxiv-2606.20515" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.19195" target="_blank" rel="noopener noreferrer">Moebius: 0.2B Lightweight Image Inpainting Framework with 10B-Level Performance</a>
+
+*HF ★ 11 · Kangsheng Duan, Ziyang Xu, Wenyu Liu… · [HF Mirror](https://huggingface.co/papers/2606.19195)*
+
+To address the high computing cost and difficult deployment of 10B-parameter image inpainting large models, this paper proposes Moebius, a lightweight inpainting framework with only 0.22B parameters: it reconstructs the diffusion backbone by introducing Local-λ hybrid interaction blocks to reduce parameter count, paired with latent space adaptive multi-granularity distillation to unlock the performance of small models. Experiments show its inpainting quality is comparable to 11.9B industrial large models, with only 2% of the parameters and over 15x faster inference speed, greatly lowering the deployment threshold.
+
+<FeedbackButtons slug="item:arxiv-2606.19195" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.20506" target="_blank" rel="noopener noreferrer">FreeStyle: Free Control of Style-Content Dual-Reference Generation from Community LoRA Mining</a>
+
+*HF ★ 8 · Jinghong Lan, Wei Cheng, Yunuo Chen… · [HF Mirror](https://huggingface.co/papers/2606.20506)*
+
+To address the pain points of style-content dual-reference image generation, which lacks high-quality triplet training data and is prone to semantic leakage from style references, this paper proposes the FreeStyle framework: it mines community LoRAs to build large-scale datasets, adopts two-stage curriculum training paired with attention constraints and a frequency-aware RoPE modulation mechanism to suppress leakage, and comes with a dedicated evaluation benchmark. Experiments show the model achieves an excellent balance between style matching, content retention, and leakage resistance.
+
+<FeedbackButtons slug="item:arxiv-2606.20506" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.20563" target="_blank" rel="noopener noreferrer">JanusMesh: Fast and Zero-Shot 3D Visual Illusion Generation via Cross-Space Denoising</a>
+
+*HF ★ 5 · Siang-Ling Zhang, Huai-Hsun Cheng, Tsung-Ju Yang… · [HF Mirror](https://huggingface.co/papers/2606.20563)*
+
+This paper proposes JanusMesh, a zero-shot, training-free text-driven 3D visual illusion generation framework. Targeting the problems of existing solutions such as low efficiency, over-saturated colors, obvious geometric seams, and semantic leakage, it adopts a two-stage generation process: first, it completes orientation alignment and SDF fusion via cross-space dual-branch denoising to ensure geometric seamlessness, then uses a view-conditioned texture synthesis module to aggregate 2D diffusion priors. It only takes 3-5 minutes to generate high-fidelity dual-semantic 3D illusions, with performance significantly better than existing methods.
+
+<FeedbackButtons slug="item:arxiv-2606.20563" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.19361" target="_blank" rel="noopener noreferrer">Computational Identifiability</a>
+
+*Lucius E. J. Bynum, Rajesh Ranganath, Kyunghyun Cho*
+
+To address the limitations of traditional identifiability in the causal field, which relies on idealized assumptions such as infinite data and asymptoticity, this paper proposes the "Computational Identifiability" framework: it searches for empirical estimators through limited computation, and judges identifiability when an estimator meeting the error tolerance is obtained under specified search assumptions and processes. Experiments show the framework can solve fine-grained practical identification problems in scenarios such as small samples, fuzzy graph criteria, and mixed observational-interventional data.
+
+<FeedbackButtons slug="item:arxiv-2606.19361" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.19363" target="_blank" rel="noopener noreferrer">When to Trust, How to Distill: Multi-Foundation Model Guidance for Lightweight, Robust Scientific Time Series Forecasting</a>
+
+*Rupasree Dey, Abdul Matin, Nathan Orwick…*
+
+To address the problems faced by time series foundation models in the scientific field, including zero-shot distribution shift and excessive computing power that makes edge deployment difficult, this paper proposes the Guard multi-teacher distillation framework: it dynamically selects suitable teacher models, paired with an uncertainty gating mechanism that automatically reduces distillation intensity when teacher confidence is insufficient. Tested on 4 types of climate-related time series tasks, this method significantly reduces error compared to baselines, can extract effective knowledge even when teachers perform poorly in zero-shot settings, and the resulting lightweight model meets edge deployment requirements.
+
+<FeedbackButtons slug="item:arxiv-2606.19363" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.19364" target="_blank" rel="noopener noreferrer">Closing the Social-Semantic Gap: SPSD for Edge-Based Prompt Compression in Cloud LLM Inference</a>
+
+*Abhinit Sen, Ajeet Kumar, Manaranjan Pradhan*
+
+To address the high energy consumption in the prefill stage of large model cloud inference, and the fact that user prompts contain a large amount of social redundancy useless for inference (the so-called "social-semantic gap"), this paper proposes the edge-side SPSD solution: it uses a 4-bit quantized small model to compress prompts, and sets rules for direct passthrough in secure scenarios. Actual measurements show it saves an average of 99.9 tokens per call, with response quality not inferior to original input, and can save 70-270 microwatt-hours of energy per call, effectively reducing cloud inference costs.
+
+<FeedbackButtons slug="item:arxiv-2606.19364" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/chatgpt-enterprise-spend-controls" target="_blank" rel="noopener noreferrer">New usage analytics and updated spend controls for enterprises</a>
+
+*OpenAI*
+
+To address the pain points of ChatGPT Enterprise users, including previously extensive cost control and difficult usage tracking, OpenAI has launched two new management features: first, upgraded spend control tools to achieve fine-grained regulation of AI usage costs and avoid overspending risks; second, new usage analytics capabilities that can intuitively display internal AI calls, scenario distribution, etc., helping enterprises control costs and reduce burdens, and deploy AI at scale with greater peace of mind.
+
+<FeedbackButtons slug="item:openai-blog-chatgpt-enterprise-spend-controls" client:visible />
+
+## <a href="https://openai.com/index/improving-health-intelligence-in-chatgpt" target="_blank" rel="noopener noreferrer">Improving health intelligence in ChatGPT</a>
+
+*OpenAI*
+
+This research focuses on optimizing ChatGPT's health intelligence capabilities, with the core solution being the launch of the upgraded GPT-5.5 Instant version: on one hand, it strengthens logical reasoning ability, optimizes context correlation perception, and improves the clarity of answer expression; on the other hand, it introduces a full-process effect evaluation mechanism with physician participation, ultimately achieving a comprehensive upgrade in the professionalism and adaptability of ChatGPT's health and wellness answers, which can effectively support health-related intelligent interaction scenario applications.
+
+<FeedbackButtons slug="item:openai-blog-improving-health-intelligence-in-chatgpt" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener noreferrer">Statement on the US government directive to suspend access to Fable 5 and Mythos 5</a>
+
+*Anthropic*
+
+This document is a public statement in response to the US government's directive to restrict access to Fable 5 and Mythos 5. The latest US export control regulations explicitly state that all foreign nationals, whether inside or outside the US, have their access to the above two types of resources suspended. Specific information about the two resources has not been disclosed yet, and they are presumed to be highly sensitive AI technology assets. This control further tightens restrictions on foreign nationals' access to US cutting-edge technological resources.
+
+<FeedbackButtons slug="item:anthropic-fable-mythos-access" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-corps" target="_blank" rel="noopener noreferrer">Introducing Claude Corps</a>
+
+*Anthropic*
+
+The official has newly launched the national youth research funding program Claude Corps, specifically established for early-career groups who aspire to bring the dividends of AI technology development to communities across the United States. The program aims to gather young talents with enthusiasm for AI inclusion, promote the implementation of the positive value of AI, and allow more communities in different regions to truly enjoy the diverse benefits brought by AI development.
+
+<FeedbackButtons slug="item:anthropic-claude-corps" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/unlocking-uk-house-building-with-ai-accelerated-planning/" target="_blank" rel="noopener noreferrer">Unlocking UK house-building with AI-accelerated planning</a>
+
+*Google DeepMind*
+
+The UK has a large gap between housing supply and demand, with the core bottleneck being the cumbersome traditional planning approval process and long decision-making cycles. To this end, the UK government has partnered with Google DeepMind to develop an AI-powered planning approval prototype tool, which relies on AI technology to speed up the planning and decision-making process for housing projects. It is expected to effectively shorten the approval cycle, providing a new practical direction for solving the housing supply bottleneck and optimizing the digital implementation of government approval processes.
+
+<FeedbackButtons slug="item:deepmind-unlocking-uk-house-building-with-ai-accelerated-planning" client:visible />
+
+## <a href="https://deepmind.google/blog/securing-the-future-of-ai-agents/" target="_blank" rel="noopener noreferrer">Securing the future of AI agents</a>
+
+*Google DeepMind*
+
+This research focusing on AI agent security proposes a core AI governance roadmap solution, which combines traditional mature security protection methods with real-time dynamic monitoring mechanisms to targeted strengthen the security defense capabilities of internal systems. The solution balances existing protection experience accumulation and dynamic risk response efficiency, and can provide a security practice framework with both offensive and defensive capabilities for the long-term safe iteration and large-scale deployment of AI agents.
+
+<FeedbackButtons slug="item:deepmind-securing-the-future-of-ai-agents" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/ServiceNow/mosaicleaks" target="_blank" rel="noopener noreferrer">MosaicLeaks: Can your research agent keep a secret?</a>
+
+*Hugging Face*
+
+This paper focuses on confidentiality vulnerabilities in large model-powered research agents, and proposes a new attack method called MosaicLeaks: it induces agents to output confidential research data in fragments, which can be spliced and restored to obtain complete sensitive information. Tests show that the built-in confidentiality mechanisms of current mainstream research agents can barely resist this attack, and the risk of leakage of unpublished research results and core parameters is extremely high, posing new security challenges for privacy protection of research agents.
+
+<FeedbackButtons slug="item:hf-blog-mosaicleaks" client:visible />
+
+## <a href="https://huggingface.co/blog/peft-beyond-lora" target="_blank" rel="noopener noreferrer">Beyond LoRA: Can you beat the most popular fine-tuning technique?</a>
+
+*Hugging Face*
+
+This review focuses on performance breakthrough paths for LoRA, the mainstream parameter-efficient fine-tuning solution for large models, and systematically sorts out improved technologies that outperform native LoRA, such as orthogonal decomposition, dynamic rank adjustment, multi-low-rank space fusion, and cross-layer parameter sharing. It verifies that reasonable optimization can significantly improve the adaptation accuracy of downstream tasks under the premise of similar parameter counts, while retaining LoRA's core advantages of low storage and easy deployment.
+
+<FeedbackButtons slug="item:hf-blog-peft-beyond-lora" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This AI alignment research from the perspective of virtue ethics refutes the presupposition that "rational agents are guided by fixed ultimate goals", pointing out that the core of human rationality is to adapt actions to a practical network that includes elements such as behavioral norms and evaluation standards. It proposes that to achieve compatible collaboration between AI and humans, the decision-making logic of AI needs to be isomorphic to the practical action logic of humans. This approach balances both ethical alignment and basic security guarantees.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/06/436842.html" target="_blank" rel="noopener noreferrer">GPT has released original AI research results</a>
+
+*QbitAI*
+
+OpenAI and Molecule.one jointly released new results: by connecting GPT-5.4 to the chemical agent Maria and its supporting high-throughput laboratory, given only the open goal of "improving important reactions", the system can independently determine research directions, design experiments, and analyze data, almost autonomously optimizing the Chan-Lam coupling reaction commonly used in drug synthesis, solving the pain point of low yield in the coupling of primary sulfonamides and boric acid. This is the first almost autonomously completed AI discovery in the field of organic chemistry, with only the experimental link performed manually.
+
+<FeedbackButtons slug="item:qbitai-436842" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/436813.html" target="_blank" rel="noopener noreferrer">The world's first general cerebellum for humanoid robots is here! Trained on the world's largest 20,000 hours of human motion data, it achieves zero-shot generalization</a>
+
+*QbitAI*
+
+Yinhe General has released AstraBrain-WBC 0.5, the world's first general cerebellum foundation model for humanoid robots, introducing the large model scaled training paradigm to the field of real-time motion control of humanoid robots for the first time. The model has 80 million parameters, is trained on 2 billion frames of human motion data, verifies the scaling law in the motion control field, can complete whole-body collaborative control at the millisecond level, achieves zero-shot generalization of motion capabilities, and pushes humanoid robot motion control into the foundation model era.
+
+<FeedbackButtons slug="item:qbitai-436813" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/436758.html" target="_blank" rel="noopener noreferrer">Is AI medical diagnosis becoming a new burden for doctors and patients? Adding "multi-round follow-up questions" allows general AI to pass the medical threshold</a>
+
+*QbitAI*
+
+Currently, many patients rely on general AI to self-check their conditions and bring AI-generated diagnosis results to medical visits, which instead increases doctor-patient communication costs, as general AI is not reliable enough for direct medical judgment. Baichuan Intelligence has launched the medical-enhanced large model Baichuan-M4, which carries out structural reconstruction of general large models and special medical enhancements. Its comprehensive performance leads the world in the latest evaluations, with the hallucination rate reduced to 3.3%, making it more suitable for clinical needs.
+
+<FeedbackButtons slug="item:qbitai-436758" client:visible />
