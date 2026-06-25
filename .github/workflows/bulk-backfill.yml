@@ -1,0 +1,174 @@
+name: Bulk backfill (history meta + bulk translate)
+
+# 一次性的"重活儿"工作流：
+#   - 回填历史 digest 的 TL;DR + 封面图
+#   - 批量补齐缺 en 镜像的 zh 文章翻译
+#   - 刷新 embeddings
+#
+# 与 daily-digest 解耦的设计目标：
+#   1) 不与日常 cron 抢资源、不被 job-timeout 90min 拖死
+#   2) 流式提交：每跑完一小批立即 commit + push，被中断也能保住已完成的部分
+#   3) 重跑零代价：脚本本身增量（已补 / 已翻的自动跳），随时停随时再跑
+#
+# 只通过 dispatch 触发，没有 cron。
+
+on:
+  workflow_dispatch:
+    inputs:
+      do_backfill:
+        description: "回填历史 digest 的 TL;DR + 封面图（5 批 × 20）"
+        type: boolean
+        default: true
+      do_translate:
+        description: "批量翻译缺 en 的 zh 文章（8 批 × 15）"
+        type: boolean
+        default: true
+      do_embeddings:
+        description: "最后刷新 embeddings.json"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: bulk-backfill
+  cancel-in-progress: false
+
+jobs:
+  bulk:
+    runs-on: ubuntu-latest
+    # GitHub 单 job 上限 6 小时（360 min）。这里用 350 留 buffer。
+    timeout-minutes: 350
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0       # 需要 push，不能 shallow
+          persist-credentials: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Configure git
+        run: |
+          git config user.name "zorotreeking-bot"
+          git config user.email "bot@zorotreeking.online"
+
+      # ──────────────────────────────────────────────────────────
+      # Phase 1：回填历史 digest（每批 20 篇，5 批 = 100 → 覆盖现有 ~95 篇）
+      # 每批跑完立即 commit + push，断电也只丢当前批未完成的少数几篇。
+      # ──────────────────────────────────────────────────────────
+      - name: Backfill TL;DR + cover (5 × 20)
+        if: ${{ inputs.do_backfill }}
+        timeout-minutes: 180
+        env:
+          DOUBAO_API_KEY: ${{ secrets.DOUBAO_API_KEY }}
+          ARK_API_KEY: ${{ secrets.ARK_API_KEY }}
+        continue-on-error: true
+        run: |
+          set -e
+          for batch in 1 2 3 4 5; do
+            echo
+            echo "════════════════ Backfill batch $batch / 5 ════════════════"
+            npx tsx scripts/backfill-digest-meta.ts --limit=20 || true
+
+            git add src/content/ai/digest-*.zh.mdx src/content/invest/digest-*.zh.mdx 2>/dev/null || true
+            if git diff --cached --quiet; then
+              echo "batch $batch: 没新增改动，回填全部完成。"
+              break
+            fi
+            git commit -m "chore(backfill): TL;DR + cover (batch $batch) [skip ci]"
+
+            for i in 1 2 3; do
+              git fetch origin main
+              git pull --rebase --autostash origin main 2>/dev/null || git rebase --abort 2>/dev/null || true
+              if git push origin HEAD:main; then
+                echo "✓ batch $batch pushed (attempt $i)"
+                break
+              fi
+              echo "push 失败，3s 后重试…"
+              sleep $((i * 3))
+            done
+          done
+
+      # ──────────────────────────────────────────────────────────
+      # Phase 2：翻译缺 en 的 zh 文章（每批 15 篇，8 批 = 120）
+      # ──────────────────────────────────────────────────────────
+      - name: Translate zh → en (8 × 15)
+        if: ${{ inputs.do_translate }}
+        timeout-minutes: 200
+        env:
+          DOUBAO_API_KEY: ${{ secrets.DOUBAO_API_KEY }}
+          ARK_API_KEY: ${{ secrets.ARK_API_KEY }}
+        continue-on-error: true
+        run: |
+          set -e
+          for batch in 1 2 3 4 5 6 7 8; do
+            echo
+            echo "════════════════ Translate batch $batch / 8 ════════════════"
+            npx tsx scripts/translate-digest.ts --limit=15 || true
+
+            git add src/content/ai/*.en.mdx src/content/invest/*.en.mdx src/content/photo/*.en.mdx src/content/hike/*.en.mdx 2>/dev/null || true
+            if git diff --cached --quiet; then
+              echo "batch $batch: 没新增翻译，全部完成。"
+              break
+            fi
+            git commit -m "chore(translate): zh→en (batch $batch) [skip ci]"
+
+            for i in 1 2 3; do
+              git fetch origin main
+              git pull --rebase --autostash origin main 2>/dev/null || git rebase --abort 2>/dev/null || true
+              if git push origin HEAD:main; then
+                echo "✓ batch $batch pushed (attempt $i)"
+                break
+              fi
+              echo "push 失败，3s 后重试…"
+              sleep $((i * 3))
+            done
+          done
+
+      # ──────────────────────────────────────────────────────────
+      # Phase 3：刷新 embeddings（新文章 + en 镜像都需要更新向量）
+      # 即使前面 cancel/超时，这步靠 if: always() 还是会跑
+      # ──────────────────────────────────────────────────────────
+      - name: Refresh embeddings
+        if: always() && inputs.do_embeddings
+        timeout-minutes: 20
+        env:
+          DOUBAO_API_KEY: ${{ secrets.DOUBAO_API_KEY }}
+          ARK_API_KEY: ${{ secrets.ARK_API_KEY }}
+          DOUBAO_EMBEDDING_MODEL: ${{ vars.DOUBAO_EMBEDDING_MODEL }}
+        continue-on-error: true
+        run: npx tsx scripts/generate-embeddings.ts
+
+      - name: Commit embeddings (always)
+        if: always() && inputs.do_embeddings
+        run: |
+          git add src/data/embeddings.json 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "embeddings 无变化"
+            exit 0
+          fi
+          git commit -m "chore(embeddings): refresh after bulk backfill [skip ci]"
+          for i in 1 2 3; do
+            git fetch origin main
+            git pull --rebase --autostash origin main 2>/dev/null || git rebase --abort 2>/dev/null || true
+            if git push origin HEAD:main; then break; fi
+            sleep $((i * 3))
+          done
+
+  # ──────────────────────────────────────────────────────────
+  # 最后显式触发 deploy.yml（所有 batch commits 都带 [skip ci] 没触发 deploy）
+  # always() 保证 bulk job 即使部分超时/cancel，也会 deploy 已经 push 的部分
+  # ──────────────────────────────────────────────────────────
+  deploy:
+    needs: bulk
+    if: always()
+    uses: ./.github/workflows/deploy.yml
+    secrets: inherit

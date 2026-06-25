@@ -14,22 +14,15 @@ on:
         type: choice
         options: [both, ai, invest]
         default: both
-      translate_all:
-        description: "强制全量回填 en 翻译（默认只翻译缺 en 的 zh）"
-        type: boolean
-        default: false
       translate_limit:
-        description: "本次翻译最多处理多少篇（默认 25，防 60min 超时；填 0 = 不限）"
+        description: "本次翻译最多处理多少篇（默认 25，防 60min 超时）"
         type: string
         default: "25"
       skip_fetch:
         description: "跳过 digest fetch，只跑 翻译/embedding（节省额度）"
         type: boolean
         default: false
-      backfill_meta:
-        description: "回填历史 digest 的 TL;DR + 封面（默认 off）"
-        type: boolean
-        default: false
+        # 历史回填 + 大批量翻译 请走 bulk-backfill.yml workflow（流式 commit 不丢数据）
 
 permissions:
   contents: write
@@ -42,7 +35,9 @@ jobs:
   fetch-and-commit:
     runs-on: ubuntu-latest
     # 全量回填翻译 60 篇 ≈ 30-50 分钟（每篇 LLM call 30-60s）；预留 90 min
-    timeout-minutes: 90
+    # daily 流程瘦身：fetch ~17min + translate ≤40min + embedding ~3min ≈ 60min。
+    # 大批量回填走 bulk-backfill.yml，独立 6h job
+    timeout-minutes: 70
     outputs:
       committed: ${{ steps.commit.outputs.committed }}
     steps:
@@ -102,38 +97,18 @@ jobs:
           fi
           echo "committed=true" >> "$GITHUB_OUTPUT"
 
-      # 历史 digest 回填 TL;DR + cover（默认 off，dispatch backfill_meta=true 时开）
-      - name: Backfill digest TL;DR + cover (history)
-        if: github.event.inputs.backfill_meta == 'true'
-        timeout-minutes: 50
-        env:
-          DOUBAO_API_KEY: ${{ secrets.DOUBAO_API_KEY }}
-          ARK_API_KEY: ${{ secrets.ARK_API_KEY }}
-        continue-on-error: true
-        run: npx tsx scripts/backfill-digest-meta.ts
-
-      # 新 zh 文章翻译成 en。
-      # cron：增量翻译，每次最多 translate_limit 篇（默认 25），防 60min 超时；
-      # dispatch translate_all=true 时强制重写全部；translate_limit=0 时不限制
-      - name: Translate posts zh → en
-        timeout-minutes: 55
+      # 新 zh 文章翻译成 en（仅日常增量；大批量回填/重译走 bulk-backfill.yml）
+      # cron / dispatch 都是增量，每次最多 translate_limit 篇（默认 25 防 timeout）
+      - name: Translate posts zh → en (incremental)
+        timeout-minutes: 40
         env:
           DOUBAO_API_KEY: ${{ secrets.DOUBAO_API_KEY }}
           ARK_API_KEY: ${{ secrets.ARK_API_KEY }}
         continue-on-error: true
         run: |
           LIMIT="${{ github.event.inputs.translate_limit }}"
-          if [ -z "$LIMIT" ] || [ "$LIMIT" = "0" ]; then
-            LIMIT_FLAG=""
-          else
-            LIMIT_FLAG="--limit=$LIMIT"
-          fi
-          if [ "${{ github.event.inputs.translate_all }}" = "true" ]; then
-            echo "🌐 全量回填模式（--all $LIMIT_FLAG）"
-            npx tsx scripts/translate-digest.ts --all $LIMIT_FLAG
-          else
-            npx tsx scripts/translate-digest.ts $LIMIT_FLAG
-          fi
+          if [ -z "$LIMIT" ]; then LIMIT="25"; fi
+          npx tsx scripts/translate-digest.ts --limit=$LIMIT
 
       # embedding 增量更新（独立 step，失败不影响 digest commit；
       # 即使超时被 cancel，新 digest mdx 已经在 main 上了）
@@ -148,7 +123,9 @@ jobs:
         continue-on-error: true
         run: npx tsx scripts/generate-embeddings.ts
 
+      # 即使 translate 被 cancel/timeout，也要把已翻好的 en + zh.mdx 提交保住
       - name: Commit embeddings.json + en translations if changed
+        if: always()
         continue-on-error: true
         run: |
           git add src/data/embeddings.json \
