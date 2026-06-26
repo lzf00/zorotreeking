@@ -2,7 +2,7 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
-import { extractDigestHighlights } from "@/lib/digest-highlights";
+import { extractDigestHighlights, extractTLDR } from "@/lib/digest-highlights";
 
 const lang = "en" as const;
 const t = useTranslations(lang);
@@ -39,40 +39,62 @@ const months = Object.keys(groups).sort().reverse();
     </p>
   </section>
 
-  <section class="max-w-3xl mx-auto px-5 pb-24">
+  <section class="max-w-4xl mx-auto px-5 pb-24">
     {months.map(ym => (
-      <div class="mt-10">
-        <h2 class="text-xs uppercase tracking-[0.2em] text-zinc-400 font-mono mb-4 pb-2 border-b border-[var(--border)]">
+      <div class="mt-12">
+        <h2 class="text-xs uppercase tracking-[0.2em] text-zinc-400 font-mono mb-5 pb-2 border-b border-[var(--border)]">
           {ym}
         </h2>
-        <ul class="divide-y divide-[var(--border)]">
+        <div class="grid sm:grid-cols-2 gap-4">
           {groups[ym].map(d => {
-            const highlights = extractDigestHighlights(d.body, 2);
+            const tldr = extractTLDR(d.body);
+            const firstLine = tldr?.summary?.[0] ?? null;
+            const tags = tldr?.tags?.slice(0, 3) ?? [];
+            const fallbackHighlights = !tldr ? extractDigestHighlights(d.body, 2) : [];
+            const cover = d.data.cover;
             return (
-              <li class="py-4">
-                <div class="flex items-baseline justify-between gap-3">
-                  <h3 class="text-base font-semibold">
-                    <a href={pathWithLang(`/invest/${d.data.translationKey}`, lang)}
-                       class="hover:text-section-invest transition-colors">
-                      {d.data.title}
-                    </a>
+              <a href={pathWithLang(`/invest/${d.data.translationKey}`, lang)}
+                 class="group block rounded-xl overflow-hidden border border-[var(--border)] hover:border-section-invest transition-colors bg-white dark:bg-zinc-900/40">
+                {cover && (
+                  <div class="aspect-[16/9] overflow-hidden bg-zinc-100 dark:bg-zinc-800">
+                    <img src={cover} alt={d.data.title}
+                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                         loading="lazy" />
+                  </div>
+                )}
+                <div class="p-4">
+                  <time class="text-[10px] uppercase tracking-[0.15em] text-zinc-400 font-mono">
+                    {d.data.date.toISOString().slice(0, 10)}
+                  </time>
+                  <h3 class="mt-1 text-base font-semibold leading-snug group-hover:text-section-invest transition-colors line-clamp-2">
+                    {d.data.title}
                   </h3>
-                  <time class="text-xs text-zinc-500 tabular-nums shrink-0">{d.data.date.toISOString().slice(0, 10)}</time>
+                  {firstLine && (
+                    <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed line-clamp-2">
+                      {firstLine}
+                    </p>
+                  )}
+                  {!firstLine && fallbackHighlights.length > 0 && (
+                    <ul class="mt-2 space-y-0.5">
+                      {fallbackHighlights.map(h => (
+                        <li class="text-xs text-zinc-500 line-clamp-1">· {h}</li>
+                      ))}
+                    </ul>
+                  )}
+                  {tags.length > 0 && (
+                    <div class="mt-3 flex flex-wrap gap-1.5">
+                      {tags.map(tag => (
+                        <span class="text-[10.5px] px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-500">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
-                {d.data.description && (
-                  <p class="mt-1 text-sm text-[var(--text-secondary)] line-clamp-1">{d.data.description}</p>
-                )}
-                {highlights.length > 0 && (
-                  <ul class="mt-1.5 space-y-0.5">
-                    {highlights.map(h => (
-                      <li class="text-xs text-zinc-400 line-clamp-1">· {h}</li>
-                    ))}
-                  </ul>
-                )}
-              </li>
+              </a>
             );
           })}
-        </ul>
+        </div>
       </div>
     ))}
     {digests.length === 0 && <p class="py-12 text-center text-zinc-500">No digests yet</p>}
