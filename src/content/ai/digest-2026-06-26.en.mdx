@@ -1,0 +1,215 @@
+---
+lang: en
+translationKey: digest-2026-06-26
+title: "AI Daily Highlights · 2026-06-26"
+description: "21 papers · Multi-source aggregation + AI summaries"
+date: 2026-06-26
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.jpeg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's content in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading overseas AI vendors are making frequent moves: OpenAI has launched an LLM-dedicated inference chip, and DeepMind has added computer operation capabilities to Gemini 3.5 Flash</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Cutting-edge AI research results are released across multiple platforms, covering reinforcement learning distillation, image generation, on-device architecture search and other fields</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">China's industrial implementation has made remarkable progress: Tashi Intelligent Navigation has released a precision robot operation solution, and NVIDIA has open-sourced an MoE fine-tuning tool with 3.7x speedup</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Big Tech Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💻 Computing Power Optimization</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Embodied Intelligence</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Productivity Tools</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.27377" target="_blank" rel="noopener noreferrer">DanceOPD: On-Policy Generative Field Distillation</a>
+
+*HF ★ 21 · Wei Zhou, Xiongwei Zhu, Zelin Xu… · [HF Mirror](https://huggingface.co/papers/2606.27377)*
+
+To address the training pain points of effect conflicts and performance degradation when image generation models unify multiple capabilities such as text-to-image generation and local/global editing, this paper proposes the DanceOPD on-policy generative field distillation framework for flow matching models. Through sample routing, student self-generated state queries, and velocity MSE loss training, it can integrate multi-expert capabilities and absorb operator fields such as classifier-free guidance. Experiments show that it can strengthen target capabilities while ensuring basic generation quality, achieving efficient multi-capability fusion.
+
+<FeedbackButtons slug="item:arxiv-2606.27377" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.26790" target="_blank" rel="noopener noreferrer">OPID: On-Policy Skill Distillation for Agentic Reinforcement Learning</a>
+
+*HF ★ 14 · Shuo Yang, Jinyang Wu, Zhengxi Lu… · [HF Mirror](https://huggingface.co/papers/2606.26790)*
+
+To solve the problems of sparse rewards in outcome-based reinforcement learning, and existing on-policy skill distillation relying on external skill libraries with poor distribution adaptability, this paper proposes the OPID on-policy skill distillation framework: it directly extracts hierarchical skills from completed on-policy trajectories, injects them into the context after key priority routing selection, and optimizes the strategy combining the advantages of token-level self-distillation and outcome advantages. It has significantly improved performance, sampling efficiency and robustness compared to baselines on three types of interactive tasks.
+
+<FeedbackButtons slug="item:arxiv-2606.26790" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.26907" target="_blank" rel="noopener noreferrer">Qwen-Image-Agent: Bridging the Context Gap in Real-World Image Generation</a>
+
+*HF ★ 10 · Zekai Zhang, Jiahao Li, Jie Zhang… · [HF Mirror](https://huggingface.co/papers/2606.26907)*
+
+To address the "context gap" problem of existing text-to-image models when processing real-world requests, where the context provided by user input does not match the sufficient context required for generation, this paper proposes the unified agent framework Qwen-Image-Agent, which builds a complete generation context through context-aware planning and multi-source information completion, and launches the corresponding evaluation benchmark IA-Bench. Experiments show that the framework outperforms existing strong baselines on multiple test sets and achieves SOTA performance.
+
+<FeedbackButtons slug="item:arxiv-2606.26907" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.27313" target="_blank" rel="noopener noreferrer">ViQ: Text-Aligned Visual Quantized Representations at Any Resolution</a>
+
+*HF ★ 6 · Xumin Yu, Zuyan Liu, Zhenyu Yang… · [HF Mirror](https://huggingface.co/papers/2606.27313)*
+
+To address the pain point that existing visual discrete representations are difficult to balance semantics and details and adapt to multi-resolution requirements, this paper proposes the ViQ visual quantized representation framework: it is divided into two stages: text-aligned pre-training and feature discretization, adopting proximal representation learning and position-aware per-head quantization mechanism, supporting any native resolution input. Its multimodal task performance is on par with SOTA, with high low-level reconstruction accuracy, which can speed up multimodal training by 20%-70%.
+
+<FeedbackButtons slug="item:arxiv-2606.27313" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.26904" target="_blank" rel="noopener noreferrer">Confidence-Aware Tool Orchestration for Robust Video Understanding</a>
+
+*HF ★ 4 · Yangfan He, Yujin Choi, Jaehong Yoon · [HF Mirror](https://huggingface.co/papers/2606.26904)*
+
+To address the "blind trust problem" of existing video reasoning models, which default that all input frames are equally reliable, leading to a sharp drop in accuracy when encountering real-world disturbances without awareness, this study proposes the Robust-TO framework, which embeds frame credibility assessment throughout the entire reasoning process, schedules multiple visual tools to select credible frames to extract evidence, and optimizes through three-level evidence synthesis and confidence cost reward. Its accuracy on clean data exceeds the strongest open-source baseline by 10.6 percentage points and outperforms Gemini-2.5-Pro. Under disturbances, its accuracy drop is the smallest among compared methods, exceeding the baseline by 5.8 percentage points.
+
+<FeedbackButtons slug="item:arxiv-2606.26904" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.24898" target="_blank" rel="noopener noreferrer">Dense Supervision Is Not Enough: The Readout Blind Spot in Looped Language Models</a>
+
+*Rituraj Sharma, Tu Vu*
+
+Aiming at the readout blind spot problem of looped language models, the study finds that dense per-round cross-entropy supervision can only manage variables exposed by the readout layer, and cannot constrain the hidden state scale transmitted in the loop: scale-invariant readouts such as RMSNorm and LayerNorm will hide the radial scale, causing the hidden state norm to soar to thousands. The problem can be fixed by adopting scale-aware readout + explicit norm penalty, or eliminating the scale in the loop. The improved model achieves lower perplexity under variable depth benchmarks.
+
+<FeedbackButtons slug="item:arxiv-2606.24898" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.24899" target="_blank" rel="noopener noreferrer">From Meta Idea to Advanced Mathematical Discovery -- Human-AI Co-Discovery of Sign-Embedding Quantum Algorithms</a>
+
+*Yanqiao Wang, Jin-Peng Liu, Peng Li…*
+
+Most existing AI-assisted mathematical research focuses on solving preset problems. Starting from the vague intuition that "rational approximation adapted to jump functions such as sign functions can be used as a design principle for quantum algorithms", this study uses the AIM intelligent system to assist in expanding ideas and connecting research points, while humans control core research decisions. Finally, the human-AI collaboration proposes a sign-embedding quantum algorithm in the field of quantum linear algebra, verifying the value of the collaboration model where AI acts as a research partner and humans make final decisions.
+
+<FeedbackButtons slug="item:arxiv-2606.24899" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.24900" target="_blank" rel="noopener noreferrer">On-Device Neural Architecture Search</a>
+
+*Andrea Mattia Garavagno, Edoardo Ragusa, Paolo Gastaldo…*
+
+This paper proposes a lightweight on-device neural architecture search solution for near-sensor computing scenarios, which directly adapts the optimal micro-model for real-time sensing data on the deployment device, and can reset the model for users to solve the individual data difference problem of human-machine interfaces. Verified on two public datasets, the solution outperforms existing SOTA when running on Raspberry Pi 4, with memory usage reduced by up to 63% and accuracy improved by up to 5.96 percentage points.
+
+<FeedbackButtons slug="item:arxiv-2606.24900" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/how-agents-are-transforming-work" target="_blank" rel="noopener noreferrer">How agents are transforming work</a>
+
+*OpenAI*
+
+OpenAI's latest study *How agents are transforming work* shows that AI agents are deeply reshaping the current form of work: they can independently undertake long-cycle, high-complexity cross-link tasks, adapt to the actual scenario needs of different positions, cover various professional roles, effectively broaden the boundary of productivity improvement, and provide a new technology implementation path for optimizing work processes and reducing costs while increasing efficiency in various industries.
+
+<FeedbackButtons slug="item:openai-blog-how-agents-are-transforming-work" client:visible />
+
+## <a href="https://openai.com/index/openai-broadcom-jalapeno-inference-chip" target="_blank" rel="noopener noreferrer">OpenAI and Broadcom unveil LLM-optimized inference chip</a>
+
+*OpenAI*
+
+Recently, OpenAI and Broadcom jointly released "Jalapeño", an AI chip customized exclusively for large language model (LLM) inference scenarios. The chip is deeply customized and optimized for the computing characteristics of LLM inference, which can systematically improve the inference performance and energy efficiency of AI systems, while better adapting to the needs of large-scale deployment of large models, and is expected to alleviate the industry pain points of high LLM inference costs and high response latency.
+
+<FeedbackButtons slug="item:openai-blog-openai-broadcom-jalapeno-inference-chip" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener noreferrer">Statement on the US government directive to suspend access to Fable 5 and Mythos 5</a>
+
+*Anthropic*
+
+This statement explains the latest export control directive issued by the US government: the directive explicitly requires all foreign nationals, whether located inside or outside the US, to suspend access to Fable 5 and Mythos 5. This control has a very wide coverage, completely depriving foreign groups of access to the above products, and also highlights the current tightening trend of US export controls in the high-tech field.
+
+<FeedbackButtons slug="item:anthropic-fable-mythos-access" client:visible />
+
+## <a href="https://www.anthropic.com/news/introducing-claude-tag" target="_blank" rel="noopener noreferrer">Introducing Claude Tag</a>
+
+*Anthropic*
+
+AI security R&D company Anthropic officially launched a new AI product Claude Tag. The company has long been deeply engaged in AI security research, with the core R&D goal of building AI systems with high reliability, interpretability and controllability. The newly released Claude Tag is its latest achievement in practicing the security-first R&D route and implementing the above technical goals.
+
+<FeedbackButtons slug="item:anthropic-introducing-claude-tag" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/introducing-computer-use-in-gemini-3-5-flash/" target="_blank" rel="noopener noreferrer">Introducing computer use in Gemini 3.5 Flash</a>
+
+*Google DeepMind*
+
+This article introduces the native computer operation capability newly added by Google to the lightweight large model Gemini 3.5 Flash. This function is realized through multimodal interface understanding pre-training and low-latency tool call fine-tuning, which can simulate keyboard and mouse operations, and complete complex tasks such as report sorting and code debugging across software. The measured accuracy of office tasks is 42% higher than the previous generation, latency is reduced by 61%, and the inference cost is only 1/10 of large models with the same capability, which is suitable for on-device deployment requirements.
+
+<FeedbackButtons slug="item:deepmind-introducing-computer-use-in-gemini-3-5-flash" client:visible />
+
+## <a href="https://deepmind.google/blog/unlocking-uk-house-building-with-ai-accelerated-planning/" target="_blank" rel="noopener noreferrer">Unlocking UK house-building with AI-accelerated planning</a>
+
+*Google DeepMind*
+
+To unblock the bottlenecks in the housing construction process and release the UK's housing supply potential, the UK government has partnered with Google DeepMind to carry out digital and intelligent cooperation in government approval, jointly developing an AI-driven planning approval prototype tool. The core is to reduce the decision-making time in the housing project planning link and improve approval efficiency through AI technology, providing a new practical direction for accelerating the progress of housing construction and exploring government-enterprise cooperation to empower government service acceleration.
+
+<FeedbackButtons slug="item:deepmind-unlocking-uk-house-building-with-ai-accelerated-planning" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/vllm-jobs" target="_blank" rel="noopener noreferrer">Run a vLLM Server on HF Jobs in One Command</a>
+
+*Hugging Face*
+
+This paper proposes a minimal deployment solution for vLLM services. Aiming at the pain points of manual environment configuration, resource scheduling, and port adaptation required for deploying large model inference services on the Hugging Face (HF) Jobs platform, it encapsulates the entire end-to-end process into a single command. Users can quickly launch a usable vLLM inference service without completing tedious pre-configuration operations, which greatly reduces the deployment threshold and improves the efficiency of large model inference verification.
+
+<FeedbackButtons slug="item:hf-blog-vllm-jobs" client:visible />
+
+## <a href="https://huggingface.co/blog/allenai/hybrid-token-prediction" target="_blank" rel="noopener noreferrer">Which tokens does a hybrid model predict better?</a>
+
+*Hugging Face*
+
+You have only provided the paper title at present, and have not pasted the specific main content of this abstract. Please supplement the full abstract text of this paper, and I will extract the core methods and experimental conclusions as required to generate a logically clear Chinese summary of about 120 words that meets the requirements.
+
+<FeedbackButtons slug="item:hf-blog-hybrid-token-prediction" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This paper breaks through the traditional framework of the orthogonality hypothesis for AI alignment, and starts from the perspective of virtue ethics, proposing that both rational humans and AI do not need to act based on preset ultimate goals. The core of human rationality is to make actions adapt to the social practice network including norms, resources and other elements. The study points out that it is necessary to make the AI decision logic isomorphic with the practical action logic of human beings, and this path is of great value for AI ethical alignment and core security attribute alignment.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-06-24-scaling-laws/" target="_blank" rel="noopener noreferrer">Scaling Laws, Carefully</a>
+
+*Lilian Weng*
+
+This paper focuses on scaling laws, the core empirical finding of deep learning: training loss decreases in a power-law fashion as model size, dataset size, and computing volume increase, appearing as a straight line on a double-logarithmic coordinate. This law essentially builds a correlation framework for computing resources, loss, model and data scale, and its core purpose is to guide the optimal allocation of scarce computing resources between model expansion and data amplification.
+
+<FeedbackButtons slug="item:lillog-2026-06-24-scaling-laws" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/06/438701.html" target="_blank" rel="noopener noreferrer">让机器人学会“预判接触”：它石智航牵头四大顶尖机构发布TacForeSight，破解精细操作难题</a>
+
+*QbitAI*
+
+Tashi Intelligent Navigation, together with four top institutions including the National University of Singapore, Shanghai Jiao Tong University, Institute of Automation of the Chinese Academy of Sciences, and Fudan University, released the TacForeSight force-conditioned tactile world model. This technology uses wrist force sensing as a leading signal to predict short-term contact evolution for the first time, integrates prediction results into action generation, breaks through the limitations of reactive feedback that is corrected after the fact, and can actively adjust operations in advance, providing a new contact intelligence paradigm closer to human logic for precise robot operation.
+
+<FeedbackButtons slug="item:qbitai-438701" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/438703.html" target="_blank" rel="noopener noreferrer">英伟达MoE新开源：一行import，微调加速3.7倍</a>
+
+*QbitAI*
+
+NVIDIA recently open-sourced NeMo AutoModel adapted to Hugging Face Transformers v5, which users can use by adding only one line of import without modifying the original API. The tool adds optimizations such as expert parallelism, DeepEP, and TransformerEngine. The fine-tuning throughput of MoE large models is 3.4-3.7 times higher than the original version, and memory usage is reduced by 29%-32%. The throughput is improved by 3.69 times when fine-tuning Qwen3-30B on a single H100 card.
+
+<FeedbackButtons slug="item:qbitai-438703" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/438698.html" target="_blank" rel="noopener noreferrer">WAVES 2026：今年盛夏，在创投浪潮里，做迎风而立的少数人！</a>
+
+*QbitAI*
+
+WAVES 2026, the annual industry vane conference for venture capital hosted by 36Kr, will be held in Panyu, Guangzhou this summer, gathering top investors, industry leaders, and cutting-edge entrepreneurs to dissect the underlying logic of core tracks such as AI, hard technology, overseas expansion, and healthcare. At the conference, the Panyu government officially introduced the regional industrial advantages and support policies, stating that it will provide full support for innovation entities. The conference focuses on discovering cutting-edge innovation forces and anchoring new trends in China's venture capital industry.
+
+<FeedbackButtons slug="item:qbitai-438698" client:visible />
