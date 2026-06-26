@@ -32,7 +32,18 @@ const LIMIT = (() => {
   return Number.isFinite(n) && n > 0 ? n : Infinity;
 })();
 
-const SYS_PROMPT = `You are a translator turning Chinese MDX articles into natural, fluent English.
+// 术语表（编辑 scripts/translation-glossary.json 即可改）
+async function loadGlossary(): Promise<{ preserve: string[]; translations: Record<string, string> }> {
+  try {
+    const txt = await fs.readFile(path.join(ROOT, "scripts", "translation-glossary.json"), "utf-8");
+    const g = JSON.parse(txt) as { preserve_english?: string[]; translations?: Record<string, string> };
+    return { preserve: g.preserve_english || [], translations: g.translations || {} };
+  } catch {
+    return { preserve: [], translations: {} };
+  }
+}
+
+let SYS_PROMPT = `You are a translator turning Chinese MDX articles into natural, fluent English.
 
 Rules:
 1) Preserve ALL markdown syntax exactly: headings (# ##), lists (- *), links [text](url), images ![](), code fences, blockquotes (>), <a> / <FeedbackButtons> JSX tags. Do not change attribute values, URLs, slug strings.
@@ -40,9 +51,25 @@ Rules:
    - change \`lang: zh\` to \`lang: en\`
    - keep \`translationKey\` exactly the same
    - translate \`title\` and \`description\` to English (keep date / numeric strings)
-   - keep all other frontmatter fields untouched (tags, category, date, draft)
-3) Paper titles, person names, technical jargon (LLM, RLHF, ARK, etc) — keep original English.
+   - keep all other frontmatter fields untouched (tags, category, date, draft, cover)
+3) Paper titles, person names, technical jargon — keep original English.
 4) Output ONLY the translated MDX, no explanations, no markdown fence wrapping the whole thing.`;
+
+async function applyGlossary() {
+  const g = await loadGlossary();
+  if (g.preserve.length === 0 && Object.keys(g.translations).length === 0) return;
+  const parts: string[] = [];
+  if (g.preserve.length > 0) {
+    parts.push(`Preserve these EXACTLY as English (do not translate): ${g.preserve.join(", ")}.`);
+  }
+  if (Object.keys(g.translations).length > 0) {
+    const pairs = Object.entries(g.translations).slice(0, 30).map(([k, v]) => `"${k}" should stay as "${k}" or translate as "${v}"`).join("; ");
+    parts.push(`Translation conventions (中→英 / 英→英): ${pairs}.`);
+  }
+  if (parts.length > 0) {
+    SYS_PROMPT += `\n\nGLOSSARY:\n${parts.join("\n")}`;
+  }
+}
 
 async function translateOne(srcText: string): Promise<string> {
   // AI digest 单篇 ~12-15KB，翻译产出 token 数会更大（英文比中文 token 多 ~1.5x），
@@ -98,6 +125,7 @@ async function main() {
     console.log("[translate] DOUBAO_API_KEY 未设置，跳过翻译");
     return;
   }
+  await applyGlossary();
 
   const todo = await findZhToTranslate();
   console.log(`[translate] 待翻译 ${todo.length} 篇${FORCE_ALL ? "（强制全量）" : "（增量：仅缺 en 镜像）"} · 并发 ${CONCURRENCY}`);
