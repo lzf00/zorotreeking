@@ -191,28 +191,38 @@ async function main() {
   }
   // 倒序：新的先处理（先看到效果）
   targets.sort((a, b) => b.date.localeCompare(a.date));
-  const sliced = Number.isFinite(LIMIT) ? targets.slice(0, LIMIT) : targets;
 
-  console.log(`[backfill] 候选 ${targets.length} 篇 · 本次处理 ${sliced.length} 篇 · ${FORCE ? "FORCE" : "增量"}${TLDR_ONLY ? " · TLDR_ONLY" : ""}${COVER_ONLY ? " · COVER_ONLY" : ""}`);
+  // LIMIT 是"成功 touched 篇数上限"，不是"看了多少个文件"。
+  // 之前的 bug：sort + slice(0, 20) 永远取最新 20 个，processOne 跳过已就绪不算 touch，
+  // 第 2 批起前 20 全已就绪 → git diff empty → bulk-backfill workflow break，
+  // 导致 5月14~6月15 共 ~60 篇永远轮不到处理。
+  const cap = Number.isFinite(LIMIT) ? LIMIT : targets.length;
+  console.log(`[backfill] 候选 ${targets.length} 篇 · 本次最多处理 ${cap} 篇 · ${FORCE ? "FORCE" : "增量"}${TLDR_ONLY ? " · TLDR_ONLY" : ""}${COVER_ONLY ? " · COVER_ONLY" : ""}`);
   let cAdd = 0, tAdd = 0, skip = 0;
-  for (let i = 0; i < sliced.length; i++) {
-    const t = sliced[i];
-    console.log(`  [${i + 1}/${sliced.length}] ${path.basename(t.filePath)}`);
+  let touched = 0;
+  for (let i = 0; i < targets.length; i++) {
+    if (touched >= cap) {
+      console.log(`  (达到上限 ${cap} 篇，本次提前结束；下次再跑可继续)`);
+      break;
+    }
+    const t = targets[i];
+    console.log(`  [${i + 1}/${targets.length}] ${path.basename(t.filePath)}`);
     try {
       const r = await processOne(t.filePath, t.date, t.kind);
       if (r.touched) {
         if (r.coverAdded) cAdd++;
         if (r.tldrAdded) tAdd++;
-        console.log(`    ✓ cover=${r.coverAdded} tldr=${r.tldrAdded}`);
+        touched++;
+        console.log(`    ✓ cover=${r.coverAdded} tldr=${r.tldrAdded} (touched ${touched}/${cap})`);
       } else {
         skip++;
-        console.log("    · 已就绪，跳过");
+        // 跳过的文件不打印，太刷屏
       }
     } catch (e: any) {
       console.warn(`    ✗ ${e.message?.slice(0, 200)}`);
     }
     // 限流 600ms（豆包 QPS）
-    if (i < sliced.length - 1) await new Promise((r) => setTimeout(r, 600));
+    if (i < targets.length - 1) await new Promise((r) => setTimeout(r, 600));
   }
   console.log(`\n[backfill] cover 新增 ${cAdd} · TL;DR 新增 ${tAdd} · 跳过 ${skip}`);
 }
