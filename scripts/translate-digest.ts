@@ -121,6 +121,17 @@ async function main() {
           // 打印前 200 字符方便诊断
           throw new Error(`缺 frontmatter，前 200B: ${out.slice(0, 200).replace(/\n/g, " ")}`);
         }
+        // 损坏 JSX 守门：豆包偶尔产出 <FeedbackButtons ... client:visiblevisible}}
+        // 这种垃圾，MDX 编译期才报错；这里提前 reject 让重试或跳过
+        const damagedMatch = out.match(/<\w[^>]*(?:visiblevisible|client:visible[^/>][^>]{0,40}[}{]{2}|<\w[^>]*\}\})/);
+        if (damagedMatch) {
+          throw new Error(`损坏 JSX 片段：${damagedMatch[0].slice(0, 80)}`);
+        }
+        // 兜底：mdx 里出现连续 `}}` 几乎都是 jsx attr 被搞坏（合法 mdx 里很少见连续大括号）
+        if (/[^\\\\]\}\}/.test(out) && !/^\s*\{\{/m.test(out)) {
+          const m = out.match(/.{0,40}\}\}.{0,20}/);
+          throw new Error(`可疑 }} 输出：${m?.[0]?.replace(/\n/g, " ")}`);
+        }
         await fs.writeFile(dstPath, out + (out.endsWith("\n") ? "" : "\n"), "utf-8");
         ok++;
         if (attempt > 1) console.log(`    ✓ 重试 #${attempt} 成功，out=${out.length}B`);
