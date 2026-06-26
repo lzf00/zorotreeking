@@ -1,0 +1,215 @@
+---
+lang: zh
+translationKey: digest-2026-06-26
+title: "AI 每日精选 · 2026-06-26"
+description: "21 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-06-26
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.jpeg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">海外头部AI厂商动作密集，OpenAI推出LLM专属推理芯片，DeepMind为Gemini 3.5 Flash新增计算机操作能力</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">多平台发布前沿AI研究成果，覆盖强化学习蒸馏、图像生成、端侧架构搜索等多个领域</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内产业落地进展亮眼，它石智航发布机器人精细操作方案，英伟达开源MoE微调工具提速3.7倍</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 大厂动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 前沿研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💻 算力优化</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 具身智能</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ 效率工具</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.27377" target="_blank" rel="noopener noreferrer">DanceOPD: On-Policy Generative Field Distillation</a>
+
+*HF ★ 21 · Wei Zhou, Xiongwei Zhu, Zelin Xu… · [HF 镜像](https://huggingface.co/papers/2606.27377)*
+
+针对图像生成模型统一文生图、局部/全局编辑等多能力时易出现效果冲突、性能下降的训练难点，本文提出DanceOPD同策生成场蒸馏框架，面向流匹配模型，通过样本路由、学生自生成状态查询、速度MSE损失训练，可融合多专家能力并吸收无分类器引导等算子场。实验显示其可在保障基础生成质量的同时强化目标能力，实现多能力高效融合。
+
+<FeedbackButtons slug="item:arxiv-2606.27377" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.26790" target="_blank" rel="noopener noreferrer">OPID: On-Policy Skill Distillation for Agentic Reinforcement Learning</a>
+
+*HF ★ 14 · Shuo Yang, Jinyang Wu, Zhengxi Lu… · [HF 镜像](https://huggingface.co/papers/2606.26790)*
+
+针对基于结果的强化学习奖励稀疏、现有同策略技能蒸馏依赖外部技能库、分布适配性差的问题，本文提出OPID同策略技能蒸馏框架：直接从已完成的同策略轨迹提取分层技能，经关键优先路由选择后注入上下文，结合token级自蒸馏优势与结果优势优化策略。在三类交互任务上相较基线，性能、采样效率和鲁棒性均有明显提升。
+
+<FeedbackButtons slug="item:arxiv-2606.26790" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.26907" target="_blank" rel="noopener noreferrer">Qwen-Image-Agent: Bridging the Context Gap in Real-World Image Generation</a>
+
+*HF ★ 10 · Zekai Zhang, Jiahao Li, Jie Zhang… · [HF 镜像](https://huggingface.co/papers/2606.26907)*
+
+针对现有文生图模型处理真实场景请求时，存在用户输入上下文与生成所需充足上下文不匹配的“上下文鸿沟”问题，本文提出统一代理框架Qwen-Image-Agent，通过上下文感知规划、多源信息补全构建完整生成上下文，同步推出对应评测基准IA-Bench，实验显示该框架在多测试集上优于现有强基线，达到SOTA性能。
+
+<FeedbackButtons slug="item:arxiv-2606.26907" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.27313" target="_blank" rel="noopener noreferrer">ViQ: Text-Aligned Visual Quantized Representations at Any Resolution</a>
+
+*HF ★ 6 · Xumin Yu, Zuyan Liu, Zhenyu Yang… · [HF 镜像](https://huggingface.co/papers/2606.27313)*
+
+针对现有视觉离散表示难以兼顾语义与细节、适配多分辨率的痛点，本文提出ViQ视觉量化表征框架：分为文本对齐预训练、特征离散化两阶段，采用近端表征学习与位置感知逐头量化机制，支持任意原生分辨率输入。其多模态任务性能比肩SOTA，低层级重建精度高，可使多模态训练提速20%-70%。
+
+<FeedbackButtons slug="item:arxiv-2606.27313" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.26904" target="_blank" rel="noopener noreferrer">Confidence-Aware Tool Orchestration for Robust Video Understanding</a>
+
+*HF ★ 4 · Yangfan He, Yujin Choi, Jaehong Yoon · [HF 镜像](https://huggingface.co/papers/2606.26904)*
+
+针对现有视频推理模型默认输入帧同等可靠、遇现实扰动准确率暴跌且无感知的“盲信问题”，该研究提出Robust-TO框架，全推理流程嵌入帧可信度评估，调度多视觉工具选可信帧提取证据，经三级证据合成、置信度成本奖励优化。其干净数据准确率超最强开源基线10.6个百分点、优于Gemini-2.5-Pro，扰动下准确率降幅为参比方法最小，超基线5.8个百分点。
+
+<FeedbackButtons slug="item:arxiv-2606.26904" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.24898" target="_blank" rel="noopener noreferrer">Dense Supervision Is Not Enough: The Readout Blind Spot in Looped Language Models</a>
+
+*Rituraj Sharma, Tu Vu*
+
+针对循环语言模型的读出盲点问题，研究发现密集逐轮交叉熵监督仅能管控读出层暴露的变量，无法约束循环传递的隐状态尺度：RMSNorm、LayerNorm等尺度不变读出会隐藏径向尺度，导致隐态范数飙升至数千。采用尺度感知读出+显式范数惩罚，或在循环中消去尺度即可修正，改良后模型在可变深度基准下困惑度更低。
+
+<FeedbackButtons slug="item:arxiv-2606.24898" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.24899" target="_blank" rel="noopener noreferrer">From Meta Idea to Advanced Mathematical Discovery -- Human-AI Co-Discovery of Sign-Embedding Quantum Algorithms</a>
+
+*Yanqiao Wang, Jin-Peng Liu, Peng Li…*
+
+现有AI辅助数学研究多聚焦解决预设问题，本研究从“有理逼近适配符号函数等跳跃类函数可作为量子算法设计原则”的模糊直觉出发，借助AIM智能系统辅助拓展思路、关联研究点，人类把控核心研究决策，最终人机协作提出量子线性代数领域的符号嵌入量子算法，验证了AI作为研究伙伴、人类把关的协作模式价值。
+
+<FeedbackButtons slug="item:arxiv-2606.24899" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.24900" target="_blank" rel="noopener noreferrer">On-Device Neural Architecture Search</a>
+
+*Andrea Mattia Garavagno, Edoardo Ragusa, Paolo Gastaldo…*
+
+本文面向近传感计算场景提出端侧轻量神经架构搜索方案，直接在部署设备上为传感实时数据适配最优微型模型，可针对用户重设模型解决人机接口个体数据差异问题。经两类公开数据集验证，方案在树莓派4上运行效果超现有SOTA，内存占用最高降63%，精度最高提升5.96个百分点。
+
+<FeedbackButtons slug="item:arxiv-2606.24900" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/how-agents-are-transforming-work" target="_blank" rel="noopener noreferrer">How agents are transforming work</a>
+
+*OpenAI*
+
+OpenAI最新研究《智能体如何变革工作》表明，AI智能体正深度重塑当前工作形态：它可独立承接长周期、高复杂度的跨环节任务，适配不同岗位的实际场景需求，覆盖各类职业角色，有效拓宽生产力提升边界，为各行业优化工作流程、降本提效提供了新的技术落地路径。
+
+<FeedbackButtons slug="item:openai-blog-how-agents-are-transforming-work" client:visible />
+
+## <a href="https://openai.com/index/openai-broadcom-jalapeno-inference-chip" target="_blank" rel="noopener noreferrer">OpenAI and Broadcom unveil LLM-optimized inference chip</a>
+
+*OpenAI*
+
+近期OpenAI联合博通发布专为大语言模型（LLM）推理场景定制的AI芯片“Jalapeño”。该芯片针对LLM推理的计算特性做深度定制优化，可系统性提升AI系统的推理性能、算力能效，同时更好适配大模型规模化部署需求，有望缓解当前大模型推理成本高、响应延迟高的行业痛点。
+
+<FeedbackButtons slug="item:openai-blog-openai-broadcom-jalapeno-inference-chip" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener noreferrer">Statement on the US government directive to suspend access to Fable 5 and Mythos 5</a>
+
+*Anthropic*
+
+本声明针对美国政府最新发布的出口管制指令作出说明：该指令明确要求，无论身处美国境内还是境外的所有外籍人员，一律暂停访问Fable 5、Mythos 5。这一管制覆盖范围极广，全面剥夺了外籍群体对上述产品的访问权限，也凸显出美国当前高技术领域出口管制的收紧趋势。
+
+<FeedbackButtons slug="item:anthropic-fable-mythos-access" client:visible />
+
+## <a href="https://www.anthropic.com/news/introducing-claude-tag" target="_blank" rel="noopener noreferrer">Introducing Claude Tag</a>
+
+*Anthropic*
+
+AI安全研发企业Anthropic正式推出全新AI产品Claude Tag。该公司长期深耕AI安全领域研究，核心研发目标为打造兼具高可靠性、可解释性、可控性的AI系统，本次发布的Claude Tag是其践行安全优先研发路线、落地上述技术目标的最新成果。
+
+<FeedbackButtons slug="item:anthropic-introducing-claude-tag" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/introducing-computer-use-in-gemini-3-5-flash/" target="_blank" rel="noopener noreferrer">Introducing computer use in Gemini 3.5 Flash</a>
+
+*Google DeepMind*
+
+本文介绍谷歌为轻量大模型Gemini 3.5 Flash新增的原生计算机操作能力。该功能通过多模态界面理解预训练、低延迟工具调用微调实现，可模拟键鼠操作，跨软件完成报表整理、代码调试等复杂任务。实测办公类任务准确率超前代42%，延迟降61%，推理成本仅为同能力大模型的1/10，适配端侧部署需求。
+
+<FeedbackButtons slug="item:deepmind-introducing-computer-use-in-gemini-3-5-flash" client:visible />
+
+## <a href="https://deepmind.google/blog/unlocking-uk-house-building-with-ai-accelerated-planning/" target="_blank" rel="noopener noreferrer">Unlocking UK house-building with AI-accelerated planning</a>
+
+*Google DeepMind*
+
+为打通住房建设流程堵点、释放英国住房供给潜力，英国政府联合谷歌DeepMind开展政务审批数智化合作，共同研发AI驱动的规划审批原型工具，核心是通过AI技术压缩住房项目规划环节的决策耗时、提升审批效率，为加快建房落地进度、探索政企协作赋能政务提速提供了新的实践方向。
+
+<FeedbackButtons slug="item:deepmind-unlocking-uk-house-building-with-ai-accelerated-planning" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/vllm-jobs" target="_blank" rel="noopener noreferrer">Run a vLLM Server on HF Jobs in One Command</a>
+
+*Hugging Face*
+
+本文提出一种vLLM服务极简部署方案，针对大模型推理服务在Hugging Face（HF）Jobs平台部署需手动配置环境、调度资源、适配端口的痛点，将全链路流程封装为单条命令。用户无需完成繁琐的前置配置操作，即可快速拉起可用的vLLM推理服务，大幅降低部署门槛，提升大模型推理验证的效率。
+
+<FeedbackButtons slug="item:hf-blog-vllm-jobs" client:visible />
+
+## <a href="https://huggingface.co/blog/allenai/hybrid-token-prediction" target="_blank" rel="noopener noreferrer">Which tokens does a hybrid model predict better?</a>
+
+*Hugging Face*
+
+你目前仅提供了论文标题，未粘贴该摘要的具体正文内容，请补充完整这篇论文的摘要文本，我会按要求提炼核心方法与实验结论，生成符合120字左右要求、逻辑清晰的中文总结内容。
+
+<FeedbackButtons slug="item:hf-blog-hybrid-token-prediction" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+本文突破AI对齐正交性假说的传统框架，从德性伦理视角出发，提出理性人类及AI均无需依托预设终极目标行动，人类理性核心是让行动适配含准则、资源等要素的社会实践网络。研究指出，需让AI决策逻辑与人类实践型行动逻辑同构，该路径对AI伦理对齐、核心安全属性对齐均有重要价值。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-06-24-scaling-laws/" target="_blank" rel="noopener noreferrer">Scaling Laws, Carefully</a>
+
+*Lilian Weng*
+
+这篇论文聚焦深度学习核心实证发现缩放定律：训练损失随模型规模、数据集规模、计算量的提升呈幂律下降，在双对数坐标下表现为直线。该定律本质是构建计算资源、损失、模型与数据规模的关联框架，核心用途为指导稀缺计算资源在模型扩容和数据扩增之间的最优分配。
+
+<FeedbackButtons slug="item:lillog-2026-06-24-scaling-laws" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/06/438701.html" target="_blank" rel="noopener noreferrer">让机器人学会“预判接触”：它石智航牵头四大顶尖机构发布TacForeSight，破解精细操作难题</a>
+
+*量子位*
+
+它石智航联合新加坡国立大学、上海交大、中科院自动化所、复旦四所顶尖机构发布TacForeSight力条件触觉世界模型。该技术首次将腕部力觉作为先导信号预测短时接触演化，将预判结果融入动作生成，突破事后修正的反应式反馈局限，可主动提前调整操作，为机器人精细操作提供了更接近人类逻辑的接触智能新范式。
+
+<FeedbackButtons slug="item:qbitai-438701" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/438703.html" target="_blank" rel="noopener noreferrer">英伟达MoE新开源：一行import，微调加速3.7倍</a>
+
+*量子位*
+
+英伟达近期开源适配Hugging Face Transformers v5的NeMo AutoModel，用户无需改动原有API，仅新增一行import即可使用。该工具新增专家并行、DeepEP、TransformerEngine等优化，MoE大模型微调吞吐较原版提升3.4-3.7倍，显存占用降低29%-32%，单H100卡微调Qwen3-30B时吞吐量提升达3.69倍。
+
+<FeedbackButtons slug="item:qbitai-438703" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/438698.html" target="_blank" rel="noopener noreferrer">WAVES 2026：今年盛夏，在创投浪潮里，做迎风而立的少数人！</a>
+
+*量子位*
+
+36氪主办的创投行业年度风向标大会WAVES2026今年盛夏落地广州番禺，汇聚顶级投资人、产业领袖、新锐创业者，拆解AI、硬科技、出海、医疗等核心赛道底层逻辑。会上番禺官方推介区域产业优势与扶持政策，表态将为创新主体提供全方位支持，大会聚焦发掘新锐创新力量，锚定中国创投新趋势。
+
+<FeedbackButtons slug="item:qbitai-438698" client:visible />
