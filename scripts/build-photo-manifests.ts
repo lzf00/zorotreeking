@@ -26,6 +26,7 @@ const IMAGE_RE = /\.(jpe?g|png|webp|avif)$/i;
 type PhotoEntry = {
   src: string;
   srcWebp?: string;       // 同图 .webp 版本（sharp 生成，质量 80，体积通常 -40%）
+  srcOg?: string;         // 1200×630 OG 专用尺寸 jpg（社交分享专用，原图 3-4MB 不能直接用作 og:image）
   thumb: string;
   thumbWebp?: string;
   width: number;
@@ -88,6 +89,7 @@ async function main() {
       let width = 0;
       let height = 0;
       let webpRelative: string | undefined;
+      let ogRelative: string | undefined;
       if (sharp) {
         try {
           const meta = await sharp(buf).rotate().metadata();
@@ -119,6 +121,32 @@ async function main() {
             }
           }
           webpRelative = `/photos/uploads/${albumSlug}/${webpName}`;
+
+          // 生成 1200×630 OG 专用尺寸（jpg，cover fit，质量 82，社交分享专用）
+          // 仅当原图够宽（≥ 1200px）且横版（宽 ≥ 高 × 1.2）才生成 og 版本
+          if (width >= 1200 && height > 0 && width / height >= 1.2) {
+            const ogName = path.basename(f, ext) + ".og.jpg";
+            const ogPath = path.join(albumDir, ogName);
+            let needOgGen = true;
+            try {
+              const srcStat = await fs.stat(inputPath);
+              const ogStat = await fs.stat(ogPath);
+              if (ogStat.mtimeMs >= srcStat.mtimeMs) needOgGen = false;
+            } catch { /* og 不存在 → 生成 */ }
+            if (needOgGen) {
+              try {
+                await sharp(buf)
+                  .rotate()
+                  .resize(1200, 630, { fit: "cover", position: "attention" })
+                  .jpeg({ quality: 82, mozjpeg: true })
+                  .toFile(ogPath);
+                console.log(`    + ${ogName} (og 1200×630)`);
+              } catch (e) {
+                console.warn(`    ✗ og gen failed ${ogName}:`, e);
+              }
+            }
+            ogRelative = `/photos/uploads/${albumSlug}/${ogName}`;
+          }
         }
       }
 
@@ -143,6 +171,7 @@ async function main() {
       entries.push({
         src: `/photos/uploads/${albumSlug}/${f}`,
         srcWebp: webpRelative,
+        srcOg: ogRelative,
         thumb: `/photos/uploads/${albumSlug}/${f}`,
         thumbWebp: webpRelative,
         width,

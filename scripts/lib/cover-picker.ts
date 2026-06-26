@@ -23,6 +23,7 @@ const MANIFEST_DIR = path.join(ROOT, "src", "data", "photo-manifest");
 type PhotoEntry = {
   src: string;
   srcWebp?: string;
+  srcOg?: string;          // 1200×630 og 专用尺寸（性能优化）
   thumb?: string;
   thumbWebp?: string;
   width: number;
@@ -87,6 +88,7 @@ export async function pickCoverFromLibrary(seed: string): Promise<string | null>
   }
   const idx = hashSeed(seed) % pool.length;
   const pick = pool[idx];
-  // src 是 jpeg/png 原图；srcWebp 是 sharp 转的 webp
-  return pick.src || pick.srcWebp || null;
+  // 优先 1200×630 og 专用尺寸（jpg ~80KB，社交分享最稳）
+  // 回退原图 jpg（3-4MB，慢但保底）→ webp（webp 在微信/QQ 部分版本不预览）
+  return pick.srcOg || pick.src || pick.srcWebp || null;
 }
