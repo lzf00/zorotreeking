@@ -1,0 +1,173 @@
+---
+lang: en
+translationKey: digest-2026-06-27
+title: "Daily AI Highlights · 2026-06-27"
+description: "16 papers · Multi-source aggregation + AI summaries"
+date: 2026-06-27
+tags: [digest, auto, arxiv, openai, anthropic, deepmind, hf-blog, the-gradient]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Today's highlights in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading AI vendors are rolling out new products intensively: OpenAI previews GPT-5.6 Sol, Anthropic launches Claude Tag, and DeepMind upgrades Gemini 3.5 Flash</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Industry updates come in quick succession: Anthropic suspends Fable 5 access per US government order, key Google talent moves to Meta, and Shendu Jizhi secures hundreds of millions in financing over two months</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">A dense batch of academic and tool achievements have been released, covering interdisciplinary AI applications, alignment research, LLM deployment optimization and other fields</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 New Model Releases</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📈 Big Tech Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Academic Frontiers</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡 Industry Financing</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Talent Movements</span>
+  </div>
+</div>
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.26128" target="_blank" rel="noopener noreferrer">Physics-guided Convolutional Neural Network for Domain Growth Prediction in Systems with Conserved Kinetics</a>
+
+*Vijay Yadav, Madhu Priya, Manish Dev Shrimali…*
+
+To address the excessively high computational cost of traditional numerical solving for nonlinear partial differential equations in conserved kinetic systems, this study proposes a physics-guided convolutional neural network surrogate model with attention mechanism for domain growth prediction. Verified by experiments, the model delivers stable and accurate long-term prediction for phase separation of binary mixtures, maintains component conservation, conforms to the Lifshitz-Slyozov domain growth law, and the framework can be extended to other complex kinetic systems.
+
+<FeedbackButtons slug="item:arxiv-2606.26128" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.26164" target="_blank" rel="noopener noreferrer">\chisao\{\}: A GPU-Native Parallel Optimizer for Multimodal Black-Box Functions via Convergence-Anticonvergence Oscillation</a>
+
+*Ira Wolfson*
+
+Aiming at the pain points of existing multimodal black-box optimization algorithms: serial execution, performance degradation in high-dimensional scenarios, and incompatibility with GPU parallel computing power, the GPU-native population optimizer Chisao is proposed. It freezes confirmed optimal solutions through a convergence-anticonvergence oscillation mechanism, and adopts an adaptive reseeding strategy to maintain population diversity to escape local optima. It achieves 100% mode recovery on the SFU benchmark set, runs up to 39x faster than baselines, has excellent noise resistance, and the tool has been open-sourced.
+
+<FeedbackButtons slug="item:arxiv-2606.26164" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.26168" target="_blank" rel="noopener noreferrer">Implementation of reinforcement learning in chemical reaction networks: application to phototaxis as curiosity-driven exploration</a>
+
+*Ruyi Tang (LCQB-AG), Grégoire Sergeant-Perthuis (LCQB-AG), David Colliaux*
+
+To address the shortcoming of existing Chlamydomonas reinhardtii phototaxis models that ignore active environmental sampling, this study proposes a modeling framework combining partially observable Markov decision processes with biochemical reaction kinetics. It fits the motion trajectories of 30 experimental Chlamydomonas reinhardtii samples via inverse reinforcement learning, can reproduce the real phototaxis behavior distribution, confirms that the run-tumble switch is an active information acquisition strategy for cells to reduce perceptual ambiguity, and reveals the mechanism by which intracellular biochemical networks support adaptive cell navigation.
+
+<FeedbackButtons slug="item:arxiv-2606.26168" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/previewing-gpt-5-6-sol" target="_blank" rel="noopener noreferrer">Previewing GPT-5.6 Sol: a next-generation model</a>
+
+*OpenAI*
+
+OpenAI recently announced the preview version of its next-generation large model GPT-5.6 Sol. The core capabilities of this model are significantly improved compared to previous generations, making it suitable for professional use cases, with a focus on three major scenarios: programming development, scientific research problem solving, and cybersecurity. It is also equipped with OpenAI's most advanced security protection system to date, strengthening performance boundaries while taking application risk prevention and control into account. It is still in the pre-research and testing stage at present.
+
+<FeedbackButtons slug="item:openai-blog-previewing-gpt-5-6-sol" client:visible />
+
+## <a href="https://openai.com/index/how-agents-are-transforming-work" target="_blank" rel="noopener noreferrer">How agents are transforming work</a>
+
+*OpenAI*
+
+OpenAI's latest research *How agents are transforming work* reveals the value of AI in reshaping work models: unlike previous general LLMs that are mostly suitable for short-cycle simple tasks, currently mature AI agents can support the execution of long-process, high-complexity tasks, with capabilities covering the work needs of multiple types of positions, which will open up new growth space for productivity improvement across all positions in the entire industry.
+
+<FeedbackButtons slug="item:openai-blog-how-agents-are-transforming-work" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener noreferrer">Statement on the US government directive to suspend access to Fable 5 and Mythos 5</a>
+
+*Anthropic*
+
+This is the official statement in response to the US government's access restriction policy for Fable 5 and Mythos 5. The core content is: the US government has officially issued an export control order, fully suspending access rights of all foreign nationals to the above two products. The control scope has no geographical restrictions: all relevant foreign nationals are bound by the ban, whether they are inside or outside the US. This is the latest move of tightened US tech export controls.
+
+<FeedbackButtons slug="item:anthropic-fable-mythos-access" client:visible />
+
+## <a href="https://www.anthropic.com/news/introducing-claude-tag" target="_blank" rel="noopener noreferrer">Introducing Claude Tag</a>
+
+*Anthropic*
+
+This article introduces Claude Tag, a new feature for team collaboration scenarios, which provides team users with a new path to interact with Claude. Team members do not need to jump to a separate Claude entry, they can call up Claude directly by tagging in the collaborative conversation flow to complete operations such as information query, content generation, and task verification, effectively lowering the threshold for using AI and greatly improving work efficiency in multi-person collaboration scenarios.
+
+<FeedbackButtons slug="item:anthropic-introducing-claude-tag" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/introducing-computer-use-in-gemini-3-5-flash/" target="_blank" rel="noopener noreferrer">Introducing computer use in Gemini 3.5 Flash</a>
+
+*Google DeepMind*
+
+This research adds native computer operation capabilities to Google's lightweight LLM Gemini 3.5 Flash. It optimizes multi-step action decision logic through reinforcement learning, can simulate keyboard and mouse operations, cross-application collaboration, and batch file processing. Compared with similar tools, it improves the completion rate of complex tasks by 32% and reduces operation latency by 38%, which can cover automation needs in multiple scenarios such as office work and data processing, greatly lowering the threshold for human-computer interaction.
+
+<FeedbackButtons slug="item:deepmind-introducing-computer-use-in-gemini-3-5-flash" client:visible />
+
+## <a href="https://deepmind.google/blog/unlocking-uk-house-building-with-ai-accelerated-planning/" target="_blank" rel="noopener noreferrer">Unlocking UK house-building with AI-accelerated planning</a>
+
+*Google DeepMind*
+
+This project addresses the pain points of long planning approval cycles, low efficiency, and constrained supply in UK housing construction. The UK government has partnered with Google DeepMind to develop an AI-driven planning approval prototype system, whose core function is to speed up the planning decision process for housing projects. The solution is expected to unblock the bottlenecks in the pre-process of housing construction, and provide reliable technical support for the UK to speed up housing supply and meet its housing construction targets.
+
+<FeedbackButtons slug="item:deepmind-unlocking-uk-house-building-with-ai-accelerated-planning" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/vllm-jobs" target="_blank" rel="noopener noreferrer">Run a vLLM Server on HF Jobs in One Command</a>
+
+*Hugging Face*
+
+This work addresses the pain point of cumbersome operations for deploying vLLM inference services on the Hugging Face (HF) Jobs platform, and launches a one-command deployment solution. It can automatically complete the whole process including environment configuration, resource scheduling, and service port mapping, without multiple manual operations, greatly lowering the deployment threshold for high-throughput LLM inference services, making it easy for researchers to launch vLLM services quickly to carry out relevant experiments.
+
+<FeedbackButtons slug="item:hf-blog-vllm-jobs" client:visible />
+
+## <a href="https://huggingface.co/blog/allenai/hybrid-token-prediction" target="_blank" rel="noopener noreferrer">Which tokens does a hybrid model predict better?</a>
+
+*Hugging Face*
+
+Currently only the paper title is provided, no specific content of the abstract is attached, so translation, extraction and summary work cannot be completed. Please supplement the full text of this paper's abstract, and I will extract the core methods and conclusions as required to generate a clear and concise English summary of about 120 words.
+
+<FeedbackButtons slug="item:hf-blog-hybrid-token-prediction" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This AI alignment research from the perspective of virtue ethics proposes that human rational behavior is not directed at a preset ultimate goal, but follows the logic of a practical network including elements such as behavior, tendency, and evaluation criteria, so rational AI should not be goal-oriented either. To realize AI's collaboration, adaptation and even compliance with humans, its decision logic must match the practical "type signature" of humans. This idea not only meets the alignment needs of human prosperity at the ethical level, but also guarantees core security attributes.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-06-24-scaling-laws/" target="_blank" rel="noopener noreferrer">Scaling Laws, Carefully</a>
+
+*Lilian Weng*
+
+This paper sorts out scaling laws, a key empirical finding in the field of deep learning: training loss decreases in a power-law fashion as model size, dataset size, and computing volume increase, showing a linear relationship on a double-logarithmic coordinate. It can be used as a framework to characterize the correlation between computing volume, loss, and model/data scale, with the core function of guiding the optimal allocation of scarce computing resources between model and data investment.
+
+<FeedbackButtons slug="item:lillog-2026-06-24-scaling-laws" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/06/438895.html" target="_blank" rel="noopener noreferrer">GPT-5.6 released out of the blue! Fable 5 loses its throne as the strongest base model</a>
+
+*QbitAI*
+
+OpenAI has recently released three differentiated large models in the GPT-5.6 series: the flagship Sol has stronger programming capabilities than GPT-5.5 and the previously strongest base model Fable 5, focusing on high-difficulty complex tasks; the balanced Terra has performance on par with GPT-5.5 at half the price; the high-speed Luna balances capability and cost-effectiveness. Currently, the three models are only open to a small number of partners with limited access, and ordinary users cannot use them for the time being.
+
+<FeedbackButtons slug="item:qbitai-438895" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/438887.html" target="_blank" rel="noopener noreferrer">Secured two rounds of hundreds of millions of yuan in financing in two months, Shendu Jizhi accelerates the deployment of domestic physical AI base models with a full-stack independent route</a>
+
+*QbitAI*
+
+Physical AI is the core track of next-generation artificial intelligence, which currently has pain points such as lack of general base models, high deployment cost, and weak generalization. Local enterprise Shendu Jizhi pioneered the full-stack independent "human-like learning" technology route, with its layout nearly a year ahead of similar projects in the US. It achieved full-link deployment and won tens of millions of yuan in orders within one year of its establishment, and secured two rounds of hundreds of millions of yuan in financing in two months, confirming that underlying originality + pragmatic deployment is the core development direction of the industry.
+
+<FeedbackButtons slug="item:qbitai-438887" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/438848.html" target="_blank" rel="noopener noreferrer">Google's "King of Inference" also moved to Meta, he was originally poached by Fei-Fei Li</a>
+
+*QbitAI*
+
+Dengyong Zhou, known as the "King of Inference" at Google DeepMind, who was recruited to Google AI's China Center initiative led by Fei-Fei Li from Microsoft, has quietly joined Meta for four months. Zhou Dengyong is the lead researcher of core LLM inference technologies such as Chain of Thought (CoT), and his achievements were once personally promoted by Google CEO Sundar Pichai. His unannounced departure predated the recent multiple core talent exodus events exposed at Google, confirming that the talent upheaval caused by Google's internal resource adjustment is earlier and more serious than the outside world perceives, and Meta is reaping the talent dividend.
+
+<FeedbackButtons slug="item:qbitai-438848" client:visible />
