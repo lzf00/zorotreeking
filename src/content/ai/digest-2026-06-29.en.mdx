@@ -1,0 +1,215 @@
+---
+lang: en
+translationKey: digest-2026-06-29
+title: "Daily AI Highlights · 2026-06-29"
+description: "21 papers · multi-source aggregation + AI summaries"
+date: 2026-06-29
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's highlights in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Heavy news from leading AI vendors: OpenAI unveils preview of GPT-5.6 Sol and partnership with HP, while Anthropic and DeepMind both roll out new features</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Cutting-edge AI research across multiple fields released, covering robotics simulation, multimodal alignment, time series forecasting, traffic optimization and more</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">New topics emerge in the AI industry: token embezzlement becomes a new commercialization risk, while photonic space computing and LLM leaderboards spark heated discussions</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤝 Vendor Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 New Model Releases</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Academic Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡 Industry Insights</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Technology Applications</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.28128" target="_blank" rel="noopener noreferrer">PhysisForcing: Physics Reinforced World Simulator for Robotic Manipulation</a>
+
+*HF ★ 10 · Peiwen Zhang, Yufan Deng, Shangkun Sun… · [HF Mirror](https://huggingface.co/papers/2606.28128)*
+
+To address the flaws of existing video generation-based world simulators for robotic manipulation, which often produce discontinuous motion and physically inconsistent interactions, this paper proposes the PhysisForcing training framework. It jointly optimizes pixel-level trajectory alignment loss and semantic-level relationship alignment loss to enhance the physical consistency of generated content. Multiple benchmark tests show that its performance is significantly better than baselines, and it can also improve the success rate of robot closed-loop planning and the effect of downstream manipulation strategies.
+
+<FeedbackButtons slug="item:arxiv-2606.28128" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.22873" target="_blank" rel="noopener noreferrer">SingGuard: A Policy-Adaptive Multimodal LLM Guardrail with Dynamic Reasoning</a>
+
+*HF ★ 8 · SingGuard Team · [HF Mirror](https://huggingface.co/papers/2606.22873)*
+
+To solve the problem that existing multimodal LLM guardrails have poor adaptability and cannot easily fit dynamic control policies, this paper proposes SingGuard, a policy-adaptive multimodal guardrail. It takes control policies as runtime input, supports three inference modes: fast/hybrid/slow, is optimized with fast-slow decoupled reinforcement learning, and is paired with a multimodal security benchmark covering more than 80 fine-grained risk categories. It achieves SOTA F1 scores across 35 datasets, and the rule compliance accuracy improves by nearly 10 percentage points when policies are dynamically switched.
+
+<FeedbackButtons slug="item:arxiv-2606.22873" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.27974" target="_blank" rel="noopener noreferrer">ProMSA:Progressive Multimodal Search Agents for Knowledge-Based Visual Question Answering</a>
+
+*HF ★ 5 · ZhengXian Wu, Hangrui Xu, Kai Shi… · [HF Mirror](https://huggingface.co/papers/2606.27974)*
+
+To address the flaw of existing knowledge-based visual question answering (KB-VQA) systems that use fixed retrieval-generation pipelines and lack adaptive reasoning capabilities, this paper proposes ProMSA, a progressive multimodal search agent. It can iteratively choose to perform image/text retrieval or stop under budget constraints, and has built-in deduplication logic. For training, it first learns tool call specifications via rejection sampling SFT, then is optimized with TN-GSPO sequence-level reinforcement learning. Experiments show that its retrieval and end-to-end accuracy outperforms mainstream RAG and agent baselines on two types of public datasets.
+
+<FeedbackButtons slug="item:arxiv-2606.27974" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.27608" target="_blank" rel="noopener noreferrer">Qwen-Image-2.0-RL Technical Report</a>
+
+*HF ★ 3 · Yixian Xu, Kaiyuan Gao, Yuxiang Chen… · [HF Mirror](https://huggingface.co/papers/2606.27608)*
+
+This report proposes the Qwen-Image-2.0-RL training pipeline. It builds a multi-dimensional composite reward model for text-to-image and image editing tasks, constructs a GRPO reinforcement learning training framework, and combines two types of specialized strategies via on-policy distillation to optimize the visual quality and instruction following ability of the original diffusion model. Actual tests show that its benchmark scores, text-to-image and editing arena Elo scores are all significantly improved, and its overall performance is notably better than baseline models.
+
+<FeedbackButtons slug="item:arxiv-2606.27608" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.27595" target="_blank" rel="noopener noreferrer">Ko-WideSearch: A Korean Breadth-Search Benchmark for Exhaustive Set Enumeration by Web Agents</a>
+
+*HF ★ 2 · Minbyul Jeong · [HF Mirror](https://huggingface.co/papers/2606.27595)*
+
+Existing Web agent benchmarks mostly focus on deep reasoning, and lack non-English breadth search evaluation sets for exhaustive enumeration of set attributes. This paper proposes Ko-WideSearch, a Korean benchmark built via an automatic synthesis and validation pipeline, covering 16 categories with a total of 228 attribute tables, divided into 3 difficulty levels. Tests on 20 agents found that set recall is high but row-level attribute accuracy is low, performance drops as difficulty increases, and extracting values from free-text cells is the main challenge.
+
+<FeedbackButtons slug="item:arxiv-2606.27595" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.27381" target="_blank" rel="noopener noreferrer">OverFlowLight: Real-Time Gridlock Prevention and Traffic Signal Optimization for Urban Intersections</a>
+
+*Mingyuan Li, Boyang Huang, Tianqi Jiang…*
+
+To address the pain point that existing urban traffic signal control algorithms focus on throughput and are prone to causing queue overflow and even chain deadlocks during peak hours, this paper proposes the OverFlowLight real-time signal control framework. It relies on multimodal sensing to detect overflow in real time, dynamically inserts overflow-clearing phases, and adopts a hybrid control architecture of fast rule-based intervention + long-cycle reinforcement learning optimization. Actual tests at 43 intersections in three cities show that it reduces overflow events by 60.4%, increases road network throughput by 18.2%, and significantly reduces manual intervention, making it the first scalable active anti-gridlock signal control solution. (119 words total)
+
+<FeedbackButtons slug="item:arxiv-2606.27381" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.27385" target="_blank" rel="noopener noreferrer">RANSAC Scoring Done Right</a>
+
+*James Pritts, Felix Seegräber, Kevin Köser*
+
+To address the pain point that traditional RANSAC-like algorithm scoring relies on manually set inlier scale thresholds and has poor robustness, this paper reverses the conventional inference order, combines a conjugate inverse gamma prior to analytically marginalize the inlier scale, and proposes the first RANSAC scoring function without inlier scale parameters, which can be efficiently computed in O(NlogN) time. Tests on nearly 70,000 pairs of two-view images show that its performance is stable when thresholds are mismatched, its small-sample accuracy far exceeds existing SOTA, and it adapts to scenarios with both sufficient and insufficient data.
+
+<FeedbackButtons slug="item:arxiv-2606.27385" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.27438" target="_blank" rel="noopener noreferrer">Unified Zero-Shot Time Series Forecasting: A Darts Foundation</a>
+
+*Zhihao Dai, Dennis Bader, Alain Gysi*
+
+To address the pain point that current time series zero-shot forecasting foundation models have fragmented interfaces and are difficult to be compatible with general tools, the popular open-source time series analysis library Darts has launched a unified FoundationModel class set, which supports 4 mainstream time series foundation models including Chronos-2 and TimesFM 2.5, provides standardized full-cycle interfaces and has minimal dependencies. Existing Darts workflows can call these models only by modifying the model name, support zero-shot/fine-tuning forecasting, uncertainty estimation, etc., and can be seamlessly used with existing data processing and evaluation tools.
+
+<FeedbackButtons slug="item:arxiv-2606.27438" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/hp-frontier-partnership" target="_blank" rel="noopener noreferrer">HP Inc. launches Frontier strategic partnership with OpenAI</a>
+
+*OpenAI*
+
+HP officially announces a "Frontier" strategic partnership with OpenAI. The two parties will expand the scale of cooperation and fully deploy AI technology in three core scenarios of HP: full-chain customer experience optimization, in-house software development, and internal enterprise operations. This partnership will help HP reduce costs and improve efficiency, upgrade the intelligence level of its products and services, and is a typical practice of consumer technology giants partnering with LLM vendors to implement commercial AI applications.
+
+<FeedbackButtons slug="item:openai-blog-hp-frontier-partnership" client:visible />
+
+## <a href="https://openai.com/index/previewing-gpt-5-6-sol" target="_blank" rel="noopener noreferrer">Previewing GPT-5.6 Sol: a next-generation model</a>
+
+*OpenAI*
+
+OpenAI recently unveiled the preview version of its next-generation LLM GPT-5.6 Sol, and has not yet announced an official launch schedule. The model focuses on upgrading three core capabilities: accuracy in handling code development tasks, ability to solve complex professional problems in scientific research scenarios, and performance in executing special tasks in the cybersecurity field. It is also equipped with OpenAI's current most advanced security technology stack, strengthening risk prevention and control capabilities while upgrading performance.
+
+<FeedbackButtons slug="item:openai-blog-previewing-gpt-5-6-sol" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener noreferrer">Statement on the US government directive to suspend access to Fable 5 and Mythos 5</a>
+
+*Anthropic*
+
+This public statement explains the latest US government export control directive: the US requires a full suspension of access to Fable 5 and Mythos 5 for all foreign nationals, with the restriction covering all non-US citizens both inside and outside the US. This is a further tightening of US export controls on cutting-edge technology, and will directly impact cross-border R&D collaboration in related fields.
+
+<FeedbackButtons slug="item:anthropic-fable-mythos-access" client:visible />
+
+## <a href="https://www.anthropic.com/news/introducing-claude-tag" target="_blank" rel="noopener noreferrer">Introducing Claude Tag</a>
+
+*Anthropic*
+
+This article introduces Claude Tag, a new Claude tool for team collaboration. The solution allows teams to customize classification tags for interaction sessions with Claude, unify the tag system across members, share and accumulate conversation assets, and quickly retrieve historical interaction content corresponding to projects, avoiding the cost of repeated queries, greatly reducing the collaboration cost for teams using Claude, and improving the overall efficiency of AI-enabled business.
+
+<FeedbackButtons slug="item:anthropic-introducing-claude-tag" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/introducing-computer-use-in-gemini-3-5-flash/" target="_blank" rel="noopener noreferrer">Introducing computer use in Gemini 3.5 Flash</a>
+
+*Google DeepMind*
+
+This article introduces the native computer operation capability added by Google to the lightweight LLM Gemini 3.5 Flash. The method opens up the end-to-end link of multimodal perception, action decision-making, and real-time feedback correction, and can simulate human keyboard and mouse operations to perform tasks across platforms. Actual tests show that its accuracy in office, information retrieval and other scenarios is 42% higher than the previous generation, latency is reduced by 60%, it can cover 90% of daily desktop operations, and the usage cost is only one-tenth of LLMs with the same capability.
+
+<FeedbackButtons slug="item:deepmind-introducing-computer-use-in-gemini-3-5-flash" client:visible />
+
+## <a href="https://deepmind.google/blog/unlocking-uk-house-building-with-ai-accelerated-planning/" target="_blank" rel="noopener noreferrer">Unlocking UK house-building with AI-accelerated planning</a>
+
+*Google DeepMind*
+
+To address the pain points of low approval efficiency and insufficient supply in UK housing construction, the UK government has launched a technical cooperation with Google DeepMind, focusing on developing an AI-driven planning approval prototype system. The solution optimizes the review and decision-making process for housing projects through AI technology, and is expected to significantly reduce approval time, remove bottlenecks in the housing construction process, and provide feasible technical support for accelerating the delivery of housing supply in the UK.
+
+<FeedbackButtons slug="item:deepmind-unlocking-uk-house-building-with-ai-accelerated-planning" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/vllm-jobs" target="_blank" rel="noopener noreferrer">Run a vLLM Server on HF Jobs in One Command</a>
+
+*Hugging Face*
+
+This tool supports fast deployment of vLLM high-throughput LLM inference services on the Hugging Face (HF) Jobs platform with just one command. It adapts to the resource scheduling logic of the HF platform, automatically completes the entire process of environment configuration, dependency adaptation, service debugging and launch, no complex manual operations are required, greatly lowering the threshold for deploying LLM inference services, and making it convenient for developers to quickly build inference applications.
+
+<FeedbackButtons slug="item:hf-blog-vllm-jobs" client:visible />
+
+## <a href="https://huggingface.co/blog/allenai/hybrid-token-prediction" target="_blank" rel="noopener noreferrer">Which tokens does a hybrid model predict better?</a>
+
+*Hugging Face*
+
+Only the paper title is currently provided, and the full English content of the abstract is not attached, so translation and summarization cannot be completed~ Please supplement the full original text of the paper abstract, and I will strictly organize its core methods and experimental conclusions as required, and output a concise, clear summary of around 120 words with highlighted key points.
+
+<FeedbackButtons slug="item:hf-blog-hybrid-token-prediction" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This paper studies AI alignment from the perspective of virtue ethics, refutes the traditional assumption that "rational agents need to be anchored to a fixed final goal", and proposes that human rationality does not originate from goal orientation, but from the adaptation of actions to a practice network including action tendencies and evaluation standards. To achieve adaptation of AI to human collaboration, the AI decision-making logic needs to match human practice logic, which is related to both ethical alignment and core security performance.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-06-24-scaling-laws/" target="_blank" rel="noopener noreferrer">Scaling Laws, Carefully</a>
+
+*Lilian Weng*
+
+This paper focuses on the core empirical finding of deep learning - the scaling law: training loss decreases in a power-law manner as model size, dataset size, and computing investment increase, showing a linear relationship on a log-log plot. This law can be used as a framework to describe the correlation between computing volume, loss, model and data scale, and its core role is to guide the optimal allocation of limited computing resources between model and data investment.
+
+<FeedbackButtons slug="item:lillog-2026-06-24-scaling-laws" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/06/439746.html" target="_blank" rel="noopener noreferrer">Token Embezzlement is Emerging as a New Risk for AI Commercialization</a>
+
+*QbitAI*
+
+Currently, AI agents have moved from technical demonstrations to commercial scenarios, and have begun to participate in transactions as new economic entities. The derived "token embezzlement" is a new risk for AI commercialization that is currently seriously underestimated. Different from traditional black industry fraud that steals funds, attackers target the inference resources and token quotas of AI enterprises, mostly by exploiting free trials and registering large numbers of fake accounts. Stripe data shows that this type of abuse has doubled in half a year, 1/6 of registrations are malicious, and agents consume computing power quickly, so enterprise losses are far higher than those from ordinary malicious exploitation of SaaS services.
+
+<FeedbackButtons slug="item:qbitai-439746" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/439728.html" target="_blank" rel="noopener noreferrer">Domestic Solution for Space Computing: Photons are More Efficient! Musk and Jensen Huang's Routes Are Too Roundabout</a>
+
+*QbitAI*
+
+Currently, space computing has become a hotspot of global competition, and traditional silicon-based chips face core pain points such as high-energy particle interference and difficult heat dissipation in space. Domestic company Guangbenwei Technology, in cooperation with Dongfang Tiansuan, has taken a different approach, launching the development of the world's first space-based optical computing payload. Relying on the charge-free property of photons, it naturally avoids radiation problems. Compared with Musk's route of deploying optical communication, it directly enters the computing link to explore a more suitable computing solution for space.
+
+<FeedbackButtons slug="item:qbitai-439728" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/439603.html" target="_blank" rel="noopener noreferrer">For the Hugging Face Top Model Leaderboard, I Only Admire yuxinlu1 Now</a>
+
+*QbitAI*
+
+The top positions of the Hugging Face popular model leaderboard have always been occupied by star products from major manufacturers such as Zhipu AI, Baidu, and NVIDIA. Recently, two 12B GGUF models from individual developer yuxinlu1 have successfully stood out: the core is distilling the programming reasoning ability of Fable 5 into a lightweight architecture that can run locally. The highest download volume reached 536,000, it once topped the list beating GLM-5.2, and was also publicly recommended by the head of Zhipu AI.
+
+<FeedbackButtons slug="item:qbitai-439603" client:visible />
