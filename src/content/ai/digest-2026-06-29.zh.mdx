@@ -1,0 +1,215 @@
+---
+lang: zh
+translationKey: digest-2026-06-29
+title: "AI 每日精选 · 2026-06-29"
+description: "21 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-06-29
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">头部AI厂商动态密集，OpenAI披露GPT-5.6 Sol预览、联惠普合作，Anthropic、DeepMind齐推新功能</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">机器人仿真、多模态对齐、时序预测、交通优化等多领域AI前沿研究集中发布</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">AI产业新议题涌现，词元盗用成商业化新风险，光子太空算力、大模型榜单引热议</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤝厂商动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥模型上新</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠学术研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡产业观察</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡技术应用</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.28128" target="_blank" rel="noopener noreferrer">PhysisForcing: Physics Reinforced World Simulator for Robotic Manipulation</a>
+
+*HF ★ 10 · Peiwen Zhang, Yufan Deng, Shangkun Sun… · [HF 镜像](https://huggingface.co/papers/2606.28128)*
+
+针对现有机器人操作领域的视频生成类世界模拟器易出现运动不连续、交互不符合物理逻辑的缺陷，本文提出PhysisForcing训练框架，联合优化像素级轨迹对齐、语义级关系对齐损失，强化生成内容的物理一致性。多基准测试显示其性能显著优于基线，还可提升机器人闭环规划成功率与下游操控策略效果。
+
+<FeedbackButtons slug="item:arxiv-2606.28128" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.22873" target="_blank" rel="noopener noreferrer">SingGuard: A Policy-Adaptive Multimodal LLM Guardrail with Dynamic Reasoning</a>
+
+*HF ★ 8 · SingGuard Team · [HF 镜像](https://huggingface.co/papers/2606.22873)*
+
+针对现有多模态大模型安全护栏适配性差、难以适配动态管控政策的问题，本文提出政策自适应的多模态护栏SingGuard：将管控政策作为运行时输入，设置快/混合/慢三档推理模式，搭配快慢解耦强化学习优化，还配套覆盖80余类细粒度风险的多模态安全基准。其在35个数据集上F1均达SOTA，政策动态切换时规则遵循准确率提升近10个点。
+
+<FeedbackButtons slug="item:arxiv-2606.22873" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.27974" target="_blank" rel="noopener noreferrer">ProMSA:Progressive Multimodal Search Agents for Knowledge-Based Visual Question Answering</a>
+
+*HF ★ 5 · ZhengXian Wu, Hangrui Xu, Kai Shi… · [HF 镜像](https://huggingface.co/papers/2606.27974)*
+
+针对现有知识型视觉问答（KB-VQA）采用固定检索生成流水线、推理无自适应能力的缺陷，本文提出渐进式多模态搜索智能体ProMSA：可在预算约束下迭代选择图像/文本检索或停止，自带去重逻辑；训练先经拒绝采样SFT学习工具调用规范，再用TN-GSPO序列级强化学习优化。实验显示其在两类公开数据集上，检索及端到端精度均优于主流RAG、智能体基线。
+
+<FeedbackButtons slug="item:arxiv-2606.27974" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.27608" target="_blank" rel="noopener noreferrer">Qwen-Image-2.0-RL Technical Report</a>
+
+*HF ★ 3 · Yixian Xu, Kaiyuan Gao, Yuxiang Chen… · [HF 镜像](https://huggingface.co/papers/2606.27608)*
+
+本报告提出Qwen-Image-2.0-RL训练管线，针对文生图、图像编辑任务构建多维度复合奖励模型，搭建GRPO强化学习训练框架，结合同策略蒸馏合并两类专项策略，优化原扩散模型的视觉质量与指令遵循能力。实测显示其基准得分、文生图及编辑竞技场Elo分均明显提升，综合表现显著优于基线模型。
+
+<FeedbackButtons slug="item:arxiv-2606.27608" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.27595" target="_blank" rel="noopener noreferrer">Ko-WideSearch: A Korean Breadth-Search Benchmark for Exhaustive Set Enumeration by Web Agents</a>
+
+*HF ★ 2 · Minbyul Jeong · [HF 镜像](https://huggingface.co/papers/2606.27595)*
+
+现有Web智能体基准多侧重深度推理，缺乏面向穷尽枚举集合属性的非英语广度搜索评测集。本文提出韩语基准Ko-WideSearch，经自动合成验证流水线构建，覆盖16类共228个属性表、分3个难度层级。测试20款智能体发现：集合召回率高但行级属性准确率低，难度升高性能下降，自由文本单元格取值是主要难点。
+
+<FeedbackButtons slug="item:arxiv-2606.27595" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.27381" target="_blank" rel="noopener noreferrer">OverFlowLight: Real-Time Gridlock Prevention and Traffic Signal Optimization for Urban Intersections</a>
+
+*Mingyuan Li, Boyang Huang, Tianqi Jiang…*
+
+针对现有城市交通信号控制算法侧重吞吐量、高峰时段易引发排队溢流甚至连锁死锁的痛点，本文提出OverFlowLight实时信控框架：依托多模态传感实时检测溢流，动态插入清溢相位，采用规则快速干预+强化学习长周期优化的混合控制架构。三地43个路口实测显示，其溢流事件降60.4%，路网吞吐量升18.2%，大幅减少人工干预，是首个可规模化落地的主动防堵信控方案。（共119字）
+
+<FeedbackButtons slug="item:arxiv-2606.27381" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.27385" target="_blank" rel="noopener noreferrer">RANSAC Scoring Done Right</a>
+
+*James Pritts, Felix Seegr\"aber, Kevin K\"oser*
+
+本文针对传统RANSAC类算法打分依赖人工设定内点尺度阈值、鲁棒性差的痛点，反转常规推理顺序，结合共轭逆伽马先验解析边缘化内点尺度，提出首款不含内点尺度参数的RANSAC打分函数，可O(NlogN)高效计算。近7万组两视图图像对测试显示，其阈值误配时性能稳定，小样本精度远超现有SOTA，适配数据丰缺不同场景。
+
+<FeedbackButtons slug="item:arxiv-2606.27385" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.27438" target="_blank" rel="noopener noreferrer">Unified Zero-Shot Time Series Forecasting: A Darts Foundation</a>
+
+*Zhihao Dai, Dennis Bader, Alain Gysi*
+
+针对当前时序零样本预报基础模型接口碎片化、难与通用工具兼容的痛点，广受欢迎的开源时序分析库Darts推出统一FoundationModel类集，适配Chronos-2、TimesFM 2.5等4款主流时序基模，提供标准化全周期接口且依赖极简。现有Darts工作流仅需修改模型名即可调用，支持零样本/微调预报、不确定度估计等，可无缝搭配原有数据处理、评测工具使用。
+
+<FeedbackButtons slug="item:arxiv-2606.27438" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/hp-frontier-partnership" target="_blank" rel="noopener noreferrer">HP Inc. launches Frontier strategic partnership with OpenAI</a>
+
+*OpenAI*
+
+惠普官方宣布与OpenAI达成“前沿”战略合作伙伴关系，双方将扩大合作规模，在惠普的全链路客户体验优化、自有软件开发、企业内部运营三大核心场景全面部署AI技术。本次合作可帮助惠普降本提效、升级产品及服务的智能化水平，也是消费科技巨头联合大模型厂商落地AI商用的典型实践。
+
+<FeedbackButtons slug="item:openai-blog-hp-frontier-partnership" client:visible />
+
+## <a href="https://openai.com/index/previewing-gpt-5-6-sol" target="_blank" rel="noopener noreferrer">Previewing GPT-5.6 Sol: a next-generation model</a>
+
+*OpenAI*
+
+OpenAI近日公开下一代大模型GPT-5.6 Sol的预览版本，目前尚未公布正式上线时间表。该模型重点升级三类核心能力：代码开发任务处理精度、科研场景复杂专业问题求解能力、网络安全领域专项任务执行效果，同时配套搭载OpenAI当前最先进的安全技术栈，在性能升级的同时同步强化风险防控能力。
+
+<FeedbackButtons slug="item:openai-blog-previewing-gpt-5-6-sol" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener noreferrer">Statement on the US government directive to suspend access to Fable 5 and Mythos 5</a>
+
+*Anthropic*
+
+这份公开声明针对美国政府最新出口管制指令作出说明：美方要求全面暂停所有外籍人员对Fable 5、Mythos 5两款产品的访问权限，限制范围覆盖身处美国境内外的所有非美籍人士，属于美国前沿技术出口管制的进一步收紧，将直接冲击相关领域跨国研发协作。
+
+<FeedbackButtons slug="item:anthropic-fable-mythos-access" client:visible />
+
+## <a href="https://www.anthropic.com/news/introducing-claude-tag" target="_blank" rel="noopener noreferrer">Introducing Claude Tag</a>
+
+*Anthropic*
+
+本文推出面向团队协作的Claude全新使用工具Claude Tag。该方案支持团队为与Claude的交互会话自定义分类标签，可统一跨成员标签体系、共享沉淀对话资产，还能快速检索项目对应历史交互内容，避免重复提问消耗，大幅降低团队使用Claude的协作成本，提升AI赋能业务的整体效率。
+
+<FeedbackButtons slug="item:anthropic-introducing-claude-tag" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/introducing-computer-use-in-gemini-3-5-flash/" target="_blank" rel="noopener noreferrer">Introducing computer use in Gemini 3.5 Flash</a>
+
+*Google DeepMind*
+
+本文介绍谷歌为轻量级大模型Gemini 3.5 Flash新增的原生计算机操作能力。方法上打通多模态感知、动作决策、实时反馈校正的端到端链路，可模拟人类键鼠操作跨平台执行任务。实测其办公、信息检索等场景准确率较前代提升42%，延迟降60%，可覆盖九成日常桌面操作，使用成本仅为同能力大模型的十分之一。
+
+<FeedbackButtons slug="item:deepmind-introducing-computer-use-in-gemini-3-5-flash" client:visible />
+
+## <a href="https://deepmind.google/blog/unlocking-uk-house-building-with-ai-accelerated-planning/" target="_blank" rel="noopener noreferrer">Unlocking UK house-building with AI-accelerated planning</a>
+
+*Google DeepMind*
+
+针对英国住房建设审批效率低、供给不足的痛点，英国政府联合谷歌DeepMind开展技术合作，核心是研发AI驱动的规划审批原型系统。该方案通过AI技术优化住房项目评审决策流程，预期将大幅压缩审批耗时，扫清建房流程堵点，为加快英国住房供给落地提供可行的技术支撑。
+
+<FeedbackButtons slug="item:deepmind-unlocking-uk-house-building-with-ai-accelerated-planning" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/vllm-jobs" target="_blank" rel="noopener noreferrer">Run a vLLM Server on HF Jobs in One Command</a>
+
+*Hugging Face*
+
+本工具支持仅用一行指令，即可在Hugging Face（HF）Jobs平台快速部署vLLM高吞吐大模型推理服务。其适配HF平台资源调度逻辑，自动完成环境配置、依赖适配、服务调试上线全流程，无需复杂手动操作，大幅降低大模型推理服务部署门槛，方便开发者快速搭建推理应用。
+
+<FeedbackButtons slug="item:hf-blog-vllm-jobs" client:visible />
+
+## <a href="https://huggingface.co/blog/allenai/hybrid-token-prediction" target="_blank" rel="noopener noreferrer">Which tokens does a hybrid model predict better?</a>
+
+*Hugging Face*
+
+当前您仅提供了论文标题，未附上该摘要的完整英文正文内容，无法完成翻译提炼工作~ 请您补充该论文摘要的完整原文，我会严格按要求梳理其核心方法、实验结论，输出120字左右重点突出、简洁清晰的中文总结。
+
+<FeedbackButtons slug="item:hf-blog-hybrid-token-prediction" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+本文从德性伦理视角研究AI对齐问题，反驳“理性智能体需锚定固定最终目标”的传统假设，提出人类理性并非源于目标导向，而是行动适配包含行动倾向、评价标准的实践网络。要实现AI与人类协作适配，需让AI决策逻辑匹配人类实践逻辑，这同时关乎伦理对齐与核心安全性能。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-06-24-scaling-laws/" target="_blank" rel="noopener noreferrer">Scaling Laws, Carefully</a>
+
+*Lilian Weng*
+
+本文聚焦深度学习核心实证发现——缩放定律：训练损失随模型规模、数据集规模、计算投入提升呈幂律下降，在双对数坐标下表现为直线关系。该定律可作为描述计算量、损失、模型与数据规模间关联的框架，核心作用是指导在模型和数据投入之间最优分配有限计算资源。
+
+<FeedbackButtons slug="item:lillog-2026-06-24-scaling-laws" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/06/439746.html" target="_blank" rel="noopener noreferrer">“词元盗用”正在成为AI商业化面临的新风险</a>
+
+*量子位*
+
+当前AI Agent已从技术演示落地商业场景，开始作为新型经济主体参与交易，随之衍生的「词元盗用」是AI商业化当前被严重低估的新风险。和传统黑产盗刷资金不同，攻击者目标是AI企业的推理资源、Token额度，多通过薅免费试用、批量注册虚号作案。Stripe数据显示半年内这类滥用翻倍，1/6注册为恶意，且Agent算力消耗快，企业损失远高于普通SaaS恶意薅羊毛。
+
+<FeedbackButtons slug="item:qbitai-439746" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/439728.html" target="_blank" rel="noopener noreferrer">太空算力的国产答案：用光子更高效！马斯克和老黄都太绕了</a>
+
+*量子位*
+
+当前太空算力已成全球竞争热点，传统硅基芯片在太空面临高能粒子干扰、散热难等核心痛点。国内光本位科技联合东方天算另辟蹊径，启动全球首个天基光计算载荷研制，依托光子无电荷特性天然规避辐射问题，相较马斯克布局光通信的路线，直接切入计算环节，探索更适配太空的算力方案。
+
+<FeedbackButtons slug="item:qbitai-439728" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/439603.html" target="_blank" rel="noopener noreferrer">抱抱脸模型TOP榜，我现在只服yuxinlu1</a>
+
+*量子位*
+
+Hugging Face模型热榜前排向来被智谱、百度、英伟达等大厂的明星产品占据，近期个人开发者yuxinlu1的两款12B GGUF模型成功突围：核心是将Fable 5的编程推理能力蒸馏至可本地运行的轻量架构，最高下载量达53.6万，曾一度霸榜力压GLM-5.2，还获智谱负责人公开推荐。
+
+<FeedbackButtons slug="item:qbitai-439603" client:visible />
