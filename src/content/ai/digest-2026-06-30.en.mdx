@@ -1,0 +1,215 @@
+---
+lang: en
+translationKey: digest-2026-06-30
+title: "Daily AI Picks · 2026-06-30"
+description: "21 papers · multi-source aggregation + AI summaries"
+date: 2026-06-30
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's content in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Cutting-edge AI research released across multiple platforms, covering areas including parameter efficiency optimization, KV cache compression, Agent capability upgrades, etc.</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Frequent updates from leading AI vendors: Gemini adds computer operation capabilities, Anthropic is ordered by the US to suspend access to two of its models</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Frequent advances in China's AI sector: breakthrough in latent space world model, Zhipu AI's Tang Jie discusses enterprise management logic in the AI era</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Big Tech Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏭 Industrial Applications</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💬 Industry Insights</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Technological Breakthroughs</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.30616" target="_blank" rel="noopener noreferrer">Scaling the Horizon, Not the Parameters: Reaching Trillion-Parameter Performance with a 35B Agent</a>
+
+*HF ★ 25 · Lei Bai, Zongsheng Cao, Yang Chen… · [HF Mirror](https://huggingface.co/papers/2606.30616)*
+
+This paper proposes Agents-A1, a 35B parameter MoE agent model. Instead of relying on parameter scaling, it expands the agent's horizon (long trajectories + heterogeneous capabilities), is supported by long-range knowledge and action infrastructure, and is trained using a three-stage training, multi-teacher domain routing distillation scheme. It matches or even outperforms trillion-parameter models from Kimi and DeepSeek on multiple long-range agent benchmarks, providing a viable new path for cost reduction and efficiency improvement for large models.
+
+<FeedbackButtons slug="item:arxiv-2606.30616" client:visible />
+
+## <a href="https://arxiv.org/abs/2502.16886" target="_blank" rel="noopener noreferrer">ReFreeKV: Towards Threshold-Free KV Cache Compression</a>
+
+*HF ★ 18 · Xuanfan Ni, Liyan Xu, Chenyang Lyu… · [HF Mirror](https://huggingface.co/papers/2502.16886)*
+
+Existing KV cache pruning methods for large model inference mostly rely on input-specific threshold tuning. In open-domain scenarios, input domains and lengths vary widely, making threshold selection difficult and easily leading to sharp performance drops. This paper proposes ReFreeKV, the first threshold-free KV compression solution, which can adaptively allocate cache budgets while maintaining full-cache level inference performance. Its effectiveness and efficiency are verified across 13 datasets covering different tasks, lengths, and model sizes, and the code has been open-sourced. (Total 119 characters)
+
+<FeedbackButtons slug="item:arxiv-2502.16886" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.24143" target="_blank" rel="noopener noreferrer">AsyncOPD: How Stale Can On-Policy Distillation Be?</a>
+
+*HF ★ 14 · Wonjun Kang, Kevin Galim, Seunghyuk Oh… · [HF Mirror](https://huggingface.co/papers/2606.24143)*
+
+To address the issues of time-consuming sampling for on-policy distillation (OPD) in large model post-training and the lack of research on policy staleness in asynchronous implementations, this paper systematically verifies that forward KL is robust to stale data while reverse KL is easily affected. It adopts targeted optimizations including recalculating reverse KL signals during training and multi-sample Monte Carlo optimization. The open-sourced AsyncOPD pipeline improves throughput by 1.6-3.8x compared to synchronous solutions, with comparable accuracy.
+
+<FeedbackButtons slug="item:arxiv-2606.24143" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.29445" target="_blank" rel="noopener noreferrer">Bridging VideoQA and Video-Guided Agentic Tasks via Generalized Keyframe Extraction</a>
+
+*HF ★ 10 · Sunqi Fan, Qingle Liu, Runqi Yin… · [HF Mirror](https://huggingface.co/papers/2606.29445)*
+
+Existing video understanding evaluations for multimodal large models mostly focus on shallow perception, and rarely verify whether skills learned from video tutorials can be applied to downstream long-cycle agent tasks. To address this, this paper releases the VG-GUIBench benchmark, which can evaluate the ability of GUI agents to follow videos to complete interactive tasks. It further proposes TASKER, a keyframe extraction algorithm that combines task relevance and scene dynamics, which significantly outperforms baselines on both video question answering and video-guided agent tasks, improving accuracy by 2.0% and 1.8% respectively on the two types of public datasets.
+
+<FeedbackButtons slug="item:arxiv-2606.29445" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.30251" target="_blank" rel="noopener noreferrer">TACO: Tool-Augmented Credit Optimization for Agentic Tool Use</a>
+
+*HF ★ 9 · Mingkuan Feng, Jinyang Wu, Hao Gu… · [HF Mirror](https://huggingface.co/papers/2606.30251)*
+
+To address the pain point in fine-grained visual QA scenarios where the reward for multimodal agents' code tool calls cannot accurately distinguish value, has inaccurate attribution, or requires additional discriminator models, this paper proposes TACO, a tool-augmented credit optimization method. As a variant of GRPO, it adopts dual pathways: self-supervised discriminator-free single tool contribution evaluation, and parameter-free result reward routing. After two-stage training, it achieves stable accuracy improvements across multiple benchmarks, and can realize on-demand tool calling.
+
+<FeedbackButtons slug="item:arxiv-2606.30251" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.27381" target="_blank" rel="noopener noreferrer">OverFlowLight: Real-Time Gridlock Prevention and Traffic Signal Optimization for Urban Intersections</a>
+
+*Mingyuan Li, Boyang Huang, Tianqi Jiang…*
+
+Existing urban traffic signal control algorithms focus heavily on throughput, making queue overflow and cascading congestion common during peak hours. To address this, this paper proposes the OverFlowLight real-time signal control framework: it integrates multi-sensor data to identify overflow in real time, dynamically inserts overflow-clearing phases, and adopts a hybrid control architecture of rule-based fast intervention + reinforcement learning for long-term optimization. The solution has been deployed at 43 intersections in three cities, reducing overflow events by 60.4% compared to the baseline, improving road network throughput by 18.2%, and significantly reducing the need for manual intervention.
+
+<FeedbackButtons slug="item:arxiv-2606.27381" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.27385" target="_blank" rel="noopener noreferrer">RANSAC Scoring Done Right</a>
+
+*James Pritts, Felix Seegräber, Kevin Köser*
+
+Existing RANSAC variant scoring relies on user-preset inlier scale parameters, which is a major pain point. This paper proposes the first fully scale-parameter-free RANSAC score: it reverses conventional inference logic, introduces a conjugate inverse gamma prior for fixed inlier partitions, and analytically marginalizes out the scale parameter, making it adaptable to scenarios with different data volumes, with a computational complexity of O(NlogN). Benchmark tests on nearly 70,000 image pairs show that its performance exceeds existing SOTA, it is more robust when thresholds are misconfigured, and the number of verification samples required for small datasets is only 1% of that of the baseline.
+
+<FeedbackButtons slug="item:arxiv-2606.27385" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.27438" target="_blank" rel="noopener noreferrer">Unified Zero-Shot Time Series Forecasting: A Darts Foundation</a>
+
+*Zhihao Dai, Dennis Bader, Alain Gysi*
+
+Existing zero-shot time series forecasting foundation models have fragmented interfaces that are difficult to integrate with general toolchains. To address this pain point, popular open-source time series analysis Python library Darts has launched a unified FoundationModel class set, which is compatible with mainstream time series foundation models including Chronos-2 and TimesFM 2.5, and provides standardized full-process interfaces. Existing Darts workflows can call these models simply by modifying the model name, supporting capabilities including zero-shot forecasting, fine-tuning, and uncertainty estimation, greatly lowering the threshold for foundation model deployment. (Total 118 characters)
+
+<FeedbackButtons slug="item:arxiv-2606.27438" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/mapping-ai-jobs-transition-eu" target="_blank" rel="noopener noreferrer">Mapping Europe’s AI Workforce Opportunity</a>
+
+*OpenAI*
+
+The newly released OpenAI report *Mapping Europe's AI Workforce Opportunity* focuses on the reshaping effect of AI on the EU job market. Through a comprehensive review of all occupations, it identifies three types of impacts: some positions face the risk of automation replacement, some will see large-scale expansion, and others will only have adjusted workflows without significant changes in headcount. The report provides a reference for the EU to formulate employment adaptation policies and promote workforce transformation.
+
+<FeedbackButtons slug="item:openai-blog-mapping-ai-jobs-transition-eu" client:visible />
+
+## <a href="https://openai.com/index/hp-frontier-partnership" target="_blank" rel="noopener noreferrer">HP Inc. launches Frontier strategic partnership with OpenAI</a>
+
+*OpenAI*
+
+HP officially announced a Frontier-level strategic partnership with OpenAI. As a large-scale implementation of HP's AI layout, the two parties will deeply integrate OpenAI's cutting-edge large model capabilities into three core scenarios: full-link customer experience optimization, full-process software development efficiency improvement, and enterprise-level operation scenario empowerment. This will cover the needs of both consumer and enterprise customers, and strengthen the market competitiveness of HP's AI ecosystem.
+
+<FeedbackButtons slug="item:openai-blog-hp-frontier-partnership" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener noreferrer">Statement on the US government directive to suspend access to Fable 5 and Mythos 5</a>
+
+*Anthropic*
+
+This statement is issued in response to the US government's directive restricting access to Fable 5 and Mythos 5: the US has introduced new export control regulations, explicitly suspending access to the two products for all foreign nationals, regardless of whether they are located inside or outside the US. This is the latest measure by the US to tighten control over cutting-edge technology, with an extremely wide coverage, and will have a direct negative impact on international technological cooperation in relevant fields.
+
+<FeedbackButtons slug="item:anthropic-fable-mythos-access" client:visible />
+
+## <a href="https://www.anthropic.com/news/introducing-claude-tag" target="_blank" rel="noopener noreferrer">Introducing Claude Tag</a>
+
+*Anthropic*
+
+This article introduces Claude Tag, a new supporting tool for Claude built specifically for enterprise team collaboration scenarios. The tool allows team users to add custom tags to Claude's prompt templates, high-quality outputs, and interactive sessions, enabling classification and archiving of the team's large model usage assets and cross-member reuse. It can significantly reduce the cost of repeated queries, and greatly improve the work efficiency of multi-person collaborative use of large models.
+
+<FeedbackButtons slug="item:anthropic-introducing-claude-tag" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/introducing-computer-use-in-gemini-3-5-flash/" target="_blank" rel="noopener noreferrer">Introducing computer use in Gemini 3.5 Flash</a>
+
+*Google DeepMind*
+
+Google's newly released Gemini 3.5 Flash adds native "computer use" capability. It can independently simulate keyboard and mouse operations without custom plugins, is compatible with multiple types of desktop systems, and can automatically complete repetitive office tasks such as file organization and data entry. Tests show that its efficiency in completing complex office workflows is 40% higher than similar models, with a 27% lower error rate. Ordinary users can access automated office capabilities at a low threshold without writing scripts.
+
+<FeedbackButtons slug="item:deepmind-introducing-computer-use-in-gemini-3-5-flash" client:visible />
+
+## <a href="https://deepmind.google/blog/unlocking-uk-house-building-with-ai-accelerated-planning/" target="_blank" rel="noopener noreferrer">Unlocking UK house-building with AI-accelerated planning</a>
+
+*Google DeepMind*
+
+To address the pain point of long planning approval cycles and slow supply delivery in the UK's housing construction process, the UK government has partnered with Google DeepMind to jointly develop an AI-driven planning decision prototype system. The system relies on AI technology to optimize the efficiency of evaluation and judgment in the planning process, with the core goal of greatly reducing the planning approval time for housing projects, removing procedural obstacles to accelerating housing supply.
+
+<FeedbackButtons slug="item:deepmind-unlocking-uk-house-building-with-ai-accelerated-planning" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/discoformer" target="_blank" rel="noopener noreferrer">DiScoFormer: One transformer for density and score, across distributions</a>
+
+*Hugging Face*
+
+This paper proposes DiScoFormer, a cross-distribution dual-task Transformer architecture. By designing a decoding structure and joint training strategy adapted to dual tasks, a single model can simultaneously fit probability density and score functions, eliminating the need for separate modeling for the two types of tasks, and can also generalize to different data distributions. Experiments show that it outperforms existing single-task models on tasks such as density estimation and generative sampling, with higher computational efficiency.
+
+<FeedbackButtons slug="item:hf-blog-discoformer" client:visible />
+
+## <a href="https://huggingface.co/blog/vllm-jobs" target="_blank" rel="noopener noreferrer">Run a vLLM Server on HF Jobs in One Command</a>
+
+*Hugging Face*
+
+This technical solution addresses the pain points of cumbersome steps and high configuration thresholds for deploying vLLM large model inference services on the Hugging Face (HF) Jobs platform. It encapsulates the entire process including environment adaptation, resource scheduling, service startup, and port mapping into a single execution command. Users do not need to manually adjust configurations, and can spin up a high-throughput vLLM inference service compatible with various open-source models in the HF ecosystem in minutes, greatly lowering the deployment threshold.
+
+<FeedbackButtons slug="item:hf-blog-vllm-jobs" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This AI alignment research from the perspective of virtue ethics refutes the traditional belief that "rational agents require preset ultimate goals", pointing out that the rationality of human actions does not come from goal orientation, but from adaptation to a practical network composed of actions, evaluation standards, resources, etc. The study proposes that only by making AI's decision-making logic match this practical "type characteristic" of humans can it be aligned with both human ethical requirements and core security attributes at the same time.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-06-24-scaling-laws/" target="_blank" rel="noopener noreferrer">Scaling Laws, Carefully</a>
+
+*Lilian Weng*
+
+This article explains the core empirical conclusion of deep learning, the "scaling law": its core rule is that training loss decreases in a power-law fashion as model size, dataset size, and total compute increase, appearing as a straight line on a log-log plot. The scaling law can be used as an analytical framework for the correlation between compute, loss, models, and data, with its core value being to guide the optimal allocation of scarce compute resources between model capacity and data scale.
+
+<FeedbackButtons slug="item:lillog-2026-06-24-scaling-laws" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/06/440024.html" target="_blank" rel="noopener noreferrer">Zhipu AI's Tang Jie: Successful enterprises used to rely on management, that no longer works in the AI era</a>
+
+*QbitAI*
+
+Tang Jie, Chief Scientist at Zhipu AI and Tsinghua University professor, proposes that the ranking of core enterprise competitiveness in the AI era is: cognition > vision > technology > management, and the old experience of winning by management, products, and capital in the past is no longer applicable. Currently, AI technology iterates extremely fast, and technological backwardness can occur overnight. After organizations become AI-powered, their structures become significantly flatter, so managers must have in-depth mastery of technology to adapt to the new competitive logic.
+
+<FeedbackButtons slug="item:qbitai-440024" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/439891.html" target="_blank" rel="noopener noreferrer">World's first: latent space world model breaks through long-sequence bidirectional physical causal chain</a>
+
+*QbitAI*
+
+Embodied AI startup Boundless Dynamics has released MWA™, the world's first latent space world model equipped with a long-sequence bidirectional physical causal chain. Adopting the "latent space world model + reinforcement learning" approach, it solves the pain points of long-cycle high-precision execution and multi-scene generalization for robots. The model topped the RoboCasa GR1 leaderboard with a 75.2% success rate, beating competitors including NVIDIA. The company has completed an over $200 million angel round, and its nearly $200 million Pre-A round financing is about to close, with heavy investment from multiple top institutions.
+
+<FeedbackButtons slug="item:qbitai-439891" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/439863.html" target="_blank" rel="noopener noreferrer">Claude Mythos led Liang Wenfeng to decide to launch financing</a>
+
+*QbitAI*
+
+The direct reason for DeepSeek's launch of financing was that founder Liang Wenfeng saw the super capabilities of Claude Mythos and realized the need to reserve core resources to compete for AGI. After financing, the 300-person team will double in size, while investing in adaptation to Huawei chips. Although this has led to no new model releases for 15 months and missing the programming tool boom, Liang Wenfeng believes these short-term products deviate from the ultimate goal and are not worth heavy investment.
+
+<FeedbackButtons slug="item:qbitai-439863" client:visible />
