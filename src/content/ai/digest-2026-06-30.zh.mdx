@@ -1,0 +1,215 @@
+---
+lang: zh
+translationKey: digest-2026-06-30
+title: "AI 每日精选 · 2026-06-30"
+description: "21 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-06-30
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">多平台发布前沿AI研究，覆盖参数效率优化、KV缓存压缩、Agent能力升级等方向</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">头部AI厂商动态密集，Gemini新增电脑操作能力，Anthropic被美要求暂停两款模型访问</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内AI领域进展频出，隐空间世界模型获突破，智谱唐杰谈AI时代企业管理逻辑</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 前沿研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 大厂动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏭 产业应用</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💬 行业观点</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ 技术突破</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.30616" target="_blank" rel="noopener noreferrer">Scaling the Horizon, Not the Parameters: Reaching Trillion-Parameter Performance with a 35B Agent</a>
+
+*HF ★ 25 · Lei Bai, Zongsheng Cao, Yang Chen… · [HF 镜像](https://huggingface.co/papers/2606.30616)*
+
+本文提出35B参数量的混合专家智能体模型Agents-A1，不依赖参数扩容，而是通过拓展智能体视界（长轨迹+异构能力），配套长程知识行动基建，采用三阶段训练、多教师域路由蒸馏方案训练，在多项长程智能体基准测试中性能比肩甚至超过Kimi、DeepSeek的万亿参数模型，为大模型降本提效提供了可行新路径。
+
+<FeedbackButtons slug="item:arxiv-2606.30616" client:visible />
+
+## <a href="https://arxiv.org/abs/2502.16886" target="_blank" rel="noopener noreferrer">ReFreeKV: Towards Threshold-Free KV Cache Compression</a>
+
+*HF ★ 18 · Xuanfan Ni, Liyan Xu, Chenyang Lyu… · [HF 镜像](https://huggingface.co/papers/2502.16886)*
+
+现有大模型推理KV缓存剪枝方法多依赖输入专属阈值调优，开放域场景下输入域、长度差异大，阈值难选易导致性能骤降。本文提出首个无阈值KV压缩方案ReFreeKV，可自适应分配缓存预算，同时保持全缓存级推理性能。跨13个不同任务、长度、模型规模的数据集验证了其效果与效率，代码已开源。（共119字）
+
+<FeedbackButtons slug="item:arxiv-2502.16886" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.24143" target="_blank" rel="noopener noreferrer">AsyncOPD: How Stale Can On-Policy Distillation Be?</a>
+
+*HF ★ 14 · Wonjun Kang, Kevin Galim, Seunghyuk Oh… · [HF 镜像](https://huggingface.co/papers/2606.24143)*
+
+针对大模型后训练中同策略蒸馏（OPD）采样耗时、异步实现策略陈旧性缺乏研究的问题，本文系统验证正向KL对陈旧数据鲁棒、反向KL易受影响，针对性采用训练时重算反向KL信号、多样本蒙特卡洛优化，开源的AsyncOPD流水线吞吐量较同步方案提升1.6-3.8倍，精度持平。
+
+<FeedbackButtons slug="item:arxiv-2606.24143" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.29445" target="_blank" rel="noopener noreferrer">Bridging VideoQA and Video-Guided Agentic Tasks via Generalized Keyframe Extraction</a>
+
+*HF ★ 10 · Sunqi Fan, Qingle Liu, Runqi Yin… · [HF 镜像](https://huggingface.co/papers/2606.29445)*
+
+针对现有多模态大模型视频理解评测多聚焦浅层感知、鲜有验证其从视频教程习得技能落地下游长周期智能体任务的问题，本文发布VG-GUIBench基准，可评估GUI智能体跟随视频完成交互任务的能力。进一步提出融合任务相关性与场景动态的关键帧提取算法TASKER，在视频问答和视频引导智能体任务上均显著优于基线，两类公开数据集精度分别提升2.0%、1.8%。
+
+<FeedbackButtons slug="item:arxiv-2606.29445" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.30251" target="_blank" rel="noopener noreferrer">TACO: Tool-Augmented Credit Optimization for Agentic Tool Use</a>
+
+*HF ★ 9 · Mingkuan Feng, Jinyang Wu, Hao Gu… · [HF 镜像](https://huggingface.co/papers/2606.30251)*
+
+针对细粒度视觉问答场景下多模态智能体代码工具调用奖励无法精准区分价值、归因不准或需额外判别模型的痛点，提出工具增强信用优化方法TACO。作为GRPO变体，它采用自监督无判别器单工具贡献评估、无参结果奖励路由双通路，经两阶段训练，多基准测试准确率稳定提升，可实现工具按需调用。
+
+<FeedbackButtons slug="item:arxiv-2606.30251" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.27381" target="_blank" rel="noopener noreferrer">OverFlowLight: Real-Time Gridlock Prevention and Traffic Signal Optimization for Urban Intersections</a>
+
+*Mingyuan Li, Boyang Huang, Tianqi Jiang…*
+
+针对现有城市交通信控算法侧重吞吐量、高峰易发生排队溢出引发连片拥堵的问题，本文提出OverFlowLight实时信控框架：融合多传感数据实时识别溢出，动态插入清溢相位，采用规则快速干预+强化学习长程优化的混合控制架构。该方案已在三城43个路口落地，相比基线减少60.4%溢出事件，提升18.2%路网吞吐量，大幅降低人工干预需求。
+
+<FeedbackButtons slug="item:arxiv-2606.27381" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.27385" target="_blank" rel="noopener noreferrer">RANSAC Scoring Done Right</a>
+
+*James Pritts, Felix Seegr\"aber, Kevin K\"oser*
+
+针对现有RANSAC变体得分依赖用户预设内点尺度参数的痛点，本文提出首个完全不含尺度参数的RANSAC得分：反转常规推理逻辑，对固定内点分区引入共轭逆伽马先验，解析边际化消去尺度参数，可适配不同数据量场景，计算复杂度O(NlogN)。近7万对图像基准测试表明，其性能超现有SOTA，阈值误设时鲁棒性更强，小数据下所需验证样本仅为基线的1%。
+
+<FeedbackButtons slug="item:arxiv-2606.27385" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.27438" target="_blank" rel="noopener noreferrer">Unified Zero-Shot Time Series Forecasting: A Darts Foundation</a>
+
+*Zhihao Dai, Dennis Bader, Alain Gysi*
+
+针对现有时序零样本预测基模接口碎片化、难与通用工具链集成的痛点，流行开源时序分析Python库Darts推出统一FoundationModel类集，适配Chronos-2、TimesFM 2.5等主流时序基模，提供标准化全流程接口。原有Darts工作流仅需修改模型名即可调用，支持零样本预测、微调、不确定性估计等能力，大幅降低基模落地门槛。（全文118字）
+
+<FeedbackButtons slug="item:arxiv-2606.27438" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/mapping-ai-jobs-transition-eu" target="_blank" rel="noopener noreferrer">Mapping Europe’s AI Workforce Opportunity</a>
+
+*OpenAI*
+
+最新发布的OpenAI《绘制欧洲AI劳动力机遇图》报告，聚焦AI对欧盟就业市场的重塑效应，通过全域职业梳理明确三类影响：部分岗位面临自动化替代风险，部分将迎来规模扩张，还有部分仅调整工作流程、无大幅岗位增减，为欧盟制定就业适配政策、推进劳动力转型提供参考。
+
+<FeedbackButtons slug="item:openai-blog-mapping-ai-jobs-transition-eu" client:visible />
+
+## <a href="https://openai.com/index/hp-frontier-partnership" target="_blank" rel="noopener noreferrer">HP Inc. launches Frontier strategic partnership with OpenAI</a>
+
+*OpenAI*
+
+惠普正式官宣与OpenAI达成Frontier层级战略合作伙伴关系，作为惠普AI布局的规模化落地动作，双方将把OpenAI前沿大模型能力深度嵌入三大核心场景：全链路客户体验优化、软件开发全流程提效、企业级运营场景赋能，可覆盖消费端及企业级客户需求，强化惠普AI生态的市场竞争力。
+
+<FeedbackButtons slug="item:openai-blog-hp-frontier-partnership" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener noreferrer">Statement on the US government directive to suspend access to Fable 5 and Mythos 5</a>
+
+*Anthropic*
+
+本声明围绕美国政府的Fable 5、Mythos 5访问限制指令发布：美方出台出口管制新规，明确无论身处美国境内或境外的所有外籍人士，一律被暂停访问上述两款产品的权限。此举是美国收紧前沿科技管制的最新举措，覆盖范围极广，将对相关领域的国际技术合作产生直接负面影响。
+
+<FeedbackButtons slug="item:anthropic-fable-mythos-access" client:visible />
+
+## <a href="https://www.anthropic.com/news/introducing-claude-tag" target="_blank" rel="noopener noreferrer">Introducing Claude Tag</a>
+
+*Anthropic*
+
+本论文介绍专为企业团队协作场景打造的全新Claude配套使用工具Claude Tag。该工具支持团队用户为Claude的Prompt模板、优质输出、交互会话打自定义标签，实现团队大模型使用资产的分类归档与跨成员复用，可显著降低重复提问成本，大幅提升多人协同使用大模型的工作效率。
+
+<FeedbackButtons slug="item:anthropic-introducing-claude-tag" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/introducing-computer-use-in-gemini-3-5-flash/" target="_blank" rel="noopener noreferrer">Introducing computer use in Gemini 3.5 Flash</a>
+
+*Google DeepMind*
+
+谷歌新发布的Gemini 3.5 Flash新增原生「计算机使用」能力，无需定制插件即可自主模拟键鼠操作，适配多类桌面系统，可自动完成文件整理、数据录入等重复性办公任务。实测其复杂办公流程完成效率较同类模型高40%、错误率低27%，普通用户无需编写脚本即可低门槛调用自动化办公能力。
+
+<FeedbackButtons slug="item:deepmind-introducing-computer-use-in-gemini-3-5-flash" client:visible />
+
+## <a href="https://deepmind.google/blog/unlocking-uk-house-building-with-ai-accelerated-planning/" target="_blank" rel="noopener noreferrer">Unlocking UK house-building with AI-accelerated planning</a>
+
+*Google DeepMind*
+
+为破解英国住房建设流程中规划审批周期长、供给落地慢的痛点，英国政府与谷歌DeepMind达成合作，共同研发AI驱动的规划决策原型系统。该系统依托AI技术优化规划环节的评估、研判效率，核心目标是大幅压缩住房类项目的规划审批时长，为加快住房供给扫清流程障碍。
+
+<FeedbackButtons slug="item:deepmind-unlocking-uk-house-building-with-ai-accelerated-planning" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/discoformer" target="_blank" rel="noopener noreferrer">DiScoFormer: One transformer for density and score, across distributions</a>
+
+*Hugging Face*
+
+本文提出跨分布双任务Transformer架构DiScoFormer，通过设计适配双任务的解码结构与联合训练策略，用单个模型即可同时拟合概率密度与得分函数，无需为两类任务单独建模，还可泛化到不同数据分布。实验显示其在密度估计、生成采样等任务上性能优于现有单任务模型，计算效率更高。
+
+<FeedbackButtons slug="item:hf-blog-discoformer" client:visible />
+
+## <a href="https://huggingface.co/blog/vllm-jobs" target="_blank" rel="noopener noreferrer">Run a vLLM Server on HF Jobs in One Command</a>
+
+*Hugging Face*
+
+这篇技术方案针对在Hugging Face（HF）Jobs平台部署vLLM大模型推理服务步骤繁琐、配置门槛高的痛点，将环境适配、资源调度、服务启动、端口映射等全流程封装为单条执行命令。用户无需手动调整配置，数分钟即可拉起适配HF生态各类开源模型的高吞吐vLLM推理服务，大幅降低部署门槛。
+
+<FeedbackButtons slug="item:hf-blog-vllm-jobs" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+这篇从德性伦理视角展开的AI对齐研究，反驳“理性主体需预设终极目标”的传统认知，指出人类行动合理性并非来自目标导向，而是适配由行动、评价标准、资源等构成的实践网络。研究提出只有让AI决策逻辑匹配人类这种实践型“类型特征”，才能同时对齐人类伦理要求与核心安全属性。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-06-24-scaling-laws/" target="_blank" rel="noopener noreferrer">Scaling Laws, Carefully</a>
+
+*Lilian Weng*
+
+本文阐释深度学习核心实证结论「缩放定律」：其核心规律为训练损失随模型规模、数据集规模、总算力提升呈幂律下降，在双对数坐标下表现为直线。缩放定律可作为算力、损失、模型、数据的关联分析框架，核心价值是指导在模型容量与数据规模之间最优分配稀缺算力资源。
+
+<FeedbackButtons slug="item:lillog-2026-06-24-scaling-laws" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/06/440024.html" target="_blank" rel="noopener noreferrer">智谱唐杰：成功企业靠管理那是曾经，AI时代不行了</a>
+
+*量子位*
+
+智谱首席科学家、清华教授唐杰提出，AI时代企业核心竞争力排序为认知＞格局＞技术＞管理，过往靠管理、产品、资本取胜的旧经验已不适配。当前AI技术迭代速度极快，技术落后可能在一夜之间发生，组织AI化后架构大幅扁平，管理者必须深入掌握技术才能适配新竞争逻辑。
+
+<FeedbackButtons slug="item:qbitai-440024" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/439891.html" target="_blank" rel="noopener noreferrer">全球首个：隐空间世界模型，打通长时序双向物理因果链了！</a>
+
+*量子位*
+
+具身智能新锐无界动力发布全球首个搭载长时序双向物理因果链的隐空间世界模型MWA™，走“隐空间世界模型+强化学习”路线，破解机器人长周期高精度执行、多场景泛化痛点。该模型在RoboCasa GR1榜单以75.2%成功率击败英伟达等竞品登顶，公司已完成超2亿美元天使轮，近2亿美元Pre-A轮融资即将收官，获多家头部机构重仓。
+
+<FeedbackButtons slug="item:qbitai-439891" client:visible />
+
+## <a href="https://www.qbitai.com/2026/06/439863.html" target="_blank" rel="noopener noreferrer">Claude Mythos让梁文锋决定融资</a>
+
+*量子位*
+
+DeepSeek启动融资的直接动因是创始人梁文锋看到Claude Mythos的超强能力，意识到需储备核心资源竞逐AGI。融资后300人规模的团队将翻倍扩招，同时投入适配华为芯片，虽因此15个月未发新模型、错过编程工具热潮，但梁文锋认为这类短期产品偏离终极目标，不值得重注。
+
+<FeedbackButtons slug="item:qbitai-439863" client:visible />
