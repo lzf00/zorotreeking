@@ -1,0 +1,215 @@
+---
+lang: en
+translationKey: digest-2026-07-01
+title: "Daily AI Highlights · 2026-07-01"
+description: "21 papers · multi-source aggregation + AI summaries"
+date: 2026-07-01
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Today's highlights in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading overseas AI vendors release new products intensively: Anthropic launches Claude Sonnet 5, DeepMind rolls out computer operation capability for Gemini 3.5 Flash.</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Cutting-edge AI research and evaluation benchmarks are released in batches, covering scientific figure generation, Agent code migration, evolutionary fine-tuning and other fields.</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Chinese firm Lianhui Technology releases VLX, the world's first edge-side streaming multimodal model for the physical world, and the industry is heatedly discussing the Claude pricing controversy.</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Vendor Releases</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📊 Evaluation Benchmarks</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Edge AI</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💬 Industry Hot Topics</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.30534" target="_blank" rel="noopener noreferrer">Orca: The World is in Your Mind</a>
+
+*HF ★ 77 · Yihao Wang, Yuheng Ji, Mingyu Cao… · [HF Mirror](https://huggingface.co/papers/2606.30534)*
+
+This paper proposes Orca, a general world foundation model that replaces isolated cross-modal prediction tasks with global next-state prediction, adopting a dual learning paradigm: unconscious learning that captures natural state transitions from continuous videos, and conscious learning that combines language/VQA supervision to learn semantic state transitions. A unified world latent space is obtained through pretraining on 125,000 hours of videos and 160 million event annotations. When freezing the backbone and only training the lightweight decoder, it outperforms specialized baselines of the same scale on three types of downstream tasks, verifying the effectiveness of the paradigm.
+
+<FeedbackButtons slug="item:arxiv-2606.30534" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.31315" target="_blank" rel="noopener noreferrer">BlockPilot: Instance-Adaptive Policy Learning for Diffusion-based Speculative Decoding</a>
+
+*HF ★ 42 · Hao Zhang, Yiming Hu, Yong Wang… · [HF Mirror](https://huggingface.co/papers/2606.31315)*
+
+To address the suboptimal performance of existing diffusion-based speculative decoding due to fixed block sizes that do not adapt to input differences, this paper proposes BlockPilot: leveraging the characteristic that the optimal block size dynamically changes with samples and has local structure, it converts block size selection into a lightweight policy learning task, predicting the sample-adaptive optimal block size based on prefilled representations. This plug-and-play method has extremely low overhead, achieving 4.2x lossless speedup on Qwen3-4B, with an acceptance length of up to 5.92.
+
+<FeedbackButtons slug="item:arxiv-2606.31315" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.28436" target="_blank" rel="noopener noreferrer">Dockerless: Environment-Free Program Verifier for Coding Agents</a>
+
+*HF ★ 40 · Wenhao Zeng, Yuling Shi, Xiaodong Gu… · [HF Mirror](https://huggingface.co/papers/2606.28436)*
+
+To address the problem that traditional code verifiers for coding agent training require exclusive Docker environment configuration and have high deployment costs, this paper proposes Dockerless, an environment-free verification tool: without executing code, it can judge the correctness of patches by having the agent explore repository information. Its AUC is 14.3 higher than the strongest open-source verifier, and when used to build a full-process environment-free training pipeline, its performance matches that of environment-included training schemes, with a maximum improvement of 8.7 percentage points over Qwen3.5-9B on three types of benchmarks.
+
+<FeedbackButtons slug="item:arxiv-2606.28436" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.30626" target="_blank" rel="noopener noreferrer">DOPD: Dual On-policy Distillation</a>
+
+*HF ★ 22 · Xinlei Yu, Gen Li, Qingyi Si… · [HF Mirror](https://huggingface.co/papers/2606.30626)*
+
+To address the problems of privileged hallucination and uneven distribution of token-level supervision signals in existing on-policy distillation, this paper proposes DOPD, a dual on-policy distillation method: this advantage-aware dual distillation paradigm dynamically routes token-level supervision between privileged teacher and privileged student policies based on advantage difference and relative probability, adapting differentiated supervision strategies for different tokens to alleviate privileged hallucination. Experiments show that it outperforms existing baselines on both LLM and vision-language model tasks, with more outstanding performance in stability and generalization.
+
+<FeedbackButtons slug="item:arxiv-2606.30626" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.29082" target="_blank" rel="noopener noreferrer">Evolution Fine-Tuning: Learning to Discover Across 371 Optimization Tasks</a>
+
+*HF ★ 11 · Young-Jun Lee, Seungone Kim, Minki Kang… · [HF Mirror](https://huggingface.co/papers/2606.29082)*
+
+Existing optimization schemes that combine large models with evolutionary search are all single-task adapted and cannot reuse cross-task optimization experience. This paper proposes the Evolution Fine-Tuning (EFT) paradigm, which converts evolutionary search trajectories into supervision signals, builds a dataset of 156,000 trajectories covering 371 optimization tasks across 10 domains, and fine-tunes 2B-9B open-source large models. Actual tests show that its average performance across 22 unseen tasks is 10.22% higher than the baseline, and when paired with test-time RL, it can match or exceed SOTA on multiple types of optimization tasks, providing a feasible path for training general discovery agents.
+
+<FeedbackButtons slug="item:arxiv-2606.29082" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.28406" target="_blank" rel="noopener noreferrer">Can AI Draw Science? A Benchmark for Evaluating Scientific Figure Generation by Text-to-Image and Multimodal Models</a>
+
+*Davie Chen*
+
+To address the pain point that existing text-to-image benchmarks cannot adapt to the evaluation of scientific illustration generation, this research launches SciDraw-Bench, a 32-task benchmark covering 10 disciplines and 8 types of illustrations, with a supporting four-dimensional evaluation system including text fidelity, semantic correctness and other dimensions. Actual tests show that specialized scientific drawing AI outperforms general text-to-image models by a large margin in all dimensions, with the most prominent advantages in semantic compliance and compliance with disciplinary conventions, while text fidelity remains the core challenge for all systems.
+
+<FeedbackButtons slug="item:arxiv-2606.28406" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.28413" target="_blank" rel="noopener noreferrer">On the Necessity of a Liquid Substrate for Mesh Intelligence</a>
+
+*Hongwei Xu*
+
+This paper focuses on the operating substrate requirements of decentralized multi-agent mesh intelligence. Based on a self-evolving latent variable model for irregular exogenous temporal observations, it derives two necessary conditions: adaptive time scale capability and observation interval awareness. Both can only be satisfied simultaneously by multi-time-scale liquid networks; simply scaling model size cannot replace temporal perception capability, and this constraint is a rigid structural requirement for each agent in mesh intelligence.
+
+<FeedbackButtons slug="item:arxiv-2606.28413" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.28433" target="_blank" rel="noopener noreferrer">Position: RL Researchers Need to Distinguish Between Solving Simulators and Using Simulators as a Proxy</a>
+
+*Matthew Vandergrift, Esraa Elelimy, Martha White*
+
+This reinforcement learning (RL) paper distinguishes two essentially different applications of simulators: one is to purely solve the simulator and pursue optimal benchmark scores, the other is to use the simulator as a proxy for real deployment scenarios. The two have significant differences in simulator usage constraints, adapted algorithms and evaluation indicators. Verified by cases and experiments, failure to distinguish between them easily leads to misleading conclusions. The paper calls on the academic community to clearly label simulator usage scenarios and improve empirical specifications for each scenario.
+
+<FeedbackButtons slug="item:arxiv-2606.28433" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/how-chatgpt-adoption-has-expanded" target="_blank" rel="noopener noreferrer">How ChatGPT adoption has expanded</a>
+
+*OpenAI*
+
+This study analyzes the global expansion characteristics of ChatGPT based on the latest Signals data released by OpenAI: its user base is expanding synchronously, usage frequency continues to rise, users are no longer satisfied with basic function calls and actively explore the boundaries of the platform's diverse capabilities; current growth covers different regions and language markets around the world, reflecting that ChatGPT's global penetration and user acceptance are steadily increasing.
+
+<FeedbackButtons slug="item:openai-blog-how-chatgpt-adoption-has-expanded" client:visible />
+
+## <a href="https://openai.com/index/introducing-genebench-pro" target="_blank" rel="noopener noreferrer">Introducing GeneBench-Pro</a>
+
+*OpenAI*
+
+GeneBench-Pro is a newly launched AI performance evaluation benchmark, specially designed for the evaluation needs of AI models in genomics, biology and related scientific research fields. The benchmark uses real datasets from complex real scenarios for testing, which can fit actual scientific research needs, accurately measure the actual effectiveness of AI models in life science related tasks, and provide a reliable evaluation ruler for AI R&D in the field.
+
+<FeedbackButtons slug="item:openai-blog-introducing-genebench-pro" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener noreferrer">Statement on the US government directive to suspend access to Fable 5 and Mythos 5</a>
+
+*Anthropic*
+
+This statement responds to the latest export control directive of the US government: the US recently issued control rules that include Fable 5 and Mythos 5 in the control scope, completely banning all foreign nationals (whether inside or outside the US) from accessing the above two products. This directive breaks through geographical restrictions to tighten technology control, and will directly affect international scientific research cooperation in relevant fields and the normal research activities of foreign researchers.
+
+<FeedbackButtons slug="item:anthropic-fable-mythos-access" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-sonnet-5" target="_blank" rel="noopener noreferrer">Introducing Claude Sonnet 5</a>
+
+*Anthropic*
+
+The newly launched Claude Sonnet 5 is the most agentic version of the Sonnet series to date, focusing on top intelligent performance, and is mainly adapted for two scenarios: first, the code development field, which can support various complex coding needs; second, daily professional office scenarios, which can efficiently handle various workplace professional affairs, with both autonomous task execution capability and professional accuracy, with a clear positioning for developers and workplace users.
+
+<FeedbackButtons slug="item:anthropic-claude-sonnet-5" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/start-building-with-nano-banana-2-lite-and-gemini-omni-flash/" target="_blank" rel="noopener noreferrer">Start building with Nano Banana 2 Lite and Gemini Omni Flash</a>
+
+*Google DeepMind*
+
+This is a getting-started guide for embedded AI developers, with the core solution of adapting the lightweight edge development board Nano Banana 2 Lite to the Gemini Omni Flash lightweight multimodal large model API. It combines the low-power deployment advantage of the development board and the efficient inference capability of the large model, greatly lowering the threshold for edge multimodal application development, and can quickly build small terminal prototypes such as intelligent interaction and image recognition, suitable for developers to quickly verify ideas.
+
+<FeedbackButtons slug="item:deepmind-start-building-with-nano-banana-2-lite-and-gemini-omni-flash" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-computer-use-in-gemini-3-5-flash/" target="_blank" rel="noopener noreferrer">Introducing computer use in Gemini 3.5 Flash</a>
+
+*Google DeepMind*
+
+This article introduces Google's new end-to-end automatic computer operation capability for Gemini 3.5 Flash: by optimizing multimodal interface recognition, keyboard and mouse instruction mapping, and task logic alignment modules, it can autonomously complete routine office tasks such as web operation, file processing, and data entry without manual intermediate intervention. The operation accuracy is more than 40% higher than that of the previous generation model of the same scale, compatible with mainstream systems and commonly used software, significantly lowering the threshold for human-computer interaction operations.
+
+<FeedbackButtons slug="item:deepmind-introducing-computer-use-in-gemini-3-5-flash" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/ibm-research/scarfbench" target="_blank" rel="noopener noreferrer">ScarfBench: Benchmarking AI Agents for Enterprise Java Framework Migration</a>
+
+*Hugging Face*
+
+This paper launches ScarfBench, the first AI Agent evaluation benchmark for enterprise Java framework migration scenarios, building a real enterprise-level task set covering different complexities such as Spring Boot version upgrade and cross-framework migration, with a supporting automated multi-dimensional evaluation system. Actual tests show that the task success rate of current mainstream AI Agents in this scenario is less than 40%, with obvious capability shortcomings, which can provide a standardized reference for the subsequent iterative optimization of enterprise-level development AI Agents.
+
+<FeedbackButtons slug="item:hf-blog-scarfbench" client:visible />
+
+## <a href="https://huggingface.co/blog/Dharma-AI/why-specialization-is-inevitable" target="_blank" rel="noopener noreferrer">Why Specialization Is Inevitable</a>
+
+*Hugging Face*
+
+You have only provided the paper title "Why Specialization Is Inevitable" so far, and have not attached the corresponding full English abstract~ Please supplement the specific content of the abstract, and I will complete the translation and refinement as required, clearly highlight the core method and research conclusion, and strictly control the length to about 120 words.
+
+<FeedbackButtons slug="item:hf-blog-why-specialization-is-inevitable" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This paper studies AI alignment from the perspective of virtue ethics, refutes the presupposition that "rational agents are guided by fixed ultimate goals", and proposes that the essence of human rationality is that actions adapt to the social practice network including rules and evaluation systems. It advocates that AI decision-making logic needs to match human practical action logic, and this path is not only related to ethical alignment, but also the key to ensuring the core security attributes of AI.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-06-24-scaling-laws/" target="_blank" rel="noopener noreferrer">Scaling Laws, Carefully</a>
+
+*Lilian Weng*
+
+This article sorts out the scaling law, a core empirical finding of deep learning: its form is simple, training loss follows a power-law decline as model size, dataset size, and invested computing volume increase, showing a straight line on double-logarithmic coordinates. This law can be used as an analytical framework for the correlation between computing volume, loss, model and data scale, and its core function is to guide the optimal allocation of valuable computing resources between model and data investment.
+
+<FeedbackButtons slug="item:lillog-2026-06-24-scaling-laws" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/07/441124.html" target="_blank" rel="noopener noreferrer">Om AI Lianhui releases VLX: the world's first edge-side streaming multimodal model for the physical world</a>
+
+*QbitAI*
+
+Om AI Lianhui releases VLX, the world's first edge-side streaming multimodal model for the physical world. Instead of compressing and porting cloud models, it is natively designed for edge-side embodied intelligence. Three sub-models work together to realize streaming incremental perception, regional retrieval-based positioning, and direct generation of executable motion trajectories, opening up the full closed loop from perception to decision-making, with a minimum latency of 0.06 seconds, covering 0.6B to 10B parameters, realizing a qualitative leap in AI autonomous working capability.
+
+<FeedbackButtons slug="item:qbitai-441124" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/441001.html" target="_blank" rel="noopener noreferrer">Anthropic, explain why Sonnet 5 is more expensive than Fable 5?</a>
+
+*QbitAI*
+
+Anthropic newly launched the Claude Sonnet 5 large model. Officially, its autonomous task planning, programming and other capabilities are close to the flagship Opus 4.8, with significantly improved performance over the previous generation but the same pricing, positioning it as a cost-effective "Opus alternative". However, developers' actual tests found that under the same input, the Token consumption of Sonnet 5 is 30% higher than the old version, the actual use cost has risen secretly, and the advertised cost-effectiveness is exaggerated.
+
+<FeedbackButtons slug="item:qbitai-441001" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/440985.html" target="_blank" rel="noopener noreferrer">Video version of Nano Banana is here! Built-in Gemini world knowledge; original Banana generates images in only 4 seconds</a>
+
+*QbitAI*
+
+Google recently launched two multimodal models: first, the Gemini Omni Flash API, which supports four types of video generation and editing capabilities: conversational editing, multimodal reference, built-in world knowledge, and text-action synchronization, with an output cost of $0.1 per second, and the effect can replace professional special effects. Second, the Nano Banana 2 Lite image generation model, which generates 1K resolution images in only 4 seconds at a cost of about 20 cents, making it the fastest and most economical Gemini image model currently available.
+
+<FeedbackButtons slug="item:qbitai-440985" client:visible />
