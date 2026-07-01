@@ -160,7 +160,16 @@ async function main() {
           const m = out.match(/.{0,40}\}\}.{0,20}/);
           throw new Error(`可疑 }} 输出：${m?.[0]?.replace(/\n/g, " ")}`);
         }
-        await fs.writeFile(dstPath, out + (out.endsWith("\n") ? "" : "\n"), "utf-8");
+        // 自动修：正文引号内的 <XXX> 被 MDX 当 JSX 标签（如 "《破局》"→"<Breaking>"）
+        //   - 只在段落中间（非 <a>/<FeedbackButtons> 白名单）出现的 `<Capitalized...>` 转成 &lt;&gt;
+        //   - 白名单：a/FeedbackButtons/div/span/ul/li/img/code/strong/em/br/hr
+        const JSX_WHITELIST = /^(a|div|span|ul|li|img|code|strong|em|br|hr|p|Fragment|FeedbackButtons)(\s|>|\/)/;
+        const sanitized = out.replace(/<([A-Z][a-zA-Z0-9]*)(\s[^>\n]{0,200})?(>|\/>)/g, (m, tag, attrs, close) => {
+          if (JSX_WHITELIST.test(tag + (close === ">" ? ">" : "/"))) return m;
+          // 未闭合且是段落中间的（引号包着的书名/剧名之类），转 &lt;
+          return `&lt;${tag}${attrs || ""}&gt;`;
+        });
+        await fs.writeFile(dstPath, sanitized + (sanitized.endsWith("\n") ? "" : "\n"), "utf-8");
         ok++;
         if (attempt > 1) console.log(`    ✓ 重试 #${attempt} 成功，out=${out.length}B`);
         return;
