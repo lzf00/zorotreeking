@@ -225,7 +225,97 @@ async function main() {
   }, null, 2));
   console.log(`\n📄 报告写入: ${path.relative(ROOT, reportPath)}`);
 
+  // 推飞书（仅当死链 > 0 且配置了 webhook）
+  const webhook = process.env.FEISHU_DEADLINK_WEBHOOK || "";
+  if (webhook && dead.length > 0) {
+    try {
+      await pushToFeishu(webhook, dead, okCount, tolerated.length);
+      console.log(`📢 飞书推送成功（${dead.length} 条死链）`);
+    } catch (e) {
+      console.warn(`⚠ 飞书推送失败: ${(e as Error).message}`);
+    }
+  } else if (!webhook) {
+    console.log("ℹ️  未配置 FEISHU_DEADLINK_WEBHOOK，跳过飞书推送");
+  }
+
   process.exit(dead.length > 0 ? 1 : 0);
+}
+
+/** 飞书交互卡片推送。分组按 file 归拢，每组最多 5 条。 */
+async function pushToFeishu(webhook: string, dead: LinkResult[], ok: number, tolerated: number): Promise<void> {
+  // 按 fromFile 分组
+  const groups: Record<string, LinkResult[]> = {};
+  for (const d of dead) {
+    (groups[d.fromFile] ??= []).push(d);
+  }
+  const groupCount = Object.keys(groups).length;
+
+  const elements: any[] = [
+    {
+      tag: "div",
+      text: {
+        tag: "lark_md",
+        content: `**🔍 zorotreeking 死链周报**\n\n✓ 健康 **${ok}** · ⚠ 容忍 **${tolerated}** · ✗ 死链 **${dead.length}**（分布在 ${groupCount} 个文件）`,
+      },
+    },
+    { tag: "hr" },
+  ];
+
+  const sortedGroups = Object.entries(groups).slice(0, 10);
+  for (const [file, links] of sortedGroups) {
+    const lines = links.slice(0, 5).map((l) => {
+      const tag = l.status ? `HTTP ${l.status}` : (l.reason || "fail");
+      return `- \`${tag}\` ${l.url.slice(0, 100)}`;
+    });
+    if (links.length > 5) lines.push(`  ... 还有 ${links.length - 5} 条`);
+    elements.push({
+      tag: "div",
+      text: {
+        tag: "lark_md",
+        content: `📄 **${file}** (${links.length})\n${lines.join("\n")}`,
+      },
+    });
+  }
+  if (Object.keys(groups).length > 10) {
+    elements.push({
+      tag: "note",
+      elements: [{
+        tag: "plain_text",
+        content: `... 还有 ${Object.keys(groups).length - 10} 个文件有死链，完整清单看 GH Actions artifact`,
+      }],
+    });
+  }
+  elements.push({ tag: "hr" });
+  elements.push({
+    tag: "action",
+    actions: [{
+      tag: "button",
+      text: { tag: "plain_text", content: "查看仓库" },
+      url: "https://github.com/lzf00/zorotreeking",
+      type: "default",
+    }],
+  });
+
+  const payload = {
+    msg_type: "interactive",
+    card: {
+      config: { wide_screen_mode: true },
+      header: {
+        template: "orange",
+        title: { tag: "plain_text", content: "死链周报 · zorotreeking" },
+      },
+      elements,
+    },
+  };
+
+  const resp = await fetch(webhook, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  if (!resp.ok) {
+    throw new Error(`飞书 HTTP ${resp.status}: ${(await resp.text()).slice(0, 200)}`);
+  }
 }
 
 main().catch((e) => { console.error(e); process.exit(2); });

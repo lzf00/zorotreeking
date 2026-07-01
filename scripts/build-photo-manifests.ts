@@ -78,7 +78,23 @@ async function main() {
     const albumSlug = ent.name;
     const albumDir = path.join(UPLOADS_DIR, albumSlug);
 
-    const files = (await fs.readdir(albumDir)).filter((f) => IMAGE_RE.test(f)).sort();
+    // 过滤：跳过脚本自身生成的派生文件（.og.jpg / .webp 已有对应原图时）
+    // 派生文件规则：xxx.og.jpg 对应原图 xxx.<ext>；xxx.webp 通常也是派生（除非孤立无原图）
+    const rawFiles = (await fs.readdir(albumDir)).filter((f) => IMAGE_RE.test(f)).sort();
+    const files: string[] = [];
+    for (const f of rawFiles) {
+      // xxx.og.jpg 一律跳过（永远是派生）
+      if (/\.og\.jpg$/i.test(f)) continue;
+      // xxx.webp：如果同目录有 xxx.jpg/jpeg/png 原图，则跳过（派生）；否则保留（孤立 webp 当原图）
+      if (/\.webp$/i.test(f)) {
+        const base = f.replace(/\.webp$/i, "");
+        const hasSourceOriginal = rawFiles.some((g) =>
+          g === `${base}.jpg` || g === `${base}.jpeg` || g === `${base}.png`
+        );
+        if (hasSourceOriginal) continue;
+      }
+      files.push(f);
+    }
     if (files.length === 0) continue;
 
     const entries: PhotoEntry[] = [];

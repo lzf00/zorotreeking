@@ -1,0 +1,57 @@
+name: Dead link check
+
+# 每周一 09:00 北京时间扫全站外链，死链推飞书群。
+#
+# 手动 dispatch 可以传 concurrency 调并发（默认 8）。
+#
+# 需要 GitHub Secret（可选）：
+#   FEISHU_DEADLINK_WEBHOOK  飞书群 bot webhook URL
+#     未配置时脚本本地打印结果 + 上传 artifact，不推飞书
+
+on:
+  schedule:
+    - cron: "0 1 * * 1"   # UTC 01:00 = BJT 09:00 周一
+  workflow_dispatch:
+    inputs:
+      concurrency:
+        description: "并发数（1-16）"
+        type: string
+        default: "8"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deadlink-check
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - name: Install deps
+        run: npm ci
+
+      - name: Run dead link check
+        env:
+          FEISHU_DEADLINK_WEBHOOK: ${{ secrets.FEISHU_DEADLINK_WEBHOOK }}
+        continue-on-error: true      # 有死链时脚本 exit 1，我们不希望 workflow 标 failure
+        run: |
+          CONC="${{ github.event.inputs.concurrency }}"
+          if [ -z "$CONC" ]; then CONC="8"; fi
+          npx tsx scripts/check-deadlinks.ts --concurrency=$CONC
+
+      - name: Upload report artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: deadlink-report
+          path: reports/deadlinks-*.json
+          retention-days: 30
