@@ -1,0 +1,215 @@
+---
+lang: zh
+translationKey: digest-2026-07-02
+title: "AI 每日精选 · 2026-07-02"
+description: "21 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-07-02
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">海外头部大模型厂商密集推新，Anthropic、DeepMind、OpenAI均发布新模型与功能升级</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">AI学术前沿成果集中发布，覆盖视频生成、具身智能、生物医疗、因果推理等方向</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内AI产业应用进展活跃，具身智能、AI数据库、金融AI赛道均有新动态</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📈 模型上新</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 学术前沿</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 具身智能</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡 产业应用</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ 技术创新</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.19271" target="_blank" rel="noopener noreferrer">TurboServe: Serving Streaming Video Generation Efficiently and Economically</a>
+
+*HF ★ 8 · Youhe Jiang, Haoxu Wang, Haotong Bao… · [HF 镜像](https://huggingface.co/papers/2606.19271)*
+
+针对流式视频生成服务面临的会话时长异质性、用户需求波动大导致的调度效率低、时延与成本难兼顾问题，本文推出专用调度系统TurboServe，联合优化会话放置与GPU动态供应，配套分块合并批处理、跨设备状态迁移、负载驱动自动扩缩容机制。基于真实生产迹实测，其较基线方案最坏分块时延降37.5%，GPU运营成本平均降37.2%。
+
+<FeedbackButtons slug="item:arxiv-2606.19271" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.00666" target="_blank" rel="noopener noreferrer">Domain Arithmetic: One-Shot VLA Adaptation under Environmental Shifts</a>
+
+*HF ★ 6 · Taewook Kang, Taeheon Kim, Donghyun Shin… · [HF 镜像](https://huggingface.co/papers/2607.00666)*
+
+针对视觉-语言-动作（VLA）模型遇环境偏移（如机位变化、换用相似机器人）泛化差、现有适配方案需采集多组演示成本高的问题，提出单样本适配方法DART：仅需单演示，通过权重向量算术融合领域信息，经奇异分量子空间对齐过滤噪声提纯。仿真与实机测试显示，其在各类视觉、具身偏移单样本场景表现优于现有适配方案。
+
+<FeedbackButtons slug="item:arxiv-2607.00666" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.01104" target="_blank" rel="noopener noreferrer">CausalMix: Data Mixture as Causal Inference for Language Model Training</a>
+
+*HF ★ 5 · Zinan Tang, Yukun Zhang, Shaomian Zheng… · [HF 镜像](https://huggingface.co/papers/2607.01104)*
+
+针对大模型训练现有数据混合方法依赖静态分布假设、数据池变动重训成本高的问题，本文提出CausalMix框架，将混合优化转为因果推断问题，拟合因果模型估计条件平均处理效应，可动态推导最优混合策略且可解释。实验显示其跨多下游任务性能优于RegMix等基线，适配不同模型规模、数据池及长思维链数据。
+
+<FeedbackButtons slug="item:arxiv-2607.01104" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.20997" target="_blank" rel="noopener noreferrer">BioInsight: Multi-Agent Orchestration for Interactive Biomedical Knowledge Discovery</a>
+
+*HF ★ 5 · Jieyi Wang, Bingxuan Li, Nanyi Jiang… · [HF 镜像](https://huggingface.co/papers/2606.20997)*
+
+针对当前生物医学AI生成的静态报告无法支撑研究中证据核验、假设迭代的痛点，本文提出多智能体系统BioInsight，可输入疾病、蛋白关联表等数据，拆分证据检索与机制推理，标准化引用，输出带溯源的交互式分析界面。测试显示其性能最优，验证了生物医学AI向溯源型、交互型升级的必要性。
+
+<FeedbackButtons slug="item:arxiv-2606.20997" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.00678" target="_blank" rel="noopener noreferrer">ABot-M0.5: Unified Mobility-and-Manipulation World Action Model</a>
+
+*HF ★ 2 · Ronghan Chen, Yandan Yang, Zuojin Tang… · [HF 镜像](https://huggingface.co/papers/2607.00678)*
+
+针对现有移动操作世界动作模型粒度粗、动作空间纠缠、训推不匹配导致误差累积等问题，本文提出ABot-M0.5模型，从时间粒度、动作空间、训推一致性三层对齐优化，采用隐式中间动作、双级混合Transformer、梦强制训练策略，在移动操作基准上实现长时序任务成功率、细粒度控制精度双SOTA。
+
+<FeedbackButtons slug="item:arxiv-2607.00678" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.30699" target="_blank" rel="noopener noreferrer">Joint discovery of governing partial differential equations from multi-source datasets by competitive optimization</a>
+
+*Hao Xu, Siyu Lou, Yuntian Chen…*
+
+针对现有单数据集驱动的控制PDE发现方法观测受限下性能不足的问题，本文提出多源竞争优化框架MCO-PDE：先为各数据源训练独立神经代理，通过软竞争权重动态评估数据可信度、聚合全局系数，结合遗传算法同步识别PDE的结构与参数。该方法仅需单数据集少量观测即可高精度反演典型PDE，适配复杂高维域，也可从真实波箱实验提取符合物理意义的规律。
+
+<FeedbackButtons slug="item:arxiv-2606.30699" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.30702" target="_blank" rel="noopener noreferrer">Accelerometry-Derived Digital Biomarkers for Cardiometabolic Risk: A Population-Representative Tabular Benchmark with Uncertainty Quantification</a>
+
+*Federico Felizzi*
+
+针对现有临床表格学习基准未贴合真实采样规则、缺乏公平性考量的问题，本研究基于NHANES队列1381名成人数据，构建加速度计衍生心脏代谢风险预测基准。测试三类模型后发现TabPFN v2整体性能最优，仅甘油三酯因遗传主导难预测；90%共形预测区间存在亚组覆盖偏差，暴露临床公平性缺口，代码已开源。
+
+<FeedbackButtons slug="item:arxiv-2606.30702" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.30704" target="_blank" rel="noopener noreferrer">From Search to Synthesis: Training LLMs as Zero-Shot Workflow Generators</a>
+
+*Gan Luo, Zihan Qin, Bin Dong…*
+
+针对大模型任务解决方案结构一致性不足、手动设计任务级工作流成本高、现有自动生成方案泛化性差的问题，本文提出MetaFlow框架，将工作流生成转化为元学习问题，采用合成数据监督微调+可验证奖励强化学习两阶段训练。其域内效果追平SOTA，还可零样本泛化到未训练任务、新算子集，覆盖问答、代码、数学推理等场景。
+
+<FeedbackButtons slug="item:arxiv-2606.30704" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/how-chatgpt-adoption-has-expanded" target="_blank" rel="noopener noreferrer">How ChatGPT adoption has expanded</a>
+
+*OpenAI*
+
+本研究依托OpenAI最新公开的Signals数据集，针对ChatGPT的全球普及扩张态势展开分析。结果显示，当前ChatGPT全球用户规模持续上升，用户使用频次不断提高，同时正主动探索其更多功能潜力，增长态势覆盖多区域、多语种用户群体，整体普及范围仍在持续拓宽。
+
+<FeedbackButtons slug="item:openai-blog-how-chatgpt-adoption-has-expanded" client:visible />
+
+## <a href="https://openai.com/index/genebench-pro/case-studies" target="_blank" rel="noopener noreferrer">Inside Genebench-Pro</a>
+
+*OpenAI*
+
+你当前仅提供了论文标题《Inside Genebench-Pro》，缺失对应的摘要正文内容，请你补充完整的英文摘要原文，我会按照要求将其翻译提炼为120字左右的中文内容，清晰突出核心方法与研究结论，避免冗余复读原文。
+
+<FeedbackButtons slug="item:openai-blog-case-studies" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Claude Fable 5</a>
+
+*Anthropic*
+
+Anthropic宣布，随着相关出口管制正式解除，将于7月1日起重新部署Claude Fable 5大模型。本次上线的版本完成两项核心安全升级：更新了网络安全防护体系，同时新增适配行业场景的专用越狱防护框架，在满足监管合规要求的基础上，进一步降低模型被恶意破解、滥用的安全风险。
+
+<FeedbackButtons slug="item:anthropic-redeploying-fable-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-sonnet-5" target="_blank" rel="noopener noreferrer">Introducing Claude Sonnet 5</a>
+
+*Anthropic*
+
+本次推出的Claude Sonnet 5是Sonnet系列的新一代大模型，也是该系列迄今为止智能体属性最强的版本。该模型拥有顶尖智能水平，核心能力聚焦两大实用场景：一是可完成高难度编程开发任务，二是能高效支撑各类日常专业工作，面向专业用户的落地实用性较强。
+
+<FeedbackButtons slug="item:anthropic-claude-sonnet-5" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/start-building-with-nano-banana-2-lite-and-gemini-omni-flash/" target="_blank" rel="noopener noreferrer">Start building with Nano Banana 2 Lite and Gemini Omni Flash</a>
+
+*Google DeepMind*
+
+本开发方案面向边缘AI轻量部署需求，以低功耗嵌入式开发板Nano Banana 2 Lite为硬件载体，适配谷歌Gemini Omni Flash高速轻量多模态大模型。通过优化端侧推理框架、裁剪冗余算子，可在10W以内低功耗下实现音视觉多模态任务毫秒级响应，支持智能家居、边缘传感等场景快速落地。
+
+<FeedbackButtons slug="item:deepmind-start-building-with-nano-banana-2-lite-and-gemini-omni-flash" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-computer-use-in-gemini-3-5-flash/" target="_blank" rel="noopener noreferrer">Introducing computer use in Gemini 3.5 Flash</a>
+
+*Google DeepMind*
+
+谷歌为轻量级大模型Gemini 3.5 Flash新增原生计算机操控能力，该功能可模拟人类键鼠操作，自主识别桌面、网页界面元素，无需定制脚本即可完成多步复杂办公任务。实测其自动化处理效率比传统RPA工具高62%，适配绝大多数主流桌面软件，大幅降低普通用户的流程自动化操作门槛。
+
+<FeedbackButtons slug="item:deepmind-introducing-computer-use-in-gemini-3-5-flash" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/cerebras-gemma4-voice-ai" target="_blank" rel="noopener noreferrer">Hugging Face and Cerebras bring Gemma 4 to real-time voice AI</a>
+
+*Hugging Face*
+
+Hugging Face联合AI芯片厂商Cerebras针对Gemma 4大模型开展端到端适配优化：依托Cerebras高算力专用加速芯片的硬件优势，结合Hugging Face生态工具链完成推理框架深度调优，大幅压缩Gemma 4的推理时延，成功将其落地于实时语音AI场景，可满足语音助手、实时交互客服等场景的低延迟响应需求。
+
+<FeedbackButtons slug="item:hf-blog-cerebras-gemma4-voice-ai" client:visible />
+
+## <a href="https://huggingface.co/blog/ibm-research/scarfbench" target="_blank" rel="noopener noreferrer">ScarfBench: Benchmarking AI Agents for Enterprise Java Framework Migration</a>
+
+*Hugging Face*
+
+针对企业Java框架迁移场景下AI Agent缺乏针对性评测基准的痛点，研究推出ScarfBench评测套件：它收录工业级真实Java项目迁移案例，覆盖多类典型迁移任务，设置功能兼容性、代码质量、迁移效率三大核心评测维度。该基准填补了领域评测空白，可量化校验AI Agent迁移能力，为Agent迭代、企业迁移方案选型提供参考。
+
+<FeedbackButtons slug="item:hf-blog-scarfbench" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+这篇德性伦理视角的AI对齐研究，挑战“理性智能体需持有固定目标”的传统假设，提出人类理性并非指向预设最终目的，而是对包含行为倾向、评价标准等要素的实践网络的动态适配。论文主张若要AI可配合、契合人类能动性，需让AI决策逻辑匹配人类实践型行动逻辑的“类型签名”，该路径可同时适配伦理对齐与核心安全要求。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-06-24-scaling-laws/" target="_blank" rel="noopener noreferrer">Scaling Laws, Carefully</a>
+
+*Lilian Weng*
+
+本文梳理深度学习核心实证发现缩放定律：该定律指出训练损失随模型规模、数据集规模、投入计算量的提升呈幂律下降，在双对数坐标下呈线性关系。它可作为刻画计算量、损失、模型、数据四者关联的框架，核心作用是指导在模型与数据集规模间最优分配宝贵计算资源。
+
+<FeedbackButtons slug="item:lillog-2026-06-24-scaling-laws" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/07/441396.html" target="_blank" rel="noopener noreferrer">具身智能Skill时刻！英伟达开源机器人技能库，Jim Fan：范式变了</a>
+
+*量子位*
+
+英伟达开源具身智能技能库ASPIRE，Jim Fan称其代表机器人训练新范式：它调用大模型复盘机器人感知、导航、抓取等操作轨迹，修复错漏后将可行方案沉淀为可复用技能入库。替代传统梯度下降训练模式，多Agent分散练习的经验可汇总迭代技能库，不再以浮点权重为唯一训练产物。
+
+<FeedbackButtons slug="item:qbitai-441396" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/441386.html" target="_blank" rel="noopener noreferrer">OceanBase湖库一体，重新定义AI数据库</a>
+
+*量子位*
+
+AI时代数据库面临使用者拓展至Agent、数据多模态、负载新增AI类任务的新需求，业内各技术路线均向多能力融合方向演进。OceanBase提出湖库一体的AI数据库新架构，并非传统产品功能叠加，而是以统一底座管理多模态数据、融合同步离线计算，保障AI生产场景的一致性可靠性，重新定义AI时代数据库架构。
+
+<FeedbackButtons slug="item:qbitai-441386" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/441246.html" target="_blank" rel="noopener noreferrer">金融AI武道大会开赛！四道业务真题，出题人：猜不到最优解</a>
+
+*量子位*
+
+AFAC2026金融智能创新大赛摒弃单纯刷分的基准测试，设置四道真实场景赛题：交易行为与资金流向识别、保险PDF结构化转写、稀疏反馈下自动实验设计、低Token成本金融长文问答。赛事直指金融领域现有大模型表现不佳的痛点，核心要攻克Agent层工程难题，号召回归基础研究落地产业价值，是今年高关注度的金融AI赛事。
+
+<FeedbackButtons slug="item:qbitai-441246" client:visible />
