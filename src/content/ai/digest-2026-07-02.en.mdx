@@ -1,0 +1,215 @@
+---
+lang: en
+translationKey: digest-2026-07-02
+title: "Daily AI Picks · 2026-07-02"
+description: "21 papers · multi-source aggregation + AI summaries"
+date: 2026-07-02
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's content in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading overseas LLM vendors are rolling out updates intensively: Anthropic, DeepMind, and OpenAI have all released new models and feature upgrades</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Cutting-edge AI academic results are being released en masse, covering fields including video generation, embodied intelligence, biomedicine, and causal reasoning</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Domestic AI industry applications are seeing active progress, with new developments in embodied intelligence, AI databases, and financial AI tracks</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📈 New Model Releases</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Academic Frontiers</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Embodied Intelligence</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡 Industrial Applications</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Technical Innovations</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.19271" target="_blank" rel="noopener noreferrer">TurboServe: Serving Streaming Video Generation Efficiently and Economically</a>
+
+*HF ★ 8 · Youhe Jiang, Haoxu Wang, Haotong Bao… · [HF Mirror](https://huggingface.co/papers/2606.19271)*
+
+To address the problems of low scheduling efficiency and difficulty balancing latency and cost in streaming video generation services caused by heterogeneous session durations and large fluctuations in user demand, this paper introduces a dedicated scheduling system TurboServe, which jointly optimizes session placement and dynamic GPU provisioning, supported by chunk merge batching, cross-device state migration, and load-driven auto-scaling mechanisms. Tested on real production traces, it reduces worst-case chunk latency by 37.5% compared to baseline solutions, and cuts GPU operating costs by an average of 37.2%.
+
+<FeedbackButtons slug="item:arxiv-2606.19271" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.00666" target="_blank" rel="noopener noreferrer">Domain Arithmetic: One-Shot VLA Adaptation under Environmental Shifts</a>
+
+*HF ★ 6 · Taewook Kang, Taeheon Kim, Donghyun Shin… · [HF Mirror](https://huggingface.co/papers/2607.00666)*
+
+To solve the problem of poor generalization of Vision-Language-Action (VLA) models when encountering environmental shifts (such as camera position changes, switching to similar robots) and the high cost of existing adaptation solutions that require collecting multiple sets of demonstrations, this paper proposes the one-shot adaptation method DART: only a single demonstration is needed, it fuses domain information via weight vector arithmetic, and filters and purifies noise through singular component subspace alignment. Simulation and real robot tests show that it outperforms existing adaptation solutions in various one-shot scenarios with visual and embodied shifts.
+
+<FeedbackButtons slug="item:arxiv-2607.00666" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.01104" target="_blank" rel="noopener noreferrer">CausalMix: Data Mixture as Causal Inference for Language Model Training</a>
+
+*HF ★ 5 · Zinan Tang, Yukun Zhang, Shaomian Zheng… · [HF Mirror](https://huggingface.co/papers/2607.01104)*
+
+To address the issues that existing data mixing methods for LLM training rely on static distribution assumptions and have high retraining costs when the data pool changes, this paper proposes the CausalMix framework, which converts mixing optimization into a causal inference problem, fits a causal model to estimate conditional average treatment effects, and can dynamically derive optimal mixing strategies with interpretability. Experiments show that it outperforms baselines such as RegMix across multiple downstream tasks, and adapts to different model sizes, data pools, and long chain-of-thought data.
+
+<FeedbackButtons slug="item:arxiv-2607.01104" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.20997" target="_blank" rel="noopener noreferrer">BioInsight: Multi-Agent Orchestration for Interactive Biomedical Knowledge Discovery</a>
+
+*HF ★ 5 · Jieyi Wang, Bingxuan Li, Nanyi Jiang… · [HF Mirror](https://huggingface.co/papers/2606.20997)*
+
+To address the pain point that static reports generated by current biomedical AI cannot support evidence verification and hypothesis iteration in research, this paper proposes the multi-agent system BioInsight, which accepts input data such as disease and protein association tables, splits evidence retrieval and mechanism reasoning, standardizes citations, and outputs an interactive analysis interface with traceability. Tests show it achieves the best performance, verifying the necessity of upgrading biomedical AI to traceable and interactive forms.
+
+<FeedbackButtons slug="item:arxiv-2606.20997" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.00678" target="_blank" rel="noopener noreferrer">ABot-M0.5: Unified Mobility-and-Manipulation World Action Model</a>
+
+*HF ★ 2 · Ronghan Chen, Yandan Yang, Zuojin Tang… · [HF Mirror](https://huggingface.co/papers/2607.00678)*
+
+To address the problems of coarse granularity, entangled action space, and error accumulation caused by training-inference mismatch in existing mobile manipulation world action models, this paper proposes the ABot-M0.5 model, which aligns and optimizes from three layers: time granularity, action space, and training-inference consistency, adopting implicit intermediate actions, two-level hybrid Transformer, and dream forced training strategies. It achieves SOTA in both long-sequence task success rate and fine-grained control accuracy on mobile manipulation benchmarks.
+
+<FeedbackButtons slug="item:arxiv-2607.00678" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2606.30699" target="_blank" rel="noopener noreferrer">Joint discovery of governing partial differential equations from multi-source datasets by competitive optimization</a>
+
+*Hao Xu, Siyu Lou, Yuntian Chen…*
+
+To address the insufficient performance of existing single-dataset-driven governing PDE discovery methods under limited observations, this paper proposes the multi-source competitive optimization framework MCO-PDE: first train independent neural proxies for each data source, dynamically evaluate data credibility and aggregate global coefficients through soft competition weights, and combine genetic algorithms to simultaneously identify the structure and parameters of PDEs. This method can invert typical PDEs with high accuracy using only a small number of observations from a single dataset, adapts to complex high-dimensional domains, and can also extract physically meaningful laws from real wave tank experiments.
+
+<FeedbackButtons slug="item:arxiv-2606.30699" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.30702" target="_blank" rel="noopener noreferrer">Accelerometry-Derived Digital Biomarkers for Cardiometabolic Risk: A Population-Representative Tabular Benchmark with Uncertainty Quantification</a>
+
+*Federico Felizzi*
+
+To address the problems that existing clinical tabular learning benchmarks do not fit real sampling rules and lack fairness considerations, this study builds an accelerometry-derived cardiometabolic risk prediction benchmark based on data from 1,381 adults in the NHANES cohort. After testing three types of models, it is found that TabPFN v2 has the best overall performance, only triglycerides are difficult to predict due to genetic dominance; 90% conformal prediction intervals have subgroup coverage bias, exposing clinical fairness gaps, and the code has been open-sourced.
+
+<FeedbackButtons slug="item:arxiv-2606.30702" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.30704" target="_blank" rel="noopener noreferrer">From Search to Synthesis: Training LLMs as Zero-Shot Workflow Generators</a>
+
+*Gan Luo, Zihan Qin, Bin Dong…*
+
+To address the problems of insufficient structural consistency of LLM task solutions, high cost of manually designing task-level workflows, and poor generalization of existing automatic generation solutions, this paper proposes the MetaFlow framework, which converts workflow generation into a meta-learning problem, adopting a two-stage training of synthetic data supervised fine-tuning + verifiable reward reinforcement learning. Its in-domain performance matches SOTA, and it can also generalize zero-shot to untrained tasks and new operator sets, covering scenarios such as Q&A, coding, and mathematical reasoning.
+
+<FeedbackButtons slug="item:arxiv-2606.30704" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/how-chatgpt-adoption-has-expanded" target="_blank" rel="noopener noreferrer">How ChatGPT adoption has expanded</a>
+
+*OpenAI*
+
+This study relies on the latest publicly available Signals dataset from OpenAI to analyze the global expansion trend of ChatGPT adoption. The results show that the current global user scale of ChatGPT continues to rise, user usage frequency is increasing, and users are actively exploring more of its functional potential. The growth trend covers multi-regional and multilingual user groups, and the overall penetration scope is still continuously expanding.
+
+<FeedbackButtons slug="item:openai-blog-how-chatgpt-adoption-has-expanded" client:visible />
+
+## <a href="https://openai.com/index/genebench-pro/case-studies" target="_blank" rel="noopener noreferrer">Inside Genebench-Pro</a>
+
+*OpenAI*
+
+Only the paper title *Inside Genebench-Pro* is provided at present, and the corresponding abstract content is missing. Please supplement the complete original English abstract, and I will translate and refine it into a Chinese text of around 120 words as required, clearly highlighting the core method and research conclusions to avoid redundant repetition of the original text.
+
+<FeedbackButtons slug="item:openai-blog-case-studies" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Claude Fable 5</a>
+
+*Anthropic*
+
+Anthropic announced that as relevant export controls are officially lifted, it will redeploy the Claude Fable 5 large model starting July 1. The version launched this time has completed two core security upgrades: the cybersecurity protection system has been updated, and a dedicated jailbreak protection framework adapted to industry scenarios has been added. On the basis of meeting regulatory compliance requirements, it further reduces the security risks of the model being maliciously cracked and misused.
+
+<FeedbackButtons slug="item:anthropic-redeploying-fable-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-sonnet-5" target="_blank" rel="noopener noreferrer">Introducing Claude Sonnet 5</a>
+
+*Anthropic*
+
+The newly launched Claude Sonnet 5 is the new generation large model of the Sonnet series, and also the version with the strongest agentic properties in the series to date. This model has top-tier intelligence, and its core capabilities focus on two practical scenarios: first, it can complete high-difficulty programming and development tasks, and second, it can efficiently support all kinds of daily professional work, with strong practicality for professional users.
+
+<FeedbackButtons slug="item:anthropic-claude-sonnet-5" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/start-building-with-nano-banana-2-lite-and-gemini-omni-flash/" target="_blank" rel="noopener noreferrer">Start building with Nano Banana 2 Lite and Gemini Omni Flash</a>
+
+*Google DeepMind*
+
+This development solution targets the demand for lightweight edge AI deployment, taking the low-power embedded development board Nano Banana 2 Lite as the hardware carrier, adapted to Google's Gemini Omni Flash high-speed lightweight multimodal large model. By optimizing the end-side inference framework and pruning redundant operators, it can achieve millisecond-level response for audio-visual multimodal tasks under low power consumption of less than 10W, supporting rapid deployment in scenarios such as smart homes and edge sensing.
+
+<FeedbackButtons slug="item:deepmind-start-building-with-nano-banana-2-lite-and-gemini-omni-flash" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-computer-use-in-gemini-3-5-flash/" target="_blank" rel="noopener noreferrer">Introducing computer use in Gemini 3.5 Flash</a>
+
+*Google DeepMind*
+
+Google has added native computer control capability to the lightweight large model Gemini 3.5 Flash. This function can simulate human mouse and keyboard operations, independently identify desktop and web interface elements, and complete multi-step complex office tasks without custom scripts. Actual tests show that its automated processing efficiency is 62% higher than traditional RPA tools, it adapts to most mainstream desktop software, and greatly lowers the threshold for ordinary users to perform process automation operations.
+
+<FeedbackButtons slug="item:deepmind-introducing-computer-use-in-gemini-3-5-flash" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/cerebras-gemma4-voice-ai" target="_blank" rel="noopener noreferrer">Hugging Face and Cerebras bring Gemma 4 to real-time voice AI</a>
+
+*Hugging Face*
+
+Hugging Face partners with AI chip manufacturer Cerebras to carry out end-to-end adaptation and optimization for the Gemma 4 large model: relying on the hardware advantages of Cerebras' high-computing dedicated acceleration chips, combined with Hugging Face's ecological toolchain to complete in-depth tuning of the inference framework, it greatly reduces the inference latency of Gemma 4, successfully deploying it in real-time voice AI scenarios, which can meet the low-latency response requirements of scenarios such as voice assistants and real-time interactive customer service.
+
+<FeedbackButtons slug="item:hf-blog-cerebras-gemma4-voice-ai" client:visible />
+
+## <a href="https://huggingface.co/blog/ibm-research/scarfbench" target="_blank" rel="noopener noreferrer">ScarfBench: Benchmarking AI Agents for Enterprise Java Framework Migration</a>
+
+*Hugging Face*
+
+To address the pain point of the lack of targeted evaluation benchmarks for AI Agents in enterprise Java framework migration scenarios, the research launches the ScarfBench evaluation suite: it includes industrial-grade real Java project migration cases, covers multiple types of typical migration tasks, and sets three core evaluation dimensions: functional compatibility, code quality, and migration efficiency. This benchmark fills the gap in domain evaluation, can quantitatively verify the migration capability of AI Agents, and provides reference for Agent iteration and enterprise migration solution selection.
+
+<FeedbackButtons slug="item:hf-blog-scarfbench" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This AI alignment research from the perspective of virtue ethics challenges the traditional assumption that "rational agents need to hold fixed goals", and proposes that human rationality is not directed at preset ultimate goals, but is a dynamic adaptation to a practical network including elements such as behavioral tendencies and evaluation standards. The paper argues that if AI is to cooperate with and fit human agency, its decision-making logic needs to match the "type signature" of human practical action logic, and this path can adapt to both ethical alignment and core security requirements at the same time.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-06-24-scaling-laws/" target="_blank" rel="noopener noreferrer">Scaling Laws, Carefully</a>
+
+*Lilian Weng*
+
+This article sorts out the scaling law, a core empirical finding of deep learning: this law states that training loss decreases in a power-law fashion as model size, dataset size, and invested compute volume increase, showing a linear relationship on a log-log plot. It can be used as a framework to characterize the correlation between compute volume, loss, model, and data, with its core role being to guide the optimal allocation of valuable compute resources between model and dataset sizes.
+
+<FeedbackButtons slug="item:lillog-2026-06-24-scaling-laws" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/07/441396.html" target="_blank" rel="noopener noreferrer">Embodied Intelligence Skill Moment! NVIDIA Open Sources Robot Skill Library, Jim Fan: The Paradigm Has Changed</a>
+
+*QbitAI*
+
+NVIDIA has open sourced the embodied intelligence skill library ASPIRE, which Jim Fan says represents a new paradigm for robot training: it calls on large models to review the operation trajectories of robots such as perception, navigation, and grasping, and after fixing errors and omissions, deposits feasible solutions into the library as reusable skills. Replacing the traditional gradient descent training mode, the experience of multi-Agent decentralized practice can be aggregated to iterate the skill library, and floating-point weights are no longer the only training product.
+
+<FeedbackButtons slug="item:qbitai-441396" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/441386.html" target="_blank" rel="noopener noreferrer">OceanBase Integrated Lakehouse Redefines AI Databases</a>
+
+*QbitAI*
+
+In the AI era, databases face new demands: users are expanded to Agents, data is multimodal, and workloads add AI-type tasks. All technical routes in the industry are evolving towards multi-capability integration. OceanBase proposes a new AI database architecture with integrated lakehouse, which is not a superposition of traditional product functions, but manages multimodal data with a unified base, integrates online and offline computing, ensures the consistency and reliability of AI production scenarios, and redefines the database architecture in the AI era.
+
+<FeedbackButtons slug="item:qbitai-441386" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/441246.html" target="_blank" rel="noopener noreferrer">Financial AI Martial Arts Conference Kicks Off! Four Real Business Questions, Question Setters: No One Guesses the Optimal Solution</a>
+
+*QbitAI*
+
+The AFAC2026 Financial Intelligence Innovation Competition abandons benchmark tests that focus solely on score brushing, and sets four real-scenario competition questions: transaction behavior and capital flow identification, insurance PDF structured transcription, automatic experiment design under sparse feedback, and low-Token cost financial long-form Q&A. The competition directly addresses the pain point that existing large models perform poorly in the financial field, with the core goal of overcoming engineering problems at the Agent layer, calling for a return to basic research to deliver industrial value, making it a highly anticipated financial AI competition this year.
+
+<FeedbackButtons slug="item:qbitai-441246" client:visible />
