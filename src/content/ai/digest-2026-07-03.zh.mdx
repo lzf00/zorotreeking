@@ -1,0 +1,215 @@
+---
+lang: zh
+translationKey: digest-2026-07-03
+title: "AI 每日精选 · 2026-07-03"
+description: "21 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-07-03
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">头部大模型厂商密集迭代：Anthropic发Claude Sonnet 5，DeepMind、OpenAI均有多项新进展公布</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">前沿技术研究成果密集发布，覆盖多模态生成、AI可解释性、Agent评测多个方向</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">产业侧涌现多个热门项目：无英伟达依赖万亿模型走热，自演进Agent等工具开源</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥模型发新</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠前沿研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖Agent技术</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡性能优化</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡产业动态</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.02512" target="_blank" rel="noopener noreferrer">Program-as-Weights: A Programming Paradigm for Fuzzy Functions</a>
+
+*HF ★ 18 · Wentao Zhang, Liliana Hotsko, Woojeong Kim… · [HF 镜像](https://huggingface.co/papers/2607.02512)*
+
+针对模糊规则类编程任务依赖大模型API成本高、难本地化的问题，本文提出“程序即权重（PAW）”编程范式：基于自制10M样本的FuzzyBench数据集训练4B编译器，为0.6B冻结Qwen3解释器生成轻量化适配器。效果追平32B Qwen3直接调用，推理内存仅为后者1/50，可在M3笔记本离线运行，将大模型从单次求解器转为可复用工具生成器。
+
+<FeedbackButtons slug="item:arxiv-2607.02512" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.30562" target="_blank" rel="noopener noreferrer">Morphing into Hybrid Attention Models</a>
+
+*HF ★ 12 · Disen Lan, Jianbin Zheng, Yuxi Ren… · [HF 镜像](https://huggingface.co/papers/2606.30562)*
+
+现有混合注意力模型靠替换部分层为线性注意力提升长上下文效率，但选保留全注意力的层时多采用启发式策略，忽略层间全局依赖。本文将选层建模为预算约束子集优化问题，提出FlashMorph：加线性注意力分支、联合优化层门控后离散选层，配合蒸馏微调。实验显示其选层成本更低，所得模型长上下文性能、通用表现均优于现有方案。
+
+<FeedbackButtons slug="item:arxiv-2606.30562" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.01642" target="_blank" rel="noopener noreferrer">Multi-Resolution Flow Matching: Training-Free Diffusion Acceleration via Staged Sampling</a>
+
+*HF ★ 10 · Xingyu Zheng, Xianglong Liu, Yifu Ding… · [HF 镜像](https://huggingface.co/papers/2607.01642)*
+
+本文针对现有无训练多分辨率文生图扩散加速方案存在模糊、伪影的问题，提出适配预训练流匹配模型的MrFlow策略：先低分辨率快速生成主结构，经轻量GAN像素空间超分、注噪重采高频后高分辨率精修。该方案可实现10倍端到端加速，质量损失不足1%，优于同类方案，搭配蒸馏策略最高可提速25倍。
+
+<FeedbackButtons slug="item:arxiv-2607.01642" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.02291" target="_blank" rel="noopener noreferrer">Optimizing Visual Generative Models via Distribution-wise Rewards</a>
+
+*HF ★ 8 · Ruihang Li, Mengde Xu, Shuyang Gu… · [HF 镜像](https://huggingface.co/papers/2607.02291)*
+
+针对视觉生成强化学习逐样本奖励易引发奖励黑客、模式坍缩、多样性下降等问题，本文提出分布级奖励微调框架：以分布而非单样本评估生成结果，搭配子集替换策略降低计算成本，优化事后模型融合系数缓解SDE带来的训推不一致。实验显示多类基线模型FID显著提升，同时兼顾感知质量与样本多样性。
+
+<FeedbackButtons slug="item:arxiv-2607.02291" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.01647" target="_blank" rel="noopener noreferrer">AgenticDataBench: A Comprehensive Benchmark for Data Agents</a>
+
+*HF ★ 5 · Zhaoyan Sun, Shan Zhong, Daizhou Wen… · [HF 镜像](https://huggingface.co/papers/2607.01647)*
+
+针对大模型驱动的数据科学自动化Agent缺乏多场景细粒度评测基准的痛点，该工作提出AgenticDataBench基准：覆盖15个垂直领域（含5个头部金融科技公司B2B真实场景），通过技能聚类去冗余，可基于大模型生成缺数据领域的任务，配套细粒度真值标签。团队已基于该开源基准评测前沿数据Agent，输出技能维度的精细化性能分析。
+
+<FeedbackButtons slug="item:arxiv-2607.01647" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2607.00089" target="_blank" rel="noopener noreferrer">Representation as a Bottleneck for Mechanistic Interpretability: The Manifestation Unit Protocol</a>
+
+*Hussein Chouman, Wataru Sasaki, Tomokazu Matsui…*
+
+针对神经网络机制可解释性现有组件分析结果难以复用、无法直接支撑下游审计与干预的痛点，本文提出“表现单元”结构化协议：扩展带Transformer注意力头原语的类型化元组，自动组织组件统计结果支持混合检索。在生成视觉、判别视觉、语言三类模型上验证显示，该协议检索性能远超无结构基线，可精准定位符合因果标准的组件，仅需两个核心字段即可生效，为可解释性研究提供通用基础架构。
+
+<FeedbackButtons slug="item:arxiv-2607.00089" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.00095" target="_blank" rel="noopener noreferrer">SNAP-FM: Sparse Nonlinear Accelerated Projection for Physics-Constrained Generative Modeling</a>
+
+*Alaina Kolli, Theodoros Xenakis, Utkarsh Utkarsh…*
+
+针对物理约束生成模型推理时非线性约束投影开销高、通用机器学习框架适配差的痛点，该研究提出SNAP-FM方法，利用样本批处理与PDE局部耦合的块稀疏结构，结合专用Julia库与GPU稀疏因子化求解。在多类PDE基准测试中，该方法在保证约束满足的同时实现投影加速，为科学机器学习约束生成采样提供实用路径。
+
+<FeedbackButtons slug="item:arxiv-2607.00095" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.00113" target="_blank" rel="noopener noreferrer">SemiScope: Disentangling Classifier Tuning and Joint Optimization in Semi-Supervised Security Classification</a>
+
+*Rui Shu, Tianpei Xia, Jingzhu He*
+
+针对安全分类标注数据稀缺、半监督学习（SSL）效果增益归因不清的问题，该研究面向二元表格型安全分类任务，提出SemiScope分析框架拆分SSL联合优化与分类器单独调优的贡献。实验显示80%场景下二者效果相当，86%的性能增益来自分类器超参与阈值调优，仅用自训练加贝叶斯调优分类器、校验集调阈值的简单方案，即可接近全监督效果，大幅降低标注需求。
+
+<FeedbackButtons slug="item:arxiv-2607.00113" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/how-chatgpt-adoption-has-expanded" target="_blank" rel="noopener noreferrer">How ChatGPT adoption has expanded</a>
+
+*OpenAI*
+
+本研究依托OpenAI最新对外发布的Signals运营数据集，分析ChatGPT的全球普及扩张进展：当前ChatGPT全球渗透呈全维度增长态势，用户使用频次稳步上升，对其功能的探索边界不断拓展，同时覆盖的地域范围、适配使用的语言类型均持续扩张，展现出极强的全球扩散活力。
+
+<FeedbackButtons slug="item:openai-blog-how-chatgpt-adoption-has-expanded" client:visible />
+
+## <a href="https://openai.com/index/genebench-pro/case-studies" target="_blank" rel="noopener noreferrer">Inside Genebench-Pro</a>
+
+*OpenAI*
+
+你当前仅提供了论文标题《Inside Genebench-Pro》，未附上对应的英文摘要正文内容，无法完成翻译提炼、总结的需求。请你补充该论文摘要的完整英文文本，我会按照要求突出核心方法与结论，输出120字左右的简洁中文总结。
+
+<FeedbackButtons slug="item:openai-blog-case-studies" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Claude Fable 5</a>
+
+*Anthropic*
+
+Anthropic宣布自7月1日起重新部署Claude Fable 5大模型，本次重启的前提是相关出口管制已正式解除。新版本升级了网络安全防护体系，新增行业专属防越狱框架，可有效抵御恶意攻击、降低安全漏洞，充分适配监管要求，进一步保障模型的使用合规性与运行安全性。
+
+<FeedbackButtons slug="item:anthropic-redeploying-fable-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-sonnet-5" target="_blank" rel="noopener noreferrer">Introducing Claude Sonnet 5</a>
+
+*Anthropic*
+
+Anthropic正式推出新一代大模型Claude Sonnet 5。该款是当前Sonnet系列中智能体（Agent）能力最强的版本，具备业内顶尖的智能水准，核心适配两大高频实用场景：各类复杂编程开发任务、日常各领域专业办公需求，可大幅提升相关场景的作业效率。
+
+<FeedbackButtons slug="item:anthropic-claude-sonnet-5" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/start-building-with-nano-banana-2-lite-and-gemini-omni-flash/" target="_blank" rel="noopener noreferrer">Start building with Nano Banana 2 Lite and Gemini Omni Flash</a>
+
+*Google DeepMind*
+
+您当前仅提供了论文标题，摘要正文内容缺失，请您补充完整该摘要的具体英文内容，我会按照要求为您完成翻译提炼，生成120字左右、突出核心方法与研究结论的简洁中文总结。
+
+<FeedbackButtons slug="item:deepmind-start-building-with-nano-banana-2-lite-and-gemini-omni-flash" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-computer-use-in-gemini-3-5-flash/" target="_blank" rel="noopener noreferrer">Introducing computer use in Gemini 3.5 Flash</a>
+
+*Google DeepMind*
+
+本工作介绍谷歌Gemini 3.5 Flash新增的自主操控计算机能力，核心方法是对齐人机交互逻辑，支持模型自主操控键鼠、调用桌面软件、跨工具串联任务，无需用户编写调用脚本。实测显示其办公自动化、批量数据处理效率较前代提升超40%，非技术用户也可零代码完成复杂多步操作任务。
+
+<FeedbackButtons slug="item:deepmind-introducing-computer-use-in-gemini-3-5-flash" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/cerebras-gemma4-voice-ai" target="_blank" rel="noopener noreferrer">Hugging Face and Cerebras bring Gemma 4 to real-time voice AI</a>
+
+*Hugging Face*
+
+Hugging Face联合Cerebras完成谷歌Gemma 4大模型的实时语音AI适配落地：依托Cerebras WSE-3晶圆级超算优化全链路推理逻辑，将端到端语音交互（语音识别+多轮对话+语音合成）延迟压至百毫秒级，性能远优于传统GPU方案。目前适配后的模型权重、部署工具已上线Hugging Face Hub，可大幅降低开发者落地低延迟语音AI的门槛。
+
+<FeedbackButtons slug="item:hf-blog-cerebras-gemma4-voice-ai" client:visible />
+
+## <a href="https://huggingface.co/blog/ibm-research/scarfbench" target="_blank" rel="noopener noreferrer">ScarfBench: Benchmarking AI Agents for Enterprise Java Framework Migration</a>
+
+*Hugging Face*
+
+针对企业Java框架迁移场景AI Agent能力缺乏统一评测标准的问题，该研究推出ScarfBench基准测试工具，构建了覆盖不同业务复杂度、迁移难度的标准化任务库，配套多维度自动化评测指标体系。实测显示当前主流AI Agent在复杂依赖适配、兼容性校验场景通过率不足35%，该基准可有效支撑迁移类AI Agent的迭代优化。
+
+<FeedbackButtons slug="item:hf-blog-scarfbench" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+这篇探讨正交性假设后对齐路径的德性伦理研究，反驳了理性主体必然持有固定终极目标的传统认知，指出人类理性的核心是行动契合实践规范而非指向特定目标，提出要实现AI与人类协作、合规运行，需让AI决策逻辑匹配人类的实践型行动逻辑，可同时满足AI伦理对齐与核心安全要求。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-06-24-scaling-laws/" target="_blank" rel="noopener noreferrer">Scaling Laws, Carefully</a>
+
+*Lilian Weng*
+
+论文《Scaling Laws, Carefully》聚焦深度学习核心经验发现缩放定律：训练损失随模型、数据集规模及投入算力提升呈幂律下降，双对数坐标下表现为直线。该定律可作为统筹算力、损失、模型与数据规模的分析框架，核心用于指导稀缺算力资源在模型、数据集扩容间的最优分配。
+
+<FeedbackButtons slug="item:lillog-2026-06-24-scaling-laws" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/07/442138.html" target="_blank" rel="noopener noreferrer">世界模型的新用途：不做选手，去当裁判</a>
+
+*量子位*
+
+地平线分拆的地瓜机器人推出世界模型Uranus，一改行业将世界模型作为具身智能“大脑”的常规路径，定位机器人开发通用底座。针对现有具身评测真机低效难复现、仿真与真实表现脱节的痛点，它可作为客观可控的评测“裁判”，还能充当训练场地缩小sim-to-real差距，为具身模型提供可反复试错、稳定验证的公共基础设施。
+
+<FeedbackButtons slug="item:qbitai-442138" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/442134.html" target="_blank" rel="noopener noreferrer">让Agent越用越强：AReaL 2.0开源，打造面向自演进智能体的RL基础设施</a>
+
+*量子位*
+
+7月2日发布的开源强化学习基础设施AReaL 2.0，针对已落地智能体无法从日常交互经验中自主成长的痛点，无需重构原有智能体，仅需将请求接入其统一推理入口，即可自动记录交互轨迹、结合反馈做在线强化学习，让智能体在安全可控前提下持续提能，打通大模型训练与智能体应用的链路。
+
+<FeedbackButtons slug="item:qbitai-442134" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/442047.html" target="_blank" rel="noopener noreferrer">全球首个英伟达含量为0的万亿模型，成了海外开发者的抢手货</a>
+
+*量子位*
+
+美团推出LongCat-2.0大模型，采用自研MoE架构，总参数1.6万亿，支持1M超长上下文，是全球首个纯国产算力实现全链路训推、完全不依赖英伟达硬件的万亿级大模型。其对外版本Owl Alpha登顶海外Agent开发者调用榜，代码、推理等性能优异，已通过市场验证，目前开放体验新用户赠千万token。
+
+<FeedbackButtons slug="item:qbitai-442047" client:visible />
