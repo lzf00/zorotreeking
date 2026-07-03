@@ -1,0 +1,215 @@
+---
+lang: en
+translationKey: digest-2026-07-03
+title: "AI Daily Digest · 2026-07-03"
+description: "21 papers · Multi-source aggregation + AI summaries"
+date: 2026-07-03
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's content in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Top LLM vendors roll out frequent updates: Anthropic releases Claude Sonnet 5, while DeepMind and OpenAI both announce multiple new developments</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Cutting-edge technical research results are released intensively, covering multimodal generation, AI interpretability, Agent evaluation and other directions</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Multiple popular projects emerge on the industry side: trillion-parameter models independent of NVIDIA gain traction, self-evolving Agent and other tools are open-sourced</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 New Model Releases</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Agent Technology</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Performance Optimization</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡 Industry Trends</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.02512" target="_blank" rel="noopener noreferrer">Program-as-Weights: A Programming Paradigm for Fuzzy Functions</a>
+
+*HF ★ 18 · Wentao Zhang, Liliana Hotsko, Woojeong Kim… · [HF Mirror](https://huggingface.co/papers/2607.02512)*
+
+To address the high cost and difficulty of localization for fuzzy rule programming tasks that rely on LLM APIs, this paper proposes the "Program-as-Weights (PAW)" programming paradigm: a 4B compiler is trained on the self-built 10M-sample FuzzyBench dataset to generate lightweight adapters for a frozen 0.6B Qwen3 interpreter. Its performance matches that of direct calls to the 32B Qwen3, while inference memory is only 1/50 of the latter, and it can run offline on an M3 laptop, turning LLMs from one-time solvers into reusable tool generators.
+
+<FeedbackButtons slug="item:arxiv-2607.02512" client:visible />
+
+## <a href="https://arxiv.org/abs/2606.30562" target="_blank" rel="noopener noreferrer">Morphing into Hybrid Attention Models</a>
+
+*HF ★ 12 · Disen Lan, Jianbin Zheng, Yuxi Ren… · [HF Mirror](https://huggingface.co/papers/2606.30562)*
+
+Existing hybrid attention models improve long context efficiency by replacing partial layers with linear attention, but most adopt heuristic strategies when selecting layers to retain full attention, ignoring global dependencies between layers. This paper models layer selection as a budget-constrained subset optimization problem, and proposes FlashMorph: add linear attention branches, jointly optimize layer gating, then perform discrete layer selection, paired with distillation fine-tuning. Experiments show its layer selection cost is lower, and the resulting model outperforms existing solutions in both long context performance and general performance.
+
+<FeedbackButtons slug="item:arxiv-2606.30562" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.01642" target="_blank" rel="noopener noreferrer">Multi-Resolution Flow Matching: Training-Free Diffusion Acceleration via Staged Sampling</a>
+
+*HF ★ 10 · Xingyu Zheng, Xianglong Liu, Yifu Ding… · [HF Mirror](https://huggingface.co/papers/2607.01642)*
+
+To address the blurring and artifact issues of existing training-free multi-resolution text-to-image diffusion acceleration solutions, this paper proposes the MrFlow strategy adapted to pretrained flow matching models: first quickly generate the main structure at low resolution, then perform lightweight GAN pixel space super-resolution, inject noise and resample high-frequency details, then refine at high resolution. This solution achieves 10x end-to-end acceleration with less than 1% quality loss, outperforming similar solutions, and can be paired with distillation strategies to achieve up to 25x speedup.
+
+<FeedbackButtons slug="item:arxiv-2607.01642" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.02291" target="_blank" rel="noopener noreferrer">Optimizing Visual Generative Models via Distribution-wise Rewards</a>
+
+*HF ★ 8 · Ruihang Li, Mengde Xu, Shuyang Gu… · [HF Mirror](https://huggingface.co/papers/2607.02291)*
+
+To address the problems of reward hacking, mode collapse, and reduced diversity caused by per-sample rewards in visual generative reinforcement learning, this paper proposes a distribution-level reward fine-tuning framework: evaluate generation results at the distribution level instead of individual samples, reduce computational cost with a subset replacement strategy, and optimize post-hoc model fusion coefficients to alleviate training-inference inconsistency caused by SDE. Experiments show that FID of multiple baseline models is significantly improved, while balancing perceptual quality and sample diversity.
+
+<FeedbackButtons slug="item:arxiv-2607.02291" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.01647" target="_blank" rel="noopener noreferrer">AgenticDataBench: A Comprehensive Benchmark for Data Agents</a>
+
+*HF ★ 5 · Zhaoyan Sun, Shan Zhong, Daizhou Wen… · [HF Mirror](https://huggingface.co/papers/2607.01647)*
+
+To address the lack of multi-scenario fine-grained evaluation benchmarks for LLM-driven data science automation Agents, this work proposes the AgenticDataBench benchmark: it covers 15 vertical domains (including real B2B scenarios from 5 top fintech companies), removes redundancy via skill clustering, can generate tasks for data-scarce domains based on LLMs, and is paired with fine-grained ground truth labels. The team has evaluated cutting-edge data Agents based on this open-source benchmark, and output refined performance analysis by skill dimension.
+
+<FeedbackButtons slug="item:arxiv-2607.01647" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2607.00089" target="_blank" rel="noopener noreferrer">Representation as a Bottleneck for Mechanistic Interpretability: The Manifestation Unit Protocol</a>
+
+*Hussein Chouman, Wataru Sasaki, Tomokazu Matsui…*
+
+To address the pain point that existing component analysis results of neural network mechanistic interpretability are difficult to reuse and cannot directly support downstream audit and intervention, this paper proposes the "Manifestation Unit" structured protocol: extend typed tuples with Transformer attention head primitives, automatically organize component statistical results to support hybrid retrieval. Verification on generative vision, discriminative vision, and language models shows that this protocol's retrieval performance far exceeds unstructured baselines, can accurately locate components that meet causal criteria, and only requires two core fields to take effect, providing a general infrastructure for interpretability research.
+
+<FeedbackButtons slug="item:arxiv-2607.00089" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.00095" target="_blank" rel="noopener noreferrer">SNAP-FM: Sparse Nonlinear Accelerated Projection for Physics-Constrained Generative Modeling</a>
+
+*Alaina Kolli, Theodoros Xenakis, Utkarsh Utkarsh…*
+
+To address the pain points of high nonlinear constraint projection overhead during inference of physics-constrained generative models and poor compatibility with general machine learning frameworks, this study proposes the SNAP-FM method, which leverages the block sparse structure of sample batch processing and PDE local coupling, combined with a dedicated Julia library and GPU sparse factorization solver. In multiple PDE benchmark tests, this method achieves projection acceleration while ensuring constraint satisfaction, providing a practical path for constrained generative sampling in scientific machine learning.
+
+<FeedbackButtons slug="item:arxiv-2607.00095" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.00113" target="_blank" rel="noopener noreferrer">SemiScope: Disentangling Classifier Tuning and Joint Optimization in Semi-Supervised Security Classification</a>
+
+*Rui Shu, Tianpei Xia, Jingzhu He*
+
+To address the scarcity of labeled data for security classification and unclear attribution of semi-supervised learning (SSL) performance gains, this study proposes the SemiScope analysis framework for binary tabular security classification tasks to separate the contributions of SSL joint optimization and independent classifier tuning. Experiments show that the two have equivalent effects in 80% of scenarios, 86% of performance gains come from classifier hyperparameter and threshold tuning, and a simple solution of self-training plus Bayesian tuning of classifiers and validation set threshold tuning can approach fully supervised performance, greatly reducing labeling requirements.
+
+<FeedbackButtons slug="item:arxiv-2607.00113" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/how-chatgpt-adoption-has-expanded" target="_blank" rel="noopener noreferrer">How ChatGPT adoption has expanded</a>
+
+*OpenAI*
+
+This study relies on OpenAI's latest publicly released Signals operational dataset to analyze the global expansion progress of ChatGPT adoption: currently, ChatGPT's global penetration is growing across all dimensions, user usage frequency is rising steadily, the boundary of its function exploration is continuously expanding, while the covered geographical range and supported language types are also continuously expanding, demonstrating extremely strong global diffusion vitality.
+
+<FeedbackButtons slug="item:openai-blog-how-chatgpt-adoption-has-expanded" client:visible />
+
+## <a href="https://openai.com/index/genebench-pro/case-studies" target="_blank" rel="noopener noreferrer">Inside Genebench-Pro</a>
+
+*OpenAI*
+
+You have only provided the paper title *Inside Genebench-Pro* without the corresponding English abstract content, so the request for translation extraction and summarization cannot be fulfilled. Please supplement the full English text of this paper's abstract, and I will highlight the core methods and conclusions as required to output a concise summary of around 120 words.
+
+<FeedbackButtons slug="item:openai-blog-case-studies" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Claude Fable 5</a>
+
+*Anthropic*
+
+Anthropic announced that it will redeploy the Claude Fable 5 LLM starting July 1, and the premise of this restart is that relevant export controls have been officially lifted. The new version has upgraded its cybersecurity protection system, added an industry-specific anti-jailbreak framework, which can effectively resist malicious attacks and reduce security vulnerabilities, fully meet regulatory requirements, and further ensure the compliance and operational safety of the model.
+
+<FeedbackButtons slug="item:anthropic-redeploying-fable-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-sonnet-5" target="_blank" rel="noopener noreferrer">Introducing Claude Sonnet 5</a>
+
+*Anthropic*
+
+Anthropic officially launches the new generation LLM Claude Sonnet 5. This is the version with the strongest Agent capabilities in the current Sonnet series, with industry-leading intelligence level, and it is mainly adapted to two high-frequency practical scenarios: various complex programming development tasks, and daily professional office needs in various fields, which can greatly improve work efficiency in relevant scenarios.
+
+<FeedbackButtons slug="item:anthropic-claude-sonnet-5" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/start-building-with-nano-banana-2-lite-and-gemini-omni-flash/" target="_blank" rel="noopener noreferrer">Start building with Nano Banana 2 Lite and Gemini Omni Flash</a>
+
+*Google DeepMind*
+
+You have only provided the paper title, and the abstract content is missing. Please supplement the specific English content of this abstract, and I will complete the translation and extraction as required to generate a concise summary of around 120 words highlighting the core methods and research conclusions.
+
+<FeedbackButtons slug="item:deepmind-start-building-with-nano-banana-2-lite-and-gemini-omni-flash" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-computer-use-in-gemini-3-5-flash/" target="_blank" rel="noopener noreferrer">Introducing computer use in Gemini 3.5 Flash</a>
+
+*Google DeepMind*
+
+This work introduces the new autonomous computer control capability added to Google Gemini 3.5 Flash. The core method is to align human-computer interaction logic, supporting the model to autonomously control the keyboard and mouse, call desktop software, and connect tasks across tools without requiring users to write call scripts. Actual measurements show that its office automation and batch data processing efficiency has increased by more than 40% compared to the previous generation, and non-technical users can also complete complex multi-step operation tasks with zero code.
+
+<FeedbackButtons slug="item:deepmind-introducing-computer-use-in-gemini-3-5-flash" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/cerebras-gemma4-voice-ai" target="_blank" rel="noopener noreferrer">Hugging Face and Cerebras bring Gemma 4 to real-time voice AI</a>
+
+*Hugging Face*
+
+Hugging Face collaborates with Cerebras to complete the real-time voice AI adaptation and implementation of Google's Gemma 4 LLM: relying on Cerebras WSE-3 wafer-level supercomputing to optimize the full-link inference logic, the end-to-end voice interaction (speech recognition + multi-turn dialogue + speech synthesis) latency is reduced to the hundred-millisecond level, with performance far superior to traditional GPU solutions. The adapted model weights and deployment tools are now available on the Hugging Face Hub, which can greatly lower the threshold for developers to implement low-latency voice AI.
+
+<FeedbackButtons slug="item:hf-blog-cerebras-gemma4-voice-ai" client:visible />
+
+## <a href="https://huggingface.co/blog/ibm-research/scarfbench" target="_blank" rel="noopener noreferrer">ScarfBench: Benchmarking AI Agents for Enterprise Java Framework Migration</a>
+
+*Hugging Face*
+
+To address the lack of unified evaluation standards for AI Agent capabilities in enterprise Java framework migration scenarios, this research launches the ScarfBench benchmark tool, which builds a standardized task library covering different business complexity and migration difficulty, paired with a multi-dimensional automated evaluation indicator system. Actual measurements show that the pass rate of current mainstream AI Agents in complex dependency adaptation and compatibility verification scenarios is less than 35%, and this benchmark can effectively support the iterative optimization of migration-oriented AI Agents.
+
+<FeedbackButtons slug="item:hf-blog-scarfbench" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This paper on virtue ethics exploring alignment paths after the orthogonality hypothesis refutes the traditional perception that rational agents necessarily hold fixed ultimate goals, pointing out that the core of human rationality is that actions conform to practical norms rather than pointing to specific goals. It proposes that to realize AI-human collaboration and compliant operation, the AI decision-making logic needs to match the practical action logic of humans, which can meet both AI ethical alignment and core security requirements at the same time.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-06-24-scaling-laws/" target="_blank" rel="noopener noreferrer">Scaling Laws, Carefully</a>
+
+*Lilian Weng*
+
+The paper *Scaling Laws, Carefully* focuses on the core empirical discovery of deep learning, scaling laws: training loss decreases in a power-law fashion as model size, dataset size and invested computing power increase, appearing as a straight line on a double logarithmic coordinate. This law can be used as an analytical framework for coordinating computing power, loss, model and data scale, and is mainly used to guide the optimal allocation of scarce computing power resources between model and dataset expansion.
+
+<FeedbackButtons slug="item:lillog-2026-06-24-scaling-laws" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/07/442138.html" target="_blank" rel="noopener noreferrer">New use case for world models: Be a referee instead of a player</a>
+
+*QbitAI*
+
+Digua Robot, spun off from Horizon, has launched the world model Uranus, breaking the industry's conventional path of using world models as the "brain" of embodied intelligence, and positioning it as a general base for robot development. To address the pain points of low efficiency and poor reproducibility of existing embodied evaluation on real machines, and the gap between simulation and real performance, it can act as an objective and controllable evaluation "referee", and also serve as a training ground to narrow the sim-to-real gap, providing a public infrastructure for embodied models that allows repeated trial and error and stable verification.
+
+<FeedbackButtons slug="item:qbitai-442138" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/442134.html" target="_blank" rel="noopener noreferrer">Make Agents stronger the more they are used: AReaL 2.0 is open-sourced, building RL infrastructure for self-evolving agents</a>
+
+*QbitAI*
+
+The open-source reinforcement learning infrastructure AReaL 2.0 released on July 2 addresses the pain point that deployed Agents cannot grow autonomously from daily interaction experience. Without reconstructing the original Agent, you only need to connect requests to its unified inference entry, and it can automatically record interaction trajectories and perform online reinforcement learning combined with feedback, allowing Agents to continuously improve their capabilities under safe and controllable premises, opening up the link between LLM training and Agent application.
+
+<FeedbackButtons slug="item:qbitai-442134" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/442047.html" target="_blank" rel="noopener noreferrer">The world's first trillion-parameter model with zero NVIDIA dependency has become a hot item for overseas developers</a>
+
+*QbitAI*
+
+Meituan has launched the LongCat-2.0 LLM, adopting a self-developed MoE architecture with a total of 1.6 trillion parameters, supporting a 1M ultra-long context window. It is the world's first trillion-level LLM that realizes full-link training and inference with purely domestic computing power and is completely independent of NVIDIA hardware. Its external version, Owl Alpha, tops the overseas Agent developer call list, with excellent code and inference performance, which has been verified by the market. Currently, new users who sign up for the experience get 10 million free tokens.
+
+<FeedbackButtons slug="item:qbitai-442047" client:visible />
