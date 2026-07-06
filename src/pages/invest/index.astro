@@ -140,18 +140,18 @@ try {
     <p class="mt-2 text-[var(--text-secondary)]">{t("section.invest.desc")}</p>
   </section>
 
-  <!-- NEW · Wind 看板入口（A 股 + 港股） -->
+  <!-- NEW · Wind 看板入口（A 股 + 港股 + ETF 三因子） -->
   <section class="max-w-5xl mx-auto px-5 pb-6">
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
       <a href={pathWithLang("/invest/market", lang)}
          class="group block border border-[var(--border)] rounded-lg p-4 hover:border-section-invest transition-colors">
         <div class="text-base font-semibold tracking-tight group-hover:text-section-invest">
           📊 A 股市场看板 →
         </div>
         <p class="mt-1 text-sm text-[var(--text-secondary)]">
-          A 股观察池 · 5 日 / 20 日 · 主力 · 涨幅榜 · 申万板块 · 单股详情
+          A 股观察池 · 主力 · 涨幅榜 · 申万板块
         </p>
-        <span class="mt-2 inline-block text-[10px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">Wind · 每日 15:30</span>
+        <span class="mt-2 inline-block text-[10px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">Wind · 每小时刷新</span>
       </a>
       <a href={pathWithLang("/invest/hk-market", lang)}
          class="group block border border-[var(--border)] rounded-lg p-4 hover:border-section-invest transition-colors">
@@ -159,9 +159,19 @@ try {
           🇭🇰 港股市场看板 →
         </div>
         <p class="mt-1 text-sm text-[var(--text-secondary)]">
-          港股观察池 · 恒生指数 · 涨幅榜 · 小米 / 腾讯 / 美团等
+          港股观察池 · 恒生指数 · 涨幅榜
         </p>
-        <span class="mt-2 inline-block text-[10px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">Wind · 每日 15:30</span>
+        <span class="mt-2 inline-block text-[10px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">Wind · 每小时刷新</span>
+      </a>
+      <a href={pathWithLang("/invest/etf", lang)}
+         class="group block border border-[var(--border)] rounded-lg p-4 hover:border-section-invest transition-colors">
+        <div class="text-base font-semibold tracking-tight group-hover:text-section-invest">
+          🛡️ ETF 三因子监测 →
+        </div>
+        <p class="mt-1 text-sm text-[var(--text-secondary)]">
+          国家队 ETF 资金信号 · 量能 · 方向 · 份额
+        </p>
+        <span class="mt-2 inline-block text-[10px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">akshare · 每日 19:30</span>
       </a>
     </div>
   </section>

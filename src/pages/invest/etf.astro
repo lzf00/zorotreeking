@@ -1,0 +1,254 @@
+---
+/**
+ * /invest/etf — ETF 三因子国家队资金监测
+ *
+ * 数据源：/opt/etf-three-factor/ 每工作日 19:30 BJT 跑
+ *   量能因子 50%（腾讯财经 K 线：日成交量/20 日均量）
+ *   方向因子 20%（护盘特征：逆市 + 超额 + 前几日跌）
+ *   份额因子 30%（akshare 交易所份额，检测一级市场申赎）
+ *
+ * 综合概率 cp = vp*50% + dp*20% + sp*30%
+ * 信号分级：🔴 ≥70 高确信 · 🟡 50-70 中等 · ⚪ <50 正常
+ */
+import fs from "node:fs";
+import path from "node:path";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { useTranslations, pathWithLang } from "@/i18n/ui";
+
+const lang = "zh" as const;
+const t = useTranslations(lang);
+
+type EtfLatest = {
+  d: string; c: number; chg: number;
+  cp: number; vr: number; vp: number; dp: number; sp: number;
+  v: number; vma: number;
+  shares_yi?: number | null; delta_yi?: number | null; delta_pct?: number | null;
+};
+type EtfSnapshot = {
+  run_time: string; model: string; target_date: string;
+  signal_dates: Array<[string, number, number, string[]]>;
+  latest: Record<string, EtfLatest>;
+  shares_data: Record<string, { shares_yi?: number; delta_yi?: number; delta_pct?: number }>;
+  published_at?: string;
+};
+
+const ETF_META: Record<string, { name: string; track: string; exch: string }> = {
+  "510300": { name: "华泰柏瑞沪深300ETF", track: "沪深300", exch: "上交所" },
+  "510310": { name: "易方达沪深300ETF",   track: "沪深300", exch: "上交所" },
+  "510330": { name: "华夏沪深300ETF",     track: "沪深300", exch: "上交所" },
+  "159919": { name: "嘉实沪深300ETF",     track: "沪深300", exch: "深交所" },
+  "510050": { name: "华夏上证50ETF",      track: "上证50",  exch: "上交所" },
+  "510500": { name: "华泰柏瑞中证500ETF", track: "中证500", exch: "上交所" },
+  "512100": { name: "南方中证1000ETF",    track: "中证1000", exch: "上交所" },
+};
+
+const snapshotPath = path.resolve("./src/data/etf-three-factor-latest.json");
+let snap: EtfSnapshot | null = null;
+try { snap = JSON.parse(fs.readFileSync(snapshotPath, "utf-8")); } catch { snap = null; }
+
+const rows = snap
+  ? Object.entries(snap.latest).map(([code, s]) => ({
+      code, ...s,
+      meta: ETF_META[code] || { name: code, track: "", exch: "" },
+      // 信号灯
+      light: s.cp >= 70 ? "red" : s.cp >= 50 ? "yellow" : "gray",
+    }))
+  : [];
+// 按综合概率倒序
+rows.sort((a, b) => b.cp - a.cp);
+
+const redCount = rows.filter((r) => r.light === "red").length;
+const yellowCount = rows.filter((r) => r.light === "yellow").length;
+const grayCount = rows.filter((r) => r.light === "gray").length;
+
+// 数据时间戳
+const asOfLabel = snap?.published_at
+  ? new Date(snap.published_at).toLocaleString("zh-CN", { timeZone: "Asia/Shanghai", hour12: false })
+  : snap?.run_time ? new Date(snap.run_time).toLocaleString("zh-CN", { timeZone: "Asia/Shanghai", hour12: false }) : "—";
+
+function fmtPct(v: number): string {
+  return `${v >= 0 ? "+" : ""}${v.toFixed(2)}%`;
+}
+function colorClass(v: number): string {
+  if (v > 0) return "text-red-600 dark:text-red-500";
+  if (v < 0) return "text-emerald-600 dark:text-emerald-500";
+  return "text-[var(--text-tertiary)]";
+}
+function cpBarColor(cp: number): string {
+  if (cp >= 70) return "bg-red-500";
+  if (cp >= 50) return "bg-amber-500";
+  return "bg-zinc-300 dark:bg-zinc-600";
+}
+function lightIcon(l: string): string {
+  return l === "red" ? "🔴" : l === "yellow" ? "🟡" : "⚪";
+}
+---
+
+<BaseLayout title="ETF 三因子监测" description="国家队 ETF 资金监测：量能 50% + 方向 20% + 份额 30%">
+  <main class="pt-12 pb-16">
+
+    <section class="max-w-5xl mx-auto px-5 pb-6">
+      <a href={pathWithLang("/invest", lang)} class="text-xs uppercase tracking-[0.18em] text-zinc-500 hover:text-section-invest transition-colors">
+        ← {t("section.invest.title")}
+      </a>
+      <h1 class="mt-6 font-serif text-4xl sm:text-6xl leading-[0.95] tracking-tight text-section-invest">🛡️ ETF 三因子监测</h1>
+      <p class="mt-3 text-sm sm:text-base text-[var(--text-secondary)]">
+        国家队 · 中央汇金 ETF 资金信号 · 量能 50% + 方向 20% + 份额 30%
+      </p>
+      <p class="mt-2 text-xs text-[var(--text-tertiary)] font-mono">
+        数据源 akshare + 腾讯财经 · 工作日 19:30 BJT 自动更新
+        {snap && <span> · 分析日 <strong>{snap.target_date}</strong> · 归档 {asOfLabel}</span>}
+      </p>
+    </section>
+
+    {!snap && (
+      <section class="max-w-5xl mx-auto px-5 pb-12">
+        <p class="p-6 rounded-lg border border-dashed border-[var(--border)] text-center text-[var(--text-tertiary)]">
+          数据源暂缺，等 timer 首次跑完自动填充。
+        </p>
+      </section>
+    )}
+
+    {snap && (
+      <>
+        <!-- 1. 今日信号概览 -->
+        <section class="max-w-5xl mx-auto px-5 pb-8">
+          <div class="grid grid-cols-3 gap-3">
+            <div class="border border-[var(--border)] rounded-lg p-4">
+              <div class="text-[11px] uppercase tracking-[0.15em] text-[var(--text-tertiary)] font-mono">🔴 高确信信号</div>
+              <div class="mt-1 text-3xl font-mono font-semibold text-red-600">{redCount}<span class="text-lg text-[var(--text-tertiary)] ml-1">只</span></div>
+              <div class="mt-0.5 text-[10px] text-[var(--text-tertiary)]">综合概率 ≥ 70%</div>
+            </div>
+            <div class="border border-[var(--border)] rounded-lg p-4">
+              <div class="text-[11px] uppercase tracking-[0.15em] text-[var(--text-tertiary)] font-mono">🟡 中等信号</div>
+              <div class="mt-1 text-3xl font-mono font-semibold text-amber-600">{yellowCount}<span class="text-lg text-[var(--text-tertiary)] ml-1">只</span></div>
+              <div class="mt-0.5 text-[10px] text-[var(--text-tertiary)]">50% ≤ 概率 &lt; 70%</div>
+            </div>
+            <div class="border border-[var(--border)] rounded-lg p-4">
+              <div class="text-[11px] uppercase tracking-[0.15em] text-[var(--text-tertiary)] font-mono">⚪ 正常</div>
+              <div class="mt-1 text-3xl font-mono font-semibold text-[var(--text-secondary)]">{grayCount}<span class="text-lg text-[var(--text-tertiary)] ml-1">只</span></div>
+              <div class="mt-0.5 text-[10px] text-[var(--text-tertiary)]">综合概率 &lt; 50%</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. 7 只 ETF 三因子明细 -->
+        <section class="max-w-5xl mx-auto px-5 pb-8">
+          <div class="flex items-baseline justify-between mb-3">
+            <h2 class="text-base font-semibold tracking-tight">📊 三因子明细</h2>
+            <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">按综合概率排序</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead class="text-[var(--text-tertiary)] text-xs">
+                <tr class="border-b border-[var(--border)]">
+                  <th class="text-left py-2 w-6"></th>
+                  <th class="text-left">ETF</th>
+                  <th class="text-right">现价</th>
+                  <th class="text-right">涨跌</th>
+                  <th class="text-right">量比</th>
+                  <th class="text-right">量能 vp</th>
+                  <th class="text-right">方向 dp</th>
+                  <th class="text-right">份额 sp</th>
+                  <th class="text-right">份额变化</th>
+                  <th class="text-right w-32">综合概率 cp</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-[var(--border)]">
+                {rows.map((r) => (
+                  <tr class="hover:bg-[var(--surface-2)]">
+                    <td class="py-2.5">{lightIcon(r.light)}</td>
+                    <td class="py-2.5">
+                      <span class="font-medium">{r.meta.name}</span>
+                      <div class="text-[10px] font-mono text-[var(--text-tertiary)]">
+                        {r.code} · {r.meta.track} · {r.meta.exch}
+                      </div>
+                    </td>
+                    <td class="text-right font-mono">¥{r.c.toFixed(3)}</td>
+                    <td class={`text-right font-mono ${colorClass(r.chg)}`}>{fmtPct(r.chg)}</td>
+                    <td class="text-right font-mono text-[var(--text-secondary)]">{r.vr.toFixed(2)}x</td>
+                    <td class="text-right font-mono">{r.vp.toFixed(0)}%</td>
+                    <td class="text-right font-mono">{r.dp.toFixed(0)}%</td>
+                    <td class="text-right font-mono">{r.sp.toFixed(0)}%</td>
+                    <td class="text-right font-mono text-[10px] text-[var(--text-tertiary)]">
+                      {r.shares_yi != null ? (
+                        <>
+                          <div>{r.shares_yi.toFixed(2)} 亿份</div>
+                          {r.delta_pct != null && r.delta_pct !== 0 && (
+                            <div class={colorClass(r.delta_pct)}>{fmtPct(r.delta_pct * 100)}</div>
+                          )}
+                        </>
+                      ) : "—"}
+                    </td>
+                    <td class="text-right">
+                      <div class="flex items-center justify-end gap-2">
+                        <div class="w-16 h-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
+                          <div class={`h-full ${cpBarColor(r.cp)} transition-all`} style={`width:${Math.min(100, r.cp)}%`}></div>
+                        </div>
+                        <span class={`font-mono font-semibold text-sm ${r.light === "red" ? "text-red-600" : r.light === "yellow" ? "text-amber-600" : "text-[var(--text-secondary)]"}`}>{r.cp.toFixed(0)}%</span>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- 3. 30 日信号回溯 -->
+        {snap.signal_dates && snap.signal_dates.length > 0 && (
+          <section class="max-w-5xl mx-auto px-5 pb-8">
+            <div class="flex items-baseline justify-between mb-3">
+              <h2 class="text-base font-semibold tracking-tight">📅 30 日重要信号回溯</h2>
+              <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">只列有 🔴 或 🟡 的日子</span>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead class="text-[var(--text-tertiary)] text-xs">
+                  <tr class="border-b border-[var(--border)]">
+                    <th class="text-left py-2">交易日</th>
+                    <th class="text-right">🔴 高确信</th>
+                    <th class="text-right">🟡 中等</th>
+                    <th class="text-left pl-4">涉及 ETF</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-[var(--border)]">
+                  {snap.signal_dates.map(([date, red, yellow, codes]) => (
+                    <tr class="hover:bg-[var(--surface-2)]">
+                      <td class="py-2 font-mono">{date}</td>
+                      <td class="text-right font-mono text-red-600">{red}</td>
+                      <td class="text-right font-mono text-amber-600">{yellow}</td>
+                      <td class="pl-4 text-xs text-[var(--text-secondary)]">
+                        {codes && codes.length > 0 ? codes.join(" · ") : "—"}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        )}
+
+        <!-- 4. 模型说明 -->
+        <section class="max-w-5xl mx-auto px-5 pb-12">
+          <details class="border border-[var(--border)] rounded-lg overflow-hidden">
+            <summary class="px-4 py-3 text-sm font-semibold cursor-pointer hover:bg-[var(--surface-2)]">🧠 三因子模型说明</summary>
+            <div class="px-4 pb-4 pt-1 text-[13px] leading-relaxed text-[var(--text-secondary)] space-y-2">
+              <p><strong>综合概率</strong> = 量能概率 × 50% + 方向概率 × 20% + 份额概率 × 30%</p>
+              <p><strong>量能因子 (vp)</strong>：日成交量 ÷ 20 日均量。放量 ≥ 1.5x 通常与大额资金买入相关。</p>
+              <p><strong>方向因子 (dp)</strong>：护盘特征评分。当 ETF 逆市（大盘跌但 ETF 涨或跌得少）+ 前几日下跌，方向概率升高。</p>
+              <p><strong>份额因子 (sp)</strong>：日份额变化。份额显著增加 → 一级市场申购（大概率是国家队），份额减少 → 赎回。数据来自 akshare 交易所官方接口。</p>
+              <p class="pt-1 border-t border-[var(--border)] mt-2 text-xs text-[var(--text-tertiary)]">
+                🔴 <strong>≥ 70%</strong> 高确信护盘信号 · 🟡 <strong>50%-70%</strong> 中等信号，值得留意 · ⚪ <strong>&lt; 50%</strong> 正常波动
+              </p>
+              <p class="text-xs text-[var(--text-tertiary)]">
+                ⚠️ 仅作模型信号研究，<strong>不构成投资建议</strong>。ETF 份额数据盘后 19:00 后更新，前端每工作日 19:30 后可见当日数据。
+              </p>
+            </div>
+          </details>
+        </section>
+      </>
+    )}
+
+  </main>
+</BaseLayout>
