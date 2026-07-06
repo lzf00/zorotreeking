@@ -212,7 +212,15 @@ function fmtAsOf(iso: string | undefined): string {
             </thead>
             <tbody class="divide-y divide-[var(--border)]">
               {watchlistSorted.map((s) => s.error ? (
-                <tr><td colspan="9" class="py-2.5 text-xs text-[var(--text-tertiary)]">⚠️ {s.code}: {s.error}</td></tr>
+                <tr class="opacity-60">
+                  <td class="py-2.5">
+                    <span aria-hidden="true">⋯</span>
+                    <span class="ml-2 text-[10px] font-mono text-[var(--text-tertiary)]">{s.code}</span>
+                  </td>
+                  <td colspan="8" class="py-2.5 text-right text-xs text-[var(--text-tertiary)] italic">
+                    数据源暂缺
+                  </td>
+                </tr>
               ) : (
                 <tr class="hover:bg-[var(--surface-2)]">
                   <td class="py-2.5">
@@ -261,7 +269,7 @@ function fmtAsOf(iso: string | undefined): string {
             </thead>
             <tbody class="divide-y divide-[var(--border)]">
               {snap.hotStocks.map((h, i) => h.error ? (
-                <tr><td colspan="4" class="py-2.5 text-xs text-[var(--text-tertiary)]">⚠️ {h.error}</td></tr>
+                <tr><td colspan="4" class="py-2.5 text-xs text-[var(--text-tertiary)] italic">数据源暂缺</td></tr>
               ) : (
                 <tr class="hover:bg-[var(--surface-2)]">
                   <td class="py-2.5 text-[var(--text-tertiary)] font-mono">{i + 1}</td>
@@ -293,7 +301,7 @@ function fmtAsOf(iso: string | undefined): string {
             </thead>
             <tbody class="divide-y divide-[var(--border)]">
               {snap.sectors.map((s) => s.error ? (
-                <tr><td colspan="3" class="py-2.5 text-xs text-[var(--text-tertiary)]">⚠️ {s.error}</td></tr>
+                <tr><td colspan="3" class="py-2.5 text-xs text-[var(--text-tertiary)] italic">数据源暂缺</td></tr>
               ) : (
                 <tr class="hover:bg-[var(--surface-2)]">
                   <td class="py-2.5"><span>{s.emoji}</span> <span class="font-medium">{s.name}</span></td>
@@ -314,7 +322,7 @@ function fmtAsOf(iso: string | undefined): string {
         </div>
         <ol class="space-y-3 list-decimal list-inside">
           {snap.news.map((n) => n.error ? (
-            <li class="text-xs text-[var(--text-tertiary)]">⚠️ {n.error}</li>
+            <li class="text-xs text-[var(--text-tertiary)] italic list-none">新闻源暂缺</li>
           ) : (
             <li class="border border-[var(--border)] rounded-lg p-3">
               <a href={baiduSearch(n.title)} target="_blank" rel="noopener noreferrer"

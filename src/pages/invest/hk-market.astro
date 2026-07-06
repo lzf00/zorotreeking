@@ -37,6 +37,7 @@ const watchlistSorted = snap?.watchlist
       (a.error ? 1 : 0) - (b.error ? 1 : 0) || (b.change_pct ?? 0) - (a.change_pct ?? 0)
     )
   : [];
+const watchlistAllError = watchlistSorted.length > 0 && watchlistSorted.every((s) => s.error);
 
 // 判断哪些股票有 detail 页（看 wind-stock-details.json 有没有）
 let detailCodes = new Set<string>();
@@ -133,6 +134,11 @@ function fmtAsOf(iso: string | undefined): string {
           <h2 class="text-base font-semibold tracking-tight">🔍 港股观察池</h2>
           <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">Wind · HKD</span>
         </div>
+        {watchlistAllError && (
+          <div class="mb-4 px-4 py-3 rounded-lg border border-amber-200/60 dark:border-amber-800/60 bg-amber-50/50 dark:bg-amber-950/20 text-xs text-amber-900 dark:text-amber-100 leading-relaxed">
+            ⚠️ 观察池当前所有代码均未从 Wind 拉到实时数据（大盘指数与涨幅榜不受影响）。可能是 Wind API 侧对港股代码格式的临时限制，下个交易日 15:30 收盘后会自动重试。
+          </div>
+        )}
         <div class="overflow-x-auto">
           <table class="w-full text-sm">
             <thead class="text-[var(--text-tertiary)] text-xs">
@@ -150,7 +156,15 @@ function fmtAsOf(iso: string | undefined): string {
             </thead>
             <tbody class="divide-y divide-[var(--border)]">
               {watchlistSorted.map((s) => s.error ? (
-                <tr><td colspan="9" class="py-2.5 text-xs text-[var(--text-tertiary)]">⚠️ {s.code}: {s.error}</td></tr>
+                <tr class="opacity-60">
+                  <td class="py-2.5">
+                    <span aria-hidden="true">⋯</span>
+                    <span class="ml-2 text-[10px] font-mono text-[var(--text-tertiary)]">{s.code}</span>
+                  </td>
+                  <td colspan="8" class="py-2.5 text-right text-xs text-[var(--text-tertiary)] italic">
+                    数据源暂缺（Wind 未识别此代码）
+                  </td>
+                </tr>
               ) : (
                 <tr class="hover:bg-[var(--surface-2)]">
                   <td class="py-2.5">
@@ -197,7 +211,7 @@ function fmtAsOf(iso: string | undefined): string {
             </thead>
             <tbody class="divide-y divide-[var(--border)]">
               {snap.hotStocks.map((h, i) => h.error ? (
-                <tr><td colspan="4" class="py-2.5 text-xs text-[var(--text-tertiary)]">⚠️ {h.error}</td></tr>
+                <tr><td colspan="4" class="py-2.5 text-xs text-[var(--text-tertiary)] italic">数据源暂缺</td></tr>
               ) : (
                 <tr class="hover:bg-[var(--surface-2)]">
                   <td class="py-2.5 text-[var(--text-tertiary)] font-mono">{i + 1}</td>
