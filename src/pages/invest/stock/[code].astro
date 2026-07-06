@@ -24,7 +24,7 @@ type CapitalFlow = {
   error?: string;
 };
 type Connect = { holding_pct?: number; error?: string };
-type Fundamentals = { revenue_yi?: number | null; profit_yi?: number | null; profit_growth?: number | null; currency?: string | null; fetched_at?: string | null };
+type Fundamentals = { revenue_yi?: number | null; profit_yi?: number | null; profit_growth?: number | null; growth_source?: string | null; currency?: string | null; fetched_at?: string | null };
 type Stock = {
   market: "A" | "HK";
   code: string; name: string;
@@ -241,7 +241,9 @@ const backText = stock?.market === "HK" ? "港股市场看板" : "市场深度�
           { label: "市净率 PB (LF)",  value: stock.pb && stock.pb > 0 ? stock.pb.toFixed(2) : "—", sub: "最新财报口径", tone: "report" },
           { label: "总市值",          value: `${fmtYi(mc)}<span class="text-[10px] text-[var(--text-tertiary)] ml-1">${priceCcy}</span>`, tone: "live" },
           { label: "PEG",             value: peg != null ? peg.toFixed(2) : "—",
-                                      sub: growthPctForSub != null ? `利润增速 ${growthPctForSub.toFixed(1)}%` : (peg == null ? "增长率数据源缺失" : undefined), tone: "live" },
+                                      sub: growthPctForSub != null
+                                        ? `增速 ${growthPctForSub.toFixed(1)}% · ${fd?.growth_source || "TTM 净利润"}`
+                                        : "Wind 各增长率口径均为 0", tone: "live" },
           { label: "营业收入 TTM",    value: `${fmtYi(rev)}<span class="text-[10px] text-[var(--text-tertiary)] ml-1">${fdCcySymbol}</span>`, sub: `${fdCcy} · 记账本位币`, tone: "report" },
           { label: "归母净利润 TTM",  value: `${fmtYi(prof)}<span class="text-[10px] text-[var(--text-tertiary)] ml-1">${fdCcySymbol}</span>`, sub: `${fdCcy} · 记账本位币`, tone: "report" },
         ];
