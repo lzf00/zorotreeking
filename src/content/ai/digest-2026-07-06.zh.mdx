@@ -1,0 +1,173 @@
+---
+lang: zh
+translationKey: digest-2026-07-06
+title: "AI 每日精选 · 2026-07-06"
+description: "16 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-07-06
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, the-gradient]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">头部大模型厂商密集推新，Anthropic发布Claude Sonnet 5，OpenAI、谷歌DeepMind均公布重要动态</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face公布多项技术进展，覆盖具身AI推理、RAG优化、企业级AI Agent评测等方向</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">WAIC 2026热议后Scaling时代技术范式，Meta布局GPU销售赛道，产业端聚焦智能体落地</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥模型发布</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠技术研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖智能体</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡行业峰会</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡商业动态</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.29526" target="_blank" rel="noopener noreferrer">The Mirage of Optimizing Training Policies: Monotonic Inference Policies as the Real Objective for LLM Reinforcement Learning</a>
+
+*HF ★ 2 · Jing Liang, Hongyao Tang, Yi Ma… · [HF 镜像](https://huggingface.co/papers/2606.29526)*
+
+针对大语言模型强化学习后训存在训推概率不一致、训练易失稳崩溃问题，现有方案聚焦优化训练侧策略，忽略训练侧优化不必然提升部署推理侧性能。本文提出单调推理策略提升（MIPI）目标，配套两步框架MIPU，通过推理侧gap代理筛选同步更新，实验验证其可提升推理性能、增强训练稳定性。
+
+<FeedbackButtons slug="item:arxiv-2606.29526" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.02501" target="_blank" rel="noopener noreferrer">Embodied.cpp: A Portable Inference Runtime of Embodied AI Models on Heterogeneous Robots</a>
+
+*HF ★ 1 · Ling Xu, Chuyu Han, Borui Li… · [HF 镜像](https://huggingface.co/papers/2607.02501)*
+
+针对具身AI模型部署碎片化、现有通用推理运行时无法满足闭环控制低延迟等具身部署需求的问题，本文提出可移植C++推理运行时Embodied.cpp，通过通用五层架构实现模块化多速率执行、低延迟融合推理等特性，支持跨异构设备统一部署。实测VLA模型任务成功率最高达100%，世界动作模型内存占用降低超70%，兼顾部署效率与模型精度。
+
+<FeedbackButtons slug="item:arxiv-2607.02501" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.00052" target="_blank" rel="noopener noreferrer">AGE: Adaptive-masking for Graph Embedding in Graph Retrieval-Augmented Generation</a>
+
+*HF ★ 1 · Bao Long Nguyen Huu, Atsushi Hashimoto · [HF 镜像](https://huggingface.co/papers/2607.00052)*
+
+针对现有GraphRAG图与文本隐特征对齐差、难适配冻结大模型的问题，本文提出图嵌入自适应掩码方法AGE。其采用类文本嵌入编码器的Transformer做掩码自监督训练，引入可学习节点采样器避开难通过上下文预测的关键节点，提升训练效率。实验显示，AGE在四个异质GraphQA基准上，显著提升了带非参数搜索模块的GraphRAG的问答准确率。
+
+<FeedbackButtons slug="item:arxiv-2607.00052" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/how-chatgpt-adoption-has-expanded" target="_blank" rel="noopener noreferrer">How ChatGPT adoption has expanded</a>
+
+*OpenAI*
+
+本内容基于OpenAI最新公开的Signals运营数据，梳理ChatGPT的全球普及态势：当前其用户规模持续扩张，用户使用频次不断提升，主动探索平台多元能力的需求旺盛，整体推广呈现跨区域、跨语种的全域增长特征，清晰展现了这款热门大模型产品的全球渗透进程正稳步推进。
+
+<FeedbackButtons slug="item:openai-blog-how-chatgpt-adoption-has-expanded" client:visible />
+
+## <a href="https://openai.com/index/genebench-pro/case-studies" target="_blank" rel="noopener noreferrer">Inside Genebench-Pro</a>
+
+*OpenAI*
+
+您好，目前您仅提供了论文标题《Inside Genebench-Pro》，未附上对应的英文摘要原文内容，请您补充完整该论文的摘要文本，我才能为您完成翻译提炼，输出符合要求、突出核心方法与结论的120字左右的中文总结内容。
+
+<FeedbackButtons slug="item:openai-blog-case-studies" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Claude Fable 5</a>
+
+*Anthropic*
+
+Anthropic官宣，在相关出口管制解除后，将于7月1日起正式重新部署Claude Fable 5大模型。本次上线版本完成两项核心安全升级：迭代了全套网络安全防护机制，搭载全新行业级越狱防护框架，既满足合规要求，也能大幅降低模型被恶意破解、输出违规内容的安全风险。
+
+<FeedbackButtons slug="item:anthropic-redeploying-fable-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-sonnet-5" target="_blank" rel="noopener noreferrer">Introducing Claude Sonnet 5</a>
+
+*Anthropic*
+
+本次发布的Claude Sonnet 5是Sonnet系列目前最具自主代理能力的版本，核心智能表现属行业第一梯队，重点针对编程开发、日常专业工作场景优化。该版本面向生产力场景设计，相比前代自主规划执行任务的能力大幅提升，可更好为开发者、职场从业者提供高效智能辅助。
+
+<FeedbackButtons slug="item:anthropic-claude-sonnet-5" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/google-deepmind-and-a24-announce-first-of-its-kind-research-partnership/" target="_blank" rel="noopener noreferrer">Google DeepMind and A24 announce first-of-its-kind research partnership</a>
+
+*Google DeepMind*
+
+这是AI领域与影视行业的首例研究向跨界合作，由谷歌DeepMind联合头部独立影视厂牌A24共同发起。双方将探索AI技术在影视创意开发、内容制作全流程的落地路径，既拓展AI创意应用的边界，也为影视行业降本提效、开拓内容新形态提供技术支撑，目前暂未披露具体落地项目。
+
+<FeedbackButtons slug="item:deepmind-google-deepmind-and-a24-announce-first-of-its-kind-research-partnership" client:visible />
+
+## <a href="https://deepmind.google/blog/start-building-with-nano-banana-2-lite-and-gemini-omni-flash/" target="_blank" rel="noopener noreferrer">Start building with Nano Banana 2 Lite and Gemini Omni Flash</a>
+
+*Google DeepMind*
+
+本开发指南面向AI开发者，介绍了低功耗嵌入式开发板Nano Banana 2 Lite搭配谷歌Gemini Omni Flash轻量极速多模态大模型推理框架的快速开发方案。二者结合可充分发挥边缘端高算力、低延迟优势，大幅降低智能家居、传感交互等场景的AI项目开发门槛，支持开发者快速落地轻量化AI原型。
+
+<FeedbackButtons slug="item:deepmind-start-building-with-nano-banana-2-lite-and-gemini-omni-flash" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/cerebras-gemma4-voice-ai" target="_blank" rel="noopener noreferrer">Hugging Face and Cerebras bring Gemma 4 to real-time voice AI</a>
+
+*Hugging Face*
+
+Hugging Face联合Cerebras完成Gemma 4大模型在实时语音AI场景的适配落地：依托Cerebras专为大模型设计的高算力专用AI加速器大幅压缩推理时延，结合Hugging Face成熟生态工具链降低部署门槛，实现端到端低延迟语音交互推理，可支撑实时语音助手、智能客服等场景流畅交互，适配方案已向开发者开放。
+
+<FeedbackButtons slug="item:hf-blog-cerebras-gemma4-voice-ai" client:visible />
+
+## <a href="https://huggingface.co/blog/ibm-research/scarfbench" target="_blank" rel="noopener noreferrer">ScarfBench: Benchmarking AI Agents for Enterprise Java Framework Migration</a>
+
+*Hugging Face*
+
+本文推出首个面向企业Java框架迁移的AI智能体基准测试套件ScarfBench。其构建了覆盖不同复杂度的真实企业级Java项目测试集，配套功能一致性、性能损耗、依赖兼容性等多维度评估体系。实测显示主流AI智能体高复杂度迁移任务通过率不足30%，依赖适配、业务逻辑保真性短板明显，可为相关研发及企业迁移方案选型提供参考。
+
+<FeedbackButtons slug="item:hf-blog-scarfbench" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+这篇聚焦AI对齐的论文以美德伦理为基础，反思主流正交性假说的预设，提出无论人类还是强AI，理性都不依赖固定最终目标：人类理性核心是将行动适配到由行动、评价标准、资源等构成的实践网络中。若要AI适配、协作人类，其决策逻辑需与人类这类实践推理同构，这是伦理对齐和安全落地的共同要求。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-06-24-scaling-laws/" target="_blank" rel="noopener noreferrer">Scaling Laws, Carefully</a>
+
+*Lilian Weng*
+
+缩放定律是深度学习领域关键实证发现，核心规律为训练损失随模型规模、数据集规模、总算力投入的提升呈幂律下降，双对数坐标下呈线性关系。该定律可作为算力、损失、模型与数据规模四者关联的分析框架，核心作用是指导研究者在模型大小和数据量之间最优分配稀缺算力资源。
+
+<FeedbackButtons slug="item:lillog-2026-06-24-scaling-laws" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/07/443522.html" target="_blank" rel="noopener noreferrer">征程赶超｜WAIC 2026世界模型激辩：答案不在VLA或世界模型，而在？</a>
+
+*量子位*
+
+WAIC2026世界模型主题论坛聚焦当前行业多技术路线并行、落地难、范式未收敛的痛点，将从底层技术辨析、产业化探索等五大维度厘清发展方向。诺奖得主萨金特将AI路线分为拟合数据的开普勒式（如VLA，泛化性弱）、掌握因果物理规则的牛顿式世界模型，为路线争议定调，大会还将同步展示头部企业落地成果。
+
+<FeedbackButtons slug="item:qbitai-443522" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/443399.html" target="_blank" rel="noopener noreferrer">征程赶超｜WAIC 2026模型与智能体：后Scaling时代范式重构，迈入智能体生产力时代</a>
+
+*量子位*
+
+2026年是AI产业分水岭，传统堆算力参数的Scaling模式边际效益递减，行业进入以智能体为核心的后Scaling生产力时代，也是中国AGI差异化突围的关键机遇。WAIC2026聚焦五大核心维度展出国产技术矩阵，破除二元认知误区，明确Scaling三维升级路径，展现中国智能体向生产力部署的跃迁图景。
+
+<FeedbackButtons slug="item:qbitai-443399" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/443339.html" target="_blank" rel="noopener noreferrer">Meta也来卖铲子了！小扎：模型可以慢，GPU必须赚</a>
+
+*量子位*
+
+近期Meta自研AI进展不及预期、员工士气低迷，扎克伯格转而布局算力租赁“卖铲子”业务，计划推出Meta Compute开放自有AI基建。2024年以来Meta已签下近10GW算力容量，在建2.5GW数据中心，算力除供自有模型、升级广告系统外对外出租，200MW即可年入百亿美元，利润率极高。
+
+<FeedbackButtons slug="item:qbitai-443339" client:visible />
