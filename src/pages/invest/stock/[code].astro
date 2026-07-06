@@ -24,6 +24,7 @@ type CapitalFlow = {
   error?: string;
 };
 type Connect = { holding_pct?: number; error?: string };
+type Fundamentals = { revenue_yi?: number | null; profit_yi?: number | null; profit_growth?: number | null };
 type Stock = {
   market: "A" | "HK";
   code: string; name: string;
@@ -32,12 +33,13 @@ type Stock = {
   turnover?: number;
   chg_5d: number; chg_20d: number; chg_ytd: number;
   pe_ttm?: number; pb?: number; dividend_yield?: number;
+  market_cap_yi?: number;
   high_52w?: number; low_52w?: number;
   main_net_today_yi?: number; main_net_5d_yi?: number; main_net_5d_pct?: number;
   main_net_10d_yi?: number; main_net_20d_yi?: number;
   currency?: string;
   emoji: string;
-  details?: { consensus?: Consensus; capital_flow?: CapitalFlow; connect?: Connect; announcements?: Item[]; news?: Item[]; kline_20d?: number[] };
+  details?: { consensus?: Consensus; capital_flow?: CapitalFlow; connect?: Connect; fundamentals?: Fundamentals; announcements?: Item[]; news?: Item[]; kline_20d?: number[] };
   error?: string;
 };
 type Snapshot = { asOf: string; date: string; stocks: Record<string, Stock> };
@@ -209,17 +211,64 @@ const backText = stock?.market === "HK" ? "港股市场看板" : "市场深度�
         </div>
       </section>
 
-      <!-- 3. 估值 -->
-      <section class="max-w-5xl mx-auto px-5 pb-8">
-        <h2 class="text-base font-semibold tracking-tight mb-3">📐 估值</h2>
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-          <div class="border border-[var(--border)] rounded-lg p-3"><div class="text-[10px] text-[var(--text-tertiary)]">市盈率 PE (TTM)</div><div class="mt-0.5 text-lg font-mono">{stock.pe_ttm && stock.pe_ttm > 0 ? stock.pe_ttm.toFixed(2) : "—"}</div></div>
-          <div class="border border-[var(--border)] rounded-lg p-3"><div class="text-[10px] text-[var(--text-tertiary)]">市净率 PB</div><div class="mt-0.5 text-lg font-mono">{stock.pb && stock.pb > 0 ? stock.pb.toFixed(2) : "—"}</div></div>
-          {stock.dividend_yield != null && stock.dividend_yield > 0 && (
-            <div class="border border-[var(--border)] rounded-lg p-3"><div class="text-[10px] text-[var(--text-tertiary)]">股息率</div><div class="mt-0.5 text-lg font-mono text-red-600">{stock.dividend_yield.toFixed(2)}%</div></div>
-          )}
-        </div>
-      </section>
+      <!-- 3. 估值 + 基本面 -->
+      {(() => {
+        const currency = stock.market === "HK" ? "HK$" : "¥";
+        const mc = stock.market_cap_yi;
+        const fd = stock.details?.fundamentals;
+        const rev = fd?.revenue_yi;
+        const prof = fd?.profit_yi;
+        const growth = fd?.profit_growth;
+        // PEG = PE / (增长率%)。Wind 返回可能是 0.15 或 15（不确定），做兼容：<1 视为倍率，>1 视为百分数
+        let peg: number | null = null;
+        if (stock.pe_ttm && stock.pe_ttm > 0 && growth != null && growth > 0) {
+          const growthPct = growth > 1 ? growth : growth * 100;
+          if (growthPct > 0) peg = stock.pe_ttm / growthPct;
+        }
+        const fmtYi = (v: number | null | undefined) => v != null && Number.isFinite(v) && v > 0
+          ? (v >= 10000 ? `${(v / 10000).toFixed(2)} 万亿` : `${v.toFixed(0)} 亿`)
+          : "—";
+        return (
+          <section class="max-w-5xl mx-auto px-5 pb-8">
+            <h2 class="text-base font-semibold tracking-tight mb-3">📐 估值 · 基本面</h2>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div class="border border-[var(--border)] rounded-lg p-3">
+                <div class="text-[10px] text-[var(--text-tertiary)]">市盈率 PE (TTM)</div>
+                <div class="mt-0.5 text-lg font-mono">{stock.pe_ttm && stock.pe_ttm > 0 ? stock.pe_ttm.toFixed(2) : "—"}</div>
+              </div>
+              <div class="border border-[var(--border)] rounded-lg p-3">
+                <div class="text-[10px] text-[var(--text-tertiary)]">市净率 PB</div>
+                <div class="mt-0.5 text-lg font-mono">{stock.pb && stock.pb > 0 ? stock.pb.toFixed(2) : "—"}</div>
+              </div>
+              <div class="border border-[var(--border)] rounded-lg p-3">
+                <div class="text-[10px] text-[var(--text-tertiary)]">总市值</div>
+                <div class="mt-0.5 text-lg font-mono">{fmtYi(mc)}<span class="text-[10px] text-[var(--text-tertiary)] ml-1">{currency}</span></div>
+              </div>
+              <div class="border border-[var(--border)] rounded-lg p-3">
+                <div class="text-[10px] text-[var(--text-tertiary)]">PEG</div>
+                <div class="mt-0.5 text-lg font-mono">{peg != null ? peg.toFixed(2) : "—"}</div>
+                {growth != null && growth > 0 && (
+                  <div class="mt-0.5 text-[10px] text-[var(--text-tertiary)] font-mono">利润增速 {(growth > 1 ? growth : growth * 100).toFixed(1)}%</div>
+                )}
+              </div>
+              <div class="border border-[var(--border)] rounded-lg p-3">
+                <div class="text-[10px] text-[var(--text-tertiary)]">营业收入 TTM</div>
+                <div class="mt-0.5 text-lg font-mono">{fmtYi(rev)}<span class="text-[10px] text-[var(--text-tertiary)] ml-1">{currency}</span></div>
+              </div>
+              <div class="border border-[var(--border)] rounded-lg p-3">
+                <div class="text-[10px] text-[var(--text-tertiary)]">归母净利润 TTM</div>
+                <div class="mt-0.5 text-lg font-mono">{fmtYi(prof)}<span class="text-[10px] text-[var(--text-tertiary)] ml-1">{currency}</span></div>
+              </div>
+              {stock.dividend_yield != null && stock.dividend_yield > 0 && (
+                <div class="border border-[var(--border)] rounded-lg p-3">
+                  <div class="text-[10px] text-[var(--text-tertiary)]">股息率</div>
+                  <div class="mt-0.5 text-lg font-mono text-red-600">{stock.dividend_yield.toFixed(2)}%</div>
+                </div>
+              )}
+            </div>
+          </section>
+        );
+      })()}
 
       <!-- 4. 资金流（仅 A 股有） -->
       {stock.market === "A" && (
