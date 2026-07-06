@@ -1,0 +1,173 @@
+---
+lang: en
+translationKey: digest-2026-07-06
+title: "AI Daily Highlights · 2026-07-06"
+description: "16 papers · Multi-source aggregation + AI summaries"
+date: 2026-07-06
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, the-gradient]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's content in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading LLM vendors are rolling out updates intensively: Anthropic released Claude Sonnet 5, while OpenAI and Google DeepMind also announced key developments</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face unveiled multiple technological advancements, covering embodied AI inference, RAG optimization, enterprise-grade AI Agent evaluation and other areas</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">WAIC 2026 held heated discussions on technical paradigms in the post-Scaling era, Meta entered the GPU sales track, and the industry focuses on agent deployment</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥Model Releases</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠Technical Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖Agents</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡Industry Summits</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡Business Updates</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2606.29526" target="_blank" rel="noopener noreferrer">The Mirage of Optimizing Training Policies: Monotonic Inference Policies as the Real Objective for LLM Reinforcement Learning</a>
+
+*HF ★ 2 · Jing Liang, Hongyao Tang, Yi Ma… · [HF Mirror](https://huggingface.co/papers/2606.29526)*
+
+To address the issues of inconsistent training-inference probability and unstable training crashes in post-training reinforcement learning for LLMs, existing solutions focus on optimizing training-side policies, ignoring that training-side optimization does not necessarily improve deployment inference-side performance. This paper proposes the Monotonic Inference Policy Improvement (MIPI) objective, paired with a two-step framework MIPU, which screens and synchronizes updates via an inference-side gap proxy. Experiments verify that it can improve inference performance and enhance training stability.
+
+<FeedbackButtons slug="item:arxiv-2606.29526" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.02501" target="_blank" rel="noopener noreferrer">Embodied.cpp: A Portable Inference Runtime of Embodied AI Models on Heterogeneous Robots</a>
+
+*HF ★ 1 · Ling Xu, Chuyu Han, Borui Li… · [HF Mirror](https://huggingface.co/papers/2607.02501)*
+
+To solve the problems of fragmented deployment of embodied AI models and the inability of existing general inference runtimes to meet embodied deployment requirements such as low latency for closed-loop control, this paper proposes Embodied.cpp, a portable C++ inference runtime. It adopts a general five-layer architecture to implement features such as modular multi-rate execution and low-latency fusion inference, supporting unified deployment across heterogeneous devices. Tests show that the task success rate of VLA models reaches up to 100%, and the memory footprint of world action models is reduced by more than 70%, balancing deployment efficiency and model accuracy.
+
+<FeedbackButtons slug="item:arxiv-2607.02501" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.00052" target="_blank" rel="noopener noreferrer">AGE: Adaptive-masking for Graph Embedding in Graph Retrieval-Augmented Generation</a>
+
+*HF ★ 1 · Bao Long Nguyen Huu, Atsushi Hashimoto · [HF Mirror](https://huggingface.co/papers/2607.00052)*
+
+To address the poor alignment between graph and text implicit features in existing GraphRAG and the difficulty in adapting to frozen LLMs, this paper proposes AGE, an adaptive masking method for graph embedding. It uses a Transformer similar to text embedding encoders for masked self-supervised training, and introduces a learnable node sampler to avoid key nodes that are difficult to predict via context, improving training efficiency. Experiments show that AGE significantly improves the question answering accuracy of GraphRAG with non-parametric search modules on four heterogeneous GraphQA benchmarks.
+
+<FeedbackButtons slug="item:arxiv-2607.00052" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/how-chatgpt-adoption-has-expanded" target="_blank" rel="noopener noreferrer">How ChatGPT adoption has expanded</a>
+
+*OpenAI*
+
+This content is based on the latest public Signals operational data from OpenAI, sorting out the global adoption trend of ChatGPT: its user scale continues to expand, user usage frequency keeps increasing, demand for actively exploring the platform's diverse capabilities is strong, and the overall promotion shows full-spectrum growth across regions and languages, clearly demonstrating that the global penetration process of this popular LLM product is steadily advancing.
+
+<FeedbackButtons slug="item:openai-blog-how-chatgpt-adoption-has-expanded" client:visible />
+
+## <a href="https://openai.com/index/genebench-pro/case-studies" target="_blank" rel="noopener noreferrer">Inside Genebench-Pro</a>
+
+*OpenAI*
+
+Hello, you have currently only provided the paper title *Inside Genebench-Pro*, without the corresponding original English abstract content. Please supplement the full abstract text of this paper, so that I can complete the translation and refinement for you, and output a qualified Chinese summary of around 120 words highlighting the core methods and conclusions.
+
+<FeedbackButtons slug="item:openai-blog-case-studies" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Claude Fable 5</a>
+
+*Anthropic*
+
+Anthropic officially announced that after relevant export controls are lifted, it will officially re-deploy the Claude Fable 5 large model starting July 1. The launched version has completed two core security upgrades: it has iterated the full set of cybersecurity protection mechanisms, and is equipped with a brand-new industry-grade jailbreak protection framework, which not only meets compliance requirements, but also greatly reduces the security risk of the model being maliciously cracked and outputting illegal content.
+
+<FeedbackButtons slug="item:anthropic-redeploying-fable-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-sonnet-5" target="_blank" rel="noopener noreferrer">Introducing Claude Sonnet 5</a>
+
+*Anthropic*
+
+The newly released Claude Sonnet 5 is the version with the strongest agentic capabilities in the Sonnet series to date, with core intelligence performance in the first echelon of the industry, optimized specifically for programming development and daily professional work scenarios. Designed for productivity scenarios, this version has significantly improved autonomous task planning and execution capabilities compared to the previous generation, and can provide more efficient intelligent assistance for developers and workplace practitioners.
+
+<FeedbackButtons slug="item:anthropic-claude-sonnet-5" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/google-deepmind-and-a24-announce-first-of-its-kind-research-partnership/" target="_blank" rel="noopener noreferrer">Google DeepMind and A24 announce first-of-its-kind research partnership</a>
+
+*Google DeepMind*
+
+This is the first research-oriented cross-border cooperation between the AI field and the film and television industry, jointly initiated by Google DeepMind and leading independent film studio A24. The two parties will explore the implementation path of AI technology in the whole process of film and television creative development and content production, which will not only expand the boundaries of AI creative applications, but also provide technical support for the film and television industry to reduce costs, improve efficiency and explore new content forms. No specific implementation projects have been disclosed yet.
+
+<FeedbackButtons slug="item:deepmind-google-deepmind-and-a24-announce-first-of-its-kind-research-partnership" client:visible />
+
+## <a href="https://deepmind.google/blog/start-building-with-nano-banana-2-lite-and-gemini-omni-flash/" target="_blank" rel="noopener noreferrer">Start building with Nano Banana 2 Lite and Gemini Omni Flash</a>
+
+*Google DeepMind*
+
+This development guide is for AI developers, introducing the rapid development solution of the low-power embedded development board Nano Banana 2 Lite paired with Google's Gemini Omni Flash lightweight ultra-fast multimodal LLM inference framework. The combination can give full play to the advantages of high computing power and low latency on the edge side, greatly reduce the threshold for AI project development in scenarios such as smart home and sensor interaction, and support developers to quickly launch lightweight AI prototypes.
+
+<FeedbackButtons slug="item:deepmind-start-building-with-nano-banana-2-lite-and-gemini-omni-flash" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/cerebras-gemma4-voice-ai" target="_blank" rel="noopener noreferrer">Hugging Face and Cerebras bring Gemma 4 to real-time voice AI</a>
+
+*Hugging Face*
+
+Hugging Face teamed up with Cerebras to complete the adaptation and implementation of the Gemma 4 large model in real-time voice AI scenarios: relying on Cerebras' high-computing dedicated AI accelerator designed for large models to greatly reduce inference latency, combined with Hugging Face's mature ecological toolchain to lower deployment thresholds, achieving end-to-end low-latency voice interaction inference, which can support smooth interaction in scenarios such as real-time voice assistants and intelligent customer service. The adaptation solution is now open to developers.
+
+<FeedbackButtons slug="item:hf-blog-cerebras-gemma4-voice-ai" client:visible />
+
+## <a href="https://huggingface.co/blog/ibm-research/scarfbench" target="_blank" rel="noopener noreferrer">ScarfBench: Benchmarking AI Agents for Enterprise Java Framework Migration</a>
+
+*Hugging Face*
+
+This paper launches ScarfBench, the first AI agent benchmark suite for enterprise Java framework migration. It builds a test set of real enterprise-level Java projects covering different complexities, paired with a multi-dimensional evaluation system including functional consistency, performance loss, and dependency compatibility. Tests show that the pass rate of mainstream AI agents for high-complexity migration tasks is less than 30%, with obvious shortcomings in dependency adaptation and business logic fidelity, which can provide reference for relevant R&D and enterprise migration solution selection.
+
+<FeedbackButtons slug="item:hf-blog-scarfbench" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This paper focusing on AI alignment is based on virtue ethics, reflects on the presuppositions of the mainstream orthogonality hypothesis, and proposes that neither humans nor strong AI have rationality that relies on fixed final goals: the core of human rationality is to adapt actions to the practical network composed of actions, evaluation standards, resources, etc. For AI to adapt to and collaborate with humans, its decision-making logic needs to be isomorphic to this kind of practical reasoning of humans, which is a common requirement for ethical alignment and secure deployment.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-06-24-scaling-laws/" target="_blank" rel="noopener noreferrer">Scaling Laws, Carefully</a>
+
+*Lilian Weng*
+
+Scaling law is a key empirical finding in the field of deep learning. The core rule is that training loss decreases in a power-law fashion as model size, dataset size, and total computing power investment increase, showing a linear relationship on a double-logarithmic coordinate. This law can be used as an analytical framework for the correlation between computing power, loss, model size and data size, and its core function is to guide researchers to optimally allocate scarce computing power resources between model size and data volume.
+
+<FeedbackButtons slug="item:lillog-2026-06-24-scaling-laws" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/07/443522.html" target="_blank" rel="noopener noreferrer">Surge Forward | Heated Debate on World Models at WAIC 2026: The Answer Is Not in VLA or World Models, But Where?</a>
+
+*QbitAI*
+
+The World Model theme forum at WAIC 2026 focuses on the current industry pain points of parallel multiple technical routes, difficult implementation, and unconverged paradigms, and will clarify the development direction from five major dimensions including underlying technical analysis and industrialization exploration. Nobel laureate Thomas Sargent divides AI routes into Kepler-style models that fit data (such as VLA, with weak generalization) and Newton-style world models that master causal physical rules, setting the tone for route disputes. The conference will also showcase the implementation results of leading enterprises simultaneously.
+
+<FeedbackButtons slug="item:qbitai-443522" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/443399.html" target="_blank" rel="noopener noreferrer">Surge Forward | Models and Agents at WAIC 2026: Paradigm Reconstruction in the Post-Scaling Era, Entering the Agent Productivity Era</a>
+
+*QbitAI*
+
+2026 is a watershed year for the AI industry. The marginal benefit of the traditional scaling model that piles up computing power and parameters is diminishing, and the industry has entered the post-Scaling productivity era with agents as the core, which is also a key opportunity for China's AGI to make a differentiated breakthrough. WAIC 2026 focuses on five core dimensions to exhibit the domestic technology matrix, breaks the dual cognitive misunderstanding, clarifies the three-dimensional upgrading path of Scaling, and shows the transition picture of Chinese agents moving towards productivity deployment.
+
+<FeedbackButtons slug="item:qbitai-443399" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/443339.html" target="_blank" rel="noopener noreferrer">Meta Is Also Selling Shovels Now! Zuckerberg: Models Can Be Slow, But GPU Profits Must Come Fast</a>
+
+*QbitAI*
+
+Recently, Meta's self-developed AI progress fell short of expectations and employee morale was low. Mark Zuckerberg turned to layout the computing power rental "shovel selling" business, and plans to launch Meta Compute to open up its own AI infrastructure. Since 2024, Meta has signed nearly 10GW of computing power capacity, and has 2.5GW of data centers under construction. In addition to supplying its own models and upgrading the advertising system, the computing power is also rented out. A 200MW capacity can generate annual revenue of tens of billions of US dollars, with extremely high profit margins.
+
+<FeedbackButtons slug="item:qbitai-443339" client:visible />
