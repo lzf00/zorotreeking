@@ -24,12 +24,19 @@ type EtfLatest = {
   v: number; vma: number;
   shares_yi?: number | null; delta_yi?: number | null; delta_pct?: number | null;
 };
+type EtfHistorical = {
+  date: string; code: string; name: string;
+  cp: number; vp: number; dp: number; sp: number;
+  chg: number | null; shares_delta_pct: number | null;
+  level: string | null;
+};
 type EtfSnapshot = {
   run_time: string; model: string; target_date: string;
   signal_dates: Array<[string, number, number, string[]]>;
   latest: Record<string, EtfLatest>;
   shares_data: Record<string, { shares_yi?: number; delta_yi?: number; delta_pct?: number }>;
   published_at?: string;
+  top_historical?: EtfHistorical[];
 };
 
 const ETF_META: Record<string, { name: string; track: string; exch: string }> = {
@@ -195,7 +202,69 @@ function lightIcon(l: string): string {
           </div>
         </section>
 
-        <!-- 3. 30 日信号回溯 -->
+        <!-- 3. 历史最强信号 top N（从 DB 积累的所有 cp ≥ 40 记录） -->
+        <section class="max-w-5xl mx-auto px-5 pb-8">
+          <div class="flex items-baseline justify-between mb-3">
+            <h2 class="text-base font-semibold tracking-tight">🏆 历史最强信号</h2>
+            <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">
+              {snap.top_historical?.length ? `top ${snap.top_historical.length} · cp ≥ 40%` : "数据积累中"}
+            </span>
+          </div>
+          {snap.top_historical && snap.top_historical.length > 0 ? (
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead class="text-[var(--text-tertiary)] text-xs">
+                  <tr class="border-b border-[var(--border)]">
+                    <th class="text-left py-2 w-6"></th>
+                    <th class="text-left">交易日</th>
+                    <th class="text-left">ETF</th>
+                    <th class="text-right">涨跌</th>
+                    <th class="text-right">量能 vp</th>
+                    <th class="text-right">方向 dp</th>
+                    <th class="text-right">份额 sp</th>
+                    <th class="text-right w-32">综合概率 cp</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-[var(--border)]">
+                  {snap.top_historical.map((h) => {
+                    const l = h.cp >= 70 ? "red" : h.cp >= 50 ? "yellow" : "gray";
+                    return (
+                      <tr class="hover:bg-[var(--surface-2)]">
+                        <td class="py-2.5">{lightIcon(l)}</td>
+                        <td class="py-2.5 font-mono text-xs">{h.date}</td>
+                        <td class="py-2.5">
+                          <span class="font-medium">{h.name}</span>
+                          <div class="text-[10px] font-mono text-[var(--text-tertiary)]">{h.code}</div>
+                        </td>
+                        <td class={`text-right font-mono ${colorClass(h.chg ?? 0)}`}>
+                          {h.chg != null ? fmtPct(h.chg) : "—"}
+                        </td>
+                        <td class="text-right font-mono">{h.vp.toFixed(0)}%</td>
+                        <td class="text-right font-mono">{h.dp.toFixed(0)}%</td>
+                        <td class="text-right font-mono">{h.sp.toFixed(0)}%</td>
+                        <td class="text-right">
+                          <div class="flex items-center justify-end gap-2">
+                            <div class="w-16 h-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
+                              <div class={`h-full ${cpBarColor(h.cp)}`} style={`width:${Math.min(100, h.cp)}%`}></div>
+                            </div>
+                            <span class={`font-mono font-semibold text-sm ${l === "red" ? "text-red-600" : l === "yellow" ? "text-amber-600" : "text-[var(--text-secondary)]"}`}>{h.cp.toFixed(0)}%</span>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div class="py-8 px-4 rounded-lg border border-dashed border-[var(--border)] text-center text-sm text-[var(--text-tertiary)]">
+              <p>今日全 ⚪（平静），且历史尚未积累到 cp ≥ 40% 的信号。</p>
+              <p class="mt-1 text-xs">timer 每工作日 19:30 归档一次，2-4 周后本表会逐渐充实。</p>
+            </div>
+          )}
+        </section>
+
+        <!-- 4. 30 日信号回溯 -->
         {snap.signal_dates && snap.signal_dates.length > 0 && (
           <section class="max-w-5xl mx-auto px-5 pb-8">
             <div class="flex items-baseline justify-between mb-3">
