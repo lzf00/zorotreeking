@@ -5,7 +5,7 @@ import { aboutData } from "@/data/about";
 import { useTranslations } from "@/i18n/ui";
 
 const t = useTranslations("zh");
-const { name, alias, tagline, photo, intro, now, timeline, contact } = aboutData;
+const { name, alias, tagline, photo, intro, now, timeline, contact, books, stack, projects, goals } = aboutData;
 
 // initials 兜底头像
 const initials = name
@@ -76,6 +76,89 @@ const initials = name
       </div>
     </section>
 
+    {/* ── 技术栈（有数据时展示） ── */}
+    {stack && stack.length > 0 && (
+      <section class="mb-16 sm:mb-20">
+        <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4 pb-2 border-b border-[var(--border)]">
+          STACK · 日常在用
+        </div>
+        <div class="flex flex-wrap gap-2">
+          {stack.map((s) => (
+            <div class="inline-flex items-baseline gap-1.5 px-3 py-1.5 rounded-full border border-[var(--border)] bg-[var(--bg-soft)]">
+              <span class="text-sm font-medium">{s.name}</span>
+              {s.years && <span class="text-[10px] text-[var(--text-tertiary)] font-mono">· {s.years}y</span>}
+              {s.note && <span class="text-[10px] text-[var(--text-tertiary)]">· {s.note}</span>}
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {/* ── 我做过的项目（有数据时展示） ── */}
+    {projects && projects.length > 0 && (
+      <section class="mb-16 sm:mb-20">
+        <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4 pb-2 border-b border-[var(--border)]">
+          PROJECTS · 做过的东西
+        </div>
+        <ul class="space-y-4">
+          {projects.map((p) => (
+            <li>
+              <div class="flex items-baseline gap-2 flex-wrap">
+                {p.url ? (
+                  <a href={p.url} target="_blank" rel="noopener noreferrer"
+                     class="text-base font-semibold hover:underline">{p.name}</a>
+                ) : (
+                  <h3 class="text-base font-semibold">{p.name}</h3>
+                )}
+                <span class="text-[11px] font-mono text-[var(--text-tertiary)]">{p.period}</span>
+              </div>
+              <p class="mt-0.5 text-sm text-[var(--text-secondary)] leading-relaxed">{p.desc}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    {/* ── 影响我的书 ── */}
+    {books && books.length > 0 && (
+      <section class="mb-16 sm:mb-20">
+        <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4 pb-2 border-b border-[var(--border)]">
+          READS · 影响我的书
+        </div>
+        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
+          {books.map((b) => (
+            <li class="flex items-baseline gap-2">
+              <span class="text-[var(--text-tertiary)] text-xs">📖</span>
+              <div class="min-w-0 flex-1">
+                <div class="flex items-baseline gap-2 flex-wrap">
+                  <span class="text-[15px] font-medium">《{b.title}》</span>
+                  {b.author && <span class="text-xs text-[var(--text-tertiary)]">— {b.author}</span>}
+                </div>
+                {b.why && <p class="mt-0.5 text-xs text-[var(--text-secondary)] leading-relaxed">{b.why}</p>}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    {/* ── 长期兴趣（有数据时展示） ── */}
+    {goals && goals.length > 0 && (
+      <section class="mb-16 sm:mb-20">
+        <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4 pb-2 border-b border-[var(--border)]">
+          NORTH STAR · 长期目标
+        </div>
+        <ul class="space-y-2.5">
+          {goals.map((g) => (
+            <li class="pl-4 relative text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300">
+              <span class="absolute left-0 top-[10px] w-1 h-1 rounded-full bg-zinc-400"></span>
+              {g}
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
     {/* ── 时间线 ── */}
     <section class="mb-16 sm:mb-20">
       <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4 pb-2 border-b border-[var(--border)]">
@@ -119,6 +202,14 @@ const initials = name
             📡 RSS
           </a>
         </li>
+        {contact.wechat_official && (
+          <li>
+            <span class="inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] px-4 py-2 text-sm"
+                  title="微信搜索公众号名">
+              💬 微信公众号 <code class="text-[11px] font-mono text-[var(--text-secondary)]">{contact.wechat_official}</code>
+            </span>
+          </li>
+        )}
         <li>
           <a href="/subscribe"
              class="inline-flex items-center gap-1.5 rounded-full bg-black dark:bg-white text-white dark:text-black px-4 py-2 text-sm hover:opacity-90 transition-opacity">

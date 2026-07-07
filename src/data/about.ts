@@ -44,8 +44,26 @@ export const aboutData = {
   contact: {
     email: "1437066318@qq.com",
     github: "https://github.com/lzf00",
+    wechat_official: "BossCat1024",   // 微信公众号
     rss: "/rss.xml",
   },
+
+  // 影响我的书（人文向 —— 平衡技术站的机器味）
+  books: [
+    { title: "活着", author: "余华", why: "生命本身的力量" },
+    { title: "平凡的世界", author: "路遥", why: "普通人怎么活出光" },
+    { title: "明朝那些事儿", author: "当年明月", why: "历史的必然与偶然" },
+    { title: "雪中悍刀行", author: "烽火戏诸侯", why: "武侠里的人物弧光" },
+  ],
+
+  // 技术栈 —— 待用户补充。空数组时前端不显示这块。
+  stack: [] as Array<{ name: string; note?: string; years?: number }>,
+
+  // 我做过的项目 —— 待用户补充
+  projects: [] as Array<{ name: string; period: string; desc: string; url?: string }>,
+
+  // 长期兴趣 / 目标
+  goals: [] as string[],
 
   // 英文版（en/about 用）。不填则跌回 zh 中文内容
   en: {
