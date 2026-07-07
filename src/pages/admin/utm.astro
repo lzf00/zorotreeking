@@ -1,0 +1,263 @@
+---
+/**
+ * /admin/utm —— UTM 参数生成器
+ *
+ * 现在 admin/stats 显示 top referrer 是 1170 次"(直接)"，仅 6 次真实来源。
+ * 分享出去的链接如果不带 UTM 参数，无法区分是从哪个渠道点进来的。
+ * 这个工具生成带 UTM 的链接，粘去微信/朋友圈/Twitter/RSS 邮件等场景。
+ *
+ * 前端小工具，不需要后端；同 /admin/stats 用 sessionStorage 密码门保护。
+ */
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="UTM 生成器" description="给站外分享链接加 UTM 参数追踪来源" noindex>
+  <main class="max-w-3xl mx-auto px-6 pt-12 pb-32">
+    <a href="/admin/stats/" class="text-xs uppercase tracking-[0.18em] text-[var(--text-tertiary)] hover:text-[var(--text)]">
+      ← 访问看板
+    </a>
+    <h1 class="mt-6 text-2xl sm:text-3xl font-semibold tracking-tight">🎯 UTM 参数生成器</h1>
+    <p class="mt-2 text-sm text-[var(--text-tertiary)]">
+      给分享出去的链接加追踪参数。粘去微信/Twitter/邮件等，之后在
+      <a href="/admin/stats/" class="underline">访问看板</a> 里就能按 <code>utm_source</code> 分辨来源。
+    </p>
+
+    <!-- 密码门 -->
+    <div id="gate" class="mt-8">
+      <label class="block text-xs uppercase tracking-[0.18em] text-zinc-500 mb-2">查看口令</label>
+      <input id="gate-pw" type="password" autocomplete="off" autofocus
+             class="w-full max-w-sm px-3 py-2 border border-[var(--border)] rounded-md
+                    bg-white dark:bg-zinc-900 text-sm focus:outline-none focus:ring-1 focus:ring-amber-400"
+             placeholder="输入口令后回车" />
+      <p id="gate-err" class="mt-2 text-xs text-red-500 hidden">口令错误。</p>
+    </div>
+
+    <div id="tool" class="hidden mt-8 space-y-6">
+      <!-- 表单区 -->
+      <div class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-tertiary)] mb-1">
+            目标页面（相对路径或完整 URL）*
+          </label>
+          <input id="in-url" type="text" placeholder="/ai/digest-2026-06-05/ 或 https://www.zorotreeking.online/..."
+                 class="w-full px-3 py-2 border border-[var(--border)] rounded-md bg-white dark:bg-zinc-900 text-sm font-mono focus:outline-none focus:ring-1 focus:ring-amber-400" />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-tertiary)] mb-1">
+              来源 utm_source *
+            </label>
+            <div class="flex gap-2">
+              <input id="in-source" type="text" placeholder="wechat"
+                     class="flex-1 px-3 py-2 border border-[var(--border)] rounded-md bg-white dark:bg-zinc-900 text-sm font-mono focus:outline-none focus:ring-1 focus:ring-amber-400" />
+              <select id="preset-source"
+                      class="px-2 py-2 border border-[var(--border)] rounded-md bg-white dark:bg-zinc-900 text-xs">
+                <option value="">选预设…</option>
+                <option value="wechat">wechat 微信</option>
+                <option value="moments">moments 朋友圈</option>
+                <option value="twitter">twitter</option>
+                <option value="linkedin">linkedin</option>
+                <option value="rss">rss</option>
+                <option value="newsletter">newsletter</option>
+                <option value="github">github</option>
+                <option value="qr">qr 二维码</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-tertiary)] mb-1">
+              媒介 utm_medium
+            </label>
+            <div class="flex gap-2">
+              <input id="in-medium" type="text" placeholder="social"
+                     class="flex-1 px-3 py-2 border border-[var(--border)] rounded-md bg-white dark:bg-zinc-900 text-sm font-mono focus:outline-none focus:ring-1 focus:ring-amber-400" />
+              <select id="preset-medium"
+                      class="px-2 py-2 border border-[var(--border)] rounded-md bg-white dark:bg-zinc-900 text-xs">
+                <option value="">选预设…</option>
+                <option value="social">social</option>
+                <option value="chat">chat（IM 聊天）</option>
+                <option value="email">email</option>
+                <option value="feed">feed（RSS）</option>
+                <option value="qr">qr</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-tertiary)] mb-1">
+              活动 utm_campaign（可选）
+            </label>
+            <input id="in-campaign" type="text" placeholder="digest-share 或 launch-etf"
+                   class="w-full px-3 py-2 border border-[var(--border)] rounded-md bg-white dark:bg-zinc-900 text-sm font-mono focus:outline-none focus:ring-1 focus:ring-amber-400" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-tertiary)] mb-1">
+              标签 utm_content（可选，A/B 测试用）
+            </label>
+            <input id="in-content" type="text" placeholder="button-top 或 v1"
+                   class="w-full px-3 py-2 border border-[var(--border)] rounded-md bg-white dark:bg-zinc-900 text-sm font-mono focus:outline-none focus:ring-1 focus:ring-amber-400" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 输出区 -->
+      <div class="pt-4 border-t border-[var(--border)]">
+        <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-tertiary)] mb-2">
+          生成的链接（会自动更新）
+        </label>
+        <div class="flex gap-2">
+          <input id="out-url" type="text" readonly
+                 class="flex-1 px-3 py-2.5 border border-[var(--border)] rounded-md bg-[var(--surface-2)] text-sm font-mono select-all" />
+          <button id="btn-copy" type="button"
+                  class="px-4 py-2.5 rounded-md bg-black dark:bg-white text-white dark:text-black text-sm font-medium hover:opacity-90 transition-opacity">
+            复制
+          </button>
+        </div>
+        <p id="copy-msg" class="mt-2 text-xs text-emerald-600 hidden">✓ 已复制到剪贴板</p>
+        <p class="mt-3 text-xs text-[var(--text-tertiary)] leading-relaxed">
+          <strong>用法约定</strong>：
+          <code>utm_source</code> 是哪个平台（wechat/twitter），
+          <code>utm_medium</code> 是形态（social/email/qr），
+          <code>utm_campaign</code> 是活动标记（比如 launch-etf 追踪某次专题）。
+          分享时粘贴生成的完整链接即可。
+        </p>
+      </div>
+
+      <!-- 常用组合快速填 -->
+      <div class="pt-4 border-t border-[var(--border)]">
+        <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-tertiary)] mb-2">
+          常用组合（点一下自动填）
+        </label>
+        <div class="flex flex-wrap gap-2">
+          <button data-preset='{"source":"wechat","medium":"chat","campaign":"share"}'
+                  class="preset-btn text-xs px-3 py-1.5 rounded-full border border-[var(--border)] hover:border-blue-500 hover:text-blue-600 transition-colors">
+            💬 微信私聊分享
+          </button>
+          <button data-preset='{"source":"moments","medium":"social","campaign":"share"}'
+                  class="preset-btn text-xs px-3 py-1.5 rounded-full border border-[var(--border)] hover:border-green-500 hover:text-green-600 transition-colors">
+            🌐 微信朋友圈
+          </button>
+          <button data-preset='{"source":"twitter","medium":"social","campaign":""}'
+                  class="preset-btn text-xs px-3 py-1.5 rounded-full border border-[var(--border)] hover:border-sky-500 hover:text-sky-600 transition-colors">
+            🐦 Twitter
+          </button>
+          <button data-preset='{"source":"rss","medium":"feed","campaign":""}'
+                  class="preset-btn text-xs px-3 py-1.5 rounded-full border border-[var(--border)] hover:border-orange-500 hover:text-orange-600 transition-colors">
+            🎯 RSS 订阅
+          </button>
+          <button data-preset='{"source":"newsletter","medium":"email","campaign":""}'
+                  class="preset-btn text-xs px-3 py-1.5 rounded-full border border-[var(--border)] hover:border-purple-500 hover:text-purple-600 transition-colors">
+            📧 邮件订阅
+          </button>
+          <button data-preset='{"source":"qr","medium":"qr","campaign":"business-card"}'
+                  class="preset-btn text-xs px-3 py-1.5 rounded-full border border-[var(--border)] hover:border-zinc-700 hover:text-zinc-900 transition-colors">
+            📱 名片/海报二维码
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<script is:inline>
+  const PW_HASH = "dda2cfcdc90a2e5fee01495a0d0396911b8caeb98851ec343e99d5f58e5f8c26";
+  const LS_KEY = "zoro:admin:gate";
+  const SITE = "https://www.zorotreeking.online";
+
+  async function sha256(s) {
+    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
+    return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, "0")).join("");
+  }
+
+  function $(id) { return document.getElementById(id); }
+
+  function normalizeUrl(input) {
+    let u = (input || "").trim();
+    if (!u) return "";
+    if (u.startsWith("http://") || u.startsWith("https://")) return u;
+    if (!u.startsWith("/")) u = "/" + u;
+    return SITE + u;
+  }
+
+  function build() {
+    const base = normalizeUrl($("in-url").value);
+    if (!base) { $("out-url").value = ""; return; }
+    const params = new URLSearchParams();
+    const fields = [
+      ["utm_source", $("in-source").value],
+      ["utm_medium", $("in-medium").value],
+      ["utm_campaign", $("in-campaign").value],
+      ["utm_content", $("in-content").value],
+    ];
+    for (const [k, v] of fields) {
+      if (v && v.trim()) params.set(k, v.trim());
+    }
+    const sep = base.includes("?") ? "&" : "?";
+    const qs = params.toString();
+    $("out-url").value = qs ? `${base}${sep}${qs}` : base;
+  }
+
+  function bindLive() {
+    ["in-url", "in-source", "in-medium", "in-campaign", "in-content"].forEach((id) => {
+      $(id).addEventListener("input", build);
+    });
+    // preset selects
+    $("preset-source").addEventListener("change", (e) => {
+      if (e.target.value) { $("in-source").value = e.target.value; build(); e.target.value = ""; }
+    });
+    $("preset-medium").addEventListener("change", (e) => {
+      if (e.target.value) { $("in-medium").value = e.target.value; build(); e.target.value = ""; }
+    });
+    // preset combo buttons
+    document.querySelectorAll(".preset-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const p = JSON.parse(btn.getAttribute("data-preset") || "{}");
+        if (p.source !== undefined) $("in-source").value = p.source;
+        if (p.medium !== undefined) $("in-medium").value = p.medium;
+        if (p.campaign !== undefined) $("in-campaign").value = p.campaign;
+        build();
+      });
+    });
+    // copy
+    $("btn-copy").addEventListener("click", async () => {
+      const v = $("out-url").value;
+      if (!v) return;
+      try {
+        await navigator.clipboard.writeText(v);
+        const msg = $("copy-msg");
+        msg.classList.remove("hidden");
+        setTimeout(() => msg.classList.add("hidden"), 1500);
+      } catch (e) {
+        $("out-url").select();
+        document.execCommand("copy");
+      }
+    });
+  }
+
+  (async () => {
+    if (sessionStorage.getItem(LS_KEY) === "1") {
+      $("gate").classList.add("hidden");
+      $("tool").classList.remove("hidden");
+      bindLive();
+      return;
+    }
+    const input = $("gate-pw"), err = $("gate-err");
+    input?.addEventListener("keydown", async (e) => {
+      if (e.key !== "Enter") return;
+      e.preventDefault();
+      const h = await sha256(input.value);
+      if (h === PW_HASH) {
+        sessionStorage.setItem(LS_KEY, "1");
+        $("gate").classList.add("hidden");
+        $("tool").classList.remove("hidden");
+        bindLive();
+      } else {
+        err?.classList.remove("hidden");
+        input.value = "";
+      }
+    });
+  })();
+</script>

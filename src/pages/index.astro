@@ -24,6 +24,13 @@ const [aiPosts, investPosts, photoAlbums, hikes] = await Promise.all([
 const aiOriginal = aiPosts.filter(p => !isDigest(p));
 const investOriginal = investPosts.filter(p => !isDigest(p));
 
+// 副标注：自动化产出（digest/market-recap）数量
+const aiDigestCount = aiPosts.filter(p => isDigest(p)).length;
+const investDigestCount = investPosts.filter(p => isDigest(p)).length;
+const investRecapCount = investPosts.filter(p =>
+  (p.data.tags ?? []).includes("market-recap") || p.data.translationKey.startsWith("market-recap-")
+).length;
+
 const latest = [
   ...aiOriginal.map(p => ({ ...p, section: "ai" as const })),
   ...investOriginal.map(p => ({ ...p, section: "invest" as const })),
@@ -208,10 +215,49 @@ const sectionAccent: Record<string, string> = {
 
   <!-- ── 四个栏目卡（2×2 圆角灰底，Apple 产品宫格风） ── -->
   <section class="max-w-6xl mx-auto px-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-    <SectionCard href={pathWithLang("/ai", lang)}     title={t("section.ai.title")}     desc={t("section.ai.desc")}     accent="ai"     count={aiOriginal.length}     countLabel="篇" index={0} />
-    <SectionCard href={pathWithLang("/invest", lang)} title={t("section.invest.title")} desc={t("section.invest.desc")} accent="invest" count={investOriginal.length} countLabel="篇" index={1} />
+    <SectionCard href={pathWithLang("/ai", lang)}     title={t("section.ai.title")}     desc={t("section.ai.desc")}     accent="ai"     count={aiOriginal.length}     countLabel="原创" countSecondary={`+ ${aiDigestCount} 期日报`} index={0} />
+    <SectionCard href={pathWithLang("/invest", lang)} title={t("section.invest.title")} desc={t("section.invest.desc")} accent="invest" count={investOriginal.length} countLabel="复盘" countSecondary={`+ ${investRecapCount + investDigestCount} 期速览`} index={1} />
     <SectionCard href={pathWithLang("/photo", lang)}  title={t("section.photo.title")}  desc={t("section.photo.desc")}  accent="photo"  count={photoAlbums.length}  countLabel="组" index={2} />
     <SectionCard href={pathWithLang("/hike", lang)}   title={t("section.hike.title")}   desc={t("section.hike.desc")}   accent="hike"   count={hikes.length}        countLabel="条" index={3} />
+  </section>
+
+  <!-- ── 主题地图入口（LLM embedding 投影 2D · 让访客感知内容广度） ── -->
+  <section class="max-w-6xl mx-auto px-5 mt-8 sm:mt-12">
+    <a href={pathWithLang("/explore", lang)}
+       class="group block rounded-2xl border border-[var(--border)] hover:border-transparent
+              bg-gradient-to-br from-blue-50/60 via-purple-50/40 to-emerald-50/60
+              dark:from-blue-950/30 dark:via-purple-950/20 dark:to-emerald-950/30
+              hover:shadow-lg transition-all duration-300 overflow-hidden">
+      <div class="flex items-center gap-4 sm:gap-6 p-5 sm:p-6">
+        <!-- 图标区：3 个色点连线，暗示主题聚类 -->
+        <div class="shrink-0 hidden sm:block">
+          <svg width="72" height="72" viewBox="0 0 72 72" class="opacity-80 group-hover:scale-110 transition-transform">
+            <circle cx="20" cy="24" r="6" fill="#1d4ed8" fill-opacity="0.7"/>
+            <circle cx="52" cy="18" r="5" fill="#991b1b" fill-opacity="0.7"/>
+            <circle cx="16" cy="52" r="4" fill="#166534" fill-opacity="0.7"/>
+            <circle cx="48" cy="50" r="7" fill="#6b21a8" fill-opacity="0.7"/>
+            <circle cx="36" cy="34" r="3" fill="currentColor" fill-opacity="0.3"/>
+            <line x1="20" y1="24" x2="36" y2="34" stroke="currentColor" stroke-width="1" stroke-opacity="0.2"/>
+            <line x1="52" y1="18" x2="36" y2="34" stroke="currentColor" stroke-width="1" stroke-opacity="0.2"/>
+            <line x1="16" y1="52" x2="36" y2="34" stroke="currentColor" stroke-width="1" stroke-opacity="0.2"/>
+            <line x1="48" y1="50" x2="36" y2="34" stroke="currentColor" stroke-width="1" stroke-opacity="0.2"/>
+          </svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="text-[10px] uppercase tracking-[0.18em] text-[var(--text-tertiary)] font-mono mb-1">
+            EMBEDDING · 2D PROJECTION
+          </div>
+          <h3 class="text-lg sm:text-xl font-semibold tracking-tight group-hover:text-blue-600 transition-colors">
+            🗺️ 主题地图 —— 看这站在写什么
+          </h3>
+          <p class="mt-1.5 text-sm text-[var(--text-secondary)] leading-relaxed">
+            所有文章用 LLM embedding 投影到 2D 平面，主题相近的自动靠在一起。
+            <span class="text-[var(--text-tertiary)]">RLHF 在哪 · 港股在哪 · 徒步在哪，一眼看到。</span>
+          </p>
+        </div>
+        <span class="shrink-0 text-2xl text-[var(--text-tertiary)] group-hover:translate-x-1 group-hover:text-blue-600 transition-all">→</span>
+      </div>
+    </a>
   </section>
 
   <!-- ── 最近更新（极简列表） ── -->

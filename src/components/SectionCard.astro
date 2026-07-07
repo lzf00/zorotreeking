@@ -6,9 +6,10 @@ interface Props {
   accent: "ai" | "invest" | "photo" | "hike";
   count?: number;
   countLabel?: string;
+  countSecondary?: string;  // "+ 53 期日报" 这种副标注
   index?: number;
 }
-const { href, title, desc, accent, count, countLabel, index = 0 } = Astro.props;
+const { href, title, desc, accent, count, countLabel, countSecondary, index = 0 } = Astro.props;
 
 const accentColor: Record<string, string> = {
   ai: "#1d4ed8",
@@ -30,7 +31,14 @@ const c = accentColor[accent];
       <span class="w-1.5 h-1.5 rounded-full" style={`background:${c}`}></span>
       <span class="uppercase tracking-[0.12em]">{accent}</span>
     </span>
-    {count !== undefined && <span class="tabular-nums">{count} {countLabel}</span>}
+    {count !== undefined && (
+      <span class="tabular-nums text-right">
+        {count} {countLabel}
+        {countSecondary && (
+          <span class="ml-1 text-[10px] opacity-70">{countSecondary}</span>
+        )}
+      </span>
+    )}
   </div>
 
   <!-- 标题 -->
