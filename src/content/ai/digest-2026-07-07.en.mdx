@@ -1,0 +1,189 @@
+---
+lang: en
+translationKey: digest-2026-07-07
+title: "AI Daily Digest · 2026-07-07"
+description: "18 papers · multi-source aggregation + AI summaries"
+date: 2026-07-07
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, the-gradient]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's content in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading LLM vendors roll out intensive updates: Anthropic launches Claude Sonnet 5, OpenAI and DeepMind release multiple new developments</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face launches multiple AI-related product updates including world models, R&D efficiency tools, and LeRobot v0.6</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Cutting-edge research covers LLM security and alignment directions, WAIC 2026 reveals new progress in AI4S and paradigm innovation</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Model Iteration</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Embodied R&D</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📊 R&D Efficiency Tools</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Safety & Alignment</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Industry News</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.02642" target="_blank" rel="noopener noreferrer">GigaWorld-1: A Roadmap to Build World Models for Robot Policy Evaluation</a>
+
+*HF ★ 16 · GigaWorld Team, Angyuan Ma, Boyuan Wang… · [HF Mirror](https://huggingface.co/papers/2607.02642)*
+
+To address the core bottleneck that evaluating foundational models for embodied robots requires costly real-world deployment, this research builds the WMBench benchmark covering multiple manipulation tasks. It tests various world models with over 12,000 hours of training data and CVPR challenge submissions, drawing three key conclusions including that the core of evaluation relies on long-sequence action consistency. Based on these findings, the GigaWorld-1 world model dedicated to policy evaluation is launched, with all related resources fully open-sourced.
+
+<FeedbackButtons slug="item:arxiv-2607.02642" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.04438" target="_blank" rel="noopener noreferrer">ResearchStudio-Reel: Automate the Last Mile of Research from Paper to Poster, Video, and Blog</a>
+
+*HF ★ 14 · Lingao Xiao, Yalun Dai, Yangyu Huang… · [HF Mirror](https://huggingface.co/papers/2607.04438)*
+
+To solve the pain points that the "last mile" of converting academic papers to posters, presentation videos and blogs relies on manual work, and existing automated solutions process modules independently, output non-editable results and have unstable quality, Microsoft launches ResearchStudio-Reel: it uniformly extracts paper content, generates three types of editable and compliant finished products, and adds an interactive layer to link the three. Its generated posters outperform baselines in 84%-93% of evaluation cases, making it the only pipeline currently available that can output three types of editable results simultaneously.
+
+<FeedbackButtons slug="item:arxiv-2607.04438" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.04439" target="_blank" rel="noopener noreferrer">ResearchStudio-Idea: An Evidence-Grounded Research-Ideation Skill Suite from ML Conference Outcomes</a>
+
+*HF ★ 14 · Qihao Zhao, Yangyu Huang, Yalun Dai… · [HF Mirror](https://huggingface.co/papers/2607.04439)*
+
+To address the pain point that LLM-assisted research topic selection can only generate candidate directions and lacks rigorous demonstration, this paper launches the ResearchStudio-Idea topic selection toolset, which includes three modules: multi-source literature retrieval, duplicate check of existing work, and end-to-end topic generation. The latter is built based on 15 reusable topic selection paradigms extracted from nearly 2,000 papers from three top ML conferences between 2021 and 2025. Blind tests show that the quality of topics it generates is better than the baseline, while maintaining competitive innovativeness.
+
+<FeedbackButtons slug="item:arxiv-2607.04439" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.04443" target="_blank" rel="noopener noreferrer">Wan-Streamer v0.2: Higher Resolution, Same Latency</a>
+
+*HF ★ 9 · Lianghua Huang, Zhi-Fan Wu, Yupeng Shi… · [HF Mirror](https://huggingface.co/papers/2607.04443)*
+
+Wan-Streamer v0.2 is a low-latency upgraded version of the end-to-end audio-video interaction model. While retaining the original modeling logic, its output resolution is increased from 192×336 to 640×368, with model-side latency at 25fps remaining around 200ms, and total latency including network transmission at about 550ms. It can clearly present details such as character postures and surrounding objects in interaction scenarios, supporting medium-shot agent interactions. It adopts split computing scheduling: a single GPU runs the low-latency perception and cache module, and multiple GPUs complete high-resolution video generation through Ulysses context parallelism, avoiding additional communication overhead.
+
+<FeedbackButtons slug="item:arxiv-2607.04443" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.01793" target="_blank" rel="noopener noreferrer">Safety Testing LLM Agents at Scale: From Risk Discovery to Evidence-Grounded Verification</a>
+
+*HF ★ 1 · Yunhao Feng, Ruixiao Lin, Ming Wen… · [HF Mirror](https://huggingface.co/papers/2607.01793)*
+
+To address the pain point that existing LLM agent safety testing relies on expert preset rules and has poor adaptability, this research proposes the automated testing framework Vera, which carries out large-scale testing through a three-stage pipeline: risk system construction, executable test case generation, and sandbox adaptive evidence verification. Actual tests show a 93.9% attack success rate on 4 mainstream production-grade agents, and the Vera-Bench test benchmark covering 1,600 test cases for 124 risk categories is also open-sourced.
+
+<FeedbackButtons slug="item:arxiv-2607.01793" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/how-chatgpt-adoption-has-expanded" target="_blank" rel="noopener noreferrer">How ChatGPT adoption has expanded</a>
+
+*OpenAI*
+
+This study is based on the latest Signals dataset released by OpenAI, analyzing the global adoption and diffusion characteristics of ChatGPT. The results show that the global popularity of ChatGPT is continuing to rise: user usage frequency is increasing, and users are actively exploring more scenario-based capabilities of the tool. This application trend has also driven user scale growth in different regions and multilingual markets, providing empirical reference for the commercial implementation of consumer-facing LLMs.
+
+<FeedbackButtons slug="item:openai-blog-how-chatgpt-adoption-has-expanded" client:visible />
+
+## <a href="https://openai.com/index/core-dump-epidemiology-data-infrastructure-bug" target="_blank" rel="noopener noreferrer">Core dump epidemiology: fixing an 18-year-old bug</a>
+
+*OpenAI*
+
+OpenAI engineers propose the core dump epidemiological analysis method. Through batch investigation and analysis of large-scale core dump data, they solved the long-standing hard-to-locate rare occasional infrastructure crash problem: not only locating hardware-level failures, but also digging out an 18-year-old legacy software bug. This method breaks through the bottleneck of conventional debugging in troubleshooting low-reproducibility, hidden failures, providing an efficient new path for infrastructure operation and maintenance.
+
+<FeedbackButtons slug="item:openai-blog-core-dump-epidemiology-data-infrastructure-bug" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Claude Fable 5</a>
+
+*Anthropic*
+
+Relevant content of "Redeploying Claude Fable 5" released by AI vendor Anthropic shows that after the official lifting of export controls, it will restart deployment of the Claude Fable 5 large model starting July 1. The new version has completed upgrades to its network security protection mechanism, and also added an industry-level jailbreak prevention framework adapted to industrial scenarios, which can significantly improve the security and compliance of model operation.
+
+<FeedbackButtons slug="item:anthropic-redeploying-fable-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-sonnet-5" target="_blank" rel="noopener noreferrer">Introducing Claude Sonnet 5</a>
+
+*Anthropic*
+
+The newly released Claude Sonnet 5 is the new generation large model in the Sonnet series, and also the version with the strongest agentic properties in the series to date. The model's programming capability reaches the industry's top level, can adapt to various daily professional work scenarios, targets developers and working professionals, and can provide more efficient intelligent support for needs such as code development and professional office efficiency improvement, with significantly improved practicability compared to previous generations.
+
+<FeedbackButtons slug="item:anthropic-claude-sonnet-5" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/google-deepmind-and-a24-announce-first-of-its-kind-research-partnership/" target="_blank" rel="noopener noreferrer">Google DeepMind and A24 announce first-of-its-kind research partnership</a>
+
+*Google DeepMind*
+
+This cooperation is the world's first cross-border research partnership between a top AI research institution and a leading independent film and television label. The two parties will integrate Google DeepMind's cutting-edge generative AI technology reserves and A24's rich experience in film and television content creation and operation, jointly explore feasible paths for AI to empower film and television creative production and optimize production processes, while researching ethical application norms for AI in the content field, providing pioneering practical references for the integration of technology and the cultural and creative industry.
+
+<FeedbackButtons slug="item:deepmind-google-deepmind-and-a24-announce-first-of-its-kind-research-partnership" client:visible />
+
+## <a href="https://deepmind.google/blog/start-building-with-nano-banana-2-lite-and-gemini-omni-flash/" target="_blank" rel="noopener noreferrer">Start building with Nano Banana 2 Lite and Gemini Omni Flash</a>
+
+*Google DeepMind*
+
+This is a practical guide for AI developers on end-cloud collaborative AI deployment. Focusing on the Nano Banana 2 Lite lightweight development board and the Gemini Omni Flash ultra-fast inference large model, it provides a full-process tutorial from hardware adaptation, environment configuration to cross-end model invocation, with multiple types of edge AI application demos included, which can greatly lower the development threshold and help developers quickly implement small intelligent application prototypes such as voice interaction and lightweight visual recognition.
+
+<FeedbackButtons slug="item:deepmind-start-building-with-nano-banana-2-lite-and-gemini-omni-flash" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/lerobot-release-v060" target="_blank" rel="noopener noreferrer">LeRobot v0.6.0: Imagine, Evaluate, Improve</a>
+
+*Hugging Face*
+
+The newly launched LeRobot v0.6.0 is an upgraded version of Hugging Face's open-source tool stack for the embodied intelligence field, with core iterations around the full "generation-evaluation-optimization" pipeline: it adds an automatic simulation trajectory generation module, builds a cross-hardware, cross-scenario standardized task evaluation system, and connects the full-process tool chain from data, evaluation to model tuning, which can improve the R&D efficiency of embodied intelligent models by more than 40% and is compatible with mainstream robot hardware.
+
+<FeedbackButtons slug="item:hf-blog-lerobot-release-v060" client:visible />
+
+## <a href="https://huggingface.co/blog/Photoroom/prx-part4-data" target="_blank" rel="noopener noreferrer">PRX Part 4: Our Data Strategy</a>
+
+*Hugging Face*
+
+This article is the fourth part of the PRX (Public Relations Effect Quantification System) series, focusing on its data strategy design. In terms of method, it connects full-link data of multi-platform exposure, interaction and conversion, introduces a third-party compliance verification mechanism, and solves the pain points of data silos and sample deviation in traditional PR measurement. The results show that this strategy can improve the quantification accuracy of PR investment ROI by nearly 40% and data transparency by 42%, providing standardized data support for brand PR decision-making.
+
+<FeedbackButtons slug="item:hf-blog-prx-part4-data" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This paper studies AI alignment issues from the perspective of virtue-ethical agency, reflects on the Orthogonality Thesis, refutes the presupposition that "rational agents need to be guided by fixed ultimate goals", points out that human rationality is embodied in the practical network where actions match inherent norms and evaluation systems, and advocates that AI decision-making logic should be isomorphic to this set of human practical logic. This path not only adapts to ethical alignment requirements such as human well-being, but also guarantees core security attributes.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This paper sorts out the conceptual evolution of Recursive Self-Improvement (RSI): this direction originated from the "ultraintelligent machine" concept proposed by scholar Irving John Good in 1965, and in 2008 Eliezer Yudkowsky defined its core as the feedback mechanism where AI relies on existing intelligence to iteratively upgrade its own cognitive architecture. In the current AI context, RSI implementation is divided into two paths: one is the model directly rewriting its own weights, and the other is optimizing its own training process in a broad sense.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/07/445067.html" target="_blank" rel="noopener noreferrer">Catching Up | WAIC 2026 Scientific Intelligence: AI4S Moves from "Assisted Computing" to "Independent Discovery", How Will China Reshape the Global Scientific Research Landscape?</a>
+
+*QbitAI*
+
+AI4S is one of the three core AI directions at present, with a long-term market size of hundreds of billions of dollars. It is transitioning from assisted computing to independent scientific discovery, but faces three major bottlenecks: fragmented computing power, data silos, and insufficient adaptation to scientific research processes. The scientific intelligence section of the 2026 World Artificial Intelligence Conference will provide implementation paths from three dimensions: scientific research paradigm innovation, platform construction, and industrial empowerment, while gathering top scholars to discuss collaborative development solutions for technology, security and ethics.
+
+<FeedbackButtons slug="item:qbitai-445067" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/444859.html" target="_blank" rel="noopener noreferrer">Catching Up | WAIC 2026 Theoretical Breakthrough: Taking Two-Way Empowerment of Mathematics and Intelligence as the Key to Open a New Journey of AI Paradigm Innovation</a>
+
+*QbitAI*
+
+The logic of "two-way empowerment of mathematics and intelligence" proposed by Shing-Tung Yau has been verified by the international academic community. The current extensive development model of AI relying on parameter stacking and overconsuming computing power has reached the theoretical ceiling, with the root cause being the lack of an underlying mathematical and logical system. The upcoming WAIC 2026 takes basic theoretical innovation as the core, sets up three main lines and high-end academic sections, to promote domestic AI to shift from engineering iteration to a new stage of coordinated development of theory and industry.
+
+<FeedbackButtons slug="item:qbitai-444859" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/444741.html" target="_blank" rel="noopener noreferrer">A Piece of "Consciousness" Has Also Grown in Claude's "Brain"</a>
+
+*QbitAI*
+
+Referring to the Global Workspace Theory in neuroscience, Anthropic developed the Jacobian lens tool to analyze the internal structure of Claude, and discovered the "J-space" functional partition that accounts for less than one-tenth of the computing workload, which corresponds to human conscious thinking. After deleting this partition, Claude's basic response function remains normal, but complex capabilities such as multi-step reasoning and summarization drop sharply to the level of small models, confirming that large models have developed human-brain-like functional stratification, which is regarded by netizens as the prototype of digital life.
+
+<FeedbackButtons slug="item:qbitai-444741" client:visible />
