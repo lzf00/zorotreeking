@@ -10,6 +10,10 @@ const tagline = en?.tagline ?? aboutData.tagline;
 const intro = en?.intro ?? aboutData.intro;
 const now = en?.now ?? aboutData.now;
 const timeline = en?.timeline ?? aboutData.timeline;
+const books = (en as any)?.books ?? aboutData.books;
+const stack = (en as any)?.stack ?? aboutData.stack;
+const projects = (en as any)?.projects ?? aboutData.projects;
+const goals = (en as any)?.goals ?? aboutData.goals;
 
 const initials = name
   .split(/\s+/)
@@ -76,6 +80,84 @@ const initials = name
       </div>
     </section>
 
+    {stack && stack.length > 0 && (
+      <section class="mb-16 sm:mb-20">
+        <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4 pb-2 border-b border-[var(--border)]">
+          STACK · Day-to-day
+        </div>
+        <div class="flex flex-wrap gap-2">
+          {stack.map((s: any) => (
+            <div class="inline-flex items-baseline gap-1.5 px-3 py-1.5 rounded-full border border-[var(--border)] bg-[var(--bg-soft)]">
+              <span class="text-sm font-medium">{s.name}</span>
+              {s.years && <span class="text-[10px] text-[var(--text-tertiary)] font-mono">· {s.years}y</span>}
+              {s.note && <span class="text-[10px] text-[var(--text-tertiary)]">· {s.note}</span>}
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {projects && projects.length > 0 && (
+      <section class="mb-16 sm:mb-20">
+        <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4 pb-2 border-b border-[var(--border)]">
+          PROJECTS
+        </div>
+        <ul class="space-y-4">
+          {projects.map((p: any) => (
+            <li>
+              <div class="flex items-baseline gap-2 flex-wrap">
+                {p.url ? (
+                  <a href={p.url} target="_blank" rel="noopener noreferrer" class="text-base font-semibold hover:underline">{p.name}</a>
+                ) : (
+                  <h3 class="text-base font-semibold">{p.name}</h3>
+                )}
+                <span class="text-[11px] font-mono text-[var(--text-tertiary)]">{p.period}</span>
+              </div>
+              <p class="mt-0.5 text-sm text-[var(--text-secondary)] leading-relaxed">{p.desc}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    {books && books.length > 0 && (
+      <section class="mb-16 sm:mb-20">
+        <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4 pb-2 border-b border-[var(--border)]">
+          READS · Books that shaped me
+        </div>
+        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
+          {books.map((b: any) => (
+            <li class="flex items-baseline gap-2">
+              <span class="text-[var(--text-tertiary)] text-xs">📖</span>
+              <div class="min-w-0 flex-1">
+                <div class="flex items-baseline gap-2 flex-wrap">
+                  <span class="text-[15px] font-medium italic">{b.title}</span>
+                  {b.author && <span class="text-xs text-[var(--text-tertiary)]">— {b.author}</span>}
+                </div>
+                {b.why && <p class="mt-0.5 text-xs text-[var(--text-secondary)] leading-relaxed">{b.why}</p>}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    {goals && goals.length > 0 && (
+      <section class="mb-16 sm:mb-20">
+        <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4 pb-2 border-b border-[var(--border)]">
+          NORTH STAR
+        </div>
+        <ul class="space-y-2.5">
+          {goals.map((g: string) => (
+            <li class="pl-4 relative text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300">
+              <span class="absolute left-0 top-[10px] w-1 h-1 rounded-full bg-zinc-400"></span>
+              {g}
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
     <section class="mb-16 sm:mb-20">
       <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4 pb-2 border-b border-[var(--border)]">
         TIMELINE
@@ -101,6 +183,9 @@ const initials = name
         <li><a href={`mailto:${contact.email}`} class="inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] px-4 py-2 text-sm hover:bg-[var(--bg-soft)] transition-colors">📮 Email</a></li>
         <li><a href={contact.github} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] px-4 py-2 text-sm hover:bg-[var(--bg-soft)] transition-colors">⌬ GitHub</a></li>
         <li><a href={contact.rss} class="inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] px-4 py-2 text-sm hover:bg-[var(--bg-soft)] transition-colors">📡 RSS</a></li>
+        {contact.wechat_official && (
+          <li><span class="inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] px-4 py-2 text-sm" title="Search this on WeChat">💬 WeChat Official <code class="text-[11px] font-mono text-[var(--text-secondary)]">{contact.wechat_official}</code></span></li>
+        )}
         <li><a href="/en/subscribe" class="inline-flex items-center gap-1.5 rounded-full bg-black dark:bg-white text-white dark:text-black px-4 py-2 text-sm hover:opacity-90 transition-opacity">✉️ Subscribe</a></li>
       </ul>
     </section>

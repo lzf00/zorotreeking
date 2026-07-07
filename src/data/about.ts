@@ -21,24 +21,28 @@ export const aboutData = {
   // 然后这里写 "/about/portrait.jpg"。留空就用 initials 圈兜底。
   photo: undefined as string | undefined,
 
-  intro: `我是 Zifei Liu，朋友们叫我 Zoro。日常是软件工程师，工作在数据与 AI 的交叉地带。
+  intro: `我是刘子非，朋友们叫我 Zoro。上海某网络安全公司的算法研究员，日常做 NLP、知识图谱、大模型 Agent —— 简单说就是**让机器读懂网络流量、威胁情报、销售报表、周报邮件里那些非结构化的中文**。
 
-写这个站源自一个简单的念头：把读过的论文、看过的市场、走过的山路都记录下来。算法越来越快，但理解需要慢。所以这里同时有 AI 论文的中文笔记、A 股 / 港股的周度复盘、徒步路线的轨迹日志，以及相机里捕捉的瞬间。
+技术栈这几年从"BERT + 命名实体识别"演进到"LLM + Agent + 业务闭环"。做过省级科研项目的独立申报（1280 万资金），也在把大模型落到 AI 巡检、合规审查、销售分析、周报生成这些具体业务里。
+
+写这个站源自一个简单的念头：把读过的论文、看过的市场、走过的山路都记录下来。算法越来越快，但理解需要慢。所以这里同时有 AI 论文的中文笔记、A 股 / 港股的实时看板、徒步路线的轨迹日志，以及相机里捕捉的瞬间。
 
 无算法，无推送，无广告。如果你也觉得"慢一点"是种奢侈，欢迎留下来读一篇。`,
 
   now: {
-    working: "深耕 AI 研究与工程实践，搭建个人知识管理系统",
-    reading: "Hugging Face Daily Papers · Anthropic 最新 RLHF 工作",
-    aiming: "今年完成 12 篇深度论文笔记 + 4 次中长距离徒步",
+    working: "大模型 Agent 落地业务：AI 巡检 / 合规审查 / 数据分析 / 周报生成",
+    reading: "HF Daily Papers · Anthropic 的 Constitutional AI · 各类 Agent 框架论文",
+    aiming: "让 LLM Agent 真正跑通业务闭环 · 走遍中国 30 座山",
   },
 
   timeline: [
-    { year: "2017", what: "本科毕业，开始第一份工程师工作" },
-    { year: "2019", what: "深入大数据基础设施，第一次接触机器学习项目" },
-    { year: "2021", what: "转向 AI 方向，参与模型工程化落地" },
-    { year: "2023", what: "周末开始徒步，第一次走完一条 30+ 公里的线路" },
-    { year: "2026", what: "启动 ZoroTreeking，把代码与山林记录在一起" },
+    { year: "2016", what: "湖北警官学院 · 计算机科学与技术本科" },
+    { year: "2020", what: "湖北大学 · 网络空间安全硕士 · 研究方向 NLP + 知识图谱" },
+    { year: "2022", what: "中科苏州实习：金融 NLP · UIE 事件抽取 · 情感分析" },
+    { year: "2023", what: "加入上海飞旗 · 算法研究员 · 网络安全 AI 方向" },
+    { year: "2024", what: "主导威胁情报知识图谱系统（100 万+ 实体 / 1000 万+ 关系）· 独立申报 1280 万省级科研项目" },
+    { year: "2025", what: "转向大模型 Agent · 落地 AI 巡检 / 合规审查 / 销售分析 / 周报系统等业务闭环" },
+    { year: "2026", what: "启动 ZoroTreeking · 把代码与山林记录在一起" },
   ],
 
   contact: {
@@ -56,34 +60,106 @@ export const aboutData = {
     { title: "雪中悍刀行", author: "烽火戏诸侯", why: "武侠里的人物弧光" },
   ],
 
-  // 技术栈 —— 待用户补充。空数组时前端不显示这块。
-  stack: [] as Array<{ name: string; note?: string; years?: number }>,
+  // 技术栈（按类别，日常主力→次要）
+  stack: [
+    { name: "Python", note: "主力语言 / NLP · ML · 全栈" },
+    { name: "PyTorch", note: "深度学习" },
+    { name: "SQL", note: "ClickHouse · Doris · MySQL" },
+    { name: "LLM 工程化", note: "DeepSeek / Claude / Kimi · Agent 编排" },
+    { name: "Nebula / Neo4j", note: "图数据库 · 百万级实体" },
+    { name: "TypeScript", note: "Astro / React · 个人项目" },
+    { name: "网络安全", note: "威胁情报 · 流量分析 · CISP 认证" },
+  ] as Array<{ name: string; note?: string; years?: number }>,
 
-  // 我做过的项目 —— 待用户补充
-  projects: [] as Array<{ name: string; period: string; desc: string; url?: string }>,
+  // 我做过的项目（按时间倒序，代表性 5 个）
+  projects: [
+    {
+      name: "ZoroTreeking",
+      period: "2026 -",
+      desc: "个人博客 + 数据自动化实验场。Astro 4 · 5 类内容自动化流水线（AI digest / 港股 A 股实时看板 / ETF 三因子 / 摄影相册 / 徒步轨迹）· 中英双语 · 大模型翻译 + 摘要 pipeline",
+      url: "https://github.com/lzf00/zorotreeking",
+    },
+    {
+      name: "大模型 Agent 业务落地（多个）",
+      period: "2025 -",
+      desc: "把 LLM 从 demo 推到业务闭环：AI 巡检（自动扫日志出告警）· 合规审查（长文本条款抽取）· 优化算法（业务参数调优）· 爬虫系统 · 销售数据分析 · 周报自动生成",
+    },
+    {
+      name: "多维威胁情报采集融合系统",
+      period: "2024 -",
+      desc: "网络安全事件知识图谱全流程构建：本地大模型微调抽取 · 多源数据融合（准确率 +10%）· Nebula 存储 100 万+ 实体 / 1000 万+ 关系",
+    },
+    {
+      name: "威胁线索与身份挖掘系统",
+      period: "2024 -",
+      desc: "海量人员及电信业务数据分析 · 聚类图算法秒级分析 10w+ 数据 · Doris + Nebula 百万级多源情报一体化实时入库",
+    },
+    {
+      name: "省级科研项目 · 威胁线索追踪与路径优化",
+      period: "2024",
+      desc: "独立完成撰写和申报全流程（项目资金 1280 万）：稀疏计算 · 威胁情报信息抽取 · 知识图谱 · 前期指南阅读到答辩汇报全程",
+    },
+  ] as Array<{ name: string; period: string; desc: string; url?: string }>,
 
-  // 长期兴趣 / 目标
-  goals: [] as string[],
+  // 长期兴趣 / 目标（不追 KPI，追方向）
+  goals: [
+    "把 LLM Agent 真正跑通业务闭环 —— 不只是 demo，而是能替代真实工作流的那种",
+    "从「实现算法」进化到「提出问题 + 定义解决方案」—— 少写工程多想边界",
+    "走遍中国 30 座山 · 每年至少 4 次中长距离徒步",
+    "用 5 年时间形成自己的投资哲学 —— 数据驱动 + 少数长期持有",
+  ],
 
   // 英文版（en/about 用）。不填则跌回 zh 中文内容
   en: {
     tagline: "Slow notes from between code and mountains.",
-    intro: `I'm Zifei Liu, also known online as Zoro. By day I'm a software engineer working at the intersection of data and AI.
+    intro: `I'm Zifei Liu, aka Zoro. Algorithm researcher at a cybersecurity company in Shanghai. Day-to-day I work on NLP, knowledge graphs, and LLM agents — essentially teaching machines to read unstructured Chinese: network traffic, threat intel, sales reports, weekly-report emails.
 
-I started this site to keep slow records of what I read, watch, and walk through — papers, markets, mountain trails, and the moments my camera catches. Algorithms are getting faster, but understanding takes time. So you'll find Chinese-language paper notes on AI research, weekly recaps of China A-shares and HK markets, hiking trip reports, and the occasional photo set.
+My tech stack has evolved from "BERT + NER" to "LLM + Agents + business loops." I've led the independent application of a provincial research project (¥12.8M funding), and I'm putting large models into real production: AI inspection, compliance review, sales analysis, weekly-report generation.
 
-No algorithm. No push. No ads. If "slow" still sounds like a luxury to you, stay for one piece.`,
+This site is a slow record of what I read, watch, and walk through — AI paper notes in Chinese, live A-share / HK-market dashboards, hiking trails, and camera moments. Algorithms are getting faster, but understanding takes time.
+
+No algorithm. No push. No ads. If "slow" still sounds like a luxury, stay for one piece.`,
     now: {
-      working: "Working on AI research & engineering · building a personal knowledge stack",
-      reading: "HF Daily Papers · Anthropic's recent RLHF work",
-      aiming: "12 deep paper notes + 4 long-distance hikes this year",
+      working: "Bringing LLM agents into real business loops (AI ops · compliance · analytics · reports)",
+      reading: "HF Daily Papers · Anthropic Constitutional AI · Agent framework papers",
+      aiming: "Ship a full-loop LLM agent · Walk 30 mountains across China",
     },
     timeline: [
-      { year: "2017", what: "Graduated; started my first engineering job" },
-      { year: "2019", what: "Deep into data infrastructure; first ML project" },
-      { year: "2021", what: "Pivoted to AI; worked on production model deployment" },
-      { year: "2023", what: "Started weekend hiking; finished my first 30+ km trail" },
-      { year: "2026", what: "Launched ZoroTreeking to record code and mountains together" },
+      { year: "2016", what: "Bachelor in CS · Hubei Police Officer Academy" },
+      { year: "2020", what: "Master in Cybersecurity · Hubei University · NLP + Knowledge Graph focus" },
+      { year: "2022", what: "NLP intern at Suzhou Institute · Financial UIE + sentiment analysis" },
+      { year: "2023", what: "Joined Shanghai Feiqi · Algorithm researcher · Cybersecurity AI" },
+      { year: "2024", what: "Led threat-intel knowledge graph (1M+ entities / 10M+ relations) · Led ¥12.8M provincial research bid solo" },
+      { year: "2025", what: "Shifted to LLM Agents · Production loops for AI ops / compliance / sales / weekly-report" },
+      { year: "2026", what: "Launched ZoroTreeking — code and mountains together" },
+    ],
+    books: [
+      { title: "To Live", author: "Yu Hua", why: "The raw power of life itself" },
+      { title: "Ordinary World", author: "Lu Yao", why: "How ordinary people shine" },
+      { title: "Those Things about the Ming Dynasty", author: "Dangnian Mingyue", why: "History's inevitable and its accidents" },
+      { title: "Sword Snow Stride", author: "Fenghuo Xizhuhou", why: "Character arcs in wuxia" },
+    ] as Array<{ title: string; author?: string; why?: string }>,
+    stack: [
+      { name: "Python", note: "Main · NLP · ML · Full-stack" },
+      { name: "PyTorch", note: "Deep learning" },
+      { name: "SQL", note: "ClickHouse · Doris · MySQL" },
+      { name: "LLM ops", note: "DeepSeek / Claude / Kimi · Agent orchestration" },
+      { name: "Nebula / Neo4j", note: "Graph DB · Millions of entities" },
+      { name: "TypeScript", note: "Astro / React · Personal projects" },
+      { name: "Cybersecurity", note: "Threat intel · Traffic analysis · CISP certified" },
+    ] as Array<{ name: string; note?: string; years?: number }>,
+    projects: [
+      { name: "ZoroTreeking", period: "2026 -", desc: "Personal blog + data-automation lab. Astro 4 · Multi-pipeline auto content (AI digest / A-share & HK live dashboards / ETF three-factor / photo albums / hiking GPX) · Bilingual · LLM translation + summarization pipeline.", url: "https://github.com/lzf00/zorotreeking" },
+      { name: "LLM Agent business loops (multi)", period: "2025 -", desc: "From demo to real business: AI ops (log-scan → alerts) · Compliance review (long-doc term extraction) · Optimization algorithms · Crawlers · Sales analytics · Auto weekly reports." },
+      { name: "Multi-source Threat Intel Fusion System", period: "2024 -", desc: "End-to-end cybersecurity knowledge graph: local LLM fine-tuning for extraction · Multi-source fusion (+10% accuracy) · Nebula storing 1M+ entities / 10M+ relations." },
+      { name: "Threat Lead & Identity Mining System", period: "2024 -", desc: "Mass personnel + telecom data analysis · Clustering graph algo processing 100k+ records at second-latency · Doris + Nebula real-time multi-source intel pipeline." },
+      { name: "Provincial Research · Threat Trail & Path Optimization", period: "2024", desc: "Solo led the full application (¥12.8M funding): sparse computing · threat intel extraction · knowledge graph · from guideline reading to defense presentation." },
+    ] as Array<{ name: string; period: string; desc: string; url?: string }>,
+    goals: [
+      "Ship an LLM agent that truly runs a business loop — not a demo, but replacing real workflows",
+      "Evolve from «implementing algorithms» to «defining problems + shaping solutions»",
+      "Walk 30 mountains across China · At least 4 long-distance hikes a year",
+      "Take 5 years to form my own investing philosophy — data-driven · long-hold few",
     ],
   },
 };
