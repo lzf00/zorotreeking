@@ -72,6 +72,23 @@ const grayCount = rows.filter((r) => r.light === "gray").length;
 const asOfLabel = snap?.published_at
   ? new Date(snap.published_at).toLocaleString("zh-CN", { timeZone: "Asia/Shanghai", hour12: false })
   : snap?.run_time ? new Date(snap.run_time).toLocaleString("zh-CN", { timeZone: "Asia/Shanghai", hour12: false }) : "—";
+// 下次刷新时间提示（build 时算，静态字符串——只是给用户参考）
+// 逻辑：如果分析日就是"上一个工作日"，下次刷新是"下一个工作日 19:30"
+function nextRefreshHint(): string {
+  const now = new Date();
+  const dow = now.getDay();  // 0=Sun 6=Sat
+  const hour = now.getHours();
+  // 工作日 19:30 前
+  if (dow >= 1 && dow <= 5 && (hour < 19 || (hour === 19 && now.getMinutes() < 30))) {
+    return "今晚 19:30";
+  }
+  // 工作日 19:30 后 / 周五夜里
+  if (dow === 5 && (hour > 19 || (hour === 19 && now.getMinutes() >= 30))) return "下周一 19:30";
+  if (dow === 6) return "下周一 19:30";
+  if (dow === 0) return "明天 19:30";
+  return "明天 19:30";
+}
+const nextRefresh = nextRefreshHint();
 
 function fmtPct(v: number): string {
   return `${v >= 0 ? "+" : ""}${v.toFixed(2)}%`;
@@ -105,6 +122,12 @@ function lightIcon(l: string): string {
       <p class="mt-2 text-xs text-[var(--text-tertiary)] font-mono">
         数据源 akshare + 腾讯财经 · 工作日 19:30 BJT 自动更新
         {snap && <span> · 分析日 <strong>{snap.target_date}</strong> · 归档 {asOfLabel}</span>}
+      </p>
+      <p class="mt-1 text-[11px] text-[var(--text-tertiary)] font-mono">
+        <span class="inline-flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          下次刷新：{nextRefresh}
+        </span>
       </p>
     </section>
 
