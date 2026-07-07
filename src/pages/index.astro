@@ -138,8 +138,30 @@ const sectionAccent: Record<string, string> = {
           </div>
         </div>
       </div>
+
+      <!-- 全站搜索快捷入口（客户端触发 SearchModal） -->
+      <button type="button" id="home-search-trigger"
+              class="mt-4 w-full flex items-center gap-3 rounded-xl border border-[var(--border)] hover:border-section-ai focus:border-section-ai bg-[var(--bg)] px-4 py-3 text-left transition-colors group">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--text-tertiary)] group-hover:text-section-ai transition-colors">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <span class="text-sm text-[var(--text-tertiary)]">
+          想找什么？试试 <span class="font-mono text-[var(--text-secondary)]">RLHF</span> · <span class="font-mono text-[var(--text-secondary)]">茅台</span> · <span class="font-mono text-[var(--text-secondary)]">黄山</span>
+        </span>
+        <span class="ml-auto text-[10px] font-mono text-[var(--text-tertiary)] border border-[var(--border)] rounded px-1.5 py-0.5">
+          /
+        </span>
+      </button>
     </div>
   </section>
+
+  <script is:inline>
+    document.getElementById("home-search-trigger")?.addEventListener("click", () => {
+      // SearchModal 在 client:idle 后挂到 window
+      const open = window.__openSearch;
+      if (typeof open === "function") open();
+    });
+  </script>
 
   <!-- ── 精选阅读（首屏内容钩子，3 张大卡）── -->
   {featured.length > 0 && (
