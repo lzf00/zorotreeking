@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import SectionCard from "@/components/SectionCard.astro";
 import { useTranslations, pathWithLang, defaultLang } from "@/i18n/ui";
+import { aboutData } from "@/data/about";
 
 const lang = defaultLang;
 const t = useTranslations(lang);
@@ -95,6 +96,48 @@ const sectionAccent: Record<string, string> = {
       <a href={pathWithLang("/about", lang)} class="inline-flex items-center text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text)] transition-colors">
         关于我 →
       </a>
+    </div>
+  </section>
+
+  <!-- ── 个人锚点（新访客第一眼知道"这是谁的博客"） ── -->
+  <section class="max-w-4xl mx-auto px-5 pb-12 sm:pb-16 animate-rise delay-300">
+    <div class="rounded-2xl border border-[var(--border)] p-5 sm:p-7 bg-[var(--surface-1)]">
+      <div class="flex items-start gap-4 sm:gap-5">
+        <!-- initials 圆圈头像 -->
+        <div class="shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-2xl
+                    bg-gradient-to-br from-blue-100 via-purple-100 to-green-100
+                    dark:from-blue-950/40 dark:via-purple-950/40 dark:to-green-950/40
+                    flex items-center justify-center"
+             aria-hidden="true">
+          <span class="font-serif text-2xl sm:text-3xl text-zinc-700 dark:text-zinc-200">ZL</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-baseline gap-2 flex-wrap">
+            <h2 class="text-base sm:text-lg font-semibold tracking-tight">{aboutData.name}</h2>
+            <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-[0.15em]">a.k.a. {aboutData.alias}</span>
+          </div>
+          <p class="mt-1.5 text-sm sm:text-[15px] leading-relaxed text-[var(--text-secondary)]">
+            软件工程师，日常在数据与 AI 的交叉地带。这里同时有 <a href={pathWithLang("/ai", lang)} class="text-section-ai hover:underline font-medium">AI 论文中文笔记</a> ·
+            <a href={pathWithLang("/invest", lang)} class="text-section-invest hover:underline font-medium ml-1">A 股 / 港股实时看板</a> ·
+            <a href={pathWithLang("/photo", lang)} class="text-section-photo hover:underline font-medium ml-1">相机瞬间</a> ·
+            <a href={pathWithLang("/hike", lang)} class="text-section-hike hover:underline font-medium ml-1">徒步轨迹</a>。
+            无算法、无推送、无广告。
+          </p>
+          <div class="mt-3 flex items-center gap-3 flex-wrap text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">
+            <a href={pathWithLang("/now", lang)} class="hover:text-[var(--text)] transition-colors">
+              📍 我最近在做什么
+            </a>
+            <span class="opacity-40">·</span>
+            <a href={pathWithLang("/about", lang)} class="hover:text-[var(--text)] transition-colors">
+              👋 关于我
+            </a>
+            <span class="opacity-40">·</span>
+            <a href="/rss.xml" class="hover:text-[var(--text)] transition-colors">
+              🎯 RSS 订阅
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 

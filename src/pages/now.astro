@@ -11,33 +11,33 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 
 // ──────────────────────────────────────────────────────────────
 // 每次更新只需要改这里 —————————————————————————————————
-const updated = "2026-06-23";
+const updated = "2026-07-07";
 const sections: Array<{ icon: string; title: string; items: string[] }> = [
   {
     icon: "🏗️",
     title: "在做",
     items: [
-      "把 zorotreeking.online 当作个人 PM 演练场：每周加一个新功能，从 SEO 性能到 AI 自动化",
-      "AI 每日精选自动化流水线（arXiv + HF + 官方博客）已稳定跑 1 个月，正在补英文版",
-      "投资跟单：A 股 + 港股 + 美股 + ETF 仓位月度复盘",
+      "把 zorotreeking.online 当作个人 PM 演练场：这几周加了 /admin/stats 访问看板、ETF 三因子监测板块、股票详情 6 卡估值 + 基本面",
+      "wind-recap 数据流水线加了 <strong>intraday 每小时刷新</strong>：A/H 股 10-16 时整点自动更新",
+      "AI 每日精选自动化跑了 2 个月，86 篇 digest 全部补齐 cover + TL;DR + 中英双语",
     ],
   },
   {
     icon: "📚",
     title: "在读 / 在看",
     items: [
-      "DeepSeek-V3 技术报告 + Doubao 1.5 Pro 多模态分析",
-      "《硅谷钢铁侠》二刷",
-      "B 站 Hi Smart 的拍摄技巧合集",
+      "复盘最近 Wind API 港股 code 归一化坑（<code>700.HK</code> 会 fuzzy 匹配到中国海油）",
+      "Anthropic Constitutional AI 相关论文",
+      "关于 PEG 数据源的思考：TTM 增长率往往缺失，PEG 得走多路 fallback 或走一致预期",
     ],
   },
   {
     icon: "🤔",
     title: "在思考",
     items: [
-      "embedding-based 推荐比标签推荐好在哪、什么时候反而更差",
+      "个人博客用什么比例平衡\"自动 digest\"和\"原创思考\"——现在 AI 版块 53:4 比例失衡",
       "AI 数字工人在中小企业能跑通的最小闭环长什么样",
-      "如何把博客的「写作 → 翻译 → 推送」做成一条 zero-touch 流水线",
+      "如何让\"数据看板\"感觉更像\"人在写\"：加个人评论、观点标记、投资持仓这种\"你能看到我怎么想\"的锚点",
     ],
   },
   {
@@ -46,6 +46,7 @@ const sections: Array<{ icon: string; title: string; items: string[] }> = [
     items: [
       "Twitter / X 重度刷屏（每日 30 分钟封顶）",
       "为了写而写的 \"日更\"——质量门槛比频率重要",
+      "过度自动化：意识到全靠自动 digest 塞满会稀释博客的人格声音",
     ],
   },
 ];

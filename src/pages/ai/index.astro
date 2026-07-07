@@ -17,6 +17,7 @@ const isDigest = (p: { data: { tags?: string[]; translationKey: string } }) =>
 
 const posts = all.filter(p => !isDigest(p));
 const digests = all.filter(isDigest);
+const recentDigests = digests.slice(0, 3);
 const latestDigest = digests[0];
 ---
 
@@ -26,8 +27,14 @@ const latestDigest = digests[0];
     <p class="mt-2 text-[var(--text-secondary)]">{t("section.ai.desc")}</p>
   </section>
 
-  <!-- 原创笔记列表（PostCard 带 section 色块 thumbnail） -->
+  <!-- ── 区一：原创笔记（个人观点，慢速产出） ── -->
   <section class="max-w-3xl mx-auto px-5">
+    <div class="flex items-baseline justify-between mb-4 pb-2 border-b border-[var(--border)]">
+      <h2 class="text-lg font-semibold tracking-tight">🧠 原创笔记</h2>
+      <span class="text-xs text-[var(--text-tertiary)] font-mono">
+        {posts.length} 篇 · 深度分析
+      </span>
+    </div>
     <ul class="divide-y divide-[var(--border)]">
       {posts.map(p => (
         <li>
@@ -41,37 +48,67 @@ const latestDigest = digests[0];
             tags={p.data.tags} />
         </li>
       ))}
-      {posts.length === 0 && <li class="py-12 text-center text-[var(--text-tertiary)]">原创笔记还在路上。</li>}
+      {posts.length === 0 && (
+        <li class="py-8 text-center text-sm text-[var(--text-tertiary)]">
+          原创笔记还在路上，每月 1-2 篇深度分析。
+        </li>
+      )}
     </ul>
+    {posts.length > 0 && posts.length < 8 && (
+      <p class="mt-4 text-xs text-[var(--text-tertiary)] italic">
+        原创产出较慢（每月 1-2 篇深度分析），下方 <a href={pathWithLang("/ai/digest", lang)} class="underline hover:text-section-ai">AI 每日精选</a> 是自动化产出的高信噪比日报，每天都有新内容。
+      </p>
+    )}
   </section>
 
-  <!-- 自动日报入口卡（不进列表，独立归档） -->
+  <!-- ── 区二：AI 每日精选（自动化产出，86 期归档） ── -->
   {digests.length > 0 && (
     <section class="max-w-3xl mx-auto px-5 mt-16">
-      <a href={pathWithLang("/ai/digest", lang)}
-         class="group block border border-[var(--border)] rounded-xl p-5 hover:border-section-ai transition-colors">
-        <div class="flex items-center justify-between gap-4">
-          <div class="min-w-0">
-            <div class="text-[11px] uppercase tracking-[0.15em] text-[var(--text-tertiary)] font-mono mb-1">
-              Auto Digest
+      <div class="flex items-baseline justify-between mb-4 pb-2 border-b border-[var(--border)]">
+        <h2 class="text-lg font-semibold tracking-tight">📰 AI 每日精选</h2>
+        <span class="text-xs text-[var(--text-tertiary)] font-mono">
+          {digests.length} 期 · cron 每日 08:00
+        </span>
+      </div>
+      <p class="mb-4 text-sm text-[var(--text-secondary)] leading-relaxed">
+        自动化抓取 HF Daily Papers + arXiv cs.LG + OpenAI / Anthropic / DeepMind / 量子位 等，豆包翻译成中文摘要，附 3 句 TL;DR + emoji 标签。全部 <strong>中英双语</strong>。
+      </p>
+
+      <!-- 最近 3 期快速预览 -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+        {recentDigests.map(d => (
+          <a href={pathWithLang(`/ai/${d.data.translationKey}`, lang)}
+             class="group block rounded-lg overflow-hidden border border-[var(--border)] hover:border-section-ai transition-colors">
+            {d.data.cover && (
+              <div class="aspect-[16/9] overflow-hidden bg-zinc-100 dark:bg-zinc-800">
+                <img src={d.data.cover} alt={d.data.title}
+                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                     loading="lazy" />
+              </div>
+            )}
+            <div class="p-3">
+              <time class="text-[10px] uppercase tracking-[0.15em] text-[var(--text-tertiary)] font-mono">
+                {d.data.date.toISOString().slice(0, 10)}
+              </time>
+              <h3 class="mt-0.5 text-sm font-semibold leading-snug group-hover:text-section-ai transition-colors line-clamp-2">
+                {d.data.title}
+              </h3>
             </div>
-            <h3 class="text-base font-semibold group-hover:text-section-ai transition-colors">
-              AI 每日精选 · 自动日报 →
-            </h3>
-            <p class="mt-1 text-sm text-[var(--text-secondary)] line-clamp-1">
-              cron 每日 08:00 抓取 HF Daily Papers + arxiv + 量子位 + Anthropic / OpenAI 等
-            </p>
+          </a>
+        ))}
+      </div>
+
+      <a href={pathWithLang("/ai/digest", lang)}
+         class="group flex items-center justify-between border border-[var(--border)] rounded-lg p-4 hover:border-section-ai transition-colors">
+        <div>
+          <div class="text-base font-semibold group-hover:text-section-ai transition-colors">
+            📚 查看全部 {digests.length} 期归档 →
           </div>
-          <div class="text-right shrink-0">
-            <div class="text-2xl font-semibold tabular-nums">{digests.length}</div>
-            <div class="text-[11px] uppercase tracking-wider text-[var(--text-tertiary)]">期</div>
-          </div>
+          <p class="mt-1 text-xs text-[var(--text-tertiary)]">
+            按月分组 · 每期含 TL;DR + 封面图 · 支持搜索
+          </p>
         </div>
-        {latestDigest && (
-          <div class="mt-3 pt-3 border-t border-[var(--border)] text-xs text-[var(--text-tertiary)]">
-            最新一期：{latestDigest.data.date.toISOString().slice(0, 10)} · {latestDigest.data.description}
-          </div>
-        )}
+        <span class="text-2xl text-[var(--text-tertiary)] group-hover:translate-x-1 group-hover:text-section-ai transition-all">→</span>
       </a>
     </section>
   )}
