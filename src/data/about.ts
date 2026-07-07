@@ -32,7 +32,7 @@ export const aboutData = {
 无算法，无推送，无广告。如果你也觉得"慢一点"是种奢侈，欢迎留下来读一篇。`,
 
   now: {
-    working: "大模型 Agent 落地业务：AI 巡检 / 合规审查 / 数据分析 / 周报生成",
+    working: "大模型 Agent 落地业务：AI 视频巡检 / 合规审查 / 数据分析 / 周报生成",
     reading: "HF Daily Papers · Anthropic 的 Constitutional AI · 各类 Agent 框架论文",
     aiming: "让 LLM Agent 真正跑通业务闭环 · 走遍中国 30 座山",
   },
@@ -43,7 +43,7 @@ export const aboutData = {
     { year: "2022", what: "中科苏州实习：金融 NLP · UIE 事件抽取 · 情感分析" },
     { year: "2023", what: "加入上海飞旗 · 算法研究员 · 网络安全 AI 方向" },
     { year: "2024", what: "主导威胁情报知识图谱系统（100 万+ 实体 / 1000 万+ 关系）· 独立申报千万级省级科研项目" },
-    { year: "2025", what: "转向大模型 Agent · 落地 AI 巡检 / 合规审查 / 销售分析 / 周报系统等业务闭环" },
+    { year: "2025", what: "转向大模型 Agent · 落地 AI 视频巡检 / 合规审查 / 销售分析 / 周报系统等业务闭环" },
     { year: "2026", what: "启动 ZoroTreeking · 把代码与山林记录在一起" },
   ],
 
