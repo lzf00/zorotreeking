@@ -25,7 +25,7 @@ export const aboutData = {
 
 我是刘子非，朋友们叫我 Zoro。上海某网络安全公司的算法研究员，日常做 NLP、知识图谱、大模型 Agent —— 简单说就是**让机器读懂网络流量、威胁情报、销售报表、周报邮件里那些非结构化的中文**。
 
-技术栈这几年从"BERT + 命名实体识别"演进到"LLM + Agent + 全栈开发"。做过千万级省级科研项目的独立申报，也在把大模型落到 AI 巡检、合规审查、销售分析、周报生成这些具体业务里。
+技术栈这几年从"BERT + 命名实体识别"演进到"LLM + Agent + 全栈开发"。做过千万级省级科研项目的独立申报，也在把大模型落到 AI 视频巡检、合规审查、销售分析、周报生成这些具体业务里。
 
 写这个站源自一个简单的念头：把读过的论文、看过的市场、走过的山路都记录下来。算法越来越快，但理解需要慢。所以这里同时有 AI 论文的中文笔记、A 股 / 港股的实时看板、徒步路线的轨迹日志，以及相机里捕捉的瞬间。
 
@@ -83,9 +83,9 @@ export const aboutData = {
       url: "https://github.com/lzf00/zorotreeking",
     },
     {
-      name: "大模型 Agent 业务落地（多个）",
+      name: "大模型 Agent 业务落地（6 类场景）",
       period: "2025 -",
-      desc: "把 LLM 从 demo 推到业务闭环：AI 巡检（自动扫日志出告警）· 合规审查（长文本条款抽取）· 优化算法（业务参数调优）· 爬虫系统 · 销售数据分析 · 周报自动生成",
+      desc: "把 LLM 从 demo 推到业务闭环。基于 Function Calling + 多 Agent 编排 + RAG 的技术栈，覆盖 6 类真实场景：AI 视频巡检（VLM 异常检测）· 合规审查（长文本条款抽取）· 优化算法（业务参数调优）· 爬虫系统 · 销售数据分析 · 周报自动生成。端到端工程链路（数据 → 模型 → 评测 → 部署 → 监控），显著节省人工投入。",
     },
     {
       name: "多维威胁情报采集融合系统",
@@ -119,7 +119,7 @@ export const aboutData = {
 
 I'm Zifei Liu, aka Zoro. Algorithm researcher at a cybersecurity company in Shanghai. Day-to-day I work on NLP, knowledge graphs, and LLM agents — essentially teaching machines to read unstructured Chinese: network traffic, threat intel, sales reports, weekly-report emails.
 
-My tech stack has evolved from "BERT + NER" to "LLM + Agents + full-stack." I've led the solo application of a tens-of-millions-yuan provincial research project, and I'm putting large models into real production: AI inspection, compliance review, sales analysis, weekly-report generation.
+My tech stack has evolved from "BERT + NER" to "LLM + Agents + full-stack." I've led the solo application of a tens-of-millions-yuan provincial research project, and I'm putting large models into real production: AI video inspection, compliance review, sales analysis, weekly-report generation.
 
 This site is a slow record of what I read, watch, and walk through — AI paper notes in Chinese, live A-share / HK-market dashboards, hiking trails, and camera moments. Algorithms are getting faster, but understanding takes time.
 
@@ -156,7 +156,7 @@ No algorithm. No push. No ads. If "slow" still sounds like a luxury, stay for on
     ] as Array<{ name: string; note?: string; years?: number }>,
     projects: [
       { name: "ZoroTreeking", period: "2026 -", desc: "Personal blog + data-automation lab. Astro 4 · Multi-pipeline auto content (AI digest / A-share & HK live dashboards / ETF three-factor / photo albums / hiking GPX) · Bilingual · LLM translation + summarization pipeline.", url: "https://github.com/lzf00/zorotreeking" },
-      { name: "LLM Agent business loops (multi)", period: "2025 -", desc: "From demo to real business: AI ops (log-scan → alerts) · Compliance review (long-doc term extraction) · Optimization algorithms · Crawlers · Sales analytics · Auto weekly reports." },
+      { name: "LLM Agent business loops (6 scenarios)", period: "2025 -", desc: "From demo to production business loops. Stack based on Function Calling + multi-agent orchestration + RAG. Covers 6 real scenarios: AI video inspection (VLM anomaly detection) · Compliance review (long-doc term extraction) · Optimization algorithms (business-parameter tuning) · Crawler systems · Sales analytics · Auto weekly reports. End-to-end pipeline (data → model → eval → deploy → monitor) with significant manpower savings." },
       { name: "Multi-source Threat Intel Fusion System", period: "2024 -", desc: "End-to-end cybersecurity knowledge graph: local LLM fine-tuning for extraction · Multi-source fusion (+10% accuracy) · Nebula storing 1M+ entities / 10M+ relations." },
       { name: "Threat Lead & Identity Mining System", period: "2024 -", desc: "Mass personnel + telecom data analysis · Clustering graph algo processing 100k+ records at second-latency · Doris + Nebula real-time multi-source intel pipeline." },
       { name: "Provincial Research · Threat Trail & Path Optimization", period: "2024", desc: "Solo-led the full application (tens-of-millions-yuan funding): sparse computing · threat intel extraction · knowledge graph · from guideline reading to defense presentation." },
