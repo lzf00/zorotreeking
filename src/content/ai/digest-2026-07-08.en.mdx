@@ -1,0 +1,215 @@
+---
+lang: en
+translationKey: digest-2026-07-08
+title: "Daily AI Digest · 2026-07-08"
+description: "21 papers · multi-source aggregation + AI summarization"
+date: 2026-07-08
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's content in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Large LLM vendors have made frequent moves: Anthropic launched Claude Sonnet 5, OpenAI rolled out two enterprise partnerships, DeepMind released new products and announced a collaboration with A24</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face released multiple new AI technical solutions, and simultaneously launched a convenient link for compute deployment with Amazon Cloud</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">China's embodied intelligence track has broken delivery records, discussions on industrialization are heating up, and multiple academic studies focus on alignment and time series prediction directions</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖Large LLM</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡Technical Progress</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">☁️Compute Deployment</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🦾Embodied Intelligence</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📑Academic Research</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.06291" target="_blank" rel="noopener noreferrer">AlayaWorld: Long-Horizon and Playable Video World Generation</a>
+
+*HF ★ 22 · AlayaWorld Team, Kaipeng Zhang, Chuanhao Li… · [HF Mirror](https://huggingface.co/papers/2607.06291)*
+
+To address the pain points of traditional game world development, including high labor costs, difficulty in customization, and high modification costs, this paper proposes the full-stack open-source framework AlayaWorld based on the generative video world model paradigm. Trained on game recordings and real-world videos, the framework can generate playable worlds that support open real-time interaction, where users can freely navigate, fight, etc. It integrates the full development chain with supporting tools and documentation, providing a practical foundation for related research and implementation.
+
+<FeedbackButtons slug="item:arxiv-2607.06291" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.05511" target="_blank" rel="noopener noreferrer">Light-Omni: Reflex over Reasoning in Agentic Video Understanding with Long-Term Memory</a>
+
+*HF ★ 11 · Chang Nie, Jiaju Wei, Junlan Feng… · [HF Mirror](https://huggingface.co/papers/2607.05511)*
+
+To address the problem that existing long-sequence agent video understanding relies on iterative reasoning, leading to excessively high latency and computing costs, this paper proposes the lightweight multimodal framework Light-Omni, which adopts a dual-context design: a global state that continuously integrates segment memories, balancing recent details and past summaries, plus a parameter latent state that directly drives actions. It can output semantically aligned results with a single forward propagation, no iterative reasoning required. Compared with M3-Agent, it has 2.4% higher accuracy, 12.1x faster speed, 2.6x higher VRAM efficiency, and can also empower existing multimodal LLMs.
+
+<FeedbackButtons slug="item:arxiv-2607.05511" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.05339" target="_blank" rel="noopener noreferrer">TREK: Distill to Explore, Reinforce to Refine</a>
+
+*HF ★ 6 · Yuanda Xu, Zhengze Zhou, Kayhan Behdin… · [HF Mirror](https://huggingface.co/papers/2607.05339)*
+
+To address the problem that GRPO optimization tends to stall on difficult samples, this paper proposes the two-stage method TREK: first, incorporate validated effective candidate solutions into the student model's policy support range via forward KL distillation, then perform fine-tuning with standard GRPO. It is compatible with black-box/white-box teachers, and even the self-context mode without an external teacher. Experiments show that its performance on mathematical reasoning and embodied agent tasks is significantly improved, and the convergence speed for difficult sample training is far better than native GRPO.
+
+<FeedbackButtons slug="item:arxiv-2607.05339" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.03451" target="_blank" rel="noopener noreferrer">SkillOpt-Lite: Better and Faster Agent Self-evolution via One Line of Vibe</a>
+
+*HF ★ 3 · Yifei Shen, Bo Li, Xinjie Zhang · [HF Mirror](https://huggingface.co/papers/2607.03451)*
+
+To address the pain point of redundant processes in existing agent skill optimization, this paper clarifies three core principles for convergence and generalization based on zero-order optimization, Claude coding philosophy and PAC learning, and launches the extremely simple and lightweight framework SkillOpt-Lite. The framework converges faster and performs better than the original version, with small models seeing a maximum score improvement of over 25 points. It can be embedded in production tools such as Copilot, allowing skill iteration with just one line of instruction, and its extended solution also outperforms LLM baselines in the same scenario.
+
+<FeedbackButtons slug="item:arxiv-2607.03451" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.05722" target="_blank" rel="noopener noreferrer">Nemotron-Labs-Diffusion: A Tri-Mode Language Model Unifying Autoregressive, Diffusion, and Self-Speculation Decoding</a>
+
+*HF ★ 2 · Yonggan Fu, Lexington Whalen, Abhinav Garg… · [HF Mirror](https://huggingface.co/papers/2607.05722)*
+
+This paper launches the tri-mode language model Nemotron-Labs-Diffusion, which unifies autoregressive, diffusion, and self-speculation decoding modes in a single architecture, adopts a joint training objective, and can switch according to deployment scenarios to ensure high throughput. Experiments show that the three types of objectives have complementary advantages, the self-speculation mode has higher efficiency than existing multi-token prediction methods, and all models across parameter sizes outperform open-source SOTA counterparts in both accuracy and speed. The 8B version has 4x the throughput of Qwen3-8B at the same accuracy level.
+
+<FeedbackButtons slug="item:arxiv-2607.05722" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2607.02586" target="_blank" rel="noopener noreferrer">Auditing the Audit: Five Failure Modes in Benchmark-Validity Audits</a>
+
+*Yanhang Li, Zhichao Fan, Zexin Zhuang*
+
+This paper reviews the commonly used perturbation-based AI benchmark validity audits, pointing out that their results are easily manipulated by undisclosed implementation details, so their reliability is questionable. The authors summarize 5 failure modes of audit processes, which are verified via self-audit of 2 open-source instruction fine-tuning models and 5 safety benchmarks. When checked against the proposed 6 due diligence thresholds, none of the test items reached the confirmation level. This failure classification is a non-exhaustive initial framework, and the verification thresholds are supplementary evidence disclosure specifications, which do not directly determine the validity of benchmarks.
+
+<FeedbackButtons slug="item:arxiv-2607.02586" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.02623" target="_blank" rel="noopener noreferrer">Evaluating Time Series Foundation Models for Electricity Price Forecasting: Contamination Risk, Distributional Shifts, and Covariate Dependence</a>
+
+*Zhenghua Pan, Ahmed Aziz Ezzat*
+
+To address the lack of research on the generalization of time series foundation models (TSFM) in covariate-driven non-stationary scenarios, this paper takes electricity price forecasting as the test scenario, and proposes a dual-dataset benchmark evaluation framework to avoid data contamination and ensure evaluation fairness. Tests show that TSFMs outperform general baselines, but their performance is highly dependent on covariate support, and they do not consistently outperform dedicated electricity price domain models. The integration of the two can complement information and has significant potential.
+
+<FeedbackButtons slug="item:arxiv-2607.02623" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.02632" target="_blank" rel="noopener noreferrer">QuantFlow: A Federated Mamba-Based Post-Transformer Foundation Model for Time-Series Forecasting</a>
+
+*Shah Nawaz Haider, Steve Austin, Arnab Barua…*
+
+To address the pain points that existing time series forecasting LLMs rely on centralized data, and Transformer architectures are difficult to adapt to long-sequence high-dimensional privacy-sensitive scenarios, this paper proposes the QuantFlow federated forecasting framework, which integrates reverse sequence embedding, bidirectional Mamba, quantile regression, and is paired with TSMixup time series augmentation. Experiments show that it has excellent accuracy across multiple datasets. When deployed with 20 non-IID clients, it does not require centralizing raw data, and can maintain usable accuracy after only 3 rounds of communication, with limitations only in some scenarios.
+
+<FeedbackButtons slug="item:arxiv-2607.02632" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/australian-payments-plus" target="_blank" rel="noopener noreferrer">Australian Payments Plus moves faster with ChatGPT and Codex</a>
+
+*OpenAI*
+
+This case introduces the AI empowerment practice of Australian payment institution AP+: to solve the pain points of high complexity in payment business and low process efficiency, it deployed two AI tools, ChatGPT Enterprise and Codex. After implementation, it achieved the expected goals of reducing operation time and improving output quality, while always taking human judgment as the core decision-making link, balancing AI efficiency improvement and risk control requirements of payment business.
+
+<FeedbackButtons slug="item:openai-blog-australian-payments-plus" client:visible />
+
+## <a href="https://openai.com/index/mufg" target="_blank" rel="noopener noreferrer">MUFG aims to become AI-native with OpenAI</a>
+
+*OpenAI*
+
+Japan's Mitsubishi UFJ Financial Group (MUFG) is collaborating with OpenAI to promote AI-native transformation, relying on ChatGPT Enterprise as the core for related deployment: internally, it will embed AI into all business links to optimize workflows, improve efficiency and reduce costs; externally, it plans to launch innovative financial services with AI capabilities on a large scale, aiming to build a full-stack AI-native financial organization and strengthen its core competitiveness in financial services.
+
+<FeedbackButtons slug="item:openai-blog-mufg" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Claude Fable 5</a>
+
+*Anthropic*
+
+Anthropic officially announced that after the relevant export control restrictions are lifted, it will re-launch and deploy the Claude Fable 5 LLM starting from July 1. This restart is accompanied by two security upgrades: the cybersecurity protection system has been updated, and an industry-specific jailbreak risk prevention and control framework has been added, which can further strengthen the compliance and security of model operation and effectively reduce the risk of malicious abuse.
+
+<FeedbackButtons slug="item:anthropic-redeploying-fable-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-sonnet-5" target="_blank" rel="noopener noreferrer">Introducing Claude Sonnet 5</a>
+
+*Anthropic*
+
+The Claude Sonnet 5 introduced this time is Anthropic's latest iterated LLM product, the version with the strongest agentic attributes in the Sonnet series. Its core performance is in the first tier of the industry, with optimized capabilities focusing on two high-frequency scenarios: code development and daily professional office work. It can provide stronger capability support for developers and professional users to handle various complex tasks, focusing on high-reliability deployment in professional scenarios.
+
+<FeedbackButtons slug="item:anthropic-claude-sonnet-5" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/google-deepmind-and-a24-announce-first-of-its-kind-research-partnership/" target="_blank" rel="noopener noreferrer">Google DeepMind and A24 announce first-of-its-kind research partnership</a>
+
+*Google DeepMind*
+
+This is the industry's first cross-border research collaboration between the world's top AI institution Google DeepMind and leading independent film studio A24. The two sides will combine their advantages in technology and content creation, conduct research on the implementation of AI in the entire chain of film and television creation, explore feasible paths for AI to empower screenwriting, shooting, and post-production, and develop new forms of AI-native narratives. At the same time, they will attach importance to creative ethics and protect the rights and interests of creators, exploring the path for compliant integration of the content industry and AI.
+
+<FeedbackButtons slug="item:deepmind-google-deepmind-and-a24-announce-first-of-its-kind-research-partnership" client:visible />
+
+## <a href="https://deepmind.google/blog/start-building-with-nano-banana-2-lite-and-gemini-omni-flash/" target="_blank" rel="noopener noreferrer">Start building with Nano Banana 2 Lite and Gemini Omni Flash</a>
+
+*Google DeepMind*
+
+The abstract body of this article has not been provided, so it is impossible to accurately extract its core methods, results and conclusions. Please supplement the complete abstract content, and I will generate a concise summary of about 120 words focusing on core innovations and implementation value as required.
+
+<FeedbackButtons slug="item:deepmind-start-building-with-nano-banana-2-lite-and-gemini-omni-flash" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/amazon/one-click-to-sagemaker-studio" target="_blank" rel="noopener noreferrer">From Hugging Face to Amazon SageMaker Studio in one click</a>
+
+*Hugging Face*
+
+This solution addresses the pain point of tedious environment configuration when AI developers deploy Hugging Face resources across platforms, launching a one-click jump function: after users select pre-trained models, datasets, and demos on Hugging Face Hub, they can click the button to directly import them into the Amazon SageMaker Studio environment, no manual dependency adaptation required. They can directly call the full-process capabilities of SageMaker such as fine-tuning, deployment, and monitoring, greatly reducing the time cost and technical threshold for LLM implementation.
+
+<FeedbackButtons slug="item:hf-blog-one-click-to-sagemaker-studio" client:visible />
+
+## <a href="https://huggingface.co/blog/microsoft/foundry-managed-compute" target="_blank" rel="noopener noreferrer">Hugging Face Models on Foundry Managed Compute</a>
+
+*Hugging Face*
+
+Only the title of this post has been provided so far, and the specific body of the abstract is not attached, so the translation, extraction and summarization requirements cannot be met. Please supplement the full text of the abstract, and I will highlight the core methods and conclusions as required, and organize a concise summary of about 120 words and feed it back to you.
+
+<FeedbackButtons slug="item:hf-blog-foundry-managed-compute" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This paper studies AI alignment from the perspective of virtue ethics, refutes the default presupposition of the orthogonality thesis that "rational agents act anchored to fixed ultimate goals", and points out that human rational behavior is essentially adapting to a practice network including action tendencies, evaluation standards and other elements, rather than chasing specific goals. It proposes that to realize smooth collaboration between AI and humans that meets ethical and safety requirements, the AI decision-making logic needs to match this practice-based action logic of humans.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+Recursive self-improvement (RSI) was first proposed by I.J. Good in 1965, with the core idea that superintelligent machines can surpass all human intellectual activities and can also design better systems themselves to achieve iteration. In 2008, Yudkowsky defined it as an intelligent feedback loop: AI uses its existing capabilities to optimize its own cognitive mechanisms. RSI in the current AI context includes both the model directly rewriting its own weights, and broadly covers the model optimizing its own training process.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/07/445531.html" target="_blank" rel="noopener noreferrer">Three former Li Auto core engineers founded a startup, breaking the fastest embodied intelligence hundred-unit delivery record</a>
+
+*QbitAI*
+
+Zhijian Power, an embodied intelligence enterprise founded by Wang Kai, Jia Peng and Wang Jiajia, former core members of Li Auto's intelligent driving team, completed the delivery of 100 units of its first full-scene robot i7 Pro less than a year after its establishment, setting the industry's fastest delivery record. It also unveiled the world's first CNC intelligent embodied robot production line. The company completed 5 rounds of financing within half a year, receiving investment from Sequoia, Tencent, Alibaba, etc. Its core competitiveness comes from its previous technical implementation accumulation in the intelligent driving field.
+
+<FeedbackButtons slug="item:qbitai-445531" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/445443.html" target="_blank" rel="noopener noreferrer">From consensus to non-consensus: the first "Technology has 'Lenovo'" salon directly addresses the "three major confusions" of embodied intelligence industrialization</a>
+
+*QbitAI*
+
+On June 30, the first "Technology has 'Lenovo'" embodied intelligence themed salon initiated by Legend Holdings and other organizations was held in Beijing. 8 guests from industry, academia, research and investment fields conducted discussions on core topics such as data, models, and implementation. The industry consensus is that data is the core of development. Some enterprises proposed training embodied models with large-scale human videos, which costs far less than real machine teleoperation. It was also pointed out that the industry urgently needs to build a complete data base including tool chains and evaluation systems.
+
+<FeedbackButtons slug="item:qbitai-445443" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/445292.html" target="_blank" rel="noopener noreferrer">I declare this is China's most amazing new energy vehicle startup</a>
+
+*QbitAI*
+
+Founded in 2021, Shanghai-based new energy vehicle startup Jishi has gained a firm foothold against the trend during the industry reshuffle period, relying on only one on-sale model plus one generation update. It sold 2,512 units in June this year, with cumulative sales in the first half of the year exceeding 10,000 units, nearly doubling year-on-year, with a full-year target of 30,000 units. Although its sales are only at the monthly sales threshold of leading new forces, less than 1/37 of Leapmotor's June sales, it has been climbing steadily, making it a rare "small but beautiful" sample among new energy vehicle startups.
+
+<FeedbackButtons slug="item:qbitai-445292" client:visible />
