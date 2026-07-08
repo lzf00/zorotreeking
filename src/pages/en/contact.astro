@@ -1,60 +1,113 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { useTranslations } from "@/i18n/ui";
+import { aboutData } from "@/data/about";
 const t = useTranslations("en");
+const { contact } = aboutData;
 ---
-<BaseLayout title="Contact / Abuse Report" description="ZoroTreeking abuse report and contact info">
-  <article class="max-w-prose mx-auto px-5 pt-16 pb-24">
-    <h1 class="font-serif text-5xl sm:text-6xl leading-[0.95] tracking-tight mb-6">Contact / Abuse Report</h1>
+<BaseLayout title="Contact · Abuse Report" description="ZoroTreeking contact info · casual channels · abuse report">
+  <article class="max-w-3xl mx-auto px-5 pt-16 pb-24">
+    <h1 class="font-serif text-5xl sm:text-6xl leading-[0.95] tracking-tight mb-6">Contact</h1>
+    <p class="text-lg text-[var(--text-secondary)] mb-12 leading-relaxed">
+      Got something to say? What you liked, what you didn't, what I should write about next, or collaboration — all welcome.
+    </p>
 
-    <div class="prose prose-neutral dark:prose-invert max-w-none">
+    {/* Casual contact */}
+    <section class="mb-16">
+      <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4 pb-2 border-b border-[var(--border)]">
+        Casual channels
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <a href={`mailto:${contact.email}?subject=[ZoroTreeking]%20`}
+           class="group border border-[var(--border)] rounded-lg p-4 hover:border-blue-500 transition-colors block">
+          <div class="text-[10px] uppercase tracking-[0.15em] text-[var(--text-tertiary)] font-mono mb-1">📮 Email · preferred</div>
+          <div class="text-sm font-semibold group-hover:text-blue-600 transition-colors">{contact.email}</div>
+          <p class="mt-1 text-xs text-[var(--text-secondary)]">Deep questions, collab / guest posts, bug reports — reply within 48h.</p>
+        </a>
+        {contact.wechat_official && (
+          <div class="border border-[var(--border)] rounded-lg p-4">
+            <div class="text-[10px] uppercase tracking-[0.15em] text-[var(--text-tertiary)] font-mono mb-1">💬 WeChat Official</div>
+            <div class="text-sm font-semibold"><code class="font-mono">{contact.wechat_official}</code></div>
+            <p class="mt-1 text-xs text-[var(--text-secondary)]">Casual chat, quick shares, first choice inside the WeChat ecosystem.</p>
+          </div>
+        )}
+        <a href={contact.github} target="_blank" rel="noopener noreferrer"
+           class="group border border-[var(--border)] rounded-lg p-4 hover:border-zinc-700 transition-colors block">
+          <div class="text-[10px] uppercase tracking-[0.15em] text-[var(--text-tertiary)] font-mono mb-1">⌬ GitHub</div>
+          <div class="text-sm font-semibold group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors">{contact.github.replace("https://github.com/", "@")}</div>
+          <p class="mt-1 text-xs text-[var(--text-secondary)]">Code issues / PRs. The zorotreeking repo is open-source.</p>
+        </a>
+        <a href="/rss.xml"
+           class="group border border-[var(--border)] rounded-lg p-4 hover:border-orange-500 transition-colors block">
+          <div class="text-[10px] uppercase tracking-[0.15em] text-[var(--text-tertiary)] font-mono mb-1">📡 RSS</div>
+          <div class="text-sm font-semibold group-hover:text-orange-600 transition-colors">/rss.xml</div>
+          <p class="mt-1 text-xs text-[var(--text-secondary)]">No signup, no algorithm — old-school blog reading.</p>
+        </a>
+      </div>
 
-      <h2>Primary contact</h2>
-      <p>
-        <strong>Email</strong>: <a href="mailto:1437066318@qq.com">1437066318@qq.com</a><br />
-        <strong>Response time</strong>: within 48 hours; urgent issues (illegal content, personal safety) handled ASAP.<br />
-        <strong>Site operator / Security officer</strong>: Zoro (the owner)
-      </p>
+      <div class="mt-6 rounded-lg border border-dashed border-[var(--border)] p-4 text-sm text-[var(--text-secondary)] leading-relaxed bg-[var(--surface-1)]">
+        <p><strong class="text-[var(--text)]">💡 Tip · Email is more likely to get a reply</strong></p>
+        <p class="mt-1 text-xs">
+          Bring: which post, what you want to say, contact (anonymous OK). Screenshots / links help.
+          Good questions may become a standalone post — mentioning you (say if you'd prefer anonymous).
+        </p>
+      </div>
+    </section>
 
-      <h2>Scope</h2>
-      <ul>
-        <li>Illegal, factually incorrect, or infringing content on this site</li>
-        <li>Inappropriate output from the AI chat widget</li>
-        <li>Personal-data requests (e.g. request deletion of a specific log)</li>
-        <li>Other compliance, copyright, or technical concerns</li>
-      </ul>
+    {/* Abuse report (compliance) */}
+    <section>
+      <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-6 pb-2 border-b border-[var(--border)]">
+        Abuse report (compliance channel)
+      </div>
 
-      <h2>Please include in your report</h2>
-      <ul>
-        <li>URL or screenshot of the offending page</li>
-        <li>Description of the issue</li>
-        <li>Contact info for follow-up (anonymous is fine, but we can't reply)</li>
-      </ul>
+      <div class="prose prose-neutral dark:prose-invert max-w-none">
+        <h2>Primary contact</h2>
+        <p>
+          <strong>Email</strong>: <a href="mailto:1437066318@qq.com">1437066318@qq.com</a><br />
+          <strong>Response time</strong>: within 48 hours; urgent issues (illegal content, personal safety) handled ASAP.<br />
+          <strong>Site operator / Security officer</strong>: Zoro (the owner)
+        </p>
 
-      <h2>Handling procedure</h2>
-      <ol>
-        <li>Initial review within 24 hours of receiving the report</li>
-        <li>Verified illegal / harmful content: <strong>removed immediately</strong>; handling record retained</li>
-        <li>Email response with the outcome within 48 hours</li>
-        <li>Suspected crimes are reported to and coordinated with relevant authorities</li>
-      </ol>
+        <h2>Scope</h2>
+        <ul>
+          <li>Illegal, factually incorrect, or infringing content on this site</li>
+          <li>Inappropriate output from the AI chat widget</li>
+          <li>Personal-data requests (e.g. request deletion of a specific log)</li>
+          <li>Other compliance, copyright, or technical concerns</li>
+        </ul>
 
-      <h2>Data collection and retention</h2>
-      <p class="text-sm">
-        This site does not offer public account registration and does not collect phone numbers, email addresses or real names.
-        Anonymous access records (IP+UA hash fingerprint, path, timestamp) are kept for at least 6 months for
-        security audit and lawful disclosure to authorities. AI conversation content is not retained long-term;
-        records that hit the keyword filter are kept only as hashes, with the original text not stored.
-      </p>
+        <h2>Please include in your report</h2>
+        <ul>
+          <li>URL or screenshot of the offending page</li>
+          <li>Description of the issue</li>
+          <li>Contact info for follow-up (anonymous is fine, but we can't reply)</li>
+        </ul>
 
-      <h2>Authorities (China)</h2>
-      <p class="text-sm">
-        <strong>Cyberspace Administration of China — illegal &amp; harmful info report center</strong>: <a href="https://www.12377.cn/" target="_blank" rel="noopener noreferrer">https://www.12377.cn/</a><br />
-        <strong>MIIT ICP filing system</strong>: <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">https://beian.miit.gov.cn/</a>
-      </p>
+        <h2>Handling procedure</h2>
+        <ol>
+          <li>Initial review within 24 hours of receiving the report</li>
+          <li>Verified illegal / harmful content: <strong>removed immediately</strong>; handling record retained</li>
+          <li>Email response with the outcome within 48 hours</li>
+          <li>Suspected crimes are reported to and coordinated with relevant authorities</li>
+        </ol>
 
-      <hr />
-      <p class="text-sm text-[var(--text-tertiary)]">沪 ICP 备 2026021578 号-1</p>
-    </div>
+        <h2>Data collection and retention</h2>
+        <p class="text-sm">
+          This site does not offer public account registration and does not collect phone numbers, email addresses or real names.
+          Anonymous access records (IP+UA hash fingerprint, path, timestamp) are kept for at least 6 months for
+          security audit and lawful disclosure to authorities. AI conversation content is not retained long-term;
+          records that hit the keyword filter are kept only as hashes, with the original text not stored.
+        </p>
+
+        <h2>Authorities (China)</h2>
+        <p class="text-sm">
+          <strong>Cyberspace Administration of China — illegal &amp; harmful info report center</strong>: <a href="https://www.12377.cn/" target="_blank" rel="noopener noreferrer">https://www.12377.cn/</a><br />
+          <strong>MIIT ICP filing system</strong>: <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">https://beian.miit.gov.cn/</a>
+        </p>
+
+        <hr />
+        <p class="text-sm text-[var(--text-tertiary)]">沪 ICP 备 2026021578 号-1</p>
+      </div>
+    </section>
   </article>
 </BaseLayout>

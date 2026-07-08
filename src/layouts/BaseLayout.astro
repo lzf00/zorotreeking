@@ -209,7 +209,11 @@ if (ogType === "article") {
       (() => {
         try {
           const path = location.pathname + location.search;
-          const ref = document.referrer && !document.referrer.includes(location.host) ? document.referrer : null;
+          // referrer 逻辑：外部来源 > URL 里 utm_source（本站内推荐追踪）
+          // 内链跳转会带 ?utm_source=related&utm_medium=post-footer，看 admin/stats 就能知道"相关推荐真的被点了几次"
+          const httpRef = document.referrer && !document.referrer.includes(location.host) ? document.referrer : null;
+          const urlUtm = new URLSearchParams(location.search).get("utm_source");
+          const ref = httpRef || (urlUtm ? `internal:${urlUtm}` : null);
           fetch("/api/track", {
             method: "POST",
             headers: { "Content-Type": "application/json" },

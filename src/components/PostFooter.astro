@@ -42,7 +42,7 @@ const t = (zh: string, en: string) => (lang === "zh" ? zh : en);
   {(prev || next) && (
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-12">
       {prev ? (
-        <a href={pathWithLang(`/${section}/${prev.translationKey}`, lang)}
+        <a href={`${pathWithLang(`/${section}/${prev.translationKey}`, lang)}?utm_source=prev&utm_medium=post-footer`}
            class={`group block border border-[var(--border)] rounded-lg p-4 transition-colors ${sectionBorder[section]}`}>
           <div class="text-[11px] uppercase tracking-[0.18em] text-zinc-500 font-mono mb-1.5">
             ← {t("上一篇", "Previous")}
@@ -57,7 +57,7 @@ const t = (zh: string, en: string) => (lang === "zh" ? zh : en);
       ) : <div></div>}
 
       {next ? (
-        <a href={pathWithLang(`/${section}/${next.translationKey}`, lang)}
+        <a href={`${pathWithLang(`/${section}/${next.translationKey}`, lang)}?utm_source=next&utm_medium=post-footer`}
            class={`group block border border-[var(--border)] rounded-lg p-4 sm:text-right transition-colors ${sectionBorder[section]}`}>
           <div class="text-[11px] uppercase tracking-[0.18em] text-zinc-500 font-mono mb-1.5">
             {t("下一篇", "Next")} →
@@ -82,7 +82,7 @@ const t = (zh: string, en: string) => (lang === "zh" ? zh : en);
       <ul class="space-y-3">
         {related.map((r) => (
           <li>
-            <a href={pathWithLang(`/${section}/${r.translationKey}`, lang)}
+            <a href={`${pathWithLang(`/${section}/${r.translationKey}`, lang)}?utm_source=related&utm_medium=post-footer`}
                class="group block py-2">
               <div class="flex items-baseline justify-between gap-3">
                 <span class={`text-sm font-medium group-${sectionHover[section]} transition-colors line-clamp-1`}>
