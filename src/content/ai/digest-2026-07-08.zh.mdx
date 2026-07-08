@@ -1,0 +1,215 @@
+---
+lang: zh
+translationKey: digest-2026-07-08
+title: "AI 每日精选 · 2026-07-08"
+description: "21 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-07-08
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">大模型厂商动作密集，Anthropic推Claude Sonnet 5，OpenAI落地两家企业合作，DeepMind发新品并联动A24</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face发布多类AI技术新方案，同步打通与亚马逊云侧算力部署便捷链路</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内具身智能赛道交付破纪录、产业化讨论升温，多篇学术研究聚焦对齐、时序预测方向</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖大模型</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡技术进展</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">☁️算力部署</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🦾具身智能</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📑学术研究</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.06291" target="_blank" rel="noopener noreferrer">AlayaWorld: Long-Horizon and Playable Video World Generation</a>
+
+*HF ★ 22 · AlayaWorld Team, Kaipeng Zhang, Chuanhao Li… · [HF 镜像](https://huggingface.co/papers/2607.06291)*
+
+针对传统游戏世界开发人力成本高、难定制、修改成本高的痛点，本文基于生成式视频世界模型范式，提出全栈开源框架AlayaWorld。该框架以游戏录屏、真实视频训练，可生成支持开放实时交互的可玩世界，用户可自由导航、战斗等，整合全开发链路，配套工具与文档，为相关研究与落地提供实用基础。
+
+<FeedbackButtons slug="item:arxiv-2607.06291" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.05511" target="_blank" rel="noopener noreferrer">Light-Omni: Reflex over Reasoning in Agentic Video Understanding with Long-Term Memory</a>
+
+*HF ★ 11 · Chang Nie, Jiaju Wei, Junlan Feng… · [HF 镜像](https://huggingface.co/papers/2607.05511)*
+
+针对现有长时序智能体视频理解依赖迭代推理、延迟与计算成本过高的问题，本文提出Light-Omni轻量多模态框架，采用“持续整合片段记忆、兼顾近期细节与过往摘要的全局状态+直接驱动动作的参数潜态”双上下文设计，单前向传播即可输出语义对齐结果，无需迭代推理。其较M3-Agent精度升2.4%、速度提12.1倍、显存效率高2.6倍，还可赋能现有多模态大模型。
+
+<FeedbackButtons slug="item:arxiv-2607.05511" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.05339" target="_blank" rel="noopener noreferrer">TREK: Distill to Explore, Reinforce to Refine</a>
+
+*HF ★ 6 · Yuanda Xu, Zhengze Zhou, Kayhan Behdin… · [HF 镜像](https://huggingface.co/papers/2607.05339)*
+
+针对GRPO优化难样本易停滞的问题，本文提出两阶段方法TREK：先通过前向KL蒸馏将验证有效候选解纳入学生模型策略支持范围，再用常规GRPO微调，兼容黑/白盒教师甚至无外部教师的自上下文模式。实验显示其在数学推理、具身智能体任务上性能显著提升，难样本训练收敛速度远优于原生GRPO。
+
+<FeedbackButtons slug="item:arxiv-2607.05339" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.03451" target="_blank" rel="noopener noreferrer">SkillOpt-Lite: Better and Faster Agent Self-evolution via One Line of Vibe</a>
+
+*HF ★ 3 · Yifei Shen, Bo Li, Xinjie Zhang · [HF 镜像](https://huggingface.co/papers/2607.03451)*
+
+针对现有智能体技能优化流程冗余的痛点，本文基于零阶优化、克劳德编码哲学与PAC学习，明确三项收敛泛化核心原则，推出极简轻量框架SkillOpt-Lite。该框架收敛更快、性能优于原版，小模型最高涨点超25分，可嵌入Copilot等生产工具，一行指令即可迭代技能，拓展方案也超过同场景大模型基线。
+
+<FeedbackButtons slug="item:arxiv-2607.03451" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.05722" target="_blank" rel="noopener noreferrer">Nemotron-Labs-Diffusion: A Tri-Mode Language Model Unifying Autoregressive, Diffusion, and Self-Speculation Decoding</a>
+
+*HF ★ 2 · Yonggan Fu, Lexington Whalen, Abhinav Garg… · [HF 镜像](https://huggingface.co/papers/2607.05722)*
+
+本文推出三模式语言模型Nemotron-Labs-Diffusion，单架构统一自回归、扩散、自投机三种解码模式，采用联合训练目标，可随部署场景切换保障高吞吐。实验显示三类目标优势互补，自投机模式效率优于现有多令牌预测方法，全参数段各品类模型精度、速度均超开源同类SOTA，8B版本同精度下吞吐量达Qwen3-8B的4倍。
+
+<FeedbackButtons slug="item:arxiv-2607.05722" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2607.02586" target="_blank" rel="noopener noreferrer">Auditing the Audit: Five Failure Modes in Benchmark-Validity Audits</a>
+
+*Yanhang Li, Zhichao Fan, Zexin Zhuang*
+
+本文复盘当前常用的扰动式AI基准有效性审计，指出其结果易受未公开实现细节操控，可靠性存疑。作者归纳5类审计流程失效模式，经2个开源指令微调模型、5个安全基准自审验证，按提出的6项尽职调查门槛核验，所有测试项均未达确认级。该失效分类为非穷尽起始框架，核验门槛为补充性证据披露规范，不直接判定基准有效性。
+
+<FeedbackButtons slug="item:arxiv-2607.02586" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.02623" target="_blank" rel="noopener noreferrer">Evaluating Time Series Foundation Models for Electricity Price Forecasting: Contamination Risk, Distributional Shifts, and Covariate Dependence</a>
+
+*Zhenghua Pan, Ahmed Aziz Ezzat*
+
+针对时序基础模型（TSFM）在协变量驱动的非平稳场景下泛化性研究不足的问题，该文以电价预测为测试场景，提出双数据集基准评测框架以规避数据污染、保障评测公平性。测试表明：TSFM效果优于通用基线，但性能高度依赖协变量支持，未稳定超过电价领域专属模型，二者集成可互补信息、潜力显著。
+
+<FeedbackButtons slug="item:arxiv-2607.02623" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.02632" target="_blank" rel="noopener noreferrer">QuantFlow: A Federated Mamba-Based Post-Transformer Foundation Model for Time-Series Forecasting</a>
+
+*Shah Nawaz Haider, Steve Austin, Arnab Barua…*
+
+针对现有时序预测大模型依赖中心化数据、Transformer架构难适配长时序高维隐私敏感场景的痛点，本文提出QuantFlow联邦预测框架，融合反向序列嵌入、双向Mamba、分位数回归，搭配TSMixup时序增强。实验显示其多数据集精度优异，20客户端非独立同分布部署无需集中原始数据，3轮通信即可保持可用精度，仅在部分场景存在局限。
+
+<FeedbackButtons slug="item:arxiv-2607.02632" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/australian-payments-plus" target="_blank" rel="noopener noreferrer">Australian Payments Plus moves faster with ChatGPT and Codex</a>
+
+*OpenAI*
+
+本案例介绍澳大利亚支付机构AP+的AI赋能实践：为破解支付业务复杂度高、流程推进效率低的痛点，其部署ChatGPT企业版与Codex两款AI工具，落地后既实现了压缩作业耗时、提升产出质量的预期目标，同时始终将人工判断作为核心决策环节，兼顾了AI提效与支付业务的风控要求。
+
+<FeedbackButtons slug="item:openai-blog-australian-payments-plus" client:visible />
+
+## <a href="https://openai.com/index/mufg" target="_blank" rel="noopener noreferrer">MUFG aims to become AI-native with OpenAI</a>
+
+*OpenAI*
+
+日本三菱日联金融集团（MUFG）正联合OpenAI推进AI原生转型，核心依托ChatGPT企业版落地相关布局：对内将AI嵌入全业务环节优化工作流程、提效降本，对外计划规模化推出搭载AI能力的创新金融服务，目标是建成全栈AI原生金融组织，强化自身金融服务核心竞争力。
+
+<FeedbackButtons slug="item:openai-blog-mufg" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Claude Fable 5</a>
+
+*Anthropic*
+
+Anthropic公司官宣，在相关出口管制限制解除后，将于7月1日起重新上线部署Claude Fable 5大模型。此次重启同步完成两项安全升级：更新了网络安全防护体系，新增行业专属的越狱风险防控框架，可进一步强化模型运行的合规性与安全性，有效降低恶意滥用风险。
+
+<FeedbackButtons slug="item:anthropic-redeploying-fable-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-sonnet-5" target="_blank" rel="noopener noreferrer">Introducing Claude Sonnet 5</a>
+
+*Anthropic*
+
+本次介绍的Claude Sonnet 5是Anthropic最新迭代的大模型产品，为Sonnet系列中智能体属性最强的版本，核心性能处于行业第一梯队，重点针对代码开发、日常专业办公两大高频场景做了能力优化，能够为开发者、职场专业用户处理各类复杂任务提供更强的能力支撑，主打高可靠性的专业场景落地。
+
+<FeedbackButtons slug="item:anthropic-claude-sonnet-5" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/google-deepmind-and-a24-announce-first-of-its-kind-research-partnership/" target="_blank" rel="noopener noreferrer">Google DeepMind and A24 announce first-of-its-kind research partnership</a>
+
+*Google DeepMind*
+
+本次是全球顶尖AI机构谷歌DeepMind与头部独立影视厂牌A24的行业首创跨界研究合作。双方将结合技术与内容创作优势，围绕AI在影视创作全链路落地展开研究，探索AI赋能编剧、拍摄、后期的可行路径，开发AI原生叙事新形态，同时重视创作伦理、保障创作者权益，为内容产业与AI的合规融合探路。
+
+<FeedbackButtons slug="item:deepmind-google-deepmind-and-a24-announce-first-of-its-kind-research-partnership" client:visible />
+
+## <a href="https://deepmind.google/blog/start-building-with-nano-banana-2-lite-and-gemini-omni-flash/" target="_blank" rel="noopener noreferrer">Start building with Nano Banana 2 Lite and Gemini Omni Flash</a>
+
+*Google DeepMind*
+
+您尚未提供该篇内容的摘要正文，无法精准提炼其核心方法、结果与结论。请补充完整摘要内容，我会按照要求为您生成120字左右、重点突出核心创新点与落地价值的简洁中文总结。
+
+<FeedbackButtons slug="item:deepmind-start-building-with-nano-banana-2-lite-and-gemini-omni-flash" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/amazon/one-click-to-sagemaker-studio" target="_blank" rel="noopener noreferrer">From Hugging Face to Amazon SageMaker Studio in one click</a>
+
+*Hugging Face*
+
+本方案针对AI开发者跨平台部署Hugging Face资源时环境配置繁琐的痛点，推出一键跳转功能：用户在Hugging Face Hub选定预训练模型、数据集、演示Demo后，点击按钮即可直接导入Amazon SageMaker Studio环境，无需手动适配依赖，可直接调用SageMaker的微调、部署、监控等全流程能力，大幅降低大模型落地的时间成本与技术门槛。
+
+<FeedbackButtons slug="item:hf-blog-one-click-to-sagemaker-studio" client:visible />
+
+## <a href="https://huggingface.co/blog/microsoft/foundry-managed-compute" target="_blank" rel="noopener noreferrer">Hugging Face Models on Foundry Managed Compute</a>
+
+*Hugging Face*
+
+你目前仅提供了这篇论文的标题，未附上摘要的具体正文内容，无法完成翻译提炼、总结的需求哦。请你补充该摘要的完整英文文本，我会按照要求突出核心方法与结论，整理为120字左右的简洁中文总结反馈给你。
+
+<FeedbackButtons slug="item:hf-blog-foundry-managed-compute" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+本文从美德伦理视角研究AI对齐问题，反驳正交性假说默认的“理性主体锚定固定终极目标行动”预设，指出人类理性行为本质是适配包含行动倾向、评价标准等要素的实践网络，而非追逐特定目标。提出要实现AI和人类顺畅协作、符合伦理及安全要求，需让AI决策逻辑匹配人类这种基于实践的行动逻辑。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+递归自我改进（RSI）最早由I.J.古德1965年提出，核心是超智能机器可超越人类所有智力活动，还能自行设计更优系统实现迭代。2008年尤德考斯基明确其为智能反馈循环：AI用现有能力优化自身认知机制。当前AI语境下的RSI既包括模型直接改写自身权重，也可广义涵盖模型优化自身训练流程。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/07/445531.html" target="_blank" rel="noopener noreferrer">三个理想火枪手创业，打破具身最快百台交付纪录</a>
+
+*量子位*
+
+前理想智驾核心成员王凯、贾鹏、王佳佳创办的具身智能企业至简动力，成立不到一年即完成首款全场景机器人i7 Pro百台交付，创下行业最快交付纪录，同步亮相全球首个CNC智能化具身机器人产线。公司半年内完成5轮融资，获红杉、腾讯、阿里等投资，核心竞争力来自此前智驾领域的技术落地积累。
+
+<FeedbackButtons slug="item:qbitai-445531" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/445443.html" target="_blank" rel="noopener noreferrer">从共识到非共识：科技有「联想」沙龙首场活动直击具身智能产业化“三大困惑”</a>
+
+*量子位*
+
+6月30日，联想控股等发起的首场“科技有「联想」”具身智能主题沙龙在京举办，8位产学研投领域嘉宾围绕数据、模型、落地等核心议题展开思辨。业内共识数据是发展核心，有企业提出采用成本远低于真机遥操的大规模人类视频训练具身模型，同时指出行业亟需搭建包含工具链、测评体系的完整数据基座。
+
+<FeedbackButtons slug="item:qbitai-445443" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/445292.html" target="_blank" rel="noopener noreferrer">我宣布这是中国最神奇的造车新势力</a>
+
+*量子位*
+
+2021年成立的上海造车新势力极石，仅靠一款在售车型加一次换代，在行业洗牌期逆势站稳：今年6月销2512台，上半年累计破万，同比近乎翻倍，全年目标3万台，虽销量仅为头部新势力月销门槛、不到零跑6月销量的1/37，但始终稳健爬坡，是新势力中少见的“小而美”样本。
+
+<FeedbackButtons slug="item:qbitai-445292" client:visible />
