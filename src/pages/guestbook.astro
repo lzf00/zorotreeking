@@ -1,0 +1,71 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Giscus from "@/components/Giscus.astro";
+import { aboutData } from "@/data/about";
+const { contact } = aboutData;
+
+const giscusEnabled = !!(
+  import.meta.env.PUBLIC_GISCUS_REPO &&
+  import.meta.env.PUBLIC_GISCUS_REPO_ID &&
+  import.meta.env.PUBLIC_GISCUS_CATEGORY_ID
+);
+---
+<BaseLayout title="留言板 · Guestbook" description="留言、问题、bug、建议、随手扔一句话 —— 都可以留在这里。">
+  <article class="max-w-3xl mx-auto px-5 pt-16 pb-24">
+    <h1 class="font-serif text-5xl sm:text-6xl leading-[0.95] tracking-tight mb-6">留言板</h1>
+    <p class="text-lg text-[var(--text-secondary)] mb-8 leading-relaxed">
+      读完某篇有想说的、觉得网站哪里烂、发现 bug、想让我写点啥、想认识 —— 都可以留在这里。
+      新留言我一般 48 小时内回。
+    </p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-12">
+      <div class="border border-[var(--border)] rounded-lg p-3">
+        <div class="text-[10px] uppercase tracking-[0.15em] text-[var(--text-tertiary)] font-mono mb-1">🐛 Bug</div>
+        <p class="text-xs text-[var(--text-secondary)]">哪个页面炸了、链接死了、样式怪了 — 附 URL / 截图更好。</p>
+      </div>
+      <div class="border border-[var(--border)] rounded-lg p-3">
+        <div class="text-[10px] uppercase tracking-[0.15em] text-[var(--text-tertiary)] font-mono mb-1">💡 建议</div>
+        <p class="text-xs text-[var(--text-secondary)]">想看啥主题、想加啥功能、觉得哪里可以做得更好。</p>
+      </div>
+      <div class="border border-[var(--border)] rounded-lg p-3">
+        <div class="text-[10px] uppercase tracking-[0.15em] text-[var(--text-tertiary)] font-mono mb-1">👋 随手</div>
+        <p class="text-xs text-[var(--text-secondary)]">读后感、共鸣、吐槽、打声招呼 — 没啥限制。</p>
+      </div>
+    </div>
+
+    {giscusEnabled ? (
+      <section>
+        <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4 pb-2 border-b border-[var(--border)]">
+          Guestbook · 需 GitHub 账号登录
+        </div>
+        <Giscus term="guestbook" lang="zh" bare />
+        <p class="mt-4 text-xs text-[var(--text-tertiary)]">
+          留言基于 GitHub Discussions 存储 · 你的用户名和头像会公开显示 · 不想登录的话下方有邮件通道。
+        </p>
+      </section>
+    ) : (
+      <section class="rounded-lg border border-dashed border-[var(--border)] p-6 bg-[var(--surface-1)]">
+        <p class="text-sm text-[var(--text-secondary)]">
+          留言板尚未配置 Giscus。请通过下方 Email 联系。
+        </p>
+      </section>
+    )}
+
+    <section class="mt-16 pt-8 border-t border-[var(--border)]">
+      <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4">
+        没有 GitHub 账号？走邮件
+      </div>
+      <a href={`mailto:${contact.email}?subject=[ZoroTreeking%20留言板]%20`}
+         class="group inline-flex items-center gap-3 border border-[var(--border)] rounded-lg px-4 py-3 hover:border-blue-500 transition-colors">
+        <span class="text-lg">📮</span>
+        <div>
+          <div class="text-sm font-semibold group-hover:text-blue-600 transition-colors">{contact.email}</div>
+          <p class="mt-0.5 text-xs text-[var(--text-secondary)]">主题会自动带 [ZoroTreeking 留言板] 前缀 · 48 小时内回</p>
+        </div>
+      </a>
+      <p class="mt-4 text-xs text-[var(--text-tertiary)]">
+        涉及违法 / 侵权投诉请走 <a href="/contact" class="underline hover:text-[var(--text)]">/contact 合规通道</a>。
+      </p>
+    </section>
+  </article>
+</BaseLayout>

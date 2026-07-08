@@ -1,0 +1,71 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Giscus from "@/components/Giscus.astro";
+import { aboutData } from "@/data/about";
+const { contact } = aboutData;
+
+const giscusEnabled = !!(
+  import.meta.env.PUBLIC_GISCUS_REPO &&
+  import.meta.env.PUBLIC_GISCUS_REPO_ID &&
+  import.meta.env.PUBLIC_GISCUS_CATEGORY_ID
+);
+---
+<BaseLayout title="Guestbook" description="Leave a note, report a bug, suggest a topic, or just say hi.">
+  <article class="max-w-3xl mx-auto px-5 pt-16 pb-24">
+    <h1 class="font-serif text-5xl sm:text-6xl leading-[0.95] tracking-tight mb-6">Guestbook</h1>
+    <p class="text-lg text-[var(--text-secondary)] mb-8 leading-relaxed">
+      Read a post and want to say something? Site broken? Bug? Topic request? Just want to say hi? Drop it here.
+      I usually reply within 48 hours.
+    </p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-12">
+      <div class="border border-[var(--border)] rounded-lg p-3">
+        <div class="text-[10px] uppercase tracking-[0.15em] text-[var(--text-tertiary)] font-mono mb-1">🐛 Bug</div>
+        <p class="text-xs text-[var(--text-secondary)]">Broken page, dead link, weird styling — URL / screenshot helps.</p>
+      </div>
+      <div class="border border-[var(--border)] rounded-lg p-3">
+        <div class="text-[10px] uppercase tracking-[0.15em] text-[var(--text-tertiary)] font-mono mb-1">💡 Suggest</div>
+        <p class="text-xs text-[var(--text-secondary)]">Topic requests, feature ideas, things you'd like to see better.</p>
+      </div>
+      <div class="border border-[var(--border)] rounded-lg p-3">
+        <div class="text-[10px] uppercase tracking-[0.15em] text-[var(--text-tertiary)] font-mono mb-1">👋 Casual</div>
+        <p class="text-xs text-[var(--text-secondary)]">Reactions, resonance, rants, just saying hi — no rules.</p>
+      </div>
+    </div>
+
+    {giscusEnabled ? (
+      <section>
+        <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4 pb-2 border-b border-[var(--border)]">
+          Guestbook · Sign in with GitHub
+        </div>
+        <Giscus term="guestbook" lang="en" bare />
+        <p class="mt-4 text-xs text-[var(--text-tertiary)]">
+          Comments live in GitHub Discussions · Your username and avatar are public · Prefer no login? Email is below.
+        </p>
+      </section>
+    ) : (
+      <section class="rounded-lg border border-dashed border-[var(--border)] p-6 bg-[var(--surface-1)]">
+        <p class="text-sm text-[var(--text-secondary)]">
+          Guestbook (Giscus) is not configured. Please email me directly instead.
+        </p>
+      </section>
+    )}
+
+    <section class="mt-16 pt-8 border-t border-[var(--border)]">
+      <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4">
+        No GitHub? Email works too
+      </div>
+      <a href={`mailto:${contact.email}?subject=[ZoroTreeking%20Guestbook]%20`}
+         class="group inline-flex items-center gap-3 border border-[var(--border)] rounded-lg px-4 py-3 hover:border-blue-500 transition-colors">
+        <span class="text-lg">📮</span>
+        <div>
+          <div class="text-sm font-semibold group-hover:text-blue-600 transition-colors">{contact.email}</div>
+          <p class="mt-0.5 text-xs text-[var(--text-secondary)]">Subject is prefixed with [ZoroTreeking Guestbook] · reply within 48h</p>
+        </div>
+      </a>
+      <p class="mt-4 text-xs text-[var(--text-tertiary)]">
+        For legal / abuse complaints, please use the <a href="/en/contact" class="underline hover:text-[var(--text)]">compliance channel on /contact</a>.
+      </p>
+    </section>
+  </article>
+</BaseLayout>

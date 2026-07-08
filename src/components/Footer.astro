@@ -27,6 +27,10 @@ const year = new Date().getFullYear();
         <span>·</span>
         <a href="/now" class="hover:text-[var(--text)] transition-colors">Now</a>
         <span>·</span>
+        <a href={lang === "zh" ? "/guestbook" : "/en/guestbook"} class="hover:text-[var(--text)] transition-colors">
+          {lang === "zh" ? "留言板" : "Guestbook"}
+        </a>
+        <span>·</span>
         <a href={lang === "zh" ? "/terms" : "/en/terms"} class="hover:text-[var(--text)] transition-colors">
           {lang === "zh" ? "使用条款" : "Terms"}
         </a>

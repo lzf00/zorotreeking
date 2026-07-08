@@ -6,32 +6,67 @@
 //   PUBLIC_GISCUS_CATEGORY=Announcements
 //   PUBLIC_GISCUS_CATEGORY_ID=...
 // 没配置时不渲染
+//
+// Props:
+//   term  — 若传入，使用 mapping=specific 把留言归到指定 discussion（用于 /guestbook 页固定一条讨论）
+//   lang  — "zh" | "en"（决定 UI 语言）
+//   bare  — true 时不渲染 section/border/标题，页面自己包装
+interface Props { term?: string; lang?: "zh" | "en"; bare?: boolean }
+const { term, lang = "zh", bare = false } = Astro.props;
+
 const repo = import.meta.env.PUBLIC_GISCUS_REPO;
 const repoId = import.meta.env.PUBLIC_GISCUS_REPO_ID;
 const category = import.meta.env.PUBLIC_GISCUS_CATEGORY ?? "Announcements";
 const categoryId = import.meta.env.PUBLIC_GISCUS_CATEGORY_ID;
 const enabled = !!(repo && repoId && categoryId);
+
+const mapping = term ? "specific" : "pathname";
+const giscusLang = lang === "en" ? "en" : "zh-CN";
 ---
 
 {enabled ? (
-  <section class="mt-16 border-t border-[var(--border)] pt-8">
-    <div class="text-xs text-[var(--text-tertiary)] uppercase tracking-wider mb-4">评论 · Comments</div>
+  bare ? (
     <script
       src="https://giscus.app/client.js"
       data-repo={repo}
       data-repo-id={repoId}
       data-category={category}
       data-category-id={categoryId}
-      data-mapping="pathname"
+      data-mapping={mapping}
+      data-term={term}
       data-strict="0"
       data-reactions-enabled="1"
       data-emit-metadata="0"
       data-input-position="top"
       data-theme="preferred_color_scheme"
-      data-lang="zh-CN"
+      data-lang={giscusLang}
       data-loading="lazy"
       crossorigin="anonymous"
       async
     />
-  </section>
+  ) : (
+    <section class="mt-16 border-t border-[var(--border)] pt-8">
+      <div class="text-xs text-[var(--text-tertiary)] uppercase tracking-wider mb-4">
+        {lang === "en" ? "Comments" : "评论 · Comments"}
+      </div>
+      <script
+        src="https://giscus.app/client.js"
+        data-repo={repo}
+        data-repo-id={repoId}
+        data-category={category}
+        data-category-id={categoryId}
+        data-mapping={mapping}
+        data-term={term}
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="preferred_color_scheme"
+        data-lang={giscusLang}
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async
+      />
+    </section>
+  )
 ) : null}
