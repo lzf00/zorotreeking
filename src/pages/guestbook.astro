@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Giscus from "@/components/Giscus.astro";
+import GuestbookBoard from "@/components/GuestbookBoard";
 import { aboutData } from "@/data/about";
 const { contact } = aboutData;
 
@@ -33,21 +34,22 @@ const giscusEnabled = !!(
       </div>
     </div>
 
-    {giscusEnabled ? (
-      <section>
+    <section class="mb-16">
+      <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4 pb-2 border-b border-[var(--border)]">
+        方式一 · 访客留言（无需登录）
+      </div>
+      <GuestbookBoard lang="zh" client:visible />
+    </section>
+
+    {giscusEnabled && (
+      <section class="mb-16">
         <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4 pb-2 border-b border-[var(--border)]">
-          Guestbook · 需 GitHub 账号登录
+          方式二 · GitHub 登录留言
         </div>
+        <p class="text-xs text-[var(--text-tertiary)] mb-4">
+          走 GitHub Discussions · 你的用户名和头像会公开显示 · 支持 emoji 反应和回复。
+        </p>
         <Giscus term="guestbook" lang="zh" bare />
-        <p class="mt-4 text-xs text-[var(--text-tertiary)]">
-          留言基于 GitHub Discussions 存储 · 你的用户名和头像会公开显示 · 不想登录的话下方有邮件通道。
-        </p>
-      </section>
-    ) : (
-      <section class="rounded-lg border border-dashed border-[var(--border)] p-6 bg-[var(--surface-1)]">
-        <p class="text-sm text-[var(--text-secondary)]">
-          留言板尚未配置 Giscus。请通过下方 Email 联系。
-        </p>
       </section>
     )}
 

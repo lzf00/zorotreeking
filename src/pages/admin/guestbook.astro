@@ -1,0 +1,173 @@
+---
+/**
+ * /admin/guestbook —— 访客留言审核
+ * 复用 /admin/stats 的 sha256 前端密码门 + zoro-stats-2026 后端 token
+ */
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+<BaseLayout title="留言审核" description="访客留言审核后台" noindex>
+  <main class="max-w-5xl mx-auto px-6 pt-12 pb-32">
+    <h1 class="text-2xl font-semibold tracking-tight">访客留言审核</h1>
+    <p class="mt-2 text-sm text-zinc-500">
+      <code>guestbook_entries</code> 审核 · 仅本人查看 · 不被索引
+    </p>
+
+    <div id="gate" class="mt-10">
+      <label class="block text-xs uppercase tracking-[0.18em] text-zinc-500 mb-2">查看口令</label>
+      <input id="gate-pw" type="password" autocomplete="off" autofocus
+             class="w-full max-w-sm px-3 py-2 border border-zinc-200 dark:border-zinc-800 rounded-md
+                    bg-white dark:bg-zinc-900 text-sm focus:outline-none focus:ring-1 focus:ring-amber-400"
+             placeholder="输入口令后回车" />
+      <p id="gate-err" class="mt-2 text-xs text-red-500 hidden">口令错误。</p>
+    </div>
+
+    <div id="board" class="hidden mt-10">
+      <div id="counts" class="grid grid-cols-4 gap-3 mb-6 text-xs"></div>
+
+      <div class="flex items-center gap-3 mb-4">
+        <label class="text-xs text-zinc-500">状态：</label>
+        <select id="status-select" class="text-sm border border-zinc-200 dark:border-zinc-800 rounded px-2 py-1 bg-white dark:bg-zinc-900">
+          <option value="pending">pending（待审核）</option>
+          <option value="approved">approved（已通过）</option>
+          <option value="hidden">hidden（已隐藏）</option>
+          <option value="all">all（全部）</option>
+        </select>
+        <button id="reload" class="text-xs text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 border border-zinc-200 dark:border-zinc-800 rounded px-3 py-1">刷新</button>
+      </div>
+
+      <div id="list" class="space-y-3"></div>
+      <p id="empty-msg" class="hidden text-sm text-zinc-500 italic border border-dashed border-zinc-200 dark:border-zinc-800 rounded p-8 text-center">
+        没有该状态的留言。
+      </p>
+    </div>
+  </main>
+</BaseLayout>
+
+<script is:inline>
+  const PW_HASH = "dda2cfcdc90a2e5fee01495a0d0396911b8caeb98851ec343e99d5f58e5f8c26";
+  const PW = "zoro-stats-2026";
+  const LS_KEY = "zoro:admin:gate";
+
+  async function sha256(s) {
+    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
+    return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, "0")).join("");
+  }
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+
+  function fmtTs(ts) {
+    const d = new Date(ts * 1000);
+    return d.toLocaleString("zh-CN", { hour12: false });
+  }
+
+  function renderCounts(counts) {
+    const total = (counts.pending || 0) + (counts.approved || 0) + (counts.hidden || 0);
+    $("counts").innerHTML = [
+      ["pending", counts.pending || 0, "amber"],
+      ["approved", counts.approved || 0, "green"],
+      ["hidden", counts.hidden || 0, "zinc"],
+      ["total", total, "blue"],
+    ].map(([k, v, c]) => `
+      <div class="rounded border border-zinc-200 dark:border-zinc-800 p-3 bg-white dark:bg-zinc-900">
+        <div class="uppercase tracking-[0.14em] text-zinc-500">${k}</div>
+        <div class="mt-1 text-lg font-semibold tabular-nums text-${c}-600 dark:text-${c}-400">${v}</div>
+      </div>
+    `).join("");
+  }
+
+  function renderList(items) {
+    if (!items?.length) { $("empty-msg").classList.remove("hidden"); $("list").innerHTML = ""; return; }
+    $("empty-msg").classList.add("hidden");
+    $("list").innerHTML = items.map((it) => {
+      const statusColor = it.status === "approved" ? "text-green-600 dark:text-green-400"
+        : it.status === "hidden" ? "text-zinc-500"
+        : "text-amber-600 dark:text-amber-400";
+      return `
+      <div class="rounded-lg border border-zinc-200 dark:border-zinc-800 p-4 bg-white dark:bg-zinc-900">
+        <div class="flex items-center justify-between gap-3 mb-2 text-xs">
+          <div class="flex items-center gap-2">
+            <span class="font-semibold">${esc(it.nickname)}</span>
+            <span class="text-zinc-500">#${it.id}</span>
+            <span class="${statusColor} uppercase tracking-wider">${it.status}</span>
+          </div>
+          <time class="text-zinc-500 font-mono">${fmtTs(it.ts)}</time>
+        </div>
+        <p class="text-sm whitespace-pre-wrap break-words mb-3 text-zinc-800 dark:text-zinc-200">${esc(it.content)}</p>
+        <div class="flex items-center gap-4 text-[11px] text-zinc-500 mb-3">
+          ${it.email ? `<span>📧 ${esc(it.email)}</span>` : ""}
+          ${it.ip ? `<span>IP ${esc(it.ip)}</span>` : ""}
+          ${it.ua_hash ? `<span>UA ${esc(it.ua_hash)}</span>` : ""}
+        </div>
+        <div class="flex flex-wrap gap-2">
+          ${it.status !== "approved" ? `<button data-id="${it.id}" data-action="approve" class="mod-btn text-xs px-3 py-1 rounded bg-green-600 hover:bg-green-700 text-white">✓ 通过</button>` : ""}
+          ${it.status !== "hidden" ? `<button data-id="${it.id}" data-action="hide" class="mod-btn text-xs px-3 py-1 rounded bg-zinc-500 hover:bg-zinc-600 text-white">隐藏</button>` : ""}
+          ${it.status === "hidden" ? `<button data-id="${it.id}" data-action="reopen" class="mod-btn text-xs px-3 py-1 rounded bg-amber-600 hover:bg-amber-700 text-white">重新待审</button>` : ""}
+          <button data-id="${it.id}" data-action="delete" class="mod-btn text-xs px-3 py-1 rounded bg-red-600 hover:bg-red-700 text-white">✕ 删除</button>
+        </div>
+      </div>`;
+    }).join("");
+
+    document.querySelectorAll(".mod-btn").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const id = parseInt(btn.getAttribute("data-id"), 10);
+        const action = btn.getAttribute("data-action");
+        if (action === "delete" && !confirm(`确认删除留言 #${id} ? 数据不可恢复。`)) return;
+        btn.disabled = true; btn.textContent = "...";
+        try {
+          const r = await fetch(`/api/admin/guestbook/mod?key=${encodeURIComponent(PW)}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id, action }),
+          });
+          if (!r.ok) throw new Error(`HTTP ${r.status}`);
+          await loadList();
+        } catch (e) {
+          alert("操作失败: " + e.message);
+          btn.disabled = false;
+        }
+      });
+    });
+  }
+
+  async function loadList() {
+    const status = $("status-select").value;
+    try {
+      const r = await fetch(`/api/admin/guestbook?key=${encodeURIComponent(PW)}&status=${status}&limit=200`);
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      const d = await r.json();
+      renderCounts(d.counts || {});
+      renderList(d.items || []);
+    } catch (e) {
+      $("list").innerHTML = `<p class="text-sm text-red-500">加载失败：${esc(e.message)}</p>`;
+    }
+  }
+
+  async function boot() {
+    $("board").classList.remove("hidden");
+    $("status-select").addEventListener("change", loadList);
+    $("reload").addEventListener("click", loadList);
+    await loadList();
+  }
+
+  (async () => {
+    if (sessionStorage.getItem(LS_KEY) === "1") {
+      $("gate").classList.add("hidden");
+      await boot();
+      return;
+    }
+    const input = $("gate-pw"), err = $("gate-err");
+    input?.addEventListener("keydown", async (e) => {
+      if (e.key !== "Enter") return;
+      e.preventDefault();
+      const h = await sha256(input.value);
+      if (h === PW_HASH) {
+        sessionStorage.setItem(LS_KEY, "1");
+        $("gate").classList.add("hidden");
+        err.classList.add("hidden");
+        await boot();
+      } else {
+        err.classList.remove("hidden");
+      }
+    });
+  })();
+</script>

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Giscus from "@/components/Giscus.astro";
+import GuestbookBoard from "@/components/GuestbookBoard";
 import { aboutData } from "@/data/about";
 const { contact } = aboutData;
 
@@ -33,21 +34,22 @@ const giscusEnabled = !!(
       </div>
     </div>
 
-    {giscusEnabled ? (
-      <section>
+    <section class="mb-16">
+      <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4 pb-2 border-b border-[var(--border)]">
+        Option 1 · Guest message (no login)
+      </div>
+      <GuestbookBoard lang="en" client:visible />
+    </section>
+
+    {giscusEnabled && (
+      <section class="mb-16">
         <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4 pb-2 border-b border-[var(--border)]">
-          Guestbook · Sign in with GitHub
+          Option 2 · Sign in with GitHub
         </div>
+        <p class="text-xs text-[var(--text-tertiary)] mb-4">
+          Backed by GitHub Discussions · Your username and avatar are public · Emoji reactions and threaded replies supported.
+        </p>
         <Giscus term="guestbook" lang="en" bare />
-        <p class="mt-4 text-xs text-[var(--text-tertiary)]">
-          Comments live in GitHub Discussions · Your username and avatar are public · Prefer no login? Email is below.
-        </p>
-      </section>
-    ) : (
-      <section class="rounded-lg border border-dashed border-[var(--border)] p-6 bg-[var(--surface-1)]">
-        <p class="text-sm text-[var(--text-secondary)]">
-          Guestbook (Giscus) is not configured. Please email me directly instead.
-        </p>
       </section>
     )}
 
