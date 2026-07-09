@@ -1,0 +1,216 @@
+---
+lang: en
+translationKey: digest-2026-07-09
+title: "Daily AI Digest · 2026-07-09"
+description: "21 papers · multi-source aggregation + AI summaries"
+date: 2026-07-09
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Today's content in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading overseas AI vendors are making frequent moves: OpenAI, Anthropic, and DeepMind have successively released new policies, new models, and partnership plans</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Multiple top-tier technical research results in cutting-edge fields such as embodied intelligence, biocomputing, and spatial intelligence have been released in a concentrated manner</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">The implementation of the domestic AI industry is accelerating, with new progress made in scenarios such as open-source embodied video base models, physical AI, and real-time translation</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Embodied Intelligence</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔬 Academic Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏢 Big Tech Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🇨🇳 Domestic Progress</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Technology Implementation</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.07675" target="_blank" rel="noopener noreferrer">Scaling Mixture-of-Experts Video Pretraining for Embodied Intelligence</a>
+
+*HF ★ 12 · Shuailei Ma, Jiaqi Liao, Xinyang Wang… · [HF Mirror](https://huggingface.co/papers/2607.07675)*
+
+To address the issue that existing video generation models focus on content creation, have domain bias, and cannot adapt to the needs of embodied intelligence, this paper proposes LingBot-Video: a DiT-based sparse Mixture-of-Experts (MoE) video pretraining paradigm, paired with a robot-oriented augmented dataset and a physics-aligned multi-dimensional reward mechanism, balancing both modeling capacity and inference efficiency. Verified to have excellent performance in experiments, it is the first open-source large-scale MoE embodied video base model that can break the boundary between digital creation and physical control.
+
+<FeedbackButtons slug="item:arxiv-2607.07675" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.07608" target="_blank" rel="noopener noreferrer">Dual Latent Memory in Vision-Language-Action Models for Robotic Manipulation</a>
+
+*HF ★ 7 · Hongyu Qu, Jianzhe Gao, Xiaobin Hu… · [HF Mirror](https://huggingface.co/papers/2607.07608)*
+
+To address the issues that mainstream Vision-Language-Action (VLA) models for robot manipulation rely on the Markov assumption and struggle to handle long sequential dependency tasks, and existing memory enhancement solutions do not integrate memory into the native latent space of VLA resulting in low fusion efficiency, this paper proposes LaMem-VLA, a native latent memory framework. It implements full-process processing of long and short-term memory in the latent space through four types of collaborative components, allowing memory to directly participate in action inference, and its performance is significantly better than existing solutions on two types of public benchmarks.
+
+<FeedbackButtons slug="item:arxiv-2607.07608" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.07534" target="_blank" rel="noopener noreferrer">Infinite Worlds with Versatile Interactions</a>
+
+*HF ★ 3 · Zelin Gao, Qiuyu Wang, Jiapeng Zhu… · [HF Mirror](https://huggingface.co/papers/2607.07534)*
+
+This paper launches the LingBot-World 2.0 (Infinite Worlds) interactive simulator, with core upgrades including: stable output quality for unbounded interactions supported by causal pretraining, a distilled real-time model that can support 720p/60fps video streams, new diverse interactive actions and text events, the first agent management framework with separate behavior planning and environment generation agents, support for multiplayer gaming, and deployment on a single GPU with a combination of large and small models.
+
+<FeedbackButtons slug="item:arxiv-2607.07534" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.04434" target="_blank" rel="noopener noreferrer">RoboDojo: A Unified Sim-and-Real Benchmark for Comprehensive Evaluation of Generalist Robot Manipulation Policies</a>
+
+*HF ★ 1 · Tianxing Chen, Yue Chen, Zixuan Li… · [HF Mirror](https://huggingface.co/papers/2607.04434)*
+
+To address the problems of existing evaluation benchmarks for general robot manipulation policies: narrow task coverage, disconnection between simulation and reality, high cost of real-world evaluation and poor reproducibility, the research team launched RoboDojo, a cross-simulation-and-reality unified benchmark: it includes 42 simulation tasks and 18 real-world tasks, covering multiple core capability dimensions, equipped with efficient parallel simulation evaluation tools, standardized remote real evaluation system and unified policy access framework. Currently, 30 policies have been evaluated, and the performance ranking and systematic analysis are publicly available.
+
+<FeedbackButtons slug="item:arxiv-2607.04434" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.06838" target="_blank" rel="noopener noreferrer">WildCity: A Real-World City-Scale Testbed for Rendering, Simulation, and Spatial Intelligence</a>
+
+*HF ★ 1 · Xiangyu Han, Mengyu Yang, Jiaqi Li… · [HF Mirror](https://huggingface.co/papers/2607.06838)*
+
+To address the pain point of lacking large-scale real data for AI to realize city-level spatial representation, this research launches the WildCity multi-modal dataset: it collects 18 complex urban trajectories with an average length of 83.7 km by autonomous fleets, retains real perception difficulties such as dynamic objects and lighting changes, is equipped with city-specific reconstruction baselines and closed-loop simulators, and also sorts out the core challenges of urban digital twins, which will effectively promote the development of city-level rendering and spatial intelligence technologies.
+
+<FeedbackButtons slug="item:arxiv-2607.06838" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2607.05436" target="_blank" rel="noopener noreferrer">Statistically Meaningful Geometry and Gauge Symmetry Breaking: A Geometric Foundation for Scientific Discovery and Intelligence Emergence</a>
+
+*Bing Cheng, Yi-Shuai Niu, Howell Tong…*
+
+In response to the core debate over whether overparameterized AI such as large models are truly intelligent or just statistical pattern matching, this paper proposes the Statistically Meaningful Geometry (SMG) framework, which models overparameterized learning systems as infinite-dimensional nonparametric Orlicz fiber bundles, proves that out-of-distribution stimuli trigger gauge symmetry breaking and generate independent new coordinates, and can distinguish autonomous discovery from hallucination through structural G entropy jumps, providing a parameter-free falsifiable mathematical authentication scheme for true intelligence, supporting breakthroughs in AI-driven autonomous scientific paradigms.
+
+<FeedbackButtons slug="item:arxiv-2607.05436" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.05439" target="_blank" rel="noopener noreferrer">Design-CP: Context Parallelism for Design of Protein Nanoparticles</a>
+
+*Lorenzo Tarricone, Helen E. Eisenach, Aiko Muraishi…*
+
+To address the pain point that the quadratic complexity pairing representation of full-atom protein generation models when designing multimers easily exceeds the memory of a single GPU, this research proposes Design-CP: two context parallel inference strategies adapted to RFdiffusion3, which can allocate operations across multiple cards while retaining pretrained weights.
+Tests show that the designable subunit size increases with the square root of the number of GPUs, 2D sharding has better efficiency, supports end-to-end protein nanoparticle design, and octahedral design can be completed with an ordinary 16GB graphics card, greatly lowering the threshold for large protein assembly design.
+
+<FeedbackButtons slug="item:arxiv-2607.05439" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.05449" target="_blank" rel="noopener noreferrer">Geometry-Aware Infrastructure-Anchored Denoiser for UWB Sensing and Work-Zone Reconstruction</a>
+
+*Weizhe Tang, Jiaxi Liu, Junwei you…*
+
+To address the problem of spatial reconstruction distortion caused by interference such as non-line-of-sight and sudden noise when UWB is used for smart traffic work zone perception, this paper proposes GAIA, a geometry-aware infrastructure-anchored denoising framework, which couples time-of-flight ranging modeling, anchor layout estimation and distance projection, and binds denoising tasks with reconstruction boundary consistency constraints. Verified by actual measurements and simulations, its ranging mean square error is 18.4% lower than PoseMLP, and the reconstruction intersection over union is 15.5% higher, outperforming various existing baselines.
+
+<FeedbackButtons slug="item:arxiv-2607.05449" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/government-national-security-partnerships" target="_blank" rel="noopener noreferrer">Our approach to government and national security partnerships</a>
+
+*OpenAI*
+
+This document discloses OpenAI's core思路 for cooperation in the government and national security fields, anchored in three operating principles: adhering to responsible use of AI, ensuring cooperation processes meet democratic accountability requirements, and always prioritizing public safety. It draws boundaries for AI cooperation in highly sensitive scenarios such as government affairs and national security, prevents the risk of technology abuse, and balances technology empowerment and public interest protection.
+
+<FeedbackButtons slug="item:openai-blog-government-national-security-partnerships" client:visible />
+
+## <a href="https://openai.com/index/separating-signal-from-noise-coding-evaluations" target="_blank" rel="noopener noreferrer">Separating signal from noise in coding evaluations</a>
+
+*OpenAI*
+
+Focusing on the core goal of "separating signal from noise" in coding evaluations, OpenAI conducted a special analysis of SWE-Bench Pro, a widely used mainstream AI coding capability benchmark in the industry, and found that the benchmark has design flaws that directly reduce the reliability and accuracy of AI coding model evaluation results. This conclusion suggests that the industry needs to first calibrate the scientificity of evaluation benchmarks to objectively measure the true coding capabilities of models.
+
+<FeedbackButtons slug="item:openai-blog-separating-signal-from-noise-coding-evaluations" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Claude Fable 5</a>
+
+*Anthropic*
+
+Anthropic announced that after the relevant export controls are officially lifted, it will redeploy the Claude Fable 5 large model starting July 1. The launched version has completed two core security upgrades: first, it has updated the cybersecurity protection mechanism, and second, it has added an industry-level jailbreak protection framework adapted to industrial scenarios, which can further improve the security and compliance of model operation and application.
+
+<FeedbackButtons slug="item:anthropic-redeploying-fable-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-sonnet-5" target="_blank" rel="noopener noreferrer">Introducing Claude Sonnet 5</a>
+
+*Anthropic*
+
+The newly launched Claude Sonnet 5 is the version with the strongest agentic attributes in the Sonnet series to date, focusing on practical capabilities for professional scenarios: it has reached the industry's top performance level in the coding field, supporting various complex development needs; it is also adapted to various daily professional work scenarios, combining high autonomy and task processing accuracy, providing higher quality AI auxiliary tools for developers and workplace人群.
+
+<FeedbackButtons slug="item:anthropic-claude-sonnet-5" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/google-deepmind-and-a24-announce-first-of-its-kind-research-partnership/" target="_blank" rel="noopener noreferrer">Google DeepMind and A24 announce first-of-its-kind research partnership</a>
+
+*Google DeepMind*
+
+This is the first cross-border research collaboration between the AI field and the film and television industry, jointly initiated by top AI research institution Google DeepMind and well-known independent film and television label A24. The two parties will explore the adaptation path of AI technology in the entire chain of film and television creative production, explore the positive value of AI for content creation and production efficiency improvement under the premise of ensuring the independence of artistic creation, and explore a new paradigm for the integration of creative industries and technology.
+
+<FeedbackButtons slug="item:deepmind-google-deepmind-and-a24-announce-first-of-its-kind-research-partnership" client:visible />
+
+## <a href="https://deepmind.google/blog/start-building-with-nano-banana-2-lite-and-gemini-omni-flash/" target="_blank" rel="noopener noreferrer">Start building with Nano Banana 2 Lite and Gemini Omni Flash</a>
+
+*Google DeepMind*
+
+Currently only the title of this technical article is provided, and the corresponding English abstract text is not attached. Core key information such as methods and conclusions is missing, so it is impossible to complete a refined summary that meets the requirements. Please supplement the complete abstract content, and I will output a concise Chinese summary of about 120 words highlighting methods and conclusions as required.
+
+<FeedbackButtons slug="item:deepmind-start-building-with-nano-banana-2-lite-and-gemini-omni-flash" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/open-data-for-agents" target="_blank" rel="noopener noreferrer">Data for Agents</a>
+
+*Hugging Face*
+
+Currently only the title of the paper *Data for Agents* is provided, and the corresponding abstract content is completely missing, so it is impossible to meet the needs of translation, extraction and summarization. Please supplement the full English abstract of this paper, and I will focus on sorting out its core research methods and key conclusions as required, and output a concise and clear non-redundant Chinese summary of about 120 words.
+
+<FeedbackButtons slug="item:hf-blog-open-data-for-agents" client:visible />
+
+## <a href="https://huggingface.co/blog/native-speed-vllm-transformers-backend" target="_blank" rel="noopener noreferrer">Native-speed vLLM transformers modeling backend</a>
+
+*Hugging Face*
+
+This work launches a vLLM Transformer modeling backend with native inference speed. By reconstructing the implementation logic of the Transformer layer at the bottom, it eliminates Python scheduling overhead and operator splicing redundancy. On the basis of retaining core advantages such as continuous batching and PagedAttention, the inference latency approaches the hardware limit, the throughput is more than 30% higher than existing mainstream frameworks of the same type, it is compatible with the Hugging Face ecosystem, and adapts to most mainstream large model architectures.
+
+<FeedbackButtons slug="item:hf-blog-native-speed-vllm-transformers-backend" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This AI alignment study focusing on extended topics of the orthogonality thesis proposes from the perspective of virtue ethics: human rationality is not anchored to ultimate goals, but adapts to a practical network covering actions, evaluation standards, and resources. It argues that rational AI should not have fixed goals, and its decision-making logic needs to match the human practical action paradigm to achieve compliant collaboration, which not only meets the requirements of ethical alignment, but also guarantees core security attributes.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+The concept of Recursive Self-Improvement (RSI) originated from the "ultraintelligent machine" hypothesis proposed by I.J. Good in 1965, referring to a system that can surpass all human intellectual activities and autonomously design better machines to achieve iterative upgrades. In 2008, Yudkowsky explicitly defined RSI as a feedback loop where AI optimizes its own cognitive mechanism relying on existing capabilities. The current path in the AI field includes both directly rewriting its own weights and the generalized mode of optimizing the training process.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/07/446458.html" target="_blank" rel="noopener noreferrer">Ant Lingbo open sources LingBot-Video, the world's first embodied-oriented video base model is here!</a>
+
+*QbitAI*
+
+On July 9, Ant Lingbo open sourced LingBot-Video, the world's first MoE architecture video generation base model for embodied intelligence. It reconstructs the pretraining paradigm specifically for embodied needs, breaking the limitation of previous video models that focus on content creation and do not conform to real physical laws. Its core indicators outperform similar mainstream open source models in multiple rounds of evaluation, providing a new open source base for the implementation of large video models in embodied intelligence.
+
+<FeedbackButtons slug="item:qbitai-446458" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/446435.html" target="_blank" rel="noopener noreferrer">From restaurant kitchens to physical world base models: QuantGroup's physical AI follows the path of selling capabilities</a>
+
+*QbitAI*
+
+Currently, the positioning of the embodied intelligence industry is differentiated, and policies force robots to adapt to real scenarios without modifying the environment. QuantGroup has chosen the path of physical world base models, not tied to hardware or specific scenarios, and outputs general AI capabilities to promote robots to upgrade from action automation to task-level autonomous operation. It has completed multiple rounds of verification in real working conditions such as restaurant kitchens, seizing the first-mover advantage for large-scale implementation.
+
+<FeedbackButtons slug="item:qbitai-446435" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/446425.html" target="_blank" rel="noopener noreferrer">Simultaneous interpreters out of work overnight! GPT-Live translates instantly, old lady arguing with AI on the spot stuns the whole internet</a>
+
+*QbitAI*
+
+OpenAI recently released GPT-Live, which achieves a major upgrade in voice interaction: real-time translation effect far exceeds the simultaneous interpretation function previously promoted by Apple, voice dialogue supports interruption, real-time feedback, and noise reduction optimization, inference and search capabilities are improved, and output is non-redundant. The official released multi-scenario demos such as cooking guidance and interview review and demonstrated them live. Currently, ChatGPT has 150 million weekly active users, the new voice feature is closer to real people, with only the minor problem of occasionally interrupting users.
+
+<FeedbackButtons slug="item:qbitai-446425" client:visible />
