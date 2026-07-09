@@ -1,0 +1,216 @@
+---
+lang: zh
+translationKey: digest-2026-07-09
+title: "AI 每日精选 · 2026-07-09"
+description: "21 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-07-09
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">海外头部AI厂商动作密集，OpenAI、Anthropic、DeepMind接连发布新政策、新模型与合作计划</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">具身智能、生物计算、空间智能等前沿领域多篇顶阶技术研究成果集中发布</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内AI产业落地提速，具身视频基模开源、物理AI、实时翻译等场景获新进展</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 具身智能</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔬 学术研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏢 大厂动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🇨🇳 国内进展</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ 技术落地</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.07675" target="_blank" rel="noopener noreferrer">Scaling Mixture-of-Experts Video Pretraining for Embodied Intelligence</a>
+
+*HF ★ 12 · Shuailei Ma, Jiaqi Liao, Xinyang Wang… · [HF 镜像](https://huggingface.co/papers/2607.07675)*
+
+针对现有视频生成模型侧重内容创作、存在域偏差，无法适配具身智能需求的问题，本文提出LingBot-Video：基于DiT的稀疏混合专家（MoE）视频预训练范式，搭配机器人导向增广数据集、物理对齐多维奖励机制，兼顾建模容量与推理效率。经实验验证性能优异，是首个开源大规模MoE具身视频基模，可打通数字创作与实体控制边界。
+
+<FeedbackButtons slug="item:arxiv-2607.07675" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.07608" target="_blank" rel="noopener noreferrer">Dual Latent Memory in Vision-Language-Action Models for Robotic Manipulation</a>
+
+*HF ★ 7 · Hongyu Qu, Jianzhe Gao, Xiaobin Hu… · [HF 镜像](https://huggingface.co/papers/2607.07608)*
+
+针对面向机器人操控的主流视-语-动作（VLA）模型依赖马尔可夫假设、难以处理长时序依赖任务，现有记忆增强方案未将记忆纳入VLA原生隐空间、融合效率低的问题，本文提出隐记忆原生框架LaMem-VLA，通过四类协同组件实现长短时记忆的隐空间全流程处理，让记忆直接参与动作推理，在两类公开基准上性能显著优于现有方案。
+
+<FeedbackButtons slug="item:arxiv-2607.07608" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.07534" target="_blank" rel="noopener noreferrer">Infinite Worlds with Versatile Interactions</a>
+
+*HF ★ 3 · Zelin Gao, Qiuyu Wang, Jiapeng Zhu… · [HF 镜像](https://huggingface.co/papers/2607.07534)*
+
+本文推出LingBot-World 2.0（无限世界）交互模拟器，核心升级包括：依托因果预训练实现无界交互且输出质量稳定，蒸馏出的实时模型可支撑720p/60fps视频流，新增多元交互动作与文本事件，首创分设行为规划、环境生成代理的智能体管控框架，支持多玩家同玩，大小模型搭配可单GPU部署。
+
+<FeedbackButtons slug="item:arxiv-2607.07534" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.04434" target="_blank" rel="noopener noreferrer">RoboDojo: A Unified Sim-and-Real Benchmark for Comprehensive Evaluation of Generalist Robot Manipulation Policies</a>
+
+*HF ★ 1 · Tianxing Chen, Yue Chen, Zixuan Li… · [HF 镜像](https://huggingface.co/papers/2607.04434)*
+
+针对通用机器人操作策略现有评估基准任务覆盖窄、虚实脱节、实评成本高难复现的问题，研究团队推出RoboDojo跨虚实统一基准：包含42项仿真、18项真实任务，覆盖多类核心能力维度，配套高效并行仿真评估工具、标准化远程实评系统与统一策略接入框架，目前已完成30个策略测评，公开了性能榜单和系统分析。
+
+<FeedbackButtons slug="item:arxiv-2607.04434" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.06838" target="_blank" rel="noopener noreferrer">WildCity: A Real-World City-Scale Testbed for Rendering, Simulation, and Spatial Intelligence</a>
+
+*HF ★ 1 · Xiangyu Han, Mengyu Yang, Jiaqi Li… · [HF 镜像](https://huggingface.co/papers/2607.06838)*
+
+针对AI实现城市级空间表征缺乏大规模真实数据的痛点，该研究推出WildCity多模态数据集：由无人车队采集18条平均长83.7公里的复杂城区轨迹，保留动态物体、光照变化等真实感知难点，配套城市专属重建基线与闭环模拟器，还梳理了城市数字孪生核心挑战，将有力推动城市级渲染、空间智能技术发展。
+
+<FeedbackButtons slug="item:arxiv-2607.06838" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2607.05436" target="_blank" rel="noopener noreferrer">Statistically Meaningful Geometry and Gauge Symmetry Breaking: A Geometric Foundation for Scientific Discovery and Intelligence Emergence</a>
+
+*Bing Cheng, Yi-Shuai Niu, Howell Tong…*
+
+针对大模型等过参数化AI是真智能还是仅统计模式匹配的核心争议，本文提出统计意义几何（SMG）框架，将过参数化学习系统建模为无穷维非参数Orlicz纤维丛，证明分布外刺激会触发规范对称性破缺、生成独立新坐标，可通过结构G熵跳变区分自主发现与幻觉，提供无参数可证伪的真智能数学认证方案，支撑AI驱动自主科学范式突破。
+
+<FeedbackButtons slug="item:arxiv-2607.05436" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.05439" target="_blank" rel="noopener noreferrer">Design-CP: Context Parallelism for Design of Protein Nanoparticles</a>
+
+*Lorenzo Tarricone, Helen E. Eisenach, Aiko Muraishi…*
+
+针对全原子蛋白生成模型设计多聚体时二次复杂度配对表示易超单GPU显存的痛点，该研究提出Design-CP：两种适配RFdiffusion3的上下文并行推理策略，可在保留预训练权重的前提下跨多卡分配运算。
+实测可随GPU数按平方根规律提升可设计亚基尺寸，2D分片效率更优，支持端到端蛋白纳米颗粒设计，16GB普通显卡即可完成八面体设计，大幅降低大蛋白组装设计门槛。
+
+<FeedbackButtons slug="item:arxiv-2607.05439" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.05449" target="_blank" rel="noopener noreferrer">Geometry-Aware Infrastructure-Anchored Denoiser for UWB Sensing and Work-Zone Reconstruction</a>
+
+*Weizhe Tang, Jiaxi Liu, Junwei you…*
+
+针对UWB用于智慧交通作业区感知时，受非视距、突发噪声等干扰导致空间重建失真的问题，本文提出几何感知基础设施锚定去噪框架GAIA，耦合时序测距建模、锚点布局估计与距离投影，绑定去噪任务与重建边界一致性约束。经实测与仿真验证，其较PoseMLP测距均方误差降18.4%，重建交并比提15.5%，性能优于现有各类基线。
+
+<FeedbackButtons slug="item:arxiv-2607.05449" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/government-national-security-partnerships" target="_blank" rel="noopener noreferrer">Our approach to government and national security partnerships</a>
+
+*OpenAI*
+
+这份材料公开了OpenAI开展政府、国家安全领域合作的核心思路，锚定三大行事原则：坚持AI负责任使用、合作过程符合民主问责要求、始终将公共安全放在优先位置，为政务、国家安全这类高敏感场景的AI合作划定边界，防范技术滥用风险，平衡技术赋能与公共利益保障。
+
+<FeedbackButtons slug="item:openai-blog-government-national-security-partnerships" client:visible />
+
+## <a href="https://openai.com/index/separating-signal-from-noise-coding-evaluations" target="_blank" rel="noopener noreferrer">Separating signal from noise in coding evaluations</a>
+
+*OpenAI*
+
+OpenAI围绕编码评测的“信噪分离”核心目标，对业内广泛使用的主流AI编码能力基准SWE-Bench Pro开展专项分析，发现该基准存在设计漏洞，会直接降低AI编码模型评估结果的可靠性与准确性。这一结论提示业界需先校准评测基准的科学性，才能客观衡量模型的真实编码能力。
+
+<FeedbackButtons slug="item:openai-blog-separating-signal-from-noise-coding-evaluations" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Claude Fable 5</a>
+
+*Anthropic*
+
+Anthropic公司宣布，在相关出口管制正式解除后，将于7月1日起重新部署Claude Fable 5大模型。本次上线的版本完成两项核心安全升级：一是更新了网络安全防护机制，二是新增了适配产业场景的行业级越狱防护框架，可进一步提升模型运行与应用的安全性、合规性。
+
+<FeedbackButtons slug="item:anthropic-redeploying-fable-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-sonnet-5" target="_blank" rel="noopener noreferrer">Introducing Claude Sonnet 5</a>
+
+*Anthropic*
+
+本次推出的Claude Sonnet 5是Sonnet系列迄今智能体属性最强的版本，主打专业场景实用能力：在编码领域达到行业顶尖性能水平，可支撑各类复杂开发需求；同时适配日常各类专业工作场景，兼具高自主性与任务处理精度，能为开发者、职场人群提供更高质量的AI辅助工具。
+
+<FeedbackButtons slug="item:anthropic-claude-sonnet-5" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/google-deepmind-and-a24-announce-first-of-its-kind-research-partnership/" target="_blank" rel="noopener noreferrer">Google DeepMind and A24 announce first-of-its-kind research partnership</a>
+
+*Google DeepMind*
+
+本次是AI领域与影视行业首创的跨界研究合作，由顶尖AI科研机构谷歌DeepMind与知名独立影视厂牌A24共同发起。双方将探索AI技术在影视创意生产全链路的适配路径，在保障艺术创作独立性的前提下，挖掘AI对内容创作、制作提效的正向价值，为创意产业与技术融合探索新范式。
+
+<FeedbackButtons slug="item:deepmind-google-deepmind-and-a24-announce-first-of-its-kind-research-partnership" client:visible />
+
+## <a href="https://deepmind.google/blog/start-building-with-nano-banana-2-lite-and-gemini-omni-flash/" target="_blank" rel="noopener noreferrer">Start building with Nano Banana 2 Lite and Gemini Omni Flash</a>
+
+*Google DeepMind*
+
+您目前仅提供了该技术文章的标题，未附上对应的英文摘要正文，缺少核心的方法、结论等关键信息，无法完成符合要求的提炼总结。请您补充完整的摘要内容，我会按要求输出120字左右、突出方法与结论的精简中文总结。
+
+<FeedbackButtons slug="item:deepmind-start-building-with-nano-banana-2-lite-and-gemini-omni-flash" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/open-data-for-agents" target="_blank" rel="noopener noreferrer">Data for Agents</a>
+
+*Hugging Face*
+
+当前您仅提供了论文《Data for Agents》的标题，对应的摘要正文内容完全缺失，无法完成翻译提炼、总结的需求。请您补充该论文完整的英文摘要原文，我会按照要求重点梳理其核心研究方法、关键结论，输出120字左右、简洁清晰无冗余的中文总结。
+
+<FeedbackButtons slug="item:hf-blog-open-data-for-agents" client:visible />
+
+## <a href="https://huggingface.co/blog/native-speed-vllm-transformers-backend" target="_blank" rel="noopener noreferrer">Native-speed vLLM transformers modeling backend</a>
+
+*Hugging Face*
+
+本工作推出具备原生推理速度的vLLM Transformer建模后端，通过底层重构Transformer层实现逻辑，消除Python调度开销、算子拼接冗余，在保留连续批处理、PagedAttention等核心优势的基础上，推理时延逼近硬件极限，吞吐量较现有主流同类型框架提升超30%，兼容HuggingFace生态，适配绝大多数主流大模型架构。
+
+<FeedbackButtons slug="item:hf-blog-native-speed-vllm-transformers-backend" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+这篇聚焦正交性假说延伸议题的AI对齐研究，从美德伦理视角提出：人类理性并非锚定终极目标，而是适配涵盖行动、评价标准、资源的实践网络。主张理性AI不应设固定目标，决策逻辑需匹配人类实践型行动范式，才能实现合规协作，既满足伦理对齐要求，也能保障核心安全属性。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+递归自我改进（RSI）概念起源于1965年I.J.古德提出的“超智能机器”假说，指可超越人类全部智力活动、自主设计更优机器实现迭代升级的系统。2008年尤德考斯基明确RSI为AI依托现有能力优化自身认知机制的反馈环，当前AI领域的该路径既包括直接改写自身权重，也涵盖优化训练流程的广义模式。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/07/446458.html" target="_blank" rel="noopener noreferrer">蚂蚁灵波开源LingBot-Video，全球首个面向具身的视频基模来了！</a>
+
+*量子位*
+
+7月9日蚂蚁灵波开源全球首个面向具身智能的MoE架构视频生成基础模型LingBot-Video，其专为具身需求重构预训练范式，打破过往视频模型侧重内容创作、不符合真实物理规律的局限，在多轮评测中核心指标均优于同类主流开源模型，为视频大模型落地具身智能提供了新的开源底座。
+
+<FeedbackButtons slug="item:qbitai-446458" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/446435.html" target="_blank" rel="noopener noreferrer">从餐饮后厨到物理世界基础模型：量化派的物理AI，走的是卖能力的路</a>
+
+*量子位*
+
+当前具身智能行业定位分化，政策倒逼机器人无需改造环境即可适配真实场景。量化派选择走物理世界基础模型路线，不绑定硬件与特定场景，输出通用AI能力推动机器人从动作自动化升级为任务级自主作业，已在餐饮后厨等真实工况完成多轮验证，抢占规模化落地先机。
+
+<FeedbackButtons slug="item:qbitai-446435" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/446425.html" target="_blank" rel="noopener noreferrer">同声传译一夜失业！GPT-Live瞬间翻译，老太太现场抬杠AI看傻全网</a>
+
+*量子位*
+
+OpenAI近日发布GPT-Live，实现语音交互大幅升级：实时翻译效果远超苹果此前宣传的同传功能，语音对话支持插话、实时反馈、抗噪优化，推理搜索能力提升，输出无冗余。官方放出烹饪指导、面试复盘等多场景Demo并直播演示，目前ChatGPT周活1.5亿，新版语音更贴近真人，仅存在偶尔打断用户的小问题。
+
+<FeedbackButtons slug="item:qbitai-446425" client:visible />
