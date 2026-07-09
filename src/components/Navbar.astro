@@ -34,6 +34,9 @@ const nav = [
       <li class="hidden sm:block">
         <a href={pathWithLang("/about", lang)} class="hover:opacity-60 transition-opacity text-[var(--text-secondary)]">{t("nav.about")}</a>
       </li>
+      <li class="hidden md:block">
+        <a href={pathWithLang("/guestbook", lang)} class="hover:opacity-60 transition-opacity text-[var(--text-secondary)]">{t("nav.guestbook")}</a>
+      </li>
     </ul>
     <div class="flex items-center gap-2">
       <button id="open-search" type="button" aria-label={lang === "zh" ? "搜索" : "Search"} title={lang === "zh" ? "搜索 (/)": "Search (/)"} class="w-8 h-8 grid place-items-center rounded-full border border-[var(--border)] hover:bg-[var(--bg-soft)] transition-colors">
