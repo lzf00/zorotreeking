@@ -1,0 +1,215 @@
+---
+lang: en
+translationKey: digest-2026-07-10
+title: "Daily AI Picks · 2026-07-10"
+description: "21 papers · multi-source aggregation + AI summaries"
+date: 2026-07-10
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's content in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading LLM vendors roll out frequent updates: GPT-5.6 is integrated into Microsoft 365 Copilot, Claude Fable 5 is redeployed, DeepMind launches new model in partnership with A24</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">AI technical papers released across multiple domains, covering core areas including video generation, long context optimization, and diffusion model inference acceleration</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">China's domestic AI industry sees active developments: Force Spirit DM0.5 improves zero-shot performance by 31%, Lingyiwanwu related topics spark industry-wide discussions</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Vendor Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Technical Papers</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📹 Video Generation</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Alignment Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🇨🇳 Industry Developments (China)</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.03118" target="_blank" rel="noopener noreferrer">Vidu S1: A Real-Time Interactive Video Generation Model</a>
+
+*HF ★ 41 · Jintao Zhang, Kai Jiang, Jintao Chen… · [HF Mirror](https://huggingface.co/papers/2607.03118)*
+
+The research team has launched Vidu S1, a real-time interactive video generation model that allows users to control digital human generated content via voice at any time. Built on TurboDiffusion and TurboServe, the model can output blur-free, drift-free infinite-length 540p videos at up to 42 FPS on consumer-grade GPUs. It supports custom uploads of real human, anime, pet and other characters, as well as voice selection. It achieves optimal performance across all metrics in tests, meets real-time inference requirements, and a demo is now available for trial.
+
+<FeedbackButtons slug="item:arxiv-2607.03118" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.08758" target="_blank" rel="noopener noreferrer">Ideas Have Genomes: Benchmarking Scientific Lineage Reasoning and Lineage-Grounded Idea Generation</a>
+
+*HF ★ 8 · Yifan Zhou, Qihao Yang, Yan Li… · [HF Mirror](https://huggingface.co/papers/2607.08758)*
+
+Existing benchmarks cannot evaluate AI's ability to model the inheritance patterns of scientific ideas, so researchers propose the IG-Bench test set. It annotates inheritance trajectories across 10 fields based on the idea genome framework, supporting two types of evaluations: inheritance reasoning and inheritance-anchored innovative generation. Tests on 14 large model scientific research systems show they have bottlenecks in combinatorial ability: the best model only achieves 27.3% inference accuracy, and introducing inheritance context does not generally improve efficiency, but instead disrupts model rankings.
+
+<FeedbackButtons slug="item:arxiv-2607.08758" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.07740" target="_blank" rel="noopener noreferrer">Jet-Long: Efficient Long-Context Extension with Dynamic Bifocal RoPE</a>
+
+*HF ★ 4 · Haozhan Tang, Zerui Wang, Yuxian Gu… · [HF Mirror](https://huggingface.co/papers/2607.07740)*
+
+To address the pain point that fixed scaling factors for zero-shot long context extension of large models struggle to balance performance for both short and long contexts, the tuning-free Jet-Long method is proposed, using dynamic adaptive scaling factor dual-window RoPE with extremely low inference overhead: long context prefill throughput is 39% higher than FA2, and single-batch generation overhead is ≤4%. It outperforms baselines in accuracy across multiple models and various long context benchmarks, is compatible with hybrid attention architectures, and is easy to deploy.
+
+<FeedbackButtons slug="item:arxiv-2607.07740" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.08763" target="_blank" rel="noopener noreferrer">OpenCoF: Learning to Reason Through Video Generation</a>
+
+*HF ★ 3 · Xinyan Chen, Ziyu Guo, Renrui Zhang… · [HF Mirror](https://huggingface.co/papers/2607.08763)*
+
+To address the lack of dedicated Chain of Frame (CoF) inference support in existing video generation models, this paper proposes the OpenCoF framework: it includes a 17K inference video dataset covering 11 task types, and the fine-tuned Wan-CoF model adds visual and text reasoning tokens to capture visual cues and semantic priors respectively. The model delivers significant performance improvements over baselines, verifying the necessity of wide-area temporal supervision and explicit organization of intermediate inference states for enhancing video reasoning capabilities. Related resources have been open-sourced.
+
+<FeedbackButtons slug="item:arxiv-2607.08763" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.04461" target="_blank" rel="noopener noreferrer">Flash-BoN: Instant Drafts for Inference-Time Scaling in Diffusion Models</a>
+
+*HF ★ 2 · Ruchit Rawal, Reza Shirkavand, Sayak Paul… · [HF Mirror](https://huggingface.co/papers/2607.04461)*
+
+Existing diffusion model inference scaling methods generally ignore verification overhead, and evaluating efficiency only by denoising steps leads to distortion. Tests show that the actual clock efficiency of ordinary Best-of-N sampling is already better than most guided search methods. Based on this, Flash-BoN is proposed: it generates a low-cost candidate pool through timestep truncation, layer skipping, and activation proxy, followed by multi-stage selection and full-precision refinement. It outperforms all baselines under fixed clock budgets, improves AUC by 8% for large models, is compatible with other optimization techniques, and can also accelerate convergence of RL post-training.
+
+<FeedbackButtons slug="item:arxiv-2607.04461" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2607.06601" target="_blank" rel="noopener noreferrer">TriRoute: Unified Learned Routing for Joint Adaptive Attention, Experts, and KV-Cache Allocation</a>
+
+*Andrii Balashov, Olena Ponomarova*
+
+Existing conditional computing techniques for large models (sparse experts, layer skipping, KV cache compression) are optimized independently and do not leverage decision coupling. To address this, the paper proposes the TriRoute framework, which uses a single lightweight controller to jointly decide the attention pattern, expert selection, and KV bitwidth for each token per layer, solving the cross-axis routing collapse problem. On models ranging from 160M to 1.3B parameters, it outperforms the independent combination of the three techniques under the same inference overhead, has stronger long-tail robustness, and its routing rules are interpretable.
+
+<FeedbackButtons slug="item:arxiv-2607.06601" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.06605" target="_blank" rel="noopener noreferrer">A Quiet Failure in Calibrated Virtual Screening: Marginal Conformal Prediction Under-Covers the Minority Class, and a Class-Conditional Fix Recovers It</a>
+
+*Muhammadjon Tursunbadalov (School of Science and Technology, Champions College Prep, United States)…*
+
+For the marginal conformal prediction reliability calibration method commonly used in drug virtual screening, this paper verifies on multiple real pharmaceutical chemistry datasets: although the overall coverage meets the standard in imbalanced scenarios, the coverage of minority classes (such as clinically toxic positive samples) is as low as 4.2%, and this issue is hidden and hard to detect. Using class-conditional (Mondrian) conformal prediction, the minority class coverage can be pulled back to the target value with only a small increase in the prediction set, and the supporting diagnostic scheme can also improve screening utility.
+
+<FeedbackButtons slug="item:arxiv-2607.06605" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.06607" target="_blank" rel="noopener noreferrer">NEST: Tackling Dataset-Level Distribution Shifts via Regime-Oriented Mixture-of-Experts</a>
+
+*Lanhao Li, Bingshu Xie, Lijun Sun…*
+
+For the problem that existing methods for long-term time series forecasting only focus on local temporal shifts and fail to adapt to global distribution shifts caused by multiple operating modes at the dataset level, this paper proposes the NEST framework: it adopts a two-stage dense Mixture-of-Experts structure, first unsupervised clustering in moment-entropy space to divide operating modes, paired with mode-oriented routing and geometric modulation, so that each expert can capture the dynamics of the corresponding mode. Tests on multiple benchmarks show it achieves state-of-the-art performance, and the code has been open-sourced.
+
+<FeedbackButtons slug="item:arxiv-2607.06607" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/gpt-5-6-preferred-model-microsoft-365-copilot" target="_blank" rel="noopener noreferrer">GPT-5.6 is now the preferred model in Microsoft 365 Copilot</a>
+
+*OpenAI*
+
+Microsoft has officially designated GPT-5.6 as the preferred large model for Microsoft 365 Copilot. The model has stronger AI capabilities, and has been fully rolled out across all office scenarios including Word, Excel, PowerPoint, smart chat, and collaborative office. It can help users significantly improve office efficiency, while optimizing the quality of all types of office outputs, providing more solid underlying technical support for full-scenario smart office experiences.
+
+<FeedbackButtons slug="item:openai-blog-gpt-5-6-preferred-model-microsoft-365-copilot" client:visible />
+
+## <a href="https://openai.com/index/chatgpt-for-your-most-ambitious-work" target="_blank" rel="noopener noreferrer">ChatGPT is now a partner for your most ambitious work</a>
+
+*OpenAI*
+
+The recently launched ChatGPT Work is a dedicated AI agent for complex work scenarios, with three core capabilities: it can perform operations across various applications and files, supports long-term tracking of individual project progress, and can directly convert user-proposed target requirements into final completed work results. It can act as a collaborative partner to support users in completing high-complexity professional and creative work, reducing the execution cost of complex tasks.
+
+<FeedbackButtons slug="item:openai-blog-chatgpt-for-your-most-ambitious-work" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+This short article launches a public call for challenging questions in the AI field, urging the public to submit the AI-related questions they care about most and find most controversial. The organizers promise that in the process of responding to each received question one by one, they will fully disclose all work details of R&D and demonstration links throughout the process, ensure transparency, reduce the information gap on AI technology, and proactively address widespread public concerns about the credibility of AI technology.
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+## <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Claude Fable 5</a>
+
+*Anthropic*
+
+Anthropic officially announced that after relevant export controls were officially lifted, the Claude Fable 5 large model will be re-launched on July 1. This deployment comes with two security upgrades: first, an updated full-link cybersecurity protection mechanism, and second, a new industry-grade jailbreak prevention framework. While complying with regulatory requirements, it greatly improves the model's security capabilities and reduces the risk of malicious cracking and abuse.
+
+<FeedbackButtons slug="item:anthropic-redeploying-fable-5" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/google-deepmind-and-a24-announce-first-of-its-kind-research-partnership/" target="_blank" rel="noopener noreferrer">Google DeepMind and A24 announce first-of-its-kind research partnership</a>
+
+*Google DeepMind*
+
+This is the first officially announced cross-border research collaboration between the AI research field and the film and television industry, jointly launched by leading AI R&D institution Google DeepMind and well-known high-quality content film studio A24. The two parties will explore implementation paths for AI in scenarios such as film and television creative empowerment, narrative creation, and production process optimization, which is expected to break down barriers between technology and art, and provide cutting-edge references for the intelligent development of the entertainment industry.
+
+<FeedbackButtons slug="item:deepmind-google-deepmind-and-a24-announce-first-of-its-kind-research-partnership" client:visible />
+
+## <a href="https://deepmind.google/blog/start-building-with-nano-banana-2-lite-and-gemini-omni-flash/" target="_blank" rel="noopener noreferrer">Start building with Nano Banana 2 Lite and Gemini Omni Flash</a>
+
+*Google DeepMind*
+
+Only the title of this article is available at present, no specific abstract content is provided. Please supplement the full English text of the abstract so that I can accurately sort out its core technical methods and experimental conclusions, and output a required, focused Chinese summary of around 120 words.
+
+<FeedbackButtons slug="item:deepmind-start-building-with-nano-banana-2-lite-and-gemini-omni-flash" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/open-data-for-agents" target="_blank" rel="noopener noreferrer">Data for Agents</a>
+
+*Hugging Face*
+
+You have only provided the paper title *Data for Agents* so far, the core abstract content is missing, so translation, extraction and summary work cannot be completed. Please supplement the complete corresponding English abstract text, and I will strictly follow the requirements to extract core methods and conclusions, and output a concise and clear Chinese summary of about 120 words.
+
+<FeedbackButtons slug="item:hf-blog-open-data-for-agents" client:visible />
+
+## <a href="https://huggingface.co/blog/native-speed-vllm-transformers-backend" target="_blank" rel="noopener noreferrer">Native-speed vLLM transformers modeling backend</a>
+
+*Hugging Face*
+
+This technical report launches the vLLM native-speed Transformer modeling backend, addressing the pain points of high ecosystem adaptation overhead and weaker performance than customized native implementations of existing frameworks. It is compatible with the full Hugging Face model ecosystem, and optimized based on PagedAttention, deep operator fusion, and dynamic continuous batch scheduling. Its throughput is 2~4 times higher than general backends, latency is reduced by more than 30%, reaching the performance of natively written operators, without requiring users to manually rewrite model code.
+
+<FeedbackButtons slug="item:hf-blog-native-speed-vllm-transformers-backend" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This AI alignment research refutes the mainstream assumption that "rational agents must be anchored to fixed goals", pointing out that the essence of human rationality is that actions adapt to the practical network composed of behavioral tendencies, evaluation rules, etc. It proposes that for AI to adapt to human subject will, its decision-making logic needs to match the practical "type signature" of humans, and this path can meet the requirements of both ethical alignment and core security attributes at the same time.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This article sorts out the conceptual evolution of Recursive Self-Improvement (RSI): in 1965, I.J. Good first proposed the concept of superintelligent machines, pointing out that they can surpass all human intellectual activities and iteratively design better systems; in 2008, Eliezer Yudkowsky clarified that RSI refers to the feedback loop where AI optimizes its own cognitive architecture based on existing intelligence. RSI in the current AI field includes both the path of models directly rewriting their own weights, and the broader category of AI optimizing its own training pipelines.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/07/447508.html" target="_blank" rel="noopener noreferrer">Zero-Shot performance improved by 31%! Force Spirit DM0.5 launched, trained on 150,000 hours of data</a>
+
+*QbitAI*
+
+Force Spirit has released a new generation of general embodied foundation model DM0.5, with a parameter scale of 4B, double that of the previous generation. Trained on 150,000 hours of three types of high-quality data, its zero-shot performance is improved by 31%. The company previously merged logistics robot company Atomix to complete real scenario coverage, which can convert passively collected data into scenario data naturally generated by business, solving the bottleneck of embodied intelligent data flywheel implementation.
+
+<FeedbackButtons slug="item:qbitai-447508" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/446843.html" target="_blank" rel="noopener noreferrer">Registration opens for the 11th China Aviation Innovation and Entrepreneurship Competition | Entropy Leaps the Sky, Boundless New Era</a>
+
+*QbitAI*
+
+Registration for the 11th China Aviation Innovation and Entrepreneurship Competition is now open. Seizing the development opportunity of the aerospace industry entering the large-scale implementation period, this year's competition will be held concurrently with the first China Aerospace Science and Technology Expo, focusing on tracks including advanced materials, intelligent manufacturing, power systems, digital R&D, new aircraft and core supporting facilities. It will gather global aerospace innovation forces, provide support for entrepreneurs, and help China achieve high-level self-reliance and self-improvement in aviation technology.
+
+<FeedbackButtons slug="item:qbitai-446843" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/446778.html" target="_blank" rel="noopener noreferrer">"Without Kai-Fu Lee, what's left of Lingyiwanwu?" One dared to ask, one dared to answer</a>
+
+*QbitAI*
+
+At the Lingyiwanwu press conference, in response to the question "How will the company develop without Kai-Fu Lee?", Kai-Fu Lee responded that he is in good health and is only responsible for core resource docking, and the proportion of orders independently won by the team has been continuously increasing. He also proposed that enterprise AI transformation needs to be led by the top leader to resolve grassroots resistance to AI replacing jobs, and accordingly launched AI products for core leaders such as the Wance decision-making platform, Boss AI and Top Sales AI.
+
+<FeedbackButtons slug="item:qbitai-446778" client:visible />
