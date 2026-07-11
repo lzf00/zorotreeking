@@ -1,0 +1,173 @@
+---
+lang: en
+translationKey: digest-2026-07-11
+title: "AI Daily Digest · 2026-07-11"
+description: "16 papers · multi-source aggregation + AI summaries"
+date: 2026-07-11
+tags: [digest, auto, arxiv, openai, anthropic, deepmind, hf-blog, the-gradient]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Today's update in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Multiple cutting-edge AI research papers covering temporal graph network interpretability, long-tailed medical image classification and other topics were released on arXiv today</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Frequent updates from overseas tech giants: GPT-5.6 rolls out to Microsoft 365 Copilot, Anthropic restores access to Claude Fable 5, DeepMind launches new model in partnership with A24</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face releases multiple technical tutorials, Xu Jinbo's team launches open access to MoleculeOS, only 7 days left to apply for the 3rd Ant Group InTech Award</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📄 Cutting-edge Papers</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Big Tech Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧬 Bio AI</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💻 Technical Resources</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Industry Events</span>
+  </div>
+</div>
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2607.07716" target="_blank" rel="noopener noreferrer">Towards the Explainability of Temporal Graph Networks via Memory Backtracking and Topological Attribution</a>
+
+*Yazheng Liu, Xi Zhang, Sihong Xie…*
+
+This study focuses on the interpretability of Temporal Graph Networks (TGN). Targeting the flaws of existing methods that ignore the core memory module and cannot trace the impact of historical events, it proposes a topological attribution tree + memory backtracking tree solution, which combines LRP to ensure the sum of event contributions matches the model output, and optimizes the important event filtering strategy. Verified on 9 datasets across 3 types of tasks, the solution outperforms SOTA baselines in interpretation fidelity, and its code has been open-sourced.
+
+<FeedbackButtons slug="item:arxiv-2607.07716" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.07717" target="_blank" rel="noopener noreferrer">Who Gets Missed in the Tail? Thresholded Subgroup Underdiagnosis in Long-Tailed Chest X-ray Classification</a>
+
+*Ha-Hieu Pham, Hai-Dang Nguyen, Dang P. M. Cao…*
+
+This study addresses the fairness issue that positive cases of rare diseases, especially those from minority subgroups, are easily underdiagnosed due to decision thresholds in long-tailed chest X-ray classification. It analyzes the impacts of modules including long-tailed loss and subgroup weighting, and proposes a group tail weighting + tail-aware threshold optimization solution. Verified on public datasets, the solution can significantly reduce the underdiagnosis rate for tail classes and all demographic subgroups, and confirms that rare disease diagnosis fairness requires comprehensive consideration of lesions, subgroups and decision thresholds, rather than relying solely on ranking metrics or label frequency.
+
+<FeedbackButtons slug="item:arxiv-2607.07717" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.07718" target="_blank" rel="noopener noreferrer">LLT: Local Linear Transformer for PDE Operator Learning</a>
+
+*Oded Ovadia, Eli Turkel*
+
+Targeting the problems of high computational complexity and lack of local interaction bias in Transformer-based methods for PDE operator learning, this study proposes the Local Linear Transformer (LLT), which integrates linear global attention, local spatial mixing and coordinate geometric information. Experiments show that its error on multiple types of PDE tasks is better than or on par with baselines, its training speed is 1.8-2.5 times higher than Transolver, it is compatible with various discrete methods and grid types, and can support large-scale aerodynamics solving on 3D unstructured grids.
+
+<FeedbackButtons slug="item:arxiv-2607.07718" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/deutsche-telekom" target="_blank" rel="noopener noreferrer">How Deutsche Telekom is rewiring telecommunications with AI</a>
+
+*OpenAI*
+
+This article outlines the AI transformation practices of Deutsche Telekom. Its core path relies on cooperation with OpenAI to deploy technologies around four core scenarios: customer service, employee workflows, network operation and maintenance, and future voice services, to comprehensively upgrade itself to a native AI telecom operator. It provides a referable typical industry sample for traditional telecom operators to deploy AI capabilities and achieve full-link digital and intelligent innovation.
+
+<FeedbackButtons slug="item:openai-blog-deutsche-telekom" client:visible />
+
+## <a href="https://openai.com/index/gpt-5-6-preferred-model-microsoft-365-copilot" target="_blank" rel="noopener noreferrer">GPT-5.6 is now the preferred model in Microsoft 365 Copilot</a>
+
+*OpenAI*
+
+Microsoft 365 Copilot has officially upgraded to list the enhanced GPT-5.6 as its preferred base large model. The model covers all office scenarios including Word, Excel, PowerPoint, intelligent dialogue, collaborative office, etc., providing stronger AI capability support, which can effectively improve user office efficiency, significantly improve the output quality of various office content, and bring users a higher-quality AI-assisted office experience.
+
+<FeedbackButtons slug="item:openai-blog-gpt-5-6-preferred-model-microsoft-365-copilot" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+This article introduces a public participation project in the AI field: it openly solicits difficult and sharp AI-related questions that the public cares about from the whole society. The project team promises that in the whole process of conducting research and giving responses to all collected questions later, all work links and argumentation basis will be fully disclosed, actively ensuring the transparency of AI-related research and expanding public participation channels in the AI field.
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+## <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Claude Fable 5</a>
+
+*Anthropic*
+
+After relevant export controls are lifted, Anthropic will redeploy the Claude Fable 5 large model starting from July 1. The new version launched this time has completed two core security upgrades: on the one hand, it has iterated the network security protection mechanism, and on the other hand, it has added an industry-grade jailbreak prevention framework. The compliance and risk resistance capabilities of the product have been targeted strengthened, which can better meet the security control requirements of commercial scenarios.
+
+<FeedbackButtons slug="item:anthropic-redeploying-fable-5" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/google-deepmind-and-a24-announce-first-of-its-kind-research-partnership/" target="_blank" rel="noopener noreferrer">Google DeepMind and A24 announce first-of-its-kind research partnership</a>
+
+*Google DeepMind*
+
+This is the industry's first cross-border research cooperation between the world's top AI research institution Google DeepMind and well-known independent film and television label A24. The two parties will combine DeepMind's cutting-edge AI technology R&D capabilities with A24's high-quality content creation experience to explore the implementation paths of AI in creative assistance, production process efficiency improvement, new narrative form development, etc., which can provide new references for the implementation of AI in cultural scenarios and the technological innovation of the content industry.
+
+<FeedbackButtons slug="item:deepmind-google-deepmind-and-a24-announce-first-of-its-kind-research-partnership" client:visible />
+
+## <a href="https://deepmind.google/blog/start-building-with-nano-banana-2-lite-and-gemini-omni-flash/" target="_blank" rel="noopener noreferrer">Start building with Nano Banana 2 Lite and Gemini Omni Flash</a>
+
+*Google DeepMind*
+
+This introductory guide for AI developers explains how to quickly connect to the open API of Google's lightweight multimodal large model Gemini Omni Flash based on the low-cost, low-power Nano Banana 2 Lite edge development board, to build end-cloud collaborative AI interactive applications. It has low development threshold and fast inference response, suitable for scenarios such as voice assistants and lightweight visual recognition, which can greatly reduce the cost of AI prototype verification.
+
+<FeedbackButtons slug="item:deepmind-start-building-with-nano-banana-2-lite-and-gemini-omni-flash" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/torch-attention-profile" target="_blank" rel="noopener noreferrer">Profiling in PyTorch (Part 3): Attention is all you profile</a>
+
+*Hugging Face*
+
+Only the title of this PyTorch performance analysis related article is currently provided, with no specific original abstract content attached, so translation and extraction work cannot be completed. Please supplement the full text of the abstract, and I will highlight the core methods and conclusions as required, and output a concise Chinese summary of about 120 characters.
+
+<FeedbackButtons slug="item:hf-blog-torch-attention-profile" client:visible />
+
+## <a href="https://huggingface.co/blog/nvidia/open-data-for-agents" target="_blank" rel="noopener noreferrer">Data for Agents</a>
+
+*Hugging Face*
+
+Only the title of the paper *Data for Agents* is currently provided, with no corresponding English abstract text attached, so translation, extraction and summary work cannot be completed. Please supplement the full English original text of the paper's abstract, and I will highlight the core methods and conclusions as required to produce a concise Chinese summary of around 120 characters.
+
+<FeedbackButtons slug="item:hf-blog-open-data-for-agents" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI alignment</a>
+
+*The Gradient*
+
+This paper discussing AI alignment challenges the traditional assumption that agents need to be bound to preset goals: human rational actions are not oriented towards fixed ultimate goals, but adapt to a self-evolving practice network composed of actions, evaluation standards, resources, etc. Based on this, a new alignment idea is proposed: the AI decision logic needs to be homologous to this set of human practice logic, which not only helps align with ethical goals such as human prosperity, but also guarantees core security attributes.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This article sorts out the conceptual evolution of Recursive Self-Improvement (RSI): Scholar I.J. Good first proposed the relevant prototype in 1965, defining a superintelligent machine as a device that can surpass all human intellectual activities and iteratively design better systems; in 2008, Eliezer Yudkowsky clarified that its core is the feedback loop where AI optimizes its own cognitive architecture relying on existing capabilities. Current RSI for AI can be divided into two paths: directly rewriting its own weights, and optimizing training pipelines.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/07/447846.html" target="_blank" rel="noopener noreferrer">只剩7天！第三届蚂蚁InTech奖申报即将截止，图灵奖得主坐镇评审</a>
+
+*量子位*
+
+Only 7 days left for application to the 3rd 2026 Ant Group InTech Award, which targets four major fields: AGI, embodied intelligence, digital medicine, data processing and security privacy. It sets up two award categories: the Science and Technology Award for young scholars who have produced mature results, and the Scholarship for current PhD students. The judging panel includes Turing Award winners and academicians of the Chinese Academy of Sciences and Chinese Academy of Engineering. The award-winning results of the first two sessions have been deployed in the industry, and the award aims to discover and support young scientific research talents deeply engaged in cutting-edge hardcore fields.
+
+<FeedbackButtons slug="item:qbitai-447846" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/447832.html" target="_blank" rel="noopener noreferrer">AI生物研发进入“操作系统时代”，许锦波团队MoleculeOS正式开放</a>
+
+*量子位*
+
+On July 2, Xu Jinbo, founder of MoleculeMind, officially opened access to the self-developed AI-native biological R&D operating system MoleculeOS. Targeting the pain points of scattered single-point AI tools and reliance on manual scheduling processes in traditional biological R&D, the system can independently understand R&D requirements, automatically decompose and schedule full-link tasks and output decision suggestions, promoting AI to upgrade from a single-point prediction tool to a R&D organizer, opening the era of high-determinacy molecular creation.
+
+<FeedbackButtons slug="item:qbitai-447832" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/447691.html" target="_blank" rel="noopener noreferrer">GPT-5.6一发布，Claude终于舍得重置Fable 5额度了</a>
+
+*量子位*
+
+OpenAI officially released GPT-5.6, its most powerful model to date, available across all channels in three tiers: flagship Sol, balanced Terra, and cost-effective Luna. The old Codex and ChatGPT desktop client have also been renamed and adjusted simultaneously. The model can autonomously generate voxel cities and assist in making breakthroughs in algebraic geometry K3 surface research. The simultaneously launched ChatGPT Work supports long-term cross-application tasks, with the only drawback being excessively fast token consumption, which also forced competitor Claude to reset the Fable 5 quota.
+
+<FeedbackButtons slug="item:qbitai-447691" client:visible />
