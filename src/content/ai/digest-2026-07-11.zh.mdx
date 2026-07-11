@@ -1,0 +1,173 @@
+---
+lang: zh
+translationKey: digest-2026-07-11
+title: "AI 每日精选 · 2026-07-11"
+description: "16 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-07-11
+tags: [digest, auto, arxiv, openai, anthropic, deepmind, hf-blog, the-gradient]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">今日arXiv上线时序图网络可解释性、长尾医疗影像分类等多篇AI领域前沿研究论文</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">海外大厂动态密集，GPT-5.6落地微软365 Copilot，Anthropic重启Claude Fable 5，DeepMind发新模型联动A24</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face发布多份技术教程，许锦波团队MoleculeOS开放，第三届蚂蚁InTech奖申报仅剩7天</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📄 前沿论文</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 大厂动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧬 生物AI</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💻 技术干货</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ 行业活动</span>
+  </div>
+</div>
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2607.07716" target="_blank" rel="noopener noreferrer">Towards the Explainability of Temporal Graph Networks via Memory Backtracking and Topological Attribution</a>
+
+*Yazheng Liu, Xi Zhang, Sihong Xie…*
+
+本研究聚焦时序图网络（TGN）可解释性，针对现有方法忽略核心记忆模块、无法溯源历史事件影响的缺陷，提出拓扑归因树+记忆回溯树方案，结合LRP保证事件贡献总和与模型输出匹配，优化重要事件筛选策略。经9个数据集三类任务验证，方案解释保真度优于SOTA基线，代码已开源。
+
+<FeedbackButtons slug="item:arxiv-2607.07716" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.07717" target="_blank" rel="noopener noreferrer">Who Gets Missed in the Tail? Thresholded Subgroup Underdiagnosis in Long-Tailed Chest X-ray Classification</a>
+
+*Ha-Hieu Pham, Hai-Dang Nguyen, Dang P. M. Cao…*
+
+本研究针对长尾胸片分类中罕见病阳性、尤其少数亚群易因决策阈值漏诊的公平性问题，拆分长尾损失、亚群加权等模块的影响，提出组尾加权+尾感知阈值调优方案。经公开数据集验证，该方案可大幅降低尾部类及各人口亚群漏诊率，同时证实罕见病诊断公平性需结合病灶、亚群、决策阈值综合考量，不能仅依赖排序指标或标签频率。
+
+<FeedbackButtons slug="item:arxiv-2607.07717" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.07718" target="_blank" rel="noopener noreferrer">LLT: Local Linear Transformer for PDE Operator Learning</a>
+
+*Oded Ovadia, Eli Turkel*
+
+针对面向PDE算子学习的Transformer类方法存在计算复杂度高、缺乏局部交互偏置的问题，该研究提出局部线性Transformer（LLT），融合线性全局注意力、局部空间混合及坐标几何信息。实验显示其在多类PDE任务上误差优于或持平基线，训练速度较Transolver提升1.8-2.5倍，适配各类离散方法、网格类型，可支撑3D非结构网格的大规模空气动力学求解。
+
+<FeedbackButtons slug="item:arxiv-2607.07718" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/deutsche-telekom" target="_blank" rel="noopener noreferrer">How Deutsche Telekom is rewiring telecommunications with AI</a>
+
+*OpenAI*
+
+本文梳理德国电信的AI转型实践，核心路径是依托与OpenAI的合作，围绕客户服务、员工工作流程、网络运维、未来语音业务四大核心场景落地技术，全面推进自身向原生AI电信运营商升级，为传统通信运营商落地AI能力、实现全链路数智化革新提供了可参考的典型行业样本。
+
+<FeedbackButtons slug="item:openai-blog-deutsche-telekom" client:visible />
+
+## <a href="https://openai.com/index/gpt-5-6-preferred-model-microsoft-365-copilot" target="_blank" rel="noopener noreferrer">GPT-5.6 is now the preferred model in Microsoft 365 Copilot</a>
+
+*OpenAI*
+
+当前微软365 Copilot已正式将能力升级的GPT-5.6列为首选基座大模型，该模型覆盖Word、Excel、PowerPoint、智能对话、协同办公等全系办公场景，提供更强的AI能力支撑，能够有效提升用户办公效率，同时显著提高各类办公内容的输出质量，为用户带来更优质的AI辅助办公体验。
+
+<FeedbackButtons slug="item:openai-blog-gpt-5-6-preferred-model-microsoft-365-copilot" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+本文介绍一项AI领域公众参与项目：面向全社会公开征集大众关心的AI相关高难度尖锐问题。项目方承诺，后续针对所有征集到的问题开展研究、给出回应的全流程中，将完整公开所有工作环节与论证依据，主动保障AI相关研究的透明度，拓宽公众对AI领域的参与渠道。
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+## <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Claude Fable 5</a>
+
+*Anthropic*
+
+Anthropic在相关出口管制解除后，将于7月1日起重新部署Claude Fable 5大模型。本次上线的新版本完成两项核心安全升级：一方面迭代了网络安全防护机制，另一方面新增了行业级防越狱框架，产品的合规性与风险抵御能力均得到定向强化，可更好适配商用场景的安全管控要求。
+
+<FeedbackButtons slug="item:anthropic-redeploying-fable-5" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/google-deepmind-and-a24-announce-first-of-its-kind-research-partnership/" target="_blank" rel="noopener noreferrer">Google DeepMind and A24 announce first-of-its-kind research partnership</a>
+
+*Google DeepMind*
+
+这是全球顶尖AI研究机构谷歌DeepMind与知名独立影视厂牌A24达成的行业首创跨界研究合作。双方将结合DeepMind的前沿AI技术研发能力与A24的优质内容创作经验，探索AI在创意辅助、制作流程提效、新型叙事形态开发等方向的落地路径，可为AI人文场景落地、内容产业技术革新提供全新参考。
+
+<FeedbackButtons slug="item:deepmind-google-deepmind-and-a24-announce-first-of-its-kind-research-partnership" client:visible />
+
+## <a href="https://deepmind.google/blog/start-building-with-nano-banana-2-lite-and-gemini-omni-flash/" target="_blank" rel="noopener noreferrer">Start building with Nano Banana 2 Lite and Gemini Omni Flash</a>
+
+*Google DeepMind*
+
+这份面向AI开发者的入门指引，讲解如何基于低成本低功耗的Nano Banana 2 Lite边缘开发板，快速对接谷歌轻量化多模态大模型Gemini Omni Flash开放接口，搭建端云协同AI交互应用，开发门槛低、推理响应快，适配语音助手、轻量视觉识别等场景，可大幅降低AI原型验证成本。
+
+<FeedbackButtons slug="item:deepmind-start-building-with-nano-banana-2-lite-and-gemini-omni-flash" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/torch-attention-profile" target="_blank" rel="noopener noreferrer">Profiling in PyTorch (Part 3): Attention is all you profile</a>
+
+*Hugging Face*
+
+你目前仅提供了这篇PyTorch性能分析相关文章的标题，未附上摘要的具体原文内容，无法完成翻译提炼工作。请补充完整摘要的文本信息，我会按要求突出核心方法与结论，输出120字左右的简洁中文总结。
+
+<FeedbackButtons slug="item:hf-blog-torch-attention-profile" client:visible />
+
+## <a href="https://huggingface.co/blog/nvidia/open-data-for-agents" target="_blank" rel="noopener noreferrer">Data for Agents</a>
+
+*Hugging Face*
+
+当前仅提供了论文标题《Data for Agents》，未附上对应的英文摘要正文内容，无法完成翻译提炼及总结工作。请你补充该论文摘要的完整英文原文，我会按照要求突出核心方法与结论，输出120字左右的简洁中文总结。
+
+<FeedbackButtons slug="item:hf-blog-open-data-for-agents" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+这篇探讨AI对齐的论文挑战了智能体需绑定预设目标的传统假设：人类理性行动并非指向固定终极目标，而是适配由行动、评价标准、资源等构成的自演进实践网络。据此提出对齐新思路：需让AI决策逻辑与人类这套实践逻辑同源，既有助于对齐人类繁荣等伦理目标，也可保障核心安全属性。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我改进（RSI）的概念演进：1965年学者I.J.古德最早提出相关雏形，定义超智能机器为可超越人类所有智力活动、能迭代设计更优系统的装置；2008年尤德考斯基明确其核心是AI依托现有能力优化自身认知架构的反馈环，当前AI的RSI可分为直接改写自身权重、优化训练管线两类路径。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/07/447846.html" target="_blank" rel="noopener noreferrer">只剩7天！第三届蚂蚁InTech奖申报即将截止，图灵奖得主坐镇评审</a>
+
+*量子位*
+
+第三届2026蚂蚁InTech奖申报仅剩7天，面向AGI、具身智能、数字医学、数据处理与安全隐私四大领域，分设面向已出成果青年学者的科技奖、在读博士生的奖学金，评委含图灵奖得主、两院院士，前两届获奖成果已落地产业，旨在挖掘扶持深耕硬核前沿方向的青年科研人才。
+
+<FeedbackButtons slug="item:qbitai-447846" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/447832.html" target="_blank" rel="noopener noreferrer">AI生物研发进入“操作系统时代”，许锦波团队MoleculeOS正式开放</a>
+
+*量子位*
+
+7月2日，分子之心创始人许锦波正式开放自研AI原生生物研发操作系统MoleculeOS。针对传统生物研发单点AI工具分散、依赖人工调度流程的痛点，该系统可自主理解研发需求，自动拆解调度全链路任务并输出决策建议，推动AI从单点预测工具升级为研发组织者，开启高确定性分子创造时代。
+
+<FeedbackButtons slug="item:qbitai-447832" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/447691.html" target="_blank" rel="noopener noreferrer">GPT-5.6一发布，Claude终于舍得重置Fable 5额度了</a>
+
+*量子位*
+
+OpenAI正式发布旗下迄今最强模型GPT-5.6，分旗舰Sol、平衡Terra、高性价比Luna三档全渠道可用，旧Codex、ChatGPT桌面端同步更名调整。该模型可自主生成体素城市、辅助代数几何K3曲面研究取得突破，同步上线跨应用长时作业的ChatGPT Work，仅缺点为token消耗过快，还倒逼竞品Claude重置Fable 5额度。
+
+<FeedbackButtons slug="item:qbitai-447691" client:visible />
