@@ -1,0 +1,147 @@
+---
+lang: zh
+translationKey: digest-2026-07-12
+title: "AI 每日精选 · 2026-07-12"
+description: "13 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-07-12
+tags: [digest, auto, openai, anthropic, deepmind, hf-blog, the-gradient, lil-log]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI、Anthropic、DeepMind等海外头部AI厂商集中发布模型落地、跨界合作及新品相关动态</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内AI领域进展亮眼，全国产十万卡算力集群落成，消费级新硬件可本地运行120B大模型</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">AI对齐伦理、Agent数据建设、具身AI等赛道均有最新研究成果及行业分析报告释出</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📈 厂商动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 算力基建</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 模型迭代</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡 技术研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ 产业动态</span>
+  </div>
+</div>
+
+# OpenAI
+
+## <a href="https://openai.com/index/deutsche-telekom" target="_blank" rel="noopener noreferrer">How Deutsche Telekom is rewiring telecommunications with AI</a>
+
+*OpenAI*
+
+本文介绍德国电信的AI转型实践：企业通过与OpenAI深度合作，重构业务底层逻辑，向原生AI电信运营商升级，目前已将大模型技术落地到客户服务提效、员工工作流优化、网络运营智能化、下一代语音业务创新四大核心场景，为传统通信行业的数智化升级提供了可参考的落地样本。
+
+<FeedbackButtons slug="item:openai-blog-deutsche-telekom" client:visible />
+
+## <a href="https://openai.com/index/gpt-5-6-preferred-model-microsoft-365-copilot" target="_blank" rel="noopener noreferrer">GPT-5.6 is now the preferred model in Microsoft 365 Copilot</a>
+
+*OpenAI*
+
+GPT-5.6现已成为微软365 Copilot的首选搭载模型。依托该模型更强的AI能力，微软365 Copilot可在Word、Excel、PowerPoint、智能对话、协同办公五大核心办公场景提供支撑，全方位帮助用户压缩办公耗时，提升工作产出质量，适配更高阶的效率需求。
+
+<FeedbackButtons slug="item:openai-blog-gpt-5-6-preferred-model-microsoft-365-copilot" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+本项目面向公众发起AI领域疑难问题征集活动，广泛收集公众对AI最关心、最困惑的硬核问题，同时公开承诺：后续回应解答这些问题时，将完整公开所有研究推导、技术验证的工作过程。此举既可以让AI研究方向更贴合公众真实关切，也能破除AI技术黑箱感，提升公众对AI发展的信任度。
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+## <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Claude Fable 5</a>
+
+*Anthropic*
+
+Anthropic宣布将于7月1日重启部署Claude Fable 5大模型，此次重启的前提是针对该产品的相关出口管制已正式解除。新版本同步升级了网络安全防护机制，还新增了适配行业场景的越狱风险防控框架，在满足合规要求的同时大幅强化了模型的安全风险应对能力。
+
+<FeedbackButtons slug="item:anthropic-redeploying-fable-5" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/google-deepmind-and-a24-announce-first-of-its-kind-research-partnership/" target="_blank" rel="noopener noreferrer">Google DeepMind and A24 announce first-of-its-kind research partnership</a>
+
+*Google DeepMind*
+
+顶尖AI研发机构谷歌DeepMind与全球知名独立影视厂牌A24达成业内首创的跨界研究合作。双方将围绕AI在影视创意生产全流程的落地开展研究，探索在保留影视创作艺术独特性的前提下，AI赋能内容创作的可行路径，为技术与文娱产业的融合提供全新参考。
+
+<FeedbackButtons slug="item:deepmind-google-deepmind-and-a24-announce-first-of-its-kind-research-partnership" client:visible />
+
+## <a href="https://deepmind.google/blog/start-building-with-nano-banana-2-lite-and-gemini-omni-flash/" target="_blank" rel="noopener noreferrer">Start building with Nano Banana 2 Lite and Gemini Omni Flash</a>
+
+*Google DeepMind*
+
+当前您仅提供了论文标题，摘要正文部分缺失，暂无法精准提炼该研究的具体方法设计与实验结论。仅从标题可知内容聚焦端侧AI落地开发实践，围绕香蕉派Nano Banana 2 Lite轻量开发板，搭配谷歌Gemini Omni Flash轻量多模态大模型的适配、应用搭建等内容展开。您补充完整摘要后可获取更精准的总结。
+
+<FeedbackButtons slug="item:deepmind-start-building-with-nano-banana-2-lite-and-gemini-omni-flash" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/torch-attention-profile" target="_blank" rel="noopener noreferrer">Profiling in PyTorch (Part 3): Attention is all you profile</a>
+
+*Hugging Face*
+
+本文属PyTorch性能剖析系列第三篇，聚焦Transformer核心的注意力模块性能分析。采用PyTorch内置Profiler工具，拆解注意力从QKV生成、softmax到输出矩阵乘全链路的耗时、显存占用特征，对比原生注意力与FlashAttention等优化实现的性能差异，可帮开发者精准定位算子瓶颈，为模型训练、推理调优提供明确方向。
+
+<FeedbackButtons slug="item:hf-blog-torch-attention-profile" client:visible />
+
+## <a href="https://huggingface.co/blog/nvidia/open-data-for-agents" target="_blank" rel="noopener noreferrer">Data for Agents</a>
+
+*Hugging Face*
+
+当前您仅提供了论文标题《Data for Agents》，未附上摘要的具体正文内容，请您补充完整该论文的摘要文本，我会按照要求为您翻译提炼，输出120字左右、突出核心方法与结论的简洁中文总结。
+
+<FeedbackButtons slug="item:hf-blog-open-data-for-agents" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+本文挑战AI对齐领域正交性假说的核心前提，从美德伦理视角出发，提出理性人类主体并无预设固定目标，人类理性本质是行为适配由行动、评价标准、资源等构成的实践网络，而非指向特定最终目的。若要实现AI安全对齐、与人类顺畅协作，AI决策逻辑需匹配人类这种基于实践的推理范式。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+递归自我改进（RSI）概念最早由I.J.古德1965年提出，指能力超越人类所有智力活动的超智能机器，可迭代设计更优机器实现自我升级。2008年尤德考斯基明确其核心是AI依托现有智能优化自身认知机制的反馈环。当前AI语境下，该反馈既可表现为模型直接改写自身权重，也可泛指模型优化自身训练流程。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/07/447981.html" target="_blank" rel="noopener noreferrer">老黄RTX Spark真机现身Bilibili World！CPU和GPU直接焊在一起，笔记本跑120B大模型</a>
+
+*量子位*
+
+英伟达在本届Bilibili World首次公开展示搭载RTX Spark超级芯片的笔记本。该芯片用NVLink-C2C直连Grace CPU与Blackwell GPU，拥1P算力、128GB统一内存，兼顾流畅游戏与AI创作，定位本地个人智能体，可本地跑120B大模型、支持100万token上下文，还配OpenShell实现隐私分流。
+
+<FeedbackButtons slug="item:qbitai-447981" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/447914.html" target="_blank" rel="noopener noreferrer">近百名玩家涌入具身数据：一年融资44.7亿，谁能真靠“卖数据”赚钱？</a>
+
+*量子位*
+
+国内具身数据赛道已有近百家玩家，过去一年15家不碰本体、模型的独立数据服务商累计融资44.7亿元，热度仍低于具身大模型赛道。当前数据采集分真机遥操、无本体采集、仿真合成、视频蒸馏四大路线，业内虽涌现居家采数、VR采数等新奇玩法，但合格数据采集门槛并不低。
+
+<FeedbackButtons slug="item:qbitai-447914" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/447902.html" target="_blank" rel="noopener noreferrer">中国首个十万卡集群落成！全国产算力支撑“十万卡时代”</a>
+
+*量子位*
+
+7月中科曙光于郑州落成国内首个全国产十万卡级AI超集群“曙光8000”，现已接入全国一体化算力网。该集群采用原生超智融合架构，全精度覆盖可同时支撑科学计算与大模型训练，破解此前算力结构性错配难题，为国产算力提效、降低重复建设成本提供了领航性落地路径。
+
+<FeedbackButtons slug="item:qbitai-447902" client:visible />
