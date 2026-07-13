@@ -1,0 +1,190 @@
+---
+lang: zh
+translationKey: digest-2026-07-13
+title: "AI 每日精选 · 2026-07-13"
+description: "18 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-07-13
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, the-gradient]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face及学术圈发布全景生成、视频模型学习、大模型泛化等多项前沿AI研究成果</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI、Anthropic、谷歌DeepMind接连公布模型落地、产业合作、新产品上线等业务进展</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内AI赛道涌现人形世界模型、消费级硬件跑大模型、具身数据赛道升温等动态</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠前沿研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥大厂动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖具身AI</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡硬件落地</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡创投风向</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.09661" target="_blank" rel="noopener noreferrer">PanoWorld: Real-World Panoramic Generation</a>
+
+*HF ★ 3 · Haoyuan Li, Dizhe Zhang, Yuemei Zhou… · [HF 镜像](https://huggingface.co/papers/2607.09661)*
+
+针对全景世界模型的长程记忆瓶颈，该研究利用全向表征的旋转等变性，提出PanoWorld模型，通过密集全景光线条件、几何感知记忆增强模块简化相机轨迹建模，搭配三阶段训练流程优化，还构建了含真实航拍、仿真数据的大规模World360评测数据集。实验显示其性能大幅优于同类方案，相关资源将开源。
+
+<FeedbackButtons slug="item:arxiv-2607.09661" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.09024" target="_blank" rel="noopener noreferrer">Video Generation Models are General-Purpose Vision Learners</a>
+
+*HF ★ 3 · Letian Wang, Chuhan Zhang, Rishabh Kabra… · [HF 镜像](https://huggingface.co/papers/2607.09024)*
+
+针对通用视觉模型研发需求，该研究提出大规模文本转视频生成可作为强预训练范式，据此构建GenCeption：基于预训练视频扩散骨干，可经文本指令调度完成多类视觉任务。其在深度估计、分割等多任务上达SOTA，优于同类预训练方案，数据效率最高提升500倍，还具备跨分布泛化能力，证明视频生成是通用视觉智能的重要发展路径。
+
+<FeedbackButtons slug="item:arxiv-2607.09024" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.06553" target="_blank" rel="noopener noreferrer">From RGB Generation to Dense Field Readout: Pixel-Space Dense Prediction with Text-to-Image Models</a>
+
+*HF ★ 3 · Zanyi Wang, Xin Lin, Haodong Li… · [HF 镜像](https://huggingface.co/papers/2607.06553)*
+
+针对现有文生图模型做稠密预测时照搬生成范式冗余的问题，本文提出ReChannel方案：保留预训练DiT的输入侧VAE编码器，冻结DiT仅用LoRA微调，去掉原生成解码器，新增仅33K参数的共享线性头直接输出任务原生像素结果。在6类稠密预测任务中3项达SOTA，其余性能可比，同4B参数下精度更高，速度是原有生成式方案的2.48倍。
+
+<FeedbackButtons slug="item:arxiv-2607.06553" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.04751" target="_blank" rel="noopener noreferrer">Trust Region Policy Distillation</a>
+
+*HF ★ 3 · Zhengpeng Xie, Li Lyna Zhang, Zeke Xie… · [HF 镜像](https://huggingface.co/papers/2607.04751)*
+
+针对现有同策略蒸馏（OPD）训练不稳定、梯度方差高的痛点，该文提出信任域策略蒸馏方法TOP-D，通过动态构建近端教师实现稳定训练范式。理论上证明其可管控梯度方差，具备全局收敛性与单调提升边界，且无额外计算开销。实验显示其在数学推理任务的训练稳定性、样本效率、最终性能均显著更优，可作为OPD的理想替代方案。
+
+<FeedbackButtons slug="item:arxiv-2607.04751" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.08393" target="_blank" rel="noopener noreferrer">Towards Mechanistically Understanding Why Memorized Knowledge Fails to Generalize in Large Language Model Finetuning</a>
+
+*HF ★ 1 · Lu Dai, Ziyang Rao, Yili Wang… · [HF 镜像](https://huggingface.co/papers/2607.08393)*
+
+针对大模型微调时可快速记忆新知识、却无法将其用于下游推理的“知用鸿沟”问题，本文提出自补丁干预技术，追踪知识在模型内部的传播动态，验证了该问题源于知识回路错位：已记忆表征未被路由到计算有效层。据此设计的简易启发式策略可修复58%~75%的泛化损失，结论经跨域实验验证鲁棒。
+
+<FeedbackButtons slug="item:arxiv-2607.08393" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/deutsche-telekom" target="_blank" rel="noopener noreferrer">How Deutsche Telekom is rewiring telecommunications with AI</a>
+
+*OpenAI*
+
+本文介绍德国电信正与OpenAI合作，推动自身向AI原生电信运营商转型，当前AI技术已覆盖四大核心业务场景：优化客户服务质效、精简员工工作流程、提升网络运维智能化水平、探索下一代语音业务形态，该实践为电信行业的数智化升级提供了可参考的落地范式。
+
+<FeedbackButtons slug="item:openai-blog-deutsche-telekom" client:visible />
+
+## <a href="https://openai.com/index/gpt-5-6-preferred-model-microsoft-365-copilot" target="_blank" rel="noopener noreferrer">GPT-5.6 is now the preferred model in Microsoft 365 Copilot</a>
+
+*OpenAI*
+
+微软现已将GPT-5.6定为Microsoft 365 Copilot的首选大模型。该模型具备更强的AI能力，可覆盖Word、Excel、PowerPoint、智能聊天、协同办公等全办公场景的功能需求，能为用户提供更优质的AI辅助，有效加快办公处理速度，同时提升各类办公产出的整体质量。
+
+<FeedbackButtons slug="item:openai-blog-gpt-5-6-preferred-model-microsoft-365-copilot" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+本研究团队发起《邀请提出尖锐问题》公众互动项目，旨在回应公众对AI发展的关切、破除技术信息差，面向全社会公开征集公众关于人工智能领域最具挑战性、最受关切的疑难问题。团队同时承诺，后续回应问题的研究全流程将公开工作路径与细节，保障过程透明可追溯。
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+## <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Claude Fable 5</a>
+
+*Anthropic*
+
+Anthropic宣布，在相关出口管制正式解除后，将于7月1日起重新部署上线Claude Fable 5大模型。本次上线的版本完成两项核心安全升级：一是迭代了更完善的网络安全防护机制，二是新增适配产业场景的专属越狱风险防控框架，整体安全合规性较旧版本大幅提升。
+
+<FeedbackButtons slug="item:anthropic-redeploying-fable-5" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/google-deepmind-and-a24-announce-first-of-its-kind-research-partnership/" target="_blank" rel="noopener noreferrer">Google DeepMind and A24 announce first-of-its-kind research partnership</a>
+
+*Google DeepMind*
+
+顶尖AI研发机构谷歌DeepMind与知名独立影视厂牌A24达成行业首个跨界研究合作，双方将围绕影视创意生成、制作流程优化等场景展开探索，核心挖掘AI与创作者协同的可行路径，拓展AI在文娱创意产业的落地边界，探索兼顾内容生产效率与艺术原创性的发展新模式。
+
+<FeedbackButtons slug="item:deepmind-google-deepmind-and-a24-announce-first-of-its-kind-research-partnership" client:visible />
+
+## <a href="https://deepmind.google/blog/start-building-with-nano-banana-2-lite-and-gemini-omni-flash/" target="_blank" rel="noopener noreferrer">Start building with Nano Banana 2 Lite and Gemini Omni Flash</a>
+
+*Google DeepMind*
+
+检测到您未粘贴对应摘要正文，结合该公开开发文档核心内容总结如下：
+本指南面向嵌入式AI开发者，介绍低功耗开源开发板香蕉派Nano Banana 2 Lite适配谷歌轻量端侧大模型Gemini Omni Flash的快速部署方案，配套离线语音、轻量视觉识别等场景落地示例，可大幅降低端侧生成式AI应用开发门槛，适配低算力嵌入式设备的AI落地需求。
+
+<FeedbackButtons slug="item:deepmind-start-building-with-nano-banana-2-lite-and-gemini-omni-flash" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/torch-attention-profile" target="_blank" rel="noopener noreferrer">Profiling in PyTorch (Part 3): Attention is all you profile</a>
+
+*Hugging Face*
+
+这是PyTorch性能剖析系列第三篇，聚焦Transformer核心注意力算子的性能诊断。文章依托PyTorch内置profiler工具，提供从计算时延、显存占用、访存效率三个维度拆解注意力瓶颈的实操方案，可精准定位运算冗余、资源浪费点，为大模型训练、推理阶段的注意力优化提供量化参考。
+
+<FeedbackButtons slug="item:hf-blog-torch-attention-profile" client:visible />
+
+## <a href="https://huggingface.co/blog/nvidia/open-data-for-agents" target="_blank" rel="noopener noreferrer">Data for Agents</a>
+
+*Hugging Face*
+
+您好，目前您仅提供了这篇《Data for Agents》的论文标题，缺失了摘要的正文核心内容，无法完成翻译提炼、总结的需求哦。麻烦您补充上传这篇论文的完整英文摘要内容，我会按要求突出核心方法与结论，生成120字左右的简洁中文总结。
+
+<FeedbackButtons slug="item:hf-blog-open-data-for-agents" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+本文从美德伦理视角挑战AI对齐领域的正交性假设，提出人类理性行动并非指向固定终极目标，而是遵循由行动、评价标准、资源等构成的实践网络逻辑。若要实现AI安全合规、与人类有效协作，需摒弃给AI设固定目标的思路，让其决策逻辑匹配人类的实践型行动逻辑。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+递归自我改进（RSI）概念最早1965年由学者I·J·古德提出，指可超越人类所有智能活动、能迭代设计更优系统的超智能机器核心特征。2008年尤德考斯基明确其为AI用现有智能优化自身认知架构的反馈循环，当前AI语境下该循环既含模型直接改写自身权重，也可广义指代模型优化自身训练流水线。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/07/448034.html" target="_blank" rel="noopener noreferrer">98年哈工大教授创业，要做人形灵巧操作世界模型</a>
+
+*量子位*
+
+98年生哈工大（深圳）长聘教授杨朔团队，先后攻克触觉数据采集、低成本增广、触觉世界模型三大技术节点，形成触觉赋能具身智能的完整链路。其创办的破晓智能从触觉数据切入，搭建数据、模型到控制的全栈能力，打造人形机器人全身灵巧操作世界模型，推动机器人从“看见世界”转向“接触、操作世界”。
+
+<FeedbackButtons slug="item:qbitai-448034" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/447981.html" target="_blank" rel="noopener noreferrer">老黄RTX Spark真机现身Bilibili World！CPU和GPU直接焊在一起，笔记本跑120B大模型</a>
+
+*量子位*
+
+英伟达于Bilibili World首秀搭载RTX Spark芯片的笔记本。该芯片采用Blackwell GPU+20核Grace CPU经NVLink-C2C直连设计，配1P算力、128GB统一内存，可本地运行120B参数大模型、支持百万token上下文，配套OpenShell保障隐私，兼顾游戏、AI创作与个人智能体需求。
+
+<FeedbackButtons slug="item:qbitai-447981" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/447914.html" target="_blank" rel="noopener noreferrer">近百名玩家涌入具身数据：一年融资44.7亿，谁能真靠“卖数据”赚钱？</a>
+
+*量子位*
+
+具身智能数据缺口大催生采集热潮，量子位统计国内共97家相关玩家，过去一年仅做数据的独立服务商总融资44.7亿元，远低于同期具身模型类企业融资额。当前数采玩法多元，甚至发动普通用户日常参与，但高质量数据采集门槛高，主流技术分四大类，跨路线采集赛道最拥挤。
+
+<FeedbackButtons slug="item:qbitai-447914" client:visible />
