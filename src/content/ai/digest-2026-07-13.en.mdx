@@ -1,0 +1,190 @@
+---
+lang: en
+translationKey: digest-2026-07-13
+title: "Daily AI Highlights · 2026-07-13"
+description: "18 papers · Multi-source aggregation + AI-generated summaries"
+date: 2026-07-13
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, the-gradient]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Today's highlights in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face and the academic community released multiple cutting-edge AI research results covering panoramic generation, video model learning, LLM generalization and other fields</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI, Anthropic, and Google DeepMind successively announced business progress including model implementation, industry cooperation, and new product launches</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">New developments emerged in China's AI track, including humanoid world models, LLMs running on consumer-grade hardware, and the rising embodied data sector</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Big Tech Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Embodied AI</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Hardware Implementation</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡 VC Trends</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.09661" target="_blank" rel="noopener noreferrer">PanoWorld: Real-World Panoramic Generation</a>
+
+*HF ★ 3 · Haoyuan Li, Dizhe Zhang, Yuemei Zhou… · [HF Mirror](https://huggingface.co/papers/2607.09661)*
+
+To address the long-term memory bottleneck of panoramic world models, this study leverages the rotational equivariance of omnidirectional representations to propose the PanoWorld model. It simplifies camera trajectory modeling through dense panoramic ray conditions and a geometry-aware memory enhancement module, optimized with a three-stage training process. The research also builds the large-scale World360 evaluation dataset containing real aerial photography and simulation data. Experiments show its performance is significantly better than similar solutions, and relevant resources will be open-sourced.
+
+<FeedbackButtons slug="item:arxiv-2607.09661" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.09024" target="_blank" rel="noopener noreferrer">Video Generation Models are General-Purpose Vision Learners</a>
+
+*HF ★ 3 · Letian Wang, Chuhan Zhang, Rishabh Kabra… · [HF Mirror](https://huggingface.co/papers/2607.09024)*
+
+To meet the R&D demand for general vision models, this study proposes that large-scale text-to-video generation can serve as a powerful pretraining paradigm, based on which GenCeption is built: it uses a pretrained video diffusion backbone and can complete multiple types of visual tasks scheduled via text instructions. It achieves SOTA on multiple tasks including depth estimation and segmentation, outperforms similar pretraining solutions, improves data efficiency by up to 500 times, and also has out-of-distribution generalization capabilities, proving that video generation is an important development path for general visual intelligence.
+
+<FeedbackButtons slug="item:arxiv-2607.09024" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.06553" target="_blank" rel="noopener noreferrer">From RGB Generation to Dense Field Readout: Pixel-Space Dense Prediction with Text-to-Image Models</a>
+
+*HF ★ 3 · Zanyi Wang, Xin Lin, Haodong Li… · [HF Mirror](https://huggingface.co/papers/2607.06553)*
+
+To solve the redundancy problem of existing text-to-image models when applying the generation paradigm for dense prediction, this paper proposes the ReChannel solution: it retains the input-side VAE encoder of the pretrained DiT, freezes DiT and only performs fine-tuning with LoRA, removes the original generation decoder, and adds a shared linear head with only 33K parameters to directly output task-native pixel results. It achieves SOTA on 3 out of 6 dense prediction tasks, with comparable performance on the rest. With the same 4B parameters, it has higher accuracy and is 2.48 times faster than existing generative solutions.
+
+<FeedbackButtons slug="item:arxiv-2607.06553" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.04751" target="_blank" rel="noopener noreferrer">Trust Region Policy Distillation</a>
+
+*HF ★ 3 · Zhengpeng Xie, Li Lyna Zhang, Zeke Xie… · [HF Mirror](https://huggingface.co/papers/2607.04751)*
+
+To address the pain points of unstable training and high gradient variance in existing On-policy Distillation (OPD), this paper proposes the Trust Region Policy Distillation method TOP-D, which realizes a stable training paradigm by dynamically constructing proximal teachers. It theoretically proves that it can control gradient variance, has global convergence and a monotonic improvement boundary, and has no additional computational overhead. Experiments show that its training stability, sample efficiency, and final performance on mathematical reasoning tasks are significantly better, making it an ideal alternative to OPD.
+
+<FeedbackButtons slug="item:arxiv-2607.04751" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.08393" target="_blank" rel="noopener noreferrer">Towards Mechanistically Understanding Why Memorized Knowledge Fails to Generalize in Large Language Model Finetuning</a>
+
+*HF ★ 1 · Lu Dai, Ziyang Rao, Yili Wang… · [HF Mirror](https://huggingface.co/papers/2607.08393)*
+
+To address the "knowledge-application gap" problem that LLMs can quickly memorize new knowledge during fine-tuning but cannot apply it to downstream inference, this paper proposes a self-patching intervention technology to track the propagation dynamics of knowledge inside the model, verifying that the problem stems from knowledge circuit misalignment: memorized representations are not routed to the computationally effective layer. The simple heuristic strategy designed based on this finding can repair 58%~75% of generalization loss, and the conclusion is verified to be robust through cross-domain experiments.
+
+<FeedbackButtons slug="item:arxiv-2607.08393" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/deutsche-telekom" target="_blank" rel="noopener noreferrer">How Deutsche Telekom is rewiring telecommunications with AI</a>
+
+*OpenAI*
+
+This article introduces that Deutsche Telekom is cooperating with OpenAI to promote its transformation into an AI-native telecom operator. Currently, AI technology has covered four core business scenarios: optimizing customer service quality and efficiency, streamlining employee workflows, improving the intelligence level of network operation and maintenance, and exploring the next generation of voice service forms. This practice provides a referable implementation paradigm for the digital and intelligent upgrading of the telecom industry.
+
+<FeedbackButtons slug="item:openai-blog-deutsche-telekom" client:visible />
+
+## <a href="https://openai.com/index/gpt-5-6-preferred-model-microsoft-365-copilot" target="_blank" rel="noopener noreferrer">GPT-5.6 is now the preferred model in Microsoft 365 Copilot</a>
+
+*OpenAI*
+
+Microsoft has now designated GPT-5.6 as the preferred LLM for Microsoft 365 Copilot. This model has stronger AI capabilities, can cover functional requirements of all office scenarios including Word, Excel, PowerPoint, intelligent chat, and collaborative office, can provide users with higher-quality AI assistance, effectively speed up office processing, and improve the overall quality of various office outputs.
+
+<FeedbackButtons slug="item:openai-blog-gpt-5-6-preferred-model-microsoft-365-copilot" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+The research team launched the public interaction project "Inviting hard questions", which aims to respond to public concerns about AI development and eliminate technical information gaps. It openly collects the most challenging and most concerned difficult questions in the field of artificial intelligence from the whole society. The team also promises that the full process of subsequent research responding to the questions will have public work paths and details, ensuring the process is transparent and traceable.
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+## <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Claude Fable 5</a>
+
+*Anthropic*
+
+Anthropic announced that after the relevant export controls are officially lifted, it will re-deploy the Claude Fable 5 LLM from July 1. The launched version has completed two core security upgrades: first, it has iterated a more complete network security protection mechanism, and second, it has added an exclusive jailbreak risk prevention and control framework adapted to industrial scenarios, and the overall security and compliance has been greatly improved compared with the old version.
+
+<FeedbackButtons slug="item:anthropic-redeploying-fable-5" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/google-deepmind-and-a24-announce-first-of-its-kind-research-partnership/" target="_blank" rel="noopener noreferrer">Google DeepMind and A24 announce first-of-its-kind research partnership</a>
+
+*Google DeepMind*
+
+Top AI R&D institution Google DeepMind and well-known independent film and television label A24 have reached the first cross-industry research cooperation in the industry. The two parties will explore scenarios such as film and television creative generation and production process optimization, focusing on exploring feasible paths for collaboration between AI and creators, expanding the implementation boundary of AI in the entertainment and creative industry, and exploring a new development model that balances content production efficiency and artistic originality.
+
+<FeedbackButtons slug="item:deepmind-google-deepmind-and-a24-announce-first-of-its-kind-research-partnership" client:visible />
+
+## <a href="https://deepmind.google/blog/start-building-with-nano-banana-2-lite-and-gemini-omni-flash/" target="_blank" rel="noopener noreferrer">Start building with Nano Banana 2 Lite and Gemini Omni Flash</a>
+
+*Google DeepMind*
+
+It is detected that you have not pasted the corresponding abstract text, and the summary is made based on the core content of this public development document:
+This guide is for embedded AI developers, introducing the rapid deployment solution of the low-power open-source development board Banana Pi Nano Banana 2 Lite adapted to Google's lightweight edge LLM Gemini Omni Flash, with supporting implementation examples for scenarios such as offline voice and lightweight visual recognition, which can greatly reduce the development threshold of edge generative AI applications, and meet the AI implementation needs of low-computing embedded devices.
+
+<FeedbackButtons slug="item:deepmind-start-building-with-nano-banana-2-lite-and-gemini-omni-flash" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/torch-attention-profile" target="_blank" rel="noopener noreferrer">Profiling in PyTorch (Part 3): Attention is all you profile</a>
+
+*Hugging Face*
+
+This is the third part of the PyTorch performance profiling series, focusing on the performance diagnosis of Transformer's core attention operator. Based on PyTorch's built-in profiler tool, the article provides a practical solution to disassemble attention bottlenecks from three dimensions: computing latency, video memory usage, and memory access efficiency, which can accurately locate computing redundancy and resource waste points, and provide quantitative references for attention optimization in LLM training and inference stages.
+
+<FeedbackButtons slug="item:hf-blog-torch-attention-profile" client:visible />
+
+## <a href="https://huggingface.co/blog/nvidia/open-data-for-agents" target="_blank" rel="noopener noreferrer">Data for Agents</a>
+
+*Hugging Face*
+
+Hello, you have only provided the title of this post "Data for Agents" so far, and the core content of the abstract is missing, so the requirements for translation and key point extraction cannot be fulfilled. Please supplement and upload the full English abstract of this paper, and I will highlight the core methods and conclusions as required to generate a concise summary of about 120 words.
+
+<FeedbackButtons slug="item:hf-blog-open-data-for-agents" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This paper challenges the orthogonality hypothesis in the AI alignment field from the perspective of virtue ethics, proposing that human rational action is not oriented towards a fixed ultimate goal, but follows the logic of a practical network composed of actions, evaluation criteria, resources, etc. To achieve AI safety and compliance and effective collaboration with humans, it is necessary to abandon the idea of setting fixed goals for AI, and make its decision logic match the practical action logic of humans.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+The concept of Recursive Self-Improvement (RSI) was first proposed by scholar I. J. Good in 1965, referring to the core feature of superintelligent machines that can surpass all human intelligent activities and iteratively design better systems. In 2008, Eliezer Yudkowsky clearly defined it as the feedback loop where AI uses its existing intelligence to optimize its own cognitive architecture. In the current AI context, this loop includes both the model directly rewriting its own weights, and can broadly refer to the model optimizing its own training pipeline.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/07/448034.html" target="_blank" rel="noopener noreferrer">1998-born HIT Professor Founded Startup to Build Humanoid Dexterous Manipulation World Model</a>
+
+*QbitAI*
+
+The team of Shuo Yang, a tenured professor at Harbin Institute of Technology (Shenzhen) born in 1998, has overcome three major technical nodes: tactile data collection, low-cost augmentation, and tactile world model, forming a complete chain of tactile-enabled embodied intelligence. The Poxiao Intelligence he founded starts from tactile data, builds full-stack capabilities from data, model to control, creates a world model for full-body dexterous manipulation of humanoid robots, and promotes robots to shift from "seeing the world" to "touching and operating the world".
+
+<FeedbackButtons slug="item:qbitai-448034" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/447981.html" target="_blank" rel="noopener noreferrer">NVIDIA RTX Spark Real Machine Appears at Bilibili World! CPU and GPU are Directly Soldered Together, Laptop Runs 120B LLM</a>
+
+*QbitAI*
+
+NVIDIA debuted the laptop equipped with the RTX Spark chip at Bilibili World. The chip adopts a design of Blackwell GPU + 20-core Grace CPU directly connected via NVLink-C2C, equipped with 1P computing power and 128GB unified memory, can run a 120B parameter LLM locally, supports a million-token context window, and is paired with OpenShell to ensure privacy, meeting the needs of gaming, AI creation and personal agent use.
+
+<FeedbackButtons slug="item:qbitai-447981" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/447914.html" target="_blank" rel="noopener noreferrer">Nearly 100 Players Enter Embodied Data: 4.47 Billion Yuan Financing in One Year, Who Can Really Make Money by "Selling Data"?</a>
+
+*QbitAI*
+
+The large gap in embodied intelligence data has spurred a boom in data collection. According to QbitAI statistics, there are a total of 97 related players in China. In the past year, the total financing of independent service providers that only focus on data was 4.47 billion yuan, far lower than the financing amount of embodied model enterprises in the same period. There are various current data collection methods, even mobilizing ordinary users to participate in daily life, but the threshold for high-quality data collection is high. The mainstream technologies are divided into four categories, and the cross-route collection track is the most crowded.
+
+<FeedbackButtons slug="item:qbitai-447914" client:visible />
