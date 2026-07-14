@@ -1,0 +1,173 @@
+---
+lang: en
+translationKey: digest-2026-07-14
+title: "Daily AI Highlights · 2026-07-14"
+description: "16 papers · multi-source aggregation + AI summaries"
+date: 2026-07-14
+tags: [digest, auto, arxiv, openai, anthropic, deepmind, hf-blog, the-gradient]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Today's highlights in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Multiple cutting-edge AI research papers on LLM distillation interpretation, low-bit quantization, neuroimaging analysis and more were released on arXiv today</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI, Anthropic, Google DeepMind and others have successively announced new updates on AI implementation, model deployment, cross-industry cooperation and more</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">LimX Dynamics raises $200 million in financing and plans a 港股 IPO, Fields Medal leak, Agent search and others have become recent industry hot topics</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📄 Cutting-edge Papers</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏢 Big Tech Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💰 Financing News</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Embodied Intelligence</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔍 Agent Applications</span>
+  </div>
+</div>
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2607.08776" target="_blank" rel="noopener noreferrer">A Unified Approach to Interpreting Knowledge Distillation for Large Language Models via Interactions</a>
+
+*Qingzhuo Wang, Ruiyang Qin, Zhenxin Qin…*
+
+To address the unclear mechanism of Knowledge Distillation (KD) for Large Language Models, this paper conducts a unified study from the perspective of interaction decomposition. It finds that the core commonality of all types of KD is that they make the student model's interactions sparse, retaining only a small number of effective interactions, and performance differences come from the ability to handle complex interactions. Based on this finding, the paper proposes a plug-and-play CIP loss, which experiments confirm can stably improve the in-domain and out-of-domain performance of various KD methods.
+
+<FeedbackButtons slug="item:arxiv-2607.08776" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.08778" target="_blank" rel="noopener noreferrer">iLENS: Interpretable LLM-Guided Mixture-of-Experts for Neuroimaging Survival Analysis</a>
+
+*Farica Zhuang, Seong Woo Han, Zixuan Wen…*
+
+To address the pain points of existing survival models for predicting the prognosis of preclinical Alzheimer's disease, which have weak interpretability and no natural language reasoning capabilities, this study proposes iLENS, an LLM-guided Mixture-of-Experts framework: the LLM integrates structured neuroimaging data and unstructured information to guide expert routing. The framework has excellent prediction performance, can realize patient stratification, and can also output transparent decision-making basis with biological evidence, filling the gap between high-performance survival analysis and interpretable clinical decision support.
+
+<FeedbackButtons slug="item:arxiv-2607.08778" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.08779" target="_blank" rel="noopener noreferrer">Signed Symmetric Quantization for Few-Bit Integers</a>
+
+*Ian Colbert, Eashan Dash, Pablo Monteagudo-Lago…*
+
+To address the problems that low-bit integer symmetric quantization is prone to truncating positive outliers because signed numbers have one more representable value in the negative direction, while asymmetric quantization has better accuracy but lower inference performance, this paper proposes signed symmetric quantization. It allocates the extra value to the side with more outliers through lightweight rules, keeping the zero point at 0. For LLM weights, more than 90% of this method meets the optimal L2 error condition, has no additional inference overhead, and can improve perplexity and few-shot accuracy compared to conventional symmetric quantization.
+
+<FeedbackButtons slug="item:arxiv-2607.08779" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/deutsche-telekom" target="_blank" rel="noopener noreferrer">How Deutsche Telekom is rewiring telecommunications with AI</a>
+
+*OpenAI*
+
+This article introduces that Deutsche Telekom is working with OpenAI to promote the transformation to an AI-native operator. It has implemented AI technology in four core scenarios: customer service optimization, employee workflow efficiency improvement, intelligent network operation and maintenance, and next-generation voice service innovation, comprehensively reconstructing the operation logic of telecommunications businesses. It not only achieves cost reduction and efficiency improvement, but also provides a reference practice sample for the AI transformation and upgrading of the global telecommunications industry.
+
+<FeedbackButtons slug="item:openai-blog-deutsche-telekom" client:visible />
+
+## <a href="https://openai.com/academy/getting-started" target="_blank" rel="noopener noreferrer">Getting started with ChatGPT</a>
+
+*OpenAI*
+
+This *Getting Started with ChatGPT* guide is for new users with no prior experience. Its core content covers two parts: first, guiding users through the full process of basic ChatGPT operations and initiating their first conversation; second, introducing simple and practical methods for three high-frequency scenarios using ChatGPT: content writing, creative brainstorming, and problem solving, helping users quickly get started with the AI tool and explore its practical value.
+
+<FeedbackButtons slug="item:openai-blog-getting-started" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+This public AI communication initiative launches two core arrangements: first, openly soliciting all kinds of difficult questions about the artificial intelligence field from the public across society, widely absorbing core AI concerns from the public perspective; second, the research team explicitly promises that in the entire process of subsequent research and answering these questions, all relevant work details will be fully disclosed, and information transparency will be maintained throughout.
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+## <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Claude Fable 5</a>
+
+*Anthropic*
+
+AI company Anthropic announced that its LLM product Claude Fable 5, which was previously suspended from launch due to export control requirements, will officially restart deployment on July 1 after relevant restrictions are lifted. The updated version launched this time has completed two security upgrades: first, it has iterated the cybersecurity protection mechanism, and second, it has added an industry-level special anti-jailbreak framework, with targeted enhancement of security capabilities.
+
+<FeedbackButtons slug="item:anthropic-redeploying-fable-5" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/google-deepmind-and-a24-announce-first-of-its-kind-research-partnership/" target="_blank" rel="noopener noreferrer">Google DeepMind and A24 announce first-of-its-kind research partnership</a>
+
+*Google DeepMind*
+
+Google DeepMind and well-known film and television company A24 have reached the first cross-industry research cooperation in the industry. The two parties will combine DeepMind's cutting-edge generative AI technical capabilities with A24's deep experience in content creation and narrative polishing in the creative field, to explore the possibility of implementing AI in scenarios such as film and television content development and creative production, and explore new paths for AI to enter the entertainment creative track and improve the efficiency of content industry innovation.
+
+<FeedbackButtons slug="item:deepmind-google-deepmind-and-a24-announce-first-of-its-kind-research-partnership" client:visible />
+
+## <a href="https://deepmind.google/blog/start-building-with-nano-banana-2-lite-and-gemini-omni-flash/" target="_blank" rel="noopener noreferrer">Start building with Nano Banana 2 Lite and Gemini Omni Flash</a>
+
+*Google DeepMind*
+
+This is a getting started guide for AIoT developers, which mainly introduces that the low-power edge development board Nano Banana 2 Lite can natively adapt to Google's Gemini Omni Flash lightweight and ultra-fast LLM inference framework. Developers do not need complex environment configuration to quickly build end-side AI applications such as offline voice interaction and lightweight visual recognition. The inference latency of this solution is 40% lower than similar solutions, and the overall board power consumption is only 3W, which is suitable for rapid development of entry-level end-side AI prototypes.
+
+<FeedbackButtons slug="item:deepmind-start-building-with-nano-banana-2-lite-and-gemini-omni-flash" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/torch-attention-profile" target="_blank" rel="noopener noreferrer">Profiling in PyTorch (Part 3): Attention is all you profile</a>
+
+*Hugging Face*
+
+This is the third part of the PyTorch performance profiling series, focusing on the performance diagnosis of the core attention module of Transformer. The method relies on PyTorch's native profiling tools to break down the operation data of attention operators in dimensions such as computing power occupation, video memory access, and scheduling overhead. It can accurately locate problems such as redundant operations and memory access bottlenecks in conventional attention implementations, and provide optimization paths such as operator fusion and video memory layout optimization, effectively improving the efficiency of LLM training and inference.
+
+<FeedbackButtons slug="item:hf-blog-torch-attention-profile" client:visible />
+
+## <a href="https://huggingface.co/blog/nvidia/open-data-for-agents" target="_blank" rel="noopener noreferrer">Data for Agents</a>
+
+*Hugging Face*
+
+*Data for Agents* addresses the current pain points of fragmented Agent training data, uneven annotation quality, and insufficient scenario coverage. It proposes a hierarchical Agent-specific data construction framework, standardizes the collection and cleaning process of three types of core data: interaction trajectories, decision logic, and environmental feedback, and simultaneously open-sources a large-scale high-quality annotated dataset. Experiments show that the cross-scenario decision performance of Agents trained on this data is improved by more than 30%, providing a standardized reference for the underlying data infrastructure of general Agents.
+
+<FeedbackButtons slug="item:hf-blog-open-data-for-agents" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This paper reflects on the underlying assumptions of the orthogonality hypothesis in the field of AI alignment, introduces the perspective of virtue ethics, and points out that human rationality is not directed at fixed final goals, but rather actions adapt to a shared practice network containing norms and evaluation systems. The paper proposes that if AI is to adapt to human subjects, its decision-making logic needs to be isomorphic with human practice logic, and this path can support both ethical value alignment and the realization of core security attributes at the same time.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+The concept of Recursive Self-Improvement (RSI) was first proposed by I.J. Good in 1965, and it is the core attribute of "superintelligent machines" that can surpass all human intellectual activities and iteratively design better systems. In 2008, Eliezer Yudkowsky clarified that its core is a feedback loop: AI uses its existing intelligence to optimize its own cognitive architecture. In the current AI field, this mechanism includes both the model directly rewriting its own weights, and in a broad sense, the model optimizing its own training pipeline.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/07/449474.html" target="_blank" rel="noopener noreferrer">LimX Dynamics raises another $200 million to accelerate 港股 IPO, Zhang Wei: Revenue bets do not conform to embodied business logic</a>
+
+*量子位*
+
+General-purpose humanoid robot company LimX Dynamics recently completed a $200 million Pre-IPO round of financing, with a post-investment valuation of 15 billion yuan. Overseas investors account for 70% of this round of financing, with a total financing of $400 million in the past six months, and it is preparing for a 港股 IPO. Founder Zhang Wei refused to sign a revenue bet, believing that inflating revenue to hype up valuation violates the business logic of the embodied industry, and the financing is mainly to reserve funds for the implementation of embodied scenarios in 2026.
+
+<FeedbackButtons slug="item:qbitai-449474" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/449407.html" target="_blank" rel="noopener noreferrer">Fields Medal leaked in advance! Wang Hong and Deng Yu are both on the list</a>
+
+*量子位*
+
+The 2026 International Congress of Mathematicians previously leaked the proposed Fields Medal award list due to a front-end vulnerability, including Chinese mathematician Deng Yu and post-90s mathematician Wang Hong with domestic education background. Wang Hong earlier introduced the "granularity" analysis strategy to solve the three-dimensional Kakeya conjecture that has plagued the academic community for a century, and was already a favorite to win the award. If the list is true, it will be the first time a Chinese scholar has won this highest mathematics award, and the official announcement will be made in July.
+
+<FeedbackButtons slug="item:qbitai-449407" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/449327.html" target="_blank" rel="noopener noreferrer">Agent-specific search tops Product Hunt, uses fewer Tokens and searches more accurately</a>
+
+*量子位*
+
+AnySearch, an Agent-specific AI search product developed by a Chinese team, topped the Product Hunt weekly list. In a benchmark test of 300 questions under the same LLM conditions, its comprehensive accuracy rate reached 76.4%, better than Parallel and Brave Search, and its latency is also the lowest. The product can cover high-quality data from the public network and vertical fields, provide real-time, traceable structured information for Agents, avoid Agents being misled by outdated information, and reduce call costs.
+
+<FeedbackButtons slug="item:qbitai-449327" client:visible />
