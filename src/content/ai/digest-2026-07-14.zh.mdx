@@ -1,0 +1,173 @@
+---
+lang: zh
+translationKey: digest-2026-07-14
+title: "AI 每日精选 · 2026-07-14"
+description: "16 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-07-14
+tags: [digest, auto, arxiv, openai, anthropic, deepmind, hf-blog, the-gradient]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">大模型蒸馏解释、少比特量化、神经影像分析等多篇AI前沿研究论文今日集中上线Arxiv</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI、Anthropic、谷歌DeepMind等接连发布AI落地、模型部署、跨界合作等新动态</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">逐际动力获2亿美元融资拟赴港股IPO，菲尔兹奖泄露、Agent搜索等成近期行业热点</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📄 前沿论文</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏢 大厂动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💰 融资新闻</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 具身智能</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔍 Agent应用</span>
+  </div>
+</div>
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2607.08776" target="_blank" rel="noopener noreferrer">A Unified Approach to Interpreting Knowledge Distillation for Large Language Models via Interactions</a>
+
+*Qingzhuo Wang, Ruiyang Qin, Zhenxin Qin…*
+
+针对大语言模型知识蒸馏（KD）作用机制不明的问题，本文基于交互分解视角开展统一研究，发现各类KD的核心共性是让学生模型稀疏化交互、仅保留少量有效交互，性能差异源于对复杂交互的处理能力。据此提出即插即用的CIP损失，实验验证其可稳定提升各类KD方法的域内、域外性能。
+
+<FeedbackButtons slug="item:arxiv-2607.08776" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.08778" target="_blank" rel="noopener noreferrer">iLENS: Interpretable LLM-Guided Mixture-of-Experts for Neuroimaging Survival Analysis</a>
+
+*Farica Zhuang, Seong Woo Han, Zixuan Wen…*
+
+针对阿尔茨海默病前驱期转归预测中现有生存模型可解释性弱、无自然语言推理能力的痛点，研究提出大模型引导的混合专家框架iLENS：由大模型整合结构化神经影像数据与非结构化信息指导专家路由。该框架预测性能优异，可实现患者分型，还能输出有生物学依据的透明决策依据，填补了高性能生存分析与可解释临床决策支持的缺口。
+
+<FeedbackButtons slug="item:arxiv-2607.08778" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.08779" target="_blank" rel="noopener noreferrer">Signed Symmetric Quantization for Few-Bit Integers</a>
+
+*Ian Colbert, Eashan Dash, Pablo Monteagudo-Lago…*
+
+针对低位整数对称量化因有符号数负向多1个可表示值易截断正离群、非对称量化精度优但推理性能低的问题，本文提出带符号对称量化，通过轻量规则将多余数值分配给离群更多的一侧，保留零点为0。该方法在大模型权重上9成以上满足L2误差最优条件，无额外推理开销，相比常规对称量化可提升困惑度与少样本精度。
+
+<FeedbackButtons slug="item:arxiv-2607.08779" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/deutsche-telekom" target="_blank" rel="noopener noreferrer">How Deutsche Telekom is rewiring telecommunications with AI</a>
+
+*OpenAI*
+
+本文介绍德国电信正联合OpenAI推进AI原生运营商转型，已将AI技术落地到客户服务优化、员工工作流程提效、网络运维智能化、下一代语音业务创新四大核心场景，全方位重构电信业务运营逻辑，既实现降本提效，也为全球电信行业的AI化转型升级提供了可参考的实践样本。
+
+<FeedbackButtons slug="item:openai-blog-deutsche-telekom" client:visible />
+
+## <a href="https://openai.com/academy/getting-started" target="_blank" rel="noopener noreferrer">Getting started with ChatGPT</a>
+
+*OpenAI*
+
+这份《ChatGPT入门指南》面向零使用经验的新手用户，核心内容涵盖两部分：一是引导用户完成ChatGPT基础操作、发起首次对话的全流程；二是介绍借助ChatGPT开展内容撰写、创意头脑风暴、问题求解三类高频场景的简便实用方法，帮助用户快速上手AI工具，发掘其实用价值。
+
+<FeedbackButtons slug="item:openai-blog-getting-started" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+本项面向AI公众沟通的工作推出两项核心安排：一是面向全社会公开征集公众提出的关于人工智能领域的各类高难度疑问，广泛吸纳公众视角下的AI核心关切；二是研究团队明确承诺，在后续研究、解答这些问题的全流程中，将完整公开所有相关工作细节，全程保持信息透明。
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+## <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Claude Fable 5</a>
+
+*Anthropic*
+
+AI企业Anthropic宣布，此前因出口管制要求暂停上线的旗下大模型产品Claude Fable 5，将在相关限制解除后于7月1日正式重启部署。本次上线的更新版本完成两项安全类升级：一是迭代了网络安全防护机制，二是新增了行业级防越狱专项框架，安全能力得到针对性强化。
+
+<FeedbackButtons slug="item:anthropic-redeploying-fable-5" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/google-deepmind-and-a24-announce-first-of-its-kind-research-partnership/" target="_blank" rel="noopener noreferrer">Google DeepMind and A24 announce first-of-its-kind research partnership</a>
+
+*Google DeepMind*
+
+谷歌DeepMind与知名影视公司A24达成行业首个跨界研究合作，双方将融合DeepMind的前沿生成式AI技术能力，与A24深耕创意领域的内容创作、叙事打磨经验，探索AI在影视内容开发、创意生产等场景的落地可能，为AI切入文娱创意赛道、内容产业创新提效探索全新路径。
+
+<FeedbackButtons slug="item:deepmind-google-deepmind-and-a24-announce-first-of-its-kind-research-partnership" client:visible />
+
+## <a href="https://deepmind.google/blog/start-building-with-nano-banana-2-lite-and-gemini-omni-flash/" target="_blank" rel="noopener noreferrer">Start building with Nano Banana 2 Lite and Gemini Omni Flash</a>
+
+*Google DeepMind*
+
+本次为面向AIoT开发者的入门指引，核心介绍低功耗边缘开发板Nano Banana 2 Lite可原生适配谷歌Gemini Omni Flash轻量极速大模型推理框架，开发者无需复杂环境配置，就能快速搭建离线语音交互、轻量视觉识别等端侧AI应用，方案推理延迟较同类方案低40%，整板功耗仅3W，适合入门级端侧AI原型快速开发。
+
+<FeedbackButtons slug="item:deepmind-start-building-with-nano-banana-2-lite-and-gemini-omni-flash" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/torch-attention-profile" target="_blank" rel="noopener noreferrer">Profiling in PyTorch (Part 3): Attention is all you profile</a>
+
+*Hugging Face*
+
+这是PyTorch性能剖析系列第三篇，聚焦Transformer核心的注意力模块性能诊断。方法上依托PyTorch原生剖析工具，拆解注意力算子算力占用、显存访问、调度开销等维度运行数据。可精准定位常规注意力实现冗余运算、访存瓶颈等问题，给出算子融合、显存排布优化等调优路径，有效提升大模型训练推理效率。
+
+<FeedbackButtons slug="item:hf-blog-torch-attention-profile" client:visible />
+
+## <a href="https://huggingface.co/blog/nvidia/open-data-for-agents" target="_blank" rel="noopener noreferrer">Data for Agents</a>
+
+*Hugging Face*
+
+《Data for Agents》针对当前智能体训练数据碎片化、标注质量参差、场景覆盖不足的痛点，提出分层式智能体专属数据构建框架，规范交互轨迹、决策逻辑、环境反馈三类核心数据的采集清洗流程，同步开源大规模高质量标注数据集。实验表明，基于该数据训练的智能体跨场景决策性能提升超30%，为通用智能体底层数据基建提供了标准化参考。
+
+<FeedbackButtons slug="item:hf-blog-open-data-for-agents" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+本文针对AI对齐领域正交性假说的底层预设展开反思，引入德性伦理学视角，指出人类理性并非指向固定终局目标，而是行动适配含规范、评价体系的共享实践网络。论文提出，AI若要适配人类主体，决策逻辑需与人类实践逻辑同构，该路径可同时支撑伦理价值对齐与核心安全属性实现。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+递归自我改进（RSI）概念最早1965年由I.J.古德提出，是能超越人类所有智力活动、可迭代设计更优系统的“超智能机器”核心属性。2008年尤德考斯基明确其核心为反馈闭环：AI用现有智能优化自身认知架构。当前AI领域中，该机制既包括模型直接改写自身权重，也可广义指模型优化自身训练管线。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/07/449474.html" target="_blank" rel="noopener noreferrer">逐际动力再融2亿美元提速港股IPO，张巍：营收对赌不符合具身商业逻辑</a>
+
+*量子位*
+
+通用人形机器人企业逐际动力近日完成2亿美元Pre-IPO轮融资，投后估值150亿元，海外资方占本轮融资额70%，近半年累计融资4亿美元，正筹备港股IPO。创始人张巍拒绝签署营收对赌，认为虚增营收炒高估值违背具身行业商业逻辑，融资主要为2026年具身场景落地储备资金。
+
+<FeedbackButtons slug="item:qbitai-449474" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/449407.html" target="_blank" rel="noopener noreferrer">菲尔兹奖提前泄露！王虹邓煜双双在列</a>
+
+*量子位*
+
+2026年国际数学家大会曾因前端漏洞泄露菲尔兹奖拟授名单，中国籍数学家邓煜、具国内教育背景的90后数学家王虹在列。王虹早前引入“颗粒性”分析策略，破解困扰学界百年的三维挂谷猜想，本就是获奖热门。若名单属实，将是中国籍学者首次斩获该数学最高奖，官方7月将正式官宣。
+
+<FeedbackButtons slug="item:qbitai-449407" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/449327.html" target="_blank" rel="noopener noreferrer">Agent专用搜索登顶Product Hunt，Token更省搜得更准</a>
+
+*量子位*
+
+中国团队研发的Agent专用AI搜索产品AnySearch登顶Product Hunt周榜。在同大模型条件下的300道题基准测试中，其综合准确率达76.4%，优于Parallel、Brave Search，延迟也最低。该产品可覆盖公网及垂直领域优质数据，为Agent提供实时、可追溯的结构化信息，能避免Agent被过时信息误导，降低调用成本。
+
+<FeedbackButtons slug="item:qbitai-449327" client:visible />
