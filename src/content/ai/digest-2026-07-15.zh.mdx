@@ -1,0 +1,183 @@
+---
+lang: zh
+translationKey: digest-2026-07-15
+title: "AI 每日精选 · 2026-07-15"
+description: "17 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-07-15
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">今日arXiv、HuggingFace等平台发布多篇AI科研成果，覆盖知识图谱、对齐、大模型审计等领域</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI、Anthropic、DeepMind等头部机构公布新动态，覆盖代理投资、Claude部署、跨界合作等方向</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内AI创企动作密集，DeepSeek启动融资、阶跃入局智能体OS、免费AI编码工具跻身第一梯队</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📈 投融资</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 大厂动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 学术研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡 智能体</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ 工具上新</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.11111" target="_blank" rel="noopener noreferrer">Know Before Fix: QA-Driven Repository Knowledge Acquisition for Software Issue Resolution</a>
+
+*HF ★ 0 · Haotian Lin, Silin Chen, Xiaodong Gu… · [HF 镜像](https://huggingface.co/papers/2607.11111)*
+
+针对大模型代码自动修复智能体因仓库知识不足易出错、现有预探索方案无针对性补全知识缺口的问题，本文提出QA驱动的ACQUIRE框架：模拟开发者先理解代码再修复的逻辑，先通过问答模块协作获取结构化仓库知识，再基于知识生成补丁。实验显示其在SWE-bench上Pass@1较现有方法最高提升4.4个百分点，额外开销较低。
+
+<FeedbackButtons slug="item:arxiv-2607.11111" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2607.09666" target="_blank" rel="noopener noreferrer">Knowledge Graphs Meet Graph Neural Networks: A Comprehensive Survey</a>
+
+*Chengcheng Sun, Jiayun Tian, Cheng Zhai…*
+
+这篇GNN与知识图谱融合的综述，填补了GNN在KG全技术链路无系统梳理的空白，提出双维度分类框架：一是覆盖KG构建、嵌入、推理、应用的全生命周期维度，二是GCN、GAT、HGNN等GNN模型的技术维度，梳理相关方法优缺，分析GNN适配各KG任务的优势，最后点明现存挑战与未来研究方向。
+
+<FeedbackButtons slug="item:arxiv-2607.09666" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.09668" target="_blank" rel="noopener noreferrer">Position: Every Ground Truth is a Human Construction, not an Objective Truth</a>
+
+*Charlotte H\"ogberg, Ericka Johnson, Kiri L. Wagstaff*
+
+这篇机器学习领域立场论文指出：模型训练、评估所用的基准真值并非天然客观的衡量标准，而是人与技术共同建构的产物，存在大量未公开的人为选择，具备场景依赖性而非普适。建议学界明确真值构建的取舍边界，践行“情境可靠性”理念，既能提升模型适用合理性，也可增强透明度、问责性，推动跨学科协作。
+
+<FeedbackButtons slug="item:arxiv-2607.09668" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.09682" target="_blank" rel="noopener noreferrer">AuditWeave: A Tamper-Evident, Auditor-Navigable Evidence Layer for AI-Assisted and Data-Transformation Workflows</a>
+
+*Vimal Nakrani*
+
+针对监管领域AI决策的事后可溯源、记录不可篡改需求，现有运维导向的溯源工具不适配审计人员逐案溯源的场景，本文推出无运行依赖的轻量Python库AuditWeave：采用仅追加哈希链账本统一记录RAG、数仓转换等全流程，可端到端溯源。实测单事件开销仅数十微秒，2000次随机篡改测试全部检出，防篡改可靠性优异。
+
+<FeedbackButtons slug="item:arxiv-2607.09682" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/managing-ai-investments-in-agentic-era" target="_blank" rel="noopener noreferrer">How to manage AI investments in the agentic era</a>
+
+*OpenAI*
+
+这篇研究聚焦智能体时代的企业AI投资管理痛点，提出系统化优化路径：以“单位投入对应有效工作量”为核算标尺，据此针对性提升AI落地效率，同时筛选高价值业务流程重点推进AI规模化部署。该方案可帮企业规避盲目投资误区，切实提升AI投入产出比，适配智能体技术落地的产业阶段需求。
+
+<FeedbackButtons slug="item:openai-blog-managing-ai-investments-in-agentic-era" client:visible />
+
+## <a href="https://openai.com/academy/codex-for-work/how-data-science-teams-use-codex" target="_blank" rel="noopener noreferrer">How data science teams use ChatGPT Work</a>
+
+*OpenAI*
+
+本文聚焦ChatGPT Work在数据科学团队的工作适配场景，结合实际业务输入梳理出五大核心应用方向：可快速生成根因分析简报、业务影响复盘报告、KPI说明文档、限定范围的专项分析内容、数据看板开发规范，能大幅降低团队非核心事务耗时，释放人力投入高价值分析决策环节。
+
+<FeedbackButtons slug="item:openai-blog-how-data-science-teams-use-codex" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+这是一项AI领域的公众互动项目，主题为“邀请提出尖锐问题”：项目方面向全社会公开征集公众关于AI的各类高难度、难以解答的疑问，同时作出公开承诺，后续在研究、回应这些收集到的问题时，会完整公开全部工作过程，做到回应全流程透明，主动接受公众监督。
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+## <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Claude Fable 5</a>
+
+*Anthropic*
+
+Anthropic宣布自7月1日起重新部署Claude Fable 5，本次上线是在对应出口管制解除后推进的，同步完成两项安全升级：更新全链路网络安全防护机制，新增适配产业场景的越狱风险防控框架，在符合监管要求的前提下进一步强化模型安全能力，降低恶意滥用风险。
+
+<FeedbackButtons slug="item:anthropic-redeploying-fable-5" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/empowering-indias-next-generation-of-innovators-with-atl-saathi/" target="_blank" rel="noopener noreferrer">Empowering India’s next generation of innovators with ATL Saathi</a>
+
+*Google DeepMind*
+
+谷歌与印度国家创新使命（AIM）联合推出AI工具ATL Saathi，该产品依托Gemini大模型能力开发，适配印度官方推进的校园科创机器人实验室的教学需求，面向一线教育工作者提供智能支撑，可辅助教师高效开展科创实践、机器人相关教学指导，助力培育印度下一代科创创新人才。
+
+<FeedbackButtons slug="item:deepmind-empowering-indias-next-generation-of-innovators-with-atl-saathi" client:visible />
+
+## <a href="https://deepmind.google/blog/google-deepmind-and-a24-announce-first-of-its-kind-research-partnership/" target="_blank" rel="noopener noreferrer">Google DeepMind and A24 announce first-of-its-kind research partnership</a>
+
+*Google DeepMind*
+
+谷歌旗下顶尖AI研发机构DeepMind与知名独立影视厂牌A24达成行业首创研究合作，双方将探索AI在影视创意生成、制作流程优化等场景的正向应用，核心是为创作者提供辅助工具、释放创意潜力，而非替代人工创作，是AI技术与文娱产业合规融合的标志性跨界尝试。
+
+<FeedbackButtons slug="item:deepmind-google-deepmind-and-a24-announce-first-of-its-kind-research-partnership" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/torch-attention-profile" target="_blank" rel="noopener noreferrer">Profiling in PyTorch (Part 3): Attention is all you profile</a>
+
+*Hugging Face*
+
+本文是PyTorch性能剖析系列第三篇，面向大模型场景聚焦Transformer核心的注意力算子性能诊断。方法上结合内置Profiler的算子级时序、内存追踪能力，配套注意力专属瓶颈识别规则，可精准定位自注意力访存冗余、调度失配等问题。该方案能为FlashAttention适配、稀疏化优化提供明确指引，可有效提升大模型训练推理效率。
+
+<FeedbackButtons slug="item:hf-blog-torch-attention-profile" client:visible />
+
+## <a href="https://huggingface.co/blog/nvidia/open-data-for-agents" target="_blank" rel="noopener noreferrer">Data for Agents</a>
+
+*Hugging Face*
+
+目前你仅提供了论文标题《面向智能体的数据》，未粘贴对应的英文摘要正文内容，无法完成翻译提炼、总结核心方法与结论的需求。请补充上传这篇论文的完整英文摘要文本，我会按照要求输出120字左右、重点突出的中文总结。
+
+<FeedbackButtons slug="item:hf-blog-open-data-for-agents" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+这篇AI对齐论文挑战“理性主体以固定目标为行动导向”的传统预设，提出人类理性核心是行动匹配包含行为、倾向、评价标准、资源的实践网络，而非指向最终目标。若要AI真正适配人类能动性，其决策逻辑需与人类实践型行动逻辑“同型”，该路径既利于对齐人类福祉等伦理要求，也能保障核心安全属性。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+递归自我改进（RSI）是AI自我迭代领域的经典概念，1965年学者古德最早提出相关的超智能机器设想，2008年尤德考斯基明确其核心逻辑：AI可依托现有智能水平，迭代升级支撑自身智能的认知架构。当前AI技术语境下，该反馈路径分为两类：一是模型直接改写自身权重，二是优化自身训练流程实现升级。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/07/450101.html" target="_blank" rel="noopener noreferrer">估值4800亿，DeepSeek火速开启新一轮融资！最快明年IPO</a>
+
+*量子位*
+
+成立仅三年的国产大模型厂商DeepSeek，距上轮融资仅六周便启动新一轮融资，投前估值约4800亿元（较上轮涨37%），刷新国产大模型估值纪录，最快年底递表拟2027年IPO。上轮融超500亿元，腾讯、宁德时代等参投，新轮融资将重点投向算力基建与下一代AI系统研发。
+
+<FeedbackButtons slug="item:qbitai-450101" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/449979.html" target="_blank" rel="noopener noreferrer">阶跃入局，重构智能体时代操作系统</a>
+
+*量子位*
+
+当前全球操作系统正迎60年来最大范式重构，头部厂商纷纷布局争夺智能体时代OS定义权，但旧有“人触发、机响应”逻辑无法适配智能体自主执行需求。阶跃星辰发布全球首个智能体原生OS Step AOS，同步推出相关终端、个人智能体产品，构建起模软硬件三位一体技术闭环。
+
+<FeedbackButtons slug="item:qbitai-449979" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/448475.html" target="_blank" rel="noopener noreferrer">刚刚，一个免费AI Coding选手杀入全球第一梯队</a>
+
+*量子位*
+
+当前海外头部AI编码工具使用门槛抬升、频现封禁问题，开发者亟需稳定易用、性价比高的替代方案。Agnes AI新发布的Agnes-2.5-Flash编码能力跻身全球第一梯队，实测表现对标Claude Opus 4.7无明显差距，官方承诺该模型不限期免费开放，还同步上线了配套桌面端工具。
+
+<FeedbackButtons slug="item:qbitai-448475" client:visible />
