@@ -1,0 +1,183 @@
+---
+lang: en
+translationKey: digest-2026-07-15
+title: "Daily AI Picks · 2026-07-15"
+description: "17 papers · multi-source aggregation + AI summaries"
+date: 2026-07-15
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's content in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Multiple AI research results were released today on platforms including arXiv and Hugging Face, covering fields such as knowledge graphs, alignment, and LLM auditing</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading institutions including OpenAI, Anthropic, and DeepMind announced new updates, covering areas such as agentic investment, Claude deployment, and cross-industry collaboration</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Chinese AI startups have intensive new moves: DeepSeek launches a new round of financing, StepFun enters the agent OS market, and a free AI coding tool ranks among the global first tier</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📈 Investment & Financing</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Big Tech Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Academic Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡 Agents</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ New Tool Releases</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.11111" target="_blank" rel="noopener noreferrer">Know Before Fix: QA-Driven Repository Knowledge Acquisition for Software Issue Resolution</a>
+
+*HF ★ 0 · Haotian Lin, Silin Chen, Xiaodong Gu… · [HF Mirror](https://huggingface.co/papers/2607.11111)*
+
+To address the issues that LLM-based automatic code repair agents are prone to errors due to insufficient repository knowledge, and existing pre-exploration solutions fail to targetedly fill knowledge gaps, this paper proposes the QA-driven ACQUIRE framework: simulating the developer logic of understanding code first before repairing, it first obtains structured repository knowledge through collaboration of question answering modules, then generates patches based on the acquired knowledge. Experiments show that its Pass@1 on SWE-bench is up to 4.4 percentage points higher than existing methods, with low additional overhead.
+
+<FeedbackButtons slug="item:arxiv-2607.11111" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2607.09666" target="_blank" rel="noopener noreferrer">Knowledge Graphs Meet Graph Neural Networks: A Comprehensive Survey</a>
+
+*Chengcheng Sun, Jiayun Tian, Cheng Zhai…*
+
+This survey on the integration of GNN and knowledge graphs fills the gap of no systematic review of GNN applications across the entire KG technical pipeline, and proposes a two-dimensional classification framework: one is the full life cycle dimension covering KG construction, embedding, inference, and application, the other is the technical dimension of GNN models including GCN, GAT, HGNN, etc. It sorts out the advantages and disadvantages of related methods, analyzes the strengths of GNN adapting to various KG tasks, and finally points out existing challenges and future research directions.
+
+<FeedbackButtons slug="item:arxiv-2607.09666" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.09668" target="_blank" rel="noopener noreferrer">Position: Every Ground Truth is a Human Construction, not an Objective Truth</a>
+
+*Charlotte H\"ogberg, Ericka Johnson, Kiri L. Wagstaff*
+
+This position paper in the field of machine learning points out that the ground truth used for model training and evaluation is not an inherently objective measurement standard, but a product of joint construction by humans and technology, with a large number of undisclosed human choices, and is scenario-dependent rather than universal. It recommends that the academic community clarify the trade-off boundaries in ground truth construction and practice the concept of "contextual reliability", which can not only improve the rationality of model application, but also enhance transparency and accountability, and promote interdisciplinary collaboration.
+
+<FeedbackButtons slug="item:arxiv-2607.09668" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.09682" target="_blank" rel="noopener noreferrer">AuditWeave: A Tamper-Evident, Auditor-Navigable Evidence Layer for AI-Assisted and Data-Transformation Workflows</a>
+
+*Vimal Nakrani*
+
+To meet the requirements of post-hoc traceability and tamper-proof records for AI decisions in the regulatory field, as existing operation-oriented traceability tools are not suitable for auditors' case-by-case traceability scenarios, this paper launches AuditWeave, a lightweight Python library with no runtime dependencies: it uses an append-only hash chain ledger to uniformly record the entire process including RAG and data warehouse transformation, supporting end-to-end traceability. Actual measurements show that the overhead per event is only tens of microseconds, and all 2000 random tampering tests were detected, with excellent tamper-proof reliability.
+
+<FeedbackButtons slug="item:arxiv-2607.09682" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/managing-ai-investments-in-agentic-era" target="_blank" rel="noopener noreferrer">How to manage AI investments in the agentic era</a>
+
+*OpenAI*
+
+This research focuses on the pain points of enterprise AI investment management in the agentic era, and proposes a systematic optimization path: taking "effective workload per unit of investment" as the measurement standard, it targetedly improves AI implementation efficiency, while screening high-value business processes to focus on large-scale AI deployment. This solution can help enterprises avoid the pitfall of blind investment, effectively improve the input-output ratio of AI, and adapt to the industry stage needs of agent technology implementation.
+
+<FeedbackButtons slug="item:openai-blog-managing-ai-investments-in-agentic-era" client:visible />
+
+## <a href="https://openai.com/academy/codex-for-work/how-data-science-teams-use-codex" target="_blank" rel="noopener noreferrer">How data science teams use ChatGPT Work</a>
+
+*OpenAI*
+
+This article focuses on the applicable scenarios of ChatGPT Work for data science teams, and sorts out five core application directions combined with actual business input: it can quickly generate root cause analysis briefs, business impact review reports, KPI explanation documents, targeted special analysis content within a limited scope, and data dashboard development specifications, which can greatly reduce the time the team spends on non-core affairs, freeing up manpower to invest in high-value analysis and decision-making links.
+
+<FeedbackButtons slug="item:openai-blog-how-data-science-teams-use-codex" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+This is a public interaction project in the AI field with the theme "Inviting hard questions": the project team openly collects all kinds of difficult, hard-to-answer questions about AI from the public across society, and at the same time makes a public commitment that when researching and responding to these collected questions later, it will fully disclose the entire work process, achieve full transparency in the response process, and proactively accept public supervision.
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+## <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Claude Fable 5</a>
+
+*Anthropic*
+
+Anthropic announced the redeployment of Claude Fable 5 starting July 1. This launch is carried out after the corresponding export controls were lifted, and two security upgrades were completed simultaneously: updating the full-link cybersecurity protection mechanism, and adding a jailbreak risk prevention and control framework adapted to industrial scenarios, further enhancing the model's security capabilities on the premise of complying with regulatory requirements and reducing the risk of malicious abuse.
+
+<FeedbackButtons slug="item:anthropic-redeploying-fable-5" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/empowering-indias-next-generation-of-innovators-with-atl-saathi/" target="_blank" rel="noopener noreferrer">Empowering India’s next generation of innovators with ATL Saathi</a>
+
+*Google DeepMind*
+
+Google and India's Atal Innovation Mission (AIM) jointly launched the AI tool ATL Saathi. This product is developed based on the capabilities of the Gemini LLM, adapted to the teaching needs of campus scientific and technological innovation robot laboratories promoted by the Indian government, and provides intelligent support for frontline educators, assisting teachers to efficiently carry out scientific and technological innovation practice and robot-related teaching guidance, helping to cultivate India's next generation of scientific and technological innovation talents.
+
+<FeedbackButtons slug="item:deepmind-empowering-indias-next-generation-of-innovators-with-atl-saathi" client:visible />
+
+## <a href="https://deepmind.google/blog/google-deepmind-and-a24-announce-first-of-its-kind-research-partnership/" target="_blank" rel="noopener noreferrer">Google DeepMind and A24 announce first-of-its-kind research partnership</a>
+
+*Google DeepMind*
+
+Google's leading AI R&D institution DeepMind has reached a first-of-its-kind research partnership with well-known independent film studio A24. The two parties will explore positive applications of AI in scenarios such as film and television creative generation and production process optimization, with the core of providing auxiliary tools for creators and unlocking creative potential, rather than replacing human creation. This is a landmark cross-industry attempt for the compliant integration of AI technology and the entertainment industry.
+
+<FeedbackButtons slug="item:deepmind-google-deepmind-and-a24-announce-first-of-its-kind-research-partnership" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/torch-attention-profile" target="_blank" rel="noopener noreferrer">Profiling in PyTorch (Part 3): Attention is all you profile</a>
+
+*Hugging Face*
+
+This article is the third part of the PyTorch performance profiling series, focusing on performance diagnosis of the core attention operator of Transformer for LLM scenarios. The method combines the operator-level timing and memory tracking capabilities of the built-in Profiler, with exclusive attention bottleneck identification rules, which can accurately locate problems such as self-attention memory access redundancy and scheduling mismatch. This solution can provide clear guidance for FlashAttention adaptation and sparsification optimization, and effectively improve the efficiency of LLM training and inference.
+
+<FeedbackButtons slug="item:hf-blog-torch-attention-profile" client:visible />
+
+## <a href="https://huggingface.co/blog/nvidia/open-data-for-agents" target="_blank" rel="noopener noreferrer">Data for Agents</a>
+
+*Hugging Face*
+
+Currently you have only provided the paper title *Data for Agents*, and have not pasted the corresponding English abstract content, so the requirement to translate, refine and summarize the core methods and conclusions cannot be fulfilled. Please supplement and upload the full English abstract text of this paper, and I will output a focused Chinese summary of about 120 words as required.
+
+<FeedbackButtons slug="item:hf-blog-open-data-for-agents" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This AI alignment paper challenges the traditional assumption that "rational agents are action-oriented towards fixed goals", and proposes that the core of human rationality is that actions match a practical network including behaviors, tendencies, evaluation standards, and resources, rather than pointing to a final goal. For AI to truly adapt to human agency, its decision-making logic needs to be "isomorphic" with human practical action logic. This path is not only conducive to aligning with ethical requirements such as human well-being, but also guarantees core security attributes.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+Recursive Self-Improvement (RSI) is a classic concept in the field of AI self-iteration. In 1965, scholar Irving John Good first proposed the related concept of ultra-intelligent machines, and in 2008, Eliezer Yudkowsky clarified its core logic: AI can rely on its existing intelligence level to iteratively upgrade the cognitive architecture that supports its own intelligence. In the current AI technology context, this feedback path is divided into two categories: one is the model directly rewriting its own weights, the other is optimizing its own training process to achieve upgrading.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/07/450101.html" target="_blank" rel="noopener noreferrer">Valued at 480 billion yuan, DeepSeek quickly launches a new round of financing! IPO as early as next year</a>
+
+*QbitAI*
+
+DeepSeek, a domestic LLM manufacturer founded only three years ago, has launched a new round of financing just six weeks after its last round, with a pre-money valuation of about 480 billion yuan (up 37% from the last round), breaking the valuation record for domestic LLMs. It plans to submit its listing application as early as the end of this year for an IPO in 2027. The last round raised more than 50 billion yuan, with investors including Tencent and CATL. The new round of financing will be mainly invested in computing infrastructure and the R&D of next-generation AI systems.
+
+<FeedbackButtons slug="item:qbitai-450101" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/449979.html" target="_blank" rel="noopener noreferrer">StepFun enters the market, reimagining the operating system for the agent era</a>
+
+*QbitAI*
+
+Currently, the global operating system is undergoing the largest paradigm shift in 60 years, with leading manufacturers all laying out to compete for the right to define the OS for the agent era, but the old logic of "human triggers, machine responds" cannot adapt to the requirements of autonomous agent execution. StepFun has released Step AOS, the world's first agent-native OS, and simultaneously launched related terminal and personal agent products, building a three-in-one technical closed loop of model, software and hardware.
+
+<FeedbackButtons slug="item:qbitai-449979" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/448475.html" target="_blank" rel="noopener noreferrer">A free AI coding tool has just entered the global first tier</a>
+
+*QbitAI*
+
+Currently, leading overseas AI coding tools have raised usage thresholds and frequent access ban issues, so developers are in urgent need of stable, easy-to-use and cost-effective alternative solutions. The newly released Agnes-2.5-Flash from Agnes AI ranks among the global first tier in coding capability, with measured performance showing no significant gap compared to Claude Opus 4.7. The official promises that the model will be open for free indefinitely, and a supporting desktop tool has also been launched simultaneously.
+
+<FeedbackButtons slug="item:qbitai-448475" client:visible />
