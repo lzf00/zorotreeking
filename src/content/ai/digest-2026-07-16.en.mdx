@@ -1,0 +1,207 @@
+---
+lang: en
+translationKey: digest-2026-07-16
+title: "Daily AI Digest · 2026-07-16"
+description: "20 papers · Multi-source aggregation + AI-generated summaries"
+date: 2026-07-16
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second recap of today's updates</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Multiple AI institutions released cutting-edge technological achievements across multiple domains today, including reasoning models, OCR tools, and agent frameworks</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading vendors including OpenAI, Anthropic and DeepMind announced new updates related to safety, products, and cross-industry collaborations</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">China's domestic AI sector released a world model training solution, industrial inspection products, and updates on WAIC 2026 preparation progress</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📈 Tech Releases</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Big Tech Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡 AI Safety</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Industry Events</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.12625" target="_blank" rel="noopener noreferrer">KnowAct-GUIClaw: Know Deeply, Act Perfectly, Personal GUI Assistant with Self-Evolving Memory and Skill</a>
+
+*HF ★ 7 · Yunxin Li, Jinchao Li, Shibo Su… · [HF Mirror](https://huggingface.co/papers/2607.12625)*
+
+To address the shortcomings of the mainstream GUI automation agent framework OpenClaw, such as poor cross-platform compatibility and lack of self-evolution mechanisms, the research team proposed a new personal GUI assistant KnowAct-GUIClaw. It adopts a "know-plan-act-reflect" architecture, equipped with an evolvable memory and skill library, and supports four major mainstream operating systems. Tests show its long-sequence task accuracy reaches 64.1%, outperforming closed-source models such as GPT-5.5. Its skills can be migrated across base models, and performance is further improved by 8.5% when paired with Kimi-2.6.
+
+<FeedbackButtons slug="item:arxiv-2607.12625" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.12395" target="_blank" rel="noopener noreferrer">Ring-Zero: Scaling Zero RL to a Trillion Parameters for Emergent Reasoning</a>
+
+*HF ★ 2 · Xinyu Tang, Gangqiang Cao, Yurou Liu… · [HF Mirror](https://huggingface.co/papers/2607.12395)*
+
+Existing zero-shot reinforcement learning solutions that require no human annotation only work for small models, and direct scaling leads to issues such as poor readability and redundant inference. To solve these problems, this paper proposes the Ring-Zero training pipeline, which for the first time extends this approach to the 1T parameter scale through optimizations including truncated importance sampling and training-inference ratio correction. Experiments show that scaling significantly improves sample efficiency and performance ceiling, the model spontaneously emerges multiple high-level cognitive abilities and performs excellently on 7 math benchmarks. The paper also proposes a 3-dimensional chain-of-thought evaluation framework, providing reference for large-parameter model research.
+
+<FeedbackButtons slug="item:arxiv-2607.12395" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.13639" target="_blank" rel="noopener noreferrer">OvisOCR2 Technical Report</a>
+
+*HF ★ 1 · Shiyin Lu, Yinglun Li, Yu Xia… · [HF Mirror](https://huggingface.co/papers/2607.13639)*
+
+The research team released OvisOCR2, an end-to-end document parsing model with 0.8B parameters. Taking page images as input, it can output Markdown results containing text, formulas, and tables in reading order. Its training uses filtered real annotations + synthetic data generated from homologous HTML, paired with strategies including supervised fine-tuning, LLM reinforcement learning distillation, and model fusion. It achieves SOTA on multiple public and internal benchmarks, and is the first end-to-end model to top OmniDocBench, which was previously dominated by pipeline methods, with excellent generalization robustness.
+
+<FeedbackButtons slug="item:arxiv-2607.13639" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.13285" target="_blank" rel="noopener noreferrer">Harness Handbook: Making Evolving Agent Harnesses Readable,Navigable, and Editable</a>
+
+*HF ★ 1 · Ruhan Wang, Yucheng Shi, Zongxia Li… · [HF Mirror](https://huggingface.co/papers/2607.13285)*
+
+To address the bottleneck of locating corresponding code for behavioral requirements during iteration of AI agent harnesses, this paper proposes the Harness Handbook solution: combining static analysis with LLM assistance, it automatically generates behavior-centric code mappings, paired with a behavior-guided progressive disclosure mechanism to guide positioning to specific implementations. Tests show that this solution improves the quality of positioning and modification solutions, reduces token consumption, and delivers particularly prominent gains in cross-module and low-frequency execution path scenarios.
+
+<FeedbackButtons slug="item:arxiv-2607.13285" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2607.11896" target="_blank" rel="noopener noreferrer">OmniPMNet: Bridging discrete and gridded PM10 forecasts via omni-query neural processes</a>
+
+*Shuangshuang He, Shuo Wang*
+
+To address the pain points of large local deviations in chemical transport models for PM10 forecasting and graph neural networks only outputting results for discrete sites, the fused model OmniPMNet is proposed: based on convolutional conditional neural processes, it rasterizes site forecasts and fuses them with CAMS grid forecasts, and can output 108-hour PM10 results for both sites and grids simultaneously. Validated on 1618 sites across China in 2024, its site accuracy outperforms baseline graph neural networks, with 30% lower error than CAMS, and even more significant improvements in high-concentration and dust scenarios. (Total 122 characters)
+
+<FeedbackButtons slug="item:arxiv-2607.11896" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.11897" target="_blank" rel="noopener noreferrer">Semidirect Fourier Delta Attention: Phase-Controlled Delta Memory with Constructive Chunk-WY Kernels</a>
+
+*Tiantian Zhang*
+
+When linear attention replaces KV cache with fixed recurrent states, compression leads to limited state tracking and long context memory capabilities. To solve this problem, this paper proposes Semidirect Fourier Delta Attention (SFDA), which replaces real diagonal decay with block-rotated Fourier control, constructs block-wise WY factorization to limit rank growth within fixed blocks, combining formal stability and controllable complexity. Its recurrent memory learning effect is far superior to baseline models with phase disabled.
+
+<FeedbackButtons slug="item:arxiv-2607.11897" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.11928" target="_blank" rel="noopener noreferrer">Repairing Shape-Prior Shortcuts in Long-Range Single-Shot Fringe Projection Profilometry</a>
+
+*Adam Haroon, Cody Fleming, Beiwen Li*
+
+Deep learning models for single-shot fringe projection profilometry have shape-prior shortcuts, relying on object boundaries rather than fringe phase to calculate depth, which cannot be solved by simply adding data or increasing model capacity. This paper proposes PhiCalNet: it outputs sine and cosine representations of wrapped phase, maps depth through a fixed differentiable calibration layer, and introduces fringe order as auxiliary input. On the 1.5-2.1m long-distance test set, its mean absolute error is reduced by 3.3 times compared to the baseline to 4.46mm.
+
+<FeedbackButtons slug="item:arxiv-2607.11928" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/advancing-ai-safety-through-state-and-federal-action" target="_blank" rel="noopener noreferrer">The US is advancing AI safety through state and federal action</a>
+
+*OpenAI*
+
+This article focuses on the advancement path of AI safety in the US, and mainly introduces the "reverse federalism" AI governance scheme proposed by OpenAI. This model abandons the top-down federal legislative approach: first, each state introduces AI regulatory regulations based on local conditions for pilot implementation, and after accumulating sufficient practical experience, a unified national framework for safe and democratized AI governance is summarized and refined, providing a feasible path for US state and federal governments to jointly advance AI safety.
+
+<FeedbackButtons slug="item:openai-blog-advancing-ai-safety-through-state-and-federal-action" client:visible />
+
+## <a href="https://openai.com/index/unlocking-self-improvement-gpt-red" target="_blank" rel="noopener noreferrer">GPT-Red: Unlocking Self-Improvement for Robustness</a>
+
+*OpenAI*
+
+OpenAI has launched the GPT-Red automated red team system, which adopts self-play technology as its core to realize self-iteration of LLM security capabilities: without relying on a large number of manual red team resources, it can automatically generate adversarial test cases and optimize defense mechanisms in a targeted manner. It can effectively improve the security compliance and alignment of AI systems, especially enhancing robustness against prompt injection attacks, providing a feasible path for automated security iteration of LLMs.
+
+<FeedbackButtons slug="item:openai-blog-unlocking-self-improvement-gpt-red" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+Relevant teams in the AI field launched this event to solicit the most challenging and sharp AI-related questions from the public, covering technical ethics, industrial implementation and other directions. The team also made a clear commitment: in the follow-up whole process of responding to and answering these collected AI-related questions, all work details will be fully disclosed to ensure the process is transparent and traceable, and actively accept public supervision.
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+## <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Claude Fable 5</a>
+
+*Anthropic*
+
+AI vendor Anthropic announced that after the lifting of export control restrictions, it will redeploy the Claude Fable 5 LLM starting July 1. The new version has completed two core security upgrades: an iterated cybersecurity protection mechanism adapted to the latest regulatory requirements, and a new industry-grade jailbreak prevention framework, which can greatly reduce the risk of adversarial prompt cracking under compliance premises and improve model operation security.
+
+<FeedbackButtons slug="item:anthropic-redeploying-fable-5" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/empowering-indias-next-generation-of-innovators-with-atl-saathi/" target="_blank" rel="noopener noreferrer">Empowering India’s next generation of innovators with ATL Saathi</a>
+
+*Google DeepMind*
+
+Google, in partnership with India's Atal Innovation Mission (AIM), officially launched the science and innovation education AI tool ATL Saathi. Developed based on Google's Gemini LLM, this product mainly serves frontline educators in India's on-campus robotics science and innovation laboratories, can lower the technical threshold for science and innovation teaching, with the ultimate goal of cultivating the next generation of local scientific and technological innovation reserve talents for India.
+
+<FeedbackButtons slug="item:deepmind-empowering-indias-next-generation-of-innovators-with-atl-saathi" client:visible />
+
+## <a href="https://deepmind.google/blog/google-deepmind-and-a24-announce-first-of-its-kind-research-partnership/" target="_blank" rel="noopener noreferrer">Google DeepMind and A24 announce first-of-its-kind research partnership</a>
+
+*Google DeepMind*
+
+Google DeepMind and leading independent film studio A24 have reached the industry's first cross-border research partnership. Centered on creators' needs, the two parties explore compliant application scenarios of AI in the entire film and television creative process, covering content development, post-production and other links. The goal is to improve production efficiency while retaining A24's unique artistic style, exploring new paradigms for the integration of AI and literary and artistic creation.
+
+<FeedbackButtons slug="item:deepmind-google-deepmind-and-a24-announce-first-of-its-kind-research-partnership" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/shippy-tech-blog" target="_blank" rel="noopener noreferrer">What building Shippy taught us about building agents</a>
+
+*Hugging Face*
+
+At present, only the paper title *What building Shippy taught us about building agents* is provided, with the main body of the abstract missing. Please provide the full English original of the abstract, and I will refine and translate it into a ~120-character Chinese summary as required, highlighting core methods and research conclusions and avoiding redundant restatement.
+
+<FeedbackButtons slug="item:hf-blog-shippy-tech-blog" client:visible />
+
+## <a href="https://huggingface.co/blog/ibm-research/model-routing-is-simple-until-it-isnt" target="_blank" rel="noopener noreferrer">Model Routing Is Simple. Until It Isn’t.</a>
+
+*Hugging Face*
+
+This article focuses on the model routing task in LLM Mixture of Experts (MoE) systems and multi-model scheduling scenarios: previously, the industry generally believed that routing is a low-complexity lightweight task that can be implemented with simple rules and tiny classifiers. This paper verifies that in scenarios of distribution shift, long-tail tasks, and heterogeneous loads, naive routing will cause problems such as unbalanced expert load and inaccurate task matching, leading to a performance drop of more than 12%. Finally, a lightweight routing scheme with online calibration and load awareness is proposed, which balances performance and inference overhead.
+
+<FeedbackButtons slug="item:hf-blog-model-routing-is-simple-until-it-isnt" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This research focuses on AI alignment issues after the orthogonality thesis. Based on virtue ethics, it refutes the traditional perception that "rational agents need to anchor fixed ultimate goals", pointing out that the core of human rationality is that actions adapt to a practical network including rules, evaluation systems, and resources. The study proposes that if AI is to adapt to human will, its decision-making logic needs to be isomorphic to human practical reasoning, a requirement that covers both ethical alignment and safety alignment needs.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+Recursive Self-Improvement (RSI) is a core concept in the field of AI self-upgrade. Scholar I.J. Good first proposed the relevant concept in 1965, defining an architecture that can surpass all human intelligent activities and iteratively design better intelligent systems as an ultra-intelligent machine. In 2008, Eliezer Yudkowsky clarified that its essence is the feedback loop where AI iteratively upgrades its own cognitive mechanism relying on existing capabilities. Contemporary AI can achieve RSI through two paths: directly modifying weights and optimizing training pipelines.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位 (QbitAI)
+
+## <a href="https://www.qbitai.com/2026/07/450896.html" target="_blank" rel="noopener noreferrer">用世界模型给VLA当教练，原力灵机发布DW0.5，把RL搬进虚拟世界</a>
+
+*QbitAI*
+
+To address the pain points of weak generalization, insufficient physical understanding of the Vision-Language-Action (VLA) route for embodied intelligence, and high real-robot training costs, Yuanli Lingji abandoned the idea of binding to a specific technical school, adopted a goal-oriented approach to integrate world models, and released the embodied world model DW0.5 and supporting post-training framework DFOL2.0. Pre-trained with tens of thousands of hours of multi-view real-robot data, the model can carry out RL training in virtual environments, reducing the training cost of embodied AI.
+
+<FeedbackButtons slug="item:qbitai-450896" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/450841.html" target="_blank" rel="noopener noreferrer">测量精度突破1微米，效率提升3倍，优可测高精度闪测仪发布</a>
+
+*QbitAI*
+
+Previously, submicron-level high-precision flash measuring instruments were monopolized by overseas manufacturers. Youkecai spent 3 years on research and development, and launched the FMX series flash measuring instrument through reconstructing the measurement optical path, adopting sub-pixel edge algorithm, and improving the accuracy of the motion platform. It achieves a measurement accuracy of ±0.7 microns, is 3 times more efficient than traditional equipment, has a built-in defect removal function, breaks the foreign technology blockade, and can meet the measurement needs of high-end precision parts such as optical modules.
+
+<FeedbackButtons slug="item:qbitai-450841" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/450831.html" target="_blank" rel="noopener noreferrer">主论坛丨WAIC 2026主论坛（下午场）重磅揭晓！</a>
+
+*QbitAI*
+
+The afternoon session of the main forum of WAIC 2026 (World Artificial Intelligence Conference 2026) will be held at the Shanghai World Expo Center on July 17. This year's conference closely follows the theme of "Intelligent Partners, Co-create the Future", takes three major chapters as the core context, invites top international scientists, entrepreneurs, and young innovators to participate, and conducts discussions around core topics such as AI technology foundation, industrial empowerment paths, and global governance consensus, showcasing the innovative development landscape of the intelligent partner era.
+
+<FeedbackButtons slug="item:qbitai-450831" client:visible />
