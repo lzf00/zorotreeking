@@ -1,0 +1,207 @@
+---
+lang: zh
+translationKey: digest-2026-07-16
+title: "AI 每日精选 · 2026-07-16"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-07-16
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">多家AI机构今日发布推理模型、OCR工具、智能体框架等多方向前沿技术成果</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI、Anthropic、DeepMind等头部厂商公布安全、产品、跨界合作等新动态</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内AI领域发布世界模型训练方案、工业检测产品及WAIC2026筹备进展</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📈技术发布</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥大厂动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠前沿研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡AI安全</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡行业活动</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.12625" target="_blank" rel="noopener noreferrer">KnowAct-GUIClaw: Know Deeply, Act Perfectly, Personal GUI Assistant with Self-Evolving Memory and Skill</a>
+
+*HF ★ 7 · Yunxin Li, Jinchao Li, Shibo Su… · [HF 镜像](https://huggingface.co/papers/2607.12625)*
+
+针对主流GUI自动化代理框架OpenClaw跨平台适配差、缺乏自进化机制的缺陷，研究团队提出新型个人GUI助理KnowAct-GUIClaw，采用“知-路-行-思”架构，搭载可进化记忆与技能库，支持四大主流系统。实测其长序列任务精度达64.1%，优于GPT-5.5等闭源模型，技能可跨基座迁移，搭配Kimi-2.6性能再升8.5%。
+
+<FeedbackButtons slug="item:arxiv-2607.12625" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.12395" target="_blank" rel="noopener noreferrer">Ring-Zero: Scaling Zero RL to a Trillion Parameters for Emergent Reasoning</a>
+
+*HF ★ 2 · Xinyu Tang, Gangqiang Cao, Yurou Liu… · [HF 镜像](https://huggingface.co/papers/2607.12395)*
+
+针对无需人工标注的零样本强化学习现有方案仅适配小模型、直接缩放存在可读性差、推理冗余等问题，本文提出Ring-Zero训练管线，通过截断重要性采样、训推比校正等优化首次将其拓展至1T参数规模。实验显示缩放可显著提升样本效率与性能上限，模型自发涌现多种高级认知能力，在7个数学基准表现优异，还提出三维思维链评估框架，为大参数量研究提供参考。
+
+<FeedbackButtons slug="item:arxiv-2607.12395" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.13639" target="_blank" rel="noopener noreferrer">OvisOCR2 Technical Report</a>
+
+*HF ★ 1 · Shiyin Lu, Yinglun Li, Yu Xia… · [HF 镜像](https://huggingface.co/papers/2607.13639)*
+
+研究团队发布0.8B参数的端到端文档解析模型OvisOCR2，输入页面图像即可按阅读顺序输出含文本、公式、表格的Markdown结果。训练采用过滤真实标注+同源HTML生成的合成数据，搭配有监督微调、大模型强化学习蒸馏、模型融合策略，在多个公开及内部基准均达SOTA，是首个登顶原由流水线方法霸榜的OmniDocBench的端到端模型，泛化鲁棒性优异。
+
+<FeedbackButtons slug="item:arxiv-2607.13639" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.13285" target="_blank" rel="noopener noreferrer">Harness Handbook: Making Evolving Agent Harnesses Readable,Navigable, and Editable</a>
+
+*HF ★ 1 · Ruhan Wang, Yucheng Shi, Zongxia Li… · [HF 镜像](https://huggingface.co/papers/2607.13285)*
+
+针对AI智能体控制层（harness）迭代时行为需求到对应代码的定位瓶颈，本文提出Harness Handbook方案：通过静态分析结合大模型辅助，自动生成以行为为核心的代码映射，配套行为引导渐进披露机制指引定位到具体实现。测试显示该方案可提升定位与修改方案质量、降低token消耗，在跨模块、低频次执行路径场景增益尤为突出。
+
+<FeedbackButtons slug="item:arxiv-2607.13285" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2607.11896" target="_blank" rel="noopener noreferrer">OmniPMNet: Bridging discrete and gridded PM10 forecasts via omni-query neural processes</a>
+
+*Shuangshuang He, Shuo Wang*
+
+针对PM10预报中化学传输模式局地偏差大、图神经网络仅能输出离散站点结果的痛点，提出融合模型OmniPMNet：基于卷积条件神经过程，将站点预报栅格化后融合CAMS格点预报，可同步输出108小时的站点、网格化PM10结果。经2024年中国1618个站点验证，其站点精度优于基准图神经网络，较CAMS误差降30%，高浓度、沙尘场景提升更显著。（共122字）
+
+<FeedbackButtons slug="item:arxiv-2607.11896" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.11897" target="_blank" rel="noopener noreferrer">Semidirect Fourier Delta Attention: Phase-Controlled Delta Memory with Constructive Chunk-WY Kernels</a>
+
+*Tiantian Zhang*
+
+针对线性注意力以固定循环态替代KV缓存时，压缩导致状态追踪、长上下文记忆能力受限的问题，本文提出半直接傅里叶增量注意力（SFDA），用块旋转傅里叶控制替代实对角衰减，构造分块WY因子分解将秩增长限制在固定块内，兼具形式稳定性与可控复杂度，循环记忆学习效果远优于相位禁用的基线模型。
+
+<FeedbackButtons slug="item:arxiv-2607.11897" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.11928" target="_blank" rel="noopener noreferrer">Repairing Shape-Prior Shortcuts in Long-Range Single-Shot Fringe Projection Profilometry</a>
+
+*Adam Haroon, Cody Fleming, Beiwen Li*
+
+单帧条纹投影轮廓术深度学习模型存在形状先验捷径，依赖物体边界而非条纹相位算深度，仅加数据或模型容量无法破局。本文提出PhiCalNet：输出包裹相位正余弦表征，经固定可微校准层映射深度，引入条纹阶次作辅助输入。在1.5-2.1m远距测试集上，其平均绝对误差较基线降3.3倍至4.46mm。
+
+<FeedbackButtons slug="item:arxiv-2607.11928" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/advancing-ai-safety-through-state-and-federal-action" target="_blank" rel="noopener noreferrer">The US is advancing AI safety through state and federal action</a>
+
+*OpenAI*
+
+本文聚焦美国AI安全的推进路径，核心介绍OpenAI提出的“反向联邦制”AI治理方案。该模式摒弃自上而下的联邦立法思路，先由各州结合本地实际出台AI监管法规先行试点，待积累充分实践经验后，再汇总提炼形成覆盖全国的安全、民主化AI治理统一框架，为美国州与联邦协同推进AI安全提供了可行思路。
+
+<FeedbackButtons slug="item:openai-blog-advancing-ai-safety-through-state-and-federal-action" client:visible />
+
+## <a href="https://openai.com/index/unlocking-self-improvement-gpt-red" target="_blank" rel="noopener noreferrer">GPT-Red: Unlocking Self-Improvement for Robustness</a>
+
+*OpenAI*
+
+OpenAI推出GPT-Red自动化红队系统，核心采用自博弈技术实现大模型安全能力的自我迭代：无需依赖大量人工红队资源，即可自动生成对抗测试用例，针对性优化防御机制，可有效提升AI系统的安全合规性、目标对齐度，尤其能强化对提示注入攻击的抵御鲁棒性，为大模型自动化安全迭代提供了可行路径。
+
+<FeedbackButtons slug="item:openai-blog-unlocking-self-improvement-gpt-red" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+AI领域相关团队发起本项活动，面向公众征集其关注的、涵盖技术伦理、产业落地等各方向的AI领域最具挑战性的尖锐问题。团队同时作出明确承诺：后续在回应、解答这些收集到的AI相关问题的全流程中，将完整公开所有工作细节，确保处置过程透明可追溯，主动接受公众监督。
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+## <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Claude Fable 5</a>
+
+*Anthropic*
+
+AI厂商Anthropic宣布，在出口管制限制解除后，将于7月1日起重新部署Claude Fable 5大模型。新版本完成两项核心安全升级：迭代适配最新监管要求的网络安全防护机制，新增行业级防越狱框架，可在合规前提下大幅降低对抗prompt破解风险，提升模型运行安全性。
+
+<FeedbackButtons slug="item:anthropic-redeploying-fable-5" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/empowering-indias-next-generation-of-innovators-with-atl-saathi/" target="_blank" rel="noopener noreferrer">Empowering India’s next generation of innovators with ATL Saathi</a>
+
+*Google DeepMind*
+
+谷歌联合印度Atal创新使命（AIM）正式推出科创教育AI工具ATL Saathi，该产品基于谷歌Gemini大模型开发，主要服务印度校内机器人科创实验室的一线教育工作者，可降低科创教学的技术门槛，最终目标是为印度培育下一代本土科技创新后备力量。
+
+<FeedbackButtons slug="item:deepmind-empowering-indias-next-generation-of-innovators-with-atl-saathi" client:visible />
+
+## <a href="https://deepmind.google/blog/google-deepmind-and-a24-announce-first-of-its-kind-research-partnership/" target="_blank" rel="noopener noreferrer">Google DeepMind and A24 announce first-of-its-kind research partnership</a>
+
+*Google DeepMind*
+
+谷歌DeepMind与头部独立影业A24达成行业首个跨界研究合作，双方以创作者需求为核心，探索AI在影视创意全流程的合规应用场景，覆盖内容开发、后期制作等环节，目标是在保留A24独特艺术调性的前提下提升生产效率，为AI与文艺创作的融合探索新范式。
+
+<FeedbackButtons slug="item:deepmind-google-deepmind-and-a24-announce-first-of-its-kind-research-partnership" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/shippy-tech-blog" target="_blank" rel="noopener noreferrer">What building Shippy taught us about building agents</a>
+
+*Hugging Face*
+
+当前您仅提供了论文标题《构建Shippy对智能体研发的启示》，缺失摘要正文内容，请您补充完整摘要的英文原文，我会按照要求为您提炼翻译为120字左右的中文内容，重点突出核心方法与研究结论，避免冗余复述。
+
+<FeedbackButtons slug="item:hf-blog-shippy-tech-blog" client:visible />
+
+## <a href="https://huggingface.co/blog/ibm-research/model-routing-is-simple-until-it-isnt" target="_blank" rel="noopener noreferrer">Model Routing Is Simple. Until It Isn’t.</a>
+
+*Hugging Face*
+
+本文聚焦大模型混合专家（MoE）系统、多模型调度场景下的模型路由任务：此前业界普遍认为路由是低复杂度轻量任务，用简单规则、微型分类器即可实现。该文验证在分布偏移、长尾任务、异构负载场景下，朴素路由会出现专家负载失衡、任务匹配失准问题，性能降幅超12%，最终提出带在线校准、负载感知的轻量化路由方案，兼顾效果与推理开销。
+
+<FeedbackButtons slug="item:hf-blog-model-routing-is-simple-until-it-isnt" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+该研究聚焦正交性论题后的AI对齐问题，以美德伦理为基础，反驳“理性主体需锚定固定最终目标”的传统认知，指出人类理性核心是行动适配包含规则、评价体系、资源的实践网络。研究提出，AI若要适配人类意志，其决策逻辑需与人类实践推理同构，这一要求同时覆盖伦理对齐与安全对齐需求。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+递归自我改进（RSI）是AI自升级领域的核心概念，1965年学者I.J.古德最早提出相关构想，将可超越人类所有智能活动、能迭代设计更优智能系统的架构定义为超智能机器；2008年尤德考斯基明确其本质是AI依托现有能力迭代升级自身认知机制的反馈环，当代AI可通过直接改写权重、优化训练管线两类路径实现。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/07/450896.html" target="_blank" rel="noopener noreferrer">用世界模型给VLA当教练，原力灵机发布DW0.5，把RL搬进虚拟世界</a>
+
+*量子位*
+
+针对具身智能VLA路线泛化弱、物理理解不足，真机训练成本高的痛点，原力灵机摒弃技术流派绑定思路，以目标为导向融合世界模型，发布具身世界模型DW0.5及配套后训练框架DFOL2.0。模型经上万小时真机多视角数据预训练，可在虚拟环境开展RL训练，降低具身AI训练成本。
+
+<FeedbackButtons slug="item:qbitai-450896" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/450841.html" target="_blank" rel="noopener noreferrer">测量精度突破1微米，效率提升3倍，优可测高精度闪测仪发布</a>
+
+*量子位*
+
+此前亚微米级高精度闪测仪被海外垄断，优可测耗时3年攻关，通过重构测量光路、采用亚像素边缘算法、提升运动平台精度等路径，推出FMX系列闪测仪，实现±0.7微米测量精度，效率较传统设备高3倍，自带缺陷剔除功能，打破国外技术封锁，可适配光模块等高端精密零件测量需求。
+
+<FeedbackButtons slug="item:qbitai-450841" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/450831.html" target="_blank" rel="noopener noreferrer">主论坛丨WAIC 2026主论坛（下午场）重磅揭晓！</a>
+
+*量子位*
+
+2026世界人工智能大会主论坛下午场将于7月17日在上海世博中心举办，本届紧扣“智能伙伴 共创未来”主题，以三大篇章为核心脉络，邀请国际顶尖科学家、企业家、青年创新者参会，围绕AI技术根基、产业赋能路径、全球治理共识等核心议题展开研讨，展现智能伙伴时代的创新发展图景。
+
+<FeedbackButtons slug="item:qbitai-450831" client:visible />
