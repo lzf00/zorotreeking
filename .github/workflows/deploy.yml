@@ -73,6 +73,10 @@ jobs:
           PUBLIC_GISCUS_REPO_ID: ${{ vars.PUBLIC_GISCUS_REPO_ID }}
           PUBLIC_GISCUS_CATEGORY: ${{ vars.PUBLIC_GISCUS_CATEGORY }}
           PUBLIC_GISCUS_CATEGORY_ID: ${{ vars.PUBLIC_GISCUS_CATEGORY_ID }}
+          # 站长平台验证 meta（BaseLayout 条件渲染，未配置不输出）
+          PUBLIC_GOOGLE_VERIFICATION: ${{ vars.PUBLIC_GOOGLE_VERIFICATION }}
+          PUBLIC_BAIDU_VERIFICATION: ${{ vars.PUBLIC_BAIDU_VERIFICATION }}
+          PUBLIC_BING_VERIFICATION: ${{ vars.PUBLIC_BING_VERIFICATION }}
         run: npm run build
 
       - name: Verify required secrets
@@ -136,6 +140,14 @@ jobs:
       - name: Ping IndexNow
         continue-on-error: true
         run: npx tsx scripts/indexnow-ping.ts
+
+      # 百度普通收录主动推送（百度不支持 IndexNow）
+      # BAIDU_PUSH_TOKEN 未配置时脚本自动跳过
+      - name: Push to Baidu
+        continue-on-error: true
+        env:
+          BAIDU_PUSH_TOKEN: ${{ secrets.BAIDU_PUSH_TOKEN }}
+        run: npx tsx scripts/baidu-push.ts
 
       - name: Summary
         run: |
