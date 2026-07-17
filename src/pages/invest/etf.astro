@@ -42,13 +42,14 @@ type EtfSnapshot = {
 };
 
 const ETF_META: Record<string, { name: string; track: string; exch: string }> = {
-  "510300": { name: "华泰柏瑞沪深300ETF", track: "沪深300", exch: "上交所" },
-  "510310": { name: "易方达沪深300ETF",   track: "沪深300", exch: "上交所" },
-  "510330": { name: "华夏沪深300ETF",     track: "沪深300", exch: "上交所" },
-  "159919": { name: "嘉实沪深300ETF",     track: "沪深300", exch: "深交所" },
-  "510050": { name: "华夏上证50ETF",      track: "上证50",  exch: "上交所" },
-  "510500": { name: "南方中证500ETF",     track: "中证500", exch: "上交所" },
-  "512100": { name: "南方中证1000ETF",    track: "中证1000", exch: "上交所" },
+  // 命名统一为财联社/行情软件口径：产品 + 基金公司后缀（与盘中实时板块一致）
+  "510300": { name: "沪深300ETF华泰柏瑞", track: "沪深300", exch: "上交所" },
+  "510310": { name: "沪深300ETF易方达",   track: "沪深300", exch: "上交所" },
+  "510330": { name: "沪深300ETF华夏",     track: "沪深300", exch: "上交所" },
+  "159919": { name: "沪深300ETF嘉实",     track: "沪深300", exch: "深交所" },
+  "510050": { name: "上证50ETF华夏",      track: "上证50",  exch: "上交所" },
+  "510500": { name: "中证500ETF南方",     track: "中证500", exch: "上交所" },
+  "512100": { name: "中证1000ETF南方",    track: "中证1000", exch: "上交所" },
 };
 
 const snapshotPath = path.resolve("./src/data/etf-three-factor-latest.json");
