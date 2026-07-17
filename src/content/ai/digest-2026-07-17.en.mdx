@@ -1,0 +1,215 @@
+---
+lang: en
+translationKey: digest-2026-07-17
+title: "Daily AI Highlights · 2026-07-17"
+description: "21 papers · multi-source aggregation + AI summaries"
+date: 2026-07-17
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second daily roundup</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Cutting-edge AI academic results released across multiple platforms today, covering world models, KV cache optimization, federated explainable AI and other fields</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading players including OpenAI, Anthropic, DeepMind released new updates, covering AI safety, product iteration, public welfare implementation and more</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Domestic AI industry is seeing active developments, with new progress made on Baidu agents, Li Auto's self-developed chips, and general robotics frameworks</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Big Tech Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Agents</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🚗 In-vehicle AI</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Industry Progress</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.15207" target="_blank" rel="noopener noreferrer">BadWAM: When World-Action Models Dream Right but Act Wrong</a>
+
+*HF ★ 5 · Qi Li, Xingyi Yang, Xinchao Wang · [HF Mirror](https://huggingface.co/papers/2607.15207)*
+
+Against the industry consensus that world-action models (WAM) that couple action generation and future prediction have stronger robustness, this paper proposes the BadWAM evaluation framework, which launches two types of WAM-specific adversarial attacks through minor visual perturbations: highly destructive pure action attacks, and imagination-preserving attacks that balance stealth. Tests show both types of attacks can significantly reduce the success rate of WAM closed-loop tasks, and the latter can take effect with minimal prediction drift, exposing unique security vulnerabilities of WAMs.
+
+<FeedbackButtons slug="item:arxiv-2607.15207" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.15038" target="_blank" rel="noopener noreferrer">Video = World + Event Stream</a>
+
+*HF ★ 5 · Lianghua Huang, Zhi-Fan Wu, Yupeng Shi… · [HF Mirror](https://huggingface.co/papers/2607.15038)*
+
+This release of Wan-Streamer v0.3 proposes the core paradigm of "Video = Static World + Dynamic Event Stream", which decomposes video into stable context and time-varying dynamic information. A general pretraining task is designed based on this framework, which can predict real-time dynamic responses given the world state and input, adapting to multiple types of real-time downstream tasks. It has now been implemented for full-duplex real-time audio and video interaction, with performance parameters consistent with v0.2, and total interaction latency of about 550ms under normal network conditions.
+
+<FeedbackButtons slug="item:arxiv-2607.15038" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.14777" target="_blank" rel="noopener noreferrer">SEED: Self-Evolving On-Policy Distillation for Agentic Reinforcement Learning</a>
+
+*HF ★ 4 · Jinyang Wu, Shuo Yang, Zhengxi Lu… · [HF Mirror](https://huggingface.co/papers/2607.14777)*
+
+To address the issues of sparse outcome-oriented rewards and the supervision gap between episode-level feedback and token-level policy learning in agent reinforcement learning, this paper proposes the SEED self-evolving on-policy distillation framework: it extracts post-hoc skills from on-policy trajectories, generates dense token-level distillation signals for joint optimization with the original RL objective, and synchronously upgrades skill extraction capabilities during policy iteration. Experiments show that this method significantly improves performance, sampling efficiency and generalization across multiple types of agent tasks.
+
+<FeedbackButtons slug="item:arxiv-2607.14777" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.15275" target="_blank" rel="noopener noreferrer">RoboTTT: Context Scaling for Robot Policies</a>
+
+*HF ★ 1 · Yunfan Jiang, Yevgen Chebotar, Ruijie Zheng… · [HF Mirror](https://huggingface.co/papers/2607.15275)*
+
+To address the pain point of excessively short visual-motor context in existing robot foundation models, NVIDIA proposes the RoboTTT strategy: it integrates test-time training into vision-language-action models, paired with sequence action forcing and truncated backpropagation techniques, which can expand the context to 8K steps without increasing inference latency. The model delivers 87% higher performance than the single-step baseline, and completes a 5-minute ten-stage assembly task for the first time, confirming that context length is a new scaling dimension for robot foundation models.
+
+<FeedbackButtons slug="item:arxiv-2607.15275" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.14431" target="_blank" rel="noopener noreferrer">Smarter and Cheaper at Once: Byte-Exact KV-Cache Grafting Turns a Frozen Small Model into a Verified-Knowledge Flywheel</a>
+
+*HF ★ 1 · Sietse Schelpe · [HF Mirror](https://huggingface.co/papers/2607.14431)*
+
+This study proposes a solution that improves capability while reducing costs without modifying the weights of frozen small models: verified knowledge is stored as byte-exact KV cache segments, which are directly grafted during inference, with results completely consistent with recalculation. Tests show that after grafting the knowledge base to Gemma-12B, its AIME 2025 accuracy increased from 80% to 93.3%, outperforming the 31B version, with the number of inference tokens reduced by 6574 times and energy consumption cut by 8700 times. It can also expand the available context to nearly 2.9 million tokens with no additional VRAM usage.
+
+<FeedbackButtons slug="item:arxiv-2607.14431" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2607.13042" target="_blank" rel="noopener noreferrer">Automatic Differentiation from Scratch: How PyTorch Computes Gradients in Physics-Informed Neural Networks</a>
+
+*Abdeladhim Tahimi*
+
+This paper breaks down the gradient calculation logic of PyTorch automatic differentiation in Physics-Informed Neural Networks (PINN): addressing the requirement for two layers of differentiation in PINN training, it takes a 1-3-3-1 structure MLP solving the y’+y=0 initial value problem as an example, tracks the full process of forward graph construction, one-time reverse calculation of gradients for all 22 parameters, and implementation of graph-in-graph via the create_graph parameter, verifies that all adjoint values are consistent with manual derivation, and connects the sensitivity framework with PyTorch's vector-Jacobian product logic.
+
+<FeedbackButtons slug="item:arxiv-2607.13042" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.13043" target="_blank" rel="noopener noreferrer">Beyond Backbone Backpropagation: A Decoupled Strategy for Efficient Transfer Learning</a>
+
+*Daniel Vila-Cruz, Laura Morán-Fernández, Verónica Bolón-Canedo*
+
+To address the high computational cost and deployment limitations of deep learning image classification transfer learning, this paper proposes a lightweight decoupled training strategy: only the model normalization layer is adjusted, features are precomputed once to decouple feature extraction and classifier optimization, paired with a classification head with margin weighted loss, eliminating the need for end-to-end backpropagation. Verified across 7 mainstream architectures and 3 medical datasets, this method significantly reduces training time, with only minimal accuracy drop or even better performance than baselines, and drastically reduced carbon emissions, making it suitable for resource-constrained scenarios.
+
+<FeedbackButtons slug="item:arxiv-2607.13043" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.13045" target="_blank" rel="noopener noreferrer">Federated Explainable Artificial Intelligence: Roles, Architectures, Evaluation, and Open Challenges</a>
+
+*Masoume Gholizade, Fabrizio Ruffini, Pietro Ducange…*
+
+This survey in the field of Federated Explainable Artificial Intelligence (FedXAI) focuses on the pain point that federated learning can protect privacy but produces black-box models, clarifying that FedXAI can meet both privacy protection and algorithm interpretability requirements. The survey sorts out the evolution path of integrating interpretability into the full process of federated learning, builds a classification system to organize existing technologies, points out the lack of unified evaluation benchmarks, identifies core challenges such as non-IID scenario adaptation and security, and provides a reference framework for building trusted federated AI.
+
+<FeedbackButtons slug="item:arxiv-2607.13045" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/why-teens-deserve-access-safe-ai" target="_blank" rel="noopener noreferrer">Why teens deserve access to safe AI</a>
+
+*OpenAI*
+
+This article focuses on the rights of teenagers to access safe AI services, introducing OpenAI's core measures to optimize ChatGPT for teenage users: building age-appropriate content protection mechanisms, supporting learning aids, launching parental control features, and collaborating with professional forces in the field. These explorations not only meet the needs of teenagers to use AI safely, but also provide practical reference for the implementation of AI products friendly to minors.
+
+<FeedbackButtons slug="item:openai-blog-why-teens-deserve-access-safe-ai" client:visible />
+
+## <a href="https://openai.com/index/cars24" target="_blank" rel="noopener noreferrer">How Cars24 scales conversations and builds faster with OpenAI</a>
+
+*OpenAI*
+
+Indian used car e-commerce platform Cars24 has built intelligent voice and chat agents based on OpenAI technology, while implementing Agent intelligent workflows across all teams in the company. After deployment, the system can process more than one million minutes of user conversations per month, successfully recovering 12% of lost sales leads, which not only improves the efficiency of responding to user needs, but also reduces manual operation costs, and significantly accelerates the overall business expansion and iteration speed.
+
+<FeedbackButtons slug="item:openai-blog-cars24" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+To fully respond to various public questions about the AI field, the relevant team has launched a public collection campaign, soliciting difficult core AI-related questions raised by the public across society. The team also explicitly promises that in the subsequent process of researching all collected questions and providing official responses, the entire workflow and research details will be made public to ensure work transparency.
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+## <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Claude Fable 5</a>
+
+*Anthropic*
+
+Anthropic announced that with the lifting of relevant export controls, it will redeploy the Claude Fable 5 large model starting July 1. The launched version has completed two core security upgrades: iteratively optimized cybersecurity protection mechanisms, and a new jailbreak prevention framework adapted to industry scenarios, which can effectively reduce the risk of malicious abuse of the model. Relevant services previously restricted by controls will also be restored and opened simultaneously.
+
+<FeedbackButtons slug="item:anthropic-redeploying-fable-5" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/our-approach-to-bioresilience/" target="_blank" rel="noopener noreferrer">Our approach to bioresilience</a>
+
+*Google DeepMind*
+
+Google DeepMind and Isomorphic Labs recently jointly released their core technical roadmap and supporting AI models in the field of bioresilience. Bioresilience research focuses on meeting the needs of scenarios such as responding to emerging infectious diseases and unknown biological threats. Subsequent related results are expected to enable core applications such as rapid vaccine and drug development and epidemic risk early warning, providing AI technical support for the construction of a global biosafety protection system.
+
+<FeedbackButtons slug="item:deepmind-our-approach-to-bioresilience" client:visible />
+
+## <a href="https://deepmind.google/blog/empowering-indias-next-generation-of-innovators-with-atl-saathi/" target="_blank" rel="noopener noreferrer">Empowering India’s next generation of innovators with ATL Saathi</a>
+
+*Google DeepMind*
+
+Google, together with India's Atal Innovation Mission (AIM), has launched ATL Saathi, an AI tool powered by the Gemini large model, which mainly serves science and technology innovation education practitioners in India's campus Atal Tinkering Labs (ATL). It can support the implementation of science and technology innovation courses such as robotics, lower the threshold of science and technology innovation teaching, provide AI support for youth science and technology innovation education, and help cultivate India's next generation of local innovative talents.
+
+<FeedbackButtons slug="item:deepmind-empowering-indias-next-generation-of-innovators-with-atl-saathi" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/nemotron-3-embed-wins-rteb" target="_blank" rel="noopener noreferrer">NVIDIA Nemotron 3 Embed Ranks #1 Overall on RTEB, Advancing Agentic Retrieval</a>
+
+*Hugging Face*
+
+NVIDIA's Nemotron 3 Embed embedding model, built specifically for agent retrieval, has optimized fine-grained semantic matching, cross-domain generalization and long text representation capabilities, and currently ranks first overall on the mainstream RTEB retrieval benchmark. The model can effectively improve the effect of Retrieval-Augmented Generation and the tool call accuracy of LLM agents, providing more reliable retrieval capability support for the implementation of high-level agents.
+
+<FeedbackButtons slug="item:hf-blog-nemotron-3-embed-wins-rteb" client:visible />
+
+## <a href="https://huggingface.co/blog/Dharma-AI/newer-models-same-advantages" target="_blank" rel="noopener noreferrer">Newer Models, Same Advantage</a>
+
+*Hugging Face*
+
+This paper studies the competitive landscape of large model generational iteration, systematically testing more than 10 mainstream large models of different generations from the three major series of GPT, Claude, and Gemini, covering more than 2000 test tasks in 6 categories including inference, multimodality, and code. The conclusion shows that generational upgrades of various manufacturers have not broken the original performance echelons, manufacturers that were dominant in the first generation still maintain their lead, and technical path endowments determine long-term competitive advantages.
+
+<FeedbackButtons slug="item:hf-blog-newer-models-same-advantages" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This article focuses on the AI alignment problem, refuting the core premise of the orthogonality hypothesis that "rational agents require preset fixed final goals" from the perspective of virtue ethics. The study points out that human rationality is not directed at preset goals, but adapts actions to a practical network containing elements such as norms and resources, and proposes that to achieve safe, compliant AI that can collaborate with humans, its decision-making logic needs to match the human practice-based action reasoning framework.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This article sorts out the conceptual evolution of Recursive Self-Improvement (RSI): when I.J. Good proposed the "superintelligence" concept in 1965, it already involved relevant logic, that is, systems surpassing human intelligence can design better agents on their own to achieve iterative upgrades; in 2008, Eliezer Yudkowsky clarified that its core is the feedback loop where AI optimizes its cognitive architecture relying on its own capabilities. Current RSI in the AI field includes both the direct rewriting of its own weights by the model, and the broader form of optimizing its own training pipeline.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/07/451691.html" target="_blank" rel="noopener noreferrer">Baidu Dazi named WAIC 2026 "Treasure of the Exhibition", full agent product matrix to be unveiled</a>
+
+*QbitAI*
+
+In July, Baidu's general agent "Baidu Dazi" was awarded the "Treasure of the Exhibition" at WAIC 2026, a highly prestigious honor that selects fewer than 10 exhibiting products each year. Baidu Dazi can complete complex office tasks across multiple scenarios, and its daily query volume has increased 20 times since launch. At this conference, Baidu will also exhibit its full-stack AI capabilities and a range of agent matrix products, covering the needs of multiple types of users including individuals, developers, and enterprises.
+
+<FeedbackButtons slug="item:qbitai-451691" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/451576.html" target="_blank" rel="noopener noreferrer">New Li Auto L6 launched at 249,800 yuan! L9's same self-developed chip and central control screen carried over, full configuration in one trim with no price increase</a>
+
+*QbitAI*
+
+Li Auto's new L6 no longer divides trim levels by intelligence features, only launching a single Ultra version, with flagship configurations from the L9 such as the same self-developed Mach M100 chip, 29-inch 6K large screen, and all-aluminum suspension carried over. It is equipped with a 51kWh battery supporting 12-minute fast charging, fixing the previous generation's shortcomings in range, chassis, and cockpit, while the price remains unchanged at 249,800 yuan. It is Li Auto's core volume model to maintain its range extender advantage and balance sales volume and gross margin.
+
+<FeedbackButtons slug="item:qbitai-451576" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/451403.html" target="_blank" rel="noopener noreferrer">World's first! Galaxy General's new framework can be deployed only with human demonstration videos, putting Tesla under pressure</a>
+
+*QbitAI*
+
+Galaxy General has released WAM-TTT, the world's first test-time post-training framework for embodied intelligence, migrating the test-time training paradigm of large models to robot control for the first time. The framework allows robots to quickly understand scenarios and store them in temporary memory through human demonstration videos. When adapting to new environments, no retraining is required and original capabilities are not lost, solving the common industry pain point of deployment generalization degradation, and opening the post-training era for embodied intelligence.
+
+<FeedbackButtons slug="item:qbitai-451403" client:visible />
