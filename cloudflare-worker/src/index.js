@@ -14,10 +14,23 @@
 // 不能用 "*"——否则任何 opener（恶意第三方）都能拿到 GitHub access token。
 const DEFAULT_CMS_ORIGIN = "https://www.zorotreeking.online";
 
+// ── 通用 OAuth 反代路由（TrailLens 后端 OAUTH_PROXY_BASE 走这里）──
+// 后端硬编码路径映射,不能改路径名。签名对齐 apps/api/traillens_api/routes/oauth.py
+const OAUTH_PROXY_ROUTES = {
+  "/google/token":    "https://oauth2.googleapis.com/token",
+  "/google/userinfo": "https://www.googleapis.com/oauth2/v3/userinfo",
+  "/github/token":    "https://github.com/login/oauth/access_token",
+  "/github/user":     "https://api.github.com/user",
+};
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     const cmsOrigin = (env.CMS_ORIGIN || DEFAULT_CMS_ORIGIN).trim();
+
+    // ── 0. 通用 OAuth 反代(TrailLens 等后端调用)──
+    const upstream = OAUTH_PROXY_ROUTES[url.pathname];
+    if (upstream) return proxyToUpstream(request, upstream, url);
 
     // ── 1. 起步：重定向到 GitHub 授权页 ──
     if (url.pathname === "/auth") {
@@ -78,11 +91,61 @@ export default {
     }
 
     // ── 健康检查 / 默认页 ──
-    return new Response("Decap OAuth proxy. Endpoints: /auth, /callback", {
+    const lines = [
+      "OAuth proxy · zorotreeking",
+      "",
+      "Decap CMS:",
+      "  GET /auth",
+      "  GET /callback",
+      "",
+      "TrailLens 后端反代:",
+      ...Object.keys(OAUTH_PROXY_ROUTES).map((k) => `  ${k}  →  ${OAUTH_PROXY_ROUTES[k]}`),
+    ];
+    return new Response(lines.join("\n"), {
       headers: { "Content-Type": "text/plain; charset=utf-8" },
     });
   },
 };
+
+/* ── 通用反代:保留 method/headers/body/query,剥掉 Host/CF-* ── */
+async function proxyToUpstream(request, upstreamUrl, incomingUrl) {
+  const target = new URL(upstreamUrl);
+  target.search = incomingUrl.search;
+
+  const headers = new Headers(request.headers);
+  headers.delete("Host");
+  headers.delete("CF-Connecting-IP");
+  headers.delete("CF-Ray");
+  headers.delete("CF-Visitor");
+  headers.delete("X-Forwarded-For");
+  headers.delete("X-Real-IP");
+
+  // GitHub API 强制要求 User-Agent
+  if (upstreamUrl.startsWith("https://api.github.com") && !headers.has("User-Agent")) {
+    headers.set("User-Agent", "zorotreeking-oauth-proxy");
+  }
+
+  const init = {
+    method: request.method,
+    headers,
+    body: ["GET", "HEAD"].includes(request.method) ? undefined : request.body,
+    redirect: "manual",
+  };
+
+  try {
+    const upstream = await fetch(target.toString(), init);
+    return new Response(upstream.body, {
+      status: upstream.status,
+      statusText: upstream.statusText,
+      headers: upstream.headers,
+    });
+  } catch (e) {
+    return new Response(`upstream_fetch_failed: ${e.message}`, {
+      status: 502,
+      headers: { "Content-Type": "text/plain" },
+    });
+  }
+}
 
 function jsonError(msg, status) {
   return new Response(JSON.stringify({ error: msg }), {
