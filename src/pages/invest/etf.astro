@@ -112,36 +112,61 @@ function lightIcon(l: string): string {
 <BaseLayout title="ETF 三因子监测" description="国家队 ETF 资金监测：量能 50% + 方向 20% + 份额 30%">
   <main class="pt-12 pb-16">
 
-    <section class="max-w-5xl mx-auto px-5 pb-6">
+    <section class="max-w-5xl mx-auto px-5 pb-8">
       <a href={pathWithLang("/invest", lang)} class="text-xs uppercase tracking-[0.18em] text-zinc-500 hover:text-section-invest transition-colors">
         ← {t("section.invest.title")}
       </a>
-      <h1 class="mt-6 font-serif text-4xl sm:text-6xl leading-[0.95] tracking-tight text-section-invest">🛡️ ETF 三因子监测</h1>
+      <h1 class="mt-6 font-serif text-4xl sm:text-6xl leading-[0.95] tracking-tight text-section-invest">🛡️ ETF 资金监测</h1>
       <p class="mt-3 text-sm sm:text-base text-[var(--text-secondary)]">
-        国家队 · 中央汇金 ETF 资金信号 · 量能 50% + 方向 20% + 份额 30%
+        宽基 ETF 盘中实时成交 + 国家队三因子信号（量能 50% + 方向 20% + 份额 30%）
       </p>
-      <p class="mt-2 text-xs text-[var(--text-tertiary)] font-mono">
-        数据源 akshare + 腾讯财经 · 工作日 19:30 BJT 自动更新
-        {snap && <span> · 分析日 <strong>{snap.target_date}</strong> · 归档 {asOfLabel}</span>}
-      </p>
-      <p class="mt-1 text-[11px] text-[var(--text-tertiary)] font-mono">
-        <span class="inline-flex items-center gap-1">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          下次刷新：{nextRefresh}
-        </span>
-      </p>
+      <div class="mt-5 flex flex-wrap gap-2">
+        <a href="#live" class="inline-flex items-center gap-1.5 text-xs font-medium border border-[var(--border)] rounded-full px-3.5 py-1.5 hover:border-red-400 hover:text-red-600 dark:hover:text-red-400 transition-colors">
+          ⚡ 盘中实时 <span class="text-[10px] font-mono text-[var(--text-tertiary)]">60s 刷新</span>
+        </a>
+        <a href="#daily" class="inline-flex items-center gap-1.5 text-xs font-medium border border-[var(--border)] rounded-full px-3.5 py-1.5 hover:border-amber-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors">
+          🛡️ 每日汇总 <span class="text-[10px] font-mono text-[var(--text-tertiary)]">19:30 更新</span>
+        </a>
+      </div>
     </section>
 
-    <!-- 0. 盘中实时成交监测（东财延迟约 1 分钟；60s 轮询，收盘停） -->
-    <section class="max-w-5xl mx-auto px-5 pb-10">
-      <div class="flex items-center gap-2 mb-3">
-        <h2 class="text-base font-semibold tracking-tight">⚡ 宽基 ETF 实时成交</h2>
-        <span class="text-[10px] uppercase tracking-[0.15em] text-[var(--text-tertiary)] font-mono border border-[var(--border)] rounded-full px-2 py-0.5">LIVE</span>
+    <!-- ═══ 板块① 盘中实时（东财延迟约 1 分钟；60s 轮询，收盘停） ═══ -->
+    <section id="live" class="max-w-5xl mx-auto px-5 pb-14 scroll-mt-20">
+      <div class="border-t-2 border-[var(--border)] pt-6 mb-5">
+        <div class="text-[11px] uppercase tracking-[0.25em] text-[var(--text-tertiary)] font-mono mb-1.5">Section 01 · Intraday</div>
+        <div class="flex items-center gap-2.5">
+          <h2 class="text-xl sm:text-2xl font-bold tracking-tight">⚡ 盘中实时</h2>
+          <span class="text-[10px] uppercase tracking-[0.15em] font-mono rounded-full px-2 py-0.5 bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-900">LIVE</span>
+        </div>
+        <p class="mt-1.5 text-sm text-[var(--text-secondary)]">12 只宽基 ETF 成交额盯盘 · 交易时段每 60 秒自动刷新 · 财联社「超昨日全天」口径</p>
       </div>
       <EtfLiveTurnover client:visible />
       <p class="mt-2 text-[11px] text-[var(--text-tertiary)]">
-        实时维度只有价格与成交额；三因子里的「份额」数据交易所盘后披露，见下方每日更新板块。
+        实时维度只有价格与成交额；三因子里的「份额」数据交易所盘后披露，见下方每日汇总板块。
       </p>
+    </section>
+
+    <!-- ═══ 板块② 每日汇总（三因子模型，盘后 19:30） ═══ -->
+    <section id="daily" class="max-w-5xl mx-auto px-5 pb-6 scroll-mt-20">
+      <div class="border-t-2 border-[var(--border)] pt-6">
+        <div class="text-[11px] uppercase tracking-[0.25em] text-[var(--text-tertiary)] font-mono mb-1.5">Section 02 · Daily</div>
+        <div class="flex items-center gap-2.5">
+          <h2 class="text-xl sm:text-2xl font-bold tracking-tight">🛡️ 每日汇总 · 三因子模型</h2>
+        </div>
+        <p class="mt-1.5 text-sm text-[var(--text-secondary)]">
+          国家队 · 中央汇金资金信号 · 量能 50% + 方向 20% + 份额 30%
+        </p>
+        <p class="mt-2 text-xs text-[var(--text-tertiary)] font-mono">
+          数据源 akshare + 腾讯财经 · 工作日 19:30 BJT 自动更新
+          {snap && <span> · 分析日 <strong>{snap.target_date}</strong> · 归档 {asOfLabel}</span>}
+        </p>
+        <p class="mt-1 text-[11px] text-[var(--text-tertiary)] font-mono">
+          <span class="inline-flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            下次刷新：{nextRefresh}
+          </span>
+        </p>
+      </div>
     </section>
 
     {!snap && (
