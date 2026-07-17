@@ -1,0 +1,215 @@
+---
+lang: zh
+translationKey: digest-2026-07-17
+title: "AI 每日精选 · 2026-07-17"
+description: "21 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-07-17
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">今日多平台发布前沿AI学术成果，覆盖世界模型、KV缓存优化、联邦可解释AI等方向</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI、Anthropic、DeepMind等头部厂商发布新动态，涉AI安全、产品迭代、公益落地等内容</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内AI产业动态活跃，百度智能体、理想自研芯片、通用机器人框架均有新进展</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 前沿研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 大厂动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 智能体</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🚗 车载AI</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ 产业进展</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.15207" target="_blank" rel="noopener noreferrer">BadWAM: When World-Action Models Dream Right but Act Wrong</a>
+
+*HF ★ 5 · Qi Li, Xingyi Yang, Xinchao Wang · [HF 镜像](https://huggingface.co/papers/2607.15207)*
+
+针对业界认为耦合动作生成与未来预测的世界动作模型（WAM）鲁棒性更强的共识，本文提出BadWAM评估框架，通过微小视觉扰动发起两类WAM专属对抗攻击：强破坏性的纯动作攻击、兼顾隐蔽性的保想象攻击。测试显示两类攻击均能大幅降低WAM闭环任务成功率，后者还可在预测漂移极小的前提下生效，暴露了WAM的特殊安全漏洞。
+
+<FeedbackButtons slug="item:arxiv-2607.15207" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.15038" target="_blank" rel="noopener noreferrer">Video = World + Event Stream</a>
+
+*HF ★ 5 · Lianghua Huang, Zhi-Fan Wu, Yupeng Shi… · [HF 镜像](https://huggingface.co/papers/2607.15038)*
+
+本次发布Wan-Streamer v0.3，提出“视频=静态世界+动态事件流”核心范式，将视频拆解为稳定上下文与时变动态信息，基于该框架设计通用预训练任务，给定世界与输入可预测实时动态响应，可适配多类实时下游任务。目前已落地全双工实时音视频交互，性能参数与v0.2持平，常规网络下总交互延迟约550ms。
+
+<FeedbackButtons slug="item:arxiv-2607.15038" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.14777" target="_blank" rel="noopener noreferrer">SEED: Self-Evolving On-Policy Distillation for Agentic Reinforcement Learning</a>
+
+*HF ★ 4 · Jinyang Wu, Shuo Yang, Zhengxi Lu… · [HF 镜像](https://huggingface.co/papers/2607.14777)*
+
+针对智能体强化学习中结果导向奖励稀疏、回合级反馈与token级策略学习存在监督缺口的问题，本文提出SEED自进化同策略蒸馏框架：从同策略轨迹中提取事后技能，生成稠密token级蒸馏信号与原RL目标联合优化，策略迭代时同步升级技能提取能力。实验证明该方法在多类智能体任务上性能、采样效率及泛化性均显著提升。
+
+<FeedbackButtons slug="item:arxiv-2607.14777" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.15275" target="_blank" rel="noopener noreferrer">RoboTTT: Context Scaling for Robot Policies</a>
+
+*HF ★ 1 · Yunfan Jiang, Yevgen Chebotar, Ruijie Zheng… · [HF 镜像](https://huggingface.co/papers/2607.15275)*
+
+针对现有机器人基础模型视觉运动上下文过短的痛点，英伟达提出RoboTTT策略：将测试时训练融入视语动模型，搭配序列动作强制、截断反向传播技术，可将上下文扩容至8K步且不提升推理延迟。该模型较单步基线性能提升87%，首次完成5分钟十阶段装配任务，证实上下文长度是机器人基模新的缩放维度。
+
+<FeedbackButtons slug="item:arxiv-2607.15275" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.14431" target="_blank" rel="noopener noreferrer">Smarter and Cheaper at Once: Byte-Exact KV-Cache Grafting Turns a Frozen Small Model into a Verified-Knowledge Flywheel</a>
+
+*HF ★ 1 · Sietse Schelpe · [HF 镜像](https://huggingface.co/papers/2607.14431)*
+
+本研究提出无需修改冻结小模型权重、可同时提能力降成本的方案：将验证知识存储为字节精确的KV缓存片段，推理时直接嫁接，结果与重新计算完全一致。实测Gemma-12B嫁接知识库后AIME2025准确率从80%升至93.3%，超越31B版本，推理token数降6574倍、能耗减8700倍，还可零额外显存将可用上下文扩至近290万token。
+
+<FeedbackButtons slug="item:arxiv-2607.14431" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2607.13042" target="_blank" rel="noopener noreferrer">Automatic Differentiation from Scratch: How PyTorch Computes Gradients in Physics-Informed Neural Networks</a>
+
+*Abdeladhim Tahimi*
+
+该论文拆解PyTorch自动微分在物理信息神经网络（PINN）中的梯度计算逻辑：针对PINN训练需两层微分的需求，以1-3-3-1结构MLP求解y’+y=0初值问题为例，全链路追踪前向构图、反向单次算出全部22个参数梯度、create_graph参数实现图中图的完整流程，验证所有伴随值与手动推导一致，打通了灵敏度框架与PyTorch的向量-雅可比乘积逻辑。
+
+<FeedbackButtons slug="item:arxiv-2607.13042" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.13043" target="_blank" rel="noopener noreferrer">Beyond Backbone Backpropagation: A Decoupled Strategy for Efficient Transfer Learning</a>
+
+*Daniel Vila-Cruz, Laura Mor\'an-Fern\'andez, Ver\'onica Bol\'on-Canedo*
+
+针对深度学习图像分类迁移学习计算成本高、部署受限问题，本文提出轻量解耦训练策略：仅调整模型归一化层，预计算一次特征以解耦特征提取与分类器优化，搭配带边际加权损失的分类头，无需端到端反向传播。经7种主流架构、3个医疗数据集验证，该方法大幅压缩训练时长，精度仅微降甚至优于基线，碳排放骤减，适配资源受限场景。
+
+<FeedbackButtons slug="item:arxiv-2607.13043" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.13045" target="_blank" rel="noopener noreferrer">Federated Explainable Artificial Intelligence: Roles, Architectures, Evaluation, and Open Challenges</a>
+
+*Masoume Gholizade, Fabrizio Ruffini, Pietro Ducange…*
+
+这篇联邦可解释人工智能（FedXAI）领域综述，聚焦联邦学习可保障隐私但模型黑盒的痛点，明确FedXAI可同时满足隐私保护与算法可解释需求。综述梳理可解释性融入联邦学习全流程的演进路径，搭建分类体系梳理现有技术，指出评估缺乏统一基准，明确非IID场景适配、安全等核心挑战，为可信联邦AI构建提供参考框架。
+
+<FeedbackButtons slug="item:arxiv-2607.13045" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/why-teens-deserve-access-safe-ai" target="_blank" rel="noopener noreferrer">Why teens deserve access to safe AI</a>
+
+*OpenAI*
+
+本文聚焦青少年获取安全AI服务的权益议题，介绍OpenAI优化ChatGPT适配青少年用户的核心举措：搭建适龄内容防护机制，配套学习辅助工具，上线家长管控功能，联动领域专业力量合作。相关探索既满足青少年安全用AI的需求，也为未成年人友好型AI产品落地提供了实践参考。
+
+<FeedbackButtons slug="item:openai-blog-why-teens-deserve-access-safe-ai" client:visible />
+
+## <a href="https://openai.com/index/cars24" target="_blank" rel="noopener noreferrer">How Cars24 scales conversations and builds faster with OpenAI</a>
+
+*OpenAI*
+
+印度二手车电商Cars24基于OpenAI技术搭建智能语音、聊天代理，同时在全公司各团队落地Agent智能工作流。落地后该系统每月可处理超百万分钟用户对话，成功挽回12%的流失销售线索，既提升了用户需求承接效率，也降低了人工运营成本，整体业务拓展迭代速度得到显著提升。
+
+<FeedbackButtons slug="item:openai-blog-cars24" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+为充分回应当前公众对AI领域的各类疑问，相关团队发起公开征集活动，面向全社会收集公众提出的AI相关高难度核心问题。同时团队明确承诺，后续针对所有征集到的问题开展研究、给出正式回应的过程中，会全程公开工作流程与研究细节，保障工作透明度。
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+## <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Claude Fable 5</a>
+
+*Anthropic*
+
+Anthropic宣布，随着相关出口管制解除，将于7月1日起重新部署Claude Fable 5大模型。此次上线版本完成两项核心安全升级：迭代优化网络安全防护机制，新增适配行业场景的防越狱框架，可有效降低模型被恶意滥用的风险，此前受管制限制的相关服务也将同步恢复开放。
+
+<FeedbackButtons slug="item:anthropic-redeploying-fable-5" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/our-approach-to-bioresilience/" target="_blank" rel="noopener noreferrer">Our approach to bioresilience</a>
+
+*Google DeepMind*
+
+谷歌DeepMind与同构实验室近期联合公开了二者在生物韧性领域的核心技术路线及配套AI模型。生物韧性研究聚焦应对新发传染病、未知生物威胁等场景需求，后续相关成果有望赋能疫苗药物快速研发、疫情风险预警等核心应用，为全球生物安全防护体系搭建提供AI技术支撑。
+
+<FeedbackButtons slug="item:deepmind-our-approach-to-bioresilience" client:visible />
+
+## <a href="https://deepmind.google/blog/empowering-indias-next-generation-of-innovators-with-atl-saathi/" target="_blank" rel="noopener noreferrer">Empowering India’s next generation of innovators with ATL Saathi</a>
+
+*Google DeepMind*
+
+谷歌联合印度国家创新使命（AIM）共同推出ATL Saathi，这是一款搭载Gemini大模型的AI工具，主要服务于印度校园阿塔尔创新实验室（ATL）的科创教育从业者，可支撑机器人等科创课程的教学落地，降低科创教学门槛，为青少年科创教育提供AI支撑，助力印度本土下一代创新人才的培养工作。
+
+<FeedbackButtons slug="item:deepmind-empowering-indias-next-generation-of-innovators-with-atl-saathi" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/nemotron-3-embed-wins-rteb" target="_blank" rel="noopener noreferrer">NVIDIA Nemotron 3 Embed Ranks #1 Overall on RTEB, Advancing Agentic Retrieval</a>
+
+*Hugging Face*
+
+英伟达专为智能体检索打造的Nemotron 3 Embed嵌入模型，优化了细粒度语义匹配、跨域泛化及长文本表征能力，目前在主流RTEB检索基准总榜位列第一。该模型可有效提升检索增强生成效果与大模型智能体的工具调用准确率，为高阶智能体落地提供更可靠的检索能力支撑。
+
+<FeedbackButtons slug="item:hf-blog-nemotron-3-embed-wins-rteb" client:visible />
+
+## <a href="https://huggingface.co/blog/Dharma-AI/newer-models-same-advantages" target="_blank" rel="noopener noreferrer">Newer Models, Same Advantage</a>
+
+*Hugging Face*
+
+这篇论文针对大模型代际迭代的竞争格局展开研究，方法上系统测试了GPT、Claude、Gemini三大系列十余款不同代次主流大模型，覆盖推理、多模态、代码等6类共2000余项测试任务。结论显示各厂商代际升级并未打破原有性能梯队，初代就占优的厂商仍保持领先，技术路径禀赋决定了长期竞争优势。
+
+<FeedbackButtons slug="item:hf-blog-newer-models-same-advantages" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+该文聚焦AI对齐问题，从德性伦理视角反驳“理性主体需预设固定最终目标”的正交性假说核心前提。研究指出人类理性并非指向预设目标，而是将行动适配到含规范、资源等要素的实践网络中，提出要实现AI安全合规、可与人协作，其决策逻辑需匹配人类基于实践的行动推理框架。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我改进（RSI）的概念演进：1965年I.J.古德提出“超智能”设想时已涉及相关逻辑，即超越人类智力的系统可自行设计更优智能体实现迭代升级；2008年尤德考斯基明确其核心是AI依托自身能力优化认知架构的反馈环，当下AI领域的RSI既包括模型直接改写自身权重，也涵盖优化自身训练管线的广义形态。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/07/451691.html" target="_blank" rel="noopener noreferrer">百度搭子获评WAIC 2026“镇馆之宝”，智能体全家桶将集中亮相</a>
+
+*量子位*
+
+7月百度旗下通用智能体“百度搭子”获评WAIC2026“镇馆之宝”，该荣誉每年仅选不足10款参展产品，含金量极高。百度搭子可完成多场景复杂办公任务，上线后日均提问量涨20倍。本次大会百度还将展出全栈AI能力、多款智能体矩阵产品，覆盖个人、开发者、企业多类用户需求。
+
+<FeedbackButtons slug="item:qbitai-451691" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/451576.html" target="_blank" rel="noopener noreferrer">理想L6换代24.98万开卖！L9同款自研芯片中控屏下放，一个版本配置拉满不涨价</a>
+
+*量子位*
+
+理想全新L6不再按智能化划分高低配，仅推出单一Ultra版，下放L9同款自研马赫M100芯片、29英寸6K大屏、全铝悬架等旗舰配置，配51度电池支持12分钟快充，补全上代续航、底盘、座舱短板，售价保持24.98万不涨，是理想稳住增程优势、平衡销量与毛利的核心走量车型。
+
+<FeedbackButtons slug="item:qbitai-451576" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/451403.html" target="_blank" rel="noopener noreferrer">全球首个！银河通用新框架仅需人类视频即可部署，特斯拉蚌埠住了</a>
+
+*量子位*
+
+银河通用发布全球首个面向具身智能的测试时后训练框架WAM-TTT，首次将大模型的测试时训练范式迁移至机器人控制。该框架可通过人类示范视频让机器人快速理解场景、存入临时记忆，适配新环境时无需重训且不丢失原有能力，破解了行业普遍存在的部署泛化性衰减痛点，开启具身智能后训练时代。
+
+<FeedbackButtons slug="item:qbitai-451403" client:visible />
