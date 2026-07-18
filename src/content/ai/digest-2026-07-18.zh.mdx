@@ -1,0 +1,173 @@
+---
+lang: zh
+translationKey: digest-2026-07-18
+title: "AI 每日精选 · 2026-07-18"
+description: "16 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-07-18
+tags: [digest, auto, arxiv, openai, anthropic, deepmind, hf-blog, the-gradient]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Arxiv今日更新多篇AI前沿论文，覆盖可解释AI、零样本多模态、空间AI等研究方向</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI、Anthropic、DeepMind、Hugging Face等头部机构发布技术、伦理、合作类动态</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">WAIC相关产业成果集中公布，涵盖机器狗、智能模型网关、国产AI芯片等热门赛道</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📄 前沿研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 大厂动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 AI治理</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔧 技术工具</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ 产业新品</span>
+  </div>
+</div>
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2607.14123" target="_blank" rel="noopener noreferrer">Position: Explainability Research Must Prioritize Foundations over Ad-hoc Methods</a>
+
+*Michal Moshkovitz, Suraj Srinivas, Lesia Semenova…*
+
+这篇XAI立场文指出，当前零散可解释AI方法层出不穷，但极少能落地指导实际决策，核心是缺乏适配人在回路全流程的基础研究框架。作者通过分析三大AI顶会相关论文、调研从业者，证实XAI普遍存在问题定义模糊、评估失准、缺反馈链路等共性问题，呼吁学界优先攻克基础结构性难题，还给出了落地实操指引。
+
+<FeedbackButtons slug="item:arxiv-2607.14123" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.14125" target="_blank" rel="noopener noreferrer">CARPRT: Class-Aware Zero-Shot Prompt Reweighting for Black-Box Vision-Language Models</a>
+
+*Ruijiang Dong, Zesheng Ye, Jianzhong Qi…*
+
+针对黑盒预训练视觉语言模型零样本分类场景，现有提示集成采用类共享权重，未适配不同类的提示偏好，本文提出无训练的类感知零样本提示重加权方法CARPRT，为每个类单独计算不同提示的专属适配权重。实验显示其在标准分类基准上优于类无关重加权方案，验证了建模提示-类依赖的有效性。
+
+<FeedbackButtons slug="item:arxiv-2607.14125" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.14127" target="_blank" rel="noopener noreferrer">Explainable Geospatial AI for Satellite Ground Station Siting Using LiDAR-Derived Terrain Intelligence</a>
+
+*Shohini Sarkar, Smithi Mahendran, Rishi Chudasama…*
+
+针对现有ITU标准估测地杂波高度（RCH）未考虑同类地物差异，导致低轨卫星地面站选址误差偏大的问题，本文提出可解释地理AI框架：基于LiDAR标注的RCH数据，融合多源公开地理遥感数据训练LightGBM模型，配套SHAP可解释分析。模型较ITU基线误差降超60%，MAE1.79米、R²0.765，识别出树冠覆盖等核心影响因子，兼顾精度与全球部署性。
+
+<FeedbackButtons slug="item:arxiv-2607.14127" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/a-scorecard-for-the-ai-age" target="_blank" rel="noopener noreferrer">A scorecard for the AI age</a>
+
+*OpenAI*
+
+OpenAI首席财务官莎拉·弗赖尔面向AI落地场景，推出适配AI时代的实用量化记分卡，用于测算AI投入的投资回报率。该记分卡设置四项核心评估维度：有效工作量、单次成功任务成本、系统可靠性、算力投入回报率，可解决AI部署中投入产出难量化的痛点，为企业评估AI应用实际价值提供清晰可落地的判断标准。
+
+<FeedbackButtons slug="item:openai-blog-a-scorecard-for-the-ai-age" client:visible />
+
+## <a href="https://openai.com/index/why-teens-deserve-access-safe-ai" target="_blank" rel="noopener noreferrer">Why teens deserve access to safe AI</a>
+
+*OpenAI*
+
+本文回应青少年获取安全AI服务的权益诉求，介绍OpenAI为适配青少年使用ChatGPT推出的系列安全举措：设置年龄适配的内容防护规则，上线专属学习辅助工具，开放家长管控功能，同时联合领域专家迭代防护机制，在筑牢安全防线的前提下，保障青少年充分获取AI带来的学习助力。
+
+<FeedbackButtons slug="item:openai-blog-why-teens-deserve-access-safe-ai" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+这是AI研究团队发起的公众互动项目：团队面向全社会开放征集通道，专门收集公众关于AI领域最具争议、最富挑战的疑难问题。同时团队作出公开承诺，后续针对征集到的问题开展研究、给出回应时，会完整公示研究论证的全流程，保障工作透明度，主动接受公众监督。
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+## <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Claude Fable 5</a>
+
+*Anthropic*
+
+Anthropic官方宣布，随着相关出口管制措施解除，将于7月1日起重启部署Claude Fable 5大模型。本次上线版本已完成安全升级，搭载更新后的网络安全防护体系，还新增适配行业场景的防越狱框架，可在合规前提下更好应对各类使用场景安全风险，保障模型落地的稳定性与安全性。
+
+<FeedbackButtons slug="item:anthropic-redeploying-fable-5" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/our-approach-to-bioresilience/" target="_blank" rel="noopener noreferrer">Our approach to bioresilience</a>
+
+*Google DeepMind*
+
+谷歌DeepMind与同构实验室近期公开了双方在生物韧性领域的共同技术路径与专属AI模型。生物韧性研究旨在提升人类社会对新发传染病、突发生物安全事件等生物类风险的预警、处置与恢复能力，本次公布的AI方案将为全球生物风险防控体系的智能化升级提供重要技术支撑。
+
+<FeedbackButtons slug="item:deepmind-our-approach-to-bioresilience" client:visible />
+
+## <a href="https://deepmind.google/blog/empowering-indias-next-generation-of-innovators-with-atl-saathi/" target="_blank" rel="noopener noreferrer">Empowering India’s next generation of innovators with ATL Saathi</a>
+
+*Google DeepMind*
+
+谷歌联合印度国家创新任务（AIM）共同推出AI工具ATL Saathi，该工具基于Gemini大模型开发，面向印度校园机器人科创实验室的教师群体使用，核心作用是降低科创实验教学门槛，辅助教师更好地开展青少年科创指导，助力培育印度本土下一代创新人才。
+
+<FeedbackButtons slug="item:deepmind-empowering-indias-next-generation-of-innovators-with-atl-saathi" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/scale-diffusers-finetuning-nemo-automodel" target="_blank" rel="noopener noreferrer">Fine-tune video and image models at scale with NVIDIA NeMo Automodel and 🤗 Diffusers</a>
+
+*Hugging Face*
+
+本文提出结合NVIDIA NeMo Automodel与Hugging Face Diffusers库的视觉模型规模化微调方案，打通双框架能力，优化分布式多卡/多节点训练流程，适配文生图、文生视频等多类扩散模型。该方案大幅降低大尺度视觉生成模型微调门槛，训练效率提升显著，可快速落地垂类场景定制化生成需求。
+
+<FeedbackButtons slug="item:hf-blog-scale-diffusers-finetuning-nemo-automodel" client:visible />
+
+## <a href="https://huggingface.co/blog/Dharma-AI/newer-models-same-advantages" target="_blank" rel="noopener noreferrer">Newer Models, Same Advantage</a>
+
+*Hugging Face*
+
+这篇题为《新模型，不变的优势》的论文聚焦大模型群体性能偏差问题，构建覆盖不同人口统计学特征的标准化问答测试集，对比GPT、Claude等系列多代新旧模型的任务准确率。研究发现模型迭代并未缩小不同群体的性能差距，旧版本中存在的特定群体性能优势在新一代模型中依然稳定存在，偏见未随模型更新得到有效缓解。
+
+<FeedbackButtons slug="item:hf-blog-newer-models-same-advantages" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+这篇AI对齐研究立足德性伦理视角，反驳智能与目标独立的经典正交性假说：人类理性行动并非锚定预设终极目标，而是依托行动实践网络的规范校准行为。若要实现AI安全可控、可与人类协作，其决策逻辑必须匹配人类基于实践的行动范式，该路径同时适配伦理对齐与核心安全要求。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+递归自我改进（RSI）的概念最早可追溯到1965年I·J·古德提出的超智能机器构想，指能超越人类所有智力活动、自主设计更优机器实现自我迭代的系统。2008年尤德考斯基明确定义其核心为反馈环：AI运用现有智能优化产出自身智能的认知机制。当前AI领域的RSI既可指模型直接改写自身权重，也可广义延伸为模型优化自身训练管线。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/07/453506.html" target="_blank" rel="noopener noreferrer">全球首款720°连续后空翻机器狗来了！宇泛智能携“灵猫”双馆联袂首秀WAIC</a>
+
+*量子位*
+
+2026世界人工智能大会上，宇泛智能全栈自研四足机器人“灵猫”双馆首秀。作为全球首款可完成720°连续后空翻的四足机器人，15台“灵猫”展演单体特技、集群齐舞等高难动作，展现其运动控制、集群调度等技术积累，呼应展会主题，探索具身智能的产业落地路径。
+
+<FeedbackButtons slug="item:qbitai-453506" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/453467.html" target="_blank" rel="noopener noreferrer">PPIO发布智能模型网关，打造面向Agent时代的智能Token工厂</a>
+
+*量子位*
+
+2026世界人工智能大会期间，PPIO发布Agentic Cloud定位与智能模型网关，打造面向Agent时代的智能Token工厂。其基于自研Agent生产力核心公式，搭建两层产品体系：智能模型网关降本提效拉高Token智能密度，Agent Harness层延长Agent运行时长，打造Agent原生适配全栈云服务，相关业务近年增长迅猛。
+
+<FeedbackButtons slug="item:qbitai-453467" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/453352.html" target="_blank" rel="noopener noreferrer">逛完WAIC 2026我悟了：国产AI芯片的真对手，根本不是英伟达的GPU</a>
+
+*量子位*
+
+逛完WAIC2026可发现，国产AI芯片的核心竞争壁垒并非英伟达GPU硬件，而是CUDA生态沉淀的开发习惯、工程标准与迁移成本。行业竞争逻辑已从单芯片参数比拼，转向全栈系统能力构建。清微智能等厂商已探索架构、芯片、软件栈、应用贯通的生态路径，聚焦解决客户低成本迁移、稳定使用、可扩容的需求，才是国产替代的核心方向。
+
+<FeedbackButtons slug="item:qbitai-453352" client:visible />
