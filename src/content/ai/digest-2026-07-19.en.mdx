@@ -1,0 +1,173 @@
+---
+lang: en
+translationKey: digest-2026-07-19
+title: "AI Daily Digest · 2026-07-19"
+description: "16 papers · Multi-source aggregation + AI summaries"
+date: 2026-07-19
+tags: [digest, auto, arxiv, openai, anthropic, deepmind, hf-blog, the-gradient]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's highlights in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Multiple new AI research papers have been added to arXiv, covering cutting-edge directions including explainable AI, zero-shot prompting, geospatial AI and more</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI, Anthropic, DeepMind, Hugging Face and other industry players have intensively released updates related to AI governance, technology and products</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Domestic AI industry has delivered outstanding progress, with frequent highlights at WAIC, and breakthroughs in multi-scenario deployment capabilities of embodied robots</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔬 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏭 Vendor Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📊 AI Governance</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Embodied Intelligence</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💻 Open Source Technology</span>
+  </div>
+</div>
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2607.14123" target="_blank" rel="noopener noreferrer">Position: Explainability Research Must Prioritize Foundations over Ad-hoc Methods</a>
+
+*Michal Moshkovitz, Suraj Srinivas, Lesia Semenova…*
+
+Currently, there are numerous explainable AI (XAI) technologies, but very few are actually deployed, with most discarded immediately after generation. The core shortfall is the lack of underlying methodologies for embedding explanations into human-in-the-loop systems. This position paper, through analyzing related papers from three top AI conferences including ICML and surveying XAI practitioners, confirms that the academic community should stop developing scattered ad-hoc methods, prioritize solving foundational issues such as ambiguous problem definitions and unclear evaluation standards, provide a supporting deployment checklist, and drive the transformation of XAI towards a human-centric, action-oriented paradigm.
+
+<FeedbackButtons slug="item:arxiv-2607.14123" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.14125" target="_blank" rel="noopener noreferrer">CARPRT: Class-Aware Zero-Shot Prompt Reweighting for Black-Box Vision-Language Models</a>
+
+*Ruijiang Dong, Zesheng Ye, Jianzhong Qi…*
+
+Aiming at the flaw in zero-shot classification for pre-trained vision-language models where existing prompt ensembles use category-shared weights and fail to account for varying prompt adaptability across categories, this paper proposes CARPRT, a training-free class-aware zero-shot prompt reweighting method: it calculates the image-text similarity of predicted samples for each category under each prompt to generate category-specific prompt weights. This method outperforms existing category-agnostic reweighting schemes on standard classification benchmarks, verifying the effectiveness of modeling prompt-category dependencies.
+
+<FeedbackButtons slug="item:arxiv-2607.14125" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.14127" target="_blank" rel="noopener noreferrer">Explainable Geospatial AI for Satellite Ground Station Siting Using LiDAR-Derived Terrain Intelligence</a>
+
+*Shohini Sarkar, Smithi Mahendran, Rishi Chudasama…*
+
+Aiming at the issue in LEO satellite ground station siting where existing ITU standard estimations of Representative Clutter Height (RCH) ignore intra-class differences and easily cause siting deviations, this study combines multi-source open geographic data with LiDAR annotations to train an explainable LightGBM model for RCH prediction. The model achieves an MAE of 1.79m and R² of 0.765, reducing error by over 60% compared to the ITU baseline. Explainability analysis identifies canopy cover and other factors as core influencing indicators, balancing both accuracy and global deployment applicability. (119 words total)
+
+<FeedbackButtons slug="item:arxiv-2607.14127" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/a-scorecard-for-the-ai-age" target="_blank" rel="noopener noreferrer">A scorecard for the AI age</a>
+
+*OpenAI*
+
+This *Scorecard for the AI Age* was launched by OpenAI CFO Sarah Friar, a pragmatic AI value assessment tool. Its core evaluation system is built around four dimensions: useful workload, cost per successful task, system reliability, and return on computing power investment, which can accurately calculate the input-output ratio of AI applications, providing implementable quantitative references for judging the commercial value of AI projects.
+
+<FeedbackButtons slug="item:openai-blog-a-scorecard-for-the-ai-age" client:visible />
+
+## <a href="https://openai.com/index/why-teens-deserve-access-safe-ai" target="_blank" rel="noopener noreferrer">Why teens deserve access to safe AI</a>
+
+*OpenAI*
+
+This article responds to the legitimate demand for safe AI use by teenagers, introducing a series of measures OpenAI has taken to optimize the teen adaptability of ChatGPT: building an age-adapted content protection system, supporting exclusive learning tools, opening up parental control ports, and collaborating with domain experts to iterate safety rules. These measures not only ensure teenagers can use AI compliantly and safely, but also provide practical references for building AI services friendly to minors.
+
+<FeedbackButtons slug="item:openai-blog-why-teens-deserve-access-safe-ai" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+The theme of this initiative is *Inviting Hard Questions*, with the core action of widely soliciting high-difficulty, high-concern questions about the AI field from the public. The team explicitly promises that when answering each question, it will fully disclose the corresponding research process and work details. This move aims to break the information gap in AI research, improve domain transparency, and push research directions to better align with the real concerns of the public.
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+## <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Claude Fable 5</a>
+
+*Anthropic*
+
+Anthropic announced that as relevant export controls are officially lifted, it will redeploy the Claude Fable 5 large model starting July 1. This launch includes two core security upgrades: first, iteratively updated cybersecurity protection mechanisms, and second, a new jailbreak prevention framework adapted to industry scenarios, which can effectively reduce security risks after the large model is deployed and meet compliance operation requirements.
+
+<FeedbackButtons slug="item:anthropic-redeploying-fable-5" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/our-approach-to-bioresilience/" target="_blank" rel="noopener noreferrer">Our approach to bioresilience</a>
+
+*Google DeepMind*
+
+Google DeepMind and Isomorphic Labs recently released their jointly developed technical solutions and supporting AI models in the field of bioresilience. Bioresilience research focuses on responding to biosafety risks such as emerging pathogens and public health emergencies. The technical path announced by the two parties relies on the advantages of AI technology, which can greatly improve the efficiency of biological risk response, emergency pharmaceutical R&D and other links, providing new support for global biosafety construction.
+
+<FeedbackButtons slug="item:deepmind-our-approach-to-bioresilience" client:visible />
+
+## <a href="https://deepmind.google/blog/empowering-indias-next-generation-of-innovators-with-atl-saathi/" target="_blank" rel="noopener noreferrer">Empowering India’s next generation of innovators with ATL Saathi</a>
+
+*Google DeepMind*
+
+Google, in partnership with India's Atal Innovation Mission (AIM), has launched ATL Saathi, an AI tool for science and innovation education. Built on the capabilities of the Gemini large model, this tool provides intelligent support for frontline educators in robotics maker labs across India, aiming to lower the threshold for science and innovation teaching, help teachers better carry out science and innovation practice guidance, and ultimately cultivate the next generation of local innovative talents in India.
+
+<FeedbackButtons slug="item:deepmind-empowering-indias-next-generation-of-innovators-with-atl-saathi" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/scale-diffusers-finetuning-nemo-automodel" target="_blank" rel="noopener noreferrer">Fine-tune video and image models at scale with NVIDIA NeMo Automodel and 🤗 Diffusers</a>
+
+*Hugging Face*
+
+This article introduces the integration solution of NVIDIA NeMo Automodel and Hugging Face Diffusers: it adapts NeMo's distributed large-scale training capabilities to multimodal pre-trained models in the Diffusers ecosystem such as text-to-image and text-to-video models, automatically completing memory optimization and computing power scheduling. This solution eliminates the need to write complex distributed code, can efficiently complete customized fine-tuning on multi-card/cluster environments, and significantly improves training throughput compared to native solutions, greatly reducing the technical threshold for large-scale fine-tuning.
+
+<FeedbackButtons slug="item:hf-blog-scale-diffusers-finetuning-nemo-automodel" client:visible />
+
+## <a href="https://huggingface.co/blog/Dharma-AI/newer-models-same-advantages" target="_blank" rel="noopener noreferrer">Newer Models, Same Advantage</a>
+
+*Hugging Face*
+
+This article focuses on the evolution of capability structure in large model iterations. After comparing the cross-task performance distribution from first-generation large models to new generation models such as GPT-4 and Claude 3, it finds that the relative advantages and disadvantages of large models of different generations are highly consistent: tasks that first-generation models excel at remain advantages for new models, and the relative ranking of originally weak tasks has no obvious reversal, indicating that large model capability improvement is mainly based on overall scaling, with obvious path dependence.
+
+<FeedbackButtons slug="item:hf-blog-newer-models-same-advantages" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This AI alignment research is carried out from the perspective of virtue ethics, refuting the presupposition that "rational agents need to be anchored to fixed ultimate goals", pointing out that the rationality of human behavior comes from adapting to a practical network including action tendencies, evaluation standards, and resources. It proposes that if AI is to adapt to human collaboration needs, its decision-making logic must match the practice-based action logic of humans. This idea is of key significance for AI ethical alignment and safety assurance.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+The concept of Recursive Self-Improvement (RSI) was first derived from the "ultraintelligent machine" proposed by I.J. Good in 1965, referring to a system that can surpass all human intellectual activities and independently design better machines to achieve iterative upgrades. In 2008, Eliezer Yudkowsky clarified that its core is the feedback loop where AI uses existing intelligence to optimize its own cognitive architecture. In the context of contemporary AI, it refers both to models directly rewriting their own weights, and broadly covers the behavior of models optimizing their own training pipelines.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/07/454155.html" target="_blank" rel="noopener noreferrer">Magic Atom Magic-VLA K02 conquers long-range box stacking and sealing task, with success rate exceeding 90%</a>
+
+*QbitAI*
+
+During the 2026 World Artificial Intelligence Conference (WAIC), Magic Atom unveiled its self-developed general embodied large model Magic-VLA K02, the first industry solution to fully complete the combined long-range task of box stacking and glue sealing, with a success rate of over 90%. The model can independently complete task planning, dynamic perception, and adaptive adjustment to disturbances, has verified multi-dimensional general manipulation capabilities, and can serve as the core technical base for robots to support large-scale industrial deployment.
+
+<FeedbackButtons slug="item:qbitai-454155" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/454049.html" target="_blank" rel="noopener noreferrer">This might be the most stunning image from WAIC this year!</a>
+
+*QbitAI*
+
+SenseTime released its new image generation model SenseNova U1 Pro at the 2026 World Artificial Intelligence Conference, which can natively output stable 8K large-format images with rich details, can independently complete the whole process from draft design to inspection and correction, and is suitable for commercial scenarios such as infographics and film storyboards. The actually generated 9th WAIC anniversary and 24 solar terms long images both meet quality standards, greatly reducing the cost of manual adjustment for image generation.
+
+<FeedbackButtons slug="item:qbitai-454049" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/453802.html" target="_blank" rel="noopener noreferrer">After ranking first in global market share, Pudu Robotics starts answering the next battle of robots at WAIC</a>
+
+*QbitAI*
+
+The embodied intelligence industry has reached a consensus that commercial services are the first battlefield for its large-scale deployment. According to a Frost & Sullivan report, Pudu ranks first in the world in all four core evaluation dimensions of commercial service robots, has deployed more than 130,000 units in 85 countries, accumulated massive real-scenario interaction data, and is now exploring the technical path of aggregation and reuse of scenario experience and cross-form migration through its new product D7.
+
+<FeedbackButtons slug="item:qbitai-453802" client:visible />
