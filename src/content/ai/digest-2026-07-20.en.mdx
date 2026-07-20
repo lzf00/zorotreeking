@@ -1,0 +1,189 @@
+---
+lang: en
+translationKey: digest-2026-07-20
+title: "Daily AI Picks · 2026-07-20"
+description: "18 papers · multi-source aggregation + AI summaries"
+date: 2026-07-20
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, the-gradient]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second daily recap</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading overseas AI vendors OpenAI, Anthropic, and DeepMind have released multiple latest updates on AI governance, model iteration, production applications, and more</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face platform has released cutting-edge technical achievements in multiple directions including RecGPT-V3, LLM inference mechanisms, multimodal fine-tuning, etc.</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">China releases the quantum AI foundation "Liangchou No.1", while Ant Group, Alibaba Cloud and others join the PyTorch Foundation to promote AI inclusiveness</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔬 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚙️ Technical Iteration</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤝 Open Source Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">✅ AI Governance</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🚀 Industrial Progress</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.15591" target="_blank" rel="noopener noreferrer">RecGPT-V3 Technical Report</a>
+
+*HF ★ 14 · Bowen Zheng, Chao Yi, Dian Chen… · [HF Mirror](https://huggingface.co/papers/2607.15591)*
+
+After the launch of the first two generations of the LLM-powered Taobao RecGPT recommendation system, three major pain points were exposed, which RecGPT-V3 targets for optimization: the Memory Hub condenses user history to reduce modeling computing power by 55.8%, the multimodal model combines text and semantic IDs to unify item matching, and latent intent reasoning cuts output costs by 200x. After being deployed to Taobao's "Guess You Like" section, GMV increased by 3.97%, end-to-end service resource consumption dropped by 52.4%, and core interaction and transaction metrics all showed positive growth.
+
+<FeedbackButtons slug="item:arxiv-2607.15591" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.13196" target="_blank" rel="noopener noreferrer">From Human-Centric to Agentic Code Review: The Impact of Different Generations of Generative AI Technology on Review Quality</a>
+
+*HF ★ 12 · Suzhen Zhong, Shayan Noei, Bram Adams… · [HF Mirror](https://huggingface.co/papers/2607.13196)*
+
+To address the heavy manual burden of code review and the lack of quantitative evidence on the effects of AI intervention, this study analyzed 1.02 million review PRs from 207 GitHub projects, covering three generations of models: human-led, LLM-assisted, and agent review, and sorted out three types of AI integration paths and collaboration characteristics. The results show that agent participation can improve review efficiency, but does not simultaneously improve quality, and the human-machine collaboration mode is the core factor affecting efficiency, providing empirical evidence for the design of AI review mechanisms that balance efficiency and quality.
+
+<FeedbackButtons slug="item:arxiv-2607.13196" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.14530" target="_blank" rel="noopener noreferrer">xHC: Expanded Hyper-Connections</a>
+
+*HF ★ 11 · Xiangdong Zhang, Xiaohan Qin, Sunan Zou… · [HF Mirror](https://huggingface.co/papers/2607.14530)*
+
+To solve the bottleneck that Transformer Hyper-Connection (HC) residual stream expansion was previously limited to N=4, with further expansion leading to sharply reduced returns and surging costs, this paper proposes the xHC architecture: it enriches write-back information with temporal feature enhancement, uses a sparse structure to update only 4 of the 16 parallel residual streams, and is paired with xHC-Flash to reduce VRAM traffic. On 18B MoE models, xHC outperforms mHC by 4 points on downstream task scores, and requires 19% less compute for the same performance, which can efficiently support large N residual stream expansion for LLM pretraining.
+
+<FeedbackButtons slug="item:arxiv-2607.14530" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.16051" target="_blank" rel="noopener noreferrer">Loop the Loopies!</a>
+
+*HF ★ 8 · Zitian Gao, Yilong Chen, Yihao Xiao… · [HF Mirror](https://huggingface.co/papers/2607.16051)*
+
+This paper introduces Loopie, the highest-performing recurrent Transformer architecture to date, which includes two MoE models with total parameters of 20B and 6B, and only 2B and 0.6B active parameters respectively. It solves the industry pain point that parameter scaling outperforms recurrent iteration when increasing compute for recurrent Transformers. With the same training compute, its performance far exceeds the standard Transformer baseline. Paired with a new post-training pipeline, it has extremely strong inference capabilities, winning gold medals at the 2025 IMO and IPhO without using any tools.
+
+<FeedbackButtons slug="item:arxiv-2607.16051" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.16097" target="_blank" rel="noopener noreferrer">Understanding Reasoning from Pretraining to Post-Training</a>
+
+*HF ★ 5 · Jingyan Shen, Ang Li, Salman Rahman… · [HF Mirror](https://huggingface.co/papers/2607.16097)*
+
+To fill the research gap of separate studies on RL post-training and pretraining for LLMs, this study conducted full-link experiments using chess as a controllable test bed, supplemented by validation in the field of mathematics: it found that pretraining loss can predict post-RL performance under the same compute budget, and the number of pretraining tokens is linearly positively correlated with the slope of RL gains; RL not only amplifies the correct preferences of SFT, but also discovers correct solutions for difficult tasks not covered by SFT, and this pattern is generalizable across domains.
+
+<FeedbackButtons slug="item:arxiv-2607.16097" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/a-scorecard-for-the-ai-age" target="_blank" rel="noopener noreferrer">A scorecard for the AI age</a>
+
+*OpenAI*
+
+The "Scorecard for the AI Age" was proposed by OpenAI CFO Sarah Friar, and introduces a set of implementable quantitative AI value assessment tools, setting evaluation standards around four dimensions: useful workload, cost per successful task, system reliability, and return on compute investment. It can accurately calculate the return on investment of AI projects, providing clear and actionable quantitative references for enterprises to evaluate the commercial value of AI deployments.
+
+<FeedbackButtons slug="item:openai-blog-a-scorecard-for-the-ai-age" client:visible />
+
+## <a href="https://openai.com/index/why-teens-deserve-access-safe-ai" target="_blank" rel="noopener noreferrer">Why teens deserve access to safe AI</a>
+
+*OpenAI*
+
+This article focuses on the legitimate needs of teenagers to use AI safely, and introduces a series of security optimization measures launched by OpenAI to adapt ChatGPT for teenage users: including setting up age-appropriate content protection mechanisms, launching exclusive learning assistance tools, and opening parent control permission ports. It also collaborates with domain experts to improve rules, building a multi-dimensional safety system for teenagers' AI use, and providing guarantees for teenagers to use AI tools in compliance with regulations.
+
+<FeedbackButtons slug="item:openai-blog-why-teens-deserve-access-safe-ai" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+This project launches an AI hard question collection initiative for the public: it openly collects the most confusing and controversial difficult questions about the AI field from the public, and the project team has made a clear commitment that when responding to and answering all collected questions, all work processes including research derivation and verification will be fully disclosed throughout the process, ensuring transparency and traceability, and eliminating the information gap between AI professional research and the public.
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+## <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Claude Fable 5</a>
+
+*Anthropic*
+
+AI company Anthropic announced that after the official lifting of relevant export controls, it will redeploy the Claude Fable 5 LLM starting July 1. The version launched this time has completed two core security upgrades: it has updated the full-link network security protection mechanism, and added a dedicated jailbreak prevention framework adapted to industrial scenarios, which can effectively improve the operational security of the model in open use scenarios.
+
+<FeedbackButtons slug="item:anthropic-redeploying-fable-5" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/our-approach-to-bioresilience/" target="_blank" rel="noopener noreferrer">Our approach to bioresilience</a>
+
+*Google DeepMind*
+
+Google DeepMind and Isomorphic Labs jointly released their technical path and supporting AI models in the field of bioresilience. This achievement targets the needs of bioresilience construction, can empower scenarios such as pathogen risk prediction and public health emergency response, helps improve the resilience to sudden biosafety events such as pandemics and biological invasions, and provides technical support for the intelligent upgrade of the global biosafety protection system.
+
+<FeedbackButtons slug="item:deepmind-our-approach-to-bioresilience" client:visible />
+
+## <a href="https://deepmind.google/blog/empowering-indias-next-generation-of-innovators-with-atl-saathi/" target="_blank" rel="noopener noreferrer">Empowering India’s next generation of innovators with ATL Saathi</a>
+
+*Google DeepMind*
+
+To empower India's next generation of innovative talents, Google and India's Atal Innovation Mission (AIM) have jointly launched the AI tool ATL Saathi. Developed based on Gemini LLM technology, this tool is dedicated to serving educators in India's national youth robotics maker labs, helping teachers lower the threshold of science and innovation teaching, supporting the cultivation of local youth's science and innovation capabilities, and improving the local early cultivation chain for science and innovation talents.
+
+<FeedbackButtons slug="item:deepmind-empowering-indias-next-generation-of-innovators-with-atl-saathi" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/scale-diffusers-finetuning-nemo-automodel" target="_blank" rel="noopener noreferrer">Fine-tune video and image models at scale with NVIDIA NeMo Automodel and 🤗 Diffusers</a>
+
+*Hugging Face*
+
+This solution is jointly launched by NVIDIA and Hugging Face, combining NeMo Automodel with the Diffusers library to enable large-scale fine-tuning of image and video generation models: it is compatible with multiple types of diffusion-based text-to-image and text-to-video models, optimizes the compute scheduling efficiency of batch fine-tuning tasks, greatly reduces the technical threshold for fine-tuning relevant LLMs, and helps developers quickly launch customized multimodal generation applications.
+
+<FeedbackButtons slug="item:hf-blog-scale-diffusers-finetuning-nemo-automodel" client:visible />
+
+## <a href="https://huggingface.co/blog/Dharma-AI/newer-models-same-advantages" target="_blank" rel="noopener noreferrer">Newer Models, Same Advantage</a>
+
+*Hugging Face*
+
+Titled "Newer Models, Same Advantage", this article focuses on research on LLM generational iteration and model selection for vertical scenarios. The results show that although the general capabilities and parameter scale of new generation LLMs continue to improve, in narrow-domain tasks such as financial risk control and medical few-shot diagnosis, early small models that have undergone domain fine-tuning still retain stable advantages in accuracy and inference cost, suggesting that vertical scenarios do not need to blindly chase new models, and on-demand selection offers higher cost-effectiveness.
+
+<FeedbackButtons slug="item:hf-blog-newer-models-same-advantages" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This AI alignment research from the perspective of virtue ethics refutes the traditional assumption that "rational agents need to be anchored to a fixed final goal", pointing out that the core of human rationality is to adjust actions according to a practical network including elements such as behavior and evaluation standards. It proposes that to achieve AI safety and compliance, and smooth collaboration with humans, the AI decision-making logic needs to match the human practice-oriented reasoning framework, taking into account both ethical alignment and safety requirements.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This article conducts research on harness engineering for Recursive Self-Improvement (RSI). The concept of RSI was first derived from the hypothesis of superintelligent machines proposed by I.J. Good in 1965, and in 2008 Eliezer Yudkowsky defined it as a feedback mechanism where AI uses its own intelligence to iteratively optimize its cognitive architecture. Modern AI implements RSI mainly through two paths: directly rewriting its own weights, or optimizing its own training pipeline, which provides a reference for the research and development of controllable self-iterating AI.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/07/455136.html" target="_blank" rel="noopener noreferrer">WAIC Buchou Quantum Releases "Liangchou No.1" – Atomic Quantum AI Foundation</a>
+
+*QbitAI*
+
+At the 2026 World Artificial Intelligence Conference, Shanghai Buchou Quantum released "Liangchou No.1", China's first atomic quantum AI foundation, marking that China's quantum computing has entered a new stage where engineering delivery and application verification proceed in parallel. This product is based on two original quantum algorithms developed by the team that have been published in top international journals, outperforms similar classical solutions, and has received authoritative recognition from top international academic circles and the global financial industry.
+
+<FeedbackButtons slug="item:qbitai-455136" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/455130.html" target="_blank" rel="noopener noreferrer">Ant Group, Alibaba Cloud and Others Officially Join the PyTorch Foundation, Working with Global Open Source Forces to Promote AI Inclusiveness</a>
+
+*QbitAI*
+
+During the 2026 World Artificial Intelligence Conference, Ant Group and others officially joined the PyTorch Foundation, and all industry and research parties reached a consensus: AGI competition has shifted from a simple model race to system competition, and it is necessary to rely on open source mechanisms to link the entire industry chain, jointly build open, efficient, low-cost AI infrastructure, and promote AI to move beyond being a tool for a small number of elites to become an inclusive productivity serving the industry.
+
+<FeedbackButtons slug="item:qbitai-455130" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/455041.html" target="_blank" rel="noopener noreferrer">Obscure Philosophy Becomes a Hot Topic for AI Governance</a>
+
+*QbitAI*
+
+At the 2024 World Artificial Intelligence Conference, philosophy became a new hot spot in the AI field: Fudan University philosophy scholars were invited to attend and share, and the newly released blue paper also focuses on humanistic issues such as AI trustworthiness and governance. With the current rapid breakthroughs in AI capabilities, core issues such as its understanding boundaries and knowledge credibility are approaching philosophical propositions. Some scholars propose that intelligence needs to be rooted in the real world, relying on four elements including the body and environment, which provides new ideas for AI development and governance.
+
+<FeedbackButtons slug="item:qbitai-455041" client:visible />
