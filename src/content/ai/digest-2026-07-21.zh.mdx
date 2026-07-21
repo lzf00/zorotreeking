@@ -1,0 +1,191 @@
+---
+lang: zh
+translationKey: digest-2026-07-21
+title: "AI 每日精选 · 2026-07-21"
+description: "18 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-07-21
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI、Anthropic、DeepMind等海外头部机构集中发布AI对齐、模型迭代、产学研落地类新动态</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face推出DiffGI、JoyNexus新技术及Cosmos 3 Edge等新品，技术优势持续保持</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内AI产业进展亮眼，WAIC 2026收官、Agent基建及下沉医疗落地均获实质突破</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 模型迭代</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔒 安全对齐</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏥 医疗落地</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏭 产业实践</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔬 前沿研究</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.13365" target="_blank" rel="noopener noreferrer">DiffGI: Differentiable Geometry Images for High-Fidelity Thin-Shell 3D Generation</a>
+
+*HF ★ 3 · Eungjune Shim, Hansol Lee, Eunjung Ju · [HF 镜像](https://huggingface.co/papers/2607.13365)*
+
+针对现有3D生成模型难表征衣物等薄壳非流形结构、传统几何图像法存在阶梯伪影、重建步骤不可微的痛点，提出可微几何图像DiffGI：采用连续TSDF编码消除分辨率相关伪影，配套可微Marching Squares实现端到端训练，基于该框架搭建VAE+流匹配潜扩散生成模型。实验表明其薄壳3D生成精度优于同类方案，算力需求大幅降低。
+
+<FeedbackButtons slug="item:arxiv-2607.13365" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.16074" target="_blank" rel="noopener noreferrer">JoyNexus: Service-Oriented Multi-Tenant Post-Training for VLA Models</a>
+
+*HF ★ 2 · Haoran Sun, Wentao Zhang, Junyang Hua… · [HF 镜像](https://huggingface.co/papers/2607.16074)*
+
+针对现有VLA模型后训练单租户独占资源存在的用户适配成本高、短任务成本高、服务商资源利用率低的问题，本文提出多租户服务JoyNexus：解耦训练、推理、环境三类服务，租户资源隔离，配套异构数据组批机制共享骨干算力。实测显示其较单租户模式降低总GPU耗时，显著提升资源利用率。
+
+<FeedbackButtons slug="item:arxiv-2607.16074" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2607.15293" target="_blank" rel="noopener noreferrer">Structure of the Circular-Dyadic Convolution Error</a>
+
+*Ben Fauber, Alireza Moradzadeh*
+
+哈达玛变换计算二进卷积较FFT更具实值运算优势，但替代DFT计算循环卷积时会产生代数误差。本文解析该误差的结构特征：存在4个固定无误差位，重排输出无法消去误差；误差算子近满秩，零空间仅对数维；误差期望由单一对齐标量决定，常规场景下输出能量渐近翻倍，仅零误差子空间滤波器无误差，整体误差结构化可预测。
+
+<FeedbackButtons slug="item:arxiv-2607.15293" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.15313" target="_blank" rel="noopener noreferrer">Position: Quantum Program Generation Must Prioritize Validity Over Probabilistic Scaling</a>
+
+*Junhao Song, Yu Zhou, William Knottenbelt…*
+
+这篇立场论文指出，将大模型缩放假说应用于通用量子电路生成是方向性错误：量子电路有严格数学约束，纯堆参数学不到希尔伯特空间物理语义，有效电路随比特数指数衰减也让事后过滤不可行。论文主张转向以验证器为核心的生成架构，内置层级约束等量子领域规则，才是量子程序生成的可行路径。
+
+<FeedbackButtons slug="item:arxiv-2607.15313" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.15394" target="_blank" rel="noopener noreferrer">A Transportable Threshold-Based Framework for Interpretable Classification of Medical Data</a>
+
+*Antony Garcia, Adrian Noriega, Gabrielle Britton…*
+
+针对医疗领域黑箱AI可解释性不足、落地受限的问题，该研究提出可迁移阈值型可解释分类框架：基于伯努利朴素贝叶斯，采用卡方引导的监督二值化处理连续医疗数据，保留模型透明度。在三类疾病基准数据集上最高AUC达0.984，性能媲美复杂模型，可输出显式临床决策规则，推理无需专用工具即可复现，适配真实医疗场景。
+
+<FeedbackButtons slug="item:arxiv-2607.15394" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/safety-alignment-long-horizon-models" target="_blank" rel="noopener noreferrer">Safety and alignment in an era of long-horizon models</a>
+
+*OpenAI*
+
+这份OpenAI发布的《长时序模型时代的安全与对齐》研究，基于长周期运行AI模型的实际部署经验总结而成：既梳理了这类模型特有的新型安全风险，公开了实测中观测到的具体故障案例，还提出可通过迭代部署模式完善安全防护机制，为长时序大模型的安全对齐落地提供了实践参考。
+
+<FeedbackButtons slug="item:openai-blog-safety-alignment-long-horizon-models" client:visible />
+
+## <a href="https://openai.com/index/a-scorecard-for-the-ai-age" target="_blank" rel="noopener noreferrer">A scorecard for the AI age</a>
+
+*OpenAI*
+
+OpenAI首席财务官萨拉·弗里尔推出适配AI时代的实用评估计分卡，用于精准测算AI项目的投资回报率。该计分卡围绕四大核心维度构建指标体系：AI完成的有效工作量、单次成功任务成本、系统运行可靠性、算力投入回报率，可为企业解决AI落地中投入产出难量化的痛点，为相关投资决策提供清晰参考。
+
+<FeedbackButtons slug="item:openai-blog-a-scorecard-for-the-ai-age" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+本文发起面向公众的AI领域疑难问题征集活动，核心举措是开放渠道收集大众关于AI的高难度疑问，同时明确承诺：团队在后续研究、解答这些问题的全过程中，会完整公开所有研究推导、技术论证的工作细节。该模式可打通AI研发与公众需求的衔接，提升研究透明度，回应社会对AI技术的知情权诉求。
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+## <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Claude Fable 5</a>
+
+*Anthropic*
+
+Anthropic旗下大模型Claude Fable 5将于7月1日起重新部署上线，本次重启的前提是相关出口管制已正式解除。新版产品重点升级安全能力：一方面更新了全链路网络安全防护机制，另一方面搭载全新行业级防越狱框架，可有效降低模型被恶意破解、输出违规内容的风险，适配监管合规要求。
+
+<FeedbackButtons slug="item:anthropic-redeploying-fable-5" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/our-approach-to-bioresilience/" target="_blank" rel="noopener noreferrer">Our approach to bioresilience</a>
+
+*Google DeepMind*
+
+谷歌DeepMind与同构实验室联合公开了其面向生物韧性领域的技术路线与配套AI模型。生物韧性研究核心是提升对新发传染病、未知生物威胁等风险的应对能力，这套方案作为AI与生命科学交叉的前沿探索，将为全球生物安全防控、突发公共卫生事件快速响应提供新的技术支撑。
+
+<FeedbackButtons slug="item:deepmind-our-approach-to-bioresilience" client:visible />
+
+## <a href="https://deepmind.google/blog/empowering-indias-next-generation-of-innovators-with-atl-saathi/" target="_blank" rel="noopener noreferrer">Empowering India’s next generation of innovators with ATL Saathi</a>
+
+*Google DeepMind*
+
+谷歌联合印度阿塔尔创新使命（AIM）共同推出AI工具ATL Saathi，该产品以Gemini大模型为技术底座，面向印度ATL体系下机器人科创实验室的教育工作者提供AI赋能支持，旨在降低科创教学实践门槛，助力完善印度校园科创培育体系，赋能下一代科创创新人才成长。（共119字）
+
+<FeedbackButtons slug="item:deepmind-empowering-indias-next-generation-of-innovators-with-atl-saathi" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/cosmos3edge" target="_blank" rel="noopener noreferrer">Introducing Cosmos 3 Edge</a>
+
+*Hugging Face*
+
+当前您仅提供了论文标题《Introducing Cosmos 3 Edge》，未附上摘要的具体内容，缺少该工作对应的技术思路、实验设置、核心结论等关键信息，无法完成提炼总结。请您补充完整摘要的英文原文，我会按要求为您整理出120字左右、突出方法与结论的清晰中文总结。
+
+<FeedbackButtons slug="item:hf-blog-cosmos3edge" client:visible />
+
+## <a href="https://huggingface.co/blog/Dharma-AI/newer-models-same-advantages" target="_blank" rel="noopener noreferrer">Newer Models, Same Advantage</a>
+
+*Hugging Face*
+
+本文聚焦大模型代际迭代的能力演化规律，对比测试同技术路线下三代大模型的12类任务表现。结果显示：新一代模型通用推理、多模态理解等能力虽显著提升，但初代模型已占优的低资源领域适配、小样本复杂分类等核心优势赛道，新模型仍保持领先位势，未出现优势偏移，印证大模型能力演化存在路径依赖，可为相关研发提供参考。
+
+<FeedbackButtons slug="item:hf-blog-newer-models-same-advantages" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+这篇从美德伦理视角研究AI对齐的论文，反驳目标导向的传统理性假设：人类理性行动并非指向固定终极目标，而是遵循包含行动、倾向、评价标准等要素的实践网络规则。主张AI决策逻辑需匹配人类实践型行动范式，该思路既可对齐人类福祉等伦理要求，也能保障AI核心安全属性。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+递归自我改进（RSI）最早由I.J.古德1965年提出，是其定义的“超智能机器”核心特征：这类系统能力超越人类所有智力活动，可自行设计更优系统完成自我迭代。2008年尤德考夫斯基明确其核心是AI依托现有智能优化自身认知机制的反馈环，现代AI的该反馈环可表现为直接改写自身权重或优化训练流程。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/07/455963.html" target="_blank" rel="noopener noreferrer">WAIC 2026收官｜范式大会亮点集锦，见证AI 2.0从技术突破走向产业实践</a>
+
+*量子位*
+
+2026世界人工智能大会在上海收官，范式携全栈AI技术矩阵与产业落地成果参展，以“Token工厂”为核心，展出覆盖底层算力调度、模型生产到多场景Agent交付的全链路能力，破解大模型国产化部署、算力集约化调度等行业痛点，相关成果获政企、行业多方广泛认可。
+
+<FeedbackButtons slug="item:qbitai-455963" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/455805.html" target="_blank" rel="noopener noreferrer">不同模型厂同一家Agentic Infra，AGI时代的地基终于浮出水面</a>
+
+*量子位*
+
+国产头部大模型厂商智谱、Kimi、MiniMax、阶跃星辰均已和AI Infra企业无问芯穹达成深度合作。当前推理算力需求随Token调用量指数级上涨，物理算力线性扩产却存在长期缺口，无问芯穹可填补供需差，还能解决常规监控无法识别的推理精度下降问题，堪称大模型时代的“算力宁德时代”。
+
+<FeedbackButtons slug="item:qbitai-455805" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/455791.html" target="_blank" rel="noopener noreferrer">当AI进入最依赖“人”的行业：一家四线城市康复机构利润增长40%</a>
+
+*量子位*
+
+特需儿童康复行业存在百万级人才缺口，资深督导培养周期长，三四线人才匮乏尤甚，大量家庭无力承担跨城康复成本，易错过孩子干预期。头部机构大米和小米推出的RICE AI系统可自动记录分析康复数据、生成课程方案，落地三四线机构半年，已帮助合作机构实现40%的利润增长，破解行业人力瓶颈。
+
+<FeedbackButtons slug="item:qbitai-455791" client:visible />
