@@ -1,0 +1,191 @@
+---
+lang: en
+translationKey: digest-2026-07-21
+title: "Daily AI Highlights · 2026-07-21"
+description: "18 papers · multi-source aggregation + AI summaries"
+date: 2026-07-21
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second daily recap</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading overseas institutions including OpenAI, Anthropic, and DeepMind have collectively released new updates on AI alignment, model iteration, and industry-academia-research implementation</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face has launched new technologies such as DiffGI and JoyNexus, as well as new products including Cosmos 3 Edge, maintaining its continuous technological edge</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Domestic AI industry has made remarkable progress: WAIC 2026 has concluded, and substantial breakthroughs have been achieved in agent infrastructure and inclusive healthcare implementation</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Model Iteration</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔒 Safety & Alignment</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏥 Healthcare Implementation</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏭 Industrial Practice</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔬 Cutting-edge Research</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.13365" target="_blank" rel="noopener noreferrer">DiffGI: Differentiable Geometry Images for High-Fidelity Thin-Shell 3D Generation</a>
+
+*HF ★ 3 · Eungjune Shim, Hansol Lee, Eunjung Ju · [HF Mirror](https://huggingface.co/papers/2607.13365)*
+
+To address the pain points of existing 3D generation models struggling to represent thin-shell non-manifold structures such as clothing, stair-step artifacts in traditional geometric image methods, and non-differentiable reconstruction processes, the differentiable geometric image DiffGI is proposed: it uses continuous TSDF encoding to eliminate resolution-related artifacts, is paired with differentiable Marching Squares to enable end-to-end training, and builds a VAE + flow matching latent diffusion generation model based on this framework. Experiments show its thin-shell 3D generation accuracy outperforms similar solutions, with significantly reduced computing power requirements.
+
+<FeedbackButtons slug="item:arxiv-2607.13365" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.16074" target="_blank" rel="noopener noreferrer">JoyNexus: Service-Oriented Multi-Tenant Post-Training for VLA Models</a>
+
+*HF ★ 2 · Haoran Sun, Wentao Zhang, Junyang Hua… · [HF Mirror](https://huggingface.co/papers/2607.16074)*
+
+To solve the problems of high user adaptation cost, high short-task cost, and low service provider resource utilization caused by single-tenant exclusive resources in existing VLA model post-training, this paper proposes the multi-tenant service JoyNexus: it decouples three types of services: training, inference, and environment, isolates tenant resources, and is paired with a heterogeneous data batching mechanism to share backbone computing power. Actual tests show it reduces total GPU time consumption compared to the single-tenant model, and significantly improves resource utilization.
+
+<FeedbackButtons slug="item:arxiv-2607.16074" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2607.15293" target="_blank" rel="noopener noreferrer">Structure of the Circular-Dyadic Convolution Error</a>
+
+*Ben Fauber, Alireza Moradzadeh*
+
+Calculating dyadic convolution with Hadamard transform has more real-valued operation advantages than FFT, but algebraic errors occur when it replaces DFT to calculate circular convolution. This paper analyzes the structural characteristics of this error: there are 4 fixed error-free bits, and rearranging the output cannot eliminate the error; the error operator is nearly full-rank, and the null space has only logarithmic dimensions; the error expectation is determined by a single alignment scalar, output energy asymptotically doubles in conventional scenarios, only zero-error subspace filters have no error, and the overall error is structured and predictable.
+
+<FeedbackButtons slug="item:arxiv-2607.15293" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.15313" target="_blank" rel="noopener noreferrer">Position: Quantum Program Generation Must Prioritize Validity Over Probabilistic Scaling</a>
+
+*Junhao Song, Yu Zhou, William Knottenbelt…*
+
+This position paper points out that applying the large model scaling hypothesis to general quantum circuit generation is a directional mistake: quantum circuits have strict mathematical constraints, pure parameter scaling cannot learn the physical semantics of Hilbert space, and the exponential decay of valid circuits with the number of bits also makes post-hoc filtering infeasible. The paper argues that shifting to a validator-centric generation architecture with built-in quantum domain rules such as hierarchical constraints is the feasible path for quantum program generation.
+
+<FeedbackButtons slug="item:arxiv-2607.15313" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.15394" target="_blank" rel="noopener noreferrer">A Transportable Threshold-Based Framework for Interpretable Classification of Medical Data</a>
+
+*Antony Garcia, Adrian Noriega, Gabrielle Britton…*
+
+To address the problems of insufficient interpretability and limited implementation of black-box AI in the medical field, this study proposes a transportable threshold-based interpretable classification framework: based on Bernoulli Naive Bayes, it uses chi-square guided supervised binarization to process continuous medical data while retaining model transparency. It achieves a maximum AUC of 0.984 on three types of disease benchmark datasets, with performance comparable to complex models, can output explicit clinical decision rules, and inference can be reproduced without dedicated tools, making it suitable for real medical scenarios.
+
+<FeedbackButtons slug="item:arxiv-2607.15394" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/safety-alignment-long-horizon-models" target="_blank" rel="noopener noreferrer">Safety and alignment in an era of long-horizon models</a>
+
+*OpenAI*
+
+This research *Safety and Alignment in an Era of Long-Horizon Models* released by OpenAI is summarized based on actual deployment experience of long-running AI models: it sorts out the unique new security risks of such models, discloses specific failure cases observed in actual tests, and also proposes that security protection mechanisms can be improved through iterative deployment modes, providing practical reference for the implementation of safety and alignment for long-horizon large models.
+
+<FeedbackButtons slug="item:openai-blog-safety-alignment-long-horizon-models" client:visible />
+
+## <a href="https://openai.com/index/a-scorecard-for-the-ai-age" target="_blank" rel="noopener noreferrer">A scorecard for the AI age</a>
+
+*OpenAI*
+
+OpenAI CFO Sarah Friar has launched a practical evaluation scorecard adapted to the AI era, used to accurately calculate the return on investment of AI projects. The scorecard builds an indicator system around four core dimensions: effective workload completed by AI, cost per successful task, system operation reliability, and return on computing power investment, which can solve the pain point for enterprises of difficulty in quantifying input and output in AI implementation, and provide clear reference for relevant investment decisions.
+
+<FeedbackButtons slug="item:openai-blog-a-scorecard-for-the-ai-age" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+This article launches a public solicitation campaign for difficult questions in the AI field, with the core measure of opening channels to collect high-difficulty questions about AI from the public, while making a clear commitment: the team will fully disclose all work details of research derivation and technical demonstration in the entire process of subsequent research and answering these questions. This model can connect AI R&D with public needs, improve research transparency, and respond to society's demand for the right to know about AI technology.
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+## <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Claude Fable 5</a>
+
+*Anthropic*
+
+Anthropic's large model Claude Fable 5 will be redeployed and launched starting July 1, and the premise of this relaunch is that relevant export controls have been officially lifted. The new version focuses on upgrading security capabilities: on the one hand, it has updated the full-link network security protection mechanism, and on the other hand, it is equipped with a new industry-level jailbreak prevention framework, which can effectively reduce the risk of the model being maliciously cracked and outputting illegal content, meeting regulatory compliance requirements.
+
+<FeedbackButtons slug="item:anthropic-redeploying-fable-5" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/our-approach-to-bioresilience/" target="_blank" rel="noopener noreferrer">Our approach to bioresilience</a>
+
+*Google DeepMind*
+
+Google DeepMind and Isomorphic Labs have jointly released their technical roadmap and supporting AI models for the bioresilience field. The core of bioresilience research is to improve the ability to respond to risks such as emerging infectious diseases and unknown biological threats. As a cutting-edge exploration at the intersection of AI and life sciences, this solution will provide new technical support for global biosecurity prevention and control and rapid response to public health emergencies.
+
+<FeedbackButtons slug="item:deepmind-our-approach-to-bioresilience" client:visible />
+
+## <a href="https://deepmind.google/blog/empowering-indias-next-generation-of-innovators-with-atl-saathi/" target="_blank" rel="noopener noreferrer">Empowering India’s next generation of innovators with ATL Saathi</a>
+
+*Google DeepMind*
+
+Google, in partnership with India's Atal Innovation Mission (AIM), has jointly launched the AI tool ATL Saathi. Built on the Gemini large model, this product provides AI empowerment support for educators in robotics science and innovation laboratories under India's ATL system, aiming to lower the threshold for science and innovation teaching practice, help improve India's campus science and innovation cultivation system, and empower the growth of the next generation of scientific and innovative talents. (119 words total)
+
+<FeedbackButtons slug="item:deepmind-empowering-indias-next-generation-of-innovators-with-atl-saathi" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/cosmos3edge" target="_blank" rel="noopener noreferrer">Introducing Cosmos 3 Edge</a>
+
+*Hugging Face*
+
+Currently you have only provided the paper title *Introducing Cosmos 3 Edge*, no specific content of the abstract is attached, and key information such as the technical approach, experimental setup, and core conclusions corresponding to this work is missing, so the extraction and summary cannot be completed. Please supplement the full English text of the abstract, and I will organize a clear summary of about 120 words highlighting the method and conclusion for you as required.
+
+<FeedbackButtons slug="item:hf-blog-cosmos3edge" client:visible />
+
+## <a href="https://huggingface.co/blog/Dharma-AI/newer-models-same-advantages" target="_blank" rel="noopener noreferrer">Newer Models, Same Advantage</a>
+
+*Hugging Face*
+
+This paper focuses on the capability evolution law of generational iteration of large models, and compares the performance of three generations of large models under the same technical route on 12 types of tasks. The results show that although the new generation of models has significantly improved capabilities such as general reasoning and multimodal understanding, the new models still maintain a leading position in the core advantage tracks where the first generation of models already had an edge, such as low-resource domain adaptation and few-shot complex classification, with no advantage shift observed, confirming that there is path dependence in the capability evolution of large models, which can provide reference for relevant R&D.
+
+<FeedbackButtons slug="item:hf-blog-newer-models-same-advantages" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This paper studying AI alignment from the perspective of virtue ethics refutes the traditional goal-oriented rationality assumption: human rational actions are not directed at fixed ultimate goals, but follow the rules of a practical network including elements such as actions, tendencies, and evaluation standards. It argues that AI decision-making logic needs to match the human practical action paradigm, which can not only align with ethical requirements such as human well-being, but also guarantee the core security attributes of AI.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+Recursive Self-Improvement (RSI) was first proposed by I.J. Good in 1965, and is the core feature of his defined "ultraintelligent machine": the capability of such systems exceeds all human intellectual activities, and they can design better systems by themselves to complete self-iteration. In 2008, Eliezer Yudkowsky clarified that its core is the feedback loop where AI relies on existing intelligence to optimize its own cognitive mechanism, and this feedback loop in modern AI can be manifested as directly rewriting its own weights or optimizing the training process.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/07/455963.html" target="_blank" rel="noopener noreferrer">WAIC 2026 Concludes | Highlights of Fanshi Conference, Witnessing AI 2.0 Moving from Technical Breakthroughs to Industrial Practice</a>
+
+*QbitAI*
+
+The 2026 World Artificial Intelligence Conference has concluded in Shanghai. Fanshi participated in the exhibition with its full-stack AI technology matrix and industrial implementation results, with the "Token Factory" as the core, demonstrating full-link capabilities covering underlying computing power scheduling, model production to multi-scenario agent delivery, solving industry pain points such as localized deployment of large models and intensive computing power scheduling, and relevant results have been widely recognized by government, enterprises and industry parties.
+
+<FeedbackButtons slug="item:qbitai-455963" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/455805.html" target="_blank" rel="noopener noreferrer">Different Model Makers Use the Same Agentic Infra, the Foundation of the AGI Era Has Finally Emerged</a>
+
+*QbitAI*
+
+Leading domestic large model manufacturers including Zhipu AI, Kimi, MiniMax, and StepFun have all reached in-depth cooperation with AI infrastructure company MooreWiz. Currently, inference computing power demand is rising exponentially with token call volume, while there is a long-term gap in linear expansion of physical computing power. MooreWiz can fill the gap between supply and demand, and also solve the problem of inference accuracy decline that cannot be identified by conventional monitoring, which is known as the "CATL of computing power" in the large model era.
+
+<FeedbackButtons slug="item:qbitai-455805" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/455791.html" target="_blank" rel="noopener noreferrer">When AI Enters the Most "Human-Dependent" Industry: A Fourth-Tier City Rehabilitation Institution Sees 40% Profit Growth</a>
+
+*QbitAI*
+
+The special needs children rehabilitation industry has a talent gap of millions, with long training cycles for senior supervisors, and the talent shortage is especially severe in third- and fourth-tier cities. A large number of families cannot afford cross-city rehabilitation costs, and easily miss their children's intervention window. The RICE AI system launched by leading institution Dami & Xiaomi can automatically record and analyze rehabilitation data and generate course plans. Half a year after being deployed in third- and fourth-tier institutions, it has helped partner institutions achieve 40% profit growth, breaking the industry's human resource bottleneck.
+
+<FeedbackButtons slug="item:qbitai-455791" client:visible />
