@@ -1,0 +1,207 @@
+---
+lang: en
+translationKey: digest-2026-07-22
+title: "Daily AI Highlights · 2026-07-22"
+description: "20 Papers · Multi-source Aggregation + AI Summaries"
+date: 2026-07-22
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's highlights in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading overseas AI vendors announced major updates in a concentrated period: OpenAI launched services for small businesses, DeepMind released new models in the Gemini 3.6 series</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Multiple new achievements emerged in the AI academic field, covering directions including world modeling, diffusion control, multi-objective optimization, and embodied simulation</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">China's AI sector delivered outstanding progress: Xiaohongshu's large model won a gold medal at IMO, and heavyweight achievements including intelligent computing and agents were released at WAIC</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Model Iteration</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📰 Vendor Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📑 Academic Achievements</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🇨🇳 Domestic Cutting-edge Progress</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔒 Security Cooperation</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.19343" target="_blank" rel="noopener noreferrer">Masked Visual Actions for Unified World Modeling</a>
+
+*HF ★ 0 · Hadi Alzayer, Wenlong Huang, Haonan Chen… · [HF Mirror](https://huggingface.co/papers/2607.19343)*
+
+To address the pain point that action representation and visual pre-training space are hard to align in robotic world modeling, this research proposes a pixel-level control interface called "Masked Visual Actions", which represents actions as partially visible trajectories of any entity in a video. A single model fine-tuned with only 15 hours of real and simulated masked samples can handle both forward dynamics prediction and inverse kinematics solving, and can effectively assist policy evaluation and planning decision-making in downstream manipulation tasks.
+
+<FeedbackButtons slug="item:arxiv-2607.19343" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.19344" target="_blank" rel="noopener noreferrer">Appearance Pointers -- Multimodal Region Control of Diffusion Transformers</a>
+
+*HF ★ 0 · Rahul Sajnani, Yulia Gryaditskaya, Radomír Měch… · [HF Mirror](https://huggingface.co/papers/2607.19344)*
+
+To solve the problem of lack of precise regional control in controllable image generation of Diffusion Transformers (DiT), this paper proposes an appearance pointer mechanism: it generates compact representations through a region correspondence network, optimizes via spatial aggregation, aligns text/image inputs with user-specified masks, and does not require retraining the base DiT. It is the first modality-agnostic local multimodal control interface for DiT, with the performance of a single model matching or even outperforming modality-specific SOTA models, enabling precise region-controllable generation.
+
+<FeedbackButtons slug="item:arxiv-2607.19344" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.18955" target="_blank" rel="noopener noreferrer">H^2SD: Hybrid Hindsight Self-Distillation</a>
+
+*HF ★ 0 · Qiye Cai, Yichuan Ma, Linyang Li… · [HF Mirror](https://huggingface.co/papers/2607.18955)*
+
+To address the issues of sparse supervision in verifiable reward reinforcement learning, and unstable optimization or lack of clear error correction direction in existing self-distillation solutions for large model reasoning tasks such as mathematical reasoning and code generation, this paper proposes the Hybrid Hindsight Self-Distillation framework H²SD: for successful trajectories, it adjusts the update magnitude with teacher signals; for failed trajectories, it aligns with the teacher distribution by referring to key reasoning prompts. Experiments show that its performance on multiple reasoning benchmarks is better than existing baselines, with stable optimization and excellent generation efficiency.
+
+<FeedbackButtons slug="item:arxiv-2607.18955" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.17599" target="_blank" rel="noopener noreferrer">ConsiSpace: Learning Geometric Consistency Matters for Video Spatial Reasoning</a>
+
+*HF ★ 0 · Ting Huang, Zhenyu Zhang, Wenyuan Huang… · [HF Mirror](https://huggingface.co/papers/2607.17599)*
+
+To address the problems that existing multimodal large models are semantically oriented, making it difficult to integrate consistent spatial evidence and resulting in poor reasoning stability during long-sequence cross-view video spatial reasoning, this paper proposes the ConsiSpace geometric consistency perception framework: it builds geometric consistency memory to efficiently store task-related spatial evidence, and designs unified consistency self-supervised reinforcement learning as a post-training signal. In three types of spatial reasoning benchmark tests, the average score is 12.6 points higher than the optimal baseline.
+
+<FeedbackButtons slug="item:arxiv-2607.17599" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2607.16194" target="_blank" rel="noopener noreferrer">Reinforcement Learning-Guided NSGA-II Enhanced with Gray Relational Coefficient for Multi-Objective Optimization: Application to NASDAQ Portfolio Optimization</a>
+
+*Zhiyuan Wang, Qinxu Ding, Ding Ding…*
+
+This paper targets the multi-objective portfolio optimization problem, and proposes the improved NSGA-II algorithm RL-NSGA-II-GRC, which integrates reinforcement learning online adaptive parameter tuning and grey relational coefficient selection operator. Benchmark tests show that its convergence is 4.4%~5.8% higher than the original NSGA-II. When applied to NASDAQ portfolio optimization, it can obtain a high-density effective frontier, with a maximum annualized Sharpe ratio of 1.92, and can output optimal solutions adapted to different risk preferences.
+
+<FeedbackButtons slug="item:arxiv-2607.16194" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.16203" target="_blank" rel="noopener noreferrer">DocOCR-Eval: A Correction-Based Framework for OCR Tool Selection Without Ground Truth</a>
+
+*Zihan Xu, Puzhen Wu, Lawrence Chun Man Lau…*
+
+To address the pain point of difficult selection among numerous OCR and multimodal large model document parsing tools in scenarios with scarce annotations, this research proposes the annotation-free evaluation framework DocOCR-Eval, which adopts a three-stage correction ranking strategy. It can approximate the tool ranking results of manual annotation without ground truth, and aggregating multimodal large models can further improve the matching degree. Experiments verify that it can reliably complete OCR tool selection in annotation-deficient scenarios, providing guidance for system implementation.
+
+<FeedbackButtons slug="item:arxiv-2607.16203" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.16222" target="_blank" rel="noopener noreferrer">Fully-sensorized smart-eyewear platform for on-device Machine Learning</a>
+
+*Andrea Giudici, Christian Veronesi, Pietro Bartoli…*
+
+This paper proposes the ARGO smart eyewear platform for on-device machine learning, adopting co-design of software, hardware and AI, equipped with the STM32N6 chip integrated with NPU. It proposes a head-parallel attention mechanism to optimize YOLOv11 for hardware adaptation, processes data locally without the cloud to ensure privacy. It achieves a mAP50-95 of 24 for urban obstacle recognition, only occupies 2.483MB of memory, and has a 113-minute battery life with a 200mAh battery at 10FPS, verifying the feasibility of high-performance privacy-friendly wearable AI devices.
+
+<FeedbackButtons slug="item:arxiv-2607.16222" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/introducing-chatgpt-small-business-program" target="_blank" rel="noopener noreferrer">Introducing the ChatGPT for small business program</a>
+
+*OpenAI*
+
+OpenAI officially launched the ChatGPT for small business program, relying on the capabilities of ChatGPT Work to provide AI skill empowerment services for small and medium-sized entrepreneurs, helping them master the implementation methods of AI tools, realize the automation of daily operation, transaction processing and other links, greatly lower the threshold of AI use for small and micro enterprises in digital transformation, and finally achieve the goals of improving efficiency, increasing revenue and driving long-term business growth.
+
+<FeedbackButtons slug="item:openai-blog-introducing-chatgpt-small-business-program" client:visible />
+
+## <a href="https://openai.com/index/hugging-face-model-evaluation-security-incident" target="_blank" rel="noopener noreferrer">OpenAI and Hugging Face partner to address security incident during model evaluation</a>
+
+*OpenAI*
+
+Recently, OpenAI and Hugging Face jointly handled a security incident that occurred during the AI model evaluation phase, and simultaneously disclosed the initial investigation conclusions of the incident. This incident reveals that attackers already have high-level targeted cyber attack capabilities targeting the AI R&D process. The incident details and attack and defense experience summarized by the two parties can provide targeted security optimization references for AI system defenders across the industry, and fill the security gaps in the entire model lifecycle.
+
+<FeedbackButtons slug="item:openai-blog-hugging-face-model-evaluation-security-incident" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+This is a public interaction initiative in the AI field. The initiators openly solicit difficult AI-related questions of public concern from the whole society, and make a clear commitment: when responding to these collected questions one by one in the future, they will fully disclose the entire process of relevant research, demonstration and problem-solving, so as to improve the transparency of AI R&D and respond to public concerns about the development of AI technology.
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+## <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Claude Fable 5</a>
+
+*Anthropic*
+
+AI vendor Anthropic announced that it will restart the deployment of the Claude Fable 5 large model starting July 1 after the official lifting of export controls. This deployment is accompanied by two security upgrades: an updated full-link cybersecurity protection system, and a new industry-grade anti-jailbreak framework, which can effectively reduce the risk of malicious cracking and illegal abuse of the model, balancing compliance requirements and usage security.
+
+<FeedbackButtons slug="item:anthropic-redeploying-fable-5" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/introducing-gemini-36-flash-35-flash-lite-and-35-flash-cyber/" target="_blank" rel="noopener noreferrer">Introducing Gemini 3.6 Flash, 3.5 Flash-Lite, and 3.5 Flash Cyber</a>
+
+*Google DeepMind*
+
+Google launched three new models in the Gemini series this time: the general-purpose lightweight flagship Gemini 3.6 Flash, the 3.5 Flash-Lite focused on ultra-low power consumption and low latency suitable for edge deployment, and the 3.5 Flash Cyber customized for cybersecurity vertical scenarios. The three new products complete the layout of the Gemini Flash product line, covering different needs such as high-performance general reasoning, edge implementation, and industry-specific scenarios, adapting to diverse computing power conditions.
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-36-flash-35-flash-lite-and-35-flash-cyber" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-gemini-3-5-flash-cyber/" target="_blank" rel="noopener noreferrer">Introducing Gemini 3.5 Flash Cyber</a>
+
+*Google DeepMind*
+
+Google has newly launched the lightweight cybersecurity dedicated model Gemini 3.5 Flash Cyber, which is a vertical scenario customized version of the Gemini 3.5 Flash series. It mainly serves cybersecurity operation and maintenance needs, can automatically identify various system vulnerabilities, and supports generating suitable patch solutions for remediation, which can significantly reduce the workload of cybersecurity practitioners in vulnerability management.
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-3-5-flash-cyber" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/state-of-simulation-for-physical-ai" target="_blank" rel="noopener noreferrer">The State of Simulation for Physical AI: An Overview</a>
+
+*Hugging Face*
+
+This review "The State of Simulation for Physical AI" sorts out the development context of physical AI simulation technology, compares the adaptation capabilities of existing simulation tools for multi-physics scenarios such as rigid bodies, fluids, and flexible bodies, analyzes the two core bottlenecks of large reality-virtual domain gap and high computational cost, summarizes cutting-edge progress such as differential simulation and reality-virtual closed-loop calibration, and points out that a high-fidelity low-cost general simulation framework is the core path to support the implementation of embodied intelligence and physical robots in the future.
+
+<FeedbackButtons slug="item:hf-blog-state-of-simulation-for-physical-ai" client:visible />
+
+## <a href="https://huggingface.co/blog/grabette" target="_blank" rel="noopener noreferrer">Grabette: an open system to record robot-manipulation data</a>
+
+*Hugging Face*
+
+This paper introduces Grabette, an open-source system for recording robot manipulation data. The system supports low-cost construction, is compatible with various devices such as robotic arms, RGBD cameras, and force-tactile sensors, realizes synchronous collection and automatic annotation of multimodal manipulation data, adapts to grasping and dexterous manipulation scenarios, and the generated datasets can be directly used for training robot manipulation policies, solving the pain points of existing similar systems being closed-source, poor adaptability, and high cost.
+
+<FeedbackButtons slug="item:hf-blog-grabette" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This paper conducts AI alignment research from the perspective of virtue ethics, refutes the presupposition that "rational agents must be anchored to end goals", and points out that human rational actions are not directed at fixed goals, but adapt to a practical network including elements such as action norms and evaluation standards. The paper proposes that to achieve smooth collaboration and alignment between AI and humans, the AI decision-making logic needs to match the "type signature" of human practice-based actions, and this path can cover both ethical alignment and core security requirements.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+The concept of Recursive Self-Improvement (RSI) was first proposed by I.J. Good in 1965, referring to superintelligent machines that can surpass all human intellectual activities and can independently design better systems to achieve self-iteration. In 2008, Eliezer Yudkowsky clarified that its core is the feedback loop where AI uses existing intelligence to optimize its own cognitive mechanism. Currently, such feedback for AI can be manifested as directly rewriting its own weights, or optimizing its own training process.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位 (QbitAI)
+
+## <a href="https://www.qbitai.com/2026/07/456178.html" target="_blank" rel="noopener noreferrer">Cowar Technology debuts at WAIC 2026, unveils the industry's first dual-layer agent world model</a>
+
+*量子位 (QbitAI)*
+
+During WAIC 2026, Cowar Technology released the industry's first full-stack self-developed COOWAM dual-layer agent world model. On-site demonstration showed that the robotic arm driven by this model can autonomously complete multi-step complex drink preparation tasks in dynamic environments, and its first heavy-duty quadruped robot dog X0 also made its offline debut. Based on this model, Cowar is promoting urban embodied intelligence to shift from single-unit operation to multi-agent collaboration, accelerating its implementation in urban scenarios such as public services and logistics distribution.
+
+<FeedbackButtons slug="item:qbitai-456178" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/456061.html" target="_blank" rel="noopener noreferrer">Xiaohongshu's large model wins full-score gold medal at IMO, its solution to the third problem is praised as elegant by champion contestants</a>
+
+*量子位 (QbitAI)*
+
+Xiaohongshu's self-developed large model dots-note-3.0 won a full-score gold medal at the 2026 International Mathematical Olympiad (IMO), making it the first large model in China and the second in the world to receive official IMO gold medal certification, outperforming Google's Gemini which previously only answered 5 out of 6 questions correctly. The model solves problems entirely in natural language, and the unconventional solutions provided for some questions are concise, elegant and hit the essence, winning high recognition from multiple CMO gold medalists.
+
+<FeedbackButtons slug="item:qbitai-456061" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/456052.html" target="_blank" rel="noopener noreferrer">WAIC heavyweight achievement | Shanghai INESA Intelligent Computing leads the establishment of "Intelligent Computing System Architecture Alliance" and releases "Super Node System Architecture Specification"</a>
+
+*量子位 (QbitAI)*
+
+At WAIC 2026, under the guidance of the Shanghai Municipal Commission of Economy and Informatization, Shanghai INESA Intelligent Computing led 23 upstream and downstream entities in the intelligent computing industry chain to officially establish the Intelligent Computing System Architecture Alliance and release the "Super Node System Architecture Specification". The alliance is operated by the INESA-ZTE Joint Laboratory, which will aggregate full-stack ecological resources, solve pain points such as imbalance between supply and demand of computing power and software and hardware adaptation barriers, and promote the construction of an independent and controllable intelligent computing base.
+
+<FeedbackButtons slug="item:qbitai-456052" client:visible />
