@@ -1,0 +1,216 @@
+---
+lang: zh
+translationKey: digest-2026-07-23
+title: "AI 每日精选 · 2026-07-23"
+description: "21 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-07-23
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">头部AI厂商密集更新：OpenAI新建算力基建、DeepMind发Gemini3.6、Anthropic重启Claude Fable5部署</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">AI前沿研究成果集中涌现，覆盖大模型训练优化、3D重建、多模态感知、对齐等方向</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内AI产业动作频发：平头哥开源核心技术、科大讯飞发布企业级AI模型治理底座</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥大模型动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠前沿研新</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏭产业落地</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖具身智能</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡开源进展</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.20145" target="_blank" rel="noopener noreferrer">SLAI T-Rex: Full-Parameter Post-training of the DeepSeek-V4 Family on Ascend SuperPOD</a>
+
+*HF ★ 12 · Dongfang Li, Xiaodong Luo, Ruoyu Sun… · [HF 镜像](https://huggingface.co/papers/2607.20145)*
+
+本文针对万亿参数MoE大模型全参数后训练的系统挑战，突破主流GPU集群局限，在昇腾NPU超算上打造SLAI T-Rex全栈优化框架，跨模型并行、算通调度、底层内核层级优化，DeepSeek-V4训练MFU达34.22%，较基线提升2.93倍。基于该框架适配运筹优化领域，专用模型零样本Pass@1达71.81%，优于同级别通用大模型。
+
+<FeedbackButtons slug="item:arxiv-2607.20145" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.19691" target="_blank" rel="noopener noreferrer">SLPO: Scaling Latent Reasoning via a Surrogate Policy</a>
+
+*HF ★ 1 · Runyang You, Zhiyuan Liu, Yongqi Li… · [HF 镜像](https://huggingface.co/papers/2607.19691)*
+
+针对显式思维链强化学习推理算力成本高、现有隐式推理受限于模仿学习无法用结果奖励实现测试时缩放的痛点，本文提出SLPO方法：基于隐式转移的替代策略密度做轨迹信用分配，搭配正确性监督停止头实现可变步长隐式推理。实验显示其可提升并行采样Pass@k，还能为难题分配更多计算、提高确定性准确率。
+
+<FeedbackButtons slug="item:arxiv-2607.19691" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.19942" target="_blank" rel="noopener noreferrer">G-MAD: A Game-Based Data Generation Framework for Multi-View RGB-T Aerial Object Detection</a>
+
+*HF ★ 0 · Yechan Kim, JongHyun Park, Dongho Yoon… · [HF 镜像](https://huggingface.co/papers/2607.19942)*
+
+针对现有真实航空多视角RGB-T目标检测数据集视角可控性差、模态对齐难、标注成本高的痛点，该研究提出游戏驱动的开源数据生成框架G-MAD，依托Arma3引擎实现可控场景布设、多视角相机调节、RGB-T同步采集、自动边界框标注，还基于该框架构建发布了大规模基准数据集AMOD，相关资源均已开源。
+
+<FeedbackButtons slug="item:arxiv-2607.19942" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.20207" target="_blank" rel="noopener noreferrer">SeededGrasp: Language-Guided Grasping in Complex Scenes with Multiple Embodiments</a>
+
+*HF ★ 0 · Yang Xu, Gurpreet Singh Mukker, Raymond Wang… · [HF 镜像](https://huggingface.co/papers/2607.20207)*
+
+针对现有视觉语言模型辅助机器人抓取方案空间感知不足、端到端训练成本高，难以适配多实体复杂场景的问题，本文提出SeededGrasp框架：将高层语义推理与底层几何执行解耦，由VLM输出种子点引导轻量抓取模型生成动作，还开源了含250万条样本的多实体桌面抓取数据集。方案性能优于现有基线，仿真、实机抓取成功率分别达72%、78%。
+
+<FeedbackButtons slug="item:arxiv-2607.20207" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.20417" target="_blank" rel="noopener noreferrer">ATSplat: Compact Feed-forward 3D Gaussian Splatting with Adaptive Token Expansion</a>
+
+*HF ★ 0 · Cho In, Jeonghwan Cho, Mijin Yoo… · [HF 镜像](https://huggingface.co/papers/2607.20417)*
+
+针对现有前馈3D高斯喷溅方法依赖输入像素布局、高斯冗余、缺乏场景自适应分配能力的问题，本文提出ATSplat框架：先从粗深度、相机信息生成稀疏3D锚点令牌，解耦高斯位置与输入图像网格，再按渲染不确定性动态扩展高复杂度区域令牌。实验显示其渲染效果达SOTA，高斯量减少5.7倍以上，单GPU可秒级重建，新视角渲染超千帧每秒。
+
+<FeedbackButtons slug="item:arxiv-2607.20417" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2607.18278" target="_blank" rel="noopener noreferrer">FALCON-Discover: Discovering Concentrated False-Confidence Regions for Calibration</a>
+
+*Filippo Cenacchi, Longbing Cao, Runze Yang*
+
+针对现有模型校准多做整体评估、易遗漏局部高置信错误集中区的问题，本文提出模型无关的事后检测框架FALCON-Discover，融合置信偏差、局部支持等四类信号对预测排序。
+经多组二分类表格数据集测试，该框架检出危险高置信错误的性能远超现有校准基线，且最优信号适配不同数据集有差异，证明此类过置信问题应按区域发现而非单分数校准问题处理。
+
+<FeedbackButtons slug="item:arxiv-2607.18278" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.18279" target="_blank" rel="noopener noreferrer">Beyond Output-Space Calibration: Spectral Evidence Bundling for Selective Reliability Estimation in Time-Series Classification</a>
+
+*Filippo Cenacchi, Longbing Cao, Runze Yang*
+
+针对时间序列分类现有事后校准仅重映射输出分数、无法关联输入时序信号的缺陷，本文提出带验证门的固定标签可靠性策略：保留骨干模型预测结果，结合输出置信度与时序频谱特征估算可靠性，仅当性能达标且不突破预设阈值时启用频谱特征。测试显示该方法可靠性评估指标显著提升，高置信错误率降至0.094。
+
+<FeedbackButtons slug="item:arxiv-2607.18279" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.18280" target="_blank" rel="noopener noreferrer">Beyond Single-Dimensional Compression: The Compound Sparsity Frontier of Large Language Models</a>
+
+*Chao Han, Haozhe Hu, Xiaoyu Shen*
+
+针对大语言模型单维度压缩高稀疏度下性能骤降问题，本文提出复合稀疏框架：先经低秩近似、通道剪枝得到静态压缩骨干，再加轻量路由实现逐词元动态跳层，参数、计算两类稀疏度可独立调控。实验显示同总稀疏度下该方法优于单类压缩，固定稀疏预算下均衡分配两类稀疏度效果最优，为大模型压缩提供实用新路径。
+
+<FeedbackButtons slug="item:arxiv-2607.18280" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/building-ai-infrastructure-with-the-effingham-county-community" target="_blank" rel="noopener noreferrer">Building AI infrastructure with the Effingham County community</a>
+
+*OpenAI*
+
+OpenAI在美国佐治亚州埃芬汉县启动“山茶花项目”，联合当地共同搭建AI基础设施。项目配套四项承诺：采用负责任的能源方案管控算力能耗影响，落地面向本地的公共投资，创造属地就业岗位，同时向当地开放Codex大模型使用权限，探索AI基建落地的企地协作共赢路径。
+
+<FeedbackButtons slug="item:openai-blog-building-ai-infrastructure-with-the-effingham-county-community" client:visible />
+
+## <a href="https://openai.com/index/how-news-organizations-are-using-ai" target="_blank" rel="noopener noreferrer">How news organizations are using AI to advance their vital missions</a>
+
+*OpenAI*
+
+本研究聚焦新闻机构的AI落地应用实践，指出当前全球新闻行业已将AI应用于三大核心场景：一是强化新闻采编报道的专业能力，二是拓展受众覆盖规模与用户粘性，三是优化经营业务全链路运营效率。目前OpenAI相关工具已面向全球记者、出版方提供技术支撑，助力新闻机构实现核心发展使命。
+
+<FeedbackButtons slug="item:openai-blog-how-news-organizations-are-using-ai" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+这一举措以公众真实需求为核心导向，面向全社会公开征集大众关于人工智能领域的各类高难度疑问，同时明确承诺在回应、攻关这些问题的全过程中，将公开所有相关工作流程与进展。该模式既推动AI研究锚定公众关切，也以透明化运作提升技术公信力，消弭大众与前沿AI研究的认知鸿沟。
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+## <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Claude Fable 5</a>
+
+*Anthropic*
+
+AI企业Anthropic在针对相关产品的出口管制正式解除后，官宣自7月1日起重新部署旗下大模型产品Claude Fable 5。本次上线的版本完成两项核心安全升级：既更新了网络安全防护体系，又搭载了全新的行业级反越狱检测框架，整体安全合规能力较此前版本得到显著提升。
+
+<FeedbackButtons slug="item:anthropic-redeploying-fable-5" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/accelerating-the-frontiers-of-scientific-discovery-googles-40m-commitment-to-the-genesis-mission/" target="_blank" rel="noopener noreferrer">Accelerating the frontiers of scientific discovery: Google’s $40M commitment to the Genesis Mission</a>
+
+*Google DeepMind*
+
+为推动前沿科学发现领域的探索提速，谷歌宣布向Genesis科研使命投入总价值4000万美元的AI相关代币与算力权益。这笔资源将定向支撑该使命依托AI技术开展跨学科科研攻关，降低前沿研究的算力门槛，助力高难度科学问题突破，缩短重大科研成果的落地周期。
+
+<FeedbackButtons slug="item:deepmind-accelerating-the-frontiers-of-scientific-discovery-googles-40m-commitment-to-the" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-gemini-36-flash-35-flash-lite-and-35-flash-cyber/" target="_blank" rel="noopener noreferrer">Introducing Gemini 3.6 Flash, 3.5 Flash-Lite, and 3.5 Flash Cyber</a>
+
+*Google DeepMind*
+
+本次谷歌推出三款全新Gemini系列模型，分别为高性能轻量通用模型Gemini 3.6 Flash、主打端侧部署的超轻量模型3.5 Flash-Lite，以及面向网络安全垂直场景定制的3.5 Flash Cyber。三款均延续Flash系列低延迟、高吞吐优势，覆盖通用推理、端侧落地、行业定制三类需求，完善了Gemini全场景产品矩阵。
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-36-flash-35-flash-lite-and-35-flash-cyber" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/state-of-simulation-for-physical-ai" target="_blank" rel="noopener noreferrer">The State of Simulation for Physical AI: An Overview</a>
+
+*Hugging Face*
+
+这篇物理AI仿真领域综述，系统梳理了仿真技术在具身智能、实体机器人等物理AI系统研发中的应用现状，分类对比了刚体、柔体、多物理场耦合场景下各类仿真工具的适配性与优劣，复盘了实虚迁移技术的现存瓶颈，指出高保真低算力仿真、通用跨域仿真框架是未来核心发展方向。
+
+<FeedbackButtons slug="item:hf-blog-state-of-simulation-for-physical-ai" client:visible />
+
+## <a href="https://huggingface.co/blog/grabette" target="_blank" rel="noopener noreferrer">Grabette: an open system to record robot-manipulation data</a>
+
+*Hugging Face*
+
+本文推出名为Grabette的开源机器人操作数据采集系统，可同步采集抓取过程中的多模态感知数据、机械臂位姿、动作指令与操作结果标签，适配主流机械臂且部署门槛低，能为机器人抓取规划、灵巧操作等方向的算法训练、验证提供低成本的标准化数据采集支撑。
+
+<FeedbackButtons slug="item:hf-blog-grabette" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+该AI对齐研究以德性伦理学为基础，反驳“理性主体以固定终极目标为行动导向”的正交性假设，指出人类理性行动本质是适配包含行为规范、评价体系在内的实践网络。提出AI若要与人类协作兼容、保障核心安全，决策逻辑需匹配人类的实践型行动逻辑，而非仅对齐抽象伦理理想。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我改进（RSI）的概念演进：1965年古德最早提出相关构想，指向可超越人类所有智力活动、能自主设计更优系统的超智能；2008年尤德考斯基明确其核心是AI依托现有智能迭代自身认知机制的反馈环，当前AI语境下RSI既包括模型直接改写自身权重，也可广义指优化自身训练管线。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/07/457434.html" target="_blank" rel="noopener noreferrer">贝壳财经启动“千帆竞发”计划，将征集百位优质创作者共建内容新生态</a>
+
+*量子位*
+
+7月8日，贝壳财经于2026年会未来大会启动“千帆竞发”生态伙伴计划，首批12位创作者已亮相，后续将面向宏观、科技、金融等多个领域征集百位优质创作者，通过分层分级合作、多维度赋能搭建可持续财经内容生态，实现平台、创作者与产业服务的协同增长。
+
+<FeedbackButtons slug="item:qbitai-457434" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/457405.html" target="_blank" rel="noopener noreferrer">芯片卖了56万片之后，阿里平头哥把最值钱的东西开源了</a>
+
+*量子位*
+
+阿里平头哥在WAIC2026宣布开源自研AI软件栈SAIL，该栈是真武AI芯片的底层配套，拥有自主知识产权、兼容主流生态，覆盖全链路组件。其已随累计出货56万片的真武芯片，经双11级流量等生产场景验证，目前源码、工具链等全量开放给全球开发者，可衔接上层框架与硬件，充分释放芯片算力。
+
+<FeedbackButtons slug="item:qbitai-457405" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/457359.html" target="_blank" rel="noopener noreferrer">科大讯飞发布星火Token Factory，打造企业级AI模型智能路由与治理新底座</a>
+
+*量子位*
+
+针对企业大模型规模化落地时多模型管理难、调用成本高、安全治理及运营监控能力滞后的痛点，科大讯飞7月19日发布星火Token Factory，定位为企业应用与大模型间的统一中间层，具备统一接入、智能路由、成本优化、全链路治理等能力，可打造企业级大模型治理底座，支撑AI高效稳定落地。
+
+<FeedbackButtons slug="item:qbitai-457359" client:visible />
