@@ -1,0 +1,215 @@
+---
+lang: en
+translationKey: digest-2026-07-23
+title: "Daily AI Picks · 2026-07-23"
+description: "21 papers · Multi-source aggregation + AI summaries"
+date: 2026-07-23
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second daily roundup</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading AI vendors roll out frequent updates: OpenAI builds new computing infrastructure, DeepMind releases Gemini 3.6, Anthropic restarts deployment of Claude Fable 5</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Cutting-edge AI research results emerge in bulk, covering LLM training optimization, 3D reconstruction, multimodal perception, alignment and other directions</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Frequent moves in China's AI industry: T-Head open-sources core technologies, iFLYTEK releases enterprise-grade AI model governance base</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 LLM Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏭 Industrial Implementation</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Embodied Intelligence</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡 Open Source Progress</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.20145" target="_blank" rel="noopener noreferrer">SLAI T-Rex: Full-Parameter Post-training of the DeepSeek-V4 Family on Ascend SuperPOD</a>
+
+*HF ★ 12 · Dongfang Li, Xiaodong Luo, Ruoyu Sun… · [HF Mirror](https://huggingface.co/papers/2607.20145)*
+
+Addressing the systemic challenges of full-parameter post-training for trillion-parameter MoE large models and breaking the limitations of mainstream GPU clusters, this paper builds the SLAI T-Rex full-stack optimization framework on Ascend NPU supercomputers, with optimizations across model parallelism, computing and communication scheduling, and underlying kernel layers. The MFU of DeepSeek-V4 training reaches 34.22%, a 2.93x improvement over the baseline. Adapted to the operational research optimization field based on this framework, the dedicated model achieves 71.81% zero-shot Pass@1, outperforming general large models of the same level.
+
+<FeedbackButtons slug="item:arxiv-2607.20145" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.19691" target="_blank" rel="noopener noreferrer">SLPO: Scaling Latent Reasoning via a Surrogate Policy</a>
+
+*HF ★ 1 · Runyang You, Zhiyuan Liu, Yongqi Li… · [HF Mirror](https://huggingface.co/papers/2607.19691)*
+
+To address the pain points of high computing cost for explicit chain-of-thought reinforcement learning inference, and existing implicit reasoning limited by imitation learning that cannot scale at test time with outcome rewards, this paper proposes the SLPO method: trajectory credit assignment based on the surrogate policy density of implicit transitions, paired with a correctness-supervised stop head to implement variable-step implicit reasoning. Experiments show it can improve Pass@k for parallel sampling, allocate more computation to difficult problems, and improve deterministic accuracy.
+
+<FeedbackButtons slug="item:arxiv-2607.19691" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.19942" target="_blank" rel="noopener noreferrer">G-MAD: A Game-Based Data Generation Framework for Multi-View RGB-T Aerial Object Detection</a>
+
+*HF ★ 0 · Yechan Kim, JongHyun Park, Dongho Yoon… · [HF Mirror](https://huggingface.co/papers/2607.19942)*
+
+To address the pain points of poor view controllability, difficult modality alignment, and high annotation cost of existing real aerial multi-view RGB-T object detection datasets, this research proposes the game-driven open-source data generation framework G-MAD. Based on the Arma3 engine, it implements controllable scene layout, multi-view camera adjustment, synchronized RGB-T acquisition, and automatic bounding box annotation. A large-scale benchmark dataset AMOD is also built and released based on this framework, and all related resources are open-sourced.
+
+<FeedbackButtons slug="item:arxiv-2607.19942" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.20207" target="_blank" rel="noopener noreferrer">SeededGrasp: Language-Guided Grasping in Complex Scenes with Multiple Embodiments</a>
+
+*HF ★ 0 · Yang Xu, Gurpreet Singh Mukker, Raymond Wang… · [HF Mirror](https://huggingface.co/papers/2607.20207)*
+
+Addressing the problems of insufficient spatial perception, high end-to-end training cost, and difficulty adapting to complex scenes with multiple embodiments in existing VLM-assisted robot grasping solutions, this paper proposes the SeededGrasp framework: it decouples high-level semantic reasoning from low-level geometric execution, with VLM outputting seed points to guide the lightweight grasping model to generate actions. A multi-embodiment desktop grasping dataset with 2.5 million samples is also open-sourced. The solution outperforms existing baselines, with grasping success rates reaching 72% in simulation and 78% on real robots respectively.
+
+<FeedbackButtons slug="item:arxiv-2607.20207" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.20417" target="_blank" rel="noopener noreferrer">ATSplat: Compact Feed-forward 3D Gaussian Splatting with Adaptive Token Expansion</a>
+
+*HF ★ 0 · Cho In, Jeonghwan Cho, Mijin Yoo… · [HF Mirror](https://huggingface.co/papers/2607.20417)*
+
+To address the problems of existing feed-forward 3D Gaussian Splatting methods relying on input pixel layout, Gaussian redundancy, and lack of scene adaptive allocation capability, this paper proposes the ATSplat framework: first generate sparse 3D anchor tokens from coarse depth and camera information, decouple Gaussian positions from the input image grid, then dynamically expand tokens in high-complexity regions according to rendering uncertainty. Experiments show its rendering effect reaches SOTA, the number of Gaussians is reduced by more than 5.7x, single-GPU reconstruction takes only seconds, and novel view rendering exceeds 1000 frames per second.
+
+<FeedbackButtons slug="item:arxiv-2607.20417" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2607.18278" target="_blank" rel="noopener noreferrer">FALCON-Discover: Discovering Concentrated False-Confidence Regions for Calibration</a>
+
+*Filippo Cenacchi, Longbing Cao, Runze Yang*
+
+Addressing the problem that existing model calibration mostly conducts overall evaluation and easily misses local concentrated regions of high-confidence errors, this paper proposes the model-agnostic post-hoc detection framework FALCON-Discover, which integrates four types of signals including confidence bias and local support to rank predictions. Tested on multiple binary classification tabular datasets, the framework's performance in detecting dangerous high-confidence errors far exceeds existing calibration baselines, and the optimal signal adaptation varies across datasets, proving that such overconfidence problems should be handled as region discovery rather than single-score calibration problems.
+
+<FeedbackButtons slug="item:arxiv-2607.18278" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.18279" target="_blank" rel="noopener noreferrer">Beyond Output-Space Calibration: Spectral Evidence Bundling for Selective Reliability Estimation in Time-Series Classification</a>
+
+*Filippo Cenacchi, Longbing Cao, Runze Yang*
+
+To address the defect of existing post-hoc calibration for time series classification that only remaps output scores and cannot associate with input time-series signals, this paper proposes a fixed-label reliability strategy with a verification gate: it retains the prediction results of the backbone model, estimates reliability by combining output confidence and time-series spectral features, and enables spectral features only when performance meets standards and does not exceed preset thresholds. Tests show that the reliability evaluation indicators of this method are significantly improved, and the high-confidence error rate drops to 0.094.
+
+<FeedbackButtons slug="item:arxiv-2607.18279" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.18280" target="_blank" rel="noopener noreferrer">Beyond Single-Dimensional Compression: The Compound Sparsity Frontier of Large Language Models</a>
+
+*Chao Han, Haozhe Hu, Xiaoyu Shen*
+
+Addressing the problem of sharp performance drop under high sparsity in single-dimensional compression of LLMs, this paper proposes a compound sparsity framework: first obtain a statically compressed backbone through low-rank approximation and channel pruning, then add lightweight routing to implement per-token dynamic layer skipping, with two types of sparsity (parameter and computation) adjustable independently. Experiments show that this method outperforms single-type compression under the same total sparsity, and balanced allocation of the two types of sparsity under a fixed sparsity budget achieves the best effect, providing a practical new path for LLM compression.
+
+<FeedbackButtons slug="item:arxiv-2607.18280" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/building-ai-infrastructure-with-the-effingham-county-community" target="_blank" rel="noopener noreferrer">Building AI infrastructure with the Effingham County community</a>
+
+*OpenAI*
+
+OpenAI launches the "Camellia Project" in Effingham County, Georgia, USA, to jointly build AI infrastructure with the local community. The project comes with four commitments: adopting responsible energy solutions to manage the impact of computing energy consumption, implementing local-oriented public investment, creating local jobs, and opening access to the Codex large model for local residents, exploring a win-win enterprise-community collaboration path for AI infrastructure deployment.
+
+<FeedbackButtons slug="item:openai-blog-building-ai-infrastructure-with-the-effingham-county-community" client:visible />
+
+## <a href="https://openai.com/index/how-news-organizations-are-using-ai" target="_blank" rel="noopener noreferrer">How news organizations are using AI to advance their vital missions</a>
+
+*OpenAI*
+
+This study focuses on the AI implementation practices of news organizations, pointing out that the global news industry has applied AI to three core scenarios: first, enhancing the professional capability of news gathering and reporting, second, expanding audience coverage scale and user stickiness, third, optimizing the end-to-end operational efficiency of business operations. Currently, OpenAI's related tools provide technical support to journalists and publishers around the world, helping news organizations achieve their core development missions.
+
+<FeedbackButtons slug="item:openai-blog-how-news-organizations-are-using-ai" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+This initiative is centered on the real needs of the public, openly soliciting all kinds of difficult questions from the whole society about the field of artificial intelligence, and explicitly promises to disclose all relevant work processes and progress in the whole process of responding to and tackling these problems. This model not only pushes AI research to anchor public concerns, but also enhances technical credibility through transparent operation, bridging the cognitive gap between the public and cutting-edge AI research.
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+## <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Claude Fable 5</a>
+
+*Anthropic*
+
+After the export controls on related products were officially lifted, AI company Anthropic officially announced that it would restart deployment of its large model product Claude Fable 5 starting July 1. The version launched this time has completed two core security upgrades: it has updated the network security protection system, and is equipped with a new industry-grade anti-jailbreak detection framework, and the overall security and compliance capability has been significantly improved compared to the previous version.
+
+<FeedbackButtons slug="item:anthropic-redeploying-fable-5" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/accelerating-the-frontiers-of-scientific-discovery-googles-40m-commitment-to-the-genesis-mission/" target="_blank" rel="noopener noreferrer">Accelerating the frontiers of scientific discovery: Google’s $40M commitment to the Genesis Mission</a>
+
+*Google DeepMind*
+
+To accelerate exploration in the field of cutting-edge scientific discovery, Google announced that it will invest a total of $40 million worth of AI-related tokens and computing rights to the Genesis Mission. These resources will be directed to support the mission to carry out interdisciplinary scientific research based on AI technology, lower the computing threshold for cutting-edge research, help break through difficult scientific problems, and shorten the deployment cycle of major scientific research results.
+
+<FeedbackButtons slug="item:deepmind-accelerating-the-frontiers-of-scientific-discovery-googles-40m-commitment-to-the" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-gemini-36-flash-35-flash-lite-and-35-flash-cyber/" target="_blank" rel="noopener noreferrer">Introducing Gemini 3.6 Flash, 3.5 Flash-Lite, and 3.5 Flash Cyber</a>
+
+*Google DeepMind*
+
+Google has launched three new Gemini series models this time: the high-performance lightweight general-purpose model Gemini 3.6 Flash, the ultra-lightweight model 3.5 Flash-Lite focusing on edge deployment, and 3.5 Flash Cyber customized for cybersecurity vertical scenarios. All three continue the low latency and high throughput advantages of the Flash series, covering three types of needs: general inference, edge deployment, and industry customization, completing the Gemini full-scenario product matrix.
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-36-flash-35-flash-lite-and-35-flash-cyber" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/state-of-simulation-for-physical-ai" target="_blank" rel="noopener noreferrer">The State of Simulation for Physical AI: An Overview</a>
+
+*Hugging Face*
+
+This review in the field of physical AI simulation systematically sorts out the current application status of simulation technology in the research and development of physical AI systems such as embodied intelligence and physical robots, classifies and compares the adaptability, advantages and disadvantages of various simulation tools in rigid body, soft body, and multi-physics coupling scenarios, reviews the existing bottlenecks of sim-to-real transfer technology, and points out that high-fidelity low-computing simulation and general cross-domain simulation frameworks are the core development directions in the future.
+
+<FeedbackButtons slug="item:hf-blog-state-of-simulation-for-physical-ai" client:visible />
+
+## <a href="https://huggingface.co/blog/grabette" target="_blank" rel="noopener noreferrer">Grabette: an open system to record robot-manipulation data</a>
+
+*Hugging Face*
+
+This paper introduces Grabette, an open-source robot manipulation data collection system that can synchronously collect multimodal perception data, robotic arm pose, action commands, and manipulation result labels during the grasping process. It is compatible with mainstream robotic arms and has a low deployment threshold, providing low-cost standardized data collection support for algorithm training and verification in directions such as robot grasping planning and dexterous manipulation.
+
+<FeedbackButtons slug="item:hf-blog-grabette" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This AI alignment research is based on virtue ethics, refutes the orthogonality assumption that "rational agents are guided by fixed ultimate goals", and points out that the essence of human rational action is to adapt to the practical network including behavioral norms and evaluation systems. It proposes that if AI is to be compatible with human collaboration and ensure core security, its decision-making logic needs to match the practical action logic of human beings, rather than only aligning with abstract ethical ideals.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This paper sorts out the conceptual evolution of Recursive Self-Improvement (RSI): Good first proposed the related concept in 1965, referring to superintelligence that can surpass all human intellectual activities and independently design better systems; Yudkowsky clarified in 2008 that its core is the feedback loop where AI iterates its own cognitive mechanism based on existing intelligence. In the current AI context, RSI includes both the model directly rewriting its own weights, and broadly refers to optimizing its own training pipeline.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/07/457434.html" target="_blank" rel="noopener noreferrer">Shell Finance launches "Thousand Sails Compete" program, will recruit 100 high-quality creators to build a new content ecosystem</a>
+
+*QbitAI*
+
+On July 8, Shell Finance launched the "Thousand Sails Compete" ecological partner program at the 2026 Annual Future Conference. The first batch of 12 creators has already debuted, and the program will later solicit 100 high-quality creators across multiple fields such as macroeconomics, technology, and finance. It will build a sustainable financial content ecosystem through tiered cooperation and multi-dimensional empowerment, achieving collaborative growth of the platform, creators, and industrial services.
+
+<FeedbackButtons slug="item:qbitai-457434" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/457405.html" target="_blank" rel="noopener noreferrer">After selling 560,000 chips, Alibaba T-Head open-sources its most valuable assets</a>
+
+*QbitAI*
+
+Alibaba's T-Head announced at WAIC 2026 that it will open-source its self-developed AI software stack SAIL, which is the underlying supporting software for the Zhenwu AI chip, has independent intellectual property rights, is compatible with mainstream ecosystems, and covers end-to-end components. It has been verified in production scenarios such as Double 11-level traffic along with the cumulative 560,000 units of Zhenwu chips shipped. Currently, the full source code, toolchain, etc. are open to global developers, which can connect upper-layer frameworks and hardware to fully unleash the chip's computing power.
+
+<FeedbackButtons slug="item:qbitai-457405" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/457359.html" target="_blank" rel="noopener noreferrer">iFLYTEK releases Spark Token Factory, building a new enterprise-grade AI model intelligent routing and governance base</a>
+
+*QbitAI*
+
+Addressing the pain points of difficult multi-model management, high invocation costs, and lagging security governance and operation monitoring capabilities when enterprises deploy large models at scale, iFLYTEK released the Spark Token Factory on July 19, positioned as a unified middle layer between enterprise applications and large models. It has capabilities such as unified access, intelligent routing, cost optimization, and end-to-end governance, and can build an enterprise-grade large model governance base to support efficient and stable AI deployment.
+
+<FeedbackButtons slug="item:qbitai-457359" client:visible />
