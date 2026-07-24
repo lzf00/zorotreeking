@@ -1,0 +1,215 @@
+---
+lang: en
+translationKey: digest-2026-07-24
+title: "AI Daily Digest · 2026-07-24"
+description: "21 papers · multi-source aggregation + AI-generated summaries"
+date: 2026-07-24
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second daily roundup</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI launches ChatGPT Health feature, DeepMind releases three new vertical scenario models including Gemini 3.6 Flash</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Cutting-edge AI research results across multiple domains are released centrally, covering coding agents, video generation, industrial prediction and other scenarios</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Newly awarded Fields Medalist officially joins OpenAI, iFlytek's new startup Yaofang Intelligence addresses the shortcoming of robot body cognition</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Model Release</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📐 Academic Progress</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Agents</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔬 Research Empowerment</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏭 Industry Trends</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.20911" target="_blank" rel="noopener noreferrer">Tencent WorkBuddy Bench: A Multi-Domain Coding-Agent Benchmark with Contamination-Resistant Task Construction</a>
+
+*HF ★ 1 · Tencent WorkBuddy Bench Team, Siqi Cai, Shaopeng Chen… · [HF Mirror](https://huggingface.co/papers/2607.20911)*
+
+Tencent has launched the WorkBuddy Bench multi-domain coding agent evaluation benchmark, which adopts a unified evaluation framework covering four real work scenarios: code engineering, front-end development, office workflow, and security attack and defense. All tasks are reversely reconstructed from real business submissions into colloquial instructions, and combined with version control to achieve data contamination resistance without requiring confidentiality. The full benchmark is open-source, with a unified reproducible evaluation protocol, and a cross-model comparison leaderboard is released simultaneously.
+
+<FeedbackButtons slug="item:arxiv-2607.20911" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.20709" target="_blank" rel="noopener noreferrer">NVIDIA-labs OO Agents: Native Python Object-Oriented Agents</a>
+
+*HF ★ 1 · Paul Furgale, Severin Klingler, James Nolan… · [HF Mirror](https://huggingface.co/papers/2607.20709)*
+
+Addressing the pain points of traditional AI agent development where logic is scattered across multiple modules and maintenance is difficult, NVIDIA has launched NOOA, a model-agnostic native Python object-oriented agent framework: it encapsulates agents as ordinary Python objects, reuses existing syntax elements to map core agent elements, integrates 6 exclusive features, supports developers to optimize agents just like debugging regular software, and performs excellently in multiple industry benchmarks.
+
+<FeedbackButtons slug="item:arxiv-2607.20709" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.10848" target="_blank" rel="noopener noreferrer">Predictive Divergence Masks for LLM RL</a>
+
+*HF ★ 1 · Xiangxin Zhou, Jiarui Yao, Penghui Qi… · [HF Mirror](https://huggingface.co/papers/2607.10848)*
+
+In LLM reinforcement learning, existing DPPO optimizes the trust region proximity criterion, but the PPO ratio-based direction criterion and divergence criterion it inherits have sign bias. This paper proposes predictive divergence masks: it pre-judges the impact of gradient update steps on trust region divergence, derives a closed-form solution for discrete softmax policies, and designs a lightweight estimator adapted to the top-K vocabulary truncation scenario in production environments. Experiments show that this method has higher divergence alignment, and can improve training effects across model scales and precision levels.
+
+<FeedbackButtons slug="item:arxiv-2607.10848" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.21580" target="_blank" rel="noopener noreferrer">GraphVid: Interactive Graph-Controllable Video Generation</a>
+
+*HF ★ 0 · Vedant Shah, Onkar Susladkar, Tushar Prakash… · [HF Mirror](https://huggingface.co/papers/2607.21580)*
+
+Addressing the pain points of existing controllable video generation, including insufficient text and trajectory control accuracy and poor adaptability to complex scenarios, this paper proposes GraphVid, a graph-conditioned image-to-video model that achieves flexible and precise control of multiple subjects through structured interaction graphs. It also builds GraphVid-Bench, a large-scale interactive video dataset with relationship annotations. With less training data and fewer parameters, its FID and FVD are reduced by nearly 40% at maximum compared to the baseline, with greatly improved image quality and controllability, verifying the application potential of structured semantic interfaces.
+
+<FeedbackButtons slug="item:arxiv-2607.21580" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.21017" target="_blank" rel="noopener noreferrer">TableVerse: A Large-scale Tabletop Dataset with Real-world Grounded Layouts for Generalizable Manipulation</a>
+
+*HF ★ 0 · Boyuan Wang, Yue Zhang, Xutao Xue… · [HF Mirror](https://huggingface.co/papers/2607.21017)*
+
+Existing synthetic tabletop scenario data lacks physical rationality and cannot restore the cluttered features of real environments, which restricts the development of general robot manipulation strategies. To solve this problem, the team proposes TableVerse, a fully automated Real2Sim pipeline that can reconstruct high-fidelity simulative tabletop scenarios from unconstrained wild images, and automatically generate collision-free pick-up operation demonstrations. The 100,000-sample TableVerse-100K dataset built based on this pipeline can provide high-quality data support for general robot manipulation research.
+
+<FeedbackButtons slug="item:arxiv-2607.21017" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2607.19378" target="_blank" rel="noopener noreferrer">Native Multi-Dimensional Subquadratic Operators via Input Dependent Long Convolutions</a>
+
+*David R. Wessels, Farhad Ramezanghorbani, David W. Romero…*
+
+Existing subquadratic attention alternatives have defects such as insufficient receptive field and destruction of native spatial structure when processing multi-dimensional data. This paper proposes HyenaND, a subquadratic global operator that directly adapts to the native structure of multi-dimensional data through implicitly parameterized input-dependent multi-dimensional convolution, and is paired with a CUDA implementation nSubQ for acceleration. Multi-domain tests show that its pure stacking accuracy matches strong attention baselines, and the configuration mixed with attention has even better performance.
+
+<FeedbackButtons slug="item:arxiv-2607.19378" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.19379" target="_blank" rel="noopener noreferrer">Bayesian Wind Tunnels for Model Selection</a>
+
+*Siddhartha R Dalal, Vishal Misra, Abhay Parekh*
+
+This paper explores whether Transformer can implement Bayesian model selection, and proposes a controllable test environment "Bayesian Wind Tunnel" that can output the posterior ground truth of hypothesis classes. Tests show that small-parameter Transformers perform close to Bayesian optimal, can complete non-nested model comparison, and corely rely on stable input symbol semantics rather than integer attributes; if symbol semantics change dynamically with tasks and require arithmetic discrimination, even if parameters are expanded by 112 times, they completely fail. Cutting-edge large models have qualitative Bayesian behavior, but the calibration gap reaches 55 times.
+
+<FeedbackButtons slug="item:arxiv-2607.19379" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.19380" target="_blank" rel="noopener noreferrer">CruiseBench: A Real-Flight-Aligned N-CMAPSS Benchmark for Engine RUL Prediction</a>
+
+*Pu Cheng, Qiang Miao*
+
+The N-CMAPSS dataset used for aero-engine Remaining Useful Life (RUL) prediction has mixed working conditions and poor comparability of model evaluation. To solve this problem, this research proposes CruiseBench, a dedicated RUL benchmark for cruise segments, paired with cruise segment masks for 9 subsets and a unified preprocessing process. Among multiple baseline models tested, TSMixer has the best accuracy. Ablation experiments confirm that preprocessing strategies have a significant impact on results. This benchmark enables reproducible comparison of RUL models and supports subsequent research on migration and domain adaptation.
+
+<FeedbackButtons slug="item:arxiv-2607.19380" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/health-in-chatgpt" target="_blank" rel="noopener noreferrer">Launching Health in ChatGPT</a>
+
+*OpenAI*
+
+ChatGPT recently launched an exclusive health feature, which is currently only open to eligible US users. This feature supports users to securely bind personal medical records and health data from the Apple Health platform. Relying on the information integration and analysis capabilities of large models, it can generate personalized health insights more tailored to individual situations, helping users understand their own health status more clearly and comprehensively.
+
+<FeedbackButtons slug="item:openai-blog-health-in-chatgpt" client:visible />
+
+## <a href="https://openai.com/index/building-ai-infrastructure-with-the-effingham-county-community" target="_blank" rel="noopener noreferrer">Building AI infrastructure with the Effingham County community</a>
+
+*OpenAI*
+
+OpenAI officially announced the launch of the "Camellia Project" in Effingham County, Georgia, USA, to build AI infrastructure together with the local community. The project also made four core commitments: follow responsible standards for energy use, implement targeted community investment, create local jobs, and open access to the Codex model to the local area, exploring the implementation path of linking AI infrastructure construction with community interests.
+
+<FeedbackButtons slug="item:openai-blog-building-ai-infrastructure-with-the-effingham-county-community" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+This project launches a call for difficult AI-related questions from the public. The core initiative is to widely collect the most confusing and high-difficulty questions about AI from the public. The initiator also makes a public commitment: in the whole process of tackling and responding to these collected questions, all links and details of the research work will be fully disclosed, so as to improve public participation and transparency of AI research.
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+## <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Claude Fable 5</a>
+
+*Anthropic*
+
+Anthropic announced that it will redeploy its Claude Fable 5 large model on July 1, after the relevant export controls are officially lifted. The version launched this time has completed two core security upgrades: it has iterated the network security protection mechanism, and added a jailbreak protection framework for industry scenarios, which can significantly improve the model's operating security and compliance, and reduce the risk of malicious abuse.
+
+<FeedbackButtons slug="item:anthropic-redeploying-fable-5" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/accelerating-the-frontiers-of-scientific-discovery-googles-40m-commitment-to-the-genesis-mission/" target="_blank" rel="noopener noreferrer">Accelerating the frontiers of scientific discovery: Google’s $40M commitment to the Genesis Mission</a>
+
+*Google DeepMind*
+
+To expand the boundaries of scientific discovery and accelerate cutting-edge research breakthroughs, Google announced that it will invest a total of $40 million worth of AI computing tokens and cloud service benefits in the Genesis scientific research mission. These resources will provide sufficient AI tools and computing support for relevant research teams, greatly reduce the threshold for cutting-edge research to use AI technology, help cross-domain research攻关, and promote the output of more breakthrough scientific results.
+
+<FeedbackButtons slug="item:deepmind-accelerating-the-frontiers-of-scientific-discovery-googles-40m-commitment-to-the" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-gemini-36-flash-35-flash-lite-and-35-flash-cyber/" target="_blank" rel="noopener noreferrer">Introducing Gemini 3.6 Flash, 3.5 Flash-Lite, and 3.5 Flash Cyber</a>
+
+*Google DeepMind*
+
+Google has released three new models in the Gemini series, namely Gemini 3.6 Flash, 3.5 Flash-Lite and 3.5 Flash Cyber, all belonging to the Flash lightweight fast-response product line. Among them, 3.6 Flash is the performance iteration version of this series, Flash-Lite is for low-computing end lightweight deployment scenarios, and Flash Cyber adapts to the special needs of the cybersecurity field. The three models further complete Gemini's layered product matrix.
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-36-flash-35-flash-lite-and-35-flash-cyber" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nunchaku-diffusers" target="_blank" rel="noopener noreferrer">Bringing Nunchaku 4-bit Diffusion Inference to Diffusers</a>
+
+*Hugging Face*
+
+This work officially integrates the Nunchaku 4-bit diffusion quantization scheme into the Hugging Face Diffusers ecosystem. The adaptation process optimizes the compatibility logic of quantization operators, achieves almost lossless inference for mainstream diffusion models including the full Stable Diffusion series, reduces memory usage by more than 60% compared to the FP16 version, has the same inference speed as the native floating-point version, and can be deployed on consumer graphics cards without additional adaptation, greatly reducing the hardware threshold for high-resolution diffusion generation.
+
+<FeedbackButtons slug="item:hf-blog-nunchaku-diffusers" client:visible />
+
+## <a href="https://huggingface.co/blog/nvidia/state-of-simulation-for-physical-ai" target="_blank" rel="noopener noreferrer">The State of Simulation for Physical AI: An Overview</a>
+
+*Hugging Face*
+
+This paper is an overview of the current state of the physical AI simulation field for embodied intelligence, robotics and other scenarios. It clarifies that simulation, as a core tool for physical AI pretraining and pre-deployment verification, can greatly reduce the R&D cost of physical interaction scenarios. The paper sorts out the technical characteristics of mainstream simulation frameworks, summarizes the current progress of three core technologies: physical entity modeling, high-precision dynamics solving, and virtual-real migration adaptation, and points out the shortcomings of existing solutions such as high computing overhead and insufficient generalization, and gives the core direction for subsequent optimization.
+
+<FeedbackButtons slug="item:hf-blog-state-of-simulation-for-physical-ai" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This AI alignment paper takes virtue ethics as a perspective, refutes the presupposition that rational agents need to be anchored to ultimate goals, and proposes that the essence of human rational action is to adjust behavior according to the practical network composed of actions, evaluation standards, etc. To realize AI that adapts to human needs and is collaborative and compliant, AI decision-making logic needs to match human practical action logic, which is crucial for both ethical alignment and safety alignment of AI.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+The concept of Recursive Self-Improvement (RSI) was first proposed by I.J. Good in 1965, and is the core feature of superintelligence that can surpass all human intellectual activities and iteratively design better systems; in 2008, Eliezer Yudkowsky clarified that its core is the feedback loop where AI optimizes its own cognitive architecture relying on existing intelligence. Current RSI in the AI field includes both the path of models directly rewriting their own weights, and the broad scenario of models optimizing their own training pipelines.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位 (QbitAI)
+
+## <a href="https://www.qbitai.com/2026/07/457792.html" target="_blank" rel="noopener noreferrer">新晋菲尔兹奖得主，当天宣布加入OpenAI</a>
+
+*QbitAI*
+
+Newly awarded Fields Medalist Jacob Tsimerman officially announced his joining OpenAI right after receiving the award. He is a full-score winner of the IMO, the youngest full professor in the history of the University of Toronto, and won the award for solving the André-Oort conjecture that had been suspended for 40 years. He solved three century-old unsolved problems during the current Fields Medal cycle, with extremely high gold content. He previously put forward the view that AI may lead to human extinction. His student, who works at Anthropic, just overthrew the 87-year-old Jacobian conjecture with the help of large models, and the master and apprentice belong to the two leading AI institutions respectively.
+
+<FeedbackButtons slug="item:qbitai-457792" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/457787.html" target="_blank" rel="noopener noreferrer">智能体政策新闻相关背景和简要解读</a>
+
+*QbitAI*
+
+Agents have become a new track in artificial intelligence competition. To implement the national strategy and build a global AI innovation highland, multiple departments in Beijing have jointly issued special support measures for agent development. The policy focuses on four directions: multi-route technology research, scenario-led application implementation, forward-looking cultivation of new intelligent economic formats, and graded and classified safety supervision, coordinating development and safety, and promoting industrial innovation and upgrading.
+
+<FeedbackButtons slug="item:qbitai-457787" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/457698.html" target="_blank" rel="noopener noreferrer">机器人为啥困在Demo？讯飞新公司爻方智能给出答案：缺一味「本体认知」</a>
+
+*QbitAI*
+
+At the 2026 World Artificial Intelligence Conference, Yaofang Intelligence, a new startup founded by iFlytek and led by Pan Jia, a leader in the embodied intelligence field, addressed the pain points that current robots mostly stay at the Demo stage, dare not speed up for fear of errors, and deform actions when changing scenarios. It pointed out that the mainstream VLA route in the industry is not the final solution, and the robot brain needs to add the key link of "body cognition" to tackle the core bottleneck of embodied intelligence.
+
+<FeedbackButtons slug="item:qbitai-457698" client:visible />
