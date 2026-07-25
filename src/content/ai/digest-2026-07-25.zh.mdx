@@ -1,0 +1,173 @@
+---
+lang: zh
+translationKey: digest-2026-07-25
+title: "AI 每日精选 · 2026-07-25"
+description: "16 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-07-25
+tags: [digest, auto, arxiv, openai, anthropic, deepmind, hf-blog, the-gradient]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI上线ChatGPT健康功能，Anthropic发布Claude Opus 5，DeepMind推出Gemini 3系列多款新模型</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">多篇大模型、训练数据、AI对齐方向前沿研究发布，HF推出4比特扩散推理优化方案</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">合肥多模态AI独角兽3个月融资21亿，国产世界模型登顶李飞飞团队榜单并开源</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥模型上新</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔬学术研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🇨🇳国产动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💻技术突破</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💸投融资讯</span>
+  </div>
+</div>
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2607.20465" target="_blank" rel="noopener noreferrer">DataPrep-Bench: Benchmarking LLMs as Training Data Preparators</a>
+
+*Hao Liang, Qifeng Cai, Yibo Lin…*
+
+针对大模型驱动的训练数据准备缺乏统一评测基准的问题，该研究推出首个下游对齐的统一基准DataPrep-Bench，覆盖6个领域，同步评测数据构造、数据质量评估两类核心能力。配套推出的技能引导数据构造智能体较基线提分近20点；分布对齐评分DAS表现优于现有评估器，是唯一在数学、科学、医疗领域性能相关系数均超0.7的指标。
+
+<FeedbackButtons slug="item:arxiv-2607.20465" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.20492" target="_blank" rel="noopener noreferrer">PhantomFill: When the Form Demands an Answer, Language Models Invent One</a>
+
+*Rana Muhammad Usman*
+
+本文研究大模型表单填充场景的幻觉问题：对13款模型测试信息不足无法回答的问题，仅调整输出格式，自由文本下模型大多诚实说明情况，强制要求填必填字段时10款模型100%捏造内容，新增“证据不足”选项仅前沿闭源模型能用，抗诱导能力与模型规模不呈正相关。研究发布PhantomFill基准量化捏造率，仅改一行schema即可修复该问题。
+
+<FeedbackButtons slug="item:arxiv-2607.20492" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.20512" target="_blank" rel="noopener noreferrer">The Active Ingredient in Muon's Grokking</a>
+
+*Yufeng Wang*
+
+本文拆解Muon优化器模算术领悟速度快于AdamW的核心机制：经多组消融与机理分析，提速核心是牛顿-舒尔茨正交化步骤，而非此前认为的谱范数约束；正交化可得到更低范数泛化解，5次迭代学习率鲁棒性最优，1次迭代更快但易崩溃。研究指出需同步上报领悟首次达标与稳定保持时间，相关代码已开源。
+
+<FeedbackButtons slug="item:arxiv-2607.20512" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/health-in-chatgpt" target="_blank" rel="noopener noreferrer">Launching Health in ChatGPT</a>
+
+*OpenAI*
+
+OpenAI近期为符合资质的美国用户上线ChatGPT健康专属功能：用户可安全绑定个人医疗记录以及苹果健康（Apple Health）平台的健康数据，ChatGPT基于整合后的专属健康信息，可输出更贴合用户实际情况的定制化健康洞察，帮助用户更清晰地认知、管理自身健康状态。
+
+<FeedbackButtons slug="item:openai-blog-health-in-chatgpt" client:visible />
+
+## <a href="https://openai.com/index/building-ai-infrastructure-with-the-effingham-county-community" target="_blank" rel="noopener noreferrer">Building AI infrastructure with the Effingham County community</a>
+
+*OpenAI*
+
+OpenAI正式官宣在佐治亚州埃芬汉县启动“山茶花项目”，联合当地社区共建AI基础设施。该项目明确四项核心承诺：将遵循负责任的能源使用准则，加大对当地的社区公共投入，为本地居民提供适配就业岗位，同时向当地开放Codex大模型使用权限，兼顾产业落地需求与社区实际收益。
+
+<FeedbackButtons slug="item:openai-blog-building-ai-infrastructure-with-the-effingham-county-community" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 5</a>
+
+*Anthropic*
+
+本次推出的Claude Opus 5是Claude系列高端Opus层级的阶跃式升级产品。其核心能力实现突破性提升，重点强化了长周期运行智能体的底层支撑能力，同时在代码生成、调试等全链路编码类任务，以及各行业专业场景的工作处理效率与准确性上均有明显优化，可更好支撑高复杂度生产级应用需求。
+
+<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+本文是AI相关机构发起的公众征集公告：将面向全社会收集公众对AI领域最关切、最具难度的疑问，同时公开承诺，后续在逐一回应、解答这些问题的全过程中，会完整披露相关研究思路、推导过程等工作内容，主动提升AI相关研究的公开透明度。
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/accelerating-the-frontiers-of-scientific-discovery-googles-40m-commitment-to-the-genesis-mission/" target="_blank" rel="noopener noreferrer">Accelerating the frontiers of scientific discovery: Google’s $40M commitment to the Genesis Mission</a>
+
+*Google DeepMind*
+
+谷歌近期宣布投入总价值4000万美元的AI算力代币与云服务权益，支持创世使命（Genesis Mission）项目。这一布局旨在降低前沿科研团队调用高性能AI算力、大模型工具的门槛，依托自身AI技术储备赋能跨学科研究，加快科学成果产出，进一步拓展全球基础研究与技术创新的前沿边界。
+
+<FeedbackButtons slug="item:deepmind-accelerating-the-frontiers-of-scientific-discovery-googles-40m-commitment-to-the" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-gemini-36-flash-35-flash-lite-and-35-flash-cyber/" target="_blank" rel="noopener noreferrer">Introducing Gemini 3.6 Flash, 3.5 Flash-Lite, and 3.5 Flash Cyber</a>
+
+*Google DeepMind*
+
+谷歌本次发布三款Gemini系列新模型，分别为Gemini 3.6 Flash、3.5 Flash-Lite、3.5 Flash Cyber。三款均归属Flash轻量化产品线，面向不同场景定向优化，可适配端侧低功耗部署、通用高性价比推理、网络安全专项应用等多元需求，完善了Gemini大矩阵，给用户提供更灵活的选型空间。
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-36-flash-35-flash-lite-and-35-flash-cyber" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nunchaku-diffusers" target="_blank" rel="noopener noreferrer">Bringing Nunchaku 4-bit Diffusion Inference to Diffusers</a>
+
+*Hugging Face*
+
+该工作将Nunchaku 4比特扩散模型推理方案集成到Hugging Face Diffusers生态，方法层面优化低位量化压缩策略，解决了4比特推理普遍存在的画质退化问题。落地后无需复杂配置即可调用，相比FP16推理显存占用减半、速度提升20%~30%，生成质量与全精度模型几乎无差异，大幅降低扩散模型部署门槛。
+
+<FeedbackButtons slug="item:hf-blog-nunchaku-diffusers" client:visible />
+
+## <a href="https://huggingface.co/blog/nvidia/state-of-simulation-for-physical-ai" target="_blank" rel="noopener noreferrer">The State of Simulation for Physical AI: An Overview</a>
+
+*Hugging Face*
+
+这篇物理AI仿真领域综述，系统梳理了当前仿真技术适配物理AI时物理精度不足、跨域泛化性弱、虚实对齐成本高的核心痛点，明确了引擎底层优化、多物理场耦合、虚实迁移校准三大改进方向，指明低功耗高保真、端边云协同仿真架构是未来发展重点，为物理AI在机器人、智能制造等场景落地提供参考。
+
+<FeedbackButtons slug="item:hf-blog-state-of-simulation-for-physical-ai" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+这篇AI对齐研究挑战了传统目标导向的智能假设，提出人类理性行动并非锚定终极目标，而是适配由行动、行为倾向、评价标准等构成的实践网络。研究指出，若要AI能配合人类、符合伦理及安全要求，需让AI决策逻辑和人类基于实践的德性行动逻辑匹配，为对齐提供了德性伦理新路径。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+递归自我改进（RSI）最早由学者I.J.古德1965年提出，是可超越人类所有智能活动、能自行设计更优机器的超智能系统的核心属性；2008年尤德考斯基将其明确定义为AI依托现有智能迭代自身认知机制的反馈环。当前AI领域中，该反馈环既包括模型直接改写自身权重，也可广义指模型优化自身训练流程。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/07/460154.html" target="_blank" rel="noopener noreferrer">合肥又押中AI独角兽：多模态赛道，3个月融了21亿</a>
+
+*量子位*
+
+合肥参投的多模态大模型企业智象未来，3个月内完成3轮累计超21亿元融资，最新C轮融资15亿元，估值破10亿美元跻身AI独角兽，获多地国资、产业资本多方跟投，老股东持续加注。当下大语言模型估值红利见顶，资本正转向潜力更大的AI视觉、多模态赛道。
+
+<FeedbackButtons slug="item:qbitai-460154" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/460041.html" target="_blank" rel="noopener noreferrer">国产世界模型登顶李飞飞团队榜单！适配国产昇腾算力、代码权重全开源</a>
+
+*量子位*
+
+兔展智能联合北大、鹏城实验室研发的UniWorld-View登顶李飞飞团队WorldScore世界模型榜。该模型采用三维几何先验结合扩散生成的技术路线，同一套架构可实现单图3D、视频4D任意位姿新视角合成，解决大基线视角生成漂移痛点，位姿控制精准，适配国产昇腾算力，代码权重已全部开源。
+
+<FeedbackButtons slug="item:qbitai-460041" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/460042.html" target="_blank" rel="noopener noreferrer">菲尔兹奖得主王虹，也发过NeurIPS</a>
+
+*量子位*
+
+菲尔兹奖得主王虹曾以共同一作身份发表NeurIPS 2019论文，是纯数学跨界AI的典型范例。该工作针对机器学习基础任务低秩矩阵近似的列子集选择算法，突破了此前O(k+1)的近似比上界，按范数p的取值区间给出更紧的误差上界，还为p≥2场景构造了匹配下界，大幅提升了算法的理论严谨性。
+
+<FeedbackButtons slug="item:qbitai-460042" client:visible />
