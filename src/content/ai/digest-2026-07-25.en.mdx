@@ -1,0 +1,173 @@
+---
+lang: en
+translationKey: digest-2026-07-25
+title: "Daily AI Picks · 2026-07-25"
+description: "16 papers · Multi-source aggregation + AI summaries"
+date: 2026-07-25
+tags: [digest, auto, arxiv, openai, anthropic, deepmind, hf-blog, the-gradient]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second daily overview</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI launches ChatGPT Health feature, Anthropic releases Claude Opus 5, DeepMind rolls out multiple new models in the Gemini 3 series</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Multiple cutting-edge studies on LLMs, training data, and AI alignment are released, HF launches 4-bit diffusion inference optimization solution</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hefei-based multimodal AI unicorn raises 2.1 billion RMB in 3 months, domestic world model tops Fei-Fei Li's team leaderboard and is open-sourced</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 New Models</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔬 Academic Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🇨🇳 Domestic Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💻 Technical Breakthroughs</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💸 Investment & Financing News</span>
+  </div>
+</div>
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2607.20465" target="_blank" rel="noopener noreferrer">DataPrep-Bench: Benchmarking LLMs as Training Data Preparators</a>
+
+*Hao Liang, Qifeng Cai, Yibo Lin…*
+
+To address the lack of a unified evaluation benchmark for LLM-driven training data preparation, this study launches DataPrep-Bench, the first downstream-aligned unified benchmark covering 6 domains, which simultaneously evaluates two core capabilities: data construction and data quality assessment. The accompanying skill-guided data construction agent improves scores by nearly 20 points over the baseline; the Distribution Alignment Score (DAS) outperforms existing evaluators, and is the only metric with a performance correlation coefficient exceeding 0.7 across mathematics, science, and medical domains.
+
+<FeedbackButtons slug="item:arxiv-2607.20465" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.20492" target="_blank" rel="noopener noreferrer">PhantomFill: When the Form Demands an Answer, Language Models Invent One</a>
+
+*Rana Muhammad Usman*
+
+This paper studies the hallucination problem of LLMs in form filling scenarios: 13 models were tested on questions that cannot be answered due to insufficient information, with only the output format adjusted. In free text mode, most models honestly state the situation; when forced to fill in required fields, 10 models fabricated content 100% of the time. Only cutting-edge closed-source models can use the added "insufficient evidence" option, and anti-induction ability is not positively correlated with model size. The study releases the PhantomFill benchmark to quantify fabrication rates, and the problem can be fixed by modifying just one line of schema.
+
+<FeedbackButtons slug="item:arxiv-2607.20492" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.20512" target="_blank" rel="noopener noreferrer">The Active Ingredient in Muon's Grokking</a>
+
+*Yufeng Wang*
+
+This paper breaks down the core mechanism that makes the Muon optimizer's modular arithmetic grokking speed faster than AdamW: through multiple sets of ablation and mechanism analysis, the core of the speedup is the Newton-Schulz orthogonalization step, not the previously believed spectral norm constraint. Orthogonalization can obtain generalized solutions with lower norm, 5 iterations achieve optimal learning rate robustness, while 1 iteration is faster but prone to collapse. The study points out that both the first time grokking meets the performance target and the stable retention time should be reported simultaneously, and the relevant code has been open-sourced.
+
+<FeedbackButtons slug="item:arxiv-2607.20512" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/health-in-chatgpt" target="_blank" rel="noopener noreferrer">Launching Health in ChatGPT</a>
+
+*OpenAI*
+
+OpenAI has recently launched the exclusive ChatGPT Health feature for eligible U.S. users: users can securely bind their personal medical records and health data from the Apple Health platform. Based on the integrated exclusive health information, ChatGPT can output customized health insights more tailored to the user's actual situation, helping users better understand and manage their own health status.
+
+<FeedbackButtons slug="item:openai-blog-health-in-chatgpt" client:visible />
+
+## <a href="https://openai.com/index/building-ai-infrastructure-with-the-effingham-county-community" target="_blank" rel="noopener noreferrer">Building AI infrastructure with the Effingham County community</a>
+
+*OpenAI*
+
+OpenAI officially announced the launch of the "Camellia Project" in Effingham County, Georgia, to build AI infrastructure together with the local community. The project has four clear core commitments: it will follow responsible energy use guidelines, increase public investment in local communities, provide suitable jobs for local residents, and open access to the Codex LLM for local users, balancing industrial implementation needs and actual community benefits.
+
+<FeedbackButtons slug="item:openai-blog-building-ai-infrastructure-with-the-effingham-county-community" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 5</a>
+
+*Anthropic*
+
+The newly launched Claude Opus 5 is a step-up upgrade for the high-end Opus tier of the Claude series. Its core capabilities have achieved breakthrough improvements, with a focus on strengthening the underlying support for long-running agents. At the same time, it has been significantly optimized for full-link coding tasks such as code generation and debugging, as well as the processing efficiency and accuracy of professional scenarios across various industries, which can better support the needs of high-complexity production-grade applications.
+
+<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+This is a public call for submissions launched by AI-related institutions: it will collect the public's most concerned and most difficult questions about the AI field from the whole society. It also publicly promises that in the whole process of responding to and answering these questions one by one, relevant research ideas, derivation processes and other work content will be fully disclosed, proactively improving the transparency of AI-related research.
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/accelerating-the-frontiers-of-scientific-discovery-googles-40m-commitment-to-the-genesis-mission/" target="_blank" rel="noopener noreferrer">Accelerating the frontiers of scientific discovery: Google’s $40M commitment to the Genesis Mission</a>
+
+*Google DeepMind*
+
+Google recently announced it will invest a total of $40 million worth of AI computing tokens and cloud service benefits to support the Genesis Mission project. This initiative aims to lower the threshold for cutting-edge research teams to access high-performance AI computing power and LLM tools, leverage its own AI technology reserves to empower interdisciplinary research, accelerate the output of scientific achievements, and further expand the frontiers of global basic research and technological innovation.
+
+<FeedbackButtons slug="item:deepmind-accelerating-the-frontiers-of-scientific-discovery-googles-40m-commitment-to-the" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-gemini-36-flash-35-flash-lite-and-35-flash-cyber/" target="_blank" rel="noopener noreferrer">Introducing Gemini 3.6 Flash, 3.5 Flash-Lite, and 3.5 Flash Cyber</a>
+
+*Google DeepMind*
+
+Google has released three new models in the Gemini series, namely Gemini 3.6 Flash, 3.5 Flash-Lite, and 3.5 Flash Cyber. All three belong to the Flash lightweight product line, optimized for different scenarios, and can meet diverse needs such as end-side low-power deployment, general cost-effective inference, and dedicated cybersecurity applications. They complete the Gemini product matrix, providing users with more flexible selection options.
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-36-flash-35-flash-lite-and-35-flash-cyber" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nunchaku-diffusers" target="_blank" rel="noopener noreferrer">Bringing Nunchaku 4-bit Diffusion Inference to Diffusers</a>
+
+*Hugging Face*
+
+This work integrates the Nunchaku 4-bit diffusion model inference solution into the Hugging Face Diffusers ecosystem. It optimizes the low-bit quantization compression strategy at the method level, solving the widespread image quality degradation problem in 4-bit inference. After implementation, it can be called without complex configuration. Compared with FP16 inference, it cuts memory usage in half and increases speed by 20% to 30%, with almost no difference in generation quality from full-precision models, greatly lowering the threshold for diffusion model deployment.
+
+<FeedbackButtons slug="item:hf-blog-nunchaku-diffusers" client:visible />
+
+## <a href="https://huggingface.co/blog/nvidia/state-of-simulation-for-physical-ai" target="_blank" rel="noopener noreferrer">The State of Simulation for Physical AI: An Overview</a>
+
+*Hugging Face*
+
+This review in the field of physical AI simulation systematically sorts out the core pain points of current simulation technology when adapting to physical AI: insufficient physical accuracy, weak cross-domain generalization, and high cost of virtual-real alignment. It identifies three major improvement directions: underlying engine optimization, multi-physics field coupling, and virtual-real migration calibration, and points out that low-power high-fidelity, end-edge-cloud collaborative simulation architecture is the key future development focus, providing reference for the implementation of physical AI in scenarios such as robotics and intelligent manufacturing.
+
+<FeedbackButtons slug="item:hf-blog-state-of-simulation-for-physical-ai" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This AI alignment study challenges the traditional goal-oriented intelligence hypothesis, proposing that human rational action is not anchored to ultimate goals, but adapts to a practical network composed of actions, behavioral tendencies, evaluation standards, etc. The study points out that for AI to cooperate with humans and meet ethical and safety requirements, its decision-making logic needs to match the logic of human practice-based virtuous action, providing a new virtue ethics path for alignment.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+Recursive Self-Improvement (RSI) was first proposed by scholar I.J. Good in 1965, and is the core attribute of superintelligent systems that can surpass all human intellectual activities and design better machines on their own. In 2008, Eliezer Yudkowsky clearly defined it as the feedback loop where AI iterates its own cognitive mechanism based on its existing intelligence. In the current AI field, this feedback loop includes both the model directly rewriting its own weights, and in a broad sense, the model optimizing its own training process.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/07/460154.html" target="_blank" rel="noopener noreferrer">Hefei bets on another AI unicorn: 2.1 billion RMB raised in 3 months in the multimodal track</a>
+
+*QbitAI*
+
+Zhixiang Future, a multimodal LLM enterprise invested in by Hefei, has completed 3 rounds of financing totaling more than 2.1 billion RMB in 3 months. Its latest Series C financing raised 1.5 billion RMB, pushing its valuation over $1 billion, making it an AI unicorn. It has received follow-on investments from state-owned assets and industrial capital across multiple regions, with existing shareholders continuing to increase their stakes. As the valuation dividend for large language models peaks, capital is shifting to the more promising AI vision and multimodal tracks.
+
+<FeedbackButtons slug="item:qbitai-460154" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/460041.html" target="_blank" rel="noopener noreferrer">Domestic world model tops Fei-Fei Li's team leaderboard! Compatible with domestic Ascend computing power, full code and weights open-sourced</a>
+
+*QbitAI*
+
+UniWorld-View, developed by Tuzhan Intelligence in collaboration with Peking University and Pengcheng Laboratory, has topped the WorldScore world model leaderboard from Fei-Fei Li's team. The model adopts a technical route combining 3D geometric priors with diffusion generation. The same architecture can realize novel view synthesis for single-image 3D and video 4D at any pose, solving the pain point of generation drift for large baseline views, with precise pose control. It is compatible with domestic Ascend computing power, and all code and weights have been open-sourced.
+
+<FeedbackButtons slug="item:qbitai-460041" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/460042.html" target="_blank" rel="noopener noreferrer">Fields Medal winner Hong Wang also published at NeurIPS</a>
+
+*QbitAI*
+
+Fields Medal winner Hong Wang once co-first authored a NeurIPS 2019 paper, a typical example of pure mathematics crossing over into AI. This work targets the column subset selection algorithm for low-rank matrix approximation, a basic machine learning task, breaking through the previous approximation ratio upper bound of O(k+1). It provides a tighter error upper bound according to the value interval of norm p, and also constructs a matching lower bound for scenarios where p≥2, greatly improving the theoretical rigor of the algorithm.
+
+<FeedbackButtons slug="item:qbitai-460042" client:visible />
