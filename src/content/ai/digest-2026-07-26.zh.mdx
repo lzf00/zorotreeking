@@ -1,0 +1,147 @@
+---
+lang: zh
+translationKey: digest-2026-07-26
+title: "AI 每日精选 · 2026-07-26"
+description: "13 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-07-26
+tags: [digest, auto, openai, anthropic, deepmind, hf-blog, the-gradient, lil-log]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">头部大模型厂商集中发新：OpenAI上线ChatGPT健康功能，Anthropic推Claude Opus 5、DeepMind发Gemini 3.6系列</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">开源与技术落地进展亮眼：吴恩达100%开源个人桌面Agent，Hugging Face推出4位扩散推理优化方案</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">行业研究与布局同步推进：谷歌投4000万美元支持AI科研，具身智能发展新观点引发热议</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 模型上新</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💻 技术开源</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 前沿研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 具身智能</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ 产业动态</span>
+  </div>
+</div>
+
+# OpenAI
+
+## <a href="https://openai.com/index/health-in-chatgpt" target="_blank" rel="noopener noreferrer">Launching Health in ChatGPT</a>
+
+*OpenAI*
+
+OpenAI近期正式推出ChatGPT专属健康模块，目前仅向符合资质的美国用户开放使用。该模块支持用户安全绑定个人医疗记录及Apple Health平台的健康数据，依托大模型能力输出更适配用户个体情况的健康洞察，帮助用户更清晰系统地了解自身健康状态。
+
+<FeedbackButtons slug="item:openai-blog-health-in-chatgpt" client:visible />
+
+## <a href="https://openai.com/index/building-ai-infrastructure-with-the-effingham-county-community" target="_blank" rel="noopener noreferrer">Building AI infrastructure with the Effingham County community</a>
+
+*OpenAI*
+
+OpenAI正式宣布在佐治亚州埃芬汉县启动“山茶花项目”，用于搭建AI基础设施。该项目同步做出四项落地承诺：采用负责任的能源利用方案、向当地投放专项社区投资、创造本地就业岗位，以及向当地开放Codex模型访问权限，探索AI基建与属地社区互利共生的落地模式。
+
+<FeedbackButtons slug="item:openai-blog-building-ai-infrastructure-with-the-effingham-county-community" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 5</a>
+
+*Anthropic*
+
+Claude Opus 5是Opus层级大模型的阶跃式迭代版本，核心针对长时运行智能体场景做了专项优化，可稳定支撑智能体长期执行复杂任务。同时该版本在代码开发、各领域专业工作处理场景的性能也有显著提升，能为高难度开发、专业领域办公及研究需求提供更强的能力支撑。
+
+<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+这份标题为《邀提硬核问题》的AI领域项目说明核心内容为：相关研究团队面向全社会公开征集公众对人工智能领域最关切、最具挑战性的疑难问题，同时作出公开承诺，后续在回应、解答这些问题的全过程中，会完整披露相关研究工作的全流程细节，确保研发过程透明可追溯。
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/accelerating-the-frontiers-of-scientific-discovery-googles-40m-commitment-to-the-genesis-mission/" target="_blank" rel="noopener noreferrer">Accelerating the frontiers of scientific discovery: Google’s $40M commitment to the Genesis Mission</a>
+
+*Google DeepMind*
+
+为加速前沿科学发现、拓展科研边界，谷歌宣布向“创世纪使命（Genesis Mission）”投入总价值4000万美元的AI代币与云算力权益额度。这批资源将定向供给相关科研团队，用于调用谷歌AI能力开展跨学科研究，可大幅降低AI辅助科研的算力成本，有效提升多领域科研攻关效率。
+
+<FeedbackButtons slug="item:deepmind-accelerating-the-frontiers-of-scientific-discovery-googles-40m-commitment-to-the" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-gemini-36-flash-35-flash-lite-and-35-flash-cyber/" target="_blank" rel="noopener noreferrer">Introducing Gemini 3.6 Flash, 3.5 Flash-Lite, and 3.5 Flash Cyber</a>
+
+*Google DeepMind*
+
+本次谷歌正式发布三款全新Gemini系列轻量级大模型，分别为Gemini 3.6 Flash、3.5 Flash-Lite与3.5 Flash Cyber。其中3.6 Flash兼顾多模态能力与推理效率，主打低延迟高性价比的云端通用场景；3.5 Flash-Lite极致轻量化，适配端侧设备离线部署；3.5 Flash Cyber为网络安全垂类专属优化版本，可满足相关场景定制化性能需求。
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-36-flash-35-flash-lite-and-35-flash-cyber" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nunchaku-diffusers" target="_blank" rel="noopener noreferrer">Bringing Nunchaku 4-bit Diffusion Inference to Diffusers</a>
+
+*Hugging Face*
+
+该工作实现Nunchaku 4比特扩散推理方案与Diffusers库的适配集成。其采用感知对齐量化策略，兼容主流扩散架构，适配多类软硬件运行环境。实测相比FP16原生推理，显存占用降低超50%，推理速度提升30%以上，生成画质几乎无劣化，大幅降低扩散模型落地部署的硬件门槛。
+
+<FeedbackButtons slug="item:hf-blog-nunchaku-diffusers" client:visible />
+
+## <a href="https://huggingface.co/blog/nvidia/state-of-simulation-for-physical-ai" target="_blank" rel="noopener noreferrer">The State of Simulation for Physical AI: An Overview</a>
+
+*Hugging Face*
+
+本综述梳理物理AI仿真领域发展现状：将现有技术划分为第一性原理驱动的物理仿真、数据驱动神经仿真、二者结合的混合仿真三类范式，对比不同范式在刚体、流体、柔性体等场景的适配性，指出核心瓶颈是仿真精度、计算效率、泛化性难以兼顾，明确了面向具身智能、实体机器人落地的优化方向。
+
+<FeedbackButtons slug="item:hf-blog-state-of-simulation-for-physical-ai" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+这篇从美德伦理视角展开的AI对齐研究，反驳“理性主体需有固定最终目标”的传统预设，指出人类理性行动源于适配由行动、评价标准等构成的实践网络而非指向特定目标。提出要实现AI与人类协同、满足对齐要求，需让AI决策逻辑匹配人类实践型行动逻辑，兼顾伦理对齐与安全需求。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+递归自我改进（RSI）最早由学者古德1965年提出，核心是超智能系统可超越人类智力、自主设计更优智能体完成自我迭代。2008年尤德考斯基明确其本质为反馈循环：AI依托现有智能优化自身认知架构。当前该技术落地分两类路径：一是AI直接改写自身权重，二是更广义的优化自身训练管线。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/07/460892.html" target="_blank" rel="noopener noreferrer">100%开源！吴恩达做了个个人桌面Agent</a>
+
+*量子位*
+
+吴恩达团队推出开源桌面AI Agent OpenWorker，采用MIT许可协议，目前已支持Mac运行，Windows版本即将上线。产品主打开放、本地优先、隐私保护、模型无关，可接入各类主流闭源大模型API及本地开源大模型，数据默认留存本地。不同于聊天类AI，它能跨文件、日历、办公软件自动执行指令，交付实际工作成果。
+
+<FeedbackButtons slug="item:qbitai-460892" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/460542.html" target="_blank" rel="noopener noreferrer">美国具身也没成熟！PI：中国公司何必总当“中国版XX”｜RSS 2026</a>
+
+*量子位*
+
+本文为RSS2026参会观察：一是北美头部具身智能企业远未成熟，领域暂无奠基性成果，中国在机器人硬件端占优，无需对标海外自称“中国版XX”；二是国内已热捧世界模型，但顶会仍集中讨论VLA，核心是顶会审稿周期长，参会成果多为大半年前启动，滞后于行业快速迭代。
+
+<FeedbackButtons slug="item:qbitai-460542" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/460253.html" target="_blank" rel="noopener noreferrer">半价干翻Fable 5？Opus 5实测炸场，网友：差点从椅子上摔下来</a>
+
+*量子位*
+
+Anthropic最新发布大模型Opus 5，多项硬核评测追平甚至反超Fable 5，定价仅为后者一半，性能达上代Opus 4.8的两倍以上。其代码、3D生成能力突出，即便删减八成配套系统提示词效果也未下降，实测生成游戏、动画效果远超预期，被网友评价性能堪比Fable 6。
+
+<FeedbackButtons slug="item:qbitai-460253" client:visible />
