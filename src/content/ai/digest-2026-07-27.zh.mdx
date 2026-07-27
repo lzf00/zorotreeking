@@ -1,0 +1,189 @@
+---
+lang: zh
+translationKey: digest-2026-07-27
+title: "AI 每日精选 · 2026-07-27"
+description: "18 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-07-27
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, the-gradient]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">海外头部AI厂商集中发新，OpenAI上线ChatGPT医疗功能、Anthropic推出Claude Opus 5、谷歌发Gemini3.6系列</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face、DeepMind等机构发布强化学习训练、多模态预训练等多项前沿AI技术成果</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内及开源领域进展亮眼，蚂蚁发百灵推理模型、吴恩达开源个人桌面Agent、复旦具身研究获突破</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥大模型迭代</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡技术开源</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠前沿研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏥AI医疗</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖具身智能</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.21653" target="_blank" rel="noopener noreferrer">Molt: A Scalable PyTorch-Native Training Framework for Agentic Reinforcement Learning</a>
+
+*HF ★ 6 · Jian Hu, Huiying Li, Hao Zhang… · [HF 镜像](https://huggingface.co/papers/2607.21653)*
+
+针对现有智能体强化学习框架算法迭代需逐层适配、研发成本高的痛点，英伟达推出PyTorch原生轻量训练框架Molt。它代码精简易溯源修改，采用异步训练架构支持多模态、混合专家策略，仅用自身生成的token训练保障数据一致性，性能与主流最优Megatron栈相当，现已开源提供配套资源。
+
+<FeedbackButtons slug="item:arxiv-2607.21653" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.22529" target="_blank" rel="noopener noreferrer">Skill Self-Play: Pushing the Frontier of LLM Capability with Co-Evolving Skills</a>
+
+*HF ★ 4 · Siyuan Huang, Pengyu Cheng, Haotian Liu… · [HF 镜像](https://huggingface.co/papers/2607.22529)*
+
+当前大模型自进化存在两难：窄域交互验证可靠但任务覆盖窄，开放生成任务多样但缺乏可靠验证。本文提出技能自博弈（Skill-SP）框架，以可验证的技能为中间载体，通过任务生成器、求解器、动态技能控制器协同共进化，兼顾验证可靠性与任务开放性。实验显示其可显著提升大模型推理、工具使用能力，还能矫正初始对齐偏差的模型。
+
+<FeedbackButtons slug="item:arxiv-2607.22529" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.22375" target="_blank" rel="noopener noreferrer">IDEAgent: Agentic Quality-Diversity Search for Research Idea Generation</a>
+
+*HF ★ 2 · Varun Gumma, Navonil Majumder, Soumitra Sinhahajari… · [HF 镜像](https://huggingface.co/papers/2607.22375)*
+
+针对现有大模型科研创意生成仅单独优化质量或多样性，易产出重复、无效思路的缺陷，本文提出多智能体框架IDEAgent，将创意生成定义为质量-多样性双目标搜索任务：通过多目标反馈打磨提质量，通过历史思路比对保多样性。在32个CS主题测试中，其综合有效产出指标Yield超最优基线3.89倍，有效覆盖主题数提升8倍，框架已开源。
+
+<FeedbackButtons slug="item:arxiv-2607.22375" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.22042" target="_blank" rel="noopener noreferrer">LAMAR: An Open Language-Aware Multilingual Alignment Reranker</a>
+
+*HF ★ 1 · Seongtae Hong, Youngjoon Jang, Jungseob Lee… · [HF 镜像](https://huggingface.co/papers/2607.22042)*
+
+现有多语言检索增强生成的重排器未优先返回与查询同语言的语义等价文档，影响答案生成效果。本文提出开源语言感知多语言重排器LAMAR，先通过英文锚定相关性蒸馏实现跨语言打分一致，再做语言一致性偏好对齐，兼顾语义相关性与同语言优先级。实测其在多类评测、通用基准及实际检索场景中均表现优异。
+
+<FeedbackButtons slug="item:arxiv-2607.22042" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.22043" target="_blank" rel="noopener noreferrer">Scaling Native Multimodal Pre-Training From Scratch</a>
+
+*HF ★ 1 · Haoyuan Wu, Aoqi Wu, Hai Wang… · [HF 镜像](https://huggingface.co/papers/2607.22043)*
+
+针对原生多模态从头预训练的缩放规律研究空白，团队在固定算力预算下探索视觉语言Transformer的最优模型规模、训练token量配置。证实损失符合可预测算力定律，语言任务缩放规律不受多模态数据配比影响，多模态任务则对配比高度敏感，据此推导效率配置边界，验证了该范式的跨模态迁移增益，为多模态基础模型可预测缩放奠定基础。
+
+<FeedbackButtons slug="item:arxiv-2607.22043" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/health-in-chatgpt" target="_blank" rel="noopener noreferrer">Launching Health in ChatGPT</a>
+
+*OpenAI*
+
+OpenAI近期为ChatGPT上线专属健康功能，目前仅面向符合资质的美国用户开放。该功能支持用户安全绑定个人医疗记录及苹果健康平台的相关健康数据，依托大模型的信息整合能力输出更具针对性的个性化健康解读，帮助用户更全面清晰地了解自身健康状况。
+
+<FeedbackButtons slug="item:openai-blog-health-in-chatgpt" client:visible />
+
+## <a href="https://openai.com/index/building-ai-infrastructure-with-the-effingham-county-community" target="_blank" rel="noopener noreferrer">Building AI infrastructure with the Effingham County community</a>
+
+*OpenAI*
+
+OpenAI官宣在佐治亚州埃芬厄姆县启动“山茶花项目”，联合当地社区共同搭建AI基础设施。该项目同步作出四项核心承诺：将采用负责任的能源使用方案，配套落地本地社区专项投资，为当地创造更多AI相关就业岗位，同时面向当地开放Codex大模型的使用权限。
+
+<FeedbackButtons slug="item:openai-blog-building-ai-infrastructure-with-the-effingham-county-community" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 5</a>
+
+*Anthropic*
+
+本次推出的Claude Opus 5是Opus层级大模型的阶跃式升级产品。核心能力提升聚焦两大方向：一是大幅优化对长周期运行智能体的支撑能力，适配高复杂度长时序的智能体落地需求；二是显著提升代码生成、专业任务的处理性能，可更好满足开发者、专业从业者的高阶使用需求。
+
+<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+本项目名为《邀请尖锐问题》，是AI领域发起的公众互动举措：发起方向全社会公开征集公众针对AI领域的难点疑问、尖锐问题，同时明确承诺，后续回应、解答这些问题的全流程中，都会完整公开所有工作细节，主动回应公众对AI技术的疑虑，提升AI研发透明度，推动技术研发对接公众真实关切。
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/accelerating-the-frontiers-of-scientific-discovery-googles-40m-commitment-to-the-genesis-mission/" target="_blank" rel="noopener noreferrer">Accelerating the frontiers of scientific discovery: Google’s $40M commitment to the Genesis Mission</a>
+
+*Google DeepMind*
+
+为加速前沿科学探索、推动AI赋能科研范式升级，谷歌宣布向Genesis（创世）科研任务投入总价值4000万美元的AI专属算力代币与云服务额度。这一支持将大幅降低前沿科研团队的AI算力使用门槛，助力多领域科研人员突破资源限制，进一步提速重大科学问题的攻关进程。
+
+<FeedbackButtons slug="item:deepmind-accelerating-the-frontiers-of-scientific-discovery-googles-40m-commitment-to-the" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-gemini-36-flash-35-flash-lite-and-35-flash-cyber/" target="_blank" rel="noopener noreferrer">Introducing Gemini 3.6 Flash, 3.5 Flash-Lite, and 3.5 Flash Cyber</a>
+
+*Google DeepMind*
+
+本次谷歌发布三款Gemini系列全新大模型：分别为综合性能升级的Gemini 3.6 Flash、面向端侧低延迟场景优化的轻量化版本3.5 Flash-Lite，以及针对网络安全垂直领域做专项适配的3.5 Flash Cyber。三款产品覆盖多元落地需求，为不同场景提供更适配的选型，进一步补全了Gemini Flash的产品线矩阵。
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-36-flash-35-flash-lite-and-35-flash-cyber" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nunchaku-diffusers" target="_blank" rel="noopener noreferrer">Bringing Nunchaku 4-bit Diffusion Inference to Diffusers</a>
+
+*Hugging Face*
+
+本次工作完成了Nunchaku 4比特量化扩散推理方案与Hugging Face Diffusers库的官方适配，方法兼顾量化精度与运行效率，生成效果较全精度模型几乎无损失，可减少近75%显存占用，推理速度提升30%以上，适配消费级普通显卡运行，大幅降低扩散类文生图、图生图任务的部署门槛，方便开发者直接调用。
+
+<FeedbackButtons slug="item:hf-blog-nunchaku-diffusers" client:visible />
+
+## <a href="https://huggingface.co/blog/nvidia/state-of-simulation-for-physical-ai" target="_blank" rel="noopener noreferrer">The State of Simulation for Physical AI: An Overview</a>
+
+*Hugging Face*
+
+这篇综述系统梳理物理AI领域的仿真技术发展现状，覆盖多物理场高保真仿真引擎、Sim2Real迁移核心技术路径等主流研究方向，剖析当前高保真度与计算效率难以兼顾、非结构化复杂场景建模精度不足等核心痛点，指出未来需融合神经仿真、多模态交互建模技术，为物理AI落地验证提供支撑。
+
+<FeedbackButtons slug="item:hf-blog-state-of-simulation-for-physical-ai" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+本文从美德伦理视角研究AI对齐问题，挑战“理性主体需锚定固定最终目标”的传统假设，指出人类理性并非指向预设目标，而是基于行动、评价标准等构成的实践网络调整行为。研究提出，若要AI适配人类主体，需让其决策逻辑匹配人类的实践型逻辑，该路径既满足伦理对齐要求，也可保障AI核心安全属性。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+递归自我改进（RSI）概念可追溯至1965年I.J.古德提出的超智能机器设想：该系统能超越人类所有智力活动，自主设计更优机器实现迭代升级。2008年尤德考斯基明确定义其为AI依托现有智能优化自身认知机制的反馈环。当前AI领域的这类反馈既包括直接改写自身权重，也可广义指向优化自身训练流程。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/07/461149.html" target="_blank" rel="noopener noreferrer">蚂蚁百灵发布新一代原生混合推理模型Ling-3.0-Flash</a>
+
+*量子位*
+
+7月24日蚂蚁百灵发布原生混合推理模型Ling-3.0-Flash，总参124B单次计算仅激活5.1B，通过混合注意力架构、升级KDA注意力、压缩专家激活比等设计，性能对标2-3倍参数量的行业头部模型，针对Agent场景优化了长程规划与纠错能力，已上线OpenRouter限免一周后将开源。
+
+<FeedbackButtons slug="item:qbitai-461149" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/460962.html" target="_blank" rel="noopener noreferrer">3万小时触觉数据补齐具身智能“手感”！新智具身&#038;复旦报告三连发</a>
+
+*量子位*
+
+针对具身机器人仅靠视觉易出现物理交互失误、缺乏触觉反馈的行业痛点，新智具身联合复旦发布N0系列三份技术报告，构建超3万小时多设备兼容的视觉-触觉交互数据集，将触觉从辅助模态升级为核心基建，配套两条技术路线，相关数据模型开源，可破解落地“最后一厘米”难题。
+
+<FeedbackButtons slug="item:qbitai-460962" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/460892.html" target="_blank" rel="noopener noreferrer">100%开源！吴恩达做了个个人桌面Agent</a>
+
+*量子位*
+
+吴恩达团队推出开源桌面Agent OpenWorker，采用MIT协议完全开源。它定位为可交付成品工作的AI同事，主打开放、本地优先、隐私保护、模型无关，可接入闭源大模型API或本地开源大模型，能跨办公工具自动完成材料整理、日程更新等任务，目前已支持Mac运行，Windows版即将上线。
+
+<FeedbackButtons slug="item:qbitai-460892" client:visible />
