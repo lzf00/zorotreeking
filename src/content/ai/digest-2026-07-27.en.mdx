@@ -1,0 +1,189 @@
+---
+lang: en
+translationKey: digest-2026-07-27
+title: "Daily AI Picks · 2026-07-27"
+description: "18 papers · multi-source aggregation + AI summaries"
+date: 2026-07-27
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, the-gradient]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's highlights in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading overseas AI vendors released new products in batches: OpenAI launched ChatGPT health features, Anthropic rolled out Claude Opus 5, and Google released the Gemini 3.6 series</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Institutions including Hugging Face and DeepMind released multiple cutting-edge AI technology achievements in areas such as reinforcement learning training and multimodal pretraining</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Domestic and open-source sectors have seen notable progress: Ant Group released the Bailing inference model, Andrew Ng open-sourced a personal desktop Agent, and Fudan University made breakthroughs in embodied intelligence research</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 LLM Iteration</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Open Source Technology</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏥 AI Healthcare</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Embodied Intelligence</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.21653" target="_blank" rel="noopener noreferrer">Molt: A Scalable PyTorch-Native Training Framework for Agentic Reinforcement Learning</a>
+
+*HF ★ 6 · Jian Hu, Huiying Li, Hao Zhang… · [HF Mirror](https://huggingface.co/papers/2607.21653)*
+
+Addressing the pain points of existing agent reinforcement learning frameworks requiring layer-by-layer adaptation for algorithm iteration and high R&D costs, NVIDIA has launched Molt, a lightweight PyTorch-native training framework. It features concise code that is easy to trace and modify, adopts an asynchronous training architecture that supports multimodal and MoE strategies, and only uses self-generated tokens for training to ensure data consistency. Its performance is comparable to the state-of-the-art mainstream Megatron stack, and it is now open source with supporting resources provided.
+
+<FeedbackButtons slug="item:arxiv-2607.21653" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.22529" target="_blank" rel="noopener noreferrer">Skill Self-Play: Pushing the Frontier of LLM Capability with Co-Evolving Skills</a>
+
+*HF ★ 4 · Siyuan Huang, Pengyu Cheng, Haotian Liu… · [HF Mirror](https://huggingface.co/papers/2607.22529)*
+
+There is currently a dilemma in the self-evolution of LLMs: narrow-domain interactive verification is reliable but has limited task coverage, while open generation tasks are diverse but lack reliable verification. This paper proposes the Skill Self-Play (Skill-SP) framework, which uses verifiable skills as an intermediate carrier, and achieves co-evolution through the collaboration of task generators, solvers, and dynamic skill controllers, balancing verification reliability and task openness. Experiments show that it can significantly improve the reasoning and tool use capabilities of LLMs, and can also correct models with initial alignment deviations.
+
+<FeedbackButtons slug="item:arxiv-2607.22529" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.22375" target="_blank" rel="noopener noreferrer">IDEAgent: Agentic Quality-Diversity Search for Research Idea Generation</a>
+
+*HF ★ 2 · Varun Gumma, Navonil Majumder, Soumitra Sinhahajari… · [HF Mirror](https://huggingface.co/papers/2607.22375)*
+
+Addressing the flaw that existing LLM research idea generation only optimizes quality or diversity separately, easily producing repetitive and invalid ideas, this paper proposes the multi-agent framework IDEAgent, which defines idea generation as a dual-objective search task of quality and diversity: it improves quality through multi-objective feedback polishing, and ensures diversity through comparison with historical ideas. In tests on 32 CS topics, its comprehensive effective output indicator Yield is 3.89 times higher than the best baseline, and the number of effectively covered topics is increased by 8 times. The framework has been open-sourced.
+
+<FeedbackButtons slug="item:arxiv-2607.22375" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.22042" target="_blank" rel="noopener noreferrer">LAMAR: An Open Language-Aware Multilingual Alignment Reranker</a>
+
+*HF ★ 1 · Seongtae Hong, Youngjoon Jang, Jungseob Lee… · [HF Mirror](https://huggingface.co/papers/2607.22042)*
+
+Existing rerankers for multilingual RAG do not prioritize returning semantically equivalent documents in the same language as the query, which affects the quality of answer generation. This paper proposes LAMAR, an open-source language-aware multilingual reranker. It first achieves cross-language scoring consistency through English-anchored relevance distillation, then performs alignment for language consistency preference, taking into account both semantic relevance and same-language priority. Actual tests show it performs excellently across multiple types of evaluations, general benchmarks, and real retrieval scenarios.
+
+<FeedbackButtons slug="item:arxiv-2607.22042" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.22043" target="_blank" rel="noopener noreferrer">Scaling Native Multimodal Pre-Training From Scratch</a>
+
+*HF ★ 1 · Haoyuan Wu, Aoqi Wu, Hai Wang… · [HF Mirror](https://huggingface.co/papers/2607.22043)*
+
+Addressing the research gap in scaling laws for native multimodal pretraining from scratch, the team explored the optimal model size and training token volume configuration for vision-language Transformers under a fixed computing power budget. It was confirmed that the loss conforms to predictable computing power laws, the scaling law of language tasks is not affected by the multimodal data ratio, while multimodal tasks are highly sensitive to the ratio. Based on this, the efficiency configuration boundary was derived, and the cross-modal transfer gain of this paradigm was verified, laying a foundation for predictable scaling of multimodal foundation models.
+
+<FeedbackButtons slug="item:arxiv-2607.22043" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/health-in-chatgpt" target="_blank" rel="noopener noreferrer">Launching Health in ChatGPT</a>
+
+*OpenAI*
+
+OpenAI recently launched exclusive health features for ChatGPT, which are currently only available to eligible users in the United States. This feature allows users to securely bind their personal medical records and relevant health data from the Apple Health platform, and leverages the information integration capabilities of LLMs to output more targeted personalized health interpretations, helping users understand their own health status more comprehensively and clearly.
+
+<FeedbackButtons slug="item:openai-blog-health-in-chatgpt" client:visible />
+
+## <a href="https://openai.com/index/building-ai-infrastructure-with-the-effingham-county-community" target="_blank" rel="noopener noreferrer">Building AI infrastructure with the Effingham County community</a>
+
+*OpenAI*
+
+OpenAI officially announced the launch of the "Camellia Project" in Effingham County, Georgia, to jointly build AI infrastructure with the local community. The project also made four core commitments: it will adopt a responsible energy use plan, implement special investments for the local community, create more AI-related jobs for local residents, and open access to the Codex LLM for local users.
+
+<FeedbackButtons slug="item:openai-blog-building-ai-infrastructure-with-the-effingham-county-community" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 5</a>
+
+*Anthropic*
+
+The newly launched Claude Opus 5 is a step-up upgrade of the Opus-tier LLM. Its core capability improvements focus on two major directions: first, it greatly optimizes support for long-running agents, adapting to the deployment needs of high-complexity, long-sequence agents; second, it significantly improves the processing performance of code generation and professional tasks, which can better meet the high-level usage needs of developers and professional practitioners.
+
+<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+This initiative named "Inviting Hard Questions" is a public interaction measure launched in the AI field: the initiator openly collects difficult questions and sharp concerns about the AI field from the whole society, and explicitly promises that in the entire process of responding to and answering these questions later, all work details will be fully disclosed, to proactively address the public's doubts about AI technology, improve the transparency of AI R&D, and promote technological R&D to align with the real concerns of the public.
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/accelerating-the-frontiers-of-scientific-discovery-googles-40m-commitment-to-the-genesis-mission/" target="_blank" rel="noopener noreferrer">Accelerating the frontiers of scientific discovery: Google’s $40M commitment to the Genesis Mission</a>
+
+*Google DeepMind*
+
+To accelerate cutting-edge scientific exploration and promote the upgrading of the AI-enabled scientific research paradigm, Google announced that it will invest a total of $40 million worth of AI-exclusive computing power tokens and cloud service credits in the Genesis scientific research mission. This support will greatly lower the threshold for cutting-edge research teams to use AI computing power, help researchers in multiple fields break through resource constraints, and further accelerate the process of tackling major scientific problems.
+
+<FeedbackButtons slug="item:deepmind-accelerating-the-frontiers-of-scientific-discovery-googles-40m-commitment-to-the" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-gemini-36-flash-35-flash-lite-and-35-flash-cyber/" target="_blank" rel="noopener noreferrer">Introducing Gemini 3.6 Flash, 3.5 Flash-Lite, and 3.5 Flash Cyber</a>
+
+*Google DeepMind*
+
+Google has released three new models in the Gemini series: the comprehensively performance-upgraded Gemini 3.6 Flash, the lightweight 3.5 Flash-Lite optimized for end-side low-latency scenarios, and the 3.5 Flash Cyber specially adapted for the cybersecurity vertical field. The three products cover diverse deployment needs, provide more suitable options for different scenarios, and further complete the Gemini Flash product line matrix.
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-36-flash-35-flash-lite-and-35-flash-cyber" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nunchaku-diffusers" target="_blank" rel="noopener noreferrer">Bringing Nunchaku 4-bit Diffusion Inference to Diffusers</a>
+
+*Hugging Face*
+
+This work has completed the official adaptation of the Nunchaku 4-bit quantized diffusion inference solution to the Hugging Face Diffusers library. The method balances quantization accuracy and operating efficiency, with almost no loss in generation effect compared to full-precision models. It can reduce VRAM usage by nearly 75%, increase inference speed by more than 30%, and is compatible with consumer-grade ordinary graphics cards, greatly lowering the deployment threshold for diffusion-based text-to-image and image-to-image tasks, and facilitating direct calls by developers.
+
+<FeedbackButtons slug="item:hf-blog-nunchaku-diffusers" client:visible />
+
+## <a href="https://huggingface.co/blog/nvidia/state-of-simulation-for-physical-ai" target="_blank" rel="noopener noreferrer">The State of Simulation for Physical AI: An Overview</a>
+
+*Hugging Face*
+
+This review systematically sorts out the current development status of simulation technology in the field of physical AI, covering mainstream research directions such as multi-physics high-fidelity simulation engines and core technical paths for Sim2Real transfer. It analyzes core pain points such as the current difficulty in balancing high fidelity and computing efficiency, and insufficient modeling accuracy for unstructured complex scenarios, pointing out that future integration of neural simulation and multimodal interactive modeling technologies is needed to provide support for the deployment and verification of physical AI.
+
+<FeedbackButtons slug="item:hf-blog-state-of-simulation-for-physical-ai" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This paper studies the AI alignment problem from the perspective of virtue ethics, challenging the traditional assumption that "rational agents need to be anchored to fixed final goals", pointing out that human rationality is not oriented towards preset goals, but adjusts behavior based on a practical network composed of actions, evaluation standards, etc. The study proposes that for AI to adapt to human agents, its decision-making logic needs to match human practical logic. This path not only meets the requirements of ethical alignment, but also ensures the core security attributes of AI.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+The concept of Recursive Self-Improvement (RSI) can be traced back to the hypothesis of ultra-intelligent machines proposed by I.J. Good in 1965: such a system can surpass all human intellectual activities and independently design better machines to achieve iterative upgrades. In 2008, Eliezer Yudkowsky explicitly defined it as a feedback loop where AI relies on its existing intelligence to optimize its own cognitive mechanism. Currently, such feedback in the AI field includes both directly rewriting its own weights, and broadly referring to optimizing its own training process.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/07/461149.html" target="_blank" rel="noopener noreferrer">Ant Bailing Releases New Generation Native Hybrid Inference Model Ling-3.0-Flash</a>
+
+*QbitAI*
+
+On July 24, Ant Bailing released the native hybrid inference model Ling-3.0-Flash, with a total parameter count of 124B and only 5.1B activated per single computation. Through designs such as a hybrid attention architecture, upgraded KDA attention, and compressed expert activation ratio, its performance is comparable to industry leading models with 2-3 times the parameter count. It has optimized long-term planning and error correction capabilities for Agent scenarios, and has been launched on OpenRouter with a one-week free trial, after which it will be open-sourced.
+
+<FeedbackButtons slug="item:qbitai-461149" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/460962.html" target="_blank" rel="noopener noreferrer">30,000 Hours of Tactile Data Completes the "Sense of Touch" for Embodied Intelligence! Xinzhi Embodied & Fudan Release Three Consecutive Reports</a>
+
+*QbitAI*
+
+Addressing the industry pain point that embodied robots relying only on vision are prone to physical interaction errors and lack tactile feedback, Xinzhi Embodied Intelligence, together with Fudan University, released three technical reports of the N0 series, building a more than 30,000-hour multi-device compatible visual-tactile interaction dataset, upgrading tactile from an auxiliary modality to core infrastructure, with two supporting technical routes. The relevant data and models are open source, which can solve the "last centimeter" problem of deployment.
+
+<FeedbackButtons slug="item:qbitai-460962" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/460892.html" target="_blank" rel="noopener noreferrer">100% Open Source! Andrew Ng Built a Personal Desktop Agent</a>
+
+*QbitAI*
+
+Andrew Ng's team has launched the open-source desktop Agent OpenWorker, which is fully open source under the MIT license. Positioned as an AI colleague that can deliver finished work, it focuses on openness, local priority, privacy protection, and model agnosticism. It can access closed-source LLM APIs or local open-source LLMs, and can automatically complete tasks such as document sorting and schedule updating across office tools. It currently supports running on Mac, and the Windows version will be launched soon.
+
+<FeedbackButtons slug="item:qbitai-460892" client:visible />
