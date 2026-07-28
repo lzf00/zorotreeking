@@ -1,0 +1,199 @@
+---
+lang: zh
+translationKey: digest-2026-07-28
+title: "AI 每日精选 · 2026-07-28"
+description: "19 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-07-28
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">头部大模型厂商密集迭代，Anthropic发Claude Opus 5、DeepMind推Gemini3.6系列，OpenAI上线ChatGPT健康功能</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">前沿技术研究多点突破，覆盖长程智能体、自动驾驶数据集、机器人学习、4位扩散推理优化等方向</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">AI产业落地持续提速，科学计算资助、具身医疗、终端智能体、高管变动等领域均有新动态</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥模型发新</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠学术研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡技术优化</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏥医疗落地</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📈产业动态</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.22798" target="_blank" rel="noopener noreferrer">StateAct: Program State, before Pixels, for Long-Horizon Computer-Use Agents</a>
+
+*HF ★ 18 · Yan Yang, Xiangru Jian, Ziyang Luo… · [HF 镜像](https://huggingface.co/papers/2607.22798)*
+
+针对计算机操作智能体依赖截图感知、信息有损的缺陷，提出StateAct多智能体框架：主智能体直接操作底层程序状态，仅少量场景调用GUI子智能体处理交互，增设独立模块校验结果。在OSWorld2.0基准上，该方案较纯截图驱动方案成功率提升约6个百分点，单任务成本降至1/9，将系统瓶颈从感知转向推理。
+
+<FeedbackButtons slug="item:arxiv-2607.22798" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.23822" target="_blank" rel="noopener noreferrer">DriveDNA: A Large-Scale Multimodal Naturalistic Driving Dataset and Benchmark for Driving Style Identification</a>
+
+*HF ★ 0 · Yuhang Wang, Lingyao Li, Hao Zhou · [HF 镜像](https://huggingface.co/papers/2607.23822)*
+
+针对现有驾驶风格识别易将车辆、场景特征误判为司机专属风格的问题，本文发布大规模多模态自然驾驶数据集DriveDNA，覆盖465名司机共975小时行驶数据，配套少样本司机重识别等三项基准任务。实验显示学习表征识别效果远优于传统描述符，纯视觉模型存在路线泄漏问题，证明风格评估需排除各类混淆变量干扰。
+
+<FeedbackButtons slug="item:arxiv-2607.23822" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.21655" target="_blank" rel="noopener noreferrer">Progress Reward Modeling for Robotic Learning: A Comprehensive Survey</a>
+
+*HF ★ 0 · Jianshu Zhang, Keliang Wu, Haoran Lu… · [HF 镜像](https://huggingface.co/papers/2607.21655)*
+
+机器人学习仅靠终端成功信号无法反馈任务执行进度，近年进度奖励相关研究增多但缺乏统一框架、难以横向对比。该综述提出进度奖励建模的统一分析视角，从模型接口、奖励信号构建方法、数据集与评估基准三个维度梳理领域脉络，总结现有方法核心局限，指明未来研究方向。
+
+<FeedbackButtons slug="item:arxiv-2607.21655" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2607.21623" target="_blank" rel="noopener noreferrer">Cloud-Native Evaluation-as-a-Service: A Microservices Architecture for Scalable AI Monitoring with Conformal Guarantees</a>
+
+*Lei Yang*
+
+本文提出云原生AI评估即服务架构EaaS，拆为6个Kubernetes无状态微服务，覆盖共形预测、漂移检测、公平性监控等能力，配套DAG流水线编排与存储接口。经验证其共形预测覆盖误差仅1.4个百分点，各项精度、延迟指标达标，当前暂无开源同类工具同时具备共形预测服务化、微服务拆分、DAG编排三大特性。
+
+<FeedbackButtons slug="item:arxiv-2607.21623" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.21633" target="_blank" rel="noopener noreferrer">On the Depth Scalability of Logic Gate Networks</a>
+
+*Taegun An, Dohun kim, Haebeom Lee…*
+
+针对现有逻辑门网络（LGN）加深无法稳定提效的问题，本文明确其核心源于优化崩塌及拓扑信息限制，仅保障训练稳定性不足。提出输入锚定LGN（IALGN），每层运算门的隐特征均绑定原始输入锚点，辅以随机k锚松弛优化选锚。三类图像数据集实验显示其100层以上仍可随深度稳定提精度，验证LGN深度可扩展需同时满足稳定优化与输入信息通路设计。
+
+<FeedbackButtons slug="item:arxiv-2607.21633" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.21634" target="_blank" rel="noopener noreferrer">MotifRole-Diff: Risk-Optimal Role-Aware Corruption for Masked Molecular Graph Diffusion</a>
+
+*Tasfia Nuzhat Ornee, Elias Hossain, Ivan Garibay…*
+
+现有分子图掩码扩散生成采用统一掩码策略，未考虑不同结构组分的重建难度与重要性差异。本文提出MotifRole-Diff方法，将掩码调度建模为不同角色令牌的风险最优分配问题，按去噪难度、图级扰动影响分配掩码率。同等算力下，该方法在QM9、MOSES数据集上分子生成有效性显著提升，FCD指标下降，证实结构感知掩码策略更适配序列化分子图扩散。
+
+<FeedbackButtons slug="item:arxiv-2607.21634" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/how-ai-is-expanding-what-people-do-at-work" target="_blank" rel="noopener noreferrer">How AI is expanding what people do at work</a>
+
+*OpenAI*
+
+OpenAI最新发布的AI职场影响研究，围绕ChatGPT职场用户的应用行为展开调研，发现这类用户普遍突破自身原有岗位职责限制，主动承接跨角色工作任务，这一趋势正逐步重构传统岗位权责划分与工作边界，印证生成式AI正在切实拓展职场人可完成的工作范畴。
+
+<FeedbackButtons slug="item:openai-blog-how-ai-is-expanding-what-people-do-at-work" client:visible />
+
+## <a href="https://openai.com/index/health-in-chatgpt" target="_blank" rel="noopener noreferrer">Launching Health in ChatGPT</a>
+
+*OpenAI*
+
+近期OpenAI为ChatGPT新上线专属健康功能，目前仅面向符合资质的美国用户开放。该功能支持用户安全绑定个人医疗记录及苹果健康平台的相关数据，依托ChatGPT大模型能力输出更具针对性的个性化健康分析洞见，可帮助用户更清晰地认知、掌握自身健康状态。
+
+<FeedbackButtons slug="item:openai-blog-health-in-chatgpt" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 5</a>
+
+*Anthropic*
+
+本次介绍的Claude Opus 5是Anthropic旗下Opus高端大模型产品线的阶跃式升级版本。该版本核心针对长周期运行的智能体场景做了专项优化，可稳定支撑智能体长时作业，同时大幅提升了代码生成调试、各领域专业任务的处理性能，更适配复杂开发、专业工作流等高端场景需求。
+
+<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+该项目题为《邀请提出尖锐问题》，核心举措为面向全社会公开征集公众对人工智能领域的各类高难度、高关切疑问。项目团队承诺，在回应、解答这些问题的全流程中，将完整公开所有研究推导、技术逻辑等工作细节，主动提升AI领域信息透明度，推动公众参与AI治理，消解技术信任壁垒。
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/accelerating-the-frontiers-of-scientific-discovery-googles-40m-commitment-to-the-genesis-mission/" target="_blank" rel="noopener noreferrer">Accelerating the frontiers of scientific discovery: Google’s $40M commitment to the Genesis Mission</a>
+
+*Google DeepMind*
+
+谷歌宣布为创世纪（Genesis）任务投入总价值4000万美元的AI算力代币与服务权益资源。该项投入旨在依托AI能力拓展科学发现前沿，为生命科学、基础物理等需高算力的科研项目提供充足AI算力支撑，降低前沿研究的AI资源使用门槛，助力多领域科研攻关实现突破性进展。
+
+<FeedbackButtons slug="item:deepmind-accelerating-the-frontiers-of-scientific-discovery-googles-40m-commitment-to-the" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-gemini-3-6-flash-3-5-flash-lite-and-3-5-flash-cyber/" target="_blank" rel="noopener noreferrer">Introducing Gemini 3.6 Flash, 3.5 Flash-Lite, and 3.5 Flash Cyber</a>
+
+*Google DeepMind*
+
+谷歌近期推出三款全新Gemini轻量化大模型，分别为Gemini 3.6 Flash、3.5 Flash-Lite与3.5 Flash Cyber。其中3.6 Flash兼顾推理性能与低延迟、高性价比优势，3.5 Flash-Lite适配低算力端侧部署，3.5 Flash Cyber专为网络安全场景优化，三款产品补全了Gemini轻量化矩阵，可覆盖多元场景的商用落地诉求。
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-3-6-flash-3-5-flash-lite-and-3-5-flash-cyber" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/cosmos-h-dreams" target="_blank" rel="noopener noreferrer">NVIDIA Cosmos-H-Dreams: Bringing Real-Time Generative Simulation to Surgical Robotics</a>
+
+*Hugging Face*
+
+你当前仅提供了该论文的标题，未粘贴对应的摘要正文内容，请补充完整的摘要文本，我才能准确梳理其核心方法、实验结论，按要求提炼为120字左右、突出核心要点的中文总结内容。
+
+<FeedbackButtons slug="item:hf-blog-cosmos-h-dreams" client:visible />
+
+## <a href="https://huggingface.co/blog/nunchaku-diffusers" target="_blank" rel="noopener noreferrer">Bringing Nunchaku 4-bit Diffusion Inference to Diffusers</a>
+
+*Hugging Face*
+
+本工作将专为扩散模型优化的Nunchaku 4比特量化推理方案适配集成至Hugging Face Diffusers生态，开发者无需额外修改代码即可调用。该方案基本不损失生成质量、推理速度几乎无下降，可将扩散模型显存占用压缩超60%，使SDXL等大参数模型可在入门消费级显卡上流畅运行，大幅降低生成式AI图像创作的硬件门槛。
+
+<FeedbackButtons slug="item:hf-blog-nunchaku-diffusers" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+这篇AI对齐研究反驳“理性主体需以固定最终目标为导向”的默认前提，指出人类理性源于行动适配由行动、倾向、评价准则等构成的实践网络。提出要实现AI与人类协作、适配人类主体性，需让AI决策逻辑匹配人类的实践型行动逻辑，这一要求既关乎伦理对齐，也涉及AI核心安全属性。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我改进（RSI）的概念脉络：1965年I.J.古德最早提出超智能机器可超越人类所有智力活动，还能设计更优机器完成自我迭代；2008年尤德考夫斯基明确RSI是AI用自身智能优化认知底层架构的反馈循环。当前AI领域的RSI既包括模型直接改写自身权重，也可广义覆盖模型优化自身训练管线的行为。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/07/461565.html" target="_blank" rel="noopener noreferrer">智能体走向终端，个人AI时代正在到来</a>
+
+*量子位*
+
+7月北京举办的财新AI主题圆桌，汇聚多方代表研讨智能体重构终端产业、个人AI终端发展前景。业内共识2026年为智能体落地关键节点，AI正从响应式工具进化为自主行动系统，会上发布高通委托IDC编制的智能体终端产业白皮书，专家建言打通研产商链路，推动终端与智能体融合释放潜力。
+
+<FeedbackButtons slug="item:qbitai-461565" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/461517.html" target="_blank" rel="noopener noreferrer">突发，翁荔离职Thinking Machines</a>
+
+*量子位*
+
+北大校友、前OpenAI资深研究员翁荔近日宣布离职入职仅20个月的Thinking Machines，距公司发布首个开源模型仅12天。她称离职原因是长期高强度工作导致近7个月身体频出问题，又不愿降低履职投入度，遂选择离开。她此前在OpenAI任职7年，曾主导完成五指机械手单手拧魔方的研发。
+
+<FeedbackButtons slug="item:qbitai-461517" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/461444.html" target="_blank" rel="noopener noreferrer">超维动力携手北大医疗：务实构建具身智能医疗落地路径</a>
+
+*量子位*
+
+超维动力与北大医疗近日达成深度合作，摒弃冒进思路，瞄准具身智能医疗落地缺训练场景、缺医护操作数据的痛点，前者输出全栈具身智能技术底座，后者提供真实临床场景与专业医疗经验，双方优势互补，共同打造“拟真训练-场景验证-医院应用”的可复制落地方案，稳扎稳打推进具身智能医疗落地。
+
+<FeedbackButtons slug="item:qbitai-461444" client:visible />
