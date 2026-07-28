@@ -1,0 +1,199 @@
+---
+lang: en
+translationKey: digest-2026-07-28
+title: "AI Daily Digest · 2026-07-28"
+description: "19 papers · multi-source aggregation + AI summaries"
+date: 2026-07-28
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's updates in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading LLM vendors are rolling out intensive iterations: Anthropic released Claude Opus 5, DeepMind launched the Gemini 3.6 series, and OpenAI rolled out ChatGPT health features</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Cutting-edge technical research has made breakthroughs across multiple areas, covering long-horizon agents, autonomous driving datasets, robotic learning, 4-bit diffusion inference optimization and other directions</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">AI industry implementation continues to accelerate, with new developments in scientific computing funding, embodied healthcare, edge agents, executive changes and other fields</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥New Model Releases</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠Academic Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡Technical Optimization</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏥Healthcare Implementation</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📈Industry Updates</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.22798" target="_blank" rel="noopener noreferrer">StateAct: Program State, before Pixels, for Long-Horizon Computer-Use Agents</a>
+
+*HF ★ 18 · Yan Yang, Xiangru Jian, Ziyang Luo… · [HF Mirror](https://huggingface.co/papers/2607.22798)*
+
+To address the flaw that computer operation agents rely on screenshot perception which leads to information loss, the StateAct multi-agent framework is proposed: the main agent directly operates the underlying program state, only calls the GUI sub-agent to handle interactions in a small number of scenarios, and adds an independent module to verify results. On the OSWorld 2.0 benchmark, this solution improves the success rate by about 6 percentage points compared to pure screenshot-driven solutions, reduces per-task cost to 1/9, and shifts the system bottleneck from perception to inference.
+
+<FeedbackButtons slug="item:arxiv-2607.22798" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.23822" target="_blank" rel="noopener noreferrer">DriveDNA: A Large-Scale Multimodal Naturalistic Driving Dataset and Benchmark for Driving Style Identification</a>
+
+*HF ★ 0 · Yuhang Wang, Lingyao Li, Hao Zhou · [HF Mirror](https://huggingface.co/papers/2607.23822)*
+
+To solve the problem that existing driving style recognition tends to misjudge vehicle and scene features as driver-specific styles, this paper releases DriveDNA, a large-scale multimodal naturalistic driving dataset covering 975 hours of driving data from 465 drivers, paired with three benchmark tasks including few-shot driver re-identification. Experiments show that the recognition effect of learned representations is far better than traditional descriptors, and pure vision models have route leakage problems, proving that style evaluation needs to exclude interference from various confounding variables.
+
+<FeedbackButtons slug="item:arxiv-2607.23822" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.21655" target="_blank" rel="noopener noreferrer">Progress Reward Modeling for Robotic Learning: A Comprehensive Survey</a>
+
+*HF ★ 0 · Jianshu Zhang, Keliang Wu, Haoran Lu… · [HF Mirror](https://huggingface.co/papers/2607.21655)*
+
+Robotic learning relying only on terminal success signals cannot provide feedback on task execution progress. In recent years, research on progress rewards has increased, but there is a lack of a unified framework, making horizontal comparison difficult. This review proposes a unified analytical perspective for progress reward modeling, sorts out the development context of the field from three dimensions: model interface, reward signal construction method, dataset and evaluation benchmark, summarizes the core limitations of existing methods, and points out future research directions.
+
+<FeedbackButtons slug="item:arxiv-2607.21655" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2607.21623" target="_blank" rel="noopener noreferrer">Cloud-Native Evaluation-as-a-Service: A Microservices Architecture for Scalable AI Monitoring with Conformal Guarantees</a>
+
+*Lei Yang*
+
+This paper proposes EaaS, a cloud-native AI evaluation-as-a-service architecture, split into 6 Kubernetes stateless microservices, covering capabilities such as conformal prediction, drift detection, fairness monitoring, etc., with supporting DAG pipeline orchestration and storage interfaces. Verification shows that its conformal prediction coverage error is only 1.4 percentage points, all accuracy and latency indicators meet standards, and there is currently no open-source similar tool that has the three characteristics of conformal prediction servitization, microservice split, and DAG orchestration at the same time.
+
+<FeedbackButtons slug="item:arxiv-2607.21623" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.21633" target="_blank" rel="noopener noreferrer">On the Depth Scalability of Logic Gate Networks</a>
+
+*Taegun An, Dohun kim, Haebeom Lee…*
+
+To address the problem that existing Logic Gate Networks (LGN) cannot stably improve performance when deepened, this paper clarifies that the core cause comes from optimization collapse and topological information limitations, and only ensuring training stability is not sufficient. Input Anchored LGN (IALGN) is proposed, where the hidden features of each layer of operation gates are bound to original input anchors, supplemented by random k-anchor relaxation optimization for anchor selection. Experiments on three image datasets show that it can still stably improve accuracy with depth above 100 layers, verifying that LGN depth scalability needs to meet both stable optimization and input information path design at the same time.
+
+<FeedbackButtons slug="item:arxiv-2607.21633" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.21634" target="_blank" rel="noopener noreferrer">MotifRole-Diff: Risk-Optimal Role-Aware Corruption for Masked Molecular Graph Diffusion</a>
+
+*Tasfia Nuzhat Ornee, Elias Hossain, Ivan Garibay…*
+
+Existing molecular graph mask diffusion generation adopts a unified mask strategy, which does not consider the difference in reconstruction difficulty and importance of different structural components. This paper proposes the MotifRole-Diff method, which models mask scheduling as a risk-optimal allocation problem for tokens of different roles, and allocates mask rates according to denoising difficulty and graph-level perturbation impact. Under the same computing power, this method significantly improves the effectiveness of molecular generation on QM9 and MOSES datasets, and the FCD indicator decreases, confirming that structure-aware mask strategies are more suitable for serialized molecular graph diffusion.
+
+<FeedbackButtons slug="item:arxiv-2607.21634" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/how-ai-is-expanding-what-people-do-at-work" target="_blank" rel="noopener noreferrer">How AI is expanding what people do at work</a>
+
+*OpenAI*
+
+OpenAI's latest released study on the impact of AI on the workplace, conducted around the application behaviors of ChatGPT workplace users, found that such users generally break through the limitations of their original job responsibilities and actively take on cross-role work tasks. This trend is gradually reconstructing the traditional division of job rights and responsibilities and work boundaries, confirming that generative AI is effectively expanding the scope of work that workplace professionals can complete.
+
+<FeedbackButtons slug="item:openai-blog-how-ai-is-expanding-what-people-do-at-work" client:visible />
+
+## <a href="https://openai.com/index/health-in-chatgpt" target="_blank" rel="noopener noreferrer">Launching Health in ChatGPT</a>
+
+*OpenAI*
+
+Recently, OpenAI has launched an exclusive health feature for ChatGPT, which is currently only open to eligible US users. This feature supports users to safely bind their personal medical records and relevant data from the Apple Health platform, and outputs more targeted personalized health analysis insights based on the capabilities of the ChatGPT large model, which can help users understand and master their own health status more clearly.
+
+<FeedbackButtons slug="item:openai-blog-health-in-chatgpt" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 5</a>
+
+*Anthropic*
+
+The Claude Opus 5 introduced this time is a stepwise upgrade of Anthropic's Opus high-end large model product line. The core of this version is specially optimized for long-running agent scenarios, which can stably support long-term agent operation, while greatly improving the processing performance of code generation and debugging, and professional tasks in various fields, which is more suitable for high-end scenario requirements such as complex development and professional workflows.
+
+<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+This project is titled *Inviting Hard Questions*, and its core measure is to openly collect all kinds of difficult, high-concern questions about the artificial intelligence field from the public. The project team promises that in the whole process of responding to and answering these questions, all work details such as research derivation and technical logic will be fully disclosed, actively improve the information transparency of the AI field, promote public participation in AI governance, and eliminate technical trust barriers.
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/accelerating-the-frontiers-of-scientific-discovery-googles-40m-commitment-to-the-genesis-mission/" target="_blank" rel="noopener noreferrer">Accelerating the frontiers of scientific discovery: Google’s $40M commitment to the Genesis Mission</a>
+
+*Google DeepMind*
+
+Google announced that it will invest a total of $40 million worth of AI computing power tokens and service equity resources for the Genesis Mission. This investment aims to expand the frontier of scientific discovery relying on AI capabilities, provide sufficient AI computing power support for scientific research projects requiring high computing power such as life sciences and basic physics, lower the threshold for using AI resources for cutting-edge research, and help achieve breakthroughs in scientific research in multiple fields.
+
+<FeedbackButtons slug="item:deepmind-accelerating-the-frontiers-of-scientific-discovery-googles-40m-commitment-to-the" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-gemini-3-6-flash-3-5-flash-lite-and-3-5-flash-cyber/" target="_blank" rel="noopener noreferrer">Introducing Gemini 3.6 Flash, 3.5 Flash-Lite, and 3.5 Flash Cyber</a>
+
+*Google DeepMind*
+
+Google recently launched three new Gemini lightweight large models, namely Gemini 3.6 Flash, 3.5 Flash-Lite and 3.5 Flash Cyber. Among them, 3.6 Flash balances inference performance, low latency and high cost-effectiveness advantages, 3.5 Flash-Lite is suitable for deployment on low-computing edge devices, and 3.5 Flash Cyber is specially optimized for cybersecurity scenarios. The three products complete the Gemini lightweight matrix, which can cover the commercial implementation demands of diverse scenarios.
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-3-6-flash-3-5-flash-lite-and-3-5-flash-cyber" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/cosmos-h-dreams" target="_blank" rel="noopener noreferrer">NVIDIA Cosmos-H-Dreams: Bringing Real-Time Generative Simulation to Surgical Robotics</a>
+
+*Hugging Face*
+
+You have only provided the title of this paper at present, and the corresponding abstract text has not been pasted. Please supplement the complete abstract content, so that I can accurately sort out its core methods and experimental conclusions, and refine it into a 120-word Chinese summary highlighting the core key points as required.
+
+<FeedbackButtons slug="item:hf-blog-cosmos-h-dreams" client:visible />
+
+## <a href="https://huggingface.co/blog/nunchaku-diffusers" target="_blank" rel="noopener noreferrer">Bringing Nunchaku 4-bit Diffusion Inference to Diffusers</a>
+
+*Hugging Face*
+
+This work adapts and integrates the Nunchaku 4-bit quantization inference scheme specially optimized for diffusion models into the Hugging Face Diffusers ecosystem, which developers can call without additional code modification. This solution basically does not lose generation quality, and the inference speed is almost unchanged, which can reduce the memory occupancy of diffusion models by more than 60%, enabling large-parameter models such as SDXL to run smoothly on entry-level consumer graphics cards, greatly lowering the hardware threshold for generative AI image creation.
+
+<FeedbackButtons slug="item:hf-blog-nunchaku-diffusers" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This AI alignment research refutes the default premise that "rational agents need to be oriented by fixed ultimate goals", pointing out that human rationality originates from actions adapting to the practice network composed of actions, tendencies, evaluation criteria, etc. It is proposed that to realize AI collaboration with humans and adapt to human subjectivity, the AI decision-making logic needs to match the practical action logic of human beings, which is related to both ethical alignment and the core security attributes of AI.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This paper sorts out the conceptual context of Recursive Self-Improvement (RSI): in 1965, I.J. Good first proposed that superintelligent machines can surpass all human intellectual activities, and can also design better machines to complete self-iteration; in 2008, Eliezer Yudkowsky clarified that RSI is a feedback loop in which AI uses its own intelligence to optimize the underlying cognitive architecture. Current RSI in the AI field includes both models directly rewriting their own weights, and can also broadly cover the behavior of models optimizing their own training pipelines.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/07/461565.html" target="_blank" rel="noopener noreferrer">Agents are moving to terminals, the era of personal AI is coming</a>
+
+*QbitAI*
+
+At the Caixin AI-themed roundtable held in Beijing in July, representatives from multiple parties gathered to discuss the reconstruction of the terminal industry by agents and the development prospects of personal AI terminals. The industry consensus is that 2026 is a key node for agent implementation, and AI is evolving from a responsive tool to an autonomous action system. The white paper on the agent terminal industry commissioned by Qualcomm and compiled by IDC was released at the meeting, and experts suggested opening up the R&D, production and business chain to promote the integration of terminals and agents to release potential.
+
+<FeedbackButtons slug="item:qbitai-461565" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/461517.html" target="_blank" rel="noopener noreferrer">Breaking: Li Weng leaves Thinking Machines</a>
+
+*QbitAI*
+
+Li Weng, a Peking University alumna and former senior researcher at OpenAI, recently announced her departure from Thinking Machines, where she had worked for only 20 months, just 12 days after the company released its first open-source model. She stated that the reason for her departure was that long-term high-intensity work had led to frequent physical problems in the past 7 months, and she was unwilling to reduce her work input, so she chose to leave. She previously worked at OpenAI for 7 years and led the R&D of the five-fingered manipulator that can twist a Rubik's cube with one hand.
+
+<FeedbackButtons slug="item:qbitai-461517" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/461444.html" target="_blank" rel="noopener noreferrer">Superdimension Power partners with Peking University Health: Pragmatically building the implementation path for embodied intelligent healthcare</a>
+
+*QbitAI*
+
+Superdimension Power and Peking University Health recently reached a deep cooperation, abandoning aggressive ideas, targeting the pain points of embodied intelligent healthcare implementation: lack of training scenarios and lack of medical operation data. The former provides the full-stack embodied intelligent technology base, while the latter provides real clinical scenarios and professional medical experience. The two complement each other's advantages to jointly build a replicable implementation plan of "simulation training - scenario verification - hospital application", and steadily promote the implementation of embodied intelligent healthcare.
+
+<FeedbackButtons slug="item:qbitai-461444" client:visible />
