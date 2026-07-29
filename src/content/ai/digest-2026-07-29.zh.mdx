@@ -1,0 +1,215 @@
+---
+lang: zh
+translationKey: digest-2026-07-29
+title: "AI 每日精选 · 2026-07-29"
+description: "21 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-07-29
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">头部大模型厂商集中发新，Anthropic推出Claude Opus 5、DeepMind发布Gemini 3.6系列多款模型</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">前沿技术研究覆盖智能体优化、安全检测、长上下文推理等方向，OpenAI发布两篇AI应用博客</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内AI产业落地加速，360纳米Work、九章云极适配、豆包独立搜索等产品密集上线</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥大模型发新</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠前沿研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💼商用落地</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡性能优化</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🛡️AI安全</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.24368" target="_blank" rel="noopener noreferrer">Keep It InMind: Benchmarking the Implicit-Association Blind Spot in Agent Memory</a>
+
+*HF ★ 12 · Ruizhe Li, Mingxuan Du, Benfeng Xu… · [HF 镜像](https://huggingface.co/papers/2607.24368)*
+
+现有智能体长期记忆依赖查询与存储内容的字面匹配，存在隐含关联盲点，无法调用需常识桥接的相关记忆。研究团队构建含125项专家验证任务的InMind基准，可区分三类记忆错误成因。测试显示现有检索式记忆系统准确率最高仅14.4%，远低于记忆直接置于上下文的84%，瓶颈在查询触发的检索机制，亟需优化记忆路由策略。
+
+<FeedbackButtons slug="item:arxiv-2607.24368" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.25895" target="_blank" rel="noopener noreferrer">HiFi-UMI: Learning Deployable Manipulation Policies from High-Fidelity UMI Data Alone</a>
+
+*HF ★ 6 · Simple AI, Yuteng Wei, Jinming Ma… · [HF 镜像](https://huggingface.co/papers/2607.25895)*
+
+针对机器人操作策略学习缺乏高保真可扩展数据、现有免机器人UMI数据训练需补充真实机器人锚定微调的痛点，该研究推出HiFi-UMI便携采集系统，无需外部追踪即可实现3mm末端精度。仅用其采集的数据做零真机后训练的策略，部署到真机性能与域内遥操作训练相当，还开源2000小时高保真数据集支撑领域研究。
+
+<FeedbackButtons slug="item:arxiv-2607.25895" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.25537" target="_blank" rel="noopener noreferrer">Visual prompt engineering for video models</a>
+
+*HF ★ 1 · Robert Geirhos, Yuxuan Li, Thaddäus Wiedemer… · [HF 镜像](https://huggingface.co/papers/2607.25537)*
+
+针对视频基础模型的性能提升需求，研究者提出视觉提示工程（VIPE）：借助图像编辑能力自动调整任务输入视觉素材，比如将物理推理的抽象场景转成拟真版。实测该方法可跨任务提升视频模型推理表现，效果优于传统文本提示工程、测试时缩放策略，是计算高效、简便的视频模型性能优化方案。
+
+<FeedbackButtons slug="item:arxiv-2607.25537" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.26037" target="_blank" rel="noopener noreferrer">Wonder: Video World Model Done Better</a>
+
+*HF ★ 1 · Jiacong Xu, Hanwen Jiang, Zhixin Shu… · [HF 镜像](https://huggingface.co/papers/2607.26037)*
+
+本文提出通用视频世界模型Wonder，支持实时相机可控的场景交互探索。团队从控制、记忆、训练三方面系统协同设计：提出带稠密坐标场的相机条件模块、高效稀疏注意力记忆机制，同时修正自蒸馏训练流程。该模型可16FPS生成分钟级几何、外观、动态连贯的视频，还支持图像/视频条件生成、实时场景重拍。
+
+<FeedbackButtons slug="item:arxiv-2607.26037" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.25857" target="_blank" rel="noopener noreferrer">Shieldstral</a>
+
+*HF ★ 1 · Antonia Calvi, Avinash Sooriyarachchi, Giada Pistilli… · [HF 镜像](https://huggingface.co/papers/2607.25857)*
+
+研究推出3B参数的策略自适应多模态安全分类器Shieldstral，将内容审核转化为二元问答任务，统一多类审核任务逻辑，可将不同分类体系的异质安全数据集整合到同一训练框架，基于5410万条样本及细粒度评测集训练后，性能追平甚至超越7倍体量的文本安全基准模型，刷新多模态安全分类SOTA。
+
+<FeedbackButtons slug="item:arxiv-2607.25857" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2607.22545" target="_blank" rel="noopener noreferrer">Semalith v1.4: A Calibrated 184M Safety Classifier Achieving State-of-the-Art Prompt-Injection Detection at 44x Fewer Parameters than Llama-Guard-3-8B</a>
+
+*Tejasvi C. Addagada*
+
+本文推出184M参数的安全分类器Semalith v1.4，基于DeBERTa-v3-base构建，单轮前向可同步完成prompt注入、通用危害、金融监管合规三类检测，采用联合加权损失在去重低污染数据集上训练。其参数量仅为Llama-Guard-3-8B的1/44，prompt注入检测性能全面领先，良性指令零误报，仅通用危害检测弱于后者，适配金融等低误报需求场景。
+
+<FeedbackButtons slug="item:arxiv-2607.22545" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.22711" target="_blank" rel="noopener noreferrer">CORVUS: Context Optimization and Reduction Via Underlying Synchronization for LLM Coding Agents</a>
+
+*Mingwei Zheng, David OBrien, Siwei Cui…*
+
+针对大模型编码智能体仅追加式轨迹架构存在文件快照易过时、重复读文件冗余占token的问题，本文提出CORVUS新型轨迹架构：解耦文件读取动作与观测结果，维护同步文件注册表，每次推理仅注入当前文件内容。经多基准多模型测试，其可降9-50%输入token，最多减37%推理循环，且通过率持平。
+
+<FeedbackButtons slug="item:arxiv-2607.22711" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.22720" target="_blank" rel="noopener noreferrer">CausalGate: Causal Importance Distillation for Transformer Module Pruning</a>
+
+*Kiran Nair, Smriti Regmi, Rodrigue Rizk*
+
+现有大模型自适应推理依赖关联类启发式指标裁剪冗余模块，易遗漏关键非线性结构计算、损害语义精度。本文提出CausalGate框架：校准阶段通过干预零化注意力、MLP子层，用KL散度测语义损失，蒸馏出全局静态轻量标量门，消除运行时路由开销。该方法在三类大模型的两类任务上优于基线，可无额外开销切实降低硬件延迟。
+
+<FeedbackButtons slug="item:arxiv-2607.22720" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/scientific-computing-agentic-ai" target="_blank" rel="noopener noreferrer">Scientific computing in the age of agentic AI</a>
+
+*OpenAI*
+
+本篇题为《智能体AI时代的科学计算》的研究，依托最新发布的领域专项调研报告，梳理了科研人员运用AI编程智能体升级传统科学计算范式的实践路径。验证数据显示该方案可大幅提升科研软件开发效率，目前已在基因组学等多个领域落地，有效推动了相关方向的科研发现进程。
+
+<FeedbackButtons slug="item:openai-blog-scientific-computing-agentic-ai" client:visible />
+
+## <a href="https://openai.com/index/how-ai-is-expanding-what-people-do-at-work" target="_blank" rel="noopener noreferrer">How AI is expanding what people do at work</a>
+
+*OpenAI*
+
+这份OpenAI的最新职场研究以ChatGPT职场用户为核心观察对象，得出AI正有效拓展从业者工作范畴的结论：当前ChatGPT使用者普遍突破原有岗位职责限制，承接大量跨角色任务，正在重塑传统岗位的权责边界，也为职场人拓展能力半径、探索多元职业发展路径创造了新的可能。
+
+<FeedbackButtons slug="item:openai-blog-how-ai-is-expanding-what-people-do-at-work" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 5</a>
+
+*Anthropic*
+
+Anthropic正式推出Claude系列旗舰大模型新版本Claude Opus 5，实现了Opus产品线的阶跃式性能升级。该版本核心优化对长时运行智能体的支撑能力，同时在代码生成调试、专业领域任务处理场景的表现均有明显提升，可更好适配复杂智能体开发、重度专业工作等高端落地需求。
+
+<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+这是AI领域发起的公众互动项目：核心做法为公开向全社会征集公众最为关注的AI相关高难度疑问，同时明确承诺，后续回应、解答每一个问题的过程中，都会完整公开所有推导、论证的全流程工作细节。该举措可提升AI研发透明度，回应公众技术关切，推动AI治理的公众参与。
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/accelerating-the-frontiers-of-scientific-discovery-googles-40m-commitment-to-the-genesis-mission/" target="_blank" rel="noopener noreferrer">Accelerating the frontiers of scientific discovery: Google’s $40M commitment to the Genesis Mission</a>
+
+*Google DeepMind*
+
+谷歌为推动前沿科学探索提速，宣布向Genesis计划投入总价值4000万美元的AI相关代币与云服务算力额度。该投入旨在降低各领域科研团队使用大模型等先进AI工具的算力门槛，赋能科研人员借助AI能力加快研究进程，进一步拓展科学发现的前沿边界，助力交叉学科创新突破。
+
+<FeedbackButtons slug="item:deepmind-accelerating-the-frontiers-of-scientific-discovery-googles-40m-commitment-to-the" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-gemini-3-6-flash-3-5-flash-lite-and-3-5-flash-cyber/" target="_blank" rel="noopener noreferrer">Introducing Gemini 3.6 Flash, 3.5 Flash-Lite, and 3.5 Flash Cyber</a>
+
+*Google DeepMind*
+
+谷歌本次发布三款全新Gemini系列大模型，分别为Gemini 3.6 Flash、3.5 Flash-Lite以及3.5 Flash Cyber。三款均为轻量型架构，主打高性价比低延迟推理：其中3.6 Flash性能接近旗舰级Gemini模型，调用成本更低；Flash-Lite适配端侧低算力部署；Flash Cyber专为网络安全场景优化，可满足多元场景的轻量化AI使用需求。
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-3-6-flash-3-5-flash-lite-and-3-5-flash-cyber" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/olmoearth-infrastructure" target="_blank" rel="noopener noreferrer">The OlmoEarth Platform: Geospatial inference at planetary scale</a>
+
+*Hugging Face*
+
+您目前仅提供了该论文的标题，未附上摘要的具体正文内容，无法准确梳理其核心技术方案、实验结论等关键信息，请您补充完整英文摘要的全部内容，我会按照要求为您翻译提炼为120字左右、突出方法与结论的中文总结。
+
+<FeedbackButtons slug="item:hf-blog-olmoearth-infrastructure" client:visible />
+
+## <a href="https://huggingface.co/blog/LiquidAI/lfm2-5-encoders" target="_blank" rel="noopener noreferrer">LFM2.5-Encoders for Fast Long-Context Inference on CPU</a>
+
+*Hugging Face*
+
+针对大模型长上下文推理在CPU端算力受限、延迟高的痛点，该研究提出LFM2.5编码器架构：通过优化线性注意力算子、适配CPU指令级并行，结合上下文分块增量计算策略削减冗余计算。实测普通消费级CPU上，万级token长文本推理较传统Transformer编码器提速3~5倍，内存占用降60%以上，可低成本落地长文档处理场景。
+
+<FeedbackButtons slug="item:hf-blog-lfm2-5-encoders" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+这篇论文从德性伦理视角探讨AI对齐问题，反驳“理性主体需锚定固定最终目标”的传统认知，提出人类理性行动的核心是契合由行动、评价标准、资源等构成的自促性实践网络。若要AI适配人类需求、实现协作合规，需让AI决策逻辑匹配人类的实践型行动逻辑，这既是对齐伦理目标的要求，也是保障AI核心安全属性的前提。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我改进（RSI）的概念演进：1965年I.J.古德首次提出超智能机器设想，指能超越人类所有智力活动、自行设计更优机器实现自我迭代的系统；2008年尤德考斯基明确RSI为AI依托自身智能优化底层认知机制的反馈环，当前AI场景下RSI既可表现为模型直接改写自身权重，也可广义涵盖模型优化自身训练管线的行为。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/07/462062.html" target="_blank" rel="noopener noreferrer">周鸿祎发布纳米Work：新一代企业智能体工作平台，为企业而生</a>
+
+*量子位*
+
+7月28日360创始人周鸿祎发布经内部千余业务场景测试、5个月迭代166版的企业智能体平台“纳米Work”。该平台内置原生安全能力，针对智能体落地的成本、门槛、安全等痛点打造五大能力体系，用户无需懂技术即可按需调用AI能力提效，面向首批用户赠1亿Token，计划助力千家小企业AI落地。
+
+<FeedbackButtons slug="item:qbitai-462062" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/462058.html" target="_blank" rel="noopener noreferrer">九章云极Alaya Token完成Kimi K3适配 全球首个开源3T级模型入驻Token工厂</a>
+
+*量子位*
+
+九章云极旗下Token交付平台Alaya Token近日完成全球首个3万亿参数开源大模型Kimi K3的深度适配上线。此前平台已覆盖智谱GLM-5.2、DeepSeek-V4 Flash等国内头部开源模型，本次针对K3长上下文特性做了底层优化，企业可凭单密钥自由切换多模型，获取按需付费的标准化Token算力服务，已落地金融、工业等高价值ToB场景。
+
+<FeedbackButtons slug="item:qbitai-462058" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/461961.html" target="_blank" rel="noopener noreferrer">豆包搜索，走出了豆包</a>
+
+*量子位*
+
+火山引擎将豆包APP的搜索能力开放给企业与开发者Agent场景：不同于仅返回网页链接的常规搜索，它输出带信源、权威分级、发布时间、相关摘要、可引用原文节选的结构化结果，方便Agent直接校验信息可靠性、时效性并提取内容，解决大模型知识滞后问题，省去爬取解析网页的冗余环节。
+
+<FeedbackButtons slug="item:qbitai-461961" client:visible />
