@@ -16,7 +16,7 @@
 | `/uses` | 工具栈清单 | `src/data/uses.ts` |
 | `/explore` | 主题地图 (PCA 2D 散点) | `src/data/embeddings.json` |
 | `/changelog` | git log 自动渲染 | build 时 execSync |
-| `/subscribe` | RSS + Buttondown 邮件订阅 | hardcoded user "zifei" |
+| `/subscribe` | RSS + Buttondown 邮件订阅 | `PUBLIC_BUTTONDOWN_USERNAME`（默认公开 handle） |
 | `/tag/[tag]` | tag 索引 | content collections |
 | `/data` | 访客 GDPR-style 数据自查 | FastAPI /api/data/me |
 | `/contact`, `/privacy`, `/terms` | 合规页 | 静态 |
@@ -33,7 +33,7 @@
 | `/og/{collection}/{slug}.png` | satori 动态生成 og:image |
 | `/{INDEXNOW_KEY}.txt` | IndexNow 验证 |
 
-### 后端 API（FastAPI 110.40.142.199:8800）
+### 后端 API（FastAPI，经 nginx `/api/*` 反向代理）
 
 | Path | 用途 |
 |---|---|
@@ -52,13 +52,13 @@
 **Steps**:
 1. fetch digests (HF papers + arxiv + qbitai → ai; 10jqka + eastmoney + yahoo → invest) 调豆包 LLM 翻译/摘要
 2. 提前 commit digest mdx（保证 digest 不丢）
-3. **翻译 zh → en**（增量；支持 `translate_all=true` 全量回填）
+3. **翻译 zh → en**（增量；单次数量由 `translate_limit` 控制）
 4. **更新 embeddings.json**（豆包 doubao-embedding-vision via ep-... endpoint）
 5. 合并 commit embeddings + 翻译
 
 `workflow_dispatch` inputs:
 - `mode`: ai / invest / both
-- `translate_all`: 强制全量回填翻译
+- `translate_limit`: 单次最多翻译数量；历史回填走 `bulk-backfill.yml`
 - `skip_fetch`: 跳过 digest fetch（省豆包额度，只跑翻译/embedding）
 
 ### `.github/workflows/weekly-roundup.yml`
@@ -132,6 +132,7 @@ src/data/embeddings.json (2048 维 × N 篇)
 | `src/data/embeddings.json` | 相关推荐 / /explore（cron 自动维护） |
 | `tailwind.config.mjs` | 字体 / section colors |
 | `astro.config.mjs` | 站点 URL / i18n / 集成 |
+| `src/content.config.ts` | 内容集合 schema / glob loaders |
 | `.lighthouserc.json` | 性能预算阈值 |
 | `renovate.json` | 依赖自动更新策略 |
 

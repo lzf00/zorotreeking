@@ -30,8 +30,9 @@ const appReaders = [
     </p>
 
     {buttondownUser && (
-      <!-- 邮件订阅（Buttondown 托管） -->
-      <div class="mt-10 mx-auto max-w-md">
+      <>
+        {/* 邮件订阅（Buttondown 托管） */}
+        <div class="mt-10 mx-auto max-w-md">
         <form
           id="buttondown-form"
           action={`https://buttondown.com/api/emails/embed-subscribe/${buttondownUser}`}
@@ -59,13 +60,14 @@ const appReaders = [
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
           <span>已提交！请去邮箱点击 Buttondown 发来的<strong>确认链接</strong>完成订阅（可能在垃圾邮件箱）</span>
         </div>
-      </div>
+        </div>
 
-      <div class="mt-12 flex items-center gap-3 max-w-md mx-auto">
-        <div class="flex-1 h-px bg-[var(--border)]"></div>
-        <span class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)]">或 RSS</span>
-        <div class="flex-1 h-px bg-[var(--border)]"></div>
-      </div>
+        <div class="mt-12 flex items-center gap-3 max-w-md mx-auto">
+          <div class="flex-1 h-px bg-[var(--border)]"></div>
+          <span class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)]">或 RSS</span>
+          <div class="flex-1 h-px bg-[var(--border)]"></div>
+        </div>
+      </>
     )}
 
     <!-- Feed URL + 一键复制 -->

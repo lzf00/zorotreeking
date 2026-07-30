@@ -1,3 +1,4 @@
+import DOMPurify from "dompurify";
 import { useEffect, useRef, useState } from "react";
 
 /**
@@ -116,7 +117,15 @@ export default function SearchModal() {
           {results.map((r, i) => (
             <a key={i} href={r.url} style={resultStyle} onClick={() => setOpen(false)}>
               <div style={resultTitleStyle}>{r.meta?.title || r.url}</div>
-              <div style={resultExcerptStyle} dangerouslySetInnerHTML={{ __html: r.excerpt }} />
+              <div
+                style={resultExcerptStyle}
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(r.excerpt, {
+                    ALLOWED_TAGS: ["mark", "strong", "em", "code", "span"],
+                    ALLOWED_ATTR: [],
+                  }),
+                }}
+              />
             </a>
           ))}
         </div>

@@ -51,16 +51,12 @@ const year = new Date().getFullYear();
       </p>
     </div>
 
-    <!-- 第二行：合规信息（ICP + 负责人 + 邮箱） -->
+    <!-- 第二行：只保留公开备案入口，个人身份与邮箱放在独立合规页面 -->
     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 pt-2 border-t border-[var(--border-soft)] text-[11px]">
       <p class="flex flex-wrap items-center gap-x-3 gap-y-1">
         <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer" class="hover:text-[var(--text)] transition-colors">
           沪 ICP 备 2026021578 号-1
         </a>
-        <span class="opacity-50">·</span>
-        <span>{lang === "zh" ? "网站负责人：Zoro" : "Operator: Zoro"}</span>
-        <span class="opacity-50">·</span>
-        <a href="mailto:1437066318@qq.com" class="hover:text-[var(--text)] transition-colors">1437066318@qq.com</a>
       </p>
     </div>
   </div>

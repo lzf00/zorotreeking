@@ -1,4 +1,9 @@
 import { useEffect, useState } from "react";
+import {
+  fetchFeedback,
+  postFeedback,
+  type FeedbackState,
+} from "@/lib/feedback-api";
 
 /**
  * 文章/digest 底部的点赞/踩按钮。微博风格：
@@ -12,34 +17,9 @@ import { useEffect, useState } from "react";
  *   align  "right"（默认）| "center"
  */
 
-type FeedbackState = {
-  likes: number;
-  dislikes: number;
-  my_vote: "like" | "dislike" | null;
-};
-
 interface Props {
   slug: string;
   align?: "right" | "center";
-}
-
-const API_BASE = "/api/feedback";
-
-async function getFeedback(slug: string, signal?: AbortSignal): Promise<FeedbackState> {
-  const resp = await fetch(`${API_BASE}?slug=${encodeURIComponent(slug)}`, { signal });
-  if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-  return (await resp.json()) as FeedbackState;
-}
-
-async function postFeedback(slug: string, kind: "like" | "dislike" | "neutral"): Promise<FeedbackState> {
-  const resp = await fetch(API_BASE, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ slug, kind }),
-  });
-  if (resp.status === 429) throw new Error("rate-limited");
-  if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-  return (await resp.json()) as FeedbackState;
 }
 
 export default function FeedbackButtons({ slug, align = "right" }: Props) {
@@ -51,7 +31,7 @@ export default function FeedbackButtons({ slug, align = "right" }: Props) {
   useEffect(() => {
     if (!slug) return;
     const ctl = new AbortController();
-    getFeedback(slug, ctl.signal)
+    fetchFeedback(slug, ctl.signal)
       .then(setState)
       .catch((e) => {
         if (e.name === "AbortError") return;

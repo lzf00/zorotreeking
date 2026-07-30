@@ -101,12 +101,9 @@ const latestPeriod = snapshots[snapshots.length - 1]?.data.period;
 let initialIndices: any[] = [];
 let initialSectors: any = undefined;
 let initialSentiment: any = undefined;
-let snapshotAsOf: string | undefined;
 try {
   const raw = fs.readFileSync(path.resolve("./src/data/wind-market-latest.json"), "utf-8");
   const wind = JSON.parse(raw);
-  snapshotAsOf = wind.asOf || wind.date;
-
   initialIndices = (wind.indices || []).map((i: any) => ({
     code: i.code,
     name: i.name,
@@ -266,7 +263,7 @@ try {
       <>
         <ul class="divide-y divide-[var(--border)]">
           {posts.map((p) => {
-            const highlights = extractDigestHighlights(p.body, 3);
+            const highlights = extractDigestHighlights(p.body ?? "", 3);
             return (
               <li class="py-4">
                 <div class="text-xs text-[var(--text-tertiary)] mb-1"><time>{p.data.date.toISOString().slice(0, 10)}</time></div>

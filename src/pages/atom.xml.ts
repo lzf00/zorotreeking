@@ -5,19 +5,11 @@
  */
 import { getCollection } from "astro:content";
 import type { APIContext } from "astro";
+import { escapeXml } from "@/lib/xml";
 
 const SITE_NAME = "ZoroTreeking";
 const SITE_DESC = "AI · 投资 · 摄影 · 徒步";
 const AUTHOR = { name: "Zifei Liu", uri: "https://github.com/lzf00" };
-
-function escapeXml(s: string): string {
-  return s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&apos;");
-}
 
 export async function GET(context: APIContext): Promise<Response> {
   const site = context.site!.toString().replace(/\/$/, "");
@@ -66,7 +58,7 @@ ${tags}
     <name>${escapeXml(AUTHOR.name)}</name>
     <uri>${AUTHOR.uri}</uri>
   </author>
-  <generator uri="https://astro.build" version="4">Astro</generator>
+  <generator uri="https://astro.build">Astro</generator>
 ${entries}
 </feed>
 `;

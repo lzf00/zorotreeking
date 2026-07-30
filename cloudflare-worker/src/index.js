@@ -6,21 +6,23 @@
 // 环境变量（绑定到 Worker）：
 //   GITHUB_CLIENT_ID      ← GitHub OAuth App Client ID
 //   GITHUB_CLIENT_SECRET  ← GitHub OAuth App Client Secret
-//   ALLOWED_USERS         ← 逗号分隔的允许登录的 GitHub username（如 "lzf00"），留空则不限制
+//   ALLOWED_USERS         ← 逗号分隔的允许登录的 GitHub username（如 "lzf00"），必须配置
 //   CMS_ORIGIN            ← 可选；postMessage 的 targetOrigin（Decap CMS 部署的 origin）
 //                           不设时使用下面的硬编码默认值（生产域名）
 
 // Decap CMS 父窗口 origin 白名单。token 通过 postMessage 回传时必须指定 targetOrigin，
 // 不能用 "*"——否则任何 opener（恶意第三方）都能拿到 GitHub access token。
 const DEFAULT_CMS_ORIGIN = "https://www.zorotreeking.online";
+const STATE_COOKIE = "decap_oauth_state";
+const STATE_TTL_SECONDS = 10 * 60;
 
 // ── 通用 OAuth 反代路由（TrailLens 后端 OAUTH_PROXY_BASE 走这里）──
 // 后端硬编码路径映射,不能改路径名。签名对齐 apps/api/traillens_api/routes/oauth.py
 const OAUTH_PROXY_ROUTES = {
-  "/google/token":    "https://oauth2.googleapis.com/token",
-  "/google/userinfo": "https://www.googleapis.com/oauth2/v3/userinfo",
-  "/github/token":    "https://github.com/login/oauth/access_token",
-  "/github/user":     "https://api.github.com/user",
+  "/google/token":    { upstream: "https://oauth2.googleapis.com/token", methods: ["POST"] },
+  "/google/userinfo": { upstream: "https://www.googleapis.com/oauth2/v3/userinfo", methods: ["GET"] },
+  "/github/token":    { upstream: "https://github.com/login/oauth/access_token", methods: ["POST"] },
+  "/github/user":     { upstream: "https://api.github.com/user", methods: ["GET"] },
 };
 
 export default {
@@ -29,24 +31,61 @@ export default {
     const cmsOrigin = (env.CMS_ORIGIN || DEFAULT_CMS_ORIGIN).trim();
 
     // ── 0. 通用 OAuth 反代(TrailLens 等后端调用)──
-    const upstream = OAUTH_PROXY_ROUTES[url.pathname];
-    if (upstream) return proxyToUpstream(request, upstream, url);
+    const proxyRoute = OAUTH_PROXY_ROUTES[url.pathname];
+    if (proxyRoute) {
+      if (!proxyRoute.methods.includes(request.method)) {
+        return new Response("method_not_allowed", {
+          status: 405,
+          headers: {
+            Allow: proxyRoute.methods.join(", "),
+            "Cache-Control": "no-store",
+            "Content-Type": "text/plain; charset=utf-8",
+          },
+        });
+      }
+      return proxyToUpstream(request, proxyRoute.upstream, url);
+    }
 
     // ── 1. 起步：重定向到 GitHub 授权页 ──
     if (url.pathname === "/auth") {
+      if (!env.GITHUB_CLIENT_ID) return jsonError("OAuth is not configured", 500);
       const state = crypto.randomUUID();
       const target = new URL("https://github.com/login/oauth/authorize");
       target.searchParams.set("client_id", env.GITHUB_CLIENT_ID);
       target.searchParams.set("scope", "repo,user");
       target.searchParams.set("state", state);
       target.searchParams.set("redirect_uri", `${url.origin}/callback`);
-      return Response.redirect(target.toString(), 302);
+      return new Response(null, {
+        status: 302,
+        headers: {
+          Location: target.toString(),
+          "Cache-Control": "no-store",
+          "Set-Cookie": stateCookie(state),
+        },
+      });
     }
 
     // ── 2. 回调：拿 code 换 token，校验用户，postMessage 给 Decap ──
     if (url.pathname === "/callback") {
       const code = url.searchParams.get("code");
-      if (!code) return jsonError("missing code", 400);
+      const state = url.searchParams.get("state");
+      const storedState = getCookie(request, STATE_COOKIE);
+      const allow = String(env.ALLOWED_USERS || "")
+        .split(",")
+        .map((value) => value.trim().toLowerCase())
+        .filter(Boolean);
+
+      if (!env.GITHUB_CLIENT_ID || !env.GITHUB_CLIENT_SECRET) {
+        return oauthError("OAuth is not configured", 500);
+      }
+      // 个人 CMS 必须配置白名单；配置缺失时不能退化为任意 GitHub 用户可登录。
+      if (allow.length === 0) {
+        return oauthError("OAuth user allowlist is not configured", 500);
+      }
+      if (!code) return oauthError("missing code", 400);
+      if (!state || !storedState || state !== storedState) {
+        return oauthError("invalid OAuth state", 400);
+      }
 
       const tokenResp = await fetch("https://github.com/login/oauth/access_token", {
         method: "POST",
@@ -59,34 +98,39 @@ export default {
           client_id: env.GITHUB_CLIENT_ID,
           client_secret: env.GITHUB_CLIENT_SECRET,
           code,
+          redirect_uri: `${url.origin}/callback`,
         }),
       });
-      const tokenData = await tokenResp.json();
-      if (tokenData.error) return jsonError(tokenData.error_description || tokenData.error, 400);
+      const tokenData = await tokenResp.json().catch(() => ({}));
+      if (!tokenResp.ok || tokenData.error || !tokenData.access_token) {
+        return oauthError("OAuth token exchange failed", 400);
+      }
 
       const token = tokenData.access_token;
 
       // ── 白名单校验 ──
-      if (env.ALLOWED_USERS) {
-        const userResp = await fetch("https://api.github.com/user", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "User-Agent": "decap-oauth-worker",
-            Accept: "application/vnd.github+json",
-          },
+      const userResp = await fetch("https://api.github.com/user", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "User-Agent": "decap-oauth-worker",
+          Accept: "application/vnd.github+json",
+        },
+      });
+      if (!userResp.ok) return oauthError("failed to load user", 502);
+      const user = await userResp.json();
+      if (!allow.includes(String(user.login || "").toLowerCase())) {
+        const nonce = createCspNonce();
+        return new Response(closingHtml(`不在白名单：${user.login || "unknown"}`, nonce), {
+          status: 403,
+          headers: oauthHtmlHeaders(nonce),
         });
-        if (!userResp.ok) return jsonError("failed to load user", 502);
-        const user = await userResp.json();
-        const allow = env.ALLOWED_USERS.split(",").map((s) => s.trim()).filter(Boolean);
-        if (!allow.includes(user.login)) {
-          return new Response(closingHtml(`不在白名单：${user.login}`), { headers: { "Content-Type": "text/html; charset=utf-8" }, status: 403 });
-        }
       }
 
       // ── 把 token 回传到 Decap CMS 父窗口 ──
       const payload = JSON.stringify({ token, provider: "github" });
-      return new Response(decapHandshakeHtml(payload, cmsOrigin), {
-        headers: { "Content-Type": "text/html; charset=utf-8" },
+      const nonce = createCspNonce();
+      return new Response(decapHandshakeHtml(payload, cmsOrigin, nonce), {
+        headers: oauthHtmlHeaders(nonce),
       });
     }
 
@@ -99,7 +143,8 @@ export default {
       "  GET /callback",
       "",
       "TrailLens 后端反代:",
-      ...Object.keys(OAUTH_PROXY_ROUTES).map((k) => `  ${k}  →  ${OAUTH_PROXY_ROUTES[k]}`),
+      ...Object.entries(OAUTH_PROXY_ROUTES)
+        .map(([path, route]) => `  ${route.methods.join("/")} ${path}  →  ${route.upstream}`),
     ];
     return new Response(lines.join("\n"), {
       headers: { "Content-Type": "text/plain; charset=utf-8" },
@@ -134,10 +179,18 @@ async function proxyToUpstream(request, upstreamUrl, incomingUrl) {
 
   try {
     const upstream = await fetch(target.toString(), init);
+    const responseHeaders = new Headers(upstream.headers);
+    // 该代理仅供后端调用：不继承上游 CORS 放行，也不缓存 OAuth 数据。
+    responseHeaders.delete("Access-Control-Allow-Origin");
+    responseHeaders.delete("Access-Control-Allow-Credentials");
+    responseHeaders.delete("Access-Control-Expose-Headers");
+    responseHeaders.delete("Set-Cookie");
+    responseHeaders.set("Cache-Control", "no-store");
+    responseHeaders.set("X-Content-Type-Options", "nosniff");
     return new Response(upstream.body, {
       status: upstream.status,
       statusText: upstream.statusText,
-      headers: upstream.headers,
+      headers: responseHeaders,
     });
   } catch (e) {
     return new Response(`upstream_fetch_failed: ${e.message}`, {
@@ -154,7 +207,53 @@ function jsonError(msg, status) {
   });
 }
 
-function decapHandshakeHtml(payload, cmsOrigin) {
+function oauthError(msg, status) {
+  return new Response(JSON.stringify({ error: msg }), {
+    status,
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      "Cache-Control": "no-store",
+      "Referrer-Policy": "no-referrer",
+      "Set-Cookie": clearStateCookie(),
+    },
+  });
+}
+
+function stateCookie(value) {
+  return `${STATE_COOKIE}=${encodeURIComponent(value)}; Path=/callback; Max-Age=${STATE_TTL_SECONDS}; HttpOnly; Secure; SameSite=Lax`;
+}
+
+function clearStateCookie() {
+  return `${STATE_COOKIE}=; Path=/callback; Max-Age=0; HttpOnly; Secure; SameSite=Lax`;
+}
+
+function getCookie(request, name) {
+  const cookie = request.headers.get("Cookie") || "";
+  for (const part of cookie.split(";")) {
+    const [key, ...rest] = part.trim().split("=");
+    if (key === name) return decodeURIComponent(rest.join("="));
+  }
+  return "";
+}
+
+function createCspNonce() {
+  return crypto.randomUUID().replaceAll("-", "");
+}
+
+function oauthHtmlHeaders(nonce) {
+  return {
+    "Content-Type": "text/html; charset=utf-8",
+    "Cache-Control": "no-store",
+    Pragma: "no-cache",
+    "Referrer-Policy": "no-referrer",
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "DENY",
+    "Content-Security-Policy": `default-src 'none'; script-src 'nonce-${nonce}'; base-uri 'none'; frame-ancestors 'none'`,
+    "Set-Cookie": clearStateCookie(),
+  };
+}
+
+function decapHandshakeHtml(payload, cmsOrigin, nonce) {
   // Decap CMS 通过 postMessage 协议接收 token，协议："authorization:github:success:<json>"
   //
   // 安全：targetOrigin 必须固定为 Decap CMS 部署域名，不能用 "*"——任何 opener
@@ -164,7 +263,7 @@ function decapHandshakeHtml(payload, cmsOrigin) {
   return `<!doctype html>
 <html><head><meta charset="utf-8"><title>Authorizing…</title></head><body>
 <p>正在登录…</p>
-<script>
+<script nonce="${nonce}">
 (function () {
   var CMS_ORIGIN = ${cmsOriginJson};
   function send(status) {
@@ -192,6 +291,13 @@ function decapHandshakeHtml(payload, cmsOrigin) {
 </body></html>`;
 }
 
-function closingHtml(text) {
-  return `<!doctype html><html><body><p>${text}</p><script>setTimeout(function(){window.close();},2500);</script></body></html>`;
+function closingHtml(text, nonce) {
+  const escaped = String(text).replace(/[&<>"']/g, (char) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
+  })[char]);
+  return `<!doctype html><html><body><p>${escaped}</p><script nonce="${nonce}">setTimeout(function(){window.close();},2500);</script></body></html>`;
 }

@@ -5,7 +5,7 @@
 - 线上：**[https://www.zorotreeking.online](https://www.zorotreeking.online)**
 - 备案：沪 ICP 备 2026021578 号-1
 - 域名：`zorotreeking.online` + `www.` / `ai.` / `invest.` / `photo.` / `hike.`（4 子域 301 到主站对应栏目）
-- 技术栈：Astro 4 + MDX + TypeScript + Tailwind + React Islands + FastAPI（后台 AI / 统计 / 反馈）
+- 技术栈：Astro 7 + MDX + TypeScript + Tailwind 3 + React Islands + FastAPI（后台 AI / 统计 / 反馈）
 - 部署：VPS + nginx + Let's Encrypt，GitHub Actions 自动 build + rsync
 - 双语：默认中文（`/`）+ 英文（`/en`）
 - 在线写文章：Decap CMS（`/admin/`），GitHub OAuth 登录（Cloudflare Worker 中转）
@@ -60,9 +60,14 @@ npm run dev              # http://localhost:4321 实时预览
 
 ## 本地开发
 
+需要 Node.js 22.12 或更高版本。
+
 ```bash
 npm install
 npm run dev          # 启动开发服务器
+npm run check        # Astro / TypeScript 静态检查
+npm test             # 核心路由与构建工具回归测试
+npm run verify       # check + test + 完整生产构建
 npm run build        # 生产构建（自动跑 build-photo-manifests → astro build → pagefind 索引）
 npm run preview      # 预览构建产物
 npm run photo:manifests  # 手动重建相册 manifest
@@ -101,8 +106,8 @@ scripts/
   lib/llm.ts                 LLM 客户端（OpenAI / ARK / DashScope 多家）
 
 src/
+  content.config.ts          4 + 1 集合的 Zod schema 与 glob loaders
   content/
-    config.ts                4 + 1 集合的 Zod schema
     ai/         *.{zh,en}.mdx + digest-YYYY-MM-DD.zh.mdx (cron 产)
     invest/     *.{zh,en}.mdx + digest-YYYY-MM-DD.zh.mdx (cron 产)
     invest-portfolio/  {YYYY-MM}.yaml + _holdings.yaml

@@ -92,7 +92,7 @@ function fmtPct(v: number): string {
 }
 function colorClass(v: number): string {
   if (v > 0) return "text-red-600 dark:text-red-500";
-  if (v < 0) return "text-emerald-600 dark:text-emerald-500";
+  if (v < 0) return "text-emerald-700 dark:text-emerald-400";
   return "text-[var(--text-tertiary)]";
 }
 function cpBarColor(cp: number): string {
@@ -132,7 +132,7 @@ function lightIcon(l: string): string {
         <div class="text-[11px] uppercase tracking-[0.25em] text-[var(--text-tertiary)] font-mono mb-1.5">Section 01 · Intraday</div>
         <div class="flex items-center gap-2.5">
           <h2 class="text-xl sm:text-2xl font-bold tracking-tight">⚡ 盘中实时</h2>
-          <span class="text-[10px] uppercase tracking-[0.15em] font-mono rounded-full px-2 py-0.5 bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-900">LIVE</span>
+          <span class="text-[10px] uppercase tracking-[0.15em] font-mono rounded-full px-2 py-0.5 bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-900">LIVE</span>
         </div>
         <p class="mt-1.5 text-sm text-[var(--text-secondary)]">12 只宽基 ETF 成交额盯盘 · 交易时段每 60 秒自动刷新 · 财联社「超昨日全天」口径</p>
       </div>
@@ -190,7 +190,7 @@ function lightIcon(l: string): string {
             </div>
             <div class="border border-[var(--border)] rounded-lg p-4">
               <div class="text-[11px] uppercase tracking-[0.15em] text-[var(--text-tertiary)] font-mono">🟡 中等信号</div>
-              <div class="mt-1 text-3xl font-mono font-semibold text-amber-600">{yellowCount}<span class="text-lg text-[var(--text-tertiary)] ml-1">只</span></div>
+              <div class="mt-1 text-3xl font-mono font-semibold text-amber-700 dark:text-amber-400">{yellowCount}<span class="text-lg text-[var(--text-tertiary)] ml-1">只</span></div>
               <div class="mt-0.5 text-[10px] text-[var(--text-tertiary)]">50% ≤ 概率 &lt; 70%</div>
             </div>
             <div class="border border-[var(--border)] rounded-lg p-4">
@@ -211,16 +211,16 @@ function lightIcon(l: string): string {
             <table class="w-full text-sm">
               <thead class="text-[var(--text-tertiary)] text-xs">
                 <tr class="border-b border-[var(--border)]">
-                  <th class="text-left py-2 w-6"></th>
-                  <th class="text-left">ETF</th>
-                  <th class="text-right">现价</th>
-                  <th class="text-right">涨跌</th>
-                  <th class="text-right">量比</th>
-                  <th class="text-right">量能 vp</th>
-                  <th class="text-right">方向 dp</th>
-                  <th class="text-right">份额 sp</th>
-                  <th class="text-right">份额变化</th>
-                  <th class="text-right w-32">综合概率 cp</th>
+                  <th scope="col" class="text-left py-2 w-6"><span class="sr-only">信号</span></th>
+                  <th scope="col" class="text-left">ETF</th>
+                  <th scope="col" class="text-right">现价</th>
+                  <th scope="col" class="text-right">涨跌</th>
+                  <th scope="col" class="text-right">量比</th>
+                  <th scope="col" class="text-right">量能 vp</th>
+                  <th scope="col" class="text-right">方向 dp</th>
+                  <th scope="col" class="text-right">份额 sp</th>
+                  <th scope="col" class="text-right">份额变化</th>
+                  <th scope="col" class="text-right w-32">综合概率 cp</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-[var(--border)]">
@@ -254,7 +254,7 @@ function lightIcon(l: string): string {
                         <div class="w-16 h-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
                           <div class={`h-full ${cpBarColor(r.cp)} transition-all`} style={`width:${Math.min(100, r.cp)}%`}></div>
                         </div>
-                        <span class={`font-mono font-semibold text-sm ${r.light === "red" ? "text-red-600" : r.light === "yellow" ? "text-amber-600" : "text-[var(--text-secondary)]"}`}>{r.cp.toFixed(0)}%</span>
+                        <span class={`font-mono font-semibold text-sm ${r.light === "red" ? "text-red-600" : r.light === "yellow" ? "text-amber-700 dark:text-amber-400" : "text-[var(--text-secondary)]"}`}>{r.cp.toFixed(0)}%</span>
                       </div>
                     </td>
                   </tr>
@@ -277,14 +277,14 @@ function lightIcon(l: string): string {
               <table class="w-full text-sm">
                 <thead class="text-[var(--text-tertiary)] text-xs">
                   <tr class="border-b border-[var(--border)]">
-                    <th class="text-left py-2 w-6"></th>
-                    <th class="text-left">交易日</th>
-                    <th class="text-left">ETF</th>
-                    <th class="text-right">涨跌</th>
-                    <th class="text-right">量能 vp</th>
-                    <th class="text-right">方向 dp</th>
-                    <th class="text-right">份额 sp</th>
-                    <th class="text-right w-32">综合概率 cp</th>
+                    <th scope="col" class="text-left py-2 w-6"><span class="sr-only">信号</span></th>
+                    <th scope="col" class="text-left">交易日</th>
+                    <th scope="col" class="text-left">ETF</th>
+                    <th scope="col" class="text-right">涨跌</th>
+                    <th scope="col" class="text-right">量能 vp</th>
+                    <th scope="col" class="text-right">方向 dp</th>
+                    <th scope="col" class="text-right">份额 sp</th>
+                    <th scope="col" class="text-right w-32">综合概率 cp</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-[var(--border)]">
@@ -309,7 +309,7 @@ function lightIcon(l: string): string {
                             <div class="w-16 h-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
                               <div class={`h-full ${cpBarColor(h.cp)}`} style={`width:${Math.min(100, h.cp)}%`}></div>
                             </div>
-                            <span class={`font-mono font-semibold text-sm ${l === "red" ? "text-red-600" : l === "yellow" ? "text-amber-600" : "text-[var(--text-secondary)]"}`}>{h.cp.toFixed(0)}%</span>
+                            <span class={`font-mono font-semibold text-sm ${l === "red" ? "text-red-600" : l === "yellow" ? "text-amber-700 dark:text-amber-400" : "text-[var(--text-secondary)]"}`}>{h.cp.toFixed(0)}%</span>
                           </div>
                         </td>
                       </tr>
@@ -337,10 +337,10 @@ function lightIcon(l: string): string {
               <table class="w-full text-sm">
                 <thead class="text-[var(--text-tertiary)] text-xs">
                   <tr class="border-b border-[var(--border)]">
-                    <th class="text-left py-2">交易日</th>
-                    <th class="text-right">🔴 高确信</th>
-                    <th class="text-right">🟡 中等</th>
-                    <th class="text-left pl-4">涉及 ETF</th>
+                    <th scope="col" class="text-left py-2">交易日</th>
+                    <th scope="col" class="text-right">🔴 高确信</th>
+                    <th scope="col" class="text-right">🟡 中等</th>
+                    <th scope="col" class="text-left pl-4">涉及 ETF</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-[var(--border)]">
@@ -348,7 +348,7 @@ function lightIcon(l: string): string {
                     <tr class="hover:bg-[var(--surface-2)]">
                       <td class="py-2 font-mono">{date}</td>
                       <td class="text-right font-mono text-red-600">{red}</td>
-                      <td class="text-right font-mono text-amber-600">{yellow}</td>
+                      <td class="text-right font-mono text-amber-700 dark:text-amber-400">{yellow}</td>
                       <td class="pl-4 text-xs text-[var(--text-secondary)]">
                         {codes && codes.length > 0 ? codes.join(" · ") : "—"}
                       </td>

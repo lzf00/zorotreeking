@@ -1,5 +1,5 @@
 ---
-import { getCollection, type CollectionEntry } from "astro:content";
+import { getCollection, render } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import StarRating from "@/components/StarRating";
 import TOC from "@/components/TOC.astro";
@@ -20,12 +20,11 @@ export async function getStaticPaths() {
   return all.map((entry) => ({ params: { slug: entry.data.translationKey }, props: { entry, all } }));
 }
 
-interface Props { entry: CollectionEntry<"ai">; all: CollectionEntry<"ai">[] }
 const { entry, all } = Astro.props;
-const { Content, headings } = await entry.render();
+const { Content, headings } = await render(entry);
 const lang = "zh" as const;
 const t = useTranslations(lang);
-const readMins = estimateReadingTime(entry.body);
+const readMins = estimateReadingTime(entry.body ?? "");
 
 const { prev, next } = getAdjacentPosts(entry as any, all as any);
 const related = getRelatedPosts(entry as any, all as any, 3);

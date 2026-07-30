@@ -1,11 +1,10 @@
 /**
- * 火山方舟 Kimi LLM 调用（用于 digest 摘要、翻译等离线任务）
+ * 火山方舟豆包 LLM 调用（用于 digest 摘要、翻译等离线任务）
  *
  * 需要环境变量 ARK_API_KEY（GitHub Actions 加进 Secrets）
  */
 
-// 豆包（Doubao-Seed-2.0-Pro）：reasoning model，但比 Kimi 便宜得多
-// 价格 ¥0.8/M 输入、¥2.0/M 输出（vs Kimi ¥12/¥12），更适合 digest 这种轻量任务
+// 豆包（Doubao-Seed-2.0-Pro）：reasoning model，适合 digest 这类离线任务。
 const MODEL_URL = "https://ark.cn-beijing.volces.com/api/v3/chat/completions";
 const MODEL_NAME = "doubao-seed-2-0-pro-260215";
 const API_KEY_ENV = "DOUBAO_API_KEY";
@@ -40,7 +39,7 @@ export async function chat(
     });
     if (!resp.ok) {
       const text = await resp.text();
-      throw new Error(`Kimi API ${resp.status}: ${text.slice(0, 200)}`);
+      throw new Error(`Doubao API ${resp.status}: ${text.slice(0, 200)}`);
     }
     const data = (await resp.json()) as {
       choices?: { message?: { content?: string } }[];
@@ -68,7 +67,7 @@ export async function summarizeToChinese(
     { role: "system", content: sysPrompts[kind] },
     { role: "user", content: `请用${lenHint}总结：\n\n${source}` },
   ];
-  // Kimi 是 reasoning model，reasoning 本身就要 ~500-1000 token，加上正文输出 → 至少 2000
+  // reasoning 模型会消耗额外 token，加上正文输出需要预留足够空间。
   let out = await chat(messages, { temperature: 0.3, maxTokens: 2500 });
   if (!out) {
     await new Promise((r) => setTimeout(r, 800));

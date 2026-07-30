@@ -18,7 +18,7 @@ interface Props {
   /** 显式覆盖颜色（命中时忽略 scheme + 涨跌方向） */
   stroke?: string;
 }
-const { data, width = 56, height = 18, scheme = "cn", stroke } = Astro.props;
+const { data, width = 56, height = 18, scheme = "cn", stroke } = Astro.props as Props;
 
 const clean: number[] = (data || []).filter((x: number) => Number.isFinite(x) && x > 0);
 if (clean.length < 2) { /* 不渲染 */ }

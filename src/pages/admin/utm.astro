@@ -6,7 +6,7 @@
  * 分享出去的链接如果不带 UTM 参数，无法区分是从哪个渠道点进来的。
  * 这个工具生成带 UTM 的链接，粘去微信/朋友圈/Twitter/RSS 邮件等场景。
  *
- * 前端小工具，不需要后端；同 /admin/stats 用 sessionStorage 密码门保护。
+ * 前端小工具，不需要后端，也不包含敏感数据。
  */
 import BaseLayout from "@/layouts/BaseLayout.astro";
 ---
@@ -22,17 +22,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
       <a href="/admin/stats/" class="underline">访问看板</a> 里就能按 <code>utm_source</code> 分辨来源。
     </p>
 
-    <!-- 密码门 -->
-    <div id="gate" class="mt-8">
-      <label class="block text-xs uppercase tracking-[0.18em] text-zinc-500 mb-2">查看口令</label>
-      <input id="gate-pw" type="password" autocomplete="off" autofocus
-             class="w-full max-w-sm px-3 py-2 border border-[var(--border)] rounded-md
-                    bg-white dark:bg-zinc-900 text-sm focus:outline-none focus:ring-1 focus:ring-amber-400"
-             placeholder="输入口令后回车" />
-      <p id="gate-err" class="mt-2 text-xs text-red-500 hidden">口令错误。</p>
-    </div>
-
-    <div id="tool" class="hidden mt-8 space-y-6">
+    <div id="tool" class="mt-8 space-y-6">
       <!-- 表单区 -->
       <div class="space-y-4">
         <div>
@@ -163,14 +153,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 </BaseLayout>
 
 <script is:inline>
-  const PW_HASH = "dda2cfcdc90a2e5fee01495a0d0396911b8caeb98851ec343e99d5f58e5f8c26";
-  const LS_KEY = "zoro:admin:gate";
   const SITE = "https://www.zorotreeking.online";
-
-  async function sha256(s) {
-    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
-    return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, "0")).join("");
-  }
 
   function $(id) { return document.getElementById(id); }
 
@@ -232,32 +215,12 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
         setTimeout(() => msg.classList.add("hidden"), 1500);
       } catch (e) {
         $("out-url").select();
-        document.execCommand("copy");
+        const msg = $("copy-msg");
+        msg.textContent = "复制失败，请按 Cmd/Ctrl+C 手动复制";
+        msg.classList.remove("hidden");
       }
     });
   }
 
-  (async () => {
-    if (sessionStorage.getItem(LS_KEY) === "1") {
-      $("gate").classList.add("hidden");
-      $("tool").classList.remove("hidden");
-      bindLive();
-      return;
-    }
-    const input = $("gate-pw"), err = $("gate-err");
-    input?.addEventListener("keydown", async (e) => {
-      if (e.key !== "Enter") return;
-      e.preventDefault();
-      const h = await sha256(input.value);
-      if (h === PW_HASH) {
-        sessionStorage.setItem(LS_KEY, "1");
-        $("gate").classList.add("hidden");
-        $("tool").classList.remove("hidden");
-        bindLive();
-      } else {
-        err?.classList.remove("hidden");
-        input.value = "";
-      }
-    });
-  })();
+  bindLive();
 </script>

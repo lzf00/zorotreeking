@@ -28,10 +28,10 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup Node 20
+      - name: Setup Node 22
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
           cache: "npm"
 
       - name: Install deps
@@ -56,15 +56,21 @@ jobs:
           fi
           WEEK=$(date -u -d "+1 hours" +%G-W%V 2>/dev/null || date -u +%G-W%V)
           git commit -m "chore(weekly): roundup $WEEK"
+          PUSHED=0
           for i in 1 2 3; do
             git fetch origin main
             git pull --rebase --autostash origin main || { git rebase --abort 2>/dev/null || true; }
             if git push origin HEAD:main; then
-              echo "committed=true" >> "$GITHUB_OUTPUT"
+              PUSHED=1
               break
             fi
             sleep $((i * 3))
           done
+          if [ "$PUSHED" != "1" ]; then
+            echo "❌ push failed after 3 attempts"
+            exit 1
+          fi
+          echo "committed=true" >> "$GITHUB_OUTPUT"
 
   deploy:
     needs: generate-and-commit

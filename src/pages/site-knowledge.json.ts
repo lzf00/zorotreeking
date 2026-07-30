@@ -37,7 +37,7 @@ export async function GET(context: APIContext) {
     site: {
       title: "ZoroTreeking",
       tagline: "在代码与山林之间，留一份缓慢的笔记。",
-      description: "个人博客，四个板块：AI 学习、个人投资、摄影、徒步。作者 Zoro（刘子非），软件工程师。",
+      description: "独立编辑型个人网站，包含 AI 学习、个人投资、摄影与徒步四个板块；公开作品与方法，不提供私人履历。",
       url: site,
     },
     sections: {
@@ -47,10 +47,10 @@ export async function GET(context: APIContext) {
       hike: { title: "徒步", desc: "路线、轨迹、风景", recent: take(hike, "hike") },
     },
     other_pages: [
-      { title: "关于我", url: `${site}/about` },
+      { title: "关于这个站", url: `${site}/about` },
       { title: "留言板", url: `${site}/guestbook` },
       { title: "订阅", url: `${site}/subscribe` },
-      { title: "投资看板", url: `${site}/invest/portfolio` },
+      { title: "投资看板", url: `${site}/invest` },
       { title: "ETF 三因子", url: `${site}/invest/etf` },
     ],
   };

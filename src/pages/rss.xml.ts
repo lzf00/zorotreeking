@@ -9,7 +9,6 @@ export async function GET(context: APIContext) {
     getCollection("hike", (p) => p.data.lang === "zh" && !p.data.draft),
     getCollection("photo", (p) => p.data.lang === "zh" && !p.data.draft),
   ]);
-  const sectionOf = (k: string) => k.startsWith("ai") ? "ai" : k.startsWith("invest") ? "invest" : k.startsWith("hike") ? "hike" : "photo";
   const all = [
     ...ai.map((p) => ({ ...p, section: "ai" as const })),
     ...invest.map((p) => ({ ...p, section: "invest" as const })),

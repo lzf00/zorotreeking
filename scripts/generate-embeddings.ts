@@ -12,7 +12,7 @@
  *
  * 输出 JSON 格式（紧凑）：
  *   {
- *     "model": "doubao-embedding-large-text-240915",
+ *     "model": "<当前 DOUBAO_EMBEDDING_MODEL>",
  *     "dim": 2048,
  *     "items": {
  *       "ai/digest-2026-06-05": { "hash": "abc123", "vec": [0.001, ...] },
@@ -26,16 +26,17 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { embed, contentHash } from "./lib/embedding.ts";
+import {
+  EMBED_MODEL,
+  assertEmbeddingCacheWriteSafe,
+  contentHash,
+  embed,
+  ensureEmbeddingCacheModel,
+  type EmbeddingCache,
+} from "./lib/embedding.ts";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUTFILE = path.join(ROOT, "src", "data", "embeddings.json");
-
-interface Cache {
-  model: string;
-  dim: number;
-  items: Record<string, { hash: string; vec: number[] }>;
-}
 
 async function readMdxList(): Promise<Array<{ collection: string; key: string; lang: string; text: string }>> {
   const out: Array<{ collection: string; key: string; lang: string; text: string }> = [];
@@ -89,12 +90,18 @@ async function main() {
   }
 
   // 读 cache
-  let cache: Cache = { model: "doubao-embedding-large-text-250515", dim: 0, items: {} };
+  let cache: EmbeddingCache = { model: EMBED_MODEL, dim: 0, items: {} };
   try {
     cache = JSON.parse(await fs.readFile(OUTFILE, "utf-8"));
   } catch {
     console.log("[embeddings] 没找到 cache，从零开始");
   }
+  const preparedCache = ensureEmbeddingCacheModel(cache);
+  const modelReset = preparedCache.reset;
+  if (preparedCache.reset) {
+    console.log(`[embeddings] 模型从 ${cache.model || "unknown"} 切换为 ${EMBED_MODEL}，丢弃旧向量并全量重算`);
+  }
+  cache = preparedCache.cache;
 
   const list = await readMdxList();
   // 只对 zh 算 embedding（en 镜像内容相同，可共用）
@@ -126,12 +133,15 @@ async function main() {
       // 前 3 篇就连续 404 → 模型名 / endpoint 配错，提前 fail-fast 避免浪费时间
       if (failed >= 3 && misses === 0) {
         console.error("\n[embeddings] 连续 3 篇失败且无成功，可能模型 ID 错或账号未开通。提前退出。");
-        console.error("[embeddings] 当前使用模型:", process.env.DOUBAO_EMBEDDING_MODEL || "doubao-embedding-large-text-250515");
+        console.error("[embeddings] 当前使用模型:", EMBED_MODEL);
         console.error("[embeddings] 请去 https://console.volcengine.com/ark/region:ark+cn-beijing/endpoint 看可用 endpoint ID");
-        break;
+        throw new Error("embedding endpoint rejected the first three items");
       }
     }
   }
+
+  // 模型切换必须是原子更新：部分新模型向量不能替换完整的旧模型缓存。
+  assertEmbeddingCacheWriteSafe(modelReset, failed);
 
   // 删除已经不在 mdx 里的旧条目（清理孤儿）
   const valid = new Set(todo.map((x) => `${x.collection}/${x.key}`));

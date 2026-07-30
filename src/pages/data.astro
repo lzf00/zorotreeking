@@ -59,7 +59,15 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 <script is:inline>
   (() => {
     const $ = (id) => document.getElementById(id);
+    const esc = (value) => String(value ?? "").replace(
+      /[&<>"']/g,
+      (char) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" })[char],
+    );
     const fmtTime = (ts) => new Date(ts * 1000).toLocaleString("zh-CN", { hour12: false });
+    const setDeleteHint = (message, ok = false) => {
+      $("deleteHint").textContent = message;
+      $("deleteHint").style.color = ok ? "#16a34a" : "#dc2626";
+    };
 
     async function loadMe() {
       $("loadBtn").disabled = true;
@@ -77,12 +85,12 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
         ].map(([l, n]) => `
           <div class="rounded-xl bg-white dark:bg-neutral-900 border border-[var(--border)] p-3 text-center">
             <div class="text-[11px] uppercase tracking-[0.12em] text-[var(--text-tertiary)]">${l}</div>
-            <div class="mt-1 text-2xl font-semibold tabular-nums">${n}</div>
+            <div class="mt-1 text-2xl font-semibold tabular-nums">${Number(n) || 0}</div>
           </div>
         `).join("");
         const pv = d.recent_pageviews || [];
         $("recent").innerHTML = pv.length
-          ? pv.map(p => `<li><span class="text-[var(--text-tertiary)]">${fmtTime(p.ts)}</span> &nbsp; ${p.path}</li>`).join("")
+          ? pv.map(p => `<li><span class="text-[var(--text-tertiary)]">${fmtTime(p.ts)}</span> &nbsp; ${esc(p.path)}</li>`).join("")
           : '<li class="text-[var(--text-tertiary)]">无</li>';
         $("dataBox").classList.remove("hidden");
         $("loadHint").textContent = "已加载";
@@ -100,13 +108,13 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
         const r = await fetch("/api/data/delete", { method: "POST" });
         const d = await r.json();
         if (d.ok) {
-          $("deleteHint").innerHTML = `<span style="color:#16a34a">已删除：feedback ${d.deleted.feedback} 条 · pageviews ${d.deleted.pageviews} 条 · 拦截 ${d.deleted.filtered_chats} 条</span>`;
+          setDeleteHint(`已删除：feedback ${Number(d.deleted.feedback) || 0} 条 · pageviews ${Number(d.deleted.pageviews) || 0} 条 · 拦截 ${Number(d.deleted.filtered_chats) || 0} 条`, true);
           setTimeout(loadMe, 400);
         } else {
-          $("deleteHint").innerHTML = '<span style="color:#dc2626">删除失败</span>';
+          setDeleteHint("删除失败");
         }
       } catch (e) {
-        $("deleteHint").innerHTML = `<span style="color:#dc2626">出错：${e.message}</span>`;
+        setDeleteHint(`出错：${e.message}`);
       } finally {
         $("deleteBtn").disabled = false;
       }

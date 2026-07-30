@@ -15,7 +15,6 @@ const isDigest = (p: { data: { tags?: string[]; translationKey: string } }) =>
 const posts = all.filter(p => !isDigest(p));
 const digests = all.filter(isDigest);
 const recentDigests = digests.slice(0, 3);
-const latestDigest = digests[0];
 ---
 
 <BaseLayout title={t("section.ai.title")} description={t("section.ai.desc")}>

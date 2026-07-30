@@ -37,6 +37,10 @@ import { fetchEastmoneyNews } from "./digest-sources/invest-eastmoney.ts";
 import { fetchYahooFinance } from "./digest-sources/invest-yahoo.ts";
 import { summarizeToChinese, digestTLDR, type DigestTLDR } from "./lib/llm.ts";
 import { pickCoverFromLibrary } from "./lib/cover-picker.ts";
+import {
+  safeExternalUrl,
+  sanitizeExternalTextForMdx,
+} from "./lib/content-safety.ts";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CONTENT_DIR = path.join(ROOT, "src", "content");
@@ -60,22 +64,6 @@ const SOURCE_LABEL: Record<string, string> = {
 
 function todayInBeijing(): string {
   return new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Shanghai" });
-}
-
-/**
- * MDX 转义：
- *  - 危险 HTML 标签（script/iframe/style/object/embed/link/meta/base）的 `<` → `&lt;`
- *    （MDX 编译会把这些标签当作 JSX 组件渲染，若外部 RSS 原文含 `<script>` 会被执行）
- *  - `<` 后跟非字母 → `&lt;`（不然被当作 JSX 标签开头）
- *  - `{` `}` → `\{` `\}`（不然被当作 JSX 表达式块；arxiv 作者名 LaTeX 转义如 `{\o}`、`{\ae}` 频繁出现）
- */
-function sanitizeForMdx(s: string): string {
-  const DANGEROUS_TAGS = /<(\/?)(script|iframe|style|object|embed|link|meta|base)\b/gi;
-  return s
-    .replace(DANGEROUS_TAGS, "&lt;$1$2")
-    .replace(/<(?![a-zA-Z!/])/g, "&lt;")
-    .replace(/\{/g, "\\{")
-    .replace(/\}/g, "\\}");
 }
 
 /**
@@ -276,22 +264,25 @@ async function buildAIDigest(date: string): Promise<void> {
     for (const p of grouped[sourceKey]) {
       // 标题本身是外链（点击新窗口打开 arxiv）。URL 中的 " 转义掉避免破属性。
       // 不带编号——苹果 newsroom 每篇 article 独立，编号是 noise。
-      const arxivHref = (p.url || "").replace(/"/g, "%22");
-      lines.push(`## <a href="${arxivHref}" target="_blank" rel="noopener noreferrer">${sanitizeForMdx(p.title)}</a>`);
+      const arxivHref = safeExternalUrl(p.url);
+      const title = sanitizeExternalTextForMdx(p.title);
+      lines.push(arxivHref
+        ? `## <a href="${arxivHref}" target="_blank" rel="noopener noreferrer">${title}</a>`
+        : `## ${title}`);
       lines.push("");
       // meta 合并单行：HF ★ N · 作者前 3 个… · HF 镜像
       const metaParts: string[] = [];
       if (p.upvotes != null) metaParts.push(`HF ★ ${p.upvotes}`);
       if (p.authors.length > 0) {
         const authorStr = p.authors.slice(0, 3).join(", ") + (p.authors.length > 3 ? "…" : "");
-        metaParts.push(sanitizeForMdx(authorStr));
+        metaParts.push(sanitizeExternalTextForMdx(authorStr));
       }
       if (p.hfUrl) metaParts.push(`[HF 镜像](${p.hfUrl})`);
       if (metaParts.length > 0) {
         lines.push(`*${metaParts.join(" · ")}*`);
         lines.push("");
       }
-      lines.push(sanitizeForMdx(p.zhSummary));
+      lines.push(sanitizeExternalTextForMdx(p.zhSummary));
       lines.push("");
       lines.push(`<FeedbackButtons slug="item:${itemSlug(p.source, p.url)}" client:visible />`);
       lines.push("");
@@ -374,11 +365,11 @@ async function buildInvestDigest(date: string): Promise<void> {
     for (const n of grouped[sourceKey]) {
       const timeStr = new Date(n.publishedAt).toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" });
       // 标题本身就是原文外链（新窗口）；不带编号
-      const newsHref = (n.url || "").replace(/"/g, "%22");
+      const newsHref = safeExternalUrl(n.url);
       if (newsHref) {
-        lines.push(`## <a href="${newsHref}" target="_blank" rel="noopener noreferrer">${sanitizeForMdx(n.title)}</a>`);
+        lines.push(`## <a href="${newsHref}" target="_blank" rel="noopener noreferrer">${sanitizeExternalTextForMdx(n.title)}</a>`);
       } else {
-        lines.push(`## ${sanitizeForMdx(n.title)}`);
+        lines.push(`## ${sanitizeExternalTextForMdx(n.title)}`);
       }
       lines.push("");
       // meta 合并单行：时间 · 涉及：A, B, C
@@ -388,7 +379,7 @@ async function buildInvestDigest(date: string): Promise<void> {
       }
       lines.push(`*${metaParts.join(" · ")}*`);
       lines.push("");
-      lines.push(sanitizeForMdx(n.zhSummary));
+      lines.push(sanitizeExternalTextForMdx(n.zhSummary));
       lines.push("");
       lines.push(`<FeedbackButtons slug="item:${itemSlug(n.source, n.url)}" client:visible />`);
       lines.push("");

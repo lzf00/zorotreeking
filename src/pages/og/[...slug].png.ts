@@ -15,6 +15,7 @@
  */
 import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
+import { selectCanonicalOgEntries } from "@/lib/og-paths";
 import satori from "satori";
 import { Resvg } from "@resvg/resvg-js";
 import fs from "node:fs";
@@ -44,7 +45,7 @@ export async function getStaticPaths() {
     getCollection("invest", (p) => !p.data.draft),
     getCollection("hike", (p) => !p.data.draft),
   ]);
-  return all.flat().map((entry) => ({
+  return selectCanonicalOgEntries(all.flat()).map((entry) => ({
     params: { slug: `${entry.collection}/${entry.data.translationKey}` },
     props: { entry },
   }));

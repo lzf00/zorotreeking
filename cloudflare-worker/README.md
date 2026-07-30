@@ -1,9 +1,27 @@
 # decap-oauth · Cloudflare Worker
 
-Decap CMS 用的 GitHub OAuth 代理。两个端点：
+这个 Worker 同时承载 Decap CMS 登录和 TrailLens 后端的固定 OAuth API 反代。
 
-- `GET /auth` → 重定向到 GitHub OAuth 授权页
-- `GET /callback` → GitHub 回调，验证白名单用户，把 token 回传给 Decap CMS
+Decap CMS：
+
+- `GET /auth` → 生成短期 OAuth state Cookie，再重定向到 GitHub
+- `GET /callback` → 校验 state 和白名单用户，把 token 回传给 Decap CMS
+
+TrailLens 后端：
+
+- `POST /google/token`
+- `GET /google/userinfo`
+- `POST /github/token`
+- `GET /github/user`
+
+反代只接受上面列出的路径和方法，响应强制 `Cache-Control: no-store`，且不会向浏览器继承上游 CORS 放行。
+
+安全约束：
+
+- `ALLOWED_USERS` 必须配置；缺失时 Worker 会 fail closed。
+- state Cookie 使用 `HttpOnly + Secure + SameSite=Lax`，有效期 10 分钟。
+- token 回调响应使用 `Cache-Control: no-store`，并在结束时清除 state Cookie。
+- TrailLens 反代目前是固定路由的后端兼容接口，不是通用开放代理；如需进一步增加共享密钥，应先同步修改调用方配置。
 
 ## 部署
 
@@ -52,5 +70,13 @@ Decap CMS 用的 GitHub OAuth 代理。两个端点：
 - Worker logs: dashboard → Workers → decap-oauth → **Logs** → **Begin log stream**
 - 常见错误：
   - 403 "不在白名单"：检查 `ALLOWED_USERS` 拼写
+  - 400 "invalid OAuth state"：授权窗口超过 10 分钟、Cookie 被禁用，或回调不是从 `/auth` 发起
+  - 500 "allowlist is not configured"：必须设置非空 `ALLOWED_USERS`
   - `bad_verification_code`：Client ID / Secret 配错；或 callback URL 不一致
   - 弹窗一直不关：Decap CMS 父窗口域名不匹配，检查浏览器 console
+
+本地安全回归：
+
+```bash
+npm test
+```

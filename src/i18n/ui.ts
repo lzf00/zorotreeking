@@ -1,8 +1,8 @@
-export const languages = { zh: "中文", en: "English" } as const;
+const languages = { zh: "中文", en: "English" } as const;
 export type Lang = keyof typeof languages;
 export const defaultLang: Lang = "zh";
 
-export const ui = {
+const ui = {
   zh: {
     "site.title": "ZoroTreeking",
     "site.tagline": "AI · 投资 · 摄影 · 徒步",
@@ -83,4 +83,41 @@ export function getLangFromUrl(url: URL): Lang {
 export function pathWithLang(path: string, lang: Lang): string {
   const clean = path.startsWith("/") ? path.slice(1) : path;
   return lang === defaultLang ? `/${clean}` : `/${lang}/${clean}`;
+}
+
+const TRANSLATED_STATIC_PATHS = new Set([
+  "/",
+  "/about",
+  "/ai",
+  "/ai/digest",
+  "/invest",
+  "/invest/digest",
+  "/invest/market",
+  "/invest/hk-market",
+  "/photo",
+  "/hike",
+  "/tag",
+  "/guestbook",
+  "/subscribe",
+  "/privacy",
+  "/terms",
+  "/data",
+  "/contact",
+]);
+
+/**
+ * Returns whether this route has a real counterpart in the other language.
+ * Chinese-only utilities should not send visitors to a generated 404 page.
+ */
+export function hasAlternateLanguagePath(pathname: string): boolean {
+  const normalized = pathname
+    .replace(/^\/(zh|en)(\/|$)/, "/")
+    .replace(/\/+/g, "/")
+    .replace(/\/$/, "") || "/";
+
+  if (TRANSLATED_STATIC_PATHS.has(normalized)) return true;
+  if (/^\/(ai|photo|hike|tag)\/[^/]+$/.test(normalized)) return true;
+  if (/^\/invest\/stock\/[^/]+$/.test(normalized)) return true;
+  if (/^\/invest\/[^/]+$/.test(normalized) && normalized !== "/invest/etf") return true;
+  return false;
 }

@@ -6,7 +6,14 @@ import AIChatWidget from "@/components/AIChatWidget";
 import SearchModal from "@/components/SearchModal";
 import ArticleImageLightbox from "@/components/ArticleImageLightbox.astro";
 import ReadTracker from "@/components/ReadTracker.astro";
-import { getLangFromUrl, useTranslations } from "@/i18n/ui";
+import {
+  getLangFromUrl,
+  hasAlternateLanguagePath,
+  pathWithLang,
+  useTranslations,
+} from "@/i18n/ui";
+import { serializeJsonLd } from "@/lib/json-ld";
+import { normalizeVerificationToken } from "@/lib/site-verification";
 
 interface Props {
   title?: string;
@@ -25,10 +32,19 @@ const t = useTranslations(lang);
 const fullTitle = title ? `${title} · ${t("site.title")}` : `${t("site.title")} — ${t("site.tagline")}`;
 const desc = description ?? t("site.tagline");
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+const localPath = Astro.url.pathname
+  .replace(/^\/en(\/|$)/, "/")
+  .replace(/\/+/g, "/");
+const hasLanguageAlternate = hasAlternateLanguagePath(localPath);
+const zhAlternate = new URL(pathWithLang(localPath, "zh"), Astro.site).toString();
+const enAlternate = new URL(pathWithLang(localPath, "en"), Astro.site).toString();
+const googleVerification = normalizeVerificationToken(import.meta.env.PUBLIC_GOOGLE_VERIFICATION);
+const baiduVerification = normalizeVerificationToken(import.meta.env.PUBLIC_BAIDU_VERIFICATION);
+const bingVerification = normalizeVerificationToken(import.meta.env.PUBLIC_BING_VERIFICATION);
 
 // ── JSON-LD 结构化数据（schema.org） ──
 // 让 Google / Bing / 微信分享等理解每个页面的语义。
-// Article 页输出 Article，首页输出 WebSite + Person，about 输出 Person，其它 WebPage。
+// Article 页输出 Article，首页输出 WebSite + Person，about 输出不含个人身份的 AboutPage。
 const siteName = "ZoroTreeking";
 const author = {
   "@type": "Person",
@@ -76,9 +92,16 @@ if (ogType === "article") {
            Astro.url.pathname === "/en/about" || Astro.url.pathname === "/en/about/") {
   jsonLd = {
     "@context": "https://schema.org",
-    ...author,
+    "@type": "AboutPage",
+    name: fullTitle,
     description: desc,
-    image: ogImage ? new URL(ogImage, Astro.site).toString() : undefined,
+    url: canonical,
+    isPartOf: {
+      "@type": "WebSite",
+      name: siteName,
+      url: Astro.site?.toString(),
+    },
+    inLanguage: lang === "zh" ? "zh-CN" : "en",
   };
 }
 ---
@@ -96,10 +119,14 @@ if (ogType === "article") {
     <meta name="description" content={desc} />
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
-    <link rel="alternate" hreflang="zh" href={new URL(Astro.url.pathname.replace(/^\/en(\/|$)/, "/"), Astro.site).toString()} />
-    <link rel="alternate" hreflang="en" href={new URL(Astro.url.pathname.startsWith("/en") ? Astro.url.pathname : `/en${Astro.url.pathname}`, Astro.site).toString()} />
-    {/* Google 推荐 x-default：不匹配 zh/en locale 时的兜底，指向中文（主要语言） */}
-    <link rel="alternate" hreflang="x-default" href={new URL(Astro.url.pathname.replace(/^\/en(\/|$)/, "/"), Astro.site).toString()} />
+    {hasLanguageAlternate && (
+      <>
+        <link rel="alternate" hreflang="zh" href={zhAlternate} />
+        <link rel="alternate" hreflang="en" href={enAlternate} />
+        {/* Google 推荐 x-default：不匹配 zh/en locale 时的兜底，指向中文（主要语言） */}
+        <link rel="alternate" hreflang="x-default" href={zhAlternate} />
+      </>
+    )}
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={desc} />
     <meta property="og:url" content={canonical} />
@@ -131,16 +158,16 @@ if (ogType === "article") {
       <meta property="article:modified_time" content={modifiedTime.toISOString()} />
     )}
     {ogType === "article" && tags && tags.map((t) => <meta property="article:tag" content={t} />)}
-    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd, (_, v) => v === undefined ? undefined : v)} />}
+    {jsonLd && <script is:inline type="application/ld+json" set:html={serializeJsonLd(jsonLd)} />}
     {/* 搜索引擎站长验证（GitHub repo Variables 配后自动注入） */}
-    {import.meta.env.PUBLIC_GOOGLE_VERIFICATION && (
-      <meta name="google-site-verification" content={import.meta.env.PUBLIC_GOOGLE_VERIFICATION} />
+    {googleVerification && (
+      <meta name="google-site-verification" content={googleVerification} />
     )}
-    {import.meta.env.PUBLIC_BAIDU_VERIFICATION && (
-      <meta name="baidu-site-verification" content={import.meta.env.PUBLIC_BAIDU_VERIFICATION} />
+    {baiduVerification && (
+      <meta name="baidu-site-verification" content={baiduVerification} />
     )}
-    {import.meta.env.PUBLIC_BING_VERIFICATION && (
-      <meta name="msvalidate.01" content={import.meta.env.PUBLIC_BING_VERIFICATION} />
+    {bingVerification && (
+      <meta name="msvalidate.01" content={bingVerification} />
     )}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/favicon.svg" />
@@ -148,12 +175,20 @@ if (ogType === "article") {
     <meta name="theme-color" content="#1d1d1f" />
     <link rel="alternate" type="application/rss+xml" title="ZoroTreeking · RSS" href="/rss.xml" />
     <link rel="alternate" type="application/atom+xml" title="ZoroTreeking · Atom" href="/atom.xml" />
+    <!-- 首次绘制前应用主题，避免深色模式加载时闪白。 -->
+    <script is:inline>
+      try {
+        const stored = localStorage.getItem("theme");
+        const initial = stored ?? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.classList.toggle("dark", initial === "dark");
+      } catch {}
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <!-- editorial 字体组合：Instrument Serif（display）+ Inter（body）+ JetBrains Mono（code） -->
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   </head>
-  <body class="min-h-screen flex flex-col">
+  <body class="min-h-screen flex flex-col" data-pagefind-ignore={noindex ? true : undefined}>
     <!-- A11y skip-to-content：键盘用户按 Tab 第一个出现这个；视觉默认隐藏，focus 时浮在左上角 -->
     <a href="#main-content"
        class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[999]
@@ -162,7 +197,7 @@ if (ogType === "article") {
       跳到正文 / Skip to content
     </a>
     <Navbar />
-    <main id="main-content" class="flex-1" tabindex="-1">
+    <main id="main-content" class="flex-1" tabindex="-1" data-pagefind-body={!noindex ? true : undefined}>
       <slot />
     </main>
     <Footer />

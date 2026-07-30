@@ -1,4 +1,9 @@
 import { useEffect, useState } from "react";
+import {
+  fetchFeedback,
+  postFeedback,
+  type FeedbackState,
+} from "@/lib/feedback-api";
 
 /**
  * 5 星评分（hover 预览 / click 落地）。
@@ -18,38 +23,14 @@ interface Props {
   label?: string;
 }
 
-type FeedbackState = {
-  likes: number;
-  dislikes: number;
-  my_vote: "like" | "dislike" | null;
-};
-
 type Score = 1 | 2 | 3 | 4 | 5;
 
-const API_BASE = "/api/feedback";
 const LS_KEY = (slug: string) => `zoro:rating:${slug}`;
 
 function scoreToKind(score: Score): "like" | "dislike" | "neutral" {
   if (score >= 4) return "like";
   if (score <= 2) return "dislike";
   return "neutral";
-}
-
-async function fetchFeedback(slug: string, signal?: AbortSignal): Promise<FeedbackState> {
-  const r = await fetch(`${API_BASE}?slug=${encodeURIComponent(slug)}`, { signal });
-  if (!r.ok) throw new Error(`HTTP ${r.status}`);
-  return (await r.json()) as FeedbackState;
-}
-
-async function postFeedback(slug: string, kind: "like" | "dislike" | "neutral"): Promise<FeedbackState> {
-  const r = await fetch(API_BASE, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ slug, kind }),
-  });
-  if (r.status === 429) throw new Error("rate-limited");
-  if (!r.ok) throw new Error(`HTTP ${r.status}`);
-  return (await r.json()) as FeedbackState;
 }
 
 const LABELS: Record<Score, string> = {
@@ -93,11 +74,11 @@ export default function StarRating({ slug, align = "right", label = "评分" }: 
     setPending(true);
     setErr(null);
     try {
-      localStorage.setItem(LS_KEY(slug), String(n));
-    } catch {}
-    try {
       const fresh = await postFeedback(slug, scoreToKind(n));
       setAgg(fresh);
+      try {
+        localStorage.setItem(LS_KEY(slug), String(n));
+      } catch {}
     } catch (e: any) {
       setScore(prevScore);
       setErr(e?.message || "fetch-error");
@@ -125,7 +106,7 @@ export default function StarRating({ slug, align = "right", label = "评分" }: 
         role="radiogroup"
         aria-label={label}
         onMouseLeave={() => setHover(0)}
-        style={{ display: "inline-flex", gap: 2 }}
+        style={{ display: "inline-flex" }}
       >
         {[1, 2, 3, 4, 5].map((n) => {
           const filled = n <= display;
@@ -144,7 +125,11 @@ export default function StarRating({ slug, align = "right", label = "评分" }: 
               style={{
                 background: "transparent",
                 border: "none",
-                padding: "2px 1px",
+                padding: 0,
+                width: 44,
+                height: 44,
+                display: "grid",
+                placeItems: "center",
                 cursor: pending ? "wait" : "pointer",
                 lineHeight: 1,
                 color: filled

@@ -94,9 +94,16 @@ export default function PhotoGallery({ photos, galleryId }: Props) {
             const exif = data?.exif as Exif | undefined;
             const alt = data?.alt as string | undefined;
             const line = formatExifLine(exif);
-            el.innerHTML = [alt ? `<div style="font-family:inherit;color:#fff;margin-bottom:3px">${alt}</div>` : "", line]
-              .filter(Boolean)
-              .join("");
+            el.replaceChildren();
+            if (alt) {
+              const caption = document.createElement("div");
+              caption.style.cssText = "font-family:inherit;color:#fff;margin-bottom:3px";
+              caption.textContent = alt;
+              el.appendChild(caption);
+            }
+            if (line) {
+              el.appendChild(document.createTextNode(line));
+            }
           });
         },
       });

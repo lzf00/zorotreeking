@@ -29,10 +29,6 @@ function sub(a: number[], b: number[]): number[] {
   return a.map((x, i) => x - b[i]);
 }
 
-function add(a: number[], b: number[]): number[] {
-  return a.map((x, i) => x + b[i]);
-}
-
 /**
  * 在 N×N Gram matrix 上做 power iteration 找前 k 个特征向量。
  * gram[i][j] = centered_X[i] . centered_X[j]
@@ -42,8 +38,12 @@ function topKEigen(gram: number[][], k: number, iters = 80): { vec: number[]; va
   const found: { vec: number[]; val: number }[] = [];
 
   for (let step = 0; step < k; step++) {
-    // 随机初始化
-    let v = Array.from({ length: n }, () => Math.random() - 0.5);
+    // 固定初始化，保证相同 embedding 在每次构建中得到相同坐标。
+    // 随机初值会让 /explore 的节点位置与静态产物不可复现。
+    let v = Array.from(
+      { length: n },
+      (_, i) => Math.sin((i + 1) * (step + 1)) + Math.cos((i + 1) * (step + 2) * 0.5),
+    );
     // 单位化
     let m = norm(v);
     v = m > 0 ? scale(v, 1 / m) : v;

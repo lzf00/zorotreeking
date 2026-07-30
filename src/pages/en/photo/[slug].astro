@@ -1,5 +1,5 @@
 ---
-import { getCollection, type CollectionEntry } from "astro:content";
+import { getCollection, render } from "astro:content";
 import PhotoLayout from "@/layouts/PhotoLayout.astro";
 import FeedbackButtons from "@/components/FeedbackButtons";
 import PhotoGallery from "@/components/PhotoGallery";
@@ -11,9 +11,8 @@ export async function getStaticPaths() {
   return all.map((entry) => ({ params: { slug: entry.data.translationKey }, props: { entry } }));
 }
 
-interface Props { entry: CollectionEntry<"photo"> }
 const { entry } = Astro.props;
-const { Content } = await entry.render();
+const { Content } = await render(entry);
 const lang = "en" as const;
 const t = useTranslations(lang);
 const photos = loadPhotoManifest(resolveAlbumKey(entry.data));
@@ -48,7 +47,7 @@ const dateStr = entry.data.date.toISOString().slice(0, 10);
     </div>
   </header>
 
-  {entry.body.trim().length > 0 && (
+  {(entry.body ?? "").trim().length > 0 && (
     <section class="max-w-prose mx-auto px-5 mt-10 mb-12 text-[15.5px] leading-[1.85] text-white/75">
       <Content />
     </section>

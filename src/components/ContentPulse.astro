@@ -16,8 +16,40 @@
  * 渲染纯 SVG（无 JS，hover 用 title）。
  */
 import { getCollection } from "astro:content";
+import { getLangFromUrl } from "@/i18n/ui";
 
-const lang = "zh" as const;
+const lang = getLangFromUrl(Astro.url);
+const labels = lang === "zh"
+  ? {
+      title: "本站心跳",
+      weeks: "过去",
+      total: "累计",
+      posts: "篇",
+      active: "活跃",
+      days: "天",
+      empty: "空",
+      original: "篇原创",
+      digest: "篇 digest",
+      ai: "AI 原创",
+      invest: "投资",
+      photo: "摄影",
+      hike: "徒步",
+    }
+  : {
+      title: "Site pulse",
+      weeks: "Past",
+      total: "total",
+      posts: "posts",
+      active: "active",
+      days: "days",
+      empty: "empty",
+      original: "original",
+      digest: "digest",
+      ai: "AI original",
+      invest: "Investing",
+      photo: "Photo",
+      hike: "Hiking",
+    };
 
 // 收集所有 collection 的 (date, section, isDigest) 元组
 type Item = { date: Date; section: "ai" | "invest" | "photo" | "hike"; digest: boolean };
@@ -128,14 +160,14 @@ const activeDays = Object.keys(byDay).length;
 <section class="my-12">
   <div class="flex items-baseline justify-between mb-4">
     <div>
-      <h3 class="text-base font-semibold tracking-tight">本站心跳</h3>
+      <h3 class="text-base font-semibold tracking-tight">{labels.title}</h3>
       <p class="mt-1 text-xs text-[var(--text-tertiary)]">
-        过去 {WEEKS} 周 · 累计 {totalDays} 篇 · 活跃 {activeDays} 天
+        {labels.weeks} {WEEKS} {lang === "zh" ? "周" : "weeks"} · {labels.total} {totalDays} {labels.posts} · {labels.active} {activeDays} {labels.days}
       </p>
     </div>
   </div>
 
-  <div class="overflow-x-auto">
+  <div class="overflow-x-auto" data-pulse-scroll>
     <svg width={WIDTH} height={HEIGHT} viewBox={`0 0 ${WIDTH} ${HEIGHT}`} class="block">
       {weeks.map((week, wi) =>
         week.map((cell, di) => {
@@ -143,12 +175,12 @@ const activeDays = Object.keys(byDay).length;
           const y = di * (SIZE + GAP);
           const n = cell.items.length;
           const sec = (() => {
-            if (n === 0) return "空";
+            if (n === 0) return labels.empty;
             const tags: string[] = [];
             const orig = cell.items.filter((x) => !x.digest);
             const dig = cell.items.filter((x) => x.digest);
-            if (orig.length > 0) tags.push(`${orig.length} 篇原创`);
-            if (dig.length > 0) tags.push(`${dig.length} 篇 digest`);
+            if (orig.length > 0) tags.push(`${orig.length} ${labels.original}`);
+            if (dig.length > 0) tags.push(`${dig.length} ${labels.digest}`);
             return tags.join(" · ");
           })();
           return (
@@ -164,11 +196,19 @@ const activeDays = Object.keys(byDay).length;
 
   {/* 图例 */}
   <div class="mt-3 flex items-center flex-wrap gap-x-4 gap-y-1 text-[10px] text-[var(--text-tertiary)] font-mono uppercase tracking-wider">
-    <span class="flex items-center gap-1"><i class="w-2.5 h-2.5 rounded-sm" style="background:var(--pulse-empty)"></i>空</span>
-    <span class="flex items-center gap-1"><i class="w-2.5 h-2.5 rounded-sm" style="background:var(--pulse-ai-3)"></i>AI 原创</span>
-    <span class="flex items-center gap-1"><i class="w-2.5 h-2.5 rounded-sm" style="background:var(--pulse-invest-3)"></i>投资</span>
-    <span class="flex items-center gap-1"><i class="w-2.5 h-2.5 rounded-sm" style="background:var(--pulse-photo-3)"></i>摄影</span>
-    <span class="flex items-center gap-1"><i class="w-2.5 h-2.5 rounded-sm" style="background:var(--pulse-hike-3)"></i>徒步</span>
+    <span class="flex items-center gap-1"><i class="w-2.5 h-2.5 rounded-sm" style="background:var(--pulse-empty)"></i>{labels.empty}</span>
+    <span class="flex items-center gap-1"><i class="w-2.5 h-2.5 rounded-sm" style="background:var(--pulse-ai-3)"></i>{labels.ai}</span>
+    <span class="flex items-center gap-1"><i class="w-2.5 h-2.5 rounded-sm" style="background:var(--pulse-invest-3)"></i>{labels.invest}</span>
+    <span class="flex items-center gap-1"><i class="w-2.5 h-2.5 rounded-sm" style="background:var(--pulse-photo-3)"></i>{labels.photo}</span>
+    <span class="flex items-center gap-1"><i class="w-2.5 h-2.5 rounded-sm" style="background:var(--pulse-hike-3)"></i>{labels.hike}</span>
     <span class="flex items-center gap-1"><i class="w-2.5 h-2.5 rounded-sm" style="background:var(--pulse-digest-2)"></i>digest</span>
   </div>
 </section>
+
+<script is:inline>
+  requestAnimationFrame(() => {
+    document.querySelectorAll("[data-pulse-scroll]").forEach((element) => {
+      element.scrollLeft = element.scrollWidth;
+    });
+  });
+</script>

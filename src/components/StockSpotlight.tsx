@@ -123,12 +123,12 @@ export default function StockSpotlight({ stocks, showNote = true, initialQuotes,
           <table className="w-full text-sm">
             <thead className="bg-[var(--bg-soft)] text-xs text-[var(--text-secondary)]">
               <tr>
-                <th className="text-left p-3 font-semibold">代码</th>
-                <th className="text-left p-3 font-semibold">名称</th>
-                <th className="text-right p-3 font-semibold">现价</th>
-                <th className="text-right p-3 font-semibold">涨跌</th>
-                <th className="text-right p-3 font-semibold">涨跌幅</th>
-                {showNote && <th className="text-left p-3 font-semibold hidden sm:table-cell">主营</th>}
+                <th scope="col" className="text-left p-3 font-semibold">代码</th>
+                <th scope="col" className="text-left p-3 font-semibold">名称</th>
+                <th scope="col" className="text-right p-3 font-semibold">现价</th>
+                <th scope="col" className="text-right p-3 font-semibold">涨跌</th>
+                <th scope="col" className="text-right p-3 font-semibold">涨跌幅</th>
+                {showNote && <th scope="col" className="text-left p-3 font-semibold hidden sm:table-cell">主营</th>}
               </tr>
             </thead>
             <tbody>

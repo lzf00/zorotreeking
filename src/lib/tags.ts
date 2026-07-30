@@ -13,7 +13,7 @@ export type ArticleRef = {
 const SECTIONS = ["ai", "invest", "photo", "hike"] as const;
 
 /** 跨四个 collection 收集某语言下的全部文章（不含 draft） */
-export async function getAllArticles(lang: Lang): Promise<ArticleRef[]> {
+async function getAllArticles(lang: Lang): Promise<ArticleRef[]> {
   const out: ArticleRef[] = [];
   for (const section of SECTIONS) {
     const items = await getCollection(section, (p) => p.data.lang === lang && !p.data.draft);

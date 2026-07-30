@@ -2,8 +2,7 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Giscus from "@/components/Giscus.astro";
 import GuestbookBoard from "@/components/GuestbookBoard";
-import { aboutData } from "@/data/about";
-const { contact } = aboutData;
+import { siteContact as contact } from "@/data/contact";
 
 const giscusEnabled = !!(
   import.meta.env.PUBLIC_GISCUS_REPO &&

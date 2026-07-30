@@ -6,8 +6,8 @@
  *       客户端用 4 并发 fetch /api/feedback?slug=... 汇总 likes/dislikes，
  *       再按 likes 排序。无需后端新增接口。
  *
- * 鉴权：noindex + 密码门（同 /admin/stats），口令 SHA-256 写在前端，纯前端门禁。
- *       不是真正的安全防御，只挡爬虫和路过的人。真要锁，去 nginx 加 basic auth。
+ * 数据来自公开的文章反馈汇总接口；页面 noindex，但不伪装成安全后台。
+ * 若未来加入敏感数据，应由 nginx/后端提供真正的身份认证。
  */
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
@@ -51,18 +51,8 @@ const rows: Row[] = [
       仅本人查看 · 不被搜索引擎索引。
     </p>
 
-    <!-- 密码门 -->
-    <div id="gate" class="mt-10">
-      <label class="block text-xs uppercase tracking-[0.18em] text-zinc-500 mb-2">查看口令</label>
-      <input id="gate-pw" type="password" autocomplete="off" autofocus
-             class="w-full max-w-sm px-3 py-2 border border-zinc-200 dark:border-zinc-800 rounded-md
-                    bg-white dark:bg-zinc-900 text-sm focus:outline-none focus:ring-1 focus:ring-amber-400"
-             placeholder="输入口令后回车" />
-      <p id="gate-err" class="mt-2 text-xs text-red-500 hidden">口令错误。</p>
-    </div>
-
     <!-- 主体 -->
-    <div id="board" class="hidden mt-10 space-y-6">
+    <div id="board" class="mt-10 space-y-6">
       <div class="flex items-center gap-3 text-sm text-zinc-500">
         <span id="progress">加载中…</span>
         <button id="refresh"
@@ -81,12 +71,12 @@ const rows: Row[] = [
       <table class="w-full text-sm">
         <thead class="text-xs uppercase tracking-[0.12em] text-zinc-400 border-b border-zinc-100 dark:border-zinc-800">
           <tr>
-            <th class="text-left py-2 pr-2 w-8">#</th>
-            <th class="text-left py-2">标题</th>
-            <th class="text-right py-2 px-3">👍</th>
-            <th class="text-right py-2 px-3">👎</th>
-            <th class="text-right py-2 px-3">净值</th>
-            <th class="text-right py-2 pl-3">日期</th>
+            <th scope="col" class="text-left py-2 pr-2 w-8">#</th>
+            <th scope="col" class="text-left py-2">标题</th>
+            <th scope="col" class="text-right py-2 px-3">👍</th>
+            <th scope="col" class="text-right py-2 px-3">👎</th>
+            <th scope="col" class="text-right py-2 px-3">净值</th>
+            <th scope="col" class="text-right py-2 pl-3">日期</th>
           </tr>
         </thead>
         <tbody id="rows"></tbody>
@@ -96,25 +86,6 @@ const rows: Row[] = [
 </BaseLayout>
 
 <script is:inline define:vars={{ rowsData: rows }}>
-  // 口令哈希（明文："zoro-stats-2026"）。改口令把下面这个 hex 换掉。
-  // 不是安全防御，只是不让搜索/爬虫直接看到内容。
-  const PW_HASH = "dda2cfcdc90a2e5fee01495a0d0396911b8caeb98851ec343e99d5f58e5f8c26";
-  const LS_KEY = "zoro:admin:gate";
-
-  async function sha256(s) {
-    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
-    return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, "0")).join("");
-  }
-
-  async function tryUnlock(pw) {
-    const h = await sha256(pw);
-    if (h === PW_HASH) {
-      sessionStorage.setItem(LS_KEY, "1");
-      return true;
-    }
-    return false;
-  }
-
   async function poolMap(items, fn, concurrency = 4) {
     const results = new Array(items.length);
     let i = 0, done = 0;
@@ -157,22 +128,30 @@ const rows: Row[] = [
       tbody.innerHTML = `<tr><td colspan="6" class="text-center py-12 text-zinc-400">暂无投票数据</td></tr>`;
       return;
     }
-    tbody.innerHTML = filtered.map((r, i) => `
+    tbody.innerHTML = filtered.map((r, i) => {
+      const section = ["ai", "invest", "photo"].includes(r.section) ? r.section : "ai";
+      const href = safeLocalHref(r.href);
+      return `
       <tr class="border-b border-zinc-50 dark:border-zinc-900 hover:bg-zinc-50/50 dark:hover:bg-zinc-900/40">
         <td class="py-2 pr-2 text-zinc-400 font-mono text-xs">${i + 1}</td>
         <td class="py-2 pr-3">
-          <a href="${r.href}" class="text-section-${r.section} hover:underline">${escapeHtml(r.title)}</a>
-          <span class="ml-2 text-[10px] uppercase tracking-[0.1em] text-zinc-400">${r.section}</span>
+          <a href="${escapeHtml(href)}" class="text-section-${section} hover:underline">${escapeHtml(r.title)}</a>
+          <span class="ml-2 text-[10px] uppercase tracking-[0.1em] text-zinc-400">${section}</span>
         </td>
         <td class="py-2 px-3 text-right font-mono">${r.likes}</td>
         <td class="py-2 px-3 text-right font-mono text-zinc-400">${r.dislikes}</td>
         <td class="py-2 px-3 text-right font-mono ${r.likes - r.dislikes > 0 ? 'text-emerald-600' : r.likes - r.dislikes < 0 ? 'text-rose-500' : 'text-zinc-400'}">${r.likes - r.dislikes > 0 ? '+' : ''}${r.likes - r.dislikes}</td>
-        <td class="py-2 pl-3 text-right text-xs text-zinc-400 font-mono">${r.date}</td>
+        <td class="py-2 pl-3 text-right text-xs text-zinc-400 font-mono">${escapeHtml(r.date)}</td>
       </tr>
-    `).join("");
+    `;
+    }).join("");
   }
   function escapeHtml(s) {
-    return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    return String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  }
+  function safeLocalHref(value) {
+    const href = String(value ?? "");
+    return href.startsWith("/") && !href.startsWith("//") ? href : "#";
   }
 
   async function loadAll() {
@@ -185,7 +164,11 @@ const rows: Row[] = [
         const r = await fetch(`/api/feedback?slug=${encodeURIComponent(row.slug)}`);
         if (!r.ok) return { ...row, likes: 0, dislikes: 0 };
         const j = await r.json();
-        return { ...row, likes: j.likes ?? 0, dislikes: j.dislikes ?? 0 };
+        return {
+          ...row,
+          likes: Number.isFinite(Number(j.likes)) ? Number(j.likes) : 0,
+          dislikes: Number.isFinite(Number(j.dislikes)) ? Number(j.dislikes) : 0,
+        };
       } catch {
         return { ...row, likes: 0, dislikes: 0 };
       }
@@ -211,27 +194,6 @@ const rows: Row[] = [
     document.getElementById("refresh")?.addEventListener("click", loadAll);
   }
 
-  (async () => {
-    if (sessionStorage.getItem(LS_KEY) === "1") {
-      document.getElementById("gate").classList.add("hidden");
-      bind();
-      await loadAll();
-      return;
-    }
-    const input = document.getElementById("gate-pw");
-    const errEl = document.getElementById("gate-err");
-    input?.addEventListener("keydown", async (e) => {
-      if (e.key !== "Enter") return;
-      e.preventDefault();
-      const ok = await tryUnlock(input.value);
-      if (ok) {
-        document.getElementById("gate").classList.add("hidden");
-        bind();
-        await loadAll();
-      } else {
-        errEl?.classList.remove("hidden");
-        input.value = "";
-      }
-    });
-  })();
+  bind();
+  loadAll();
 </script>

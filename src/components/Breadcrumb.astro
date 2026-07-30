@@ -12,6 +12,7 @@
  * 同时输出 schema.org BreadcrumbList JSON-LD，Google 富结果识别。
  */
 import { pathWithLang } from "@/i18n/ui";
+import { serializeJsonLd } from "@/lib/json-ld";
 
 interface Props {
   section: "ai" | "invest" | "hike" | "photo";
@@ -62,4 +63,4 @@ const jsonLd = {
   ))}
 </nav>
 
-<script type="application/ld+json" set:html={JSON.stringify(jsonLd, (_, v) => v === undefined ? undefined : v)}></script>
+<script is:inline type="application/ld+json" set:html={serializeJsonLd(jsonLd)}></script>

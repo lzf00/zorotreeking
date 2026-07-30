@@ -39,17 +39,17 @@ jobs:
     # 大批量回填走 bulk-backfill.yml，独立 6h job
     timeout-minutes: 70
     outputs:
-      committed: ${{ steps.commit.outputs.committed }}
+      committed: ${{ steps.commit.outputs.committed == 'true' || steps.commit_followups.outputs.committed == 'true' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup Node 20
+      - name: Setup Node 22
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
           cache: "npm"
 
       - name: Install deps
@@ -125,6 +125,7 @@ jobs:
 
       # 即使 translate 被 cancel/timeout，也要把已翻好的 en + zh.mdx 提交保住
       - name: Commit embeddings.json + en translations if changed
+        id: commit_followups
         if: always()
         continue-on-error: true
         run: |
@@ -138,12 +139,21 @@ jobs:
           fi
           DATE_CN=$(date -u -d "+8 hours" +%Y-%m-%d 2>/dev/null || date -u +%Y-%m-%d)
           git commit -m "chore(ai): refresh embeddings + en translations $DATE_CN"
+          PUSHED=0
           for i in 1 2 3; do
             git fetch origin main
             git pull --rebase --autostash origin main || { git rebase --abort 2>/dev/null || true; }
-            git push origin HEAD:main && break
+            if git push origin HEAD:main; then
+              PUSHED=1
+              break
+            fi
             sleep $((i * 3))
           done
+          if [ "$PUSHED" != "1" ]; then
+            echo "❌ follow-up push failed after 3 attempts"
+            exit 1
+          fi
+          echo "committed=true" >> "$GITHUB_OUTPUT"
 
   # 跑完后显式调 deploy.yml（GITHUB_TOKEN 推的 commit 不会自己触发 push event）
   deploy:

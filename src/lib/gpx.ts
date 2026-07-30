@@ -1,6 +1,6 @@
 import { XMLParser } from "fast-xml-parser";
 
-export type GpxPoint = { lat: number; lng: number; ele?: number; time?: string };
+type GpxPoint = { lat: number; lng: number; ele?: number; time?: string };
 export type GpxStats = {
   points: GpxPoint[];
   distanceKm: number;

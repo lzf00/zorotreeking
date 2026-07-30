@@ -116,17 +116,17 @@ export default function EtfLiveTurnover() {
         <table className="w-full text-sm min-w-[640px]">
           <thead>
             <tr className="text-[11px] uppercase tracking-[0.1em] text-[var(--text-tertiary)] font-mono border-b border-[var(--border)]">
-              <th className="text-left px-3 py-2 font-medium">ETF</th>
-              <th className="text-right px-3 py-2 font-medium">现价</th>
-              <th className="text-right px-3 py-2 font-medium">涨跌</th>
-              <th className="text-right px-3 py-2 font-medium">今日成交</th>
-              <th className="text-left px-3 py-2 font-medium w-[220px]">vs 昨日全天</th>
+              <th scope="col" className="text-left px-3 py-2 font-medium">ETF</th>
+              <th scope="col" className="text-right px-3 py-2 font-medium">现价</th>
+              <th scope="col" className="text-right px-3 py-2 font-medium">涨跌</th>
+              <th scope="col" className="text-right px-3 py-2 font-medium">今日成交</th>
+              <th scope="col" className="text-left px-3 py-2 font-medium w-[220px]">vs 昨日全天</th>
             </tr>
           </thead>
           <tbody>
             {data.map((d) => {
               const pct = d.change_pct;
-              const chgColor = pct == null ? "" : pct > 0 ? "text-red-600 dark:text-red-400" : pct < 0 ? "text-green-600 dark:text-green-400" : "";
+              const chgColor = pct == null ? "" : pct > 0 ? "text-red-600 dark:text-red-400" : pct < 0 ? "text-green-700 dark:text-green-400" : "";
               const ratio = d.ratio_pct;
               const overFull = (ratio ?? 0) >= 100;
               const barW = ratio == null ? 0 : Math.min(ratio, 100);

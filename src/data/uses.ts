@@ -41,7 +41,7 @@ export const usesData = {
     {
       title: "Site Stack",
       items: [
-        { name: "Astro 4", note: "本站静态生成框架", url: "https://astro.build" },
+        { name: "Astro 7", note: "本站静态生成框架", url: "https://astro.build" },
         { name: "Tailwind CSS", note: "样式" },
         { name: "MDX", note: "文章格式" },
         { name: "Pagefind", note: "客户端全文搜索（无后端）", url: "https://pagefind.app" },
@@ -73,5 +73,3 @@ export const usesData = {
 
   footer: `这份清单不算"推荐"，只是记录我自己怎么用。换工具的频率 ≈ 每年 1-2 个，要换通常因为旧工具的核心承诺没兑现，而不是新工具更花哨。`,
 };
-
-export type UsesData = typeof usesData;

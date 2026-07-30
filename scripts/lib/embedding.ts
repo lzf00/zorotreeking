@@ -2,7 +2,7 @@
  * 豆包 / 火山方舟 embedding 调用。
  * 与 llm.ts 同账号，复用 DOUBAO_API_KEY / ARK_API_KEY。
  *
- * 模型：doubao-embedding-large-text-240915（2048 维）
+ * 默认模型：doubao-embedding-large-text-250515（可通过 DOUBAO_EMBEDDING_MODEL 覆盖）
  * 价格：~¥0.0007/k tokens，相关推荐用够便宜
  *
  * 用途：scripts/generate-embeddings.ts 给每篇文章算向量，存 src/data/embeddings.json，
@@ -12,7 +12,35 @@
 // 多模态 endpoint，doubao-embedding-vision 必须走这个 URL（纯文本 endpoint 不支持）；
 // 请求体改用 [{type:"text",text:"..."}] 结构。
 const EMBED_URL = "https://ark.cn-beijing.volces.com/api/v3/embeddings/multimodal";
-const EMBED_MODEL = process.env.DOUBAO_EMBEDDING_MODEL || "doubao-embedding-large-text-250515";
+export const EMBED_MODEL = process.env.DOUBAO_EMBEDDING_MODEL || "doubao-embedding-large-text-250515";
+
+export interface EmbeddingCache {
+  model: string;
+  dim: number;
+  items: Record<string, { hash: string; vec: number[] }>;
+}
+
+export function ensureEmbeddingCacheModel(
+  cache: EmbeddingCache,
+  model = EMBED_MODEL,
+): { cache: EmbeddingCache; reset: boolean } {
+  if (cache.model === model) return { cache, reset: false };
+  return {
+    cache: { model, dim: 0, items: {} },
+    reset: true,
+  };
+}
+
+export function assertEmbeddingCacheWriteSafe(
+  modelReset: boolean,
+  failed: number,
+): void {
+  if (modelReset && failed > 0) {
+    throw new Error(
+      `embedding model refresh incomplete (${failed} failed); refusing to replace the previous cache`,
+    );
+  }
+}
 
 export async function embed(text: string, opts: { timeoutMs?: number } = {}): Promise<number[]> {
   const apiKey = process.env.DOUBAO_API_KEY || process.env.ARK_API_KEY;

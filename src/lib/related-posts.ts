@@ -9,7 +9,7 @@
  */
 import embeddingsData from "../data/embeddings.json";
 
-interface EmbeddingCache {
+export interface EmbeddingCache {
   model?: string;
   dim?: number;
   items?: Record<string, { hash: string; vec: number[] }>;
@@ -89,19 +89,31 @@ export function getRelatedPosts(
   current: PostLike,
   all: PostLike[],
   n: number = 3,
+  embeddingCache: EmbeddingCache = EMBEDDINGS,
 ): PostRef[] {
+  const limit = Math.max(0, Math.floor(n));
+  if (limit === 0) return [];
+
   const currentIsDigest = isDigestPost(current);
   const candidates = all
     .filter((p) => p.data.translationKey !== current.data.translationKey)
     .filter((p) => currentIsDigest || !isDigestPost(p));
 
-  const items = EMBEDDINGS.items ?? {};
+  const items = embeddingCache.items ?? {};
   const curKey = `${current.collection}/${current.data.translationKey}`;
   const curVec = items[curKey]?.vec;
+  const selected: PostLike[] = [];
+  const selectedKeys = new Set<string>();
+  const addSelected = (post: PostLike) => {
+    const key = `${post.collection}/${post.data.translationKey}`;
+    if (selectedKeys.has(key) || selected.length >= limit) return;
+    selectedKeys.add(key);
+    selected.push(post);
+  };
 
   // ── 优先 embedding ──
   if (curVec && curVec.length > 0) {
-    const scored = candidates
+    const semantic = candidates
       .map((p) => {
         const k = `${p.collection}/${p.data.translationKey}`;
         const v = items[k]?.vec;
@@ -110,31 +122,33 @@ export function getRelatedPosts(
       })
       .filter((x) => x.sim > 0)
       .sort((a, b) => b.sim - a.sim || b.ts - a.ts)
-      .slice(0, n);
-    if (scored.length >= n) return scored.map((x) => toRef(x.p));
-    // 不够 N 篇 → 跌回 tag 算法补
+      .slice(0, limit);
+    semantic.forEach((item) => addSelected(item.p));
+    if (selected.length >= limit) return selected.map(toRef);
+    // 不够 N 篇 → 保留语义结果，再用 tag 算法补
   }
 
   // ── Fallback：tag overlap ──
   const currentTags = new Set(current.data.tags ?? []);
-  const scored = candidates
+  const tagged = candidates
+    .filter((p) => !selectedKeys.has(`${p.collection}/${p.data.translationKey}`))
     .map((p) => {
       const overlap = (p.data.tags ?? []).filter((t) => currentTags.has(t)).length;
       return { p, overlap, ts: p.data.date.getTime() };
     })
     .filter((x) => x.overlap > 0 || currentTags.size === 0)
     .sort((a, b) => b.overlap - a.overlap || b.ts - a.ts)
-    .slice(0, n);
+    .slice(0, limit - selected.length);
+  tagged.forEach((item) => addSelected(item.p));
 
   // 仍不够 → 按时间补
-  if (scored.length < n) {
-    const have = new Set(scored.map((x) => x.p.data.translationKey));
+  if (selected.length < limit) {
     const filler = candidates
-      .filter((p) => !have.has(p.data.translationKey))
+      .filter((p) => !selectedKeys.has(`${p.collection}/${p.data.translationKey}`))
       .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-      .slice(0, n - scored.length);
-    for (const p of filler) scored.push({ p, overlap: 0, ts: p.data.date.getTime() });
+      .slice(0, limit - selected.length);
+    filler.forEach(addSelected);
   }
 
-  return scored.map((x) => toRef(x.p));
+  return selected.map(toRef);
 }

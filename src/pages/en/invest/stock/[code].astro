@@ -6,7 +6,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { useTranslations, pathWithLang } from "@/i18n/ui";
+import { pathWithLang } from "@/i18n/ui";
 
 type Consensus = { target_price?: number; buy_count?: number; overweight_count?: number; total_ratings?: number; coverage?: number; error?: string };
 type Item = { title: string; date: string; snippet: string; error?: string };
@@ -52,7 +52,6 @@ export async function getStaticPaths() {
 const { code } = Astro.props as { code: string };
 const stock = snap?.stocks?.[code] || null;
 const lang = "en" as const;
-const t = useTranslations(lang);
 
 function fmt(v: number | null | undefined, digits = 2, unit = ""): string {
   if (v == null || !Number.isFinite(Number(v))) return "—";
@@ -281,7 +280,7 @@ const backText = stock?.market === "HK" ? "HK market dashboard" : "Market dashbo
               <div class="bg-[var(--surface-2)] px-3 py-2 text-xs text-[var(--text-secondary)] font-semibold">5-day short selling trend</div>
               <table class="w-full text-sm">
                 <thead class="text-[10px] text-[var(--text-tertiary)]">
-                  <tr><th class="text-left px-3 py-1.5">Date</th><th class="text-right px-3">Short amt (¥100M)</th><th class="text-right px-3">% market</th></tr>
+                  <tr><th scope="col" class="text-left px-3 py-1.5">Date</th><th scope="col" class="text-right px-3">Short amt (¥100M)</th><th scope="col" class="text-right px-3">% market</th></tr>
                 </thead>
                 <tbody class="divide-y divide-[var(--border)]">
                   {stock.details.capital_flow.short_trend_5d.map((t) => (

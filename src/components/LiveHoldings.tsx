@@ -149,14 +149,14 @@ export default function LiveHoldings({ holdings }: Props) {
           <table className="w-full text-sm">
             <thead className="bg-[var(--bg-soft)] text-xs text-[var(--text-secondary)]">
               <tr>
-                <th className="text-left p-3 font-semibold">代码</th>
-                <th className="text-left p-3 font-semibold">基金</th>
-                <th className="text-right p-3 font-semibold">份额</th>
-                <th className="text-right p-3 font-semibold">成本净值</th>
-                <th className="text-right p-3 font-semibold">估算净值</th>
-                <th className="text-right p-3 font-semibold">今日</th>
-                <th className="text-right p-3 font-semibold">估算市值</th>
-                <th className="text-right p-3 font-semibold">累计盈亏</th>
+                <th scope="col" className="text-left p-3 font-semibold">代码</th>
+                <th scope="col" className="text-left p-3 font-semibold">基金</th>
+                <th scope="col" className="text-right p-3 font-semibold">份额</th>
+                <th scope="col" className="text-right p-3 font-semibold">成本净值</th>
+                <th scope="col" className="text-right p-3 font-semibold">估算净值</th>
+                <th scope="col" className="text-right p-3 font-semibold">今日</th>
+                <th scope="col" className="text-right p-3 font-semibold">估算市值</th>
+                <th scope="col" className="text-right p-3 font-semibold">累计盈亏</th>
               </tr>
             </thead>
             <tbody>

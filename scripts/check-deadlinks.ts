@@ -13,6 +13,7 @@
  *   npx tsx scripts/check-deadlinks.ts --limit=50     # 只扫前 50 个
  *   npx tsx scripts/check-deadlinks.ts --section=ai   # 只扫某栏目
  *   npx tsx scripts/check-deadlinks.ts --concurrency=4 # 调并发
+ *   npx tsx scripts/check-deadlinks.ts --host-concurrency=2 # 单域名并发上限
  *
  * 后续可接入 cron 周扫 + 飞书推坏链清单。
  */
@@ -35,11 +36,18 @@ const CONCURRENCY = (() => {
   const m = ARGS.find((a) => a.startsWith("--concurrency="));
   return m ? Math.max(1, Math.min(16, parseInt(m.split("=")[1], 10) || 8)) : 8;
 })();
+const HOST_CONCURRENCY = (() => {
+  const m = ARGS.find((a) => a.startsWith("--host-concurrency="));
+  return m ? Math.max(1, Math.min(4, parseInt(m.split("=")[1], 10) || 2)) : 2;
+})();
 
 // 这些域名 4xx/5xx 当假阳性（rate-limit / WAF / 不支持 HEAD）。
 const TOLERATED_DOMAINS = [
   "github.com", "twitter.com", "x.com", "linkedin.com",
   "huggingface.co",  // 偶尔 403/429
+  "finance.yahoo.com", // 当前运行环境常被 WAF 直接断开，无 HTTP 状态
+  "barrons.com",       // 订阅墙返回 401，不代表文章 URL 不存在
+  "qbitai.com",        // 高频巡检时会限流或直接超时
   "openai.com",      // WAF 严格
   "anthropic.com",
 ];
@@ -98,9 +106,7 @@ function shouldSkip(url: string): boolean {
   }
 }
 
-function isTolerated(url: string, status: number | null): boolean {
-  if (status === null) return false;
-  if (status < 400) return true;
+function isTolerated(url: string): boolean {
   try {
     const u = new URL(url);
     return TOLERATED_DOMAINS.some((d) => u.hostname === d || u.hostname.endsWith(`.${d}`));
@@ -138,12 +144,36 @@ async function probe(url: string): Promise<LinkResult> {
     }
     const status = r?.status ?? 0;
     const ok = status > 0 && status < 400;
-    const tolerated = !ok && isTolerated(url, status);
+    const tolerated = !ok && isTolerated(url);
     return { ...baseRef, status, ok, tolerated };
   } catch (e: any) {
-    return { ...baseRef, status: null, ok: false, tolerated: false, reason: e.name === "AbortError" ? "timeout" : (e.message || "err").slice(0, 100) };
+    return {
+      ...baseRef,
+      status: null,
+      ok: false,
+      tolerated: isTolerated(url),
+      reason: e.name === "AbortError" ? "timeout" : (e.message || "err").slice(0, 100),
+    };
   } finally {
     clearTimeout(timer);
+  }
+}
+
+const hostSlots = new Map<string, { active: number; waiters: Array<() => void> }>();
+
+async function withHostLimit<T>(url: string, task: () => Promise<T>): Promise<T> {
+  const hostname = new URL(url).hostname;
+  const state = hostSlots.get(hostname) ?? { active: 0, waiters: [] };
+  hostSlots.set(hostname, state);
+  if (state.active >= HOST_CONCURRENCY) {
+    await new Promise<void>((resolve) => state.waiters.push(resolve));
+  }
+  state.active++;
+  try {
+    return await task();
+  } finally {
+    state.active--;
+    state.waiters.shift()?.();
   }
 }
 
@@ -181,9 +211,9 @@ async function main() {
   const refs = Number.isFinite(LIMIT) ? allRefs.slice(0, LIMIT) : allRefs;
   if (refs.length < allRefs.length) console.log(`  --limit=${LIMIT} 只扫前 ${refs.length} 个`);
 
-  console.log(`[deadlinks] 并发 ${CONCURRENCY} 探测…`);
+  console.log(`[deadlinks] 全局并发 ${CONCURRENCY} · 单域名并发 ${HOST_CONCURRENCY} 探测…`);
   const results = await poolMap(refs, async (ref) => {
-    const r = await probe(ref.url);
+    const r = await withHostLimit(ref.url, () => probe(ref.url));
     return { ...r, fromFile: ref.fromFile };
   }, CONCURRENCY);
   console.log();

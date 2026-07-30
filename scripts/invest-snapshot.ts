@@ -87,7 +87,6 @@ function parseSimpleYaml(s: string): any {
   const root: any = {};
   let cur: any = root;
   let curList: any[] | null = null;
-  let curListKey = "";
   let curItem: any = null;
   for (const line of lines) {
     if (!line.trim() || line.trim().startsWith("#")) continue;
@@ -105,7 +104,6 @@ function parseSimpleYaml(s: string): any {
     } else if (line.endsWith(":")) {
       const key = line.slice(0, -1).trim();
       curList = [];
-      curListKey = key;
       cur[key] = curList;
     } else {
       const [k, ...v] = line.split(":");

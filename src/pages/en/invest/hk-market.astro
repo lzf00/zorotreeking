@@ -101,7 +101,7 @@ function fmtAsOf(iso: string | undefined): string {
         <div class="overflow-x-auto">
           <table class="w-full text-sm">
             <thead class="text-[var(--text-tertiary)] text-xs">
-              <tr><th class="text-left py-2">Index</th><th class="text-right">Points</th><th class="text-right">Change</th></tr>
+              <tr><th scope="col" class="text-left py-2">Index</th><th scope="col" class="text-right">Points</th><th scope="col" class="text-right">Change</th></tr>
             </thead>
             <tbody class="divide-y divide-[var(--border)]">
               {snap.indices.map((idx) => (
@@ -127,14 +127,14 @@ function fmtAsOf(iso: string | undefined): string {
           <table class="w-full text-sm">
             <thead class="text-[var(--text-tertiary)] text-xs">
               <tr>
-                <th class="text-left py-2">Stock</th>
-                <th class="text-right">Price</th>
-                <th class="text-right">Today</th>
-                <th class="text-right">5D</th>
-                <th class="text-right">20D</th>
-                <th class="text-right">YTD</th>
-                <th class="text-right">PE TTM</th>
-                <th class="text-right">Detail</th>
+                <th scope="col" class="text-left py-2">Stock</th>
+                <th scope="col" class="text-right">Price</th>
+                <th scope="col" class="text-right">Today</th>
+                <th scope="col" class="text-right">5D</th>
+                <th scope="col" class="text-right">20D</th>
+                <th scope="col" class="text-right">YTD</th>
+                <th scope="col" class="text-right">PE TTM</th>
+                <th scope="col" class="text-right">Detail</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-[var(--border)]">
@@ -173,7 +173,7 @@ function fmtAsOf(iso: string | undefined): string {
         <div class="overflow-x-auto">
           <table class="w-full text-sm">
             <thead class="text-[var(--text-tertiary)] text-xs">
-              <tr><th class="text-left py-2 w-10">#</th><th class="text-left">Stock</th><th class="text-right">Price</th><th class="text-right">Change</th></tr>
+              <tr><th scope="col" class="text-left py-2 w-10">#</th><th scope="col" class="text-left">Stock</th><th scope="col" class="text-right">Price</th><th scope="col" class="text-right">Change</th></tr>
             </thead>
             <tbody class="divide-y divide-[var(--border)]">
               {snap.hotStocks.map((h, i) => h.error ? (

@@ -1,7 +1,6 @@
 # Security headers · nginx 配置建议
 
-把下面这一段加到 110.40.142.199 服务器上 `nginx` 对应 server block 里
-（通常 `/www/server/panel/vhost/nginx/zorotreeking.online.conf` 或 `/etc/nginx/sites-enabled/`）。
+把下面这一段加到生产服务器的 `nginx` 对应 server block 里。
 
 ```nginx
 # === Security Headers ===
@@ -43,10 +42,7 @@ add_header Content-Security-Policy "
 ## 怎么应用
 
 ```bash
-# 服务器上：
-sudo nano /etc/nginx/sites-enabled/zorotreeking.online.conf
-# 把上面那段 paste 到 server { ... } 块里
-
+# 服务器上编辑对应站点配置后：
 sudo nginx -t       # 语法检查
 sudo systemctl reload nginx
 ```

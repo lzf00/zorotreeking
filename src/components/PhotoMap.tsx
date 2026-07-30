@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { normalizeSameOriginUrl } from "@/lib/safe-url";
 
 /**
  * /photo/[slug] 页用：把相册里有 GPS 的照片标在 leaflet 小地图上。
@@ -23,6 +24,7 @@ export default function PhotoMap({ points }: Props) {
   useEffect(() => {
     if (!ref.current || points.length === 0) return;
     let alive = true;
+    let mapInstance: { remove: () => void } | null = null;
 
     (async () => {
       const L = (await import("leaflet")).default;
@@ -33,6 +35,7 @@ export default function PhotoMap({ points }: Props) {
         scrollWheelZoom: false,
         attributionControl: true,
       });
+      mapInstance = map;
 
       L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
         attribution: "&copy; OSM &copy; CARTO",
@@ -53,12 +56,24 @@ export default function PhotoMap({ points }: Props) {
         const ll: [number, number] = [p.lat, p.lng];
         latlngs.push(ll);
         const marker = L.marker(ll, { icon: dotIcon }).addTo(map);
-        const popup = `<div style="font-family:Inter,system-ui;font-size:12px">
-          <a href="${p.src}" target="_blank" rel="noopener">
-            <img src="${p.thumb}" alt="${p.alt}" style="width:120px;height:auto;display:block;border-radius:6px"/>
-          </a>
-          <div style="margin-top:4px;color:#6b7280">${p.alt}</div>
-        </div>`;
+        const popup = document.createElement("div");
+        popup.style.cssText = "font-family:Inter,system-ui;font-size:12px";
+
+        const link = document.createElement("a");
+        link.href = normalizeSameOriginUrl(p.src, window.location.origin);
+        link.target = "_blank";
+        link.rel = "noopener";
+
+        const image = document.createElement("img");
+        image.src = normalizeSameOriginUrl(p.thumb, window.location.origin);
+        image.alt = String(p.alt ?? "");
+        image.style.cssText = "width:120px;height:auto;display:block;border-radius:6px";
+        link.append(image);
+
+        const caption = document.createElement("div");
+        caption.style.cssText = "margin-top:4px;color:#6b7280";
+        caption.textContent = String(p.alt ?? "");
+        popup.append(link, caption);
         marker.bindPopup(popup, { maxWidth: 160 });
       }
 
@@ -67,7 +82,10 @@ export default function PhotoMap({ points }: Props) {
       }
     })();
 
-    return () => { alive = false; };
+    return () => {
+      alive = false;
+      mapInstance?.remove();
+    };
   }, [points]);
 
   if (points.length === 0) return null;

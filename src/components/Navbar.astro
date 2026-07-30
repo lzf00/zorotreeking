@@ -1,5 +1,11 @@
 ---
-import { getLangFromUrl, useTranslations, pathWithLang, defaultLang, type Lang } from "@/i18n/ui";
+import {
+  getLangFromUrl,
+  hasAlternateLanguagePath,
+  useTranslations,
+  pathWithLang,
+  type Lang,
+} from "@/i18n/ui";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -8,6 +14,7 @@ const altLang: Lang = lang === "zh" ? "en" : "zh";
 // 当前 path 切换语言时的目标 URL
 const currentPath = Astro.url.pathname.replace(/^\/(zh|en)(\/|$)/, "/").replace(/\/+/g, "/");
 const switchHref = pathWithLang(currentPath || "/", altLang);
+const canSwitchLanguage = hasAlternateLanguagePath(currentPath);
 
 const nav = [
   { href: pathWithLang("/", lang), label: t("nav.home") },
@@ -25,7 +32,7 @@ const nav = [
       <span class="w-7 h-7 rounded-lg bg-black text-white dark:bg-white dark:text-black grid place-items-center text-sm font-bold leading-none">Z</span>
       <span class="hidden sm:inline text-[15px] font-semibold leading-none tracking-tight">{t("site.title")}</span>
     </a>
-    <ul class="flex items-center gap-5 sm:gap-7 text-[13px] uppercase tracking-[0.14em] font-mono">
+    <ul class="hidden lg:flex items-center gap-5 xl:gap-7 text-[13px] uppercase tracking-[0.14em] font-mono">
       {nav.slice(1, 5).map(item => (
         <li>
           <a href={item.href} class:list={["hover:opacity-60 transition-opacity", item.color]}>{item.label}</a>
@@ -42,15 +49,57 @@ const nav = [
       <button id="open-search" type="button" aria-label={lang === "zh" ? "搜索" : "Search"} title={lang === "zh" ? "搜索 (/)": "Search (/)"} class="w-8 h-8 grid place-items-center rounded-full border border-[var(--border)] hover:bg-[var(--bg-soft)] transition-colors">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       </button>
-      <a href={pathWithLang("/guestbook", lang)} aria-label={lang === "zh" ? "留言板" : "Guestbook"} title={lang === "zh" ? "留言板" : "Guestbook"} class="w-8 h-8 grid place-items-center rounded-full border border-[var(--border)] hover:bg-[var(--bg-soft)] transition-colors">
+      <a href={pathWithLang("/guestbook", lang)} aria-label={lang === "zh" ? "留言板" : "Guestbook"} title={lang === "zh" ? "留言板" : "Guestbook"} class="hidden sm:grid w-8 h-8 place-items-center rounded-full border border-[var(--border)] hover:bg-[var(--bg-soft)] transition-colors">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
       </a>
-      <a href={pathWithLang("/subscribe", lang)} aria-label={lang === "zh" ? "订阅" : "Subscribe"} title={lang === "zh" ? "订阅" : "Subscribe"} class="w-8 h-8 grid place-items-center rounded-full border border-[var(--border)] hover:bg-[var(--bg-soft)] transition-colors">
+      <a href={pathWithLang("/subscribe", lang)} aria-label={lang === "zh" ? "订阅" : "Subscribe"} title={lang === "zh" ? "订阅" : "Subscribe"} class="hidden sm:grid w-8 h-8 place-items-center rounded-full border border-[var(--border)] hover:bg-[var(--bg-soft)] transition-colors">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>
       </a>
-      <a href={switchHref} class="text-xs px-2.5 py-1 rounded-full border border-[var(--border)] hover:bg-[var(--bg-soft)] transition-colors">
-        {t("lang.switch")}
-      </a>
+      {canSwitchLanguage && (
+        <a href={switchHref} class="text-xs px-2.5 py-1 rounded-full border border-[var(--border)] hover:bg-[var(--bg-soft)] transition-colors">
+          {t("lang.switch")}
+        </a>
+      )}
+      <details id="mobile-nav" class="relative lg:hidden">
+        <summary
+          role="button"
+          aria-label={lang === "zh" ? "打开导航菜单" : "Open navigation menu"}
+          aria-controls="mobile-nav-panel"
+          aria-expanded="false"
+          class="w-8 h-8 grid place-items-center rounded-full border border-[var(--border)] hover:bg-[var(--bg-soft)] transition-colors cursor-pointer list-none [&::-webkit-details-marker]:hidden"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="4" y1="7" x2="20" y2="7" />
+            <line x1="4" y1="12" x2="20" y2="12" />
+            <line x1="4" y1="17" x2="20" y2="17" />
+          </svg>
+        </summary>
+        <div id="mobile-nav-panel" class="absolute right-0 top-10 z-50 w-56 rounded-xl border border-[var(--border)] bg-[var(--bg)] shadow-xl p-2">
+          {nav.slice(1).map((item) => (
+            <a
+              href={item.href}
+              class:list={[
+                "flex items-center rounded-lg px-3 py-2.5 text-sm hover:bg-[var(--bg-soft)] transition-colors",
+                item.color,
+              ]}
+            >
+              {item.label}
+            </a>
+          ))}
+          <a
+            href={pathWithLang("/guestbook", lang)}
+            class="flex items-center rounded-lg px-3 py-2.5 text-sm text-[var(--text-secondary)] hover:bg-[var(--bg-soft)] transition-colors"
+          >
+            {t("nav.guestbook")}
+          </a>
+          <a
+            href={pathWithLang("/subscribe", lang)}
+            class="flex items-center rounded-lg px-3 py-2.5 text-sm text-[var(--text-secondary)] hover:bg-[var(--bg-soft)] transition-colors"
+          >
+            {lang === "zh" ? "订阅" : "Subscribe"}
+          </a>
+        </div>
+      </details>
       <button id="theme-toggle" type="button" aria-label="toggle theme" class="w-8 h-8 grid place-items-center rounded-full border border-[var(--border)] hover:bg-[var(--bg-soft)] transition-colors">
         <svg class="hidden dark:block" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
         <svg class="block dark:hidden" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -61,19 +110,21 @@ const nav = [
 
 <script is:inline>
   (() => {
-    const stored = localStorage.getItem("theme");
-    const initial = stored ?? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-    document.documentElement.classList.toggle("dark", initial === "dark");
     document.addEventListener("DOMContentLoaded", () => {
       const btn = document.getElementById("theme-toggle");
       btn?.addEventListener("click", () => {
         const isDark = document.documentElement.classList.toggle("dark");
-        localStorage.setItem("theme", isDark ? "dark" : "light");
+        try { localStorage.setItem("theme", isDark ? "dark" : "light"); } catch {}
       });
       const searchBtn = document.getElementById("open-search");
       searchBtn?.addEventListener("click", () => {
         // 由 SearchModal 在 mount 时挂到 window
         (window).__openSearch?.();
+      });
+      const mobileNav = document.getElementById("mobile-nav");
+      const mobileNavSummary = mobileNav?.querySelector("summary");
+      mobileNav?.addEventListener("toggle", () => {
+        mobileNavSummary?.setAttribute("aria-expanded", mobileNav.hasAttribute("open") ? "true" : "false");
       });
     });
   })();

@@ -57,7 +57,15 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 <script is:inline>
   (() => {
     const $ = (id) => document.getElementById(id);
+    const esc = (value) => String(value ?? "").replace(
+      /[&<>"']/g,
+      (char) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" })[char],
+    );
     const fmtTime = (ts) => new Date(ts * 1000).toLocaleString("en-US", { hour12: false });
+    const setDeleteHint = (message, ok = false) => {
+      $("deleteHint").textContent = message;
+      $("deleteHint").style.color = ok ? "#16a34a" : "#dc2626";
+    };
 
     async function loadMe() {
       $("loadBtn").disabled = true;
@@ -75,12 +83,12 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
         ].map(([l, n]) => `
           <div class="rounded-xl bg-white dark:bg-neutral-900 border border-[var(--border)] p-3 text-center">
             <div class="text-[11px] uppercase tracking-[0.12em] text-[var(--text-tertiary)]">${l}</div>
-            <div class="mt-1 text-2xl font-semibold tabular-nums">${n}</div>
+            <div class="mt-1 text-2xl font-semibold tabular-nums">${Number(n) || 0}</div>
           </div>
         `).join("");
         const pv = d.recent_pageviews || [];
         $("recent").innerHTML = pv.length
-          ? pv.map(p => `<li><span class="text-[var(--text-tertiary)]">${fmtTime(p.ts)}</span> &nbsp; ${p.path}</li>`).join("")
+          ? pv.map(p => `<li><span class="text-[var(--text-tertiary)]">${fmtTime(p.ts)}</span> &nbsp; ${esc(p.path)}</li>`).join("")
           : '<li class="text-[var(--text-tertiary)]">none</li>';
         $("dataBox").classList.remove("hidden");
         $("loadHint").textContent = "Loaded";
@@ -98,13 +106,13 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
         const r = await fetch("/api/data/delete", { method: "POST" });
         const d = await r.json();
         if (d.ok) {
-          $("deleteHint").innerHTML = `<span style="color:#16a34a">Deleted: feedback ${d.deleted.feedback} · pageviews ${d.deleted.pageviews} · filtered ${d.deleted.filtered_chats}</span>`;
+          setDeleteHint(`Deleted: feedback ${Number(d.deleted.feedback) || 0} · pageviews ${Number(d.deleted.pageviews) || 0} · filtered ${Number(d.deleted.filtered_chats) || 0}`, true);
           setTimeout(loadMe, 400);
         } else {
-          $("deleteHint").innerHTML = '<span style="color:#dc2626">Failed</span>';
+          setDeleteHint("Failed");
         }
       } catch (e) {
-        $("deleteHint").innerHTML = `<span style="color:#dc2626">Error: ${e.message}</span>`;
+        setDeleteHint(`Error: ${e.message}`);
       } finally {
         $("deleteBtn").disabled = false;
       }

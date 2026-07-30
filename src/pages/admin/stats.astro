@@ -2,10 +2,10 @@
 /**
  * /admin/stats —— 个人访问数据看板（基于 /api/track 落库的数据）
  *
- * 鉴权：noindex + 前端密码门（同 /admin/feedback）。
- *      若要更严，给 nginx 加 basic auth 把整个 /admin/ 路径锁住。
+ * 鉴权：由后端校验用户在本页临时输入的管理口令。
+ *      口令不写入静态产物，也不持久化到浏览器存储。
  *
- * 数据源：GET /api/admin/stats?key={pw}
+ * 数据源：GET /api/admin/stats，请求头 X-Admin-Token: {pw}
  *   返回（约定）：
  *     {
  *       total_pv: number,
@@ -66,7 +66,8 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
         <p class="mt-2 text-xs text-zinc-500 leading-relaxed">
           需要在 FastAPI 后端实现一个聚合 <code>/api/track</code> 落库数据的接口。建议结构：
         </p>
-        <pre class="mt-3 text-[11px] bg-zinc-100 dark:bg-zinc-800 rounded p-3 overflow-x-auto">{`GET /api/admin/stats?key=zoro-stats-2026
+        <pre class="mt-3 text-[11px] bg-zinc-100 dark:bg-zinc-800 rounded p-3 overflow-x-auto">{`GET /api/admin/stats
+X-Admin-Token: {admin-key}
 → {
   total_pv, total_uv,
   today_pv, today_uv,
@@ -81,15 +82,17 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 </BaseLayout>
 
 <script is:inline>
-  const PW_HASH = "dda2cfcdc90a2e5fee01495a0d0396911b8caeb98851ec343e99d5f58e5f8c26";
-  const PW_PLAIN_FOR_API = "zoro-stats-2026";   // 后端鉴权用同一口令
-  const LS_KEY = "zoro:admin:gate";
-
-  async function sha256(s) {
-    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
-    return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, "0")).join("");
-  }
   function $(id) { return document.getElementById(id); }
+  function esc(value) {
+    return String(value ?? "").replace(
+      /[&<>"']/g,
+      (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char],
+    );
+  }
+  function safePath(value) {
+    const path = String(value ?? "");
+    return path.startsWith("/") && !path.startsWith("//") ? path : "#";
+  }
 
   function fmt(n) {
     if (n == null) return "—";
@@ -126,9 +129,9 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
     svg.innerHTML = `
       <path d="${area}" fill="rgba(245,158,11,0.18)" />
       <path d="${path}" fill="none" stroke="#f59e0b" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" />
-      ${byDay.map((d, i) => `<circle cx="${xs[i].toFixed(1)}" cy="${ys[i].toFixed(1)}" r="2" fill="#f59e0b"><title>${d.date}: PV ${d.pv} · UV ${d.uv}</title></circle>`).join("")}
-      <text x="${pad}" y="${h - 2}" font-size="9" fill="#a1a1aa">${byDay[0].date}</text>
-      <text x="${w - pad}" y="${h - 2}" font-size="9" fill="#a1a1aa" text-anchor="end">${byDay[byDay.length - 1].date}</text>
+      ${byDay.map((d, i) => `<circle cx="${xs[i].toFixed(1)}" cy="${ys[i].toFixed(1)}" r="2" fill="#f59e0b"><title>${esc(d.date)}: PV ${Number(d.pv) || 0} · UV ${Number(d.uv) || 0}</title></circle>`).join("")}
+      <text x="${pad}" y="${h - 2}" font-size="9" fill="#a1a1aa">${esc(byDay[0].date)}</text>
+      <text x="${w - pad}" y="${h - 2}" font-size="9" fill="#a1a1aa" text-anchor="end">${esc(byDay[byDay.length - 1].date)}</text>
     `;
   }
 
@@ -136,10 +139,12 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
     if (!rows?.length) return;
     $("top-paths-section").classList.remove("hidden");
     const max = rows[0].pv || 1;
-    $("top-paths").innerHTML = rows.map((r) => `
+    $("top-paths").innerHTML = rows.map((r) => {
+      const path = String(r.path ?? "");
+      return `
       <tr class="border-b border-zinc-50 dark:border-zinc-900">
         <td class="py-1.5 pr-3 truncate max-w-[260px]">
-          <a href="${r.path}" class="text-amber-700 dark:text-amber-400 hover:underline text-xs">${r.path}</a>
+          <a href="${esc(safePath(path))}" class="text-amber-700 dark:text-amber-400 hover:underline text-xs">${esc(path)}</a>
         </td>
         <td class="py-1.5 w-24">
           <div class="h-1.5 rounded-full bg-amber-100 dark:bg-amber-900/30 overflow-hidden">
@@ -148,7 +153,8 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
         </td>
         <td class="py-1.5 pl-3 text-right text-xs tabular-nums text-zinc-500">${fmt(r.pv)}</td>
       </tr>
-    `).join("");
+    `;
+    }).join("");
   }
 
   function renderTopRefs(rows) {
@@ -157,7 +163,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
     const max = rows[0].pv || 1;
     $("top-refs").innerHTML = rows.map((r) => `
       <tr class="border-b border-zinc-50 dark:border-zinc-900">
-        <td class="py-1.5 pr-3 truncate max-w-[200px] text-xs">${r.referrer || "(直接访问)"}</td>
+        <td class="py-1.5 pr-3 truncate max-w-[200px] text-xs">${esc(r.referrer || "(直接访问)")}</td>
         <td class="py-1.5 w-24">
           <div class="h-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
             <div class="h-full bg-zinc-400 dark:bg-zinc-500" style="width:${(r.pv / max * 100).toFixed(0)}%"></div>
@@ -168,40 +174,46 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
     `).join("");
   }
 
-  async function loadStats() {
-    $("board").classList.remove("hidden");
+  async function loadStats(adminKey) {
+    $("empty").classList.add("hidden");
     try {
-      const r = await fetch(`/api/admin/stats?key=${encodeURIComponent(PW_PLAIN_FOR_API)}`);
+      const r = await fetch("/api/admin/stats", {
+        headers: { "X-Admin-Token": adminKey },
+        cache: "no-store",
+      });
+      if (r.status === 401 || r.status === 403) return false;
       if (!r.ok) throw new Error(`HTTP ${r.status}`);
       const d = await r.json();
+      $("board").classList.remove("hidden");
       renderKpis(d);
       renderTrend(d.by_day);
       renderTopPaths(d.top_paths);
       renderTopRefs(d.top_refs);
+      return true;
     } catch (_) {
+      $("board").classList.remove("hidden");
       renderKpis({ total_pv: null, total_uv: null, today_pv: null, today_uv: null });
       $("empty").classList.remove("hidden");
+      return true;
     }
   }
 
-  (async () => {
-    if (sessionStorage.getItem(LS_KEY) === "1") {
-      $("gate").classList.add("hidden");
-      await loadStats();
-      return;
-    }
+  (() => {
     const input = $("gate-pw"), err = $("gate-err");
     input?.addEventListener("keydown", async (e) => {
       if (e.key !== "Enter") return;
       e.preventDefault();
-      const h = await sha256(input.value);
-      if (h === PW_HASH) {
-        sessionStorage.setItem(LS_KEY, "1");
+      err?.classList.add("hidden");
+      input.disabled = true;
+      const ok = await loadStats(input.value);
+      input.disabled = false;
+      if (ok) {
         $("gate").classList.add("hidden");
-        await loadStats();
+        input.value = "";
       } else {
         err?.classList.remove("hidden");
         input.value = "";
+        input.focus();
       }
     });
   })();

@@ -1,6 +1,6 @@
 import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
-import tailwind from "@astrojs/tailwind";
+import { unified } from "@astrojs/markdown-remark";
 import react from "@astrojs/react";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
@@ -12,26 +12,30 @@ const SITE = "https://www.zorotreeking.online";
 export default defineConfig({
   site: SITE,
   output: "static",
-  integrations: [
-    mdx(),
-    tailwind({ applyBaseStyles: false }),
-    react(),
-  ],
+  integrations: [mdx(), react()],
   i18n: {
     defaultLocale: "zh",
     locales: ["zh", "en"],
     routing: { prefixDefaultLocale: false },
   },
   markdown: {
+    processor: unified({
+      rehypePlugins: [
+        rehypeSlug,
+        [rehypeAutolinkHeadings, {
+          behavior: "append",
+          properties: {
+            className: ["heading-anchor"],
+            ariaHidden: "true",
+            tabIndex: -1,
+          },
+        }],
+      ],
+    }),
     shikiConfig: {
       themes: { light: "github-light", dark: "github-dark" },
       wrap: true,
     },
-    rehypePlugins: [
-      rehypeSlug,
-      // append: 不再把整个标题包成锚链，避免与"标题即外链"冲突；末尾追加一个隐形锚作 #fragment 定位
-      [rehypeAutolinkHeadings, { behavior: "append", properties: { className: ["heading-anchor"], ariaHidden: "true", tabIndex: -1 } }],
-    ],
   },
   // 开发期把 /api/* 代理到生产 AI Agent。
   // 备案已下来，直接用 HTTPS 域名，不用再 IP + Host header 绕路。

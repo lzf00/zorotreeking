@@ -36,7 +36,7 @@ function transform(src: string): { out: string; touched: number } {
 
   // 3) meta 行去 emoji（保持 *...* 斜体语义）
   //    匹配 "*📄 HF ★ ..." 或 "*🕐 时间 ..."
-  out = out.replace(/^\*([^*\n]+)\*$/gm, (full, content) => {
+  out = out.replace(/^\*([^*\n]+)\*$/gm, (_full, content) => {
     const cleaned = content.replace(emojiRe, "").trim();
     if (cleaned !== content.trim()) touched++;
     return `*${cleaned}*`;

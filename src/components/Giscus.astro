@@ -27,6 +27,7 @@ const giscusLang = lang === "en" ? "en" : "zh-CN";
 {enabled ? (
   bare ? (
     <script
+      is:inline
       src="https://giscus.app/client.js"
       data-repo={repo}
       data-repo-id={repoId}
@@ -50,6 +51,7 @@ const giscusLang = lang === "en" ? "en" : "zh-CN";
         {lang === "en" ? "Comments" : "评论 · Comments"}
       </div>
       <script
+        is:inline
         src="https://giscus.app/client.js"
         data-repo={repo}
         data-repo-id={repoId}

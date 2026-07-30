@@ -1,9 +1,6 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { useTranslations } from "@/i18n/ui";
-import { aboutData } from "@/data/about";
-const t = useTranslations("en");
-const { contact } = aboutData;
+import { siteContact as contact } from "@/data/contact";
 ---
 <BaseLayout title="Contact · Abuse Report" description="ZoroTreeking contact info · casual channels · abuse report">
   <article class="max-w-3xl mx-auto px-5 pt-16 pb-24">

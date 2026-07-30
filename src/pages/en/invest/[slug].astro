@@ -1,5 +1,5 @@
 ---
-import { getCollection, type CollectionEntry } from "astro:content";
+import { getCollection, render } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import StarRating from "@/components/StarRating";
 import TagChip from "@/components/TagChip.astro";
@@ -17,9 +17,8 @@ export async function getStaticPaths() {
   return all.map((entry) => ({ params: { slug: entry.data.translationKey }, props: { entry, all } }));
 }
 
-interface Props { entry: CollectionEntry<"invest">; all: CollectionEntry<"invest">[] }
 const { entry, all } = Astro.props;
-const { Content } = await entry.render();
+const { Content } = await render(entry);
 const lang = "en" as const;
 const t = useTranslations(lang);
 

@@ -47,10 +47,10 @@ const months = Object.keys(groups).sort().reverse();
         </h2>
         <div class="grid sm:grid-cols-2 gap-4">
           {groups[ym].map(d => {
-            const tldr = extractTLDR(d.body);
+            const tldr = extractTLDR(d.body ?? "");
             const firstLine = tldr?.summary?.[0] ?? null;
             const tags = tldr?.tags?.slice(0, 3) ?? [];
-            const fallbackHighlights = !tldr ? extractDigestHighlights(d.body, 2) : [];
+            const fallbackHighlights = !tldr ? extractDigestHighlights(d.body ?? "", 2) : [];
             const cover = d.data.cover;
             return (
               <a href={pathWithLang(`/ai/${d.data.translationKey}`, lang)}

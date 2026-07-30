@@ -35,6 +35,8 @@ const TX = {
     listTitle: "留言墙",
     empty: "还没有已通过的留言。做第一个吧。",
     loadMore: "加载更多",
+    loadingMore: "加载中……",
+    listFail: "留言加载失败，请稍后重试。",
     countPrefix: "共",
     countSuffix: "条已通过留言",
     tooShort: "留言太短了，至少 5 个字。",
@@ -59,6 +61,8 @@ const TX = {
     listTitle: "Wall",
     empty: "No approved messages yet. Be the first.",
     loadMore: "Load more",
+    loadingMore: "Loading…",
+    listFail: "Messages could not be loaded. Please try again later.",
     countPrefix: "",
     countSuffix: "approved message(s)",
     tooShort: "Too short — at least 5 characters.",
@@ -86,6 +90,7 @@ export default function GuestbookBoard({ lang = "zh" }: Props) {
   const [items, setItems] = useState<Entry[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(false);
 
   const [nickname, setNickname] = useState("");
@@ -99,25 +104,37 @@ export default function GuestbookBoard({ lang = "zh" }: Props) {
   useEffect(() => {
     let stopped = false;
     fetch(`${API}?limit=${PAGE}`)
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.json();
+      })
       .then((data) => {
         if (stopped) return;
         setItems(data.items || []);
         setTotal(data.total || 0);
         setHasMore((data.items || []).length >= PAGE);
       })
-      .catch(() => { if (!stopped) setNotice({ kind: "err", msg: "网络错误" }); })
+      .catch(() => { if (!stopped) setNotice({ kind: "err", msg: t.listFail }); })
       .finally(() => { if (!stopped) setLoading(false); });
     return () => { stopped = true; };
   }, []);
 
   async function loadMore() {
     const last = items[items.length - 1];
-    if (!last) return;
-    const r = await fetch(`${API}?limit=${PAGE}&before=${last.ts}`);
-    const data = await r.json();
-    setItems([...items, ...(data.items || [])]);
-    setHasMore((data.items || []).length >= PAGE);
+    if (!last || loadingMore) return;
+    setLoadingMore(true);
+    try {
+      const r = await fetch(`${API}?limit=${PAGE}&before=${last.ts}`);
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      const data = await r.json();
+      const nextItems: Entry[] = Array.isArray(data.items) ? data.items : [];
+      setItems((current) => [...current, ...nextItems]);
+      setHasMore(nextItems.length >= PAGE);
+    } catch {
+      setNotice({ kind: "err", msg: t.listFail });
+    } finally {
+      setLoadingMore(false);
+    }
   }
 
   async function submit(e: React.FormEvent) {
@@ -264,8 +281,9 @@ export default function GuestbookBoard({ lang = "zh" }: Props) {
         <div className="mt-4 text-center">
           <button
             onClick={loadMore}
+            disabled={loadingMore}
             className="text-sm text-[var(--text-secondary)] hover:text-[var(--text)] border border-[var(--border)] rounded px-4 py-1.5"
-          >{t.loadMore}</button>
+          >{loadingMore ? t.loadingMore : t.loadMore}</button>
         </div>
       )}
     </div>

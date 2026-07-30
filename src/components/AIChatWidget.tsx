@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import DOMPurify from "dompurify";
 import { marked } from "marked";
 
 /**
@@ -45,14 +46,39 @@ type ModelsInfo = {
   default: string;
 };
 
+class ChatStreamError extends Error {}
+
 marked.setOptions({ breaks: true, gfm: true });
 
 function renderMd(text: string): string {
   try {
-    return marked.parse(text || "") as string;
+    return DOMPurify.sanitize(marked.parse(text || "") as string, {
+      USE_PROFILES: { html: true },
+      FORBID_TAGS: ["form", "input", "button", "iframe", "object", "embed", "style"],
+      FORBID_ATTR: ["style"],
+    });
   } catch {
-    return text;
+    return "";
   }
+}
+
+function safeSourceUrl(value?: string): string | undefined {
+  const url = value?.trim();
+  if (!url) return undefined;
+  if (/^https?:\/\//i.test(url)) return url;
+  if (/^\/(?!\/)/.test(url)) return url;
+  return undefined;
+}
+
+function toSource(value: unknown): Source | undefined {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return undefined;
+  const source = value as Record<string, unknown>;
+  return {
+    title: typeof source.title === "string" ? source.title : undefined,
+    url: typeof source.url === "string" ? source.url : undefined,
+    snippet: typeof source.snippet === "string" ? source.snippet : undefined,
+    site: typeof source.site === "string" ? source.site : undefined,
+  };
 }
 
 export default function AIChatWidget() {
@@ -78,13 +104,25 @@ export default function AIChatWidget() {
       if (saved) setCurrentModel(saved);
     } catch {}
     fetch("/api/models")
-      .then((r) => r.json() as Promise<ModelsInfo>)
+      .then((r) => {
+        if (!r.ok) throw new Error(`models HTTP ${r.status}`);
+        return r.json() as Promise<ModelsInfo>;
+      })
       .then((info) => {
-        if (info.models && info.models.length) {
-          setModels(info.models);
+        const availableModels = Array.isArray(info.models)
+          ? info.models.filter((model): model is string => typeof model === "string" && model.length > 0)
+          : [];
+        if (availableModels.length) {
+          setModels(availableModels);
           // 没存过偏好就用 default
           const saved = localStorage.getItem(MODEL_KEY) || "";
-          if (!saved && info.default) setCurrentModel(info.default);
+          if (saved && availableModels.includes(saved)) {
+            setCurrentModel(saved);
+          } else if (typeof info.default === "string" && availableModels.includes(info.default)) {
+            setCurrentModel(info.default);
+          } else {
+            setCurrentModel(availableModels[0]);
+          }
         }
       })
       .catch(() => {});
@@ -107,6 +145,15 @@ export default function AIChatWidget() {
   // 打开面板时清未读
   useEffect(() => {
     if (open) setUnread(false);
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("keydown", closeOnEscape);
+    return () => document.removeEventListener("keydown", closeOnEscape);
   }, [open]);
 
   async function send(text: string) {
@@ -136,6 +183,9 @@ export default function AIChatWidget() {
         });
         return;
       }
+      if (!resp.ok) {
+        throw new Error(`服务器返回 HTTP ${resp.status}`);
+      }
       if (!resp.body) throw new Error("no body");
       const reader = resp.body.getReader();
       const decoder = new TextDecoder();
@@ -145,53 +195,68 @@ export default function AIChatWidget() {
       let sources: Source[] | undefined;
       let intent: Intent | undefined;
 
+      const handleSseLine = (rawLine: string) => {
+        const line = rawLine.replace(/\r$/, "");
+        if (!line.startsWith("data:")) return;
+        const data = line.slice(5).trimStart();
+        if (!data || data === "[DONE]") return;
+
+        let obj: Record<string, unknown>;
+        try {
+          const parsed = JSON.parse(data) as unknown;
+          if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return;
+          obj = parsed as Record<string, unknown>;
+        } catch (error) {
+          console.error("[chat] invalid SSE JSON:", error);
+          return;
+        }
+
+        if (typeof obj.session_id === "string" && obj.session_id) {
+          sessionId.current = obj.session_id;
+          try { localStorage.setItem(SESSION_KEY, obj.session_id); } catch {}
+        }
+        if (obj.type === "sources") {
+          sources = Array.isArray(obj.sources)
+            ? obj.sources.map(toSource).filter((source): source is Source => Boolean(source))
+            : [];
+          if (typeof obj.intent === "string") {
+            intent = {
+              intent: obj.intent,
+              intent_label: typeof obj.intent_label === "string" ? obj.intent_label : undefined,
+              intent_emoji: typeof obj.intent_emoji === "string" ? obj.intent_emoji : undefined,
+            };
+          }
+        } else if (obj.type === "reasoning" && typeof obj.text === "string") {
+          reasoningBuf += obj.text;
+        } else if (obj.type === "content" && typeof obj.text === "string") {
+          contentBuf += obj.text;
+        } else if (obj.type === "error") {
+          throw new ChatStreamError(typeof obj.text === "string" && obj.text ? obj.text : "服务器错误");
+        }
+
+        setMessages((prev) => {
+          const next = [...prev];
+          next[next.length - 1] = {
+            role: "assistant",
+            text: contentBuf,
+            reasoning: reasoningBuf || undefined,
+            sources,
+            intent,
+          };
+          return next;
+        });
+      };
+
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
         buffer += decoder.decode(value, { stream: true });
         const lines = buffer.split("\n");
         buffer = lines.pop() ?? "";
-        for (const line of lines) {
-          if (!line.startsWith("data: ")) continue;
-          const data = line.slice(6).trim();
-          if (data === "[DONE]") continue;
-          try {
-            const obj = JSON.parse(data);
-            if (obj.session_id) {
-              sessionId.current = obj.session_id;
-              try { localStorage.setItem(SESSION_KEY, obj.session_id); } catch {}
-            }
-            if (obj.type === "sources") {
-              sources = obj.sources || [];
-              if (obj.intent) {
-                intent = { intent: obj.intent, intent_label: obj.intent_label, intent_emoji: obj.intent_emoji };
-              }
-            } else if (obj.type === "reasoning" && obj.text) {
-              reasoningBuf += obj.text;
-            } else if (obj.type === "content" && obj.text) {
-              contentBuf += obj.text;
-            } else if (obj.type === "error") {
-              throw new Error(obj.text || "服务器错误");
-            }
-            setMessages((prev) => {
-              const next = [...prev];
-              next[next.length - 1] = {
-                role: "assistant",
-                text: contentBuf,
-                reasoning: reasoningBuf || undefined,
-                sources,
-                intent,
-              };
-              return next;
-            });
-          } catch (e) {
-            // 单个 chunk 解析失败，跳过
-            if (e instanceof Error && e.message !== "Unexpected end of JSON input") {
-              console.error("[chat] parse error:", e);
-            }
-          }
-        }
+        lines.forEach(handleSseLine);
       }
+      buffer += decoder.decode();
+      if (buffer) buffer.split("\n").forEach(handleSseLine);
       if (!open) setUnread(true);
     } catch (e: any) {
       setMessages((prev) => {
@@ -231,6 +296,8 @@ export default function AIChatWidget() {
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-label="AI 助手"
+        aria-controls="ai-chat-panel"
+        aria-expanded={open}
         title="AI 助手"
         style={{
           position: "fixed",
@@ -275,6 +342,7 @@ export default function AIChatWidget() {
       {/* 聊天面板 */}
       {open && (
         <div
+          id="ai-chat-panel"
           role="dialog"
           aria-label="AI 助手对话框"
           style={{
@@ -493,7 +561,7 @@ function Bubble({ msg }: { msg: Message }) {
           <div style={{ fontSize: "11px", color: "var(--text-tertiary, #9ca3af)" }}>参考来源 · {msg.sources.length}</div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
             {msg.sources.map((s, i) => (
-              <a key={i} href={s.url} target="_blank" rel="noopener noreferrer"
+              <a key={i} href={safeSourceUrl(s.url)} target="_blank" rel="noopener noreferrer"
                 style={{
                   display: "inline-flex", alignItems: "center", gap: "5px",
                   padding: "4px 9px", border: "1px solid var(--border, #e5e7eb)",

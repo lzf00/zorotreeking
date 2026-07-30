@@ -1,9 +1,15 @@
-import { defineCollection, z } from "astro:content";
+import { defineCollection } from "astro:content";
+import { glob } from "astro/loaders";
+import { z } from "astro/zod";
 
 // 通用：所有文章共享的语言/翻译关联字段
 const i18nBase = {
   lang: z.enum(["zh", "en"]),
-  translationKey: z.string(),  // 中英两份共享同一个 key，用来跨语言定位
+  // 中英两份共享同一个 key，并直接用于 URL、OG、推荐和 sitemap。
+  translationKey: z.string().regex(
+    /^[A-Za-z0-9]+(?:[._-][A-Za-z0-9]+)*$/,
+    "translationKey must be a URL-safe segment",
+  ),
   title: z.string(),
   description: z.string().optional(),
   date: z.coerce.date(),
@@ -14,7 +20,7 @@ const i18nBase = {
 };
 
 const ai = defineCollection({
-  type: "content",
+  loader: glob({ base: "./src/content/ai", pattern: "**/*.{md,mdx}" }),
   schema: z.object({
     ...i18nBase,
     category: z.enum(["basics", "paper", "tool", "applied", "thoughts"]).default("thoughts"),
@@ -22,7 +28,7 @@ const ai = defineCollection({
 });
 
 const investPosts = defineCollection({
-  type: "content",
+  loader: glob({ base: "./src/content/invest", pattern: "**/*.{md,mdx}" }),
   schema: z.object({
     ...i18nBase,
     period: z.string().optional(),     // e.g. "2026-05"
@@ -32,7 +38,10 @@ const investPosts = defineCollection({
 
 // 投资持仓快照（YAML，非 mdx）
 const investPortfolio = defineCollection({
-  type: "data",
+  loader: glob({
+    base: "./src/content/invest-portfolio",
+    pattern: "**/[^_]*.{json,yaml,yml}",
+  }),
   schema: z.object({
     period: z.string(),
     asOf: z.coerce.date(),
@@ -53,7 +62,7 @@ const investPortfolio = defineCollection({
 });
 
 const photo = defineCollection({
-  type: "content",
+  loader: glob({ base: "./src/content/photo", pattern: "**/*.{md,mdx}" }),
   schema: z.object({
     ...i18nBase,
     location: z.string().optional(),
@@ -68,7 +77,7 @@ const photo = defineCollection({
 });
 
 const hike = defineCollection({
-  type: "content",
+  loader: glob({ base: "./src/content/hike", pattern: "**/*.{md,mdx}" }),
   schema: z.object({
     ...i18nBase,
     location: z.string(),
