@@ -35,9 +35,7 @@ jobs:
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
         # assert 失败的话 exit code 非 0；assert 设了 warn 不会 fail，error 才 fail
-        run: |
-          npm install -g @lhci/cli@0.13.x
-          lhci autorun
+        run: npx --yes @lhci/cli@0.13.x autorun
 
       - name: Upload reports as artifact
         if: always()
