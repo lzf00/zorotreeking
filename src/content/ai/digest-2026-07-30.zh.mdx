@@ -1,0 +1,215 @@
+---
+lang: zh
+translationKey: digest-2026-07-30
+title: "AI 每日精选 · 2026-07-30"
+description: "21 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-07-30
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">海外AI大厂密集推新：Anthropic发Claude Opus 5，DeepMind上Lyria3.5，OpenAI公开ARC-AGI提分方案</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">多项高效AI技术发布：TurboVLA仅占1G显存实时运行，低参安全检测器性能超Llama Guard3</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内AI动态活跃：翁荔光速回归OpenAI，国产安全智能体跻身全球前四位列国内第一</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 大厂上新</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ 效率优化</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 技术突破</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔒 AI安全</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🌏 国内动态</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.27205" target="_blank" rel="noopener noreferrer">TurboVLA: Real-Time Vision-Language-Action Model at 32 Hz on an RTX 4090 with &lt;1 GB VRAM</a>
+
+*HF ★ 8 · Hengyi Xie, Chenfei Yao, Xianjin Wu… · [HF 镜像](https://huggingface.co/papers/2607.27205)*
+
+针对传统以LLM为核心的视觉-语言-动作（VLA）模型推理开销高的问题，本工作提出TurboVLA新范式，摒弃LLM中间枢纽设计，独立编码视觉、语言信号后经轻量双向交互直接映射动作。其仅0.2B参数，在RTX4090上推理时延31.2ms（约32Hz）、显存占0.9GB，LIBERO基准成功率达97.7%，性能持平甚至优于更大的VLA模型。
+
+<FeedbackButtons slug="item:arxiv-2607.27205" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.27180" target="_blank" rel="noopener noreferrer">HumanCLAW: Can Vision-Language Models Act Through a Body?</a>
+
+*HF ★ 2 · Siyao Li, Jiawei Gu, Shuai Liu… · [HF 镜像](https://huggingface.co/papers/2607.27180)*
+
+针对视觉语言模型（VLM）具身行动失败原因难区分是决策失误还是控制故障的问题，本文提出HumanCLAW评估框架，解耦行动决策与底层执行，排除执行端干扰，仅评测VLM的行动决策能力。基于该框架搭建含1218个长时序室内具身任务的测试集，测试9款主流VLM后发现最高成功率仅16.8%，当前VLM核心短板不是目标识别，而是缺乏具身自我感知。
+
+<FeedbackButtons slug="item:arxiv-2607.27180" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.27191" target="_blank" rel="noopener noreferrer">Can AI agents conduct open-ended AI research? Early evidence from two case studies</a>
+
+*HF ★ 1 · Peter Kirgis, Sayash Kapoor, Andrew Schwartz… · [HF 镜像](https://huggingface.co/papers/2607.27191)*
+
+针对现有AI自主开展开放式科研的评估方法存在缺陷，该研究提出“影子评估”方案：以两篇未发表NeurIPS投稿的核心科研问题为任务，给前沿智能体6天算力支持，由原作者评价产出。结果显示当前AI可独立完成工程环节，但无法推进核心科研问题，存在五类典型失败，尚不具备完整科研能力。
+
+<FeedbackButtons slug="item:arxiv-2607.27191" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.25802" target="_blank" rel="noopener noreferrer">Explicit Layer Modeling for Video Object Insertion and Layer Decomposition</a>
+
+*HF ★ 1 · Kyujin Han, Seungjoo Shin, Sunghyun Cho · [HF 镜像](https://huggingface.co/papers/2607.25802)*
+
+针对现有视频编辑缺乏显式分层表示、物体插入与分层任务性能受限的问题，该研究构建TriLayer大规模三元组视频数据集，含对齐的合成、带配套特效的前后景标注。基于此提出双分支扩散框架DBL-Diffusion，可完成分层物体插入与视频分层分解，实验验证显式层建模能大幅提升两项任务效果。
+
+<FeedbackButtons slug="item:arxiv-2607.25802" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.27155" target="_blank" rel="noopener noreferrer">OmegaUse-OfficeVal: Benchmarking LLM Agents on Long-Horizon Office-Suite Tasks with Economic Grounding</a>
+
+*HF ★ 0 · Jingbo Zhou, Yusai Zhao, Qi Bao… · [HF 镜像](https://huggingface.co/papers/2607.27155)*
+
+针对现有基准难以评估LLM智能体长周期办公流程任务执行性价比的问题，研究团队推出OmegaUse-OfficeVal基准，包含100个脱敏后的真实从业者办公任务，配套人力耗时、任务定价两类经济指标与代码校验工具。实测显示当前前沿LLM执行成本、速度均优于人类，但交付质量远未达人类水平，相关资源已完全开源。
+
+<FeedbackButtons slug="item:arxiv-2607.27155" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2607.22545" target="_blank" rel="noopener noreferrer">Semalith v1.4: A Calibrated 184M Safety Classifier Achieving State-of-the-Art Prompt-Injection Detection at 44x Fewer Parameters than Llama-Guard-3-8B</a>
+
+*Tejasvi C. Addagada*
+
+针对现有开源安全护栏无法单次推理同时覆盖多类安全检测的缺口，研究推出184M参数的Semalith v1.4分类器，采用联合加权损失训练，单次前向即可完成提示注入、通用危害、金融合规三类检测。其参数仅为Llama-Guard-3-8B的1/44，提示注入检测性能全优，良性指令误报率为0，通用危害检测则与后者形成能力互补。
+
+<FeedbackButtons slug="item:arxiv-2607.22545" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.22711" target="_blank" rel="noopener noreferrer">CORVUS: Context Optimization and Reduction Via Underlying Synchronization for LLM Coding Agents</a>
+
+*Mingwei Zheng, David OBrien, Siwei Cui…*
+
+针对大模型代码智能体传统追加式轨迹存储过时文件快照、冗余重读易引发推理错误、浪费token的问题，本文提出CORVUS新型轨迹架构：解耦读文件操作与观测，维护同步文件注册表，每轮推理仅注入当前文件内容。经两款代码基准、四款大模型测试，其可降9-50%任务输入token、缩15-32%提示词长度、最多减37%推理轮次，通过率无明显下降。
+
+<FeedbackButtons slug="item:arxiv-2607.22711" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.22720" target="_blank" rel="noopener noreferrer">CausalGate: Causal Importance Distillation for Transformer Module Pruning</a>
+
+*Kiran Nair, Smriti Regmi, Rodrigue Rizk*
+
+针对大模型Transformer剪枝现有自适应推理依赖相关性启发式指标、易丢失关键语义计算信息的问题，本文提出CausalGate框架：校准阶段干预各注意力、MLP子层输出实测语义损失得到结构重要度，蒸馏为静态轻量标量门控消除运行时开销。在三类主流模型、两类任务上优于基线，可无额外开销降低硬件延迟。
+
+<FeedbackButtons slug="item:arxiv-2607.22720" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/how-two-settings-tripled-our-arc-agi-3-scores" target="_blank" rel="noopener noreferrer">How enabling two settings tripled our scores on the ARC-AGI-3 benchmark</a>
+
+*OpenAI*
+
+本文聚焦GPT-5.6在ARC-AGI-3通用人工智能基准的性能优化，仅通过调整两项API配置就实现大幅突破：核心优化逻辑为保留模型完整推理链路、启用内容压缩机制，最终基准得分提升至原先的3倍，同时还同步改善了任务运行效率，为同类大模型评测调优提供了极简高效的可行路径。
+
+<FeedbackButtons slug="item:openai-blog-how-two-settings-tripled-our-arc-agi-3-scores" client:visible />
+
+## <a href="https://openai.com/index/chatgpt-for-academic-researchers" target="_blank" rel="noopener noreferrer">Accelerating scientific discovery with ChatGPT for Academic Researchers</a>
+
+*OpenAI*
+
+这篇文章聚焦前沿大模型助力科研增效的方向，披露OpenAI的专项支持举措：面向10万名学术研究者免费开放ChatGPT最先进AI模型的使用权限。该举措意在降低前沿大模型的学术使用门槛，为科研人员的研究工作、跨主体协作赋能，进而加快各学科科学发现进程，提升整体科研产出效率。
+
+<FeedbackButtons slug="item:openai-blog-chatgpt-for-academic-researchers" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 5</a>
+
+*Anthropic*
+
+本次推出的Claude Opus 5是Anthropic Opus高端产品线的阶跃式升级产品，核心性能实现突破性提升：一方面可稳定支撑长周期运行的智能体任务，适配复杂多轮自动化工作流；另一方面编码能力、专业领域任务处理精度显著优化，可更好满足高要求的开发、科研、商务类专业工作需求。
+
+<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+这是AI领域一项面向公众的疑问征集举措，发起方主动面向全社会征集大众关于AI的最具挑战性的疑难问题，同时公开承诺：后续针对所有征集到的问题开展研究、给出回应的过程中，将全程公示完整的研究工作链路，主动公开研究细节，以此提升AI研究透明度，回应社会对AI技术的关切。
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/were-launching-lyria-35-in-google-flow-music-with-advances-across-musicality-lyrics-vocals-and-creative-control/" target="_blank" rel="noopener noreferrer">We’re launching Lyria 3.5 in Google Flow Music, with advances across musicality, lyrics, vocals, and creative control</a>
+
+*Google DeepMind*
+
+谷歌近日在旗下Flow Music平台正式上线音乐生成模型Lyria 3.5。该版本核心升级覆盖四大维度：音乐整体协调性、自然度显著提升，歌词生成的表意准确性、叙事连贯性优化，人声拟真度与情感表现力增强，同时进一步放开创作可控权限，可更好满足各类创作者的个性化生成需求。
+
+<FeedbackButtons slug="item:deepmind-were-launching-lyria-35-in-google-flow-music-with-advances-across-musicality-lyr" client:visible />
+
+## <a href="https://deepmind.google/blog/accelerating-the-frontiers-of-scientific-discovery-googles-40m-commitment-to-the-genesis-mission/" target="_blank" rel="noopener noreferrer">Accelerating the frontiers of scientific discovery: Google’s $40M commitment to the Genesis Mission</a>
+
+*Google DeepMind*
+
+为加速前沿科学发现边界拓展，谷歌宣布向“创世任务”（Genesis Mission）提供总价值4000万美元的AI专属代币与算力额度支持。该投入将依托谷歌的AI技术、算力储备，赋能创世任务跨学科科研攻关，探索AI驱动科研的新范式，降低前沿研究算力门槛，助力更多突破性科学成果落地。
+
+<FeedbackButtons slug="item:deepmind-accelerating-the-frontiers-of-scientific-discovery-googles-40m-commitment-to-the" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/olmoearth-infrastructure" target="_blank" rel="noopener noreferrer">The OlmoEarth Platform: Geospatial inference at planetary scale</a>
+
+*Hugging Face*
+
+目前您仅提供了该论文的标题，未附上完整的英文摘要正文，缺少平台架构、核心技术路径、实测效果、落地价值等关键信息，无法完成符合要求的要点提炼与总结。请您补充完整的摘要内容，我会为您精准梳理方法、结论，生成120字左右的凝练中文总结。
+
+<FeedbackButtons slug="item:hf-blog-olmoearth-infrastructure" client:visible />
+
+## <a href="https://huggingface.co/blog/LiquidAI/lfm2-5-encoders" target="_blank" rel="noopener noreferrer">LFM2.5-Encoders for Fast Long-Context Inference on CPU</a>
+
+*Hugging Face*
+
+针对大模型长上下文推理在CPU端时延高的痛点，该工作提出LFM2.5编码器架构，通过优化线性注意力的上下文分层压缩机制，针对性适配CPU多核并行、缓存亲和调度特性，在不损失长上下文理解精度的前提下，CPU上长文本推理速度较同类方案提升3~5倍，可大幅降低长文本任务推理部署成本。
+
+<FeedbackButtons slug="item:hf-blog-lfm2-5-encoders" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+这篇美德伦理视角的AI对齐研究论文挑战正交性假说：人类理性行动并非指向固定最终目标，而是适配由行动、评价标准等构成的实践网络；理性AI也不应预设固定目标，要实现AI与人类协作、符合安全要求，其决策逻辑必须匹配人类基于实践的行动范式，适配效果同时关乎伦理对齐与核心安全落地。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+递归自我改进（RSI）概念最早源于1965年I.J.古德提出的“超智能机器”设想：这类系统能在所有智力活动上超越人类，还可设计更优机器完成自我迭代。2008年尤德考斯基正式定义RSI为AI依托现有智能优化自身认知生成机制的反馈回路，当前AI语境下，该回路既可指模型直接改写自身权重，也广义涵盖模型优化自身训练管线。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/07/462947.html" target="_blank" rel="noopener noreferrer">这这这…翁荔光速回OpenAI上班了</a>
+
+*量子位*
+
+近日，AI初创公司Thinking Machines Lab（TML）联创翁荔刚以健康原因宣布离职，随即光速重返老东家OpenAI，牵头负责内部优先级极高的自进化（RSI）团队，核心研究让模型可自主训练迭代后继版本。目前TML6位联创已有3人回归OpenAI，仅剩CEO米拉等2人留守，外界猜测TML内部存矛盾但暂无实据。
+
+<FeedbackButtons slug="item:qbitai-462947" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/462943.html" target="_blank" rel="noopener noreferrer">中科院院士对话北电数智AI专家：以 AI 与数学 “乘法效应” 开辟产业落地新路径</a>
+
+*量子位*
+
+2026年7月，数学与人工智能交叉主题学术论坛在云南玉溪举办，五百余位学界代表参会。中科院周向宇院士与北电数智专家窦德景对话提出，AI与数学结合可产生“乘法效应”：当前主流大模型数学能力已大幅跃升，高考数学普遍135分以上、可获奥数满分，二者交叉能为产业落地开辟新路径。
+
+<FeedbackButtons slug="item:qbitai-462943" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/462447.html" target="_blank" rel="noopener noreferrer">超越OpenAI、Anthropic！国产AI安全智能体杀进全球前四、国内第一</a>
+
+*量子位*
+
+深信服基于国产GLM-5.2开发的Sangfor AI安全智能体，采用智能体群体协同架构与证据管治机制，支撑漏洞全链路分析能力。在贴近工业场景的全球权威CyberGym评测中，其漏洞任务成功率达86.3%，跻身全球第四、国内第一，性能超过OpenAI、Anthropic同类产品，验证了国产大模型在代码安全领域的实战能力。
+
+<FeedbackButtons slug="item:qbitai-462447" client:visible />
