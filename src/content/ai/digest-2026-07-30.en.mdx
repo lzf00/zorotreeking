@@ -1,0 +1,215 @@
+---
+lang: en
+translationKey: digest-2026-07-30
+title: "Daily AI Digest · 2026-07-30"
+description: "21 papers · multi-source aggregation + AI summaries"
+date: 2026-07-30
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second recap of today's updates</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Overseas AI giants roll out dense updates: Anthropic releases Claude Opus 5, DeepMind launches Lyria 3.5, OpenAI publishes ARC-AGI score improvement solution</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Multiple high-efficiency AI technologies released: TurboVLA runs in real time with only 1GB VRAM, low-parameter safety detector outperforms Llama Guard 3</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Active domestic AI developments: Weng Li returns to OpenAI at lightning speed, domestic security agent ranks top 4 globally and first in China</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Big Tech New Releases</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Efficiency Optimization</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Technical Breakthroughs</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔒 AI Security</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🌏 Domestic Updates</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.27205" target="_blank" rel="noopener noreferrer">TurboVLA: Real-Time Vision-Language-Action Model at 32 Hz on an RTX 4090 with &lt;1 GB VRAM</a>
+
+*HF ★ 8 · Hengyi Xie, Chenfei Yao, Xianjin Wu… · [HF Mirror](https://huggingface.co/papers/2607.27205)*
+
+To address the high inference overhead of traditional LLM-centric Vision-Language-Action (VLA) models, this work proposes the new TurboVLA paradigm, which abandons the LLM as the intermediate hub design. It independently encodes visual and language signals, then directly maps to actions via lightweight bidirectional interaction. With only 0.2B parameters, it has an inference latency of 31.2ms (~32Hz) and 0.9GB VRAM usage on an RTX 4090, achieves a 97.7% success rate on the LIBERO benchmark, with performance on par with or even better than larger VLA models.
+
+<FeedbackButtons slug="item:arxiv-2607.27205" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.27180" target="_blank" rel="noopener noreferrer">HumanCLAW: Can Vision-Language Models Act Through a Body?</a>
+
+*HF ★ 2 · Siyao Li, Jiawei Gu, Shuai Liu… · [HF Mirror](https://huggingface.co/papers/2607.27180)*
+
+To solve the problem that it is difficult to distinguish whether the failure of embodied actions of Vision-Language Models (VLM) is caused by decision errors or control faults, this paper proposes the HumanCLAW evaluation framework, which decouples action decision-making from underlying execution, eliminates execution-side interference, and only evaluates the action decision-making ability of VLMs. Based on this framework, a test set containing 1218 long-sequence indoor embodied tasks was built. After testing 9 mainstream VLMs, the highest success rate was only 16.8%. The core shortcoming of current VLMs is not object recognition, but the lack of embodied self-perception.
+
+<FeedbackButtons slug="item:arxiv-2607.27180" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.27191" target="_blank" rel="noopener noreferrer">Can AI agents conduct open-ended AI research? Early evidence from two case studies</a>
+
+*HF ★ 1 · Peter Kirgis, Sayash Kapoor, Andrew Schwartz… · [HF Mirror](https://huggingface.co/papers/2607.27191)*
+
+To address the flaws in existing evaluation methods for AI independently carrying out open-ended scientific research, this study proposes a "shadow evaluation" scheme: taking the core scientific research problems of two unpublished NeurIPS submissions as tasks, providing cutting-edge agents with 6 days of computing power support, and the original authors evaluate the output. The results show that current AI can independently complete engineering links, but cannot advance core scientific research problems, has five typical failure modes, and does not yet have complete scientific research capabilities.
+
+<FeedbackButtons slug="item:arxiv-2607.27191" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.25802" target="_blank" rel="noopener noreferrer">Explicit Layer Modeling for Video Object Insertion and Layer Decomposition</a>
+
+*HF ★ 1 · Kyujin Han, Seungjoo Shin, Sunghyun Cho · [HF Mirror](https://huggingface.co/papers/2607.25802)*
+
+To address the lack of explicit layered representation in existing video editing and limited performance of object insertion and layering tasks, this study builds the TriLayer large-scale triplet video dataset, which contains aligned synthetic and foreground/background annotations with supporting special effects. Based on this, the dual-branch diffusion framework DBL-Diffusion is proposed, which can complete layered object insertion and video layered decomposition. Experiments verify that explicit layer modeling can greatly improve the performance of both tasks.
+
+<FeedbackButtons slug="item:arxiv-2607.25802" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.27155" target="_blank" rel="noopener noreferrer">OmegaUse-OfficeVal: Benchmarking LLM Agents on Long-Horizon Office-Suite Tasks with Economic Grounding</a>
+
+*HF ★ 0 · Jingbo Zhou, Yusai Zhao, Qi Bao… · [HF Mirror](https://huggingface.co/papers/2607.27155)*
+
+To address the problem that existing benchmarks are difficult to evaluate the cost-effectiveness of LLM agents performing long-horizon office workflow tasks, the research team launched the OmegaUse-OfficeVal benchmark, which contains 100 desensitized real office tasks from practitioners, equipped with two types of economic indicators: labor time consumption and task pricing, as well as code verification tools. Actual tests show that current cutting-edge LLMs outperform humans in both execution cost and speed, but delivery quality is far from human level, and related resources are fully open-source.
+
+<FeedbackButtons slug="item:arxiv-2607.27155" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2607.22545" target="_blank" rel="noopener noreferrer">Semalith v1.4: A Calibrated 184M Safety Classifier Achieving State-of-the-Art Prompt-Injection Detection at 44x Fewer Parameters than Llama-Guard-3-8B</a>
+
+*Tejasvi C. Addagada*
+
+To fill the gap that existing open-source security guardrails cannot cover multiple types of security detection in a single inference, the research launches the 184M parameter Semalith v1.4 classifier, trained with joint weighted loss, which can complete three types of detection: prompt injection, general harm, and financial compliance in a single forward pass. Its parameters are only 1/44 of Llama-Guard-3-8B, it has excellent all-round performance in prompt injection detection with 0 false positive rate for benign instructions, and its general harm detection capability complements that of the latter.
+
+<FeedbackButtons slug="item:arxiv-2607.22545" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.22711" target="_blank" rel="noopener noreferrer">CORVUS: Context Optimization and Reduction Via Underlying Synchronization for LLM Coding Agents</a>
+
+*Mingwei Zheng, David OBrien, Siwei Cui…*
+
+To address the problems of traditional append-style trajectory storage for large model code agents storing outdated file snapshots, redundant re-reads easily causing inference errors and wasting tokens, this paper proposes the new CORVUS trajectory architecture: decoupling file read operations from observations, maintaining a synchronized file registry, and only injecting current file content per inference round. Tested on two code benchmarks and four large models, it can reduce task input tokens by 9-50%, shorten prompt length by 15-32%, reduce inference rounds by up to 37%, with no significant drop in pass rate.
+
+<FeedbackButtons slug="item:arxiv-2607.22711" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.22720" target="_blank" rel="noopener noreferrer">CausalGate: Causal Importance Distillation for Transformer Module Pruning</a>
+
+*Kiran Nair, Smriti Regmi, Rodrigue Rizk*
+
+To address the problem that existing adaptive inference for Transformer pruning of large models relies on correlation heuristic indicators and easily loses key semantic computing information, this paper proposes the CausalGate framework: in the calibration phase, intervene in the output of each attention and MLP sub-layer to measure semantic loss to obtain structural importance, which is distilled into a static lightweight scalar gate to eliminate runtime overhead. It outperforms baselines on three mainstream models and two types of tasks, and can reduce hardware latency without additional overhead.
+
+<FeedbackButtons slug="item:arxiv-2607.22720" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/how-two-settings-tripled-our-arc-agi-3-scores" target="_blank" rel="noopener noreferrer">How enabling two settings tripled our scores on the ARC-AGI-3 benchmark</a>
+
+*OpenAI*
+
+This paper focuses on the performance optimization of GPT-5.6 on the ARC-AGI-3 artificial general intelligence benchmark, achieving a major breakthrough by only adjusting two API configurations: the core optimization logic is to retain the complete inference link of the model and enable the content compression mechanism, finally increasing the benchmark score to 3 times the original, while also improving task operation efficiency simultaneously, providing a minimal and efficient feasible path for evaluation and tuning of similar large models.
+
+<FeedbackButtons slug="item:openai-blog-how-two-settings-tripled-our-arc-agi-3-scores" client:visible />
+
+## <a href="https://openai.com/index/chatgpt-for-academic-researchers" target="_blank" rel="noopener noreferrer">Accelerating scientific discovery with ChatGPT for Academic Researchers</a>
+
+*OpenAI*
+
+This article focuses on how cutting-edge large models help improve scientific research efficiency, disclosing OpenAI's special support initiative: free access to ChatGPT's most advanced AI models for 100,000 academic researchers. This initiative aims to lower the academic access threshold for cutting-edge large models, empower researchers in their research work and cross-entity collaboration, thereby accelerating the process of scientific discovery in various disciplines and improving the overall efficiency of scientific research output.
+
+<FeedbackButtons slug="item:openai-blog-chatgpt-for-academic-researchers" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 5</a>
+
+*Anthropic*
+
+The newly launched Claude Opus 5 is a step-by-step upgrade of Anthropic's high-end Opus product line, with breakthrough improvements in core performance: on the one hand, it can stably support long-running agent tasks, adapting to complex multi-round automated workflows; on the other hand, its coding ability and processing accuracy for professional domain tasks are significantly optimized, which can better meet the high requirements of professional work in development, scientific research, and business.
+
+<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+This is a public question collection initiative in the AI field. The initiator actively solicits the most challenging questions about AI from the whole society, and publicly promises that in the subsequent process of researching and responding to all collected questions, the complete research work chain will be publicly announced throughout the process, and research details will be actively disclosed, so as to improve the transparency of AI research and respond to social concerns about AI technology.
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/were-launching-lyria-35-in-google-flow-music-with-advances-across-musicality-lyrics-vocals-and-creative-control/" target="_blank" rel="noopener noreferrer">We’re launching Lyria 3.5 in Google Flow Music, with advances across musicality, lyrics, vocals, and creative control</a>
+
+*Google DeepMind*
+
+Google recently officially launched the music generation model Lyria 3.5 on its Flow Music platform. The core upgrades of this version cover four dimensions: the overall coordination and naturalness of music are significantly improved, the ideographic accuracy and narrative coherence of lyric generation are optimized, the vocal fidelity and emotional expression are enhanced, and creative control permissions are further relaxed, which can better meet the personalized generation needs of various creators.
+
+<FeedbackButtons slug="item:deepmind-were-launching-lyria-35-in-google-flow-music-with-advances-across-musicality-lyr" client:visible />
+
+## <a href="https://deepmind.google/blog/accelerating-the-frontiers-of-scientific-discovery-googles-40m-commitment-to-the-genesis-mission/" target="_blank" rel="noopener noreferrer">Accelerating the frontiers of scientific discovery: Google’s $40M commitment to the Genesis Mission</a>
+
+*Google DeepMind*
+
+To accelerate the expansion of the frontiers of cutting-edge scientific discovery, Google announced that it will provide AI-specific tokens and computing power quotas worth a total of $40 million to the Genesis Mission. This investment will rely on Google's AI technology and computing power reserves to empower the Genesis Mission's interdisciplinary scientific research, explore new paradigms of AI-driven scientific research, lower the computing power threshold for cutting-edge research, and help more breakthrough scientific achievements be implemented.
+
+<FeedbackButtons slug="item:deepmind-accelerating-the-frontiers-of-scientific-discovery-googles-40m-commitment-to-the" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/olmoearth-infrastructure" target="_blank" rel="noopener noreferrer">The OlmoEarth Platform: Geospatial inference at planetary scale</a>
+
+*Hugging Face*
+
+Currently only the title of this paper is provided, the full English abstract text is not attached, and key information such as platform architecture, core technical path, measured effect, and implementation value is missing, so the required key point extraction and summary cannot be completed. Please supplement the complete abstract content, and I will accurately sort out the methods and conclusions for you to generate a concise summary of about 120 words.
+
+<FeedbackButtons slug="item:hf-blog-olmoearth-infrastructure" client:visible />
+
+## <a href="https://huggingface.co/blog/LiquidAI/lfm2-5-encoders" target="_blank" rel="noopener noreferrer">LFM2.5-Encoders for Fast Long-Context Inference on CPU</a>
+
+*Hugging Face*
+
+To address the pain point of high latency of large model long context inference on CPUs, this work proposes the LFM2.5 encoder architecture. By optimizing the context layered compression mechanism of linear attention and specifically adapting to the characteristics of CPU multi-core parallelism and cache affinity scheduling, without losing the accuracy of long context understanding, the long text inference speed on CPU is 3~5 times higher than similar solutions, which can greatly reduce the inference and deployment cost of long text tasks.
+
+<FeedbackButtons slug="item:hf-blog-lfm2-5-encoders" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This AI alignment research paper from the perspective of virtue ethics challenges the orthogonality thesis: human rational actions are not directed at fixed final goals, but adapt to the practical network composed of actions, evaluation standards, etc.; rational AI should not have preset fixed goals either. To realize AI-human collaboration and meet safety requirements, its decision-making logic must match the human practice-based action paradigm, and the adaptation effect is related to both ethical alignment and core security implementation.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+The concept of Recursive Self-Improvement (RSI) originated from the "ultraintelligent machine" idea proposed by I.J. Good in 1965: this type of system can surpass humans in all intellectual activities, and can also design better machines to complete self-iteration. In 2008, Eliezer Yudkowsky officially defined RSI as a feedback loop where AI relies on existing intelligence to optimize its own cognitive generation mechanism. In the current AI context, this loop can refer to the model directly rewriting its own weights, and also broadly covers the model optimizing its own training pipeline.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/07/462947.html" target="_blank" rel="noopener noreferrer">Wow… Weng Li returns to OpenAI for work at lightning speed</a>
+
+*QbitAI*
+
+Recently, Weng Li, co-founder of AI startup Thinking Machines Lab (TML), just announced her resignation for health reasons, and then immediately returned to her former employer OpenAI at lightning speed, leading the high-priority internal Recursive Self-Improvement (RSI) team, whose core research is to enable models to independently train and iterate subsequent versions. Currently, 3 of TML's 6 co-founders have returned to OpenAI, leaving only 2 people including CEO Mira to stay. Outsiders speculate that there are internal conflicts within TML but there is no solid evidence yet.
+
+<FeedbackButtons slug="item:qbitai-462947" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/462943.html" target="_blank" rel="noopener noreferrer">CAS academician talks with Beidian Shuzhi AI experts: "Multiplier effect" of AI and mathematics opens up new paths for industrial implementation</a>
+
+*QbitAI*
+
+In July 2026, an academic forum on the intersection of mathematics and artificial intelligence was held in Yuxi, Yunnan, with more than 500 academic representatives attending. Academician Zhou Xiangyu of the Chinese Academy of Sciences and Dou Dejing, an expert from Beidian Shuzhi, proposed in a dialogue that the combination of AI and mathematics can produce a "multiplier effect": the mathematical ability of current mainstream large models has jumped significantly, generally scoring above 135 in the college entrance examination mathematics and achieving full marks in Olympic mathematics competitions, and the intersection of the two can open up new paths for industrial implementation.
+
+<FeedbackButtons slug="item:qbitai-462943" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/462447.html" target="_blank" rel="noopener noreferrer">Surpassing OpenAI and Anthropic! Domestic AI security agent enters top 4 globally, ranks first in China</a>
+
+*QbitAI*
+
+Sangfor's AI security agent developed based on domestic GLM-5.2 adopts an agent group collaboration architecture and evidence governance mechanism, supporting full-link vulnerability analysis capabilities. In the globally authoritative CyberGym evaluation close to industrial scenarios, its vulnerability task success rate reached 86.3%, ranking 4th in the world and first in China, with performance exceeding similar products from OpenAI and Anthropic, verifying the practical capability of domestic large models in the field of code security.
+
+<FeedbackButtons slug="item:qbitai-462447" client:visible />
