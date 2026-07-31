@@ -1,11 +1,194 @@
 ---
-import AboutEditorial from "@/components/AboutEditorial.astro";
+import ContentPulse from "@/components/ContentPulse.astro";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import { aboutData } from "@/data/about";
+import { useTranslations } from "@/i18n/ui";
+
+const t = useTranslations("en");
+const { name, tagline, photo, intro, now, timeline, books, stack, projects, goals, links } = aboutData.en;
+const initials = name
+  .split(/\s+/)
+  .map((part) => part[0])
+  .join("")
+  .slice(0, 2)
+  .toUpperCase();
 ---
 
 <BaseLayout
-  title="About this site"
-  description="About ZoroTreeking, an independent editorial project on AI, markets, photography and hiking."
+  title={t("nav.about")}
+  description="About Zoro's public experience across NLP, knowledge graphs, LLM agents and system engineering."
 >
-  <AboutEditorial lang="en" />
+  <article class="max-w-3xl mx-auto px-5 pt-12 sm:pt-20 pb-16">
+
+    <header class="flex flex-col sm:flex-row items-start gap-6 sm:gap-8 mb-14 sm:mb-16">
+      {photo ? (
+        <img
+          src={photo}
+          alt=""
+          class="w-32 h-32 sm:w-40 sm:h-40 rounded-2xl object-cover shrink-0"
+        />
+      ) : (
+        <div
+          class="w-32 h-32 sm:w-40 sm:h-40 rounded-2xl shrink-0
+                 bg-gradient-to-br from-blue-100 via-purple-100 to-green-100
+                 dark:from-blue-950/40 dark:via-purple-950/40 dark:to-green-950/40
+                 flex items-center justify-center"
+          aria-hidden="true"
+        >
+          <span class="font-serif text-5xl sm:text-6xl text-zinc-700 dark:text-zinc-200">{initials}</span>
+        </div>
+      )}
+      <div class="flex-1 min-w-0">
+        <h1 class="font-serif text-4xl sm:text-5xl leading-[1.05] tracking-tight">{name}</h1>
+        <p class="mt-4 text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed font-light">
+          {tagline}
+        </p>
+      </div>
+    </header>
+
+    <section class="mb-16 sm:mb-20">
+      {intro.split("\n\n").map((paragraph) => (
+        <p class="text-[17px] sm:text-[18px] leading-[1.75] text-zinc-700 dark:text-zinc-300 mb-5 last:mb-0">
+          {paragraph}
+        </p>
+      ))}
+    </section>
+
+    {/* ── NOW ── */}
+    <section class="mb-16 sm:mb-20">
+      <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4 pb-2 border-b border-[var(--border)]">
+        NOW
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div class="rounded-xl border border-[var(--border)] p-4 sm:p-5 bg-blue-50/40 dark:bg-blue-950/20">
+          <div class="text-xs font-semibold text-section-ai mb-1.5">🛠 Working on</div>
+          <p class="text-sm leading-relaxed text-[var(--text-secondary)]">{now.working}</p>
+        </div>
+        <div class="rounded-xl border border-[var(--border)] p-4 sm:p-5 bg-purple-50/40 dark:bg-purple-950/20">
+          <div class="text-xs font-semibold text-section-photo mb-1.5">📖 Reading</div>
+          <p class="text-sm leading-relaxed text-[var(--text-secondary)]">{now.reading}</p>
+        </div>
+        <div class="rounded-xl border border-[var(--border)] p-4 sm:p-5 bg-green-50/40 dark:bg-green-950/20">
+          <div class="text-xs font-semibold text-section-hike mb-1.5">🎯 Long-term direction</div>
+          <p class="text-sm leading-relaxed text-[var(--text-secondary)]">{now.aiming}</p>
+        </div>
+      </div>
+    </section>
+
+    {/* ── STACK ── */}
+    <section class="mb-16 sm:mb-20">
+      <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4 pb-2 border-b border-[var(--border)]">
+        STACK · Day-to-day
+      </div>
+      <div class="flex flex-wrap gap-2">
+        {stack.map((item) => (
+          <div class="inline-flex items-baseline gap-1.5 px-3 py-1.5 rounded-full border border-[var(--border)] bg-[var(--bg-soft)]">
+            <span class="text-sm font-medium">{item.name}</span>
+            <span class="text-[10px] text-[var(--text-tertiary)]">· {item.note}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    {/* ── PROJECTS ── */}
+    <section class="mb-16 sm:mb-20">
+      <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4 pb-2 border-b border-[var(--border)]">
+        PROJECTS
+      </div>
+      <ul class="space-y-5">
+        {projects.map((project) => (
+          <li>
+            <div class="flex items-baseline gap-2 flex-wrap">
+              <h2 class="text-base font-semibold">{project.name}</h2>
+              <span class="text-[11px] font-mono text-[var(--text-tertiary)]">{project.stage}</span>
+            </div>
+            <p class="mt-1 text-sm text-[var(--text-secondary)] leading-relaxed">{project.desc}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    {/* ── READS ── */}
+    <section class="mb-16 sm:mb-20">
+      <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4 pb-2 border-b border-[var(--border)]">
+        READS · Books that shaped me
+      </div>
+      <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
+        {books.map((book) => (
+          <li class="flex items-baseline gap-2">
+            <span class="text-[var(--text-tertiary)] text-xs" aria-hidden="true">📖</span>
+            <div class="min-w-0 flex-1">
+              <div class="flex items-baseline gap-2 flex-wrap">
+                <span class="text-[15px] font-medium italic">{book.title}</span>
+                <span class="text-xs text-[var(--text-tertiary)]">— {book.author}</span>
+              </div>
+              <p class="mt-0.5 text-xs text-[var(--text-secondary)] leading-relaxed">{book.why}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    {/* ── NORTH STAR ── */}
+    <section class="mb-16 sm:mb-20">
+      <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4 pb-2 border-b border-[var(--border)]">
+        NORTH STAR
+      </div>
+      <ul class="space-y-2.5">
+        {goals.map((goal) => (
+          <li class="pl-4 relative text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300">
+            <span class="absolute left-0 top-[10px] w-1 h-1 rounded-full bg-zinc-400"></span>
+            {goal}
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    {/* ── TIMELINE ── */}
+    <section class="mb-16 sm:mb-20">
+      <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4 pb-2 border-b border-[var(--border)]">
+        TIMELINE · Experience path
+      </div>
+      <ol class="relative border-l border-[var(--border)] ml-2 space-y-5">
+        {timeline.map((item) => (
+          <li class="ml-5 relative">
+            <span class="absolute -left-[26px] top-1.5 w-2.5 h-2.5 rounded-full bg-zinc-300 dark:bg-zinc-700 ring-4 ring-[var(--bg)]"></span>
+            <div class="text-[11px] font-mono text-[var(--text-tertiary)] uppercase tracking-wider mb-0.5">
+              {item.label}
+            </div>
+            <div class="text-[15px] text-zinc-700 dark:text-zinc-300 leading-snug">{item.what}</div>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <ContentPulse />
+
+    {/* ── CONNECT: public site routes only ── */}
+    <section class="mb-16 mt-4">
+      <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4 pb-2 border-b border-[var(--border)]">
+        CONNECT
+      </div>
+      <ul class="flex flex-wrap items-center gap-3">
+        {links.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class="inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] px-4 py-2 text-sm hover:bg-[var(--bg-soft)] transition-colors"
+            >
+              <span aria-hidden="true">{link.icon}</span>
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <aside class="pt-8 border-t border-[var(--border)] text-xs text-[var(--text-tertiary)] leading-relaxed">
+      This page keeps only public capability areas and generalised experience. It omits legal identity,
+      employers, education institutions, contact details, precise dates and non-public project metrics.
+      See the <a href="/en/privacy" class="underline hover:text-[var(--text)]">privacy policy</a> for site data handling.
+    </aside>
+
+  </article>
 </BaseLayout>

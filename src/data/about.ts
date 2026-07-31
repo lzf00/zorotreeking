@@ -1,224 +1,194 @@
 export type AboutLang = "zh" | "en";
 
-type AboutCopy = {
-  eyebrow: string;
-  title: string;
+type AboutProfile = {
+  name: string;
   tagline: string;
-  intro: string[];
-  craftLabel: string;
-  craft: Array<{
-    index: string;
-    title: string;
-    text: string;
+  photo?: string;
+  intro: string;
+  now: {
+    working: string;
+    reading: string;
+    aiming: string;
+  };
+  stack: Array<{
+    name: string;
+    note: string;
   }>;
-  pathsLabel: string;
-  pathsIntro: string;
-  paths: Array<{
-    key: "ai" | "invest" | "photo" | "hike";
+  projects: Array<{
+    name: string;
+    stage: string;
+    desc: string;
+  }>;
+  books: Array<{
+    title: string;
+    author: string;
+    why: string;
+  }>;
+  goals: string[];
+  timeline: Array<{
+    label: string;
+    what: string;
+  }>;
+  links: Array<{
     href: string;
     label: string;
-    title: string;
-    description: string;
-    color: string;
+    icon: string;
   }>;
-  principlesLabel: string;
-  principles: Array<{
-    title: string;
-    text: string;
-  }>;
-  privacyLabel: string;
-  privacyTitle: string;
-  privacyText: string;
-  privacyLink: string;
-  privacyLinkLabel: string;
-  pulseLabel: string;
-  ctaTitle: string;
-  ctaText: string;
-  ctaPrimary: string;
-  ctaSecondary: string;
 };
 
 /**
- * About 页只描述站点、公开内容与工作方法。
- * 个人身份、履历、联系方式和内部项目数据不得写入此对象。
+ * About 页保留公开的能力方向与代表性经历，不保存可追溯的私人履历。
+ * 禁止加入真实姓名、单位、学校、邮箱、精确年份和非公开项目规模。
  */
-export const aboutData: Record<AboutLang, AboutCopy> = {
+export const aboutData: Record<AboutLang, AboutProfile> = {
   zh: {
-    eyebrow: "ABOUT · ZOROTREEKING",
-    title: "这里不放简历，\n只说明为什么写。",
+    name: "Zoro",
     tagline: "在代码与山林之间，留一份缓慢的笔记。",
-    intro: [
-      "ZoroTreeking 是一份持续生长的个人编辑项目。这里把 AI、市场、摄影和徒步放在同一张桌面上：一边理解快速变化的技术与数据，一边保留真实世界的光线、路径和体感。",
-      "参考专业经历所形成的方法，但不复制履历本身：先从复杂信息里找出结构，再把想法做成可运行的系统，最后用测试、反馈与复盘验证结果。公开的是作品与思考，不是私人档案。",
+    intro: `我长期关注自然语言处理、知识图谱与大模型 Agent，也持续把模型、数据和界面组合成真正可运行的系统。
+
+经历覆盖中文信息抽取、文本分类与情感分析、知识图谱构建、多源数据融合、RAG、工具调用和自动化工作流。相比展示职位与单位，我更愿意保留解决问题的方法：理解业务、整理数据、实现模型、接入系统，再用测试与反馈验证结果。
+
+ZoroTreeking 是这些实践之外的一份长期记录。这里有 AI 学习、市场观察、摄影和徒步；既记录技术怎样工作，也记录人怎样理解变化。`,
+    now: {
+      working: "持续打磨 LLM Agent、RAG、评测与自动化工作流",
+      reading: "AI 论文 · Agent 工程 · 模型评测 · 数据系统",
+      aiming: "把原型做成稳定、可维护、能被真实使用的系统",
+    },
+    stack: [
+      { name: "Python", note: "NLP · 数据处理 · 自动化" },
+      { name: "PyTorch", note: "模型训练 · 推理 · 评测" },
+      { name: "LLM 应用", note: "RAG · 提示设计 · 模型接入" },
+      { name: "Agent 工程", note: "任务编排 · 工具调用 · 状态管理" },
+      { name: "知识图谱", note: "信息抽取 · 数据融合 · 图查询" },
+      { name: "数据系统", note: "SQL · 数据管道 · 可观测性" },
+      { name: "全栈开发", note: "Python 后端 · TypeScript · Astro" },
     ],
-    craftLabel: "HOW IT IS MADE · 如何形成内容",
-    craft: [
+    projects: [
       {
-        index: "01",
-        title: "先理解",
-        text: "从语言、数据与现实问题中辨认结构，把模糊问题拆成可以讨论的部分。",
+        name: "ZoroTreeking",
+        stage: "公开项目",
+        desc: "个人内容与数据自动化实验场，包含双语内容、AI 摘要、市场数据、摄影相册、徒步记录和自动部署。",
       },
       {
-        index: "02",
-        title: "再实现",
-        text: "让模型、数据和界面协同工作，把一次性的想法变成可以运行、可以维护的系统。",
+        name: "LLM Agent 与业务自动化",
+        stage: "近期实践",
+        desc: "围绕长文本理解、数据分析和报告生成搭建 Agent 工作流，覆盖检索、工具调用、结果校验与运行监控。",
       },
       {
-        index: "03",
-        title: "后验证",
-        text: "用来源、测试、反馈与复盘校正判断。结果比术语重要，边界和不确定性同样要写清楚。",
-      },
-    ],
-    pathsLabel: "FOUR PATHS · 四条内容路径",
-    pathsIntro: "不按职位或履历组织内容，只按长期关注的问题分类。",
-    paths: [
-      {
-        key: "ai",
-        href: "/ai",
-        label: "01 / INTELLIGENCE",
-        title: "AI 学习",
-        description: "论文、模型、Agent 与真实系统之间的距离。",
-        color: "#1d4ed8",
+        name: "知识图谱与多源信息融合",
+        stage: "工程实践",
+        desc: "完成从文本抽取、实体关系建模、数据清洗融合到图数据库查询的完整链路，并服务于复杂信息分析。",
       },
       {
-        key: "invest",
-        href: "/invest",
-        label: "02 / MARKETS",
-        title: "个人投资",
-        description: "市场数据、投资框架与持续修正的判断。",
-        color: "#991b1b",
+        name: "中文 NLP 信息抽取",
+        stage: "算法实践",
+        desc: "处理事件抽取、命名实体识别、文本分类和情感分析等任务，积累数据构建、训练、评测与部署经验。",
       },
       {
-        key: "photo",
-        href: "/photo",
-        label: "03 / LIGHT",
-        title: "摄影",
-        description: "相机留下的光线、秩序和偶然时刻。",
-        color: "#6b21a8",
-      },
-      {
-        key: "hike",
-        href: "/hike",
-        label: "04 / TRAILS",
-        title: "徒步",
-        description: "路线、地形与身体走过之后留下的记录。",
-        color: "#166534",
+        name: "算法系统工程化",
+        stage: "持续积累",
+        desc: "把模型能力接入后端服务、数据管道和前端界面，关注稳定性、可维护性、边界条件与真实反馈。",
       },
     ],
-    principlesLabel: "EDITORIAL NOTES · 编辑原则",
-    principles: [
-      {
-        title: "来源可追",
-        text: "尽量给事实、数据和判断留下出处。",
-      },
-      {
-        title: "过程可见",
-        text: "不只展示结论，也记录方法、失败和修正。",
-      },
-      {
-        title: "隐私优先",
-        text: "公开作品与方法，默认收起无关的个人与业务信息。",
-      },
+    books: [
+      { title: "活着", author: "余华", why: "生命本身的力量" },
+      { title: "平凡的世界", author: "路遥", why: "普通人怎样活出光" },
+      { title: "明朝那些事儿", author: "当年明月", why: "历史的必然与偶然" },
+      { title: "雪中悍刀行", author: "烽火戏诸侯", why: "故事里的人物弧光" },
     ],
-    privacyLabel: "PRIVACY BY DEFAULT",
-    privacyTitle: "公开作品，不公开私人档案。",
-    privacyText:
-      "本页刻意省略真实身份、任职单位、教育履历、联系方式、精确时间线，以及未公开项目的名称、数据和规模。必要的站点合规与联系入口独立放置，不与个人介绍混在一起。",
-    privacyLink: "/privacy",
-    privacyLinkLabel: "查看隐私说明",
-    pulseLabel: "SITE PULSE · 内容脉搏",
-    ctaTitle: "从一条感兴趣的路径开始。",
-    ctaText: "这里没有推荐算法，也不需要先认识作者。选一个主题，直接阅读。",
-    ctaPrimary: "开始阅读 AI",
-    ctaSecondary: "订阅 RSS",
+    goals: [
+      "让 LLM Agent 从演示走向稳定、可维护的真实工作流",
+      "从实现算法继续走向定义问题、设计方案与验证结果",
+      "长期记录技术、市场、摄影与徒步中的真实观察",
+      "保持数据驱动，也为不确定性留下空间",
+    ],
+    timeline: [
+      { label: "基础积累", what: "学习计算机、机器学习与数据系统，形成算法与工程并重的基础。" },
+      { label: "NLP 实践", what: "从中文信息抽取、文本分类和情感分析开始处理非结构化信息。" },
+      { label: "图谱工程", what: "将信息抽取扩展到知识图谱、多源数据融合与复杂关系分析。" },
+      { label: "Agent 工程", what: "转向大模型应用，实践 RAG、工具调用、任务编排、评测与监控。" },
+      { label: "持续迭代", what: "建设 ZoroTreeking，并持续把学习、系统实践与真实世界记录在一起。" },
+    ],
+    links: [
+      { href: "/rss.xml", label: "RSS", icon: "📡" },
+      { href: "/subscribe", label: "订阅邮件", icon: "✉️" },
+      { href: "/guestbook", label: "留言板", icon: "💬" },
+    ],
   },
   en: {
-    eyebrow: "ABOUT · ZOROTREEKING",
-    title: "No résumé here.\nOnly the reason for writing.",
+    name: "Zoro",
     tagline: "Slow notes from between code and mountains.",
-    intro: [
-      "ZoroTreeking is an evolving independent editorial project. It puts AI, markets, photography and hiking on the same desk: making sense of fast-moving technology and data while keeping room for light, terrain and lived experience.",
-      "The method comes from professional practice without reproducing a private résumé: find structure in complex information, turn ideas into working systems, then test them against evidence, feedback and reflection. The work is public; the personal file is not.",
+    intro: `My work has long focused on natural language processing, knowledge graphs and LLM agents, with an equal interest in turning models, data and interfaces into systems that actually run.
+
+The experience spans Chinese information extraction, text classification and sentiment analysis, knowledge-graph construction, multi-source data fusion, RAG, tool use and automated workflows. Instead of listing employers and titles, this page keeps the method: understand the problem, organise the data, build the model, connect the system, then verify the result with tests and feedback.
+
+ZoroTreeking is a long-running record beside that work. It brings together AI learning, market observations, photography and hiking — how technology works, and how people make sense of change.`,
+    now: {
+      working: "Refining LLM agents, RAG, evaluation and automated workflows",
+      reading: "AI papers · Agent engineering · Model evaluation · Data systems",
+      aiming: "Turn prototypes into stable, maintainable systems people can actually use",
+    },
+    stack: [
+      { name: "Python", note: "NLP · Data processing · Automation" },
+      { name: "PyTorch", note: "Training · Inference · Evaluation" },
+      { name: "LLM Applications", note: "RAG · Prompt design · Model integration" },
+      { name: "Agent Engineering", note: "Orchestration · Tool use · State management" },
+      { name: "Knowledge Graphs", note: "Extraction · Data fusion · Graph queries" },
+      { name: "Data Systems", note: "SQL · Pipelines · Observability" },
+      { name: "Full Stack", note: "Python backend · TypeScript · Astro" },
     ],
-    craftLabel: "HOW IT IS MADE",
-    craft: [
+    projects: [
       {
-        index: "01",
-        title: "Understand",
-        text: "Find structure in language, data and real-world problems, then turn ambiguity into questions that can be examined.",
+        name: "ZoroTreeking",
+        stage: "Public project",
+        desc: "A personal publishing and data-automation lab with bilingual content, AI summaries, market data, photo stories, hiking notes and automated delivery.",
       },
       {
-        index: "02",
-        title: "Build",
-        text: "Let models, data and interfaces work together so a one-off idea becomes a system that can run and be maintained.",
+        name: "LLM Agents and Workflow Automation",
+        stage: "Recent practice",
+        desc: "Agent workflows for long-document understanding, data analysis and report generation, covering retrieval, tool use, result validation and operational monitoring.",
       },
       {
-        index: "03",
-        title: "Verify",
-        text: "Use sources, tests, feedback and retrospection to correct the result. Boundaries and uncertainty belong in the record too.",
-      },
-    ],
-    pathsLabel: "FOUR PATHS",
-    pathsIntro: "The archive is organised by enduring questions, not by job titles or chronology.",
-    paths: [
-      {
-        key: "ai",
-        href: "/en/ai",
-        label: "01 / INTELLIGENCE",
-        title: "AI Learning",
-        description: "The distance between papers, models, agents and working systems.",
-        color: "#1d4ed8",
+        name: "Knowledge Graphs and Data Fusion",
+        stage: "Engineering practice",
+        desc: "End-to-end work from text extraction, entity and relation modelling, and data cleaning to graph storage, queries and complex-information analysis.",
       },
       {
-        key: "invest",
-        href: "/en/invest",
-        label: "02 / MARKETS",
-        title: "Personal Investing",
-        description: "Market data, investment frameworks and judgments that stay open to revision.",
-        color: "#991b1b",
+        name: "Chinese NLP Information Extraction",
+        stage: "Algorithm practice",
+        desc: "Event extraction, named-entity recognition, text classification and sentiment analysis, including dataset design, training, evaluation and deployment.",
       },
       {
-        key: "photo",
-        href: "/en/photo",
-        label: "03 / LIGHT",
-        title: "Photography",
-        description: "Light, order and chance moments kept by a camera.",
-        color: "#6b21a8",
-      },
-      {
-        key: "hike",
-        href: "/en/hike",
-        label: "04 / TRAILS",
-        title: "Hiking",
-        description: "Routes, terrain and notes left after walking through them.",
-        color: "#166534",
+        name: "Productionising Algorithm Systems",
+        stage: "Ongoing",
+        desc: "Connecting model capabilities to backend services, data pipelines and interfaces, with attention to reliability, maintainability and real feedback.",
       },
     ],
-    principlesLabel: "EDITORIAL NOTES",
-    principles: [
-      {
-        title: "Trace the source",
-        text: "Facts, data and judgments should leave a path back to their evidence.",
-      },
-      {
-        title: "Show the process",
-        text: "Record methods, failures and corrections instead of presenting only the answer.",
-      },
-      {
-        title: "Privacy first",
-        text: "Publish the work and the method; keep unrelated personal and business details out.",
-      },
+    books: [
+      { title: "To Live", author: "Yu Hua", why: "The force of life itself" },
+      { title: "Ordinary World", author: "Lu Yao", why: "How ordinary people find their light" },
+      { title: "Those Things About the Ming Dynasty", author: "Dangnian Mingyue", why: "History, inevitability and chance" },
+      { title: "Sword Snow Stride", author: "Fenghuo Xizhuhou", why: "Character arcs inside a long story" },
     ],
-    privacyLabel: "PRIVACY BY DEFAULT",
-    privacyTitle: "Public work, not a public personal file.",
-    privacyText:
-      "This page deliberately omits legal identity, employers, education history, contact details, precise timelines, and the names, metrics or scale of non-public projects. Site compliance and contact routes remain separate from this introduction.",
-    privacyLink: "/en/privacy",
-    privacyLinkLabel: "Read the privacy note",
-    pulseLabel: "SITE PULSE",
-    ctaTitle: "Start with one path that interests you.",
-    ctaText: "There is no recommendation algorithm and no need to know the author first. Pick a subject and read.",
-    ctaPrimary: "Start with AI",
-    ctaSecondary: "Follow via RSS",
+    goals: [
+      "Move LLM agents from demonstrations into stable, maintainable workflows",
+      "Keep growing from implementing algorithms to defining problems and validating solutions",
+      "Record honest observations across technology, markets, photography and hiking",
+      "Stay data-driven while leaving room for uncertainty",
+    ],
+    timeline: [
+      { label: "Foundations", what: "Built a foundation across computing, machine learning and data systems." },
+      { label: "NLP Practice", what: "Started with Chinese information extraction, text classification and sentiment analysis." },
+      { label: "Graph Engineering", what: "Extended extraction into knowledge graphs, data fusion and complex-relation analysis." },
+      { label: "Agent Engineering", what: "Moved into LLM applications through RAG, tool use, orchestration, evaluation and monitoring." },
+      { label: "Continuous Work", what: "Built ZoroTreeking to keep learning, system practice and real-world notes together." },
+    ],
+    links: [
+      { href: "/rss.xml", label: "RSS", icon: "📡" },
+      { href: "/en/subscribe", label: "Subscribe", icon: "✉️" },
+      { href: "/en/guestbook", label: "Guestbook", icon: "💬" },
+    ],
   },
 };
+
+export type AboutData = typeof aboutData;
