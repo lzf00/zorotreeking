@@ -46,7 +46,11 @@ export default function SectorRanking({ initialData }: Props = {}) {
     inFlight.current = true;
     try {
       const r = await fetch("/api/market/sectors", { cache: "no-store" });
-      const d: Resp = await r.json();
+      if (!r.ok) {
+        throw new Error(`接口响应异常：${r.status} ${r.statusText}`);
+      }
+      const raw = await r.json();
+      const d: Resp = raw && typeof raw === "object" ? raw : ({} as Resp);
       if (d.ok) { setData(d); setError(null); }
       else if (!data) setError(d.error || "加载失败");
     } catch (e: any) {

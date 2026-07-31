@@ -24,7 +24,17 @@ type EtfItem = {
   ratio_pct: number | null;
 };
 
-type Resp = { ok: boolean; ts: number; trading: boolean; items: EtfItem[]; error?: string; stale?: boolean };
+type EtfResp = {
+  ok: boolean;
+  ts: number;
+  trading: boolean;
+  items: EtfItem[];
+  requested?: number;
+  succeeded?: number;
+  partial?: boolean;
+  error?: string;
+  stale?: boolean;
+};
 
 const POLL_MS = 60_000;
 
@@ -44,6 +54,8 @@ export default function EtfLiveTurnover() {
   const [data, setData] = useState<EtfItem[] | null>(null);
   const [updated, setUpdated] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [partialCount, setPartialCount] = useState<number | null>(null);
+  const [stale, setStale] = useState(false);
   const inFlight = useRef(false);
 
   async function load() {
@@ -51,11 +63,24 @@ export default function EtfLiveTurnover() {
     inFlight.current = true;
     try {
       const r = await fetch("/api/market/etf", { cache: "no-store" });
-      const d: Resp = await r.json();
+      if (!r.ok) {
+        throw new Error(`接口响应异常：${r.status} ${r.statusText}`);
+      }
+      const raw = await r.json();
+      const d: EtfResp = raw && typeof raw === "object" ? raw : ({} as EtfResp);
       if (d.ok) {
+        if (!Array.isArray(d.items)) {
+          throw new Error("返回数据格式不符合预期（items 缺失）");
+        }
         setData(d.items);
         setUpdated(d.ts);
         setError(null);
+        if (d.partial && typeof d.succeeded === "number") {
+          setPartialCount(d.succeeded);
+        } else {
+          setPartialCount(null);
+        }
+        setStale(Boolean(d.stale));
       } else if (!data) {
         setError(d.error || "加载失败");
       }
@@ -105,9 +130,15 @@ export default function EtfLiveTurnover() {
               {over100} 只成交额已超昨日全天
             </span>
           )}
+          {partialCount !== null && data.length > 0 && (
+            <span className="ml-2 text-amber-700 dark:text-amber-400">
+              昨日基准仅 {partialCount}/{data.length} 只可用
+            </span>
+          )}
         </p>
         <p className="text-[11px] text-[var(--text-tertiary)] font-mono">
           东方财富 · 延迟约 1 分钟 · {updated ? fmtTime(updated) : "—"}
+          {stale && <span className="ml-2">（回退缓存）</span>}
           {!isATradingHours() && "（已收盘）"}
         </p>
       </div>
