@@ -30,7 +30,15 @@ type FundQuote = {
   error?: string;
 };
 
-type Resp = { ok: boolean; ts: number; funds: FundQuote[]; error?: string };
+type FundResp = {
+  ok: boolean;
+  ts: number;
+  funds: FundQuote[];
+  requested?: number;
+  succeeded?: number;
+  partial?: boolean;
+  error?: string;
+};
 
 interface Props { holdings: Holding[] }
 
@@ -48,6 +56,7 @@ export default function LiveHoldings({ holdings }: Props) {
   const [updated, setUpdated] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [partial, setPartial] = useState<number | null>(null);
   const inFlight = useRef(false);
 
   const codes = useMemo(() => holdings.map(h => h.symbol).join(","), [holdings]);
@@ -57,14 +66,29 @@ export default function LiveHoldings({ holdings }: Props) {
     inFlight.current = true;
     setLoading(true);
     try {
+      if (!codes) {
+        throw new Error("持仓列表为空，先补充 src/content/invest-portfolio/_holdings.yaml");
+      }
       const r = await fetch(`/api/market/funds?codes=${codes}`, { cache: "no-store" });
-      const d: Resp = await r.json();
+      if (!r.ok) {
+        throw new Error(`接口响应异常：${r.status} ${r.statusText}`);
+      }
+      const raw = await r.json();
+      const d: FundResp = raw && typeof raw === "object" ? raw : ({} as FundResp);
       if (d.ok) {
+        if (!Array.isArray(d.funds)) {
+          throw new Error("返回数据格式不符合预期（funds 缺失）");
+        }
         const map: Record<string, FundQuote> = {};
         for (const f of d.funds) map[f.code] = f;
         setQuotes(map);
         setUpdated(d.ts);
         setError(null);
+        if (d.partial && typeof d.succeeded === "number") {
+          setPartial(d.succeeded);
+        } else {
+          setPartial(null);
+        }
       } else if (!quotes) setError(d.error || "加载失败");
     } catch (e: any) {
       if (!quotes) setError(e?.message || "网络异常");
@@ -105,11 +129,15 @@ export default function LiveHoldings({ holdings }: Props) {
   });
 
   const totalCost = rows.reduce((s, r) => s + r.costValue, 0);
-  const totalMV   = rows.reduce((s, r) => s + (r.marketValue ?? r.costValue), 0);
-  const totalPnL  = totalMV - totalCost;
-  const totalPct  = (totalMV / totalCost - 1) * 100;
+  const totalMV = rows.reduce((s, r) => s + (r.marketValue ?? 0), 0);
+  const totalPnL = totalMV - totalCost;
+  const totalPct = totalMV > 0 ? (totalCost > 0 ? (totalMV / totalCost - 1) * 100 : 0) : 0;
   const todayTotal = rows.reduce((s, r) => s + (r.todayPnl ?? 0), 0);
-  const todayPct = totalMV > 0 ? (todayTotal / (totalMV - todayTotal)) * 100 : 0;
+  const hasTodayValue = rows.some((r) => r.todayPnl !== null);
+  const todayBase = hasTodayValue ? rows.reduce((s, r) => s + (r.marketValue ?? 0) - (r.todayPnl ?? 0), 0) : 0;
+  const todayPct = todayBase > 0 ? (todayTotal / todayBase) * 100 : 0;
+  const hasMV = rows.some((r) => r.marketValue != null);
+  const hasAnyData = rows.some((r) => r.nav != null);
 
   if (!quotes && error) {
     return (
@@ -127,17 +155,21 @@ export default function LiveHoldings({ holdings }: Props) {
     <div className="space-y-4">
       {/* 顶部总览 */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <Card label="估算市值" value={`¥${fmt(totalMV, 2)}`} sub="基于 估算净值×份额" />
+        <Card
+          label="估算市值"
+          value={hasMV ? `¥${fmt(totalMV, 0)}` : "—"}
+          sub={hasMV ? "基于 估算净值×份额" : "等待可用行情"}
+        />
         <Card
           label="今日盈亏"
-          value={`${todayTotal >= 0 ? "+" : ""}¥${fmt(todayTotal, 2)}`}
-          sub={`${todayPct >= 0 ? "+" : ""}${fmt(todayPct, 2)}%`}
+          value={hasTodayValue ? `${todayTotal >= 0 ? "+" : ""}¥${fmt(todayTotal, 2)}` : "—"}
+          sub={hasTodayValue ? `${todayPct >= 0 ? "+" : ""}${fmt(todayPct, 2)}%` : "—"}
           color={todayTotal > 0 ? "#dc2626" : todayTotal < 0 ? "#16a34a" : undefined}
         />
         <Card
           label="累计盈亏"
-          value={`${totalPnL >= 0 ? "+" : ""}¥${fmt(totalPnL, 0)}`}
-          sub={`${totalPct >= 0 ? "+" : ""}${fmt(totalPct, 2)}%`}
+          value={hasAnyData ? `${totalPnL >= 0 ? "+" : ""}¥${fmt(totalPnL, 0)}` : "—"}
+          sub={hasAnyData ? `${totalPct >= 0 ? "+" : ""}${fmt(totalPct, 2)}%` : "—"}
           color={totalPnL > 0 ? "#dc2626" : totalPnL < 0 ? "#16a34a" : undefined}
         />
         <Card label="持仓数" value={String(holdings.length)} sub={`占用成本 ¥${fmt(totalCost, 0)}`} />
@@ -189,6 +221,9 @@ export default function LiveHoldings({ holdings }: Props) {
       <p className="text-[11px] text-[var(--text-tertiary)] font-mono tracking-wide">
         数据源 天天基金 · 估算净值（盘中实时，约 1-2 分钟延迟）+ 单位净值（上一交易日 17:00 后发布） · 最后更新 {updated ? fmtTime(updated) : "—"}
         {!isATradingHours() && <span className="ml-2">（非交易时段，已停止自动刷新）</span>}
+        {partial !== null && (
+          <span className="ml-2 text-amber-600 dark:text-amber-400">· 部分基金缺失（{partial}/{rows.length}）</span>
+        )}
         {loading && <span className="ml-2">…</span>}
       </p>
     </div>
