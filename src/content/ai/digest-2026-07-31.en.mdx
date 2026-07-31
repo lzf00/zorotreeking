@@ -1,0 +1,215 @@
+---
+lang: en
+translationKey: digest-2026-07-31
+title: "AI Daily Highlights · 2026-07-31"
+description: "21 papers · multi-source aggregation + AI summaries"
+date: 2026-07-31
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's content in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading LLM vendors are rolling out new releases intensively: OpenAI launches self-optimizing GPT-5.6, Anthropic releases Claude Opus 5, DeepMind upgrades its multimodal product line</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face unveils cutting-edge research on chemistry, spatial reasoning, world models and more, plus multiple new reinforcement learning papers are available on arXiv</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Qualcomm bets on personal AI as the new growth driver for the terminal market, and the industry holds in-depth discussions on topics including Harness engineering and AI alignment</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Model Iteration</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Industry Implementation</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💻 Compute Management</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ On-device AI</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.28618" target="_blank" rel="noopener noreferrer">AskChem: Claim-Centered Infrastructure for Chemistry Literature Synthesis</a>
+
+*HF ★ 17 · Bing Yan, Gregory Wolfe, Stefano Martiniani… · [HF Mirror](https://huggingface.co/papers/2607.28618)*
+
+Existing chemistry literature search only returns sorted documents, requiring manual cross-document information integration and verification. To address this pain point, the developed AskChem changes the retrieval unit from papers to atomized chemical claims with DOI sources and evidence positioning, supported by a hierarchical retrieval classification system, evidence association graph and other structures. It has indexed 2.4 million claims from 147,000 papers, supporting multi-end access. Evaluations show that the LLM reader empowered by it achieves a 100% DOI resolution rate, with the highest citation density among all tested systems.
+
+<FeedbackButtons slug="item:arxiv-2607.28618" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.27703" target="_blank" rel="noopener noreferrer">SpatialCLI: Learning to Reason With Spatial Tools, Then Without Them</a>
+
+*HF ★ 14 · Yang Zhou, Zixuan Huang, Sunzhu Li… · [HF Mirror](https://huggingface.co/papers/2607.27703)*
+
+To solve the capability mismatch problem where general vision-language models lack sufficient spatial awareness and professional vision models cannot output task decisions, this paper proposes the three-stage SpatialCLI framework: call spatial tools to complement perception, optimize tool usage with cold-start supervised fine-tuning + agent reinforcement learning, and internalize professional perception capabilities based on successful trajectories. It also releases a perception benchmark with 516 samples. Tests show that when equipped with tools, it improves Qwen3-VL performance from 29.3% to 84.6%, outperforming similar tool-aided solutions which score 72.1%, and it still maintains 73.8% performance after internalization without tools.
+
+<FeedbackButtons slug="item:arxiv-2607.27703" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.28624" target="_blank" rel="noopener noreferrer">PhiZero: A World Model Built Around Physical Language</a>
+
+*HF ★ 8 · Shuyao Shang, Yuqi Wang, Ruopeng Gao… · [HF Mirror](https://huggingface.co/papers/2607.28624)*
+
+This paper proposes PhiZero, a physical world model based on physical language. Aiming at the defects of existing models that predict videos directly in pixel space and embed dynamic laws implicitly in high-dimensional networks, this model learns discrete physical language representations from real-world scene videos via self-supervision, adopts a reasoning-first then rendering paradigm: it first derives the physical language sequence of world evolution before generating the corresponding video. Experiments verify its excellent physical consistency, which can support tasks such as interactive modeling, fine-grained action simulation, zero-shot action transfer and more.
+
+<FeedbackButtons slug="item:arxiv-2607.28624" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.28272" target="_blank" rel="noopener noreferrer">MemHarness: Memory Is Reconstructed, Not Replayed</a>
+
+*HF ★ 6 · Rong Wu, Daocheng Fu, Licheng Wen… · [HF Mirror](https://huggingface.co/papers/2607.28272)*
+
+Most existing memory-augmented LLMs directly replay retrieved static historical experiences, which is prone to negative transfer due to mismatch with current decision-making scenarios. Inspired by the active reconstruction mechanism of human memory, this paper proposes the MemHarness framework. The unified strategy model trained end-to-end via GRPO will reconstruct experiences and output decision guidance combined with the current state. Experiments show its performance is significantly better than pure RL and static memory baselines, with strong out-of-distribution robustness, and it can also improve the inherent reasoning ability of the model.
+
+<FeedbackButtons slug="item:arxiv-2607.28272" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.26760" target="_blank" rel="noopener noreferrer">Metis: Memory Foundation Model</a>
+
+*HF ★ 6 · Zeyu Zhang, Ziliang Guo, Yihang Sun… · [HF Mirror](https://huggingface.co/papers/2607.26760)*
+
+To address the problem that current AI agent memories rely on external modules and research on native memory capabilities is insufficient, this study proposes the memory foundation model paradigm and launches the first prototype Metis. It has a built-in persistent dynamic memory state, retrieves information via memory attention, and can complete memory updates only through forward propagation without gradients. Experiments verify its native memory capability, and the supporting project and model checkpoints have been open-sourced.
+
+<FeedbackButtons slug="item:arxiv-2607.26760" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2607.26059" target="_blank" rel="noopener noreferrer">Emergent Sparsity in Frozen Random CNN Feature Extractors for Deep Reinforcement Learning</a>
+
+*Scott M. Norton*
+
+This study finds that when deep reinforcement learning uses frozen randomly initialized CNN as a feature extractor, the fully connected layer will spontaneously form extremely high sparse representations even without sparsity-inducing objectives. It confirms that sparsity increases with task complexity, the available dimension of random projection determines the performance upper limit, core activated neurons are necessary for performance, and the activation set is locked before the reward turns positive, which can be used to estimate the inherent effective rank of tasks without additional sparsity mechanisms.
+
+<FeedbackButtons slug="item:arxiv-2607.26059" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.26061" target="_blank" rel="noopener noreferrer">Sim2Win: A Team-Agnostic, Event-Based Pre-Match Outcome Prediction and Tactical Profiling System for Football</a>
+
+*Mouad Zemzoumi, Amine Abouaomar*
+
+Aiming at the pain points that pre-match tactical analysis for professional football relies on subjective judgment, and identity-associated prediction systems cannot be generalized to unknown teams, this paper proposes the team-agnostic, event-driven pre-match prediction framework Sim2Win: it constructs tactical portraits based on match event data, extracts interpretable features, clusters playing styles, and trains multi-classifiers to predict match results. Verified across multiple tournaments, its generalization performance is better than mainstream baselines such as ELO, proving that tactical behavior representations have transferable predictive value.
+
+<FeedbackButtons slug="item:arxiv-2607.26061" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.26094" target="_blank" rel="noopener noreferrer">Meta-Learned Reward Shaping for Reinforcement Learning from Human Feedback</a>
+
+*Yunpeng Chu*
+
+To address the problems that existing RLHF relies on static task-agnostic reward models, has sparse learning signals and limited alignment effects, this paper proposes the meta-learning reward shaping framework MeRLa: before RLHF training, it meta-learns task-aware shaping functions across auxiliary tasks, generates composite rewards that take into account both policy optimality and task-specific signals, with supporting theoretical guarantees. Tested on LLaMA-3-8B, it outperforms mainstream algorithms such as PPO and DPO, with a 90.8% win rate on AlpacaEval 2.0 and a 9.14 score on MT-Bench, improving training stability by 41%, and it is compatible with various augmented rewards.
+
+<FeedbackButtons slug="item:arxiv-2607.26094" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/advancing-the-price-performance-frontier-with-gpt-5-6" target="_blank" rel="noopener noreferrer">Advancing the price-performance frontier with GPT-5.6</a>
+
+*OpenAI*
+
+This article focuses on OpenAI's commercial exploration research of the GPT-5.6 model. The core is to greatly improve operating efficiency by optimizing the model architecture, paired with exploring low pricing strategies adapted to the two scenarios of Luna and Terra, successfully breaking through the price-performance boundary of LLM commercialization, greatly reducing the cost threshold for enterprises to deploy AI workflows at scale, and providing a more economical and feasible path for large-scale enterprise-grade AI implementation.
+
+<FeedbackButtons slug="item:openai-blog-advancing-the-price-performance-frontier-with-gpt-5-6" client:visible />
+
+## <a href="https://openai.com/index/avatarin" target="_blank" rel="noopener noreferrer">How avatarin built a 24/7 retail agent with GPT-Realtime</a>
+
+*OpenAI*
+
+avatarin relies on OpenAI's GPT-Realtime technology to create a 24/7 multilingual intelligent retail customer service agent for consumers of Yamada Denki, a well-known home appliance retail chain in Japan. The implementation performance of this solution is outstanding: only two weeks after launch, it has served a total of 30,000 users, with a user survey satisfaction rate as high as 92%, fully verifying the commercial value of LLM real-time interaction technology in the retail customer service scenario.
+
+<FeedbackButtons slug="item:openai-blog-avatarin" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 5</a>
+
+*Anthropic*
+
+Claude Opus 5 is a stepwise iterative version of the Opus series flagship LLM, which achieves two major core capability upgrades: first, it greatly optimizes the support capability for long-running agents, which can ensure that agents stably perform complex tasks for a long time; second, it significantly improves the performance of code generation and professional field transaction processing, which can better meet the usage needs of high-difficulty development, professional work in various industries and other scenarios.
+
+<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+Titled "Inviting hard questions", this article announces a public participation initiative: it openly solicits the most concerned high-difficulty questions about the artificial intelligence field from the whole society. At the same time, the team publicly promises that when conducting research and responses to all collected questions in the future, it will fully disclose the full process details of problem solving, so as to improve the transparency of AI research and proactively respond to public concerns about AI technology.
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestration-and-multi-robot-collaboration/" target="_blank" rel="noopener noreferrer">Gemini Robotics ER 2: powering robotics with video understanding, task orchestration, and multi-robot collaboration</a>
+
+*Google DeepMind*
+
+Gemini Robotics ER 2 is a dedicated technical empowerment system built for robotics scenarios, which has achieved stepwise breakthroughs in three core dimensions: video understanding capability, task tool orchestration and scheduling, and multi-robot collaboration mechanism. It can support robots to complete functions such as autonomous reasoning and group collaboration, effectively solving various complex tasks in real scenarios, and is an important landmark progress in the field of robot application implementation.
+
+<FeedbackButtons slug="item:deepmind-gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestrati" client:visible />
+
+## <a href="https://deepmind.google/blog/were-launching-lyria-35-in-google-flow-music-with-advances-across-musicality-lyrics-vocals-and-creative-control/" target="_blank" rel="noopener noreferrer">We’re launching Lyria 3.5 in Google Flow Music, with advances across musicality, lyrics, vocals, and creative control</a>
+
+*Google DeepMind*
+
+Google recently officially launched the user-facing AI music generation model Lyria 3.5 on the Flow Music platform. This version has achieved technological breakthroughs in three core dimensions: musical expression, lyrics adaptation, and vocal fidelity, while further strengthening creative controllability, which not only improves the professional quality of AI-generated music, but also greatly lowers the threshold for ordinary users to customize personalized music.
+
+<FeedbackButtons slug="item:deepmind-were-launching-lyria-35-in-google-flow-music-with-advances-across-musicality-lyr" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/Dharma-AI/gpu-management" target="_blank" rel="noopener noreferrer">GPU Management: Why Idle GPUs Are the New Grounded Aircraft</a>
+
+*Hugging Face*
+
+Currently only the paper title is provided, with no attached abstract body content. Please supplement the full English abstract text, and I will accurately extract its core methods, conclusions and innovations, and output a logically clear, focused summary of around 120 words as required.
+
+<FeedbackButtons slug="item:hf-blog-gpu-management" client:visible />
+
+## <a href="https://huggingface.co/blog/allenai/olmoearth-infrastructure" target="_blank" rel="noopener noreferrer">The OlmoEarth Platform: Geospatial inference at planetary scale</a>
+
+*Hugging Face*
+
+This article introduces the planetary-scale geospatial reasoning platform OlmoEarth developed by the Allen Institute for AI: methodologically, it integrates multi-source remote sensing and annotated geographic datasets, adapts to the spatial semantic understanding capabilities of open-source LLMs, and supports multi-resolution geographic tasks from meter-level to kilometer-level. Actual measurements show that its accuracy in scenarios such as land cover classification and disaster assessment is 14% higher than traditional tools, and inference efficiency is improved by nearly 30 times. Relevant resources have been open-sourced.
+
+<FeedbackButtons slug="item:hf-blog-olmoearth-infrastructure" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This article focuses on the AI alignment problem, refutes the common assumption that "rational agents need to be anchored to fixed goals", and proposes that human rational behavior is not oriented towards a certain final goal, but adapts to a self-promoting practice network including action tendencies, evaluation criteria and other elements. To realize AI collaboration with humans, compliance with ethical requirements and even meeting core security attributes, it is necessary to make AI decision-making logic match this practice-based virtuous agency model of humans.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This article sorts out the conceptual evolution of recursive self-improvement (RSI): as early as 1965, I.J. Good first proposed that superintelligent machines can surpass all human intellectual activities, and can design better machines to achieve self-iteration; in 2008, Eliezer Yudkowsky clarified that its core is the feedback loop where AI uses existing intelligence to optimize its own cognitive mechanism. Current research shows that the RSI of contemporary AI can be realized either by directly rewriting its own weights or by optimizing the training pipeline.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/07/463433.html" target="_blank" rel="noopener noreferrer">Father of Claude Code: Harness only has a 6-month shelf life, untie the reins</a>
+
+*QbitAI*
+
+Boris, the father of Claude Code, stated in the latest YC interview that AI product iteration should boldly adopt ablation experiments, clean up redundant prompts, tools and harness code every six months, and add them back line by line to verify actual utility. He pointed out that the current capabilities of LLMs generally exceed the preset boundaries of products, and it is recommended to unbind restrictions to allow models to take on more difficult tasks. Currently, only core modules such as security and permissions are retained in the harness of Claude Code.
+
+<FeedbackButtons slug="item:qbitai-463433" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/463204.html" target="_blank" rel="noopener noreferrer">Qualcomm bets on "personal AI" as the next growth point for the terminal market</a>
+
+*QbitAI*
+
+Currently, shipments of terminals such as global smartphones, PCs, and tablets are generally declining, but the penetration rate of AI functions is rising against the trend, and the old logic of exchanging hardware parameter stacking for sales has become invalid. An industry white paper commissioned by Qualcomm and released by IDC points out that only carrying fragmented AI functions cannot improve users' willingness to pay, and the terminal industry needs to shift to the "personal AI" paradigm with agents as the carrier and users as the center, which is also the new growth driver that Qualcomm is betting on.
+
+<FeedbackButtons slug="item:qbitai-463204" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/463297.html" target="_blank" rel="noopener noreferrer">GPT-5.6 self-optimization confirmed, new self-boosting mechanism has emerged</a>
+
+*QbitAI*
+
+OpenAI recently disclosed progress related to AI recursive self-evolution (RSI): GPT-5.6 has been deployed in the production environment, can independently analyze traffic and adjust request routing, and can also rewrite the underlying GPU Kernel it runs on and optimize the speculative decoding model with the help of Triton. Currently, it has achieved a 20% reduction in end-to-end service costs and a more than 15% increase in Token generation efficiency, and has not yet reached the full RSI level of automatically training the next generation of models.
+
+<FeedbackButtons slug="item:qbitai-463297" client:visible />
