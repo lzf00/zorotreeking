@@ -1,0 +1,215 @@
+---
+lang: zh
+translationKey: digest-2026-07-31
+title: "AI 每日精选 · 2026-07-31"
+description: "21 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-07-31
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">头部大模型厂商密集发新，OpenAI推可自优化GPT-5.6、Anthropic发Claude Opus 5、DeepMind升级多模态线</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face公布化学、空间推理、世界模型等前沿研究，另有多篇强化学习方向Arxiv论文上线</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">高通押注个人AI为终端市场新增长点，行业围绕Harness工程、AI对齐等议题展开深度讨论</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 模型迭代</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 产业落地</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 前沿研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💻 算力管理</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ 终端AI</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.28618" target="_blank" rel="noopener noreferrer">AskChem: Claim-Centered Infrastructure for Chemistry Literature Synthesis</a>
+
+*HF ★ 17 · Bing Yan, Gregory Wolfe, Stefano Martiniani… · [HF 镜像](https://huggingface.co/papers/2607.28618)*
+
+现有化学文献检索仅返回排序文档，需人工跨文献整合校验信息。对此研发的AskChem将检索单位从论文改为带DOI来源、证据定位的原子化化学主张，配套分层检索分类体系、证据关联图谱等结构，已索引14.7万篇论文的240万条主张，支持多端访问。测评显示其赋能的大模型阅读器DOI可解析率达100%，引文密度为受试系统最高。
+
+<FeedbackButtons slug="item:arxiv-2607.28618" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.27703" target="_blank" rel="noopener noreferrer">SpatialCLI: Learning to Reason With Spatial Tools, Then Without Them</a>
+
+*HF ★ 14 · Yang Zhou, Zixuan Huang, Sunzhu Li… · [HF 镜像](https://huggingface.co/papers/2607.27703)*
+
+针对通用视觉语言模型空间感知不足、专业视觉模型无法输出任务决策的能力错配问题，本文提出三阶段SpatialCLI框架：调用空间工具补全感知、用冷启动监督微调+智能体强化学习优化工具使用、基于成功轨迹内化专业感知能力，还发布了含516个样例的感知基准。测试显示其带工具时将Qwen3-VL性能从29.3%提至84.6%，超同类带工具方案72.1%的成绩，内化后无工具仍保持73.8%性能。
+
+<FeedbackButtons slug="item:arxiv-2607.27703" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.28624" target="_blank" rel="noopener noreferrer">PhiZero: A World Model Built Around Physical Language</a>
+
+*HF ★ 8 · Shuyao Shang, Yuqi Wang, Ruopeng Gao… · [HF 镜像](https://huggingface.co/papers/2607.28624)*
+
+本文提出基于物理语言的物理世界模型PhiZero。针对现有模型直接在像素空间预测视频、动力学规律隐式嵌入高维网络的缺陷，该模型自监督从真实场景视频学习离散物理语言表示，采用先推理后渲染范式，先推导世界演化的物理语言序列再生成对应视频。实验验证其物理一致性优异，可支撑交互建模、细粒度动作仿真、零样本动作迁移等任务。
+
+<FeedbackButtons slug="item:arxiv-2607.28624" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.28272" target="_blank" rel="noopener noreferrer">MemHarness: Memory Is Reconstructed, Not Replayed</a>
+
+*HF ★ 6 · Rong Wu, Daocheng Fu, Licheng Wen… · [HF 镜像](https://huggingface.co/papers/2607.28272)*
+
+现有记忆增强大模型多直接回放检索到的静态历史经验，易因和当前决策场景不匹配出现负迁移。受人类记忆主动重构机制启发，本文提出MemHarness框架，经GRPO端到端训练的统一策略模型会结合当前状态重构经验输出决策指导。实验显示其性能显著优于纯RL、静态记忆基线，分布外鲁棒性强，还可提升模型内在推理能力。
+
+<FeedbackButtons slug="item:arxiv-2607.28272" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.26760" target="_blank" rel="noopener noreferrer">Metis: Memory Foundation Model</a>
+
+*HF ★ 6 · Zeyu Zhang, Ziliang Guo, Yihang Sun… · [HF 镜像](https://huggingface.co/papers/2607.26760)*
+
+针对当前AI智能体记忆依赖外部模块、原生记忆能力研究不足的问题，该研究提出记忆基础模型范式，推出首个原型Metis。其内置持久动态记忆状态，通过记忆注意力调取信息，无需梯度、仅前向传播即可完成记忆更新，实验验证其具备原生记忆能力，配套项目与模型检查点已开源。
+
+<FeedbackButtons slug="item:arxiv-2607.26760" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2607.26059" target="_blank" rel="noopener noreferrer">Emergent Sparsity in Frozen Random CNN Feature Extractors for Deep Reinforcement Learning</a>
+
+*Scott M. Norton*
+
+该研究发现，深度强化学习采用冻结随机初始化CNN作为特征提取器时，即便无稀疏诱导目标，全连接层也会自发形成极高稀疏表征。证实稀疏度随任务复杂度提升，随机投影可用维度决定性能上限，核心激活神经元为性能必需，激活集早于奖励转正前锁定，可用于免额外稀疏机制估计任务内在有效秩。
+
+<FeedbackButtons slug="item:arxiv-2607.26059" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.26061" target="_blank" rel="noopener noreferrer">Sim2Win: A Team-Agnostic, Event-Based Pre-Match Outcome Prediction and Tactical Profiling System for Football</a>
+
+*Mouad Zemzoumi, Amine Abouaomar*
+
+针对职业足球赛前战术分析依赖主观判断、身份关联类预测系统无法泛化至未知队伍的痛点，本文提出队伍无关的事件驱动赛前预测框架Sim2Win：基于赛事事件数据构建战术画像、提取可解释特征、聚类打法风格，训练多分类器预测赛果。经跨赛事验证，其泛化性能优于ELO等主流基线，证明战术行为表征具备可迁移预测价值。
+
+<FeedbackButtons slug="item:arxiv-2607.26061" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.26094" target="_blank" rel="noopener noreferrer">Meta-Learned Reward Shaping for Reinforcement Learning from Human Feedback</a>
+
+*Yunpeng Chu*
+
+针对现有RLHF依赖静态任务无关奖励模型、学习信号稀疏、对齐效果受限的问题，提出元学习奖励塑形框架MeRLa：RLHF训练前跨辅助任务元学习任务感知塑形函数，生成兼顾策略最优性和任务专属信号的复合奖励，配套理论保障。在LLaMA-3-8B上测试优于PPO、DPO等主流算法，AlpacaEval 2.0胜率90.8%、MT-Bench得分9.14，训练稳定性提41%，可兼容各类增强奖励。
+
+<FeedbackButtons slug="item:arxiv-2607.26094" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/advancing-the-price-performance-frontier-with-gpt-5-6" target="_blank" rel="noopener noreferrer">Advancing the price-performance frontier with GPT-5.6</a>
+
+*OpenAI*
+
+本篇聚焦OpenAI的GPT-5.6模型商用探索研究，核心通过优化模型架构大幅提升运行效率，配套探索适配Luna、Terra两大场景的低定价策略，成功突破大模型商用的性价比边界，大幅降低企业规模化部署AI工作流的成本门槛，为企业级AI大规模落地提供了更具经济性的可行路径。
+
+<FeedbackButtons slug="item:openai-blog-advancing-the-price-performance-frontier-with-gpt-5-6" client:visible />
+
+## <a href="https://openai.com/index/avatarin" target="_blank" rel="noopener noreferrer">How avatarin built a 24/7 retail agent with GPT-Realtime</a>
+
+*OpenAI*
+
+avatarin依托OpenAI的GPT-Realtime技术，为日本知名家电零售连锁山田电机的消费者打造了24小时不间断的多语种智能零售客服代理。该方案落地表现亮眼，上线仅两周就累计服务3万名用户，用户调研满意度高达92%，充分验证了大模型实时交互技术在零售客服场景的商用价值。
+
+<FeedbackButtons slug="item:openai-blog-avatarin" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 5</a>
+
+*Anthropic*
+
+Claude Opus 5是Opus系列旗舰大模型的阶跃式迭代版本，核心实现两大能力升级：一是大幅优化对长周期运行智能体的支撑能力，可保障智能体长时间稳定执行复杂任务；二是显著提升代码生成、专业领域事务处理的表现，能更好满足高难度开发、各行业专业工作等场景的使用需求。
+
+<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+这篇题为《征集尖锐问题》的文章发布了一项公众参与举措：面向全社会公开征集公众关于人工智能领域最关心的高难度疑问，同时团队公开承诺，后续针对所有征集到的问题开展研究回应时，都会完整公开问题解决的全流程工作细节，以此提升AI研究透明度，主动回应公众对AI技术的关切。
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestration-and-multi-robot-collaboration/" target="_blank" rel="noopener noreferrer">Gemini Robotics ER 2: powering robotics with video understanding, task orchestration, and multi-robot collaboration</a>
+
+*Google DeepMind*
+
+Gemini Robotics ER 2是面向机器人场景打造的专用技术赋能系统，核心在视频理解能力、任务工具编排调度、多机器人协同机制三大维度实现了阶跃性突破，可支撑机器人完成自主推理、群组协作等功能，有效解决真实场景下的各类复杂任务，是机器人落地应用领域的重要标志性进展。
+
+<FeedbackButtons slug="item:deepmind-gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestrati" client:visible />
+
+## <a href="https://deepmind.google/blog/were-launching-lyria-35-in-google-flow-music-with-advances-across-musicality-lyrics-vocals-and-creative-control/" target="_blank" rel="noopener noreferrer">We’re launching Lyria 3.5 in Google Flow Music, with advances across musicality, lyrics, vocals, and creative control</a>
+
+*Google DeepMind*
+
+谷歌近日在Flow Music平台正式上线面向用户开放的AI音乐生成模型Lyria 3.5。该版本在音乐性表达、歌词适配度、人声拟真度三大核心维度均实现技术突破，同时进一步强化创作可控性，既提升了AI生成音乐的成品专业度，也大幅降低普通用户个性化定制音乐的门槛。
+
+<FeedbackButtons slug="item:deepmind-were-launching-lyria-35-in-google-flow-music-with-advances-across-musicality-lyr" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/Dharma-AI/gpu-management" target="_blank" rel="noopener noreferrer">GPU Management: Why Idle GPUs Are the New Grounded Aircraft</a>
+
+*Hugging Face*
+
+当前您仅提供了论文标题，未附上摘要正文内容，请您补充完整的英文摘要文本，我会精准提炼其中的核心方法、结论与创新点，按要求输出120字左右、逻辑清晰重点突出的中文总结。
+
+<FeedbackButtons slug="item:hf-blog-gpu-management" client:visible />
+
+## <a href="https://huggingface.co/blog/allenai/olmoearth-infrastructure" target="_blank" rel="noopener noreferrer">The OlmoEarth Platform: Geospatial inference at planetary scale</a>
+
+*Hugging Face*
+
+本文介绍艾伦人工智能研究所研发的行星级地理空间推理平台OlmoEarth：方法上整合多源遥感、标注地理数据集，适配开源大模型的空间语义理解能力，支持米级到公里级多分辨率地理任务。实测其在土地覆盖分类、灾害评估等场景精度较传统工具高14%，推理效率提升近30倍，相关资源已开源。
+
+<FeedbackButtons slug="item:hf-blog-olmoearth-infrastructure" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+该文围绕AI对齐问题展开，反驳“理性智能体需锚定固定目标”的常见预设，提出人类理性行为并非指向某类最终目标，而是适配包含行动倾向、评价准则等要素的自促性实践网络。要实现AI与人类协作、契合伦理要求乃至满足核心安全属性，需让AI决策逻辑匹配人类这类基于实践的德性能动模式。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我改进（RSI）的概念演进：1965年I.J.古德最早提出超智能机器可超越人类所有智力活动，且能设计更优机器实现自我迭代；2008年尤德考斯基明确其核心是AI用现有智能优化自身认知机制的反馈环。当前研究显示，当代AI的RSI既可通过直接改写自身权重实现，也可优化训练管线达成。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/07/463433.html" target="_blank" rel="noopener noreferrer">Claude Code之父：Harness保质期只有半年，解开缰绳吧</a>
+
+*量子位*
+
+Claude Code之父Boris在YC最新访谈中提出，AI产品迭代应大胆采用消融实验，每半年清理冗余提示词、工具、harness代码，逐行回加验证实际效用。他指出当前大模型能力普遍超出产品预设边界，建议解绑限制让模型承接更难任务，目前Claude Code的harness仅保留安全、权限等核心模块。
+
+<FeedbackButtons slug="item:qbitai-463433" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/463204.html" target="_blank" rel="noopener noreferrer">终端市场的下一个增长点，高通押在了“个人AI”上</a>
+
+*量子位*
+
+当前全球智能手机、PC、平板等终端出货量普遍下滑，但AI功能渗透率逆势走高，堆硬件参数换销量的旧逻辑已经失效。高通委托IDC发布的产业白皮书指出，仅搭载零散AI功能无法提升用户付费意愿，终端产业需转向以智能体为载体、用户为中心的“个人AI”范式，这也是高通押注的新增长点。
+
+<FeedbackButtons slug="item:qbitai-463204" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/463297.html" target="_blank" rel="noopener noreferrer">GPT-5.6自己优化自己实锤了，新的左脚踩右脚已经出现</a>
+
+*量子位*
+
+OpenAI最新披露AI递归自进化（RSI）相关进展：GPT-5.6已落地生产环境，可自主分析流量、调整请求路由，还能借助Triton改写自身运行的GPU底层Kernel、优化推测解码模型。目前已实现端到端服务成本降20%，Token生成效率提超15%，暂未达到自动训练下一代模型的完整RSI水平。
+
+<FeedbackButtons slug="item:qbitai-463297" client:visible />
