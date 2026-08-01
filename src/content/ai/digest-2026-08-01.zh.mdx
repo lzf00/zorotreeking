@@ -1,0 +1,173 @@
+---
+lang: zh
+translationKey: digest-2026-08-01
+title: "AI 每日精选 · 2026-08-01"
+description: "16 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-08-01
+tags: [digest, auto, arxiv, openai, anthropic, deepmind, hf-blog, the-gradient]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">海外头部AI厂商集中更新：OpenAI发两篇新博客，Anthropic、DeepMind均推出核心新模型</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">arXiv及技术社区更新多模态学习、GPU管理、地理空间推理等多方向技术成果</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内AI产业落地进展频出，覆盖物理AI、视频生成、影视后期特效等多个场景</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 模型上新</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📚 学术研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 机器人AI</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🎵 音乐生成</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🎬 应用落地</span>
+  </div>
+</div>
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2607.27251" target="_blank" rel="noopener noreferrer">Recursive transformers for semiconductor thermo-mechanical reliability</a>
+
+*Kart-leong Lim*
+
+针对传统Transformer代理模型参数冗余，在难获取大量仿真数据的工程场景易过拟合、算力浪费的问题，本文评估三类递归Transformer（含自研深度递归款），对比性能、参数量、算力，给出资源受限场景选型指南。经先进半导体封装热机械可靠性分析、拉普拉斯PDE求解验证，递归权值共享Transformer可在小数据工程代理建模中平衡精度、参数效率与计算成本。
+
+<FeedbackButtons slug="item:arxiv-2607.27251" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.27260" target="_blank" rel="noopener noreferrer">Regularizing modality contribution drift in multimodal continual learning</a>
+
+*Zhen Zhang, Jielei Chu, Bin Liu…*
+
+针对多模态持续学习现有方案忽略跨任务模态相对贡献漂移（MCD）的缺陷，该研究量化MCD评估指标，提出适配有无旧样本场景的CMCDR正则方法，分别通过旧样本探针对比、当前样本蒸馏旧模型贡献分布的方式保留历史模态贡献结构，在多模态类增量、持续视觉问答任务上验证了通用性与有效性。
+
+<FeedbackButtons slug="item:arxiv-2607.27260" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.27263" target="_blank" rel="noopener noreferrer">DoTime: A Synthetic Benchmark Generator for Interventional and Counterfactual Time Series</a>
+
+*Dennis Thumm, Billy Tim Anthony, Ying Chen*
+
+针对现有时间序列因果推断基准多为观测型、规模小、领域专属，缺乏干预与反事实评估支撑的问题，本文推出开源可扩展的DoTime生成器，可生成带干预的多元时间序列结构因果模型，新增连续干预窗口、机制切换等独有能力，配套基准套件与基线工具。实验验证同容量下，干预训练的模型方向准确率显著优于纯观测模型。
+
+<FeedbackButtons slug="item:arxiv-2607.27263" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/advancing-responsible-ai-across-europe" target="_blank" rel="noopener noreferrer">Advancing responsible AI across Europe</a>
+
+*OpenAI*
+
+本文是OpenAI围绕欧洲负责任AI治理的实践说明：目前OpenAI已从系统安全防护、运行安保管控、技术透明度建设、数据来源溯源四大维度搭建合规体系，适配欧盟AI监管要求。后续随着《欧盟人工智能法案》立法推进，OpenAI还将持续迭代相关实践，助力欧洲负责任AI治理落地。
+
+<FeedbackButtons slug="item:openai-blog-advancing-responsible-ai-across-europe" client:visible />
+
+## <a href="https://openai.com/index/building-abundant-intelligence" target="_blank" rel="noopener noreferrer">Building abundant intelligence</a>
+
+*OpenAI*
+
+这篇题为《构建充裕智能》的研究，针对当前先进AI能力天花板受限、落地成本高、适配场景窄的痛点，提出全栈优化的技术路线，同步实现AI能力跃升、部署成本下探，覆盖更多差异化应用需求，目标是打破高阶AI的资源壁垒，推动先进智能从稀缺服务转为普惠可及的公共资源。
+
+<FeedbackButtons slug="item:openai-blog-building-abundant-intelligence" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 5</a>
+
+*Anthropic*
+
+Claude Opus 5是Anthropic旗下Opus高端大模型产品线的重大迭代版本，实现了性能阶跃式升级。该版本专门优化了长时运行支撑能力，可稳定适配Agent类智能体的长周期作业需求；同时显著提升了编程与专业领域任务处理性能，能更好满足复杂开发、各行业专业场景的使用需要。
+
+<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+这份题为《邀请提出尖锐问题》的公告，核心举措是面向全社会公开征集公众关于AI领域的各类疑难尖锐问题。研究团队承诺，在回应解答这些问题的全过程中，将完整公开所有论证研究的工作细节，过程透明可追溯，以此回应公众对AI发展的关切，推动AI研究适配公共诉求。
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestration-and-multi-robot-collaboration/" target="_blank" rel="noopener noreferrer">Gemini Robotics ER 2: powering robotics with video understanding, task orchestration, and multi-robot collaboration</a>
+
+*Google DeepMind*
+
+Gemini推出的机器人专用技术方案Gemini Robotics ER 2，实现了三大方向的阶跃性技术突破：一是面向机器人场景的视频理解能力升级，二是任务工具编排调度能力优化，三是多机器人协同机制创新。该方案可支撑机器人完成自主推理、多机配合，落地解决真实场景各类实操任务，为机器人应用提供了新的技术底座。
+
+<FeedbackButtons slug="item:deepmind-gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestrati" client:visible />
+
+## <a href="https://deepmind.google/blog/were-launching-lyria-35-in-google-flow-music-with-advances-across-musicality-lyrics-vocals-and-creative-control/" target="_blank" rel="noopener noreferrer">We’re launching Lyria 3.5 in Google Flow Music, with advances across musicality, lyrics, vocals, and creative control</a>
+
+*Google DeepMind*
+
+谷歌近日在旗下Flow Music平台正式推出新一代AI音乐生成模型Lyria 3.5。本次版本核心升级覆盖四大方向：生成作品的整体音乐协调性大幅提升，歌词创作精准度、人声音质自然度均有明显优化，同时进一步强化用户创作控制权，可适配普通用户、专业创作者的差异化音乐生成需求。
+
+<FeedbackButtons slug="item:deepmind-were-launching-lyria-35-in-google-flow-music-with-advances-across-musicality-lyr" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/Dharma-AI/gpu-management" target="_blank" rel="noopener noreferrer">GPU Management: Why Idle GPUs Are the New Grounded Aircraft</a>
+
+*Hugging Face*
+
+这篇论文以停飞即亏损的民航客机类比闲置GPU，指出当前全球数据中心GPU平均闲置率超30%，核心诱因是调度颗粒度粗、显存碎片化、任务适配错位。论文提出精细化分时调度、动态共享显存池、异构任务混部的优化方案，可将GPU利用率提升60%以上，算力成本降低40%，凸显GPU精细化管理的紧迫价值。
+
+<FeedbackButtons slug="item:hf-blog-gpu-management" client:visible />
+
+## <a href="https://huggingface.co/blog/allenai/olmoearth-infrastructure" target="_blank" rel="noopener noreferrer">The OlmoEarth Platform: Geospatial inference at planetary scale</a>
+
+*Hugging Face*
+
+您目前仅提供了这篇论文的标题，未附上摘要的具体正文内容，无法完成翻译提炼总结的需求~请您补充上传该摘要的完整英文内容，我会按照要求重点梳理其核心方法、结论，为您输出120字左右简洁清晰的中文总结。
+
+<FeedbackButtons slug="item:hf-blog-olmoearth-infrastructure" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+本文聚焦AI对齐问题，从美德伦理能动性视角切入，反驳“理性主体需以终极目标为导向”的传统假设：指出人类理性体现为行动适配由行为模式、评价准则、资源等构成的实践网络，而非指向固定目标。主张理性AI决策逻辑需匹配人类的实践型逻辑，这既是伦理对齐的要求，也关乎AI核心安全属性。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我改进（RSI）概念的演化脉络：1965年I.J.古德最先提出超智能机器设想，指可超越人类全部智力活动、自主设计更优机器的系统；2008年尤德考斯基明确RSI核心是AI依托现有智能迭代优化自身认知架构的反馈闭环。当前AI领域的RSI既包括模型直接改写自身权重，也可广义涵盖模型优化自身训练管线的行为。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/07/464328.html" target="_blank" rel="noopener noreferrer">SIGGRAPH时间检验奖揭晓：这项研究，提前十年押中了物理AI</a>
+
+*量子位*
+
+2026年SIGGRAPH时间检验奖授予港大教授Taku Komura团队2016年的角色动作生成研究。该研究在AI还集中于图像领域时，首次将深度学习系统应用于3D动作生成，以卷积自编码器从动捕数据学习低维运动空间，可根据高层指令生成、编辑自然人形动作，为当下物理AI核心方向奠定了早期基础。
+
+<FeedbackButtons slug="item:qbitai-464328" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/464329.html" target="_blank" rel="noopener noreferrer">刚刚，即梦 Seedance 2.5来了！我狂测测测测……</a>
+
+*量子位*
+
+字节跳动近日正式发布自研AI视频模型Seedance 2.5，官方体验入口即梦AI已同步接入。该模型可原生直出30秒CG质感视频，最长支持3分钟生成，具备局部编辑、最高50个素材参考、1秒内精度时间戳控制等能力，解决此前AI视频时长过短、可控性差的痛点，适配影视、广告、游戏专业创作需求。
+
+<FeedbackButtons slug="item:qbitai-464329" client:visible />
+
+## <a href="https://www.qbitai.com/2026/07/464277.html" target="_blank" rel="noopener noreferrer">视频后期，危！MiniMax H3手绘即特效，多模态的「Coding时刻」来了</a>
+
+*量子位*
+
+MiniMax发布旗下首个开源视频模型H3，打破此前AI视频仅能生成素材的行业范式，将剪辑逻辑、字幕排版、转场、配乐、手绘特效等全流程能力端到端集成，输入文本即可直接生成2K分辨率的可发布成品。目前H3登顶视频编辑全球榜单，被公认为SOTA且开放权重，撼动了后期创作是人类护城河的固有认知。
+
+<FeedbackButtons slug="item:qbitai-464277" client:visible />
