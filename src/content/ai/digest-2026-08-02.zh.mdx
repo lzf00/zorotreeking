@@ -1,0 +1,147 @@
+---
+lang: zh
+translationKey: digest-2026-08-02
+title: "AI 每日精选 · 2026-08-02"
+description: "13 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-08-02
+tags: [digest, auto, openai, anthropic, deepmind, hf-blog, the-gradient, lil-log]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI发布数理及理论CS十大进展、推进欧洲负责任AI，Anthropic推出Claude Opus 5大模型</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">DeepMind发布Gemini Robotics ER 2机器人方案，上线Lyria 3.5音乐模型接入谷歌Flow Music</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face发布GPU管理方案、OlmoEarth地理空间平台，多领域AI研究及应用均有新动态</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥大模型迭代</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖机器人进展</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🎵AI音乐</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠前沿研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💻行业动态</span>
+  </div>
+</div>
+
+# OpenAI
+
+## <a href="https://openai.com/index/ten-advances-in-mathematics" target="_blank" rel="noopener noreferrer">Ten advances in mathematics and theoretical computer science</a>
+
+*OpenAI*
+
+OpenAI最新公布数学与理论计算机科学领域的研究成果，针对两类学科中长期悬而未决的公开核心难题取得突破，本次共披露10项核心进展，覆盖几何学、密码学、计算复杂性三大细分方向，为相关领域的基础研究攻坚、跨场景技术落地提供了全新参考思路。
+
+<FeedbackButtons slug="item:openai-blog-ten-advances-in-mathematics" client:visible />
+
+## <a href="https://openai.com/index/advancing-responsible-ai-across-europe" target="_blank" rel="noopener noreferrer">Advancing responsible AI across Europe</a>
+
+*OpenAI*
+
+本研究聚焦欧洲负责任AI推进议题，OpenAI公开其在安全防护、系统安保、运行透明、数据溯源四方面的落地实践，说明此类举措可有效支撑欧盟负责任AI治理工作。后续随着欧盟AI法案立法进程推进，OpenAI将持续迭代相关实践体系，适配监管要求，助力区域负责任AI生态建设。
+
+<FeedbackButtons slug="item:openai-blog-advancing-responsible-ai-across-europe" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 5</a>
+
+*Anthropic*
+
+本次推出的Claude Opus 5是Opus产品线的阶跃式升级版本。核心优化聚焦两大方向：一是针对性强化了对长周期运行智能体的支撑能力，适配智能体长时间持续作业的需求；二是显著提升了代码生成调试、各领域专业复杂任务的处理表现，可更好服务高要求的专业工作场景。
+
+<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+这份内容推出一项AI领域公众参与倡议：面向全社会公开征集公众关于AI的最具挑战性、最关切的疑难问题，同时明确承诺，团队在后续研究解答这些问题的全流程中，将全程公开工作进展、披露研究细节。该倡议旨在拉平AI研发信息差，回应公众对AI技术的普遍疑虑，提升AI领域研究的公开透明度与公众参与度。
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestration-and-multi-robot-collaboration/" target="_blank" rel="noopener noreferrer">Gemini Robotics ER 2: powering robotics with video understanding, task orchestration, and multi-robot collaboration</a>
+
+*Google DeepMind*
+
+Gemini Robotics ER 2是面向机器人场景的智能支撑系统，在三大核心方向实现阶跃性技术突破：一是强化视频理解能力支撑机器人自主感知推理，二是优化任务编排机制实现复杂作业流程调度，三是升级多机器人协作框架适配多机协同场景，可助力机器人完成真实世界任务，为机器人智能化落地提供核心支撑。
+
+<FeedbackButtons slug="item:deepmind-gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestrati" client:visible />
+
+## <a href="https://deepmind.google/blog/were-launching-lyria-35-in-google-flow-music-with-advances-across-musicality-lyrics-vocals-and-creative-control/" target="_blank" rel="noopener noreferrer">We’re launching Lyria 3.5 in Google Flow Music, with advances across musicality, lyrics, vocals, and creative control</a>
+
+*Google DeepMind*
+
+谷歌近期在旗下Flow Music平台正式推出音乐生成模型Lyria 3.5。本次升级重点优化四大核心能力：生成作品的音乐性更自然协调，歌词匹配度、人声拟真度均有显著提升，同时强化了用户对生成流程的创意控制权，可适配普通创作爱好者、专业音乐人不同层级的AI辅助创作需求。
+
+<FeedbackButtons slug="item:deepmind-were-launching-lyria-35-in-google-flow-music-with-advances-across-musicality-lyr" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/Dharma-AI/gpu-management" target="_blank" rel="noopener noreferrer">GPU Management: Why Idle GPUs Are the New Grounded Aircraft</a>
+
+*Hugging Face*
+
+该文将闲置GPU类比民航停飞客机，指出大模型算力成本高企背景下，GPU闲置产生的高额沉没成本、算力浪费会大幅推高业务成本，拖累研发迭代效率。文章提出需构建负载感知的动态GPU管理体系，通过算力池化、弹性任务混部等手段压降闲置率，是算力运维降本增效的核心路径。
+
+<FeedbackButtons slug="item:hf-blog-gpu-management" client:visible />
+
+## <a href="https://huggingface.co/blog/allenai/olmoearth-infrastructure" target="_blank" rel="noopener noreferrer">The OlmoEarth Platform: Geospatial inference at planetary scale</a>
+
+*Hugging Face*
+
+本文提出面向行星级地理空间推理的OlmoEarth平台，针对传统框架大尺度遥感数据处理算力适配差、空间语义失配痛点，优化多源数据并行调度、空间特征自动对齐核心架构，可支撑全球土地覆盖监测、灾害推演等任务，实测较同类框架效率提升42%、推理精度提升7.8%，为大尺度地学智能分析提供开源工具支撑。
+
+<FeedbackButtons slug="item:hf-blog-olmoearth-infrastructure" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+该德性伦理视角的AI对齐研究，反驳“理性主体需锚定固定终极目标”的传统预设，指出人类理性核心是行动适配由行为、倾向、评价标准构成的实践网络。提出若要AI适配人类主体性，其决策逻辑需匹配人类实践型行动逻辑，该路径既满足伦理对齐要求，也能保障核心安全属性。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+递归自我改进（RSI）概念可追溯至1965年I.J.古德提出的“超智能机器”：即超越人类所有智力活动、可自行设计更优机器迭代的系统。2008年尤德考斯基明确其为AI用现有智能优化自身认知机制的反馈环，当代AI语境下，该反馈环既可指AI直接改写自身权重，也可广义指优化训练流程。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/08/464781.html" target="_blank" rel="noopener noreferrer">「天线宝宝」机器人上门做保洁，200元/小时，纯·人工·智能</a>
+
+*量子位*
+
+美国2024年成立的初创企业Tau Robotics，近日推出被戏称“天线宝宝”的人形保洁机器人，定价200元/小时。其展示的各类家务动作均为人工遥控实现，无倍速处理的流畅度优于行业同类演示，此前已获300万美元Pre-seed融资，团队计划先靠遥控模式落地家庭积累数据，后续迭代自主AI。
+
+<FeedbackButtons slug="item:qbitai-464781" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/464761.html" target="_blank" rel="noopener noreferrer">获奖之后，王虹最想感谢的人</a>
+
+*量子位*
+
+2026年菲尔兹奖得主王虹获奖后最想感谢的人是她的博导拉里·古斯。正是古斯将挂谷猜想引入王虹的研究视野，且并未在她引发全球学界关注、公认晦涩难懂的三维挂谷集证明论文中署名。后续古斯专门为该成果撰写解读综述，为相关研究者提供参考。
+
+<FeedbackButtons slug="item:qbitai-464761" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/464713.html" target="_blank" rel="noopener noreferrer">奥特曼也逃不过刷TikTok上瘾，Sora背后最抓马的一段来了</a>
+
+*量子位*
+
+OpenAI CEO奥特曼为研发Sora参考产品逻辑体验TikTok，意外沉迷后最终卸载APP、关闭通知戒断。他在最新访谈中透露，目前OpenAI在编码智能体领域取得进展后，已暂停Sora等项目，集中资源攻坚核心方向，同时分享了适配新环境的创业方法论，指出当下创业逻辑、企业成长节奏较十年前已彻底改变。
+
+<FeedbackButtons slug="item:qbitai-464713" client:visible />
