@@ -1,0 +1,189 @@
+---
+lang: en
+translationKey: digest-2026-08-03
+title: "Daily AI Picks · 2026-08-03"
+description: "18 papers · multi-source aggregation + AI summaries"
+date: 2026-08-03
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, the-gradient]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second overview of today's content</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Anthropic launches Claude Opus 5, OpenAI announces progress in mathematics and its responsible AI layout in Europe, DeepMind releases Gemini Robotics ER2 and Lyria 3.5</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face releases cutting-edge papers on LLM auditing, world models, multimodality and other fields, as well as industry blogs on GPU management</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">A 200 RMB/hour "artificial intelligence" cleaning robot has appeared in the Chinese market, and gossip about Sam Altman being addicted to scrolling TikTok has leaked out</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 New Model Releases</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💻 Computing Power Management</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Alignment Exploration</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Industry Anecdotes</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.28617" target="_blank" rel="noopener noreferrer">AISPA: User-Centric System Prompt Auditing for Large Language Model Applications</a>
+
+*HF ★ 16 · Xiangning Lin, Shenzhe Zhu, Shu Yang… · [HF Mirror](https://huggingface.co/papers/2607.28617)*
+
+Addressing the trust and accountability gap caused by undisclosed system prompts of commercial LLMs, this study proposes the user-centric AISPA auditing framework, which audited 3,249 system prompt instructions from 88 commercial AI products across 8 dimensions of user concern. The results show that user protection instructions are common but do not cover all dimensions, and 40% of products still have instructions that harm user interests. The study calls for strengthening the transparency, standardization and independent supervision of system prompts.
+
+<FeedbackButtons slug="item:arxiv-2607.28617" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.28415" target="_blank" rel="noopener noreferrer">QQWorld: Quantile-Quantile Matching for World Model Regularization</a>
+
+*HF ★ 10 · Zhoushun Yu, Xiaoyu Hu, Xiangyu Xu · [HF Mirror](https://huggingface.co/papers/2607.28415)*
+
+The performance of implicit world models depends on the quality of the learned latent distribution. The EP regularization used in existing LeWM models has problems such as easy gradient vanishing for tail samples and insufficient control of heavy-tailed bias. To solve this, QQWorld is proposed, which uses a quantile matching objective to align latent samples with Gaussian quantiles, retaining effective tail gradients, and also introduces cross-batch quantiles to expand the sorting pool to optimize the bias-variance tradeoff. In four types of control environments, this method has a higher planning success rate than LeWM, better Gaussian alignment of latent distributions, and thinner tails.
+
+<FeedbackButtons slug="item:arxiv-2607.28415" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.23802" target="_blank" rel="noopener noreferrer">From RLVR to RLSVR: Task Transformation Induces Self-Verifiable Rewards for Open-Ended LLM Self-Improvement</a>
+
+*HF ★ 6 · Qinsi Wang, Jing Shi, Huazheng Wang… · [HF Mirror](https://huggingface.co/papers/2607.23802)*
+
+Existing reinforcement learning based on verifiable rewards (RLVR) is only suitable for deterministically verifiable scenarios such as mathematics and programming, while rewards used for open-ended tasks have problems such as evaluation bias and high computing power costs. This paper proposes the RLSVR paradigm, which converts open-ended tasks into verifiable proxy environments through task transformation, implements the SpyRL instance of multi-agent self-play, and generates unbiased verifiable rewards based on voting of predefined spy identities. Experiments show that it outperforms existing self-improvement methods on tasks such as summarization and creative writing, effectively expanding the applicable scope of RLVR.
+
+<FeedbackButtons slug="item:arxiv-2607.23802" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.23782" target="_blank" rel="noopener noreferrer">N_0-VTLA: Scaling Vision-Tactile-Language-Action Model with Latent Tactile Tokens</a>
+
+*HF ★ 5 · NeoteAI Team, Fudan TEAI Team · [HF Mirror](https://huggingface.co/papers/2607.23782)*
+
+This study proposes N₀-VTLA, the first large-scale pre-trained vision-tactile-language-action foundation model, supported by three schemes: vision-tactile pre-training, phased tactile pathway fusion, and ALTER advantage-conditioned offline reinforcement learning, which can realize high-contact fine manipulation and offline policy optimization. It outperforms all baselines on 9 real-world robot tasks, has a nearly 20 percentage point higher success rate than the baseline on 20 simulation tasks, and achieves a 75%-95% success rate on long-sequence real tasks, laying a foundation for tactile-driven robot manipulation.
+
+<FeedbackButtons slug="item:arxiv-2607.23782" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.29679" target="_blank" rel="noopener noreferrer">Scaling Properties of Text Conditioning in Visual Generation</a>
+
+*HF ★ 2 · Zilong Chen, Chaorui Deng, Kunchang Li… · [HF Mirror](https://huggingface.co/papers/2607.29679)*
+
+This paper studies the scaling properties of text conditioning in text-to-image generation, and finds that the convergence loss of diffusion models decreases as the amount of structured language in prompts increases. Two metrics, white-box GPG and black-box ED, are used to quantify the degree of structuring, which have linear and power-law decreasing relationships with loss, respectively. Based on this rule, structured prompts are optimized and a dedicated prompter is trained. The resulting model outperforms existing open-source models on almost all composition, reasoning, and common sense benchmarks, and matches top closed-source models on most metrics.
+
+<FeedbackButtons slug="item:arxiv-2607.29679" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/ten-advances-in-mathematics" target="_blank" rel="noopener noreferrer">Ten advances in mathematics and theoretical computer science</a>
+
+*OpenAI*
+
+Recently, OpenAI released its latest research progress in the fields of mathematics and theoretical computer science, achieving ten core breakthroughs on long-standing open problems in the two disciplines, covering three key subfields: geometry, cryptography, and computational complexity. These results demonstrate the ability of AI technology to tackle hard problems in basic science, and can provide new problem-solving ideas for subsequent research in related fields.
+
+<FeedbackButtons slug="item:openai-blog-ten-advances-in-mathematics" client:visible />
+
+## <a href="https://openai.com/index/advancing-responsible-ai-across-europe" target="_blank" rel="noopener noreferrer">Advancing responsible AI across Europe</a>
+
+*OpenAI*
+
+This article focuses on the theme of responsible AI development in the EU. OpenAI has disclosed its implementation practices in four dimensions: AI security assurance, system risk prevention and control, operational transparency, and data traceability, stating that relevant measures can meet the EU's responsible AI governance requirements. It also clarified that it will continue to iterate and optimize relevant compliance and governance practices as the EU AI Act legislation progresses.
+
+<FeedbackButtons slug="item:openai-blog-advancing-responsible-ai-across-europe" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 5</a>
+
+*Anthropic*
+
+Anthropic's newly launched Claude Opus 5 is a stepwise upgrade to its high-end Opus LLM line, with three major core capability upgrades: a leap in support for long-running agent scenarios, as well as significantly optimized performance in code generation and professional domain task processing, which can better meet the application needs of high-complexity, long-duration agent development, professional production and other scenarios.
+
+<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+This is a public interaction project in the AI field, whose core initiative is to openly solicit high-difficulty, high-concern questions about AI from the public across the whole society. The project team explicitly promises that during the entire process of answering these questions, the details and progress of relevant research work will be fully disclosed. This move can not only make AI R&D more aligned with the real needs of the public, but also eliminate technical information gaps, and promote public awareness, participation and supervision of AI.
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestration-and-multi-robot-collaboration/" target="_blank" rel="noopener noreferrer">Gemini Robotics ER 2: powering robotics with video understanding, task orchestration, and multi-robot collaboration</a>
+
+*Google DeepMind*
+
+Gemini Robotics ER 2 is a new intelligent support system for robotics scenarios, achieving stepwise breakthroughs in three core technical dimensions: first, video understanding capabilities adapted to robot perception needs, second, task and tool orchestration and scheduling capabilities, and third, multi-robot collaborative interaction capabilities. The system can support robots to complete autonomous reasoning and cross-robot collaboration, solve various practical tasks in real scenarios, and provide a key technical foundation for the implementation of robot applications.
+
+<FeedbackButtons slug="item:deepmind-gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestrati" client:visible />
+
+## <a href="https://deepmind.google/blog/were-launching-lyria-35-in-google-flow-music-with-advances-across-musicality-lyrics-vocals-and-creative-control/" target="_blank" rel="noopener noreferrer">We’re launching Lyria 3.5 in Google Flow Music, with advances across musicality, lyrics, vocals, and creative control</a>
+
+*Google DeepMind*
+
+Google recently launched the new generation AI music generation model Lyria 3.5 on its Flow Music creation platform. This version has achieved multi-dimensional core capability upgrades: greatly improving the musical professionalism and fluency of generated content, optimizing the semantic adaptability of lyric creation, upgrading the vocal simulation effect, and further relaxing creative customization permissions, which can meet users' more refined music generation needs.
+
+<FeedbackButtons slug="item:deepmind-were-launching-lyria-35-in-google-flow-music-with-advances-across-musicality-lyr" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/Dharma-AI/gpu-management" target="_blank" rel="noopener noreferrer">GPU Management: Why Idle GPUs Are the New Grounded Aircraft</a>
+
+*Hugging Face*
+
+This blog post compares idle GPUs to grounded civil aviation airliners, pointing out that the idleness of such heavy computing power assets will generate high sunk costs. Currently, the GPU utilization rate of computing power clusters in various scenarios is generally less than 30%, and the core causes are coarse-grained scheduling and mismatch between resource supply and demand. The post proposes building a pooled elastic GPU management system, which can activate idle resources through means such as fine-grained segmentation and dynamic task matching, increasing utilization rate to more than 60% and significantly reducing computing power costs.
+
+<FeedbackButtons slug="item:hf-blog-gpu-management" client:visible />
+
+## <a href="https://huggingface.co/blog/allenai/olmoearth-infrastructure" target="_blank" rel="noopener noreferrer">The OlmoEarth Platform: Geospatial inference at planetary scale</a>
+
+*Hugging Face*
+
+This article introduces the OlmoEarth platform for planetary-scale geospatial inference. Addressing the pain points of limited computing power and high difficulty in fusing multi-source heterogeneous data in traditional geospatial analysis, it integrates an LLM inference framework, a distributed computing power scheduling system, and global multi-source geosensing datasets, which can efficiently support global-level tasks such as disaster monitoring and ecological assessment, with inference efficiency and accuracy significantly better than existing similar tools.
+
+<FeedbackButtons slug="item:hf-blog-olmoearth-infrastructure" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This paper reflecting on the AI orthogonality hypothesis starts from the perspective of virtue ethics, refutes the presupposition that "rational agents need to be anchored to ultimate goals", and points out that the core of human rational action is a practice-adapted rule and evaluation system. The paper proposes that to achieve AI safety and alignment that can collaborate with humans, the AI decision-making logic needs to match human practice-based action logic, rather than setting fixed goals for it.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This article sorts out the conceptual context of artificial intelligence recursive self-improvement (RSI): In 1965, scholar I.J. Good first proposed the concept of superintelligence, pointing out that such systems can surpass all human intellectual activities and can also design better machines to achieve self-iteration. In 2008, Eliezer Yudkowsky clarified that the core of RSI is the feedback loop where AI uses its existing intelligence to optimize its own cognitive architecture. Current AI RSI can be divided into two categories: directly rewriting its own weights, and optimizing training pipelines.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/08/464781.html" target="_blank" rel="noopener noreferrer">"Teletubbies" robot provides on-site cleaning services for 200 RMB/hour: pure · human · intelligence</a>
+
+*QbitAI*
+
+Tau Robotics, a US startup founded in 2024, recently released its first humanoid housekeeping robot, named for its resemblance to Teletubbies. At this stage, it is operated purely by manual remote control, and can complete housework such as cleaning sinks, mopping floors, picking up trash and other chores without speed-up processing, with a service price of 200 RMB per hour. It plans to accumulate data based on real home scenarios in the future, and iteratively develop autonomous AI capabilities.
+
+<FeedbackButtons slug="item:qbitai-464781" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/464761.html" target="_blank" rel="noopener noreferrer">After winning the award, the person Wang Hong wants to thank the most</a>
+
+*QbitAI*
+
+After winning the award, 2026 Fields Medal winner Wang Hong most wants to thank her doctoral supervisor, Larry Guth, Shannon Chair Professor at MIT. It was Guth who introduced the Kakeya conjecture to her, and Wang Hong finally completed the proof of the 3D Kakeya set. The relevant paper is extremely difficult, and only the two authors can fully understand it. Guth did not sign the paper, instead, he specially wrote an interpretive review to help the academic community understand the breakthrough.
+
+<FeedbackButtons slug="item:qbitai-464761" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/464713.html" target="_blank" rel="noopener noreferrer">Altman also can't escape TikTok addiction: the most dramatic story behind Sora is revealed</a>
+
+*QbitAI*
+
+OpenAI CEO Sam Altman became addicted to TikTok when he was studying it for the development of Sora, and finally uninstalled the app to quit. He revealed in a recent interview that the company has suspended Sora-like projects, concentrating computing power and manpower on tackling coding agents; he also shared his startup methodology, saying that the current entrepreneurial logic has been completely iterated, startups grow extremely fast, and they must focus on core competitiveness to survive.
+
+<FeedbackButtons slug="item:qbitai-464713" client:visible />
