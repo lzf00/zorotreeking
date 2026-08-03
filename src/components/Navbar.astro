@@ -98,8 +98,25 @@ const nav = [
           >
             {lang === "zh" ? "订阅" : "Subscribe"}
           </a>
+          <a
+            href="/admin/"
+            class="flex items-center rounded-lg px-3 py-2.5 text-sm text-[var(--text-secondary)] hover:bg-[var(--bg-soft)] transition-colors"
+          >
+            {t("nav.admin")}
+          </a>
         </div>
       </details>
+      <a
+        href="/admin/"
+        aria-label={t("nav.admin")}
+        title={t("nav.admin")}
+        class="w-8 h-8 grid place-items-center rounded-full border border-[var(--border)] hover:bg-[var(--bg-soft)] transition-colors"
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 20h9" />
+          <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
+        </svg>
+      </a>
       <button id="theme-toggle" type="button" aria-label="toggle theme" class="w-8 h-8 grid place-items-center rounded-full border border-[var(--border)] hover:bg-[var(--bg-soft)] transition-colors">
         <svg class="hidden dark:block" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
         <svg class="block dark:hidden" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>

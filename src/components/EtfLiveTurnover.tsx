@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { formatChinaMarketTime, isChinaATradingHours } from "@/lib/china-market";
 
 /**
  * 宽基 ETF 盘中实时成交监测（/invest/etf/ 页顶部）。
@@ -38,29 +39,19 @@ type EtfResp = {
 
 const POLL_MS = 60_000;
 
-function isATradingHours(d: Date = new Date()): boolean {
-  const day = d.getDay();
-  if (day === 0 || day === 6) return false;
-  const t = d.getHours() * 60 + d.getMinutes();
-  return (t >= 570 && t <= 690) || (t >= 780 && t <= 900);
-}
-
-function fmtTime(ts: number): string {
-  const d = new Date(ts * 1000);
-  return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
-}
-
 export default function EtfLiveTurnover() {
   const [data, setData] = useState<EtfItem[] | null>(null);
   const [updated, setUpdated] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [partialCount, setPartialCount] = useState<number | null>(null);
+  const [partial, setPartial] = useState<{ succeeded: number; requested: number } | null>(null);
   const [stale, setStale] = useState(false);
+  const [loading, setLoading] = useState(false);
   const inFlight = useRef(false);
 
-  async function load() {
+  const load = useCallback(async () => {
     if (inFlight.current) return;
     inFlight.current = true;
+    setLoading(true);
     try {
       const r = await fetch("/api/market/etf", { cache: "no-store" });
       if (!r.ok) {
@@ -69,33 +60,37 @@ export default function EtfLiveTurnover() {
       const raw = await r.json();
       const d: EtfResp = raw && typeof raw === "object" ? raw : ({} as EtfResp);
       if (d.ok) {
-        if (!Array.isArray(d.items)) {
-          throw new Error("返回数据格式不符合预期（items 缺失）");
+        if (!Array.isArray(d.items) || d.items.length === 0) {
+          throw new Error("接口未返回可展示的 ETF 数据");
         }
         setData(d.items);
-        setUpdated(d.ts);
+        setUpdated(Number.isFinite(d.ts) ? d.ts : null);
         setError(null);
         if (d.partial && typeof d.succeeded === "number") {
-          setPartialCount(d.succeeded);
+          setPartial({
+            succeeded: d.succeeded,
+            requested: typeof d.requested === "number" ? d.requested : d.items.length,
+          });
         } else {
-          setPartialCount(null);
+          setPartial(null);
         }
         setStale(Boolean(d.stale));
-      } else if (!data) {
-        setError(d.error || "加载失败");
+      } else {
+        throw new Error(d.error || "加载失败");
       }
-    } catch (e: any) {
-      if (!data) setError(e?.message || "网络异常");
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : "网络异常");
     } finally {
       inFlight.current = false;
+      setLoading(false);
     }
-  }
+  }, []);
 
   useEffect(() => {
     load();
     const timer = setInterval(() => {
       if (document.hidden) return;
-      if (!isATradingHours()) return;
+      if (!isChinaATradingHours()) return;
       load();
     }, POLL_MS);
     const onVis = () => { if (!document.hidden) load(); };
@@ -104,8 +99,7 @@ export default function EtfLiveTurnover() {
       clearInterval(timer);
       document.removeEventListener("visibilitychange", onVis);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [load]);
 
   if (!data && error) {
     return (
@@ -130,18 +124,25 @@ export default function EtfLiveTurnover() {
               {over100} 只成交额已超昨日全天
             </span>
           )}
-          {partialCount !== null && data.length > 0 && (
+          {partial !== null && (
             <span className="ml-2 text-amber-700 dark:text-amber-400">
-              昨日基准仅 {partialCount}/{data.length} 只可用
+              昨日基准仅 {partial.succeeded}/{partial.requested} 只可用
             </span>
           )}
         </p>
         <p className="text-[11px] text-[var(--text-tertiary)] font-mono">
-          东方财富 · 延迟约 1 分钟 · {updated ? fmtTime(updated) : "—"}
+          东方财富 · 延迟约 1 分钟 · {updated ? formatChinaMarketTime(updated) : "—"}
           {stale && <span className="ml-2">（回退缓存）</span>}
-          {!isATradingHours() && "（已收盘）"}
+          {!isChinaATradingHours() && "（已收盘）"}
+          {loading && <span className="ml-2">刷新中…</span>}
         </p>
       </div>
+
+      {error && (
+        <div role="status" className="mb-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-300">
+          刷新失败，正在保留上次数据：{error}。<button onClick={load} className="underline ml-1">重试</button>
+        </div>
+      )}
 
       <div className="overflow-x-auto rounded-xl border border-[var(--border)]">
         <table className="w-full text-sm min-w-[640px]">

@@ -122,6 +122,17 @@ test("admin pages keep secrets out of request URLs", () => {
   }
 });
 
+test("navbar keeps the authenticated CMS entry discoverable", () => {
+  const source = readFileSync(
+    new URL("../src/components/Navbar.astro", import.meta.url),
+    "utf8",
+  );
+
+  assert.equal(source.match(/href="\/admin\/"/g)?.length, 2);
+  assert.match(source, /aria-label=\{t\("nav\.admin"\)\}/);
+  assert.match(source, /\{t\("nav\.admin"\)\}/);
+});
+
 test("JSON-LD serialization cannot terminate its script element", () => {
   const serialized = serializeJsonLd({
     headline: "</script><script>alert('xss')</script>",

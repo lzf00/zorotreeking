@@ -1,4 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { formatChinaMarketTime, isChinaATradingHours } from "@/lib/china-market";
+import { summarizePortfolioValuation } from "@/lib/portfolio-valuation";
 
 /**
  * 实时持仓：拿 _holdings.yaml 的占位份额 + 成本，调 /api/market/funds 拿天天基金实时估值，
@@ -44,24 +46,17 @@ interface Props { holdings: Holding[] }
 
 const POLL_MS = 60_000;
 
-function isATradingHours(d: Date = new Date()): boolean {
-  const day = d.getDay();
-  if (day === 0 || day === 6) return false;
-  const t = d.getHours() * 60 + d.getMinutes();
-  return (t >= 570 && t <= 690) || (t >= 780 && t <= 900);
-}
-
 export default function LiveHoldings({ holdings }: Props) {
   const [quotes, setQuotes] = useState<Record<string, FundQuote> | null>(null);
   const [updated, setUpdated] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [partial, setPartial] = useState<number | null>(null);
+  const [partial, setPartial] = useState<{ succeeded: number; requested: number } | null>(null);
   const inFlight = useRef(false);
 
   const codes = useMemo(() => holdings.map(h => h.symbol).join(","), [holdings]);
 
-  async function load() {
+  const load = useCallback(async () => {
     if (inFlight.current) return;
     inFlight.current = true;
     setLoading(true);
@@ -76,33 +71,43 @@ export default function LiveHoldings({ holdings }: Props) {
       const raw = await r.json();
       const d: FundResp = raw && typeof raw === "object" ? raw : ({} as FundResp);
       if (d.ok) {
-        if (!Array.isArray(d.funds)) {
-          throw new Error("返回数据格式不符合预期（funds 缺失）");
+        if (!Array.isArray(d.funds) || d.funds.length === 0) {
+          throw new Error("接口未返回可展示的基金数据");
         }
         const map: Record<string, FundQuote> = {};
-        for (const f of d.funds) map[f.code] = f;
+        for (const f of d.funds) {
+          if (f && typeof f.code === "string" && f.code) map[f.code] = f;
+        }
+        if (Object.keys(map).length === 0) {
+          throw new Error("返回数据格式不符合预期（基金代码缺失）");
+        }
         setQuotes(map);
-        setUpdated(d.ts);
+        setUpdated(Number.isFinite(d.ts) ? d.ts : null);
         setError(null);
         if (d.partial && typeof d.succeeded === "number") {
-          setPartial(d.succeeded);
+          setPartial({
+            succeeded: d.succeeded,
+            requested: typeof d.requested === "number" ? d.requested : holdings.length,
+          });
         } else {
           setPartial(null);
         }
-      } else if (!quotes) setError(d.error || "加载失败");
-    } catch (e: any) {
-      if (!quotes) setError(e?.message || "网络异常");
+      } else {
+        throw new Error(d.error || "加载失败");
+      }
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : "网络异常");
     } finally {
       inFlight.current = false;
       setLoading(false);
     }
-  }
+  }, [codes, holdings.length]);
 
   useEffect(() => {
     load();
     const timer = setInterval(() => {
       if (document.hidden) return;
-      if (!isATradingHours()) return;
+      if (!isChinaATradingHours()) return;
       load();
     }, POLL_MS);
     const onVis = () => { if (!document.hidden) load(); };
@@ -111,8 +116,7 @@ export default function LiveHoldings({ holdings }: Props) {
       clearInterval(timer);
       document.removeEventListener("visibilitychange", onVis);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [load]);
 
   // 计算每行 + 总览
   const rows = holdings.map(h => {
@@ -128,16 +132,10 @@ export default function LiveHoldings({ holdings }: Props) {
     return { h, q, nav, pct, marketValue, costValue, pnl, pnlPct, todayPnl };
   });
 
-  const totalCost = rows.reduce((s, r) => s + r.costValue, 0);
-  const totalMV = rows.reduce((s, r) => s + (r.marketValue ?? 0), 0);
-  const totalPnL = totalMV - totalCost;
-  const totalPct = totalMV > 0 ? (totalCost > 0 ? (totalMV / totalCost - 1) * 100 : 0) : 0;
-  const todayTotal = rows.reduce((s, r) => s + (r.todayPnl ?? 0), 0);
-  const hasTodayValue = rows.some((r) => r.todayPnl !== null);
-  const todayBase = hasTodayValue ? rows.reduce((s, r) => s + (r.marketValue ?? 0) - (r.todayPnl ?? 0), 0) : 0;
-  const todayPct = todayBase > 0 ? (todayTotal / todayBase) * 100 : 0;
-  const hasMV = rows.some((r) => r.marketValue != null);
-  const hasAnyData = rows.some((r) => r.nav != null);
+  const summary = summarizePortfolioValuation(rows);
+  const hasMV = summary.valuedCount > 0;
+  const hasTodayValue = summary.todayCount > 0;
+  const valuationCoverage = `${summary.valuedCount}/${rows.length} 只可估算`;
 
   if (!quotes && error) {
     return (
@@ -153,26 +151,32 @@ export default function LiveHoldings({ holdings }: Props) {
 
   return (
     <div className="space-y-4">
+      {error && (
+        <div role="status" className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-300">
+          刷新失败，正在保留上次数据：{error}。<button onClick={load} className="underline ml-1">重试</button>
+        </div>
+      )}
+
       {/* 顶部总览 */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <Card
           label="估算市值"
-          value={hasMV ? `¥${fmt(totalMV, 0)}` : "—"}
-          sub={hasMV ? "基于 估算净值×份额" : "等待可用行情"}
+          value={hasMV ? `¥${fmt(summary.totalMarketValue, 0)}` : "—"}
+          sub={hasMV ? valuationCoverage : "等待可用行情"}
         />
         <Card
           label="今日盈亏"
-          value={hasTodayValue ? `${todayTotal >= 0 ? "+" : ""}¥${fmt(todayTotal, 2)}` : "—"}
-          sub={hasTodayValue ? `${todayPct >= 0 ? "+" : ""}${fmt(todayPct, 2)}%` : "—"}
-          color={todayTotal > 0 ? "#dc2626" : todayTotal < 0 ? "#16a34a" : undefined}
+          value={hasTodayValue ? `${summary.todayPnl >= 0 ? "+" : ""}¥${fmt(summary.todayPnl, 2)}` : "—"}
+          sub={summary.todayPnlPct !== null ? `${summary.todayPnlPct >= 0 ? "+" : ""}${fmt(summary.todayPnlPct, 2)}%` : "—"}
+          color={summary.todayPnl > 0 ? "#dc2626" : summary.todayPnl < 0 ? "#16a34a" : undefined}
         />
         <Card
           label="累计盈亏"
-          value={hasAnyData ? `${totalPnL >= 0 ? "+" : ""}¥${fmt(totalPnL, 0)}` : "—"}
-          sub={hasAnyData ? `${totalPct >= 0 ? "+" : ""}${fmt(totalPct, 2)}%` : "—"}
-          color={totalPnL > 0 ? "#dc2626" : totalPnL < 0 ? "#16a34a" : undefined}
+          value={hasMV ? `${summary.totalPnl >= 0 ? "+" : ""}¥${fmt(summary.totalPnl, 0)}` : "—"}
+          sub={summary.totalPnlPct !== null ? `${summary.totalPnlPct >= 0 ? "+" : ""}${fmt(summary.totalPnlPct, 2)}%` : "—"}
+          color={summary.totalPnl > 0 ? "#dc2626" : summary.totalPnl < 0 ? "#16a34a" : undefined}
         />
-        <Card label="持仓数" value={String(holdings.length)} sub={`占用成本 ¥${fmt(totalCost, 0)}`} />
+        <Card label="持仓数" value={String(holdings.length)} sub={`占用成本 ¥${fmt(summary.totalCost, 0)}`} />
       </div>
 
       {/* 持仓明细 */}
@@ -219,10 +223,10 @@ export default function LiveHoldings({ holdings }: Props) {
       </div>
 
       <p className="text-[11px] text-[var(--text-tertiary)] font-mono tracking-wide">
-        数据源 天天基金 · 估算净值（盘中实时，约 1-2 分钟延迟）+ 单位净值（上一交易日 17:00 后发布） · 最后更新 {updated ? fmtTime(updated) : "—"}
-        {!isATradingHours() && <span className="ml-2">（非交易时段，已停止自动刷新）</span>}
+        数据源 天天基金 · 估算净值（盘中实时，约 1-2 分钟延迟）+ 单位净值（上一交易日 17:00 后发布） · 最后更新 {updated ? formatChinaMarketTime(updated) : "—"}
+        {!isChinaATradingHours() && <span className="ml-2">（非交易时段，已停止自动刷新）</span>}
         {partial !== null && (
-          <span className="ml-2 text-amber-600 dark:text-amber-400">· 部分基金缺失（{partial}/{rows.length}）</span>
+          <span className="ml-2 text-amber-600 dark:text-amber-400">· 部分基金缺失（{partial.succeeded}/{partial.requested}）</span>
         )}
         {loading && <span className="ml-2">…</span>}
       </p>
@@ -243,10 +247,4 @@ function Card({ label, value, sub, color }: { label: string; value: string; sub?
 function fmt(n: number, digits = 2): string {
   if (!Number.isFinite(n)) return "—";
   return n.toLocaleString("en-US", { minimumFractionDigits: digits, maximumFractionDigits: digits });
-}
-
-function fmtTime(ts: number): string {
-  const d = new Date(ts * 1000);
-  const pad = (n: number) => String(n).padStart(2, "0");
-  return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
 }
