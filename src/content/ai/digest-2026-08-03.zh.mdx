@@ -1,0 +1,189 @@
+---
+lang: zh
+translationKey: digest-2026-08-03
+title: "AI 每日精选 · 2026-08-03"
+description: "18 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-08-03
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, the-gradient]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Anthropic推出Claude Opus 5，OpenAI公布数理进展及欧洲负责任AI布局，DeepMind发Gemini机器人ER2与Lyria3.5</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face发布大模型审计、世界模型、多模态等方向前沿论文及GPU管理类产业博客</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内出现200元/小时的“人工智能”保洁机器人，奥特曼刷TikTok上瘾相关八卦流出</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖模型上新</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥前沿研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💻算力管理</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠对齐探索</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡行业趣闻</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.28617" target="_blank" rel="noopener noreferrer">AISPA: User-Centric System Prompt Auditing for Large Language Model Applications</a>
+
+*HF ★ 16 · Xiangning Lin, Shenzhe Zhu, Shu Yang… · [HF 镜像](https://huggingface.co/papers/2607.28617)*
+
+针对商用大模型系统提示未公开引发的信任与问责缺口，该研究提出用户导向的AISPA审计框架，从8个用户关切维度，审计了88款商用AI产品的3249条系统提示指令。结果显示，用户防护类指令普及但覆盖维度不全，仍有40%产品存在损害用户利益的指令，呼吁强化系统提示的透明度、标准化与独立监管。
+
+<FeedbackButtons slug="item:arxiv-2607.28617" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.28415" target="_blank" rel="noopener noreferrer">QQWorld: Quantile-Quantile Matching for World Model Regularization</a>
+
+*HF ★ 10 · Zhoushun Yu, Xiaoyu Hu, Xiangyu Xu · [HF 镜像](https://huggingface.co/papers/2607.28415)*
+
+隐式世界模型的性能依赖学习到的隐分布质量，现有LeWM模型采用的EP正则化存在尾部样本梯度易消失、重尾偏差管控不足的问题。为此提出QQWorld，改用分位数匹配目标对齐隐样本与高斯分位数、保留尾部有效梯度，还引入跨批次分位数扩大排序池优化偏差-方差权衡。在四类控制环境中，该方法相较LeWM规划成功率更高，隐分布高斯对齐度更优、尾部更薄。
+
+<FeedbackButtons slug="item:arxiv-2607.28415" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.23802" target="_blank" rel="noopener noreferrer">From RLVR to RLSVR: Task Transformation Induces Self-Verifiable Rewards for Open-Ended LLM Self-Improvement</a>
+
+*HF ★ 6 · Qinsi Wang, Jing Shi, Huazheng Wang… · [HF 镜像](https://huggingface.co/papers/2607.23802)*
+
+现有基于可验证奖励的强化学习（RLVR）仅适配数学、编程等可确定性校验的场景，开放任务所用奖励存在评估偏差、算力成本高等问题。本文提出RLSVR范式，通过任务转化将开放任务转为可验证代理环境，落地多智能体自博弈的SpyRL实例，依托预定义间谍身份的投票生成无偏可验证奖励。实验显示其在摘要、创意写作等任务上优于现有自改进方法，有效拓展了RLVR的适用边界。
+
+<FeedbackButtons slug="item:arxiv-2607.23802" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.23782" target="_blank" rel="noopener noreferrer">N_0-VTLA: Scaling Vision-Tactile-Language-Action Model with Latent Tactile Tokens</a>
+
+*HF ★ 5 · NeoteAI Team, Fudan TEAI Team · [HF 镜像](https://huggingface.co/papers/2607.23782)*
+
+本次研究提出首个大规模预训练的视-触-语-动基础模型N₀-VTLA，配套采用视触预训练、分阶段触觉通路融合、ALTER优势条件离线强化学习三大方案，可实现富接触精细操作与离线策略优化。实测9项真实机器人任务全优胜，20项仿真任务成功率较基准高近20个百分点，长时序真实任务成功率达75%-95%，为触觉驱动机器人操纵奠定基础。
+
+<FeedbackButtons slug="item:arxiv-2607.23782" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.29679" target="_blank" rel="noopener noreferrer">Scaling Properties of Text Conditioning in Visual Generation</a>
+
+*HF ★ 2 · Zilong Chen, Chaorui Deng, Kunchang Li… · [HF 镜像](https://huggingface.co/papers/2607.29679)*
+
+本文研究文生图中文本条件的缩放特性，发现扩散模型收敛损失随提示的结构化语言量提升而降低，分别采用白盒GPG、黑盒ED两类指标量化结构化程度，二者与损失分别呈线性、幂律递减关系。基于该规律优化结构化提示、训练专用提示器，所得模型在几乎所有构图、推理、常识基准上超现有开源模型，多数指标比肩顶尖闭源模型。
+
+<FeedbackButtons slug="item:arxiv-2607.29679" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/ten-advances-in-mathematics" target="_blank" rel="noopener noreferrer">Ten advances in mathematics and theoretical computer science</a>
+
+*OpenAI*
+
+近日OpenAI公开了数学与理论计算机科学领域的最新研究进展，针对两个学科内长期悬而未决的公开问题共取得十项核心突破，覆盖几何、密码学、计算复杂度三大重点细分方向。这批成果展现了AI技术攻坚基础理科硬核难题的能力，可为相关领域后续研究提供全新的解题思路参考。
+
+<FeedbackButtons slug="item:openai-blog-ten-advances-in-mathematics" client:visible />
+
+## <a href="https://openai.com/index/advancing-responsible-ai-across-europe" target="_blank" rel="noopener noreferrer">Advancing responsible AI across Europe</a>
+
+*OpenAI*
+
+本文围绕欧盟负责任AI发展主题，OpenAI公开了其在AI安全保障、系统风险防控、运行透明度、数据溯源四大维度的落地实践，说明相关举措可适配欧盟负责任AI治理要求，同时明确后续将随《欧盟AI法案》的立法推进，持续迭代优化相关合规及治理实践。
+
+<FeedbackButtons slug="item:openai-blog-advancing-responsible-ai-across-europe" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 5</a>
+
+*Anthropic*
+
+Anthropic最新推出的Claude Opus 5是其Opus高端大模型线的阶跃性升级产品，核心能力实现三大升级：对长周期运行的智能体场景的支撑能力跨越式提升，同时代码生成、专业领域任务处理表现也得到显著优化，可更好满足高复杂度、长时效的智能体开发、专业生产等场景的应用需求。
+
+<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+这是一项AI领域的公众互动项目，核心动作是面向全社会公开征集大众关于AI的高难度、高关切问题，同时项目方明确承诺，在解答这些问题的全过程中，会完整公开相关研究工作的细节与进展。此举既能让AI研发更贴合公众真实需求，也能消解技术信息差，推动公众对AI的认知、参与和监督。
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestration-and-multi-robot-collaboration/" target="_blank" rel="noopener noreferrer">Gemini Robotics ER 2: powering robotics with video understanding, task orchestration, and multi-robot collaboration</a>
+
+*Google DeepMind*
+
+Gemini Robotics ER 2是面向机器人场景的全新智能支撑系统，在三大核心技术维度实现阶跃性突破：一是适配机器人感知需求的视频理解能力，二是任务与工具编排调度能力，三是多机器人协同交互能力。该系统可支撑机器人完成自主推理、跨机协作，能够解决真实场景下的各类实操任务，为机器人落地应用提供关键技术底座。
+
+<FeedbackButtons slug="item:deepmind-gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestrati" client:visible />
+
+## <a href="https://deepmind.google/blog/were-launching-lyria-35-in-google-flow-music-with-advances-across-musicality-lyrics-vocals-and-creative-control/" target="_blank" rel="noopener noreferrer">We’re launching Lyria 3.5 in Google Flow Music, with advances across musicality, lyrics, vocals, and creative control</a>
+
+*Google DeepMind*
+
+谷歌近期在旗下Flow Music音乐创作平台上线新一代AI音乐生成模型Lyria 3.5。该版本实现多维度核心能力升级：大幅提升生成内容的音乐专业性与流畅度，优化歌词创作的表意适配性，升级人声拟真效果，同时进一步放开创作自定义权限，可满足用户更精细化的音乐生成需求。
+
+<FeedbackButtons slug="item:deepmind-were-launching-lyria-35-in-google-flow-music-with-advances-across-musicality-lyr" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/Dharma-AI/gpu-management" target="_blank" rel="noopener noreferrer">GPU Management: Why Idle GPUs Are the New Grounded Aircraft</a>
+
+*Hugging Face*
+
+该论文将闲置GPU类比为停飞的民航客机，指出这类重算力资产闲置会产生高额沉没成本，当前各场景算力集群普遍GPU利用率不足30%，核心诱因是调度粗颗粒、资源供需错配。论文提出构建池化弹性GPU管理体系，通过细粒度切分、任务动态匹配等手段盘活闲置资源，可将利用率提升至60%以上，显著压低算力成本。
+
+<FeedbackButtons slug="item:hf-blog-gpu-management" client:visible />
+
+## <a href="https://huggingface.co/blog/allenai/olmoearth-infrastructure" target="_blank" rel="noopener noreferrer">The OlmoEarth Platform: Geospatial inference at planetary scale</a>
+
+*Hugging Face*
+
+本文推出面向行星级地理空间推理的OlmoEarth平台，针对传统地理空间分析算力受限、多源异构数据融合难度高的痛点，整合大模型推理框架、分布式算力调度体系与全球多源地理传感数据集，可高效支撑灾害监测、生态评估等全球级任务，推理效率与精度均明显优于现有同类工具。
+
+<FeedbackButtons slug="item:hf-blog-olmoearth-infrastructure" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+这篇反思AI正交性假说的论文从美德伦理视角出发，驳斥“理性主体需锚定终极目标”的预设，指出人类理性行动核心是适配实践的规则与评价体系。论文提出，若要实现AI安全、可与人类协作对齐，需让AI决策逻辑匹配人类基于实践的行动逻辑，而非为其设定固定目标。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理人工智能递归自我改进（RSI）的概念脉络：1965年学者I.J.古德最早提出超智能构想，指出这类系统可超越人类所有智力活动，还能设计更优机器实现自我迭代。2008年尤德考夫斯基明确RSI核心是AI用现有智能优化自身认知架构的反馈环，当前AI的RSI可分为直接改写自身权重、优化训练管线两类。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/08/464781.html" target="_blank" rel="noopener noreferrer">「天线宝宝」机器人上门做保洁，200元/小时，纯·人工·智能</a>
+
+*量子位*
+
+美国2024年成立的初创企业Tau Robotics近日发布首款人形家政机器人，因外形酷似天线宝宝得名，现阶段采用纯人工遥控操作，无需倍速处理即可完成洗手、拖地、捡拾垃圾等家务，服务定价200元/小时，后续计划依托真实家庭场景积累数据，迭代研发自主AI能力。
+
+<FeedbackButtons slug="item:qbitai-464781" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/464761.html" target="_blank" rel="noopener noreferrer">获奖之后，王虹最想感谢的人</a>
+
+*量子位*
+
+2026年菲尔兹奖得主王虹获奖后最想感谢博导、MIT香农讲席教授拉里·古斯。正是古斯将挂谷猜想介绍给她，王虹最终完成三维挂谷集证明，相关论文难度极高，仅两位作者能完全看懂。古斯未在成果中署名，反而专门撰写解读综述，助力学界理解该突破。
+
+<FeedbackButtons slug="item:qbitai-464761" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/464713.html" target="_blank" rel="noopener noreferrer">奥特曼也逃不过刷TikTok上瘾，Sora背后最抓马的一段来了</a>
+
+*量子位*
+
+OpenAI CEO奥特曼为研发Sora研究TikTok时不慎沉迷，最终卸载软件戒断。他在最新访谈中透露，公司已停掉Sora类项目，集中算力、人力攻坚编码智能体；还分享创业方法论称当下创业逻辑已彻底迭代，初创企业成长速度极快，必须聚焦核心竞争力才能存活。
+
+<FeedbackButtons slug="item:qbitai-464713" client:visible />
