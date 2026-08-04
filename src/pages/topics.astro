@@ -59,7 +59,7 @@ const collectionStats = ["ai", "invest", "hike", "photo"].map((c) => {
   return { collection: c, count: list.length, words };
 });
 const maxWords = Math.max(...collectionStats.map((s) => s.words), 1);
-const sectionLabel: Record<string, string> = { ai: "AI 学习", invest: "个人投资", hike: "徒步", photo: "摄影" };
+const sectionLabel: Record<string, string> = { ai: "AI 学习", invest: "个人投资", hike: "徒步旅行", photo: "摄影" };
 const sectionColor: Record<string, string> = {
   ai: "#1d4ed8", invest: "#991b1b", hike: "#166534", photo: "#6b21a8",
 };

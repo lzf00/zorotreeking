@@ -1,0 +1,65 @@
+---
+import { readFileSync } from "node:fs";
+
+const source = readFileSync(
+  new URL("../../../public/hike/travel/ali-grand-loop-2026/index.html", import.meta.url),
+  "utf8",
+);
+
+function extract(pattern: RegExp, label: string) {
+  const match = source.match(pattern);
+  if (!match?.[1]) throw new Error(`Ali travel guide is missing ${label}`);
+  return match[1];
+}
+
+const sourceStyle = extract(/<style>([\s\S]*?)<\/style>/, "styles");
+const guideHeader = extract(/(<header class="hero"[\s\S]*?<\/header>)/, "hero")
+  .replace('href="/hike"', 'href="#travel-guide-ali"')
+  .replace("← ZoroTreeking · 徒步旅行", "ZoroTreeking · 本期旅行攻略");
+const guideNav = extract(/(<nav class="nav"[\s\S]*?<\/nav>)/, "navigation");
+const guideMain = extract(/<main>([\s\S]*?)<\/main>/, "content");
+const guideScript = extract(/<script>([\s\S]*?)<\/script>/, "enhancements");
+
+// The supplied guide is also kept as a standalone fallback. At build time we
+// reuse its actual content here so /hike/ is the primary, complete reading view.
+const scopedStyle = `
+@scope (.ali-guide) {
+  ${sourceStyle
+    .replaceAll(":root", ":scope")
+    .replace(/\bbody(?=\s*[:{])/g, ":scope")}
+
+  :scope {
+    display: block;
+    position: relative;
+    color: var(--ink);
+    background: var(--paper);
+    overflow: clip;
+  }
+
+  :scope .nav { top: 3.5rem; }
+  :scope .topbar .brand { text-decoration: none; }
+  :scope .guide-endnote {
+    padding: 54px 0 64px;
+    background: #d8cdb5;
+  }
+  :scope .guide-endnote p { margin: 0; color: #5c625e; }
+}
+`;
+---
+
+<div class="ali-guide" data-ali-guide>
+  <Fragment set:html={guideHeader} />
+  <Fragment set:html={guideNav} />
+  <div class="guide-content">
+    <Fragment set:html={guideMain} />
+  </div>
+  <aside class="guide-endnote">
+    <div class="wrap">
+      <div class="footer-title">向西，平安归来。</div>
+      <p>本计划用于行前讨论，不替代实时导航、天气预报、交警通告和医生建议。出发前 24 小时请再次核对道路、景区、边防证与航班状态。</p>
+    </div>
+  </aside>
+</div>
+
+<style is:global set:html={scopedStyle}></style>
+<script is:inline set:html={guideScript}></script>

@@ -1,49 +1,90 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import AliGrandLoopGuide from "@/components/travel/AliGrandLoopGuide.astro";
+import { getTravelGuides } from "@/data/travel-guides";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
 
 const lang = "zh" as const;
 const t = useTranslations(lang);
+const guides = getTravelGuides(lang);
 const hikes = (await getCollection("hike", (p) => p.data.lang === lang && !p.data.draft))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
 const diffLabel = { easy: "轻松", moderate: "中等", hard: "困难", expert: "专家" };
 const diffColor = {
-  easy: "bg-green-500/10 text-green-600",
-  moderate: "bg-amber-500/10 text-amber-600",
-  hard: "bg-orange-500/10 text-orange-600",
-  expert: "bg-red-500/10 text-red-600",
+  easy: "bg-green-500/10 text-green-700 dark:text-green-400",
+  moderate: "bg-amber-500/10 text-amber-700 dark:text-amber-400",
+  hard: "bg-orange-500/10 text-orange-700 dark:text-orange-400",
+  expert: "bg-red-500/10 text-red-700 dark:text-red-400",
 };
 ---
 
 <BaseLayout title={t("section.hike.title")} description={t("section.hike.desc")}>
-  <section class="max-w-3xl mx-auto px-5 pt-12 pb-6">
-    <h1 class="font-serif text-5xl sm:text-6xl leading-[0.95] tracking-tight" style="color:#166534">{t("section.hike.title")}</h1>
-    <p class="mt-2 text-[var(--text-secondary)]">{t("section.hike.desc")}</p>
+  <section class="travel-hero max-w-6xl mx-auto px-5 pt-12 sm:pt-16 pb-10 sm:pb-14">
+    <div class="grid lg:grid-cols-[1fr_280px] gap-8 lg:gap-16 items-end">
+      <div>
+        <div class="flex items-center gap-3 text-[11px] font-mono uppercase tracking-[0.2em] text-section-hike">
+          <span class="h-px w-10 bg-section-hike"></span>
+          Trails · Roadbooks · Field Notes
+        </div>
+        <h1 class="mt-5 font-serif text-5xl sm:text-7xl lg:text-8xl leading-[0.9] tracking-[-0.045em] text-[var(--text)]">
+          徒步<br /><span class="text-section-hike">旅行</span>
+        </h1>
+        <p class="mt-6 max-w-2xl text-base sm:text-lg leading-relaxed text-[var(--text-secondary)]">
+          从一条山路，到一段完整旅程。旅行攻略直接在本页展开，包含路线轨迹、逐日行程、住宿预算和行前判断。
+        </p>
+        <div class="mt-7 flex flex-wrap gap-3 text-sm">
+          <a href="#travel-guide-ali" class="rounded-full bg-section-hike px-5 py-2.5 font-medium text-white transition-transform hover:-translate-y-0.5">阅读本期攻略 ↓</a>
+          <a href="#trail-archive" class="rounded-full border border-[var(--border)] px-5 py-2.5 text-[var(--text-secondary)] hover:bg-[var(--bg-soft)]">查看徒步路线</a>
+        </div>
+      </div>
+      <div class="hidden lg:block border-l border-[var(--border)] pl-7 pb-2">
+        <div class="text-4xl font-serif text-section-hike">{guides.length + hikes.length}</div>
+        <div class="mt-1 text-xs font-mono uppercase tracking-[0.16em] text-[var(--text-tertiary)]">Journeys archived</div>
+        <p class="mt-5 text-sm leading-relaxed text-[var(--text-secondary)]">攻略会随路况、季节和实际经验继续修订。</p>
+      </div>
+    </div>
   </section>
-  <section class="max-w-3xl mx-auto px-5">
+
+  <section id="travel-guide-ali" class="scroll-mt-14 pb-16 sm:pb-24">
+    <div class="max-w-6xl mx-auto px-5 flex items-end justify-between gap-4 mb-6">
+      <div>
+        <div class="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--text-tertiary)]">Travel Guides</div>
+        <h2 class="mt-1 text-2xl sm:text-3xl font-semibold tracking-tight">旅行攻略 · 本期完整内容</h2>
+      </div>
+      <span class="text-sm text-[var(--text-tertiary)]">{guides.length} 篇</span>
+    </div>
+    <AliGrandLoopGuide />
+  </section>
+
+  <section id="trail-archive" class="max-w-4xl mx-auto px-5 pb-24 scroll-mt-20">
+    <div class="flex items-end justify-between gap-4 mb-5">
+      <div>
+        <div class="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--text-tertiary)]">Trail Archive</div>
+        <h2 class="mt-1 text-2xl sm:text-3xl font-semibold tracking-tight">徒步路线</h2>
+      </div>
+      <span class="text-sm text-[var(--text-tertiary)]">{hikes.length} 条</span>
+    </div>
     {hikes.length === 0 ? <p class="py-12 text-center text-[var(--text-tertiary)]">还没有路线</p> : (
-      <ul class="divide-y divide-[var(--border)]">
+      <ul class="divide-y divide-[var(--border)] border-y border-[var(--border)]">
         {hikes.map((h) => (
-          <li class="py-5">
-            <div class="flex items-center gap-2 text-xs text-[var(--text-tertiary)] mb-1.5">
-              <time>{h.data.date.toISOString().slice(0, 10)}</time>
-              <span>·</span>
-              <span>{h.data.location}</span>
-              <span class:list={["px-2 py-0.5 rounded-full", diffColor[h.data.difficulty]]}>{diffLabel[h.data.difficulty]}</span>
-            </div>
-            <h2 class="text-lg font-semibold">
-              <a href={pathWithLang(`/hike/${h.data.translationKey}`, lang)}
-                 class="hover:text-section-hike transition-colors">
-                {h.data.title}
-              </a>
-            </h2>
-            <div class="mt-2 flex items-center gap-4 text-sm text-[var(--text-secondary)]">
-              {h.data.distanceKm != null && <span>📏 {h.data.distanceKm} km</span>}
-              {h.data.elevationGainM != null && <span>⛰️ +{h.data.elevationGainM} m</span>}
-              {h.data.durationHours != null && <span>⏱ {h.data.durationHours} h</span>}
-            </div>
+          <li class="py-6 sm:py-7">
+            <a href={pathWithLang(`/hike/${h.data.translationKey}`, lang)} class="group grid sm:grid-cols-[150px_1fr_auto] gap-3 sm:gap-6 items-start">
+              <div class="text-xs text-[var(--text-tertiary)]">
+                <time>{h.data.date.toISOString().slice(0, 10)}</time>
+                <div class="mt-1">{h.data.location}</div>
+              </div>
+              <div>
+                <h3 class="text-lg sm:text-xl font-semibold group-hover:text-section-hike transition-colors">{h.data.title}</h3>
+                <div class="mt-2 flex flex-wrap items-center gap-3 text-xs text-[var(--text-secondary)]">
+                  {h.data.distanceKm != null && <span>{h.data.distanceKm} km</span>}
+                  {h.data.elevationGainM != null && <span>+{h.data.elevationGainM} m</span>}
+                  {h.data.durationHours != null && <span>{h.data.durationHours} h</span>}
+                </div>
+              </div>
+              <span class:list={["justify-self-start sm:justify-self-end px-2.5 py-1 rounded-full text-xs", diffColor[h.data.difficulty]]}>{diffLabel[h.data.difficulty]}</span>
+            </a>
           </li>
         ))}
       </ul>

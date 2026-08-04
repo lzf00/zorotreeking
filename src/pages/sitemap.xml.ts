@@ -1,6 +1,7 @@
 import { getCollection } from "astro:content";
 import type { APIContext } from "astro";
 import stockDetails from "@/data/wind-stock-details.json";
+import { travelGuides } from "@/data/travel-guides";
 import { getStaticSitemapPaths } from "@/lib/sitemap";
 import { tagToSlug } from "@/lib/tags";
 import { escapeXml } from "@/lib/xml";
@@ -34,6 +35,9 @@ export async function GET(context: APIContext) {
   push("invest", "zh", invZh); push("invest", "en", invEn);
   push("hike", "zh", hikeZh); push("hike", "en", hikeEn);
   push("photo", "zh", photoZh); push("photo", "en", photoEn);
+  for (const guide of travelGuides) {
+    urls.push({ loc: `${site}${guide.href}`, lastmod: new Date(`${guide.updated ?? guide.date}T00:00:00+08:00`) });
+  }
 
   const zhEntries = [...aiZh, ...invZh, ...hikeZh, ...photoZh];
   const enEntries = [...aiEn, ...invEn, ...hikeEn, ...photoEn];

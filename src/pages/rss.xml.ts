@@ -18,7 +18,7 @@ export async function GET(context: APIContext) {
 
   return rss({
     title: "ZoroTreeking",
-    description: "AI · 投资 · 摄影 · 徒步",
+    description: "AI · 投资 · 摄影 · 徒步旅行",
     site: context.site!,
     items: all.map((p) => ({
       title: p.data.title,

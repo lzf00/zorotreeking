@@ -35,7 +35,7 @@ const SECTION_COLOR: Record<string, string> = {
 const SECTION_LABEL: Record<string, string> = {
   ai: "AI 学习",
   invest: "个人投资",
-  hike: "徒步",
+  hike: "徒步旅行",
   photo: "摄影",
 };
 

@@ -8,7 +8,7 @@ import type { APIContext } from "astro";
 import { escapeXml } from "@/lib/xml";
 
 const SITE_NAME = "ZoroTreeking";
-const SITE_DESC = "AI · 投资 · 摄影 · 徒步";
+const SITE_DESC = "AI · 投资 · 摄影 · 徒步旅行";
 const AUTHOR = { name: "Zifei Liu", uri: "https://github.com/lzf00" };
 
 export async function GET(context: APIContext): Promise<Response> {

@@ -1,5 +1,6 @@
 import { getCollection } from "astro:content";
 import type { APIContext } from "astro";
+import { getTravelGuides } from "@/data/travel-guides";
 
 /**
  * 静态站点知识摘要（每次 build 生成）：给 AIChatWidget 后端拉去拼进 system prompt。
@@ -19,6 +20,13 @@ export async function GET(context: APIContext) {
   ]);
 
   const site = context.site?.toString().replace(/\/$/, "") || "https://www.zorotreeking.online";
+  const travel = getTravelGuides("zh").map((guide) => ({
+    title: guide.title,
+    description: guide.description,
+    date: guide.date,
+    url: `${site}${guide.href}`,
+    tags: ["旅行攻略", guide.location],
+  }));
 
   const take = (arr: any[], section: string, N = 15) =>
     arr
@@ -37,14 +45,14 @@ export async function GET(context: APIContext) {
     site: {
       title: "ZoroTreeking",
       tagline: "在代码与山林之间，留一份缓慢的笔记。",
-      description: "独立编辑型个人网站，包含 AI 学习、个人投资、摄影与徒步四个板块；公开作品与方法，不提供私人履历。",
+      description: "独立编辑型个人网站，包含 AI 学习、个人投资、摄影与徒步旅行四个板块；公开作品与方法，不提供私人履历。",
       url: site,
     },
     sections: {
       ai: { title: "AI 学习", desc: "AI 论文笔记、工具、思考", recent: take(ai, "ai") },
       invest: { title: "个人投资", desc: "A股 / 港股持仓、复盘、数据看板", recent: take(invest, "invest") },
       photo: { title: "摄影", desc: "镜头里的生活", recent: take(photo, "photo") },
-      hike: { title: "徒步", desc: "路线、轨迹、风景", recent: take(hike, "hike") },
+      hike: { title: "徒步旅行", desc: "徒步路线、旅行攻略与沿途风景", recent: [...travel, ...take(hike, "hike")].slice(0, 15) },
     },
     other_pages: [
       { title: "关于这个站", url: `${site}/about` },

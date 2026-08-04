@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import SectionCard from "@/components/SectionCard.astro";
+import { getTravelGuides } from "@/data/travel-guides";
 import { useTranslations, pathWithLang, defaultLang } from "@/i18n/ui";
 
 const lang = defaultLang;
@@ -22,6 +23,19 @@ const [aiPosts, investPosts, photoAlbums, hikes] = await Promise.all([
 // 栏目卡片展示的"原创数"也用过滤后的，避免"AI 23 篇"骗访客
 const aiOriginal = aiPosts.filter(p => !isDigest(p));
 const investOriginal = investPosts.filter(p => !isDigest(p));
+const travelPosts = getTravelGuides(lang).map((guide) => ({
+  id: `travel-${guide.slug}`,
+  body: guide.description,
+  data: {
+    lang,
+    translationKey: `travel/${guide.slug}`,
+    title: guide.title,
+    description: guide.description,
+    date: new Date(`${guide.date}T00:00:00+08:00`),
+    tags: ["travel-guide", "旅行攻略"],
+    draft: false,
+  },
+}));
 
 // 副标注：自动化产出（digest/market-recap）数量
 const aiDigestCount = aiPosts.filter(p => isDigest(p)).length;
@@ -35,6 +49,7 @@ const latest = [
   ...investOriginal.map(p => ({ ...p, section: "invest" as const })),
   ...photoAlbums.map(p => ({ ...p, section: "photo" as const })),
   ...hikes.map(p => ({ ...p, section: "hike" as const })),
+  ...travelPosts.map(p => ({ ...p, section: "hike" as const })),
 ]
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
   .slice(0, 6);
@@ -57,6 +72,7 @@ function pickHero() {
   const latestVisual = [
     ...photoAlbums.map(p => ({ ...p, section: "photo" as const })),
     ...hikes.map(p => ({ ...p, section: "hike" as const })),
+    ...travelPosts.map(p => ({ ...p, section: "hike" as const })),
   ].sort((a, b) => b.data.date.getTime() - a.data.date.getTime())[0];
 
   return [originals[0], latestDigest, latestVisual].filter(Boolean).slice(0, 3);
@@ -92,7 +108,7 @@ const sectionAccent: Record<string, string> = {
       留一份缓慢的笔记。
     </h1>
     <p class="mt-6 text-lg sm:text-xl text-[var(--text-secondary)] max-w-2xl mx-auto leading-relaxed animate-rise delay-100">
-      关于 AI、投资、摄影、徒步的个人记录。
+      关于 AI、投资、摄影、徒步与旅行的个人记录。
     </p>
     <div class="mt-10 flex items-center justify-center gap-4 animate-rise delay-200">
       <a href={pathWithLang("/ai", lang)} class="inline-flex items-center gap-1.5 rounded-full bg-black dark:bg-white text-white dark:text-black px-5 py-2.5 text-sm font-medium hover:opacity-90 transition-opacity">
@@ -129,7 +145,7 @@ const sectionAccent: Record<string, string> = {
             一份在数据、技术与真实世界之间缓慢生长的编辑项目。这里同时有 <a href={pathWithLang("/ai", lang)} class="text-section-ai hover:underline font-medium">AI 论文中文笔记</a> ·
             <a href={pathWithLang("/invest", lang)} class="text-section-invest hover:underline font-medium ml-1">A 股 / 港股实时看板</a> ·
             <a href={pathWithLang("/photo", lang)} class="text-section-photo hover:underline font-medium ml-1">相机瞬间</a> ·
-            <a href={pathWithLang("/hike", lang)} class="text-section-hike hover:underline font-medium ml-1">徒步轨迹</a>。
+            <a href={pathWithLang("/hike", lang)} class="text-section-hike hover:underline font-medium ml-1">徒步路线与旅行攻略</a>。
             无算法、无推送、无广告。
           </p>
           <div class="mt-3 flex items-center gap-3 flex-wrap text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">
@@ -220,7 +236,7 @@ const sectionAccent: Record<string, string> = {
     <SectionCard href={pathWithLang("/ai", lang)}     title={t("section.ai.title")}     desc={t("section.ai.desc")}     accent="ai"     count={aiOriginal.length}     countLabel="原创" countSecondary={`+ ${aiDigestCount} 期日报`} index={0} />
     <SectionCard href={pathWithLang("/invest", lang)} title={t("section.invest.title")} desc={t("section.invest.desc")} accent="invest" count={investOriginal.length} countLabel="复盘" countSecondary={`+ ${investRecapCount + investDigestCount} 期速览`} index={1} />
     <SectionCard href={pathWithLang("/photo", lang)}  title={t("section.photo.title")}  desc={t("section.photo.desc")}  accent="photo"  count={photoAlbums.length}  countLabel="组" index={2} />
-    <SectionCard href={pathWithLang("/hike", lang)}   title={t("section.hike.title")}   desc={t("section.hike.desc")}   accent="hike"   count={hikes.length}        countLabel="条" index={3} />
+    <SectionCard href={pathWithLang("/hike", lang)}   title={t("section.hike.title")}   desc={t("section.hike.desc")}   accent="hike"   count={hikes.length + travelPosts.length} countLabel="篇" index={3} />
   </section>
 
   <!-- ── 主题地图入口（LLM embedding 投影 2D · 让访客感知内容广度） ── -->
@@ -254,7 +270,7 @@ const sectionAccent: Record<string, string> = {
           </h3>
           <p class="mt-1.5 text-sm text-[var(--text-secondary)] leading-relaxed">
             所有文章用 LLM embedding 投影到 2D 平面，主题相近的自动靠在一起。
-            <span class="text-[var(--text-tertiary)]">RLHF 在哪 · 港股在哪 · 徒步在哪，一眼看到。</span>
+            <span class="text-[var(--text-tertiary)]">RLHF 在哪 · 港股在哪 · 下一段旅程在哪，一眼看到。</span>
           </p>
         </div>
         <span class="shrink-0 text-2xl text-[var(--text-tertiary)] group-hover:translate-x-1 group-hover:text-blue-600 transition-all">→</span>
