@@ -138,13 +138,26 @@ jobs:
           release_root="${DEPLOY_PATH%/}"
           release_root="${release_root%/dist}"
           ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new "$SSH_USER@$SSH_HOST" \
-            "mkdir -p '$release_root/releases/$GITHUB_SHA'"
+            sh -s -- "$release_root" "$GITHUB_SHA" <<'SH'
+          set -eu
+          release_root=$1
+          sha=$2
+          target="$release_root/releases/$sha"
+          mkdir -p "$target"
+          # Seed unchanged files as hard links from the active release. The
+          # following checksum rsync then transfers only genuinely changed bytes.
+          if [ -L "$release_root/current" ]; then
+            current=$(readlink -f "$release_root/current")
+            test -d "$current"
+            cp -al "$current"/. "$target"/
+          fi
+          SH
 
       - name: Rsync dist → versioned release
         run: |
           release_root="${DEPLOY_PATH%/}"
           release_root="${release_root%/dist}"
-          rsync -avz --delete --no-perms --no-owner --no-group \
+          rsync -avz --checksum --delete --no-perms --no-owner --no-group \
             -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new" \
             dist/ "$SSH_USER@$SSH_HOST:$release_root/releases/$GITHUB_SHA/"
 
