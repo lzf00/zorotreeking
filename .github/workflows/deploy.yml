@@ -147,6 +147,64 @@ jobs:
           # 静默验证私钥可解析；不要把私钥的任何片段写入 Actions 日志。
           ssh-keygen -y -f ~/.ssh/deploy_key >/dev/null
 
+      - name: Reconcile AMap CSP allowlist
+        run: |
+          # 高德 SDK 与运行时数据必须同时通过 CSP。配置修改前保留备份，
+          # nginx 语法检查失败时立即恢复，避免安全头更新影响整个站点。
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new "$SSH_USER@$SSH_HOST" \
+            sh -s -- "$GITHUB_SHA" <<'SH'
+          set -eu
+          sha=$1
+          target=$(sudo -n grep -RIl --include='*.conf' 'Content-Security-Policy' /etc/nginx 2>/dev/null | head -1)
+          test -n "$target"
+          backup="/tmp/zorotreeking-csp-$sha.conf"
+          sudo -n cp "$target" "$backup"
+          if ! sudo -n python3 - "$target" <<'PY'
+          import re, sys
+          from pathlib import Path
+
+          path = Path(sys.argv[1])
+          source = path.read_text(encoding="utf-8")
+
+          def allow(directive: str, origins: list[str], text: str) -> str:
+              pattern = re.compile(rf"({re.escape(directive)}\s+)([^;]*)(;)")
+              match = pattern.search(text)
+              if not match:
+                  raise SystemExit(f"missing CSP directive: {directive}")
+              values = match.group(2).split()
+              for origin in origins:
+                  if origin not in values:
+                      values.append(origin)
+              return text[:match.start()] + match.group(1) + " ".join(values) + match.group(3) + text[match.end():]
+
+          source = allow("script-src", ["https://webapi.amap.com"], source)
+          source = allow("connect-src", ["https://*.amap.com", "https://*.autonavi.com"], source)
+          path.write_text(source, encoding="utf-8")
+          PY
+          then
+            sudo -n cp "$backup" "$target"
+            exit 1
+          fi
+          if ! sudo -n nginx -t; then
+            sudo -n cp "$backup" "$target"
+            sudo -n nginx -t
+            exit 1
+          fi
+          if ! sudo -n systemctl reload nginx; then
+            sudo -n cp "$backup" "$target"
+            sudo -n nginx -t
+            sudo -n systemctl reload nginx
+            exit 1
+          fi
+          echo "✓ 高德地图 CSP 白名单已核对"
+          SH
+
+          # 从公网响应确认 active nginx 已加载新策略，而不是只改了磁盘文件。
+          csp=$(curl -fsSI https://www.zorotreeking.online/hike/ | tr -d '\r' | grep -i '^content-security-policy:')
+          printf '%s' "$csp" | grep -q 'https://webapi.amap.com'
+          printf '%s' "$csp" | grep -q 'https://\*.amap.com'
+          echo "✓ 公网 CSP 已允许高德 SDK 与运行时请求"
+
       - name: Prepare versioned release
         run: |
           release_root="${DEPLOY_PATH%/}"
@@ -208,12 +266,16 @@ jobs:
                       meta = json.load(resp)
                   if meta.get("sha") != os.environ["GITHUB_SHA"]:
                       raise ValueError(f"static release mismatch: {meta.get('sha')}")
+                  with urllib.request.urlopen("https://www.zorotreeking.online/hike/", timeout=20) as resp:
+                      csp = resp.headers.get("Content-Security-Policy", "")
+                  if "https://webapi.amap.com" not in csp or "https://*.amap.com" not in csp:
+                      raise ValueError("AMap CSP allowlist missing from production response")
                   with urllib.request.urlopen("https://www.zorotreeking.online/api/market/etf", timeout=20) as resp:
                       data = json.load(resp)
                   items = data.get("items") or []
                   missing = [x.get("code") for x in items if x.get("ratio_pct") is None]
                   if data.get("ok") is True and len(items) == 12 and not missing and data.get("baseline_date"):
-                      print(f"✓ static sha={meta['sha']} · ETF API 12/12 · baseline={data['baseline_date']}")
+                      print(f"✓ static sha={meta['sha']} · AMap CSP ready · ETF API 12/12 · baseline={data['baseline_date']}")
                       break
                   last = {"count": len(items), "missing": missing, "baseline": data.get("baseline_date")}
               except Exception as exc:
