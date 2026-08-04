@@ -75,6 +75,8 @@ rows.sort((a, b) => b.cp - a.cp);
 const redCount = rows.filter((r) => r.light === "red").length;
 const yellowCount = rows.filter((r) => r.light === "yellow").length;
 const grayCount = rows.filter((r) => r.light === "gray").length;
+const shareCoverage = rows.filter((r) => r.shares_yi != null).length;
+const factorCoverage = rows.filter((r) => r.sp != null).length;
 
 // 数据时间戳
 const asOfLabel = snap?.published_at
@@ -201,11 +203,13 @@ function lightIcon(l: string): string {
           </div>
         </section>
 
-        <!-- 2. 7 只 ETF 三因子明细 -->
+        <!-- 2. 12 只 ETF 三因子明细 -->
         <section class="max-w-5xl mx-auto px-5 pb-8">
           <div class="flex items-baseline justify-between mb-3">
             <h2 class="text-base font-semibold tracking-tight">📊 三因子明细</h2>
-            <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">按综合概率排序</span>
+            <span class={`text-[11px] font-mono uppercase tracking-wide ${shareCoverage < rows.length || factorCoverage < rows.length ? "text-amber-700 dark:text-amber-400" : "text-[var(--text-tertiary)]"}`}>
+              份额 {shareCoverage}/{rows.length} · 因子 {factorCoverage}/{rows.length}
+            </span>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full text-sm">
@@ -244,7 +248,7 @@ function lightIcon(l: string): string {
                         <>
                           <div>{r.shares_yi.toFixed(2)} 亿份</div>
                           {r.delta_pct != null && r.delta_pct !== 0 && (
-                            <div class={colorClass(r.delta_pct)}>{fmtPct(r.delta_pct * 100)}</div>
+                            <div class={colorClass(r.delta_pct)}>{fmtPct(r.delta_pct)}</div>
                           )}
                         </>
                       ) : "—"}

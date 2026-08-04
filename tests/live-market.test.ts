@@ -47,12 +47,19 @@ test("empty quote sets keep portfolio totals explicitly unavailable", () => {
 });
 
 test("live ETF data hydrates immediately and the public security filing stays complete", async () => {
-  const [etfPage, footer] = await Promise.all([
+  const [etfPage, etfLive, footer] = await Promise.all([
     readFile(new URL("../src/pages/invest/etf.astro", import.meta.url), "utf8"),
+    readFile(new URL("../src/components/EtfLiveTurnover.tsx", import.meta.url), "utf8"),
     readFile(new URL("../src/components/Footer.astro", import.meta.url), "utf8"),
   ]);
 
   assert.match(etfPage, /<EtfLiveTurnover client:load\s*\/>/);
+  assert.match(etfPage, /fmtPct\(r\.delta_pct\)/);
+  assert.doesNotMatch(etfPage, /fmtPct\(r\.delta_pct \* 100\)/);
+  assert.match(etfPage, /份额 \{shareCoverage\}\/\{rows\.length\}/);
+  assert.match(etfLive, /baseline_date/);
+  assert.match(etfLive, /基准待补采/);
+  assert.match(etfLive, /腾讯财经/);
   assert.match(footer, /https:\/\/beian\.mps\.gov\.cn\/#\/query\/webSearch\?code=31011502406842/);
   assert.match(footer, /rel="noopener noreferrer"/);
   assert.match(footer, /src="\/备案图标\.png"/);

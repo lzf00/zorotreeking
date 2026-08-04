@@ -9,7 +9,7 @@ import { formatChinaMarketTime, isChinaATradingHours } from "@/lib/china-market"
  *
  * 行为与 MarketIndicesGrid 一致：
  *  - 进页面立即拉一次；交易时段每 60s 轮询；隐藏页停轮询
- *  - 后端 /api/market/etf（东财 push2delay 代理，延迟约 1 分钟）
+ *  - 后端 /api/market/etf（东财实时行情 + 腾讯上一交易日基准）
  *
  * 注意：这里只有价格/成交维度是实时的；三因子模型里的"份额"因子
  * 交易所盘后才披露，仍在下方每日 19:30 更新的板块里。
@@ -23,6 +23,7 @@ type EtfItem = {
   turnover_yi: number | null;
   prev_turnover_yi: number | null;
   ratio_pct: number | null;
+  prev_trade_date?: string | null;
 };
 
 type EtfResp = {
@@ -35,6 +36,7 @@ type EtfResp = {
   partial?: boolean;
   error?: string;
   stale?: boolean;
+  baseline_date?: string;
 };
 
 const POLL_MS = 60_000;
@@ -45,6 +47,7 @@ export default function EtfLiveTurnover() {
   const [error, setError] = useState<string | null>(null);
   const [partial, setPartial] = useState<{ succeeded: number; requested: number } | null>(null);
   const [stale, setStale] = useState(false);
+  const [baselineDate, setBaselineDate] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const inFlight = useRef(false);
 
@@ -75,6 +78,7 @@ export default function EtfLiveTurnover() {
           setPartial(null);
         }
         setStale(Boolean(d.stale));
+        setBaselineDate(typeof d.baseline_date === "string" ? d.baseline_date : null);
       } else {
         throw new Error(d.error || "加载失败");
       }
@@ -131,7 +135,7 @@ export default function EtfLiveTurnover() {
           )}
         </p>
         <p className="text-[11px] text-[var(--text-tertiary)] font-mono">
-          东方财富 · 延迟约 1 分钟 · {updated ? formatChinaMarketTime(updated) : "—"}
+          实时：东方财富 · 昨日基准：腾讯财经{baselineDate ? ` ${baselineDate}` : ""} · {updated ? formatChinaMarketTime(updated) : "—"}
           {stale && <span className="ml-2">（回退缓存）</span>}
           {!isChinaATradingHours() && "（已收盘）"}
           {loading && <span className="ml-2">刷新中…</span>}
@@ -176,18 +180,27 @@ export default function EtfLiveTurnover() {
                     {d.turnover_yi != null ? `${d.turnover_yi.toFixed(1)} 亿` : "—"}
                   </td>
                   <td className="px-3 py-2">
-                    <div className="flex items-center gap-2">
-                      <div className="flex-1 h-1.5 rounded-full bg-[var(--bg-soft)] overflow-hidden">
-                        <div
-                          className={`h-full rounded-full ${overFull ? "bg-red-500" : "bg-zinc-400 dark:bg-zinc-500"}`}
-                          style={{ width: `${barW}%` }}
-                        />
-                      </div>
-                      <span className={`text-[11px] tabular-nums font-mono w-14 text-right ${overFull ? "text-red-600 dark:text-red-400 font-semibold" : "text-[var(--text-tertiary)]"}`}>
-                        {ratio != null ? `${ratio.toFixed(0)}%` : "—"}
+                    {ratio == null ? (
+                      <span
+                        className="text-[11px] text-amber-700 dark:text-amber-400"
+                        title="上一交易日成交额正在补采，当前实时成交额仍然有效"
+                      >
+                        基准待补采
                       </span>
-                      {overFull && <span className="text-[11px]">✓</span>}
-                    </div>
+                    ) : (
+                      <div className="flex items-center gap-2" title={d.prev_trade_date ? `基准交易日：${d.prev_trade_date}` : undefined}>
+                        <div className="flex-1 h-1.5 rounded-full bg-[var(--bg-soft)] overflow-hidden">
+                          <div
+                            className={`h-full rounded-full ${overFull ? "bg-red-500" : "bg-zinc-400 dark:bg-zinc-500"}`}
+                            style={{ width: `${barW}%` }}
+                          />
+                        </div>
+                        <span className={`text-[11px] tabular-nums font-mono w-14 text-right ${overFull ? "text-red-600 dark:text-red-400 font-semibold" : "text-[var(--text-tertiary)]"}`}>
+                          {ratio.toFixed(0)}%
+                        </span>
+                        {overFull && <span className="text-[11px]">✓</span>}
+                      </div>
+                    )}
                   </td>
                 </tr>
               );
