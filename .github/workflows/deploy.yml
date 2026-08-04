@@ -69,6 +69,16 @@ jobs:
         # HTTP 200 / JSON 存在不等于业务数据正确；发布前独立重算完整度和因子公式。
         run: npm run validate:etf
 
+      - name: Verify AMap build configuration
+        env:
+          PUBLIC_AMAP_JS_KEY: ${{ secrets.PUBLIC_AMAP_JS_KEY }}
+          PUBLIC_AMAP_SECURITY_CODE: ${{ secrets.PUBLIC_AMAP_SECURITY_CODE }}
+        run: |
+          # 生产发布必须带高德配置；浏览器运行时异常仍会自动降级到 OSM。
+          [ -n "$PUBLIC_AMAP_JS_KEY" ] || { echo "❌ 缺少 PUBLIC_AMAP_JS_KEY"; exit 1; }
+          [ -n "$PUBLIC_AMAP_SECURITY_CODE" ] || { echo "❌ 缺少 PUBLIC_AMAP_SECURITY_CODE"; exit 1; }
+          echo "✓ 高德地图构建配置已注入"
+
       - name: Build site
         env:
           # Giscus 评论：值来自 GitHub repo Settings → Variables。
@@ -81,6 +91,10 @@ jobs:
           PUBLIC_GOOGLE_VERIFICATION: ${{ vars.PUBLIC_GOOGLE_VERIFICATION }}
           PUBLIC_BAIDU_VERIFICATION: ${{ vars.PUBLIC_BAIDU_VERIFICATION }}
           PUBLIC_BING_VERIFICATION: ${{ vars.PUBLIC_BING_VERIFICATION }}
+          # 高德 Web JS API：敏感配置只从仓库 Secrets 注入构建产物。
+          # 未配置或运行时加载失败时，路线图会自动使用 OpenStreetMap 备用底图。
+          PUBLIC_AMAP_JS_KEY: ${{ secrets.PUBLIC_AMAP_JS_KEY }}
+          PUBLIC_AMAP_SECURITY_CODE: ${{ secrets.PUBLIC_AMAP_SECURITY_CODE }}
         run: npm run build
 
       - name: Stamp release identity

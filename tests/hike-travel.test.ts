@@ -5,6 +5,7 @@ import test from "node:test";
 import { aliRoadLabels, aliRoutedDayGeometry } from "../src/data/ali-road-geometry";
 import { aliRouteDays, aliRoutePoints } from "../src/data/ali-route";
 import { getTravelGuides } from "../src/data/travel-guides";
+import { wgs84ToGcj02 } from "../src/utils/amap-coordinate";
 
 test("hike section is presented as hiking and travel across navigation and home", async () => {
   const [ui, home, section] = await Promise.all([
@@ -57,16 +58,39 @@ test("the complete Ali roadbook is embedded directly in the hike landing page", 
   assert.match(component, /<AliRouteOverview \/>/);
   assert.match(component, /route-atlas/);
   assert.match(component, /map-panel reveal/);
-  assert.match(atlas, /OpenStreetMap 真实底图/);
+  assert.match(atlas, /高德地图优先/);
+  assert.match(atlas, /OpenStreetMap 自动备用/);
   assert.match(atlas, /公路走向/);
   assert.match(atlas, /道路拟合/);
   assert.match(atlas, /逐日道路、节点、补给与退出条件/);
   assert.match(map, /tile\.openstreetmap\.org/);
   assert.match(map, /OpenStreetMap contributors/);
+  assert.match(map, /webapi\.amap\.com\/maps\?v=2\.0/);
+  assert.match(map, /PUBLIC_AMAP_JS_KEY/);
+  assert.match(map, /PUBLIC_AMAP_SECURITY_CODE/);
+  assert.match(map, /data-map-provider/);
   assert.match(map, /aliRoutedDayGeometry/);
   assert.match(map, /公路走向与编号/);
   assert.match(map, /control\.scale/);
   assert.match(map, /scrollWheelZoom: false/);
+});
+
+test("AMap integration uses encrypted deployment secrets and a tested coordinate conversion", async () => {
+  const workflow = await readFile(new URL("../.github/workflows/deploy.yml", import.meta.url), "utf8");
+  assert.match(workflow, /PUBLIC_AMAP_JS_KEY: \$\{\{ secrets\.PUBLIC_AMAP_JS_KEY \}\}/);
+  assert.match(workflow, /PUBLIC_AMAP_SECURITY_CODE: \$\{\{ secrets\.PUBLIC_AMAP_SECURITY_CODE \}\}/);
+  assert.match(workflow, /Verify AMap build configuration/);
+  assert.doesNotMatch(workflow, /\b[0-9a-f]{32}\b/i, "workflow must not contain a literal AMap credential");
+
+  const [shanghaiLat, shanghaiLng] = wgs84ToGcj02(31.2304, 121.4737);
+  assert.ok(shanghaiLat > 31.228 && shanghaiLat < 31.231);
+  assert.ok(shanghaiLng > 121.477 && shanghaiLng < 121.479);
+
+  const [lhasaLat, lhasaLng] = wgs84ToGcj02(29.652, 91.1721);
+  assert.ok(lhasaLat > 29.648 && lhasaLat < 29.654);
+  assert.ok(lhasaLng > 91.173 && lhasaLng < 91.177);
+
+  assert.deepEqual(wgs84ToGcj02(51.5074, -0.1278), [51.5074, -0.1278]);
 });
 
 test("Ali route atlas has complete, internally consistent day and marker data", () => {

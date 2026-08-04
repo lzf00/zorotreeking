@@ -49,9 +49,9 @@ const markerKinds: { kind: AliRoutePointKind; label: string }[] = [
       <div class="ali-route-atlas__map-topline">
         <div>
           <span class="ali-route-atlas__live-dot"></span>
-          OpenStreetMap 真实底图与公路走向
+          高德地图优先 · 公路走向 · OpenStreetMap 自动备用
         </div>
-        <span>WGS84 · 规划级坐标 · 非实时导航</span>
+        <span>WGS84 → GCJ-02 · 规划级坐标 · 非实时导航</span>
       </div>
       <div class="ali-route-atlas__roads" aria-label="本线路主要公路">
         <span>本线公路</span>
@@ -68,7 +68,7 @@ const markerKinds: { kind: AliRoutePointKind; label: string }[] = [
         {markerKinds.map(({ kind, label }) => (
           <span><i class={`ali-route-marker ali-route-marker--${kind}`}></i>{label}</span>
         ))}
-        <span class="ali-route-atlas__legend-note">金色实线沿 OSM 道路拟合；红色点线标识每日行驶分段</span>
+        <span class="ali-route-atlas__legend-note">金色实线沿道路网络拟合；红色点线标识每日行驶分段</span>
       </div>
     </div>
 
@@ -141,6 +141,7 @@ const markerKinds: { kind: AliRoutePointKind; label: string }[] = [
       <a href="https://www.peakwiki.org/peak.php?pid=1354" target="_blank" rel="noopener noreferrer">普拉喜琼峰体坐标资料 ↗</a>
       <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap · 道路与底图数据 ↗</a>
       <a href="https://project-osrm.org/" target="_blank" rel="noopener noreferrer">OSRM · 道路拟合引擎 ↗</a>
+      <a href="https://lbs.amap.com/api/javascript-api-v2/summary" target="_blank" rel="noopener noreferrer">高德开放平台 · JS API 2.0 ↗</a>
     </div>
   </div>
 </section>
@@ -284,6 +285,34 @@ const markerKinds: { kind: AliRoutePointKind; label: string }[] = [
     font-size: .7rem;
     backdrop-filter: blur(8px);
   }
+  .ali-route-map-help strong { color: #176d73; }
+  .ali-amap-layer-control {
+    position: absolute;
+    z-index: 500;
+    top: 12px;
+    right: 12px;
+    display: grid;
+    gap: 6px;
+    margin: 0;
+    padding: 10px 12px;
+    border: 1px solid rgba(23, 32, 29, .24);
+    border-radius: 3px;
+    color: #26312c;
+    background: rgba(255, 252, 243, .94);
+    box-shadow: 0 4px 18px rgba(23, 32, 29, .18);
+    font-family: var(--sans);
+    font-size: 12px;
+  }
+  .ali-amap-layer-control legend {
+    padding: 0 3px;
+    color: #6d706b;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  .ali-amap-layer-control label { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+  .ali-amap-layer-control input { accent-color: #176d73; }
   .ali-route-atlas__legend {
     display: flex;
     flex-wrap: wrap;
@@ -386,6 +415,37 @@ const markerKinds: { kind: AliRoutePointKind; label: string }[] = [
     height: 22px;
     border-width: 3px;
     box-shadow: 0 2px 8px rgba(23, 32, 29, .38);
+  }
+  .ali-amap-place-marker {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+  }
+  .ali-amap-place-marker .ali-route-marker {
+    width: 22px;
+    height: 22px;
+    border-width: 3px;
+    box-shadow: 0 2px 8px rgba(23, 32, 29, .38);
+  }
+  .ali-amap-place-label {
+    position: absolute;
+    bottom: 26px;
+    left: 50%;
+    width: max-content;
+    max-width: 110px;
+    overflow: hidden;
+    padding: 3px 6px;
+    border-radius: 2px;
+    color: #17201d;
+    background: rgba(244, 239, 227, .94);
+    box-shadow: 0 2px 12px rgba(23, 32, 29, .18);
+    font-size: 11px;
+    text-overflow: ellipsis;
+    transform: translateX(-50%);
+    white-space: nowrap;
   }
   .ali-route-marker--airport { background: #2b7183; }
   .ali-route-marker--overnight { background: #17201d; }
@@ -593,6 +653,8 @@ const markerKinds: { kind: AliRoutePointKind; label: string }[] = [
     .ali-route-atlas__roads { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: thin; }
     .ali-route-atlas__roads > span { flex: 0 0 auto; }
     .ali-route-map .ali-road-shield-icon:not(.ali-road-shield-icon--major) { display: none; }
+    .ali-route-map .ali-road-shield:not(.ali-road-shield--major) { display: none; }
+    .ali-amap-layer-control { top: 8px; right: 8px; }
     .ali-route-map { height: 560px; min-height: 560px; }
     .ali-route-map-help { left: 10px; right: 10px; text-align: center; }
     .ali-route-atlas__legend-note { width: 100%; margin-left: 0; }
