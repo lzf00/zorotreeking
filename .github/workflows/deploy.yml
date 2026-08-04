@@ -194,7 +194,11 @@ jobs:
                       values.append(origin)
               return text[:match.start()] + match.group(1) + " ".join(values) + match.group(3) + text[match.end():]
 
-          source = allow("script-src", ["https://webapi.amap.com"], source)
+          source = allow("script-src", [
+              "https://webapi.amap.com",
+              "https://restapi.amap.com",
+              "https://jsapi-service.amap.com",
+          ], source)
           source = allow("connect-src", ["https://*.amap.com", "https://*.autonavi.com"], source)
           path.write_text(source, encoding="utf-8")
           PY
@@ -220,6 +224,8 @@ jobs:
           # 从公网响应确认 active nginx 已加载新策略，而不是只改了磁盘文件。
           csp=$(curl -fsSI https://www.zorotreeking.online/hike/ | tr -d '\r' | grep -i '^content-security-policy:')
           printf '%s' "$csp" | grep -q 'https://webapi.amap.com'
+          printf '%s' "$csp" | grep -q 'https://restapi.amap.com'
+          printf '%s' "$csp" | grep -q 'https://jsapi-service.amap.com'
           printf '%s' "$csp" | grep -q 'https://\*.amap.com'
           echo "✓ 公网 CSP 已允许高德 SDK 与运行时请求"
 
@@ -286,7 +292,13 @@ jobs:
                       raise ValueError(f"static release mismatch: {meta.get('sha')}")
                   with urllib.request.urlopen("https://www.zorotreeking.online/hike/", timeout=20) as resp:
                       csp = resp.headers.get("Content-Security-Policy", "")
-                  if "https://webapi.amap.com" not in csp or "https://*.amap.com" not in csp:
+                  required_amap_origins = (
+                      "https://webapi.amap.com",
+                      "https://restapi.amap.com",
+                      "https://jsapi-service.amap.com",
+                      "https://*.amap.com",
+                  )
+                  if not all(origin in csp for origin in required_amap_origins):
                       raise ValueError("AMap CSP allowlist missing from production response")
                   with urllib.request.urlopen("https://www.zorotreeking.online/api/market/etf", timeout=20) as resp:
                       data = json.load(resp)

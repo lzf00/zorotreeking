@@ -82,6 +82,8 @@ test("AMap integration uses encrypted deployment secrets and a tested coordinate
   assert.match(workflow, /Verify AMap build configuration/);
   assert.match(workflow, /Reconcile AMap CSP allowlist/);
   assert.match(workflow, /https:\/\/webapi\.amap\.com/);
+  assert.match(workflow, /https:\/\/restapi\.amap\.com/);
+  assert.match(workflow, /https:\/\/jsapi-service\.amap\.com/);
   assert.match(workflow, /https:\/\/\*\.amap\.com/);
   assert.match(workflow, /AMap CSP allowlist missing from production response/);
   assert.doesNotMatch(workflow, /\b[0-9a-f]{32}\b/i, "workflow must not contain a literal AMap credential");
