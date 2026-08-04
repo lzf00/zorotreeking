@@ -155,11 +155,24 @@ jobs:
             sh -s -- "$GITHUB_SHA" <<'SH'
           set -eu
           sha=$1
-          target=$(sudo -n grep -RIl --include='*.conf' 'Content-Security-Policy' /etc/nginx 2>/dev/null | head -1)
-          test -n "$target"
+          if [ "$(id -u)" -eq 0 ]; then
+            as_root=""
+          elif command -v sudo >/dev/null 2>&1 && sudo -n true 2>/dev/null; then
+            as_root="sudo -n"
+          else
+            echo "❌ 部署账号没有更新 nginx CSP 所需的免密 sudo 权限"
+            exit 1
+          fi
+          echo "[csp] 定位 active nginx 安全头配置"
+          target=$($as_root grep -RIl --include='*.conf' 'Content-Security-Policy' /etc/nginx 2>/dev/null | head -1)
+          if [ -z "$target" ]; then
+            echo "❌ /etc/nginx 中没有找到 Content-Security-Policy 配置"
+            exit 1
+          fi
           backup="/tmp/zorotreeking-csp-$sha.conf"
-          sudo -n cp "$target" "$backup"
-          if ! sudo -n python3 - "$target" <<'PY'
+          echo "[csp] 备份并更新白名单"
+          $as_root cp "$target" "$backup"
+          if ! $as_root python3 - "$target" <<'PY'
           import re, sys
           from pathlib import Path
 
@@ -182,18 +195,19 @@ jobs:
           path.write_text(source, encoding="utf-8")
           PY
           then
-            sudo -n cp "$backup" "$target"
+            $as_root cp "$backup" "$target"
             exit 1
           fi
-          if ! sudo -n nginx -t; then
-            sudo -n cp "$backup" "$target"
-            sudo -n nginx -t
+          echo "[csp] 校验并重新加载 nginx"
+          if ! $as_root nginx -t; then
+            $as_root cp "$backup" "$target"
+            $as_root nginx -t
             exit 1
           fi
-          if ! sudo -n systemctl reload nginx; then
-            sudo -n cp "$backup" "$target"
-            sudo -n nginx -t
-            sudo -n systemctl reload nginx
+          if ! $as_root systemctl reload nginx; then
+            $as_root cp "$backup" "$target"
+            $as_root nginx -t
+            $as_root systemctl reload nginx
             exit 1
           fi
           echo "✓ 高德地图 CSP 白名单已核对"
