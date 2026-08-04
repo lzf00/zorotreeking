@@ -1,5 +1,6 @@
 ---
 import AliRouteMap from "./AliRouteMap";
+import { aliRoadLabels } from "../../data/ali-road-geometry";
 import {
   aliRouteDays,
   aliRoutePointById,
@@ -33,7 +34,7 @@ const markerKinds: { kind: AliRoutePointKind; label: string }[] = [
       </div>
       <div>
         <h2>把每一天，落到真实地理坐标上。</h2>
-        <p>这张可缩放底图把机场、住宿城市、途经县城、景点、观景位和补给点放在同一条时间线上。点击任何标记，可查看对应日期、参考海拔、节点作用和坐标说明。</p>
+        <p>这张可缩放底图把实际道路拟合、公路编号、机场、住宿城市、途经县城、景点、观景位和补给点放在同一条时间线上。点击公路牌或地点标记，可查看对应日期、参考海拔、节点作用和坐标说明。</p>
       </div>
     </div>
 
@@ -48,22 +49,32 @@ const markerKinds: { kind: AliRoutePointKind; label: string }[] = [
       <div class="ali-route-atlas__map-topline">
         <div>
           <span class="ali-route-atlas__live-dot"></span>
-          OpenStreetMap 真实底图
+          OpenStreetMap 真实底图与公路走向
         </div>
         <span>WGS84 · 规划级坐标 · 非实时导航</span>
       </div>
+      <div class="ali-route-atlas__roads" aria-label="本线路主要公路">
+        <span>本线公路</span>
+        {aliRoadLabels.map((road) => (
+          <span class={`ali-route-road-chip ali-route-road-chip--${road.roadClass}`} title={road.description}>
+            <strong>{road.ref}</strong>{road.name}
+          </span>
+        ))}
+      </div>
       <AliRouteMap client:visible points={aliRoutePoints} days={aliRouteDays} />
       <div class="ali-route-atlas__legend" aria-label="地图图例">
+        <span><i class="ali-route-road-swatch"></i>道路拟合</span>
+        <span><i class="ali-route-day-swatch"></i>逐日路线</span>
         {markerKinds.map(({ kind, label }) => (
           <span><i class={`ali-route-marker ali-route-marker--${kind}`}></i>{label}</span>
         ))}
-        <span class="ali-route-atlas__legend-note">红色虚线表示节点顺序，不代表道路精确走线</span>
+        <span class="ali-route-atlas__legend-note">金色实线沿 OSM 道路拟合；红色点线标识每日行驶分段</span>
       </div>
     </div>
 
     <aside class="ali-route-atlas__notice reveal">
       <strong>读图边界</strong>
-      <p>地图标出“计划经过什么”，不承诺“当时一定能走”。其中 {approximateCount} 个湖区、峰体或观景区域使用代表性规划点，并在弹窗中单独注明。出发前 24 小时仍须核对交警通告、景区开放、天气、边境通行证和车辆导航；不得把峰体坐标、湖心坐标或虚线直接设为驾车终点。</p>
+      <p>地图标出“计划经过什么、主要沿哪条公路走”，不承诺“当时一定能走”。道路拟合用于行前总览，不包含实时封路、施工、限行或临时改道；其中 {approximateCount} 个湖区、峰体或观景区域使用代表性规划点，并在弹窗中单独注明。出发前 24 小时仍须核对交警通告、景区开放、天气、边境通行证和车载导航。</p>
     </aside>
 
     <div class="ali-route-atlas__subhead reveal">
@@ -128,6 +139,8 @@ const markerKinds: { kind: AliRoutePointKind; label: string }[] = [
       <a href="https://wlt.xizang.gov.cn/ztzl_69/wenlv/202512/t20251202_512215.html" target="_blank" rel="noopener noreferrer">西藏文旅厅 · 珠峰地标与开放区域 ↗</a>
       <a href="https://s.nia.gov.cn/mps/bszy/dzbjtxz/blzy/202604/t20260414_1001.html" target="_blank" rel="noopener noreferrer">国家移民管理局 · 电子边境通行证 ↗</a>
       <a href="https://www.peakwiki.org/peak.php?pid=1354" target="_blank" rel="noopener noreferrer">普拉喜琼峰体坐标资料 ↗</a>
+      <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap · 道路与底图数据 ↗</a>
+      <a href="https://project-osrm.org/" target="_blank" rel="noopener noreferrer">OSRM · 道路拟合引擎 ↗</a>
     </div>
   </div>
 </section>
@@ -211,6 +224,46 @@ const markerKinds: { kind: AliRoutePointKind; label: string }[] = [
     background: #70c1b3;
     box-shadow: 0 0 0 4px rgba(112, 193, 179, .15);
   }
+  .ali-route-atlas__roads {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    padding: 11px 16px;
+    border-bottom: 1px solid rgba(23, 32, 29, .15);
+    background: #e7e0d0;
+  }
+  .ali-route-atlas__roads > span:first-child {
+    align-self: center;
+    margin-right: 5px;
+    color: #6d706b;
+    font-family: var(--mono);
+    font-size: .62rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  .ali-route-road-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 7px 4px 4px;
+    border: 1px solid rgba(23, 32, 29, .16);
+    border-radius: 3px;
+    color: #4c544f;
+    background: rgba(255, 252, 243, .78);
+    font-size: .66rem;
+  }
+  .ali-route-road-chip strong {
+    padding: 2px 5px;
+    border-radius: 2px;
+    color: #fff;
+    background: #27714c;
+    font-family: var(--mono);
+    font-size: .62rem;
+    letter-spacing: .03em;
+  }
+  .ali-route-road-chip--expressway strong { background: #176d73; }
+  .ali-route-road-chip--scenic strong { background: #b64934; }
+  .ali-route-road-chip--connector strong { background: #626a63; }
   .ali-route-map-shell { position: relative; }
   .ali-route-map {
     width: 100%;
@@ -249,6 +302,70 @@ const markerKinds: { kind: AliRoutePointKind; label: string }[] = [
   .ali-route-atlas__legend-note {
     margin-left: auto;
     color: #6d706b;
+  }
+  .ali-route-road-swatch,
+  .ali-route-day-swatch {
+    display: inline-block;
+    width: 30px;
+    height: 0;
+    border-top: 4px solid #d29a33;
+    box-shadow: 0 -1px 0 #fff8e9, 0 1px 0 #fff8e9;
+  }
+  .ali-route-day-swatch {
+    border-top: 2px dashed #b64934;
+    box-shadow: none;
+  }
+  .ali-road-shield-icon {
+    border: 0;
+    background: transparent;
+  }
+  .ali-road-shield {
+    display: inline-flex;
+    align-items: center;
+    width: max-content;
+    max-width: 118px;
+    overflow: hidden;
+    border: 1px solid rgba(23, 32, 29, .26);
+    border-radius: 4px;
+    background: rgba(255, 252, 243, .94);
+    box-shadow: 0 3px 11px rgba(23, 32, 29, .24);
+    white-space: nowrap;
+  }
+  .ali-road-shield strong {
+    align-self: stretch;
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 6px;
+    color: #fff;
+    background: #27714c;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .04em;
+  }
+  .ali-road-shield > span {
+    overflow: hidden;
+    padding: 4px 7px;
+    color: #26312c;
+    font-size: 10px;
+    font-weight: 700;
+    text-overflow: ellipsis;
+  }
+  .ali-road-shield--expressway strong { background: #176d73; }
+  .ali-road-shield--scenic strong { background: #b64934; }
+  .ali-road-shield--connector strong { background: #626a63; }
+  .ali-route-map .leaflet-control-layers {
+    border: 1px solid rgba(23, 32, 29, .24);
+    border-radius: 3px;
+    color: #26312c;
+    background: rgba(255, 252, 243, .94);
+    box-shadow: 0 4px 18px rgba(23, 32, 29, .18);
+    font-family: var(--sans);
+  }
+  .ali-route-map .leaflet-control-scale-line {
+    border-color: #26312c;
+    color: #26312c;
+    background: rgba(255, 252, 243, .82);
+    font-family: var(--mono);
   }
   .ali-route-div-icon {
     border: 0;
@@ -473,6 +590,9 @@ const markerKinds: { kind: AliRoutePointKind; label: string }[] = [
     .ali-route-atlas__metrics div:nth-child(2) { border-right: 0; }
     .ali-route-atlas__metrics div:nth-child(-n+2) { border-bottom: 1px solid rgba(23, 32, 29, .16); }
     .ali-route-atlas__map-topline { align-items: flex-start; flex-direction: column; }
+    .ali-route-atlas__roads { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: thin; }
+    .ali-route-atlas__roads > span { flex: 0 0 auto; }
+    .ali-route-map .ali-road-shield-icon:not(.ali-road-shield-icon--major) { display: none; }
     .ali-route-map { height: 560px; min-height: 560px; }
     .ali-route-map-help { left: 10px; right: 10px; text-align: center; }
     .ali-route-atlas__legend-note { width: 100%; margin-left: 0; }

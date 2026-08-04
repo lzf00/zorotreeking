@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
+import { aliRoadLabels, aliRoutedDayGeometry } from "../src/data/ali-road-geometry";
 import { aliRouteDays, aliRoutePoints } from "../src/data/ali-route";
 import { getTravelGuides } from "../src/data/travel-guides";
 
@@ -57,9 +58,14 @@ test("the complete Ali roadbook is embedded directly in the hike landing page", 
   assert.match(component, /route-atlas/);
   assert.match(component, /map-panel reveal/);
   assert.match(atlas, /OpenStreetMap 真实底图/);
+  assert.match(atlas, /公路走向/);
+  assert.match(atlas, /道路拟合/);
   assert.match(atlas, /逐日道路、节点、补给与退出条件/);
   assert.match(map, /tile\.openstreetmap\.org/);
   assert.match(map, /OpenStreetMap contributors/);
+  assert.match(map, /aliRoutedDayGeometry/);
+  assert.match(map, /公路走向与编号/);
+  assert.match(map, /control\.scale/);
   assert.match(map, /scrollWheelZoom: false/);
 });
 
@@ -94,4 +100,34 @@ test("Ali route atlas has complete, internally consistent day and marker data", 
     markerKinds,
     new Set(["airport", "overnight", "city", "attraction", "viewpoint", "supply"]),
   );
+});
+
+test("Ali road overlay follows routed geometry and labels every major highway", () => {
+  assert.deepEqual(
+    Object.keys(aliRoutedDayGeometry).map(Number),
+    Array.from({ length: 13 }, (_, index) => index + 1),
+  );
+
+  let coordinateCount = 0;
+  for (const day of aliRouteDays) {
+    const coordinates = aliRoutedDayGeometry[day.day];
+    assert.ok(coordinates && coordinates.length >= 2, `D${day.day} needs road-following geometry`);
+    coordinateCount += coordinates.length;
+    for (const [lat, lng] of coordinates) {
+      assert.ok(lat >= 27 && lat <= 34, `D${day.day} road latitude is outside the route region`);
+      assert.ok(lng >= 79 && lng <= 92, `D${day.day} road longitude is outside the route region`);
+    }
+  }
+  assert.ok(coordinateCount >= 1_000, "road overlay must retain enough detail to show road curvature");
+
+  const roadRefs = new Set(aliRoadLabels.map((road) => road.ref));
+  for (const expected of ["G109", "G219", "G317", "G318", "G349", "G565"]) {
+    assert.ok(roadRefs.has(expected), `${expected} needs a visible road shield`);
+  }
+  for (const road of aliRoadLabels) {
+    assert.ok(road.days.length > 0);
+    assert.ok(road.description.length >= 15);
+    assert.ok(road.lat >= 27 && road.lat <= 34);
+    assert.ok(road.lng >= 79 && road.lng <= 92);
+  }
 });
