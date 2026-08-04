@@ -164,7 +164,11 @@ jobs:
             exit 1
           fi
           echo "[csp] 定位 active nginx 安全头配置"
-          target=$($as_root grep -RIl --include='*.conf' 'Content-Security-Policy' /etc/nginx 2>/dev/null | head -1)
+          # 从 nginx -T 的 active include 图谱取文件，兼容没有 .conf 后缀的 snippet。
+          target=$($as_root nginx -T 2>&1 | awk '
+            /^# configuration file / { file=$4; sub(/:$/, "", file) }
+            /Content-Security-Policy/ && file { print file; exit }
+          ')
           if [ -z "$target" ]; then
             echo "❌ /etc/nginx 中没有找到 Content-Security-Policy 配置"
             exit 1
