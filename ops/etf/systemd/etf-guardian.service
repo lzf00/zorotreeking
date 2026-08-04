@@ -1,0 +1,19 @@
+[Unit]
+Description=Zoro ETF data-quality guardian and bounded self-repair
+After=network-online.target ai-agent.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=root
+WorkingDirectory=/opt/zoro-etf-ops
+EnvironmentFile=/opt/ai-agent/.env
+EnvironmentFile=-/opt/wind-recap/.env
+EnvironmentFile=-/opt/zoro-etf-ops/.env
+ExecStart=/opt/etf-three-factor/venv/bin/python3 /opt/zoro-etf-ops/guardian.py --repair
+TimeoutStartSec=600
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

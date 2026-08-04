@@ -1,0 +1,12 @@
+[Unit]
+Description=Run Zoro ETF Guardian every two minutes
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=2min
+AccuracySec=10s
+Persistent=true
+Unit=etf-guardian.service
+
+[Install]
+WantedBy=timers.target

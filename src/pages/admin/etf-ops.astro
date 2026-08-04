@@ -1,0 +1,137 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="ETF 运维中心" description="ETF 数据健康、自检测与受控修复" noindex>
+  <main class="max-w-6xl mx-auto px-6 pt-12 pb-32">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="text-xs uppercase tracking-[0.18em] text-zinc-500">Operations</p>
+        <h1 class="mt-2 text-2xl font-semibold tracking-tight">ETF 运维中心</h1>
+        <p class="mt-2 text-sm text-zinc-500">统一查看实时行情、三因子快照、事故与自修复记录。</p>
+      </div>
+      <a href="/admin/stats" class="text-sm text-amber-700 dark:text-amber-400 hover:underline">访问看板 →</a>
+    </div>
+
+    <section id="gate" class="mt-10 max-w-sm">
+      <label for="admin-token" class="block text-xs uppercase tracking-[0.18em] text-zinc-500 mb-2">管理员口令</label>
+      <input id="admin-token" type="password" autocomplete="off" autofocus placeholder="输入后回车"
+        class="w-full px-3 py-2 border border-zinc-200 dark:border-zinc-800 rounded-md bg-white dark:bg-zinc-900 text-sm focus:outline-none focus:ring-1 focus:ring-amber-400" />
+      <p id="gate-error" class="hidden mt-2 text-xs text-red-500">鉴权失败，请检查口令。</p>
+      <p class="mt-2 text-[11px] text-zinc-400">口令只放在请求头中，刷新或离开页面即清除。</p>
+    </section>
+
+    <div id="dashboard" class="hidden mt-10 space-y-8">
+      <div class="flex flex-wrap items-center gap-3">
+        <span id="overall" class="rounded-full px-3 py-1 text-xs font-medium bg-zinc-100 dark:bg-zinc-800">unknown</span>
+        <span id="checked-at" class="text-xs text-zinc-500"></span>
+        <button id="refresh" type="button" class="ml-auto rounded-full border border-zinc-200 dark:border-zinc-700 px-4 py-1.5 text-xs hover:bg-zinc-50 dark:hover:bg-zinc-900">刷新</button>
+        <button id="repair-cache" type="button" class="rounded-full bg-amber-500 text-white px-4 py-1.5 text-xs hover:bg-amber-600 disabled:opacity-50">重置行情缓存</button>
+      </div>
+
+      <section id="metrics" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4"></section>
+
+      <section>
+        <h2 class="text-sm font-semibold">当前问题</h2>
+        <div id="issues" class="mt-3 grid gap-3"></div>
+      </section>
+
+      <div class="grid lg:grid-cols-2 gap-8">
+        <section>
+          <h2 class="text-sm font-semibold">事故记录</h2>
+          <div id="incidents" class="mt-3 overflow-x-auto"></div>
+        </section>
+        <section>
+          <h2 class="text-sm font-semibold">自修复记录</h2>
+          <div id="repairs" class="mt-3 overflow-x-auto"></div>
+        </section>
+      </div>
+      <p id="action-result" class="hidden rounded-lg border px-4 py-3 text-sm"></p>
+    </div>
+  </main>
+</BaseLayout>
+
+<script is:inline>
+  (() => {
+    const $ = (id) => document.getElementById(id);
+    let adminToken = "";
+    const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[char]);
+    const statusTone = (status) => ({
+      healthy: "bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-900",
+      degraded: "bg-amber-50 text-amber-700 border border-amber-200 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-900",
+      unhealthy: "bg-red-50 text-red-700 border border-red-200 dark:bg-red-950/40 dark:text-red-300 dark:border-red-900",
+    }[status] || "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300");
+    const asTime = (value) => {
+      if (!value) return "—";
+      const date = typeof value === "number" ? new Date(value * 1000) : new Date(value);
+      return Number.isNaN(date.getTime()) ? String(value) : date.toLocaleString("zh-CN", { hour12: false });
+    };
+    const table = (headers, rows) => rows?.length ? `
+      <table class="w-full text-xs"><thead><tr class="text-left text-zinc-500">${headers.map((h) => `<th class="pb-2 pr-3 font-medium">${esc(h)}</th>`).join("")}</tr></thead>
+      <tbody>${rows.join("")}</tbody></table>` : `<p class="text-xs text-zinc-400">暂无记录</p>`;
+
+    function render(data) {
+      const overall = $("overall");
+      overall.textContent = data.status || "unknown";
+      overall.className = `rounded-full px-3 py-1 text-xs font-medium ${statusTone(data.status)}`;
+      $("checked-at").textContent = `检测时间 ${asTime(data.checked_at)} · 用时 ${data.duration_ms ?? "—"} ms`;
+      const rt = data.realtime || {}, snap = data.snapshot || {};
+      const rm = rt.metrics || {}, sm = snap.metrics || {};
+      const cards = [
+        ["实时行情", rt.status, `${rm.baseline_coverage ?? 0}/${rm.expected ?? 12} 有对比`],
+        ["基准交易日", rm.baseline_dates?.[0] || "—", `期望 ${rm.expected_baseline_date || "—"}`],
+        ["三因子快照", snap.status || "未检测", `${snap.phase || "—"} · ${sm.target_date || "—"}`],
+        ["份额因子", `${sm.factor_coverage ?? 0}/${sm.expected ?? 12}`, `${sm.unique_share_factors ?? 0} 个不同值`],
+      ];
+      $("metrics").innerHTML = cards.map(([label, value, note]) => `<article class="rounded-xl border border-zinc-200 dark:border-zinc-800 p-4"><p class="text-xs text-zinc-500">${esc(label)}</p><p class="mt-2 text-xl font-semibold">${esc(value)}</p><p class="mt-1 text-xs text-zinc-400">${esc(note)}</p></article>`).join("");
+      const issues = [...(rt.issues || []), ...(snap.issues || [])];
+      $("issues").innerHTML = issues.length ? issues.map((item) => `<article class="rounded-lg border p-3 ${item.severity === "error" ? "border-red-200 bg-red-50/50 dark:border-red-900 dark:bg-red-950/20" : "border-amber-200 bg-amber-50/50 dark:border-amber-900 dark:bg-amber-950/20"}"><div class="flex gap-2"><code class="text-xs">${esc(item.code)}</code><span class="text-xs text-zinc-500">${esc(item.severity)}</span></div><p class="mt-1 text-sm">${esc(item.message)}</p></article>`).join("") : `<p class="rounded-lg border border-emerald-200 bg-emerald-50/50 p-3 text-sm text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/20 dark:text-emerald-300">当前没有质量问题。</p>`;
+      const history = data.history || {};
+      $("incidents").innerHTML = table(["问题", "状态", "次数", "最近"], (history.incidents || []).map((r) => `<tr class="border-t border-zinc-100 dark:border-zinc-800"><td class="py-2 pr-3">${esc(r.fingerprint)}</td><td class="py-2 pr-3">${esc(r.status)}</td><td class="py-2 pr-3 tabular-nums">${esc(r.occurrences)}</td><td class="py-2 whitespace-nowrap">${esc(asTime(r.last_seen))}</td></tr>`));
+      $("repairs").innerHTML = table(["动作", "结果", "时间"], (history.repairs || []).map((r) => `<tr class="border-t border-zinc-100 dark:border-zinc-800"><td class="py-2 pr-3">${esc(r.runbook)}</td><td class="py-2 pr-3">${esc(r.result)}</td><td class="py-2 whitespace-nowrap">${esc(asTime(r.ts))}</td></tr>`));
+    }
+
+    async function load() {
+      const response = await fetch("/api/admin/etf-ops", { headers: { "X-Admin-Token": adminToken }, cache: "no-store" });
+      if (response.status === 401 || response.status === 403) return false;
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      render(await response.json());
+      $("dashboard").classList.remove("hidden");
+      return true;
+    }
+
+    $("admin-token")?.addEventListener("keydown", async (event) => {
+      if (event.key !== "Enter") return;
+      event.preventDefault();
+      adminToken = event.currentTarget.value;
+      event.currentTarget.value = "";
+      $("gate-error").classList.add("hidden");
+      try {
+        if (await load()) $("gate").classList.add("hidden");
+        else { adminToken = ""; $("gate-error").classList.remove("hidden"); }
+      } catch (error) {
+        adminToken = "";
+        $("gate-error").textContent = `加载失败：${error.message}`;
+        $("gate-error").classList.remove("hidden");
+      }
+    });
+    $("refresh")?.addEventListener("click", () => load().catch(() => {}));
+    $("repair-cache")?.addEventListener("click", async (event) => {
+      if (!confirm("仅重置 ETF 实时行情缓存并让下一次请求重新抓取，是否继续？")) return;
+      const button = event.currentTarget;
+      button.disabled = true;
+      const result = $("action-result");
+      try {
+        const response = await fetch("/api/admin/etf-ops/repair/cache", { method: "POST", headers: { "X-Admin-Token": adminToken } });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        result.textContent = "缓存已重置；正在重新检测。";
+        result.className = "rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/20 dark:text-emerald-300";
+        await new Promise((resolve) => setTimeout(resolve, 1200));
+        await load();
+      } catch (error) {
+        result.textContent = `修复失败：${error.message}`;
+        result.className = "rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700 dark:border-red-900 dark:bg-red-950/20 dark:text-red-300";
+      } finally { button.disabled = false; }
+    });
+  })();
+</script>

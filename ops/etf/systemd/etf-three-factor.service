@@ -1,0 +1,21 @@
+[Unit]
+Description=ETF three-factor pipeline with canonical registry and publication gate
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=root
+WorkingDirectory=/opt/etf-three-factor
+EnvironmentFile=/opt/wind-recap/.env
+Environment=ETF_REGISTRY_PATH=/opt/zoro-etf-ops/registry.json
+Environment=ETF_PIPELINE_SCRIPT=/opt/etf-three-factor/scripts/etf_v7_threefactor.py
+Environment=ETF_SNAPSHOT_PATH=/root/.etf-skill/workspace/ETF三因子分析-v7.json
+ExecStart=/opt/etf-three-factor/venv/bin/python3 /opt/zoro-etf-ops/pipeline_runner.py
+ExecStartPost=/opt/etf-three-factor/venv/bin/python3 /opt/zoro-etf-ops/publish_etf.py
+TimeoutStartSec=600
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

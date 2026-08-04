@@ -65,6 +65,10 @@ jobs:
         # type error 提前拦，避免红线 build 上线
         run: npx astro check
 
+      - name: Validate ETF data quality
+        # HTTP 200 / JSON 存在不等于业务数据正确；发布前独立重算完整度和因子公式。
+        run: npm run validate:etf
+
       - name: Build site
         env:
           # Giscus 评论：值来自 GitHub repo Settings → Variables。
@@ -78,6 +82,16 @@ jobs:
           PUBLIC_BAIDU_VERIFICATION: ${{ vars.PUBLIC_BAIDU_VERIFICATION }}
           PUBLIC_BING_VERIFICATION: ${{ vars.PUBLIC_BING_VERIFICATION }}
         run: npm run build
+
+      - name: Stamp release identity
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from datetime import datetime, timezone
+          with open("dist/deploy-meta.json", "w", encoding="utf-8") as handle:
+              json.dump({"sha": os.environ["GITHUB_SHA"], "built_at": datetime.now(timezone.utc).isoformat()}, handle)
+              handle.write("\n")
+          PY
 
       - name: Verify required secrets
         run: |
@@ -100,8 +114,8 @@ jobs:
             echo "❌ SSH_USER 含空白或斜杠"
             exit 1
           fi
-          if ! printf "%s" "$DEPLOY_PATH" | grep -qE "^/"; then
-            echo "❌ DEPLOY_PATH 必须以 / 开头"
+          if ! printf "%s" "${DEPLOY_PATH%/}" | grep -qE "^/[A-Za-z0-9._/-]+/dist$"; then
+            echo "❌ DEPLOY_PATH 必须是无空格的绝对路径并以 /dist 结尾"
             exit 1
           fi
           echo "✓ 三个 secret 看起来格式 OK"
@@ -119,11 +133,86 @@ jobs:
           # 静默验证私钥可解析；不要把私钥的任何片段写入 Actions 日志。
           ssh-keygen -y -f ~/.ssh/deploy_key >/dev/null
 
-      - name: Rsync dist → server
+      - name: Prepare versioned release
         run: |
+          release_root="${DEPLOY_PATH%/}"
+          release_root="${release_root%/dist}"
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new "$SSH_USER@$SSH_HOST" \
+            "mkdir -p '$release_root/releases/$GITHUB_SHA'"
+
+      - name: Rsync dist → versioned release
+        run: |
+          release_root="${DEPLOY_PATH%/}"
+          release_root="${release_root%/dist}"
           rsync -avz --delete --no-perms --no-owner --no-group \
             -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new" \
-            dist/ "$SSH_USER@$SSH_HOST:$DEPLOY_PATH/"
+            dist/ "$SSH_USER@$SSH_HOST:$release_root/releases/$GITHUB_SHA/"
+
+      - name: Activate release atomically
+        id: activate
+        run: |
+          release_root="${DEPLOY_PATH%/}"
+          release_root="${release_root%/dist}"
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new "$SSH_USER@$SSH_HOST" \
+            sh -s -- "$release_root" "$GITHUB_SHA" <<'SH'
+          set -eu
+          release_root=$1
+          sha=$2
+          new_release="$release_root/releases/$sha"
+          test -f "$new_release/deploy-meta.json"
+          if [ -L "$release_root/current" ]; then
+            old_release=$(readlink -f "$release_root/current")
+            ln -sfn "$old_release" "$release_root/previous"
+          elif [ -d "$release_root/dist" ]; then
+            ln -sfn "$release_root/dist" "$release_root/previous"
+          fi
+          ln -sfn "$new_release" "$release_root/current.next"
+          mv -Tf "$release_root/current.next" "$release_root/current"
+          SH
+
+      - name: Production acceptance smoke test
+        run: |
+          python3 - <<'PY'
+          import json, os, time, urllib.request
+          last = None
+          for attempt in range(6):
+              try:
+                  with urllib.request.urlopen("https://www.zorotreeking.online/deploy-meta.json", timeout=20) as resp:
+                      meta = json.load(resp)
+                  if meta.get("sha") != os.environ["GITHUB_SHA"]:
+                      raise ValueError(f"static release mismatch: {meta.get('sha')}")
+                  with urllib.request.urlopen("https://www.zorotreeking.online/api/market/etf", timeout=20) as resp:
+                      data = json.load(resp)
+                  items = data.get("items") or []
+                  missing = [x.get("code") for x in items if x.get("ratio_pct") is None]
+                  if data.get("ok") is True and len(items) == 12 and not missing and data.get("baseline_date"):
+                      print(f"✓ static sha={meta['sha']} · ETF API 12/12 · baseline={data['baseline_date']}")
+                      break
+                  last = {"count": len(items), "missing": missing, "baseline": data.get("baseline_date")}
+              except Exception as exc:
+                  last = str(exc)
+              if attempt < 5:
+                  time.sleep(10)
+          else:
+              raise SystemExit(f"ETF production smoke failed: {last}")
+          PY
+
+      - name: Roll back failed release
+        if: failure() && steps.activate.outcome == 'success'
+        run: |
+          release_root="${DEPLOY_PATH%/}"
+          release_root="${release_root%/dist}"
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new "$SSH_USER@$SSH_HOST" \
+            sh -s -- "$release_root" <<'SH'
+          set -eu
+          release_root=$1
+          test -L "$release_root/previous"
+          previous=$(readlink -f "$release_root/previous")
+          test -d "$previous"
+          ln -sfn "$previous" "$release_root/current.rollback"
+          mv -Tf "$release_root/current.rollback" "$release_root/current"
+          echo "Rollback completed"
+          SH
 
       # 通知 IndexNow（Bing/Yandex/Naver/Seznam）新增/改动 URL，加速索引
       # 失败不阻塞 deploy

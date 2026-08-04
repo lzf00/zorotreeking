@@ -43,3 +43,13 @@ test("deploy workflow never prints private key material", async () => {
   assert.doesNotMatch(contents, /head\s+-c\s+\d+\s+~\/\.ssh\/deploy_key/);
   assert.match(contents, /ssh-keygen -y -f ~\/\.ssh\/deploy_key >\/dev\/null/);
 });
+
+test("deploy uses versioned releases, commit identity smoke, and automatic rollback", async () => {
+  const contents = await workflow("deploy.yml");
+  assert.match(contents, /releases\/\$GITHUB_SHA/);
+  assert.match(contents, /dist\/deploy-meta\.json/);
+  assert.match(contents, /meta\.get\("sha"\) != os\.environ\["GITHUB_SHA"\]/);
+  assert.match(contents, /Roll back failed release/);
+  assert.match(contents, /steps\.activate\.outcome == 'success'/);
+  assert.match(contents, /readlink -f "\$release_root\/previous"/);
+});

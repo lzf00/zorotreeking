@@ -112,7 +112,7 @@ test("site verification variables accept tokens and recover from pasted meta tag
 });
 
 test("admin pages keep secrets out of request URLs", () => {
-  for (const page of ["stats.astro", "guestbook.astro"]) {
+  for (const page of ["stats.astro", "guestbook.astro", "etf-ops.astro"]) {
     const source = readFileSync(
       new URL(`../src/pages/admin/${page}`, import.meta.url),
       "utf8",

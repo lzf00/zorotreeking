@@ -16,7 +16,8 @@
     "preview": "astro preview",
     "test": "node --import tsx --test tests/*.test.ts",
     "check": "astro check",
-    "verify": "npm run check && npm test && npm run build",
+    "validate:etf": "tsx scripts/validate-etf-snapshot.ts",
+    "verify": "npm run validate:etf && npm run check && npm test && npm run build",
     "astro": "astro"
   },
   "dependencies": {

@@ -23,7 +23,10 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 
 <BaseLayout title="访问看板" description="个人访问数据看板" noindex>
   <main class="max-w-5xl mx-auto px-6 pt-12 pb-32">
-    <h1 class="text-2xl font-semibold tracking-tight">访问看板</h1>
+    <div class="flex items-center justify-between gap-4">
+      <h1 class="text-2xl font-semibold tracking-tight">访问看板</h1>
+      <a href="/admin/etf-ops" class="text-sm text-amber-700 dark:text-amber-400 hover:underline">ETF 运维中心 →</a>
+    </div>
     <p class="mt-2 text-sm text-zinc-500">
       基于 <code>/api/track</code> 的访问日志聚合。仅本人查看 · 不被搜索引擎索引。
     </p>

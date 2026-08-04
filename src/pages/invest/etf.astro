@@ -33,6 +33,7 @@ type EtfHistorical = {
   level: string | null;
 };
 type EtfSnapshot = {
+  schema_version?: number;
   run_time: string; model: string; target_date: string;
   signal_dates: Array<[string, number, number, string[]]>;
   latest: Record<string, EtfLatest>;
@@ -41,25 +42,24 @@ type EtfSnapshot = {
   top_historical?: EtfHistorical[];
 };
 
-const ETF_META: Record<string, { name: string; track: string; exch: string }> = {
-  // 命名统一为财联社/行情软件口径：产品 + 基金公司后缀（与盘中实时板块一致）
-  "510300": { name: "沪深300ETF华泰柏瑞", track: "沪深300", exch: "上交所" },
-  "510310": { name: "沪深300ETF易方达",   track: "沪深300", exch: "上交所" },
-  "510330": { name: "沪深300ETF华夏",     track: "沪深300", exch: "上交所" },
-  "159919": { name: "沪深300ETF嘉实",     track: "沪深300", exch: "深交所" },
-  "510050": { name: "上证50ETF华夏",      track: "上证50",  exch: "上交所" },
-  "510500": { name: "中证500ETF南方",     track: "中证500", exch: "上交所" },
-  "512100": { name: "中证1000ETF南方",    track: "中证1000", exch: "上交所" },
-  "159915": { name: "创业板ETF易方达",    track: "创业板指", exch: "深交所" },
-  "159949": { name: "创业板50ETF华安",    track: "创业板50", exch: "深交所" },
-  "588000": { name: "科创50ETF华夏",      track: "科创50",   exch: "上交所" },
-  "563360": { name: "A500ETF华泰柏瑞",    track: "中证A500", exch: "上交所" },
-  "159352": { name: "A500ETF南方",        track: "中证A500", exch: "深交所" },
-};
+type Registry = { etfs: Array<{ code: string; name: string; index: string; exchange: "SSE" | "SZSE" }> };
+const registry = JSON.parse(fs.readFileSync(path.resolve("./src/data/etf-registry.json"), "utf-8")) as Registry;
+const ETF_META = Object.fromEntries(registry.etfs.map((item) => [item.code, {
+  name: item.name,
+  track: item.index,
+  exch: item.exchange === "SSE" ? "上交所" : "深交所",
+}])) as Record<string, { name: string; track: string; exch: string }>;
 
-const snapshotPath = path.resolve("./src/data/etf-three-factor-latest.json");
-let snap: EtfSnapshot | null = null;
-try { snap = JSON.parse(fs.readFileSync(snapshotPath, "utf-8")); } catch { snap = null; }
+function readSnapshot(filename: string): EtfSnapshot | null {
+  try { return JSON.parse(fs.readFileSync(path.resolve(`./src/data/${filename}`), "utf-8")); } catch { return null; }
+}
+
+const completeSnap = readSnapshot("etf-three-factor-complete-latest.json");
+const earlySnap = readSnapshot("etf-three-factor-early-latest.json");
+const legacySnap = readSnapshot("etf-three-factor-latest.json");
+// 完整三因子始终优先；15:15 早盘版单独展示状态，不覆盖上一个完整交易日。
+const snap = completeSnap ?? legacySnap;
+const newerEarlyAvailable = Boolean(earlySnap && snap && earlySnap.target_date > snap.target_date);
 
 const rows = snap
   ? Object.entries(snap.latest).map(([code, s]) => ({
@@ -87,7 +87,7 @@ const asOfLabel = snap?.published_at
 // 两段式刷新：15:15 早盘版（量能+方向二因子）→ 19:30 份额补全（全量三因子）
 const nextRefresh = "交易日 15:15 早盘版 → 19:30 份额补全";
 // 早盘二因子版检测：latest 里任一 sp 为 null 说明份额还没披露
-const isEarlyRun = snap ? Object.values(snap.latest).some((s) => s.sp == null) : false;
+const isEarlyRun = !completeSnap && snap ? Object.values(snap.latest).some((s) => s.sp == null) : false;
 
 function fmtPct(v: number): string {
   return `${v >= 0 ? "+" : ""}${v.toFixed(2)}%`;
@@ -167,6 +167,11 @@ function lightIcon(l: string): string {
         {isEarlyRun && (
           <p class="mt-3 inline-flex items-center gap-1.5 text-xs rounded-lg px-3 py-1.5 bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-900">
             ⏳ 当前为早盘二因子版（量能 70% + 方向 30%）· 份额因子 19:30 披露后自动补全
+          </p>
+        )}
+        {newerEarlyAvailable && earlySnap && snap && (
+          <p class="mt-3 inline-flex items-center gap-1.5 text-xs rounded-lg px-3 py-1.5 bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-900">
+            🛡️ {earlySnap.target_date} 早盘二因子已生成；当前保留展示 {snap.target_date} 的完整三因子，19:30 通过质量门禁后再更新。
           </p>
         )}
       </div>
