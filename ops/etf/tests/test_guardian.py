@@ -1,4 +1,5 @@
 import argparse
+import json
 import sys
 import tempfile
 import unittest
@@ -8,7 +9,7 @@ from unittest.mock import patch
 OPS = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(OPS))
 
-from guardian import Guardian, _systemctl
+from guardian import Guardian, _notify_feishu, _systemctl
 
 
 REGISTRY_PATH = Path(__file__).resolve().parents[3] / "src" / "data" / "etf-registry.json"
@@ -68,6 +69,32 @@ class GuardianRepairTests(unittest.TestCase):
             _systemctl("stop", "ai-agent.service")
         with self.assertRaises(ValueError):
             _systemctl("restart", "nginx.service")
+
+    def test_feishu_notification_includes_required_keyword(self):
+        class Response:
+            status = 200
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *_args):
+                return False
+
+            @staticmethod
+            def read(_limit):
+                return b'{"code": 0}'
+
+        with (
+            patch.dict("os.environ", {
+                "ETF_FEISHU_WEBHOOK_URL": "https://example.invalid/hook",
+                "ETF_FEISHU_KEYWORD": "ZoroTreeking",
+            }),
+            patch("guardian.urllib.request.urlopen", return_value=Response()) as urlopen,
+        ):
+            self.assertTrue(_notify_feishu("ETF Guardian test", "healthy"))
+        request = urlopen.call_args.args[0]
+        payload = json.loads(request.data.decode("utf-8"))
+        self.assertIn("ZoroTreeking", payload["content"]["text"])
 
 
 if __name__ == "__main__":

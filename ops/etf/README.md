@@ -37,8 +37,9 @@ arbitrary command. `flock` prevents concurrent guardians. Every detection,
 incident, and repair is persisted in `/var/lib/zoro-etf-ops/state.db`.
 
 ServerChan uses the existing `/opt/wind-recap/.env`. Feishu can be enabled by
-adding `ETF_FEISHU_WEBHOOK_URL` to `/opt/zoro-etf-ops/.env`; no secret belongs
-in this repository.
+adding `ETF_FEISHU_WEBHOOK_URL` and, when the bot requires it,
+`ETF_FEISHU_KEYWORD` to `/opt/zoro-etf-ops/.env`; no secret belongs in this
+repository. The default keyword is `ZoroTreeking`.
 
 ## Verification
 

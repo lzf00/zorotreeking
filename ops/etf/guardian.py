@@ -70,7 +70,11 @@ def _notify_feishu(title: str, body: str) -> bool:
     endpoint = os.getenv("ETF_FEISHU_WEBHOOK_URL", "").strip()
     if not endpoint:
         return False
-    payload = json.dumps({"msg_type": "text", "content": {"text": f"{title}\n{body}"}}, ensure_ascii=False).encode("utf-8")
+    keyword = os.getenv("ETF_FEISHU_KEYWORD", "ZoroTreeking").strip()
+    message = f"{title}\n{body}"
+    if keyword and keyword not in message:
+        message = f"{keyword} | {message}"
+    payload = json.dumps({"msg_type": "text", "content": {"text": message}}, ensure_ascii=False).encode("utf-8")
     request = urllib.request.Request(endpoint, data=payload, method="POST", headers={"Content-Type": "application/json", "User-Agent": "ZoroETFGuardian/1.0"})
     with urllib.request.urlopen(request, timeout=15) as response:
         result = json.loads(response.read(200_000).decode("utf-8"))
