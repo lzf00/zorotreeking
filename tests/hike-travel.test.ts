@@ -69,6 +69,8 @@ test("the complete Ali roadbook is embedded directly in the hike landing page", 
   assert.match(map, /PUBLIC_AMAP_JS_KEY/);
   assert.match(map, /PUBLIC_AMAP_SECURITY_CODE/);
   assert.match(map, /data-map-provider/);
+  assert.match(map, /securitypolicyviolation/);
+  assert.match(map, /高德地图 Web Worker 被 CSP 阻止/);
   assert.match(map, /aliRoutedDayGeometry/);
   assert.match(map, /公路走向与编号/);
   assert.match(map, /control\.scale/);
@@ -84,6 +86,8 @@ test("AMap integration uses encrypted deployment secrets and a tested coordinate
   assert.match(workflow, /https:\/\/webapi\.amap\.com/);
   assert.match(workflow, /https:\/\/restapi\.amap\.com/);
   assert.match(workflow, /https:\/\/jsapi-service\.amap\.com/);
+  assert.match(workflow, /worker-src/);
+  assert.match(workflow, /blob:/);
   assert.match(workflow, /https:\/\/\*\.amap\.com/);
   assert.match(workflow, /AMap CSP allowlist missing from production response/);
   assert.doesNotMatch(workflow, /\b[0-9a-f]{32}\b/i, "workflow must not contain a literal AMap credential");

@@ -25,6 +25,7 @@ add_header Permissions-Policy "geolocation=(), microphone=(), camera=(), payment
 add_header Content-Security-Policy "
   default-src 'self';
   script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://cdn.jsdelivr.net https://giscus.app https://webapi.amap.com https://restapi.amap.com https://jsapi-service.amap.com;
+  worker-src 'self' blob:;
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net;
   font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net data:;
   img-src 'self' data: https: blob:;
@@ -58,4 +59,4 @@ curl -I https://www.zorotreeking.online | grep -iE "strict-transport|x-frame|x-c
 1. **HSTS 是单向票**：一旦浏览器记住了就 1 年都强制 HTTPS。换证书 / 临时撤回 HTTPS 会让所有访客拿到证书错误打不开站。所以 `preload` 配上就别再撤。
 2. **CSP 试错**：上线后看 DevTools → Console，被拦的 inline script / 第三方域名会报错。遇到了把对应域名 / hash 加进 CSP allowlist。
 3. **Decap CMS 后台**（`/admin/`）走 cloudflare worker，CSP frame-ancestors 不影响。
-4. **高德地图**：`script-src` 只放行官方 SDK、JSONP 和插件主机；地图运行时请求只放行高德与 Autonavi 子域。部署流水线会幂等核对这些来源并在 `nginx -t` 失败时恢复备份。
+4. **高德地图**：`script-src` 只放行官方 SDK、JSONP 和插件主机；`worker-src` 只允许同源与高德矢量底图所需的 `blob:` Worker；地图运行时请求只放行高德与 Autonavi 子域。部署流水线会幂等核对这些来源并在 `nginx -t` 失败时恢复备份。

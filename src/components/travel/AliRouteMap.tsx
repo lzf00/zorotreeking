@@ -207,11 +207,30 @@ async function renderAmap(
     showLabel: true,
     mapStyle: "amap://styles/normal",
   });
+  let stopReadinessCheck = () => {};
   const mapReady = new Promise<void>((resolve, reject) => {
-    const timeout = window.setTimeout(() => reject(new Error("高德地图底图渲染超时")), 10_000);
-    map.on("complete", () => {
+    let settled = false;
+    const finish = (error?: Error) => {
+      if (settled) return;
+      settled = true;
+      stopReadinessCheck();
+      if (error) reject(error);
+      else resolve();
+    };
+    const handleCspViolation = (event: SecurityPolicyViolationEvent) => {
+      const directive = event.effectiveDirective || event.violatedDirective;
+      if (directive === "worker-src" && event.blockedURI === "blob") {
+        finish(new Error("高德地图 Web Worker 被 CSP 阻止"));
+      }
+    };
+    const timeout = window.setTimeout(() => finish(new Error("高德地图底图渲染超时")), 10_000);
+    stopReadinessCheck = () => {
       window.clearTimeout(timeout);
-      resolve();
+      document.removeEventListener("securitypolicyviolation", handleCspViolation);
+    };
+    document.addEventListener("securitypolicyviolation", handleCspViolation);
+    map.on("complete", () => {
+      finish();
     });
   });
 
@@ -311,6 +330,7 @@ async function renderAmap(
   try {
     await mapReady;
   } catch (error) {
+    stopReadinessCheck();
     layerGroups.current = {};
     map.destroy();
     throw error;

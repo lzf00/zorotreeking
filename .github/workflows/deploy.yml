@@ -183,11 +183,17 @@ jobs:
           path = Path(sys.argv[1])
           source = path.read_text(encoding="utf-8")
 
-          def allow(directive: str, origins: list[str], text: str) -> str:
+          def allow(directive: str, origins: list[str], text: str, create_after=None) -> str:
               pattern = re.compile(rf"({re.escape(directive)}\s+)([^;]*)(;)")
               match = pattern.search(text)
               if not match:
-                  raise SystemExit(f"missing CSP directive: {directive}")
+                  if not create_after:
+                      raise SystemExit(f"missing CSP directive: {directive}")
+                  anchor = re.compile(rf"({re.escape(create_after)}\s+[^;]*;)").search(text)
+                  if not anchor:
+                      raise SystemExit(f"missing CSP anchor directive: {create_after}")
+                  addition = f" {directive} {' '.join(origins)};"
+                  return text[:anchor.end()] + addition + text[anchor.end():]
               values = match.group(2).split()
               for origin in origins:
                   if origin not in values:
@@ -199,6 +205,7 @@ jobs:
               "https://restapi.amap.com",
               "https://jsapi-service.amap.com",
           ], source)
+          source = allow("worker-src", ["'self'", "blob:"], source, create_after="script-src")
           source = allow("connect-src", ["https://*.amap.com", "https://*.autonavi.com"], source)
           path.write_text(source, encoding="utf-8")
           PY
@@ -226,6 +233,7 @@ jobs:
           printf '%s' "$csp" | grep -q 'https://webapi.amap.com'
           printf '%s' "$csp" | grep -q 'https://restapi.amap.com'
           printf '%s' "$csp" | grep -q 'https://jsapi-service.amap.com'
+          printf '%s' "$csp" | grep -q "worker-src 'self' blob:"
           printf '%s' "$csp" | grep -q 'https://\*.amap.com'
           echo "✓ 公网 CSP 已允许高德 SDK 与运行时请求"
 
@@ -297,6 +305,7 @@ jobs:
                       "https://restapi.amap.com",
                       "https://jsapi-service.amap.com",
                       "https://*.amap.com",
+                      "worker-src 'self' blob:",
                   )
                   if not all(origin in csp for origin in required_amap_origins):
                       raise ValueError("AMap CSP allowlist missing from production response")
