@@ -1,5 +1,6 @@
 ---
 import { readFileSync } from "node:fs";
+import AliRouteOverview from "./AliRouteOverview.astro";
 
 const source = readFileSync(
   new URL("../../../public/hike/travel/ali-grand-loop-2026/index.html", import.meta.url),
@@ -16,8 +17,16 @@ const sourceStyle = extract(/<style>([\s\S]*?)<\/style>/, "styles");
 const guideHeader = extract(/(<header class="hero"[\s\S]*?<\/header>)/, "hero")
   .replace('href="/hike"', 'href="#travel-guide-ali"')
   .replace("← ZoroTreeking · 徒步旅行", "ZoroTreeking · 本期旅行攻略");
-const guideNav = extract(/(<nav class="nav"[\s\S]*?<\/nav>)/, "navigation");
-const guideMain = extract(/<main>([\s\S]*?)<\/main>/, "content");
+const guideNav = extract(/(<nav class="nav"[\s\S]*?<\/nav>)/, "navigation")
+  .replace('<a href="#itinerary">逐日行程</a>', '<a href="#route-atlas">交互地图</a><a href="#itinerary">逐日行程</a>');
+const guideMain = extract(/<main>([\s\S]*?)<\/main>/, "content")
+  .replace(/\s*<div class="map-panel reveal">[\s\S]*?<div class="map-note">[\s\S]*?<\/div>\s*<\/div>/, "");
+const guideMainSplit = guideMain.match(/([\s\S]*?<section id="overview"[\s\S]*?<\/section>)([\s\S]*)/);
+if (!guideMainSplit?.[1] || !guideMainSplit[2]) {
+  throw new Error("Ali travel guide is missing the overview split point");
+}
+const guideOverview = guideMainSplit[1];
+const guideRemainder = guideMainSplit[2];
 const guideScript = extract(/<script>([\s\S]*?)<\/script>/, "enhancements");
 
 // The supplied guide is also kept as a standalone fallback. At build time we
@@ -51,7 +60,9 @@ const scopedStyle = `
   <Fragment set:html={guideHeader} />
   <Fragment set:html={guideNav} />
   <div class="guide-content">
-    <Fragment set:html={guideMain} />
+    <Fragment set:html={guideOverview} />
+    <AliRouteOverview />
+    <Fragment set:html={guideRemainder} />
   </div>
   <aside class="guide-endnote">
     <div class="wrap">

@@ -1,0 +1,496 @@
+---
+import AliRouteMap from "./AliRouteMap";
+import {
+  aliRouteDays,
+  aliRoutePointById,
+  aliRoutePoints,
+  type AliRoutePointKind,
+} from "../../data/ali-route";
+
+const mappedPointCount = aliRoutePoints.length;
+const attractionCount = aliRoutePoints.filter((point) =>
+  point.kind === "attraction" || point.kind === "viewpoint"
+).length;
+const overnightCount = aliRoutePoints.filter((point) => point.kind === "overnight").length;
+const approximateCount = aliRoutePoints.filter((point) => point.coordinateNote).length;
+
+const markerKinds: { kind: AliRoutePointKind; label: string }[] = [
+  { kind: "airport", label: "机场" },
+  { kind: "overnight", label: "住宿城市" },
+  { kind: "city", label: "途经城市" },
+  { kind: "attraction", label: "景点" },
+  { kind: "viewpoint", label: "观景点" },
+  { kind: "supply", label: "补给点" },
+];
+---
+
+<section id="route-atlas" class="ali-route-atlas">
+  <div class="wrap">
+    <div class="ali-route-atlas__head reveal">
+      <div>
+        <div class="eyebrow">01A / Route Atlas</div>
+        <div class="rule"></div>
+      </div>
+      <div>
+        <h2>把每一天，落到真实地理坐标上。</h2>
+        <p>这张可缩放底图把机场、住宿城市、途经县城、景点、观景位和补给点放在同一条时间线上。点击任何标记，可查看对应日期、参考海拔、节点作用和坐标说明。</p>
+      </div>
+    </div>
+
+    <div class="ali-route-atlas__metrics reveal" aria-label="路线地图统计">
+      <div><strong>13</strong><span>逐日路线</span></div>
+      <div><strong>{mappedPointCount}</strong><span>地图节点</span></div>
+      <div><strong>{attractionCount}</strong><span>景点与观景位</span></div>
+      <div><strong>{overnightCount}</strong><span>住宿城市</span></div>
+    </div>
+
+    <div class="ali-route-atlas__map-card reveal">
+      <div class="ali-route-atlas__map-topline">
+        <div>
+          <span class="ali-route-atlas__live-dot"></span>
+          OpenStreetMap 真实底图
+        </div>
+        <span>WGS84 · 规划级坐标 · 非实时导航</span>
+      </div>
+      <AliRouteMap client:visible points={aliRoutePoints} days={aliRouteDays} />
+      <div class="ali-route-atlas__legend" aria-label="地图图例">
+        {markerKinds.map(({ kind, label }) => (
+          <span><i class={`ali-route-marker ali-route-marker--${kind}`}></i>{label}</span>
+        ))}
+        <span class="ali-route-atlas__legend-note">红色虚线表示节点顺序，不代表道路精确走线</span>
+      </div>
+    </div>
+
+    <aside class="ali-route-atlas__notice reveal">
+      <strong>读图边界</strong>
+      <p>地图标出“计划经过什么”，不承诺“当时一定能走”。其中 {approximateCount} 个湖区、峰体或观景区域使用代表性规划点，并在弹窗中单独注明。出发前 24 小时仍须核对交警通告、景区开放、天气、边境通行证和车辆导航；不得把峰体坐标、湖心坐标或虚线直接设为驾车终点。</p>
+    </aside>
+
+    <div class="ali-route-atlas__subhead reveal">
+      <div>
+        <div class="eyebrow">DAY-BY-DAY FIELD INDEX</div>
+        <h3>逐日道路、节点、补给与退出条件</h3>
+      </div>
+      <p>公里数与车时是行前估算，未计入临时管制、检查站、排队、拍摄和恶劣天气。</p>
+    </div>
+
+    <div class="ali-route-atlas__days">
+      {aliRouteDays.map((day) => {
+        const points = day.pointIds
+          .map((id) => aliRoutePointById.get(id))
+          .filter((point) => point != null);
+        const uniquePoints = points.filter((point, index) => points.findIndex((item) => item.id === point.id) === index);
+        return (
+          <article class="ali-route-day reveal">
+            <div class="ali-route-day__index">
+              <b>D{String(day.day).padStart(2, "0")}</b>
+              <span>{day.date}</span>
+            </div>
+            <div class="ali-route-day__body">
+              <header>
+                <div>
+                  <h4>{day.title}</h4>
+                  <p>{day.distance} · {day.driving}</p>
+                </div>
+                <span>{day.roads}</span>
+              </header>
+
+              <ol class="ali-route-day__nodes" aria-label={`第 ${day.day} 天途经节点`}>
+                {uniquePoints.map((point, index) => (
+                  <li>
+                    <i class={`ali-route-marker ali-route-marker--${point.kind}`}></i>
+                    <span>{point.shortName}</span>
+                    {index < uniquePoints.length - 1 && <b aria-hidden="true">→</b>}
+                  </li>
+                ))}
+              </ol>
+
+              <div class="ali-route-day__grid">
+                <div><b>沿途重点</b><p>{day.highlights.join(" · ")}</p></div>
+                <div><b>补给计划</b><p>{day.supply}</p></div>
+                <div><b>住宿落点</b><p>{day.overnight}</p></div>
+                <div class="ali-route-day__risk"><b>主要风险</b><p>{day.risk}</p></div>
+              </div>
+
+              <div class="ali-route-day__decision">
+                <span>当天退出条件</span>
+                <p>{day.decision}</p>
+              </div>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+
+    <div class="ali-route-atlas__sources reveal">
+      <span>规划资料</span>
+      <a href="https://wlt.xizang.gov.cn/xwzx_69/wlyw/wldt/202507/t20250725_491772.html" target="_blank" rel="noopener noreferrer">西藏文旅厅 · 阿里线路与沿途景观 ↗</a>
+      <a href="https://wlt.xizang.gov.cn/ztzl_69/wenlv/202512/t20251202_512215.html" target="_blank" rel="noopener noreferrer">西藏文旅厅 · 珠峰地标与开放区域 ↗</a>
+      <a href="https://s.nia.gov.cn/mps/bszy/dzbjtxz/blzy/202604/t20260414_1001.html" target="_blank" rel="noopener noreferrer">国家移民管理局 · 电子边境通行证 ↗</a>
+      <a href="https://www.peakwiki.org/peak.php?pid=1354" target="_blank" rel="noopener noreferrer">普拉喜琼峰体坐标资料 ↗</a>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .ali-route-atlas {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background:
+      radial-gradient(circle at 92% 4%, rgba(23, 109, 115, .12), transparent 25rem),
+      linear-gradient(180deg, #e5ddca 0%, var(--paper) 26%, #ebe4d3 100%);
+  }
+  .ali-route-atlas__head {
+    display: grid;
+    grid-template-columns: 30% 1fr;
+    gap: 7%;
+    align-items: start;
+  }
+  .ali-route-atlas__head h2 {
+    max-width: 780px;
+    margin: 0;
+  }
+  .ali-route-atlas__head p {
+    max-width: 760px;
+    margin: 18px 0 0;
+  }
+  .ali-route-atlas__metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin-top: 42px;
+    border: 1px solid rgba(23, 32, 29, .2);
+    background: rgba(240, 234, 220, .62);
+  }
+  .ali-route-atlas__metrics div {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 18px 22px;
+    border-right: 1px solid rgba(23, 32, 29, .16);
+  }
+  .ali-route-atlas__metrics div:last-child { border-right: 0; }
+  .ali-route-atlas__metrics strong {
+    color: var(--red);
+    font-family: var(--serif);
+    font-size: 2rem;
+    line-height: 1;
+  }
+  .ali-route-atlas__metrics span {
+    color: var(--muted);
+    font-size: .76rem;
+    letter-spacing: .06em;
+  }
+  .ali-route-atlas__map-card {
+    margin-top: 22px;
+    overflow: hidden;
+    border: 1px solid rgba(23, 32, 29, .24);
+    background: #d8d0bd;
+    box-shadow: 0 28px 80px rgba(39, 34, 24, .12);
+  }
+  .ali-route-atlas__map-topline {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 14px 18px;
+    color: #e8e4d6;
+    background: #17201d;
+    font-family: var(--mono);
+    font-size: .7rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  .ali-route-atlas__map-topline div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .ali-route-atlas__live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #70c1b3;
+    box-shadow: 0 0 0 4px rgba(112, 193, 179, .15);
+  }
+  .ali-route-map-shell { position: relative; }
+  .ali-route-map {
+    width: 100%;
+    height: min(64vw, 650px);
+    min-height: 520px;
+    background: #cfc7b4;
+  }
+  .ali-route-map-help {
+    position: absolute;
+    z-index: 500;
+    right: 12px;
+    bottom: 12px;
+    margin: 0;
+    padding: 8px 10px;
+    color: #25302c;
+    background: rgba(244, 239, 227, .92);
+    border: 1px solid rgba(23, 32, 29, .15);
+    font-size: .7rem;
+    backdrop-filter: blur(8px);
+  }
+  .ali-route-atlas__legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 18px;
+    padding: 14px 18px;
+    color: #313a36;
+    background: #ede7d9;
+    font-size: .74rem;
+  }
+  .ali-route-atlas__legend > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .ali-route-atlas__legend-note {
+    margin-left: auto;
+    color: #6d706b;
+  }
+  .ali-route-div-icon {
+    border: 0;
+    background: transparent;
+  }
+  .ali-route-marker {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    flex: 0 0 auto;
+    border: 2px solid #f4efe3;
+    border-radius: 50%;
+    background: #17201d;
+    box-shadow: 0 1px 5px rgba(23, 32, 29, .28);
+  }
+  .ali-route-div-icon .ali-route-marker {
+    width: 22px;
+    height: 22px;
+    border-width: 3px;
+    box-shadow: 0 2px 8px rgba(23, 32, 29, .38);
+  }
+  .ali-route-marker--airport { background: #2b7183; }
+  .ali-route-marker--overnight { background: #17201d; }
+  .ali-route-marker--city { background: #5d685e; }
+  .ali-route-marker--attraction { background: #b64934; }
+  .ali-route-marker--viewpoint { background: #c58927; }
+  .ali-route-marker--supply { background: #367a60; }
+  .ali-route-place-label,
+  .ali-route-line-label {
+    border: 0 !important;
+    border-radius: 2px !important;
+    color: #17201d !important;
+    background: rgba(244, 239, 227, .94) !important;
+    box-shadow: 0 2px 12px rgba(23, 32, 29, .18) !important;
+    font-family: var(--sans) !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+  }
+  .ali-route-place-label::before,
+  .ali-route-line-label::before { display: none; }
+  .ali-route-popup {
+    color: #27302d;
+    font-family: var(--sans);
+    line-height: 1.55;
+  }
+  .ali-route-popup__eyebrow {
+    margin-bottom: 4px;
+    color: #a64130;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  .ali-route-popup h3 {
+    margin: 0 0 8px;
+    color: #17201d;
+    font-family: var(--serif);
+    font-size: 20px;
+  }
+  .ali-route-popup p { margin: 6px 0; font-size: 12px; }
+  .ali-route-popup a {
+    display: inline-block;
+    margin-top: 7px;
+    color: #176d73;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .ali-route-atlas__notice {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 24px;
+    margin-top: 20px;
+    padding: 20px 22px;
+    border-left: 4px solid var(--red);
+    background: rgba(184, 73, 52, .08);
+  }
+  .ali-route-atlas__notice strong {
+    color: var(--red);
+    font-family: var(--mono);
+    font-size: .74rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  .ali-route-atlas__notice p { margin: 0; font-size: .85rem; }
+  .ali-route-atlas__subhead {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 40px;
+    margin: 82px 0 26px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+  }
+  .ali-route-atlas__subhead h3 {
+    margin: 7px 0 0;
+    font-family: var(--serif);
+    font-size: clamp(1.7rem, 3.4vw, 2.7rem);
+  }
+  .ali-route-atlas__subhead > p {
+    max-width: 430px;
+    margin: 0;
+    color: var(--muted);
+    font-size: .82rem;
+  }
+  .ali-route-atlas__days {
+    display: grid;
+    gap: 14px;
+  }
+  .ali-route-day {
+    display: grid;
+    grid-template-columns: 92px 1fr;
+    border: 1px solid rgba(23, 32, 29, .2);
+    background: rgba(244, 239, 227, .72);
+  }
+  .ali-route-day__index {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 25px 12px;
+    color: #eee7d8;
+    background: #1d2c28;
+  }
+  .ali-route-day__index b {
+    font-family: var(--mono);
+    font-size: 1.25rem;
+    letter-spacing: .04em;
+  }
+  .ali-route-day__index span { margin-top: 3px; color: #b3b9b4; font-size: .7rem; }
+  .ali-route-day__body { padding: 22px 24px 24px; min-width: 0; }
+  .ali-route-day__body header {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .ali-route-day__body h4 {
+    margin: 0;
+    color: #17201d;
+    font-family: var(--serif);
+    font-size: 1.4rem;
+  }
+  .ali-route-day__body header p {
+    margin: 5px 0 0;
+    color: var(--red);
+    font-family: var(--mono);
+    font-size: .72rem;
+    font-weight: 700;
+  }
+  .ali-route-day__body header > span {
+    padding: 5px 8px;
+    border: 1px solid rgba(23, 32, 29, .17);
+    color: #5f655f;
+    font-family: var(--mono);
+    font-size: .66rem;
+    text-align: right;
+  }
+  .ali-route-day__nodes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px 9px;
+    margin: 18px 0 0;
+    padding: 13px 15px;
+    background: rgba(216, 208, 189, .55);
+    list-style: none;
+  }
+  .ali-route-day__nodes li { display: inline-flex; align-items: center; gap: 6px; font-size: .76rem; }
+  .ali-route-day__nodes b { margin-left: 3px; color: #b2832f; font-weight: 400; }
+  .ali-route-day__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 17px;
+    border-top: 1px solid rgba(23, 32, 29, .13);
+    border-left: 1px solid rgba(23, 32, 29, .13);
+  }
+  .ali-route-day__grid > div {
+    padding: 14px 16px;
+    border-right: 1px solid rgba(23, 32, 29, .13);
+    border-bottom: 1px solid rgba(23, 32, 29, .13);
+  }
+  .ali-route-day__grid b,
+  .ali-route-day__decision span {
+    color: #176d73;
+    font-family: var(--mono);
+    font-size: .67rem;
+    letter-spacing: .07em;
+  }
+  .ali-route-day__grid p,
+  .ali-route-day__decision p { margin: 5px 0 0; font-size: .78rem; line-height: 1.65; }
+  .ali-route-day__grid .ali-route-day__risk b { color: var(--red); }
+  .ali-route-day__decision {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 16px;
+    margin-top: 12px;
+    padding: 12px 15px;
+    color: #e7e2d5;
+    background: #273832;
+  }
+  .ali-route-day__decision span { color: #e0ac4d; }
+  .ali-route-day__decision p { margin: 0; }
+  .ali-route-atlas__sources {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px 20px;
+    margin-top: 34px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+    font-size: .72rem;
+  }
+  .ali-route-atlas__sources span {
+    color: var(--muted);
+    font-family: var(--mono);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  .ali-route-atlas__sources a { color: #176d73; text-decoration: underline; text-underline-offset: 3px; }
+
+  @media (max-width: 760px) {
+    .ali-route-atlas__head { grid-template-columns: 1fr; gap: 30px; }
+    .ali-route-atlas__metrics { grid-template-columns: repeat(2, 1fr); }
+    .ali-route-atlas__metrics div:nth-child(2) { border-right: 0; }
+    .ali-route-atlas__metrics div:nth-child(-n+2) { border-bottom: 1px solid rgba(23, 32, 29, .16); }
+    .ali-route-atlas__map-topline { align-items: flex-start; flex-direction: column; }
+    .ali-route-map { height: 560px; min-height: 560px; }
+    .ali-route-map-help { left: 10px; right: 10px; text-align: center; }
+    .ali-route-atlas__legend-note { width: 100%; margin-left: 0; }
+    .ali-route-atlas__notice { grid-template-columns: 1fr; gap: 8px; }
+    .ali-route-atlas__subhead { align-items: start; flex-direction: column; gap: 14px; margin-top: 64px; }
+    .ali-route-day { grid-template-columns: 60px minmax(0, 1fr); }
+    .ali-route-day__index { padding: 22px 7px; }
+    .ali-route-day__index b { font-size: 1rem; }
+    .ali-route-day__body { padding: 18px 15px 18px; }
+    .ali-route-day__body header { flex-direction: column; gap: 10px; }
+    .ali-route-day__body header > span { text-align: left; }
+    .ali-route-day__grid { grid-template-columns: 1fr; }
+    .ali-route-day__decision { grid-template-columns: 1fr; gap: 5px; }
+  }
+
+  @media print {
+    .ali-route-map { min-height: 390px; height: 390px; }
+    .ali-route-map-help { display: none; }
+    .ali-route-day { break-inside: avoid; }
+  }
+</style>
