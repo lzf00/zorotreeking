@@ -86,6 +86,7 @@ test("AMap integration uses encrypted deployment secrets and a tested coordinate
   assert.match(workflow, /https:\/\/webapi\.amap\.com/);
   assert.match(workflow, /https:\/\/restapi\.amap\.com/);
   assert.match(workflow, /https:\/\/jsapi-service\.amap\.com/);
+  assert.match(workflow, /https:\/\/mapplugin\.amap\.com/);
   assert.match(workflow, /worker-src/);
   assert.match(workflow, /blob:/);
   assert.match(workflow, /https:\/\/\*\.amap\.com/);

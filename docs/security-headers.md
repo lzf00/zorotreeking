@@ -24,7 +24,7 @@ add_header Permissions-Policy "geolocation=(), microphone=(), camera=(), payment
 # 看哪些被拦了，逐步放开。下面的允许列表来自当前站实际使用：
 add_header Content-Security-Policy "
   default-src 'self';
-  script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://cdn.jsdelivr.net https://giscus.app https://webapi.amap.com https://restapi.amap.com https://jsapi-service.amap.com;
+  script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://cdn.jsdelivr.net https://giscus.app https://webapi.amap.com https://restapi.amap.com https://jsapi-service.amap.com https://mapplugin.amap.com;
   worker-src 'self' blob:;
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net;
   font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net data:;

@@ -204,6 +204,7 @@ jobs:
               "https://webapi.amap.com",
               "https://restapi.amap.com",
               "https://jsapi-service.amap.com",
+              "https://mapplugin.amap.com",
           ], source)
           source = allow("worker-src", ["'self'", "blob:"], source, create_after="script-src")
           source = allow("connect-src", ["https://*.amap.com", "https://*.autonavi.com"], source)
@@ -233,6 +234,7 @@ jobs:
           printf '%s' "$csp" | grep -q 'https://webapi.amap.com'
           printf '%s' "$csp" | grep -q 'https://restapi.amap.com'
           printf '%s' "$csp" | grep -q 'https://jsapi-service.amap.com'
+          printf '%s' "$csp" | grep -q 'https://mapplugin.amap.com'
           printf '%s' "$csp" | grep -q "worker-src 'self' blob:"
           printf '%s' "$csp" | grep -q 'https://\*.amap.com'
           echo "✓ 公网 CSP 已允许高德 SDK 与运行时请求"
@@ -304,6 +306,7 @@ jobs:
                       "https://webapi.amap.com",
                       "https://restapi.amap.com",
                       "https://jsapi-service.amap.com",
+                      "https://mapplugin.amap.com",
                       "https://*.amap.com",
                       "worker-src 'self' blob:",
                   )
