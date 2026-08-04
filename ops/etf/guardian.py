@@ -29,6 +29,9 @@ from etf_ops import (
 
 BJT = timezone(timedelta(hours=8))
 ALLOWED_SERVICES = {"ai-agent.service", "etf-three-factor.service"}
+DEFAULT_SNAPSHOT_RETRY_START = "19:30"
+DEFAULT_SNAPSHOT_FINAL_DEADLINE = "23:00"
+SNAPSHOT_RETRY_COOLDOWN_SECONDS = 1800
 
 
 def _request_json(url: str, *, method: str = "GET", token: str = "", timeout: int = 20) -> Dict[str, Any]:
@@ -127,6 +130,67 @@ def _combine_status(realtime: Mapping[str, Any], snapshot: Optional[Mapping[str,
     return "healthy"
 
 
+def _clock_minutes(value: str, default: str) -> tuple[int, str]:
+    candidate = (value or default).strip()
+    try:
+        hour_text, minute_text = candidate.split(":", 1)
+        hour, minute = int(hour_text), int(minute_text)
+        if not (0 <= hour <= 23 and 0 <= minute <= 59):
+            raise ValueError
+    except (TypeError, ValueError):
+        hour_text, minute_text = default.split(":", 1)
+        hour, minute = int(hour_text), int(minute_text)
+        candidate = default
+    return hour * 60 + minute, candidate
+
+
+def _snapshot_window() -> tuple[int, str, int, str]:
+    retry_minutes, retry_text = _clock_minutes(
+        os.getenv("ETF_SNAPSHOT_RETRY_START", DEFAULT_SNAPSHOT_RETRY_START),
+        DEFAULT_SNAPSHOT_RETRY_START,
+    )
+    deadline_minutes, deadline_text = _clock_minutes(
+        os.getenv("ETF_SNAPSHOT_FINAL_DEADLINE", DEFAULT_SNAPSHOT_FINAL_DEADLINE),
+        DEFAULT_SNAPSHOT_FINAL_DEADLINE,
+    )
+    if deadline_minutes <= retry_minutes:
+        retry_minutes, retry_text = _clock_minutes(DEFAULT_SNAPSHOT_RETRY_START, DEFAULT_SNAPSHOT_RETRY_START)
+        deadline_minutes, deadline_text = _clock_minutes(DEFAULT_SNAPSHOT_FINAL_DEADLINE, DEFAULT_SNAPSHOT_FINAL_DEADLINE)
+    return retry_minutes, retry_text, deadline_minutes, deadline_text
+
+
+def _add_issue(report: Dict[str, Any], *, code: str, message: str, severity: str, expected: Any, actual: Any) -> None:
+    if any(issue.get("code") == code for issue in report.get("issues", [])):
+        return
+    report.setdefault("issues", []).append({
+        "code": code,
+        "message": message,
+        "severity": severity,
+        "expected": expected,
+        "actual": actual,
+    })
+
+
+def _snapshot_reason(report: Optional[Mapping[str, Any]]) -> str:
+    if not report:
+        return "未检测到三因子快照"
+    metrics = report.get("metrics") or {}
+    expected = metrics.get("expected", 12)
+    shares = metrics.get("share_coverage", 0)
+    factors = metrics.get("factor_coverage", 0)
+    deadline = metrics.get("complete_deadline", DEFAULT_SNAPSHOT_FINAL_DEADLINE)
+    codes = {str(issue.get("code")) for issue in report.get("issues", [])}
+    if codes & {"share_source_pending", "snapshot_date_pending"}:
+        return f"份额数据源尚未发布（份额 {shares}/{expected}，份额因子 {factors}/{expected}），系统将定时重试，最终截止 {deadline}"
+    issue_text = ", ".join(sorted(code for code in codes if code)) or "无明确问题码"
+    return f"问题: {issue_text}；份额 {shares}/{expected}，份额因子 {factors}/{expected}"
+
+
+def _process_exit_code(status: str, *, fail_on_unhealthy: bool) -> int:
+    """Keep business health separate from systemd process execution health."""
+    return 1 if fail_on_unhealthy and status == "unhealthy" else 0
+
+
 class Guardian:
     def __init__(self, args: argparse.Namespace):
         self.args = args
@@ -197,25 +261,109 @@ class Guardian:
                 report, _payload = self._check_realtime()
         return report
 
-    def _check_snapshot(self) -> Optional[Dict[str, Any]]:
+    def _check_snapshot(self, now: Optional[datetime] = None) -> Optional[Dict[str, Any]]:
         snapshot_path = Path(self.args.snapshot)
         snapshot = _load_json(snapshot_path)
         if snapshot is None:
             return None
-        bjt_now = datetime.now(BJT)
-        enforce_complete = bjt_now.weekday() < 5 and (bjt_now.hour, bjt_now.minute) >= (19, 40)
-        phase = "complete" if enforce_complete else "auto"
-        return validate_snapshot(snapshot, self.registry, phase=phase)
+        bjt_now = (now or datetime.now(BJT)).astimezone(BJT)
+        report = validate_snapshot(snapshot, self.registry, phase="auto")
+        metrics = report.setdefault("metrics", {})
+        retry_minutes, retry_text, deadline_minutes, deadline_text = _snapshot_window()
+        current_minutes = bjt_now.hour * 60 + bjt_now.minute
+        expected = int(metrics.get("expected") or self.registry["expected_count"])
+        coverage_complete = (
+            metrics.get("share_coverage") == expected
+            and metrics.get("factor_coverage") == expected
+        )
+        target_date = str(metrics.get("target_date") or "")
+        expected_date = bjt_now.date().isoformat()
+        current_snapshot = target_date == expected_date
+        metrics.update({
+            "availability_state": "complete" if coverage_complete and current_snapshot else "pre_release",
+            "expected_target_date": expected_date,
+            "retry_start": retry_text,
+            "complete_deadline": deadline_text,
+        })
+
+        # A complete current-day snapshot is judged on its actual quality at any
+        # time.  Formula/source-identity failures must never be hidden by the
+        # publication grace window.
+        if coverage_complete and current_snapshot:
+            return report
+        if bjt_now.weekday() >= 5:
+            metrics["availability_state"] = "not_required"
+            return report
+        existing_errors = [issue for issue in report.get("issues", []) if issue.get("severity") == "error"]
+        if existing_errors:
+            metrics["availability_state"] = "invalid"
+            return report
+
+        if current_minutes >= deadline_minutes:
+            report = validate_snapshot(snapshot, self.registry, phase="complete")
+            metrics = report.setdefault("metrics", {})
+            metrics.update({
+                "availability_state": "deadline_missed",
+                "expected_target_date": expected_date,
+                "retry_start": retry_text,
+                "complete_deadline": deadline_text,
+            })
+            if target_date != expected_date:
+                _add_issue(
+                    report,
+                    code="snapshot_date",
+                    message="Complete snapshot date is stale after the publication deadline",
+                    severity="error",
+                    expected=expected_date,
+                    actual=target_date,
+                )
+                report["status"] = "unhealthy"
+            return report
+
+        if current_minutes >= retry_minutes:
+            pending_code = "share_source_pending" if current_snapshot else "snapshot_date_pending"
+            _add_issue(
+                report,
+                code=pending_code,
+                message="Exchange share data has not published the current complete snapshot yet",
+                severity="warning",
+                expected={"target_date": expected_date, "shares": expected, "factors": expected},
+                actual={
+                    "target_date": target_date,
+                    "shares": metrics.get("share_coverage", 0),
+                    "factors": metrics.get("factor_coverage", 0),
+                },
+            )
+            report["status"] = "degraded"
+            metrics["availability_state"] = "pending_source"
+        return report
 
     def _repair_snapshot(self, report: Optional[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
-        if not report or report.get("status") != "unhealthy" or report.get("phase") != "complete":
+        if not report or report.get("status") == "healthy":
             return report
-        if not self.store.repair_allowed("rerun_three_factor", cooldown_seconds=1800, max_attempts=1):
+        issue_codes = {str(issue.get("code")) for issue in report.get("issues", [])}
+        retryable = (
+            report.get("status") == "unhealthy" and report.get("phase") == "complete"
+        ) or bool(issue_codes & {"share_source_pending", "snapshot_date_pending"})
+        if not retryable:
+            return report
+        runbook = "rerun_three_factor_final" if report.get("status") == "unhealthy" and report.get("phase") == "complete" else "rerun_three_factor"
+        if not self.store.repair_allowed(
+            runbook,
+            cooldown_seconds=SNAPSHOT_RETRY_COOLDOWN_SECONDS,
+            max_attempts=1,
+        ):
             return report
         ok, detail = _systemctl("start", "etf-three-factor.service", timeout=600)
-        self.store.record_repair("rerun_three_factor", "success" if ok else "failed", detail)
-        structured_log("repair", runbook="rerun_three_factor", result="success" if ok else "failed")
-        return self._check_snapshot() if ok else report
+        if not ok:
+            self.store.record_repair(runbook, "failed", detail)
+            structured_log("repair", runbook=runbook, result="failed")
+            return report
+        retry = self._check_snapshot()
+        result = "success" if retry and retry.get("status") == "healthy" else "pending" if retry and retry.get("status") == "degraded" else "failed"
+        self.store.record_repair(runbook, result, json.dumps((retry or {}).get("metrics", {}), ensure_ascii=False))
+        structured_log("repair", runbook=runbook, result=result)
+        return retry or report
 
     def run(self) -> Dict[str, Any]:
         started = time.monotonic()
@@ -244,10 +392,21 @@ class Guardian:
             },
         }
         atomic_write_json(self.args.status, status)
+        delivery: Optional[Dict[str, bool]] = None
         if overall == "unhealthy" and previous != "unhealthy":
-            notify("🚨 ETF Guardian 告警", f"状态: {overall}\n实时: {realtime.get('status')}\n三因子: {(snapshot or {}).get('status', 'not_checked')}")
+            delivery = notify(
+                "🚨 ETF Guardian 告警",
+                f"状态: {overall}\n实时: {realtime.get('status')}\n三因子: {(snapshot or {}).get('status', 'not_checked')}\n原因: {_snapshot_reason(snapshot)}",
+            )
+        elif overall == "degraded" and previous != "degraded":
+            delivery = notify(
+                "🟡 ETF Guardian 等待份额数据",
+                f"状态: degraded（非故障）\n实时: {realtime.get('status')}\n三因子: 等待发布\n原因: {_snapshot_reason(snapshot)}",
+            )
         elif overall == "healthy" and previous in {"degraded", "unhealthy"}:
-            notify("✅ ETF Guardian 已恢复", f"上一状态: {previous}\n当前状态: healthy")
+            delivery = notify("✅ ETF Guardian 已恢复", f"上一状态: {previous}\n当前状态: healthy")
+        if delivery is not None:
+            structured_log("notification", previous=previous, status=overall, channels=delivery)
         structured_log("guardian_complete", status=overall, duration_ms=status["duration_ms"], repair=self.args.repair)
         return status
 
@@ -262,6 +421,7 @@ def main() -> int:
     parser.add_argument("--db", default=os.getenv("ETF_STATE_DB", "/var/lib/zoro-etf-ops/state.db"))
     parser.add_argument("--lock", default=os.getenv("ETF_GUARDIAN_LOCK", "/run/lock/zoro-etf-guardian.lock"))
     parser.add_argument("--repair", action="store_true")
+    parser.add_argument("--fail-on-unhealthy", action="store_true", help="Return exit 1 for unhealthy business state (manual/CI only)")
     args = parser.parse_args()
     lock_path = Path(args.lock)
     lock_path.parent.mkdir(parents=True, exist_ok=True)
@@ -272,7 +432,7 @@ def main() -> int:
             structured_log("guardian_skipped", reason="already_running")
             return 0
         status = Guardian(args).run()
-    return 1 if status["status"] == "unhealthy" else 0
+    return _process_exit_code(status["status"], fail_on_unhealthy=args.fail_on_unhealthy)
 
 
 if __name__ == "__main__":

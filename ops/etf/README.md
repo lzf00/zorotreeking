@@ -17,7 +17,9 @@ repair, and deployment rollback.
    `etf-three-factor-complete-latest.json` and the legacy last-known-good path.
 4. `guardian.py` checks the realtime API and analyzer workspace every two
    minutes. Its independent CSI 300 calendar check prevents Monday/holiday
-   fallback errors.
+   fallback errors. After the initial 19:30 collection, an unpublished exchange
+   share feed is reported as `degraded`/pending and retried at a bounded cadence;
+   it only becomes `unhealthy` after the configurable final deadline.
 5. FastAPI exposes a safe public summary at `/api/market/etf/health` and an
    authenticated history at `/api/admin/etf-ops`.
 
@@ -30,16 +32,29 @@ The guardian can only execute these allowlisted runbooks:
 | Data contract fails | Retry data fetch | 2 per 5 minutes |
 | Retry still fails | Reset only ETF market cache | 1 per 30 minutes |
 | API cannot be reached | Restart `ai-agent.service` | 1 per 30 minutes |
-| Complete snapshot is still invalid after 19:40 | Start `etf-three-factor.service` | 1 per 30 minutes |
+| Share source is pending after 19:30 | Start `etf-three-factor.service` | 1 per 30 minutes |
+| Complete snapshot is still invalid after final deadline | Final start of `etf-three-factor.service` | 1 per 30 minutes |
 
 It cannot stop services, restart Nginx, change configuration, or execute an
 arbitrary command. `flock` prevents concurrent guardians. Every detection,
 incident, and repair is persisted in `/var/lib/zoro-etf-ops/state.db`.
 
+The publication window defaults to `19:30`–`23:00` Beijing time and can be
+overridden with `ETF_SNAPSHOT_RETRY_START` and
+`ETF_SNAPSHOT_FINAL_DEADLINE` in `/opt/zoro-etf-ops/.env`. During this window,
+the public health endpoint remains available with `status=degraded` and an
+`availability_state=pending_source` metric. The Guardian process itself exits
+successfully after completing a business-health assessment; manual or CI checks
+can opt into a non-zero unhealthy exit with `--fail-on-unhealthy`.
+
 ServerChan uses the existing `/opt/wind-recap/.env`. Feishu can be enabled by
 adding `ETF_FEISHU_WEBHOOK_URL` and, when the bot requires it,
 `ETF_FEISHU_KEYWORD` to `/opt/zoro-etf-ops/.env`; no secret belongs in this
 repository. The default keyword is `ZoroTreeking`.
+State transitions send one message: yellow while waiting for the source, red
+only after the final deadline or for a genuine data-contract failure, and green
+after recovery. Messages include coverage and the specific issue instead of a
+bare `unhealthy` label.
 
 ## Verification
 
@@ -53,6 +68,7 @@ Production checks:
 
 ```bash
 systemctl status etf-guardian.timer ai-agent etf-three-factor.timer
+systemctl show etf-guardian.service -p Result -p ExecMainStatus
 curl -fsS https://www.zorotreeking.online/api/market/etf/health
 journalctl -u etf-guardian.service -n 50 --no-pager
 ```

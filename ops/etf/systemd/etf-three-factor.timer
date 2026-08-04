@@ -1,0 +1,11 @@
+[Unit]
+Description=ETF three-factor initial Mon-Fri 19:30 BJT collection
+
+[Timer]
+# BJT 19:30 = UTC 11:30. Guardian performs source-aware bounded retries.
+OnCalendar=Mon..Fri *-*-* 11:30:00 UTC
+Persistent=false
+Unit=etf-three-factor.service
+
+[Install]
+WantedBy=timers.target
