@@ -47,8 +47,8 @@ the public health endpoint remains available with `status=degraded` and an
 successfully after completing a business-health assessment; manual or CI checks
 can opt into a non-zero unhealthy exit with `--fail-on-unhealthy`.
 
-ServerChan uses the existing `/opt/wind-recap/.env`. Feishu can be enabled by
-adding `ETF_FEISHU_WEBHOOK_URL` and, when the bot requires it,
+ETF Guardian notifications are Feishu-only. Enable them by adding
+`ETF_FEISHU_WEBHOOK_URL` and, when the bot requires it,
 `ETF_FEISHU_KEYWORD` to `/opt/zoro-etf-ops/.env`; no secret belongs in this
 repository. The default keyword is `ZoroTreeking`.
 State transitions send one message: yellow while waiting for the source, red

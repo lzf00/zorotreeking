@@ -10,7 +10,7 @@ from unittest.mock import patch
 OPS = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(OPS))
 
-from guardian import BJT, Guardian, _notify_feishu, _process_exit_code, _snapshot_reason, _systemctl
+from guardian import BJT, Guardian, _notify_feishu, _process_exit_code, _snapshot_reason, _systemctl, notify
 
 
 REGISTRY_PATH = Path(__file__).resolve().parents[3] / "src" / "data" / "etf-registry.json"
@@ -167,10 +167,12 @@ class GuardianRepairTests(unittest.TestCase):
             with (
                 patch.object(guardian, "_check_realtime", return_value=(realtime, {})),
                 patch.object(guardian, "_check_snapshot", return_value=snapshot),
-                patch("guardian.notify", return_value={"serverchan": False, "feishu": True}) as notify,
+                patch("guardian.notify", return_value={"feishu": True}) as notify,
             ):
                 result = guardian.run()
             self.assertEqual(result["status"], "degraded")
+            self.assertEqual(result["notification_policy"], "feishu_only")
+            self.assertEqual(result["notification_channels"], {"feishu_configured": False})
             title, body = notify.call_args.args
             self.assertIn("等待份额", title)
             self.assertIn("份额数据源尚未发布", body)
@@ -206,6 +208,12 @@ class GuardianRepairTests(unittest.TestCase):
         request = urlopen.call_args.args[0]
         payload = json.loads(request.data.decode("utf-8"))
         self.assertIn("ZoroTreeking", payload["content"]["text"])
+
+    def test_notification_route_is_feishu_only(self):
+        with patch("guardian._notify_feishu", return_value=True) as feishu:
+            result = notify("ETF Guardian test", "healthy")
+        self.assertEqual(result, {"feishu": True})
+        feishu.assert_called_once_with("ETF Guardian test", "healthy")
 
 
 if __name__ == "__main__":

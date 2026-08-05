@@ -11,7 +11,6 @@ import subprocess
 import sys
 import time
 import urllib.error
-import urllib.parse
 import urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -58,17 +57,6 @@ def _systemctl(action: str, service: str, timeout: int = 180) -> tuple[bool, str
     return result.returncode == 0, detail
 
 
-def _notify_serverchan(title: str, body: str) -> bool:
-    key = os.getenv("SERVERCHAN_KEY", "").strip()
-    if not key:
-        return False
-    endpoint = f"https://sctapi.ftqq.com/{urllib.parse.quote(key, safe='')}.send"
-    payload = urllib.parse.urlencode({"title": title[:64], "desp": body[:8000]}).encode()
-    request = urllib.request.Request(endpoint, data=payload, method="POST", headers={"User-Agent": "ZoroETFGuardian/1.0"})
-    with urllib.request.urlopen(request, timeout=15) as response:
-        return 200 <= response.status < 300
-
-
 def _notify_feishu(title: str, body: str) -> bool:
     endpoint = os.getenv("ETF_FEISHU_WEBHOOK_URL", "").strip()
     if not endpoint:
@@ -85,12 +73,11 @@ def _notify_feishu(title: str, body: str) -> bool:
 
 
 def notify(title: str, body: str) -> Dict[str, bool]:
-    results = {"serverchan": False, "feishu": False}
-    for name, sender in (("serverchan", _notify_serverchan), ("feishu", _notify_feishu)):
-        try:
-            results[name] = sender(title, body)
-        except Exception as exc:
-            structured_log("notification_failed", channel=name, error=str(exc)[:300])
+    results = {"feishu": False}
+    try:
+        results["feishu"] = _notify_feishu(title, body)
+    except Exception as exc:
+        structured_log("notification_failed", channel="feishu", error=str(exc)[:300])
     return results
 
 
@@ -387,9 +374,9 @@ class Guardian:
             "snapshot": snapshot,
             "run_ids": {"realtime": realtime_run, "snapshot": snapshot_run},
             "notification_channels": {
-                "serverchan_configured": bool(os.getenv("SERVERCHAN_KEY", "").strip()),
                 "feishu_configured": bool(os.getenv("ETF_FEISHU_WEBHOOK_URL", "").strip()),
             },
+            "notification_policy": "feishu_only",
         }
         atomic_write_json(self.args.status, status)
         delivery: Optional[Dict[str, bool]] = None
