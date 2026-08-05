@@ -1,0 +1,215 @@
+---
+lang: en
+translationKey: digest-2026-08-05
+title: "AI Daily Digest · 2026-08-05"
+description: "21 papers · multi-source aggregation + AI summaries"
+date: 2026-08-05
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's highlights in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading AI vendors are rolling out new products intensively: Anthropic releases Claude Opus 5, DeepMind launches Gemini Robotics ER2 and Lyria 3.5</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face and the academic community release new achievements across multiple fields, covering video editing, Agent benchmarks, local deployment, model distillation and other directions</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Diverse industry developments draw attention: OpenAI publishes third-party cybersecurity assessments, new progress is made in AI fact verification, open-source research tools and HarmonyOS 7</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 New Model Releases</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔬 Academic Advances</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏭 Industry Dynamics</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔒 Security Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚙️ Open-Source Tools</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2608.03974" target="_blank" rel="noopener noreferrer">JoyAI-Video-Edit: Real-Time Open-Ended Video Editing with Autoregressive Diffusion</a>
+
+*HF ★ 11 · Yicheng Xiao, Wenxun Dai, Xinran Qin… · [HF Mirror](https://huggingface.co/papers/2608.03974)*
+
+To address the requirements of low latency, source content fidelity and long-term temporal consistency for real-time video editing, this paper proposes JoyAI-Video-Edit, a 16B-parameter autoregressive diffusion framework integrating three technologies: chunked autoregressive adaptation, source-anchored distribution matching distillation, and long-sequence autoregressive distillation, solving the problems of training-inference bias, insufficient fidelity and temporal drift. Its performance outperforms existing streaming editing tools and matches that of offline systems. It supports end-to-end 720p/30fps editing on a single B200 GPU, and its code has been open-sourced.
+
+<FeedbackButtons slug="item:arxiv-2608.03974" client:visible />
+
+## <a href="https://arxiv.org/abs/2607.28956" target="_blank" rel="noopener noreferrer">MerchantBench: Benchmarking LLM Agents for Long-Term Coherence in E-Commerce Operations</a>
+
+*HF ★ 5 · Qiming Shi, Yulong Tao, Linbo Jin… · [HF Mirror](https://huggingface.co/papers/2607.28956)*
+
+Existing LLM Agent benchmarks mostly focus on short-cycle tasks and lack evaluation of long-term coherence. To address this gap, this paper proposes the MerchantBench benchmark: it builds a 365-day seller operation simulation environment based on nearly 100,000 pieces of real e-commerce product data, paired with 26 interactive tools, requiring Agents to make coherent cross-cycle decisions. Tests on 8 LLMs and two Agent frameworks show that the final net asset value of the optimal LLM configuration only reaches 27.3% of the average of human operators, indicating a significant gap.
+
+<FeedbackButtons slug="item:arxiv-2607.28956" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.03971" target="_blank" rel="noopener noreferrer">UniWorld-Design: From Pixel Generation to Layer-Native Design</a>
+
+*HF ★ 2 · Zongjian Li, Zhiyuan Yan, Chenxu Bai… · [HF Mirror](https://huggingface.co/papers/2608.03971)*
+
+This paper proposes the UniWorld-Design generation framework, which reconstructs image generation from flat pixel synthesis to structured creation centered on semantic RGBA layers, adapting to the layered operation logic of designers. The framework includes two core models: T2RGBA for generating RGBA materials from text, and I2L for outputting ordered editable semantic layers from input images + instructions, supporting intelligent editing across multiple scenarios. Benchmark tests show its indicators are far ahead of similar solutions, and the generated layers can be directly dragged and reused.
+
+<FeedbackButtons slug="item:arxiv-2608.03971" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.03316" target="_blank" rel="noopener noreferrer">Any-OPD: Heterogeneous On-Policy Distillation for Flow-Matching Models via Representation-Space Bridging</a>
+
+*HF ★ 2 · Siming Fu, Zheming Fu, Ruizhe He… · [HF Mirror](https://huggingface.co/papers/2608.03316)*
+
+Existing on-policy distillation for flow matching models requires full alignment of teacher-student architecture, latent space and time steps, which cannot be implemented in heterogeneous scenarios. This paper proposes Any-OPD, the first on-policy distillation framework adapted to any heterogeneous latent flow matching generator, which avoids the aforementioned constraints through model-agnostic visual representation alignment, noise level matching, and VAE recoding anchoring on the student side. Experiments distill the 12B parameter FLUX to the 2.5B SD3.5, the student's generation quality is greatly improved, and its performance matches the teacher while only being 1/5 of its size, far better than direct latent space regression solutions.
+
+<FeedbackButtons slug="item:arxiv-2608.03316" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.03509" target="_blank" rel="noopener noreferrer">SkillJack: Persistent Skill Backdoors in Self-Evolving Agents</a>
+
+*HF ★ 1 · Zonghao Ying, Xiangfan Wu, Huiyu Wu… · [HF Mirror](https://huggingface.co/papers/2608.03509)*
+
+Targeting the "experience to reusable skill" mechanism of self-evolving Agents, this paper proposes a new backdoor attack SkillJack: it hijacks the Agent's own learning process to implant malicious behavior into its skill library without tampering with the running context. This attack can hide malicious intent and take effect persistently, with 80% of attacks remaining effective after deleting the original poisoning records. Experiments show its minimum detection rate is only 11.4%, the highest attack success rate reaches 89.2%, and there is also a risk of false triggering, highlighting the necessity of traceability protection for the full life cycle of skills.
+
+<FeedbackButtons slug="item:arxiv-2608.03509" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2608.00019" target="_blank" rel="noopener noreferrer">Uncertainty-Aware Simulation-Based Inference for Operations Research with Large Language Models</a>
+
+*Liang Guo, Lin Shaochong, Shen Zuo-Jun Max…*
+
+When LLMs are applied to operations research tasks, the short-sightedness of autoregressive generation easily leads to subsequent errors in modeling and solving code. To address this problem, this paper proposes a training-free uncertainty-aware inference framework: it quantifies the downstream uncertainty of intermediate steps through short forward-looking simulation, and dynamically selects candidate steps with high probability of generating coherent models through importance resampling. Experiments outperform conventional baselines on three types of operations research benchmarks including NL4OPT, providing an efficient training-free new paradigm for reliable operations research modeling generation.
+
+<FeedbackButtons slug="item:arxiv-2608.00019" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.00106" target="_blank" rel="noopener noreferrer">Learning Compositional Meta-Routing for Agentic Workflows: An Executable Benchmark</a>
+
+*Natan Vidra, Alina Kapanova, Arun Kanhai…*
+
+Existing Agent workflow routing mostly focuses on isolated selection of tools and models, with obvious shortcomings. This paper releases an executable benchmark covering 504 tasks across multiple fields, and proposes a budget-aware meta-routing method that can combine heterogeneous operations from task text. The method achieves 100% success rate on the test set, 6.5 percentage points higher than static routing, with 43% lower cost, but its shortcoming in vocabulary generalization on the challenge set is prominent, providing a reproducible test bed for related research.
+
+<FeedbackButtons slug="item:arxiv-2608.00106" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.00107" target="_blank" rel="noopener noreferrer">MetaRoute-Bench: Evaluating Meta-Decision Policies for Agentic Workflow Routing</a>
+
+*Natan Vidra, Alina Kapanova, Arun Kanhai…*
+
+Previous evaluations of Agent workflow meta-decision making only assessed based on overall task accuracy, ignoring cost and latency. To address this, this paper launches the open-source evaluation benchmark MetaRoute-Bench, covering 180 tasks across three categories and 8 routing strategies. Offline tests show that the task-aware combined routing strategy has a 2.7 percentage point higher accuracy than the optimal static strategy, but its cost and latency increase by 4.7% and 6.4% respectively. The full set of evaluation tools has been open-sourced.
+
+<FeedbackButtons slug="item:arxiv-2608.00107" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/third-party-cyber-evaluations-involving-openai-models" target="_blank" rel="noopener noreferrer">Third-party cyber evaluations involving OpenAI models</a>
+
+*OpenAI*
+
+Recently, OpenAI issued an official statement on multiple recent third-party cybersecurity assessment incidents involving its LLMs, and simultaneously launched a new security protection system. The new system will focus on complementing risk control rules for all links of AI model testing and evaluation, strengthening the granularity of security audits, effectively avoiding the risk of models being illegally used for cyber attacks, and building a solid security barrier for the compliant implementation of LLMs.
+
+<FeedbackButtons slug="item:openai-blog-third-party-cyber-evaluations-involving-openai-models" client:visible />
+
+## <a href="https://openai.com/index/learn-teach-chatgpt-work-codex" target="_blank" rel="noopener noreferrer">New ways to learn and teach with ChatGPT Work and Codex</a>
+
+*OpenAI*
+
+This research focuses on the two LLM tools ChatGPT Work and Codex, exploring new educational plugins adapted to their ecosystem, which can cover three core user groups: K12 teachers, university educators, and students, supporting multiple scenarios such as teaching interaction, independent learning, academic research, and practical creation, providing a new tool path for the implementation of AI-assisted education for all school stages, and expanding the feasible direction of LLM implementation in education scenarios.
+
+<FeedbackButtons slug="item:openai-blog-learn-teach-chatgpt-work-codex" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 5</a>
+
+*Anthropic*
+
+The newly released Claude Opus 5 is a step-by-step iteration product of the high-end Opus LLM line of the Claude series for high-difficulty scenarios. Core optimizations cover two major dimensions: first, it greatly strengthens the underlying support capability for long-running Agents, adapting to the needs of Agents to perform complex tasks for a long time; second, it significantly improves the processing performance in code generation and professional work scenarios in various fields, which can better support the implementation of high-complexity professional tasks.
+
+<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+This is a public interaction project in the AI field, whose core initiative is to openly solicit the most concerned difficult questions about AI from the whole society. The project party promises that when answering relevant questions in the future, it will fully disclose the work logic, research process and judgment basis, and output answers in a completely transparent manner. This initiative not only meets the public's demand for AI information, but also improves the credibility of AI popularization.
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestration-and-multi-robot-collaboration/" target="_blank" rel="noopener noreferrer">Gemini Robotics ER 2: powering robotics with video understanding, task orchestration, and multi-robot collaboration</a>
+
+*Google DeepMind*
+
+The newly released Gemini Robotics ER 2 is an exclusive capability system for robotics scenarios, focusing on serving the implementation needs of real tasks, with three core technical modules upgraded: on-robot video understanding capability, task and tool orchestration and scheduling capability, and multi-robot collaboration mechanism. This system can support robots to reason independently and collaborate with multiple machines to complete complex real-world tasks, achieving a stepwise improvement in core capabilities related to robot applications.
+
+<FeedbackButtons slug="item:deepmind-gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestrati" client:visible />
+
+## <a href="https://deepmind.google/blog/were-launching-lyria-35-in-google-flow-music-with-advances-across-musicality-lyrics-vocals-and-creative-control/" target="_blank" rel="noopener noreferrer">We’re launching Lyria 3.5 in Google Flow Music, with advances across musicality, lyrics, vocals, and creative control</a>
+
+*Google DeepMind*
+
+Google recently officially launched the music generation model Lyria 3.5 on its Flow Music platform. This version has completed technical iterations for four core dimensions: musicality, lyric generation, vocal expressiveness, and user creative control. The professionalism and fidelity of generated music have been greatly improved, while the creation flexibility is higher, which can effectively lower the threshold for professional music creation and empower users to produce high-quality customized music.
+
+<FeedbackButtons slug="item:deepmind-were-launching-lyria-35-in-google-flow-music-with-advances-across-musicality-lyr" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/LiquidAI/lfm2-5-2-6b" target="_blank" rel="noopener noreferrer">Deploy local agents everywhere with LFM2.5-2.6B</a>
+
+*Hugging Face*
+
+At present, only the title of this paper is provided, with no full abstract content attached, so we cannot complete the translation and refinement work~ Please supplement the complete text of this paper's abstract, and I will sort out its core methods and conclusions for you to generate a concise ~120-word Chinese summary with prominent key points.
+
+<FeedbackButtons slug="item:hf-blog-lfm2-5-2-6b" client:visible />
+
+## <a href="https://huggingface.co/blog/Dharma-AI/gpu-management" target="_blank" rel="noopener noreferrer">GPU Management: Why Idle GPUs Are the New Grounded Aircraft</a>
+
+*Hugging Face*
+
+This article compares idle GPUs to grounded high-value civil aviation aircraft, pointing out that current GPU clusters generally have problems such as rigid scheduling mechanisms and inaccurate load matching, resulting in a large amount of high-value computing power being left unused and wasted. It proposes to implement GPU management strategies of dynamic load awareness and elastic computing power scheduling, which can greatly improve the computing power utilization of the cluster and significantly reduce the operating cost of LLM training and inference links.
+
+<FeedbackButtons slug="item:hf-blog-gpu-management" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This paper studies AI alignment from the perspective of virtue ethics, refutes the traditional assumption that "rational agents need to be anchored to fixed final goals", and points out that human rationality adjusts behavior based on a practical network covering actions and evaluation standards. It proposes that if AI is to be collaborative and meet human demands, its decision-making logic needs to match the "type signature" of human practice orientation. This path not only meets the requirements of ethical alignment, but also ensures core security attributes.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+The concept of recursive self-improvement (RSI) dates back to I.J. Good's 1965 superintelligence hypothesis: an intelligence that can surpass all human intellectual activities and design better machines for iterative upgrading. In 2008, Eliezer Yudkowsky explicitly defined it as a feedback loop where AI uses its existing intelligence to optimize its own cognitive architecture. In the current AI context, this loop includes both the model directly rewriting its own weights, and broadly covers the optimization of training pipelines.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/08/466386.html" target="_blank" rel="noopener noreferrer">开源版Claude Science来了！零依赖、MIT协议，内置30+项科研Skills</a>
+
+*QbitAI*
+
+Peking University and Yuankong AI Agent Joint Laboratory have open-sourced the scientific research Agent OpenAI4S, which replicates the closed-source Claude Science, adopts the MIT license and has zero core dependencies. The project takes Code-as-Action as the core idea, self-develops a full set of underlying architecture, can directly generate code to run on a persistent kernel, has more than 30 built-in scientific research skills, supports computing power access and achievement version management, and can replace traditional tool-calling Agents to complete the full process of complex scientific research tasks.
+
+<FeedbackButtons slug="item:qbitai-466386" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/465792.html" target="_blank" rel="noopener noreferrer">数学家24小时驳回OpenAI攻破的猜想！“AI证对了每句话，但已跟原猜想无关”</a>
+
+*QbitAI*
+
+OpenAI claimed that its new model has solved 10 world-class problems, including constructing a counterexample to disprove Connes' rigidity conjecture, and also provided 37,000 lines of code verified by the Lean4 kernel. Mathematician Nelson traced the mathematical prototype corresponding to the code line by line, and found that the group constructed by AI did not meet the two preconditions required by the conjecture, so the counterexample is completely invalid, confirming that human review of AI scientific research results is indispensable.
+
+<FeedbackButtons slug="item:qbitai-465792" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/466262.html" target="_blank" rel="noopener noreferrer">开发者苦 “造轮子” 久矣，HarmonyOS 7 正在抹平系统能力的接入鸿沟</a>
+
+*QbitAI*
+
+Currently, AI code generation still cannot solve the trivial engineering pain points faced by developers such as system access and multi-end adaptation, and a large number of innovative applications are difficult to launch due to cost and technical complexity limitations. Huawei revealed at the HDD HarmonyOS Innovation Forum that HarmonyOS 7 eliminates the gap in system capability access by converting system capabilities into Skills, simplifying multi-device interconnection access and other measures, greatly reducing the development threshold for end-side innovative applications in the AI era.
+
+<FeedbackButtons slug="item:qbitai-466262" client:visible />
