@@ -1,0 +1,189 @@
+---
+lang: en
+translationKey: digest-2026-08-06
+title: "Daily AI Picks · 2026-08-06"
+description: "18 papers · multi-source aggregation + AI summaries"
+date: 2026-08-06
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second recap of today's content</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Anthropic officially releases Claude Opus 5, DeepMind launches new version of Gemini Robotics and Lyria 3.5 music model</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face and arXiv publish multiple cutting-edge research results in the fields of LLM inference, multimodal training, and agent technology</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">The industry focuses on core topics including local agent deployment, GPU energy efficiency management, AI alignment ethics, and LLM security</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥Major Releases</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖Agent Technology</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡Industrial Implementation</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔒Security & Ethics</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2608.05139" target="_blank" rel="noopener noreferrer">Toward Skill-Native LLMs: Skill Entropy for Benchmarking and Training Long-Horizon Reasoning</a>
+
+*HF ★ 7 · Yinghui He, Ling Yang, Jiarui Liu… · [HF mirror](https://huggingface.co/papers/2608.05139)*
+
+Addressing the gap in systematic evaluation and training methods for long-chain cross-skill reasoning in large models, this study proposes the skill entropy metric to measure the difficulty of skill switching, and builds the Skill²-Bench evaluation dataset covering 558 skills across 9 domains. It verifies that model accuracy drops significantly on high skill entropy tasks; the study further proposes a skill entropy reinforcement learning training framework, which achieves up to double the performance on the Qwen3 series of models, outperforming existing baselines, and skill entropy can be used as a general training signal.
+
+<FeedbackButtons slug="item:arxiv-2608.05139" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.05000" target="_blank" rel="noopener noreferrer">Towards Physics of Multimodal Pretraining: Knowledge Flow, Modality Synergy, Early Unification, and Recipes</a>
+
+*HF ★ 7 · Junlin Han, Shengbang Tong, David Fan… · [HF mirror](https://huggingface.co/papers/2608.05000)*
+
+Addressing the unclear underlying mechanism of modality interaction in multimodal pretraining, this study conducts systematic controlled experiments on synthetic and real datasets, and verifies conclusions using a 13.5B MoE large model trained on 2T tokens. It clarifies the asymmetric law of cross-modal knowledge flow and the adaptation conditions for modality synergy, confirms that early-stage unified modality training outperforms late alignment, and also proposes an efficient pretraining scheme that only requires 5% of the computing power.
+
+<FeedbackButtons slug="item:arxiv-2608.05000" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.05013" target="_blank" rel="noopener noreferrer">OneDayAgent: Towards a Long-Horizon Harness for Autonomous Agents</a>
+
+*HF ★ 5 · Jingsheng Zheng, Xinyuan Fang, Jintian Zhang… · [HF mirror](https://huggingface.co/papers/2608.05013)*
+
+When existing LLM agents are deployed for long-cycle cross-environment multimodal daily tasks, current solutions only solve problems such as target drift in a point-to-point manner, and lack a universal cross-backend management and control framework. This paper proposes the OneDayAgent long-cycle management and control framework, which supports subtask splitting, context memory management, and result verification and repair. In tests on 104 tasks, paired with GLM-5.2, it achieves a score of 0.821, the current best performance, and can adapt to 5 large model backends across 3 series without fine-tuning.
+
+<FeedbackButtons slug="item:arxiv-2608.05013" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.04570" target="_blank" rel="noopener noreferrer">The Personalization Mirage: How LLMs Fabricate User Profiles, and Why Self-Monitoring Misleads</a>
+
+*HF ★ 3 · Yushi Sun, Yanjie Zhang, Rui Sheng · [HF mirror](https://huggingface.co/papers/2608.04570)*
+
+This paper focuses on the problem of user profile distortion in personalized LLMs with persistent memory, and builds the MirageBench test benchmark covering 150 user categories and 6 personalized tasks. After evaluating 12 large models across 7 series, it finds that all models have 35%~49% of unfounded user attribute fabrication; moreover, the fabrication rate self-reported by the model is negatively correlated with the measured value: the better the self-reported performance, the higher the actual fabrication rate. A reliable personalized system needs to rely on external verification rather than model self-assessment.
+
+<FeedbackButtons slug="item:arxiv-2608.04570" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.04574" target="_blank" rel="noopener noreferrer">When Memory Lies: An Empirical Study of Spatial Memory Staleness in VLM Agents</a>
+
+*HF ★ 2 · Yushi Sun, Yanjie Zhang · [HF mirror](https://huggingface.co/papers/2608.04574)*
+
+This study addresses the security risk of outdated spatial memory in memory-augmented VLM agents, and conducts outdated memory detection and navigation tests on 6 closed-source and open-source VLMs based on the dynamic FrozenLake test platform. The results show that the ability to recognize outdated memory in text does not mean that the model's visual grounding ability meets standards; the difference in visual detection F1 score across different models exceeds 0.8; directly using unaudited memory doubles the navigation mortality rate of GPT-4o; memory audit can reduce risks but provides no benefit when visual audit fails.
+
+<FeedbackButtons slug="item:arxiv-2608.04574" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2608.02628" target="_blank" rel="noopener noreferrer">Deep Divide-and-Reduce in Symbolic Regression</a>
+
+*Yusong Deng, Yanjie Li, Weijun Li*
+
+Addressing the problem that current symbolic regression methods generally lack inherent mathematical and logical support, and the classic AI Feynman method has a narrow scope of application and limited practicality due to its reliance on brute-force search of subexpressions, this study proposes the DDRSR method through rigorous mathematical derivation. It broadens the applicable scope of expression decomposition and reduction, does not require brute-force search, and has both generality and theoretical correctness. Experiments verify that it has significant performance advantages in expression decomposition and numerical regression tasks.
+
+<FeedbackButtons slug="item:arxiv-2608.02628" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.02629" target="_blank" rel="noopener noreferrer">Multimodal Auto-regressive Transformer Surrogate for Modeling Variable Operations and Quantifying Uncertainty in Geological Carbon Storage</a>
+
+*Yifu Han, Louis J. Durlofsky*
+
+This paper addresses the modeling requirements for variable completion injection and production strategies for geological carbon storage, and proposes a multimodal autoregressive Transformer surrogate model that integrates three types of inputs: 3D geological models, seepage parameters, and control variables, trained on 4000 sets of numerical simulation data. It has extremely low prediction error on the test set, can adapt to injection and production control switching, and combined with Markov Chain Monte Carlo assimilation, it can greatly reduce the uncertainty of parameters such as fault permeability, and the prediction results are highly consistent with the real model.
+
+<FeedbackButtons slug="item:arxiv-2608.02629" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.02632" target="_blank" rel="noopener noreferrer">LLMs Can Annotate Attribution Graphs</a>
+
+*Ameen Patel, Max Zhang, Nathan Hu*
+
+Addressing the high-cost pain point that LLM circuit tracing requires manual clustering of features and MLP neurons as supernodes, this paper proposes an automated pipeline: directly input feature descriptions to the LLM, which automatically completes supernode clustering. Verified results show that the interpretability of the generated supernodes is equivalent to manual annotation; 97% of samples in the two-hop capital task hit the intermediate hop supernode. It can also automatically annotate thousands of attribution graphs and screen high-value samples for manual review, facilitating automatic circuit tracing research.
+
+<FeedbackButtons slug="item:arxiv-2608.02632" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/third-party-cyber-evaluations-involving-openai-models" target="_blank" rel="noopener noreferrer">Third-party cyber evaluations involving OpenAI models</a>
+
+*OpenAI*
+
+Recently, OpenAI disclosed details of incidents related to third-party cybersecurity evaluations involving its full range of large models. In response to the AI model security risks exposed during these evaluations, it has introduced a new security protection mechanism to strengthen the testing and evaluation links in the entire R&D process of AI models, further improve the model's ability to resist cyber attacks, and reduce potential security risks in the deployment and application of large models.
+
+<FeedbackButtons slug="item:openai-blog-third-party-cyber-evaluations-involving-openai-models" client:visible />
+
+## <a href="https://openai.com/index/learn-teach-chatgpt-work-codex" target="_blank" rel="noopener noreferrer">New ways to learn and teach with ChatGPT Work and Codex</a>
+
+*OpenAI*
+
+This paper focuses on adapting ChatGPT Work and Codex for educational scenarios, exploring feasible paths for developing exclusive new educational plugins. These plugins cover three core user groups: K12 teachers, higher education educators, and students, and can support the full educational chain including teaching implementation, independent learning, academic research, and project creation, providing new ideas for AI tools to empower quality improvement of education at all levels and expand the boundaries of educational scenarios.
+
+<FeedbackButtons slug="item:openai-blog-learn-teach-chatgpt-work-codex" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 5</a>
+
+*Anthropic*
+
+The newly launched Claude Opus 5 is a leapfrog upgrade of the flagship large model in the Opus series. This version has been specially optimized for long-running agent scenarios, can stably support agents to perform complex tasks for a long time, and at the same time has significantly improved capabilities in code generation and professional domain transaction processing, which can better meet the usage needs of complex development and various high-level professional work.
+
+<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+The research team has launched an initiative to solicit difficult AI questions from the public, widely collecting the most confusing and difficult questions the public has about the AI field. The team also publicly promises that in the entire process of responding to and solving these problems in the future, it will fully disclose work details such as research ideas and verification paths, ensure that answers are transparent and traceable, and open up the connection channel between professional AI research and public cognition.
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestration-and-multi-robot-collaboration/" target="_blank" rel="noopener noreferrer">Gemini Robotics ER 2: powering robotics with video understanding, task orchestration, and multi-robot collaboration</a>
+
+*Google DeepMind*
+
+Gemini Robotics ER 2 is a dedicated intelligent support system for robot applications, which has achieved three core technological leaps for deployment requirements: video understanding capability for robot scenarios, task and tool orchestration and scheduling capability, and multi-robot collaborative operation capability. The system can support robots' autonomous reasoning and cross-robot collaboration to solve real-world tasks, representing a phased breakthrough in the field of robot intelligence and providing a new foundation for deployment applications.
+
+<FeedbackButtons slug="item:deepmind-gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestrati" client:visible />
+
+## <a href="https://deepmind.google/blog/were-launching-lyria-35-in-google-flow-music-with-advances-across-musicality-lyrics-vocals-and-creative-control/" target="_blank" rel="noopener noreferrer">We’re launching Lyria 3.5 in Google Flow Music, with advances across musicality, lyrics, vocals, and creative control</a>
+
+*Google DeepMind*
+
+Google has officially launched the Lyria 3.5 music generation model on its Flow Music platform. This version has completed upgrades in four core dimensions, greatly improving the musical fluency, lyric matching degree and vocal naturalness of generated content. At the same time, it has further liberalized custom creation permissions, lowered the threshold for professional music creation, and users can more flexibly produce high-quality music works that meet their needs.
+
+<FeedbackButtons slug="item:deepmind-were-launching-lyria-35-in-google-flow-music-with-advances-across-musicality-lyr" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/LiquidAI/lfm2-5-2-6b" target="_blank" rel="noopener noreferrer">Deploy local agents everywhere with LFM2.5-2.6B</a>
+
+*Hugging Face*
+
+The newly released 2.6B parameter LFM2.5-2.6B is a lightweight agent base focused on end-side deployment. It has targeted optimizations for core agent capabilities such as tool calling and task planning under small parameter scales, greatly lowering the inference computing power threshold. It can run locally on various edge terminals such as mobile phones and embedded devices without relying on the cloud, balancing low latency and privacy security, providing a cost-effective solution for full-domain agent deployment.
+
+<FeedbackButtons slug="item:hf-blog-lfm2-5-2-6b" client:visible />
+
+## <a href="https://huggingface.co/blog/Dharma-AI/gpu-management" target="_blank" rel="noopener noreferrer">GPU Management: Why Idle GPUs Are the New Grounded Aircraft</a>
+
+*Hugging Face*
+
+This paper uses the core analogy of "idle GPUs are grounded aircraft", pointing out that against the background of soaring AI computing power demand and tight GPU supply, a large number of enterprises have an average GPU utilization rate of less than 30% due to imperfect scheduling systems, resulting in a large amount of resource waste. The paper proposes solutions such as dynamic computing power scheduling, elastic load scaling, and cross-task resource pooling, which can increase GPU utilization to more than 70%, greatly reduce AI computing power costs, and alleviate the contradiction between supply and demand.
+
+<FeedbackButtons slug="item:hf-blog-gpu-management" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+Focusing on AI alignment issues after the orthogonality hypothesis, this study starts from the perspective of virtue ethics, refuting the preset that agents need to be driven by fixed end goals: human rational behavior is not anchored to specific goals, but matches the logic of rules and evaluation systems of the practice network. It proposes that to realize collaboration between AI and humans, the AI decision-making logic needs to adapt to the human practice-based action paradigm, taking into account both ethical alignment and core security requirements.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+Recursive Self-Improvement (RSI) was first proposed by I.J. Good in 1965, who defined an agent that can surpass all human intellectual activities and design better system iterations by itself as a "superintelligent machine". In 2008, Yudkowsky clarified that its core is the feedback loop where AI optimizes its own cognitive mechanism relying on existing capabilities. Current iterations of this type for AI include both directly rewriting its own weights and optimizing training pipelines.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
