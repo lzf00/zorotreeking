@@ -1,0 +1,215 @@
+---
+lang: en
+translationKey: digest-2026-08-07
+title: "AI Daily Digest · 2026-08-07"
+description: "21 papers · Multi-source aggregation + AI summarization"
+date: 2026-08-07
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second summary of today's updates</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI opens free access to GPT-5.6 Luna, Anthropic launches Claude Opus 5, DeepMind releases new meteorology and robotics models back-to-back</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face and arXiv have released multiple cutting-edge AI research results in the fields of agents, multimodality, and mathematical reasoning</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">A cost-effective fused large model was released in China, Zhiyuan removes its chief scientist from official channels, and a new large model evaluation benchmark receives industry recommendation</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥Large Model Iteration</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖Agent Technology</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🌪️Meteorology Breakthrough</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📰Industry News</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2608.05987" target="_blank" rel="noopener noreferrer">AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning</a>
+
+*HF ★ 24 · Zi-Han Wang, Zhengxi Lu, Zhiyuan Yao… · [HF Mirror](https://huggingface.co/papers/2608.05987)*
+
+To address the difficulties of credit assignment for key decisions in long-sequence multi-turn reinforcement learning tasks and the insufficient sequence credit expression of existing self-distillation methods, this paper proposes a critic-free recursive turn-level credit assignment method AgentOPSD. By aggregating token-level log probability differences between teacher and student models and recursively updating Bayesian beliefs, it converts sparse rewards into turn-level credit signals. Tested on three types of tasks using two scales of Qwen2.5, its performance outperforms baselines such as GRPO, with a success rate of 89.1% on the ALFWorld task.
+
+<FeedbackButtons slug="item:arxiv-2608.05987" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.05631" target="_blank" rel="noopener noreferrer">ChronoVision: Temporal Reasoning via Latent State Reconstruction</a>
+
+*HF ★ 21 · Yifan Shen, Jian Xu, Boyi Li… · [HF Mirror](https://huggingface.co/papers/2608.05631)*
+
+To solve the problem that multimodal large models struggle with complex visual tasks requiring multi-step temporal reasoning, and language reasoning cannot accurately describe continuous visual transformations, this paper proposes the ChronoVision framework: a reconstruction vision head and ROI attention localization module are introduced during the fine-tuning phase, and reinforcement learning with implicit process grounding is adopted after training. A new temporal evaluation dataset Vbvr-VQA is also released. Experiments show that it achieves state-of-the-art performance on two types of benchmarks, with excellent cross-domain performance.
+
+<FeedbackButtons slug="item:arxiv-2608.05631" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.06060" target="_blank" rel="noopener noreferrer">Learning from Failures: Retrieval-Centric CoT via Hard Negatives for Unified Multimodal Retrieval</a>
+
+*HF ★ 20 · Zelong Sun, Jun Wang, Kaicheng Yang… · [HF Mirror](https://huggingface.co/papers/2608.06060)*
+
+To address the issue that large vision-language models are prone to confusing semantically similar candidates in multimodal retrieval, and traditional chain-of-thought reasoning only relies on queries without resolving retrieval misunderstandings, this paper proposes the UniME-R1 embedding-advisor framework. It mines hard negatives to simulate retrieval failures, generates retrieval-oriented chain-of-thought, selects reranking or full-library re-retrieval based on initial retrieval results, and combines supervised learning and retrieval-oriented reinforcement learning for training. Its performance significantly outperforms strong baselines on multiple types of benchmarks.
+
+<FeedbackButtons slug="item:arxiv-2608.06060" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.05248" target="_blank" rel="noopener noreferrer">WorldClaw: Agentic 3D Open-World Generation at Scale</a>
+
+*HF ★ 18 · Chunchao Guo, Jinpeng Li, Yang Li… · [HF Mirror](https://huggingface.co/papers/2608.05248)*
+
+To solve the pain point that text-generated large-scale explorable 3D open worlds cannot balance global spatial coherence, rich local content, and editable reusable assets, this paper proposes an agent-driven coarse-to-fine generation framework WorldClaw: first, a planning agent converts text into structured scene specifications and builds a globally coherent terrain base, then refines areas with high detail requirements, and finally optimizes via a rendering agent. This method can generate large-scale open scenes with global consistency, high-quality local effects, and editable instance assets.
+
+<FeedbackButtons slug="item:arxiv-2608.05248" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.05802" target="_blank" rel="noopener noreferrer">On-Policy Delta Distillation for Multilingual Math Reasoning</a>
+
+*HF ★ 16 · Byeongho Heo, Jaehui Hwang, Sangdoo Yun… · [HF Mirror](https://huggingface.co/papers/2608.05802)*
+
+Aiming at the research gap of on-policy distillation (OPD) in multilingual scenarios, the team explored the performance of OPD and its improved version On-Policy Delta Distillation (OPD²) in English, Korean, and Japanese mathematical reasoning tasks: OPD² uses the probability difference between the post-training teacher model and the base model as the learning signal. Experiments based on Qwen3 show that its effect is better than the original OPD, with particularly significant improvements in Japanese and Korean, narrowing the performance gap between English and Korean. In addition, although OPD trained only on English can improve the performance of Japanese and Korean, it will lead to English-biased output, so multilingual data is required to ensure the output language characteristics.
+
+<FeedbackButtons slug="item:arxiv-2608.05802" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2608.04013" target="_blank" rel="noopener noreferrer">C$^2$MOE: Consistency and Complementarity-guided Mixture of Experts for Incomplete Multimodal Emotion Learning</a>
+
+*Yuntao Shou, Tao Meng, Wei Ai…*
+
+To address the problem that conversational multimodal emotion recognition relies on complete input, and existing missing modality robust methods only focus on cross-modal consistency while ignoring complementarity, leading to reconstruction bias, this paper proposes the C²MOE framework. It splits multimodal knowledge into consistent and complementary components based on information theory, paired with dual-branch prediction and dynamic reweighting modules to complete missing modalities. It outperforms existing SOTA in multiple benchmark tests, with better robustness in missing modality scenarios.
+
+<FeedbackButtons slug="item:arxiv-2608.04013" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.04014" target="_blank" rel="noopener noreferrer">On Hamming-Lipschitz Type Stability of the Subdominant (Minmax) Ultrametric: Theory and Simple Proofs</a>
+
+*Alokendu Mazumder, Arnab Roy, Punit Rathore*
+
+Aiming at the problem that the existing stability bounds of the subdominant (minmax) ultrametric corresponding to single-link clustering are not applicable to sparse perturbations, this paper constructs an ℓ₀-type stability theory, proves that sparse perturbations only propagate through the minimum spanning tree, derives an accurate Hamming-Lipschitz bound, and confirms the sharpness of the bound and the near additivity of multiple perturbations. Experiments show that the obtained structural score can be used for vulnerability diagnosis of hierarchical representations.
+
+<FeedbackButtons slug="item:arxiv-2608.04014" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.04026" target="_blank" rel="noopener noreferrer">A Trust-region Framework for Moment Estimation</a>
+
+*Oluwasegun A. Somefun*
+
+This study proposes a trust region analysis framework for Adam-class adaptive moment estimation optimizers, where the single weight update step size is constrained by 2nd to 4th order moments. The derived Gmake method can uniformly explain techniques such as moment normalization, learning rate scheduling, and momentum filtering. GPT2 training experiments show that the 4th-order moment variant has the highest gain under weak trust region constraints, and the stronger the constraints, the better the performance of the 2nd-order moment variant, with lower validation loss.
+
+<FeedbackButtons slug="item:arxiv-2608.04026" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/improving-gpt-5-6-sol-in-chatgpt" target="_blank" rel="noopener noreferrer">Improving GPT‑5.6 Sol in ChatGPT—and expanding access to GPT-5.6 Luna for free users</a>
+
+*OpenAI*
+
+This ChatGPT launch includes two core updates: first, the iterative GPT-5.6 Sol version optimizes the underlying model capabilities, significantly improving output accuracy and content consistency; second, it relaxes user rights restrictions, opening access to GPT-5.6 Luna for free users, with no limit on the number of daily chat interactions for this model, greatly lowering the threshold for using advanced large models and covering the needs of more ordinary users.
+
+<FeedbackButtons slug="item:openai-blog-improving-gpt-5-6-sol-in-chatgpt" client:visible />
+
+## <a href="https://openai.com/index/openai-and-apa-partner-to-advance-responsible-ai" target="_blank" rel="noopener noreferrer">Working with the American Psychological Association on youth mental health and AI</a>
+
+*OpenAI*
+
+The article reveals that OpenAI and the American Psychological Association are cooperating on youth mental health and responsible AI applications. The two sides will jointly issue evidence-based application guidelines, supporting service resources and safety protection rules, which will not only promote the value implementation of AI in scenarios such as youth mental support and intervention, but also targeted prevent and control the ethical, privacy and youth psychological harm risks that may be caused by technology misuse.
+
+<FeedbackButtons slug="item:openai-blog-openai-and-apa-partner-to-advance-responsible-ai" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 5</a>
+
+*Anthropic*
+
+Claude Opus 5 released by Anthropic this time is a step-by-step iteration product of the Opus flagship product line. The core upgrade focuses on three types of core demands: it has carried out underlying adaptation for long-running agent tasks, greatly improving the stability of continuous agent execution; at the same time, it has targeted optimized coding capabilities and professional field task processing performance, which can better support high-demand scenarios such as R&D and professional consulting.
+
+<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+This AI research team has launched the "Call for Hard Questions" public campaign, soliciting the most confusing and concerning high-difficulty questions in the field of artificial intelligence from the public across society. The team also publicly promises that in the whole process of responding to and answering these questions one by one in the future, it will fully publicize all research and demonstration workflows, achieve full transparency in the response process, and effectively respond to various social questions about AI development.
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/weathernext-ai-model-achieves-breakthrough-in-forecasting-cyclones/" target="_blank" rel="noopener noreferrer">WeatherNext: AI model achieves breakthrough in forecasting cyclones</a>
+
+*Google DeepMind*
+
+The new meteorological AI model WeatherNext has achieved breakthrough progress in the field of cyclone forecasting. Compared with traditional numerical forecasting models, it has lower computing power requirements and the forecast generation speed is increased by more than 100 times. It can accurately predict the generation location, moving path and peak intensity of tropical and temperate cyclones 7 days in advance, and the forecast accuracy is nearly 30% higher than existing mainstream solutions, which can reserve more sufficient response time for disaster prevention and mitigation.
+
+<FeedbackButtons slug="item:deepmind-weathernext-ai-model-achieves-breakthrough-in-forecasting-cyclones" client:visible />
+
+## <a href="https://deepmind.google/blog/gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestration-and-multi-robot-collaboration/" target="_blank" rel="noopener noreferrer">Gemini Robotics ER 2: powering robotics with video understanding, task orchestration, and multi-robot collaboration</a>
+
+*Google DeepMind*
+
+Gemini Robotics ER 2 is a new generation of intelligent support system specially developed for the robotics field, whose core function is to enable robots to realize autonomous reasoning and collaborative operation to complete various real-scene tasks. It has achieved step-by-step breakthroughs in three core technology directions for robot scenarios: video understanding, task tool orchestration, and multi-robot collaboration, providing a technical base with greatly improved performance for the intelligent implementation of robots.
+
+<FeedbackButtons slug="item:deepmind-gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestrati" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/baseten" target="_blank" rel="noopener noreferrer">Baseten on Hugging Face Inference Providers 🔥</a>
+
+*Hugging Face*
+
+Currently, only the title of this paper about Baseten accessing Hugging Face Inference Providers is provided, no specific abstract content is attached, and key information such as core research methods and experimental conclusions is missing. It is impossible to complete the translation and summary of about 120 words. Please supplement the relevant text of the complete abstract, and I will handle the relevant needs for you later.
+
+<FeedbackButtons slug="item:hf-blog-baseten" client:visible />
+
+## <a href="https://huggingface.co/blog/LiquidAI/lfm2-5-2-6b" target="_blank" rel="noopener noreferrer">Deploy local agents everywhere with LFM2.5-2.6B</a>
+
+*Hugging Face*
+
+This time, the lightweight open-source agent base LFM2.5 with 2.6B parameters is launched, focusing on end-side full-scene deployment capability. Through lightweight design, the model adapts to low-computing hardware such as mobile phones and embedded devices, can run locally without relying on cloud large models, and has the capabilities of tool calling, task disassembly, and multi-turn interaction, taking into account the advantages of low latency and data not leaving the end, which can cover multiple implementation scenarios such as consumer electronics and industrial edge.
+
+<FeedbackButtons slug="item:hf-blog-lfm2-5-2-6b" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This paper studies the AI alignment problem from the perspective of virtue ethics, refutes the mainstream presupposition that "rational agents need to anchor fixed ultimate goals", and proposes that the essence of human rationality is the alignment of actions with a practical network including behavioral tendencies, evaluation standards and other elements. To realize AI collaboration and compliance with humans, AI decision-making logic needs to match human practical action logic, which takes into account both ethical alignment and core security requirements.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+The concept of recursive self-improvement (RSI) was first proposed by scholar I.J. Good in 1965, referring to a "superintelligent machine" that can surpass all human intelligent activities and independently iteratively design better intelligent systems. In 2008, Yudkowsky clarified that its core is the feedback loop where AI optimizes its own cognitive mechanism relying on existing intelligence. RSI in current AI scenarios includes not only the model directly rewriting its own weights, but also broadly covers the behavior of AI optimizing its own training pipeline.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/08/467834.html" target="_blank" rel="noopener noreferrer">PPIO officially releases "Fusion Model": Outperforms the intelligence of top models at one-tenth the cost</a>
+
+*QbitAI*
+
+On August 6, PPIO released the Fusion model gateway. Different from traditional API gateways, it distributes complex tasks to multiple specialized models for parallel processing, and fuses to generate results after cross-validation. Tests show that the fusion effect of its three open-source models surpasses Claude Fable 5, and the cost is only 1/10 of the latter, which can solve the defects of single model partiality and hallucination, proving that the call layer can also realize intelligence improvement.
+
+<FeedbackButtons slug="item:qbitai-467834" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/467730.html" target="_blank" rel="noopener noreferrer">Zhiyuan removes chief scientist Luo Jianlan from official channels</a>
+
+*QbitAI*
+
+Shortly before Zhiyuan Robot starts its listing process in Hong Kong, Luo Jianlan, former partner and chief scientist, has been removed from the partner list on the official website, and his personal homepage and social media account profiles have all deleted Zhiyuan-related employment information. Luo Jianlan joined Zhiyuan in April 2025 to lead the establishment of the embodied intelligence research center. If the resignation is true, his tenure is only 1 year and 4 months. At present, neither side has officially announced this personnel change.
+
+<FeedbackButtons slug="item:qbitai-467730" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/467663.html" target="_blank" rel="noopener noreferrer">Show me *The Lord of the Rings*! Kaparthy strongly recommends new large model evaluation benchmark</a>
+
+*QbitAI*
+
+Anthropic researcher Kaparthy has launched a new large model evaluation benchmark "Lord of the Rings Benchmark" to replace the original SVG test: input the opening content of *The Lord of the Rings* to the large model, and require it to call Three.js to generate a 3D scene of Middle-earth. Tests show that even Claude Opus 5 needs to consume millions of tokens and 2 hours to generate rough results, exposing the core shortcoming that current large models can write code to build scenes, but cannot understand their own generated content and cannot perform interactive verification.
+
+<FeedbackButtons slug="item:qbitai-467663" client:visible />
