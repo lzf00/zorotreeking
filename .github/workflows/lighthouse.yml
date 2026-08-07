@@ -1,6 +1,6 @@
 name: Lighthouse CI
 
-# Deploy 完成后 5 分钟跑一次 Lighthouse，对比性能预算，未达标发邮件/Issue。
+# Deploy 完成后等待 1 分钟再跑 Lighthouse，对比性能预算。
 # 由 deploy.yml workflow_run 触发；也支持 workflow_dispatch 手动跑。
 
 on:
@@ -11,7 +11,11 @@ on:
 
 permissions:
   contents: read
-  issues: write
+  statuses: write
+
+concurrency:
+  group: lighthouse-${{ github.event.workflow_run.head_branch || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   lhci:
@@ -22,25 +26,51 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
+          fetch-depth: 2
 
       - name: Setup Node 22
         uses: actions/setup-node@v6
         with:
           node-version: "22"
 
+      - name: Decide whether audited pages changed
+        id: scope
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          DEPLOYED_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+        run: |
+          if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          changed_paths=$(git diff-tree --no-commit-id --name-only -r "$DEPLOYED_SHA")
+          decision=$(printf '%s\n' "$changed_paths" | node scripts/lighthouse-scope.mjs)
+          if [ "$decision" = "skip" ]; then
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "Generated snapshot-only deployment; Lighthouse skipped." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Wait for deploy propagate
+        if: steps.scope.outputs.run == 'true'
         run: sleep 60
 
       - name: Run Lighthouse CI
+        if: steps.scope.outputs.run == 'true'
         env:
-          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+          LHCI_UPLOAD__GITHUB_TOKEN: ${{ github.token }}
         # assert 失败的话 exit code 非 0；assert 设了 warn 不会 fail，error 才 fail
         run: npx --yes @lhci/cli@0.13.x autorun
 
       - name: Upload reports as artifact
-        if: always()
+        if: always() && steps.scope.outputs.run == 'true'
         uses: actions/upload-artifact@v7
         with:
           name: lighthouse-reports
           path: .lighthouseci/
+          include-hidden-files: true
           retention-days: 14

@@ -99,8 +99,9 @@ const stats = {
     {points.length === 0 ? (
       <p class="text-[var(--text-tertiary)]">embeddings.json 还没数据。等 daily-digest workflow 跑完后回来。</p>
     ) : (
-      <div class="relative w-full bg-[var(--bg-soft)] rounded-2xl border border-[var(--border)] overflow-hidden">
-        <svg viewBox={`0 0 ${VBW} ${VBH}`} class="w-full h-auto block" preserveAspectRatio="xMidYMid meet">
+      <div id="explore-map-shell" class="relative w-full bg-[var(--bg-soft)] rounded-2xl border border-[var(--border)] overflow-hidden">
+        <div id="explore-tooltip" role="tooltip" aria-hidden="true"></div>
+        <svg id="explore-map" viewBox={`0 0 ${VBW} ${VBH}`} class="w-full h-auto block" preserveAspectRatio="xMidYMid meet" aria-label="文章主题关系图">
           {points.map((p) => {
             const m = metaMap.get(p.key);
             if (!m) return null;
@@ -108,11 +109,11 @@ const stats = {
             const color = colorMap[m.collection] ?? "#71717a";
             const r = m.isDigest ? 0.7 : 1.1;
             const opacity = m.isDigest ? 0.55 : 1;
+            const label = `${m.title} · ${m.date.toISOString().slice(0, 10)}`;
             return (
-              <a href={`/${m.collection}/${m.key}`} class="explore-point">
+              <a href={`/${m.collection}/${m.key}`} class="explore-point" data-tooltip={label} aria-label={label}>
                 <circle cx={cx} cy={cy} r={r} fill={color} opacity={opacity}
                         class="transition-all hover:r-2 hover:opacity-100" />
-                <title>{m.title} · {m.date.toISOString().slice(0, 10)}</title>
               </a>
             );
           })}
@@ -138,4 +139,77 @@ const stats = {
 <style>
   .explore-point { cursor: pointer; }
   .explore-point circle:hover { r: 2.2; opacity: 1; }
+  #explore-tooltip {
+    position: absolute;
+    z-index: 10;
+    max-width: min(320px, calc(100% - 16px));
+    padding: 6px 9px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg);
+    color: var(--text);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+    font-size: 12px;
+    line-height: 1.4;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+  }
+  #explore-tooltip[data-visible="true"] {
+    opacity: 1;
+    visibility: visible;
+  }
 </style>
+
+<script>
+  const shell = document.querySelector<HTMLElement>("#explore-map-shell");
+  const map = document.querySelector<SVGElement>("#explore-map");
+  const tooltip = document.querySelector<HTMLElement>("#explore-tooltip");
+
+  const pointFrom = (target: EventTarget | null) =>
+    target instanceof Element
+      ? target.closest<SVGAElement>(".explore-point[data-tooltip]")
+      : null;
+
+  const hideTooltip = () => {
+    if (!tooltip) return;
+    tooltip.dataset.visible = "false";
+    tooltip.setAttribute("aria-hidden", "true");
+  };
+
+  const showTooltip = (point: SVGAElement, clientX: number, clientY: number) => {
+    if (!shell || !tooltip) return;
+    tooltip.textContent = point.dataset.tooltip ?? "";
+    tooltip.dataset.visible = "true";
+    tooltip.setAttribute("aria-hidden", "false");
+
+    const shellRect = shell.getBoundingClientRect();
+    const left = Math.min(
+      Math.max(8, clientX - shellRect.left + 12),
+      Math.max(8, shell.clientWidth - tooltip.offsetWidth - 8),
+    );
+    const top = Math.min(
+      Math.max(8, clientY - shellRect.top + 12),
+      Math.max(8, shell.clientHeight - tooltip.offsetHeight - 8),
+    );
+    tooltip.style.left = `${left}px`;
+    tooltip.style.top = `${top}px`;
+  };
+
+  map?.addEventListener("pointerover", (event) => {
+    const point = pointFrom(event.target);
+    if (point) showTooltip(point, event.clientX, event.clientY);
+  });
+  map?.addEventListener("pointermove", (event) => {
+    const point = pointFrom(event.target);
+    if (point) showTooltip(point, event.clientX, event.clientY);
+  });
+  map?.addEventListener("pointerleave", hideTooltip);
+  map?.addEventListener("focusin", (event) => {
+    const point = pointFrom(event.target);
+    if (!point) return;
+    const rect = point.getBoundingClientRect();
+    showTooltip(point, rect.left + rect.width / 2, rect.top + rect.height / 2);
+  });
+  map?.addEventListener("focusout", hideTooltip);
+</script>

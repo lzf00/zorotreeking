@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
+import { spawnSync } from "node:child_process";
 import test from "node:test";
 
 const workflow = async (name: string) =>
@@ -22,6 +23,35 @@ test("all workflows use the Node version required by Astro 7", async () => {
 
 test("Lighthouse budget failures are not swallowed", async () => {
   assert.doesNotMatch(await workflow("lighthouse.yml"), /lhci autorun\s*\|\|\s*true/);
+});
+
+test("Lighthouse skips generated market snapshots but audits user-facing changes", () => {
+  const decide = (paths: string[]) => {
+    const result = spawnSync(process.execPath, ["scripts/lighthouse-scope.mjs"], {
+      cwd: new URL("..", import.meta.url),
+      input: `${paths.join("\n")}\n`,
+      encoding: "utf8",
+    });
+    assert.equal(result.status, 0, result.stderr);
+    return result.stdout.trim();
+  };
+
+  assert.equal(decide([
+    "src/data/etf-three-factor-early-latest.json",
+    "src/data/etf-three-factor-status.json",
+  ]), "skip");
+  assert.equal(decide(["src/content/ai/digest-2026-08-07.zh.mdx"]), "run");
+  assert.equal(decide(["src/pages/explore.astro"]), "run");
+  assert.equal(decide([]), "run");
+});
+
+test("Lighthouse workflow checks the deployed revision and keeps hidden reports", async () => {
+  const contents = await workflow("lighthouse.yml");
+  assert.match(contents, /statuses:\s*write/);
+  assert.match(contents, /github\.event\.workflow_run\.head_sha/);
+  assert.match(contents, /scripts\/lighthouse-scope\.mjs/);
+  assert.match(contents, /LHCI_UPLOAD__GITHUB_TOKEN/);
+  assert.match(contents, /include-hidden-files:\s*true/);
 });
 
 test("daily deployment includes follow-up translation and embedding commits", async () => {

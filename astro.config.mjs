@@ -12,6 +12,11 @@ const SITE = "https://www.zorotreeking.online";
 export default defineConfig({
   site: SITE,
   output: "static",
+  build: {
+    // The shared stylesheet is small enough to inline and otherwise becomes
+    // the render-blocking request that dominates FCP under Lighthouse throttling.
+    inlineStylesheets: "always",
+  },
   integrations: [mdx(), react()],
   i18n: {
     defaultLocale: "zh",
