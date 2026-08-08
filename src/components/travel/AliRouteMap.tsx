@@ -11,6 +11,9 @@ import { toAmapPosition } from "../../utils/amap-coordinate";
 interface Props {
   points: AliRoutePoint[];
   days: AliRouteDay[];
+  roadLabels?: AliRoadLabel[];
+  routedDayGeometry?: Record<number, [number, number][]>;
+  mapAriaLabel?: string;
 }
 
 type MapProvider = "loading" | "amap" | "osm";
@@ -62,7 +65,7 @@ const kindLabel: Record<AliRoutePointKind, string> = {
   viewpoint: "观景点",
   supply: "补给点",
 };
-const majorRoadRefs = new Set(["G109", "G219", "G317", "G318"]);
+const majorRoadRefs = new Set(["G6", "G0612", "G109", "G219", "G317", "G318"]);
 let amapLoader: Promise<AMapNamespace> | undefined;
 
 function appendMeta(parent: HTMLElement, label: string, value: string) {
@@ -195,6 +198,8 @@ async function renderAmap(
   AMap: AMapNamespace,
   points: AliRoutePoint[],
   days: AliRouteDay[],
+  roadLabels: AliRoadLabel[],
+  routedDayGeometry: Record<number, [number, number][]>,
   layerGroups: React.MutableRefObject<Partial<Record<LayerKey, AMapOverlayGroup>>>,
 ) {
   const { pointById, dayNumbersByPoint } = getRouteIndexes(points, days);
@@ -237,7 +242,7 @@ async function renderAmap(
   const roadOverlays: unknown[] = [];
   const routeOverlays: unknown[] = [];
   for (const day of days) {
-    const coordinates = aliRoutedDayGeometry[day.day] ?? day.pointIds
+    const coordinates = routedDayGeometry[day.day] ?? day.pointIds
       .map((id) => pointById.get(id))
       .filter((point): point is AliRoutePoint => Boolean(point))
       .map((point) => [point.lat, point.lng] as [number, number]);
@@ -277,7 +282,7 @@ async function renderAmap(
     }));
   }
 
-  for (const road of aliRoadLabels) {
+  for (const road of roadLabels) {
     const marker = new AMap.Marker({
       position: toAmapPosition(road.lat, road.lng),
       content: createRoadIconElement(road),
@@ -342,7 +347,13 @@ async function renderAmap(
   };
 }
 
-async function renderOpenStreetMap(element: HTMLElement, points: AliRoutePoint[], days: AliRouteDay[]) {
+async function renderOpenStreetMap(
+  element: HTMLElement,
+  points: AliRoutePoint[],
+  days: AliRouteDay[],
+  roadLabels: AliRoadLabel[],
+  routedDayGeometry: Record<number, [number, number][]>,
+) {
   const L = await import("leaflet");
   await import("leaflet/dist/leaflet.css");
   const { pointById, dayNumbersByPoint } = getRouteIndexes(points, days);
@@ -362,7 +373,7 @@ async function renderOpenStreetMap(element: HTMLElement, points: AliRoutePoint[]
   const roadLayer = L.featureGroup().addTo(map);
   const routeLayer = L.featureGroup().addTo(map);
   for (const day of days) {
-    const coordinates = aliRoutedDayGeometry[day.day] ?? day.pointIds
+    const coordinates = routedDayGeometry[day.day] ?? day.pointIds
       .map((id) => pointById.get(id))
       .filter((point): point is AliRoutePoint => Boolean(point))
       .map((point) => [point.lat, point.lng] as [number, number]);
@@ -385,7 +396,7 @@ async function renderOpenStreetMap(element: HTMLElement, points: AliRoutePoint[]
     });
   }
 
-  for (const road of aliRoadLabels) {
+  for (const road of roadLabels) {
     const icon = L.divIcon({
       className: `ali-road-shield-icon${majorRoadRefs.has(road.ref) ? " ali-road-shield-icon--major" : ""}`,
       html: createRoadIconElement(road).outerHTML,
@@ -427,7 +438,13 @@ async function renderOpenStreetMap(element: HTMLElement, points: AliRoutePoint[]
   return () => map.remove();
 }
 
-export default function AliRouteMap({ points, days }: Props) {
+export default function AliRouteMap({
+  points,
+  days,
+  roadLabels = aliRoadLabels,
+  routedDayGeometry = aliRoutedDayGeometry,
+  mapAriaLabel = "旅行路线真实底图，包含道路拟合线、公路编号、每日路线、途经城市、景点、补给点与住宿点",
+}: Props) {
   const mapElement = useRef<HTMLDivElement>(null);
   const amapLayerGroups = useRef<Partial<Record<LayerKey, AMapOverlayGroup>>>({});
   const [provider, setProvider] = useState<MapProvider>("loading");
@@ -444,14 +461,28 @@ export default function AliRouteMap({ points, days }: Props) {
         if (!AMAP_JS_KEY || !AMAP_SECURITY_CODE) throw new Error("高德地图配置未提供");
         const AMap = await loadAmapSdk();
         if (cancelled) return;
-        disposeMap = await renderAmap(element, AMap, points, days, amapLayerGroups);
+        disposeMap = await renderAmap(
+          element,
+          AMap,
+          points,
+          days,
+          roadLabels,
+          routedDayGeometry,
+          amapLayerGroups,
+        );
         setProvider("amap");
       } catch (error) {
         if (cancelled) return;
         console.info("[AliRouteMap] 高德地图不可用，已切换 OpenStreetMap 备用底图。", error);
         disposeMap?.();
         element.replaceChildren();
-        disposeMap = await renderOpenStreetMap(element, points, days);
+        disposeMap = await renderOpenStreetMap(
+          element,
+          points,
+          days,
+          roadLabels,
+          routedDayGeometry,
+        );
         if (!cancelled) setProvider("osm");
         else disposeMap();
       }
@@ -461,7 +492,7 @@ export default function AliRouteMap({ points, days }: Props) {
       cancelled = true;
       disposeMap?.();
     };
-  }, [days, points]);
+  }, [days, points, roadLabels, routedDayGeometry]);
 
   function toggleAmapLayer(layer: LayerKey, visible: boolean) {
     const group = amapLayerGroups.current[layer];
@@ -482,7 +513,7 @@ export default function AliRouteMap({ points, days }: Props) {
         ref={mapElement}
         className="ali-route-map"
         role="region"
-        aria-label="阿里大环线真实底图，包含道路拟合线、公路编号、每日路线、途经城市、景点、补给点与住宿点"
+        aria-label={mapAriaLabel}
       />
       {provider === "amap" && (
         <fieldset className="ali-amap-layer-control" aria-label="地图图层开关">

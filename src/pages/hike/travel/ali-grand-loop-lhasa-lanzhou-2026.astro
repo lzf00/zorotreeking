@@ -1,0 +1,30 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import LhasaLanzhouGuide from "@/components/travel/LhasaLanzhouGuide.astro";
+
+const title = "拉萨取车 · 阿里大环线 · 兰州还车 2026";
+const description = "2026 年 9 月 26 日至 10 月 7 日，从上海飞抵拉萨取车，穿越阿里南北线，经那曲、格尔木、西宁到兰州异地还车，再乘高铁返回上海的 12 天详细路书。";
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "TouristTrip",
+  name: title,
+  description,
+  touristType: "高原自驾旅行者",
+  itinerary: {
+    "@type": "ItemList",
+    itemListElement: ["拉萨", "日喀则", "萨嘎", "塔钦", "札达", "狮泉河", "改则", "尼玛", "那曲", "格尔木", "西宁", "兰州", "上海"].map((name, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name,
+    })),
+  },
+};
+---
+
+<BaseLayout title={title} description={description}>
+  <Fragment slot="head">
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>
+  </Fragment>
+  <LhasaLanzhouGuide />
+</BaseLayout>

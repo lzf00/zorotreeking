@@ -1,0 +1,428 @@
+---
+import LhasaLanzhouRouteOverview from "./LhasaLanzhouRouteOverview.astro";
+
+interface Props {
+  embedded?: boolean;
+}
+
+const { embedded = false } = Astro.props;
+
+const route = [
+  "拉萨",
+  "日喀则",
+  "萨嘎",
+  "塔钦",
+  "札达",
+  "狮泉河",
+  "改则",
+  "尼玛",
+  "那曲",
+  "格尔木",
+  "西宁",
+  "兰州",
+  "上海",
+];
+---
+
+<article class="lhasa-lanzhou-guide" data-lhasa-lanzhou-guide>
+  <header class="ll-hero" id="route-top">
+    <div class="ll-contours" aria-hidden="true"></div>
+    <div class="ll-wrap ll-hero__topline">
+      <a href={embedded ? "#travel-guides" : "/hike/"}>
+        {embedded ? "ZoroTreeking · 本期旅行攻略" : "← 返回徒步旅行板块"}
+      </a>
+      <span>2026 · NATIONAL DAY · PLAN B</span>
+    </div>
+    <div class="ll-wrap ll-hero__body">
+      <p class="ll-kicker">Lhasa pickup → Lanzhou drop-off → Shanghai by rail</p>
+      <h1><span>十二天</span>从世界屋脊<br />一路向东</h1>
+      <p class="ll-lead">9 月 26 日拉萨取车，27 日进入阿里大环线；北线抵达那曲后沿 G109 下降到格尔木、西宁，最终在兰州异地还车，高铁优先返回上海。10 月 7 日必须抵达上海。</p>
+      <div class="ll-hero__facts" aria-label="路线核心信息">
+        <div><b>09.26 — 10.07</b><span>12 天 · 上海往返</span></div>
+        <div><b>≈ 5,300 KM</b><span>全程高强度自驾</span></div>
+        <div><b>10.07</b><span>必须抵达上海</span></div>
+      </div>
+      <div class="ll-route-ribbon" aria-label="主要路线">
+        {route.map((place, index) => (
+          <span><b>{place}</b>{index < route.length - 1 && <i aria-hidden="true">→</i>}</span>
+        ))}
+      </div>
+    </div>
+  </header>
+
+  <nav class="ll-nav" aria-label="本攻略章节">
+    <div class="ll-wrap">
+      <a href="#ll-overview">总览</a>
+      <a href="#ll-gates">出发门槛</a>
+      <a href="#route-atlas">交互地图</a>
+      <a href="#ll-return">返沪方案</a>
+      <a href="#ll-cuts">路线取舍</a>
+      <a href="#ll-gear">车辆装备</a>
+      <a href="#ll-permit">证件健康</a>
+      <a href="#ll-budget">预算</a>
+      <button type="button" data-print-guide>打印 / 存为 PDF</button>
+    </div>
+  </nav>
+
+  <main>
+    <section id="ll-overview" class="ll-section ll-overview">
+      <div class="ll-wrap ll-split">
+        <div>
+          <p class="ll-eyebrow">01 / Reality check</p>
+          <div class="ll-rule"></div>
+        </div>
+        <div>
+          <h2>这不是宽松假期，<br />是带三道保险的时间任务。</h2>
+          <p>12 天要同时完成阿里南北线、那曲至格尔木、西宁至兰州和返沪，核心矛盾不是“景点够不够”，而是连续长途日后仍要守住 10 月 7 日。方案主动删除珠峰、班公湖、茶卡盐湖入园和青海湖绕行，把有限时间留给车辆、道路和返程。</p>
+        </div>
+      </div>
+      <div class="ll-wrap ll-metrics">
+        <div><strong>2</strong><span>至少两名熟练司机</span></div>
+        <div><strong>3</strong><span>连续 600 km+ 长途日</span></div>
+        <div><strong>5,231m</strong><span>唐古拉参考海拔</span></div>
+        <div><strong>0</strong><span>固定缓冲日</span></div>
+      </div>
+      <div class="ll-wrap ll-warning">
+        <b>规划结论</b>
+        <p>可以形成路线，但不具备“保证按计划完成”的冗余。任一硬门槛不满足，就要在出发前改方案；不能把延误转化为夜驾。</p>
+      </div>
+    </section>
+
+    <section id="ll-gates" class="ll-section ll-gates">
+      <div class="ll-wrap">
+        <p class="ll-eyebrow">02 / Three hard gates</p>
+        <h2>先拿到三张“通行证”，再谈出发。</h2>
+        <div class="ll-gate-grid">
+          <article>
+            <span>GATE 01</span>
+            <h3>异地还车书面确认</h3>
+            <p>订单必须明确：拉萨取车、兰州还车、车型允许进入阿里和青藏公路、异地费、里程限制、救援范围、门店营业时间。</p>
+            <b>没有书面确认 = 不取车</b>
+          </article>
+          <article>
+            <span>GATE 02</span>
+            <h3>G109 实时可通</h3>
+            <p>10 月 4 日在那曲再次核对施工、保通便道、临时交通管制、唐古拉降雪和大车拥堵；导航“有路线”不等于当天可按时通过。</p>
+            <b>无法确认全线 = 不离开那曲</b>
+          </article>
+          <article>
+            <span>GATE 03</span>
+            <h3>10 月 7 日返沪席位</h3>
+            <p>铁路主选必须由 12306 明确显示当晚抵沪；同步持有可退改航班兜底。国庆候补不能视为已经买到车票。</p>
+            <b>没有确定席位 = 提前结束阿里段</b>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <LhasaLanzhouRouteOverview />
+
+    <section id="ll-return" class="ll-section ll-return">
+      <div class="ll-wrap ll-split">
+        <div>
+          <p class="ll-eyebrow">03 / Return to Shanghai</p>
+          <div class="ll-rule"></div>
+        </div>
+        <div>
+          <h2>铁路优先，夜车只奖励提前到达。</h2>
+          <p>最终车次需等 12306 放票确认。下面是预订逻辑，不是对未来时刻表的承诺。</p>
+        </div>
+      </div>
+      <div class="ll-wrap ll-return-grid">
+        <article class="is-primary">
+          <span>PLAN A · 主方案</span>
+          <h3>10.07 兰州西 → 上海虹桥</h3>
+          <p>10 月 6 日住西宁，7 日 05:00 前出发，优先在兰州西站附近完成异地还车，选择约 10:00—11:30 发车且当晚抵沪的直达高铁。</p>
+          <ul>
+            <li>09:30 前完成还车和进站</li>
+            <li>只选 12306 显示当日抵沪车次</li>
+            <li>还车门店必须提前书面确认</li>
+          </ul>
+        </article>
+        <article>
+          <span>PLAN B · 提前到达才启用</span>
+          <h3>10.06 晚 兰州 → 上海火车 / 卧铺</h3>
+          <p>10 月 6 日晚上火车或夜间卧铺，只在傍晚前已经抵达兰州、还车完毕且人车状态正常时使用。不得从格尔木为了赶固定夜车连续超时驾驶。</p>
+          <ul>
+            <li>先还车，再进站</li>
+            <li>卧铺抵沪时间必须不晚于 10 月 7 日</li>
+            <li>没提前到兰州就自动放弃</li>
+          </ul>
+        </article>
+        <article>
+          <span>PLAN C · 兜底</span>
+          <h3>兰州 / 西宁 → 上海航班</h3>
+          <p>高铁无票、G109 延误或 10 月 6 日未到西宁时启用。航班应可退改，并优先选择当天仍有后续备降或改签空间的时段。</p>
+          <ul>
+            <li>铁路票与航班不同时做不可退订单</li>
+            <li>先保证 10 月 7 日抵沪，再坚持兰州还车</li>
+            <li>保存租车公司跨城处置方案</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="ll-cuts" class="ll-section ll-cuts">
+      <div class="ll-wrap">
+        <p class="ll-eyebrow">04 / Deliberate cuts</p>
+        <h2>删掉四个诱惑，换回一条返程线。</h2>
+        <div class="ll-cut-list">
+          <div><b>珠峰支线</b><span>删除</span><p>至少增加半天至一天，且景区摆渡和天气不确定；本方案直接由日喀则经拉孜去萨嘎。</p></div>
+          <div><b>班公湖</b><span>删除</span><p>把狮泉河半天留给轮胎、刹车、机油和北线物资，不带未知车况进入羌塘。</p></div>
+          <div><b>茶卡盐湖入园</b><span>删除</span><p>10 月 6 日只做补给换班；国庆排队会破坏西宁落脚和次日高铁衔接。</p></div>
+          <div><b>青海湖绕行</b><span>删除</span><p>只从主线远观，不进入景区。当天唯一目标是白天到西宁并整理还车材料。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="ll-gear" class="ll-section ll-field">
+      <div class="ll-wrap ll-split">
+        <div>
+          <p class="ll-eyebrow">05 / Vehicle & field kit</p>
+          <div class="ll-rule"></div>
+        </div>
+        <div>
+          <h2>这辆车要同时适应阿里、羌塘和青藏公路。</h2>
+        </div>
+      </div>
+      <div class="ll-wrap ll-check-grid">
+        <article>
+          <h3>车辆硬件</h3>
+          <ul>
+            <li>四驱或高通过性燃油 SUV</li>
+            <li>全尺寸备胎，出发前拆装一次</li>
+            <li>防滑链、拖车绳、搭电线</li>
+            <li>充气泵、补胎工具、胎压表</li>
+            <li>刹车、油液、电瓶书面验车记录</li>
+          </ul>
+        </article>
+        <article>
+          <h3>高原与通信</h3>
+          <ul>
+            <li>车载氧气 + 每人便携氧气</li>
+            <li>离线高德地图与纸质节点表</li>
+            <li>卫星通信设备优先</li>
+            <li>每人至少一天应急水粮</li>
+            <li>司机每 90—120 分钟强制换班</li>
+          </ul>
+        </article>
+        <article>
+          <h3>秋季冰雪</h3>
+          <ul>
+            <li>羽绒、冲锋衣、手套和保暖帽</li>
+            <li>防冻玻璃水和低温启动检查</li>
+            <li>头灯、反光背心、警示三角牌</li>
+            <li>不在暗冰、风雪中抢行山口</li>
+            <li>不以夜驾弥补白天延误</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="ll-permit" class="ll-section ll-permit">
+      <div class="ll-wrap">
+        <p class="ll-eyebrow">06 / Permit & health</p>
+        <h2>证件先完成，身体每天重新投票。</h2>
+        <div class="ll-permit-grid">
+          <div><b>边境通行证</b><p>目的地至少覆盖普兰、札达、日土、噶尔；建议出发前在户籍地或通过当期官方渠道办妥，携带电子与纸质备份。</p></div>
+          <div><b>随车文件</b><p>身份证、驾驶证、租车合同、跨省异地还车确认、车辆行驶证复印件、保险与救援电话。</p></div>
+          <div><b>高反红线</b><p>意识异常、走路不稳、静息呼吸困难、反复呕吐或血氧持续异常：停止上升、就医或下降。</p></div>
+          <div><b>驾驶红线</b><p>头晕、视线异常、四肢无力立即换人；连续两名司机状态不佳，就近住宿而不是继续推进。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="ll-budget" class="ll-section ll-budget">
+      <div class="ll-wrap ll-budget__grid">
+        <div>
+          <p class="ll-eyebrow">07 / Budget</p>
+          <h2>四人一车，先把跨省还车费问清楚。</h2>
+          <p>国庆租车、异地还车和返沪交通波动很大，以下仅用于准备资金，不是报价。</p>
+        </div>
+        <div class="ll-budget__number">
+          <span>每人建议准备</span>
+          <strong>¥15,000—22,000</strong>
+          <small>四人均摊 · 含 20% 应急金</small>
+        </div>
+      </div>
+      <div class="ll-wrap ll-costs">
+        <div><b>往返交通</b><span>¥4,000—7,000 / 人</span></div>
+        <div><b>食宿门票</b><span>¥4,000—6,000 / 人</span></div>
+        <div><b>租车燃油路费</b><span>¥5,000—8,000 / 人</span></div>
+        <div><b>应急与改签</b><span>¥2,000—4,000 / 人</span></div>
+      </div>
+      <div class="ll-wrap ll-booking-order">
+        <b>预订顺序</b>
+        <ol>
+          <li>确认至少两名司机与健康情况</li>
+          <li>拿到拉萨—兰州异地还车书面报价</li>
+          <li>办理边境通行证</li>
+          <li>锁定 10 月 7 日返沪铁路票与可退改兜底</li>
+          <li>按日预订沿途县城住宿</li>
+          <li>出发前 24 小时复核道路、天气与景区</li>
+        </ol>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ll-endnote">
+    <div class="ll-wrap">
+      <strong>向东，按时回家。</strong>
+      <p>本路线是行前决策工具，不替代实时导航、交警通告、景区通知、租车合同、12306 与医生建议。任何一天都允许提前结束行程。</p>
+      <a href="#route-top">返回顶部 ↑</a>
+    </div>
+  </footer>
+</article>
+
+<script>
+  document.querySelector<HTMLElement>("[data-print-guide]")?.addEventListener("click", () => window.print());
+</script>
+
+<style is:global>
+  .lhasa-lanzhou-guide {
+    --ink: #17201d;
+    --paper: #eee7d7;
+    --paper-deep: #d9cfb9;
+    --muted: #62665f;
+    --line: rgba(23, 32, 29, .22);
+    --red: #a8422f;
+    --teal: #176d73;
+    --gold: #d19a33;
+    --serif: "Instrument Serif", "Noto Serif SC", Georgia, serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    position: relative;
+    overflow: clip;
+    color: var(--ink);
+    background: var(--paper);
+    font-family: "Noto Sans SC", system-ui, sans-serif;
+  }
+  .lhasa-lanzhou-guide *, .lhasa-lanzhou-guide *::before, .lhasa-lanzhou-guide *::after { box-sizing: border-box; }
+  .ll-wrap { width: min(1180px, calc(100% - 40px)); margin-inline: auto; }
+  .ll-hero { position: relative; min-height: 720px; color: #f3eddf; background: #17201d; }
+  .ll-contours { position: absolute; inset: 0; opacity: .2; background: repeating-radial-gradient(ellipse at 75% 90%, transparent 0 38px, rgba(240, 230, 207, .35) 40px 41px, transparent 43px 78px); transform: rotate(-4deg) scale(1.15); }
+  .ll-hero::after { content: "EASTBOUND"; position: absolute; right: -24px; bottom: -44px; color: rgba(238, 231, 215, .04); font: 700 clamp(7rem, 20vw, 18rem)/.8 var(--mono); letter-spacing: -.08em; }
+  .ll-hero__topline { position: relative; z-index: 1; display: flex; justify-content: space-between; gap: 24px; padding-top: 28px; font: .68rem/1.4 var(--mono); letter-spacing: .12em; text-transform: uppercase; }
+  .ll-hero__topline a { color: inherit; text-decoration: none; }
+  .ll-hero__body { position: relative; z-index: 1; padding: 112px 0 72px; }
+  .ll-kicker, .ll-eyebrow { margin: 0; color: var(--red); font: 700 .7rem/1.4 var(--mono); letter-spacing: .18em; text-transform: uppercase; }
+  .ll-hero .ll-kicker { color: #e3ad46; }
+  .ll-hero h1 { max-width: 940px; margin: 22px 0 0; font: 400 clamp(4.5rem, 10vw, 8.6rem)/.82 var(--serif); letter-spacing: -.045em; }
+  .ll-hero h1 span { color: #e3ad46; }
+  .ll-lead { max-width: 760px; margin: 34px 0 0; color: #c7c4b9; font-size: 1.05rem; line-height: 1.9; }
+  .ll-hero__facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 900px; margin-top: 46px; border-block: 1px solid rgba(255,255,255,.22); }
+  .ll-hero__facts div { padding: 20px 26px 20px 0; }
+  .ll-hero__facts b { display: block; color: #f3eddf; font: 600 1.12rem/1.2 var(--mono); }
+  .ll-hero__facts span { display: block; margin-top: 7px; color: #969b93; font-size: .75rem; }
+  .ll-route-ribbon { display: flex; flex-wrap: wrap; gap: 8px 12px; margin-top: 34px; color: #bebfb5; font: .72rem/1.5 var(--mono); }
+  .ll-route-ribbon span { display: inline-flex; gap: 12px; align-items: center; }
+  .ll-route-ribbon b { font-weight: 500; }
+  .ll-route-ribbon i { color: #d19a33; font-style: normal; }
+  .ll-nav { position: sticky; top: 3.5rem; z-index: 30; overflow-x: auto; color: #e8e4d6; background: rgba(23,32,29,.96); border-top: 1px solid rgba(255,255,255,.1); backdrop-filter: blur(14px); }
+  .ll-nav .ll-wrap { display: flex; align-items: center; gap: 26px; min-height: 54px; white-space: nowrap; }
+  .ll-nav a, .ll-nav button { color: inherit; border: 0; background: none; font: 600 .72rem/1 var(--mono); text-decoration: none; cursor: pointer; }
+  .ll-nav button { margin-left: auto; padding: 9px 13px; color: #17201d; background: #e3ad46; }
+  .ll-section { padding: 96px 0; scroll-margin-top: 7rem; border-top: 1px solid var(--line); }
+  .ll-split { display: grid; grid-template-columns: 25% 1fr; gap: 9%; }
+  .ll-rule { width: 52px; height: 1px; margin-top: 16px; background: var(--red); }
+  .ll-section h2 { max-width: 850px; margin: 0; font: 400 clamp(2.8rem, 6vw, 5.4rem)/.95 var(--serif); letter-spacing: -.035em; }
+  .ll-section h2 + p, .ll-split > div:last-child > p { max-width: 760px; margin: 24px 0 0; color: var(--muted); line-height: 1.9; }
+  .ll-metrics { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 62px; border: 1px solid var(--line); }
+  .ll-metrics div { padding: 24px; border-right: 1px solid var(--line); }
+  .ll-metrics div:last-child { border-right: 0; }
+  .ll-metrics strong { display: block; color: var(--red); font: 400 2.2rem/1 var(--serif); }
+  .ll-metrics span { display: block; margin-top: 8px; color: var(--muted); font-size: .76rem; }
+  .ll-warning { display: grid; grid-template-columns: 160px 1fr; gap: 26px; margin-top: 22px; padding: 22px 25px; color: #f3eddf; background: var(--red); }
+  .ll-warning b { font: 700 .74rem/1.5 var(--mono); letter-spacing: .12em; }
+  .ll-warning p { margin: 0; line-height: 1.75; }
+  .ll-gates { color: #efe9dc; background: #222b27; }
+  .ll-gates h2 { margin-top: 18px; }
+  .ll-gate-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 54px; background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.16); }
+  .ll-gate-grid article { min-height: 310px; padding: 30px; background: #222b27; }
+  .ll-gate-grid span { color: #e3ad46; font: 700 .7rem/1 var(--mono); letter-spacing: .16em; }
+  .ll-gate-grid h3 { margin: 28px 0 0; font: 400 2rem/1.05 var(--serif); }
+  .ll-gate-grid p { margin: 18px 0 30px; color: #b7bbb4; line-height: 1.8; }
+  .ll-gate-grid b { display: block; margin-top: auto; padding-top: 18px; color: #f1c66e; border-top: 1px solid rgba(255,255,255,.14); font: 600 .78rem/1.5 var(--mono); }
+  .ll-return { background: #d9cfb9; }
+  .ll-return-grid { display: grid; grid-template-columns: 1.15fr 1fr 1fr; gap: 18px; margin-top: 58px; }
+  .ll-return-grid article { padding: 30px; border: 1px solid rgba(23,32,29,.24); background: rgba(238,231,215,.65); }
+  .ll-return-grid article.is-primary { color: #f2eddf; background: #176d73; border-color: #176d73; }
+  .ll-return-grid span { font: 700 .67rem/1 var(--mono); letter-spacing: .13em; text-transform: uppercase; }
+  .ll-return-grid h3 { margin: 22px 0 0; font: 400 2rem/1.05 var(--serif); }
+  .ll-return-grid p { min-height: 132px; margin: 18px 0 0; color: var(--muted); line-height: 1.8; }
+  .ll-return-grid .is-primary p { color: #d0dfdc; }
+  .ll-return-grid ul, .ll-check-grid ul { margin: 24px 0 0; padding: 20px 0 0 18px; border-top: 1px solid currentColor; }
+  .ll-return-grid li, .ll-check-grid li { margin: 8px 0; line-height: 1.55; }
+  .ll-cuts { background: #eee7d7; }
+  .ll-cuts h2 { margin-top: 18px; }
+  .ll-cut-list { margin-top: 48px; border-top: 1px solid var(--line); }
+  .ll-cut-list div { display: grid; grid-template-columns: 170px 70px 1fr; gap: 30px; align-items: start; padding: 24px 0; border-bottom: 1px solid var(--line); }
+  .ll-cut-list b { font: 400 1.55rem/1.2 var(--serif); }
+  .ll-cut-list span { color: var(--red); font: 700 .7rem/1.7 var(--mono); }
+  .ll-cut-list p { margin: 0; color: var(--muted); line-height: 1.75; }
+  .ll-field { background: #d9cfb9; }
+  .ll-check-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 58px; }
+  .ll-check-grid article { padding: 28px; border: 1px solid var(--line); background: rgba(238,231,215,.5); }
+  .ll-check-grid h3 { margin: 0; font: 400 1.7rem/1.1 var(--serif); }
+  .ll-check-grid ul { color: var(--muted); }
+  .ll-permit { color: #efe9dc; background: #17201d; }
+  .ll-permit h2 { margin-top: 18px; }
+  .ll-permit-grid { display: grid; grid-template-columns: repeat(2, 1fr); margin-top: 52px; border: 1px solid rgba(255,255,255,.16); }
+  .ll-permit-grid div { padding: 28px; border-right: 1px solid rgba(255,255,255,.16); border-bottom: 1px solid rgba(255,255,255,.16); }
+  .ll-permit-grid div:nth-child(2n) { border-right: 0; }
+  .ll-permit-grid div:nth-last-child(-n+2) { border-bottom: 0; }
+  .ll-permit-grid b { color: #e3ad46; font: 600 .78rem/1.4 var(--mono); }
+  .ll-permit-grid p { margin: 12px 0 0; color: #b7bbb4; line-height: 1.8; }
+  .ll-budget { background: #eee7d7; }
+  .ll-budget__grid { display: grid; grid-template-columns: 1fr .75fr; gap: 8%; align-items: end; }
+  .ll-budget__grid h2 { margin-top: 18px; }
+  .ll-budget__grid p { max-width: 680px; color: var(--muted); line-height: 1.8; }
+  .ll-budget__number { padding-left: 34px; border-left: 4px solid var(--red); }
+  .ll-budget__number span, .ll-budget__number small { display: block; color: var(--muted); }
+  .ll-budget__number strong { display: block; margin: 10px 0; color: var(--red); font: 400 clamp(2.3rem, 4vw, 4rem)/1 var(--serif); }
+  .ll-costs { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 54px; border: 1px solid var(--line); }
+  .ll-costs div { padding: 22px; border-right: 1px solid var(--line); }
+  .ll-costs div:last-child { border-right: 0; }
+  .ll-costs b, .ll-costs span { display: block; }
+  .ll-costs b { font: 600 .75rem/1.4 var(--mono); }
+  .ll-costs span { margin-top: 10px; color: var(--muted); }
+  .ll-booking-order { display: grid; grid-template-columns: 160px 1fr; gap: 30px; margin-top: 26px; padding: 28px; color: #f1ebdd; background: var(--teal); }
+  .ll-booking-order > b { font: 600 .76rem/1.5 var(--mono); letter-spacing: .12em; }
+  .ll-booking-order ol { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px 38px; margin: 0; padding-left: 22px; }
+  .ll-booking-order li { line-height: 1.6; }
+  .ll-endnote { padding: 52px 0; color: #eee7d7; background: #a8422f; }
+  .ll-endnote .ll-wrap { display: grid; grid-template-columns: 220px 1fr auto; gap: 40px; align-items: start; }
+  .ll-endnote strong { font: 400 2rem/1 var(--serif); }
+  .ll-endnote p { margin: 0; line-height: 1.8; }
+  .ll-endnote a { color: inherit; font: 600 .72rem/1.4 var(--mono); }
+  @media (max-width: 860px) {
+    .ll-hero { min-height: 650px; }
+    .ll-hero__body { padding-top: 90px; }
+    .ll-hero__facts, .ll-metrics { grid-template-columns: repeat(2, 1fr); }
+    .ll-hero__facts div, .ll-metrics div { border-bottom: 1px solid var(--line); }
+    .ll-split, .ll-budget__grid { grid-template-columns: 1fr; gap: 28px; }
+    .ll-gate-grid, .ll-return-grid, .ll-check-grid { grid-template-columns: 1fr; }
+    .ll-return-grid p { min-height: 0; }
+    .ll-costs { grid-template-columns: repeat(2, 1fr); }
+    .ll-costs div:nth-child(2) { border-right: 0; }
+    .ll-costs div:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+    .ll-endnote .ll-wrap { grid-template-columns: 1fr; gap: 18px; }
+  }
+  @media (max-width: 560px) {
+    .ll-wrap { width: min(100% - 28px, 1180px); }
+    .ll-hero__topline span { display: none; }
+    .ll-hero h1 { font-size: 4.1rem; }
+    .ll-hero__facts, .ll-metrics, .ll-permit-grid, .ll-costs { grid-template-columns: 1fr; }
+    .ll-section { padding: 72px 0; }
+    .ll-cut-list div { grid-template-columns: 1fr auto; gap: 8px 18px; }
+    .ll-cut-list p { grid-column: 1 / -1; }
+    .ll-warning, .ll-booking-order { grid-template-columns: 1fr; }
+    .ll-booking-order ol { grid-template-columns: 1fr; }
+    .ll-permit-grid div { border-right: 0; border-bottom: 1px solid rgba(255,255,255,.16) !important; }
+    .ll-permit-grid div:last-child { border-bottom: 0 !important; }
+  }
+  @media print {
+    .ll-nav, .ll-contours, .site-header, .site-footer { display: none !important; }
+    .lhasa-lanzhou-guide { background: white; }
+    .ll-section { break-inside: avoid; padding: 34px 0; }
+  }
+</style>

@@ -23,6 +23,21 @@ export type TravelGuide = {
 export const travelGuides: TravelGuide[] = [
   {
     lang: "zh",
+    slug: "ali-grand-loop-lhasa-lanzhou-2026",
+    href: "/hike/travel/ali-grand-loop-lhasa-lanzhou-2026/",
+    title: "向东 · 阿里大环线至兰州 2026",
+    description: "9 月 26 日拉萨取车，穿越阿里南北线后经那曲、格尔木、西宁至兰州异地还车，高铁返回上海。",
+    date: "2026-08-09",
+    updated: "2026-08-09",
+    location: "西藏 · 青海 · 甘肃",
+    days: 12,
+    distanceKm: 5300,
+    travelMode: "拉萨取车 · 兰州还车",
+    season: "2026 国庆",
+    route: ["拉萨", "日喀则", "萨嘎", "塔钦", "札达", "狮泉河", "改则", "尼玛", "那曲", "格尔木", "西宁", "兰州", "上海"],
+  },
+  {
+    lang: "zh",
     slug: "ali-grand-loop-2026",
     href: "/hike/travel/ali-grand-loop-2026/",
     title: "向西 · 阿里大环线 2026",

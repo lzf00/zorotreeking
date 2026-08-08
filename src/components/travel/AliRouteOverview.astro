@@ -1,19 +1,46 @@
 ---
 import AliRouteMap from "./AliRouteMap";
-import { aliRoadLabels } from "../../data/ali-road-geometry";
+import {
+  aliRoadLabels,
+  aliRoutedDayGeometry,
+  type AliRoadLabel,
+} from "../../data/ali-road-geometry";
 import {
   aliRouteDays,
-  aliRoutePointById,
   aliRoutePoints,
+  type AliRouteDay,
+  type AliRoutePoint,
   type AliRoutePointKind,
 } from "../../data/ali-route";
 
-const mappedPointCount = aliRoutePoints.length;
-const attractionCount = aliRoutePoints.filter((point) =>
+interface Props {
+  points?: AliRoutePoint[];
+  days?: AliRouteDay[];
+  roadLabels?: AliRoadLabel[];
+  routedDayGeometry?: Record<number, [number, number][]>;
+  heading?: string;
+  intro?: string;
+  mapAriaLabel?: string;
+  extraSources?: { href: string; label: string }[];
+}
+
+const {
+  points = aliRoutePoints,
+  days = aliRouteDays,
+  roadLabels = aliRoadLabels,
+  routedDayGeometry = aliRoutedDayGeometry,
+  heading = "把每一天，落到真实地理坐标上。",
+  intro = "这张可缩放底图把实际道路拟合、公路编号、机场、住宿城市、途经县城、景点、观景位和补给点放在同一条时间线上。点击公路牌或地点标记，可查看对应日期、参考海拔、节点作用和坐标说明。",
+  mapAriaLabel,
+  extraSources = [],
+} = Astro.props;
+const pointById = new Map(points.map((point) => [point.id, point]));
+const mappedPointCount = points.length;
+const attractionCount = points.filter((point) =>
   point.kind === "attraction" || point.kind === "viewpoint"
 ).length;
-const overnightCount = aliRoutePoints.filter((point) => point.kind === "overnight").length;
-const approximateCount = aliRoutePoints.filter((point) => point.coordinateNote).length;
+const overnightCount = points.filter((point) => point.kind === "overnight").length;
+const approximateCount = points.filter((point) => point.coordinateNote).length;
 
 const markerKinds: { kind: AliRoutePointKind; label: string }[] = [
   { kind: "airport", label: "机场" },
@@ -33,13 +60,13 @@ const markerKinds: { kind: AliRoutePointKind; label: string }[] = [
         <div class="rule"></div>
       </div>
       <div>
-        <h2>把每一天，落到真实地理坐标上。</h2>
-        <p>这张可缩放底图把实际道路拟合、公路编号、机场、住宿城市、途经县城、景点、观景位和补给点放在同一条时间线上。点击公路牌或地点标记，可查看对应日期、参考海拔、节点作用和坐标说明。</p>
+        <h2>{heading}</h2>
+        <p>{intro}</p>
       </div>
     </div>
 
     <div class="ali-route-atlas__metrics reveal" aria-label="路线地图统计">
-      <div><strong>13</strong><span>逐日路线</span></div>
+      <div><strong>{days.length}</strong><span>逐日路线</span></div>
       <div><strong>{mappedPointCount}</strong><span>地图节点</span></div>
       <div><strong>{attractionCount}</strong><span>景点与观景位</span></div>
       <div><strong>{overnightCount}</strong><span>住宿城市</span></div>
@@ -55,13 +82,20 @@ const markerKinds: { kind: AliRoutePointKind; label: string }[] = [
       </div>
       <div class="ali-route-atlas__roads" aria-label="本线路主要公路">
         <span>本线公路</span>
-        {aliRoadLabels.map((road) => (
+        {roadLabels.map((road) => (
           <span class={`ali-route-road-chip ali-route-road-chip--${road.roadClass}`} title={road.description}>
             <strong>{road.ref}</strong>{road.name}
           </span>
         ))}
       </div>
-      <AliRouteMap client:visible points={aliRoutePoints} days={aliRouteDays} />
+      <AliRouteMap
+        client:visible
+        points={points}
+        days={days}
+        roadLabels={roadLabels}
+        routedDayGeometry={routedDayGeometry}
+        mapAriaLabel={mapAriaLabel}
+      />
       <div class="ali-route-atlas__legend" aria-label="地图图例">
         <span><i class="ali-route-road-swatch"></i>道路拟合</span>
         <span><i class="ali-route-day-swatch"></i>逐日路线</span>
@@ -86,9 +120,9 @@ const markerKinds: { kind: AliRoutePointKind; label: string }[] = [
     </div>
 
     <div class="ali-route-atlas__days">
-      {aliRouteDays.map((day) => {
+      {days.map((day) => {
         const points = day.pointIds
-          .map((id) => aliRoutePointById.get(id))
+          .map((id) => pointById.get(id))
           .filter((point) => point != null);
         const uniquePoints = points.filter((point, index) => points.findIndex((item) => item.id === point.id) === index);
         return (
@@ -142,6 +176,9 @@ const markerKinds: { kind: AliRoutePointKind; label: string }[] = [
       <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap · 道路与底图数据 ↗</a>
       <a href="https://project-osrm.org/" target="_blank" rel="noopener noreferrer">OSRM · 道路拟合引擎 ↗</a>
       <a href="https://lbs.amap.com/api/javascript-api-v2/summary" target="_blank" rel="noopener noreferrer">高德开放平台 · JS API 2.0 ↗</a>
+      {extraSources.map((source) => (
+        <a href={source.href} target="_blank" rel="noopener noreferrer">{source.label} ↗</a>
+      ))}
     </div>
   </div>
 </section>

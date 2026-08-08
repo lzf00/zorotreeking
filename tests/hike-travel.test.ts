@@ -4,6 +4,14 @@ import test from "node:test";
 
 import { aliRoadLabels, aliRoutedDayGeometry } from "../src/data/ali-road-geometry";
 import { aliRouteDays, aliRoutePoints } from "../src/data/ali-route";
+import {
+  lhasaLanzhouRoadLabels,
+  lhasaLanzhouRoutedDayGeometry,
+} from "../src/data/lhasa-lanzhou-road-geometry";
+import {
+  lhasaLanzhouRouteDays,
+  lhasaLanzhouRoutePoints,
+} from "../src/data/lhasa-lanzhou-route";
 import { getTravelGuides } from "../src/data/travel-guides";
 import { wgs84ToGcj02 } from "../src/utils/amap-coordinate";
 
@@ -23,9 +31,11 @@ test("hike section is presented as hiking and travel across navigation and home"
 
 test("Ali travel guide is indexed and keeps its complete standalone roadbook", async () => {
   const guides = getTravelGuides("zh");
-  assert.equal(guides.length, 1);
-  assert.equal(guides[0]?.slug, "ali-grand-loop-2026");
-  assert.equal(guides[0]?.href, "/hike/travel/ali-grand-loop-2026/");
+  assert.equal(guides.length, 2);
+  assert.equal(guides[0]?.slug, "ali-grand-loop-lhasa-lanzhou-2026");
+  assert.equal(guides[0]?.href, "/hike/travel/ali-grand-loop-lhasa-lanzhou-2026/");
+  assert.equal(guides[1]?.slug, "ali-grand-loop-2026");
+  assert.equal(guides[1]?.href, "/hike/travel/ali-grand-loop-2026/");
 
   const html = await readFile(
     new URL("../public/hike/travel/ali-grand-loop-2026/index.html", import.meta.url),
@@ -39,6 +49,26 @@ test("Ali travel guide is indexed and keeps its complete standalone roadbook", a
   assert.match(html, /id="budget"/);
   assert.match(html, /沪公网安备31011502406842号/);
   assert.doesNotMatch(html, /target="_blank" rel="noreferrer"/);
+});
+
+test("Lhasa to Lanzhou guide is integrated into hike and has a dedicated shareable page", async () => {
+  const [section, page, guide] = await Promise.all([
+    readFile(new URL("../src/pages/hike/index.astro", import.meta.url), "utf8"),
+    readFile(
+      new URL("../src/pages/hike/travel/ali-grand-loop-lhasa-lanzhou-2026.astro", import.meta.url),
+      "utf8",
+    ),
+    readFile(new URL("../src/components/travel/LhasaLanzhouGuide.astro", import.meta.url), "utf8"),
+  ]);
+
+  assert.match(section, /ali-grand-loop-lhasa-lanzhou-2026/);
+  assert.match(section, /拉萨取车/);
+  assert.match(page, /<LhasaLanzhouGuide/);
+  assert.match(guide, /09\.26 — 10\.07/);
+  assert.match(guide, /异地还车书面确认/);
+  assert.match(guide, /G109/);
+  assert.match(guide, /10 月 7 日必须抵达上海/);
+  assert.match(guide, /LhasaLanzhouRouteOverview/);
 });
 
 test("the complete Ali roadbook is embedded directly in the hike landing page", async () => {
@@ -164,5 +194,44 @@ test("Ali road overlay follows routed geometry and labels every major highway", 
     assert.ok(road.description.length >= 15);
     assert.ok(road.lat >= 27 && road.lat <= 34);
     assert.ok(road.lng >= 79 && road.lng <= 92);
+  }
+});
+
+test("Lhasa to Lanzhou route covers all 12 dates and the complete eastbound handoff", () => {
+  assert.equal(lhasaLanzhouRouteDays.length, 12);
+  assert.equal(lhasaLanzhouRouteDays[0]?.date, "09.26");
+  assert.equal(lhasaLanzhouRouteDays[1]?.date, "09.27");
+  assert.equal(lhasaLanzhouRouteDays[11]?.date, "10.07");
+  assert.match(lhasaLanzhouRouteDays[9]?.title ?? "", /那曲.*格尔木/);
+  assert.match(lhasaLanzhouRouteDays[10]?.title ?? "", /格尔木.*西宁/);
+  assert.match(lhasaLanzhouRouteDays[11]?.title ?? "", /西宁.*兰州.*上海/);
+
+  const pointIds = new Set(lhasaLanzhouRoutePoints.map((point) => point.id));
+  for (const id of ["lhasa", "shiquanhe", "nagqu", "golmud", "xining", "lanzhou-west", "shanghai"]) {
+    assert.ok(pointIds.has(id), `route is missing ${id}`);
+  }
+  for (const day of lhasaLanzhouRouteDays) {
+    assert.ok(day.pointIds.length >= 2, `D${day.day} needs map nodes`);
+    for (const id of day.pointIds) assert.ok(pointIds.has(id), `D${day.day} references unknown ${id}`);
+  }
+});
+
+test("Lhasa to Lanzhou map uses road-following geometry and labels the Tibet-Qinghai-Gansu roads", () => {
+  assert.deepEqual(
+    Object.keys(lhasaLanzhouRoutedDayGeometry).map(Number),
+    Array.from({ length: 12 }, (_, index) => index + 1),
+  );
+
+  let coordinateCount = 0;
+  for (const day of lhasaLanzhouRouteDays) {
+    const coordinates = lhasaLanzhouRoutedDayGeometry[day.day];
+    assert.ok(coordinates && coordinates.length >= 2, `D${day.day} needs routed geometry`);
+    coordinateCount += coordinates.length;
+  }
+  assert.ok(coordinateCount >= 350, "eastbound road overlay needs enough points to show road curvature");
+
+  const roadRefs = new Set(lhasaLanzhouRoadLabels.map((road) => road.ref));
+  for (const expected of ["G219", "G317", "G109", "G6"]) {
+    assert.ok(roadRefs.has(expected), `${expected} needs a visible road shield`);
   }
 });

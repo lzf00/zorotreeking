@@ -1,0 +1,45 @@
+---
+import AliRouteOverview from "./AliRouteOverview.astro";
+import {
+  lhasaLanzhouRoadLabels,
+  lhasaLanzhouRoutedDayGeometry,
+} from "../../data/lhasa-lanzhou-road-geometry";
+import {
+  lhasaLanzhouRouteDays,
+  lhasaLanzhouRoutePoints,
+} from "../../data/lhasa-lanzhou-route";
+
+const extraSources = [
+  {
+    href: "https://www.geermu.gov.cn/messageInfo?id=ff8080819d6c3934019e902eaa56025b",
+    label: "格尔木市交通运输局 · G109 施工与临时管制",
+  },
+  {
+    href: "https://nq.xzdw.gov.cn/xwzx_675/nqyw/202604/t20260410_662577.html",
+    label: "那曲市 G109 协调办 · 施工绕行公告",
+  },
+  {
+    href: "https://lasa.zuche.com/",
+    label: "神州租车 · 拉萨直营网点",
+  },
+  {
+    href: "https://lanzhou.zuche.com/",
+    label: "神州租车 · 兰州西站等网点",
+  },
+  {
+    href: "https://www.12306.cn/index/",
+    label: "中国铁路 12306 · 最终车次与放票查询",
+  },
+];
+---
+
+<AliRouteOverview
+  points={lhasaLanzhouRoutePoints}
+  days={lhasaLanzhouRouteDays}
+  roadLabels={lhasaLanzhouRoadLabels}
+  routedDayGeometry={lhasaLanzhouRoutedDayGeometry}
+  heading="从阿里北线，一路下降到兰州西站。"
+  intro="地图把拉萨取车、阿里南北线、那曲转入 G109、格尔木与西宁下降段、兰州异地还车以及铁路返沪放在同一条时间轴上。金色线按道路与铁路走向拟合；点击公路牌或地点，可查看日期、海拔、补给和退出条件。"
+  mapAriaLabel="拉萨取车经阿里大环线、那曲、格尔木、西宁至兰州还车并乘高铁返回上海的真实底图"
+  extraSources={extraSources}
+/>
