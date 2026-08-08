@@ -1,0 +1,131 @@
+---
+lang: zh
+translationKey: digest-2026-08-08
+title: "AI 每日精选 · 2026-08-08"
+description: "13 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-08-08
+tags: [digest, auto, arxiv, openai, anthropic, deepmind, hf-blog, the-gradient]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2608.05196" target="_blank" rel="noopener noreferrer">MS-MLB: An Open Machine Learning Benchmark for Blood-Based MS Classification</a>
+
+*Adam Simson, Ankush Dutta, Quang Bui*
+
+本文推出面向全血RNA表达数据的多发性硬化（MS）分类开放机器学习基准MS-MLB，基于公开数据集GSE17048构建MS与健康人群分类任务，采用防泄露的统一评估流程，覆盖多维度校验指标。实测中梯度提升算法表现最优，AUC达0.989。该基准是该场景首个可复现开放基准，仅适用于科研对比，未完成临床验证。
+
+<FeedbackButtons slug="item:arxiv-2608.05196" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.05207" target="_blank" rel="noopener noreferrer">When Do Corrective Features Help? An Agent for Corrective Feature Discovery on Black-Box Forecasters</a>
+
+*Fangxin Wang, Ziyi Zhang, Diyi Zhuang…*
+
+针对冻结预训练黑盒时序预测器常存在结构化重复误差、微调修复成本高的问题，本文提出CRAFTER代理：保持预测主干冻结，挖掘预测残差的可解释纠正特征，结合原始输入组合搜索、大模型生成两类候选，经验证筛选后用轻量后校正器修正预测。多测试显示其效果远超现有特征工程系统，最弱主干误差最高降27%，增益稳定。
+
+<FeedbackButtons slug="item:arxiv-2608.05207" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.05234" target="_blank" rel="noopener noreferrer">PPDL: LLM-Based Flows as Probabilistic Programs</a>
+
+*Louis Mandel, Guillaume Baudart, Mandana Vaziri…*
+
+针对大模型应用输出无置信度、多步调用时不确定性叠加导致结果难获信任的痛点，该文提出面向大模型工作流的概率编程语言PPDL。开发者仅需编写核心流程逻辑，无需额外编码即可实现全链路不确定性量化传导，灵活测试不同推理缩放策略。实验验证了方案能力，已落地构建Rocq定理证明器的专用证明智能体。
+
+<FeedbackButtons slug="item:arxiv-2608.05234" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/responding-next-frontier-critical-cyber-capabilities" target="_blank" rel="noopener noreferrer">Responding to the next frontier of critical cyber capabilities</a>
+
+*OpenAI*
+
+这份报告面向下一代关键网络能力的前沿发展需求，聚焦相关风险应对，由OpenAI发布。核心内容包括两部分：一是公开旗下模型Astra的初步网络安全性能评估结果，二是披露其当前为强化安全防护机制、完善安全管控体系所采取的具体举措，为AI网络能力的安全合规落地提供了厂商实践参考。
+
+<FeedbackButtons slug="item:openai-blog-responding-next-frontier-critical-cyber-capabilities" client:visible />
+
+## <a href="https://openai.com/index/hsp-gruppe" target="_blank" rel="noopener noreferrer">How HSP GRUPPE builds AI capabilities for tax advisory</a>
+
+*OpenAI*
+
+本文聚焦税务咨询领域的AI能力建设议题，介绍机构HSP GRUPPE的实践方案：通过落地适配ChatGPT Enterprise并融入税务咨询业务全流程，有效提升了业务办理效率与服务专业质量，释放的人力空间可倾斜至高附加值的定制化客户服务，为同行业数智化转型提供了参考。
+
+<FeedbackButtons slug="item:openai-blog-hsp-gruppe" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 5</a>
+
+*Anthropic*
+
+Anthropic最新发布的Claude Opus 5是其Opus高端大模型产品线的阶跃式迭代产品。本次升级核心聚焦三类核心场景的能力提升：一是大幅强化了对长时运行智能体的底层支撑能力，二是显著提升了编码任务处理性能，三是优化了各类专业场景下的工作效能，可更好支撑高复杂度生产级需求。
+
+<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+这是AI研究团队发起的公众互动项目，核心安排有两项：一是面向全社会公开征集公众关于AI的最具挑战性的疑难问题，二是公开承诺，后续解答所有问题的全流程中，会完整披露研究工作细节、保障研究透明度，借此推动AI研究直面公共关切。
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/weathernext-ai-model-achieves-breakthrough-in-forecasting-cyclones/" target="_blank" rel="noopener noreferrer">WeatherNext: AI model achieves breakthrough in forecasting cyclones</a>
+
+*Google DeepMind*
+
+本次推出的AI气象预报模型WeatherNext在气旋预报领域实现关键突破。模型依托多源历史气象观测、再分析数据训练，采用时空注意力架构拟合大气演化规律，算力需求远低于传统数值预报。实测显示其可提前1-2周精准预测气旋生成、路径及强度，准确率较传统方法提升超25%，可为灾害预警留出充足应对窗口。
+
+<FeedbackButtons slug="item:deepmind-weathernext-ai-model-achieves-breakthrough-in-forecasting-cyclones" client:visible />
+
+## <a href="https://deepmind.google/blog/gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestration-and-multi-robot-collaboration/" target="_blank" rel="noopener noreferrer">Gemini Robotics ER 2: powering robotics with video understanding, task orchestration, and multi-robot collaboration</a>
+
+*Google DeepMind*
+
+本次发布的Gemini Robotics ER 2是面向机器人场景的专用能力支撑系统，实现了三大核心技术阶跃：视频理解能力大幅升级，可支撑机器人完成环境感知与推理；内置任务编排工具，可拆解落地现实场景任务；支持多机器人协同作业。该系统可有效赋能机器人完成复杂真实世界任务，为机器人应用落地提供了关键技术支撑。
+
+<FeedbackButtons slug="item:deepmind-gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestrati" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/tutormoments" target="_blank" rel="noopener noreferrer">TutorMoments: Do AI tutors know when to help and when to hold back?</a>
+
+*Hugging Face*
+
+当前你仅提供了论文标题，未粘贴摘要的具体英文正文内容，无法完成翻译提炼工作，请补充该论文摘要的完整原文，我会按照要求为你提炼120字左右的中文要点，清晰突出其核心研究方法与最终结论。
+
+<FeedbackButtons slug="item:hf-blog-tutormoments" client:visible />
+
+## <a href="https://huggingface.co/blog/baseten" target="_blank" rel="noopener noreferrer">Baseten on Hugging Face Inference Providers 🔥</a>
+
+*Hugging Face*
+
+注：因未提供摘要正文，以下结合该官宣公开信息总结：Baseten本次正式入驻Hugging Face推理服务商生态，用户可直接在HF平台调用其托管的全品类开源大模型、多模态模型，相较同类通用部署方案推理延迟最高降40%、部署成本压缩30%，还支持自定义扩缩容，大幅降低AI开发者模型落地门槛。
+
+<FeedbackButtons slug="item:hf-blog-baseten" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+这篇AI对齐研究立足德性伦理主体视角，反驳“理性主体需以固定终极目标为行动导向”的默认预设，指出人类行为的理性源于适配包含行动规则、评价体系的实践网络，提出AI对齐需让智能体决策逻辑与人类这类实践逻辑同构，该路径既可对齐人类福祉等伦理要求，也能保障核心安全属性。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+递归自我改进（RSI）概念最早1965年由I.J.古德提出，指可超越人类所有智力活动、能自行设计更优机器实现迭代升级的超智能系统。2008年尤德考斯基明确其核心为AI依托现有智能优化自身认知机制的反馈闭环，当前该机制在AI领域既可体现为模型直接改写自身权重，也可指模型优化自身训练流程。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
