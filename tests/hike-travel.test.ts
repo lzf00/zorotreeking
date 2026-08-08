@@ -68,6 +68,7 @@ test("Lhasa to Lanzhou guide is integrated into hike and has a dedicated shareab
   assert.match(guide, /异地还车书面确认/);
   assert.match(guide, /G109/);
   assert.match(guide, /10 月 7 日必须抵达上海/);
+  assert.match(guide, /10 月 6 日晚发、10 月 7 日前抵沪的高铁/);
   assert.match(guide, /LhasaLanzhouRouteOverview/);
 });
 
