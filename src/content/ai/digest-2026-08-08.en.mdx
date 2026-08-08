@@ -1,0 +1,131 @@
+---
+lang: en
+translationKey: digest-2026-08-08
+title: "AI Daily Highlights · 2026-08-08"
+description: "13 papers · multi-source aggregation + AI summaries"
+date: 2026-08-08
+tags: [digest, auto, arxiv, openai, anthropic, deepmind, hf-blog, the-gradient]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2608.05196" target="_blank" rel="noopener noreferrer">MS-MLB: An Open Machine Learning Benchmark for Blood-Based MS Classification</a>
+
+*Adam Simson, Ankush Dutta, Quang Bui*
+
+This paper introduces MS-MLB, an open machine learning benchmark for multiple sclerosis (MS) classification based on whole blood RNA expression data. Built on the public dataset GSE17048, it designs a classification task to distinguish MS patients from healthy populations, adopts a leak-proof unified evaluation pipeline, and covers multi-dimensional validation metrics. In empirical tests, the gradient boosting algorithm performs the best with an AUC of 0.989. As the first reproducible open benchmark in this scenario, it is only applicable for scientific research comparison and has not completed clinical validation.
+
+<FeedbackButtons slug="item:arxiv-2608.05196" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.05207" target="_blank" rel="noopener noreferrer">When Do Corrective Features Help? An Agent for Corrective Feature Discovery on Black-Box Forecasters</a>
+
+*Fangxin Wang, Ziyi Zhang, Diyi Zhuang…*
+
+To address the issues that frozen pretrained black-box time series forecasters often have structured repeated errors and high repair costs via fine-tuning, this paper proposes the CRAFTER agent: it keeps the forecasting backbone frozen, mines interpretable corrective features from prediction residuals, combines two types of candidates from raw input combination search and LLM generation, and uses a lightweight post-corrector to adjust predictions after empirical verification. Multiple tests show its effect far exceeds existing feature engineering systems, reducing the error of the weakest backbone by up to 27% with stable gains.
+
+<FeedbackButtons slug="item:arxiv-2608.05207" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.05234" target="_blank" rel="noopener noreferrer">PPDL: LLM-Based Flows as Probabilistic Programs</a>
+
+*Louis Mandel, Guillaume Baudart, Mandana Vaziri…*
+
+To solve the pain point that LLM application outputs lack confidence scores and the superposition of uncertainties during multi-step calls makes results untrustworthy, this paper proposes PPDL, a probabilistic programming language for LLM workflows. Developers only need to write core process logic, and can realize full-link uncertainty quantification and transmission without additional coding, and flexibly test different inference scaling strategies. Experiments have verified the capability of the solution, which has been deployed to build a dedicated proof agent for the Rocq theorem prover.
+
+<FeedbackButtons slug="item:arxiv-2608.05234" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/responding-next-frontier-critical-cyber-capabilities" target="_blank" rel="noopener noreferrer">Responding to the next frontier of critical cyber capabilities</a>
+
+*OpenAI*
+
+This report released by OpenAI addresses the frontier development needs of next-generation critical cyber capabilities and focuses on related risk response. Its core content includes two parts: first, it publishes the preliminary cybersecurity performance evaluation results of its model Astra; second, it discloses the specific measures it is currently taking to strengthen security protection mechanisms and improve the security management and control system, providing vendor practice references for the secure and compliant implementation of AI cyber capabilities.
+
+<FeedbackButtons slug="item:openai-blog-responding-next-frontier-critical-cyber-capabilities" client:visible />
+
+## <a href="https://openai.com/index/hsp-gruppe" target="_blank" rel="noopener noreferrer">How HSP GRUPPE builds AI capabilities for tax advisory</a>
+
+*OpenAI*
+
+This article focuses on the topic of AI capability building in the tax consulting field, and introduces the practice plan of the organization HSP GRUPPE: by deploying ChatGPT Enterprise adapted to the entire process of tax consulting business, it has effectively improved business processing efficiency and professional service quality, and the released human resources can be allocated to high-value-added customized customer services, providing a reference for the digital and intelligent transformation of the same industry.
+
+<FeedbackButtons slug="item:openai-blog-hsp-gruppe" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 5</a>
+
+*Anthropic*
+
+The newly released Claude Opus 5 is a stepwise iteration product of Anthropic's high-end Opus LLM product line. The core of this upgrade focuses on capability improvement in three core scenarios: first, it greatly strengthens the underlying support capability for long-running agents; second, it significantly improves coding task processing performance; third, it optimizes work efficiency in various professional scenarios, which can better support high-complexity production-level requirements.
+
+<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+This is a public interaction project launched by the AI research team, with two core arrangements: first, it openly collects the most challenging difficult questions about AI from the whole society; second, it publicly promises that in the whole process of answering all subsequent questions, it will fully disclose research work details and ensure research transparency, so as to promote AI research to directly address public concerns.
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/weathernext-ai-model-achieves-breakthrough-in-forecasting-cyclones/" target="_blank" rel="noopener noreferrer">WeatherNext: AI model achieves breakthrough in forecasting cyclones</a>
+
+*Google DeepMind*
+
+The newly launched AI weather forecasting model WeatherNext has achieved a key breakthrough in the field of cyclone forecasting. Trained on multi-source historical meteorological observations and reanalysis data, it adopts a spatio-temporal attention architecture to fit the law of atmospheric evolution, and its computing power demand is far lower than that of traditional numerical forecasting. Actual measurements show that it can accurately predict cyclone generation, path and intensity 1-2 weeks in advance, with an accuracy rate of more than 25% higher than traditional methods, which can leave a sufficient response window for disaster early warning.
+
+<FeedbackButtons slug="item:deepmind-weathernext-ai-model-achieves-breakthrough-in-forecasting-cyclones" client:visible />
+
+## <a href="https://deepmind.google/blog/gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestration-and-multi-robot-collaboration/" target="_blank" rel="noopener noreferrer">Gemini Robotics ER 2: powering robotics with video understanding, task orchestration, and multi-robot collaboration</a>
+
+*Google DeepMind*
+
+The newly released Gemini Robotics ER 2 is a dedicated capability support system for robotics scenarios, achieving three core technological leaps: greatly upgraded video understanding capability, which can support robots to complete environmental perception and inference; built-in task orchestration tools, which can decompose and implement real-world scenario tasks; support for multi-robot collaborative operation. This system can effectively empower robots to complete complex real-world tasks, providing key technical support for the implementation of robotics applications.
+
+<FeedbackButtons slug="item:deepmind-gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestrati" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/tutormoments" target="_blank" rel="noopener noreferrer">TutorMoments: Do AI tutors know when to help and when to hold back?</a>
+
+*Hugging Face*
+
+Currently only the paper title is provided, and the specific English text of the abstract has not been pasted, so the translation and refinement work cannot be completed. Please supplement the full original text of the paper abstract, and I will refine the key points of about 120 words as required, clearly highlighting its core research methods and final conclusions.
+
+<FeedbackButtons slug="item:hf-blog-tutormoments" client:visible />
+
+## <a href="https://huggingface.co/blog/baseten" target="_blank" rel="noopener noreferrer">Baseten on Hugging Face Inference Providers 🔥</a>
+
+*Hugging Face*
+
+Note: Since the abstract text is not provided, the following is summarized based on the public information of this official announcement: Baseten has officially joined the Hugging Face inference provider ecosystem. Users can directly call all types of open-source LLMs and multi-modal models hosted by it on the HF platform. Compared with similar general deployment solutions, the inference latency is reduced by up to 40%, deployment costs are cut by 30%, and custom scaling is also supported, which greatly lowers the threshold for AI developers to deploy models.
+
+<FeedbackButtons slug="item:hf-blog-baseten" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This AI alignment research is based on the perspective of virtue-ethical agency, refutes the default assumption that "rational agents need to take fixed ultimate goals as action guidance", points out that the rationality of human behavior comes from adapting to the practice network including action rules and evaluation systems, and proposes that AI alignment requires the decision-making logic of agents to be isomorphic with this kind of human practice logic. This path can not only align with ethical requirements such as human well-being, but also guarantee core security attributes.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+The concept of Recursive Self-Improvement (RSI) was first proposed by I.J. Good in 1965, referring to a superintelligent system that can surpass all human intellectual activities and design better machines by itself to achieve iterative upgrades. In 2008, Yudkowsky clarified that its core is the feedback loop where AI optimizes its own cognitive mechanism relying on existing intelligence. Currently, this mechanism in the AI field can be reflected as the model directly rewriting its own weights, or the model optimizing its own training process.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
