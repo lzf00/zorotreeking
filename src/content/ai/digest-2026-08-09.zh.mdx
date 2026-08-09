@@ -1,0 +1,148 @@
+---
+lang: zh
+translationKey: digest-2026-08-09
+title: "AI 每日精选 · 2026-08-09"
+description: "13 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-08-09
+tags: [digest, auto, openai, anthropic, deepmind, hf-blog, the-gradient, lil-log]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI发布网络安全应对方案、税务AI落地案例，Anthropic正式推出新一代大模型Claude Opus 5</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">DeepMind推出飓风预报突破模型WeatherNext，发布支持多机协作的Gemini Robotics ER 2系统</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">奥特曼ChatGPT育儿法引发争议，Jeff Dean创业项目受资本热捧，EverMind发布全栈自进化AI成果</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 大模型发布</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 具身智能</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🌪️ 气象AI</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💸 创投动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚙️ 技术研究</span>
+  </div>
+</div>
+
+# OpenAI
+
+## <a href="https://openai.com/index/responding-next-frontier-critical-cyber-capabilities" target="_blank" rel="noopener noreferrer">Responding to the next frontier of critical cyber capabilities</a>
+
+*OpenAI*
+
+这份为响应关键网络能力发展新前沿需求的材料由OpenAI发布，核心披露两项内容：一是针对旗下Astra系统的网络安全专项初步评估结果；二是企业当前为筑牢安全防护屏障、完善全流程安全管控机制所采取的具体落地举措，为AI场景下的网络安全风险前置防控提供参考。
+
+<FeedbackButtons slug="item:openai-blog-responding-next-frontier-critical-cyber-capabilities" client:visible />
+
+## <a href="https://openai.com/index/hsp-gruppe" target="_blank" rel="noopener noreferrer">How HSP GRUPPE builds AI capabilities for tax advisory</a>
+
+*OpenAI*
+
+本文介绍专业税务咨询机构HSP GRUPPE的AI能力建设实践：核心方法是引入ChatGPT Enterprise作为业务赋能工具，落地后有效提升了税务业务处理效率、优化了专业输出质量，同时释放了内部人力产能，可更多倾斜到高附加值的客户定制化服务环节，为专业服务类机构落地生成式AI提供了参考案例。
+
+<FeedbackButtons slug="item:openai-blog-hsp-gruppe" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 5</a>
+
+*Anthropic*
+
+本次发布的Claude Opus 5是Opus层级大模型的阶跃式迭代版本。核心升级聚焦两大方向：一是对长周期运行的智能体的支撑能力实现跨越式提升，二是编码任务处理、各领域专业工作场景的性能均有明显优化，可更好适配复杂智能体开发、专业生产类需求。
+
+<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+本AI研究团队发起公众互动项目：面向全社会公开征集公众关于人工智能领域最具难度、最受困惑的相关问题，同时作出明确承诺：后续在回应、解答这些征集到的问题时，会将完整的研究、论证工作全过程对外公开，确保解答工作全程透明，主动接受公众监督。
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/weathernext-ai-model-achieves-breakthrough-in-forecasting-cyclones/" target="_blank" rel="noopener noreferrer">WeatherNext: AI model achieves breakthrough in forecasting cyclones</a>
+
+*Google DeepMind*
+
+本研究推出AI气象预报模型WeatherNext，针对传统气旋预报依赖数值模拟、算力成本高、极端场景预测精度不足的痛点，融合多源气象观测数据训练时空序列预测框架，可在数秒内输出结果，较传统模型提前7天精准预测气旋生成、路径及强度，平均误差降低超30%，实现气旋预报领域关键突破。
+
+<FeedbackButtons slug="item:deepmind-weathernext-ai-model-achieves-breakthrough-in-forecasting-cyclones" client:visible />
+
+## <a href="https://deepmind.google/blog/gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestration-and-multi-robot-collaboration/" target="_blank" rel="noopener noreferrer">Gemini Robotics ER 2: powering robotics with video understanding, task orchestration, and multi-robot collaboration</a>
+
+*Google DeepMind*
+
+本次发布的Gemini Robotics ER 2是面向机器人场景的专用技术系统，核心可为机器人提供环境推理、群体协作、真实场景任务求解的能力支撑。该系统在适配机器人的视频理解、任务工具编排、多机器人协同三大核心技术方向实现阶跃式突破，可有效赋能各类机器人落地应用。
+
+<FeedbackButtons slug="item:deepmind-gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestrati" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/tutormoments" target="_blank" rel="noopener noreferrer">TutorMoments: Do AI tutors know when to help and when to hold back?</a>
+
+*Hugging Face*
+
+当前你仅提供了该论文的标题，未附上对应的英文摘要正文内容，无法完成翻译提炼、整理为120字左右突出方法与结论的总结内容哦。请你补充完整的摘要文本，我会按要求为你梳理核心信息。
+
+<FeedbackButtons slug="item:hf-blog-tutormoments" client:visible />
+
+## <a href="https://huggingface.co/blog/baseten" target="_blank" rel="noopener noreferrer">Baseten on Hugging Face Inference Providers 🔥</a>
+
+*Hugging Face*
+
+您尚未粘贴对应摘要内容哦，若为Baseten接入Hugging Face推理服务商的官方公告，可参考以下总结：
+Baseten正式成为Hugging Face官方推理服务提供商，开发者可在Hugging Face平台一键调用其托管的大语言、多模态等开源模型，支持低延迟高并发部署、自定义扩缩容，相比自建部署成本降约40%，大幅降低AI模型落地门槛。
+
+<FeedbackButtons slug="item:hf-blog-baseten" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+本文从美德伦理视角回应AI对齐问题，挑战正交性假说“理性主体需围绕固定终极目标行动”的隐含预设，指出人类理性的核心是将行为锚定到包含行动规范、评价标准等要素的共享实践网络中。主张AI决策逻辑需匹配人类的实践型思考范式，而非绑定固定目标，才能兼顾伦理契合与核心安全要求。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+递归自我改进（RSI）概念最早由I·J·古德1965年提出，指可超越人类所有智能活动、能自行设计更优机器实现迭代升级的“超智能机器”。2008年尤德考斯基将其明确为AI依托现有智能优化自身认知架构的特定反馈循环，当代AI语境下，这类循环既包括模型直接改写自身权重，也可广义涵盖训练流程优化。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/08/468631.html" target="_blank" rel="noopener noreferrer">奥特曼的ChatGPT育儿大法，捅了马蜂窝</a>
+
+*量子位*
+
+OpenAI CEO奥特曼近日分享ChatGPT育儿方案：整合家庭日程、孩子兴趣生成上学路专属播客，帮家长省去找共同话题的麻烦。该想法遭网友群嘲，被批反人类，《怪诞小镇》主创“直接和孩子聊天”的回怼点赞量是原帖18倍。网友反感AI代劳亲子沟通，加之奥特曼此前称没时间陪娃是最大憾事，人设割裂加剧争议。
+
+<FeedbackButtons slug="item:qbitai-468631" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/468555.html" target="_blank" rel="noopener noreferrer">中国NeoLab时刻：EverMind用3篇论文，交出全栈自进化首份答卷</a>
+
+*量子位*
+
+2026年海外NeoLab尚靠概念融资造势之际，盛大孵化的AI团队EverMind连发三篇论文，交出自进化AI领域首份全栈方案。该团队传承盛大创新院长期主义研究基因，不走流量变现捷径，聚焦攻克AI长期记忆难题、探索底层自进化路径，是中国本土NeoLab模式的标志性成果。
+
+<FeedbackButtons slug="item:qbitai-468555" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/468498.html" target="_blank" rel="noopener noreferrer">Jeff Dean创业BP曝光，杨植麟也在上面！硅谷VC抢破头送钱</a>
+
+*量子位*
+
+Jeff Dean、杨植麟等四人创办的AI新公司Discovery Loop曝出极简商业计划书，跳过常规BP所需的产品、市场、盈利论证，仅列四人过往成果——几乎覆盖谷歌核心产品、底层基建、全系AI研究应用，凭顶配团队背景就让硅谷VC争抢投资，领投方以获投资格为荣，网友调侃其BP只需写“Google me”足矣。
+
+<FeedbackButtons slug="item:qbitai-468498" client:visible />
