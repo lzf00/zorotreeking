@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import "leaflet/dist/leaflet.css";
 
 import {
   aliRoadLabels,
@@ -355,7 +356,6 @@ async function renderOpenStreetMap(
   routedDayGeometry: Record<number, [number, number][]>,
 ) {
   const L = await import("leaflet");
-  await import("leaflet/dist/leaflet.css");
   const { pointById, dayNumbersByPoint } = getRouteIndexes(points, days);
 
   const map = L.map(element, {

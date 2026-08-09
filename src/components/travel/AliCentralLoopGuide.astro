@@ -1,0 +1,170 @@
+---
+import AliCentralRouteOverview from "./AliCentralRouteOverview.astro";
+
+interface Props {
+  variant: "lanzhou" | "chengdu";
+}
+
+const { variant } = Astro.props;
+const isChengdu = variant === "chengdu";
+const route = isChengdu
+  ? ["拉萨", "日喀则", "萨嘎", "塔钦", "札达", "狮泉河", "霍尔", "亚热", "仁多", "措勤", "文布南村", "尼玛", "那曲", "拉萨", "成都", "上海"]
+  : ["拉萨", "日喀则", "萨嘎", "塔钦", "札达", "狮泉河", "霍尔", "亚热", "仁多", "措勤", "文布南村", "尼玛", "那曲", "格尔木", "西宁", "兰州", "上海"];
+const facts = isChengdu
+  ? [["≈ 4,300 KM", "自驾里程 + 空中转场"], ["10.05", "拉萨还车后抵成都"], ["10.07", "必须抵达上海"]]
+  : [["≈ 5,650 KM", "全程高强度自驾"], ["3 DAYS", "亚热至尼玛中线段"], ["10.07", "必须抵达上海"]];
+---
+
+<article class="central-guide" data-central-guide={variant}>
+  <header class="cg-hero" id="central-top">
+    <div class="cg-topography" aria-hidden="true"></div>
+    <div class="cg-wrap cg-topline">
+      <a href="/hike/">← 返回徒步旅行板块</a>
+      <span>NEW ROUTE · ORIGINAL ROUTES PRESERVED</span>
+    </div>
+    <div class="cg-wrap cg-hero__body">
+      <p class="cg-kicker">Ali central line · 09.26—10.07</p>
+      <h1>从狮泉河<br /><em>折入湖群</em></h1>
+      <p class="cg-lead">狮泉河掉头，经霍尔、亚热、仁多、措勤、文布南村抵达尼玛；{isChengdu ? "再由那曲返回拉萨还车、转场成都。" : "再接那曲、格尔木、西宁与兰州还车。"}10 月 7 日必须抵达上海。</p>
+      <div class="cg-facts">
+        {facts.map(([value, label]) => <div><b>{value}</b><span>{label}</span></div>)}
+      </div>
+      <div class="cg-route" aria-label="主要路线">
+        {route.map((place, index) => <span><b>{place}</b>{index < route.length - 1 && <i>→</i>}</span>)}
+      </div>
+    </div>
+  </header>
+
+  <nav class="cg-nav" aria-label="本攻略章节">
+    <div class="cg-wrap">
+      <a href="#cg-verdict">规划结论</a>
+      <a href="#route-atlas">逐日地图</a>
+      <a href="#cg-compression">时间压缩</a>
+      <a href="#cg-return">返沪衔接</a>
+      <a href="#cg-gates">中线门槛</a>
+      <button type="button" data-print-central>打印 / PDF</button>
+    </div>
+  </nav>
+
+  <main>
+    <section id="cg-verdict" class="cg-section cg-verdict">
+      <div class="cg-wrap cg-split">
+        <div><p class="cg-eyebrow">01 / Route verdict</p><div class="cg-rule"></div></div>
+        <div>
+          <h2>线路可以这样改，<br />代价是中线没有容错。</h2>
+          <p>亚热—仁多—措勤—文布南村不是普通景区串联，而是三天连续的偏远高原转场。为了不覆盖旧路线，也不把 10 月 7 日截止日向后推，本方案把原来的“塔钦到札达、札达到狮泉河”合并成 9 月 30 日一个超长日。</p>
+        </div>
+      </div>
+      <div class="cg-wrap cg-metrics">
+        <div><strong>5</strong><span>新增中线关键节点</span></div>
+        <div><strong>3</strong><span>必须逐日确认路况</span></div>
+        <div><strong>2+</strong><span>熟练司机最低配置</span></div>
+        <div><strong>0</strong><span>可用于追进度的夜驾</span></div>
+      </div>
+      <aside class="cg-alert"><div class="cg-wrap"><b>路线边界</b><p>地图线路是道路网络的规划拟合，不是实时可通证明。单车、无卫星通信、无全尺寸备胎，或不能确认亚热住宿与中线路况时，不进入这条中线。</p></div></aside>
+    </section>
+
+    <AliCentralRouteOverview variant={variant} />
+
+    <section id="cg-compression" class="cg-section cg-compression">
+      <div class="cg-wrap cg-split">
+        <div><p class="cg-eyebrow">02 / Time trade-off</p><div class="cg-rule"></div></div>
+        <div><h2>省出来的一天，<br />全部交给仁多与措勤。</h2></div>
+      </div>
+      <div class="cg-wrap cg-trade-grid">
+        <article><span>09.30 · D05</span><h3>塔钦 → 札达 → 狮泉河</h3><p>约 560 km，11—13 小时。古格与托林寺按开放时间二选一；14:30 前必须离开札达，不用夜驾补打卡。</p></article>
+        <article><span>10.01—10.03 · D06—D08</span><h3>霍尔 → 亚热 → 仁多 → 措勤 → 文布南村 → 尼玛</h3><p>三天约 1,160 km。每一天都以前方住宿、燃油、天气和道路有人确认作为出发条件。</p></article>
+        <article><span>10.04 · D09</span><h3>尼玛 → 那曲</h3><p>接回原计划时间轴。色林措只在天气与车时同时允许时短停，不能用这一天补偿前面的中线延误。</p></article>
+      </div>
+    </section>
+
+    <section id="cg-return" class="cg-section cg-return">
+      <div class="cg-wrap cg-split">
+        <div><p class="cg-eyebrow">03 / Return strategy</p><div class="cg-rule"></div></div>
+        <div>
+          <h2>{isChengdu ? "成都保留一日缓冲，上海不留侥幸。" : "兰州仍是还车终点，上海仍是硬截止。"}</h2>
+          <p>{isChengdu ? "10 月 5 日那曲沿 G109 返回拉萨，完成同城还车后飞往成都；10 月 6 日作为恢复与改签缓冲，10 月 7 日高铁或航班返沪。" : "10 月 5 日那曲到格尔木、6 日格尔木到西宁、7 日清晨去兰州还车，返沪车次必须由 12306 明确显示当日抵达。"}</p>
+        </div>
+      </div>
+      <div class="cg-wrap cg-return-card">
+        {isChengdu ? (
+          <>
+            <div><span>主方案</span><h3>那曲 → 拉萨还车 → 成都</h3><p>把车辆归还到取车城市，避免未确认的跨省异地还车，也避免青藏东缘连续山路赶时间。</p></div>
+            <div class="is-warning"><span>不采纳为 12 天主方案</span><h3>那曲直接自驾成都</h3><p>那曲直驾成都至少增加 3 天；约 1,800 km 的高海拔与山地道路不能压缩为两天，还要预留还车和返沪。若坚持自驾，整个截止日应顺延到约 10 月 10 日以后。</p></div>
+          </>
+        ) : (
+          <>
+            <div><span>主方案</span><h3>10.07 兰州西 → 上海</h3><p>05:00 前从西宁出发，09:30 前完成兰州还车，只购买明确显示 10 月 7 日当晚抵沪的车次。</p></div>
+            <div><span>提前抵达奖励</span><h3>10.06 晚 兰州 → 上海</h3><p>仅在已经抵达兰州并完成还车时，改乘当晚高铁或卧铺；不能从格尔木连续夜驾去追固定车次。</p></div>
+          </>
+        )}
+      </div>
+    </section>
+
+    <section id="cg-gates" class="cg-section cg-gates">
+      <div class="cg-wrap">
+        <p class="cg-eyebrow">04 / Go or no-go</p>
+        <h2>四个条件，缺一个就换回北线。</h2>
+        <div class="cg-gate-grid">
+          <article><b>01</b><h3>路况有人确认</h3><p>出发前 24 小时和当天清晨分别联系沿线住宿、当地交通管理或实际通过车辆。</p></article>
+          <article><b>02</b><h3>车辆适合非铺装</h3><p>高通过性四驱、全尺寸备胎、防滑链、拖车绳、充气泵、补胎工具和底盘防护齐全。</p></article>
+          <article><b>03</b><h3>通信与结伴</h3><p>至少两名司机，优先两车同行；单车必须配卫星通信并把每日节点交给外部联系人。</p></article>
+          <article><b>04</b><h3>健康每日重投票</h3><p>静息气喘、意识异常、走路不稳或持续呕吐立即停止前进，下降或就医优先。</p></article>
+        </div>
+        <div class="cg-old-routes"><b>原路线未覆盖</b><a href="/hike/travel/ali-grand-loop-lhasa-lanzhou-2026/">查看原兰州北线版 ↗</a><a href="/hike/travel/ali-grand-loop-2026/">查看原拉萨闭环版 ↗</a></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="cg-footer"><div class="cg-wrap"><strong>穿湖，但不赌路。</strong><p>本页是行前决策工具，不替代实时导航、交警通告、景区通知、租车合同、12306 或医生建议。</p><a href="#central-top">返回顶部 ↑</a></div></footer>
+</article>
+
+<script>
+  document.querySelector<HTMLElement>("[data-print-central]")?.addEventListener("click", () => window.print());
+</script>
+
+<style is:global>
+  .central-guide { --ink:#16201d; --paper:#eee8d9; --muted:#626960; --line:rgba(22,32,29,.2); --red:#a94430; --teal:#126b70; --gold:#d7a33f; --serif:"Instrument Serif","Noto Serif SC",Georgia,serif; --mono:"JetBrains Mono",ui-monospace,monospace; overflow:clip; color:var(--ink); background:var(--paper); font-family:"Noto Sans SC",system-ui,sans-serif; }
+  .central-guide *, .central-guide *::before, .central-guide *::after { box-sizing:border-box; }
+  .cg-wrap, .central-guide .wrap { width:min(1180px,calc(100% - 40px)); margin-inline:auto; }
+  .central-guide .eyebrow { color:var(--red); font:700 .7rem/1.4 var(--mono); letter-spacing:.18em; text-transform:uppercase; }
+  .central-guide .rule { width:52px; height:1px; margin-top:16px; background:var(--red); }
+  .cg-hero { position:relative; min-height:760px; color:#f5efdf; background:#15231f; }
+  .cg-topography { position:absolute; inset:-20%; opacity:.26; background:repeating-radial-gradient(ellipse at 35% 65%,transparent 0 34px,rgba(235,220,184,.38) 35px 36px,transparent 38px 76px); transform:rotate(8deg); }
+  .cg-hero::after { content:"CENTRAL"; position:absolute; right:-2vw; bottom:-2rem; color:rgba(255,255,255,.035); font:700 clamp(8rem,22vw,20rem)/.8 var(--mono); letter-spacing:-.1em; }
+  .cg-topline { position:relative; z-index:1; display:flex; justify-content:space-between; padding-top:28px; font:.67rem/1.4 var(--mono); letter-spacing:.13em; }
+  .cg-topline a { color:inherit; text-decoration:none; }
+  .cg-hero__body { position:relative; z-index:1; padding:112px 0 68px; }
+  .cg-kicker,.cg-eyebrow { margin:0; color:var(--gold); font:700 .7rem/1.4 var(--mono); letter-spacing:.18em; text-transform:uppercase; }
+  .cg-hero h1 { max-width:960px; margin:22px 0 0; font:400 clamp(5rem,11vw,9rem)/.78 var(--serif); letter-spacing:-.05em; }
+  .cg-hero h1 em { color:var(--gold); font-style:normal; }
+  .cg-lead { max-width:820px; margin:38px 0 0; color:#c4c8bd; font-size:1.06rem; line-height:1.9; }
+  .cg-facts { display:grid; grid-template-columns:repeat(3,1fr); max-width:920px; margin-top:46px; border-block:1px solid rgba(255,255,255,.2); }
+  .cg-facts div { padding:20px 24px 20px 0; }
+  .cg-facts b,.cg-facts span { display:block; }
+  .cg-facts b { font:600 1.05rem/1.2 var(--mono); }
+  .cg-facts span { margin-top:7px; color:#929a91; font-size:.75rem; }
+  .cg-route { display:flex; flex-wrap:wrap; gap:8px 12px; margin-top:34px; color:#bec2b8; font:.72rem/1.5 var(--mono); }
+  .cg-route span { display:inline-flex; gap:12px; align-items:center; }
+  .cg-route b { font-weight:500; }.cg-route i { color:var(--gold); font-style:normal; }
+  .cg-nav { position:sticky; top:3.5rem; z-index:30; overflow-x:auto; color:#ece5d7; background:rgba(21,35,31,.96); backdrop-filter:blur(14px); }
+  .cg-nav .cg-wrap { display:flex; align-items:center; gap:26px; min-height:54px; white-space:nowrap; }
+  .cg-nav a,.cg-nav button { color:inherit; border:0; background:none; font:600 .72rem/1 var(--mono); text-decoration:none; cursor:pointer; }
+  .cg-nav button { margin-left:auto; padding:10px 13px; color:var(--ink); background:var(--gold); }
+  .cg-section { padding:96px 0; scroll-margin-top:7rem; border-top:1px solid var(--line); }
+  .cg-split { display:grid; grid-template-columns:25% 1fr; gap:9%; }
+  .cg-rule { width:52px; height:1px; margin-top:16px; background:var(--red); }
+  .cg-section h2 { max-width:880px; margin:0; font:400 clamp(2.8rem,6vw,5.4rem)/.94 var(--serif); letter-spacing:-.04em; }
+  .cg-split > div:last-child > p { max-width:800px; margin:25px 0 0; color:var(--muted); line-height:1.9; }
+  .cg-metrics { display:grid; grid-template-columns:repeat(4,1fr); margin-top:58px; border:1px solid var(--line); }
+  .cg-metrics div { padding:24px; border-right:1px solid var(--line); }.cg-metrics div:last-child{border:0}
+  .cg-metrics strong,.cg-metrics span { display:block; }.cg-metrics strong{color:var(--red);font:400 2.3rem/1 var(--serif)}.cg-metrics span{margin-top:8px;color:var(--muted);font-size:.76rem}
+  .cg-alert { margin-top:24px; color:#f7efe0; background:var(--red); }.cg-alert .cg-wrap{display:grid;grid-template-columns:170px 1fr;gap:24px;padding-block:22px}.cg-alert b{font:.75rem/1.5 var(--mono);letter-spacing:.1em}.cg-alert p{margin:0;line-height:1.8}
+  .cg-compression { background:#dcd2bd; }.cg-trade-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:58px}.cg-trade-grid article{min-height:300px;padding:30px;border:1px solid var(--line);background:rgba(245,239,224,.55)}.cg-trade-grid span{color:var(--red);font:700 .7rem/1 var(--mono);letter-spacing:.12em}.cg-trade-grid h3{margin:28px 0 0;font:400 2rem/1.05 var(--serif)}.cg-trade-grid p{margin:20px 0 0;color:var(--muted);line-height:1.8}
+  .cg-return { background:#eee8d9; }.cg-return-card{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:58px}.cg-return-card>div{padding:32px;border:1px solid var(--line);background:#e1d7c2}.cg-return-card .is-warning{color:#f2ecde;background:#a94430}.cg-return-card span{font:700 .7rem/1 var(--mono);letter-spacing:.14em}.cg-return-card h3{margin:22px 0 0;font:400 2.2rem/1.05 var(--serif)}.cg-return-card p{margin:18px 0 0;line-height:1.85}.cg-return-card>div:not(.is-warning) p{color:var(--muted)}
+  .cg-gates { color:#f1eadc; background:#16201d; }.cg-gates h2{margin-top:18px}.cg-gate-grid{display:grid;grid-template-columns:repeat(4,1fr);margin-top:52px;border:1px solid rgba(255,255,255,.17)}.cg-gate-grid article{padding:28px;border-right:1px solid rgba(255,255,255,.17)}.cg-gate-grid article:last-child{border:0}.cg-gate-grid b{color:var(--gold);font:700 .72rem/1 var(--mono)}.cg-gate-grid h3{margin:24px 0 0;font:400 1.65rem/1.1 var(--serif)}.cg-gate-grid p{margin:16px 0 0;color:#b6bcb3;line-height:1.8}.cg-old-routes{display:flex;flex-wrap:wrap;gap:18px 30px;margin-top:24px;padding:22px 26px;color:var(--ink);background:var(--gold)}.cg-old-routes b{margin-right:auto}.cg-old-routes a{color:inherit}
+  .cg-footer{padding:52px 0;color:#f1eadc;background:var(--teal)}.cg-footer .cg-wrap{display:grid;grid-template-columns:240px 1fr auto;gap:36px}.cg-footer strong{font:400 2rem/1 var(--serif)}.cg-footer p{margin:0;line-height:1.8}.cg-footer a{color:inherit;font:.72rem/1.4 var(--mono)}
+  @media(max-width:860px){.cg-hero{min-height:680px}.cg-split,.cg-footer .cg-wrap{grid-template-columns:1fr;gap:28px}.cg-facts,.cg-metrics{grid-template-columns:repeat(2,1fr)}.cg-trade-grid,.cg-gate-grid{grid-template-columns:1fr}.cg-gate-grid article{border-right:0;border-bottom:1px solid rgba(255,255,255,.17)}.cg-return-card{grid-template-columns:1fr}}
+  @media(max-width:560px){.cg-wrap,.central-guide .wrap{width:min(100% - 28px,1180px)}.cg-topline span{display:none}.cg-hero h1{font-size:4.25rem}.cg-facts,.cg-metrics{grid-template-columns:1fr}.cg-section{padding:72px 0}.cg-alert .cg-wrap{grid-template-columns:1fr}.cg-nav{top:3.25rem}}
+  @media print{.cg-nav,.cg-topography,.site-header,.site-footer{display:none!important}.cg-section{padding:32px 0;break-inside:avoid}.central-guide{background:white}}
+</style>

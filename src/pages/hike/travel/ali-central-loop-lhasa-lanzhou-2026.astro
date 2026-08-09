@@ -1,0 +1,22 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import AliCentralLoopGuide from "@/components/travel/AliCentralLoopGuide.astro";
+
+const title = "阿里中线 · 拉萨取车至兰州还车 2026";
+const description = "2026 年 9 月 26 日至 10 月 7 日，从拉萨取车，经狮泉河、霍尔、亚热、仁多、措勤、文布南村、尼玛与那曲，再到格尔木、西宁和兰州还车返沪的 12 天独立路书。";
+const stops = ["拉萨", "日喀则", "萨嘎", "塔钦", "札达", "狮泉河", "霍尔", "亚热", "仁多", "措勤", "文布南村", "尼玛", "那曲", "格尔木", "西宁", "兰州", "上海"];
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "TouristTrip",
+  name: title,
+  description,
+  touristType: "高原自驾旅行者",
+  itinerary: { "@type": "ItemList", itemListElement: stops.map((name, index) => ({ "@type": "ListItem", position: index + 1, name })) },
+};
+---
+
+<BaseLayout title={title} description={description}>
+  <Fragment slot="head"><script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)}></script></Fragment>
+  <AliCentralLoopGuide variant="lanzhou" />
+</BaseLayout>
+

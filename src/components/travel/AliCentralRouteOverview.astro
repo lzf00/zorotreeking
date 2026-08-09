@@ -1,0 +1,56 @@
+---
+import AliRouteOverview from "./AliRouteOverview.astro";
+import {
+  aliCentralChengduRoadLabels,
+  aliCentralChengduRoutedDayGeometry,
+  aliCentralLanzhouRoadLabels,
+  aliCentralLanzhouRoutedDayGeometry,
+} from "../../data/ali-central-road-geometry";
+import {
+  aliCentralChengduRouteDays,
+  aliCentralChengduRoutePoints,
+  aliCentralLanzhouRouteDays,
+  aliCentralLanzhouRoutePoints,
+} from "../../data/ali-central-route";
+
+interface Props {
+  variant: "lanzhou" | "chengdu";
+}
+
+const { variant } = Astro.props;
+const isChengdu = variant === "chengdu";
+const extraSources = [
+  {
+    href: "https://jtt.xizang.gov.cn/xxgk/fdzdgknr/rdjyzxtadf/202212/t20221216_333658.html",
+    label: "西藏自治区交通运输厅 · 措勤至亚热公路建设资料",
+  },
+  {
+    href: "https://jtt.xizang.gov.cn/xxgk/fdzdgknr/zbgg/202402/t20240229_405394.html",
+    label: "西藏自治区交通运输厅 · 雄巴至亚热公路养护资料",
+  },
+  {
+    href: "https://nq.xzdw.gov.cn/jrnq/202104/t20210427_183460.html",
+    label: "那曲市 · 文布南村与当惹雍措位置资料",
+  },
+  {
+    href: "https://www.12306.cn/index/",
+    label: "中国铁路 12306 · 最终车次与放票查询",
+  },
+];
+---
+
+<AliRouteOverview
+  points={isChengdu ? aliCentralChengduRoutePoints : aliCentralLanzhouRoutePoints}
+  days={isChengdu ? aliCentralChengduRouteDays : aliCentralLanzhouRouteDays}
+  roadLabels={isChengdu ? aliCentralChengduRoadLabels : aliCentralLanzhouRoadLabels}
+  routedDayGeometry={isChengdu ? aliCentralChengduRoutedDayGeometry : aliCentralLanzhouRoutedDayGeometry}
+  heading={isChengdu ? "穿过当惹雍措，再从那曲折回成都。" : "穿过当惹雍措，再从那曲一路向东。"}
+  intro={isChengdu
+    ? "地图把狮泉河掉头、霍尔、亚热、仁多、措勤、文布南村、尼玛和那曲放入同一条中线时间轴；那曲之后返回拉萨还车并转场成都。道路段按道路网络拟合，航班与铁路段只表示衔接方向。"
+    : "地图把狮泉河掉头、霍尔、亚热、仁多、措勤、文布南村、尼玛和那曲放入同一条中线时间轴；那曲之后接回 G109、格尔木、西宁和兰州。道路拟合不替代出发当天的通行确认。"}
+  mapAriaLabel={isChengdu
+    ? "拉萨取车经阿里中线到那曲，再返回拉萨还车转场成都并返回上海的交互地图"
+    : "拉萨取车经阿里中线、那曲、格尔木、西宁到兰州还车并返回上海的交互地图"}
+  extraSources={extraSources}
+/>
+

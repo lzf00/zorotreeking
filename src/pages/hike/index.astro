@@ -9,6 +9,10 @@ const lang = "zh" as const;
 const t = useTranslations(lang);
 const guides = getTravelGuides(lang);
 const featuredGuide = guides.find((guide) => guide.slug === "ali-grand-loop-lhasa-lanzhou-2026") ?? guides[0];
+const centralGuides = guides.filter((guide) => [
+  "ali-central-loop-lhasa-lanzhou-2026",
+  "ali-central-loop-nagqu-chengdu-2026",
+].includes(guide.slug));
 const hikes = (await getCollection("hike", (p) => p.data.lang === lang && !p.data.draft))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
@@ -56,12 +60,26 @@ const diffColor = {
       </div>
       <span class="text-sm text-[var(--text-tertiary)]">{guides.length} 篇</span>
     </div>
+    <div class="mb-6 grid gap-4 lg:grid-cols-2">
+      {centralGuides.map((guide, index) => (
+        <a href={guide.href} class="group relative overflow-hidden rounded-[1.4rem] border border-[var(--border)] bg-[#eee8d9] p-6 text-[#17201d] transition-transform hover:-translate-y-1 sm:p-8">
+          <div class="absolute right-5 top-4 font-serif text-7xl leading-none text-[#a94430]/10">0{index + 1}</div>
+          <div class="relative font-mono text-[10px] uppercase tracking-[0.18em] text-[#a94430]">New · Ali central line</div>
+          <h3 class="relative mt-5 max-w-md font-serif text-3xl leading-none tracking-[-.03em] sm:text-4xl">{guide.title}</h3>
+          <p class="relative mt-5 max-w-xl text-sm leading-7 text-[#60665f]">{guide.description}</p>
+          <div class="relative mt-6 flex flex-wrap gap-4 border-t border-[#17201d]/15 pt-5 font-mono text-[10px] text-[#60665f]">
+            <span>{guide.days} DAYS</span><span>≈ {guide.distanceKm.toLocaleString()} KM</span><span>{guide.travelMode}</span>
+          </div>
+          <span class="relative mt-6 inline-flex items-center gap-2 font-mono text-xs text-[#a94430] transition-transform group-hover:translate-x-1">打开独立路书 →</span>
+        </a>
+      ))}
+    </div>
     {featuredGuide && (
       <a href={featuredGuide.href} class="group relative block overflow-hidden rounded-[1.75rem] border border-[var(--border)] bg-[#17201d] p-7 text-[#f2eddf] shadow-[0_24px_80px_rgba(23,32,29,.14)] sm:p-10">
         <div class="pointer-events-none absolute -right-20 -top-24 h-80 w-80 rounded-full border-[40px] border-[#d19a33]/10"></div>
         <div class="relative grid gap-10 lg:grid-cols-[1fr_280px] lg:items-end">
           <div>
-            <div class="font-mono text-[10px] uppercase tracking-[0.2em] text-[#e3ad46]">Latest roadbook · 09.26—10.07</div>
+            <div class="font-mono text-[10px] uppercase tracking-[0.2em] text-[#e3ad46]">Original eastbound roadbook · 09.26—10.07</div>
             <h3 class="mt-5 max-w-3xl font-serif text-4xl leading-[.95] tracking-[-.035em] sm:text-6xl">拉萨取车，穿越阿里，<br />从兰州坐高铁回上海。</h3>
             <p class="mt-6 max-w-2xl text-sm leading-7 text-[#b9beb6] sm:text-base">{featuredGuide.description}</p>
             <div class="mt-7 flex flex-wrap gap-x-5 gap-y-2 font-mono text-[11px] text-[#d5d7d0]">

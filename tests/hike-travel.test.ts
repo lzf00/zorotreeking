@@ -5,6 +5,18 @@ import test from "node:test";
 import { aliRoadLabels, aliRoutedDayGeometry } from "../src/data/ali-road-geometry";
 import { aliRouteDays, aliRoutePoints } from "../src/data/ali-route";
 import {
+  aliCentralChengduRoadLabels,
+  aliCentralChengduRoutedDayGeometry,
+  aliCentralLanzhouRoadLabels,
+  aliCentralLanzhouRoutedDayGeometry,
+} from "../src/data/ali-central-road-geometry";
+import {
+  aliCentralChengduRouteDays,
+  aliCentralChengduRoutePoints,
+  aliCentralLanzhouRouteDays,
+  aliCentralLanzhouRoutePoints,
+} from "../src/data/ali-central-route";
+import {
   lhasaLanzhouRoadLabels,
   lhasaLanzhouRoutedDayGeometry,
 } from "../src/data/lhasa-lanzhou-road-geometry";
@@ -31,11 +43,11 @@ test("hike section is presented as hiking and travel across navigation and home"
 
 test("Ali travel guide is indexed and keeps its complete standalone roadbook", async () => {
   const guides = getTravelGuides("zh");
-  assert.equal(guides.length, 2);
-  assert.equal(guides[0]?.slug, "ali-grand-loop-lhasa-lanzhou-2026");
-  assert.equal(guides[0]?.href, "/hike/travel/ali-grand-loop-lhasa-lanzhou-2026/");
-  assert.equal(guides[1]?.slug, "ali-grand-loop-2026");
-  assert.equal(guides[1]?.href, "/hike/travel/ali-grand-loop-2026/");
+  assert.equal(guides.length, 4);
+  assert.equal(guides[0]?.slug, "ali-central-loop-nagqu-chengdu-2026");
+  assert.equal(guides[1]?.slug, "ali-central-loop-lhasa-lanzhou-2026");
+  assert.ok(guides.some((guide) => guide.slug === "ali-grand-loop-lhasa-lanzhou-2026"));
+  assert.ok(guides.some((guide) => guide.slug === "ali-grand-loop-2026"));
 
   const html = await readFile(
     new URL("../public/hike/travel/ali-grand-loop-2026/index.html", import.meta.url),
@@ -49,6 +61,31 @@ test("Ali travel guide is indexed and keeps its complete standalone roadbook", a
   assert.match(html, /id="budget"/);
   assert.match(html, /沪公网安备31011502406842号/);
   assert.doesNotMatch(html, /target="_blank" rel="noreferrer"/);
+});
+
+test("two independent Ali central-line guides are indexed without replacing earlier routes", async () => {
+  const [section, lanzhouPage, chengduPage, component] = await Promise.all([
+    readFile(new URL("../src/pages/hike/index.astro", import.meta.url), "utf8"),
+    readFile(
+      new URL("../src/pages/hike/travel/ali-central-loop-lhasa-lanzhou-2026.astro", import.meta.url),
+      "utf8",
+    ),
+    readFile(
+      new URL("../src/pages/hike/travel/ali-central-loop-nagqu-chengdu-2026.astro", import.meta.url),
+      "utf8",
+    ),
+    readFile(new URL("../src/components/travel/AliCentralLoopGuide.astro", import.meta.url), "utf8"),
+  ]);
+
+  assert.match(section, /ali-central-loop-lhasa-lanzhou-2026/);
+  assert.match(section, /ali-central-loop-nagqu-chengdu-2026/);
+  assert.match(section, /ali-grand-loop-lhasa-lanzhou-2026/);
+  assert.match(section, /ali-grand-loop-2026/);
+  assert.match(lanzhouPage, /variant="lanzhou"/);
+  assert.match(chengduPage, /variant="chengdu"/);
+  assert.match(component, /狮泉河.*霍尔.*亚热.*仁多.*措勤.*文布南村.*尼玛/s);
+  assert.match(component, /那曲直驾成都至少增加 3 天/);
+  assert.match(component, /10 月 7 日必须抵达上海/);
 });
 
 test("Lhasa to Lanzhou guide is integrated into hike and has a dedicated shareable page", async () => {
@@ -95,6 +132,8 @@ test("the complete Ali roadbook is embedded directly in the hike landing page", 
   assert.match(atlas, /道路拟合/);
   assert.match(atlas, /逐日道路、节点、补给与退出条件/);
   assert.match(map, /tile\.openstreetmap\.org/);
+  assert.match(map, /^import "leaflet\/dist\/leaflet\.css";/m);
+  assert.doesNotMatch(map, /await import\("leaflet\/dist\/leaflet\.css"\)/);
   assert.match(map, /OpenStreetMap contributors/);
   assert.match(map, /webapi\.amap\.com\/maps\?v=2\.0/);
   assert.match(map, /PUBLIC_AMAP_JS_KEY/);
@@ -235,4 +274,53 @@ test("Lhasa to Lanzhou map uses road-following geometry and labels the Tibet-Qin
   for (const expected of ["G219", "G317", "G109", "G6"]) {
     assert.ok(roadRefs.has(expected), `${expected} needs a visible road shield`);
   }
+});
+
+test("Ali central-line variants share the requested middle section and keep 12 dated days", () => {
+  for (const days of [aliCentralLanzhouRouteDays, aliCentralChengduRouteDays]) {
+    assert.equal(days.length, 12);
+    assert.deepEqual(days.map((day) => day.day), Array.from({ length: 12 }, (_, index) => index + 1));
+    assert.equal(days[0]?.date, "09.26");
+    assert.equal(days[11]?.date, "10.07");
+    assert.deepEqual(days[5]?.pointIds, ["shiquanhe", "hol", "yare"]);
+    assert.deepEqual(days[6]?.pointIds, ["yare", "rinduo", "coqen"]);
+    assert.deepEqual(days[7]?.pointIds, ["coqen", "wenbu-south", "nyima"]);
+    assert.match(days[4]?.title ?? "", /塔钦.*札达.*狮泉河/);
+    assert.match(days[8]?.title ?? "", /尼玛.*那曲/);
+  }
+
+  assert.match(aliCentralLanzhouRouteDays[9]?.title ?? "", /那曲.*格尔木/);
+  assert.match(aliCentralLanzhouRouteDays[11]?.title ?? "", /兰州.*上海/);
+  assert.match(aliCentralChengduRouteDays[9]?.title ?? "", /那曲.*拉萨.*成都/);
+  assert.match(aliCentralChengduRouteDays[10]?.title ?? "", /成都.*机动/);
+  assert.match(aliCentralChengduRouteDays[11]?.title ?? "", /成都.*上海/);
+
+  const expectedMiddle = ["hol", "yare", "rinduo", "coqen", "wenbu-south"];
+  for (const points of [aliCentralLanzhouRoutePoints, aliCentralChengduRoutePoints]) {
+    const ids = new Set(points.map((point) => point.id));
+    for (const id of expectedMiddle) assert.ok(ids.has(id), `central route is missing ${id}`);
+  }
+  assert.ok(aliCentralLanzhouRoutePoints.some((point) => point.id === "lanzhou-west"));
+  assert.ok(aliCentralChengduRoutePoints.some((point) => point.id === "chengdu"));
+});
+
+test("Ali central-line maps retain road geometry and label the new corridor", () => {
+  for (const [days, geometry] of [
+    [aliCentralLanzhouRouteDays, aliCentralLanzhouRoutedDayGeometry],
+    [aliCentralChengduRouteDays, aliCentralChengduRoutedDayGeometry],
+  ] as const) {
+    assert.deepEqual(Object.keys(geometry).map(Number), Array.from({ length: 12 }, (_, index) => index + 1));
+    for (const day of days) {
+      assert.ok(geometry[day.day]?.length >= 2, `D${day.day} needs central-line geometry`);
+    }
+  }
+
+  const lanzhouRefs = new Set(aliCentralLanzhouRoadLabels.map((road) => road.ref));
+  const chengduRefs = new Set(aliCentralChengduRoadLabels.map((road) => road.ref));
+  for (const expected of ["G219", "S302", "阿里中线", "G109"]) {
+    assert.ok(lanzhouRefs.has(expected), `Lanzhou route is missing ${expected}`);
+    assert.ok(chengduRefs.has(expected), `Chengdu route is missing ${expected}`);
+  }
+  assert.ok(lanzhouRefs.has("G6"));
+  assert.ok(chengduRefs.has("空中转场"));
 });
