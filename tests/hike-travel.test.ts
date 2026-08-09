@@ -106,7 +106,9 @@ test("G317 Chengdu and Lhasa-return loop are independent indexed roadbooks", asy
   assert.match(loopPage, /<AliLhasaReturnGuide/);
   assert.match(loopGuide, /10 月 6 日下午或晚上回拉萨/);
   assert.match(loopGuide, /阿里昆莎机场/);
-  assert.match(loopGuide, /10月5日回上海/);
+  assert.match(loopGuide, /最晚10月5日到上海/);
+  assert.match(loopGuide, /10月5日：最晚当日抵沪/);
+  assert.match(loopGuide, /该方案没有航变余量/);
   assert.match(loopGuide, /阿里普兰机场/);
   assert.match(loopOverview, /point\.id !== "shanghai"/);
   assert.match(loopOverview, /day\.day < 12/);

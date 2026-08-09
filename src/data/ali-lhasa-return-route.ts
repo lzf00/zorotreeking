@@ -57,7 +57,7 @@ export const aliLhasaReturnRoutePoints: AliRoutePoint[] = [
     if (point.id === "shiquanhe") {
       return {
         ...point,
-        detail: "阿里地区综合补给中心，也是朋友 10 月 5 日前返沪的最佳分流城市；昆莎机场位于镇区西南方向。",
+        detail: "阿里地区综合补给中心，也是朋友最晚 10 月 5 日抵沪的最佳分流城市；昆莎机场位于镇区西南方向。",
       };
     }
     return { ...point };
@@ -78,7 +78,7 @@ if (shiquanheDayIndex >= 0) {
   copiedDrivingDays[shiquanheDayIndex] = {
     ...day,
     highlights: [...day.highlights, "朋友昆莎机场分流"],
-    decision: `${day.decision} 需要 10 月 5 日前返沪的朋友当晚留在狮泉河，次日不再随车进入改则方向。`,
+    decision: `${day.decision} 最晚 10 月 5 日抵沪的朋友当晚留在狮泉河，10 月 3 日或 4 日从昆莎机场离开，不再随车进入改则方向。`,
   };
 }
 
