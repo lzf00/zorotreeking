@@ -1,0 +1,21 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import NagquG317Guide from "@/components/travel/NagquG317Guide.astro";
+
+const title = "川藏北线 · 那曲沿 G317 自驾成都 2026";
+const description = "那曲经索县、巴青、丁青、昌都、江达、德格、甘孜和炉霍，再转 G350 抄近成都，10 月 7 日返抵上海的条件型独立路书。";
+const stops = ["那曲", "索县", "巴青", "丁青", "昌都", "江达", "德格", "甘孜", "炉霍", "道孚", "丹巴", "小金", "汶川", "成都", "上海"];
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "TouristTrip",
+  name: title,
+  description,
+  touristType: "高原长途自驾旅行者",
+  itinerary: { "@type": "ItemList", itemListElement: stops.map((name, index) => ({ "@type": "ListItem", position: index + 1, name })) },
+};
+---
+
+<BaseLayout title={title} description={description}>
+  <Fragment slot="head"><script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)}></script></Fragment>
+  <NagquG317Guide />
+</BaseLayout>

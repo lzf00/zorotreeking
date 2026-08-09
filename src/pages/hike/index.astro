@@ -9,7 +9,9 @@ const lang = "zh" as const;
 const t = useTranslations(lang);
 const guides = getTravelGuides(lang);
 const featuredGuide = guides.find((guide) => guide.slug === "ali-grand-loop-lhasa-lanzhou-2026") ?? guides[0];
-const centralGuides = guides.filter((guide) => [
+const decisionGuides = guides.filter((guide) => [
+  "ali-grand-loop-lhasa-return-2026",
+  "ali-central-loop-nagqu-g317-chengdu-2026",
   "ali-central-loop-lhasa-lanzhou-2026",
   "ali-central-loop-nagqu-chengdu-2026",
 ].includes(guide.slug));
@@ -61,10 +63,12 @@ const diffColor = {
       <span class="text-sm text-[var(--text-tertiary)]">{guides.length} 篇</span>
     </div>
     <div class="mb-6 grid gap-4 lg:grid-cols-2">
-      {centralGuides.map((guide, index) => (
+      {decisionGuides.map((guide, index) => (
         <a href={guide.href} class="group relative overflow-hidden rounded-[1.4rem] border border-[var(--border)] bg-[#eee8d9] p-6 text-[#17201d] transition-transform hover:-translate-y-1 sm:p-8">
           <div class="absolute right-5 top-4 font-serif text-7xl leading-none text-[#a94430]/10">0{index + 1}</div>
-          <div class="relative font-mono text-[10px] uppercase tracking-[0.18em] text-[#a94430]">New · Ali central line</div>
+          <div class="relative font-mono text-[10px] uppercase tracking-[0.18em] text-[#a94430]">
+            {guide.slug === "ali-grand-loop-lhasa-return-2026" ? "New · Lhasa return loop" : guide.slug.includes("g317") ? "New · G317 north route" : "Ali central line"}
+          </div>
           <h3 class="relative mt-5 max-w-md font-serif text-3xl leading-none tracking-[-.03em] sm:text-4xl">{guide.title}</h3>
           <p class="relative mt-5 max-w-xl text-sm leading-7 text-[#60665f]">{guide.description}</p>
           <div class="relative mt-6 flex flex-wrap gap-4 border-t border-[#17201d]/15 pt-5 font-mono text-[10px] text-[#60665f]">

@@ -17,10 +17,40 @@ export type TravelGuide = {
 /**
  * 旅行攻略索引。
  *
- * 新攻略只需把独立页面放进 public/hike/travel/<slug>/index.html，
+ * 新攻略可以使用 Astro 独立页面或 public/hike/travel/<slug>/index.html，
  * 再在这里登记元数据，即可进入徒步旅行板块、首页和 sitemap。
  */
 export const travelGuides: TravelGuide[] = [
+  {
+    lang: "zh",
+    slug: "ali-grand-loop-lhasa-return-2026",
+    href: "/hike/travel/ali-grand-loop-lhasa-return-2026/",
+    title: "闭环 · 阿里大环线拉萨取还 2026",
+    description: "9 月 26 日拉萨取车，沿阿里南北线闭环，10 月 6 日回拉萨、7 日返沪；朋友可在狮泉河经昆莎机场提前离队。",
+    date: "2026-08-09",
+    updated: "2026-08-09",
+    location: "西藏 · 阿里大环线",
+    days: 12,
+    distanceKm: 4000,
+    travelMode: "拉萨取车 · 拉萨还车",
+    season: "2026 国庆",
+    route: ["拉萨", "日喀则", "定日", "珠峰", "萨嘎", "塔钦", "札达", "狮泉河", "改则", "尼玛", "班戈", "纳木措", "拉萨", "上海"],
+  },
+  {
+    lang: "zh",
+    slug: "ali-central-loop-nagqu-g317-chengdu-2026",
+    href: "/hike/travel/ali-central-loop-nagqu-g317-chengdu-2026/",
+    title: "北进 · 那曲沿 G317 自驾成都 2026",
+    description: "那曲沿 G317 经昌都、德格和甘孜，在炉霍转 G350 抄近成都；只有 10 月 4 日清晨离开那曲，才可能 7 日抵沪。",
+    date: "2026-08-09",
+    updated: "2026-08-09",
+    location: "西藏 · 四川",
+    days: 4,
+    distanceKm: 1870,
+    travelMode: "G317 / G350 · 成都还车",
+    season: "2026 国庆",
+    route: ["那曲", "索县", "巴青", "丁青", "昌都", "江达", "德格", "甘孜", "炉霍", "道孚", "丹巴", "汶川", "成都", "上海"],
+  },
   {
     lang: "zh",
     slug: "ali-central-loop-nagqu-chengdu-2026",

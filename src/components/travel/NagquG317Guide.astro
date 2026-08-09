@@ -1,0 +1,80 @@
+---
+import RouteGuideShell from "./RouteGuideShell.astro";
+import NagquG317RouteOverview from "./NagquG317RouteOverview.astro";
+
+const route = ["那曲", "索县", "巴青", "丁青", "昌都", "江达", "德格", "甘孜", "炉霍", "道孚", "丹巴", "汶川", "成都", "上海"];
+---
+
+<RouteGuideShell
+  variant="g317"
+  kicker="G317 north route · Conditional deadline plan"
+  title="沿川藏北线"
+  accentTitle="把车开到成都"
+  lead="那曲出发，以 G317 穿过索县、巴青、丁青、昌都、德格与甘孜；在炉霍转向 G227、G350 抄近成都。路线被保留，但 10 月 7 日到上海只有一个入口条件：10 月 4 日清晨必须已经从那曲出发。"
+  facts={[["≈ 1,870 KM", "那曲至成都规划里程"], ["3 DAYS", "极限驾驶，不含缓冲"], ["10.07", "航班抵达上海"]]}
+  route={route}
+  nav={[
+    { href: "#g317-verdict", label: "成立条件" },
+    { href: "#route-atlas", label: "交互地图" },
+    { href: "#g317-schedules", label: "三日与四日" },
+    { href: "#g317-roads", label: "路线选择" },
+    { href: "#g317-gates", label: "退出门槛" },
+  ]}
+  footerTitle="走北线，也要给自己留退路。"
+  footerText="本页保存 G317 自驾成都方案，但不把三天压缩包装成安全承诺。实时道路、施工、天气、租车跨省还车和航班状态必须在出发前重新确认。"
+>
+  <section id="g317-verdict" class="rd-section">
+    <div class="rd-wrap rd-split">
+      <div><p class="rd-eyebrow">01 / Entry condition</p><div class="rd-rule"></div></div>
+      <div>
+        <h2>路线成立，<br />时间轴只差一天。</h2>
+        <p class="rd-copy">最近的“走 317”方案不是全程死守 G317 编号，而是到炉霍后转 G227、G350，经道孚、丹巴、小金和汶川进入成都。这样比经翁达、马尔康的纯 G317 少约 190 公里；但现有阿里中线 10 月 4 日晚才到那曲，无法直接接上。</p>
+      </div>
+    </div>
+    <div class="rd-wrap rd-metrics">
+      <div><strong>10.03</strong><span>最迟抵达那曲</span></div>
+      <div><strong>10.04</strong><span>清晨开始东行</span></div>
+      <div><strong>10.06</strong><span>成都还车硬截止</span></div>
+      <div><strong>0</strong><span>可用于景点支线的小时</span></div>
+    </div>
+    <aside class="rd-alert"><div class="rd-wrap"><b>与原中线冲突</b><p>若仍按 10 月 3 日措勤—文布南村—尼玛、10 月 4 日尼玛—那曲执行，本方案只能在 10 月 7 日晚到成都，无法同日抵达上海。要启用本页，必须重排前段并在 10 月 3 日晚前到那曲。</p></div></aside>
+  </section>
+
+  <NagquG317RouteOverview />
+
+  <section id="g317-schedules" class="rd-section rd-section--deep">
+    <div class="rd-wrap rd-split">
+      <div><p class="rd-eyebrow">02 / Pace comparison</p><div class="rd-rule"></div></div>
+      <div><h2>四日版是路书，<br />三日版只是截止方案。</h2><p class="rd-copy">四日版把每天控制在约 375—550 公里，更接近可管理的高原长途；三日版连续两天超过 600 公里，只在两名以上熟练司机、车辆良好、无临时管制时讨论。</p></div>
+    </div>
+    <div class="rd-wrap rd-card-grid">
+      <article class="rd-card"><span>四日安全版 · 推荐</span><h3>丁青<br />江达<br />炉霍<br />成都</h3><p>那曲—丁青约477 km；丁青—江达约464 km；江达—炉霍约375 km；炉霍—成都约554 km。成都之后另留一天返沪。</p></article>
+      <article class="rd-card rd-card--accent"><span>三日截止版 · 条件启用</span><h3>昌都<br />炉霍<br />成都</h3><p>10月4日约710 km、5日约600 km、6日约550 km，7日飞上海。任何一天触发退出条件，截止目标自动失效。</p></article>
+      <article class="rd-card rd-card--night"><span>不可采用</span><h3>10月5日<br />才离开那曲</h3><p>即使压成三天也只能10月7日晚到成都，无法再同日到上海；不得把夜驾或超速作为解决方案。</p></article>
+    </div>
+  </section>
+
+  <section id="g317-roads" class="rd-section">
+    <div class="rd-wrap rd-split">
+      <div><p class="rd-eyebrow">03 / Shortest corridor</p><div class="rd-rule"></div></div>
+      <div><h2>“主要走317”比“纯317”更近。</h2><p class="rd-copy">三条导航结果要分清：绝对最短可能在昌都转 G214、G318；纯 G317 会继续经翁达、马尔康；本页选用 G317 到炉霍后转 G350 的折中路线，保留川藏北线主体，同时缩短成都方向里程。</p></div>
+    </div>
+    <div class="rd-wrap rd-table" role="table" aria-label="那曲到成都路线比较">
+      <div class="rd-table-row" role="row"><b>本页方案</b><strong>G317 → 炉霍 → G350 → 成都</strong><span>≈ 1,870 km</span><small>最近的北线主体</small></div>
+      <div class="rd-table-row" role="row"><b>纯 G317</b><strong>炉霍 → 翁达 → 马尔康 → 汶川</strong><span>≈ 2,050 km</span><small>约多 190 km</small></div>
+      <div class="rd-table-row" role="row"><b>绝对最短</b><strong>昌都南下 G214 / G318</strong><span>≈ 1,820 km</span><small>不再是317方案</small></div>
+    </div>
+  </section>
+
+  <section id="g317-gates" class="rd-section rd-section--night">
+    <div class="rd-wrap"><p class="rd-eyebrow">04 / No-go gates</p><h2>四个门槛，<br />任一个失败就停止赶成都。</h2>
+      <div class="rd-gates">
+        <article><b>01</b><h3>跨省还车书面确认</h3><p>拉萨取车、成都还车及进藏道路救援范围必须写进订单或平台工单。</p></article>
+        <article><b>02</b><h3>两名以上司机</h3><p>单司机不得执行连续三天十小时以上山路；疲劳迹象出现立即换人或住宿。</p></article>
+        <article><b>03</b><h3>每日道路复核</h3><p>前一晚和出发清晨分别核对 G317、G227、G350 施工、降雪与放行信息。</p></article>
+        <article><b>04</b><h3>成都返沪已出票</h3><p>10月7日航班必须提前锁定，不能把候补或紧张联程当作确定席位。</p></article>
+      </div>
+      <div class="rd-links"><b>其他独立路线仍保留</b><a href="/hike/travel/ali-central-loop-nagqu-chengdu-2026/">那曲折返拉萨后飞成都 ↗</a><a href="/hike/travel/ali-central-loop-lhasa-lanzhou-2026/">阿里中线至兰州 ↗</a></div>
+    </div>
+  </section>
+</RouteGuideShell>

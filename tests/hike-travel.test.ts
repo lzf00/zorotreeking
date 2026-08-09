@@ -17,6 +17,14 @@ import {
   aliCentralLanzhouRoutePoints,
 } from "../src/data/ali-central-route";
 import {
+  aliLhasaReturnRoadLabels,
+  aliLhasaReturnRoutedDayGeometry,
+} from "../src/data/ali-lhasa-return-road-geometry";
+import {
+  aliLhasaReturnRouteDays,
+  aliLhasaReturnRoutePoints,
+} from "../src/data/ali-lhasa-return-route";
+import {
   lhasaLanzhouRoadLabels,
   lhasaLanzhouRoutedDayGeometry,
 } from "../src/data/lhasa-lanzhou-road-geometry";
@@ -24,6 +32,14 @@ import {
   lhasaLanzhouRouteDays,
   lhasaLanzhouRoutePoints,
 } from "../src/data/lhasa-lanzhou-route";
+import {
+  nagquG317RoadLabels,
+  nagquG317RoutedDayGeometry,
+} from "../src/data/nagqu-g317-chengdu-road-geometry";
+import {
+  nagquG317DeadlineRouteDays,
+  nagquG317RoutePoints,
+} from "../src/data/nagqu-g317-chengdu-route";
 import { getTravelGuides } from "../src/data/travel-guides";
 import { wgs84ToGcj02 } from "../src/utils/amap-coordinate";
 
@@ -43,9 +59,11 @@ test("hike section is presented as hiking and travel across navigation and home"
 
 test("Ali travel guide is indexed and keeps its complete standalone roadbook", async () => {
   const guides = getTravelGuides("zh");
-  assert.equal(guides.length, 4);
-  assert.equal(guides[0]?.slug, "ali-central-loop-nagqu-chengdu-2026");
-  assert.equal(guides[1]?.slug, "ali-central-loop-lhasa-lanzhou-2026");
+  assert.equal(guides.length, 6);
+  assert.equal(guides[0]?.slug, "ali-grand-loop-lhasa-return-2026");
+  assert.equal(guides[1]?.slug, "ali-central-loop-nagqu-g317-chengdu-2026");
+  assert.ok(guides.some((guide) => guide.slug === "ali-central-loop-nagqu-chengdu-2026"));
+  assert.ok(guides.some((guide) => guide.slug === "ali-central-loop-lhasa-lanzhou-2026"));
   assert.ok(guides.some((guide) => guide.slug === "ali-grand-loop-lhasa-lanzhou-2026"));
   assert.ok(guides.some((guide) => guide.slug === "ali-grand-loop-2026"));
 
@@ -61,6 +79,38 @@ test("Ali travel guide is indexed and keeps its complete standalone roadbook", a
   assert.match(html, /id="budget"/);
   assert.match(html, /沪公网安备31011502406842号/);
   assert.doesNotMatch(html, /target="_blank" rel="noreferrer"/);
+});
+
+test("G317 Chengdu and Lhasa-return loop are independent indexed roadbooks", async () => {
+  const [section, g317Page, g317Guide, loopPage, loopGuide, loopOverview] = await Promise.all([
+    readFile(new URL("../src/pages/hike/index.astro", import.meta.url), "utf8"),
+    readFile(
+      new URL("../src/pages/hike/travel/ali-central-loop-nagqu-g317-chengdu-2026.astro", import.meta.url),
+      "utf8",
+    ),
+    readFile(new URL("../src/components/travel/NagquG317Guide.astro", import.meta.url), "utf8"),
+    readFile(
+      new URL("../src/pages/hike/travel/ali-grand-loop-lhasa-return-2026.astro", import.meta.url),
+      "utf8",
+    ),
+    readFile(new URL("../src/components/travel/AliLhasaReturnGuide.astro", import.meta.url), "utf8"),
+    readFile(new URL("../src/components/travel/AliLhasaReturnRouteOverview.astro", import.meta.url), "utf8"),
+  ]);
+
+  assert.match(section, /ali-central-loop-nagqu-g317-chengdu-2026/);
+  assert.match(section, /ali-grand-loop-lhasa-return-2026/);
+  assert.match(g317Page, /<NagquG317Guide/);
+  assert.match(g317Guide, /G317.*G350/s);
+  assert.match(g317Guide, /10 月 4 日清晨/);
+  assert.match(g317Guide, /10 月 3 日晚前到那曲/);
+  assert.match(loopPage, /<AliLhasaReturnGuide/);
+  assert.match(loopGuide, /10 月 6 日下午或晚上回拉萨/);
+  assert.match(loopGuide, /阿里昆莎机场/);
+  assert.match(loopGuide, /10月5日回上海/);
+  assert.match(loopGuide, /阿里普兰机场/);
+  assert.match(loopOverview, /point\.id !== "shanghai"/);
+  assert.match(loopOverview, /day\.day < 12/);
+  assert.match(loopOverview, /mapPoints=\{drivingMapPoints\}/);
 });
 
 test("two independent Ali central-line guides are indexed without replacing earlier routes", async () => {
@@ -323,4 +373,59 @@ test("Ali central-line maps retain road geometry and label the new corridor", ()
   }
   assert.ok(lanzhouRefs.has("G6"));
   assert.ok(chengduRefs.has("空中转场"));
+});
+
+test("Lhasa-return loop covers Sep 26 through Oct 7 and exposes both early-flight exits", () => {
+  assert.equal(aliLhasaReturnRouteDays.length, 12);
+  assert.deepEqual(
+    aliLhasaReturnRouteDays.map((day) => day.day),
+    Array.from({ length: 12 }, (_, index) => index + 1),
+  );
+  assert.equal(aliLhasaReturnRouteDays[0]?.date, "09.26");
+  assert.equal(aliLhasaReturnRouteDays[1]?.date, "09.27");
+  assert.equal(aliLhasaReturnRouteDays[10]?.date, "10.06");
+  assert.equal(aliLhasaReturnRouteDays[11]?.date, "10.07");
+  assert.match(aliLhasaReturnRouteDays[10]?.title ?? "", /班戈.*纳木措.*拉萨/);
+  assert.match(aliLhasaReturnRouteDays[11]?.title ?? "", /拉萨.*上海/);
+
+  const pointIds = new Set(aliLhasaReturnRoutePoints.map((point) => point.id));
+  for (const id of ["lhasa", "shiquanhe", "kunsha-airport", "purang-airport", "shanghai"]) {
+    assert.ok(pointIds.has(id), `Lhasa-return route is missing ${id}`);
+  }
+  for (const day of aliLhasaReturnRouteDays) {
+    for (const id of day.pointIds) assert.ok(pointIds.has(id), `D${day.day} references unknown ${id}`);
+    assert.ok(aliLhasaReturnRoutedDayGeometry[day.day]?.length >= 2, `D${day.day} needs mapped geometry`);
+  }
+
+  const refs = new Set(aliLhasaReturnRoadLabels.map((road) => road.ref));
+  for (const expected of ["G219", "G317", "G109", "昆莎航班", "返沪航班"]) {
+    assert.ok(refs.has(expected), `Lhasa-return map is missing ${expected}`);
+  }
+});
+
+test("Nagqu G317 deadline route keeps the shortest north-line handoff and mapped daily exits", () => {
+  assert.equal(nagquG317DeadlineRouteDays.length, 4);
+  assert.deepEqual(nagquG317DeadlineRouteDays.map((day) => day.date), ["10.04", "10.05", "10.06", "10.07"]);
+  assert.match(nagquG317DeadlineRouteDays[0]?.title ?? "", /那曲.*昌都/);
+  assert.match(nagquG317DeadlineRouteDays[1]?.title ?? "", /昌都.*炉霍/);
+  assert.match(nagquG317DeadlineRouteDays[2]?.title ?? "", /炉霍.*成都/);
+  assert.match(nagquG317DeadlineRouteDays[3]?.title ?? "", /成都.*上海/);
+
+  const pointIds = new Set(nagquG317RoutePoints.map((point) => point.id));
+  for (const id of ["nagqu", "chamdo", "dege", "garze", "luhuo", "danba", "chengdu", "shanghai"]) {
+    assert.ok(pointIds.has(id), `G317 route is missing ${id}`);
+  }
+  let coordinateCount = 0;
+  for (const day of nagquG317DeadlineRouteDays) {
+    const geometry = nagquG317RoutedDayGeometry[day.day];
+    assert.ok(geometry?.length >= 2, `G317 D${day.day} needs road geometry`);
+    coordinateCount += geometry.length;
+    for (const id of day.pointIds) assert.ok(pointIds.has(id), `G317 D${day.day} references unknown ${id}`);
+  }
+  assert.ok(coordinateCount >= 500, "G317 map needs enough road detail to show the mountain corridor");
+
+  const refs = new Set(nagquG317RoadLabels.map((road) => road.ref));
+  for (const expected of ["G317", "G227", "G350", "G4217", "返沪航班"]) {
+    assert.ok(refs.has(expected), `G317 map is missing ${expected}`);
+  }
 });

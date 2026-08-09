@@ -1,0 +1,21 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import AliLhasaReturnGuide from "@/components/travel/AliLhasaReturnGuide.astro";
+
+const title = "阿里大环线 · 拉萨取还车 2026";
+const description = "9 月 26 日拉萨取车，穿越珠峰、塔钦、札达、狮泉河、改则、尼玛、班戈和纳木措，10 月 6 日回拉萨；朋友可从昆莎机场提前返沪。";
+const stops = ["拉萨", "日喀则", "定日", "珠峰", "萨嘎", "塔钦", "札达", "狮泉河", "改则", "尼玛", "班戈", "纳木措", "拉萨", "上海"];
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "TouristTrip",
+  name: title,
+  description,
+  touristType: "阿里大环线自驾旅行者",
+  itinerary: { "@type": "ItemList", itemListElement: stops.map((name, index) => ({ "@type": "ListItem", position: index + 1, name })) },
+};
+---
+
+<BaseLayout title={title} description={description}>
+  <Fragment slot="head"><script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)}></script></Fragment>
+  <AliLhasaReturnGuide />
+</BaseLayout>

@@ -1,0 +1,46 @@
+---
+import AliRouteOverview from "./AliRouteOverview.astro";
+import {
+  aliLhasaReturnRoadLabels,
+  aliLhasaReturnRoutedDayGeometry,
+} from "../../data/ali-lhasa-return-road-geometry";
+import {
+  aliLhasaReturnRouteDays,
+  aliLhasaReturnRoutePoints,
+} from "../../data/ali-lhasa-return-route";
+
+const extraSources = [
+  {
+    href: "https://wlt.xizang.gov.cn/xwzx_69/xydt/202603/t20260325_531189.html",
+    label: "西藏自治区文旅厅 · 2026 阿里与拉萨航班",
+  },
+  {
+    href: "https://www.xizang.gov.cn/xwzx_406/dsdt/202512/t20251228_516357.html",
+    label: "西藏自治区政府 · 阿里昆莎至成都直飞航线",
+  },
+  {
+    href: "https://wlt.xizang.gov.cn/xccx/lytg/202606/t20260612_545303.html",
+    label: "西藏自治区文旅厅 · 拉萨至上海直飞航线",
+  },
+  {
+    href: "https://wlt.xizang.gov.cn/xwzx_69/tzgg/202606/t20260626_547279.html",
+    label: "西藏自治区文旅厅 · 2026 G318 交通管制",
+  },
+];
+
+const drivingMapPoints = aliLhasaReturnRoutePoints.filter((point) => point.id !== "shanghai");
+const drivingMapDays = aliLhasaReturnRouteDays.filter((day) => day.day < 12);
+---
+
+<AliRouteOverview
+  points={aliLhasaReturnRoutePoints}
+  days={aliLhasaReturnRouteDays}
+  mapPoints={drivingMapPoints}
+  mapDays={drivingMapDays}
+  roadLabels={aliLhasaReturnRoadLabels}
+  routedDayGeometry={aliLhasaReturnRoutedDayGeometry}
+  heading="从拉萨出发，绕过阿里南北线，再回到拉萨。"
+  intro="新版闭环从 9 月 26 日拉萨取车开始，沿羊湖、珠峰、萨嘎、塔钦、札达、狮泉河、改则、尼玛、班戈和纳木措闭合；10 月 6 日下午或晚上回到拉萨。昆莎和普兰机场作为朋友提前返沪的独立退出点显示在地图上。"
+  mapAriaLabel="拉萨取车经阿里南北线返回拉萨，并标出昆莎和普兰提前返程机场的交互地图"
+  extraSources={extraSources}
+/>

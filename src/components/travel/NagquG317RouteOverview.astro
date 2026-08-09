@@ -1,0 +1,37 @@
+---
+import AliRouteOverview from "./AliRouteOverview.astro";
+import {
+  nagquG317RoadLabels,
+  nagquG317RoutedDayGeometry,
+} from "../../data/nagqu-g317-chengdu-road-geometry";
+import {
+  nagquG317DeadlineRouteDays,
+  nagquG317RoutePoints,
+} from "../../data/nagqu-g317-chengdu-route";
+
+const extraSources = [
+  {
+    href: "https://lyfz.changdu.gov.cn/cdslyj4/c101234/202205/152ef55c91c446b8871ba95ed6a7e0ed.shtml",
+    label: "昌都市文化和旅游局 · G317 川藏北线路线资料",
+  },
+  {
+    href: "https://jtt.xizang.gov.cn/xxgk/fdzdgknr/zbgg/202604/t20260415_535026.html",
+    label: "西藏自治区交通运输厅 · 2026 G317 养护与灾害处治",
+  },
+  {
+    href: "https://www.12306.cn/index/",
+    label: "中国铁路 12306 · 成都返沪备用查询",
+  },
+];
+---
+
+<AliRouteOverview
+  points={nagquG317RoutePoints}
+  days={nagquG317DeadlineRouteDays}
+  roadLabels={nagquG317RoadLabels}
+  routedDayGeometry={nagquG317RoutedDayGeometry}
+  heading="沿 G317 穿过藏东，再用 G350 抄近成都。"
+  intro="这张地图展示满足 10 月 7 日到上海所需的三日极限驾驶：那曲至甘孜、炉霍以 G317 为主，随后转 G227、G350，经道孚、丹巴、小金和汶川进入成都。它是条件路线，不是对夜驾和疲劳驾驶的授权。"
+  mapAriaLabel="那曲经G317、G227和G350自驾到成都，再搭乘航班返回上海的交互地图"
+  extraSources={extraSources}
+/>

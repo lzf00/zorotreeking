@@ -16,6 +16,8 @@ import {
 interface Props {
   points?: AliRoutePoint[];
   days?: AliRouteDay[];
+  mapPoints?: AliRoutePoint[];
+  mapDays?: AliRouteDay[];
   roadLabels?: AliRoadLabel[];
   routedDayGeometry?: Record<number, [number, number][]>;
   heading?: string;
@@ -27,6 +29,8 @@ interface Props {
 const {
   points = aliRoutePoints,
   days = aliRouteDays,
+  mapPoints = points,
+  mapDays = days,
   roadLabels = aliRoadLabels,
   routedDayGeometry = aliRoutedDayGeometry,
   heading = "把每一天，落到真实地理坐标上。",
@@ -35,12 +39,12 @@ const {
   extraSources = [],
 } = Astro.props;
 const pointById = new Map(points.map((point) => [point.id, point]));
-const mappedPointCount = points.length;
-const attractionCount = points.filter((point) =>
+const mappedPointCount = mapPoints.length;
+const attractionCount = mapPoints.filter((point) =>
   point.kind === "attraction" || point.kind === "viewpoint"
 ).length;
-const overnightCount = points.filter((point) => point.kind === "overnight").length;
-const approximateCount = points.filter((point) => point.coordinateNote).length;
+const overnightCount = mapPoints.filter((point) => point.kind === "overnight").length;
+const approximateCount = mapPoints.filter((point) => point.coordinateNote).length;
 
 const markerKinds: { kind: AliRoutePointKind; label: string }[] = [
   { kind: "airport", label: "机场" },
@@ -90,8 +94,8 @@ const markerKinds: { kind: AliRoutePointKind; label: string }[] = [
       </div>
       <AliRouteMap
         client:visible
-        points={points}
-        days={days}
+        points={mapPoints}
+        days={mapDays}
         roadLabels={roadLabels}
         routedDayGeometry={routedDayGeometry}
         mapAriaLabel={mapAriaLabel}
