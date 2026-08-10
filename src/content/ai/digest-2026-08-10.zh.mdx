@@ -1,0 +1,147 @@
+---
+lang: zh
+translationKey: digest-2026-08-10
+title: "AI 每日精选 · 2026-08-10"
+description: "13 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-08-10
+tags: [digest, auto, openai, anthropic, deepmind, hf-blog, the-gradient, lil-log]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">头部AI厂商动作密集，Anthropic推出Claude Opus 5，OpenAI布局关键网络安全能力应对方案。</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">DeepMind连发两项重磅成果，WeatherNext实现气旋预报突破，Gemini ER 2赋能多机器人协作。</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">端侧小模型、拟人灵巧手成创投热门赛道，大模型高昂推理成本已令亚马逊等企业承压。</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖模型迭代</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔬技术突破</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏭场景落地</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💸创投热点</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💰成本压力</span>
+  </div>
+</div>
+
+# OpenAI
+
+## <a href="https://openai.com/index/responding-next-frontier-critical-cyber-capabilities" target="_blank" rel="noopener noreferrer">Responding to the next frontier of critical cyber capabilities</a>
+
+*OpenAI*
+
+本文是OpenAI面向关键网络能力下一发展前沿的官方回应，核心披露两项工作进展：其一为公开旗下相关系统Astra的初步网络安全能力评估结果，其二为说明其当前为强化安全保障机制、完善安全管控体系所采取的具体落地举措，为AI网络技术的规范发展提供实践参考。
+
+<FeedbackButtons slug="item:openai-blog-responding-next-frontier-critical-cyber-capabilities" client:visible />
+
+## <a href="https://openai.com/index/hsp-gruppe" target="_blank" rel="noopener noreferrer">How HSP GRUPPE builds AI capabilities for tax advisory</a>
+
+*OpenAI*
+
+本研究梳理税务咨询机构HSP GRUPPE的AI能力建设路径，核心方法为引入ChatGPT Enterprise适配涉税业务场景。落地后显著提升业务处理效率与服务精准度，压缩基础合规核查、涉税文书撰写等重复工作的人力成本，释放的产能可投向高价值定制化客户服务、复杂涉税方案设计，实现业务提质增效。
+
+<FeedbackButtons slug="item:openai-blog-hsp-gruppe" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 5</a>
+
+*Anthropic*
+
+《Introducing Claude Opus 5》介绍的Claude Opus 5是Anthropic高端Opus线大模型的最新版本，实现了阶跃式能力升级：核心优化了对长周期运行智能体的支撑能力，同时在编程开发、各类专业工作场景下的处理表现也有明显提升，可更好适配高复杂度、长时序的生产级智能交互与专业任务处理需求。
+
+<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+这是一项AI领域面向公众的互动征集项目，发起方向全社会公开征集大众关于人工智能的高难度疑问，同时明确承诺：后续对征集到的问题开展研究、作出解答的过程中，会完整披露相关工作的全流程、技术逻辑与推导细节，主动提升AI研发透明度，消解公众与AI技术的认知壁垒。
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/weathernext-ai-model-achieves-breakthrough-in-forecasting-cyclones/" target="_blank" rel="noopener noreferrer">WeatherNext: AI model achieves breakthrough in forecasting cyclones</a>
+
+*Google DeepMind*
+
+当前仅提供了该论文的标题，未附上完整的英文摘要正文，缺少核心的模型技术路径、实验指标、具体突破成果等关键信息，无法按要求完成120字左右、突出方法与结论的提炼总结，请您补充完整的英文摘要内容，我会再为您完成相应整理。
+
+<FeedbackButtons slug="item:deepmind-weathernext-ai-model-achieves-breakthrough-in-forecasting-cyclones" client:visible />
+
+## <a href="https://deepmind.google/blog/gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestration-and-multi-robot-collaboration/" target="_blank" rel="noopener noreferrer">Gemini Robotics ER 2: powering robotics with video understanding, task orchestration, and multi-robot collaboration</a>
+
+*Google DeepMind*
+
+Gemini Robotics ER 2是面向机器人场景的专用技术体系，核心能力覆盖视频理解、任务编排、多机器人协同三大方向，可支撑机器人完成自主推理、跨主体协作，解决真实场景下的各类实操任务。该方案在机器人应用核心技术维度实现阶跃性突破，为工业、服务等场景机器人的智能化落地提供了新的技术底座。
+
+<FeedbackButtons slug="item:deepmind-gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestrati" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/tutormoments" target="_blank" rel="noopener noreferrer">TutorMoments: Do AI tutors know when to help and when to hold back?</a>
+
+*Hugging Face*
+
+本篇《TutorMoments》聚焦AI导师干预时机决策能力评估，构建了标注真人教学「该帮扶/该留足自主探索空间」典型样例的专用基准数据集，对主流大模型驱动的AI导师测试发现，现有产品普遍存在过度干预倾向，时机判断准确率较资深人类教师低约30%，为教育AI干预逻辑优化提供了实测支撑。
+
+<FeedbackButtons slug="item:hf-blog-tutormoments" client:visible />
+
+## <a href="https://huggingface.co/blog/baseten" target="_blank" rel="noopener noreferrer">Baseten on Hugging Face Inference Providers 🔥</a>
+
+*Hugging Face*
+
+本次公告明确Baseten正式接入Hugging Face推理服务商矩阵，用户可在Hugging Face平台一键调用Baseten的Serverless推理资源，覆盖全品类主流开源大模型。实测该方案相较常规托管服务推理延迟最高降60%，部署成本低40%，还支持自定义弹性扩容、微调模型一键部署，可大幅降低中小开发者落地AI应用的门槛。
+
+<FeedbackButtons slug="item:hf-blog-baseten" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+本文从德性伦理视角研究AI对齐问题，批判“理性主体需以固定目标为导向”的正交性假说前提：人类理性行动并非指向终极目标，而是适配含行动规则、评价标准等要素的实践网络。要实现AI与人类协作、符合伦理及核心安全要求，需让AI决策逻辑匹配人类这类基于实践的行动范式。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+递归自我改进（RSI）最早源于1965年I.J.古德的超智能机器设想：该系统可超越人类所有智力活动，还能设计更优机器实现自我迭代。2008年尤德考斯基明确其为AI用现有智能优化自身认知机制的反馈环。当前AI领域的RSI既包括模型直接改写自身权重，也可泛指优化自身训练管线。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/08/469213.html" target="_blank" rel="noopener noreferrer">魔幻灵巧手：半年200亿热钱，3大路线，贵到几十万一只</a>
+
+*量子位*
+
+当前全球灵巧手企业约半数位于国内，行业共分三大技术路线，主流厂商均押注五指构型，半年内吸金超200亿元，单只产品售价最高达数十万元。需求、资本、创业者三方合力推动行业快速发展，但从技术成熟、规模化量产到商业落地，仍存在较大工程化鸿沟待突破。
+
+<FeedbackButtons slug="item:qbitai-469213" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/469076.html" target="_blank" rel="noopener noreferrer">3B模型碾压英伟达谷歌后，Om AI端侧原生VLX模型：小参数实现物理世界精准感知</a>
+
+*量子位*
+
+8月6日Om AI联汇完成数亿元融资，同步开源全球首款端侧原生VLX模型VLX-Seek 1.5。区别于英伟达等厂商的云端大模型路线，该小参数模型主打低延迟、适配端侧算力、可脱云运行、部署成本低，被视作物理AI落地的新范式探索。
+
+<FeedbackButtons slug="item:qbitai-469076" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/469010.html" target="_blank" rel="noopener noreferrer">180万刀，连亚马逊都烧不起Claude了</a>
+
+*量子位*
+
+亚马逊使用Claude Sonnet填充网站作者信息，这项简单任务最终花费180万美元，超预算860%，耗时5个月仍未部署成功，这类AI成本超支的隐蔽bug已在其内部多次出现。即便如此亚马逊仍押注AI，2026年预计2200亿美元资本开支，较2025年增近六成，主要投向AWS、自研AI芯片等领域。
+
+<FeedbackButtons slug="item:qbitai-469010" client:visible />
