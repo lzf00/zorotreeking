@@ -1,20 +1,13 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import AliGrandLoopGuide from "@/components/travel/AliGrandLoopGuide.astro";
 import { getTravelGuides } from "@/data/travel-guides";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
 
 const lang = "zh" as const;
 const t = useTranslations(lang);
 const guides = getTravelGuides(lang);
-const featuredGuide = guides.find((guide) => guide.slug === "ali-grand-loop-lhasa-lanzhou-2026") ?? guides[0];
-const decisionGuides = guides.filter((guide) => [
-  "ali-grand-loop-lhasa-return-2026",
-  "ali-central-loop-nagqu-g317-chengdu-2026",
-  "ali-central-loop-lhasa-lanzhou-2026",
-  "ali-central-loop-nagqu-chengdu-2026",
-].includes(guide.slug));
+const routeAccents = ["#176d73", "#a94430", "#b57d19", "#315f45", "#76502d", "#425b82"];
 const hikes = (await getCollection("hike", (p) => p.data.lang === lang && !p.data.draft))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
@@ -39,10 +32,10 @@ const diffColor = {
           徒步<br /><span class="text-section-hike">旅行</span>
         </h1>
         <p class="mt-6 max-w-2xl text-base sm:text-lg leading-relaxed text-[var(--text-secondary)]">
-          从一条山路，到一段完整旅程。旅行攻略直接在本页展开，包含路线轨迹、逐日行程、住宿预算和行前判断。
+          所有自驾路线统一保存在这里。一条路线对应一个独立模块，点击后进入完整地图、逐日行程、住宿预算和行前判断。
         </p>
         <div class="mt-7 flex flex-wrap gap-3 text-sm">
-          <a href="#travel-guides" class="rounded-full bg-section-hike px-5 py-2.5 font-medium text-white transition-transform hover:-translate-y-0.5">阅读最新攻略 ↓</a>
+          <a href="#travel-guides" class="rounded-full bg-section-hike px-5 py-2.5 font-medium text-white transition-transform hover:-translate-y-0.5">查看全部自驾路线 ↓</a>
           <a href="#trail-archive" class="rounded-full border border-[var(--border)] px-5 py-2.5 text-[var(--text-secondary)] hover:bg-[var(--bg-soft)]">查看徒步路线</a>
         </div>
       </div>
@@ -57,57 +50,36 @@ const diffColor = {
   <section id="travel-guides" class="max-w-6xl mx-auto px-5 pb-16 sm:pb-24 scroll-mt-20">
     <div class="max-w-6xl mx-auto px-5 flex items-end justify-between gap-4 mb-6">
       <div>
-        <div class="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--text-tertiary)]">Travel Guides</div>
-        <h2 class="mt-1 text-2xl sm:text-3xl font-semibold tracking-tight">旅行攻略</h2>
+        <div class="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--text-tertiary)]">Self-drive roadbooks</div>
+        <h2 class="mt-1 text-2xl sm:text-3xl font-semibold tracking-tight">自驾路线</h2>
       </div>
-      <span class="text-sm text-[var(--text-tertiary)]">{guides.length} 篇</span>
+      <span class="text-sm text-[var(--text-tertiary)]">{guides.length} 条独立路线</span>
     </div>
-    <div class="mb-6 grid gap-4 lg:grid-cols-2">
-      {decisionGuides.map((guide, index) => (
-        <a href={guide.href} class="group relative overflow-hidden rounded-[1.4rem] border border-[var(--border)] bg-[#eee8d9] p-6 text-[#17201d] transition-transform hover:-translate-y-1 sm:p-8">
-          <div class="absolute right-5 top-4 font-serif text-7xl leading-none text-[#a94430]/10">0{index + 1}</div>
-          <div class="relative font-mono text-[10px] uppercase tracking-[0.18em] text-[#a94430]">
-            {guide.slug === "ali-grand-loop-lhasa-return-2026" ? "New · Lhasa return loop" : guide.slug.includes("g317") ? "New · G317 north route" : "Ali central line"}
+    <div class="route-card-grid grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {guides.map((guide, index) => (
+        <a
+          href={guide.href}
+          class="route-card group"
+          style={`--route-accent:${routeAccents[index % routeAccents.length]}`}
+          data-route-card={guide.slug}
+          aria-label={`打开自驾路线：${guide.title}`}
+        >
+          <div class="route-card__top">
+            <span>ROUTE {String(index + 1).padStart(2, "0")}</span>
+            <span>{guide.season}</span>
           </div>
-          <h3 class="relative mt-5 max-w-md font-serif text-3xl leading-none tracking-[-.03em] sm:text-4xl">{guide.title}</h3>
-          <p class="relative mt-5 max-w-xl text-sm leading-7 text-[#60665f]">{guide.description}</p>
-          <div class="relative mt-6 flex flex-wrap gap-4 border-t border-[#17201d]/15 pt-5 font-mono text-[10px] text-[#60665f]">
-            <span>{guide.days} DAYS</span><span>≈ {guide.distanceKm.toLocaleString()} KM</span><span>{guide.travelMode}</span>
+          <h3>{guide.title}</h3>
+          <p>{guide.description}</p>
+          <div class="route-card__path" title={guide.route.join(" → ")}>{guide.route.join(" → ")}</div>
+          <div class="route-card__meta">
+            <span>{guide.days} 天</span>
+            <span>约 {guide.distanceKm.toLocaleString()} km</span>
+            <span>{guide.travelMode}</span>
           </div>
-          <span class="relative mt-6 inline-flex items-center gap-2 font-mono text-xs text-[#a94430] transition-transform group-hover:translate-x-1">打开独立路书 →</span>
+          <div class="route-card__action"><span>打开独立路书</span><b aria-hidden="true">↗</b></div>
         </a>
       ))}
     </div>
-    {featuredGuide && (
-      <a href={featuredGuide.href} class="group relative block overflow-hidden rounded-[1.75rem] border border-[var(--border)] bg-[#17201d] p-7 text-[#f2eddf] shadow-[0_24px_80px_rgba(23,32,29,.14)] sm:p-10">
-        <div class="pointer-events-none absolute -right-20 -top-24 h-80 w-80 rounded-full border-[40px] border-[#d19a33]/10"></div>
-        <div class="relative grid gap-10 lg:grid-cols-[1fr_280px] lg:items-end">
-          <div>
-            <div class="font-mono text-[10px] uppercase tracking-[0.2em] text-[#e3ad46]">Original eastbound roadbook · 09.26—10.07</div>
-            <h3 class="mt-5 max-w-3xl font-serif text-4xl leading-[.95] tracking-[-.035em] sm:text-6xl">拉萨取车，穿越阿里，<br />从兰州坐高铁回上海。</h3>
-            <p class="mt-6 max-w-2xl text-sm leading-7 text-[#b9beb6] sm:text-base">{featuredGuide.description}</p>
-            <div class="mt-7 flex flex-wrap gap-x-5 gap-y-2 font-mono text-[11px] text-[#d5d7d0]">
-              <span>{featuredGuide.days} DAYS</span><span>≈ {featuredGuide.distanceKm.toLocaleString()} KM</span><span>{featuredGuide.travelMode}</span>
-            </div>
-          </div>
-          <div class="border-t border-white/15 pt-6 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0">
-            <div class="text-xs leading-6 text-[#9ea49c]">{featuredGuide.route.join(" → ")}</div>
-            <span class="mt-7 inline-flex items-center gap-3 font-mono text-xs text-[#e3ad46] transition-transform group-hover:translate-x-1">查看新路线 <b aria-hidden="true">→</b></span>
-          </div>
-        </div>
-      </a>
-    )}
-  </section>
-
-  <section id="travel-guide-ali" class="scroll-mt-14 pb-16 sm:pb-24">
-    <div class="max-w-6xl mx-auto px-5 flex items-end justify-between gap-4 mb-6">
-      <div>
-        <div class="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--text-tertiary)]">Original loop · Full content</div>
-        <h2 class="mt-1 text-2xl sm:text-3xl font-semibold tracking-tight">原始拉萨闭环方案 · 完整内容</h2>
-      </div>
-      <a href="/hike/travel/ali-grand-loop-2026/" class="text-sm text-section-hike hover:underline">独立阅读页 ↗</a>
-    </div>
-    <AliGrandLoopGuide />
   </section>
 
   <section id="trail-archive" class="max-w-4xl mx-auto px-5 pb-24 scroll-mt-20">
@@ -143,3 +115,86 @@ const diffColor = {
     )}
   </section>
 </BaseLayout>
+
+<style>
+  .route-card {
+    position: relative;
+    display: flex;
+    min-height: 360px;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 1.35rem;
+    padding: 1.55rem;
+    color: #17201d;
+    background:
+      linear-gradient(135deg, color-mix(in srgb, var(--route-accent) 9%, transparent), transparent 42%),
+      #eee8d9;
+    box-shadow: 0 12px 30px rgba(23, 32, 29, .04);
+    transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+  }
+  .route-card::before {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+    background: var(--route-accent);
+    content: "";
+  }
+  .route-card:hover {
+    transform: translateY(-5px);
+    border-color: color-mix(in srgb, var(--route-accent) 45%, #d2c8b4);
+    box-shadow: 0 22px 48px rgba(23, 32, 29, .12);
+  }
+  .route-card:focus-visible { outline: 3px solid var(--route-accent); outline-offset: 4px; }
+  .route-card__top {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    color: var(--route-accent);
+    font: 700 .64rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+  }
+  .route-card h3 {
+    margin: 1.45rem 0 0;
+    font-family: ui-serif, Georgia, "Noto Serif SC", serif;
+    font-size: clamp(1.55rem, 2.2vw, 2rem);
+    line-height: 1.08;
+    letter-spacing: -.035em;
+  }
+  .route-card > p { margin: 1rem 0 0; color: #61665f; font-size: .875rem; line-height: 1.75; }
+  .route-card__path {
+    margin-top: 1.25rem;
+    overflow: hidden;
+    color: #77796f;
+    font-size: .72rem;
+    line-height: 1.65;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .route-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .45rem .85rem;
+    margin-top: auto;
+    padding-top: 1.25rem;
+    color: #62685f;
+    font: 600 .65rem/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  .route-card__action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1rem;
+    border-top: 1px solid rgba(23, 32, 29, .14);
+    padding-top: 1rem;
+    color: var(--route-accent);
+    font-size: .78rem;
+    font-weight: 700;
+  }
+  .route-card__action b { font-size: 1.1rem; transition: transform .25s ease; }
+  .route-card:hover .route-card__action b { transform: translate(3px, -3px); }
+  @media (prefers-reduced-motion: reduce) {
+    .route-card, .route-card__action b { transition: none; }
+  }
+</style>

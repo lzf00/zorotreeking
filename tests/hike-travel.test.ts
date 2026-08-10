@@ -53,7 +53,7 @@ test("hike section is presented as hiking and travel across navigation and home"
   assert.match(ui, /"nav\.hike": "徒步旅行"/);
   assert.match(ui, /"section\.hike\.desc": "徒步路线、旅行攻略与沿途风景"/);
   assert.match(home, /hikes\.length \+ travelPosts\.length/);
-  assert.match(section, />旅行攻略/);
+  assert.match(section, />自驾路线/);
   assert.match(section, />徒步路线</);
 });
 
@@ -66,6 +66,14 @@ test("Ali travel guide is indexed and keeps its complete standalone roadbook", a
   assert.ok(guides.some((guide) => guide.slug === "ali-central-loop-lhasa-lanzhou-2026"));
   assert.ok(guides.some((guide) => guide.slug === "ali-grand-loop-lhasa-lanzhou-2026"));
   assert.ok(guides.some((guide) => guide.slug === "ali-grand-loop-2026"));
+  assert.equal(new Set(guides.map((guide) => guide.slug)).size, guides.length);
+  assert.equal(new Set(guides.map((guide) => guide.href)).size, guides.length);
+
+  const section = await readFile(new URL("../src/pages/hike/index.astro", import.meta.url), "utf8");
+  assert.match(section, /\{guides\.map\(\(guide, index\) =>/);
+  assert.match(section, /href=\{guide\.href\}/);
+  assert.match(section, /data-route-card=\{guide\.slug\}/);
+  assert.doesNotMatch(section, /decisionGuides|featuredGuide|<AliGrandLoopGuide/);
 
   const html = await readFile(
     new URL("../public/hike/travel/ali-grand-loop-2026/index.html", import.meta.url),
@@ -82,8 +90,7 @@ test("Ali travel guide is indexed and keeps its complete standalone roadbook", a
 });
 
 test("G317 Chengdu and Lhasa-return loop are independent indexed roadbooks", async () => {
-  const [section, g317Page, g317Guide, loopPage, loopGuide, loopOverview] = await Promise.all([
-    readFile(new URL("../src/pages/hike/index.astro", import.meta.url), "utf8"),
+  const [g317Page, g317Guide, loopPage, loopGuide, loopOverview] = await Promise.all([
     readFile(
       new URL("../src/pages/hike/travel/ali-central-loop-nagqu-g317-chengdu-2026.astro", import.meta.url),
       "utf8",
@@ -97,8 +104,6 @@ test("G317 Chengdu and Lhasa-return loop are independent indexed roadbooks", asy
     readFile(new URL("../src/components/travel/AliLhasaReturnRouteOverview.astro", import.meta.url), "utf8"),
   ]);
 
-  assert.match(section, /ali-central-loop-nagqu-g317-chengdu-2026/);
-  assert.match(section, /ali-grand-loop-lhasa-return-2026/);
   assert.match(g317Page, /<NagquG317Guide/);
   assert.match(g317Guide, /G317.*G350/s);
   assert.match(g317Guide, /10 月 4 日清晨/);
@@ -116,8 +121,7 @@ test("G317 Chengdu and Lhasa-return loop are independent indexed roadbooks", asy
 });
 
 test("two independent Ali central-line guides are indexed without replacing earlier routes", async () => {
-  const [section, lanzhouPage, chengduPage, component] = await Promise.all([
-    readFile(new URL("../src/pages/hike/index.astro", import.meta.url), "utf8"),
+  const [lanzhouPage, chengduPage, component] = await Promise.all([
     readFile(
       new URL("../src/pages/hike/travel/ali-central-loop-lhasa-lanzhou-2026.astro", import.meta.url),
       "utf8",
@@ -129,10 +133,6 @@ test("two independent Ali central-line guides are indexed without replacing earl
     readFile(new URL("../src/components/travel/AliCentralLoopGuide.astro", import.meta.url), "utf8"),
   ]);
 
-  assert.match(section, /ali-central-loop-lhasa-lanzhou-2026/);
-  assert.match(section, /ali-central-loop-nagqu-chengdu-2026/);
-  assert.match(section, /ali-grand-loop-lhasa-lanzhou-2026/);
-  assert.match(section, /ali-grand-loop-2026/);
   assert.match(lanzhouPage, /variant="lanzhou"/);
   assert.match(chengduPage, /variant="chengdu"/);
   assert.match(component, /狮泉河.*霍尔.*亚热.*仁多.*措勤.*文布南村.*尼玛/s);
@@ -141,8 +141,7 @@ test("two independent Ali central-line guides are indexed without replacing earl
 });
 
 test("Lhasa to Lanzhou guide is integrated into hike and has a dedicated shareable page", async () => {
-  const [section, page, guide] = await Promise.all([
-    readFile(new URL("../src/pages/hike/index.astro", import.meta.url), "utf8"),
+  const [page, guide] = await Promise.all([
     readFile(
       new URL("../src/pages/hike/travel/ali-grand-loop-lhasa-lanzhou-2026.astro", import.meta.url),
       "utf8",
@@ -150,8 +149,6 @@ test("Lhasa to Lanzhou guide is integrated into hike and has a dedicated shareab
     readFile(new URL("../src/components/travel/LhasaLanzhouGuide.astro", import.meta.url), "utf8"),
   ]);
 
-  assert.match(section, /ali-grand-loop-lhasa-lanzhou-2026/);
-  assert.match(section, /拉萨取车/);
   assert.match(page, /<LhasaLanzhouGuide/);
   assert.match(guide, /09\.26 — 10\.07/);
   assert.match(guide, /异地还车书面确认/);
@@ -161,7 +158,7 @@ test("Lhasa to Lanzhou guide is integrated into hike and has a dedicated shareab
   assert.match(guide, /LhasaLanzhouRouteOverview/);
 });
 
-test("the complete Ali roadbook is embedded directly in the hike landing page", async () => {
+test("the original Ali roadbook stays independent while retaining the complete map implementation", async () => {
   const [section, component, atlas, map] = await Promise.all([
     readFile(new URL("../src/pages/hike/index.astro", import.meta.url), "utf8"),
     readFile(new URL("../src/components/travel/AliGrandLoopGuide.astro", import.meta.url), "utf8"),
@@ -169,9 +166,9 @@ test("the complete Ali roadbook is embedded directly in the hike landing page", 
     readFile(new URL("../src/components/travel/AliRouteMap.tsx", import.meta.url), "utf8"),
   ]);
 
-  assert.match(section, /<AliGrandLoopGuide \/>/);
-  assert.match(section, /id="travel-guide-ali"/);
-  assert.doesNotMatch(section, /打开完整攻略/);
+  assert.doesNotMatch(section, /<AliGrandLoopGuide \/>/);
+  assert.doesNotMatch(section, /id="travel-guide-ali"/);
+  assert.match(section, /打开独立路书/);
   assert.match(component, /guideMain/);
   assert.match(component, /data-ali-guide/);
   assert.match(component, /@scope \(\.ali-guide\)/);
