@@ -1,0 +1,44 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import AliGrandLoopGuide from "@/components/travel/AliGrandLoopGuide.astro";
+
+const title = "向西 · 阿里大环线 2026";
+const description = "2026 年阿里大环线 13 天自驾路书：从拉萨出发，经日喀则、珠峰、塔钦、札达、狮泉河、改则、尼玛、班戈和纳木措，最终返回拉萨。包含真实地图、公路走向、逐日节点、补给与风险提示。";
+const stops = [
+  "拉萨",
+  "日喀则",
+  "定日",
+  "珠峰",
+  "萨嘎",
+  "塔钦",
+  "札达",
+  "狮泉河",
+  "改则",
+  "尼玛",
+  "班戈",
+  "纳木措",
+  "拉萨",
+];
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "TouristTrip",
+  name: title,
+  description,
+  touristType: "阿里大环线自驾旅行者",
+  itinerary: {
+    "@type": "ItemList",
+    itemListElement: stops.map((name, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name,
+    })),
+  },
+};
+---
+
+<BaseLayout title={title} description={description}>
+  <Fragment slot="head">
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>
+  </Fragment>
+  <AliGrandLoopGuide />
+</BaseLayout>

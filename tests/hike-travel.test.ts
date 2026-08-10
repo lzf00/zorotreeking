@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
 import test from "node:test";
 
 import { aliRoadLabels, aliRoutedDayGeometry } from "../src/data/ali-road-geometry";
@@ -76,7 +76,7 @@ test("Ali travel guide is indexed and keeps its complete standalone roadbook", a
   assert.doesNotMatch(section, /decisionGuides|featuredGuide|<AliGrandLoopGuide/);
 
   const html = await readFile(
-    new URL("../public/hike/travel/ali-grand-loop-2026/index.html", import.meta.url),
+    new URL("../src/data/ali-grand-loop-2026-source.html", import.meta.url),
     "utf8",
   );
   assert.match(html, /<title>向西 · 阿里大环线 2026<\/title>/);
@@ -87,6 +87,43 @@ test("Ali travel guide is indexed and keeps its complete standalone roadbook", a
   assert.match(html, /id="budget"/);
   assert.match(html, /沪公网安备31011502406842号/);
   assert.doesNotMatch(html, /target="_blank" rel="noreferrer"/);
+});
+
+test("the original Ali roadbook URL is rendered through the complete shared route atlas", async () => {
+  const pageUrl = new URL(
+    "../src/pages/hike/travel/ali-grand-loop-2026.astro",
+    import.meta.url,
+  );
+  const legacyPublicUrl = new URL(
+    "../public/hike/travel/ali-grand-loop-2026/index.html",
+    import.meta.url,
+  );
+  const pageExists = await access(pageUrl).then(
+    () => true,
+    () => false,
+  );
+  const legacyPublicExists = await access(legacyPublicUrl).then(
+    () => true,
+    () => false,
+  );
+
+  assert.equal(
+    pageExists,
+    true,
+    "the original route URL needs an Astro page instead of serving the incomplete public SVG directly",
+  );
+  assert.equal(
+    legacyPublicExists,
+    false,
+    "the legacy public HTML must not shadow the Astro route during production builds",
+  );
+
+  const page = await readFile(pageUrl, "utf8");
+  assert.match(page, /import BaseLayout from/);
+  assert.match(page, /import AliGrandLoopGuide from/);
+  assert.match(page, /<BaseLayout/);
+  assert.match(page, /<AliGrandLoopGuide \/>/);
+  assert.match(page, /"@type": "TouristTrip"/);
 });
 
 test("G317 Chengdu and Lhasa-return loop are independent indexed roadbooks", async () => {
@@ -170,6 +207,8 @@ test("the original Ali roadbook stays independent while retaining the complete m
   assert.doesNotMatch(section, /id="travel-guide-ali"/);
   assert.match(section, /打开独立路书/);
   assert.match(component, /guideMain/);
+  assert.match(component, /ali-grand-loop-2026-source\.html\?raw/);
+  assert.doesNotMatch(component, /readFileSync/);
   assert.match(component, /data-ali-guide/);
   assert.match(component, /@scope \(\.ali-guide\)/);
   assert.match(component, /<AliRouteOverview \/>/);

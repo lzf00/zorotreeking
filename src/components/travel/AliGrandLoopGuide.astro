@@ -1,11 +1,6 @@
 ---
-import { readFileSync } from "node:fs";
 import AliRouteOverview from "./AliRouteOverview.astro";
-
-const source = readFileSync(
-  new URL("../../../public/hike/travel/ali-grand-loop-2026/index.html", import.meta.url),
-  "utf8",
-);
+import source from "../../data/ali-grand-loop-2026-source.html?raw";
 
 function extract(pattern: RegExp, label: string) {
   const match = source.match(pattern);
@@ -29,8 +24,8 @@ const guideOverview = guideMainSplit[1];
 const guideRemainder = guideMainSplit[2];
 const guideScript = extract(/<script>([\s\S]*?)<\/script>/, "enhancements");
 
-// The supplied guide is also kept as a standalone fallback. At build time we
-// reuse its actual content here so /hike/ is the primary, complete reading view.
+// Keep the supplied roadbook as a build-time source template and render it only
+// through Astro so this route can share the complete interactive map.
 const scopedStyle = `
 @scope (.ali-guide) {
   ${sourceStyle
@@ -56,7 +51,7 @@ const scopedStyle = `
 `;
 ---
 
-<div class="ali-guide" data-ali-guide>
+<div id="travel-guide-ali" class="ali-guide" data-ali-guide>
   <Fragment set:html={guideHeader} />
   <Fragment set:html={guideNav} />
   <div class="guide-content">
