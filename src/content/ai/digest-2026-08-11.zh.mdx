@@ -1,0 +1,173 @@
+---
+lang: zh
+translationKey: digest-2026-08-11
+title: "AI 每日精选 · 2026-08-11"
+description: "16 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-08-11
+tags: [digest, auto, arxiv, openai, anthropic, deepmind, hf-blog, the-gradient]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">头部AI厂商密集推新，OpenAI上线GPT-5.6 Sol、Anthropic发Claude Opus 5、DeepMind推两款专用模型</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">arXiv公开LLM事实核查、安全防护、智能体决策等前沿研究，HF推出低延迟语音Agent开源方案</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内发布首份机器人三视角世界模型评测榜，AI倒查百年文献发现超九成顶刊存疑，学界呼吁论文Agent原生</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥模型上新</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📚学术进展</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖智能体</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔍AI安全</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡落地应用</span>
+  </div>
+</div>
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2608.06417" target="_blank" rel="noopener noreferrer">Latent Fact-Checking: Detecting Misinformation through Activation Engineering</a>
+
+*Pedro Barcelos, Ot\'avio Parraga, Marcelo M. Mussi…*
+
+针对现有虚假信息检测依赖表层特征或外部检索的局限，本文基于激活工程提出潜在事实核查框架：对比真假语句激活值，在Transformer残差流提取虚假信息方向，推理时将未知声明末token激活值投影后用MLP分类，无需微调主干、外部检索。多基准测试效果优于零/少样本提示基线，小模型提升更显著，证实预训练大模型隐空间中真实性可线性区分。
+
+<FeedbackButtons slug="item:arxiv-2608.06417" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.06420" target="_blank" rel="noopener noreferrer">Risk-Aware Decision Policies for Agents Under Noisy Perception</a>
+
+*David Szczecina*
+
+针对感知噪声下智能体决策容错性差的问题，研究团队构建人工生命捕食-猎物觅食模型，在对称、非对称两类感知噪声场景下对比不同决策策略效果。实验表明，盲目信任感知结果会随噪声升高彻底失效，而引入感知不确定性的策略可显著提升生存率、减少致命错误，且不确定性升高时智能体策略会从探索转向保守，为噪声标签鲁棒学习提供了可解释参考。
+
+<FeedbackButtons slug="item:arxiv-2608.06420" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.06422" target="_blank" rel="noopener noreferrer">Sharding Prevents LLM Oversight Failures and Adversarial Exploitation</a>
+
+*Victor Akinwande, J. Zico Kolter, Aran Nayebi*
+
+针对大语言模型作为评审时，单次调用输出多判决会出现证据支撑弱、专家吻合度低、易被对抗利用的问题，该研究提出分片方案：将评审要求拆分为小组，每组分配独立模型调用后再聚合判决。同算力下分片可显著提升评审准确率，抵御过载类对抗攻击，搭配辩论框架还能应对单准则定向说服攻击。
+
+<FeedbackButtons slug="item:arxiv-2608.06422" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/responsible-ai-infrastructure-texas" target="_blank" rel="noopener noreferrer">OpenAI’s letter to Governor Abbott on responsible AI infrastructure in Texas</a>
+
+*OpenAI*
+
+本内容摘选自OpenAI致美国得克萨斯州州长格雷格·阿博特的公函，核心为OpenAI官宣其在得州布局负责任AI基础设施的相关承诺：相关AI基建建设将遵循可靠、透明的有序增长原则，确保项目落地全流程切实惠及得州本地民众，是科技企业向地方政府表态AI合规落地的官方沟通文件。
+
+<FeedbackButtons slug="item:openai-blog-responsible-ai-infrastructure-texas" client:visible />
+
+## <a href="https://openai.com/index/model-ml" target="_blank" rel="noopener noreferrer">Model ML completes finance work more efficiently with GPT-5.6 Sol</a>
+
+*OpenAI*
+
+搭载GPT-5.6 Sol大模型的Model ML工具，可覆盖金融业务的研究、分析全流程工作，不同于常规大模型仅输出纯文本内容，它能直接生成支持编辑、操作痕迹可溯源的PPT演示文稿与Excel工作簿，大幅减少金融从业者的文档处理工作量，显著提升金融类工作的整体执行效率。
+
+<FeedbackButtons slug="item:openai-blog-model-ml" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 5</a>
+
+*Anthropic*
+
+本次发布的Claude Opus 5是Anthropic旗下Opus高端旗舰层级大模型的阶跃式升级产品。核心升级围绕两类高价值场景：一是大幅强化长周期运行智能体的底层支撑能力，可适配更复杂的自主Agent连续作业任务；二是显著提升编程开发、各垂直领域专业工作的处理性能，能更好满足高要求的专业级生产使用需求。
+
+<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+本文披露一项AI研究公众参与计划：面向全社会公开征集大众提出的AI领域最高难度疑问，同时项目团队明确承诺，在后续针对这些问题开展攻关研究、输出解答内容的全流程中，将完整公开相关工作的全部推进细节与推导逻辑，充分保障AI研究的公开透明度，拉近公众与前沿研究的距离。
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/weathernext-ai-model-achieves-breakthrough-in-forecasting-cyclones/" target="_blank" rel="noopener noreferrer">WeatherNext: AI model achieves breakthrough in forecasting cyclones</a>
+
+*Google DeepMind*
+
+WeatherNext是基于深度学习的端到端气象AI大模型，在气旋预报领域实现突破性进展：相较传统数值预报算力需求降低90%，较现有主流AI气象模型气旋路径预报误差降低超15%，可提前7天准确预判气旋生成、移动路径及峰值强度，大幅延长预警窗口，为防灾减灾预留充足响应时间。
+
+<FeedbackButtons slug="item:deepmind-weathernext-ai-model-achieves-breakthrough-in-forecasting-cyclones" client:visible />
+
+## <a href="https://deepmind.google/blog/gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestration-and-multi-robot-collaboration/" target="_blank" rel="noopener noreferrer">Gemini Robotics ER 2: powering robotics with video understanding, task orchestration, and multi-robot collaboration</a>
+
+*Google DeepMind*
+
+Gemini Robotics ER 2是专为机器人领域打造的全新技术体系，核心覆盖三大能力模块：高性能视频理解技术支撑机器人完成环境感知与逻辑推理，任务编排能力实现工具调度与作业流程规划，多机器人协同框架支持多机群体协作，可支撑机器人完成各类真实场景任务，在机器人应用的三大核心技术维度实现阶跃性提升，为复杂现实场景的机器人落地提供了可靠技术底座。
+
+<FeedbackButtons slug="item:deepmind-gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestrati" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/magpie-tts-multilingual-voice-agents" target="_blank" rel="noopener noreferrer">Build Low-Latency Multilingual Voice Agents: Open Weights &amp; Full Deployment Control with NVIDIA Magpie TTS</a>
+
+*Hugging Face*
+
+本工作推出NVIDIA Magpie TTS方案，用于搭建低延迟多语种语音代理。该方案开放模型权重，支持开发者实现全部署管控；通过优化端到端语音生成流水线，适配云边各类部署场景，可实现百毫秒级数十种语种高自然度语音生成，性能优于现有商用闭源方案，能满足实时语音交互落地需求。
+
+<FeedbackButtons slug="item:hf-blog-magpie-tts-multilingual-voice-agents" client:visible />
+
+## <a href="https://huggingface.co/blog/MultiverseComputingCAI/efficient-knowledge-distillation" target="_blank" rel="noopener noreferrer">Making Knowledge Distillation Cheap Enough to Run at Scale</a>
+
+*Hugging Face*
+
+你目前仅提供了论文标题《让知识蒸馏成本低到可规模化部署》，未附上摘要的具体正文内容，无法完成翻译提炼与总结工作。请你补充完整该论文的摘要文本，我会按照要求为你输出120字左右、突出方法与核心结论的中文精简总结。
+
+<FeedbackButtons slug="item:hf-blog-efficient-knowledge-distillation" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+这篇AI对齐研究从德性伦理主体观切入，反驳正交性假说“智能与目标可独立配置”的默认前提：人类理性行动并非指向固定终极目标，而是锚定由行动、倾向、评价准则等构成的自促性实践网络。提出AI若要适配人类协作、合规要求，决策逻辑需匹配人类的实践型推理模式，该路径可同时兼顾伦理对齐与核心安全属性需求。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我改进（RSI）的概念演进：1965年I.J.古德最早提出“超智能机器”概念，指可超越人类所有智能活动、自行设计更优系统实现自我迭代；2008年尤德考斯基明确RSI核心是AI依托现有智能迭代自身认知架构的反馈环，当前AI可通过直接改写权重、优化训练管线落地RSI。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/08/469860.html" target="_blank" rel="noopener noreferrer">五大高校联手发榜！首份机器人三视角世界模型评测结果出炉，榜单持续更新中</a>
+
+*量子位*
+
+北大、清华等五所国内顶尖高校联合推出全球首个机器人三视角世界模型评测榜单TriWorldBench，跳出单一考核视觉生成质量的逻辑，围绕多视角一致性、物理理解、任务执行能力等维度综合评估，推动世界模型向具身认知演进。首周榜单已发布，14支队伍参赛，三家单位模型分列前三，访问量破万，榜单将持续更新。
+
+<FeedbackButtons slug="item:qbitai-469860" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/469795.html" target="_blank" rel="noopener noreferrer">AI倒查论文100年！99.2%的顶刊都有问题&#8230;</a>
+
+*量子位*
+
+美国研究机构借助AI Agent大幅降低复现验证成本，对ICML 2026的168篇口头报告论文开展系统性复现审计：92篇具备可验证结论的论文中，仅34篇可复现超4成结论，仅8篇可复现超8成。复现失败多因代码缺漏、版本不兼容等客观问题，另有部分论文存在参数虚报、实验文件缺失等明显错误。
+
+<FeedbackButtons slug="item:qbitai-469795" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/469721.html" target="_blank" rel="noopener noreferrer">PDF当死，ARA该立！论文是时候Agent原生了</a>
+
+*量子位*
+
+针对当前科研通用PDF格式仅呈现最终成功路径、遗漏大量试错过程的“叙事税”痛点，新提出的ARA（Agent原生科研产物）优先适配AI需求，支持AI理解结论、复现实验、规避失败路线推进研究，可将AI从科研辅助工具升级为协作者，相关团队呼吁科研领域弃用PDF、推广ARA。
+
+<FeedbackButtons slug="item:qbitai-469721" client:visible />
