@@ -149,7 +149,7 @@ jobs:
 
       - name: Reconcile AMap CSP allowlist
         run: |
-          # 高德 SDK 与运行时数据必须同时通过 CSP。配置修改前保留备份，
+          # 高德 SDK、运行时数据与 Giscus 样式必须通过 CSP。配置修改前保留备份，
           # nginx 语法检查失败时立即恢复，避免安全头更新影响整个站点。
           ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new "$SSH_USER@$SSH_HOST" \
             sh -s -- "$GITHUB_SHA" <<'SH'
@@ -206,6 +206,7 @@ jobs:
               "https://jsapi-service.amap.com",
               "https://mapplugin.amap.com",
           ], source)
+          source = allow("style-src", ["https://giscus.app"], source)
           source = allow("worker-src", ["'self'", "blob:"], source, create_after="script-src")
           source = allow("connect-src", ["https://*.amap.com", "https://*.autonavi.com"], source)
           path.write_text(source, encoding="utf-8")
@@ -226,7 +227,7 @@ jobs:
             $as_root systemctl reload nginx
             exit 1
           fi
-          echo "✓ 高德地图 CSP 白名单已核对"
+          echo "✓ 运行时 CSP 白名单已核对"
           SH
 
           # 从公网响应确认 active nginx 已加载新策略，而不是只改了磁盘文件。
@@ -237,7 +238,8 @@ jobs:
           printf '%s' "$csp" | grep -q 'https://mapplugin.amap.com'
           printf '%s' "$csp" | grep -q "worker-src 'self' blob:"
           printf '%s' "$csp" | grep -q 'https://\*.amap.com'
-          echo "✓ 公网 CSP 已允许高德 SDK 与运行时请求"
+          printf '%s' "$csp" | grep -Eq 'style-src [^;]*https://giscus\.app([ ;])'
+          echo "✓ 公网 CSP 已允许高德 SDK、运行时请求与 Giscus 样式"
 
       - name: Prepare versioned release
         run: |
@@ -292,7 +294,7 @@ jobs:
       - name: Production acceptance smoke test
         run: |
           python3 - <<'PY'
-          import json, os, time, urllib.request
+          import json, os, re, time, urllib.request
           last = None
           for attempt in range(6):
               try:
@@ -312,6 +314,8 @@ jobs:
                   )
                   if not all(origin in csp for origin in required_amap_origins):
                       raise ValueError("AMap CSP allowlist missing from production response")
+                  if not re.search(r"style-src [^;]*https://giscus\.app(?: |;)", csp):
+                      raise ValueError("Giscus stylesheet origin missing from style-src")
                   with urllib.request.urlopen("https://www.zorotreeking.online/api/market/etf", timeout=20) as resp:
                       data = json.load(resp)
                   items = data.get("items") or []

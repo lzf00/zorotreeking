@@ -54,6 +54,12 @@ test("Lighthouse workflow checks the deployed revision and keeps hidden reports"
   assert.match(contents, /include-hidden-files:\s*true/);
 });
 
+test("deploy keeps the Giscus stylesheet inside the production CSP", async () => {
+  const contents = await workflow("deploy.yml");
+  assert.match(contents, /allow\("style-src", \["https:\/\/giscus\.app"\]/);
+  assert.match(contents, /Giscus stylesheet origin missing from style-src/);
+});
+
 test("daily deployment includes follow-up translation and embedding commits", async () => {
   const contents = await workflow("daily-digest.yml");
   assert.match(contents, /steps\.commit_followups\.outputs\.committed/);
