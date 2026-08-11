@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { formatChinaMarketTime, isChinaATradingHours } from "@/lib/china-market";
 
 /**
  * 市场情绪：沪深成交额 + 涨跌平家数 + 涨停跌停板。
@@ -27,13 +28,6 @@ type Resp = {
 };
 
 const POLL_MS = 120_000;
-
-function isATradingHours(d: Date = new Date()): boolean {
-  const day = d.getDay();
-  if (day === 0 || day === 6) return false;
-  const t = d.getHours() * 60 + d.getMinutes();
-  return (t >= 570 && t <= 690) || (t >= 780 && t <= 900);
-}
 
 function fmtYi(n: number): string {
   // 以"亿"为单位显示，1 亿 = 1e8。统一 2 位小数，与个股页 / StockSpotlight 一致。
@@ -72,7 +66,7 @@ export default function MarketSentiment({ initialData }: Props = {}) {
     load();
     const timer = setInterval(() => {
       if (document.hidden) return;
-      if (!isATradingHours()) return;
+      if (!isChinaATradingHours()) return;
       load();
     }, POLL_MS);
     const onVis = () => { if (!document.hidden) load(); };
@@ -164,15 +158,9 @@ export default function MarketSentiment({ initialData }: Props = {}) {
       </div>
       <p className="mt-3 text-[11px] text-[var(--text-tertiary)] font-mono">
         数据 东方财富 push2delay · 全市场 A 股 + 创业板 + 科创板 · 后端缓存 90s
-        {data.ts ? `· 更新于 ${fmtTime(data.ts)}` : ""}
+        {data.ts ? `· 接口响应 ${formatChinaMarketTime(data.ts)}` : ""}
         {data.stale && <span className="ml-2" style={{ color: "#dc2626" }}>· 数据陈旧（上游异常）</span>}
       </p>
     </div>
   );
-}
-
-function fmtTime(ts: number): string {
-  const d = new Date(ts * 1000);
-  const pad = (n: number) => String(n).padStart(2, "0");
-  return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
 }

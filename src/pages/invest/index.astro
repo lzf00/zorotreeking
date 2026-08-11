@@ -46,6 +46,7 @@ const t = useTranslations(lang);
 // 仅支持本文件的固定结构：- key: value
 const holdingsPath = path.resolve("./src/content/invest-portfolio/_holdings.yaml");
 const rawYaml = fs.readFileSync(holdingsPath, "utf-8");
+const portfolioMode = /^portfolioMode:\s*actual\s*$/m.test(rawYaml) ? "actual" : "placeholder";
 
 type Holding = { symbol: string; name: string; shares: number; costAvg: number };
 function parseHoldings(text: string): Holding[] {
@@ -101,9 +102,14 @@ const latestPeriod = snapshots[snapshots.length - 1]?.data.period;
 let initialIndices: any[] = [];
 let initialSectors: any = undefined;
 let initialSentiment: any = undefined;
+let initialMarketUpdated: number | undefined = undefined;
 try {
   const raw = fs.readFileSync(path.resolve("./src/data/wind-market-latest.json"), "utf-8");
   const wind = JSON.parse(raw);
+  if (typeof wind.asOf === "string") {
+    const snapshotTime = Date.parse(`${wind.asOf}+08:00`);
+    if (Number.isFinite(snapshotTime)) initialMarketUpdated = snapshotTime / 1000;
+  }
   initialIndices = (wind.indices || []).map((i: any) => ({
     code: i.code,
     name: i.name,
@@ -121,7 +127,14 @@ try {
   const up = [...sectors].filter((s) => (s.change_pct ?? 0) > 0).slice(0, 10);
   const down = [...sectors].filter((s) => (s.change_pct ?? 0) < 0).sort((a, b) => (a.change_pct ?? 0) - (b.change_pct ?? 0)).slice(0, 10);
   if (sectors.length > 0) {
-    initialSectors = { ok: true, ts: 0, total: sectors.length, top_up: up, top_down: down };
+    initialSectors = {
+      ok: true,
+      ts: initialMarketUpdated ?? 0,
+      total: sectors.length,
+      top_up: up,
+      top_down: down,
+      stale: true,
+    };
   }
 
   // 涨跌停家数
@@ -185,7 +198,12 @@ try {
       <h2 class="text-base font-semibold tracking-tight">今日大盘</h2>
       <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">Live</span>
     </div>
-    <MarketIndicesGrid initialIndices={initialIndices} client:load />
+    <MarketIndicesGrid
+      initialIndices={initialIndices}
+      initialUpdated={initialMarketUpdated}
+      initialSource="wind_snapshot"
+      client:load
+    />
   </section>
 
   <!-- D · 市场情绪：成交额 / 涨跌家数 / 涨停跌停 -->
@@ -200,10 +218,12 @@ try {
   <!-- B · 我的持仓（实时基金估值） -->
   <section class="max-w-5xl mx-auto px-5 pb-8">
     <div class="flex items-baseline justify-between mb-3">
-      <h2 class="text-base font-semibold tracking-tight">我的持仓（估算）</h2>
-      <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">Live</span>
+      <h2 class="text-base font-semibold tracking-tight">
+        {portfolioMode === "actual" ? "我的持仓（已公布净值）" : "持仓估值（示例数据）"}
+      </h2>
+      <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">Published NAV</span>
     </div>
-    <LiveHoldings holdings={holdings} client:load />
+    <LiveHoldings holdings={holdings} dataMode={portfolioMode} client:load />
   </section>
 
   <!-- C1 · AI 科创聚焦 -->
@@ -234,7 +254,7 @@ try {
   </section>
 
   <p class="max-w-5xl mx-auto px-5 mt-4 text-[11px] text-[var(--text-tertiary)] leading-relaxed">
-    本页行情由东方财富 / 天天基金等公开接口提供，仅供参考；持仓份额与成本为占位 / 学习日志，<strong>不构成任何投资建议</strong>。
+    本页证券行情由东方财富公开接口提供；基金估值仅使用天天基金公开的已公布单位净值，不提供盘中净值估算。当前持仓份额与成本为占位 / 学习日志，<strong>不构成任何投资建议</strong>。
     历史业绩不代表未来表现，市场有风险，入市需谨慎。
   </p>
 

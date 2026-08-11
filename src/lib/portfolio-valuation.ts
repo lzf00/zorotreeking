@@ -4,6 +4,27 @@ export type PortfolioValuationRow = {
   todayPnl: number | null;
 };
 
+export type PublishedFundQuote = {
+  code: string;
+  nav: number;
+  navDate: string;
+  dayPct: number | null;
+  basis: "published_nav";
+};
+
+export type FundPositionInput = {
+  shares: number;
+  costAvg: number;
+};
+
+export type FundPositionValuation = PortfolioValuationRow & {
+  nav: number;
+  navDate: string;
+  dayPct: number | null;
+  dayPnl: number | null;
+  basis: "published_nav";
+};
+
 export type PortfolioValuationSummary = {
   totalCost: number;
   valuedCost: number;
@@ -54,4 +75,72 @@ export function summarizePortfolioValuation(
     valuedCount: valuedRows.length,
     todayCount: todayRows.length,
   };
+}
+
+/**
+ * Accept only the requested fund's formally published unit NAV.
+ *
+ * The upstream compatibility API also exposes legacy `est_*` fields. Those
+ * fields are not intraday estimates: `est_nav` can contain cumulative NAV and
+ * `est_pct` contains the published NAV day's growth rate. Valuation must never
+ * prefer `est_nav` over the unit NAV in `nav`.
+ */
+export function normalizePublishedFundQuote(
+  raw: unknown,
+  expectedCode: string,
+): PublishedFundQuote | null {
+  if (!raw || typeof raw !== "object") return null;
+  const quote = raw as Record<string, unknown>;
+  if (quote.ok === false || quote.code !== expectedCode) return null;
+
+  const nav = typeof quote.nav === "number" ? quote.nav : Number.NaN;
+  const navDate = typeof quote.nav_date === "string" ? quote.nav_date : "";
+  if (!Number.isFinite(nav) || nav <= 0 || !/^\d{4}-\d{2}-\d{2}$/.test(navDate)) {
+    return null;
+  }
+
+  const rawDayPct = quote.est_pct;
+  const dayPct = typeof rawDayPct === "number" && Number.isFinite(rawDayPct)
+    ? rawDayPct
+    : null;
+
+  return {
+    code: expectedCode,
+    nav,
+    navDate,
+    dayPct,
+    basis: "published_nav",
+  };
+}
+
+export function valueFundPosition(
+  holding: FundPositionInput,
+  quote: PublishedFundQuote,
+): FundPositionValuation {
+  const costValue = holding.costAvg * holding.shares;
+  const marketValue = quote.nav * holding.shares;
+  const dayPnl = quote.dayPct !== null && quote.dayPct > -100
+    ? marketValue - marketValue / (1 + quote.dayPct / 100)
+    : null;
+
+  return {
+    costValue,
+    marketValue,
+    todayPnl: dayPnl,
+    dayPnl,
+    nav: quote.nav,
+    navDate: quote.navDate,
+    dayPct: quote.dayPct,
+    basis: quote.basis,
+  };
+}
+
+export function formatSignedCurrency(value: number, digits = 2): string {
+  if (!Number.isFinite(value)) return "—";
+  const sign = value > 0 ? "+" : value < 0 ? "-" : "";
+  const amount = Math.abs(value).toLocaleString("en-US", {
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits,
+  });
+  return `${sign}¥${amount}`;
 }

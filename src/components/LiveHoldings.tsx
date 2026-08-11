@@ -1,10 +1,15 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { formatChinaMarketTime, isChinaATradingHours } from "@/lib/china-market";
-import { summarizePortfolioValuation } from "@/lib/portfolio-valuation";
+import {
+  formatSignedCurrency,
+  normalizePublishedFundQuote,
+  summarizePortfolioValuation,
+  valueFundPosition,
+} from "@/lib/portfolio-valuation";
 
 /**
- * 实时持仓：拿 _holdings.yaml 的占位份额 + 成本，调 /api/market/funds 拿天天基金实时估值，
- * 实时算出 估算市值 / 今日盈亏 / 累计盈亏。
+ * 基金持仓：拿 _holdings.yaml 的份额 + 成本，调 /api/market/funds 获取
+ * 天天基金已公布的单位净值，计算净值市值 / 最近净值日盈亏 / 累计盈亏。
  *
  * 行为：
  *  - 进入页面立即拉一次
@@ -23,10 +28,10 @@ type Holding = {
 type FundQuote = {
   code: string;
   name?: string | null;        // 天天基金返回的真实名
-  nav?: number | null;          // 上一交易日单位净值
+  nav?: number | null;          // 已公布单位净值
   nav_date?: string | null;
-  est_nav?: number | null;      // 当日估算净值
-  est_pct?: number | null;      // 估算涨跌幅 %
+  est_nav?: number | null;      // 兼容字段；上游当前可能放累计净值，禁止用于估值
+  est_pct?: number | null;      // 已公布净值日增长率 %
   est_time?: string | null;
   ok: boolean;
   error?: string;
@@ -42,11 +47,14 @@ type FundResp = {
   error?: string;
 };
 
-interface Props { holdings: Holding[] }
+interface Props {
+  holdings: Holding[];
+  dataMode?: "placeholder" | "actual";
+}
 
 const POLL_MS = 60_000;
 
-export default function LiveHoldings({ holdings }: Props) {
+export default function LiveHoldings({ holdings, dataMode = "placeholder" }: Props) {
   const [quotes, setQuotes] = useState<Record<string, FundQuote> | null>(null);
   const [updated, setUpdated] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -74,9 +82,17 @@ export default function LiveHoldings({ holdings }: Props) {
         if (!Array.isArray(d.funds) || d.funds.length === 0) {
           throw new Error("接口未返回可展示的基金数据");
         }
+        const requestedCodes = new Set(holdings.map((holding) => holding.symbol));
         const map: Record<string, FundQuote> = {};
         for (const f of d.funds) {
-          if (f && typeof f.code === "string" && f.code) map[f.code] = f;
+          if (
+            f &&
+            typeof f.code === "string" &&
+            requestedCodes.has(f.code) &&
+            !map[f.code]
+          ) {
+            map[f.code] = f;
+          }
         }
         if (Object.keys(map).length === 0) {
           throw new Error("返回数据格式不符合预期（基金代码缺失）");
@@ -84,10 +100,13 @@ export default function LiveHoldings({ holdings }: Props) {
         setQuotes(map);
         setUpdated(Number.isFinite(d.ts) ? d.ts : null);
         setError(null);
-        if (d.partial && typeof d.succeeded === "number") {
+        const validCount = holdings.filter((holding) =>
+          normalizePublishedFundQuote(map[holding.symbol], holding.symbol),
+        ).length;
+        if (validCount < holdings.length) {
           setPartial({
-            succeeded: d.succeeded,
-            requested: typeof d.requested === "number" ? d.requested : holdings.length,
+            succeeded: validCount,
+            requested: holdings.length,
           });
         } else {
           setPartial(null);
@@ -120,27 +139,34 @@ export default function LiveHoldings({ holdings }: Props) {
 
   // 计算每行 + 总览
   const rows = holdings.map(h => {
-    const q = quotes?.[h.symbol];
-    // 优先用估算净值（交易时段更新），其次单位净值（上一交易日）
-    const nav = q?.est_nav ?? q?.nav ?? null;
-    const pct = q?.est_pct ?? null;
-    const marketValue = nav != null ? nav * h.shares : null;
-    const costValue = h.costAvg * h.shares;
+    const rawQuote = quotes?.[h.symbol];
+    const q = normalizePublishedFundQuote(rawQuote, h.symbol);
+    const valuation = q ? valueFundPosition(h, q) : null;
+    const nav = valuation?.nav ?? null;
+    const pct = valuation?.dayPct ?? null;
+    const marketValue = valuation?.marketValue ?? null;
+    const costValue = valuation?.costValue ?? h.costAvg * h.shares;
     const pnl = marketValue != null ? marketValue - costValue : null;
     const pnlPct = marketValue != null ? (marketValue / costValue - 1) * 100 : null;
-    const todayPnl = (nav != null && pct != null) ? (marketValue! * pct / (100 + pct)) : null;
+    const todayPnl = valuation?.dayPnl ?? null;
     return { h, q, nav, pct, marketValue, costValue, pnl, pnlPct, todayPnl };
   });
 
   const summary = summarizePortfolioValuation(rows);
   const hasMV = summary.valuedCount > 0;
   const hasTodayValue = summary.todayCount > 0;
-  const valuationCoverage = `${summary.valuedCount}/${rows.length} 只可估算`;
+  const valuationCoverage = `${summary.valuedCount}/${rows.length} 只有正式净值`;
+  const navDates = [...new Set(rows.map((row) => row.q?.navDate).filter(Boolean))].sort();
+  const navDateSummary = navDates.length === 0
+    ? "—"
+    : navDates.length === 1
+      ? navDates[0]
+      : `${navDates[0]} 至 ${navDates[navDates.length - 1]}`;
 
   if (!quotes && error) {
     return (
       <div className="rounded-2xl bg-[var(--bg-soft)] p-5 text-sm text-[var(--text-tertiary)]">
-        实时持仓加载失败：{error}。<button onClick={load} className="underline ml-1">重试</button>
+        持仓净值加载失败：{error}。<button onClick={load} className="underline ml-1">重试</button>
       </div>
     );
   }
@@ -151,6 +177,11 @@ export default function LiveHoldings({ holdings }: Props) {
 
   return (
     <div className="space-y-4">
+      {dataMode === "placeholder" && (
+        <div role="note" className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs leading-relaxed text-amber-800 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-300">
+          当前份额和成本是仓库中的示例占位值，不是证券账户数据；下方市值与盈亏仅用于验证计算链路，不能与真实账户对账。
+        </div>
+      )}
       {error && (
         <div role="status" className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-300">
           刷新失败，正在保留上次数据：{error}。<button onClick={load} className="underline ml-1">重试</button>
@@ -160,19 +191,19 @@ export default function LiveHoldings({ holdings }: Props) {
       {/* 顶部总览 */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <Card
-          label="估算市值"
+          label={dataMode === "placeholder" ? "示例市值" : "净值市值"}
           value={hasMV ? `¥${fmt(summary.totalMarketValue, 0)}` : "—"}
           sub={hasMV ? valuationCoverage : "等待可用行情"}
         />
         <Card
-          label="今日盈亏"
-          value={hasTodayValue ? `${summary.todayPnl >= 0 ? "+" : ""}¥${fmt(summary.todayPnl, 2)}` : "—"}
+          label="最近净值日盈亏"
+          value={hasTodayValue ? formatSignedCurrency(summary.todayPnl, 2) : "—"}
           sub={summary.todayPnlPct !== null ? `${summary.todayPnlPct >= 0 ? "+" : ""}${fmt(summary.todayPnlPct, 2)}%` : "—"}
           color={summary.todayPnl > 0 ? "#dc2626" : summary.todayPnl < 0 ? "#16a34a" : undefined}
         />
         <Card
           label="累计盈亏"
-          value={hasMV ? `${summary.totalPnl >= 0 ? "+" : ""}¥${fmt(summary.totalPnl, 0)}` : "—"}
+          value={hasMV ? formatSignedCurrency(summary.totalPnl, 0) : "—"}
           sub={summary.totalPnlPct !== null ? `${summary.totalPnlPct >= 0 ? "+" : ""}${fmt(summary.totalPnlPct, 2)}%` : "—"}
           color={summary.totalPnl > 0 ? "#dc2626" : summary.totalPnl < 0 ? "#16a34a" : undefined}
         />
@@ -189,9 +220,9 @@ export default function LiveHoldings({ holdings }: Props) {
                 <th scope="col" className="text-left p-3 font-semibold">基金</th>
                 <th scope="col" className="text-right p-3 font-semibold">份额</th>
                 <th scope="col" className="text-right p-3 font-semibold">成本净值</th>
-                <th scope="col" className="text-right p-3 font-semibold">估算净值</th>
-                <th scope="col" className="text-right p-3 font-semibold">今日</th>
-                <th scope="col" className="text-right p-3 font-semibold">估算市值</th>
+                <th scope="col" className="text-right p-3 font-semibold">单位净值</th>
+                <th scope="col" className="text-right p-3 font-semibold">净值日涨跌</th>
+                <th scope="col" className="text-right p-3 font-semibold">净值市值</th>
                 <th scope="col" className="text-right p-3 font-semibold">累计盈亏</th>
               </tr>
             </thead>
@@ -199,20 +230,23 @@ export default function LiveHoldings({ holdings }: Props) {
               {rows.map(r => {
                 const pctColor = r.pct == null ? "var(--text-tertiary)" : r.pct > 0 ? "#dc2626" : r.pct < 0 ? "#16a34a" : "var(--text-tertiary)";
                 const pnlColor = r.pnl == null ? "var(--text-tertiary)" : r.pnl > 0 ? "#dc2626" : r.pnl < 0 ? "#16a34a" : "var(--text-tertiary)";
-                const displayName = r.q?.name || r.h.name;
+                const displayName = r.h.name;
                 return (
                   <tr key={r.h.symbol} className="border-t border-[var(--border)]">
                     <td className="p-3 font-mono text-xs">{r.h.symbol}</td>
                     <td className="p-3 max-w-[180px] truncate" title={displayName}>{displayName}</td>
                     <td className="p-3 text-right tabular-nums">{r.h.shares.toLocaleString()}</td>
                     <td className="p-3 text-right tabular-nums text-[var(--text-secondary)]">{fmt(r.h.costAvg, 4)}</td>
-                    <td className="p-3 text-right tabular-nums">{r.nav != null ? fmt(r.nav, 4) : "—"}</td>
+                    <td className="p-3 text-right tabular-nums">
+                      <div>{r.nav != null ? fmt(r.nav, 4) : "—"}</div>
+                      {r.q?.navDate && <div className="mt-0.5 text-[10px] text-[var(--text-tertiary)]">{r.q.navDate}</div>}
+                    </td>
                     <td className="p-3 text-right tabular-nums" style={{ color: pctColor }}>
                       {r.pct != null ? `${r.pct > 0 ? "+" : ""}${fmt(r.pct, 2)}%` : "—"}
                     </td>
                     <td className="p-3 text-right tabular-nums">{r.marketValue != null ? `¥${fmt(r.marketValue, 0)}` : "—"}</td>
                     <td className="p-3 text-right tabular-nums" style={{ color: pnlColor }}>
-                      {r.pnl != null ? `${r.pnl >= 0 ? "+" : ""}¥${fmt(r.pnl, 0)}  (${r.pnlPct! >= 0 ? "+" : ""}${fmt(r.pnlPct!, 2)}%)` : "—"}
+                      {r.pnl != null ? `${formatSignedCurrency(r.pnl, 0)}  (${r.pnlPct! >= 0 ? "+" : ""}${fmt(r.pnlPct!, 2)}%)` : "—"}
                     </td>
                   </tr>
                 );
@@ -223,8 +257,8 @@ export default function LiveHoldings({ holdings }: Props) {
       </div>
 
       <p className="text-[11px] text-[var(--text-tertiary)] font-mono tracking-wide">
-        数据源 天天基金 · 估算净值（盘中实时，约 1-2 分钟延迟）+ 单位净值（上一交易日 17:00 后发布） · 最后更新 {updated ? formatChinaMarketTime(updated) : "—"}
-        {!isChinaATradingHours() && <span className="ml-2">（非交易时段，已停止自动刷新）</span>}
+        数据源 天天基金公开历史净值 · 仅使用已公布单位净值（不使用盘中估算） · 净值日期 {navDateSummary} · 接口响应 {updated ? formatChinaMarketTime(updated) : "—"}
+        {!isChinaATradingHours() && <span className="ml-2">（非交易时段，已停止轮询）</span>}
         {partial !== null && (
           <span className="ml-2 text-amber-600 dark:text-amber-400">· 部分基金缺失（{partial.succeeded}/{partial.requested}）</span>
         )}

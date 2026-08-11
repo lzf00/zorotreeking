@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import { formatChinaMarketTime, isChinaATradingHours } from "@/lib/china-market";
+import { classifyLaggingSectors } from "@/lib/market-quality";
 
 /**
  * 行业板块涨跌排行（细分行业 m:90 t:2）。
@@ -19,17 +21,11 @@ type Resp = {
   total?: number;
   top_up?: Sector[];
   top_down?: Sector[];
+  stale?: boolean;
   error?: string;
 };
 
 const POLL_MS = 60_000;
-
-function isATradingHours(d: Date = new Date()): boolean {
-  const day = d.getDay();
-  if (day === 0 || day === 6) return false;
-  const t = d.getHours() * 60 + d.getMinutes();
-  return (t >= 570 && t <= 690) || (t >= 780 && t <= 900);
-}
 
 interface Props {
   /** SSR 兜底：服务端从 wind-market-latest.json sectors 映射好 */
@@ -64,7 +60,7 @@ export default function SectorRanking({ initialData }: Props = {}) {
     load();
     const timer = setInterval(() => {
       if (document.hidden) return;
-      if (!isATradingHours()) return;
+      if (!isChinaATradingHours()) return;
       load();
     }, POLL_MS);
     const onVis = () => { if (!document.hidden) load(); };
@@ -94,16 +90,22 @@ export default function SectorRanking({ initialData }: Props = {}) {
   }
 
   const ups = data.top_up || [];
-  const downs = data.top_down || [];
+  const lagging = classifyLaggingSectors(data.top_down || []);
 
   return (
     <div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <SectorList title="涨幅榜" items={ups} color="#dc2626" arrow="▲" />
-        <SectorList title="跌幅榜" items={downs} color="#16a34a" arrow="▼" />
+        <SectorList
+          title={lagging.items.length === 0 ? "后十名待实时数据" : lagging.title}
+          items={lagging.items}
+          color={lagging.direction === "down" ? "#16a34a" : "#dc2626"}
+          arrow={lagging.direction === "down" ? "▼" : "▲"}
+        />
       </div>
       <p className="mt-3 text-[11px] text-[var(--text-tertiary)] font-mono">
-        细分行业板块 · 共 {data.total ?? "?"} 个 · {data.ts ? `更新于 ${fmtTime(data.ts)}` : ""}
+        数据源 {data.stale ? "Wind 静态兜底快照" : "东方财富公开行情"} · 细分行业板块共 {data.total ?? "?"} 个 · {data.ts ? `${data.stale ? "快照时间" : "接口响应"} ${formatChinaMarketTime(data.ts)}` : "时间未知"}
+        {data.stale && <span className="ml-2 text-amber-600 dark:text-amber-400">· 实时接口尚未成功更新</span>}
       </p>
     </div>
   );
@@ -132,10 +134,4 @@ function SectorList({ title, items, color, arrow }: { title: string; items: Sect
       </ul>
     </div>
   );
-}
-
-function fmtTime(ts: number): string {
-  const d = new Date(ts * 1000);
-  const pad = (n: number) => String(n).padStart(2, "0");
-  return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
 }

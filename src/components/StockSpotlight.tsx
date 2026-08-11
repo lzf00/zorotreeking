@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { formatChinaMarketTime, isChinaATradingHours } from "@/lib/china-market";
 
 /**
  * 通用个股聚焦组件。
@@ -36,13 +37,6 @@ interface Props {
 
 const POLL_MS = 60_000;
 
-function isATradingHours(d: Date = new Date()): boolean {
-  const day = d.getDay();
-  if (day === 0 || day === 6) return false;
-  const t = d.getHours() * 60 + d.getMinutes();
-  return (t >= 570 && t <= 690) || (t >= 780 && t <= 900);
-}
-
 export default function StockSpotlight({ stocks, showNote = true, initialQuotes, initialUpdated }: Props) {
   const [quotes, setQuotes] = useState<Record<string, Quote> | null>(
     initialQuotes && Object.keys(initialQuotes).length > 0 ? initialQuotes : null,
@@ -77,7 +71,7 @@ export default function StockSpotlight({ stocks, showNote = true, initialQuotes,
     load();
     const timer = setInterval(() => {
       if (document.hidden) return;
-      if (!isATradingHours()) return;
+      if (!isChinaATradingHours()) return;
       load();
     }, POLL_MS);
     const onVis = () => { if (!document.hidden) load(); };
@@ -116,7 +110,7 @@ export default function StockSpotlight({ stocks, showNote = true, initialQuotes,
             {avg == null ? "—" : `${avg > 0 ? "+" : ""}${avg.toFixed(2)}%`}
           </span>
         </span>
-        <span className="font-mono text-[10.5px]">{updated ? `更新于 ${fmtTime(updated)}` : ""}</span>
+        <span className="font-mono text-[10.5px]">{updated ? `东方财富接口响应 ${formatChinaMarketTime(updated)}` : ""}</span>
       </div>
       <div className="rounded-2xl border border-[var(--border)] overflow-hidden">
         <div className="overflow-x-auto">
@@ -161,10 +155,4 @@ export default function StockSpotlight({ stocks, showNote = true, initialQuotes,
       </div>
     </div>
   );
-}
-
-function fmtTime(ts: number): string {
-  const d = new Date(ts * 1000);
-  const pad = (n: number) => String(n).padStart(2, "0");
-  return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
 }

@@ -7,6 +7,8 @@
 #   costAvg：成本净值（占位值）
 #   market: Fund 表示开放式基金
 
+portfolioMode: placeholder
+
 holdings:
   - symbol: "006551"
     name: "中庚价值领航混合"
@@ -24,18 +26,18 @@ holdings:
     shares: 5000
     costAvg: 1.18
   - symbol: "020274"
-    name: "富国中证细分化工产业主题ETF联接C"
+    name: "富国中证细分化工产业主题ETF发起式联接C"
     market: Fund
     shares: 12000
     costAvg: 0.85
   - symbol: "018173"
-    name: "华泰柏瑞中证电力全指ETF联接C"
+    name: "华泰柏瑞中证电力全指ETF发起式联接C"
     market: Fund
     shares: 10000
     costAvg: 0.95
-  # 161226 是 A 类 LOF。其 C 类 019005 天天基金未接估值接口，故用 A 类（净值相同）。
-  - symbol: "161226"
-    name: "国投瑞银白银期货(LOF)"
+  # A/C 份额必须按真实代码独立估值，不能用 161226(A) 替代 019005(C)。
+  - symbol: "019005"
+    name: "国投瑞银白银期货(LOF)C"
     market: Fund
     shares: 6000
     costAvg: 1.10
@@ -50,7 +52,7 @@ holdings:
     shares: 5000
     costAvg: 0.65
   - symbol: "011840"
-    name: "天弘中证人工智能C"
+    name: "天弘中证人工智能主题ETF发起联接C"
     market: Fund
     shares: 9000
     costAvg: 0.80

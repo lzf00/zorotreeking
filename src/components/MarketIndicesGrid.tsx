@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { formatChinaMarketTime, isChinaATradingHours } from "@/lib/china-market";
 
 /**
  * 实时大盘指数栏：7 大指数（A 股 5 + 港股 1 + 美股 1）。
@@ -26,22 +27,19 @@ type Resp = { ok: boolean; ts: number; indices: Index[]; error?: string };
 const POLL_MS = 60_000;
 
 /** A 股交易时段判断（北京时间，工作日 9:30-11:30 + 13:00-15:00） */
-function isATradingHours(d: Date = new Date()): boolean {
-  const day = d.getDay();
-  if (day === 0 || day === 6) return false;
-  const t = d.getHours() * 60 + d.getMinutes();
-  return (t >= 570 && t <= 690) || (t >= 780 && t <= 900);
-}
-
 interface Props {
   /** 服务端兜底数据。SSR 时直接渲染这份；hydrate 后 useEffect 拉 /api/market 覆盖 */
   initialIndices?: Index[];
   initialUpdated?: number;
+  initialSource?: "wind_snapshot";
 }
 
-export default function MarketIndicesGrid({ initialIndices, initialUpdated }: Props = {}) {
+export default function MarketIndicesGrid({ initialIndices, initialUpdated, initialSource }: Props = {}) {
   const [data, setData] = useState<Index[] | null>(initialIndices && initialIndices.length > 0 ? initialIndices : null);
   const [updated, setUpdated] = useState<number | null>(initialUpdated ?? null);
+  const [source, setSource] = useState<"live" | "wind_snapshot">(
+    initialSource === "wind_snapshot" ? "wind_snapshot" : "live",
+  );
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const inFlight = useRef(false);
@@ -56,6 +54,7 @@ export default function MarketIndicesGrid({ initialIndices, initialUpdated }: Pr
       if (d.ok) {
         setData(d.indices);
         setUpdated(d.ts);
+        setSource("live");
         setError(null);
       } else {
         if (!data) setError(d.error || "加载失败");
@@ -72,7 +71,7 @@ export default function MarketIndicesGrid({ initialIndices, initialUpdated }: Pr
     load();
     const timer = setInterval(() => {
       if (document.hidden) return;
-      if (!isATradingHours()) return;
+      if (!isChinaATradingHours()) return;
       load();
     }, POLL_MS);
     const onVis = () => { if (!document.hidden) load(); };
@@ -108,8 +107,9 @@ export default function MarketIndicesGrid({ initialIndices, initialUpdated }: Pr
         {data.map((d) => <IndexCard key={d.code} d={d} />)}
       </div>
       <p className="mt-3 text-[11px] text-[var(--text-tertiary)] font-mono tracking-wide">
-        数据源 东方财富 · 延迟约 15 秒 · 更新于 {updated ? fmtTime(updated) : "—"}
-        {!isATradingHours() && <span className="ml-2">（非交易时段，已停止自动刷新）</span>}
+        数据源 {source === "live" ? "东方财富公开行情" : "Wind 静态兜底快照"} · {source === "live" ? "接口响应" : "快照时间"} {updated ? formatChinaMarketTime(updated) : "—"}
+        {source === "wind_snapshot" && <span className="ml-2 text-amber-600 dark:text-amber-400">· 实时接口尚未成功更新</span>}
+        {!isChinaATradingHours() && <span className="ml-2">（非交易时段，已停止自动刷新）</span>}
         {loading && <span className="ml-2">…</span>}
       </p>
     </section>
@@ -141,10 +141,4 @@ function IndexCard({ d }: { d: Index }) {
       </div>
     </div>
   );
-}
-
-function fmtTime(ts: number): string {
-  const d = new Date(ts * 1000);
-  const pad = (n: number) => String(n).padStart(2, "0");
-  return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
 }
