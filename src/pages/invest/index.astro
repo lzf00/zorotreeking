@@ -46,9 +46,20 @@ const t = useTranslations(lang);
 // 仅支持本文件的固定结构：- key: value
 const holdingsPath = path.resolve("./src/content/invest-portfolio/_holdings.yaml");
 const rawYaml = fs.readFileSync(holdingsPath, "utf-8");
-const portfolioMode = /^portfolioMode:\s*actual\s*$/m.test(rawYaml) ? "actual" : "placeholder";
+const rawPortfolioMode = rawYaml.match(/^portfolioMode:\s*(\w+)\s*$/m)?.[1];
+const portfolioMode = rawPortfolioMode === "actual" || rawPortfolioMode === "simulation"
+  ? rawPortfolioMode
+  : "placeholder";
+const simulationStartDate = rawYaml.match(/^simulationStartDate:\s*"?([^"\s]+)"?\s*$/m)?.[1];
 
-type Holding = { symbol: string; name: string; shares: number; costAvg: number };
+type Holding = {
+  symbol: string;
+  name: string;
+  shares: number;
+  costAvg: number;
+  initialCapital?: number;
+  baselineDate?: string;
+};
 function parseHoldings(text: string): Holding[] {
   const lines = text.split("\n").map(l => l.replace(/#.*$/, ""));
   const out: Holding[] = [];
@@ -70,12 +81,15 @@ function parseHoldings(text: string): Holding[] {
       if (k === "name") cur.name = v;
       else if (k === "shares") cur.shares = Number(v);
       else if (k === "costAvg") cur.costAvg = Number(v);
+      else if (k === "initialCapital") cur.initialCapital = Number(v);
+      else if (k === "baselineDate") cur.baselineDate = v;
     }
   }
   if (cur) out.push(cur);
   return out;
 }
 const holdings: Holding[] = parseHoldings(rawYaml);
+const simulationCapitalPerFund = holdings[0]?.initialCapital ?? 0;
 
 // ── 复盘文章（原创） + 自动日报分流 ──
 const allInvest = (await getCollection("invest", (p) => p.data.lang === lang && !p.data.draft))
@@ -219,11 +233,20 @@ try {
   <section class="max-w-5xl mx-auto px-5 pb-8">
     <div class="flex items-baseline justify-between mb-3">
       <h2 class="text-base font-semibold tracking-tight">
-        {portfolioMode === "actual" ? "我的持仓（已公布净值）" : "基金净值跟踪（未接入账户）"}
+        {portfolioMode === "actual"
+          ? "我的持仓（已公布净值）"
+          : portfolioMode === "simulation"
+            ? `模拟组合（每只本金 ¥${simulationCapitalPerFund.toLocaleString()}）`
+            : "基金净值跟踪（未接入账户）"}
       </h2>
       <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">Published NAV</span>
     </div>
-    <LiveHoldings holdings={holdings} dataMode={portfolioMode} client:load />
+    <LiveHoldings
+      holdings={holdings}
+      dataMode={portfolioMode}
+      simulationStartDate={simulationStartDate}
+      client:load
+    />
   </section>
 
   <!-- C1 · AI 科创聚焦 -->

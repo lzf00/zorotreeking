@@ -131,6 +131,43 @@ test("placeholder holdings expose published NAV but never fake account valuation
   assert.equal(result.dayPnl, null);
 });
 
+test("simulation derives fund shares from fixed capital and the baseline NAV", () => {
+  const result = valueFundPosition(
+    { shares: 0, costAvg: 2.0266, initialCapital: 10000 },
+    {
+      code: "016708",
+      nav: 1.8697,
+      navDate: "2026-08-10",
+      dayPct: 1.62,
+      basis: "published_nav",
+    },
+    "simulation",
+  );
+
+  assert.ok(Math.abs(result.valuedShares - 4934.372841211882) < 1e-10);
+  assert.equal(result.costValue, 10000);
+  assert.ok(Math.abs(result.marketValue! - 9225.796901213855) < 1e-10);
+});
+
+test("simulation fails closed when capital or baseline NAV is invalid", () => {
+  const result = valueFundPosition(
+    { shares: 0, costAvg: 0, initialCapital: 10000 },
+    {
+      code: "016708",
+      nav: 1.8697,
+      navDate: "2026-08-10",
+      dayPct: 1.62,
+      basis: "published_nav",
+    },
+    "simulation",
+  );
+
+  assert.equal(result.nav, 1.8697);
+  assert.equal(result.valuedShares, null);
+  assert.equal(result.costValue, null);
+  assert.equal(result.marketValue, null);
+});
+
 test("signed fund currency keeps the sign before the currency symbol", () => {
   assert.equal(formatSignedCurrency(374, 0), "+¥374");
   assert.equal(formatSignedCurrency(-374, 0), "-¥374");

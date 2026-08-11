@@ -3,63 +3,86 @@
 #
 # 字段：
 #   symbol：基金代码（6 位数字；不带 sh/sz 前缀）
-#   shares：份额（占位值，按需直接改）
-#   costAvg：成本净值（占位值）
+#   shares：按 initialCapital / costAvg 推导的模拟份额
+#   costAvg：模拟成交日正式单位净值
+#   initialCapital：每只基金的模拟投入本金
+#   baselineDate：模拟成交净值日
 #   market: Fund 表示开放式基金
 
-portfolioMode: placeholder
+portfolioMode: simulation
+simulationStartDate: "2026-02-01"
 
 holdings:
   - symbol: "006551"
     name: "中庚价值领航混合"
     market: Fund
-    shares: 7000
-    costAvg: 3.50
+    shares: 2696.6534530647
+    costAvg: 3.7083
+    initialCapital: 10000
+    baselineDate: "2026-02-02"
   - symbol: "016708"
     name: "华夏有色金属ETF联接C"
     market: Fund
-    shares: 8000
-    costAvg: 1.05
+    shares: 4934.3728412119
+    costAvg: 2.0266
+    initialCapital: 10000
+    baselineDate: "2026-02-02"
   - symbol: "022709"
     name: "万家臻选混合C"
     market: Fund
-    shares: 5000
-    costAvg: 1.18
+    shares: 2015.0727441261
+    costAvg: 4.9626
+    initialCapital: 10000
+    baselineDate: "2026-02-02"
   - symbol: "020274"
     name: "富国中证细分化工产业主题ETF发起式联接C"
     market: Fund
-    shares: 12000
-    costAvg: 0.85
+    shares: 6840.8811054864
+    costAvg: 1.4618
+    initialCapital: 10000
+    baselineDate: "2026-02-02"
   - symbol: "018173"
     name: "华泰柏瑞中证电力全指ETF发起式联接C"
     market: Fund
-    shares: 10000
-    costAvg: 0.95
+    shares: 9059.6122485958
+    costAvg: 1.1038
+    initialCapital: 10000
+    baselineDate: "2026-02-02"
   # A/C 份额必须按真实代码独立估值，不能用 161226(A) 替代 019005(C)。
   - symbol: "019005"
     name: "国投瑞银白银期货(LOF)C"
     market: Fund
-    shares: 6000
-    costAvg: 1.10
+    shares: 4486.3167339614
+    costAvg: 2.2290
+    initialCapital: 10000
+    baselineDate: "2026-02-02"
   - symbol: "018392"
     name: "南方上海金ETF联接C"
     market: Fund
-    shares: 10000
-    costAvg: 1.05
+    shares: 4904.1243685940
+    costAvg: 2.0391
+    initialCapital: 10000
+    baselineDate: "2026-02-02"
   - symbol: "012414"
     name: "招商中证白酒指数(LOF)C"
     market: Fund
-    shares: 5000
-    costAvg: 0.65
+    shares: 13869.6255201110
+    costAvg: 0.7210
+    initialCapital: 10000
+    baselineDate: "2026-02-02"
   - symbol: "011840"
     name: "天弘中证人工智能主题ETF发起联接C"
     market: Fund
-    shares: 9000
-    costAvg: 0.80
+    shares: 6130.4561059343
+    costAvg: 1.6312
+    initialCapital: 10000
+    baselineDate: "2026-02-02"
   - symbol: "018178"
     name: "华夏科创50指数增强C"
     market: Fund
-    shares: 8000
-    costAvg: 1.10
+    shares: 6331.1174422286
+    costAvg: 1.5795
+    initialCapital: 10000
+    baselineDate: "2026-02-02"
 
-notes: "占位份额与成本——可直接编辑本文件，下次 build 后自动反映到 /invest 页面"
+notes: "模拟组合：每只基金于 2026-02-01 设定投入 ¥10,000；因当日为周日，统一使用 2026-02-02 首个正式单位净值成交；未计申购与赎回费用。"

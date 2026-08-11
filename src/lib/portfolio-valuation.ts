@@ -15,9 +15,11 @@ export type PublishedFundQuote = {
 export type FundPositionInput = {
   shares: number;
   costAvg: number;
+  initialCapital?: number;
 };
 
 export type FundPositionValuation = PortfolioValuationRow & {
+  valuedShares: number | null;
   nav: number;
   navDate: string;
   dayPct: number | null;
@@ -121,7 +123,7 @@ export function normalizePublishedFundQuote(
 export function valueFundPosition(
   holding: FundPositionInput,
   quote: PublishedFundQuote,
-  dataMode: "placeholder" | "actual" = "actual",
+  dataMode: "placeholder" | "simulation" | "actual" = "actual",
 ): FundPositionValuation {
   if (dataMode === "placeholder") {
     return {
@@ -129,6 +131,7 @@ export function valueFundPosition(
       marketValue: null,
       todayPnl: null,
       dayPnl: null,
+      valuedShares: null,
       nav: quote.nav,
       navDate: quote.navDate,
       dayPct: quote.dayPct,
@@ -136,8 +139,36 @@ export function valueFundPosition(
     };
   }
 
-  const costValue = holding.costAvg * holding.shares;
-  const marketValue = quote.nav * holding.shares;
+  if (
+    dataMode === "simulation" &&
+    (
+      typeof holding.initialCapital !== "number" ||
+      !Number.isFinite(holding.initialCapital) ||
+      holding.initialCapital <= 0 ||
+      !Number.isFinite(holding.costAvg) ||
+      holding.costAvg <= 0
+    )
+  ) {
+    return {
+      costValue: null,
+      marketValue: null,
+      todayPnl: null,
+      dayPnl: null,
+      valuedShares: null,
+      nav: quote.nav,
+      navDate: quote.navDate,
+      dayPct: quote.dayPct,
+      basis: quote.basis,
+    };
+  }
+
+  const valuedShares = dataMode === "simulation"
+    ? holding.initialCapital! / holding.costAvg
+    : holding.shares;
+  const costValue = dataMode === "simulation"
+    ? holding.initialCapital!
+    : holding.costAvg * holding.shares;
+  const marketValue = quote.nav * valuedShares;
   const dayPnl = quote.dayPct !== null && quote.dayPct > -100
     ? marketValue - marketValue / (1 + quote.dayPct / 100)
     : null;
@@ -147,6 +178,7 @@ export function valueFundPosition(
     marketValue,
     todayPnl: dayPnl,
     dayPnl,
+    valuedShares,
     nav: quote.nav,
     navDate: quote.navDate,
     dayPct: quote.dayPct,
