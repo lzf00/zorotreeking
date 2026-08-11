@@ -8,7 +8,13 @@ export type PublishedFundQuote = {
   code: string;
   nav: number;
   navDate: string;
+  previousNav?: number | null;
+  previousNavDate?: string | null;
+  cumulativeNav?: number | null;
   dayPct: number | null;
+  source?: string;
+  qualityIssues?: string[];
+  stale?: boolean;
   basis: "published_nav";
 };
 
@@ -16,6 +22,7 @@ export type FundPositionInput = {
   shares: number;
   costAvg: number;
   initialCapital?: number;
+  subscriptionFeePct?: number;
 };
 
 export type FundPositionValuation = PortfolioValuationRow & {
@@ -100,22 +107,64 @@ export function normalizePublishedFundQuote(
   const quote = raw as Record<string, unknown>;
   if (quote.ok === false || quote.code !== expectedCode) return null;
 
-  const nav = typeof quote.nav === "number" ? quote.nav : Number.NaN;
-  const navDate = typeof quote.nav_date === "string" ? quote.nav_date : "";
+  const hasExplicitUnitNav = Object.hasOwn(quote, "unit_nav");
+  const hasExplicitUnitNavDate = Object.hasOwn(quote, "unit_nav_date");
+  const navValue = hasExplicitUnitNav ? quote.unit_nav : quote.nav;
+  const navDateValue = hasExplicitUnitNavDate ? quote.unit_nav_date : quote.nav_date;
+  const nav = typeof navValue === "number" ? navValue : Number.NaN;
+  const navDate = typeof navDateValue === "string" ? navDateValue : "";
   if (!Number.isFinite(nav) || nav <= 0 || !/^\d{4}-\d{2}-\d{2}$/.test(navDate)) {
     return null;
   }
 
-  const rawDayPct = quote.est_pct;
+  const rawPreviousNav = quote.previous_unit_nav;
+  const rawPreviousNavDate = quote.previous_unit_nav_date;
+  const previousPairIsValid =
+    typeof rawPreviousNav === "number" &&
+    Number.isFinite(rawPreviousNav) &&
+    rawPreviousNav > 0 &&
+    typeof rawPreviousNavDate === "string" &&
+    /^\d{4}-\d{2}-\d{2}$/.test(rawPreviousNavDate) &&
+    rawPreviousNavDate < navDate;
+  const previousNav = previousPairIsValid ? rawPreviousNav : null;
+  const previousNavDate = previousPairIsValid ? rawPreviousNavDate : null;
+
+  const rawCumulativeNav = quote.cumulative_nav;
+  const cumulativeNav = typeof rawCumulativeNav === "number" &&
+    Number.isFinite(rawCumulativeNav) && rawCumulativeNav > 0
+    ? rawCumulativeNav
+    : null;
+
+  const rawDayPct = typeof quote.day_pct === "number" ? quote.day_pct : quote.est_pct;
   const dayPct = typeof rawDayPct === "number" && Number.isFinite(rawDayPct)
     ? rawDayPct
     : null;
+  const source = typeof quote.source === "string" && quote.source.trim()
+    ? quote.source
+    : "legacy_fund_api";
+  const allowedQualityIssues = new Set([
+    "nav_date_regression",
+    "large_nav_move",
+    "reported_day_pct_mismatch",
+  ]);
+  const qualityIssues = Array.isArray(quote.quality_issues)
+    ? [...new Set(quote.quality_issues.filter(
+      (issue): issue is string => typeof issue === "string" && allowedQualityIssues.has(issue),
+    ))]
+    : [];
+  const stale = quote.stale === true;
 
   return {
     code: expectedCode,
     nav,
     navDate,
+    previousNav,
+    previousNavDate,
+    cumulativeNav,
     dayPct,
+    source,
+    ...(qualityIssues.length > 0 ? { qualityIssues } : {}),
+    ...(stale ? { stale: true } : {}),
     basis: "published_nav",
   };
 }
@@ -146,7 +195,15 @@ export function valueFundPosition(
       !Number.isFinite(holding.initialCapital) ||
       holding.initialCapital <= 0 ||
       !Number.isFinite(holding.costAvg) ||
-      holding.costAvg <= 0
+      holding.costAvg <= 0 ||
+      (
+        holding.subscriptionFeePct !== undefined &&
+        (
+          !Number.isFinite(holding.subscriptionFeePct) ||
+          holding.subscriptionFeePct < 0 ||
+          holding.subscriptionFeePct >= 100
+        )
+      )
     )
   ) {
     return {
@@ -162,15 +219,20 @@ export function valueFundPosition(
     };
   }
 
+  const subscriptionFeePct = dataMode === "simulation" ? (holding.subscriptionFeePct ?? 0) : 0;
+  const netInvestedCapital = dataMode === "simulation"
+    ? holding.initialCapital! / (1 + subscriptionFeePct / 100)
+    : 0;
   const valuedShares = dataMode === "simulation"
-    ? holding.initialCapital! / holding.costAvg
+    ? netInvestedCapital / holding.costAvg
     : holding.shares;
   const costValue = dataMode === "simulation"
     ? holding.initialCapital!
     : holding.costAvg * holding.shares;
   const marketValue = quote.nav * valuedShares;
-  const dayPnl = quote.dayPct !== null && quote.dayPct > -100
-    ? marketValue - marketValue / (1 + quote.dayPct / 100)
+  const dayPnl = typeof quote.previousNav === "number" &&
+    Number.isFinite(quote.previousNav) && quote.previousNav > 0
+    ? (quote.nav - quote.previousNav) * valuedShares
     : null;
 
   return {

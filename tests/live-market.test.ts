@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
+import * as chinaMarket from "../src/lib/china-market";
 import { formatChinaMarketTime, isChinaATradingHours } from "../src/lib/china-market";
 import { classifyLaggingSectors } from "../src/lib/market-quality";
 import {
@@ -20,6 +21,18 @@ test("China market hours do not depend on the visitor's local timezone", () => {
     formatChinaMarketTime(new Date("2026-08-03T01:30:00Z").getTime() / 1000),
     "09:30:00",
   );
+});
+
+test("published fund NAV keeps refreshing after market close until the evening cutoff", () => {
+  const refreshWindow = (chinaMarket as typeof chinaMarket & {
+    isFundNavRefreshWindow?: (date: Date) => boolean;
+  }).isFundNavRefreshWindow;
+
+  assert.equal(typeof refreshWindow, "function");
+  assert.equal(refreshWindow?.(new Date("2026-08-11T08:30:00Z")), true); // 北京 16:30
+  assert.equal(refreshWindow?.(new Date("2026-08-11T14:30:00Z")), true); // 北京 22:30
+  assert.equal(refreshWindow?.(new Date("2026-08-11T14:31:00Z")), false);
+  assert.equal(refreshWindow?.(new Date("2026-08-15T08:30:00Z")), false); // 周六
 });
 
 test("partial fund quotes do not count missing positions as a 100% loss", () => {
@@ -57,9 +70,16 @@ test("published fund valuation never substitutes cumulative NAV for unit NAV", (
     normalizePublishedFundQuote(
       {
         code: "012414",
-        nav: 0.5752,
-        nav_date: "2026-08-10",
-        est_nav: 0.6602,
+        unit_nav: 0.5752,
+        unit_nav_date: "2026-08-10",
+        previous_unit_nav: 0.5614,
+        previous_unit_nav_date: "2026-08-07",
+        cumulative_nav: 0.6602,
+        day_pct: 2.46,
+        source: "eastmoney_fundmob",
+        nav: 9.9999,
+        nav_date: "2026-08-01",
+        est_nav: 8.8888,
         est_pct: 2.46,
         est_time: null,
         ok: true,
@@ -70,7 +90,11 @@ test("published fund valuation never substitutes cumulative NAV for unit NAV", (
       code: "012414",
       nav: 0.5752,
       navDate: "2026-08-10",
+      previousNav: 0.5614,
+      previousNavDate: "2026-08-07",
+      cumulativeNav: 0.6602,
       dayPct: 2.46,
+      source: "eastmoney_fundmob",
       basis: "published_nav",
     },
   );
@@ -92,6 +116,28 @@ test("published fund valuation rejects a response for a different share class", 
   );
 });
 
+test("published fund quote preserves nonfatal upstream quality warnings", () => {
+  const result = normalizePublishedFundQuote(
+    {
+      code: "006551",
+      unit_nav: 3.7462,
+      unit_nav_date: "2026-08-10",
+      previous_unit_nav: 3.7197,
+      previous_unit_nav_date: "2026-08-07",
+      cumulative_nav: 3.7462,
+      day_pct: 0.7124,
+      source: "eastmoney_fundmob",
+      quality_issues: ["nav_date_regression"],
+      stale: true,
+      ok: true,
+    },
+    "006551",
+  );
+
+  assert.deepEqual(result?.qualityIssues, ["nav_date_regression"]);
+  assert.equal(result?.stale, true);
+});
+
 test("fund position PnL uses the published NAV and its published NAV date", () => {
   const result = valueFundPosition(
     { shares: 5000, costAvg: 0.65 },
@@ -99,15 +145,42 @@ test("fund position PnL uses the published NAV and its published NAV date", () =
       code: "012414",
       nav: 0.5752,
       navDate: "2026-08-10",
+      previousNav: 0.5614,
+      previousNavDate: "2026-08-07",
+      cumulativeNav: 0.6602,
       dayPct: 2.46,
+      source: "eastmoney_fundmob",
       basis: "published_nav",
     },
   );
 
   assert.equal(result.marketValue, 2876);
   assert.equal(result.costValue, 3250);
-  assert.ok(Math.abs(result.dayPnl - 69.05094671091138) < 1e-10);
+  assert.ok(Math.abs(result.dayPnl! - 69) < 1e-10);
   assert.equal(result.navDate, "2026-08-10");
+});
+
+test("simulation supports an explicit subscription fee without changing total cash cost", () => {
+  const result = valueFundPosition(
+    { shares: 0, costAvg: 2, initialCapital: 10000, subscriptionFeePct: 1.5 },
+    {
+      code: "006551",
+      nav: 2.2,
+      navDate: "2026-08-10",
+      previousNav: 2.1,
+      previousNavDate: "2026-08-07",
+      cumulativeNav: 2.2,
+      dayPct: 4.76,
+      source: "eastmoney_fundmob",
+      basis: "published_nav",
+    },
+    "simulation",
+  );
+
+  assert.ok(Math.abs(result.valuedShares! - 4926.108374384237) < 1e-10);
+  assert.equal(result.costValue, 10000);
+  assert.ok(Math.abs(result.marketValue! - 10837.438423645322) < 1e-10);
+  assert.ok(Math.abs(result.dayPnl! - 492.6108374384237) < 1e-10);
 });
 
 test("placeholder holdings expose published NAV but never fake account valuation", () => {

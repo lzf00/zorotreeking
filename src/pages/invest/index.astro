@@ -59,6 +59,7 @@ type Holding = {
   costAvg: number;
   initialCapital?: number;
   baselineDate?: string;
+  subscriptionFeePct?: number;
 };
 function parseHoldings(text: string): Holding[] {
   const lines = text.split("\n").map(l => l.replace(/#.*$/, ""));
@@ -83,6 +84,7 @@ function parseHoldings(text: string): Holding[] {
       else if (k === "costAvg") cur.costAvg = Number(v);
       else if (k === "initialCapital") cur.initialCapital = Number(v);
       else if (k === "baselineDate") cur.baselineDate = v;
+      else if (k === "subscriptionFeePct") cur.subscriptionFeePct = Number(v);
     }
   }
   if (cur) out.push(cur);
@@ -239,7 +241,7 @@ try {
             ? `模拟组合（每只本金 ¥${simulationCapitalPerFund.toLocaleString()}）`
             : "基金净值跟踪（未接入账户）"}
       </h2>
-      <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">Published NAV</span>
+      <span class="text-[11px] text-[var(--text-tertiary)] font-mono tracking-wide">官方单位净值</span>
     </div>
     <LiveHoldings
       holdings={holdings}

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { formatChinaMarketTime, isChinaATradingHours } from "@/lib/china-market";
+import { formatChinaMarketTime, isFundNavRefreshWindow } from "@/lib/china-market";
 import {
   formatSignedCurrency,
   normalizePublishedFundQuote,
@@ -13,8 +13,8 @@ import {
  *
  * 行为：
  *  - 进入页面立即拉一次
- *  - 之后每 60 秒轮询（仅 A 股交易时段 9:30-11:30 + 13:00-15:00 工作日）
- *  - 非交易时段静态显示上次结果
+ *  - 工作日 9:30-22:30 每 5 分钟检查一次，覆盖收盘后的正式净值发布窗口
+ *  - 其余时段静态显示上次结果
  *  - 标签页隐藏时停轮询，切回 visible 立即补一次
  */
 
@@ -25,6 +25,7 @@ type Holding = {
   costAvg: number;
   initialCapital?: number;
   baselineDate?: string;
+  subscriptionFeePct?: number;
 };
 
 type FundQuote = {
@@ -32,6 +33,15 @@ type FundQuote = {
   name?: string | null;        // 天天基金返回的真实名
   nav?: number | null;          // 已公布单位净值
   nav_date?: string | null;
+  unit_nav?: number | null;
+  unit_nav_date?: string | null;
+  previous_unit_nav?: number | null;
+  previous_unit_nav_date?: string | null;
+  cumulative_nav?: number | null;
+  day_pct?: number | null;
+  source?: string | null;
+  quality_issues?: string[];
+  stale?: boolean;
   est_nav?: number | null;      // 兼容字段；上游当前可能放累计净值，禁止用于估值
   est_pct?: number | null;      // 已公布净值日增长率 %
   est_time?: string | null;
@@ -55,7 +65,7 @@ interface Props {
   simulationStartDate?: string;
 }
 
-const POLL_MS = 60_000;
+const POLL_MS = 5 * 60_000;
 
 export default function LiveHoldings({ holdings, dataMode = "placeholder", simulationStartDate }: Props) {
   const [quotes, setQuotes] = useState<Record<string, FundQuote> | null>(null);
@@ -129,7 +139,7 @@ export default function LiveHoldings({ holdings, dataMode = "placeholder", simul
     load();
     const timer = setInterval(() => {
       if (document.hidden) return;
-      if (!isChinaATradingHours()) return;
+      if (!isFundNavRefreshWindow()) return;
       load();
     }, POLL_MS);
     const onVis = () => { if (!document.hidden) load(); };
@@ -171,6 +181,7 @@ export default function LiveHoldings({ holdings, dataMode = "placeholder", simul
   const valuationCoverage = `${summary.valuedCount}/${rows.length} 只有正式净值`;
   const navDates = [...new Set(rows.map((row) => row.q?.navDate).filter(Boolean))].sort();
   const baselineDates = [...new Set(rows.map((row) => row.h.baselineDate).filter(Boolean))].sort();
+  const qualityIssues = [...new Set(rows.flatMap((row) => row.q?.qualityIssues ?? []))];
   const navDateSummary = navDates.length === 0
     ? "—"
     : navDates.length === 1
@@ -204,6 +215,14 @@ export default function LiveHoldings({ holdings, dataMode = "placeholder", simul
       {error && (
         <div role="status" className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-300">
           刷新失败，正在保留上次数据：{error}。<button onClick={load} className="underline ml-1">重试</button>
+        </div>
+      )}
+      {qualityIssues.length > 0 && (
+        <div role="status" className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs leading-relaxed text-amber-800 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-300">
+          数据质量保护已启用：
+          {qualityIssues.includes("nav_date_regression") && "检测到上游净值日期倒退，当前保留上一份有效数据。"}
+          {qualityIssues.includes("large_nav_move") && "检测到单位净值大幅变化，请结合基金公告核对。"}
+          {qualityIssues.includes("reported_day_pct_mismatch") && "上游涨跌幅与相邻净值不一致，盈亏已按单位净值差计算。"}
         </div>
       )}
 
@@ -306,7 +325,9 @@ export default function LiveHoldings({ holdings, dataMode = "placeholder", simul
 
       <p className="text-[11px] text-[var(--text-tertiary)] font-mono tracking-wide">
         数据源 天天基金公开历史净值 · 仅使用已公布单位净值（不使用盘中估算） · 净值日期 {navDateSummary} · 接口响应 {updated ? formatChinaMarketTime(updated) : "—"}
-        {!isChinaATradingHours() && <span className="ml-2">（非交易时段，已停止轮询）</span>}
+        {isFundNavRefreshWindow()
+          ? <span className="ml-2">（净值发布窗口，每 5 分钟检查）</span>
+          : <span className="ml-2">（当前不在净值发布窗口）</span>}
         {dataMode === "simulation" && <span className="ml-2">· 模拟起点 {simulationStartDate ?? "2026-02-01"}</span>}
         {partial !== null && (
           <span className="ml-2 text-amber-600 dark:text-amber-400">· 部分基金缺失（{partial.succeeded}/{partial.requested}）</span>
