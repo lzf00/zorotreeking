@@ -215,11 +215,11 @@ try {
     <MarketSentiment initialData={initialSentiment} client:visible />
   </section>
 
-  <!-- B · 我的持仓（实时基金估值） -->
+  <!-- B · 我的持仓 / 公开基金净值跟踪 -->
   <section class="max-w-5xl mx-auto px-5 pb-8">
     <div class="flex items-baseline justify-between mb-3">
       <h2 class="text-base font-semibold tracking-tight">
-        {portfolioMode === "actual" ? "我的持仓（已公布净值）" : "持仓估值（示例数据）"}
+        {portfolioMode === "actual" ? "我的持仓（已公布净值）" : "基金净值跟踪（未接入账户）"}
       </h2>
       <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">Published NAV</span>
     </div>

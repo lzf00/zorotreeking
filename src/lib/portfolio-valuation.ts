@@ -1,5 +1,5 @@
 export type PortfolioValuationRow = {
-  costValue: number;
+  costValue: number | null;
   marketValue: number | null;
   todayPnl: number | null;
 };
@@ -46,15 +46,20 @@ export function summarizePortfolioValuation(
   rows: PortfolioValuationRow[],
 ): PortfolioValuationSummary {
   const valuedRows = rows.filter(
-    (row): row is PortfolioValuationRow & { marketValue: number } =>
+    (row): row is PortfolioValuationRow & { costValue: number; marketValue: number } =>
+      row.costValue !== null &&
+      Number.isFinite(row.costValue) &&
       row.marketValue !== null && Number.isFinite(row.marketValue),
   );
   const todayRows = valuedRows.filter(
-    (row): row is PortfolioValuationRow & { marketValue: number; todayPnl: number } =>
+    (row): row is PortfolioValuationRow & { costValue: number; marketValue: number; todayPnl: number } =>
       row.todayPnl !== null && Number.isFinite(row.todayPnl),
   );
 
-  const totalCost = rows.reduce((sum, row) => sum + row.costValue, 0);
+  const totalCost = rows.reduce(
+    (sum, row) => sum + (row.costValue !== null && Number.isFinite(row.costValue) ? row.costValue : 0),
+    0,
+  );
   const valuedCost = valuedRows.reduce((sum, row) => sum + row.costValue, 0);
   const totalMarketValue = valuedRows.reduce((sum, row) => sum + row.marketValue, 0);
   const totalPnl = totalMarketValue - valuedCost;
@@ -116,7 +121,21 @@ export function normalizePublishedFundQuote(
 export function valueFundPosition(
   holding: FundPositionInput,
   quote: PublishedFundQuote,
+  dataMode: "placeholder" | "actual" = "actual",
 ): FundPositionValuation {
+  if (dataMode === "placeholder") {
+    return {
+      costValue: null,
+      marketValue: null,
+      todayPnl: null,
+      dayPnl: null,
+      nav: quote.nav,
+      navDate: quote.navDate,
+      dayPct: quote.dayPct,
+      basis: quote.basis,
+    };
+  }
+
   const costValue = holding.costAvg * holding.shares;
   const marketValue = quote.nav * holding.shares;
   const dayPnl = quote.dayPct !== null && quote.dayPct > -100

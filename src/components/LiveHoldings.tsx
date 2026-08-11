@@ -141,18 +141,21 @@ export default function LiveHoldings({ holdings, dataMode = "placeholder" }: Pro
   const rows = holdings.map(h => {
     const rawQuote = quotes?.[h.symbol];
     const q = normalizePublishedFundQuote(rawQuote, h.symbol);
-    const valuation = q ? valueFundPosition(h, q) : null;
+    const valuation = q ? valueFundPosition(h, q, dataMode) : null;
     const nav = valuation?.nav ?? null;
     const pct = valuation?.dayPct ?? null;
     const marketValue = valuation?.marketValue ?? null;
-    const costValue = valuation?.costValue ?? h.costAvg * h.shares;
-    const pnl = marketValue != null ? marketValue - costValue : null;
-    const pnlPct = marketValue != null ? (marketValue / costValue - 1) * 100 : null;
+    const costValue = valuation?.costValue ?? (dataMode === "actual" ? h.costAvg * h.shares : null);
+    const pnl = marketValue != null && costValue != null ? marketValue - costValue : null;
+    const pnlPct = marketValue != null && costValue != null && costValue > 0
+      ? (marketValue / costValue - 1) * 100
+      : null;
     const todayPnl = valuation?.dayPnl ?? null;
     return { h, q, nav, pct, marketValue, costValue, pnl, pnlPct, todayPnl };
   });
 
   const summary = summarizePortfolioValuation(rows);
+  const publishedNavCount = rows.filter((row) => row.q !== null).length;
   const hasMV = summary.valuedCount > 0;
   const hasTodayValue = summary.todayCount > 0;
   const valuationCoverage = `${summary.valuedCount}/${rows.length} 只有正式净值`;
@@ -160,8 +163,8 @@ export default function LiveHoldings({ holdings, dataMode = "placeholder" }: Pro
   const navDateSummary = navDates.length === 0
     ? "—"
     : navDates.length === 1
-      ? navDates[0]
-      : `${navDates[0]} 至 ${navDates[navDates.length - 1]}`;
+      ? (navDates[0] ?? "—")
+      : `${navDates[0] ?? "—"} 至 ${navDates[navDates.length - 1] ?? "—"}`;
 
   if (!quotes && error) {
     return (
@@ -179,7 +182,7 @@ export default function LiveHoldings({ holdings, dataMode = "placeholder" }: Pro
     <div className="space-y-4">
       {dataMode === "placeholder" && (
         <div role="note" className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs leading-relaxed text-amber-800 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-300">
-          当前份额和成本是仓库中的示例占位值，不是证券账户数据；下方市值与盈亏仅用于验证计算链路，不能与真实账户对账。
+          当前未接入证券账户，只展示可核验的公开基金净值；份额、成本、市值和盈亏已隐藏，避免示例数据被误认为真实持仓。
         </div>
       )}
       {error && (
@@ -189,26 +192,35 @@ export default function LiveHoldings({ holdings, dataMode = "placeholder" }: Pro
       )}
 
       {/* 顶部总览 */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <Card
-          label={dataMode === "placeholder" ? "示例市值" : "净值市值"}
-          value={hasMV ? `¥${fmt(summary.totalMarketValue, 0)}` : "—"}
-          sub={hasMV ? valuationCoverage : "等待可用行情"}
-        />
-        <Card
-          label="最近净值日盈亏"
-          value={hasTodayValue ? formatSignedCurrency(summary.todayPnl, 2) : "—"}
-          sub={summary.todayPnlPct !== null ? `${summary.todayPnlPct >= 0 ? "+" : ""}${fmt(summary.todayPnlPct, 2)}%` : "—"}
-          color={summary.todayPnl > 0 ? "#dc2626" : summary.todayPnl < 0 ? "#16a34a" : undefined}
-        />
-        <Card
-          label="累计盈亏"
-          value={hasMV ? formatSignedCurrency(summary.totalPnl, 0) : "—"}
-          sub={summary.totalPnlPct !== null ? `${summary.totalPnlPct >= 0 ? "+" : ""}${fmt(summary.totalPnlPct, 2)}%` : "—"}
-          color={summary.totalPnl > 0 ? "#dc2626" : summary.totalPnl < 0 ? "#16a34a" : undefined}
-        />
-        <Card label="持仓数" value={String(holdings.length)} sub={`占用成本 ¥${fmt(summary.totalCost, 0)}`} />
-      </div>
+      {dataMode === "actual" ? (
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <Card
+            label="净值市值"
+            value={hasMV ? `¥${fmt(summary.totalMarketValue, 0)}` : "—"}
+            sub={hasMV ? valuationCoverage : "等待可用行情"}
+          />
+          <Card
+            label="最近净值日盈亏"
+            value={hasTodayValue ? formatSignedCurrency(summary.todayPnl, 2) : "—"}
+            sub={summary.todayPnlPct !== null ? `${summary.todayPnlPct >= 0 ? "+" : ""}${fmt(summary.todayPnlPct, 2)}%` : "—"}
+            color={summary.todayPnl > 0 ? "#dc2626" : summary.todayPnl < 0 ? "#16a34a" : undefined}
+          />
+          <Card
+            label="累计盈亏"
+            value={hasMV ? formatSignedCurrency(summary.totalPnl, 0) : "—"}
+            sub={summary.totalPnlPct !== null ? `${summary.totalPnlPct >= 0 ? "+" : ""}${fmt(summary.totalPnlPct, 2)}%` : "—"}
+            color={summary.totalPnl > 0 ? "#dc2626" : summary.totalPnl < 0 ? "#16a34a" : undefined}
+          />
+          <Card label="持仓数" value={String(holdings.length)} sub={`占用成本 ¥${fmt(summary.totalCost, 0)}`} />
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <Card label="数据口径" value="正式净值" sub="不使用盘中估算" />
+          <Card label="净值覆盖" value={`${publishedNavCount}/${rows.length}`} sub="代码严格匹配" />
+          <Card label="最新净值日" value={navDateSummary} sub="以基金公告为准" />
+          <Card label="基金数" value={String(holdings.length)} sub="未接入账户持仓" />
+        </div>
+      )}
 
       {/* 持仓明细 */}
       <div className="rounded-2xl border border-[var(--border)] overflow-hidden">
@@ -218,12 +230,12 @@ export default function LiveHoldings({ holdings, dataMode = "placeholder" }: Pro
               <tr>
                 <th scope="col" className="text-left p-3 font-semibold">代码</th>
                 <th scope="col" className="text-left p-3 font-semibold">基金</th>
-                <th scope="col" className="text-right p-3 font-semibold">份额</th>
-                <th scope="col" className="text-right p-3 font-semibold">成本净值</th>
+                {dataMode === "actual" && <th scope="col" className="text-right p-3 font-semibold">份额</th>}
+                {dataMode === "actual" && <th scope="col" className="text-right p-3 font-semibold">成本净值</th>}
                 <th scope="col" className="text-right p-3 font-semibold">单位净值</th>
                 <th scope="col" className="text-right p-3 font-semibold">净值日涨跌</th>
-                <th scope="col" className="text-right p-3 font-semibold">净值市值</th>
-                <th scope="col" className="text-right p-3 font-semibold">累计盈亏</th>
+                {dataMode === "actual" && <th scope="col" className="text-right p-3 font-semibold">净值市值</th>}
+                {dataMode === "actual" && <th scope="col" className="text-right p-3 font-semibold">累计盈亏</th>}
               </tr>
             </thead>
             <tbody>
@@ -235,8 +247,8 @@ export default function LiveHoldings({ holdings, dataMode = "placeholder" }: Pro
                   <tr key={r.h.symbol} className="border-t border-[var(--border)]">
                     <td className="p-3 font-mono text-xs">{r.h.symbol}</td>
                     <td className="p-3 max-w-[180px] truncate" title={displayName}>{displayName}</td>
-                    <td className="p-3 text-right tabular-nums">{r.h.shares.toLocaleString()}</td>
-                    <td className="p-3 text-right tabular-nums text-[var(--text-secondary)]">{fmt(r.h.costAvg, 4)}</td>
+                    {dataMode === "actual" && <td className="p-3 text-right tabular-nums">{r.h.shares.toLocaleString()}</td>}
+                    {dataMode === "actual" && <td className="p-3 text-right tabular-nums text-[var(--text-secondary)]">{fmt(r.h.costAvg, 4)}</td>}
                     <td className="p-3 text-right tabular-nums">
                       <div>{r.nav != null ? fmt(r.nav, 4) : "—"}</div>
                       {r.q?.navDate && <div className="mt-0.5 text-[10px] text-[var(--text-tertiary)]">{r.q.navDate}</div>}
@@ -244,10 +256,12 @@ export default function LiveHoldings({ holdings, dataMode = "placeholder" }: Pro
                     <td className="p-3 text-right tabular-nums" style={{ color: pctColor }}>
                       {r.pct != null ? `${r.pct > 0 ? "+" : ""}${fmt(r.pct, 2)}%` : "—"}
                     </td>
-                    <td className="p-3 text-right tabular-nums">{r.marketValue != null ? `¥${fmt(r.marketValue, 0)}` : "—"}</td>
-                    <td className="p-3 text-right tabular-nums" style={{ color: pnlColor }}>
-                      {r.pnl != null ? `${formatSignedCurrency(r.pnl, 0)}  (${r.pnlPct! >= 0 ? "+" : ""}${fmt(r.pnlPct!, 2)}%)` : "—"}
-                    </td>
+                    {dataMode === "actual" && <td className="p-3 text-right tabular-nums">{r.marketValue != null ? `¥${fmt(r.marketValue, 0)}` : "—"}</td>}
+                    {dataMode === "actual" && (
+                      <td className="p-3 text-right tabular-nums" style={{ color: pnlColor }}>
+                        {r.pnl != null ? `${formatSignedCurrency(r.pnl, 0)}  (${r.pnlPct! >= 0 ? "+" : ""}${fmt(r.pnlPct!, 2)}%)` : "—"}
+                      </td>
+                    )}
                   </tr>
                 );
               })}

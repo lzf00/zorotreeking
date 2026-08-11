@@ -110,6 +110,27 @@ test("fund position PnL uses the published NAV and its published NAV date", () =
   assert.equal(result.navDate, "2026-08-10");
 });
 
+test("placeholder holdings expose published NAV but never fake account valuation", () => {
+  const result = valueFundPosition(
+    { shares: 8000, costAvg: 1.05 },
+    {
+      code: "016708",
+      nav: 1.8697,
+      navDate: "2026-08-10",
+      dayPct: 1.62,
+      basis: "published_nav",
+    },
+    "placeholder",
+  );
+
+  assert.equal(result.nav, 1.8697);
+  assert.equal(result.navDate, "2026-08-10");
+  assert.equal(result.dayPct, 1.62);
+  assert.equal(result.costValue, null);
+  assert.equal(result.marketValue, null);
+  assert.equal(result.dayPnl, null);
+});
+
 test("signed fund currency keeps the sign before the currency symbol", () => {
   assert.equal(formatSignedCurrency(374, 0), "+¥374");
   assert.equal(formatSignedCurrency(-374, 0), "-¥374");
