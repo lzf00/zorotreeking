@@ -1,0 +1,119 @@
+{
+  "ok": true,
+  "ts": 1786456835,
+  "partial": false,
+  "stale": true,
+  "macro": {
+    "source": "bls",
+    "source_url": "https://www.bls.gov/developers/api_signature_v2.htm",
+    "fetched_at": 1786456831,
+    "stale": true,
+    "cpi": { "reference": "2026-06", "actual": 3.5, "expected": 3.8, "previous": 4.2, "preliminary": false },
+    "core_cpi": { "reference": "2026-06", "actual": 2.6, "expected": null, "previous": 2.9, "preliminary": false },
+    "payroll": { "reference": "2026-07", "actual": -23.0, "expected": 80.0, "previous": 20.0, "preliminary": true },
+    "unemployment": { "reference": "2026-07", "actual": 4.1, "expected": null, "previous": 4.2, "preliminary": false },
+    "trends": {
+      "cpi": [
+        { "date": "2025-06", "value": 2.7 },
+        { "date": "2025-07", "value": 2.7 },
+        { "date": "2025-08", "value": 2.9 },
+        { "date": "2025-09", "value": 3.0 },
+        { "date": "2025-11", "value": 2.7 },
+        { "date": "2025-12", "value": 2.7 },
+        { "date": "2026-01", "value": 2.4 },
+        { "date": "2026-02", "value": 2.4 },
+        { "date": "2026-03", "value": 3.3 },
+        { "date": "2026-04", "value": 3.8 },
+        { "date": "2026-05", "value": 4.2 },
+        { "date": "2026-06", "value": 3.5 }
+      ],
+      "core_cpi": [
+        { "date": "2025-06", "value": 2.9 },
+        { "date": "2025-07", "value": 3.1 },
+        { "date": "2025-08", "value": 3.1 },
+        { "date": "2025-09", "value": 3.0 },
+        { "date": "2025-11", "value": 2.6 },
+        { "date": "2025-12", "value": 2.6 },
+        { "date": "2026-01", "value": 2.5 },
+        { "date": "2026-02", "value": 2.5 },
+        { "date": "2026-03", "value": 2.6 },
+        { "date": "2026-04", "value": 2.8 },
+        { "date": "2026-05", "value": 2.9 },
+        { "date": "2026-06", "value": 2.6 }
+      ],
+      "payroll": [
+        { "date": "2025-08", "value": -70.0 },
+        { "date": "2025-09", "value": 76.0 },
+        { "date": "2025-10", "value": -140.0 },
+        { "date": "2025-11", "value": 41.0 },
+        { "date": "2025-12", "value": -17.0 },
+        { "date": "2026-01", "value": 160.0 },
+        { "date": "2026-02", "value": -156.0 },
+        { "date": "2026-03", "value": 214.0 },
+        { "date": "2026-04", "value": 148.0 },
+        { "date": "2026-05", "value": 63.0 },
+        { "date": "2026-06", "value": 20.0, "preliminary": true },
+        { "date": "2026-07", "value": -23.0, "preliminary": true }
+      ],
+      "unemployment": [
+        { "date": "2025-07", "value": 4.3 },
+        { "date": "2025-08", "value": 4.3 },
+        { "date": "2025-09", "value": 4.4 },
+        { "date": "2025-11", "value": 4.5 },
+        { "date": "2025-12", "value": 4.4 },
+        { "date": "2026-01", "value": 4.3 },
+        { "date": "2026-02", "value": 4.4 },
+        { "date": "2026-03", "value": 4.3 },
+        { "date": "2026-04", "value": 4.3 },
+        { "date": "2026-05", "value": 4.3 },
+        { "date": "2026-06", "value": 4.2 },
+        { "date": "2026-07", "value": 4.1 }
+      ]
+    },
+    "consensus": {
+      "source": "Trading Economics 市场一致预期",
+      "source_url": "https://tradingeconomics.com/united-states/calendar",
+      "updated_at": "2026-08-07T13:00:00Z"
+    }
+  },
+  "market": {
+    "source": "eastmoney_delayed",
+    "source_url": "https://quote.eastmoney.com/usstocklist.html",
+    "fetched_at": 1786456835,
+    "quote_ts": 1786456835,
+    "requested": 23,
+    "succeeded": 23,
+    "partial": false,
+    "stale": true,
+    "indices": [
+      { "symbol": "SPX", "name": "标普 500", "price": 7759.18, "change": 6.07, "change_pct": 0.08, "quote_ts": 1786456805 },
+      { "symbol": "NDX", "name": "纳斯达克 100", "price": 26568.78, "change": -36.58, "change_pct": -0.14, "quote_ts": 1786456835 },
+      { "symbol": "DJIA", "name": "道琼斯工业", "price": 54169.27, "change": 193.29, "change_pct": 0.36, "quote_ts": 1786456805 },
+      { "symbol": "IWM", "name": "罗素 2000 ETF", "price": 301.82, "change": 1.84, "change_pct": 0.61, "quote_ts": 1786456835 }
+    ],
+    "sectors": [
+      { "symbol": "XLK", "name": "信息技术", "price": 186.43, "change": 0.11, "change_pct": 0.06, "quote_ts": 1786456835 },
+      { "symbol": "XLC", "name": "通信服务", "price": 111.79, "change": -0.04, "change_pct": -0.04, "quote_ts": 1786456834 },
+      { "symbol": "XLY", "name": "可选消费", "price": 119.785, "change": 0.115, "change_pct": 0.1, "quote_ts": 1786456835 },
+      { "symbol": "XLF", "name": "金融", "price": 58.015, "change": 0.205, "change_pct": 0.35, "quote_ts": 1786456835 },
+      { "symbol": "XLI", "name": "工业", "price": 186.79, "change": 2.19, "change_pct": 1.19, "quote_ts": 1786456835 },
+      { "symbol": "XLE", "name": "能源", "price": 60.48, "change": 0.3, "change_pct": 0.5, "quote_ts": 1786456835 },
+      { "symbol": "XLV", "name": "医疗保健", "price": 168.75, "change": 0.31, "change_pct": 0.18, "quote_ts": 1786456835 },
+      { "symbol": "XLP", "name": "日常消费", "price": 84.765, "change": -0.185, "change_pct": -0.22, "quote_ts": 1786456835 },
+      { "symbol": "XLU", "name": "公用事业", "price": 43.44, "change": 0.31, "change_pct": 0.72, "quote_ts": 1786456834 },
+      { "symbol": "XLRE", "name": "房地产", "price": 44.32, "change": -0.08, "change_pct": -0.18, "quote_ts": 1786456835 },
+      { "symbol": "XLB", "name": "原材料", "price": 53.43, "change": 0.25, "change_pct": 0.47, "quote_ts": 1786456834 }
+    ],
+    "companies": [
+      { "symbol": "AAPL", "name": "苹果", "price": 306.365, "change": -1.895, "change_pct": -0.61, "quote_ts": 1786456835 },
+      { "symbol": "MSFT", "name": "微软", "price": 501.31, "change": -4.75, "change_pct": -0.94, "quote_ts": 1786456835 },
+      { "symbol": "NVDA", "name": "英伟达", "price": 219.51, "change": 1.96, "change_pct": 0.9, "quote_ts": 1786456835 },
+      { "symbol": "AMZN", "name": "亚马逊", "price": 274.74, "change": -3.35, "change_pct": -1.2, "quote_ts": 1786456835 },
+      { "symbol": "GOOGL", "name": "谷歌", "price": 351.26, "change": -6.26, "change_pct": -1.75, "quote_ts": 1786456835 },
+      { "symbol": "META", "name": "Meta", "price": 604.592, "change": 9.672, "change_pct": 1.63, "quote_ts": 1786456835 },
+      { "symbol": "TSLA", "name": "特斯拉", "price": 334.22, "change": 3.34, "change_pct": 1.01, "quote_ts": 1786456835 },
+      { "symbol": "AVGO", "name": "博通", "price": 420.365, "change": -2.035, "change_pct": -0.48, "quote_ts": 1786456835 }
+    ]
+  },
+  "issues": []
+}

@@ -174,7 +174,7 @@ try {
 
   <!-- NEW · Wind 看板入口（A 股 + 港股 + ETF 三因子） -->
   <section class="max-w-5xl mx-auto px-5 pb-6">
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
       <a href={pathWithLang("/invest/market", lang)}
          class="group block border border-[var(--border)] rounded-lg p-4 hover:border-section-invest transition-colors">
         <div class="text-base font-semibold tracking-tight group-hover:text-section-invest">
@@ -194,6 +194,16 @@ try {
           港股观察池 · 恒生指数 · 涨幅榜
         </p>
         <span class="mt-2 inline-block text-[10px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">Wind · 每小时刷新</span>
+      </a>
+      <a href={pathWithLang("/invest/us-market", lang)}
+         class="group block border border-[var(--border)] rounded-lg p-4 hover:border-[#17324d] transition-colors">
+        <div class="text-base font-semibold tracking-tight group-hover:text-[#17324d] dark:group-hover:text-[#9fc1d5]">
+          🇺🇸 美股与美国经济 →
+        </div>
+        <p class="mt-1 text-sm text-[var(--text-secondary)]">
+          CPI · 非农 · 大盘 · 行业 · 大型公司
+        </p>
+        <span class="mt-2 inline-block text-[10px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">BLS · US Market Live</span>
       </a>
       <a href={pathWithLang("/invest/etf", lang)}
          class="group block border border-[var(--border)] rounded-lg p-4 hover:border-section-invest transition-colors">

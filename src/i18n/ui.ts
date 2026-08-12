@@ -118,6 +118,12 @@ export function hasAlternateLanguagePath(pathname: string): boolean {
   if (TRANSLATED_STATIC_PATHS.has(normalized)) return true;
   if (/^\/(ai|photo|hike|tag)\/[^/]+$/.test(normalized)) return true;
   if (/^\/invest\/stock\/[^/]+$/.test(normalized)) return true;
-  if (/^\/invest\/[^/]+$/.test(normalized) && normalized !== "/invest/etf") return true;
+  if (
+    /^\/invest\/[^/]+$/.test(normalized) &&
+    normalized !== "/invest/etf" &&
+    normalized !== "/invest/us-market"
+  ) {
+    return true;
+  }
   return false;
 }

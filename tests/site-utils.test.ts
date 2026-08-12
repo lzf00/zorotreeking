@@ -28,6 +28,7 @@ test("language switch only appears when the alternate page exists", () => {
   assert.equal(hasAlternateLanguagePath("/ai/digest-2026-07-29"), true);
   assert.equal(hasAlternateLanguagePath("/invest/stock/000001.SZ"), true);
   assert.equal(hasAlternateLanguagePath("/invest/etf"), false);
+  assert.equal(hasAlternateLanguagePath("/invest/us-market"), false);
   assert.equal(hasAlternateLanguagePath("/explore"), false);
   assert.equal(hasAlternateLanguagePath("/admin/stats"), false);
   assert.equal(hasAlternateLanguagePath("/404"), false);
