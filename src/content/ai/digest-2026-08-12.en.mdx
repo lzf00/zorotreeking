@@ -1,0 +1,173 @@
+---
+lang: en
+translationKey: digest-2026-08-12
+title: "Daily AI Picks · 2026-08-12"
+description: "16 papers · multi-source aggregation + AI summaries"
+date: 2026-08-12
+tags: [digest, auto, arxiv, openai, anthropic, deepmind, hf-blog, the-gradient]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Today's Highlights in 30 Seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading LLM vendors have been active recently: OpenAI is testing ads in ChatGPT, Daybreak models are now available on AWS, Anthropic launched Claude Opus 5, and Sergey Brin has taken over the Gemini team</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">DeepMind released new models for weather forecasting and robotics, Ant Group bet on a physical interaction brain, and a leading new energy firm built the world's largest single AI computing power unit</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">New AI academic research has been released across multiple fields, and Hugging Face launched low-token inference and low-latency multilingual voice Agent solutions</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 LLM Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Industrial Implementation</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 AI Robotics</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💻 Computing Infrastructure</span>
+  </div>
+</div>
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2608.07471" target="_blank" rel="noopener noreferrer">Application of Artificial Intelligence for Fraudulent Banking Operations Recognition</a>
+
+*Bohdan Mytnyk, Oleksandr Tkachyk, Nataliya Shakhovska…*
+
+To address the rise in fraud following the widespread adoption of online banking services after the pandemic, this paper studies the application of AI algorithms in identifying fraudulent banking transactions. By optimizing data preprocessing, resolving class imbalance, and conducting feature engineering, the researchers compared multiple machine learning models. The stacked generalization model delivered the best recognition performance with an AUC of 0.954, followed by logistic regression (AUC 0.946), both effectively improving fraud detection accuracy.
+
+<FeedbackButtons slug="item:arxiv-2608.07471" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.07472" target="_blank" rel="noopener noreferrer">Data-Driven Fire-Zone Segmentation for Improved Short-Term Wildfire Prediction</a>
+
+*Nicolas Caron, Christophe Guyeux, Hassan Noura…*
+
+Existing short-term wildfire prediction methods usually divide regions using uniform grids, without accounting for the spatial heterogeneity of ignition points. This study confirms that the choice of spatial discretization method has a greater impact on prediction performance than the choice of model. The paper proposes an unsupervised fire zone segmentation algorithm combining watershed detection and K-means clustering, which delimits prediction units directly based on historical fire patterns. Tested across 6 provinces in France with multiple models, this method improves IoU by 3-6% compared to the grid method, is lightweight and parallelizable, and consistently boosts prediction performance.
+
+<FeedbackButtons slug="item:arxiv-2608.07472" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.07535" target="_blank" rel="noopener noreferrer">Evolving Safety Landscape of Multi-modal Large Language Models: A Survey of Emerging Threats and Safeguards</a>
+
+*Xi Li, Shu Zhao, Xiaohan Zou…*
+
+This survey focuses on new security risks brought by the modality fusion architecture of Multimodal Large Language Models (MLLMs), which bypass existing single-modal security frameworks. It systematically sorts out the evolution of MLLM security: first, it builds a classification system for multimodal security threats, covering risk types such as adversarial attacks, data poisoning, jailbreaking, and hallucination. It then reviews current progress in protection measures, and finally identifies unresolved challenges and research directions, providing a reference for the development of scalable security mechanisms for multimodal systems.
+
+<FeedbackButtons slug="item:arxiv-2608.07535" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/testing-ads-in-chatgpt" target="_blank" rel="noopener noreferrer">Testing ads in ChatGPT</a>
+
+*OpenAI*
+
+OpenAI has recently launched tests of built-in ads in ChatGPT, a move aimed at providing financial support for the continued operation of the free ChatGPT service. Multiple user safeguards are in place for this test: ads carry clear labels to avoid misleading users, ad delivery does not interfere at all with the independence of ChatGPT's answer generation, strict privacy protection mechanisms are implemented, and users are given control over ad display, balancing commercial monetization and user experience.
+
+<FeedbackButtons slug="item:openai-blog-testing-ads-in-chatgpt" client:visible />
+
+## <a href="https://openai.com/index/daybreak-models-are-now-available-on-aws" target="_blank" rel="noopener noreferrer">Daybreak models are now available on AWS</a>
+
+*OpenAI*
+
+OpenAI has partnered with Amazon Web Services (AWS) to launch an enterprise-grade security service, integrating the cybersecurity capabilities of the Daybreak security LLM into the Amazon Bedrock platform for general availability. The service can directly adapt to enterprises' existing security operation workflows, allowing enterprises to use pre-integrated LLM capabilities to simplify tasks such as attack and defense response and risk investigation, effectively lowering the threshold for security operations and improving protection efficiency.
+
+<FeedbackButtons slug="item:openai-blog-daybreak-models-are-now-available-on-aws" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 5</a>
+
+*Anthropic*
+
+Claude Opus 5 is a leap-forward iteration of the Claude Opus tier of LLMs, with core upgrades focused on two scenario categories: first, it greatly enhances support for long-running agents, meeting the deployment requirements of agents for complex, long-process tasks; second, it significantly improves performance on code generation and professional domain tasks, better meeting the needs of high-demand R&D and professional office scenarios.
+
+<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+This project launches a public call for AI questions, collecting the most challenging questions about the AI field from across society. It also makes a public commitment: when conducting research to answer the collected questions, the full workflow will be displayed transparently throughout the process. This initiative can both incorporate the public's real concerns to guide R&D directions, and reduce information asymmetry in the AI industry, improving public trust in the field.
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/weathernext-ai-model-achieves-breakthrough-in-forecasting-cyclones/" target="_blank" rel="noopener noreferrer">WeatherNext: AI model achieves breakthrough in forecasting cyclones</a>
+
+*Google DeepMind*
+
+This paper focuses on the technical breakthrough of the AI weather forecasting model WeatherNext in cyclone prediction. Using a deep learning architecture, the model can accurately predict the formation location, movement path, and peak intensity of tropical cyclones more than 7 days in advance. Its accuracy is over 30% higher than traditional numerical forecasting models, and its computing efficiency is dozens of times higher, reserving more response time for extreme weather disaster early warnings.
+
+<FeedbackButtons slug="item:deepmind-weathernext-ai-model-achieves-breakthrough-in-forecasting-cyclones" client:visible />
+
+## <a href="https://deepmind.google/blog/gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestration-and-multi-robot-collaboration/" target="_blank" rel="noopener noreferrer">Gemini Robotics ER 2: powering robotics with video understanding, task orchestration, and multi-robot collaboration</a>
+
+*Google DeepMind*
+
+Gemini Robotics ER 2 is a dedicated intelligent support system for robotics scenarios, achieving step-change breakthroughs in three core technical dimensions: video understanding capability adapted to robot needs, task tool orchestration and scheduling capability, and multi-robot collaboration capability. The system enables robots to perform autonomous reasoning and collaborate with multiple units, effectively solving various practical operation tasks in real-world scenarios.
+
+<FeedbackButtons slug="item:deepmind-gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestrati" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/ibm-research/altk-evolve-sldd" target="_blank" rel="noopener noreferrer">Thinking of ACE? We Can Do It with Fewer Tokens</a>
+
+*Hugging Face*
+
+Currently, only the title of this paper has been provided, no specific abstract content is attached. It is impossible to accurately extract key information such as core methods and experimental conclusions to complete a summary that meets requirements. Please supplement the full English abstract of this paper, and I will extract the core points as required to produce a clear Chinese summary of around 120 words highlighting methods and conclusions.
+
+<FeedbackButtons slug="item:hf-blog-altk-evolve-sldd" client:visible />
+
+## <a href="https://huggingface.co/blog/nvidia/magpie-tts-multilingual-voice-agents" target="_blank" rel="noopener noreferrer">Build Low-Latency Multilingual Voice Agents: Open Weights &amp; Full Deployment Control with NVIDIA Magpie TTS</a>
+
+*Hugging Face*
+
+NVIDIA has launched the Magpie TTS technical solution, targeting the demand for building low-latency multilingual voice agents. It opens model weights and supports users' full-process deployment control. Through architecture optimization, it greatly reduces speech generation latency, supports natural multilingual speech output, and can flexibly adapt to edge and cloud deployment, providing higher customization efficiency and deployment flexibility for scenarios such as multilingual voice assistants and intelligent customer service.
+
+<FeedbackButtons slug="item:hf-blog-magpie-tts-multilingual-voice-agents" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+This AI alignment research challenges the default goal-oriented assumption, pointing out that human rationality is not anchored to ultimate goals, but instead adapts behaviors to a practical network that includes action tendencies, evaluation standards, and related resources. It proposes that to make AI adapt to human collaboration and compliance requirements, AI decision-making logic needs to be isomorphic to human practical behavior logic. This path not only meets ethical requirements such as human well-being, but also guarantees the core security attributes of AI.
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+Recursive Self-Improvement (RSI) was first proposed by I.J. Good in 1965, referring to superintelligent machines whose performance exceeds all human intellectual activities, which can design better machines to achieve self-iteration. In 2008, Eliezer Yudkowsky clarified that its core is a feedback loop: AI uses its existing intelligence to optimize its own cognitive mechanisms. RSI in the current AI context includes both models directly rewriting their own weights, and broadly refers to models optimizing their own training processes.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/08/470674.html" target="_blank" rel="noopener noreferrer">Ant Group Invests in Robot "Fingertips" for the First Time! A Bet of Hundreds of Millions of Yuan, the World's First Physical Interaction Brain Released</a>
+
+*QbitAI*
+
+On August 11, embodied tactile track company Demeng completed a strategic financing round of hundreds of millions of yuan led by Ant Group. This is the first time Ant Group has entered the robot tactile perception field; previously, it had completed a full chain layout of embodied intelligence from the main body, embodied brain to core components. Demeng focuses on the world's first physical interaction brain, overcoming the core AGI difficulty of tactile perception. Capital is currently accelerating its influx into the tactile track.
+
+<FeedbackButtons slug="item:qbitai-470674" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/470621.html" target="_blank" rel="noopener noreferrer">How Does a Leading New Energy Firm Support the World's Largest Single AI Computing Power Super Unit?</a>
+
+*QbitAI*
+
+New energy company Envision Technology recently put the world's largest single AI computing power super unit into operation in Ulanqab. The supporting Xinghe Base has a total planned capacity of 2GW, which can support parallel computing power of millions of cards. Currently, AI computing clusters are advancing to the scale of hundreds of thousands/millions of cards, with power consumption rising to the gigawatt level. Electricity has changed from a supporting resource to a core precondition for AI data centers, and energy supply capacity has become the new core competitiveness in the AI computing power race.
+
+<FeedbackButtons slug="item:qbitai-470621" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/470576.html" target="_blank" rel="noopener noreferrer">Google Co-Founder Brin Takes Emergency Control of Gemini Team, but "3.5 Pro Has Been Canceled"</a>
+
+*QbitAI*
+
+Google originally planned to launch its flagship LLM Gemini 3.5 Pro in the month after the I/O conference in May this year, which was intended to reverse its position in the high-end model market and compete with products from OpenAI and other competitors, but the product has not yet been launched. The official states that it is still in closed testing with partners and has no clear launch date, while third-party think tanks judge that it has been canceled. Currently, co-founder Sergey Brin has taken emergency control of the Gemini team, and the next-generation Gemini 4 has entered the pretraining stage.
+
+<FeedbackButtons slug="item:qbitai-470576" client:visible />
