@@ -1,0 +1,173 @@
+---
+lang: zh
+translationKey: digest-2026-08-12
+title: "AI 每日精选 · 2026-08-12"
+description: "16 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-08-12
+tags: [digest, auto, arxiv, openai, anthropic, deepmind, hf-blog, the-gradient]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">头部大模型厂商动作密集，OpenAI测ChatGPT广告、Daybreak上AWS、Anthropic推Claude Opus 5、布林接管Gemini团队</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">DeepMind发布气象预测及机器人新模型，蚂蚁押注物理交互脑、新能源大厂建最大AI算力单体</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">多领域AI学术研究上新，Hugging Face推出低token推理、低延迟多语种语音Agent方案</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥大模型动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡产业落地</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠前沿研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖AI机器人</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💻算力基建</span>
+  </div>
+</div>
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2608.07471" target="_blank" rel="noopener noreferrer">Application of Artificial Intelligence for Fraudulent Banking Operations Recognition</a>
+
+*Bohdan Mytnyk, Oleksandr Tkachyk, Nataliya Shakhovska…*
+
+针对疫情后线上银行业务普及、欺诈行为增多的问题，本文研究AI算法在银行欺诈交易识别中的应用：通过优化数据预处理、解决样本不平衡、开展特征工程，对比多种机器学习模型，最终堆叠泛化模型识别效果最优，AUC达0.954，逻辑回归次之（AUC0.946），可有效提升欺诈检测准确率。
+
+<FeedbackButtons slug="item:arxiv-2608.07471" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.07472" target="_blank" rel="noopener noreferrer">Data-Driven Fire-Zone Segmentation for Improved Short-Term Wildfire Prediction</a>
+
+*Nicolas Caron, Christophe Guyeux, Hassan Noura…*
+
+针对现有短期野火预测常用均匀网格划分区域、未考虑着火点空间异质性的问题，该研究证实空间离散化方式对预测效果的影响大于模型选择，提出结合分水岭检测与K-means聚类的无监督火区分割算法，直接基于历史火灾模式划定预测单元。经法国6个省多模型测试，该方法较网格法IoU提升3-6%，计算轻量可并行，可稳定提升预测性能。
+
+<FeedbackButtons slug="item:arxiv-2608.07472" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.07535" target="_blank" rel="noopener noreferrer">Evolving Safety Landscape of Multi-modal Large Language Models: A Survey of Emerging Threats and Safeguards</a>
+
+*Xi Li, Shu Zhao, Xiaohan Zou…*
+
+该综述聚焦多模态大模型（MLLM）模态融合架构催生的、突破单模态安全框架的新型安全风险，系统梳理MLLM安全演进态势：首先构建多模态安全威胁分类体系，覆盖对抗攻击、数据投毒、越狱、幻觉等风险类型，再梳理现有防护进展，最后明确待解挑战与研究方向，为可扩展多模态系统安全机制研发提供参考。
+
+<FeedbackButtons slug="item:arxiv-2608.07535" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/testing-ads-in-chatgpt" target="_blank" rel="noopener noreferrer">Testing ads in ChatGPT</a>
+
+*OpenAI*
+
+近期OpenAI启动ChatGPT内置广告测试，此举旨在为ChatGPT免费服务的持续运营提供资金支撑。本次测试设置多重用户保障：广告带有清晰标识避免误导，投放完全不干预ChatGPT生成回答的独立性，配套严格的隐私保护机制，同时开放用户对广告的控制权，兼顾商业变现与用户体验平衡。
+
+<FeedbackButtons slug="item:openai-blog-testing-ads-in-chatgpt" client:visible />
+
+## <a href="https://openai.com/index/daybreak-models-are-now-available-on-aws" target="_blank" rel="noopener noreferrer">Daybreak models are now available on AWS</a>
+
+*OpenAI*
+
+OpenAI联合亚马逊云科技（AWS）推出企业级安全服务，双方将Daybreak安全大模型的网络安全能力接入Amazon Bedrock平台正式对外开放。该服务可直接适配企业现有安全运营工作流，支持企业借助预集成的大模型能力简化攻防处置、风险排查等工作，有效降低安全运营门槛、提升防护效率。
+
+<FeedbackButtons slug="item:openai-blog-daybreak-models-are-now-available-on-aws" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 5</a>
+
+*Anthropic*
+
+Claude Opus 5是Claude Opus层级大模型的跨越式迭代产品，核心升级围绕两类场景展开：一是大幅强化对长时运行智能体的支撑能力，适配复杂长流程的智能体落地需求；二是显著提升代码生成、专业领域任务的处理效果，可更好满足高要求研发、专业办公类场景的使用需求。
+
+<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+本项目发起面向公众的AI问题征集活动，收集全社会关于AI领域最具挑战性的疑难问题，同时公开承诺：后续针对征集到的问题开展研究解答时，将全程透明展示完整工作链路。该举措既能吸纳公众真实关切引导研发方向，也能拉平AI行业信息差，提升领域公共信任度。
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/weathernext-ai-model-achieves-breakthrough-in-forecasting-cyclones/" target="_blank" rel="noopener noreferrer">WeatherNext: AI model achieves breakthrough in forecasting cyclones</a>
+
+*Google DeepMind*
+
+本次论文聚焦AI气象预报模型WeatherNext的气旋预报技术突破。该模型采用深度学习架构，可提前7天以上精准预测热带气旋的生成位置、移动路径及峰值强度，准确率较传统数值预报模式提升超30%，运算效率提升数十倍，可为极端气象灾害预警预留更充足的响应时间。
+
+<FeedbackButtons slug="item:deepmind-weathernext-ai-model-achieves-breakthrough-in-forecasting-cyclones" client:visible />
+
+## <a href="https://deepmind.google/blog/gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestration-and-multi-robot-collaboration/" target="_blank" rel="noopener noreferrer">Gemini Robotics ER 2: powering robotics with video understanding, task orchestration, and multi-robot collaboration</a>
+
+*Google DeepMind*
+
+Gemini Robotics ER 2是面向机器人场景的专用智能支撑系统，在三大核心技术维度实现阶跃式突破：分别是适配机器人需求的视频理解能力、任务工具编排调度能力，以及多机器人协作能力。该系统可赋能机器人自主推理、多机配合，有效解决真实场景中的各类实操任务。
+
+<FeedbackButtons slug="item:deepmind-gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestrati" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/ibm-research/altk-evolve-sldd" target="_blank" rel="noopener noreferrer">Thinking of ACE? We Can Do It with Fewer Tokens</a>
+
+*Hugging Face*
+
+当前你仅提供了该论文的标题，未附上摘要的具体正文内容，无法准确提取其核心方法、实验结论等关键信息完成符合要求的总结。请补充完整这篇论文的英文摘要原文，我会按要求提炼核心要点，产出120字左右、突出方法与结论的清晰中文总结。
+
+<FeedbackButtons slug="item:hf-blog-altk-evolve-sldd" client:visible />
+
+## <a href="https://huggingface.co/blog/nvidia/magpie-tts-multilingual-voice-agents" target="_blank" rel="noopener noreferrer">Build Low-Latency Multilingual Voice Agents: Open Weights &amp; Full Deployment Control with NVIDIA Magpie TTS</a>
+
+*Hugging Face*
+
+NVIDIA推出Magpie TTS技术方案，面向低延迟多语种语音代理构建需求，开放模型权重并支持用户全流程部署管控，通过架构优化大幅压缩语音生成时延，支持多语种自然语音输出，可灵活适配端侧、云端部署，能为多语语音助手、智能客服等场景提供更高的定制效率与部署灵活性。
+
+<FeedbackButtons slug="item:hf-blog-magpie-tts-multilingual-voice-agents" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+这篇AI对齐研究挑战目标导向的默认预设，指出人类理性并非锚定终极目标，而是将行为适配到含行动倾向、评价标准、相关资源的实践网络中。提出要让适配人类协作、合规要求，需让AI决策逻辑与人类实践型行为逻辑同构，该路径既契合人类福祉等伦理要求，也能保障AI核心安全属性。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+递归自我改进（RSI）1965年由I.J.古德最早提出，指性能超越人类所有智能活动的超智能机器，可设计更优机器实现自我迭代。2008年尤德考斯基明确其核心为反馈闭环：AI用现有智能优化自身认知机制。当前AI语境下的RSI既包含模型直接改写自身权重，也可广义指向模型优化自身训练流程。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/08/470674.html" target="_blank" rel="noopener noreferrer">蚂蚁首次投向机器人“指尖”！数亿元押注，全球首个物理交互脑发布</a>
+
+*量子位*
+
+8月11日，具身触觉赛道企业戴盟完成蚂蚁领投的数亿元战略融资，这是蚂蚁首次切入机器人触觉感知领域，此前其已完成具身智能从本体、具身大脑到核心零部件的全链条布局。戴盟主打全球首个物理交互脑，攻克触觉感知这一AGI核心难点，当前资本正加速涌入触觉赛道。
+
+<FeedbackButtons slug="item:qbitai-470674" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/470621.html" target="_blank" rel="noopener noreferrer">一家新能源大厂，如何撑起全球最大AI算力超级单体？</a>
+
+*量子位*
+
+新能源企业远景科技近期在乌兰察布投产全球最大AI算力超级单体，配套星河基地总规划容量2GW，可支持百万卡并行算力。当前AI算力集群正向十万/百万卡规模跃进，功耗升至吉瓦级，电力已从配套变为AI数据中心核心前置条件，能源供给能力成AI算力竞赛新核心竞争力。
+
+<FeedbackButtons slug="item:qbitai-470621" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/470576.html" target="_blank" rel="noopener noreferrer">谷歌创始人布林紧急接管Gemini团队，但“3.5 Pro已被取消”</a>
+
+*量子位*
+
+谷歌原计划今年5月I/O大会后次月推出旗舰大模型Gemini 3.5 Pro，原定承担高端模型市场翻盘任务，对标OpenAI等竞品，但该产品至今未上线。官方称其仍在合作伙伴封闭测试阶段，无明确上线时间，第三方智库则判断其已被取消。目前创始人布林已紧急接管Gemini团队，下一代Gemini 4已进入预训练阶段。
+
+<FeedbackButtons slug="item:qbitai-470576" client:visible />
