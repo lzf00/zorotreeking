@@ -1,0 +1,200 @@
+---
+lang: zh
+translationKey: digest-2026-08-13
+title: "AI 每日精选 · 2026-08-13"
+description: "19 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-08-13
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Anthropic正式推出Claude Opus 5，OpenAI公开多篇企业AI从辅助到落地执行的实践案例</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">DeepMind推出手语交互AI与飓风预测模型WeatherNext，Hugging Face发布多款边缘计算、向量嵌入方向新工具</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国产具身智能创下全球新纪录，成本比Figure AI低30%效率高45%，Jeff Dean离职引行业热议</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥模型发布</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠科研突破</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡企业落地</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖具身智能</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡行业动态</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2608.11878" target="_blank" rel="noopener noreferrer">ToolHazard: Scaling Adversarial Environments for Security Evaluation and Alignment of LLM-based Agents</a>
+
+*HF ★ 1 · Yutao Mou, Pengfei Yang, Zhe Yin… · [HF 镜像](https://huggingface.co/papers/2608.11878)*
+
+（LLM 摘要失败，请稍后手动补充）
+
+<FeedbackButtons slug="item:arxiv-2608.11878" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.11924" target="_blank" rel="noopener noreferrer">Spark-to-Paper: End-to-End Research Paper Generation as a Composable Skill</a>
+
+*HF ★ 0 · Zhuoyang Qian, Biao Wu, Yiran Wang… · [HF 镜像](https://huggingface.co/papers/2608.11924)*
+
+本文提出可嵌入现有编码助手的端到端论文生成系统Spark-to-Paper，无需独立代理平台，将生成流程拆为13个可组合技能，分离模型判断与确定性操作、实验规划与报告，增设校验避免自驳问题，支持生成可编辑矢量图。实测引用准确率99.5%、图表可编辑率96.4%，造假检测率从14%提至92%，单篇平均成本8.1美元、耗时3.2小时，验证了该轻量方案的可行性。
+
+<FeedbackButtons slug="item:arxiv-2608.11924" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.11274" target="_blank" rel="noopener noreferrer">Agent Safety Should Be a Runtime Contract</a>
+
+*HF ★ 0 · Albus W. Ng, Yi Han, Jusheng Zhang… · [HF 镜像](https://huggingface.co/papers/2608.11274)*
+
+当前AI安全主流采用RLHF等训练期注入策略，无法适配可执行代码、修改数据的自主智能体场景。该文提出智能体安全应采用运行时契约，通过沙箱、权限管控前置阻断危险操作，留存测试、日志等可验证证据核验合规性。结合四类实证，其指出智能体安全核心应为带可查证据的执行轨迹，而非模型本身。
+
+<FeedbackButtons slug="item:arxiv-2608.11274" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2608.09997" target="_blank" rel="noopener noreferrer">Transformer Geometry Observatory TGO-IV: Developmental Topology Observatory</a>
+
+*Kaustubh Kapil, Kishor P. Upla*
+
+针对现有Transformer可解释性研究多孤立分析单层或整体网络、缺乏表征跨层演化规律探索的问题，该研究提出TGO-IV拓扑分析框架，以持续同调为核心工具，从token表征点云构建VR复形，结合多类拓扑特征指标，追踪表征前向传播过程中的全局拓扑演化规律，为探明原始输入到任务相关特征的演化节点与作用机制提供新路径。
+
+<FeedbackButtons slug="item:arxiv-2608.09997" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.10007" target="_blank" rel="noopener noreferrer">Uncertainty-Aware Ensemble Deep Randomized Neural Networks for Classification</a>
+
+*M. Sajid, A. Quadir, A. Rahaman…*
+
+针对现有深度随机神经网络对训练样本统一处理、抗噪声与离群点能力弱、污染特征跨层传播影响决策效果的问题，研究引入直觉模糊理论，结合样本类别中心距离隶属度、邻域异质性非隶属度给样本分配自适应权重，可区分不同质量样本，提出两款鲁棒改进框架。基准数据集（含加噪场景）测试显示其性能优于现有各类SOTA方案。
+
+<FeedbackButtons slug="item:arxiv-2608.10007" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.10010" target="_blank" rel="noopener noreferrer">CurveFP: Rational-Radix Logarithmic Datatypes with Closed Products for Language Models</a>
+
+*Ye Qiao*
+
+针对大模型低精度数据类型多优化标量保真度、未改进乘积运算的问题，本文提出有理基对数闭乘积数据类型族CurveFP，乘积仅需符号异或与整数索引更新，分别推出训练用8位、部署用7位实现。实测7位版比FP8少1位仍困惑度更优，8位版矩阵运算误差更低，预训练效果接近BF16，兼顾精度、低存储与运算简洁性。
+
+<FeedbackButtons slug="item:arxiv-2608.10010" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/how-enterprises-put-ai-to-work" target="_blank" rel="noopener noreferrer">From assistance to execution: How enterprises put AI to work</a>
+
+*OpenAI*
+
+这份OpenAI发布的企业AI应用专项研究，梳理了当前企业落地智能体AI的主流路径：普遍依托ChatGPT、Codex等大模型工具，推动AI从传统辅助职能向实际业务执行环节渗透。研究同时明确，布局更早的前沿企业已在AI应用进度上显著拉开与同业的差距，率先收获技术落地红利。
+
+<FeedbackButtons slug="item:openai-blog-how-enterprises-put-ai-to-work" client:visible />
+
+## <a href="https://openai.com/index/ringcentral" target="_blank" rel="noopener noreferrer">How RingCentral builds AI-native work from engineering to ops</a>
+
+*OpenAI*
+
+这篇内容介绍了云通信厂商RingCentral的AI原生工作落地实践：该公司引入ChatGPT Work与Codex两款大模型工具，覆盖从研发到运维全链路场景，一方面大幅提速AI原生产品的开发迭代效率，另一方面打通工程、运维部门的数据壁垒，实现运营情报的集中化智能分析，为企业全流程AI赋能提供参考路径。
+
+<FeedbackButtons slug="item:openai-blog-ringcentral" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 5</a>
+
+*Anthropic*
+
+Claude Opus 5是Anthropic旗下Opus高端大模型产品线的代际升级版本，实现了性能阶跃式提升。该版本核心优化有两点：一是大幅强化对长时运行智能体的承载能力，适配复杂Agent场景需求；二是编码、专业领域任务处理能力均有显著进步，可更好支撑开发者及各行业专业人士的高阶工作需求。
+
+<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+本研究发起面向公众的AI问题征集项目，核心是收集公众对AI领域最关切的疑难问题，同时作出承诺：后续针对所有征集到的问题开展研究、给出回应时，将完整公开研究路径、推导过程等全部工作细节，以此提升AI研发透明度，消解技术与公众间的信息壁垒，推动AI发展适配社会真实关切。
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/putting-sign-language-ai-into-users-hands/" target="_blank" rel="noopener noreferrer">Putting sign language AI into users’ hands</a>
+
+*Google DeepMind*
+
+本研究面向聋人及听障群体的无障碍交流需求，研发出突破性的手语转文字（SL2T）AI模型，核心目标是将手语AI能力直接下沉到用户可直接使用的终端场景中，可支撑面向听障群体的全新手语交互功能，有效打通听障与健听人群的交流壁垒，实现无障碍AI技术的普惠落地。
+
+<FeedbackButtons slug="item:deepmind-putting-sign-language-ai-into-users-hands" client:visible />
+
+## <a href="https://deepmind.google/blog/weathernext-ai-model-achieves-breakthrough-in-forecasting-cyclones/" target="_blank" rel="noopener noreferrer">WeatherNext: AI model achieves breakthrough in forecasting cyclones</a>
+
+*Google DeepMind*
+
+全新AI气象模型WeatherNext在气旋预报领域实现突破性进展：它采用高分辨率时空序列学习架构，融合多源气象观测、再分析数据集训练，相较传统数值预报运算效率提升数十倍，气旋路径、强度、登陆时间预报准确率提升30%以上，可提前7天输出高精度结果，为极端气象防灾减灾提供关键技术支撑。
+
+<FeedbackButtons slug="item:deepmind-weathernext-ai-model-achieves-breakthrough-in-forecasting-cyclones" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/olmoearth-embeddings" target="_blank" rel="noopener noreferrer">Introducing OlmoEarth embeddings: Custom embedding exports from OlmoEarth Studio for downstream analysis</a>
+
+*Hugging Face*
+
+本文推出面向地学领域的OlmoEarth嵌入服务，支持用户从OlmoEarth Studio平台自定义导出适配自身需求的专属嵌入向量，可直接对接各类下游分析任务，无需用户从零训练通用嵌入模型，大幅降低地学场景AI分析的技术门槛，能有效提升地学分类、异常检测等任务的落地效率。
+
+<FeedbackButtons slug="item:hf-blog-olmoearth-embeddings" client:visible />
+
+## <a href="https://huggingface.co/blog/LiquidAI/lfm2-5-vl-3b" target="_blank" rel="noopener noreferrer">LFM2.5-VL-3B for Better and Faster Vision Capabilities for the Edge</a>
+
+*Hugging Face*
+
+### 总结
+本次推出的3B参数量边缘端多模态模型LFM2.5-VL-3B，针对性优化了视觉编码器架构与跨模态对齐效率，相较同量级通用多模态模型，图文理解、OCR、视觉检测等视觉任务精度平均提升超10%，推理速度提40%以上，无需量化即可直接在端侧低算力设备部署，适配智能交互、工业巡检等场景。
+
+<FeedbackButtons slug="item:hf-blog-lfm2-5-vl-3b" client:visible />
+
+# The Gradient
+
+## <a href="https://thegradient.pub/virtue-ethics-ai-alignment/" target="_blank" rel="noopener noreferrer">After Orthogonality: Virtue-Ethical Agency and AI Alignment</a>
+
+*The Gradient*
+
+这篇AI对齐研究从美德伦理视角出发，反驳“理性主体需锚定固定终极目标”的通行预设，指出人类理性行动的核心是适配包含行动倾向、评价标准等要素的实践网络。提出若要AI能配合人类、合规运行，需让AI决策逻辑匹配人类的实践推理范式，该思路同时覆盖伦理对齐与核心安全需求。
+
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我改进（RSI）的概念演进：1965年学者I.J.古德率先提出，超智能机器可在所有智力活动上超越人类，还能设计更优机器完成自我迭代；2008年尤德考斯基明确其核心是AI依托现有智能优化自身认知机制的反馈环。当前AI的这类反馈既含模型直接改写自身权重，也可广义涵盖训练管线优化。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/08/471254.html" target="_blank" rel="noopener noreferrer">《置身谷内》！Jeff Dean上顶会自曝离职现场：被1500人围堵</a>
+
+*量子位*
+
+Jeff Dean在顶会KDD2026公开其任职谷歌27年的离职最后48小时细节：他先后向139名亲近同事、全体谷歌员工官宣离职，出席1500人告别会，熬夜回复告别消息到凌晨2点半，交回工牌当晚标注自己“失业”，零点便以新公司Discovery Loop联创兼CEO上岗，另有三位谷歌核心研究员与其共同创业。
+
+<FeedbackButtons slug="item:qbitai-471254" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/471162.html" target="_blank" rel="noopener noreferrer">Anthropic CEO整天神神叨叨，投资人受不了了</a>
+
+*量子位*
+
+传AI企业Anthropic将于10月底IPO，融资额或超600亿美元，有望成为全球第二大IPO。但公司CEO Dario长期高度警惕AI风险，坚持安全优先级高于盈利，相关保守操作引发投资者不满，甚至质疑其是来经营公司还是拯救世界，要求其少渲染AI末日风险、多讲商业化方案，目前市场已担忧其IPO表现。
+
+<FeedbackButtons slug="item:qbitai-471162" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/471049.html" target="_blank" rel="noopener noreferrer">国产具身智能创全球新纪录！以30%成本跑赢 Figure AI 45%效率，聪明的具身大脑成关键</a>
+
+*量子位*
+
+国内自变量机器人公开直播无人工兜底的随机包裹物流分拣，实测效率达1816件/小时，较美国Figure AI的行业纪录高45%，采用双臂+标准夹爪方案硬件成本低70%，分拣准确率98%。核心支撑为自研WALL-B世界统一模型，探索出高性价比、易规模化落地的具身智能发展新路径。
+
+<FeedbackButtons slug="item:qbitai-471049" client:visible />
