@@ -516,12 +516,15 @@ export default function AliRouteMap({
         aria-label={mapAriaLabel}
       />
       {provider === "amap" && (
-        <fieldset className="ali-amap-layer-control" aria-label="地图图层开关">
-          <legend>图层</legend>
-          <label><input type="checkbox" defaultChecked onChange={(event) => toggleAmapLayer("roads", event.currentTarget.checked)} />公路走向与编号</label>
-          <label><input type="checkbox" defaultChecked onChange={(event) => toggleAmapLayer("routes", event.currentTarget.checked)} />逐日行驶路线</label>
-          <label><input type="checkbox" defaultChecked onChange={(event) => toggleAmapLayer("places", event.currentTarget.checked)} />城市、景点与补给</label>
-        </fieldset>
+        <details className="ali-amap-layer-control">
+          <summary>图层设置</summary>
+          <fieldset aria-label="地图图层开关">
+            <legend className="sr-only">地图图层开关</legend>
+            <label><input type="checkbox" defaultChecked onChange={(event) => toggleAmapLayer("roads", event.currentTarget.checked)} />公路走向与编号</label>
+            <label><input type="checkbox" defaultChecked onChange={(event) => toggleAmapLayer("routes", event.currentTarget.checked)} />逐日行驶路线</label>
+            <label><input type="checkbox" defaultChecked onChange={(event) => toggleAmapLayer("places", event.currentTarget.checked)} />城市、景点与补给</label>
+          </fieldset>
+        </details>
       )}
       <p className="ali-route-map-help" aria-live="polite">
         <strong>{providerLabel}</strong> · 拖动查看 · 点击公路牌或地点查看详情 · 已关闭滚轮缩放

@@ -109,9 +109,10 @@ const {
   .rd-route span { display: inline-flex; gap: 12px; align-items: center; }
   .rd-route b { font-weight: 500; }
   .rd-route i { color: var(--rd-accent-2); font-style: normal; }
-  .rd-nav { position: sticky; top: 3.5rem; z-index: 30; overflow-x: auto; color: #eee8da; background: color-mix(in srgb, var(--rd-night) 96%, transparent); backdrop-filter: blur(14px); }
+  .rd-nav { position: sticky; top: 3.5rem; z-index: 30; overflow-x: auto; color: #eee8da; background: color-mix(in srgb, var(--rd-night) 96%, transparent); backdrop-filter: blur(14px); scrollbar-width: none; }
+  .rd-nav::-webkit-scrollbar { display: none; }
   .rd-nav .rd-wrap { display: flex; align-items: center; gap: 26px; min-height: 54px; white-space: nowrap; }
-  .rd-nav a, .rd-nav button { color: inherit; border: 0; background: none; font: 600 .72rem/1 var(--rd-mono); text-decoration: none; cursor: pointer; }
+  .rd-nav a, .rd-nav button { display: inline-flex; min-height: 44px; align-items: center; color: inherit; border: 0; background: none; font: 600 .72rem/1 var(--rd-mono); text-decoration: none; cursor: pointer; }
   .rd-nav button { margin-left: auto; padding: 10px 13px; color: var(--rd-night); background: var(--rd-accent-2); }
   .rd-section { padding: 92px 0; scroll-margin-top: 7rem; border-top: 1px solid var(--rd-line); }
   .rd-section--deep { background: var(--rd-paper-deep); }

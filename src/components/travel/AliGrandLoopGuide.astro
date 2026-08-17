@@ -41,6 +41,9 @@ const scopedStyle = `
   }
 
   :scope .nav { top: 3.5rem; }
+  :scope .nav-inner::-webkit-scrollbar { display: none; }
+  :scope .nav a,
+  :scope .nav .print { display: inline-flex; min-height: 44px; align-items: center; }
   :scope .topbar .brand { text-decoration: none; }
   :scope .guide-endnote {
     padding: 54px 0 64px;

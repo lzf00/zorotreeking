@@ -20,10 +20,7 @@ import {
   aliLhasaReturnRoadLabels,
   aliLhasaReturnRoutedDayGeometry,
 } from "../src/data/ali-lhasa-return-road-geometry";
-import {
-  aliLhasaReturnRouteDays,
-  aliLhasaReturnRoutePoints,
-} from "../src/data/ali-lhasa-return-route";
+import * as aliLhasaReturnData from "../src/data/ali-lhasa-return-route";
 import {
   lhasaLanzhouRoadLabels,
   lhasaLanzhouRoutedDayGeometry,
@@ -42,6 +39,11 @@ import {
 } from "../src/data/nagqu-g317-chengdu-route";
 import { getTravelGuides } from "../src/data/travel-guides";
 import { wgs84ToGcj02 } from "../src/utils/amap-coordinate";
+
+const {
+  aliLhasaReturnRouteDays,
+  aliLhasaReturnRoutePoints,
+} = aliLhasaReturnData;
 
 test("hike section is presented as hiking and travel across navigation and home", async () => {
   const [ui, home, section] = await Promise.all([
@@ -87,6 +89,27 @@ test("Ali travel guide is indexed and keeps its complete standalone roadbook", a
   assert.match(html, /id="budget"/);
   assert.match(html, /沪公网安备31011502406842号/);
   assert.doesNotMatch(html, /target="_blank" rel="noreferrer"/);
+});
+
+test("travel guide catalog separates complete routes from destination-specific return segments", () => {
+  const chengduGuides = getTravelGuides("zh", { destination: "chengdu" });
+  assert.deepEqual(
+    chengduGuides.map((guide) => guide.slug),
+    [
+      "ali-central-loop-nagqu-g317-chengdu-2026",
+      "ali-central-loop-nagqu-chengdu-2026",
+    ],
+  );
+
+  const completeGuides = getTravelGuides("zh", { scope: "complete" });
+  assert.equal(completeGuides.length, 5);
+  assert.ok(completeGuides.every((guide) => guide.scope === "complete"));
+  assert.ok(completeGuides.every((guide) => guide.status === "planning"));
+  assert.ok(completeGuides.every((guide) => /^2026-\d{2}-\d{2}$/.test(guide.updated)));
+  assert.ok(
+    !completeGuides.some((guide) => guide.slug === "ali-central-loop-nagqu-g317-chengdu-2026"),
+    "the four-day Nagqu-Chengdu leg must not be presented as a complete Ali itinerary",
+  );
 });
 
 test("the original Ali roadbook URL is rendered through the complete shared route atlas", async () => {
@@ -155,6 +178,108 @@ test("G317 Chengdu and Lhasa-return loop are independent indexed roadbooks", asy
   assert.match(loopOverview, /point\.id !== "shanghai"/);
   assert.match(loopOverview, /day\.day < 12/);
   assert.match(loopOverview, /mapPoints=\{drivingMapPoints\}/);
+});
+
+test("the Lhasa-return roadbook audits reservations and permits for every day", () => {
+  type DailyPlanning = {
+    day: number;
+    reservations: Array<{
+      subject: string;
+      status: string;
+      leadTime: string;
+      channel: string;
+      documents: string;
+      note: string;
+      sourceUrl: string;
+    }>;
+  };
+
+  const dailyPlanning = (
+    aliLhasaReturnData as typeof aliLhasaReturnData & {
+      aliLhasaReturnDailyPlanning?: DailyPlanning[];
+    }
+  ).aliLhasaReturnDailyPlanning;
+
+  assert.ok(dailyPlanning, "the route needs a dedicated daily reservation audit");
+  assert.deepEqual(
+    dailyPlanning.map((plan) => plan.day),
+    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+  );
+
+  for (const plan of dailyPlanning) {
+    assert.ok(plan.reservations.length > 0, `day ${plan.day} needs a checked booking item`);
+    for (const item of plan.reservations) {
+      assert.ok(["必须提前", "建议提前", "现场办理", "无需预约", "出发前复核"].includes(item.status));
+      assert.ok(item.subject.length > 0);
+      assert.ok(item.leadTime.length > 0);
+      assert.ok(item.channel.length > 0);
+      assert.ok(item.documents.length > 0);
+      assert.ok(item.note.length > 0);
+      assert.match(item.sourceUrl, /^https:\/\//);
+    }
+  }
+
+  const reservationSubjects = dailyPlanning.flatMap((plan) =>
+    plan.reservations.map((item) => item.subject),
+  );
+  for (const requiredSubject of [
+    "电子边境通行证",
+    "羊卓雍措",
+    "扎什伦布寺",
+    "珠峰景区",
+    "神山圣湖景区",
+    "冈仁波齐塔钦远观",
+    "札达土林",
+    "古格遗址公园",
+    "朋友昆莎机场返沪",
+    "色林措",
+    "纳木措",
+  ]) {
+    assert.ok(
+      reservationSubjects.some((subject) => subject.includes(requiredSubject)),
+      `${requiredSubject} needs an explicit booking decision`,
+    );
+  }
+});
+
+test("the Lhasa-return roadbook offers budget hotel fallbacks for every overnight", () => {
+  type DailyPlanning = {
+    day: number;
+    stay: {
+      city: string;
+      budget: string;
+      bookingAdvice: string;
+      noHotelNeeded?: boolean;
+      hotels: Array<{
+        name: string;
+        strengths: string;
+        bookingUrl: string;
+      }>;
+    };
+  };
+
+  const dailyPlanning = (
+    aliLhasaReturnData as typeof aliLhasaReturnData & {
+      aliLhasaReturnDailyPlanning?: DailyPlanning[];
+    }
+  ).aliLhasaReturnDailyPlanning;
+
+  assert.ok(dailyPlanning, "the route needs a dedicated daily hotel plan");
+  for (const plan of dailyPlanning.slice(0, 11)) {
+    assert.equal(plan.stay.budget, "¥200–400 / 标间");
+    assert.ok(plan.stay.city.length > 0);
+    assert.ok(plan.stay.bookingAdvice.includes("国庆"));
+    assert.ok(plan.stay.hotels.length >= 2, `day ${plan.day} needs a primary and backup hotel`);
+    assert.equal(new Set(plan.stay.hotels.map((hotel) => hotel.name)).size, plan.stay.hotels.length);
+    for (const hotel of plan.stay.hotels) {
+      assert.ok(hotel.strengths.length > 0);
+      assert.match(hotel.bookingUrl, /^https:\/\//);
+    }
+  }
+
+  const finalDay = dailyPlanning[11];
+  assert.equal(finalDay?.stay.noHotelNeeded, true);
+  assert.equal(finalDay?.stay.hotels.length, 0);
 });
 
 test("two independent Ali central-line guides are indexed without replacing earlier routes", async () => {

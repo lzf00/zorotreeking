@@ -9,6 +9,7 @@ import {
   aliRouteDays,
   aliRoutePoints,
   type AliRouteDay,
+  type AliRouteDailyPlanning,
   type AliRoutePoint,
   type AliRoutePointKind,
 } from "../../data/ali-route";
@@ -24,6 +25,8 @@ interface Props {
   intro?: string;
   mapAriaLabel?: string;
   extraSources?: { href: string; label: string }[];
+  dailyPlanning?: AliRouteDailyPlanning[];
+  planningReviewedAt?: string;
 }
 
 const {
@@ -37,8 +40,11 @@ const {
   intro = "这张可缩放底图把实际道路拟合、公路编号、机场、住宿城市、途经县城、景点、观景位和补给点放在同一条时间线上。点击公路牌或地点标记，可查看对应日期、参考海拔、节点作用和坐标说明。",
   mapAriaLabel,
   extraSources = [],
+  dailyPlanning = [],
+  planningReviewedAt,
 } = Astro.props;
 const pointById = new Map(points.map((point) => [point.id, point]));
+const planningByDay = new Map(dailyPlanning.map((plan) => [plan.day, plan]));
 const mappedPointCount = mapPoints.length;
 const attractionCount = mapPoints.filter((point) =>
   point.kind === "attraction" || point.kind === "viewpoint"
@@ -54,6 +60,13 @@ const markerKinds: { kind: AliRoutePointKind; label: string }[] = [
   { kind: "viewpoint", label: "观景点" },
   { kind: "supply", label: "补给点" },
 ];
+const reservationStatusClass = {
+  "必须提前": "required",
+  "建议提前": "recommended",
+  "现场办理": "onsite",
+  "无需预约": "none",
+  "出发前复核": "recheck",
+} as const;
 ---
 
 <section id="route-atlas" class="ali-route-atlas">
@@ -120,7 +133,10 @@ const markerKinds: { kind: AliRoutePointKind; label: string }[] = [
         <div class="eyebrow">DAY-BY-DAY FIELD INDEX</div>
         <h3>逐日道路、节点、补给与退出条件</h3>
       </div>
-      <p>公里数与车时是行前估算，未计入临时管制、检查站、排队、拍摄和恶劣天气。</p>
+      <p>
+        公里数与车时是行前估算，未计入临时管制、检查站、排队、拍摄和恶劣天气。
+        {planningReviewedAt && <> 预约与住宿信息核对于 {planningReviewedAt}，出发前仍需复核。</>}
+      </p>
     </div>
 
     <div class="ali-route-atlas__days">
@@ -129,6 +145,7 @@ const markerKinds: { kind: AliRoutePointKind; label: string }[] = [
           .map((id) => pointById.get(id))
           .filter((point) => point != null);
         const uniquePoints = points.filter((point, index) => points.findIndex((item) => item.id === point.id) === index);
+        const planning = planningByDay.get(day.day);
         return (
           <article class="ali-route-day reveal">
             <div class="ali-route-day__index">
@@ -160,6 +177,73 @@ const markerKinds: { kind: AliRoutePointKind; label: string }[] = [
                 <div><b>住宿落点</b><p>{day.overnight}</p></div>
                 <div class="ali-route-day__risk"><b>主要风险</b><p>{day.risk}</p></div>
               </div>
+
+              {planning && (
+                <div class="ali-route-day__planning">
+                  <section class="ali-route-day__booking" aria-label={`第 ${day.day} 天预约清单`}>
+                    <div class="ali-route-day__planning-head">
+                      <div>
+                        <span>BOOKING AUDIT</span>
+                        <h5>当天预约与证件</h5>
+                      </div>
+                      <small>{planning.reservations.length} 项已逐一核对</small>
+                    </div>
+
+                    <div class="ali-route-day__reservation-list">
+                      {planning.reservations.map((item) => (
+                        <article class="ali-route-reservation">
+                          <div class="ali-route-reservation__title">
+                            <strong>{item.subject}</strong>
+                            <span class={`ali-route-reservation__status ali-route-reservation__status--${reservationStatusClass[item.status]}`}>
+                              {item.status}
+                            </span>
+                          </div>
+                          <dl>
+                            <div><dt>提前多久</dt><dd>{item.leadTime}</dd></div>
+                            <div><dt>办理渠道</dt><dd>{item.channel}</dd></div>
+                            <div><dt>随身材料</dt><dd>{item.documents}</dd></div>
+                          </dl>
+                          <p>{item.note}</p>
+                          <a href={item.sourceUrl} target="_blank" rel="noopener noreferrer">
+                            {item.sourceLabel} ↗
+                          </a>
+                        </article>
+                      ))}
+                    </div>
+                  </section>
+
+                  <section class="ali-route-day__stay" aria-label={`第 ${day.day} 天住宿方案`}>
+                    <div class="ali-route-day__planning-head">
+                      <div>
+                        <span>STAY PLAN</span>
+                        <h5>{planning.stay.city}</h5>
+                      </div>
+                      <small>{planning.stay.budget}</small>
+                    </div>
+
+                    {planning.stay.noHotelNeeded ? (
+                      <div class="ali-route-day__no-hotel">
+                        <strong>本日不安排酒店</strong>
+                        <p>{planning.stay.bookingAdvice}</p>
+                      </div>
+                    ) : (
+                      <>
+                        <div class="ali-route-hotel-list">
+                          {planning.stay.hotels.map((hotel, index) => (
+                            <a class="ali-route-hotel" href={hotel.bookingUrl} target="_blank" rel="noopener noreferrer">
+                              <span>{index === 0 ? "首选" : `备选 ${index}`}</span>
+                              <strong>{hotel.name}</strong>
+                              <p>{hotel.strengths}</p>
+                              <small>查看实时房价与库存 ↗</small>
+                            </a>
+                          ))}
+                        </div>
+                        <p class="ali-route-day__stay-advice">{planning.stay.bookingAdvice}</p>
+                      </>
+                    )}
+                  </section>
+                </div>
+              )}
 
               <div class="ali-route-day__decision">
                 <span>当天退出条件</span>
@@ -332,10 +416,7 @@ const markerKinds: { kind: AliRoutePointKind; label: string }[] = [
     z-index: 500;
     top: 12px;
     right: 12px;
-    display: grid;
-    gap: 6px;
     margin: 0;
-    padding: 10px 12px;
     border: 1px solid rgba(23, 32, 29, .24);
     border-radius: 3px;
     color: #26312c;
@@ -344,15 +425,23 @@ const markerKinds: { kind: AliRoutePointKind; label: string }[] = [
     font-family: var(--sans);
     font-size: 12px;
   }
-  .ali-amap-layer-control legend {
-    padding: 0 3px;
-    color: #6d706b;
+  .ali-amap-layer-control summary {
+    display: flex;
+    min-width: 108px;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 8px 12px;
     font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: .08em;
-    text-transform: uppercase;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    cursor: pointer;
   }
-  .ali-amap-layer-control label { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+  .ali-amap-layer-control summary:focus-visible { outline: 3px solid rgba(23, 109, 115, .35); outline-offset: 2px; }
+  .ali-amap-layer-control fieldset { display: grid; gap: 3px; margin: 0; border: 0; border-top: 1px solid rgba(23, 32, 29, .16); padding: 6px 10px 9px; }
+  .ali-amap-layer-control label { display: flex; min-height: 34px; align-items: center; gap: 7px; white-space: nowrap; }
   .ali-amap-layer-control input { accent-color: #176d73; }
   .ali-route-atlas__legend {
     display: flex;
@@ -657,6 +746,168 @@ const markerKinds: { kind: AliRoutePointKind; label: string }[] = [
   .ali-route-day__grid p,
   .ali-route-day__decision p { margin: 5px 0 0; font-size: .78rem; line-height: 1.65; }
   .ali-route-day__grid .ali-route-day__risk b { color: var(--red); }
+  .ali-route-day__planning {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(300px, .8fr);
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .ali-route-day__booking,
+  .ali-route-day__stay {
+    min-width: 0;
+    border: 1px solid rgba(23, 32, 29, .16);
+    background: rgba(255, 252, 243, .56);
+  }
+  .ali-route-day__planning-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 13px 15px;
+    border-bottom: 1px solid rgba(23, 32, 29, .13);
+    background: rgba(216, 208, 189, .4);
+  }
+  .ali-route-day__planning-head span {
+    color: #176d73;
+    font-family: var(--mono);
+    font-size: .58rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+  }
+  .ali-route-day__planning-head h5 {
+    margin: 3px 0 0;
+    color: #17201d;
+    font-family: var(--serif);
+    font-size: 1.02rem;
+  }
+  .ali-route-day__planning-head small {
+    flex: 0 0 auto;
+    padding: 4px 6px;
+    border: 1px solid rgba(23, 109, 115, .25);
+    color: #176d73;
+    background: rgba(255, 252, 243, .76);
+    font-family: var(--mono);
+    font-size: .59rem;
+  }
+  .ali-route-day__reservation-list { display: grid; }
+  .ali-route-reservation {
+    padding: 14px 15px 15px;
+    border-bottom: 1px solid rgba(23, 32, 29, .11);
+  }
+  .ali-route-reservation:last-child { border-bottom: 0; }
+  .ali-route-reservation__title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .ali-route-reservation__title strong {
+    color: #1d2c28;
+    font-size: .84rem;
+  }
+  .ali-route-reservation__status {
+    flex: 0 0 auto;
+    padding: 3px 6px;
+    border: 1px solid currentColor;
+    font-family: var(--mono);
+    font-size: .56rem;
+    font-weight: 700;
+    letter-spacing: .03em;
+  }
+  .ali-route-reservation__status--required { color: #a33e2d; background: rgba(184, 73, 52, .08); }
+  .ali-route-reservation__status--recommended { color: #8b651f; background: rgba(197, 137, 39, .1); }
+  .ali-route-reservation__status--onsite { color: #176d73; background: rgba(23, 109, 115, .08); }
+  .ali-route-reservation__status--none { color: #52635b; background: rgba(82, 99, 91, .08); }
+  .ali-route-reservation__status--recheck { color: #7a573f; background: rgba(122, 87, 63, .08); }
+  .ali-route-reservation dl {
+    display: grid;
+    gap: 4px;
+    margin: 11px 0 0;
+  }
+  .ali-route-reservation dl > div {
+    display: grid;
+    grid-template-columns: 66px 1fr;
+    gap: 8px;
+  }
+  .ali-route-reservation dt {
+    color: #7d817c;
+    font-family: var(--mono);
+    font-size: .59rem;
+  }
+  .ali-route-reservation dd {
+    margin: 0;
+    color: #343e39;
+    font-size: .7rem;
+    line-height: 1.55;
+  }
+  .ali-route-reservation > p {
+    margin: 10px 0 0;
+    color: #5d635e;
+    font-size: .7rem;
+    line-height: 1.62;
+  }
+  .ali-route-reservation > a {
+    display: inline-block;
+    margin-top: 8px;
+    color: #176d73;
+    font-size: .63rem;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .ali-route-hotel-list { display: grid; gap: 8px; padding: 12px; }
+  .ali-route-hotel {
+    display: block;
+    padding: 12px 13px;
+    border: 1px solid rgba(23, 32, 29, .13);
+    color: inherit;
+    background: rgba(244, 239, 227, .7);
+    text-decoration: none;
+    transition: border-color .2s ease, background .2s ease, transform .2s ease;
+  }
+  .ali-route-hotel:hover {
+    border-color: rgba(23, 109, 115, .5);
+    background: rgba(255, 252, 243, .95);
+    transform: translateY(-1px);
+  }
+  .ali-route-hotel > span {
+    color: var(--red);
+    font-family: var(--mono);
+    font-size: .56rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+  }
+  .ali-route-hotel > strong {
+    display: block;
+    margin-top: 4px;
+    color: #17201d;
+    font-size: .78rem;
+    line-height: 1.45;
+  }
+  .ali-route-hotel > p {
+    margin: 6px 0 0;
+    color: #5d635e;
+    font-size: .69rem;
+    line-height: 1.58;
+  }
+  .ali-route-hotel > small {
+    display: inline-block;
+    margin-top: 7px;
+    color: #176d73;
+    font-size: .6rem;
+  }
+  .ali-route-day__stay-advice,
+  .ali-route-day__no-hotel {
+    margin: 0 12px 12px;
+    padding: 11px 12px;
+    border-left: 3px solid #c58927;
+    color: #5d5546;
+    background: rgba(197, 137, 39, .08);
+    font-size: .66rem;
+    line-height: 1.6;
+  }
+  .ali-route-day__no-hotel { margin-top: 12px; }
+  .ali-route-day__no-hotel strong { color: #273832; font-size: .76rem; }
+  .ali-route-day__no-hotel p { margin: 5px 0 0; }
   .ali-route-day__decision {
     display: grid;
     grid-template-columns: 100px 1fr;
@@ -695,6 +946,8 @@ const markerKinds: { kind: AliRoutePointKind; label: string }[] = [
     .ali-route-atlas__roads > span { flex: 0 0 auto; }
     .ali-route-map .ali-road-shield-icon:not(.ali-road-shield-icon--major) { display: none; }
     .ali-route-map .ali-road-shield:not(.ali-road-shield--major) { display: none; }
+    .ali-route-map .ali-road-shield--major > span { display: none; }
+    .ali-route-map .ali-amap-place-label { display: none; }
     .ali-amap-layer-control { top: 8px; right: 8px; }
     .ali-route-map { height: 560px; min-height: 560px; }
     .ali-route-map-help { left: 10px; right: 10px; text-align: center; }
@@ -708,6 +961,10 @@ const markerKinds: { kind: AliRoutePointKind; label: string }[] = [
     .ali-route-day__body header { flex-direction: column; gap: 10px; }
     .ali-route-day__body header > span { text-align: left; }
     .ali-route-day__grid { grid-template-columns: 1fr; }
+    .ali-route-day__planning { grid-template-columns: 1fr; }
+    .ali-route-day__planning-head { align-items: flex-start; flex-direction: column; gap: 8px; }
+    .ali-route-reservation__title { align-items: flex-start; flex-direction: column; gap: 7px; }
+    .ali-route-reservation dl > div { grid-template-columns: 1fr; gap: 2px; }
     .ali-route-day__decision { grid-template-columns: 1fr; gap: 5px; }
   }
 

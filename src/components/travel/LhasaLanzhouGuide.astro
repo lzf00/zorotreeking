@@ -317,7 +317,9 @@ const route = [
   .ll-route-ribbon span { display: inline-flex; gap: 12px; align-items: center; }
   .ll-route-ribbon b { font-weight: 500; }
   .ll-route-ribbon i { color: #d19a33; font-style: normal; }
-  .ll-nav { position: sticky; top: 3.5rem; z-index: 30; overflow-x: auto; color: #e8e4d6; background: rgba(23,32,29,.96); border-top: 1px solid rgba(255,255,255,.1); backdrop-filter: blur(14px); }
+  .ll-nav { position: sticky; top: 3.5rem; z-index: 30; overflow-x: auto; color: #e8e4d6; background: rgba(23,32,29,.96); border-top: 1px solid rgba(255,255,255,.1); backdrop-filter: blur(14px); scrollbar-width: none; }
+  .ll-nav::-webkit-scrollbar { display: none; }
+  .ll-nav a,.ll-nav button { display: inline-flex; min-height: 44px; align-items: center; }
   .ll-nav .ll-wrap { display: flex; align-items: center; gap: 26px; min-height: 54px; white-space: nowrap; }
   .ll-nav a, .ll-nav button { color: inherit; border: 0; background: none; font: 600 .72rem/1 var(--mono); text-decoration: none; cursor: pointer; }
   .ll-nav button { margin-left: auto; padding: 9px 13px; color: #17201d; background: #e3ad46; }

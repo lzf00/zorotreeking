@@ -34,6 +34,42 @@ export interface AliRouteDay {
   decision: string;
 }
 
+export type AliReservationStatus =
+  | "必须提前"
+  | "建议提前"
+  | "现场办理"
+  | "无需预约"
+  | "出发前复核";
+
+export interface AliRouteReservationItem {
+  subject: string;
+  status: AliReservationStatus;
+  leadTime: string;
+  channel: string;
+  documents: string;
+  note: string;
+  sourceLabel: string;
+  sourceUrl: string;
+}
+
+export interface AliRouteHotelOption {
+  name: string;
+  strengths: string;
+  bookingUrl: string;
+}
+
+export interface AliRouteDailyPlanning {
+  day: number;
+  reservations: AliRouteReservationItem[];
+  stay: {
+    city: string;
+    budget: string;
+    bookingAdvice: string;
+    noHotelNeeded?: boolean;
+    hotels: AliRouteHotelOption[];
+  };
+}
+
 export const aliRoutePoints: AliRoutePoint[] = [
   {
     id: "gonggar-airport",

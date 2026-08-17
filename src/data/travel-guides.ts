@@ -5,13 +5,23 @@ export type TravelGuide = {
   title: string;
   description: string;
   date: string;
-  updated?: string;
+  updated: string;
   location: string;
   days: number;
   distanceKm: number;
   travelMode: string;
   season: string;
   route: string[];
+  destination: "lhasa" | "lanzhou" | "chengdu";
+  destinationLabel: "拉萨" | "兰州" | "成都";
+  scope: "complete" | "segment";
+  scopeLabel: "完整行程" | "返程接驳段";
+  status: "planning";
+};
+
+export type TravelGuideFilters = {
+  destination?: TravelGuide["destination"];
+  scope?: TravelGuide["scope"];
 };
 
 /**
@@ -28,13 +38,18 @@ export const travelGuides: TravelGuide[] = [
     title: "闭环 · 阿里大环线拉萨取还 2026",
     description: "9 月 26 日拉萨取车，沿阿里南北线闭环，10 月 6 日回拉萨、7 日返沪；朋友可在狮泉河经昆莎机场提前离队。",
     date: "2026-08-09",
-    updated: "2026-08-09",
+    updated: "2026-08-17",
     location: "西藏 · 阿里大环线",
     days: 12,
     distanceKm: 4000,
     travelMode: "拉萨取车 · 拉萨还车",
     season: "2026 国庆",
     route: ["拉萨", "日喀则", "定日", "珠峰", "萨嘎", "塔钦", "札达", "狮泉河", "改则", "尼玛", "班戈", "纳木措", "拉萨", "上海"],
+    destination: "lhasa",
+    destinationLabel: "拉萨",
+    scope: "complete",
+    scopeLabel: "完整行程",
+    status: "planning",
   },
   {
     lang: "zh",
@@ -50,6 +65,11 @@ export const travelGuides: TravelGuide[] = [
     travelMode: "G317 / G350 · 成都还车",
     season: "2026 国庆",
     route: ["那曲", "索县", "巴青", "丁青", "昌都", "江达", "德格", "甘孜", "炉霍", "道孚", "丹巴", "汶川", "成都", "上海"],
+    destination: "chengdu",
+    destinationLabel: "成都",
+    scope: "segment",
+    scopeLabel: "返程接驳段",
+    status: "planning",
   },
   {
     lang: "zh",
@@ -65,6 +85,11 @@ export const travelGuides: TravelGuide[] = [
     travelMode: "拉萨取还 · 成都转场",
     season: "2026 国庆",
     route: ["拉萨", "日喀则", "萨嘎", "塔钦", "札达", "狮泉河", "霍尔", "亚热", "仁多", "措勤", "文布南村", "尼玛", "那曲", "拉萨", "成都", "上海"],
+    destination: "chengdu",
+    destinationLabel: "成都",
+    scope: "complete",
+    scopeLabel: "完整行程",
+    status: "planning",
   },
   {
     lang: "zh",
@@ -80,6 +105,11 @@ export const travelGuides: TravelGuide[] = [
     travelMode: "拉萨取车 · 兰州还车",
     season: "2026 国庆",
     route: ["拉萨", "日喀则", "萨嘎", "塔钦", "札达", "狮泉河", "霍尔", "亚热", "仁多", "措勤", "文布南村", "尼玛", "那曲", "格尔木", "西宁", "兰州", "上海"],
+    destination: "lanzhou",
+    destinationLabel: "兰州",
+    scope: "complete",
+    scopeLabel: "完整行程",
+    status: "planning",
   },
   {
     lang: "zh",
@@ -95,6 +125,11 @@ export const travelGuides: TravelGuide[] = [
     travelMode: "拉萨取车 · 兰州还车",
     season: "2026 国庆",
     route: ["拉萨", "日喀则", "萨嘎", "塔钦", "札达", "狮泉河", "改则", "尼玛", "那曲", "格尔木", "西宁", "兰州", "上海"],
+    destination: "lanzhou",
+    destinationLabel: "兰州",
+    scope: "complete",
+    scopeLabel: "完整行程",
+    status: "planning",
   },
   {
     lang: "zh",
@@ -110,11 +145,18 @@ export const travelGuides: TravelGuide[] = [
     travelMode: "拉萨落地四驱",
     season: "2026 国庆",
     route: ["拉萨", "珠峰", "萨嘎", "塔钦", "札达", "狮泉河", "改则", "尼玛", "班戈", "拉萨"],
+    destination: "lhasa",
+    destinationLabel: "拉萨",
+    scope: "complete",
+    scopeLabel: "完整行程",
+    status: "planning",
   },
 ];
 
-export function getTravelGuides(lang: "zh" | "en") {
+export function getTravelGuides(lang: "zh" | "en", filters: TravelGuideFilters = {}) {
   return travelGuides
     .filter((guide) => guide.lang === lang)
+    .filter((guide) => !filters.destination || guide.destination === filters.destination)
+    .filter((guide) => !filters.scope || guide.scope === filters.scope)
     .sort((a, b) => b.date.localeCompare(a.date));
 }

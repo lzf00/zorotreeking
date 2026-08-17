@@ -147,7 +147,9 @@ const facts = isChengdu
   .cg-route { display:flex; flex-wrap:wrap; gap:8px 12px; margin-top:34px; color:#bec2b8; font:.72rem/1.5 var(--mono); }
   .cg-route span { display:inline-flex; gap:12px; align-items:center; }
   .cg-route b { font-weight:500; }.cg-route i { color:var(--gold); font-style:normal; }
-  .cg-nav { position:sticky; top:3.5rem; z-index:30; overflow-x:auto; color:#ece5d7; background:rgba(21,35,31,.96); backdrop-filter:blur(14px); }
+  .cg-nav { position:sticky; top:3.5rem; z-index:30; overflow-x:auto; color:#ece5d7; background:rgba(21,35,31,.96); backdrop-filter:blur(14px); scrollbar-width:none; }
+  .cg-nav::-webkit-scrollbar { display:none; }
+  .cg-nav a,.cg-nav button { display:inline-flex; min-height:44px; align-items:center; }
   .cg-nav .cg-wrap { display:flex; align-items:center; gap:26px; min-height:54px; white-space:nowrap; }
   .cg-nav a,.cg-nav button { color:inherit; border:0; background:none; font:600 .72rem/1 var(--mono); text-decoration:none; cursor:pointer; }
   .cg-nav button { margin-left:auto; padding:10px 13px; color:var(--ink); background:var(--gold); }
