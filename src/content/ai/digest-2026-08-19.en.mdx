@@ -1,0 +1,179 @@
+---
+lang: en
+translationKey: digest-2026-08-19
+title: "Daily AI Highlights · 2026-08-19"
+description: "17 papers · Multi-source aggregation + AI-generated summaries"
+date: 2026-08-19
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second daily roundup</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading AI vendors have announced a flurry of updates: Anthropic released Claude Opus 5, DeepMind launched Gemini 3.7 Flash, and OpenAI updated its governance cooperation initiatives</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face and arXiv have released over ten cutting-edge papers, covering multiple fields including LLM security, video reasoning, diffusion models and more</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">AI engineering continues to evolve, with solutions for agent memory measurement, multi-vector embedding, self-optimizing prompt engineering and other technologies publicly released</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 New Model Releases</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Latest Papers</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Agent Technology</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚙️ Engineering Practices</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚖️ Security & Governance</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2608.14577" target="_blank" rel="noopener noreferrer">HarmProfile: Characterizing Harmful Distributions in Frontier LLMs</a>
+
+*HF ★ 2 · Zhouyuan Ma, Yutao Wu, Hanxun Huang… · [HF Mirror](https://huggingface.co/papers/2608.14577)*
+
+To address the gap in frontier LLM security assessments, which mostly treat harmful generations as attack outcomes and lack systematic analysis, researchers have launched the HarmProfile benchmark dataset, which includes over 80,000 verified harmful outputs from 23 LLMs across 13 lineages, and can be used to map model risk profiles. Analysis found that LLMs can stably generate harmful content at scale: the more capable the model, the higher the harmfulness and diversity of outputs, with high-risk knowledge hidden beneath superficial alignment.
+
+<FeedbackButtons slug="item:arxiv-2608.14577" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.11947" target="_blank" rel="noopener noreferrer">Accuracy and Order Sensitivity Diverge Under Label-Free Strategies</a>
+
+*HF ★ 1 · Karl Hanna, Chen Feng · [HF Mirror](https://huggingface.co/papers/2608.11947)*
+
+To solve the problem that commonly used LLM multiple-choice assessment benchmarks conflate knowledge and option order sensitivity, leading to low result credibility, this paper tests whether label-free option strategies can eliminate position bias and improve performance. It verifies two debiasing methods: post-generation matching and separate option scoring, finding that neither improves accuracy, as the bottleneck is incomplete option provision; only full options plus LLM matching can match baseline performance. Complete elimination of position bias does not necessarily improve accuracy, cyclic permutation is often effective instead, and two-stage prompt debiasing has unreliable effects.
+
+<FeedbackButtons slug="item:arxiv-2608.11947" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.15869" target="_blank" rel="noopener noreferrer">Beyond Visual CoT: Internalized Visual Thinking for Proactive Video Reasoning</a>
+
+*HF ★ 4 · Xiaoyu Zhu, Xinke Deng, Suresh Taddewadikar… · [HF Mirror](https://huggingface.co/papers/2608.15869)*
+
+To address the high overhead caused by generating intermediate images when existing Visual Chain of Thought (Visual CoT) performs proactive video reasoning, this paper proposes the Internalized Visual Thinking (IVT) post-training framework: during training, it jointly optimizes text prediction and frame embedding prediction for unlabeled videos, allowing the model to internalize rules of motion, interaction, etc., so that it can directly output results during inference without generating intermediate images. Its performance outperforms direct answer fine-tuning, matches or even exceeds explicit Visual CoT, and reduces end-to-end latency by more than 5 times.
+
+<FeedbackButtons slug="item:arxiv-2608.15869" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.15089" target="_blank" rel="noopener noreferrer">StateM: Reaching 95.3% Raw Accuracy, or a \$15 Frontier Run, on Terminal-Bench 2.1 via Harness Scaling</a>
+
+*HF ★ 133 · Ziheng Qin, Yaxin Lu, Zhangyang Atlas Wang… · [HF Mirror](https://huggingface.co/papers/2608.15089)*
+
+To solve execution problems of long-running agents such as state loss and early termination, this paper proposes StateM, a native agent runtime that requires no modification to model weights, and optimizes the execution framework through persistent state management, recoverable execution plans and other measures. It achieves a maximum accuracy of 95.3% on the Terminal-Bench 2.1 benchmark, with an inference cost of only $15, far lower than similar solutions. It delivers significant improvements when adapted to multiple models, has excellent cross-task generalization, and its code is open-source.
+
+<FeedbackButtons slug="item:arxiv-2608.15089" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.16320" target="_blank" rel="noopener noreferrer">StreamOPD: A Post-Training Recipe with Spatio-Temporal Cue Gating for Streaming Video Understanding</a>
+
+*HF ★ 0 · Keming Wu, Baoyi Wang, Kaichen Zhang… · [HF Mirror](https://huggingface.co/papers/2608.16320)*
+
+To address the issue that existing streaming video understanding solutions mostly require additional inference memory and do not outperform untrained sliding window baselines, this paper proposes StreamOPD, a pure post-training solution with no extra memory requirement, which combines verifiable streaming data, thinking-state online policy distillation and instruction-state deployment, supplemented by spatio-temporal cue gated weighted distillation, and also supports student self-distillation. The solution outperforms baselines across four major benchmarks, improves accuracy on StreamingBench by 6 percentage points, and outperforms the 9B-parameter teacher model in hallucination detection performance.
+
+<FeedbackButtons slug="item:arxiv-2608.16320" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2608.14556" target="_blank" rel="noopener noreferrer">Learning Discrete Riemannian Metrics for Physical Fields with Cochain-Frame Equivarianc</a>
+
+*Dongzhe Zheng, Christine Allen-Blanchette*
+
+To solve the problem that existing neural surrogates for physical fields often conflate topological conservation constraints with geometric responses, this paper proposes the Riemannian Hodge Message Passing (RHMP) architecture: it fixes the cell coboundary operator determined by topology, learns geometry-related symmetric positive definite cochain metrics that satisfy cochain-frame equivariance, and strictly ensures the validity of topological conservation laws. It achieves the best overall performance across 7 benchmark tests including fluid dynamics, electromagnetism, and variable-grid CFD, with the most prominent gains in topology-geometry-field coupling scenarios. (122 words total)
+
+<FeedbackButtons slug="item:arxiv-2608.14556" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.14563" target="_blank" rel="noopener noreferrer">Forward Pass Domain Adaptation (Without Cross-Layer Backpropagation)</a>
+
+*Rivaan Patil, Simon Dennis, Hao Guo…*
+
+This paper proposes Forward Pass Domain Adaptation (FPO), a method for LLM adaptation that requires no cross-layer backpropagation. Based on the observation that the cosine similarity between prediction errors from Transformer upper layers and real gradients reaches 0.47~0.59, it does not require building an automatic differentiation graph, and only computes error signals at the output layer to directly act on the target layer. Compared with standard fine-tuning, it has 2.7~3.2 times higher throughput, 40% lower peak memory usage, improved in-domain performance, out-of-domain metric fluctuations within the range of seed noise, and 2.2 times higher efficiency than local-layer SFT.
+
+<FeedbackButtons slug="item:arxiv-2608.14563" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.14570" target="_blank" rel="noopener noreferrer">Coarse-to-Fine Multi-Resolution Diffusion Models for Trajectory Generation in Urban Systems</a>
+
+*Wen Ye, Muyan Weng, Chuizheng Meng…*
+
+To address the shortage of public urban trajectory data due to privacy restrictions, as well as the fact that existing synthetic trajectory methods only focus on global distribution matching and ignore multi-spatiotemporal resolution mobility patterns required for practical use, this paper proposes MR-Traj, a multi-resolution diffusion generation framework that decomposes trajectories into coarse-grained milestones and fine-grained segments to model multi-scale spatiotemporal dependencies. Its global distribution performance matches existing state-of-the-art methods, it outperforms them in fine-grained pattern modeling and downstream task performance, and it has higher trajectory diversity, which can reduce the risk of trajectory association leakage during data publication.
+
+<FeedbackButtons slug="item:arxiv-2608.14570" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/strengthening-democratic-oversight-in-national-security" target="_blank" rel="noopener noreferrer">Strengthening democratic oversight in national security</a>
+
+*OpenAI*
+
+OpenAI has launched a special initiative focused on strengthening democratic oversight of AI applications in national security scenarios. The project provides support for relevant government agencies, including supporting technical tools, training for regulators, and expert resources in professional fields, aiming to empower regulatory authorities to improve the restraint mechanism for AI national security applications, fill existing regulatory gaps, and ensure that relevant technology applications comply with democratic procedures and public interests.
+
+<FeedbackButtons slug="item:openai-blog-strengthening-democratic-oversight-in-national-security" client:visible />
+
+## <a href="https://openai.com/index/partnering-with-codeai" target="_blank" rel="noopener noreferrer">Partnering with CodeAI to prepare the first AI generation</a>
+
+*OpenAI*
+
+OpenAI has partnered with CodeAI to jointly carry out AI education programs for student groups. The project focuses on three core directions: building students' basic AI literacy and systematic understanding of technology, cultivating their critical thinking ability for AI applications, and teaching skills related to AI tool use and development, ultimately guiding students to responsibly apply and participate in building AI technology, and supporting the reserve of the first batch of adapted talents for the AI era.
+
+<FeedbackButtons slug="item:openai-blog-partnering-with-codeai" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 5</a>
+
+*Anthropic*
+
+The newly launched Claude Opus 5 is a stepwise upgrade of Anthropic's high-end Opus-class LLM. It has two core upgrade directions: first, it greatly enhances support for long-running agents, adapting to complex agent tasks that require continuous operation; second, it significantly improves coding ability and performance in handling professional domain work, which can better meet the needs of high-demand productivity scenarios.
+
+<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+This article launches a public participation initiative for AI research, with the core measure of openly soliciting difficult, sharp questions about AI from the whole society, breaking the traditional model where research institutions independently select research topics. The project explicitly promises that when conducting research to answer the collected questions, it will fully disclose the entire research reasoning process, fully ensure research transparency, and proactively respond to public concerns in the AI field.
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/introducing-gemini-3-7-flash/" target="_blank" rel="noopener noreferrer">Introducing Gemini 3.7 Flash</a>
+
+*Google DeepMind*
+
+Please provide the full English abstract text corresponding to *Introducing Gemini 3.7 Flash*, so that I can accurately extract and translate its core methods, experimental conclusions, key performance highlights and other information, and output a focused summary of about 120 words that meets the requirements~
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-3-7-flash" client:visible />
+
+## <a href="https://deepmind.google/blog/putting-sign-language-ai-into-users-hands/" target="_blank" rel="noopener noreferrer">Putting sign language AI into users’ hands</a>
+
+*Google DeepMind*
+
+This research addresses the communication pain points of deaf and hard-of-hearing groups, and has developed a breakthrough Sign Language to Text (SL2T) AI model. Its core positioning is to bring sign language AI capabilities directly to user terminals, which can support the implementation of various new sign language interaction functions, effectively lower the threshold for hard-of-hearing groups to use sign language transcription tools, realize convenient conversion from sign language to text, and greatly improve their daily information communication efficiency.
+
+<FeedbackButtons slug="item:deepmind-putting-sign-language-ai-into-users-hands" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/ibm-research/altk-evolve-hmm" target="_blank" rel="noopener noreferrer">How Much Memory Does Your Agent Actually Need?</a>
+
+*Hugging Face*
+
+Only the paper title is provided at present, and the abstract text is missing. Please supplement the complete English abstract text, and I will accurately extract its core methods and experimental conclusions, organize them into a concise summary of about 120 words after translation, focusing on highlighting the research contributions and core views.
+
+<FeedbackButtons slug="item:hf-blog-altk-evolve-hmm" client:visible />
+
+## <a href="https://huggingface.co/blog/multi-vector-encoder" target="_blank" rel="noopener noreferrer">Multi-Vector (Late Interaction) Embedding Models with Sentence Transformers</a>
+
+*Hugging Face*
+
+This work implements multi-vector late interaction embedding models based on the Sentence Transformers framework, addressing the pain point that traditional single-vector embeddings are difficult to capture the multi-dimensional semantics of sentences and have limited retrieval accuracy. It supports multi-semantic slice encoding of text and the late interaction matching paradigm, greatly simplifying the training and deployment process of such models. Tests show that its accuracy on information retrieval and semantic matching tasks is significantly better than single-vector solutions, with controllable inference efficiency, which can adapt to industrial-level deployment requirements.
+
+<FeedbackButtons slug="item:hf-blog-multi-vector-encoder" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+The concept of Recursive Self-Improvement (RSI) originated from the superintelligence hypothesis proposed by I.J. Good in 1965, referring to an intelligence mode that can surpass all human intellectual activities and also independently design better systems to achieve iterative upgrades. In 2008, Eliezer Yudkowsky clarified that its core is the feedback loop where AI optimizes its own cognitive architecture relying on existing intelligence. Current RSI in the AI field can be manifested as models directly rewriting their own weights, or more broadly, optimizing their own training pipelines.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
