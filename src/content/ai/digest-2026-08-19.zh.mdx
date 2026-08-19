@@ -1,0 +1,179 @@
+---
+lang: zh
+translationKey: digest-2026-08-19
+title: "AI 每日精选 · 2026-08-19"
+description: "17 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-08-19
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">头部AI厂商动作密集，Anthropic发Claude Opus 5，DeepMind推Gemini 3.7 Flash，OpenAI更新治理合作</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face及arXiv公开十余篇前沿论文，覆盖大模型安全、视频推理、扩散模型等多领域</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">AI工程化方向持续迭代，智能体内存测算、多向量嵌入、自优化提示工程等方案公开</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 模型上新</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 论文速递</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 智能体技术</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚙️ 工程实践</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚖️ 安全治理</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2608.14577" target="_blank" rel="noopener noreferrer">HarmProfile: Characterizing Harmful Distributions in Frontier LLMs</a>
+
+*HF ★ 2 · Zhouyuan Ma, Yutao Wu, Hanxun Huang… · [HF 镜像](https://huggingface.co/papers/2608.14577)*
+
+针对前沿大模型安全评估多将有害生成视为攻击结果、缺乏系统分析的空白，研究者推出HarmProfile基准数据集，覆盖13个谱系23款大模型的8万余条校验过的有害输出，可刻画模型风险画像。分析发现大模型可稳定大规模生成有害内容，能力越强有害性、多样性越高，表面对齐下暗藏高风险知识。
+
+<FeedbackButtons slug="item:arxiv-2608.14577" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.11947" target="_blank" rel="noopener noreferrer">Accuracy and Order Sensitivity Diverge Under Label-Free Strategies</a>
+
+*HF ★ 1 · Karl Hanna, Chen Feng · [HF 镜像](https://huggingface.co/papers/2608.11947)*
+
+针对当前常用的大模型多选评估基准混同知识与选项顺序敏感度、结果可信度低的问题，本文测试无选项标签策略是否能消除位置偏差、提升性能：验证生成后匹配、选项单独打分两种消偏方法，发现二者均未提升精度，瓶颈在未给全选项，仅全选项+大模型匹配可追平基线。完全消位置偏差未必提精度，循环置换反而常有效，两阶段提示消偏效果不可靠。
+
+<FeedbackButtons slug="item:arxiv-2608.11947" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.15869" target="_blank" rel="noopener noreferrer">Beyond Visual CoT: Internalized Visual Thinking for Proactive Video Reasoning</a>
+
+*HF ★ 4 · Xiaoyu Zhu, Xinke Deng, Suresh Taddewadikar… · [HF 镜像](https://huggingface.co/papers/2608.15869)*
+
+针对现有视觉思维链（Visual CoT）开展主动视频推理时生成中间图像带来高开销的问题，本文提出内化视觉思维（IVT）后训练框架：训练时联合优化文本预测与未标注视频的帧嵌入预测，让模型内化运动、交互等规律，推理时无需生成中间图像即可直接输出结果。其性能优于直接答案微调，与显式Visual CoT相当甚至更优，端到端时延降低超5倍。
+
+<FeedbackButtons slug="item:arxiv-2608.15869" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.15089" target="_blank" rel="noopener noreferrer">StateM: Reaching 95.3% Raw Accuracy, or a \$15 Frontier Run, on Terminal-Bench 2.1 via Harness Scaling</a>
+
+*HF ★ 133 · Ziheng Qin, Yaxin Lu, Zhangyang Atlas Wang… · [HF 镜像](https://huggingface.co/papers/2608.15089)*
+
+针对长程智能体易丢失状态、提前终止等执行问题，本文提出StateM智能体原生运行时，无需改动模型权重，通过持久状态管控、可恢复执行预案等优化执行框架。其在Terminal-Bench 2.1基准最高准确率达95.3%，推理成本仅15美元远低于同类方案，适配多款模型均获显著提升，跨任务泛化性优异，代码已开源。
+
+<FeedbackButtons slug="item:arxiv-2608.15089" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.16320" target="_blank" rel="noopener noreferrer">StreamOPD: A Post-Training Recipe with Spatio-Temporal Cue Gating for Streaming Video Understanding</a>
+
+*HF ★ 0 · Keming Wu, Baoyi Wang, Kaichen Zhang… · [HF 镜像](https://huggingface.co/papers/2608.16320)*
+
+针对现有流式视频理解方案多需额外推理内存、性能未优于无训练滑窗基线的问题，本文提出无额外内存的纯后训练方案StreamOPD，结合可验证流式数据、思考态在线策略蒸馏与指令态部署，辅以时空提示门控加权蒸馏，还支持学生自蒸馏。方案在四大基准全面超基线，StreamingBench精度提6个点，幻觉检测性能优于9B参教师模型。
+
+<FeedbackButtons slug="item:arxiv-2608.16320" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2608.14556" target="_blank" rel="noopener noreferrer">Learning Discrete Riemannian Metrics for Physical Fields with Cochain-Frame Equivarianc</a>
+
+*Dongzhe Zheng, Christine Allen-Blanchette*
+
+针对现有物理场神经代理常混淆拓扑守恒约束与几何响应的问题，本文提出黎曼霍奇消息传递（RHMP）架构：固定拓扑决定的胞腔上边界算子，学习几何相关的对称正定上链度量，满足上链框架等变性，严格保障拓扑守恒定律成立。在流体、电磁、可变网格CFD等7类基准测试中整体性能最优，拓扑-几何-场耦合场景增益最突出。（共122字）
+
+<FeedbackButtons slug="item:arxiv-2608.14556" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.14563" target="_blank" rel="noopener noreferrer">Forward Pass Domain Adaptation (Without Cross-Layer Backpropagation)</a>
+
+*Rivaan Patil, Simon Dennis, Hao Guo…*
+
+本文提出用于大模型适配、无需跨层反向传播的前馈域适配方法FPO，基于Transformer高层输出预测误差与真实梯度余弦相似度达0.47~0.59的观测，无需构建自动微分图，仅在输出层计算误差信号直接作用于目标层。其相比标准微调吞吐量高2.7~3.2倍、峰值显存降40%，域内效果提升，域外指标波动在种子噪声范围内，效率是局部层SFT的2.2倍。
+
+<FeedbackButtons slug="item:arxiv-2608.14563" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.14570" target="_blank" rel="noopener noreferrer">Coarse-to-Fine Multi-Resolution Diffusion Models for Trajectory Generation in Urban Systems</a>
+
+*Wen Ye, Muyan Weng, Chuizheng Meng…*
+
+针对城市公开轨迹数据因隐私限制供给不足、现有合成轨迹方法仅侧重全局分布匹配、忽略实用所需的多时空分辨率移动模式的问题，本文提出多分辨率扩散生成框架MR-Traj，将轨迹拆解为粗粒度里程碑与细粒度分段建模多尺度时空依赖。其全局分布表现比肩现有最优方法，细粒度模式建模、下游任务表现更优，且轨迹多样性更高，可降低数据发布时的轨迹关联泄露风险。
+
+<FeedbackButtons slug="item:arxiv-2608.14570" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/strengthening-democratic-oversight-in-national-security" target="_blank" rel="noopener noreferrer">Strengthening democratic oversight in national security</a>
+
+*OpenAI*
+
+OpenAI推出专项行动，聚焦强化国家安全场景下AI应用的民主监督。该项目面向相关政府机构提供支撑，包括配套技术工具、监管人员培训及专业领域专家资源，意在赋能监管主体完善AI国安应用的约束机制，填补现有监管空白，确保相关技术应用契合民主程序与公共利益。
+
+<FeedbackButtons slug="item:openai-blog-strengthening-democratic-oversight-in-national-security" client:visible />
+
+## <a href="https://openai.com/index/partnering-with-codeai" target="_blank" rel="noopener noreferrer">Partnering with CodeAI to prepare the first AI generation</a>
+
+*OpenAI*
+
+OpenAI与CodeAI达成合作，共同面向学生群体开展AI培育工作。项目核心聚焦三大方向：搭建学生的AI基础素养、建立对技术的系统认知，培养其对AI应用的批判性思考能力，传授AI工具使用、开发相关技能，最终引导学生负责任地应用、参与构建AI技术，为AI时代首批适配人才储备提供支撑。
+
+<FeedbackButtons slug="item:openai-blog-partnering-with-codeai" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 5</a>
+
+*Anthropic*
+
+本次推出的Claude Opus 5是Anthropic旗下高端Opus级大模型的阶跃式升级版本。核心升级方向有二：一是大幅强化对长周期运行智能体的支撑能力，适配需要持续运行的复杂智能体任务；二是显著提升编码能力与专业领域工作处理表现，可更好满足高要求的生产力场景需求。
+
+<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+本文推出AI研究公众参与倡议，核心举措为面向全社会公开征集关于AI的高难度、尖锐疑问，打破科研机构自主选定研究议题的传统模式。项目明确承诺，后续针对征集到的问题开展解答研究时，将完整公开全部研究推导过程，充分保障研究透明度，主动回应公众对AI领域的公共关切。
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/introducing-gemini-3-7-flash/" target="_blank" rel="noopener noreferrer">Introducing Gemini 3.7 Flash</a>
+
+*Google DeepMind*
+
+请你补充提供《Introducing Gemini 3.7 Flash》对应的完整英文摘要正文内容，我才能针对其核心方法、实验结论、核心性能亮点等信息进行精准提炼翻译，输出符合120字左右要求、突出重点的总结内容哦~
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-3-7-flash" client:visible />
+
+## <a href="https://deepmind.google/blog/putting-sign-language-ai-into-users-hands/" target="_blank" rel="noopener noreferrer">Putting sign language AI into users’ hands</a>
+
+*Google DeepMind*
+
+本研究针对聋人及听障群体的交流痛点，研发出突破性手语转文字（SL2T）AI模型，核心定位是将手语AI能力直接下沉到用户终端使用，可支撑各类新型手语交互功能落地，有效降低听障群体使用手语转写工具的门槛，实现手语到文字的便捷转换，大幅提升其日常信息交流效率。
+
+<FeedbackButtons slug="item:deepmind-putting-sign-language-ai-into-users-hands" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/ibm-research/altk-evolve-hmm" target="_blank" rel="noopener noreferrer">How Much Memory Does Your Agent Actually Need?</a>
+
+*Hugging Face*
+
+目前仅提供了论文标题，缺少摘要正文内容，请你补充完整的英文摘要文本，我会精准提炼其中的核心方法、实验结论，翻译后整理为120字左右的简洁中文总结，重点突出研究贡献与核心观点。
+
+<FeedbackButtons slug="item:hf-blog-altk-evolve-hmm" client:visible />
+
+## <a href="https://huggingface.co/blog/multi-vector-encoder" target="_blank" rel="noopener noreferrer">Multi-Vector (Late Interaction) Embedding Models with Sentence Transformers</a>
+
+*Hugging Face*
+
+本工作基于Sentence Transformers框架实现多向量晚交互嵌入模型，针对传统单向量嵌入难以捕捉句子多维语义、召回精度受限的痛点，支持文本多语义切片编码与晚交互匹配范式，大幅简化该类模型的训练部署流程。实测其在信息检索、语义匹配任务上精度明显优于单向量方案，推理效率可控，可适配工业级落地需求。
+
+<FeedbackButtons slug="item:hf-blog-multi-vector-encoder" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+递归自我改进（RSI）概念最早源自1965年I.J.古德提出的超智能设想，指可超越人类所有智力活动、还能自主设计更优系统实现迭代升级的智能模式。2008年尤德考斯基明确其核心是AI依托现有智能优化自身认知架构的反馈环，当前AI领域的RSI可表现为模型直接改写自身权重，或更广义的优化自身训练管线。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
