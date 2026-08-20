@@ -1,16 +1,27 @@
 {
   "schema_version": 1,
-  "status": "healthy",
+  "status": "degraded",
   "phase": "early",
   "target_date": "2026-08-20",
-  "published_at": "2026-08-20T22:06:31+08:00",
+  "published_at": "2026-08-20T22:37:02+08:00",
   "metrics": {
     "expected": 12,
     "items": 12,
-    "share_coverage": 0,
-    "factor_coverage": 0,
-    "unique_share_factors": 0,
+    "share_coverage": 8,
+    "factor_coverage": 8,
+    "unique_share_factors": 8,
     "target_date": "2026-08-20"
   },
-  "issues": []
+  "issues": [
+    {
+      "code": "early_partial_shares",
+      "message": "Early snapshot contains partial share disclosure",
+      "severity": "warning",
+      "expected": null,
+      "actual": {
+        "shares": 8,
+        "factors": 8
+      }
+    }
+  ]
 }
