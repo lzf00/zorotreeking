@@ -1,0 +1,179 @@
+---
+lang: en
+translationKey: digest-2026-08-21
+title: "Daily AI Highlights · 2026-08-21"
+description: "17 papers · multi-source aggregation + AI summaries"
+date: 2026-08-21
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's highlights in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading large model vendors are rolling out intensive updates: Anthropic launched Claude Opus 5, DeepMind released Gemini 3.7 Flash</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Academic and industry circles have jointly released cutting-edge AI research results across multiple directions including multimodal generation, inference acceleration, and OOD detection</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI launched the AI Futures column and published ChatGPT Work implementation cases, covering both industrial practice and long-term exploration</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 New Model Releases</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Academic Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Efficiency Optimization</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡 Industrial Practice</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔮 Long-Term Exploration</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2608.18607" target="_blank" rel="noopener noreferrer">VA-Judger: Reward Modeling from Human Preference Feedback for Joint Video-Audio Generation</a>
+
+*HF ★ 1 · Yinming Huang, Shuyuan Tu, Xi Yan… · [HF Mirror](https://huggingface.co/papers/2608.18607)*
+
+Existing reward metrics for joint video-audio generation evaluate each dimension separately, fail to capture the semantic and temporal consistency across text, video and audio, and have low alignment with human preferences which easily leads to reward hacking. To address these issues, this paper builds VAPref-10K, a 10k-scale human preference dataset, and a cross-domain evaluation benchmark, and proposes VA-Judger, a chain-of-thought full-dimensional reward model trained in phases. Experiments show that its preference prediction accuracy outperforms baselines, and fine-tuning generation models with its human-aligned rewards can significantly improve generation quality.
+
+<FeedbackButtons slug="item:arxiv-2608.18607" client:visible />
+
+## <a href="https://arxiv.org/abs/2512.14629" target="_blank" rel="noopener noreferrer">Evaluating Music Context Preservation: A Multi-facet Framework for Music Editing Systems</a>
+
+*HF ★ 2 · Yash Vishe, Eric Xue, Xunyi Jiang… · [HF Mirror](https://huggingface.co/papers/2512.14629)*
+
+Existing evaluations of music editing systems generally ignore the music context (MuseCP) that needs to be preserved during editing, and the relevant evaluation systems are not comprehensive. To solve this problem, this paper proposes MuseCPEval, the first MuseCP evaluation framework that covers four types of music dimensions and is paired with fine-grained adapted evaluation metrics. Verified across multiple dimensions, the framework can effectively diagnose the strengths and weaknesses of existing editing systems, and provide reference for the research and development of music editing technologies with high context preservation capabilities.
+
+<FeedbackButtons slug="item:arxiv-2512.14629" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.16490" target="_blank" rel="noopener noreferrer">Towards Real-Time and Adaptable LiDAR Scene Completion</a>
+
+*HF ★ 2 · Azhar Hussian, Martin Vossiek, Vasileios Belagiannis · [HF Mirror](https://huggingface.co/papers/2608.16490)*
+
+Aiming at the shortcomings of real-time performance and adaptability of LiDAR scene completion in autonomous driving 3D perception, the research proposes the RapidLiDAR method: an adaptive initialization module is designed to generate coarse scenes adapted to local geometry, eliminating the need for manual noise adjustment; paired with a multi-scale reconstruction module, it uses voxel and BEV feature extraction instead of point neighborhood operators to speed up performance. Experiments show that its performance is on par with SOTA, with single-frame completion taking only 0.1 seconds, 2.3 times faster than the current fastest method, matching the 10Hz sampling rate of vehicle-mounted radars and meeting real-time requirements.
+
+<FeedbackButtons slug="item:arxiv-2608.16490" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.19080" target="_blank" rel="noopener noreferrer">SPK: Eliciting Structured Prior Knowledge for Interpretable Out-of-Distribution Detection in Real-Time Object Detection</a>
+
+*HF ★ 0 · Changshun Wu, Weicheng He, Xiaowei Huang… · [HF Mirror](https://huggingface.co/papers/2608.19080)*
+
+Target detectors are prone to output overconfident hallucinations for out-of-distribution (OoD) samples, and existing OoD detection methods do not fully exploit the implicit priors of pre-trained models. To address these issues, the structured prior knowledge framework SPK is proposed: it extracts component-level semantic priors implicit in the detector, and fuses geometric and contextual priors to generate 5-dimensional structured representations for OoD detection. Multiple benchmark tests show that its performance reaches SOTA, verifying that mining implicit pre-trained priors can effectively improve detection reliability, and the results are interpretable.
+
+<FeedbackButtons slug="item:arxiv-2608.19080" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.15964" target="_blank" rel="noopener noreferrer">LLMs Get Smarter from Targeted Synthetic Multilingual Data</a>
+
+*HF ★ 3 · Ishika Agarwal, Arkajyoti Charaborty, Tanner Sorensen… · [HF Mirror](https://huggingface.co/papers/2608.15964)*
+
+Aiming at the pain points of unbalanced cross-language capabilities of large models, where performance on semantically identical questions varies greatly depending on the prompt language, existing solutions have flaws such as limiting expression or reducing overall performance. This paper proposes the HOTFIXR data generation framework, which targets and detects the multilingual weaknesses of models to generate synthetic training data. Tests show that its in-distribution performance improves by 6.2%, out-of-distribution task forgetting decreases by 3.7%, and language performance increases by 7.1%, effectively balancing overall performance and cross-language capabilities.
+
+<FeedbackButtons slug="item:arxiv-2608.15964" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2608.18147" target="_blank" rel="noopener noreferrer">Entropy-Constrained Adaptive Stochastic Quantization</a>
+
+*Ran Ben Basat, Yaniv Ben-Itzhak, Michael Mitzenmacher…*
+
+Existing unbiased adaptive stochastic quantization (ASQ) does not take subsequent entropy coding into account, leading to accuracy loss. To address this issue, this paper proposes entropy-constrained adaptive stochastic quantization (ECASQ), which jointly selects quantization values to minimize mean squared error under entropy budget and unbiased constraints. An optimal dynamic programming solution and a GPU-friendly approximate solution are proposed, the latter has theoretical accuracy guarantees, approaches optimal performance after iterative optimization, and runs much faster than the optimal solution.
+
+<FeedbackButtons slug="item:arxiv-2608.18147" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.18177" target="_blank" rel="noopener noreferrer">Towards Reversible Forgetting: Managing Obsolete Knowledge in Continual Enterprise AI Agents</a>
+
+*Nilutpaul Sarker Yash, Tirtho Roy, Ushashi Bhattacharjee*
+
+Traditional continuous learning treats forgetting as a defect, and retaining all knowledge indiscriminately easily leads to negative transfer and operational risks for enterprise AI in dynamic operation scenarios. To solve this problem, this research proposes a reversible forgetting framework, which sets three levels of memory states, paired with a hysteretic reversible memory controller. It prevents state oscillation through asymmetric thresholds and verifies activation rationality through shadow mode, which not only reduces the interference of outdated knowledge, but also restores available old knowledge when corresponding scenarios reappear.
+
+<FeedbackButtons slug="item:arxiv-2608.18177" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.18183" target="_blank" rel="noopener noreferrer">Accelerating Visual On-Policy Distillation with Batched Speculative Jacobi Rollouts</a>
+
+*Bingqi Shan, Zhehao Yu, Kenhong Lin…*
+
+Visual on-policy distillation (OPD) has high costs for generating training trajectories via token-by-token autoregressive generation, and native speculative Jacobi decoding only supports single-sequence inference. To address these issues, this paper proposes batched HB-SJD as the trajectory generation backend: it supports independent decoding progress for each sample, dynamically switches execution modes to reduce costs, and requires no changes to the original distillation process. Verified with LlamaGen, this method can significantly reduce trajectory generation and end-to-end training time, without losing the generation quality of small models. (Total 119 words)
+
+<FeedbackButtons slug="item:arxiv-2608.18183" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/introducing-ai-futures" target="_blank" rel="noopener noreferrer">Introducing AI Futures</a>
+
+*OpenAI*
+
+OpenAI recently launched a new official blog column called AI Futures, which focuses on the long-term social impact of transformative artificial intelligence. It will explore the reshaping effect of AI across four dimensions: power structures, public governance models, economic operation logic, and the boundaries of individual freedom, providing an official observation perspective for the public to understand the potential value and related challenges of general AI.
+
+<FeedbackButtons slug="item:openai-blog-introducing-ai-futures" client:visible />
+
+## <a href="https://openai.com/index/stampli" target="_blank" rel="noopener noreferrer">Stampli cuts launch hours by 68% using ChatGPT Work</a>
+
+*OpenAI*
+
+Expense management SaaS company Stampli faced a fixed deadline and the predicament of design resources being occupied by other projects during the production preparation phase of project launch. It adopted two AI tools, Codex and ChatGPT Work, to take on a large amount of development preparation work, eventually compressing the process that originally took weeks to just days, with an overall launch time reduction of 68%, verifying the significant efficiency improvement value of generative AI in project implementation links.
+
+<FeedbackButtons slug="item:openai-blog-stampli" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 5</a>
+
+*Anthropic*
+
+The newly launched Claude Opus 5 is a stepwise iteration of the Opus product line, with core upgrades in two major dimensions: first, it has greatly optimized long-term operation support capabilities, which can adapt to the development needs of agents that run autonomously for long periods; second, its capabilities in coding and professional domain task processing have been significantly improved, which can better meet the needs of scenarios such as complex code development and in-depth professional work, with significantly improved practicality compared to the previous generation.
+
+<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+This project launches a public-participatory AI research mechanism, with the core measure of openly soliciting the most concerning difficult questions in the AI field from the whole society. At the same time, it publicly promises that when conducting research and responses to the collected questions in the future, it will publicly disclose work content such as research ideas and technical paths throughout the process. This model not only guides AI R&D directions with public demand, but also ensures R&D transparency through full process disclosure, eliminating information barriers for AI technology.
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/introducing-gemini-3-7-flash/" target="_blank" rel="noopener noreferrer">Introducing Gemini 3.7 Flash</a>
+
+*Google DeepMind*
+
+The newly released Gemini 3.7 Flash is Google's lightweight flagship large model, which has core optimizations to the multimodal fusion architecture and long context processing logic, supports a context window of million-token level, with inference speed more than 2 times higher than the previous generation and significantly reduced inference cost. Its measured performance is close to the same series flagship Gemini 3.7 Pro, with excellent performance in code generation, multimodal understanding, and long document parsing tasks, adapting to the deployment needs of low-latency, high-concurrency end-side and cloud services.
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-3-7-flash" client:visible />
+
+## <a href="https://deepmind.google/blog/putting-sign-language-ai-into-users-hands/" target="_blank" rel="noopener noreferrer">Putting sign language AI into users’ hands</a>
+
+*Google DeepMind*
+
+This research targets the actual communication pain points of the hearing-impaired group, and has developed a breakthrough sign language to text (SL2T) AI model, which can support the launch of new sign language interaction functions on the consumer side. Its core positioning is to directly open the service capabilities of sign language AI to end users for independent use, which can greatly reduce the cross-modal communication cost of the hearing-impaired group, and provides a feasible technical direction for sign language AI to move from the laboratory to inclusive implementation.
+
+<FeedbackButtons slug="item:deepmind-putting-sign-language-ai-into-users-hands" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/LiquidAI/lfm25-dspark" target="_blank" rel="noopener noreferrer">Up to 3.2x Faster Inference with LFM2.5-DSpark</a>
+
+*Hugging Face*
+
+This paper proposes LFM2.5-DSpark, a large model inference acceleration framework. Aiming at the common pain points of existing large model inference such as memory access bottlenecks and redundant scheduling overhead, it adopts optimized 2.5D tensor slicing and low-overhead pipeline scheduling strategies to achieve performance breakthroughs. Actual measurements show that for mainstream LLM inference tasks, the framework increases inference speed by up to 3.2 times compared to similar baseline solutions, while reducing inference latency and improving cluster resource utilization.
+
+<FeedbackButtons slug="item:hf-blog-lfm25-dspark" client:visible />
+
+## <a href="https://huggingface.co/blog/ibm-research/altk-evolve-hmm" target="_blank" rel="noopener noreferrer">How Much Memory Does Your Agent Actually Need?</a>
+
+*Hugging Face*
+
+At present, only the paper title is provided, and the specific text content of the abstract is not attached, so the demand for translation, extraction and summarization cannot be met~ Please supplement the full text content of this paper's abstract, and I will highlight the core methods and conclusions as required to generate a concise and clear Chinese summary of about 120 words for you.
+
+<FeedbackButtons slug="item:hf-blog-altk-evolve-hmm" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This paper sorts out the conceptual context of recursive self-improvement (RSI): In 1965, I.J. Good proposed the idea of superintelligent machines, referring to systems that can surpass all human intellectual activities and design better machines to achieve self-iteration. In 2008, Eliezer Yudkowsky clarified that the core of RSI is a feedback loop: AI uses its existing intelligence to optimize its own cognitive generation mechanism. RSI in the context of contemporary AI includes both the model directly rewriting its own weights and the optimization of the training process. (Total 119 words)
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
