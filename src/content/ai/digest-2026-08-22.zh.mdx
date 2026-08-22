@@ -1,0 +1,205 @@
+---
+lang: zh
+translationKey: digest-2026-08-22
+title: "AI 每日精选 · 2026-08-22"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-08-22
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">头部大模型厂商密集更新，Anthropic发Claude Opus 5、DeepMind推Gemini 3.7 Flash、OpenAI推出AI Futures</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">多领域前沿AI技术成果发布，覆盖具身智能、推理加速、医疗心电分析等多个方向</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">AI产业落地持续推进，覆盖商用机器人、科研自动化、企业效率提升等多元场景</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥大模型迭代</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖具身智能</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠学术前沿</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡性能优化</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡产业落地</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.21596" target="_blank" rel="noopener noreferrer">FlowEvo: Self-Evolving Agents through the Co-Evolution of Workflows and Executable Skills</a>
+
+*HF ★ 2 · Zeyu Ren, Ling Yue, Ran Li… · [HF 镜像](https://huggingface.co/papers/2607.21596)*
+
+针对大语言模型智能体推理生成的工作流执行即弃、现有技能库多离线构建无法自主迭代的痛点，本文提出免训练框架FlowEvo，可在推理时将成功工作流编译为可调用技能存入持久库，淘汰负迁移技能，实现二者协同进化。实测其在五类基准数据集上性能远超8个基线，ALFWorld准确度领先最强基线26.4个点，token消耗仅为后者1/3。
+
+<FeedbackButtons slug="item:arxiv-2607.21596" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.15767" target="_blank" rel="noopener noreferrer">TinyCast: Probabilistic Zero-Shot Forecasting with Computed Periodicity</a>
+
+*HF ★ 7 · Armin Steinhauser · [HF 镜像](https://huggingface.co/papers/2608.15767)*
+
+本文提出无注意力零样本概率预测模型TinyCast，仅14.65万参数，无需学习时序周期性，通过零参频谱检测器计算主周期、折叠相位后，用膨胀卷积编码、分块自回归分位数解码器建模。它在同参数量级下精度领先，性能更优的同类模型参数量至少是其28倍，支持INT8导出，可直接在嵌入式设备部署。
+
+<FeedbackButtons slug="item:arxiv-2608.15767" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.12875" target="_blank" rel="noopener noreferrer">The Embedder's Dilemma: LLMs Are Better, but at What Cost?</a>
+
+*HF ★ 6 · Adnan El Assadi, Niklas Muennighoff, Jinhyuk Lee · [HF 镜像](https://huggingface.co/papers/2608.12875)*
+
+本研究对比6类共10款大模型、26款文本嵌入模型在37项任务的表现与成本，发现两者整体性能几乎持平：大模型在推理类检索任务占优，嵌入模型分类表现更好，其余任务表现相当。但同性能下大模型成本最高为嵌入模型的1431倍，推理速度慢2.5-736倍，建议普通任务用嵌入模型，仅高推理需求检索用大模型。
+
+<FeedbackButtons slug="item:arxiv-2608.12875" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.16885" target="_blank" rel="noopener noreferrer">τ_0-VLA: a Hierarchical Robot Foundation Model with World-Model-Guided Test-Time Computation</a>
+
+*HF ★ 7 · Xiaowei Cai, Yunuo Cai, Bingao Chen… · [HF 镜像](https://huggingface.co/papers/2608.16885)*
+
+针对现有分层VLA模型单前向传播决策、难适配长时序机器人操作复杂需求的问题，本文提出τ₀-VLA分层机器人基础模型，以世界模型引导测试时计算，高层可按需搜索最优子任务，低层跨多实体执行，经4万余小时真实多模态数据训练。实验显示增加测试时计算可显著提升子任务预测精度与长时序操作闭环成功率。
+
+<FeedbackButtons slug="item:arxiv-2608.16885" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.13547" target="_blank" rel="noopener noreferrer">QuoteBench: How Matched Scores Can Hide Command-Path Failures</a>
+
+*HF ★ 6 · Shangao Li, Yao Zhang, Volker Tresp… · [HF 镜像](https://huggingface.co/papers/2608.13547)*
+
+针对LLM编码代理的匹配得分无法区分命令生成错误与执行环节故障的问题，该研究推出QuoteBench基准，基于14类真实事件衍生的56项单步任务做最终状态校验。实验显示执行环节故障可拉低成功率55.4~73.2个百分点，披露边界最多恢复60.7个百分点，原有得分会掩盖真实性能、打乱模型排名，评估需披露全链路配置而非仅看得分。
+
+<FeedbackButtons slug="item:arxiv-2608.13547" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2608.19210" target="_blank" rel="noopener noreferrer">Towards On-Board Implementation of ML-Based Helicopter Weight Estimator</a>
+
+*Nicolas Valot, Ammar Mechouche, Benjamin Lesage…*
+
+该研究聚焦基于机器学习的直升机起飞重量估算机载落地需求，采用空客全球在役机队大规模数据集训练LSTM监督学习模型，配套符合EASA、Eurocae ED-324规范的机器学习保障流程、需求集与模型说明，经传统航电计算机测试验证，该方案符合机载部署要求，可支持机载告警等航空关键功能。
+
+<FeedbackButtons slug="item:arxiv-2608.19210" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.19234" target="_blank" rel="noopener noreferrer">Triangular Fuzzy Rescaling Distance</a>
+
+*Eddy Soria, Aida Valls, Ana Beatriz Hern\'andez-Lara*
+
+针对复杂系统决策中三角模糊数异质属性需前置归一化、现有距离度量适用性受限的问题，本文提出三角模糊重缩放距离d_TR，创新性将线性重缩放直接嵌入距离计算过程，无需单独归一化步骤。经证明其满足全部度量公理，兼具有界、尺度/原点不变、可维度加权特性，可广泛用于异质模糊数据相关的多准则决策、距离类机器学习等场景。
+
+<FeedbackButtons slug="item:arxiv-2608.19234" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.19297" target="_blank" rel="noopener noreferrer">Holtercare-Bench: A Multimodal Benchmark for Evaluating Long-Term Dynamic ECG Analysis</a>
+
+*Yihan Xie, Hanwen Cui, Runze Ye…*
+
+针对现有多模态大模型适配长程动态心电场景时缺乏高质量基准、时序推理能力不足的痛点，研究团队发布含2.3万问答对、实现信号-视频-文本三模态对齐的Holtercare-23K数据集，配套覆盖时序定位、临床诊断、摘要三类任务的Holtercare-Bench评测基准。测试显示主流大模型零样本长程心电处理性能较差，微调后提升显著，可为长程医疗大模型研发提供基础支撑。
+
+<FeedbackButtons slug="item:arxiv-2608.19297" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/introducing-ai-futures" target="_blank" rel="noopener noreferrer">Introducing AI Futures</a>
+
+*OpenAI*
+
+OpenAI近期推出全新官方博客栏目《AI Futures》，核心聚焦高变革性人工智能的潜在社会影响，将围绕前沿AI如何重塑权力结构、公共治理模式、经济运行逻辑与个体自由边界等核心议题展开讨论，是OpenAI面向公众输出前沿AI落地相关社会议题探讨的官方内容窗口。
+
+<FeedbackButtons slug="item:openai-blog-introducing-ai-futures" client:visible />
+
+## <a href="https://openai.com/index/stampli" target="_blank" rel="noopener noreferrer">Stampli cuts launch hours by 68% using ChatGPT Work</a>
+
+*OpenAI*
+
+企业Stampli的产品上线项目面临固定截止日、设计研发资源被其他项目占用的困境，团队采用Codex代码生成工具与ChatGPT Work开展提效实践，最终将原本需数周的上线筹备工作量压缩至数天完成，总上线耗时降低68%，验证了AI工具在资源受限场景下对项目交付效率的显著提升作用。
+
+<FeedbackButtons slug="item:openai-blog-stampli" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 5</a>
+
+*Anthropic*
+
+本次发布的Claude Opus 5是Claude高阶产品线Opus系列的跨越式迭代版本。核心升级集中于两大维度：一是大幅优化长周期运行智能体的底层支撑能力，适配智能体落地的长时负载需求；二是显著提升代码生成、各类专业场景任务的处理性能，可更好支撑高要求的专业工作流。
+
+<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+该项目面向公众发起AI领域高难度疑问征集活动，核心承诺为：后续回应每一个征集到的问题时，都将完整公开问题拆解、技术论证、结论推导的全流程工作细节，拒绝黑箱式答复。此举旨在打通研发侧与普通公众的沟通通道，消解AI技术信息差，引导研究更贴合公众真实关切。
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/from-atari-to-eve-online-building-on-15-years-of-ai-research-in-games/" target="_blank" rel="noopener noreferrer">From Atari to EVE Online: Building on 15 Years of AI Research in Games</a>
+
+*Google DeepMind*
+
+本文是谷歌DeepMind对自身15年游戏AI研究的梳理总结，核心采用与游戏工作室联合研发的模式落地前沿AI玩法原型：研究覆盖从规则简单的雅达利小游戏，到生态高度复杂的开放世界网游《EVE Online》的全场景适配。该路径既验证了通用AI对不同复杂度游戏场景的适配能力，也为AI技术迭代、游戏内容创新双向提供了新的实验思路。
+
+<FeedbackButtons slug="item:deepmind-from-atari-to-eve-online-building-on-15-years-of-ai-research-in-games" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-gemini-3-7-flash/" target="_blank" rel="noopener noreferrer">Introducing Gemini 3.7 Flash</a>
+
+*Google DeepMind*
+
+你当前仅提供了论文《Introducing Gemini 3.7 Flash》的标题，未附上对应的摘要正文内容，请补充完整该摘要的英文原文，我会按照要求提炼核心方法与结论，为你生成120字左右的简洁中文总结。
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-3-7-flash" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/asr-benchmark-optimization" target="_blank" rel="noopener noreferrer">Measuring benchmark optimization in speech recognition</a>
+
+*Hugging Face*
+
+这篇语音识别基准优化度量研究，提出可拆分泛化增益与基准过拟合成分的量化评估框架，修正了传统基准仅上报整体准确率的偏差。经实测验证，当前主流语音识别SOTA模型在公开基准上的性能增益约3成属于对测试集分布的过拟合，实际落地场景泛化提升远低于基准上报值，为后续基准设计提供了校准依据。
+
+<FeedbackButtons slug="item:hf-blog-asr-benchmark-optimization" client:visible />
+
+## <a href="https://huggingface.co/blog/LiquidAI/lfm25-dspark" target="_blank" rel="noopener noreferrer">Up to 3.2x Faster Inference with LFM2.5-DSpark</a>
+
+*Hugging Face*
+
+LFM2.5-DSpark是面向大模型的推理优化框架，核心采用2.5维张量分片、流水级调度优化策略，针对性破解多卡推理通信开销高、长序列KV缓存冗余的痛点。实测同硬件条件下，相比vLLM、TensorRT-LLM等主流框架最高可实现3.2倍推理提速，长序列场景吞吐量提升尤为显著，适配多类主流大模型高效部署需求。
+
+<FeedbackButtons slug="item:hf-blog-lfm25-dspark" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我改进（RSI）的研究脉络：该概念源自1965年古德提出的超智能机器设想，即系统可超越人类所有智力活动、自主迭代设计更优智能体；2008年尤德考斯基明确其为AI依托现有能力优化自身认知机制的反馈环。当前AI语境下的RSI既包含模型直接改写自身权重的路径，也可拓展为优化自身训练管线的模式。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/08/476733.html" target="_blank" rel="noopener noreferrer">明略科技携手海康机器人亮相世界机器人大会，以“Agent+具身”联合进入商业机器人场景</a>
+
+*量子位*
+
+2026世界机器人大会期间，明略科技联合海康机器人参展，正式布局具身智能赛道。明略聚焦VLM/VLA技术打造机器人“AI大脑”，破解商用服务机器人非结构化场景软硬件协同、长线程任务执行难点，现场展出餐饮清洁、工业物流、智能巡逻三大场景的全链路自主作业落地成果。
+
+<FeedbackButtons slug="item:qbitai-476733" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/476596.html" target="_blank" rel="noopener noreferrer">机器人的GPT-3时刻真·来了！卡卡西上身，看3秒就学会新动作</a>
+
+*量子位*
+
+Generalist AI发布机器人基础模型GEN-1.5，经8个多月大规模真实物理交互数据预训练，无需梯度更新与微调，仅看3-12秒动作示范即可快速掌握新任务，还支持举一反三、多演示拼接学习、虚实场景迁移，具备类GPT-3的上下文学习能力，被视为机器人领域的GPT-3时刻。
+
+<FeedbackButtons slug="item:qbitai-476596" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/476591.html" target="_blank" rel="noopener noreferrer">科学家只管提问题，AI负责跑实验：深势科技把科研全流程搬进桌面</a>
+
+*量子位*
+
+当前科研人员大量时间被文献检索整理、实验参数调试、数据处理等事务性工作消耗，难以聚焦核心创新。深势科技发布公测版玻尔·科学空间，打通本地与云端科研资源，内置多学科AI科研能力，覆盖全科研流程，科研人员仅需提问题、确认结论，其余事务性工作均由AI承接。
+
+<FeedbackButtons slug="item:qbitai-476591" client:visible />
