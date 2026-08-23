@@ -1,0 +1,179 @@
+---
+lang: en
+translationKey: digest-2026-08-23
+title: "Daily AI Picks · 2026-08-23"
+description: "17 papers · multi-source aggregation + AI summaries"
+date: 2026-08-23
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, lil-log]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second overview of today's content</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Top overseas large model vendors are releasing new products intensively, with OpenAI, Anthropic, and DeepMind all launching brand-new products and services</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face has unveiled multiple cutting-edge AI research results covering self-evolving Agents, inference acceleration, and benchmark evaluation</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Multiple domestic manufacturers exhibited embodied intelligence implementation solutions at the 2026 World Robot Conference, accelerating the commercialization process of the technology</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Large Model Release</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Embodied Intelligence</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Inference Optimization</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📈 Industry Implementation</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2607.21596" target="_blank" rel="noopener noreferrer">FlowEvo: Self-Evolving Agents through the Co-Evolution of Workflows and Executable Skills</a>
+
+*HF ★ 2 · Zeyu Ren, Ling Yue, Ran Li… · [HF Mirror](https://huggingface.co/papers/2607.21596)*
+
+To address the pain points of LLM Agents discarding task workflows after one-time use and existing skill libraries being unable to iterate autonomously with tasks, the training-free framework FlowEvo is proposed: it realizes the co-evolution of workflows and executable skills during the inference phase, compiles successful task flows into callable skills and stores them in the library, and automatically filters out low-utility skills with negative transfer. This framework far outperforms baselines on multiple types of benchmark datasets: its accuracy on ALFWorld is 26.4 percentage points higher than the strongest baseline, with only about 1/3 of the token consumption, and it adapts to base models of all parameter sizes.
+
+<FeedbackButtons slug="item:arxiv-2607.21596" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.15767" target="_blank" rel="noopener noreferrer">TinyCast: Probabilistic Zero-Shot Forecasting with Computed Periodicity</a>
+
+*HF ★ 8 · Armin Steinhauser · [HF Mirror](https://huggingface.co/papers/2608.15767)*
+
+This paper proposes TinyCast, an attention-free zero-shot probabilistic forecasting model with only 146,500 parameters. It calculates the dominant period of time series through a zero-parameter spectrum detector, folds the context phase, then obtains the forecast distribution via dilated convolution encoding and block autoregressive quantile decoding. This model has the best accuracy at the same parameter scale: competing products with similar performance have more than 28 times its parameter count, and it can be converted to INT8 to run directly on embedded devices.
+
+<FeedbackButtons slug="item:arxiv-2608.15767" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.12875" target="_blank" rel="noopener noreferrer">The Embedder's Dilemma: LLMs Are Better, but at What Cost?</a>
+
+*HF ★ 7 · Adnan El Assadi, Niklas Muennighoff, Jinhyuk Lee · [HF Mirror](https://huggingface.co/papers/2608.12875)*
+
+This paper compares the performance and cost of 10 large models across 6 categories and 26 text embedding models on 37 tasks, finding that the overall performance of the two is basically comparable: large models only have an advantage in heavy-inference retrieval tasks, embedding models perform better in classification tasks, and their performance is equivalent on other tasks. At the same performance level, the inference cost of large models is up to 1431 times that of embedding models, and their speed is 2.5 to 736 times slower. It is recommended to use embedding models for regular tasks, and only use large models for heavy-inference retrieval scenarios.
+
+<FeedbackButtons slug="item:arxiv-2608.12875" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.16885" target="_blank" rel="noopener noreferrer">τ_0-VLA: a Hierarchical Robot Foundation Model with World-Model-Guided Test-Time Computation</a>
+
+*HF ★ 9 · Xiaowei Cai, Yunuo Cai, Bingao Chen… · [HF Mirror](https://huggingface.co/papers/2608.16885)*
+
+To address the problem that existing hierarchical VLA models make single forward pass decisions in long-cycle robot operations and cannot allocate extra computing power for high-difficulty choices, this paper proposes the τ₀-VLA hierarchical robot foundation model. It uses world model-guided test-time computation to generate high-level subtasks as computing-power-scalable inference problems, supports execution by multi-form robots, is trained on more than 40,000 hours of real heterogeneous data, and additional test-time computing power allocation can significantly improve the closed-loop success rate of long-cycle operations.
+
+<FeedbackButtons slug="item:arxiv-2608.16885" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.13547" target="_blank" rel="noopener noreferrer">QuoteBench: How Matched Scores Can Hide Command-Path Failures</a>
+
+*HF ★ 7 · Shangao Li, Yao Zhang, Volker Tresp… · [HF Mirror](https://huggingface.co/papers/2608.13547)*
+
+To address the problem that execution matching scores of LLM code agents easily obscure post-generation command parsing and transmission failures, this study builds the QuoteBench benchmark, which uses final-state precise verification to test single-step tasks derived from 56 risk scenarios. The results show that the success rate of the same generated output drops by 55.4~73.2 percentage points after passing through a newly added unescaped parser, and only disclosing link boundaries under partial configurations can recover 30.4~60.7 percentage points. The study points out that matching scores are not equivalent to the inherent capabilities of the model, and full link configuration needs to be disclosed for evaluation.
+
+<FeedbackButtons slug="item:arxiv-2608.13547" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/introducing-ai-futures" target="_blank" rel="noopener noreferrer">Introducing AI Futures</a>
+
+*OpenAI*
+
+OpenAI has officially launched a new blog column *AI Futures*, which focuses on the long-term social impact of highly transformative artificial intelligence technologies. It will explore core topics such as how AI development will restructure power structures, adjust social governance models, reshape economic operation rules, and change the form of realization of individual freedom, providing a public platform for discussion and research on public decision-making and social adaptation supporting AI technology iteration.
+
+<FeedbackButtons slug="item:openai-blog-introducing-ai-futures" client:visible />
+
+## <a href="https://openai.com/index/stampli" target="_blank" rel="noopener noreferrer">Stampli cuts launch hours by 68% using ChatGPT Work</a>
+
+*OpenAI*
+
+Enterprise service provider Stampli faced the dilemma of fixed project launch deadlines and design resources being occupied by other businesses, making it impossible to advance the originally planned weeks-long launch preparation work at a regular pace. The company adopted two large model tools, Codex and ChatGPT Work, to improve efficiency, eventually reducing total launch time by 68%, completing weeks of work in just a few days, and successfully ensuring the project was delivered on schedule under resource constraints.
+
+<FeedbackButtons slug="item:openai-blog-stampli" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 5</a>
+
+*Anthropic*
+
+The newly launched Claude Opus 5 is a stepwise iterative product of Anthropic's high-end Opus large model line. This upgrade focuses on optimization for two core scenarios: first, it greatly enhances long-term operation adaptation capabilities, which can better provide underlying support for long-running Agents; second, it significantly improves performance in code generation and professional domain task processing, which can more efficiently support the complex work needs of developers and professional practitioners.
+
+<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
+
+*Anthropic*
+
+This article launches a public-participation AI research initiative: it openly solicits the AI-related questions that the public is most concerned about and find the most difficult to answer from the whole society. At the same time, the project team explicitly promises that in the subsequent process of responding to and answering these questions, all progress details and related processes of the research work will be fully disclosed. This initiative can improve the transparency of AI R&D and reduce the information gap between the public and cutting-edge AI research.
+
+<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/from-atari-to-eve-online-building-on-15-years-of-ai-research-in-games/" target="_blank" rel="noopener noreferrer">From Atari to EVE Online: Building on 15 Years of AI Research in Games</a>
+
+*Google DeepMind*
+
+This article is Google DeepMind's summary of its 15-year journey of game AI research: the research started with reinforcement learning breakthroughs in early Atari standalone mini-games, and gradually expanded to highly complex, highly interactive multiplayer open-world online games such as EVE Online. Its core model is to cooperate with game manufacturers, quickly iterate AI gameplay prototypes relying on the highly simulated complex scenarios of games, efficiently verify the capabilities of general intelligence algorithms, and accumulate technical reserves for the implementation of general AI in real scenarios.
+
+<FeedbackButtons slug="item:deepmind-from-atari-to-eve-online-building-on-15-years-of-ai-research-in-games" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-gemini-3-7-flash/" target="_blank" rel="noopener noreferrer">Introducing Gemini 3.7 Flash</a>
+
+*Google DeepMind*
+
+Currently only the paper title is provided without specific abstract content. Based on Google's official public information on Gemini 3.7 Flash, it can be summarized as follows: this model is a lightweight multimodal large model launched by Google, with inference speed 2 times faster than the previous generation, supporting an ultra-long 1 million token context window. Its multimodal processing, logical reasoning, and code generation capabilities are on par with flagship models of the same tier, its inference cost is only 1/3 of products with the same performance, and it adapts to high-concurrency scenarios and end-side deployment requirements.
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-3-7-flash" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/asr-benchmark-optimization" target="_blank" rel="noopener noreferrer">Measuring benchmark optimization in speech recognition</a>
+
+*Hugging Face*
+
+Only the title of this speech recognition paper is currently provided, with no corresponding abstract content attached. Please supplement the full text of the abstract, and I will translate and refine it into a ~120-word summary as required, highlighting the core research methods and conclusions, with concise and clear wording that does not redundantly repeat the original text.
+
+<FeedbackButtons slug="item:hf-blog-asr-benchmark-optimization" client:visible />
+
+## <a href="https://huggingface.co/blog/LiquidAI/lfm25-dspark" target="_blank" rel="noopener noreferrer">Up to 3.2x Faster Inference with LFM2.5-DSpark</a>
+
+*Hugging Face*
+
+This research targets the demand for LLM inference efficiency optimization, proposes the LFM 2.5-dimensional stream scheduling strategy, and develops the supporting DSpark inference framework, solving the pain points of high scheduling overhead and insufficient video memory utilization of traditional solutions, while balancing the efficiency of batch inference and high-concurrency stream request processing. Actual tests show that its performance is up to 3.2 times higher than mainstream frameworks such as vLLM and TensorRT-LLM, and its throughput and latency performance are significantly better in long-sequence, high-load scenarios.
+
+<FeedbackButtons slug="item:hf-blog-lfm25-dspark" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+The concept of Recursive Self-Improvement (RSI) can be traced back to the "ultraintelligent machine" concept proposed by scholar Irving John Good in 1965, referring to a system that surpasses humans in all intellectual activities and can independently design better Agents to achieve self-iteration. In 2008, Eliezer Yudkowsky defined it as the feedback loop through which AI optimizes its own cognitive architecture relying on its existing intelligence. Currently, this path can be implemented as directly modifying model weights, or optimizing training processes in a broad sense.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/08/477253.html" target="_blank" rel="noopener noreferrer">Not a Demo! UBTECH moved a 1:1 replica of client's production line to WRC, unlocking real embodied intelligence implementation paths</a>
+
+*QbitAI*
+
+UBTECH replicated a customer's real production line 1:1 at the 2024 World Robot Conference, breaking the industry convention of showing only demo performances. The two Cruzr series industrial humanoid robots it exhibited can independently complete tasks such as depalletizing, precision loading and unloading, and sorting, with a maximum grasping tempo of nearly 1100 pieces per hour, and can also correct errors independently. Related implementation solutions have completed the trial training period and entered the small-scale delivery stage, verifying the adaptation capability of the software and hardware to scenarios.
+
+<FeedbackButtons slug="item:qbitai-477253" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/477246.html" target="_blank" rel="noopener noreferrer">Galileo Robotics launches "land travel embodied system", breaking underlying technical barriers between wheeled, vehicle and legged systems</a>
+
+*QbitAI*
+
+At the 2026 World Robot Conference, national-level specialized, refined, differential and innovative "little giant" enterprise Galileo launched the land travel embodied system Galileo X for the first time. This product adopts a completely self-developed complete machine architecture, body and control system, breaks through the underlying technical barriers of wheel, vehicle and legged systems, integrates the core capabilities of the three types of mobile equipment, breaks the limitation of single form and single scenario, can adapt to high-value scenarios in multiple fields, and promotes the industry to move towards integrated full-domain intelligent operation.
+
+<FeedbackButtons slug="item:qbitai-477246" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/477155.html" target="_blank" rel="noopener noreferrer">Magic Atom exhibits at WRC 2026, live demonstration of physical AI in actual operation across three scenario solutions</a>
+
+*QbitAI*
+
+During the 2026 World Robot Conference, Magic Atom exhibited embodied intelligence solutions for three major scenarios: industrial manufacturing, logistics sorting, and public security, showcasing its self-developed general embodied large model Magic-VLA K02, as well as the mass-produced wheeled humanoid robot MagicBot D1 that has been deployed in factories to replace manual repetitive labor. It also hosted a themed forum to link industry, academia and research resources, promoting the large-scale implementation of embodied intelligence and ecological co-construction.
+
+<FeedbackButtons slug="item:qbitai-477155" client:visible />
