@@ -1,0 +1,205 @@
+---
+lang: en
+translationKey: digest-2026-08-25
+title: "AI Daily Digest · 2026-08-25"
+description: "20 papers · Multi-source aggregation + AI summaries"
+date: 2026-08-25
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading AI vendors release new products intensively: OpenAI launches GPT-5.6, Anthropic releases Claude Opus 5, DeepMind rolls out Gemini 3.7 Flash</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Cutting-edge research on world models, AI prediction and more is released in batches; Hugging Face launches multiple technical optimizations including inference acceleration</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Dynamic developments in China's AI sector: Ren Shaoqing, author of ResNet, enters robotics entrepreneurship, and new breakthroughs are made in scientific research evaluation rules</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥New LLM Releases</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡Performance Optimization</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖Entrepreneurship Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡Industry Implementation</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2608.21439" target="_blank" rel="noopener noreferrer">WorldMind: Decoupled Game World Model for State-Aware NPC Behavior</a>
+
+*HF ★ 2 · Zhiyang Deng, Boran Zhang, Danze Chen… · [HF Mirror](https://huggingface.co/papers/2608.21439)*
+
+To address the problem that NPC behaviors in existing game world models are either entangled with video generation, rely on external control, and lack state decision interfaces resulting in insufficient responsiveness, this paper proposes WorldMind, the first state-aware decoupled framework for NPC behaviors. It splits interaction modeling into a four-layer closed loop, and is paired with BOSS-140K, a large-scale dataset with rich in-game internal states. Experiments show that its NPC behaviors are more tactically reasonable and coherent, outperforming baselines in approximately 70% of comparative tests.
+
+<FeedbackButtons slug="item:arxiv-2608.21439" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.21031" target="_blank" rel="noopener noreferrer">PhysCaP: Grounding Code-as-Policy Agent with Physics-Informed Exploration</a>
+
+*HF ★ 3 · Chen-Yu Lin, Jing-Wen Chen, Hsueh-En Chang… · [HF Mirror](https://huggingface.co/papers/2608.21031)*
+
+This paper proposes PhysCaP, an agent for active perception in robot manipulation. It adds a physics-guided exploration layer to the code-as-policy framework, enabling extraction of implicit physical properties such as object mass and stiffness through the robot's proprioceptive sensing without additional sensors. It adopts a dual-agent design of planner + prioritizer to balance exploration cost and efficiency. Real-world tests show that for multiple types of manipulation tasks, it requires fewer interactions, takes less time and delivers comparable performance compared to baseline methods, and the effectiveness of the physical property extraction module is also verified by ablation experiments.
+
+<FeedbackButtons slug="item:arxiv-2608.21031" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.20438" target="_blank" rel="noopener noreferrer">Peer-Voted LLM-Agent Stress Tests Find Feed-Induced Lexical Convergence but No Reliable Matched-Exposure Advantage for Distributed Sources</a>
+
+*HF ★ 3 · Rana Muhammad Usman, Dominic Williamson · [HF Mirror](https://huggingface.co/papers/2608.20438)*
+
+This study introduces PV-SST, a peer-voted LLM-agent stress testing framework, and conducts matched-exposure control experiments covering 448 trials across multiple open-source LLMs and multiple themes. The results show that information feeds sorted by peer likes significantly increase the lexical similarity of the agent population, but multiple information sources do not change the agents' stances more stably than a single source, and no reliable matched-exposure advantage for distributed sources is observed. The conclusion only applies to synthetic agent populations.
+
+<FeedbackButtons slug="item:arxiv-2608.20438" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.18077" target="_blank" rel="noopener noreferrer">Hydra-0: Action Flow for Generalist World Modeling and Control</a>
+
+*HF ★ 5 · Hongyu Li, Bowen Wen, Xinghao Zhu… · [HF Mirror](https://huggingface.co/papers/2608.18077)*
+
+The study proposes Hydra-0, a generalist world model that uses action flow represented as pixel motion as a unified visual interface, enabling learning of action consequences across robot morphologies, tasks, environments, etc. Its optimal configuration reduces robot motion error by 90.4% and object motion error by 60.2% compared to baselines, supports zero-shot composition and data-efficient adaptation, achieves a correlation coefficient of 0.96 between playback and reference success rate on the RoboLab benchmark, and can directly output executable actions from object flows in human demonstrations without task-specific expert demonstrations.
+
+<FeedbackButtons slug="item:arxiv-2608.18077" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.18484" target="_blank" rel="noopener noreferrer">Partition the Support, Reconstruct the Residual: Training-Free Sparse Attention for Video Generation and World Models</a>
+
+*HF ★ 7 · Pardis Taghavi, Reza Langari, Gaurav Pandey · [HF Mirror](https://huggingface.co/papers/2608.18484)*
+
+To address the problem of high error when existing training-free block sparse attention is adapted to video Transformers, this study proposes SparsePR, a training-free solution that combines response-coupled block routing and probe-fitting residual reconstruction to effectively reduce sparse attention reconstruction error. Verified on four types of video generation and world models, it maintains generation quality while only performing 22%~26% of attention pairs, delivering 1.48~2.61x end-to-end speedup.
+
+<FeedbackButtons slug="item:arxiv-2608.18484" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2608.20343" target="_blank" rel="noopener noreferrer">Bankruptcy Prediction via Hybrid Resampling and Stacking Ensemble Techniques with Explainable Artificial Intelligence (XAI)-Driven Analysis</a>
+
+*Obu-Amoah Ampomah, Edmund Fosu Agyemang, Kofi Acheampong…*
+
+For highly imbalanced financial data, this study builds a bankruptcy prediction framework integrating consensus feature selection, hybrid resampling, stacking ensemble and explainable AI. Tested on the Taiwan bankruptcy dataset: SMOTE-ENN resampling delivers the best recognition performance for bankruptcy (minority class); among single models, GRU paired with this strategy performs best; the stacking ensemble combining 5 traditional ensemble models as base learners and LSTM as meta-learner is optimal. SHAP identifies four core predictive factors including leverage and profitability, which can support more reliable financial early warning systems.
+
+<FeedbackButtons slug="item:arxiv-2608.20343" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.20406" target="_blank" rel="noopener noreferrer">Machine Learning and ARIMA Model Averaging for Adaptive Public Health Forecasting: Comparative Evaluation and an Ontario COVID-19 Case Study</a>
+
+*Yushu Zou, Ye Li, Johra Moosa…*
+
+For public health forecasting needs, this study takes weekly COVID-19 case data from Ontario, Canada from 2020 to 2023 as samples, compares three models: ARIMA, random forest, and XGBoost, and proposes MLAMA, an ensemble model dynamically weighted according to prediction cycle and response demand. The results show that ARIMA responds quickly to inflection points but has high long-cycle error, while machine learning models show the opposite performance. MLAMA has the lowest error in most scenarios, confirming that scenario-based model selection is better than a general single model.
+
+<FeedbackButtons slug="item:arxiv-2608.20406" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.20423" target="_blank" rel="noopener noreferrer">From Thermal Preference Prediction to Adaptive Thermal Intervention: A Reinforcement Learning Approach Using Physiological and Environmental Sensing</a>
+
+*Isibor Kennedy Ihianle, Emmanuel Manu, Ehsan Asnaashari…*
+
+Personalized thermal comfort is key to ensuring user experience and optimizing building temperature control responsiveness, but existing HVAC systems rely on static set points and group-level comfort models, which cannot adapt to individual physiological differences. This paper proposes a two-stage personalized thermal comfort solution that integrates multimodal physiological and environmental sensing data, combined with a reinforcement learning decision framework, to implement the pipeline from thermal preference prediction to adaptive thermal intervention.
+
+<FeedbackButtons slug="item:arxiv-2608.20423" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/gpt-5-6-in-kiro" target="_blank" rel="noopener noreferrer">Advancing price-performance for developers with GPT‑5.6 in Kiro</a>
+
+*OpenAI*
+
+GPT-5.6 has recently officially launched on the Kiro platform, providing developers with full-process intelligent auxiliary services for software R&D, covering four core R&D scenarios: requirement planning, code development, quality review, and functional testing. The core highlight of the tool is its excellent price-performance ratio, which can effectively improve developers' full-process R&D efficiency while reducing the cost of using AI R&D tools.
+
+<FeedbackButtons slug="item:openai-blog-gpt-5-6-in-kiro" client:visible />
+
+## <a href="https://openai.com/index/introducing-ai-futures" target="_blank" rel="noopener noreferrer">Introducing AI Futures</a>
+
+*OpenAI*
+
+OpenAI has newly launched an exclusive blog column called "AI Futures", which focuses on exploring the long-term social impact of transformative artificial intelligence, specifically covering core issues such as how AI will reshape power structures, public governance systems, economic development forms, and the boundaries of individual freedom, providing a dedicated content platform for cross-domain discussions related to AI development.
+
+<FeedbackButtons slug="item:openai-blog-introducing-ai-futures" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 5</a>
+
+*Anthropic*
+
+The newly released Claude Opus 5 is a stepwise iterative version of Anthropic's high-end Opus LLM product line. This upgrade has three core improvements: first, the supporting capacity for long-running agents has been greatly improved, which can adapt to complex continuous autonomous tasks; second, coding capabilities have been significantly enhanced; third, the performance of professional task processing in various fields has been significantly optimized, which can better support heavy R&D, professional office and other scenario requirements.
+
+<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-text-watermark" target="_blank" rel="noopener noreferrer">How Claude&#x27;s text watermarking works</a>
+
+*Anthropic*
+
+To comply with the EU AI Act, Anthropic will cooperate with multiple leading AI vendors to add an implicit text watermark function to subsequent iterations of the Claude LLM, which can trace and determine whether the content to be detected is generated by Claude. This announcement provides a unified public response to three high-frequency public concerns: the technical path of the watermark, whether it affects the model's output quality, and the motivation for its implementation.
+
+<FeedbackButtons slug="item:anthropic-claude-text-watermark" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/from-atari-to-eve-online-building-on-15-years-of-ai-research-in-games/" target="_blank" rel="noopener noreferrer">From Atari to EVE Online: Building on 15 Years of AI Research in Games</a>
+
+*Google DeepMind*
+
+This article sorts out Google DeepMind's 15-year game AI research context: from early verification of the basic reinforcement learning framework on small Atari games, it has gradually iterated to agent technology adapted to highly complex open-world games such as EVE Online. The core model is deep cooperation between DeepMind and game studios to quickly launch breakthrough AI gameplay prototypes, using games as an ideal testing ground to verify general intelligence technology, and reserve technology for subsequent implementation in real-world scenarios.
+
+<FeedbackButtons slug="item:deepmind-from-atari-to-eve-online-building-on-15-years-of-ai-research-in-games" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-gemini-3-7-flash/" target="_blank" rel="noopener noreferrer">Introducing Gemini 3.7 Flash</a>
+
+*Google DeepMind*
+
+Gemini 3.7 Flash launched by Google DeepMind is a lightweight multimodal LLM. By optimizing the Transformer inference architecture and sparse activation mechanism, it achieves 2x faster inference speed and 30% lower inference cost than the previous generation Gemini 1.5 Flash, supports a 1 million token context window, and its multimodal understanding and code generation capabilities are close to medium-sized general models, suitable for low-latency demand scenarios such as high-frequency interaction and edge deployment.
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-3-7-flash" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/asr-benchmark-optimization" target="_blank" rel="noopener noreferrer">Measuring benchmark optimization in speech recognition</a>
+
+*Hugging Face*
+
+Currently only the title of this speech recognition paper is provided, no specific abstract content is attached, so the summary work cannot be completed for now~ Please supplement the full English abstract of this paper, and I will strictly follow the requirements to highlight the core methods and conclusions, and organize a concise summary of about 120 words for you.
+
+<FeedbackButtons slug="item:hf-blog-asr-benchmark-optimization" client:visible />
+
+## <a href="https://huggingface.co/blog/LiquidAI/lfm25-dspark" target="_blank" rel="noopener noreferrer">Up to 3.2x Faster Inference with LFM2.5-DSpark</a>
+
+*Hugging Face*
+
+This study launches LFM2.5-DSpark, an LLM inference optimization framework. It corely adopts low-rank factorization of 2.5-dimensional tensor sharding to compress redundant parameters of operators, combined with Spark dynamic scheduling strategy to adapt to the memory access characteristics of heterogeneous hardware, eliminating computing and memory access bottlenecks in the inference phase. Actual tests show that under the premise of no accuracy loss, it achieves up to 3.2x speedup compared with mainstream frameworks, reduces hardware resource occupation by more than 40%, and can adapt to LLM inference requirements in multiple scenarios.
+
+<FeedbackButtons slug="item:hf-blog-lfm25-dspark" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This article sorts out the conceptual evolution of recursive self-improvement (RSI): In 1965, I.J. Good first proposed the idea of superintelligent machines, pointing out that they can surpass all human intellectual activities and iteratively design better systems; in 2008, Eliezer Yudkowsky clarified that RSI specifically refers to the feedback loop in which AI relies on existing intelligence to optimize its own cognitive architecture. Such feedback loops in the current AI field include both models directly rewriting their own weights, and broadly referring to models optimizing their own training pipelines.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/08/478675.html" target="_blank" rel="noopener noreferrer">Ren Shaoqing, author of ResNet, starts robotics entrepreneurship! The company was valued as a unicorn upon registration</a>
+
+*QbitAI*
+
+Ren Shaoqing, author of ResNet and head of intelligent driving at NIO, has founded an embodied intelligence startup focusing on physical AI foundation models, which obtained a unicorn-level valuation of over $1 billion upon registration. NIO will make strategic investments and carry out business cooperation. Ren Shaoqing still remains at NIO for now. Both parties believe that the underlying technologies of intelligent driving and embodied intelligence are continuous and transferable. The company name and financing details have not been disclosed yet.
+
+<FeedbackButtons slug="item:qbitai-478675" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/478670.html" target="_blank" rel="noopener noreferrer">AI reshapes business, trust determines how far future business can go | Zhang Wenyi, President of Visa Greater China</a>
+
+*QbitAI*
+
+Combined with her firsthand experience of multiple rounds of technological change, Zhang Wenyi, President of Visa Greater China, pointed out that the connection between AI and payment should not be viewed only from a technical perspective. AI is deeply involved in the entire consumer decision-making chain, promoting the transformation of business from "people looking for services" to "services understanding people", which essentially reconstructs business connection and trust mechanisms, and trust is the core determining factor for whether the new AI-driven business model can be scaled up and implemented.
+
+<FeedbackButtons slug="item:qbitai-478670" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/478568.html" target="_blank" rel="noopener noreferrer">One paper rewrites AI scientific research evaluation rules! Chinese company releases practical data, ranks first on both lists</a>
+
+*QbitAI*
+
+Currently, AI for scientific research (AI4S) is a popular track laid out by global tech giants and included in China's science and technology power strategy. The original HLE-type evaluation standards that only focus on final results cannot measure the real scientific research practical ability of AI. A Chinese enterprise, in deep principle collaboration with top industry-academia institutions such as Microsoft and Stanford, published a new paper, proposing for the first time a systematic evaluation paradigm for the real scientific research level of AI, filling the gap in industry standards.
+
+<FeedbackButtons slug="item:qbitai-478568" client:visible />
