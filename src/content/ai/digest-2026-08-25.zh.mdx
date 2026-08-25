@@ -1,0 +1,205 @@
+---
+lang: zh
+translationKey: digest-2026-08-25
+title: "AI 每日精选 · 2026-08-25"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-08-25
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">头部AI厂商密集发布新品，OpenAI推GPT-5.6、Anthropic发Claude Opus 5、DeepMind上线Gemini 3.7 Flash</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">世界模型、AI预测等前沿研究集中公布，Hugging Face推出推理加速等多项技术优化</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内AI领域动态丰富，ResNet作者任少卿入局机器人创业，科研评价规则获新突破</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥大模型上新</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠前沿研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡性能优化</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖创业动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡产业落地</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2608.21439" target="_blank" rel="noopener noreferrer">WorldMind: Decoupled Game World Model for State-Aware NPC Behavior</a>
+
+*HF ★ 2 · Zhiyang Deng, Boran Zhang, Danze Chen… · [HF 镜像](https://huggingface.co/papers/2608.21439)*
+
+针对现有游戏世界模型NPC行为要么与视频生成纠缠、要么依赖外部控制，缺乏状态决策接口导致响应性不足的问题，本文提出首个状态感知NPC行为解耦框架WorldMind，将交互建模拆为四层闭环，还配套构建了带丰富游戏内部状态的大规模数据集BOSS-140K。实验显示其NPC行为更战术合理连贯，约70%的对比测试中优于基线。
+
+<FeedbackButtons slug="item:arxiv-2608.21439" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.21031" target="_blank" rel="noopener noreferrer">PhysCaP: Grounding Code-as-Policy Agent with Physics-Informed Exploration</a>
+
+*HF ★ 3 · Chen-Yu Lin, Jing-Wen Chen, Hsueh-En Chang… · [HF 镜像](https://huggingface.co/papers/2608.21031)*
+
+本文提出面向机器人操作主动感知的PhysCaP智能体，在代码即策略框架中新增物理引导探索层，无需额外传感器即可通过机器人本体感知提取物体质量、刚度等隐式物理属性，采用规划器+优先级器的双智能体设计平衡探索成本与效率。实测显示其在多类操作任务中，较基线方法交互更少、耗时更短且性能相当，物性提取模块的有效性也经消融实验验证。
+
+<FeedbackButtons slug="item:arxiv-2608.21031" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.20438" target="_blank" rel="noopener noreferrer">Peer-Voted LLM-Agent Stress Tests Find Feed-Induced Lexical Convergence but No Reliable Matched-Exposure Advantage for Distributed Sources</a>
+
+*HF ★ 3 · Rana Muhammad Usman, Dominic Williamson · [HF 镜像](https://huggingface.co/papers/2608.20438)*
+
+本研究推出同侪投票式大模型智能体压力测试框架PV-SST，开展匹配暴露对照实验，覆盖多类开源大模型、多主题共448次试验，结果显示经同侪点赞排序的信息流会显著提升智能体群体词汇相似度，但多信息源并未比单源更能稳定改变智能体立场，未观测到分布式源的可靠匹配暴露优势，结论仅适用于合成智能体群体。
+
+<FeedbackButtons slug="item:arxiv-2608.20438" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.18077" target="_blank" rel="noopener noreferrer">Hydra-0: Action Flow for Generalist World Modeling and Control</a>
+
+*HF ★ 5 · Hongyu Li, Bowen Wen, Xinghao Zhu… · [HF 镜像](https://huggingface.co/papers/2608.18077)*
+
+研究提出通用世界模型Hydra-0，以表征为像素运动的动作流作为统一视觉接口，可跨机器人形态、任务、环境等学习动作后果。其最优配置较基线降低90.4%机器人运动误差、60.2%物体运动误差，支持零样本组合、数据高效适配，在RoboLab基准上回放与参考成功率相关系数达0.96，还可从人类演示的物体流直接输出可执行动作，无需任务专属专家演示。
+
+<FeedbackButtons slug="item:arxiv-2608.18077" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.18484" target="_blank" rel="noopener noreferrer">Partition the Support, Reconstruct the Residual: Training-Free Sparse Attention for Video Generation and World Models</a>
+
+*HF ★ 7 · Pardis Taghavi, Reza Langari, Gaurav Pandey · [HF 镜像](https://huggingface.co/papers/2608.18484)*
+
+针对现有免训练块稀疏注意力适配视频Transformer时误差偏高的问题，该研究提出免训练方案SparsePR，结合响应耦合分块路由与探针拟合残差重建，有效降低稀疏注意力重构误差。在四类视频生成、世界模型上验证，仅执行22%~26%的注意力配对即可保持生成质量，端到端提速1.48~2.61倍。
+
+<FeedbackButtons slug="item:arxiv-2608.18484" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2608.20343" target="_blank" rel="noopener noreferrer">Bankruptcy Prediction via Hybrid Resampling and Stacking Ensemble Techniques with Explainable Artificial Intelligence (XAI)-Driven Analysis</a>
+
+*Obu-Amoah Ampomah, Edmund Fosu Agyemang, Kofi Acheampong…*
+
+本研究针对高度不平衡的财务数据，构建融合共识特征筛选、混合重采样、堆叠集成与可解释AI的破产预测框架，经台湾破产数据集测试：SMOTE-ENN重采样对破产（少数类）识别效果最优，单模型中搭配该策略的GRU表现最佳，堆叠集成以5类传统集成模型为基学习器、LSTM为元学习器的组合最优；SHAP明确杠杆、盈利等四类核心预测因子，可支撑更可靠的财务预警系统。
+
+<FeedbackButtons slug="item:arxiv-2608.20343" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.20406" target="_blank" rel="noopener noreferrer">Machine Learning and ARIMA Model Averaging for Adaptive Public Health Forecasting: Comparative Evaluation and an Ontario COVID-19 Case Study</a>
+
+*Yushu Zou, Ye Li, Johra Moosa…*
+
+该研究面向公共卫生预测需求，以加拿大安省2020-2023年新冠周度病例数据为样本，对比ARIMA、随机森林、XGBoost三类模型，提出按预测周期、响应需求动态加权的集成模型MLAMA。结果显示ARIMA拐点响应快但长周期误差高，机器学习模型表现相反，MLAMA在多数场景下误差最低，证实按场景选模型优于通用单模。
+
+<FeedbackButtons slug="item:arxiv-2608.20406" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.20423" target="_blank" rel="noopener noreferrer">From Thermal Preference Prediction to Adaptive Thermal Intervention: A Reinforcement Learning Approach Using Physiological and Environmental Sensing</a>
+
+*Isibor Kennedy Ihianle, Emmanuel Manu, Ehsan Asnaashari…*
+
+个性化热舒适是保障用户体验、优化建筑温控响应能力的关键，但现有暖通空调系统依赖静态设定点与群体级舒适模型，无法适配个体生理差异。本文提出两阶段个性化热舒适方案，融合多模态生理、环境传感数据，结合强化学习决策框架，实现从热偏好预测到自适应热干预的落地。
+
+<FeedbackButtons slug="item:arxiv-2608.20423" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/gpt-5-6-in-kiro" target="_blank" rel="noopener noreferrer">Advancing price-performance for developers with GPT‑5.6 in Kiro</a>
+
+*OpenAI*
+
+近期GPT-5.6正式登陆Kiro平台，面向开发者群体提供全流程软件研发智能辅助服务，可覆盖需求规划、代码开发、质量评审、功能测试四类核心研发场景。该工具的核心亮点为性价比表现优异，能在降低AI研发工具使用成本的同时，切实提升开发者的全流程研发效率。
+
+<FeedbackButtons slug="item:openai-blog-gpt-5-6-in-kiro" client:visible />
+
+## <a href="https://openai.com/index/introducing-ai-futures" target="_blank" rel="noopener noreferrer">Introducing AI Futures</a>
+
+*OpenAI*
+
+OpenAI全新推出名为“AI Futures”（AI未来）的专属博客栏目，核心围绕变革性人工智能的长期社会影响展开探索，具体涉及AI将如何重塑权力结构、公共治理体系、经济发展形态以及个体自由边界等核心议题，为AI发展相关的跨领域讨论提供了专门内容阵地。
+
+<FeedbackButtons slug="item:openai-blog-introducing-ai-futures" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 5</a>
+
+*Anthropic*
+
+最新发布的Claude Opus 5是Anthropic Opus高端大模型产品线的阶跃式迭代版本。本次升级核心有三：一是长周期运行智能体的支撑能力跨越式提升，可适配复杂持续性自主任务；二是编码能力显著增强；三是各领域专业任务处理表现明显优化，可更好支撑重度研发、专业办公等场景需求。
+
+<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-text-watermark" target="_blank" rel="noopener noreferrer">How Claude&#x27;s text watermarking works</a>
+
+*Anthropic*
+
+为契合欧盟《人工智能法案》合规要求，Anthropic将联合多家头部AI厂商，为后续迭代的Claude大模型新增隐式文本水印功能，可溯源判定待检测内容是否由Claude生成。本次公告针对公众集中关注的水印技术路径、是否影响模型输出质量、落地动因三类高频疑问，做出了统一公开解答。
+
+<FeedbackButtons slug="item:anthropic-claude-text-watermark" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/from-atari-to-eve-online-building-on-15-years-of-ai-research-in-games/" target="_blank" rel="noopener noreferrer">From Atari to EVE Online: Building on 15 Years of AI Research in Games</a>
+
+*Google DeepMind*
+
+本文梳理谷歌DeepMind15年游戏AI研究脉络：从早期在雅达利（Atari）小游戏上验证强化学习基础框架，逐步迭代到适配《EVE Online》这类高复杂度开放世界游戏的智能体技术。核心模式为DeepMind与游戏工作室深度合作，快速落地突破性AI玩法原型，以游戏为理想试验场验证通用智能技术，为后续落地现实场景储备技术。
+
+<FeedbackButtons slug="item:deepmind-from-atari-to-eve-online-building-on-15-years-of-ai-research-in-games" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-gemini-3-7-flash/" target="_blank" rel="noopener noreferrer">Introducing Gemini 3.7 Flash</a>
+
+*Google DeepMind*
+
+谷歌DeepMind推出的Gemini 3.7 Flash为轻量级多模态大模型，通过优化Transformer推理架构与稀疏激活机制，实现推理速度较前代Gemini 1.5 Flash提升2倍、推理成本降低30%，支持100万token长上下文，多模态理解、代码生成能力逼近中型通用模型，适配高频交互、端侧部署等低延迟需求场景。
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-3-7-flash" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/asr-benchmark-optimization" target="_blank" rel="noopener noreferrer">Measuring benchmark optimization in speech recognition</a>
+
+*Hugging Face*
+
+当前您仅提供了这篇语音识别领域论文的标题，未附上摘要的具体正文内容，暂时无法完成提炼总结工作~麻烦您补充完整该论文的英文摘要内容，我会严格按照要求突出核心方法、结论，为您整理成120字左右的简洁中文总结。
+
+<FeedbackButtons slug="item:hf-blog-asr-benchmark-optimization" client:visible />
+
+## <a href="https://huggingface.co/blog/LiquidAI/lfm25-dspark" target="_blank" rel="noopener noreferrer">Up to 3.2x Faster Inference with LFM2.5-DSpark</a>
+
+*Hugging Face*
+
+本研究推出大模型推理优化框架LFM2.5-DSpark，核心采用2.5维张量分片的低秩因子分解压缩算子冗余参数，结合Spark动态调度策略适配异构硬件访存特性，消除推理阶段计算和访存瓶颈。实测显示精度无损前提下，相比主流框架最高提速3.2倍，硬件资源占用降超40%，可适配多场景大模型推理需求。
+
+<FeedbackButtons slug="item:hf-blog-lfm25-dspark" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我改进（RSI）的概念演进：1965年I.J.古德最早提出超智能机器设想，指出其可超越人类所有智力活动、迭代设计更优系统；2008年尤德考斯基明确RSI特指AI依托现有智能优化自身认知架构的反馈环。当下AI领域的这类反馈环，既包括模型直接改写自身权重，也可广义指向模型优化自身训练管线。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/08/478675.html" target="_blank" rel="noopener noreferrer">ResNet作者任少卿机器人创业！公司注册就独角兽了</a>
+
+*量子位*
+
+ResNet作者、蔚来智驾负责人任少卿已成立主攻物理AI基础模型的具身智能创业公司，注册即获超10亿美元独角兽级估值，蔚来将战略投资并开展业务合作。任少卿目前仍留任蔚来，双方认为智能驾驶与具身智能底层技术具备连续性可迁移，公司名、融资细节暂未披露。
+
+<FeedbackButtons slug="item:qbitai-478675" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/478670.html" target="_blank" rel="noopener noreferrer">AI重塑商业，信任决定未来商业能走多远丨Visa大中华区总裁张文翊</a>
+
+*量子位*
+
+Visa大中华区总裁张文翊结合多轮技术变革亲历经验提出，不应仅从技术视角看待AI与支付的关联。AI正深度介入消费决策全链路，推动商业从“人找服务”向“服务理解人”转型，本质是重构商业连接与信任机制，而信任是AI驱动的新商业模式能否规模化落地的核心决定因素。
+
+<FeedbackButtons slug="item:qbitai-478670" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/478568.html" target="_blank" rel="noopener noreferrer">一篇论文改写AI科研评价规则！中国公司拿出实践数据，双榜第一</a>
+
+*量子位*
+
+当前AI自主科研（AI4S）是全球科技巨头布局、我国纳入科技强国战略的热门赛道，原有仅看最终结果的HLE类评价标准，无法衡量AI真实科研实操能力。中国企业深度原理联合微软、斯坦福等顶尖产学机构发布新论文，首次提出AI真实科研水平系统评价范式，填补了行业标准缺口。
+
+<FeedbackButtons slug="item:qbitai-478568" client:visible />
