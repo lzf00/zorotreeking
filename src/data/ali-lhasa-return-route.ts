@@ -15,7 +15,7 @@ const friendExitPoints: AliRoutePoint[] = [
     lat: 32.1013,
     lng: 80.0563,
     elevationM: 4274,
-    detail: "朋友提前返沪的首选分流机场，距狮泉河镇规划道路约 54 公里。团队 10 月 2 日抵达狮泉河后，朋友可于 10 月 3 日单独前往机场。",
+    detail: "朋友提前返沪的首选分流机场，距狮泉河镇规划道路约 54 公里。团队 10 月 1 日抵达狮泉河后，朋友可于 10 月 2 日或 3 日单独前往机场。",
     services: "拉萨航班、部分成都航班、机场接驳以开售结果为准",
   },
   {
@@ -52,13 +52,13 @@ export const aliLhasaReturnRoutePoints: AliRoutePoint[] = [
     if (point.id === "lhasa") {
       return {
         ...point,
-        detail: "新版阿里大环线的取还车城市：9 月 26 日完成适应和补给，10 月 5 日晚或次日凌晨回到这里住宿，10 月 6 日完成还车缓冲。",
+        detail: "新版阿里大环线的取还车城市：9 月 26 日完成适应和补给，10 月 5 日晚回到这里住宿，10 月 6 日完成还车缓冲。",
       };
     }
     if (point.id === "shiquanhe") {
       return {
         ...point,
-        detail: "阿里地区综合补给中心，也是朋友最晚 10 月 5 日抵沪的最佳分流城市；昆莎机场位于镇区西南方向。",
+        detail: "阿里地区综合补给中心，也是朋友最晚 10 月 5 日抵沪的最佳分流城市；本版 10 月 1 日到达狮泉河，朋友 10 月 2 日或 3 日从昆莎机场离开。",
       };
     }
     return { ...point };
@@ -73,51 +73,82 @@ const copiedDrivingDays = aliRouteDays.slice(2, 11).map((day) => ({
   highlights: [...day.highlights],
 }));
 
-const shiquanheDayIndex = copiedDrivingDays.findIndex((day) => day.date === "10.02");
-if (shiquanheDayIndex >= 0) {
-  const day = copiedDrivingDays[shiquanheDayIndex]!;
-  copiedDrivingDays[shiquanheDayIndex] = {
+const replaceCopiedDrivingDay = (date: string, replacement: Partial<AliRouteDay>) => {
+  const index = copiedDrivingDays.findIndex((day) => day.date === date);
+  if (index < 0) return;
+  const day = copiedDrivingDays[index]!;
+  copiedDrivingDays[index] = {
     ...day,
-    highlights: [...day.highlights, "朋友昆莎机场分流"],
-    decision: `${day.decision} 最晚 10 月 5 日抵沪的朋友当晚留在狮泉河，10 月 3 日或 4 日从昆莎机场离开，不再随车进入改则方向。`,
+    ...replacement,
+    pointIds: replacement.pointIds ? [...replacement.pointIds] : day.pointIds,
+    highlights: replacement.highlights ? [...replacement.highlights] : day.highlights,
   };
-}
+};
 
-const baingoinForwardDayIndex = copiedDrivingDays.findIndex((day) => day.date === "10.04");
-if (baingoinForwardDayIndex >= 0) {
-  const day = copiedDrivingDays[baingoinForwardDayIndex]!;
-  copiedDrivingDays[baingoinForwardDayIndex] = {
-    ...day,
-    title: "改则 → 洞措 → 尼玛 → 色林措 → 班戈",
-    distance: "约 700–740 km",
-    driving: "约 13–15 小时，尽量天黑前后抵达班戈",
-    roads: "G317",
-    pointIds: ["gerze", "dongco", "nyima", "selin", "baingoin"],
-    highlights: ["洞措远观", "色林措远观", "班戈住宿", "提前压缩返拉距离"],
-    supply: "改则满油、带足热食和晚餐备份出发；尼玛只做加油、热食和换司机，班戈到店后补给住宿。",
-    overnight: "班戈县城。",
-    risk: "本日主动变成长途推进日，用来换取 10 月 5 日更短返拉；横风、低温和疲劳叠加时，洞措和色林措都只远观或直接跳过。",
-    decision: "06:30 前从改则出发；若 15:00 仍未到尼玛或天气恶化，改住尼玛并把 10 月 5 日恢复为压线返拉备选。",
-  };
-}
+replaceCopiedDrivingDay("10.01", {
+  title: "塔钦 → 门士 → 札达土林/古格择一 → 狮泉河",
+  distance: "约 500–540 km",
+  driving: "约 10–12 小时，景点只保留一处短停",
+  roads: "G219 / G565 / 札达方向连接道路",
+  pointIds: ["darchen", "kailash", "menshi", "zanda-earth", "zanda", "guge", "tholing", "shiquanhe"],
+  highlights: ["冈仁波齐南麓", "札达土林穿行", "古格或托林择一", "狮泉河补给"],
+  supply: "塔钦满油和早餐后出发，门士只做状态检查；札达县城补餐和加油，不住宿；狮泉河完成车辆、油料和北线物资复核。",
+  overnight: "狮泉河镇。",
+  risk: "本日用札达住宿换取北线四天均衡返拉，不能同时做古格和托林寺深度参观；若古格排队或札达支线耗时超预期，直接放弃景点进狮泉河。",
+  decision: "06:30 前从塔钦出发；13:30 仍未进入札达盆地则取消古格/托林；16:00 前必须离开札达方向，确保夜里不在峡谷和山路赶车。",
+});
 
-const lhasaReturnDayIndex = copiedDrivingDays.findIndex((day) => day.date === "10.05");
-if (lhasaReturnDayIndex >= 0) {
-  const day = copiedDrivingDays[lhasaReturnDayIndex]!;
-  copiedDrivingDays[lhasaReturnDayIndex] = {
-    ...day,
-    title: "班戈 → 当雄 → 拉萨",
-    distance: "约 430–480 km",
-    driving: "约 8–10 小时，晚间到店有余量",
-    roads: "G317 / G109",
-    pointIds: ["baingoin", "damxung", "lhasa"],
-    highlights: ["当雄补给", "念青唐古拉山北麓", "回到拉萨", "10 月 6 日还车缓冲"],
-    supply: "班戈满油出发，车内保留热饮和路餐；当雄强制补油、热食和状态检查，抵达拉萨后只做停车、入住和必要车辆检查。",
-    overnight: "拉萨市区，必须预付保留房并电话确认 24 小时前台；预计 10 月 5 日晚间到店，极端延误可接受 10 月 6 日凌晨到店。",
-    risk: "相比尼玛直接返拉，本日少约 250–300 km，但仍有国庆返程车流、横风和夜间疲劳风险；不安排纳木措入园、圣象天门或湖边支线。",
-    decision: "08:00 前从班戈出发；若午后到达当雄，直接进拉萨，不再追加纳木措或其他支线。",
-  };
-}
+replaceCopiedDrivingDay("10.02", {
+  title: "狮泉河 → 革吉 → 雄巴 → 改则",
+  distance: "约 480 km",
+  driving: "约 9–10 小时",
+  roads: "G317",
+  pointIds: ["shiquanhe", "geji", "xiongba", "gerze"],
+  highlights: ["朋友昆莎机场分流", "藏北荒原", "革吉河谷", "G317 长直路段"],
+  supply: "狮泉河满油；革吉见站即补，雄巴只做短停，改则再次补满。",
+  overnight: "改则县城。",
+  risk: "服务区稀疏、手机信号不连续，长直路段容易疲劳和误判速度；朋友若需要最晚 10 月 5 日抵沪，本日从狮泉河分流，不再随车进改则。",
+  decision: "主车早出发进入 G317；朋友优先 10 月 2 日从昆莎机场离开，最晚 10 月 3 日离开。主车每 90–120 分钟强制停车活动，注意力下降即换人。",
+});
+
+replaceCopiedDrivingDay("10.03", {
+  title: "改则 → 洞措 → 尼玛",
+  distance: "约 370 km",
+  driving: "约 7–9 小时",
+  roads: "G317",
+  pointIds: ["gerze", "dongco", "nyima"],
+  highlights: ["羌塘湖盆", "洞措远景", "高原牧区"],
+  supply: "改则满油和热食出发，洞措不依赖补给，抵达尼玛后立即加油。",
+  overnight: "尼玛县城。",
+  risk: "天气变化快、横风与低温明显；不要驶入支路、盐碱地或湖岸寻找机位。",
+  decision: "如 G317 出现封控或大雪，以改则原地等待为首选，不尝试无保障绕行。",
+});
+
+replaceCopiedDrivingDay("10.04", {
+  title: "尼玛 → 色林措 → 班戈",
+  distance: "约 350 km",
+  driving: "约 7–9 小时",
+  roads: "G317 及开放观景连接道路",
+  pointIds: ["nyima", "selin", "baingoin"],
+  highlights: ["色林措远观", "藏北湖群", "班戈草原", "班戈住宿"],
+  supply: "尼玛满油并带热饮，色林措只在正规开放点短停，班戈补给住宿。",
+  overnight: "班戈县城。",
+  risk: "湖区风大、体感温度低，保护区与临时管制范围必须遵守；本日不再承担改则到尼玛的长距离推进。",
+  decision: "低能见度、大风或时间不足时取消湖边停留，保持 G317 主线推进到班戈。",
+});
+
+replaceCopiedDrivingDay("10.05", {
+  title: "班戈 → 当雄 → 拉萨",
+  distance: "约 430–480 km",
+  driving: "约 8–10 小时，晚间到店有余量",
+  roads: "G317 / G109",
+  pointIds: ["baingoin", "damxung", "lhasa"],
+  highlights: ["当雄补给", "念青唐古拉山北麓", "回到拉萨", "10 月 6 日还车缓冲"],
+  supply: "班戈满油出发，车内保留热饮和路餐；当雄强制补油、热食和状态检查，抵达拉萨后只做停车、入住和必要车辆检查。",
+  overnight: "拉萨市区，必须预付保留房并电话确认 24 小时前台；预计 10 月 5 日晚间到店，极端延误可接受 10 月 6 日凌晨到店。",
+  risk: "相比尼玛直接返拉，本日少约 250–300 km，但仍有国庆返程车流、横风和夜间疲劳风险；不安排纳木措入园、圣象天门或湖边支线。",
+  decision: "08:00 前从班戈出发；若午后到达当雄，直接进拉萨，不再追加纳木措或其他支线。",
+});
 
 export const aliLhasaReturnRouteDays: AliRouteDay[] = [
   {
@@ -381,57 +412,25 @@ export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
         leadTime: "提前 1–3 天查看“智游阿里”和札达当地公告，入谷前再确认道路",
         channel: "“智游阿里”微信小程序或景区正规现场窗口",
         documents: "二代身份证、电子边境通行证；车辆证件随车",
-        note: "未查到 2026 国庆统一强制预约条款；按正规开放道路进入，不驶入未开放土林沟谷。若线上出现分时票，立即改为实名预订。",
+        note: "本版不住札达，土林只做穿行远观或短停。未查到 2026 国庆统一强制预约条款；按正规开放道路进入，不驶入未开放土林沟谷。",
         sourceLabel: "西藏文旅厅 · 阿里智慧旅游平台",
         sourceUrl: "https://wlt.xizang.gov.cn/xwzx_69/xydt/202507/t20250718_490235.html",
       },
-    ],
-    stay: {
-      city: "札达县城",
-      budget: standardRoomBudget,
-      bookingAdvice: nationalDayHotelAdvice,
-      hotels: [
-        {
-          name: "札达蓝森富氧酒店",
-          strengths: "供氧、免费停车、电梯，近托林寺与县城餐饮；优先确认国庆双床是否仍在目标价。",
-          bookingUrl: "https://hotels.ctrip.com/hotels/133349605.html",
-        },
-        {
-          name: "芸苔酒店（托林店）",
-          strengths: "近托林寺、免费停车和洗衣，价格超预算时可与蓝森交叉替换。",
-          bookingUrl: "https://m.ctrip.com/webapp/hotel/undefined21290",
-        },
-      ],
-    },
-  },
-  {
-    day: 7,
-    reservations: [
       {
-        subject: "古格遗址公园",
+        subject: "古格遗址或托林寺择一",
         status: "建议提前",
-        leadTime: "提前 1–3 天在小程序实名预订，前一晚核对首批入园时间",
-        channel: "“智游阿里”微信小程序",
+        leadTime: "提前 1–3 天查看“智游阿里”和札达当地公告；当天只执行一处短参观",
+        channel: "“智游阿里”微信小程序、寺院正规售票窗口或景区现场公告",
         documents: "二代身份证、电子边境通行证；保存订单二维码",
-        note: "阿里官方智慧旅游平台已支持古格门票预订。国庆早场优先，避免古格排队挤压托林寺和离开札达盆地的时间。",
+        note: "均衡版把札达住宿让给北线，不再同时安排古格和托林寺。若排队、天气或道路耗时超预期，直接取消参观并前往狮泉河。",
         sourceLabel: "西藏文旅厅 · 智游阿里古格预订",
         sourceUrl: "https://wlt.xizang.gov.cn/xwzx_69/xydt/202507/t20250718_490235.html",
-      },
-      {
-        subject: "托林寺",
-        status: "现场办理",
-        leadTime: "前一晚查看开放时间；当天按古格结束时间决定是否进入",
-        channel: "寺院正规售票窗口；如“智游阿里”出现票务则优先线上办理",
-        documents: "二代身份证、电子边境通行证；优惠证件原件",
-        note: "未查到 2026 散客强制提前预约公告。古格为主、托林寺为可压缩项，最迟下午离开札达。",
-        sourceLabel: "西藏文旅厅 · 西藏 A 级景区名录",
-        sourceUrl: "https://wlt.xizang.gov.cn/zwgk_69/gkml/ggfw/202510/t20251023_505529.html",
       },
     ],
     stay: {
       city: "狮泉河镇",
       budget: standardRoomBudget,
-      bookingAdvice: nationalDayHotelAdvice,
+      bookingAdvice: `${nationalDayHotelAdvice} 本版不再订札达住宿，10 月 1 日直接住狮泉河，用这一天给北线拆分返拉。`,
       hotels: [
         {
           name: "尚客优酒店（阿里噶尔县噶尔路店）",
@@ -447,15 +446,15 @@ export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
     },
   },
   {
-    day: 8,
+    day: 7,
     reservations: [
       {
         subject: "朋友昆莎机场返沪机票",
         status: "必须提前",
-        leadTime: "建议提前 30–60 天出票，至少预留一班可退改的后备衔接方案",
+        leadTime: "建议提前 30–60 天出票，优先 10 月 2 日离开，最晚 10 月 3 日离开",
         channel: "航空公司官方渠道；机场接送需另行与正规车辆书面确认",
         documents: "身份证、航班订单、行李额度与接送订单",
-        note: "只适用于 10 月 5 日必须抵沪的朋友：当日不再随车去改则，独立从狮泉河前往昆莎机场。机票未出票或接送未落实，就不能视为有效分流。",
+        note: "只适用于 10 月 5 日必须抵沪的朋友：10 月 1 日晚在狮泉河与团队分流，不再随车去改则。机票未出票或接送未落实，就不能视为有效分流。",
         sourceLabel: "西藏文旅厅 · 2026 阿里航线信息",
         sourceUrl: "https://wlt.xizang.gov.cn/xwzx_69/xydt/202603/t20260325_531189.html",
       },
@@ -489,25 +488,47 @@ export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
     },
   },
   {
-    day: 9,
+    day: 8,
     reservations: [
       {
-        subject: "洞措、色林措与羌塘沿途观景",
+        subject: "洞措与羌塘沿途观景",
         status: "无需预约",
-        leadTime: "出发前 24 小时核对 G317 通行与风雪；不设置湖岸到达时间或拍摄任务",
+        leadTime: "出发前 24 小时核对 G317 通行与风雪；不设置湖岸到达时间",
         channel: "无票务渠道；沿 G317 合法开放道路远观",
         documents: "身份证、驾驶证、车辆订单或行驶证",
-        note: "没有可靠官方票务或强制预约信息。洞措和色林措都只做主线远观，不驶入盐碱地、草场、湿地或湖滩；当天目标从尼玛前推到班戈，尼玛只加油和热食，不再住宿。",
+        note: "没有可靠官方票务或强制预约信息。洞措不作为补给点，也不驶入盐碱地；若能见度下降，以到达尼玛县城为唯一目标。",
         sourceLabel: "西藏文旅厅 · 阿里北线线路资料",
         sourceUrl: "https://wlt.xizang.gov.cn/xwzx_69/wlyw/wldt/202507/t20250725_491772.html",
       },
+    ],
+    stay: {
+      city: "尼玛县城",
+      budget: standardRoomBudget,
+      bookingAdvice: nationalDayHotelAdvice,
+      hotels: [
+        {
+          name: "尼玛凯枫大酒店",
+          strengths: "可供氧、免费停车，县城成熟度较高；优先确认供氧方式和夜间热水。",
+          bookingUrl: "https://m.ctrip.com/webapp/hotel/nyima21498",
+        },
+        {
+          name: "尼玛秘境庄园民宿",
+          strengths: "供氧、充电、洗衣和免费停车，适合作为酒店满房时的高评分备选。",
+          bookingUrl: "https://m.ctrip.com/webapp/hotel/nyima21498/sl13595035",
+        },
+      ],
+    },
+  },
+  {
+    day: 9,
+    reservations: [
       {
         subject: "色林措正规观景区域",
         status: "出发前复核",
-        leadTime: "抵达尼玛前后向当地文旅、酒店或 12345 核对开放与管制",
+        leadTime: "出发前 24 小时向尼玛/申扎当地文旅或 12345 核对开放与管制",
         channel: "未查到 2026 统一线上票务；以现场保护区和交通管理为准",
         documents: "身份证、驾驶证、车辆证件；如现场要求实名登记则配合办理",
-        note: "色林措属于自然保护区域，只使用 G317 及正规开放观景点，不进入草场、湿地和湖滩。若时间或天气不稳，直接取消观景停车，优先到班戈。",
+        note: "色林措属于自然保护区域，只使用 G317 及正规开放观景点，不进入草场、湿地和湖滩。没有可靠预约入口时，不从非官方渠道购买所谓通行名额。",
         sourceLabel: "西藏自治区发改委 · 色林措景区规划资料",
         sourceUrl: "https://drc.xizang.gov.cn/zwgk_1941/fz/zxx/201806/P020200909428490530433.pdf",
       },
@@ -515,7 +536,7 @@ export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
     stay: {
       city: "班戈县城",
       budget: standardRoomBudget,
-      bookingAdvice: `${nationalDayHotelAdvice} 本晚从尼玛前推到班戈，订房时优先确认供氧、停车、夜间热水和晚到保留房。`,
+      bookingAdvice: `${nationalDayHotelAdvice} 本晚按原北线节奏住班戈，订房时优先确认供氧、停车、夜间热水和晚到保留房。`,
       hotels: [
         {
           name: "尚客优品酒店（班戈店）",

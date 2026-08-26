@@ -169,12 +169,13 @@ test("G317 Chengdu and Lhasa-return loop are independent indexed roadbooks", asy
   assert.match(g317Guide, /10 月 4 日清晨/);
   assert.match(g317Guide, /10 月 3 日晚前到那曲/);
   assert.match(loopPage, /<AliLhasaReturnGuide/);
-  assert.match(loopGuide, /10 月 4 日.*班戈住宿/);
-  assert.match(loopGuide, /10 月 5 日.*回拉萨并住宿/);
+  assert.match(loopGuide, /10 月 1 日.*狮泉河/);
+  assert.match(loopGuide, /北线拆成改则、尼玛、班戈、拉萨四段/);
+  assert.match(loopGuide, /10 月 5 日.*回拉萨住宿/);
   assert.match(loopGuide, /阿里昆莎机场/);
   assert.match(loopGuide, /最晚10月5日到上海/);
   assert.match(loopGuide, /10月5日：最晚当日抵沪/);
-  assert.match(loopGuide, /该方案没有航变余量/);
+  assert.match(loopGuide, /10月2日：昆莎/);
   assert.match(loopGuide, /阿里普兰机场/);
   assert.match(loopOverview, /point\.id !== "shanghai" && point\.id !== "namtso"/);
   assert.match(loopOverview, /day\.day < 12/);
@@ -231,7 +232,7 @@ test("the Lhasa-return roadbook audits reservations and permits for every day", 
     "神山圣湖景区",
     "冈仁波齐塔钦远观",
     "札达土林",
-    "古格遗址公园",
+    "古格遗址",
     "朋友昆莎机场返沪",
     "色林措",
     "拉萨同城还车",
@@ -547,11 +548,17 @@ test("Lhasa-return loop covers Sep 26 through Oct 7 and exposes both early-fligh
   );
   assert.equal(aliLhasaReturnRouteDays[0]?.date, "09.26");
   assert.equal(aliLhasaReturnRouteDays[1]?.date, "09.27");
+  assert.equal(aliLhasaReturnRouteDays[5]?.date, "10.01");
+  assert.equal(aliLhasaReturnRouteDays[6]?.date, "10.02");
+  assert.equal(aliLhasaReturnRouteDays[7]?.date, "10.03");
   assert.equal(aliLhasaReturnRouteDays[8]?.date, "10.04");
   assert.equal(aliLhasaReturnRouteDays[9]?.date, "10.05");
   assert.equal(aliLhasaReturnRouteDays[10]?.date, "10.06");
   assert.equal(aliLhasaReturnRouteDays[11]?.date, "10.07");
-  assert.match(aliLhasaReturnRouteDays[8]?.title ?? "", /改则.*尼玛.*班戈/);
+  assert.match(aliLhasaReturnRouteDays[5]?.title ?? "", /塔钦.*狮泉河/);
+  assert.match(aliLhasaReturnRouteDays[6]?.title ?? "", /狮泉河.*改则/);
+  assert.match(aliLhasaReturnRouteDays[7]?.title ?? "", /改则.*尼玛/);
+  assert.match(aliLhasaReturnRouteDays[8]?.title ?? "", /尼玛.*班戈/);
   assert.match(aliLhasaReturnRouteDays[9]?.title ?? "", /班戈.*拉萨/);
   assert.match(aliLhasaReturnRouteDays[10]?.title ?? "", /拉萨.*还车/);
   assert.match(aliLhasaReturnRouteDays[11]?.title ?? "", /拉萨.*上海/);

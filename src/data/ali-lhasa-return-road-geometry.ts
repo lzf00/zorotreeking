@@ -3,9 +3,9 @@ import { aliRoadLabels, aliRoutedDayGeometry, type AliRoadLabel } from "./ali-ro
 const remapDay = (day: number) => {
   if (day === 1) return 1;
   if (day === 13) return 12;
-  if (day >= 3 && day <= 9) return day - 1;
-  if (day === 10 || day === 11) return 9;
-  if (day === 12) return 10;
+  if (day >= 3 && day <= 6) return day - 1;
+  if (day === 7 || day === 8) return 6;
+  if (day >= 9 && day <= 12) return day - 2;
   return undefined;
 };
 
@@ -61,13 +61,13 @@ export const aliLhasaReturnRoutedDayGeometry: Record<number, [number, number][]>
   3: aliRoutedDayGeometry[4]!,
   4: aliRoutedDayGeometry[5]!,
   5: aliRoutedDayGeometry[6]!,
-  6: aliRoutedDayGeometry[7]!,
-  7: aliRoutedDayGeometry[8]!,
-  8: aliRoutedDayGeometry[9]!,
-  9: [
-    ...aliRoutedDayGeometry[10]!,
-    ...aliRoutedDayGeometry[11]!,
+  6: [
+    ...aliRoutedDayGeometry[7]!,
+    ...aliRoutedDayGeometry[8]!,
   ],
+  7: aliRoutedDayGeometry[9]!,
+  8: aliRoutedDayGeometry[10]!,
+  9: aliRoutedDayGeometry[11]!,
   10: baingoinToLhasaMainlineGeometry,
   11: [
     [29.652, 91.1721],
