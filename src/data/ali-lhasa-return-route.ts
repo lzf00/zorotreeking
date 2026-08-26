@@ -83,21 +83,39 @@ if (shiquanheDayIndex >= 0) {
   };
 }
 
+const baingoinForwardDayIndex = copiedDrivingDays.findIndex((day) => day.date === "10.04");
+if (baingoinForwardDayIndex >= 0) {
+  const day = copiedDrivingDays[baingoinForwardDayIndex]!;
+  copiedDrivingDays[baingoinForwardDayIndex] = {
+    ...day,
+    title: "改则 → 洞措 → 尼玛 → 色林措 → 班戈",
+    distance: "约 700–740 km",
+    driving: "约 13–15 小时，尽量天黑前后抵达班戈",
+    roads: "G317",
+    pointIds: ["gerze", "dongco", "nyima", "selin", "baingoin"],
+    highlights: ["洞措远观", "色林措远观", "班戈住宿", "提前压缩返拉距离"],
+    supply: "改则满油、带足热食和晚餐备份出发；尼玛只做加油、热食和换司机，班戈到店后补给住宿。",
+    overnight: "班戈县城。",
+    risk: "本日主动变成长途推进日，用来换取 10 月 5 日更短返拉；横风、低温和疲劳叠加时，洞措和色林措都只远观或直接跳过。",
+    decision: "06:30 前从改则出发；若 15:00 仍未到尼玛或天气恶化，改住尼玛并把 10 月 5 日恢复为压线返拉备选。",
+  };
+}
+
 const lhasaReturnDayIndex = copiedDrivingDays.findIndex((day) => day.date === "10.05");
 if (lhasaReturnDayIndex >= 0) {
   const day = copiedDrivingDays[lhasaReturnDayIndex]!;
   copiedDrivingDays[lhasaReturnDayIndex] = {
     ...day,
-    title: "尼玛 → 色林措 → 班戈 → 当雄 → 拉萨",
-    distance: "约 680–720 km",
-    driving: "约 13–16 小时，允许夜里到店",
+    title: "班戈 → 当雄 → 拉萨",
+    distance: "约 430–480 km",
+    driving: "约 8–10 小时，晚间到店有余量",
     roads: "G317 / G109",
-    pointIds: ["nyima", "selin", "baingoin", "damxung", "lhasa"],
-    highlights: ["色林措远观", "班戈补给", "念青唐古拉山北麓", "夜抵拉萨"],
-    supply: "尼玛清晨满油出发，车内备热饮和正餐；班戈、当雄见站即补，抵达拉萨后只做停车、入住和必要车辆检查。",
-    overnight: "拉萨市区，必须预付保留房并电话确认 24 小时前台，可接受 10 月 6 日凌晨到店。",
-    risk: "这是全程最重的赶路日之一，横风、低温、夜间疲劳和返程车流叠加；不安排纳木措入园或湖边支线。",
-    decision: "06:30 前从尼玛出发；若午后仍未过班戈或天气恶化，取消所有观景停车，优先经当雄进拉萨。",
+    pointIds: ["baingoin", "damxung", "lhasa"],
+    highlights: ["当雄补给", "念青唐古拉山北麓", "回到拉萨", "10 月 6 日还车缓冲"],
+    supply: "班戈满油出发，车内保留热饮和路餐；当雄强制补油、热食和状态检查，抵达拉萨后只做停车、入住和必要车辆检查。",
+    overnight: "拉萨市区，必须预付保留房并电话确认 24 小时前台；预计 10 月 5 日晚间到店，极端延误可接受 10 月 6 日凌晨到店。",
+    risk: "相比尼玛直接返拉，本日少约 250–300 km，但仍有国庆返程车流、横风和夜间疲劳风险；不安排纳木措入园、圣象天门或湖边支线。",
+    decision: "08:00 前从班戈出发；若午后到达当雄，直接进拉萨，不再追加纳木措或其他支线。",
   };
 }
 
@@ -151,7 +169,7 @@ const standardRoomBudget = "¥200–400 / 标间";
 const nationalDayHotelAdvice =
   "国庆房价与库存波动很大：现在先锁可免费取消房，入住前 7 天、72 小时各复核一次；若超出预算，按同城候选顺序切换，不订无独卫、无热水或无法确认停车的房间。";
 
-export const aliLhasaReturnPlanningReviewedAt = "2026-08-25";
+export const aliLhasaReturnPlanningReviewedAt = "2026-08-26";
 
 export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
   {
@@ -474,30 +492,40 @@ export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
     day: 9,
     reservations: [
       {
-        subject: "洞措与羌塘沿途观景",
+        subject: "洞措、色林措与羌塘沿途观景",
         status: "无需预约",
-        leadTime: "出发前 24 小时核对 G317 通行与风雪；不设置湖岸到达时间",
+        leadTime: "出发前 24 小时核对 G317 通行与风雪；不设置湖岸到达时间或拍摄任务",
         channel: "无票务渠道；沿 G317 合法开放道路远观",
         documents: "身份证、驾驶证、车辆订单或行驶证",
-        note: "没有可靠官方票务或强制预约信息。洞措不作为补给点，也不驶入盐碱地；若能见度下降，以到达尼玛县城为唯一目标。",
+        note: "没有可靠官方票务或强制预约信息。洞措和色林措都只做主线远观，不驶入盐碱地、草场、湿地或湖滩；当天目标从尼玛前推到班戈，尼玛只加油和热食，不再住宿。",
         sourceLabel: "西藏文旅厅 · 阿里北线线路资料",
         sourceUrl: "https://wlt.xizang.gov.cn/xwzx_69/wlyw/wldt/202507/t20250725_491772.html",
       },
+      {
+        subject: "色林措正规观景区域",
+        status: "出发前复核",
+        leadTime: "抵达尼玛前后向当地文旅、酒店或 12345 核对开放与管制",
+        channel: "未查到 2026 统一线上票务；以现场保护区和交通管理为准",
+        documents: "身份证、驾驶证、车辆证件；如现场要求实名登记则配合办理",
+        note: "色林措属于自然保护区域，只使用 G317 及正规开放观景点，不进入草场、湿地和湖滩。若时间或天气不稳，直接取消观景停车，优先到班戈。",
+        sourceLabel: "西藏自治区发改委 · 色林措景区规划资料",
+        sourceUrl: "https://drc.xizang.gov.cn/zwgk_1941/fz/zxx/201806/P020200909428490530433.pdf",
+      },
     ],
     stay: {
-      city: "尼玛县城",
+      city: "班戈县城",
       budget: standardRoomBudget,
-      bookingAdvice: nationalDayHotelAdvice,
+      bookingAdvice: `${nationalDayHotelAdvice} 本晚从尼玛前推到班戈，订房时优先确认供氧、停车、夜间热水和晚到保留房。`,
       hotels: [
         {
-          name: "尼玛凯枫大酒店",
-          strengths: "可供氧、免费停车，县城成熟度较高；优先确认供氧方式和夜间热水。",
-          bookingUrl: "https://m.ctrip.com/webapp/hotel/nyima21498",
+          name: "尚客优品酒店（班戈店）",
+          strengths: "班戈县城连锁候选，页面显示可供氧、停车和供暖；订前核对国庆实际房价、供氧方式和晚到保留房。",
+          bookingUrl: "https://hotels.ctrip.com/hotels/129496888.html",
         },
         {
-          name: "尼玛秘境庄园民宿",
-          strengths: "供氧、充电、洗衣和免费停车，适合作为酒店满房时的高评分备选。",
-          bookingUrl: "https://m.ctrip.com/webapp/hotel/nyima21498/sl13595035",
+          name: "班戈景禾供氧酒店",
+          strengths: "县城供氧酒店备选，适合尚客优品满房或超预算时交叉比价；必须电话确认停车和热水。",
+          bookingUrl: "https://hotels.ctrip.com/hotels/124582616.html",
         },
       ],
     },
@@ -506,29 +534,29 @@ export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
     day: 10,
     reservations: [
       {
-        subject: "色林措正规观景区域",
+        subject: "班戈至当雄返拉主线",
         status: "出发前复核",
-        leadTime: "出发前 24 小时向尼玛/申扎当地文旅或 12345 核对开放与管制",
-        channel: "未查到 2026 统一线上票务；以现场保护区和交通管理为准",
-        documents: "身份证、驾驶证、车辆证件；如现场要求实名登记则配合办理",
-        note: "色林措属于自然保护区域，只使用 G317 及正规开放观景点，不进入草场、湿地和湖滩。没有可靠预约入口时，不从非官方渠道购买所谓通行名额。",
-        sourceLabel: "西藏自治区发改委 · 色林措景区规划资料",
-        sourceUrl: "https://drc.xizang.gov.cn/zwgk_1941/fz/zxx/201806/P020200909428490530433.pdf",
+        leadTime: "10 月 4 日抵达班戈后核对 G317/G109 通行、当雄补给和拉萨酒店保留房",
+        channel: "当地交警、12345、酒店前台和租车门店；不购买纳木措或湖边支线票务",
+        documents: "身份证、驾驶证、车辆订单或行驶证、拉萨酒店订单",
+        note: "10 月 5 日从班戈返拉，目标是减少当天公里数；不进入纳木措景区、圣象天门或湖边支线，当雄只做补给与状态检查。",
+        sourceLabel: "西藏文旅厅 · 班戈与纳木措北部旅游资料",
+        sourceUrl: "https://wlt.xizang.gov.cn/xccx/lytg/202403/t20240327_409224.html",
       },
     ],
     stay: {
       city: "拉萨市区",
       budget: standardRoomBudget,
-      bookingAdvice: `${nationalDayHotelAdvice} 本晚可能夜里或 10 月 6 日凌晨到店，必须预付保留房并电话确认 24 小时前台，优先与 10 月 6 日连住。`,
+      bookingAdvice: `${nationalDayHotelAdvice} 本晚从班戈返拉，预计比尼玛出发明显早到；仍需预付保留房并电话确认 24 小时前台，优先与 10 月 6 日连住。`,
       hotels: [
         {
           name: "如家商旅酒店（拉萨堆龙经济开发区店）",
-          strengths: "靠近西侧与机场方向、免费停车，适合深夜进城、还车和次日离藏；必须确认夜间保留房。",
+          strengths: "靠近西侧与机场方向、免费停车，适合晚间进城、还车和次日离藏；必须确认夜间保留房。",
           bookingUrl: "https://hotels.ctrip.com/hotels/29597640.html",
         },
         {
           name: "拉萨新气象酒店（八廓街店）",
-          strengths: "近老城、停车评价较多；若夜里到店，订前必须电话确认院内车位、前台值守和保留房政策。",
+          strengths: "近老城、停车评价较多；若晚间到店，订前必须电话确认院内车位、前台值守和保留房政策。",
           bookingUrl: "https://hotels.ctrip.com/hotel/113895184.html",
         },
       ],
@@ -540,7 +568,7 @@ export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
       {
         subject: "拉萨同城还车与返沪缓冲",
         status: "必须提前",
-        leadTime: "10 月 5 日抵拉前确认门店营业、夜间停车和 10 月 6 日还车时段",
+        leadTime: "10 月 5 日晚抵拉后确认门店营业、夜间停车和 10 月 6 日还车时段",
         channel: "租车订单平台 + 门店电话或工单确认",
         documents: "身份证、驾驶证、租车订单、取车照片、加油和还车验收凭证",
         note: "本版 10 月 5 日已回拉萨，10 月 6 日不再安排纳木措入园；当天只做休整、洗车、还车和返沪航班复核。",

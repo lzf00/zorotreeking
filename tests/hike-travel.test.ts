@@ -169,7 +169,8 @@ test("G317 Chengdu and Lhasa-return loop are independent indexed roadbooks", asy
   assert.match(g317Guide, /10 月 4 日清晨/);
   assert.match(g317Guide, /10 月 3 日晚前到那曲/);
   assert.match(loopPage, /<AliLhasaReturnGuide/);
-  assert.match(loopGuide, /10 月 5 日.*进拉萨并住宿/);
+  assert.match(loopGuide, /10 月 4 日.*班戈住宿/);
+  assert.match(loopGuide, /10 月 5 日.*回拉萨并住宿/);
   assert.match(loopGuide, /阿里昆莎机场/);
   assert.match(loopGuide, /最晚10月5日到上海/);
   assert.match(loopGuide, /10月5日：最晚当日抵沪/);
@@ -546,10 +547,12 @@ test("Lhasa-return loop covers Sep 26 through Oct 7 and exposes both early-fligh
   );
   assert.equal(aliLhasaReturnRouteDays[0]?.date, "09.26");
   assert.equal(aliLhasaReturnRouteDays[1]?.date, "09.27");
+  assert.equal(aliLhasaReturnRouteDays[8]?.date, "10.04");
   assert.equal(aliLhasaReturnRouteDays[9]?.date, "10.05");
   assert.equal(aliLhasaReturnRouteDays[10]?.date, "10.06");
   assert.equal(aliLhasaReturnRouteDays[11]?.date, "10.07");
-  assert.match(aliLhasaReturnRouteDays[9]?.title ?? "", /尼玛.*班戈.*拉萨/);
+  assert.match(aliLhasaReturnRouteDays[8]?.title ?? "", /改则.*尼玛.*班戈/);
+  assert.match(aliLhasaReturnRouteDays[9]?.title ?? "", /班戈.*拉萨/);
   assert.match(aliLhasaReturnRouteDays[10]?.title ?? "", /拉萨.*还车/);
   assert.match(aliLhasaReturnRouteDays[11]?.title ?? "", /拉萨.*上海/);
 

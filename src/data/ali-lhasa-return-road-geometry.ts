@@ -3,10 +3,18 @@ import { aliRoadLabels, aliRoutedDayGeometry, type AliRoadLabel } from "./ali-ro
 const remapDay = (day: number) => {
   if (day === 1) return 1;
   if (day === 13) return 12;
-  if (day >= 3 && day <= 10) return day - 1;
-  if (day === 11 || day === 12) return 10;
+  if (day >= 3 && day <= 9) return day - 1;
+  if (day === 10 || day === 11) return 9;
+  if (day === 12) return 10;
   return undefined;
 };
+
+const baingoinToLhasaMainlineGeometry = [
+  // Drop the embedded Namtso/Tashi peninsula sightseeing spur from the base loop.
+  ...aliRoutedDayGeometry[12]!.slice(0, 101),
+  ...aliRoutedDayGeometry[12]!.slice(130),
+];
+
 export const aliLhasaReturnRoadLabels: AliRoadLabel[] = [
   ...aliRoadLabels.map((road) => {
     const lhasaReturnRoad = road.id === "namtso-road"
@@ -15,7 +23,7 @@ export const aliLhasaReturnRoadLabels: AliRoadLabel[] = [
           ref: "连接路",
           name: "班戈至当雄段",
           roadClass: "connector" as const,
-          description: "10 月 5 日收口使用的班戈至当雄方向道路，不安排纳木措入园或湖边支线。",
+          description: "10 月 5 日从班戈返拉使用的主线方向，不安排纳木措入园或湖边支线。",
         }
       : road;
 
@@ -56,11 +64,11 @@ export const aliLhasaReturnRoutedDayGeometry: Record<number, [number, number][]>
   6: aliRoutedDayGeometry[7]!,
   7: aliRoutedDayGeometry[8]!,
   8: aliRoutedDayGeometry[9]!,
-  9: aliRoutedDayGeometry[10]!,
-  10: [
+  9: [
+    ...aliRoutedDayGeometry[10]!,
     ...aliRoutedDayGeometry[11]!,
-    ...aliRoutedDayGeometry[12]!,
   ],
+  10: baingoinToLhasaMainlineGeometry,
   11: [
     [29.652, 91.1721],
     [29.645, 91.12],
