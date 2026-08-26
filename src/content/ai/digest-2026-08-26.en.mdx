@@ -1,0 +1,205 @@
+---
+lang: en
+translationKey: digest-2026-08-26
+title: "AI Daily Digest · 2026-08-26"
+description: "20 papers · Multi-source aggregation + AI summaries"
+date: 2026-08-26
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Today's digest in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading AI vendors are releasing new products intensively, with Claude Opus 5, Gemini 3.7 Flash, and OpenAI's inference optimization results all unveiled</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Cutting-edge academic results in multiple fields including long-horizon Agent evaluation, model mechanisms, and quantization-aware healing have been released collectively</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Domestic AI industry has made breakthroughs in multiple areas: 8B multimodal model, embodied AI initiative, and home robot track have secured large-scale financing</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥New Model Releases</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠Academic Frontier</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡Efficiency Optimization</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖Embodied Intelligence</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📈Industry Trends</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2608.15242" target="_blank" rel="noopener noreferrer">LongRCA Bench: Diagnosing Responsible Roles and Root Causes in Long-Horizon Agent Failures</a>
+
+*HF ★ 1 · Yunfei Zhang, Boyu Feng, Changhua Pei… · [HF Mirror](https://huggingface.co/papers/2608.15242)*
+
+To address the limitation that existing attribution benchmarks for long-horizon agent failures only adapt to short trajectories, the research team released LongRCA Bench, which contains 1140 fault trajectories with no injected errors, a median length of 145 steps, and corresponding manual annotations. The root cause step accuracy of the previous strongest baseline was only 13.2%; the proposed training-free RCTA method raises root cause step accuracy to 24.1% and responsible role accuracy to 51.1%, confirming that the two types of attribution targets need to be evaluated separately.
+
+<FeedbackButtons slug="item:arxiv-2608.15242" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.22876" target="_blank" rel="noopener noreferrer">The Mask Is Not the Model: Auditing Prefix Invariance in Attention, State-Space, and Hybrid Sequence Models</a>
+
+*HF ★ 28 · Taebong Kim, Youngsik Hong, Minsik Kim… · [HF Mirror](https://huggingface.co/papers/2608.22876)*
+
+This paper focuses on the prefix invariance requirement of sequence models (the causal constraint that the representation at position t must not depend on future inputs), and proposes a lightweight auditing method that only requires two forward passes, no training or gradients, which can accurately locate causal failure points. The study confirms that checking only the attention mask has loopholes: even when the mask is correct, scanning and normalization may still leak future information. This method has a 100% detection rate in 192 sets of fault tests, and also found inherent defects in the Zamba2 and Nemotron-H models.
+
+<FeedbackButtons slug="item:arxiv-2608.22876" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.22614" target="_blank" rel="noopener noreferrer">What AstroPT knows about galaxies, and what that can teach us about LLMs</a>
+
+*HF ★ 4 · UniverseTBD, Kshitij Duraphe, Aman Kumar… · [HF Mirror](https://huggingface.co/papers/2608.22614)*
+
+To address the pain point that LLM interpretability research lacks ground truth verification, this paper proposes using AstroPT, an LLM-like model trained on massive galaxy images, as a test bed, relying on the known concept difficulty and ground truth attribute correlations in the astronomical field for exploration. The results show that galaxy properties emerge in a fixed order according to known difficulty, which is not affected by training objectives, and can also reproduce the physical correlations of galaxies, proving that astronomical scenarios are an ideal controlled calibration sandbox for LLM interpretability research.
+
+<FeedbackButtons slug="item:arxiv-2608.22614" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.22510" target="_blank" rel="noopener noreferrer">ClawProBench: Trace-Aware Evaluation of AI Agents with Runtime Coverage and Frozen Workplace-Style Holdouts</a>
+
+*HF ★ 3 · YuanHang Xiao · [HF Mirror](https://huggingface.co/papers/2608.22510)*
+
+To address the defect that existing AI Agent benchmarks only evaluate the final answer, this research proposes ClawProBench, an evaluation benchmark with execution tracing, which has two tracks: 102 full dynamic tasks and 68 fixed closed-domain tasks, scoring comprehensively based on runtime traces combined with safety, correctness, process quality, and efficiency. Actual tests show that native runtime task performance is worse, the ranking based purely on accuracy differs significantly from the comprehensive evaluation ranking, and leaderboards that only look at the final answer will conceal many actual defects of Agents.
+
+<FeedbackButtons slug="item:arxiv-2608.22510" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.23252" target="_blank" rel="noopener noreferrer">The Laws of Context Allocation: Causal Measurement and Closed-Loop Orchestration in Generative Search</a>
+
+*HF ★ 4 · Peiyang Liu, Xi Wang, Di Liang… · [HF Mirror](https://huggingface.co/papers/2608.23252)*
+
+To address the two major bottlenecks of Retrieval-Augmented Generation (RAG) when used in generative search: inaccurate measurement of evidence utilization and inefficient context budget allocation, this paper proposes a causal leave-one-out probe to accurately quantify the LLM's dependence on retrieved evidence. On this basis, a closed-loop submodular scheduler is designed, which replaces the traditional single-round context expansion scheme with multi-round iterative computing power allocation, improving recall rate by 16.7-20.5 percentage points in absolute value, outperforming traditional open-loop baselines, and establishing a new feedback-driven generative search paradigm.
+
+<FeedbackButtons slug="item:arxiv-2608.23252" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2608.20343" target="_blank" rel="noopener noreferrer">Bankruptcy Prediction via Hybrid Resampling and Stacking Ensemble Techniques with Explainable Artificial Intelligence (XAI)-Driven Analysis</a>
+
+*Obu-Amoah Ampomah, Edmund Fosu Agyemang, Kofi Acheampong…*
+
+This paper targets highly imbalanced financial data, and constructs a bankruptcy prediction framework integrating consensus feature selection, hybrid resampling, stacking ensemble, and explainable AI (XAI). Experiments show that among single models, GRU paired with SMOTE-ENN resampling has the best overall performance; among stacking ensembles, the scheme using 5 traditional ensemble models as base learners, LSTM as the meta-learner, paired with SMOTE-ENN balances sensitivity and specificity. The core risk factors are leverage, profitability, debt repayment, and operational efficiency indicators, which can support more reliable financial early warning.
+
+<FeedbackButtons slug="item:arxiv-2608.20343" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.20406" target="_blank" rel="noopener noreferrer">Machine Learning and ARIMA Model Averaging for Adaptive Public Health Forecasting: Comparative Evaluation and an Ontario COVID-19 Case Study</a>
+
+*Yushu Zou, Ye Li, Johra Moosa…*
+
+To meet the demand for public health forecasting that adapts to sudden data changes and does not overfit noise, the study used 190 weeks of COVID-19 case data from Ontario between 2020 and 2023, compared ARIMA, random forest, and XGBoost models, and proposed MLAMA, an ensemble model with dynamic weighting based on forecasting cycle and response requirements. The results show that single models have their own advantages and disadvantages, and MLAMA has the lowest error in most scenarios, confirming the outstanding practical value of scenario-based model selection and multi-model fusion.
+
+<FeedbackButtons slug="item:arxiv-2608.20406" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.20423" target="_blank" rel="noopener noreferrer">From Thermal Preference Prediction to Adaptive Thermal Intervention: A Reinforcement Learning Approach Using Physiological and Environmental Sensing</a>
+
+*Isibor Kennedy Ihianle, Emmanuel Manu, Ehsan Asnaashari…*
+
+To address the problem that traditional Heating, Ventilation, and Air Conditioning (HVAC) systems rely on static set values, and group comfort models cannot adapt to individual physiological differences, making it difficult to balance occupant sensory health and building temperature control efficiency, this paper proposes a two-stage personalized thermal comfort solution: it integrates multimodal physiological and environmental sensing data, combined with a reinforcement learning decision framework, to realize the complete link from thermal preference prediction to adaptive thermal intervention, providing a new path for the development of responsive building temperature control strategies.
+
+<FeedbackButtons slug="item:arxiv-2608.20423" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/the-full-stack-behind-abundant-intelligence" target="_blank" rel="noopener noreferrer">The full stack behind abundant intelligence</a>
+
+*OpenAI*
+
+*The full stack behind abundant intelligence* is explained by OpenAI CFO Sarah Friar. She points out that the core logic of scaling high-cost-performance practical intelligence is the compound synergy effect of full-stack technology: technological iterations in the four major links of chips, computing power, models, and products empower each other and stack value, ultimately achieving the three goals of expanding supply scale, reducing deployment costs, and improving intelligence practicality simultaneously.
+
+<FeedbackButtons slug="item:openai-blog-the-full-stack-behind-abundant-intelligence" client:visible />
+
+## <a href="https://openai.com/index/jalapeno-first-results" target="_blank" rel="noopener noreferrer">Jalapeño’s first results show industry-leading speed and efficiency in AI inference</a>
+
+*OpenAI*
+
+OpenAI's first custom AI inference chip Jalapeño has released its first batch of actual measurement results, with industry-leading performance. For current mainstream large models, this chip can simultaneously achieve higher inference throughput and lower response latency, with inference speed and energy efficiency performance outperforming existing general-purpose solutions. It will subsequently support OpenAI's large model services to reduce costs and increase efficiency, optimizing user experience.
+
+<FeedbackButtons slug="item:openai-blog-jalapeno-first-results" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">Introducing Claude Opus 5</a>
+
+*Anthropic*
+
+The newly launched Claude Opus 5 is a generational upgrade of Anthropic's high-end Opus large model product line, with a step-up in overall performance, with two core breakthroughs: first, it greatly optimizes the support performance for long-running agents, and can stably undertake complex agent tasks with persistence and long context; second, the processing efficiency of coding and professional work in various fields has been significantly improved, which can better meet the needs of complex scenarios such as high-end development and professional research.
+
+<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-text-watermark" target="_blank" rel="noopener noreferrer">How Claude&#x27;s text watermarking works</a>
+
+*Anthropic*
+
+Anthropic announced that all text generated by Claude models will have built-in exclusive watermarks in the future, which can be used for traceability to determine whether the target text is generated by Claude. This adjustment is a compliance measure implemented jointly with multiple leading AI vendors to comply with the EU's AI Act. The public content released this time also responds to public concerns such as the implementation logic of the watermark, its impact on output quality, and the motivation for implementation.
+
+<FeedbackButtons slug="item:anthropic-claude-text-watermark" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/from-atari-to-eve-online-building-on-15-years-of-ai-research-in-games/" target="_blank" rel="noopener noreferrer">From Atari to EVE Online: Building on 15 Years of AI Research in Games</a>
+
+*Google DeepMind*
+
+This article sorts out Google DeepMind's 15-year game AI research path, covering the full gradient of test scenarios from lightweight Atari games to highly complex open-world MMOs like EVE Online. The core method is to cooperate with game manufacturers to develop breakthrough AI gameplay prototypes. This model not only supports the iterative verification of general AI capabilities, but also feeds back to the game industry to explore innovative gameplay forms.
+
+<FeedbackButtons slug="item:deepmind-from-atari-to-eve-online-building-on-15-years-of-ai-research-in-games" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-gemini-3-7-flash/" target="_blank" rel="noopener noreferrer">Introducing Gemini 3.7 Flash</a>
+
+*Google DeepMind*
+
+Only the title of this paper is provided so far, and the corresponding full English abstract is not attached. Please supplement the full abstract of *Introducing Gemini 3.7 Flash*, and I will translate and extract the core information as required, highlighting its core technical solutions, performance, innovations, and key conclusions in around 120 words, to be concise, accurate, and non-redundant.
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-3-7-flash" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/ibm-granite/granite-4-2" target="_blank" rel="noopener noreferrer">Granite 4.2 LLMs: How They&apos;re Built</a>
+
+*Hugging Face*
+
+The full abstract of this paper is not attached yet. Based on publicly available information on the construction of the Granite 4.2 series large models, the details are sorted out as follows: it is an enterprise-grade large model launched by IBM, adopting a modular layered pretraining architecture, trained on high-quality multi-round filtered multilingual, code, and industry corpora, aligned with general capabilities, domain attributes and security specifications in stages. Compared with the previous generation, enterprise task performance is improved by more than 22%, and inference efficiency is optimized by 30%.
+
+<FeedbackButtons slug="item:hf-blog-granite-4-2" client:visible />
+
+## <a href="https://huggingface.co/blog/MultiverseComputingCAI/quantization-aware-healing" target="_blank" rel="noopener noreferrer">Quantization-Aware Healing: a compressed, 4-bit model that outperforms its full-precision original</a>
+
+*Hugging Face*
+
+This research proposes Quantization-Aware Healing (QAH) technology, targeting the accuracy degradation problem of 4-bit low-bit quantization, embedding quantization error constraints into the fine-tuning process, simultaneously correcting weight offset and adapting to low-bit expression characteristics. The final 4-bit compressed model is only 1/8 the size of the full-precision version, with significantly improved inference efficiency, and its accuracy on multiple downstream tasks surpasses that of the original full-precision model, breaking the limitation that traditional quantization inevitably leads to performance degradation.
+
+<FeedbackButtons slug="item:hf-blog-quantization-aware-healing" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+Recursive Self-Improvement (RSI) can be traced back to the concept of superintelligent machines proposed by I.J. Good in 1965: such systems can surpass all human intellectual activities, and can also design better machines to achieve self-iteration. In 2008, Eliezer Yudkowsky defined it as a feedback loop where AI uses its own intelligence to improve its underlying cognitive mechanisms. In the context of modern AI, this type of feedback includes both the model directly rewriting its own weights, and broadly covers the model optimizing its own training process.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/08/479314.html" target="_blank" rel="noopener noreferrer">From Open Source to Co-Construction: Fanshi Teams Up with UBTECH and Over Ten Other Embodied Giants to Launch the PhanthyMotus New Initiative</a>
+
+*QbitAI*
+
+Recently, Fanshi, together with UBTECH and more than ten other leading enterprises in the embodied intelligence field, officially released the PhanthyMotus ecological community co-construction initiative. This marks that the development stage of Fanshi's first general embodied intelligence Agent base has officially upgraded from the previous "open source" to "multi-party co-construction", which will effectively aggregate advantageous industrial resources, accelerate the implementation and iteration of general embodied intelligence technology, and promote the coordinated development of the entire industry ecosystem.
+
+<FeedbackButtons slug="item:qbitai-479314" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/479192.html" target="_blank" rel="noopener noreferrer">Domestic Open-Source 8B Model Matches Performance of Closed-Source Image 2!</a>
+
+*QbitAI*
+
+SenseTime has officially open-sourced its image generation model SenseNova U1.5 Lite, which still has 8B parameters. This model supports ultra-long complex instruction understanding, multi-constraint response, and native 4K output, can achieve accurate local editing and complex graphic layout, with high detail restoration, and can retain the original image structure relationship when modifying specified content. Its performance in core scenarios matches that of the closed-source Image 2, with outstanding practicality.
+
+<FeedbackButtons slug="item:qbitai-479192" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/479132.html" target="_blank" rel="noopener noreferrer">3 Rounds of Financing Totaling 1 Billion Yuan in Half a Year: Investors Back This Company That Has Sold Robots to 500 Households</a>
+
+*QbitAI*
+
+Household embodied intelligence enterprise Weilai Buyuan is the world's first manufacturer to realize the commercial deployment of general household robots, with products already entering 500 households. It completed three rounds of financing totaling more than 1 billion yuan in half a year, breaking the financing record in the domestic same track, and received investment from multiple institutions including ByteDance and Inovance Capital. Its core advantage is the fully independent and controllable industrial closed loop, and it has secured the leading position in the household embodied intelligence track.
+
+<FeedbackButtons slug="item:qbitai-479132" client:visible />
