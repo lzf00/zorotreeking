@@ -169,13 +169,13 @@ test("G317 Chengdu and Lhasa-return loop are independent indexed roadbooks", asy
   assert.match(g317Guide, /10 月 4 日清晨/);
   assert.match(g317Guide, /10 月 3 日晚前到那曲/);
   assert.match(loopPage, /<AliLhasaReturnGuide/);
-  assert.match(loopGuide, /10 月 6 日下午或晚上回拉萨/);
+  assert.match(loopGuide, /10 月 5 日.*进拉萨并住宿/);
   assert.match(loopGuide, /阿里昆莎机场/);
   assert.match(loopGuide, /最晚10月5日到上海/);
   assert.match(loopGuide, /10月5日：最晚当日抵沪/);
   assert.match(loopGuide, /该方案没有航变余量/);
   assert.match(loopGuide, /阿里普兰机场/);
-  assert.match(loopOverview, /point\.id !== "shanghai"/);
+  assert.match(loopOverview, /point\.id !== "shanghai" && point\.id !== "namtso"/);
   assert.match(loopOverview, /day\.day < 12/);
   assert.match(loopOverview, /mapPoints=\{drivingMapPoints\}/);
 });
@@ -233,7 +233,7 @@ test("the Lhasa-return roadbook audits reservations and permits for every day", 
     "古格遗址公园",
     "朋友昆莎机场返沪",
     "色林措",
-    "纳木措",
+    "拉萨同城还车",
   ]) {
     assert.ok(
       reservationSubjects.some((subject) => subject.includes(requiredSubject)),
@@ -546,9 +546,11 @@ test("Lhasa-return loop covers Sep 26 through Oct 7 and exposes both early-fligh
   );
   assert.equal(aliLhasaReturnRouteDays[0]?.date, "09.26");
   assert.equal(aliLhasaReturnRouteDays[1]?.date, "09.27");
+  assert.equal(aliLhasaReturnRouteDays[9]?.date, "10.05");
   assert.equal(aliLhasaReturnRouteDays[10]?.date, "10.06");
   assert.equal(aliLhasaReturnRouteDays[11]?.date, "10.07");
-  assert.match(aliLhasaReturnRouteDays[10]?.title ?? "", /班戈.*纳木措.*拉萨/);
+  assert.match(aliLhasaReturnRouteDays[9]?.title ?? "", /尼玛.*班戈.*拉萨/);
+  assert.match(aliLhasaReturnRouteDays[10]?.title ?? "", /拉萨.*还车/);
   assert.match(aliLhasaReturnRouteDays[11]?.title ?? "", /拉萨.*上海/);
 
   const pointIds = new Set(aliLhasaReturnRoutePoints.map((point) => point.id));
@@ -564,6 +566,8 @@ test("Lhasa-return loop covers Sep 26 through Oct 7 and exposes both early-fligh
   for (const expected of ["G219", "G317", "G109", "昆莎航班", "返沪航班"]) {
     assert.ok(refs.has(expected), `Lhasa-return map is missing ${expected}`);
   }
+  assert.ok(refs.has("连接路"), "Lhasa-return map needs the Bangoin-Damxung connector");
+  assert.ok(!refs.has("环湖路"), "Lhasa-return map should not present Namtso as a required scenic road");
 });
 
 test("Nagqu G317 deadline route keeps the shortest north-line handoff and mapped daily exits", () => {

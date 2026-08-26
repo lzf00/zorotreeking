@@ -52,7 +52,7 @@ export const aliLhasaReturnRoutePoints: AliRoutePoint[] = [
     if (point.id === "lhasa") {
       return {
         ...point,
-        detail: "新版阿里大环线的取还车城市：9 月 26 日完成适应和补给，10 月 6 日下午或晚上回到这里完成还车。",
+        detail: "新版阿里大环线的取还车城市：9 月 26 日完成适应和补给，10 月 5 日晚或次日凌晨回到这里住宿，10 月 6 日完成还车缓冲。",
       };
     }
     if (point.id === "shiquanhe") {
@@ -66,7 +66,7 @@ export const aliLhasaReturnRoutePoints: AliRoutePoint[] = [
   ...friendExitPoints,
 ];
 
-const copiedDrivingDays = aliRouteDays.slice(2, 12).map((day) => ({
+const copiedDrivingDays = aliRouteDays.slice(2, 11).map((day) => ({
   ...day,
   day: day.day - 1,
   pointIds: [...day.pointIds],
@@ -80,6 +80,24 @@ if (shiquanheDayIndex >= 0) {
     ...day,
     highlights: [...day.highlights, "朋友昆莎机场分流"],
     decision: `${day.decision} 最晚 10 月 5 日抵沪的朋友当晚留在狮泉河，10 月 3 日或 4 日从昆莎机场离开，不再随车进入改则方向。`,
+  };
+}
+
+const lhasaReturnDayIndex = copiedDrivingDays.findIndex((day) => day.date === "10.05");
+if (lhasaReturnDayIndex >= 0) {
+  const day = copiedDrivingDays[lhasaReturnDayIndex]!;
+  copiedDrivingDays[lhasaReturnDayIndex] = {
+    ...day,
+    title: "尼玛 → 色林措 → 班戈 → 当雄 → 拉萨",
+    distance: "约 680–720 km",
+    driving: "约 13–16 小时，允许夜里到店",
+    roads: "G317 / G109",
+    pointIds: ["nyima", "selin", "baingoin", "damxung", "lhasa"],
+    highlights: ["色林措远观", "班戈补给", "念青唐古拉山北麓", "夜抵拉萨"],
+    supply: "尼玛清晨满油出发，车内备热饮和正餐；班戈、当雄见站即补，抵达拉萨后只做停车、入住和必要车辆检查。",
+    overnight: "拉萨市区，必须预付保留房并电话确认 24 小时前台，可接受 10 月 6 日凌晨到店。",
+    risk: "这是全程最重的赶路日之一，横风、低温、夜间疲劳和返程车流叠加；不安排纳木措入园或湖边支线。",
+    decision: "06:30 前从尼玛出发；若午后仍未过班戈或天气恶化，取消所有观景停车，优先经当雄进拉萨。",
   };
 }
 
@@ -100,6 +118,20 @@ export const aliLhasaReturnRouteDays: AliRouteDay[] = [
   },
   ...copiedDrivingDays,
   {
+    day: 11,
+    date: "10.06",
+    title: "拉萨休整 → 加油洗车 → 同城还车",
+    distance: "市内约 0–65 km",
+    driving: "弹性安排；如提前飞离则机场段约 1–1.5 小时",
+    roads: "拉萨城市道路 / 机场高速（可选）",
+    pointIds: ["lhasa", "gonggar-airport", "lhasa"],
+    highlights: ["补觉恢复", "车辆整理", "同城还车", "返沪缓冲"],
+    supply: "上午优先补觉和整理行李，再完成加油、洗车、还车验收和电子凭证复核；只保留机场或医院等必要市内移动。",
+    overnight: "拉萨市区，优先与 10 月 5 日同店连住；若 10 月 6 日已有确定晚班，可提前离藏。",
+    risk: "10 月 5 日若次日凌晨才到店，10 月 6 日不再安排布达拉宫、纳木措或其他景点，避免把休整日再次变成长途日。",
+    decision: "只有在人员状态稳定、车辆还车完成且航班已出票时，才考虑 10 月 6 日晚提前返程；否则守住拉萨住宿和 10 月 7 日飞行。",
+  },
+  {
     day: 12,
     date: "10.07",
     title: "拉萨 → 贡嘎机场 → 上海｜当日必须抵达",
@@ -108,10 +140,10 @@ export const aliLhasaReturnRouteDays: AliRouteDay[] = [
     roads: "机场高速 / 拉萨至上海航班",
     pointIds: ["lhasa", "gonggar-airport", "shanghai"],
     highlights: ["还车凭证复核", "贡嘎机场", "拉萨直飞上海", "返沪硬截止"],
-    supply: "优先在 10 月 6 日晚完成加油、洗车和还车；10 月 7 日只保留酒店至机场的人员与行李转场。",
+    supply: "优先在 10 月 6 日完成加油、洗车和还车；10 月 7 日只保留酒店至机场的人员与行李转场。",
     overnight: "当晚抵达上海。",
     risk: "国庆返程和高原天气可能造成航变，未出票联程、候补和紧张中转都不能视为有效返沪方案。",
-    decision: "优先购买拉萨直飞上海且可退改的航班；若 10 月 6 日已有确定晚班并顺利还车，可提前一晚离藏增加缓冲。",
+    decision: "优先购买拉萨直飞上海且可退改的航班；若 10 月 6 日车况和身体状态都稳定且有确定晚班，可提前一晚离藏增加缓冲。",
   },
 ];
 
@@ -119,7 +151,7 @@ const standardRoomBudget = "¥200–400 / 标间";
 const nationalDayHotelAdvice =
   "国庆房价与库存波动很大：现在先锁可免费取消房，入住前 7 天、72 小时各复核一次；若超出预算，按同城候选顺序切换，不订无独卫、无热水或无法确认停车的房间。";
 
-export const aliLhasaReturnPlanningReviewedAt = "2026-08-17";
+export const aliLhasaReturnPlanningReviewedAt = "2026-08-25";
 
 export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
   {
@@ -141,7 +173,7 @@ export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
         leadTime: "建议提前 30–60 天锁定四驱或高离地间车型",
         channel: "租车订单平台 + 门店书面确认",
         documents: "身份证、驾驶证、信用卡或平台要求的押金材料",
-        note: "订单备注 G219/G317 长途使用、同城还车、救援范围、防滑链与备胎；取车时拍摄全车、轮胎、油量和里程，并把 10 月 6 日晚还车写入订单。",
+        note: "订单备注 G219/G317 长途使用、同城还车、救援范围、防滑链与备胎；取车时拍摄全车、轮胎、油量和里程，并把 10 月 5 日夜抵拉萨、10 月 6 日还车缓冲写入订单。",
         sourceLabel: "携程租车 · 实时车型与门店订单",
         sourceUrl: "https://car.ctrip.com/",
       },
@@ -485,19 +517,19 @@ export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
       },
     ],
     stay: {
-      city: "班戈县城",
+      city: "拉萨市区",
       budget: standardRoomBudget,
-      bookingAdvice: nationalDayHotelAdvice,
+      bookingAdvice: `${nationalDayHotelAdvice} 本晚可能夜里或 10 月 6 日凌晨到店，必须预付保留房并电话确认 24 小时前台，优先与 10 月 6 日连住。`,
       hotels: [
         {
-          name: "景禾供氧酒店",
-          strengths: "供氧、免费停车、近主路且评价强调性价比；无电梯，重行李需提前确认楼层。",
-          bookingUrl: "https://hotels.ctrip.com/hotels/124582616.html",
+          name: "如家商旅酒店（拉萨堆龙经济开发区店）",
+          strengths: "靠近西侧与机场方向、免费停车，适合深夜进城、还车和次日离藏；必须确认夜间保留房。",
+          bookingUrl: "https://hotels.ctrip.com/hotels/29597640.html",
         },
         {
-          name: "尚客优品酒店（班戈店）",
-          strengths: "供氧、免费停车和连锁型设施，作为景禾无房或楼层不合适时的备选。",
-          bookingUrl: "https://m.ctrip.com/webapp/hotel/bange21657/v0v149",
+          name: "拉萨新气象酒店（八廓街店）",
+          strengths: "近老城、停车评价较多；若夜里到店，订前必须电话确认院内车位、前台值守和保留房政策。",
+          bookingUrl: "https://hotels.ctrip.com/hotel/113895184.html",
         },
       ],
     },
@@ -506,29 +538,29 @@ export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
     day: 11,
     reservations: [
       {
-        subject: "纳木措实名套票",
-        status: "建议提前",
-        leadTime: "提前 1–3 天实名购票，前一晚核对天气、入口和摆渡安排",
-        channel: "景区官方正规渠道/“乃仓生活”微信入口，或现场正规窗口",
-        documents: "二代身份证；优惠人群携带对应原件",
-        note: "2026 年官方信息显示纳木措采用实名套票并可在 48 小时内不限次进出。本路线只走当日开放的常规观景区域，不临时追加圣象天门支线。",
-        sourceLabel: "西藏文旅厅 · 纳木措 2026 实名套票",
-        sourceUrl: "https://wlt.xizang.gov.cn/xccx/lytg/202606/t20260623_546718.html",
+        subject: "拉萨同城还车与返沪缓冲",
+        status: "必须提前",
+        leadTime: "10 月 5 日抵拉前确认门店营业、夜间停车和 10 月 6 日还车时段",
+        channel: "租车订单平台 + 门店电话或工单确认",
+        documents: "身份证、驾驶证、租车订单、取车照片、加油和还车验收凭证",
+        note: "本版 10 月 5 日已回拉萨，10 月 6 日不再安排纳木措入园；当天只做休整、洗车、还车和返沪航班复核。",
+        sourceLabel: "携程租车 · 实时车型与门店订单",
+        sourceUrl: "https://car.ctrip.com/",
       },
     ],
     stay: {
       city: "拉萨市区",
       budget: standardRoomBudget,
-      bookingAdvice: `${nationalDayHotelAdvice} 本晚优先与第一晚同店，减少搬运行李，并确认次日机场接驳。`,
+      bookingAdvice: `${nationalDayHotelAdvice} 本晚优先与 10 月 5 日同店连住，减少搬运行李，并确认次日机场接驳。`,
       hotels: [
         {
           name: "如家商旅酒店（拉萨堆龙经济开发区店）",
-          strengths: "靠近西侧与机场方向、免费停车，适合还车和次日离藏；可与第一晚连锁同订单。",
+          strengths: "靠近西侧与机场方向、免费停车，适合还车和次日离藏；优先与 10 月 5 日同店连住。",
           bookingUrl: "https://hotels.ctrip.com/hotels/29597640.html",
         },
         {
           name: "拉萨新气象酒店（八廓街店）",
-          strengths: "若还想短暂逛老城可选，停车评价较多；必须确认 10 月 6 日深夜到店保留房。",
+          strengths: "若还想短暂逛老城可选，停车评价较多；必须确认车位、供氧房差价和次日机场接驳。",
           bookingUrl: "https://hotels.ctrip.com/hotel/113895184.html",
         },
       ],
@@ -540,7 +572,7 @@ export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
       {
         subject: "拉萨返沪航班与租车闭环",
         status: "必须提前",
-        leadTime: "建议提前 30–60 天出票；10 月 6 日晚完成加油、验车和还车凭证",
+        leadTime: "建议提前 30–60 天出票；10 月 6 日完成加油、验车和还车凭证",
         channel: "航空公司官方渠道 + 租车门店订单",
         documents: "身份证、航班订单、行李额度、租车验收/还车电子凭证",
         note: "10 月 7 日必须抵沪，优先直飞且可退改；不把候补或紧张中转视为有效方案。10 月 7 日当天不再安排景点和跨城还车。",

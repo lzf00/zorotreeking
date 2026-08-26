@@ -2,7 +2,7 @@
 import RouteGuideShell from "./RouteGuideShell.astro";
 import AliLhasaReturnRouteOverview from "./AliLhasaReturnRouteOverview.astro";
 
-const route = ["拉萨", "日喀则", "定日", "珠峰", "萨嘎", "塔钦", "札达", "狮泉河", "改则", "尼玛", "班戈", "纳木措", "拉萨", "上海"];
+const route = ["拉萨", "日喀则", "定日", "珠峰", "萨嘎", "塔钦", "札达", "狮泉河", "改则", "尼玛", "班戈", "当雄", "拉萨", "上海"];
 ---
 
 <RouteGuideShell
@@ -10,8 +10,8 @@ const route = ["拉萨", "日喀则", "定日", "珠峰", "萨嘎", "塔钦", "�
   kicker="Ali grand loop · Lhasa pickup and return"
   title="从拉萨出发"
   accentTitle="再回到拉萨"
-  lead="9 月 26 日拉萨取车，27 日开始阿里南北大环线；10 月 6 日下午或晚上回拉萨并完成还车，10 月 7 日飞回上海。朋友最晚 10 月 5 日抵达上海，仍在 10 月 2 日狮泉河分流，走阿里昆莎机场。"
-  facts={[["≈ 4,000 KM", "拉萨取还完整闭环"], ["10.06", "下午或晚上回拉萨"], ["10.03—04", "朋友昆莎机场退出"]]}
+  lead="9 月 26 日拉萨取车，27 日开始阿里南北大环线；10 月 5 日从尼玛清早出发，经班戈和当雄晚到或次日凌晨进拉萨并住宿，10 月 6 日作为还车缓冲，10 月 7 日飞回上海。朋友最晚 10 月 5 日抵达上海，仍在 10 月 2 日狮泉河分流，走阿里昆莎机场。"
+  facts={[["≈ 4,000 KM", "拉萨取还完整闭环"], ["10.05", "夜抵拉萨住宿"], ["10.06", "拉萨还车缓冲"]]}
   route={route}
   nav={[
     { href: "#loop-verdict", label: "规划结论" },
@@ -26,15 +26,15 @@ const route = ["拉萨", "日喀则", "定日", "珠峰", "萨嘎", "塔钦", "�
   <section id="loop-verdict" class="rd-section">
     <div class="rd-wrap rd-split">
       <div><p class="rd-eyebrow">01 / Route verdict</p><div class="rd-rule"></div></div>
-      <div><h2>这是目前最完整，<br />也最容易还车的闭环。</h2><p class="rd-copy">路线不再向兰州或成都异地还车，而是沿阿里南线向西、北线向东，在班戈和纳木措收口回拉萨。10 月 6 日只把纳木措视为可取消项：越早回拉萨，10 月 7 日返沪越稳。</p></div>
+      <div><h2>这是目前最完整，<br />也最容易还车的闭环。</h2><p class="rd-copy">路线不再向兰州或成都异地还车，而是沿阿里南线向西、北线向东。唯一压缩点放在 10 月 5 日：尼玛清早出发，色林措只远观，班戈和当雄作为补给点，当晚或次日凌晨进拉萨住宿。</p></div>
     </div>
     <div class="rd-wrap rd-metrics">
       <div><strong>09.26</strong><span>贡嘎落地取车</span></div>
       <div><strong>09.27</strong><span>正式开始自驾</span></div>
       <div><strong>10.02</strong><span>狮泉河机场分流</span></div>
-      <div><strong>10.06</strong><span>拉萨还车</span></div>
+      <div><strong>10.05</strong><span>晚到拉萨住宿</span></div>
     </div>
-    <aside class="rd-alert"><div class="rd-wrap"><b>10 月 6 日收口规则</b><p>班戈出发后，若 11:30 前不能确认纳木措开放、天气和剩余日照，直接经当雄返回拉萨。目标是 17:00—20:00 完成还车，不是为最后一个景点牺牲返沪缓冲。</p></div></aside>
+    <aside class="rd-alert"><div class="rd-wrap"><b>10 月 5 日收口规则</b><p>尼玛必须清早离开，班戈以后不再追加景点。纳木措从本版移出必经路线，目标是无论晚到还是次日凌晨，都把人和车带回拉萨酒店。</p></div></aside>
   </section>
 
   <AliLhasaReturnRouteOverview />
@@ -54,11 +54,11 @@ const route = ["拉萨", "日喀则", "定日", "珠峰", "萨嘎", "塔钦", "�
   <section id="loop-return" class="rd-section">
     <div class="rd-wrap rd-split">
       <div><p class="rd-eyebrow">03 / Lhasa return</p><div class="rd-rule"></div></div>
-      <div><h2>10月6日回到拉萨，<br />把10月7日只留给飞行。</h2><p class="rd-copy">班戈至拉萨有两档收口。常规版经过开放的纳木措观景区域；保守版取消纳木措，直接经当雄回拉萨。只要天气、车辆或人员状态出现不确定，就选择保守版。</p></div>
+      <div><h2>10月5日住进拉萨，<br />把10月6日留给恢复和还车。</h2><p class="rd-copy">班戈不再作为过夜点，而是补给和状态检查点。当天只保留色林措远观，之后经当雄进入拉萨；10 月 6 日只做补觉、洗车、还车和返沪准备。</p></div>
     </div>
     <div class="rd-wrap rd-card-grid">
-      <article class="rd-card"><span>常规收口</span><h3>班戈 → 纳木措 → 当雄 → 拉萨</h3><p>约400公里、8—10小时。06:30—07:00出发，目标18:00—20:00抵达并按合同还车。</p></article>
-      <article class="rd-card rd-card--accent"><span>优先兜底</span><h3>班戈 → 当雄 → 拉萨</h3><p>取消纳木措停留，争取10月6日下午进入拉萨。若有已出票的晚班，可当晚提前返沪。</p></article>
+      <article class="rd-card"><span>压缩收口</span><h3>尼玛 → 色林措 → 班戈 → 拉萨</h3><p>约680—720公里、13—16小时。06:30前出发，色林措只远观，班戈和当雄只做补给。</p></article>
+      <article class="rd-card rd-card--accent"><span>住宿规则</span><h3>10月5日晚<br />拉萨保留房</h3><p>酒店必须预付并确认24小时前台。晚到或次日凌晨到店都按10月5日晚住宿处理，不再订班戈。</p></article>
       <article class="rd-card rd-card--night"><span>10月7日返沪</span><h3>拉萨直飞上海</h3><p>2026夏秋航季拉萨至上海虹桥稳定执行，并新增浦东直飞。最终只以国庆实际开售、可退改订单为准。</p></article>
     </div>
   </section>
@@ -68,7 +68,7 @@ const route = ["拉萨", "日喀则", "定日", "珠峰", "萨嘎", "塔钦", "�
       <div class="rd-gates">
         <article><b>01</b><h3>朋友机票先于酒店</h3><p>先锁定10月3日或4日昆莎离港及后续航段；压线方案必须在订单上明确显示10月5日抵达上海。</p></article>
         <article><b>02</b><h3>珠峰和札达可取消</h3><p>任何超时都取消景点停留，不把后续北线压缩为夜驾或连续超长日。</p></article>
-        <article><b>03</b><h3>10月6日纳木措可取消</h3><p>11:30仍不能确认开放和日照，直接回拉萨，优先完成还车和返程准备。</p></article>
+        <article><b>03</b><h3>10月5日不进纳木措</h3><p>色林措后只保留主线推进和补给，目标是当晚或次日凌晨抵达拉萨酒店。</p></article>
         <article><b>04</b><h3>两名司机与卫星通信</h3><p>北线服务稀疏，单车至少两名熟练司机、全尺寸备胎、防滑链和卫星通信。</p></article>
       </div>
       <div class="rd-links"><b>原有路线全部保留</b><a href="/hike/travel/ali-grand-loop-2026/">原13天拉萨闭环 ↗</a><a href="/hike/travel/ali-grand-loop-lhasa-lanzhou-2026/">兰州还车版 ↗</a><a href="/hike/travel/ali-central-loop-nagqu-g317-chengdu-2026/">G317成都版 ↗</a></div>

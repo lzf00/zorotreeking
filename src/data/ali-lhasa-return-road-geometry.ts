@@ -3,15 +3,28 @@ import { aliRoadLabels, aliRoutedDayGeometry, type AliRoadLabel } from "./ali-ro
 const remapDay = (day: number) => {
   if (day === 1) return 1;
   if (day === 13) return 12;
-  if (day >= 3 && day <= 12) return day - 1;
+  if (day >= 3 && day <= 10) return day - 1;
+  if (day === 11 || day === 12) return 10;
   return undefined;
 };
 export const aliLhasaReturnRoadLabels: AliRoadLabel[] = [
-  ...aliRoadLabels.map((road) => ({
-    ...road,
-    id: `lhasa-return-${road.id}`,
-    days: road.days.map(remapDay).filter((day): day is number => day != null),
-  })).filter((road) => road.days.length > 0),
+  ...aliRoadLabels.map((road) => {
+    const lhasaReturnRoad = road.id === "namtso-road"
+      ? {
+          ...road,
+          ref: "连接路",
+          name: "班戈至当雄段",
+          roadClass: "connector" as const,
+          description: "10 月 5 日收口使用的班戈至当雄方向道路，不安排纳木措入园或湖边支线。",
+        }
+      : road;
+
+    return {
+      ...lhasaReturnRoad,
+      id: `lhasa-return-${road.id}`,
+      days: Array.from(new Set(road.days.map(remapDay).filter((day): day is number => day != null))),
+    };
+  }).filter((road) => road.days.length > 0),
   {
     id: "lhasa-return-kunsha-flight",
     ref: "昆莎航班",
@@ -44,8 +57,15 @@ export const aliLhasaReturnRoutedDayGeometry: Record<number, [number, number][]>
   7: aliRoutedDayGeometry[8]!,
   8: aliRoutedDayGeometry[9]!,
   9: aliRoutedDayGeometry[10]!,
-  10: aliRoutedDayGeometry[11]!,
-  11: aliRoutedDayGeometry[12]!,
+  10: [
+    ...aliRoutedDayGeometry[11]!,
+    ...aliRoutedDayGeometry[12]!,
+  ],
+  11: [
+    [29.652, 91.1721],
+    [29.645, 91.12],
+    [29.652, 91.1721],
+  ],
   12: [
     ...aliRoutedDayGeometry[13]!,
     [29.2963, 90.908],
