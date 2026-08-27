@@ -37,16 +37,6 @@ export const aliLhasaReturnRoadLabels: AliRoadLabel[] = [
     };
   }).filter((road) => road.days.length > 0),
   {
-    id: "lhasa-return-kunsha-flight",
-    ref: "昆莎航班",
-    name: "阿里昆莎至拉萨或成都",
-    roadClass: "connector",
-    lat: 31.95,
-    lng: 81.2,
-    days: [8],
-    description: "朋友在狮泉河分流后的首选空中退出通道，具体日期、班次和席位以开售订单为准。",
-  },
-  {
     id: "lhasa-return-flight",
     ref: "返沪航班",
     name: "拉萨至上海空中转场",

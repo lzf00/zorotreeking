@@ -17,10 +17,6 @@ const extraSources = [
     label: "西藏自治区文旅厅 · 2026 阿里与拉萨航班",
   },
   {
-    href: "https://www.xizang.gov.cn/xwzx_406/dsdt/202512/t20251228_516357.html",
-    label: "西藏自治区政府 · 阿里昆莎至成都直飞航线",
-  },
-  {
     href: "https://wlt.xizang.gov.cn/xccx/lytg/202606/t20260612_545303.html",
     label: "西藏自治区文旅厅 · 拉萨至上海直飞航线",
   },
@@ -56,7 +52,7 @@ const drivingMapDays = aliLhasaReturnRouteDays.filter((day) => day.day < 12);
   roadLabels={aliLhasaReturnRoadLabels}
   routedDayGeometry={aliLhasaReturnRoutedDayGeometry}
   heading="从拉萨出发，绕过阿里南北线，再回到拉萨。"
-  intro="新版闭环从 9 月 26 日拉萨取车开始，9 月 29 日上午进入珠峰景区并在景区开放住宿点看日落和星空；10 月 2 日到狮泉河后，G317 只保留色林措和纳木措两个大景，按洞措、班戈、拉萨三段快返，10 月 5 日回到拉萨住宿，10 月 6 日留作还车缓冲。昆莎和普兰机场作为朋友提前返沪的独立退出点显示在地图上。"
-  mapAriaLabel="拉萨取车经阿里南北线返回拉萨，并标出昆莎和普兰提前返程机场的交互地图"
+  intro="新版闭环从 9 月 26 日拉萨取车开始，9 月 29 日上午进入珠峰景区并在景区开放住宿点看日落和星空；全员 10 月 2 日到狮泉河补给，G317 只保留色林措和纳木措两个大景，按洞措、班戈、拉萨三段回程，10 月 5 日回到拉萨住宿，10 月 6 日留作还车缓冲。"
+  mapAriaLabel="拉萨取车经阿里南北线再返回拉萨的交互地图，包含道路拟合、每日路线、补给点和住宿点"
   extraSources={extraSources}
 />

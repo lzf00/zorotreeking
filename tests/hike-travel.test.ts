@@ -172,11 +172,9 @@ test("G317 Chengdu and Lhasa-return loop are independent indexed roadbooks", asy
   assert.match(loopGuide, /9 月 29 日上午进珠峰景区/);
   assert.match(loopGuide, /G317.*色林措和纳木措两个大景/s);
   assert.match(loopGuide, /10 月 5 日晚回拉萨住宿/);
-  assert.match(loopGuide, /阿里昆莎机场/);
-  assert.match(loopGuide, /最晚10月5日到上海/);
-  assert.match(loopGuide, /10月5日：最晚当日抵沪/);
-  assert.match(loopGuide, /10月3日：昆莎/);
-  assert.match(loopGuide, /阿里普兰机场/);
+  assert.doesNotMatch(loopGuide, /阿里昆莎机场|阿里普兰机场|最晚10月5日到上海|朋友/);
+  assert.match(loopGuide, /去掉分流之后/);
+  assert.match(loopGuide, /狮泉河只做补给/);
   assert.match(loopOverview, /point\.id !== "shanghai"/);
   assert.doesNotMatch(loopOverview, /point\.id !== "shanghai" && point\.id !== "namtso"/);
   assert.match(loopOverview, /day\.day < 12/);
@@ -234,7 +232,6 @@ test("the Lhasa-return roadbook audits reservations and permits for every day", 
     "冈仁波齐塔钦远观",
     "札达土林",
     "古格遗址",
-    "朋友昆莎机场返沪",
     "色林措",
     "纳木措",
     "拉萨同城还车",
@@ -542,7 +539,7 @@ test("Ali central-line maps retain road geometry and label the new corridor", ()
   assert.ok(chengduRefs.has("空中转场"));
 });
 
-test("Lhasa-return loop covers Sep 26 through Oct 7 and exposes both early-flight exits", () => {
+test("Lhasa-return loop covers Sep 26 through Oct 7 without early-flight friend exits", () => {
   assert.equal(aliLhasaReturnRouteDays.length, 12);
   assert.deepEqual(
     aliLhasaReturnRouteDays.map((day) => day.day),
@@ -568,18 +565,21 @@ test("Lhasa-return loop covers Sep 26 through Oct 7 and exposes both early-fligh
   assert.match(aliLhasaReturnRouteDays[11]?.title ?? "", /拉萨.*上海/);
 
   const pointIds = new Set(aliLhasaReturnRoutePoints.map((point) => point.id));
-  for (const id of ["lhasa", "shiquanhe", "dongco", "namtso", "kunsha-airport", "purang-airport", "shanghai"]) {
+  for (const id of ["lhasa", "shiquanhe", "dongco", "namtso", "shanghai"]) {
     assert.ok(pointIds.has(id), `Lhasa-return route is missing ${id}`);
   }
+  assert.equal(pointIds.has("kunsha-airport"), false);
+  assert.equal(pointIds.has("purang-airport"), false);
   for (const day of aliLhasaReturnRouteDays) {
     for (const id of day.pointIds) assert.ok(pointIds.has(id), `D${day.day} references unknown ${id}`);
     assert.ok(aliLhasaReturnRoutedDayGeometry[day.day]?.length >= 2, `D${day.day} needs mapped geometry`);
   }
 
   const refs = new Set(aliLhasaReturnRoadLabels.map((road) => road.ref));
-  for (const expected of ["G219", "G317", "G109", "昆莎航班", "返沪航班"]) {
+  for (const expected of ["G219", "G317", "G109", "返沪航班"]) {
     assert.ok(refs.has(expected), `Lhasa-return map is missing ${expected}`);
   }
+  assert.equal(refs.has("昆莎航班"), false);
   assert.ok(refs.has("环湖路"), "Lhasa-return map needs the Namtso scenic road");
 });
 
