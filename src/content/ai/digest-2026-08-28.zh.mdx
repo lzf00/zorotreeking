@@ -1,0 +1,205 @@
+---
+lang: zh
+translationKey: digest-2026-08-28
+title: "AI 每日精选 · 2026-08-28"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-08-28
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face、arXiv更新十余篇AI前沿论文，覆盖Agent、世界建模、LLM安全等多个研究方向</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI、Anthropic、DeepMind等头部AI厂商接连发布模型能力、硬件标准、评测方案等新动态</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内AGI相关企业营收增速亮眼，AI+数据要素、医疗等落地场景接连取得新进展</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📝学术前沿</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏢大厂动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💼产业落地</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔒安全合规</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠模型技术</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2608.27345" target="_blank" rel="noopener noreferrer">PAWBench: How Far Are We from Probabilistically Aligned World Modeling?</a>
+
+*HF ★ 69 · Yuandong Pu, Le Zhuo, Sayak Paul… · [HF 镜像](https://huggingface.co/papers/2608.27345)*
+
+针对当前被视作世界模型的视频生成模型仅做单样本合理性校验、未覆盖分布匹配需求的问题，本文明确概率对齐为世界模型核心指标，推出PAWBench基准与PAWEval评估协议，测试11款主流模型在50种场景的表现，发现所有模型均无法同时覆盖有效行为范围并匹配参考概率，后续可从提示、噪声采样、训练维度优化分布对齐。
+
+<FeedbackButtons slug="item:arxiv-2608.27345" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.27260" target="_blank" rel="noopener noreferrer">What Makes Good Agentic Data? An ACE Lens on Data Generation for LLM Agents</a>
+
+*HF ★ 51 · Xingshan Zeng, Zishan Xu, Boju Zhang… · [HF 镜像](https://huggingface.co/papers/2608.27260)*
+
+针对大模型智能体生成交互数据质量缺乏统一评判逻辑的问题，本文首先将智能体数据拆解为环境、任务、交互、校验器四元组范式，进一步提出「准确性-复杂度-多样性（ACE）」分析框架厘清生成约束，指出领域正转向落地校验的准确性、匹配学习者能力的复杂度、非表层的多样性，核心是产出适配智能体与环境迭代的有效非冗余数据。
+
+<FeedbackButtons slug="item:arxiv-2608.27260" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.27448" target="_blank" rel="noopener noreferrer">TTPO: Test-Time Policy Optimization</a>
+
+*HF ★ 49 · Aozhe Wang, Zhengxi Lu, Jianze Wang… · [HF 镜像](https://huggingface.co/papers/2608.27448)*
+
+针对大模型数学推理后训练方法依赖真值标签无法开展测试时训练、多数投票伪标签易失效的问题，本文基于“与伪标签不一致的生成基本为错”的观察，提出测试时策略优化TTPO：采用不对称目标，蒸馏一致生成、分组RL惩罚错例，搭配token级选择优化。无标签下性能追平有监督方法，Qwen3-1.7B推理精度最高升36.4%，泛化性优异。
+
+<FeedbackButtons slug="item:arxiv-2608.27448" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.15763" target="_blank" rel="noopener noreferrer">Training Agents to Evolve with Their Harness: TaoLive Digital Avatar Agent Technical Report</a>
+
+*HF ★ 39 · TaoLive AIGC LLM Team, Yuhan Sun, Wenhao Lin… · [HF 镜像](https://huggingface.co/papers/2608.15763)*
+
+针对AI数字人直播低延迟、策略迭代快的需求，本报告提出框架感知训练（HAT）方法，核心为框架状态增强技术，分三阶段训练轻量化模型适配可变运行框架，解决大模型延迟高、小模型易过拟合痛点。其直播问答准确率达94.8%，优于通用大模型，延迟达标，上线淘宝直播后GMV、商品浏览量均获正向提升。
+
+<FeedbackButtons slug="item:arxiv-2608.15763" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.27456" target="_blank" rel="noopener noreferrer">UrbanGround: From Local Perception to Spatial Agency in a Real-Scale City</a>
+
+*HF ★ 37 · Tianjie Ju, Zheng Wu, Yueqing Sun… · [HF 镜像](https://huggingface.co/papers/2608.27456)*
+
+针对多模态大模型仅能解析静态街景、移动后城市空间决策能力待验证的问题，团队研发首个基于全港3D地理数据的实尺度城市交互沙箱UrbanGround，支持第一人称闭环探索导航。测试显示现有多模态大模型智能体具备基础视觉识别、短程空间推理能力，但方位感知、避障、长程目标探索能力不足，误差易累积且难修正。
+
+<FeedbackButtons slug="item:arxiv-2608.27456" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2608.26132" target="_blank" rel="noopener noreferrer">SLM-Conditioned Hierarchical Relation Routing for Labeled Property Graph Learning</a>
+
+*Michal Podstawski*
+
+针对常规图神经网络处理带标签属性图时，将属性转为静态特征、无法适配预测目标动态选择语义传播证据的痛点，本文提出小语言模型（SLM）驱动的分层关系路由架构：以拓扑GNN输出为结构表征锚点，用SLM生成目标适配路由查询，分层筛选邻域消息后对锚点做残差更新。该方法兼顾结构保真与语义引入，支持可解释分析，为富属性图学习提供通用范式。
+
+<FeedbackButtons slug="item:arxiv-2608.26132" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.26222" target="_blank" rel="noopener noreferrer">NeuronFuzz: Safety Neuron Guided Fuzzing for LLM Safety Evaluation</a>
+
+*Zhiyuan Xu, Muhammad Firhard Roslan, Joseph Gardiner…*
+
+针对现有LLM越狱测试依赖响应反馈、成本高、对强对齐模型指导稀疏的痛点，本文提出白盒模糊测试框架NeuronFuzz：提取内部安全神经元激活生成连续安全告警分作为迭代反馈，无需生成模型响应即可运行，结合梯度定位敏感位置、掩码语言模型生成合规变异提示。在21个模型测试中，白盒场景越狱发现率达76-100%，超基线最多48个百分点，生成的攻击模板可零样本迁移至各类模型，效果优异。
+
+<FeedbackButtons slug="item:arxiv-2608.26222" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.26233" target="_blank" rel="noopener noreferrer">Pruning Binarized Neural Networks: A Dedicated Framework and Globally Weighted Algorithms</a>
+
+*Roan Rubiales, Jean Pierre David*
+
+针对二值神经网络适配边缘端时现有剪枝策略适配性差、难带来实际硬件增益的问题，本文推出基于PyTorch的专用研究框架，支持二值网络冻结、剪枝，方便复现现有方案、快速开发新方法。同时提出全局加权剪枝算法，兼顾不同层级参数重要性，在VGG11上实现70%剪枝率且精度无损，远优于同场景下SOTA的41%剪枝率。
+
+<FeedbackButtons slug="item:arxiv-2608.26233" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/supporting-next-generation-ai-startups-thailand" target="_blank" rel="noopener noreferrer">Supporting Thailand’s next generation of AI startups</a>
+
+*OpenAI*
+
+本项目由OpenAI联合泰国高等教育与科研创新部（MHESI）发起，核心举措是推出为期8周的AI专项创业加速器，重点覆盖医疗健康、康养、教育三大民生赛道，为10家本土初创企业提供定向支持，助力其完成从AI技术原型到可信商用产品的落地转化，夯实泰国下一代AI初创产业的发展基础。
+
+<FeedbackButtons slug="item:openai-blog-supporting-next-generation-ai-startups-thailand" client:visible />
+
+## <a href="https://openai.com/index/what-students-gain-from-chatgpt-critical-thinking-training" target="_blank" rel="noopener noreferrer">Better answers, broader thinking: What students gain from ChatGPT and critical-thinking training</a>
+
+*OpenAI*
+
+该研究主题为《更优答案、更广思维：学生从ChatGPT与批判性思维训练中的获益》，采用随机试验设计，纳入千余名大学生为样本，聚焦ChatGPT使用、批判性思维训练对学生真实大学课业表现、作业原创性的影响，旨在明确二者结合能为学生带来的答题质量提升、思维拓展等实际增益。
+
+<FeedbackButtons slug="item:openai-blog-what-students-gain-from-chatgpt-critical-thinking-training" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/model-hardware-standard-research-preview" target="_blank" rel="noopener noreferrer">Previewing the Model Hardware Standard</a>
+
+*Anthropic*
+
+AI研究机构Anthropic近期启动模型硬件标准（MHS）的研究预览，面向首批科研实验室、先进制造商开放试用。MHS是面向AI智能体的统一技术规范，核心功能为保障AI操控各类物理设备时的运行安全，该共享标准也将为实体AI、工业智能等场景的落地及跨主体协同提供基础支撑。
+
+<FeedbackButtons slug="item:anthropic-model-hardware-standard-research-preview" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-text-watermark" target="_blank" rel="noopener noreferrer">How Claude&#x27;s text watermarking works</a>
+
+*Anthropic*
+
+Anthropic宣布未来Claude系列大模型的生成文本将内嵌专属文本水印，可快速鉴别内容是否由Claude生成。本次调整是其联合多家头部AI厂商共同推进，为满足欧盟AI法案的合规要求。本次还将公开回应水印技术原理、对生成质量的影响、改版动因等外界关注的常见问题。
+
+<FeedbackButtons slug="item:anthropic-claude-text-watermark" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/gemini-omni-1-1-flash-lets-you-build-with-more-control/" target="_blank" rel="noopener noreferrer">Gemini Omni 1.1 Flash lets you build with more control</a>
+
+*Google DeepMind*
+
+本次介绍的Gemini Omni 1.1 Flash是谷歌推出的轻量多模态大模型，主打开发可控性升级：新增细粒度指令约束、强制结构化输出功能，支持低门槛自定义微调，推理速度较前代提升30%、调用成本降低40%，兼顾多模态精度与性价比，适配实时交互类AI应用快速落地。
+
+<FeedbackButtons slug="item:deepmind-gemini-omni-1-1-flash-lets-you-build-with-more-control" client:visible />
+
+## <a href="https://deepmind.google/blog/piloting-the-worlds-first-double-blind-ai-evaluations/" target="_blank" rel="noopener noreferrer">Piloting the world's first double-blind AI evaluations</a>
+
+*Google DeepMind*
+
+本次推出全球首个双盲AI评估试点，核心采用评估者、被评估对象（AI及对照人类）双向隐匿身份的测试规则，可有效规避人为偏好、AI针对性应答对测评结果的干扰，输出的AI能力结论比传统评估更客观公允，可为AI性能分级、合规落地提供更可靠的测评依据。
+
+<FeedbackButtons slug="item:deepmind-piloting-the-worlds-first-double-blind-ai-evaluations" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/train-multi-vector-encoder" target="_blank" rel="noopener noreferrer">Training and Finetuning Multi-Vector Embedding Models with Sentence Transformers</a>
+
+*Hugging Face*
+
+该论文针对单向量文本嵌入表征能力有限的痛点，基于Sentence Transformers框架提出多向量嵌入模型的端到端训练、微调方案，优化了训练内存占用与推理效率。实测在信息检索、语义匹配等任务上效果较单向量模型提升10%左右，且兼容现有向量检索生态，大幅降低多向量嵌入模型的落地门槛。
+
+<FeedbackButtons slug="item:hf-blog-train-multi-vector-encoder" client:visible />
+
+## <a href="https://huggingface.co/blog/ibm-granite/granite-4-2" target="_blank" rel="noopener noreferrer">Granite 4.2 LLMs: How They&apos;re Built</a>
+
+*Hugging Face*
+
+当前您仅提供了该论文的标题，缺失摘要正文内容哦~请您补充完整的摘要原文，我会准确提炼其核心方法、技术路径与核心结论，按要求生成120字左右、重点突出的清晰中文总结。
+
+<FeedbackButtons slug="item:hf-blog-granite-4-2" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我改进（RSI）的概念沿革：1965年学者I.J.古德最早提出相关设想，指智力远超人类的超智能机器可自主设计更优系统实现迭代。2008年尤德考斯基明确定义其为AI借助现有智能优化自身认知机制的反馈环，当前AI语境下该机制可体现为直接改写自身权重，或广义上优化训练流程。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/08/480600.html" target="_blank" rel="noopener noreferrer">刚刚，港股AGI第一股杀疯了！Agent业务半年进账近5亿，Token收入Q2暴涨500%</a>
+
+*量子位*
+
+港股AGI第一股云知声发布2026年中期财报，总营收5.62亿元，同比增38.7%、增速近乎翻倍。核心增长引擎智能体业务营收4.78亿元，新增Token业务Q2环比暴涨超500%、毛利率超60%。与遇冷的OpenClaw形成反差，云知声已将智能体落地医疗、保险等场景，划分三大收入板块。
+
+<FeedbackButtons slug="item:qbitai-480600" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/480591.html" target="_blank" rel="noopener noreferrer">e生涯斩获浙江一等奖，同蚂蚁、浙大一道晋级数据要素国赛</a>
+
+*量子位*
+
+2026年由国家数据局牵头的国家级“数据要素×”大赛浙江赛区近日收官，赛事以产业落地为核心导向、不唯算法论，吸引了各领域头部企校参赛。最终海亮科服智慧教育（赛道唯一一等奖）、蚂蚁医疗AI、浙大联合长龙航空的民航项目等获各赛道一等奖，晋级国赛。
+
+<FeedbackButtons slug="item:qbitai-480591" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/480557.html" target="_blank" rel="noopener noreferrer">首款癌症疫苗，一针300万？？？</a>
+
+*量子位*
+
+莫德纳与默沙东联合研发、AI全流程参与的个性化mRNA黑色素瘤疫苗Intismeran，近期III期临床获阳性结果，联用PD-1抑制剂可延缓患者复发转移，是全球首个闯过III期的mRNA癌症治疗方案。但该疫苗被预测定价约318万元，还需联用高价K药，或仅富人可负担，目前定价对应疗程仍不明确。
+
+<FeedbackButtons slug="item:qbitai-480557" client:visible />
