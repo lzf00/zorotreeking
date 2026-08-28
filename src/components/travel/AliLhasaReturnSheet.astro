@@ -10,13 +10,16 @@ const shortenHotel = (name: string) =>
 const rows = aliLhasaReturnRouteDays.map((day) => {
   const planning = aliLhasaReturnDailyPlanning.find((plan) => plan.day === day.day);
   const stay = planning?.stay;
-  const hotelLine = stay?.noHotelNeeded
-    ? "当日抵沪，无需酒店"
-    : stay?.hotels.length
-      ? `${stay.hotels[0] ? shortenHotel(stay.hotels[0].name) : stay.city}${
-          stay.hotels[1] ? ` / 备选${shortenHotel(stay.hotels[1].name)}` : ""
-        }`
-      : day.overnight;
+  const primaryHotel = stay?.hotels[0]?.name;
+  const backupHotel = stay?.hotels[1]?.name;
+  let hotelLine = day.overnight;
+  if (stay?.noHotelNeeded) {
+    hotelLine = "当日抵沪，无需酒店";
+  } else if (primaryHotel && backupHotel) {
+    hotelLine = shortenHotel(primaryHotel) + " / 备选" + shortenHotel(backupHotel);
+  } else if (primaryHotel) {
+    hotelLine = shortenHotel(primaryHotel);
+  }
   return {
     day: day.day,
     date: day.date,
@@ -99,7 +102,7 @@ const rows = aliLhasaReturnRouteDays.map((day) => {
     window.print();
   };
   const clearPrintSheet = () => root.classList.remove("rd-print-sheet");
-  document.querySelector<HTMLElement>("[data-print-sheet]")?.addEventListener("click", printSheet);
+  document.querySelector("[data-print-sheet]")?.addEventListener("click", printSheet);
   window.addEventListener("afterprint", clearPrintSheet);
 </script>
 
