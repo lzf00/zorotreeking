@@ -1,5 +1,6 @@
 ---
 import RouteGuideShell from "./RouteGuideShell.astro";
+import AliLhasaReturnSheet from "./AliLhasaReturnSheet.astro";
 import AliLhasaReturnRouteOverview from "./AliLhasaReturnRouteOverview.astro";
 
 const route = ["拉萨", "日喀则", "定日", "珠峰景区", "萨嘎", "塔钦", "札达", "狮泉河", "洞措", "色林措", "班戈", "纳木措", "拉萨", "上海"];
@@ -15,6 +16,7 @@ const route = ["拉萨", "日喀则", "定日", "珠峰景区", "萨嘎", "塔�
   route={route}
   nav={[
     { href: "#loop-verdict", label: "规划结论" },
+    { href: "#loop-sheet", label: "总路书" },
     { href: "#route-atlas", label: "交互地图" },
     { href: "#loop-pacing", label: "日程取舍" },
     { href: "#loop-return", label: "回拉萨" },
@@ -36,6 +38,8 @@ const route = ["拉萨", "日喀则", "定日", "珠峰景区", "萨嘎", "塔�
     </div>
     <aside class="rd-alert"><div class="rd-wrap"><b>仍要接受的取舍</b><p>珠峰过夜占掉一天，10 月 5 日又必须住进拉萨，所以札达仍排不进单独住宿，北线也做不到原 13 天那种改则、尼玛、班戈各住一晚。洞措只用来拆开狮泉河到班戈的长路，不是景点。</p></div></aside>
   </section>
+
+  <AliLhasaReturnSheet />
 
   <AliLhasaReturnRouteOverview />
 

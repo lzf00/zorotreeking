@@ -43,6 +43,7 @@ import { wgs84ToGcj02 } from "../src/utils/amap-coordinate";
 const {
   aliLhasaReturnRouteDays,
   aliLhasaReturnRoutePoints,
+  aliLhasaReturnDailyPlanning,
 } = aliLhasaReturnData;
 
 test("hike section is presented as hiking and travel across navigation and home", async () => {
@@ -169,6 +170,8 @@ test("G317 Chengdu and Lhasa-return loop are independent indexed roadbooks", asy
   assert.match(g317Guide, /10 月 4 日清晨/);
   assert.match(g317Guide, /10 月 3 日晚前到那曲/);
   assert.match(loopPage, /<AliLhasaReturnGuide/);
+  assert.match(loopGuide, /<AliLhasaReturnSheet/);
+  assert.match(loopGuide, /#loop-sheet/);
   assert.match(loopGuide, /9 月 29 日上午进珠峰景区/);
   assert.match(loopGuide, /G317.*色林措和纳木措两个大景/s);
   assert.match(loopGuide, /10 月 5 日晚回拉萨住宿/);
@@ -581,6 +584,35 @@ test("Lhasa-return loop covers Sep 26 through Oct 7 without early-flight friend 
   }
   assert.equal(refs.has("昆莎航班"), false);
   assert.ok(refs.has("环湖路"), "Lhasa-return map needs the Namtso scenic road");
+});
+
+test("Lhasa-return one-page sheet lists sights, distance, and hotels for every day", async () => {
+  const sheet = await readFile(
+    new URL("../src/components/travel/AliLhasaReturnSheet.astro", import.meta.url),
+    "utf8",
+  );
+  assert.match(sheet, /id="loop-sheet"/);
+  assert.match(sheet, /12 天总路书/);
+  assert.match(sheet, /data-print-sheet/);
+
+  assert.equal(aliLhasaReturnRouteDays.length, aliLhasaReturnDailyPlanning.length);
+  for (const day of aliLhasaReturnRouteDays) {
+    const planning = aliLhasaReturnDailyPlanning.find((plan) => plan.day === day.day);
+    assert.ok(planning, `D${day.day} needs a stay plan for the one-page sheet`);
+    assert.ok(day.highlights.length > 0, `D${day.day} needs sights`);
+    assert.match(day.distance, /\d/);
+    if (planning.stay.noHotelNeeded) {
+      assert.equal(planning.stay.hotels.length, 0);
+    } else {
+      assert.ok(planning.stay.city.length > 0);
+      assert.ok(planning.stay.hotels[0]?.name.length > 0, `D${day.day} needs a primary hotel`);
+    }
+  }
+  assert.match(aliLhasaReturnRouteDays[3]?.highlights.join(" ") ?? "", /珠峰/);
+  assert.match(aliLhasaReturnRouteDays[8]?.highlights.join(" ") ?? "", /色林措/);
+  assert.match(aliLhasaReturnRouteDays[9]?.highlights.join(" ") ?? "", /纳木措/);
+  assert.match(aliLhasaReturnDailyPlanning[3]?.stay.hotels[0]?.name ?? "", /珠峰/);
+  assert.match(aliLhasaReturnDailyPlanning[9]?.stay.city ?? "", /拉萨/);
 });
 
 test("Nagqu G317 deadline route keeps the shortest north-line handoff and mapped daily exits", () => {
