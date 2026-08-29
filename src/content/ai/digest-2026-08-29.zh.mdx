@@ -1,0 +1,137 @@
+---
+lang: zh
+translationKey: digest-2026-08-29
+title: "AI 每日精选 · 2026-08-29"
+description: "12 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-08-29
+tags: [digest, auto, openai, anthropic, deepmind, hf-blog, lil-log, qbitai]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI公布Cursor被SpaceX收购后的后续安排，Anthropic、DeepMind推出AI硬件标准、新模型等多项更新</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face更新开放ASR榜单新增全球南方语言，同步推出多向量嵌入模型微调相关教程</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内AI产业动态活跃，《时代》AI100发榜、港股AGI第一股业绩暴涨，AI工具效率突出</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📈 产业动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 大厂更新</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 技术进展</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡 应用落地</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ 榜单发布</span>
+  </div>
+</div>
+
+# OpenAI
+
+## <a href="https://openai.com/index/our-decision-on-cursor-following-its-acquisition-by-spacex" target="_blank" rel="noopener noreferrer">Our decision on Cursor following its acquisition by SpaceX</a>
+
+*OpenAI*
+
+本公告针对代码编辑工具Cursor被SpaceX收购一事作出正式决策：OpenAI将逐步终止此前与Cursor签订的、为其提供OpenAI系列大模型能力支持的商业合作合约。本次调整由Cursor的股权主体变更直接触发，相关合作将按流程有序关停。
+
+<FeedbackButtons slug="item:openai-blog-our-decision-on-cursor-following-its-acquisition-by-spacex" client:visible />
+
+## <a href="https://openai.com/index/supporting-next-generation-ai-startups-thailand" target="_blank" rel="noopener noreferrer">Supporting Thailand’s next generation of AI startups</a>
+
+*OpenAI*
+
+本项目聚焦泰国AI科创生态培育，由OpenAI与泰国高等教育、科研与创新部（MHESI）联合发起。落地举措为开设8周专项加速营，筛选医疗健康、康养、教育三大赛道共10家初创企业入营，核心目标是助力企业将AI技术原型转化为受用户信任的成熟落地产品，扶持泰国下一代AI初创企业发展。
+
+<FeedbackButtons slug="item:openai-blog-supporting-next-generation-ai-startups-thailand" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/model-hardware-standard-research-preview" target="_blank" rel="noopener noreferrer">Previewing the Model Hardware Standard</a>
+
+*Anthropic*
+
+AI机构Anthropic近期推出模型硬件标准（MHS）的研究预览版本，该标准是面向AI代理的统一共享规范，核心目的是为AI安全操控各类物理实体设备提供标准化运行准则。目前该预览版本仅向首批入选的科研实验室、先进制造厂商定向开放试用。
+
+<FeedbackButtons slug="item:anthropic-model-hardware-standard-research-preview" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-text-watermark" target="_blank" rel="noopener noreferrer">How Claude&#x27;s text watermarking works</a>
+
+*Anthropic*
+
+Anthropic宣布未来旗下Claude系列大模型生成的所有文本都将内置水印标识，可用于溯源判定文本是否由Claude生成。该举措是为符合欧盟《AI法案》要求，将与其余主流AI厂商同步落地。本次官方还公开回应了公众关切的水印技术原理、对输出质量的影响、落地动因等核心问题。
+
+<FeedbackButtons slug="item:anthropic-claude-text-watermark" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/gemini-omni-1-1-flash-lets-you-build-with-more-control/" target="_blank" rel="noopener noreferrer">Gemini Omni 1.1 Flash lets you build with more control</a>
+
+*Google DeepMind*
+
+谷歌新发布的Gemini Omni 1.1 Flash是面向开发者的轻量级多模态大模型，核心优势为开发可控性大幅提升：支持强制结构化输出、多模态调度细粒度配置，推理速度较前代提30%、调用成本降40%，可高效适配智能体、多模态应用等场景的定制化开发需求。
+
+<FeedbackButtons slug="item:deepmind-gemini-omni-1-1-flash-lets-you-build-with-more-control" client:visible />
+
+## <a href="https://deepmind.google/blog/piloting-the-worlds-first-double-blind-ai-evaluations/" target="_blank" rel="noopener noreferrer">Piloting the world's first double-blind AI evaluations</a>
+
+*Google DeepMind*
+
+本次是全球首个AI双盲评估试点项目，核心采用评测方与待评估AI主体身份互盲的设计，可有效规避品牌效应、评测者主观偏好等非能力类干扰因素，大幅提升AI能力评测结果的公正性与可信度，为后续AI性能排行、合规校验、市场化选型等场景提供了更科学的评估新范式。
+
+<FeedbackButtons slug="item:deepmind-piloting-the-worlds-first-double-blind-ai-evaluations" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/open-asr-leaderboard-global-south" target="_blank" rel="noopener noreferrer">The Open ASR Leaderboard Adds Its First Global South Language</a>
+
+*Hugging Face*
+
+本次开放自动语音识别（ASR）公开榜单首次纳入全球南方代表性本土语言斯瓦希里语，填补了过往ASR评测长期侧重欧美高资源语言、缺失欠发达地区小语种评测的空白。新增赛道采用非洲多场景真实语音数据集，适配低资源场景需求，将推动小语种ASR技术落地，助力全球语言数字公平。
+
+<FeedbackButtons slug="item:hf-blog-open-asr-leaderboard-global-south" client:visible />
+
+## <a href="https://huggingface.co/blog/train-multi-vector-encoder" target="_blank" rel="noopener noreferrer">Training and Finetuning Multi-Vector Embedding Models with Sentence Transformers</a>
+
+*Hugging Face*
+
+当前你仅提供了论文标题，未附上摘要的具体正文内容，请你补充完整该论文的英文摘要内容，我会按照要求为你提炼成120字左右的中文总结，重点突出核心方法与研究结论，做到简洁清晰不冗余。
+
+<FeedbackButtons slug="item:hf-blog-train-multi-vector-encoder" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我改进（RSI）概念的演化脉络：1965年I.J.古德最早提出超智能机器构想，指可超越人类所有智力活动、能自行设计更优系统实现自我升级的智能体；2008年尤德考斯基明确RSI核心是AI依托现有智能优化自身认知机制。当前AI领域的RSI包含两类路径，分别是模型直接改写自身权重、优化训练管线完成迭代。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/08/480700.html" target="_blank" rel="noopener noreferrer">我的自媒体搭子太能卷，一顿饭功夫17份成品</a>
+
+*量子位*
+
+百度新发布AI办公智能体“百度搭子”，可独立完成从信息处理到成品产出的全流程长程任务，提出“交付即惊艳”的专业办公标准，要求产物快速、专业、可直接使用。据7月行业榜单其月活位列总榜第二、增速居首，实测升级后的自媒体套件可高效完成多平台内容生产任务。
+
+<FeedbackButtons slug="item:qbitai-480700" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/480666.html" target="_blank" rel="noopener noreferrer">《时代》周刊全球AI 100放榜，精准捕获稚晖君最“想低调”的幕后老板</a>
+
+*量子位*
+
+《时代》2026年度全球AI百人榜发布，奥特曼、马斯克、李飞飞等国内外AI领域核心人物悉数入选，创新者板块的智元创始人邓泰华引发关注。他是稚晖君的上司，曾在华为任职20余年主导鲲鹏、昇腾生态建设，智元创立初期他隐于幕后，近年随企业商业化推进才公开露面。
+
+<FeedbackButtons slug="item:qbitai-480666" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/480600.html" target="_blank" rel="noopener noreferrer">刚刚，港股AGI第一股杀疯了！Agent业务半年进账近5亿，Token收入Q2暴涨500%</a>
+
+*量子位*
+
+港股AGI第一股云知声发布2026年中报：上半年总营收5.62亿元，同比增38.7%、增速几近翻倍。其中智能体业务收入4.78亿为核心增长引擎，新增Token业务Q2环比暴涨超500%、毛利率超60%，复购占比超6成、手握近10亿现金流。区别于仍遇发展困境的OpenClaw，其智能体已落地医疗、保险等场景跑通盈利。
+
+<FeedbackButtons slug="item:qbitai-480600" client:visible />
