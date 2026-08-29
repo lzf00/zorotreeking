@@ -1,0 +1,137 @@
+---
+lang: en
+translationKey: digest-2026-08-29
+title: "AI Daily Digest · 2026-08-29"
+description: "12 papers · multi-source aggregation + AI summaries"
+date: 2026-08-29
+tags: [digest, auto, openai, anthropic, deepmind, hf-blog, lil-log, qbitai]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's highlights in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI announces follow-up arrangements after SpaceX's acquisition of Cursor; Anthropic and DeepMind roll out multiple updates including AI hardware standards and new models</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face updates the open ASR leaderboard to add Global South languages, and releases tutorials related to fine-tuning multi-vector embedding models at the same time</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">China's domestic AI industry is seeing dynamic developments: Time's AI 100 list is released, the first AGI stock on 港股 posts surging performance, and AI tools deliver outstanding efficiency</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📈 Industry Trends</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Big Tech Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Technical Advances</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡 Application Implementation</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ List Releases</span>
+  </div>
+</div>
+
+# OpenAI
+
+## <a href="https://openai.com/index/our-decision-on-cursor-following-its-acquisition-by-spacex" target="_blank" rel="noopener noreferrer">Our decision on Cursor following its acquisition by SpaceX</a>
+
+*OpenAI*
+
+This announcement releases the official decision regarding the acquisition of code editing tool Cursor by SpaceX: OpenAI will gradually terminate the previously signed commercial cooperation contract with Cursor, under which OpenAI provided capabilities of its LLM series to Cursor. This adjustment is directly triggered by the change of Cursor's equity owner, and relevant cooperation will be shut down in an orderly manner in accordance with procedures.
+
+<FeedbackButtons slug="item:openai-blog-our-decision-on-cursor-following-its-acquisition-by-spacex" client:visible />
+
+## <a href="https://openai.com/index/supporting-next-generation-ai-startups-thailand" target="_blank" rel="noopener noreferrer">Supporting Thailand’s next generation of AI startups</a>
+
+*OpenAI*
+
+This project focuses on cultivating Thailand's AI tech innovation ecosystem, jointly launched by OpenAI and Thailand's Ministry of Higher Education, Science, Research and Innovation (MHESI). The implementation measure is an 8-week specialized accelerator program, which will select 10 startups across three major tracks: healthcare, elderly care, and education to participate. The core goal is to help enterprises convert AI technology prototypes into trusted, mature implemented products, and support the development of Thailand's next generation of AI startups.
+
+<FeedbackButtons slug="item:openai-blog-supporting-next-generation-ai-startups-thailand" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/model-hardware-standard-research-preview" target="_blank" rel="noopener noreferrer">Previewing the Model Hardware Standard</a>
+
+*Anthropic*
+
+AI lab Anthropic recently released a research preview of the Model Hardware Standard (MHS), a unified shared specification for AI agents, with the core purpose of providing standardized operating guidelines for AI to safely control various physical devices. Currently, this preview version is only available for trial use by the first batch of selected research laboratories and advanced manufacturing enterprises.
+
+<FeedbackButtons slug="item:anthropic-model-hardware-standard-research-preview" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-text-watermark" target="_blank" rel="noopener noreferrer">How Claude&#x27;s text watermarking works</a>
+
+*Anthropic*
+
+Anthropic announced that all text generated by its Claude series of LLMs will have built-in watermark identifiers in the future, which can be used for traceability to determine whether text is generated by Claude. This measure is to comply with the requirements of the EU AI Act, and will be implemented in sync with other mainstream AI vendors. The official also publicly responded to core public concerns including the technical principle of the watermark, its impact on output quality, and the motivation for implementation.
+
+<FeedbackButtons slug="item:anthropic-claude-text-watermark" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/gemini-omni-1-1-flash-lets-you-build-with-more-control/" target="_blank" rel="noopener noreferrer">Gemini Omni 1.1 Flash lets you build with more control</a>
+
+*Google DeepMind*
+
+Google's newly released Gemini Omni 1.1 Flash is a lightweight multimodal LLM for developers, with its core advantage being significantly improved development controllability: it supports mandatory structured output and fine-grained configuration of multimodal scheduling, has 30% faster inference speed and 40% lower calling cost compared to the previous generation, and can efficiently adapt to customized development needs for scenarios such as agents and multimodal applications.
+
+<FeedbackButtons slug="item:deepmind-gemini-omni-1-1-flash-lets-you-build-with-more-control" client:visible />
+
+## <a href="https://deepmind.google/blog/piloting-the-worlds-first-double-blind-ai-evaluations/" target="_blank" rel="noopener noreferrer">Piloting the world's first double-blind AI evaluations</a>
+
+*Google DeepMind*
+
+This is the world's first double-blind AI evaluation pilot project, which adopts a design where the identities of the evaluator and the AI subject to be evaluated are hidden from each other. It can effectively avoid non-capability-related interference factors such as brand effect and evaluators' subjective preferences, greatly improving the fairness and credibility of AI capability evaluation results, and providing a more scientific new evaluation paradigm for subsequent scenarios such as AI performance ranking, compliance verification, and market-oriented model selection.
+
+<FeedbackButtons slug="item:deepmind-piloting-the-worlds-first-double-blind-ai-evaluations" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/open-asr-leaderboard-global-south" target="_blank" rel="noopener noreferrer">The Open ASR Leaderboard Adds Its First Global South Language</a>
+
+*Hugging Face*
+
+This update to the open Automatic Speech Recognition (ASR) leaderboard includes Swahili, a representative local language of the Global South, for the first time, filling the gap that previous ASR evaluations long focused on high-resource European and American languages and lacked evaluation of low-resource languages in less developed regions. The newly added track uses real speech datasets from multiple scenarios in Africa, adapts to the needs of low-resource scenarios, and will promote the implementation of ASR technology for low-resource languages and contribute to global digital linguistic equity.
+
+<FeedbackButtons slug="item:hf-blog-open-asr-leaderboard-global-south" client:visible />
+
+## <a href="https://huggingface.co/blog/train-multi-vector-encoder" target="_blank" rel="noopener noreferrer">Training and Finetuning Multi-Vector Embedding Models with Sentence Transformers</a>
+
+*Hugging Face*
+
+Currently you have only provided the paper title, without the specific content of the abstract. Please supplement the full English abstract of this paper, and I will refine it into a Chinese summary of around 120 words as required, focusing on the core method and research conclusions, keeping it concise and clear without redundancy.
+
+<FeedbackButtons slug="item:hf-blog-train-multi-vector-encoder" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This article sorts out the evolution of the concept of Recursive Self-Improvement (RSI): In 1965, I.J. Good first proposed the idea of superintelligent machines, referring to agents that can surpass all human intellectual activities and design better systems on their own to achieve self-upgrade; in 2008, Eliezer Yudkowsky clarified that the core of RSI is that AI optimizes its own cognitive mechanism relying on its existing intelligence. Currently, RSI in the AI field includes two paths: models directly rewrite their own weights, and optimize training pipelines to complete iterations.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/08/480700.html" target="_blank" rel="noopener noreferrer">My AI content creation assistant is incredibly efficient, producing 17 finished works in the time it takes to eat a meal</a>
+
+*QbitAI*
+
+Baidu's newly released AI office agent "Baidu Dazi" can independently complete long-range full-process tasks from information processing to finished product output, and proposes the professional office standard of "stunning on delivery", requiring products to be fast, professional, and ready to use directly. According to the July industry ranking, its monthly active users rank second overall, with the highest growth rate. Real-world tests show that the upgraded content creation suite can efficiently complete multi-platform content production tasks.
+
+<FeedbackButtons slug="item:qbitai-480700" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/480666.html" target="_blank" rel="noopener noreferrer">Time's Global AI 100 list is released, accurately spotting Zhi Huijun's low-profile behind-the-scenes boss</a>
+
+*QbitAI*
+
+Time's 2026 Global AI 100 list has been released, with key figures in the AI field at home and abroad including Sam Altman, Elon Musk, and Fei-Fei Li all selected. Deng Taihua, founder of Unitree Robotics in the Innovators section, has attracted attention. He is Zhi Huijun's superior, who worked at Huawei for more than 20 years leading the construction of the Kunpeng and Ascend ecosystems. He stayed behind the scenes in the early days of Unitree's founding, and only appeared publicly in recent years as the company's commercialization progressed.
+
+<FeedbackButtons slug="item:qbitai-480666" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/480600.html" target="_blank" rel="noopener noreferrer">Just now, the first AGI stock on 港股 is booming! Agent business revenue nears 500 million yuan in half a year, Token revenue soars 500% in Q2</a>
+
+*QbitAI*
+
+Unisound, the first AGI stock listed on 港股, released its 2026 mid-year report: total revenue in the first half of the year was 562 million yuan, up 38.7% year-on-year, with the growth rate nearly doubling. Among them, the agent business revenue of 478 million yuan is the core growth engine, the newly added Token business saw a month-on-month surge of over 500% in Q2 with a gross margin of over 60%, repurchase rate exceeds 60%, and the company holds nearly 1 billion yuan in cash flow. Unlike OpenClaw, which is still facing development difficulties, its agents have been implemented in scenarios such as healthcare and insurance and have achieved profitability.
+
+<FeedbackButtons slug="item:qbitai-480600" client:visible />
