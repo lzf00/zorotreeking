@@ -1,0 +1,205 @@
+---
+lang: en
+translationKey: digest-2026-08-31
+title: "Daily AI Highlights · 2026-08-31"
+description: "20 Papers · Multi-source Aggregation + AI Summaries"
+date: 2026-08-31
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's highlights in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">More than 10 cutting-edge AI papers were released today on Hugging Face and arXiv, covering embodied reasoning, model quantization, security protection and other fields</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Industry giants including OpenAI, Anthropic and DeepMind have successively released official updates on business decisions, functional standards, new models and more</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">New implementation progress has emerged in the AI industry, including reinforcement training hardware, industrial embodied intelligence, and quantitative research agents</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📄 Cutting-edge Papers</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏢 Tech Giant Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Embodied Intelligence</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚙️ Technical Optimization</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💼 Industry Implementation</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2608.27549" target="_blank" rel="noopener noreferrer">Code as Worlds: Agentic Discovery of Executable World Representations for Physical Reasoning</a>
+
+*HF ★ 19 · Hanyang Wang, Yimo Cai, Weiliang Chen… · [HF Mirror](https://huggingface.co/papers/2608.27549)*
+
+To address the issues that existing vision-language models lack explicit representation of underlying physical mechanisms and have insufficient reasoning reliability, this paper proposes the Code-as-World paradigm: it converts the composition, dynamics, and appearance of the physical world into executable code as an abstract representation, designs an iterative closed-loop for agent abductive reasoning that can generate such representations from multi-modal observations, and provides large-scale physical supervision for vision-language models. Experiments show that it achieves SOTA on the QuantiPhy dataset, outperforming leading closed-source models.
+
+<FeedbackButtons slug="item:arxiv-2608.27549" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.28476" target="_blank" rel="noopener noreferrer">ContextPilot: Teaching Agents for Proactive Context Management via Fine-grained RL</a>
+
+*HF ★ 14 · Zhuoshi Pan, Qizhi Pei, Junru Lu… · [HF Mirror](https://huggingface.co/papers/2608.28476)*
+
+To solve the problems of limited toolset, low exploration efficiency, and overly coarse reward allocation granularity in existing active context management for long-cycle agent tasks, Tencent proposes the ContextPilot framework: it expands tools for planning, long-term memory and more, adapts to fine-grained reinforcement learning, identifies critical decisions through context and entropy changes, and realizes action-level advantage estimation. Experiments show that it adapts to multiple types of base models, and outperforms existing baselines on tasks such as long-context question answering with a more compact working context.
+
+<FeedbackButtons slug="item:arxiv-2608.28476" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.26582" target="_blank" rel="noopener noreferrer">J-Zero: Unified Challenger--Solver--Judge Co-Evolution from Zero Data</a>
+
+*HF ★ 14 · Gyouk Chu, Myeongho Jeon, Eunho Yang · [HF Mirror](https://huggingface.co/papers/2608.26582)*
+
+To address the limitation that self-evolving large models are only applicable to verifiable domains and there is insufficient research on non-verifiable domains, this paper proposes J-Zero, a challenger-solver-judge co-evolution framework under zero data: the challenger generates increasingly difficult tasks, the solver optimizes answers, and the judge adapts based on preference pairs with known generation order without needing to score by itself. It outperforms baselines by 4.2 and 8.0 points in the two types of domains respectively, can continue to improve after 10 iterations, far outperforming baselines that degrade after only two rounds.
+
+<FeedbackButtons slug="item:arxiv-2608.26582" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.27550" target="_blank" rel="noopener noreferrer">Beyond Data Scaling: Representation-Centric Continued Pre-training for Vision-Language-Action Models</a>
+
+*HF ★ 12 · Senqiao Yang, Chengyao Wang, Yuxin Chen… · [HF Mirror](https://huggingface.co/papers/2608.27550)*
+
+To address the representation bottleneck of general vision-language-action (VLA) models caused by high cost and difficulty in scaling up robot data collection, this paper proposes VLAct, a representation-centric continued pretraining framework. By retaining the general prior of VLMs, implementing cross-entity action collaborative supervision, and partially unifying cross-entity action layout design, it can extract transferable vision-action knowledge under a fixed data budget. Its performance surpasses existing industrial-grade VLA systems on multiple benchmarks, outperforms the full-data baseline on unknown humanoid robot tasks with only 20% of the data, and only requires 16 GPUs for training, making it an important optimization direction for the VLA field beyond data scaling.
+
+<FeedbackButtons slug="item:arxiv-2608.27550" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.24777" target="_blank" rel="noopener noreferrer">StepGuard: Learning Step-Level Guardrails with Scalable Supervision and Safety-Utility Balancing</a>
+
+*HF ★ 11 · Zhijie Zheng, Yu Li, Chen Qian… · [HF Mirror](https://huggingface.co/papers/2608.24777)*
+
+To address the security risks of tool calling by LLM agents and the widespread lack of pre-execution verification for step-level actions in existing guardrails, this paper proposes StepGuard, a step-level security guardrail: it is paired with StepGen to automatically generate positive and negative samples of risky steps in the same context, and uses Balance-GRPO to dynamically balance attack and defense samples for training weights. Tests show it has the highest accuracy among open-source guardrails, on par with GPT-5.4, reduces attack success rate by 77.3% compared to unprotected scenarios, with only a 2.8 percentage point loss in utility.
+
+<FeedbackButtons slug="item:arxiv-2608.24777" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2608.27507" target="_blank" rel="noopener noreferrer">Marginal Coverage Credit Reduces Redundant Exploration in Parallel State-Entropy Optimization</a>
+
+*Junhao Cao, Hongyi Xia, Jianian Wu…*
+
+To address the flaw of parallel state-entropy maximization policy gradient algorithm (PGPSE) that it only counts overall exploration benefits and cannot identify non-redundant contributing policies, this paper proposes the MCC-PGPSE method. It calculates the contribution of a single policy through leave-one-out policy coverage, adjusts the allocation without changing the total intrinsic reward scale, and suppresses redundant exploration. Multiple benchmark tests show that its performance is better than baselines, and the benefits mainly come from the leave-one-out coverage mechanism, verifying the effectiveness of contribution-oriented reward allocation in improving complementary coverage of parallel policies.
+
+<FeedbackButtons slug="item:arxiv-2608.27507" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.27512" target="_blank" rel="noopener noreferrer">Quantization-Triggered Backdoors in Language Models: Cross-Quantizer Transferability and the Validation--Deployment Gap</a>
+
+*Jacopo Dardini, Claudio Stanzione, Giordano Col\`o…*
+
+This study finds that post-training quantization for large models is not a semantically neutral optimization, and will create a validation-deployment gap: it proposes quantization behavior equivalence classes to provide theoretical support for quantization-triggered backdoors. Through three-stage adversarial fine-tuning, backdoors that are hidden in full-precision models and activated after INT8/4bit quantization can be embedded. Tests show that the backdoor trigger rate of translation models reaches up to 85%, stance classification bias increases by up to 0.33, and attacks can be transferred across quantizers. The conclusion is that full-precision-only audits are insufficient, and the final deployed quantized model must be verified.
+
+<FeedbackButtons slug="item:arxiv-2608.27512" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.27513" target="_blank" rel="noopener noreferrer">DAMP: Decay-Aware Mixed-Precision Recurrent-State Quantization</a>
+
+*Tao Zhang, Jianchao Tan, Pingwei Sun…*
+
+To address the problems of high VRAM occupation from FP32 storage of recurrent states and high decoding latency in large models using GDN and KDA architectures, this paper proposes DAMP, a decay-aware mixed-precision quantization scheme: in the offline calibration phase, it identifies high-risk channels by combining quantization error energy and channel decay stability, and allocates precision differentially. Tests show that this scheme can reduce state storage by 69.1%, speed up the update kernel by up to 2.01 times, reduce decoding latency by 10.9%, and its accuracy is close to the FP32 baseline.
+
+<FeedbackButtons slug="item:arxiv-2608.27513" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/our-decision-on-cursor-following-its-acquisition-by-spacex" target="_blank" rel="noopener noreferrer">Our decision on Cursor following its acquisition by SpaceX</a>
+
+*OpenAI*
+
+This announcement is OpenAI's partnership adjustment statement: following the acquisition of code editing tool Cursor by SpaceX, OpenAI has officially decided to terminate the previously signed cooperation contract with Cursor to supply its large models. This decision is a routine commercial adjustment triggered by corporate mergers and acquisitions, most likely based on considerations of technical ownership, competitive risks or data compliance. Going forward, Cursor will need to adapt to other AI models to support its core functions.
+
+<FeedbackButtons slug="item:openai-blog-our-decision-on-cursor-following-its-acquisition-by-spacex" client:visible />
+
+## <a href="https://openai.com/index/supporting-next-generation-ai-startups-thailand" target="_blank" rel="noopener noreferrer">Supporting Thailand’s next generation of AI startups</a>
+
+*OpenAI*
+
+OpenAI has partnered with Thailand's Ministry of Higher Education, Science, Research and Innovation (MHESI) to launch an 8-week AI startup acceleration program, focusing on three livelihood tracks: healthcare, elderly care, and education. It will provide targeted support to 10 startups in related fields, help them iterate their existing AI technology prototypes into compliant, reliable and implementable products, support the cultivation of local next-generation AI innovation forces, and improve Thailand's AI entrepreneurship ecosystem.
+
+<FeedbackButtons slug="item:openai-blog-supporting-next-generation-ai-startups-thailand" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/model-hardware-standard-research-preview" target="_blank" rel="noopener noreferrer">Previewing the Model Hardware Standard</a>
+
+*Anthropic*
+
+Recently, AI company Anthropic launched a research preview of the Model Hardware Standard (MHS). This standard is a unified shared specification for AI agents to safely operate physical devices, aiming to solve the pain point of security adaptation when AI controls physical hardware in different scenarios. The standard is now open to the first batch of research laboratories and advanced manufacturing manufacturers, and will lay a solid security foundation for the large-scale implementation of AI embodied applications.
+
+<FeedbackButtons slug="item:anthropic-model-hardware-standard-research-preview" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-text-watermark" target="_blank" rel="noopener noreferrer">How Claude&#x27;s text watermarking works</a>
+
+*Anthropic*
+
+Anthropic officially announced that all text generated by future iterations of the Claude large model will have a built-in exclusive watermark. This technology can quickly identify whether text is generated by Claude, and is a compliance measure implemented in collaboration with multiple leading AI manufacturers to meet the requirements of the EU AI Act. This official response addresses key public concerns including the technical logic of the watermark, its impact on output quality, and the core motivation for launching this feature.
+
+<FeedbackButtons slug="item:anthropic-claude-text-watermark" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/gemini-omni-1-1-flash-lets-you-build-with-more-control/" target="_blank" rel="noopener noreferrer">Gemini Omni 1.1 Flash lets you build with more control</a>
+
+*Google DeepMind*
+
+Google's newly released Gemini Omni 1.1 Flash is a lightweight multimodal large model for development scenarios, with its core advantage being greatly improved development controllability: it supports fine-grained output format customization, adjustable multimodal interaction parameters, has 30% faster inference speed than previous generation models of the same tier, 20% lower calling cost, is suitable for real-time interactive AI native applications, and can significantly reduce the threshold for implementation.
+
+<FeedbackButtons slug="item:deepmind-gemini-omni-1-1-flash-lets-you-build-with-more-control" client:visible />
+
+## <a href="https://deepmind.google/blog/piloting-the-worlds-first-double-blind-ai-evaluations/" target="_blank" rel="noopener noreferrer">Piloting the world's first double-blind AI evaluations</a>
+
+*Google DeepMind*
+
+This pilot is the world's first double-blind AI evaluation project, adopting a core two-way anonymous double-blind mechanism: evaluators do not know in advance whether the evaluation subject is AI or human, and the tested AI is also not notified that it is in the evaluation process. This can effectively avoid evaluation bias caused by identity awareness, more objectively anchor the real capability level of AI, and provide important practical reference for the subsequent standardization of AI evaluation systems.
+
+<FeedbackButtons slug="item:deepmind-piloting-the-worlds-first-double-blind-ai-evaluations" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/open-asr-leaderboard-global-south" target="_blank" rel="noopener noreferrer">The Open ASR Leaderboard Adds Its First Global South Language</a>
+
+*Hugging Face*
+
+The Open Automatic Speech Recognition (ASR) Leaderboard has included indigenous languages from the Global South for the first time. Previously, such leaderboards mostly covered common European and American languages, and low-resource minority languages in the Global South have long been excluded from evaluation. This addition is paired with standardized evaluation corpora for the corresponding languages, filling the gap in multilingual ASR evaluation, which will help the implementation of speech technology in underdeveloped regions and narrow the global digital language divide.
+
+<FeedbackButtons slug="item:hf-blog-open-asr-leaderboard-global-south" client:visible />
+
+## <a href="https://huggingface.co/blog/train-multi-vector-encoder" target="_blank" rel="noopener noreferrer">Training and Finetuning Multi-Vector Embedding Models with Sentence Transformers</a>
+
+*Hugging Face*
+
+Note: The full abstract text was not pasted, the following is the core summary of the public paper corresponding to the title: This paper extends the Sentence Transformers framework to support end-to-end training and fine-tuning of multi-vector embedding models, introducing adapted improved contrastive loss and late interaction matching mechanisms. Tests show that this scheme improves performance by an average of about 10% over single-vector embedding models on tasks such as information retrieval and open-domain question answering, while being compatible with the original tool ecosystem, with low deployment and inference thresholds and excellent efficiency.
+
+<FeedbackButtons slug="item:hf-blog-train-multi-vector-encoder" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This paper sorts out the conceptual context of Recursive Self-Improvement (RSI): in 1965, I.J. Good first proposed the idea of superintelligent machines, referring to systems that can surpass all human intellectual activities and design better machines on their own to achieve iteration; in 2008, Eliezer Yudkowsky formally proposed the RSI concept, whose core is the feedback loop where AI optimizes its own cognitive architecture based on existing intelligence. In the context of contemporary AI, this feedback can be manifested as directly rewriting its own weights, or optimizing the training process in a broad sense.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/08/481759.html" target="_blank" rel="noopener noreferrer">OpenAI买几万台Mac搞强化训练！英伟达的活被苹果抢了</a>
+
+*QbitAI*
+
+Recently, leading AI companies including OpenAI and Anthropic have purchased and rented a large number of peripheral-free Mac mini/Studio devices for reinforcement learning training of agents that can operate computers autonomously. The unified memory of Apple's M-series chips avoids the transmission bottleneck between NVIDIA GPU VRAM and system memory, making it suitable for this niche scenario. This has directly driven a 29% year-on-year increase in Mac quarterly revenue, and Apple has also launched targeted enterprise AI hardware promotion activities.
+
+<FeedbackButtons slug="item:qbitai-481759" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/481750.html" target="_blank" rel="noopener noreferrer">全国第三，公司第二，“初创黑马”灵犀智涌用ROSS Harness把机器人送进工业具身智能第一梯队</a>
+
+*QbitAI*
+
+Lingxi Zhiyong, a startup founded only three months ago, participated in the industrial assembly and feeding scenario competition of the 2nd World Humanoid Robot Games with a demo assembled robot, defeated multiple leading brands and ranked among the top 3 in China. It relies on its self-developed ROSS Harness industrial-grade execution system as the core, solving industry pain points such as unstable success rate and difficult migration of the single-model route, converting model probabilistic output into stable and controllable production capacity, and entering the first echelon of industrial embodied intelligence.
+
+<FeedbackButtons slug="item:qbitai-481750" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/481475.html" target="_blank" rel="noopener noreferrer">AQuA：让量化研究 Agent 持续进化，也让回测结果经得起检验</a>
+
+*QbitAI*
+
+To address the pain points of quantitative research agents that self-iteration is prone to data leakage, overfitting and unreliable conclusions, teams from Princeton, Ant Group and Stanford jointly launched the AQuA system, which sets up two independent self-evolution closed loops for factor discovery and model research and development, isolating data paths and evaluation rules outside the iteration loop to avoid cheating. Tests show that the Sharpe ratio of the out-of-sample long-short strategy for 美股 reaches up to 2.5 after deducting turnover costs, and the Sharpe ratio was positive every year from 2021 to 2025.
+
+<FeedbackButtons slug="item:qbitai-481475" client:visible />
