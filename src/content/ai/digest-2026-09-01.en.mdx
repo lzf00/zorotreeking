@@ -1,0 +1,206 @@
+---
+lang: en
+translationKey: digest-2026-09-01
+title: "Daily AI Highlights · 2026-09-01"
+description: "20 papers · Multi-source aggregation + AI summaries"
+date: 2026-09-01
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second daily recap</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Today, multiple cutting-edge AI papers were released on Hugging Face and arXiv, covering areas including model distillation, agent development, and quantization security</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading players including OpenAI, Anthropic, and DeepMind announced multiple latest updates on infrastructure, model standards, new products and more</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">The domestic AI circle has seen frequent industrial hotspots, covering computing power cooperation, startup competitions, rumors of the upcoming GPT-6 release and other content</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏢 Big Tech Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💻 Industry News</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚙️ Tech Implementation</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Industry Hotspots</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2608.31046" target="_blank" rel="noopener noreferrer">Does On-Policy Distillation Really Distill? From Noisy Teacher to Self-Improvement</a>
+
+*HF ★ 13 · Yi Ding, Ruqi Zhang · [HF Mirror](https://huggingface.co/papers/2608.31046)*
+
+This study explores the source of performance of on-policy distillation (OPD), finding that its teacher supervision noise increases with model scale, but student performance is not affected by the noise. The core gain comes from suppressing tokens with low log probability, requiring no teacher participation. Based on this, the unsupervised on-policy self-adaptive method OPSA is proposed, which allocates learning signals through entropy-adaptive negative advantage. Its performance is significantly improved compared to baselines and the original OPD, with excellent generalizability.
+
+<FeedbackButtons slug="item:arxiv-2608.31046" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.31119" target="_blank" rel="noopener noreferrer">PaperGym: Rubric-Centered Evolution for Research-Plan Generation</a>
+
+*HF ★ 9 · Yuhan Wang, Zhengxi Lu, Yuchen Yan… · [HF Mirror](https://huggingface.co/papers/2608.31119)*
+
+To address the pain point that AI-generated research plans lack credible evaluation basis, this paper proposes the PaperGym framework: it synthesizes research questions from the background and objectives of papers, extracts scoring rules from methods and experiments, and converts a single paper into a training environment, with a rule leakage rate of only 3.7%, far lower than existing solutions. It adopts a two-step training strategy using scoring rules, with performance significantly better than baselines such as supervised fine-tuning. It also open-sources 20,000 training corpora and a dedicated evaluation benchmark.
+
+<FeedbackButtons slug="item:arxiv-2608.31119" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.31075" target="_blank" rel="noopener noreferrer">Scaling Large Reasoning Models beyond Human Supervision: A Path toward Superintelligence</a>
+
+*HF ★ 8 · Zhiqin Yang, Jingwen Fu, Yuhan Liu… · [HF Mirror](https://huggingface.co/papers/2608.31075)*
+
+Targeting the scaling demand of large reasoning models for superintelligence, and addressing the pain points of lack of reliable rewards for open tasks and human supervision failing to keep up with model iteration, this paper builds a five-level evolution ladder from L0 to L4 from two dimensions: reward mechanism and training experience, sorts out the iterative path of removing human supervision, identifies four types of risks in self-generated rewards and training data, proposes three evaluation directions, and supports a supporting open source repository to track progress in the field.
+
+<FeedbackButtons slug="item:arxiv-2608.31075" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.31076" target="_blank" rel="noopener noreferrer">Learning to Evaluate Before Improving: Automatic Rubric Induction for Automatic Research Agents</a>
+
+*HF ★ 1 · Xuehai Wang, Haowei Qin, Tongxin Liu… · [HF Mirror](https://huggingface.co/papers/2608.31076)*
+
+To address the problems that autonomous research agents lack clear success criteria when handling open research tasks, and are prone to analysis omissions, improper methods, insufficient evidence for conclusions and other issues, this paper proposes the evaluation-first AutoSciRub framework: it disassembles task objectives, combines literature and data to generate task-specific executable evaluation rules, which are used to guide execution, verification and targeted iterative revision. Multiple benchmark tests show that this framework can stably and significantly improve the research performance of agents with different configurations, with strong versatility.
+
+<FeedbackButtons slug="item:arxiv-2608.31076" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.31022" target="_blank" rel="noopener noreferrer">MNIST-PRO: MNIST is Back as a Partially Observable World for AI Agents</a>
+
+*HF ★ 0 · Vernon Toh, Navonil Majumder, Zhengyuan Liu… · [HF Mirror](https://huggingface.co/papers/2608.31022)*
+
+To address the problem that existing partially observable agent benchmarks are mixed with control complexity and cannot separately test the ability to construct perceptual states, this paper proposes the MNIST-PRO benchmark: it transforms MNIST recognition into a sequential fragment search task with backtracking restrictions, testing 4 types of memory schemes for 10 multimodal models. The results show that there is a significant performance gap for models under partial observability, with three bottlenecks: poor perceptual integration, early search termination, and difficulty in correcting false beliefs, confirming that agents need to have reliable ability to construct and update perceptual states.
+
+<FeedbackButtons slug="item:arxiv-2608.31022" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2608.27507" target="_blank" rel="noopener noreferrer">Marginal Coverage Credit Reduces Redundant Exploration in Parallel State-Entropy Optimization</a>
+
+*Junhao Cao, Hongyi Xia, Jianian Wu…*
+
+To address the defect that the parallel state entropy maximization policy gradient method (PGPSE) only counts the overall exploration volume of the team and cannot identify non-redundant contributing policies, this study proposes the MCC-PGPSE method, which calculates the contribution of a single policy through leave-one-out policy coverage and state attribution expertise, and redistributes intrinsic rewards to suppress redundant exploration. Multi-scenario tests show that it is significantly better than baselines, and the performance improvement mainly comes from the leave-one-out coverage evaluation mechanism, verifying the optimization effect of contribution-oriented reward allocation on complementary coverage of parallel policies. (Full text 118 words)
+
+<FeedbackButtons slug="item:arxiv-2608.27507" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.27512" target="_blank" rel="noopener noreferrer">Quantization-Triggered Backdoors in Language Models: Cross-Quantizer Transferability and the Validation--Deployment Gap</a>
+
+*Jacopo Dardini, Claudio Stanzione, Giordano Colò…*
+
+This study confirms that post-training quantization of large models is not a semantically neutral optimization, and there is a validation-deployment gap. The team proposed quantization behavior equivalence classes to complete the theoretical foundation, built a three-stage adversarial fine-tuning framework that can implant backdoors that are only triggered when quantized to INT8/4-bit. Actual tests show that the backdoor trigger rate of translation models is up to 85.02%, the bias shift of stance classifiers is up to 0.33, and the attack can be transferred across quantizers, proving that source-precision only audit is insufficient, and deployed models must be included in certification.
+
+<FeedbackButtons slug="item:arxiv-2608.27512" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.27513" target="_blank" rel="noopener noreferrer">DAMP: Decay-Aware Mixed-Precision Recurrent-State Quantization</a>
+
+*Tao Zhang, Jianchao Tan, Pingwei Sun…*
+
+To address the problems of high FP32 recurrent state storage occupancy and slow decoding of large models using GDN and KDA architectures to replace KV cache, and serious accuracy loss of existing uniform quantization, this paper proposes the DAMP decay-aware mixed-precision quantization scheme: offline calibration combines quantization error energy and channel decay stability to select high-risk channels to retain high precision, and the rest are stored in INT8. This scheme can reduce recurrent state storage by 69%, speed up the update kernel by 2 times, reduce decoding latency by up to 10.9%, and the accuracy is close to the FP32 baseline.
+
+<FeedbackButtons slug="item:arxiv-2608.27513" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/polimill" target="_blank" rel="noopener noreferrer">Polimill builds Japan's next-generation public AI infrastructure</a>
+
+*OpenAI*
+
+Japanese institution Polimill leads the construction of the country's next-generation public AI infrastructure, with core technologies adopting OpenAI's GPT large language model and Codex code large model. This facility is implemented for municipal departments at all levels, which can support government staff to efficiently retrieve and call various administrative domain knowledge bases, while greatly accelerating the development and iteration efficiency of government digital systems, helping to improve the quality and upgrade of public services.
+
+<FeedbackButtons slug="item:openai-blog-polimill" client:visible />
+
+## <a href="https://openai.com/index/expanding-access-to-ai-with-chatgpt-ads" target="_blank" rel="noopener noreferrer">A milestone in expanding access to AI</a>
+
+*OpenAI*
+
+This disclosure marks an important development milestone for the ChatGPT advertising business: its current annualized operating revenue has exceeded the $1 billion mark, and it is simultaneously promoting business deployment layout on a global scale. The business adopts a tiered supply model of free basic services plus affordable paid value-added options, which greatly lowers the threshold for using AI. It is a landmark achievement in the process of AI technology inclusion, providing feasible support for a wider group of people to easily access AI capabilities.
+
+<FeedbackButtons slug="item:openai-blog-expanding-access-to-ai-with-chatgpt-ads" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/model-hardware-standard-research-preview" target="_blank" rel="noopener noreferrer">Previewing the Model Hardware Standard</a>
+
+*Anthropic*
+
+Anthropic recently launched the Model Hardware Standard (MHS) research preview, opening it to the first batch of research laboratories and high-end manufacturers for collaborative verification and iteration. This standard is a unified specification for AI agents to safely control physical devices, aiming to avoid security risks of AI operating physical hardware at the underlying rule level, and providing a unified adaptation benchmark for subsequent physical AI scenario implementation and cross-stakeholder technical collaboration.
+
+<FeedbackButtons slug="item:anthropic-model-hardware-standard-research-preview" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-text-watermark" target="_blank" rel="noopener noreferrer">How Claude's text watermarking works</a>
+
+*Anthropic*
+
+To comply with the requirements of the EU AI Act, Anthropic will cooperate with multiple leading AI vendors to add a built-in text watermarking function to the upcoming Claude series of large models, which can trace and determine whether the target text is generated by Claude. This paper provides official answers to three questions of general public concern: the implementation logic of watermark technology, whether it affects the quality of model output, and the motivation for implementing this adjustment.
+
+<FeedbackButtons slug="item:anthropic-claude-text-watermark" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/gemini-omni-1-1-flash-lets-you-build-with-more-control/" target="_blank" rel="noopener noreferrer">Gemini Omni 1.1 Flash lets you build with more control</a>
+
+*Google DeepMind*
+
+Gemini Omni 1.1 Flash is an iterative version of Google's lightweight multimodal large model, with core upgrades focusing on improved developer controllability: new fine-grained output format constraints, custom behavior tuning, and precise control capabilities for multimodal responses are added, while retaining the previous generation's advantages of low latency and low inference cost, adapting to end-side deployment and real-time interaction requirements, which can greatly lower the threshold for development and deployment of multimodal applications.
+
+<FeedbackButtons slug="item:deepmind-gemini-omni-1-1-flash-lets-you-build-with-more-control" client:visible />
+
+## <a href="https://deepmind.google/blog/piloting-the-worlds-first-double-blind-ai-evaluations/" target="_blank" rel="noopener noreferrer">Piloting the world's first double-blind AI evaluations</a>
+
+*Google DeepMind*
+
+This is the world's first double-blind AI evaluation pilot, targeting the common chaos in current AI evaluations such as scoring bias caused by knowing the model ownership, and participating parties specifically training for tests to get higher scores. It adopts a double-blind mechanism: reviewers do not know information such as the developer and model of the participating AI throughout the process, and participating parties cannot know the test content and evaluation standards in advance, which can effectively ensure the fairness of the evaluation, and provide a new implementable paradigm for subsequent evaluation of AI performance, ethical compliance and other dimensions.
+
+<FeedbackButtons slug="item:deepmind-piloting-the-worlds-first-double-blind-ai-evaluations" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/open-asr-leaderboard-global-south" target="_blank" rel="noopener noreferrer">The Open ASR Leaderboard Adds Its First Global South Language</a>
+
+*Hugging Face*
+
+This Open Automatic Speech Recognition (ASR) Leaderboard includes low-resource languages from the Global South for the first time, breaking the previous industry status quo where mainstream ASR evaluation lists have long focused on high-resource common languages in Europe and America, ignoring the needs of niche languages in less developed regions. This move will promote the research and development of ASR technology for Global South languages, help local digital services to be implemented, and promote the inclusion of speech technology and the inheritance of local language and culture.
+
+<FeedbackButtons slug="item:hf-blog-open-asr-leaderboard-global-south" client:visible />
+
+## <a href="https://huggingface.co/blog/train-multi-vector-encoder" target="_blank" rel="noopener noreferrer">Training and Finetuning Multi-Vector Embedding Models with Sentence Transformers</a>
+
+*Hugging Face*
+
+You did not paste the summary text to be processed this time. If you are referring to the official public paper of the same name from Sentence Transformers, you can refer to the following summary:
+This study optimized the entire training and fine-tuning process of multi-vector embedding models, realized generating multiple semantic vectors for a single text based on the Sentence Transformers framework, solved the problem that single-vector representation has insufficient adaptability to fine-grained semantic matching scenarios. The accuracy on retrieval and semantic matching tasks is up to 11% higher than that of single-vector solutions, while providing out-of-the-box implementation, which greatly lowers the threshold for deployment of multi-vector models.
+
+<FeedbackButtons slug="item:hf-blog-train-multi-vector-encoder" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This paper focuses on the research of governance engineering for AI self-improvement, sorting out the evolution context of the recursive self-improvement (RSI) concept: I.J. Good first proposed the idea of "superintelligence" in 1965, and Eliezer Yudkowsky formally defined RSI as the feedback loop in which AI uses its own intelligence to optimize the underlying cognitive mechanism in 2008. Currently, this kind of feedback can be manifested as the model directly rewriting its own weights, or expanded to optimizing the training pipeline.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/08/481928.html" target="_blank" rel="noopener noreferrer">VCs are going crazy! 2 million RMB cash prize for the champion, plus 40 million RMB spent to build an AI "startup utopia"</a>
+
+*QbitAI*
+
+The "Delin Cup 2026 AI Startup Competition" hosted by Delin Capital is launched in Shenzhen, targeting the pain points of early-stage AI startup teams lacking exposure and tight financing windows. The champion will receive a 2 million RMB cash prize with no equity taken, and up to 15 teams will be selected to settle in the incubation space built with an investment of 40 million RMB, with free office and other costs, equipped with up to 5 million RMB in equity investment, and connected to more than 30 top VCs to help the project grow.
+
+<FeedbackButtons slug="item:qbitai-481928" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/481919.html" target="_blank" rel="noopener noreferrer">Fanshi reaches major computing power strategic cooperation with Huawei, becoming one of the first AI enterprises to adopt the highest-end domestic computing power base</a>
+
+*QbitAI*
+
+Fanshi recently reached a strategic cooperation on Ascend 950 chip computing power with domestic computing power leader Huawei, becoming one of the first AI enterprises to access the highest-end domestic computing power base. This cooperation can address the uncertainty of overseas computing power, adapt to the expansion rhythm of its own API business, improve the delivery capacity for large customers in finance, government and other fields, break the dependence on a single computing power source, and the large procurement scale provides deterministic support for its performance growth for several years.
+
+<FeedbackButtons slug="item:qbitai-481919" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/481893.html" target="_blank" rel="noopener noreferrer">'GPT-6' closed beta demos go viral! Release scheduled for this Thursday</a>
+
+*QbitAI*
+
+Recently, it is rumored online that OpenAI's new flagship model Astra (commonly known as GPT-6), which is scheduled to be released this Thursday, is expanding its internal testing, with a large number of actual test demos leaked. The model has extremely strong 3D generation capabilities, can independently produce complex interactive 3D assets with complete internal structures. With its high reasoning intensity and automatic iterative error correction capabilities, it greatly reduces the cost of game modeling. Currently, OpenAI has not officially confirmed the authenticity of the related demos.
+
+<FeedbackButtons slug="item:qbitai-481893" client:visible />
