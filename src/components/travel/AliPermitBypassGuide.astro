@@ -1,0 +1,92 @@
+---
+import RouteGuideShell from "./RouteGuideShell.astro";
+import AliLhasaReturnSheet from "./AliLhasaReturnSheet.astro";
+import AliPermitBypassRouteOverview from "./AliPermitBypassRouteOverview.astro";
+import {
+  aliPermitBypassDailyPlanning,
+  aliPermitBypassRouteDays,
+} from "../../data/ali-permit-bypass-route";
+
+const route = ["拉萨", "日喀则", "拉孜", "萨嘎", "塔钦", "札达", "狮泉河", "洞措", "色林措", "班戈", "纳木措", "拉萨", "上海"];
+---
+
+<RouteGuideShell
+  variant="lhasa-loop"
+  kicker="Ali grand loop · Skip Shigatse border permit"
+  title="日喀则边防证停办"
+  accentTitle="就绕过去"
+  lead="9 月 26 日拉萨取车，27 日开始自驾。国家移民管理局 8 月 28 日起暂停签发日喀则电子边境通行证，本版因此不去定日、珠峰和吉隆；只办阿里地区电子证，28 日经拉孜到萨嘎，29–30 日给塔钦和神山圣湖，10 月 1 日住札达，2 日到狮泉河，G317 按洞措、班戈、拉萨三段回程，5 日晚回拉萨，6 日还车，7 日飞上海。"
+  facts={[["证件", "只办阿里证"], ["09.30", "塔钦连住"], ["10.01", "札达过夜"]]}
+  route={route}
+  nav={[
+    { href: "#loop-verdict", label: "规划结论" },
+    { href: "#loop-sheet", label: "总路书" },
+    { href: "#route-atlas", label: "交互地图" },
+    { href: "#loop-pacing", label: "日程取舍" },
+    { href: "#loop-return", label: "回拉萨" },
+    { href: "#loop-gates", label: "执行门槛" },
+  ]}
+  footerTitle="绕开边境，不等于放松截止日。"
+  footerText="本页是 2026 国庆行前决策工具。日喀则边境证若恢复签发，可切回珠峰过夜版；出发前仍须按移民局、交警、景区和租车合同重新确认。"
+>
+  <section id="loop-verdict" class="rd-section">
+    <div class="rd-wrap rd-split">
+      <div><p class="rd-eyebrow">01 / Route verdict</p><div class="rd-rule"></div></div>
+      <div><h2>这是边防证约束下，<br />仍能走完阿里的闭环。</h2><p class="rd-copy">停的是日喀则市电子边境管理区通行证，不是进藏本身，也不是阿里证。珠峰、吉隆、聂拉木这类日喀则边境点现在申请不到，已持证官方也要求暂勿前往。阿里的普兰、札达、噶尔仍按阿里证办理。本版放弃珠峰，把两天还给塔钦和札达，10 月 5 日晚回拉萨的硬约束不变。官方原文见 <a href="https://www.nia.gov.cn/n897453/c1797217/content.html">国家移民管理局 2026 年第 5 号公告</a>。</p></div>
+    </div>
+    <div class="rd-wrap rd-metrics">
+      <div><strong>09.26</strong><span>贡嘎落地取车</span></div>
+      <div><strong>09.28</strong><span>拉孜直达萨嘎</span></div>
+      <div><strong>10.01</strong><span>札达过夜</span></div>
+      <div><strong>10.05</strong><span>纳木措后回拉萨</span></div>
+    </div>
+    <aside class="rd-alert"><div class="rd-wrap"><b>先分清三件事</b><p>日喀则市区和拉孜本身不需要日喀则边境证。定日检查站没有日喀则证过不去，所以珠峰取消。萨嘎到塔钦 8 月底有车主按阿里证走通，但萨嘎、仲巴部分乡镇在边境名单里，口径可能变化；过不去就折返拉萨，改 G317 北进狮泉河，不去吉隆灾害区。</p></div></aside>
+  </section>
+
+  <AliLhasaReturnSheet
+    days={aliPermitBypassRouteDays}
+    planning={aliPermitBypassDailyPlanning}
+    heading="12 天总路书，<br />不去珠峰，把时间还给阿里。"
+    sheetTitle="拉萨取还 · 绕证 12 日执行表"
+    sheetMeta="09.26–10.07 · 不去珠峰 · 札达过夜 · 10.05 回拉萨"
+    accentDays={[6, 10]}
+  />
+
+  <AliPermitBypassRouteOverview />
+
+  <section id="loop-pacing" class="rd-section rd-section--deep">
+    <div class="rd-wrap rd-split">
+      <div><p class="rd-eyebrow">02 / Why this pacing</p><div class="rd-rule"></div></div>
+      <div><h2>珠峰拿掉之后，<br />日程改由证件和 10 月 5 日回拉萨决定。</h2><p class="rd-copy">原来 9 月 28–30 日是定日、珠峰、萨嘎。本版合成 28 日一天赶到萨嘎，29 日到塔钦，30 日连住看神山圣湖，10 月 1 日住进札达。北线仍按洞措、班戈、拉萨三段，守住 10 月 5 日晚回拉萨。</p></div>
+    </div>
+    <div class="rd-wrap rd-exit-grid">
+      <article class="rd-exit"><span class="rd-status">取消</span><h3>09.29<br />珠峰过夜</h3><p>没有日喀则电子边境通行证，定日检查站过不去。吉隆是灾害核心区，也不作为绕行。珠峰过夜版仍保留，等恢复签发后再切回去。</p><ul><li>不去定日、绒布寺、大本营</li><li>不去吉隆、聂拉木、亚东</li><li>已持日喀则证也暂勿前往边境区</li></ul></article>
+      <article class="rd-exit"><span class="rd-status">加回来</span><h3>09.30–10.01<br />塔钦连住和札达过夜</h3><p>珠峰占掉的两天还给阿里。30 日不转山，只在塔钦远观冈仁波齐和玛旁雍措；10 月 1 日进札达住一晚，2 日古格或托林择一后到狮泉河。</p><ul><li>塔钦连住，减少搬运行李</li><li>札达日落前到县</li><li>古格/托林只做一处</li></ul></article>
+      <article class="rd-exit"><span class="rd-status">可执行拆法</span><h3>10.03–10.05<br />G317 三天两湖</h3><p>北线仍是洞措、班戈、拉萨，把单日压在 400–580 公里，只留色林措和纳木措。</p><ul><li>10月3日：狮泉河 → 洞措</li><li>10月4日：色林措 → 班戈</li><li>10月5日：纳木措 → 拉萨</li></ul></article>
+    </div>
+  </section>
+
+  <section id="loop-return" class="rd-section">
+    <div class="rd-wrap rd-split">
+      <div><p class="rd-eyebrow">03 / Lhasa return</p><div class="rd-rule"></div></div>
+      <div><h2>10月5日住进拉萨，<br />把10月6日留给恢复和还车。</h2><p class="rd-copy">狮泉河到拉萨的 G317 段不再为洞措、尼玛这些中途节点停留太久，真正留下的是色林措和纳木措。班戈到拉萨按 400–450 公里、傍晚到晚间到店估。</p></div>
+    </div>
+    <div class="rd-wrap rd-card-grid">
+      <article class="rd-card"><span>证件改法</span><h3>日喀则 → 拉孜 → 萨嘎</h3><p>9月28日早场扎什伦布寺后西行，不进定日。萨嘎检查站只出示阿里电子证；不放行就放弃西进。</p></article>
+      <article class="rd-card rd-card--accent"><span>阿里加深</span><h3>塔钦 → 札达 → 狮泉河</h3><p>9月29日到塔钦，30日连住看神山圣湖，10月1日住札达，2日短参观后到狮泉河过夜补给。</p></article>
+      <article class="rd-card rd-card--night"><span>G317回程</span><h3>洞措 → 色林措 → 纳木措 → 拉萨</h3><p>全员走完北线，只保留色林措和纳木措两个核心大景，10月5日晚住拉萨。</p></article>
+    </div>
+  </section>
+
+  <section id="loop-gates" class="rd-section rd-section--night">
+    <div class="rd-wrap"><p class="rd-eyebrow">04 / Go or no-go</p><h2>四个决定，<br />守住绕行和返沪。</h2>
+      <div class="rd-gates">
+        <article><b>01</b><h3>只办阿里证</h3><p>现在不要申请日喀则前往地。阿里证先锁定；萨嘎检查站若不认，折返拉萨改 G317 北进，不试探定日和吉隆。</p></article>
+        <article><b>02</b><h3>洞措住宿是开关</h3><p>10月3日晚必须有洞措可住点；确认不了就改住改则，并接受10月4日更长赶路。</p></article>
+        <article><b>03</b><h3>10月5日只短停纳木措</h3><p>纳木措保留为第二个大景，但不去圣象天门、扎西半岛深度游或湖边支线。</p></article>
+        <article><b>04</b><h3>两名司机与卫星通信</h3><p>北线服务稀疏，单车至少两名熟练司机、全尺寸备胎、防滑链和卫星通信。</p></article>
+      </div>
+      <div class="rd-links"><b>证件若恢复，切回珠峰版</b><a href="/hike/travel/ali-grand-loop-lhasa-return-2026/">珠峰过夜拉萨还车版 ↗</a><a href="/hike/travel/ali-grand-loop-2026/">原13天拉萨闭环 ↗</a><a href="/hike/travel/ali-central-loop-nagqu-g317-chengdu-2026/">G317成都版 ↗</a></div>
+    </div>
+  </section>
+</RouteGuideShell>

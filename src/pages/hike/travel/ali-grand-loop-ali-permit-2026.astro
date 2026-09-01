@@ -1,0 +1,21 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import AliPermitBypassGuide from "@/components/travel/AliPermitBypassGuide.astro";
+
+const title = "阿里大环线 · 绕开日喀则边防证 2026";
+const description = "9 月 26 日拉萨取车。日喀则电子边境通行证停发期间不去珠峰，经拉孜、萨嘎进阿里，塔钦连住后住札达，G317 经色林措、纳木措于 10 月 5 日回拉萨。";
+const stops = ["拉萨", "日喀则", "拉孜", "萨嘎", "塔钦", "札达", "狮泉河", "洞措", "色林措", "班戈", "纳木措", "拉萨", "上海"];
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "TouristTrip",
+  name: title,
+  description,
+  touristType: "阿里大环线自驾旅行者",
+  itinerary: { "@type": "ItemList", itemListElement: stops.map((name, index) => ({ "@type": "ListItem", position: index + 1, name })) },
+};
+---
+
+<BaseLayout title={title} description={description}>
+  <Fragment slot="head"><script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)}></script></Fragment>
+  <AliPermitBypassGuide />
+</BaseLayout>

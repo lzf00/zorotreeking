@@ -22,6 +22,15 @@ import {
 } from "../src/data/ali-lhasa-return-road-geometry";
 import * as aliLhasaReturnData from "../src/data/ali-lhasa-return-route";
 import {
+  aliPermitBypassRoadLabels,
+  aliPermitBypassRoutedDayGeometry,
+} from "../src/data/ali-permit-bypass-road-geometry";
+import {
+  aliPermitBypassDailyPlanning,
+  aliPermitBypassRouteDays,
+  aliPermitBypassRoutePoints,
+} from "../src/data/ali-permit-bypass-route";
+import {
   lhasaLanzhouRoadLabels,
   lhasaLanzhouRoutedDayGeometry,
 } from "../src/data/lhasa-lanzhou-road-geometry";
@@ -62,9 +71,10 @@ test("hike section is presented as hiking and travel across navigation and home"
 
 test("Ali travel guide is indexed and keeps its complete standalone roadbook", async () => {
   const guides = getTravelGuides("zh");
-  assert.equal(guides.length, 6);
-  assert.equal(guides[0]?.slug, "ali-grand-loop-lhasa-return-2026");
-  assert.equal(guides[1]?.slug, "ali-central-loop-nagqu-g317-chengdu-2026");
+  assert.equal(guides.length, 7);
+  assert.equal(guides[0]?.slug, "ali-grand-loop-ali-permit-2026");
+  assert.equal(guides[1]?.slug, "ali-grand-loop-lhasa-return-2026");
+  assert.equal(guides[2]?.slug, "ali-central-loop-nagqu-g317-chengdu-2026");
   assert.ok(guides.some((guide) => guide.slug === "ali-central-loop-nagqu-chengdu-2026"));
   assert.ok(guides.some((guide) => guide.slug === "ali-central-loop-lhasa-lanzhou-2026"));
   assert.ok(guides.some((guide) => guide.slug === "ali-grand-loop-lhasa-lanzhou-2026"));
@@ -103,7 +113,7 @@ test("travel guide catalog separates complete routes from destination-specific r
   );
 
   const completeGuides = getTravelGuides("zh", { scope: "complete" });
-  assert.equal(completeGuides.length, 5);
+  assert.equal(completeGuides.length, 6);
   assert.ok(completeGuides.every((guide) => guide.scope === "complete"));
   assert.ok(completeGuides.every((guide) => guide.status === "planning"));
   assert.ok(completeGuides.every((guide) => /^2026-\d{2}-\d{2}$/.test(guide.updated)));
@@ -179,6 +189,8 @@ test("G317 Chengdu and Lhasa-return loop are independent indexed roadbooks", asy
   assert.doesNotMatch(loopGuide, /阿里昆莎机场|阿里普兰机场|最晚10月5日到上海|朋友/);
   assert.match(loopGuide, /去掉分流之后/);
   assert.match(loopGuide, /狮泉河只做补给/);
+  assert.match(loopGuide, /绕证方案/);
+  assert.match(loopGuide, /ali-grand-loop-ali-permit-2026/);
   assert.match(loopOverview, /point\.id !== "shanghai"/);
   assert.doesNotMatch(loopOverview, /point\.id !== "shanghai" && point\.id !== "namtso"/);
   assert.match(loopOverview, /day\.day < 12/);
@@ -641,4 +653,57 @@ test("Nagqu G317 deadline route keeps the shortest north-line handoff and mapped
   for (const expected of ["G317", "G227", "G350", "G4217", "返沪航班"]) {
     assert.ok(refs.has(expected), `G317 map is missing ${expected}`);
   }
+});
+
+test("Shigatse permit-bypass loop skips Everest and restores Zanda overnight", async () => {
+  const [page, guide, overview] = await Promise.all([
+    readFile(
+      new URL("../src/pages/hike/travel/ali-grand-loop-ali-permit-2026.astro", import.meta.url),
+      "utf8",
+    ),
+    readFile(new URL("../src/components/travel/AliPermitBypassGuide.astro", import.meta.url), "utf8"),
+    readFile(
+      new URL("../src/components/travel/AliPermitBypassRouteOverview.astro", import.meta.url),
+      "utf8",
+    ),
+  ]);
+
+  assert.match(page, /<AliPermitBypassGuide/);
+  assert.match(guide, /只办阿里证/);
+  assert.match(guide, /札达过夜/);
+  assert.match(guide, /不去定日、珠峰和吉隆/);
+  assert.match(guide, /n897453\/c1797217/);
+  assert.doesNotMatch(guide, /吉山吉舍|9 月 29 日上午进珠峰景区/);
+  assert.doesNotMatch(guide, /阿里昆莎机场|阿里普兰机场|最晚10月5日到上海|朋友分流/);
+  assert.match(overview, /point\.id !== "shanghai"/);
+  assert.match(overview, /day\.day < 12/);
+
+  assert.equal(aliPermitBypassRouteDays.length, 12);
+  assert.deepEqual(
+    aliPermitBypassRouteDays.map((day) => day.day),
+    Array.from({ length: 12 }, (_, index) => index + 1),
+  );
+  assert.equal(aliPermitBypassRouteDays[0]?.date, "09.26");
+  assert.match(aliPermitBypassRouteDays[2]?.title ?? "", /日喀则.*拉孜.*萨嘎/);
+  assert.match(aliPermitBypassRouteDays[3]?.title ?? "", /萨嘎.*塔钦/);
+  assert.match(aliPermitBypassRouteDays[4]?.title ?? "", /塔钦/);
+  assert.match(aliPermitBypassRouteDays[5]?.title ?? "", /札达/);
+  assert.match(aliPermitBypassRouteDays[6]?.title ?? "", /札达.*狮泉河/);
+  assert.match(aliPermitBypassDailyPlanning[5]?.stay.city ?? "", /札达/);
+  assert.match(aliPermitBypassDailyPlanning[0]?.reservations[0]?.subject ?? "", /日喀则电子边境通行证停发/);
+
+  const pointIds = new Set(aliPermitBypassRoutePoints.map((point) => point.id));
+  for (const id of ["tingri", "gawula", "rongbuk", "ebc"]) {
+    assert.equal(pointIds.has(id), false, `bypass map should not include ${id}`);
+  }
+  for (const day of aliPermitBypassRouteDays) {
+    for (const id of day.pointIds) assert.ok(pointIds.has(id), `bypass D${day.day} references unknown ${id}`);
+    assert.ok(aliPermitBypassRoutedDayGeometry[day.day]?.length >= 2, `bypass D${day.day} needs mapped geometry`);
+  }
+
+  const refs = new Set(aliPermitBypassRoadLabels.map((road) => road.ref));
+  for (const expected of ["G219", "G317", "G109", "返沪航班"]) {
+    assert.ok(refs.has(expected), `bypass map is missing ${expected}`);
+  }
+  assert.equal(refs.has("昆莎航班"), false);
 });

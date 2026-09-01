@@ -3,13 +3,38 @@ import {
   aliLhasaReturnDailyPlanning,
   aliLhasaReturnRouteDays,
 } from "../../data/ali-lhasa-return-route";
+import type { AliRouteDailyPlanning, AliRouteDay } from "../../data/ali-route";
+
+interface Props {
+  days?: AliRouteDay[];
+  planning?: AliRouteDailyPlanning[];
+  kicker?: string;
+  heading?: string;
+  lead?: string;
+  sheetTitle?: string;
+  sheetMeta?: string;
+  accentDays?: number[];
+}
+
+const {
+  days = aliLhasaReturnRouteDays,
+  planning = aliLhasaReturnDailyPlanning,
+  kicker = "01A / One-page roadbook",
+  heading = "12 天总路书，<br />一页看完景点、车程和酒店。",
+  lead = "这张表只写每天必看的点、估算距离和当晚首选/备选酒店。下面的地图和逐日清单有预约、风险和退出条件；出门前把这一页打出来即可。",
+  sheetTitle = "拉萨取还 · 12 日执行表",
+  sheetMeta = "09.26–10.07 · 珠峰过夜 · 10.05 回拉萨",
+  accentDays = [4, 10],
+} = Astro.props;
+
+const accentDaySet = new Set(accentDays);
 
 const shortenHotel = (name: string) =>
   name.replace(/（.*?）/g, "").replace(/\(.*?\)/g, "").replace(/\s+/g, " ").trim();
 
-const rows = aliLhasaReturnRouteDays.map((day) => {
-  const planning = aliLhasaReturnDailyPlanning.find((plan) => plan.day === day.day);
-  const stay = planning?.stay;
+const rows = days.map((day) => {
+  const plan = planning.find((item) => item.day === day.day);
+  const stay = plan?.stay;
   const primaryHotel = stay?.hotels[0]?.name;
   const backupHotel = stay?.hotels[1]?.name;
   let hotelLine = day.overnight;
@@ -30,6 +55,7 @@ const rows = aliLhasaReturnRouteDays.map((day) => {
     driving: day.driving,
     city: stay?.city ?? day.overnight,
     hotelLine,
+    accent: accentDaySet.has(day.day),
   };
 });
 ---
@@ -37,12 +63,12 @@ const rows = aliLhasaReturnRouteDays.map((day) => {
 <section id="loop-sheet" class="rd-section rd-sheet" aria-labelledby="loop-sheet-title">
   <div class="rd-wrap rd-split">
     <div>
-      <p class="rd-eyebrow">01A / One-page roadbook</p>
+      <p class="rd-eyebrow">{kicker}</p>
       <div class="rd-rule"></div>
     </div>
     <div>
-      <h2 id="loop-sheet-title">12 天总路书，<br />一页看完景点、车程和酒店。</h2>
-      <p class="rd-copy">这张表只写每天必看的点、估算距离和当晚首选/备选酒店。下面的地图和逐日清单有预约、风险和退出条件；出门前把这一页打出来即可。</p>
+      <h2 id="loop-sheet-title" set:html={heading} />
+      <p class="rd-copy">{lead}</p>
       <button type="button" class="rd-sheet-print" data-print-sheet>打印这一页</button>
     </div>
   </div>
@@ -52,9 +78,9 @@ const rows = aliLhasaReturnRouteDays.map((day) => {
       <header class="rd-sheet-head">
         <div>
           <b>ALI GRAND LOOP · LHASA RETURN 2026</b>
-          <strong>拉萨取还 · 12 日执行表</strong>
+          <strong>{sheetTitle}</strong>
         </div>
-        <span>09.26–10.07 · 珠峰过夜 · 10.05 回拉萨</span>
+        <span>{sheetMeta}</span>
       </header>
 
       <table class="rd-sheet-table">
@@ -69,7 +95,7 @@ const rows = aliLhasaReturnRouteDays.map((day) => {
         </thead>
         <tbody>
           {rows.map((row) => (
-            <tr>
+            <tr class={row.accent ? "rd-sheet-accent" : undefined}>
               <th scope="row">
                 <b>D{String(row.day).padStart(2, "0")}</b>
                 <span>{row.date}</span>
@@ -201,8 +227,7 @@ const rows = aliLhasaReturnRouteDays.map((day) => {
   .rd-sheet-table tbody tr:last-child td {
     border-bottom: 0;
   }
-  .rd-sheet-table tbody tr:nth-child(4),
-  .rd-sheet-table tbody tr:nth-child(10) {
+  .rd-sheet-table tbody tr.rd-sheet-accent {
     background: color-mix(in srgb, var(--rd-accent-2) 16%, transparent);
   }
   @media (max-width: 900px) {
