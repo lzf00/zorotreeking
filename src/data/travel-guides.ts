@@ -36,7 +36,7 @@ export const travelGuides: TravelGuide[] = [
     slug: "ali-grand-loop-lhasa-return-2026",
     href: "/hike/travel/ali-grand-loop-lhasa-return-2026/",
     title: "闭环 · 阿里大环线拉萨取还 2026",
-    description: "9 月 26 日拉萨取车，9 月 29 日住珠峰景区看日落星空，全员 10 月 2 日到狮泉河，G317 经洞措、色林措、班戈、纳木措回拉萨，10 月 5 日住宿。",
+    description: "9 月 26 日拉萨取车，9 月 29 日住巴松吉山吉舍看珠峰日落星空，全员 10 月 2 日到狮泉河，G317 经洞措、色林措、班戈、纳木措回拉萨，10 月 5 日住宿。",
     date: "2026-08-09",
     updated: "2026-08-27",
     location: "西藏 · 阿里大环线",
