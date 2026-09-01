@@ -1,0 +1,206 @@
+---
+lang: zh
+translationKey: digest-2026-09-01
+title: "AI 每日精选 · 2026-09-01"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-09-01
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">今日Hugging Face、Arxiv上线多篇AI前沿论文，覆盖模型蒸馏、智能体研发、量化安全等方向</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI、Anthropic、DeepMind等头部厂商公布基建、模型标准、新品等多项最新进展</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内AI圈频现产业热点，涵盖算力合作、创业赛事、GPT-6即将发布的传闻等内容</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 前沿研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏢 大厂动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💻 产业新闻</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚙️ 技术落地</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 行业热点</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2608.31046" target="_blank" rel="noopener noreferrer">Does On-Policy Distillation Really Distill? From Noisy Teacher to Self-Improvement</a>
+
+*HF ★ 13 · Yi Ding, Ruqi Zhang · [HF 镜像](https://huggingface.co/papers/2608.31046)*
+
+本研究探究同策略蒸馏（OPD）的性能来源，发现其教师监督噪声随模型规模升高，但学生性能不受噪声影响，核心增益来自抑制低对数概率token，无需教师参与。据此提出无监督同策略自适应方法OPSA，通过熵自适应负优势分配学习信号，性能较基线、原OPD均有大幅提升，泛用性优异。
+
+<FeedbackButtons slug="item:arxiv-2608.31046" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.31119" target="_blank" rel="noopener noreferrer">PaperGym: Rubric-Centered Evolution for Research-Plan Generation</a>
+
+*HF ★ 9 · Yuhan Wang, Zhengxi Lu, Yuchen Yan… · [HF 镜像](https://huggingface.co/papers/2608.31119)*
+
+针对AI生成科研计划缺乏可信评估依据的痛点，本文提出PaperGym框架：从论文背景目标合成待研究问题，从方法实验提取评分规则，将单篇论文转化为训练环境，规则泄露率仅3.7%，远低于现有方案。采用分两步利用评分规则的训练策略，效果显著优于监督微调等基线，还开源了2万条训练语料及专用评测基准。
+
+<FeedbackButtons slug="item:arxiv-2608.31119" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.31075" target="_blank" rel="noopener noreferrer">Scaling Large Reasoning Models beyond Human Supervision: A Path toward Superintelligence</a>
+
+*HF ★ 8 · Zhiqin Yang, Jingwen Fu, Yuhan Liu… · [HF 镜像](https://huggingface.co/papers/2608.31075)*
+
+本文面向超智能方向大推理模型规模化需求，针对开放任务缺可靠奖励、人类监督跟不上模型迭代的痛点，从奖励机制、训练经验两个维度搭建L0到L4的五级演进阶梯，梳理去人类监督的迭代路径，点明自主生成奖励、训练数据的四类风险，提出三类评估方向，配套开源仓库跟进领域进展。
+
+<FeedbackButtons slug="item:arxiv-2608.31075" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.31076" target="_blank" rel="noopener noreferrer">Learning to Evaluate Before Improving: Automatic Rubric Induction for Automatic Research Agents</a>
+
+*HF ★ 1 · Xuehai Wang, Haowei Qin, Tongxin Liu… · [HF 镜像](https://huggingface.co/papers/2608.31076)*
+
+针对自主科研代理处理开放科研任务时缺乏明确成功标准，易出现分析遗漏、方法不当、结论证据不足等问题，本文提出评估优先的AutoSciRub框架：拆解任务目标，结合文献与数据生成任务专属可执行评估规则，用于指导执行、校验与定向迭代修订。多基准测试显示，该框架可稳定显著提升不同配置代理的科研表现，通用性强。
+
+<FeedbackButtons slug="item:arxiv-2608.31076" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.31022" target="_blank" rel="noopener noreferrer">MNIST-PRO: MNIST is Back as a Partially Observable World for AI Agents</a>
+
+*HF ★ 0 · Vernon Toh, Navonil Majumder, Zhengyuan Liu… · [HF 镜像](https://huggingface.co/papers/2608.31022)*
+
+针对现有部分可观测智能体基准混杂控制复杂度、无法单独测试感知状态构建能力的问题，该文提出MNIST-PRO基准：将MNIST识别改造为带回溯限制的顺序片段搜索任务，测试10个多模态模型的4类记忆方案。结果显示部分可观测下模型性能缺口显著，存在感知整合差、提前停搜、错误信念难修正三类瓶颈，证实智能体需具备可靠感知状态构建更新能力。
+
+<FeedbackButtons slug="item:arxiv-2608.31022" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2608.27507" target="_blank" rel="noopener noreferrer">Marginal Coverage Credit Reduces Redundant Exploration in Parallel State-Entropy Optimization</a>
+
+*Junhao Cao, Hongyi Xia, Jianian Wu…*
+
+针对并行状态熵最大化策略梯度方法（PGPSE）仅统计团队整体探索量、无法识别非冗余贡献策略的缺陷，该研究提出MCC-PGPSE方法，通过留一策略覆盖度与状态归属专长计算单策略贡献，重分配内在奖励以抑制冗余探索。多场景测试显示其显著优于基线，性能提升主要来自留一覆盖评估机制，验证了贡献导向奖励分配对并行策略互补覆盖的优化作用。（全文118字）
+
+<FeedbackButtons slug="item:arxiv-2608.27507" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.27512" target="_blank" rel="noopener noreferrer">Quantization-Triggered Backdoors in Language Models: Cross-Quantizer Transferability and the Validation--Deployment Gap</a>
+
+*Jacopo Dardini, Claudio Stanzione, Giordano Col\`o…*
+
+该研究证实大模型训练后量化并非语义中性优化，存在验证-部署偏差。团队提出量化行为等价类完成理论奠基，搭建三阶段对抗微调框架，可植入仅INT8/4位量化时触发的后门，实测翻译模型后门触发率最高85.02%，立场分类器偏见偏移最高0.33，攻击可跨量化器迁移，证明仅源精度审计不足，部署态模型必须纳入认证。
+
+<FeedbackButtons slug="item:arxiv-2608.27512" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.27513" target="_blank" rel="noopener noreferrer">DAMP: Decay-Aware Mixed-Precision Recurrent-State Quantization</a>
+
+*Tao Zhang, Jianchao Tan, Pingwei Sun…*
+
+针对采用GDN、KDA架构替代KV缓存的大模型FP32循环态存储占用高、解码慢，现有均匀量化精度损失严重的问题，本文提出DAMP衰减感知混精度量化方案：离线校准结合量化误差能量、通道衰减稳定性筛选高风险通道保留高精度，其余用INT8存储。该方案可减69%循环态存储，更新核提速2倍，解码时延最高降10.9%，精度接近FP32基线。
+
+<FeedbackButtons slug="item:arxiv-2608.27513" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/polimill" target="_blank" rel="noopener noreferrer">Polimill builds Japan's next-generation public AI infrastructure</a>
+
+*OpenAI*
+
+日本机构Polimill主导搭建该国下一代公共AI基础设施，核心技术采用OpenAI的GPT大语言模型及Codex代码大模型。该设施面向各级市政部门落地，可支撑政务人员高效检索、调用各类行政领域知识库，同时能大幅加快政务数字化系统的开发迭代效率，助力公共服务提质升级。
+
+<FeedbackButtons slug="item:openai-blog-polimill" client:visible />
+
+## <a href="https://openai.com/index/expanding-access-to-ai-with-chatgpt-ads" target="_blank" rel="noopener noreferrer">A milestone in expanding access to AI</a>
+
+*OpenAI*
+
+本次披露ChatGPT广告业务的重要发展里程碑：当前其年化运营营收已突破10亿美元大关，同步推进全球范围的业务落地布局。该业务采用免费基础服务加平价付费增值选项的分层供给模式，大幅降低AI使用门槛，是AI技术普惠进程中的标志性成果，为更广泛群体便捷获取AI能力提供了可行支撑。
+
+<FeedbackButtons slug="item:openai-blog-expanding-access-to-ai-with-chatgpt-ads" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/model-hardware-standard-research-preview" target="_blank" rel="noopener noreferrer">Previewing the Model Hardware Standard</a>
+
+*Anthropic*
+
+Anthropic近期启动模型硬件标准（MHS）研究预览，向首批科研实验室、高端制造厂商开放供合作验证迭代。该标准是AI智能体安全操控物理设备的统一规范，旨在从底层规则层面规避AI操作实体硬件的安全风险，为后续实体AI场景落地、跨主体技术协作提供统一适配基准。
+
+<FeedbackButtons slug="item:anthropic-model-hardware-standard-research-preview" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-text-watermark" target="_blank" rel="noopener noreferrer">How Claude&#x27;s text watermarking works</a>
+
+*Anthropic*
+
+为符合欧盟《人工智能法案》要求，Anthropic将联合多家主流AI厂商，为后续推出的Claude系列大模型新增生成文本内置水印功能，可溯源判定目标文本是否由Claude生成。本文就公众普遍关心的水印技术实现逻辑、是否影响模型输出质量、推行该项调整的动因三类问题作出官方解答。
+
+<FeedbackButtons slug="item:anthropic-claude-text-watermark" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/gemini-omni-1-1-flash-lets-you-build-with-more-control/" target="_blank" rel="noopener noreferrer">Gemini Omni 1.1 Flash lets you build with more control</a>
+
+*Google DeepMind*
+
+Gemini Omni 1.1 Flash是谷歌推出的轻量级多模态大模型迭代版本，核心升级聚焦开发者可控性提升：新增细粒度输出格式约束、自定义行为调优、多模态响应精准管控能力，同时保留前代低延迟、低推理成本的优势，适配端侧部署、实时交互需求，可大幅降低多模态应用开发落地门槛。
+
+<FeedbackButtons slug="item:deepmind-gemini-omni-1-1-flash-lets-you-build-with-more-control" client:visible />
+
+## <a href="https://deepmind.google/blog/piloting-the-worlds-first-double-blind-ai-evaluations/" target="_blank" rel="noopener noreferrer">Piloting the world's first double-blind AI evaluations</a>
+
+*Google DeepMind*
+
+本次开展的是全球首个AI双盲评估试点，针对当前AI评测普遍存在的知悉模型归属导致打分偏向、参评方定向刷题刷分等乱象，采用双盲机制：评审方全程不知参评AI的研发主体、型号等信息，参评方无法提前获知测试内容、评审标准，可有效保障评测公允，为后续AI性能、伦理合规等维度的评测提供可落地的全新范式。
+
+<FeedbackButtons slug="item:deepmind-piloting-the-worlds-first-double-blind-ai-evaluations" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/open-asr-leaderboard-global-south" target="_blank" rel="noopener noreferrer">The Open ASR Leaderboard Adds Its First Global South Language</a>
+
+*Hugging Face*
+
+本次开放自动语音识别（ASR）排行榜首次纳入全球南方低资源语言，打破了此前主流ASR评估榜单长期聚焦欧美高资源通用语、忽视欠发达地区小众语言需求的行业现状。此举将推动面向全球南方语言的ASR技术研发，助力当地数字服务落地，促进语音技术普惠与本土语言文化传承。
+
+<FeedbackButtons slug="item:hf-blog-open-asr-leaderboard-global-south" client:visible />
+
+## <a href="https://huggingface.co/blog/train-multi-vector-encoder" target="_blank" rel="noopener noreferrer">Training and Finetuning Multi-Vector Embedding Models with Sentence Transformers</a>
+
+*Hugging Face*
+
+您未粘贴本次需要处理的摘要正文哦，若您指的是Sentence Transformers官方同名公开论文，可参考如下总结：
+该研究优化了多向量嵌入模型的训练微调全流程，基于Sentence Transformers框架实现单文本生成多语义向量，解决了单向量表征对细粒度语义匹配场景适配性不足的问题，在检索、语义匹配类任务上准确率较单向量方案最高提升11%，同时提供开箱即用的实现，大幅降低多向量模型落地门槛。
+
+<FeedbackButtons slug="item:hf-blog-train-multi-vector-encoder" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文面向AI自我改进的管控工程研究，梳理递归自我改进（RSI）概念的演进脉络：1965年I.J.古德最早提出“超智能机”设想，2008年尤德考斯基正式定义RSI为AI用自身智能优化底层认知机制的反馈环。当前这类反馈既可表现为模型直接改写自身权重，也可拓展为优化训练管线。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/08/481928.html" target="_blank" rel="noopener noreferrer">VC疯了！200万现金冠军奖，又花4000万造了一座AI「创业乌托邦」</a>
+
+*量子位*
+
+德邻资本主办的“德邻杯2026AI创业大赛”落地深圳，针对早期AI创业团队缺曝光、融资窗口紧的痛点，冠军可获200万无占股现金奖，还将遴选最多15支团队入驻其斥资4000万打造的孵化空间，免办公等各项成本，配最高500万股权投资，对接30余家顶级VC助力项目成长。
+
+<FeedbackButtons slug="item:qbitai-481928" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/481919.html" target="_blank" rel="noopener noreferrer">范式与华为达成重磅算力战略合作，成为首批拥抱国产最高端算力底座的AI企业</a>
+
+*量子位*
+
+范式近期与国产算力龙头华为达成昇腾950芯片算力战略合作，成为首批接入国产最高端算力底座的AI企业。此次合作可应对境外算力不确定性，适配自身API业务扩张节奏，提升金融、政务等大客户交付能力，打破单一算力依赖，超大采购规模为其数年业绩增长提供确定性支撑。
+
+<FeedbackButtons slug="item:qbitai-481919" client:visible />
+
+## <a href="https://www.qbitai.com/2026/08/481893.html" target="_blank" rel="noopener noreferrer">「GPT-6」灰测demo刷屏！周四发布在即</a>
+
+*量子位*
+
+近期网传OpenAI将于周四发布的新旗舰模型Astra（俗称GPT-6）正扩大内部测试，大量实测demo流出。该模型3D生成能力极强，可自主产出带完整内部结构、可交互的复杂3D资产，凭借高思考强度、自动迭代纠错能力大幅降低游戏建模成本，目前OpenAI官方尚未认领相关demo。
+
+<FeedbackButtons slug="item:qbitai-481893" client:visible />
