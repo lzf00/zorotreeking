@@ -5,11 +5,17 @@ import {
 } from "./ali-lhasa-return-route";
 import type { AliRouteDailyPlanning, AliRouteDay } from "./ali-route";
 
-const everestPointIds = new Set(["tingri", "gawula", "rongbuk", "ebc"]);
+const everestDetourPointIds = new Set(["tingri", "gawula", "rongbuk"]);
 
 export const aliPermitBypassRoutePoints = aliLhasaReturnRoutePoints
-  .filter((point) => !everestPointIds.has(point.id))
+  .filter((point) => !everestDetourPointIds.has(point.id))
   .map((point) => {
+    if (point.id === "ebc") {
+      return {
+        ...point,
+        detail: "地图重点峰体，本版因日喀则边防证停发不进入定日和珠峰景区。只用来辨认方位，严禁把此点当作驾车终点或离开 G219 寻路。",
+      };
+    }
     if (point.id === "shigatse") {
       return {
         ...point,

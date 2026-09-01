@@ -195,6 +195,7 @@ test("G317 Chengdu and Lhasa-return loop are independent indexed roadbooks", asy
   assert.doesNotMatch(loopOverview, /point\.id !== "shanghai" && point\.id !== "namtso"/);
   assert.match(loopOverview, /day\.day < 12/);
   assert.match(loopOverview, /mapPoints=\{drivingMapPoints\}/);
+  assert.match(loopOverview, /珠峰、国王峰、冈仁波齐/);
 });
 
 test("the Lhasa-return roadbook audits reservations and permits for every day", () => {
@@ -360,6 +361,7 @@ test("the original Ali roadbook stays independent while retaining the complete m
   assert.match(atlas, /OpenStreetMap 自动备用/);
   assert.match(atlas, /公路走向/);
   assert.match(atlas, /道路拟合/);
+  assert.match(atlas, /重点峰体/);
   assert.match(atlas, /逐日道路、节点、补给与退出条件/);
   assert.match(map, /tile\.openstreetmap\.org/);
   assert.match(map, /^import "leaflet\/dist\/leaflet\.css";/m);
@@ -373,6 +375,8 @@ test("the original Ali roadbook stays independent while retaining the complete m
   assert.match(map, /高德地图 Web Worker 被 CSP 阻止/);
   assert.match(map, /aliRoutedDayGeometry/);
   assert.match(map, /公路走向与编号/);
+  assert.match(map, /重点峰体/);
+  assert.match(map, /hasPermanentLabel/);
   assert.match(map, /control\.scale/);
   assert.match(map, /scrollWheelZoom: false/);
 });
@@ -433,7 +437,7 @@ test("Ali route atlas has complete, internally consistent day and marker data", 
   const markerKinds = new Set(aliRoutePoints.map((point) => point.kind));
   assert.deepEqual(
     markerKinds,
-    new Set(["airport", "overnight", "city", "attraction", "viewpoint", "supply"]),
+    new Set(["airport", "overnight", "city", "attraction", "viewpoint", "peak", "supply"]),
   );
 });
 
@@ -581,8 +585,13 @@ test("Lhasa-return loop covers Sep 26 through Oct 7 without early-flight friend 
   assert.match(aliLhasaReturnRouteDays[11]?.title ?? "", /拉萨.*上海/);
 
   const pointIds = new Set(aliLhasaReturnRoutePoints.map((point) => point.id));
-  for (const id of ["lhasa", "shiquanhe", "dongco", "namtso", "shanghai"]) {
+  for (const id of ["lhasa", "shiquanhe", "dongco", "namtso", "shanghai", "ebc", "king-peak", "kailash"]) {
     assert.ok(pointIds.has(id), `Lhasa-return route is missing ${id}`);
+  }
+  for (const id of ["ebc", "king-peak", "kailash"]) {
+    const peak = aliLhasaReturnRoutePoints.find((point) => point.id === id);
+    assert.equal(peak?.kind, "peak", `${id} should be a focus peak`);
+    assert.ok(peak?.shortName && !peak.shortName.includes("远观") && !peak.shortName.includes("大本营"));
   }
   assert.equal(pointIds.has("kunsha-airport"), false);
   assert.equal(pointIds.has("purang-airport"), false);
@@ -677,6 +686,7 @@ test("Shigatse permit-bypass loop skips Everest and restores Zanda overnight", a
   assert.doesNotMatch(guide, /阿里昆莎机场|阿里普兰机场|最晚10月5日到上海|朋友分流/);
   assert.match(overview, /point\.id !== "shanghai"/);
   assert.match(overview, /day\.day < 12/);
+  assert.match(overview, /珠峰方位、国王峰和冈仁波齐/);
 
   assert.equal(aliPermitBypassRouteDays.length, 12);
   assert.deepEqual(
@@ -693,11 +703,20 @@ test("Shigatse permit-bypass loop skips Everest and restores Zanda overnight", a
   assert.match(aliPermitBypassDailyPlanning[0]?.reservations[0]?.subject ?? "", /日喀则电子边境通行证停发/);
 
   const pointIds = new Set(aliPermitBypassRoutePoints.map((point) => point.id));
-  for (const id of ["tingri", "gawula", "rongbuk", "ebc"]) {
+  for (const id of ["tingri", "gawula", "rongbuk"]) {
     assert.equal(pointIds.has(id), false, `bypass map should not include ${id}`);
+  }
+  for (const id of ["ebc", "king-peak", "kailash"]) {
+    assert.equal(pointIds.has(id), true, `bypass map should still mark ${id}`);
+    assert.equal(
+      aliPermitBypassRoutePoints.find((point) => point.id === id)?.kind,
+      "peak",
+      `${id} should be a focus peak on the bypass map`,
+    );
   }
   for (const day of aliPermitBypassRouteDays) {
     for (const id of day.pointIds) assert.ok(pointIds.has(id), `bypass D${day.day} references unknown ${id}`);
+    assert.equal(day.pointIds.includes("ebc"), false, `bypass D${day.day} must not drive to Everest`);
     assert.ok(aliPermitBypassRoutedDayGeometry[day.day]?.length >= 2, `bypass D${day.day} needs mapped geometry`);
   }
 

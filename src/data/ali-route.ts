@@ -4,6 +4,7 @@ export type AliRoutePointKind =
   | "city"
   | "attraction"
   | "viewpoint"
+  | "peak"
   | "supply";
 
 export interface AliRoutePoint {
@@ -233,14 +234,14 @@ export const aliRoutePoints: AliRoutePoint[] = [
   },
   {
     id: "ebc",
-    name: "珠峰游客大本营开放区域",
-    shortName: "珠峰大本营",
-    kind: "attraction",
+    name: "珠峰",
+    shortName: "珠峰",
+    kind: "peak",
     lat: 28.1365,
     lng: 86.8555,
-    elevationM: 5200,
-    detail: "以游客可达开放区域为目的地，不进入登山营地或管制区域；当日开放状态必须复核。",
-    coordinateNote: "游客开放区域规划点",
+    elevationM: 8848,
+    detail: "地图重点峰体。珠峰过夜版进入北坡开放区域远观；绕证版只标方位，不作为驾车终点。",
+    coordinateNote: "峰体/游客开放区域规划点，不是登山营地",
   },
   {
     id: "saga",
@@ -255,9 +256,9 @@ export const aliRoutePoints: AliRoutePoint[] = [
   },
   {
     id: "king-peak",
-    name: "普拉喜琼峰（国王峰）远观点",
-    shortName: "国王峰远观",
-    kind: "viewpoint",
+    name: "国王峰（普拉喜琼峰）",
+    shortName: "国王峰",
+    kind: "peak",
     lat: 29.8125,
     lng: 84.6362,
     elevationM: 6530,
@@ -298,9 +299,9 @@ export const aliRoutePoints: AliRoutePoint[] = [
   },
   {
     id: "kailash",
-    name: "冈仁波齐峰体",
+    name: "冈仁波齐",
     shortName: "冈仁波齐",
-    kind: "attraction",
+    kind: "peak",
     lat: 31.0678,
     lng: 81.3119,
     elevationM: 6656,

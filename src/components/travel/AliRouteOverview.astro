@@ -46,20 +46,25 @@ const {
 const pointById = new Map(points.map((point) => [point.id, point]));
 const planningByDay = new Map(dailyPlanning.map((plan) => [plan.day, plan]));
 const mappedPointCount = mapPoints.length;
+const peakCount = mapPoints.filter((point) => point.kind === "peak").length;
 const attractionCount = mapPoints.filter((point) =>
-  point.kind === "attraction" || point.kind === "viewpoint"
+  point.kind === "attraction" || point.kind === "viewpoint" || point.kind === "peak"
 ).length;
 const overnightCount = mapPoints.filter((point) => point.kind === "overnight").length;
 const approximateCount = mapPoints.filter((point) => point.coordinateNote).length;
 
-const markerKinds: { kind: AliRoutePointKind; label: string }[] = [
+const allMarkerKinds = [
   { kind: "airport", label: "机场" },
   { kind: "overnight", label: "住宿城市" },
   { kind: "city", label: "途经城市" },
+  { kind: "peak", label: "重点峰体" },
   { kind: "attraction", label: "景点" },
   { kind: "viewpoint", label: "观景点" },
   { kind: "supply", label: "补给点" },
-];
+] as const satisfies readonly { kind: AliRoutePointKind; label: string }[];
+const markerKinds = allMarkerKinds.filter(({ kind }) =>
+  mapPoints.some((point) => point.kind === kind)
+);
 const reservationStatusClass = {
   "必须提前": "required",
   "建议提前": "recommended",
@@ -85,7 +90,7 @@ const reservationStatusClass = {
     <div class="ali-route-atlas__metrics reveal" aria-label="路线地图统计">
       <div><strong>{days.length}</strong><span>逐日路线</span></div>
       <div><strong>{mappedPointCount}</strong><span>地图节点</span></div>
-      <div><strong>{attractionCount}</strong><span>景点与观景位</span></div>
+      <div><strong>{attractionCount}</strong><span>{peakCount > 0 ? "景点、观景与峰体" : "景点与观景位"}</span></div>
       <div><strong>{overnightCount}</strong><span>住宿城市</span></div>
     </div>
 
@@ -119,7 +124,7 @@ const reservationStatusClass = {
         {markerKinds.map(({ kind, label }) => (
           <span><i class={`ali-route-marker ali-route-marker--${kind}`}></i>{label}</span>
         ))}
-        <span class="ali-route-atlas__legend-note">金色实线沿道路网络拟合；红色点线标识每日行驶分段</span>
+        <span class="ali-route-atlas__legend-note">金色实线沿道路网络拟合；红色点线标识每日行驶分段{peakCount > 0 ? "；酒红标记为重点峰体，名字始终显示" : ""}</span>
       </div>
     </div>
 
@@ -551,14 +556,25 @@ const reservationStatusClass = {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    overflow: visible;
     width: 22px;
     height: 22px;
+  }
+  .ali-amap-place-marker--peak {
+    width: 26px;
+    height: 26px;
   }
   .ali-amap-place-marker .ali-route-marker {
     width: 22px;
     height: 22px;
     border-width: 3px;
     box-shadow: 0 2px 8px rgba(23, 32, 29, .38);
+  }
+  .ali-route-div-icon--peak .ali-route-marker,
+  .ali-amap-place-marker--peak .ali-route-marker {
+    width: 26px;
+    height: 26px;
+    box-shadow: 0 0 0 2px rgba(138, 31, 44, .22), 0 2px 10px rgba(23, 32, 29, .4);
   }
   .ali-amap-place-label {
     position: absolute;
@@ -577,9 +593,20 @@ const reservationStatusClass = {
     transform: translateX(-50%);
     white-space: nowrap;
   }
+  .ali-amap-place-label--peak {
+    bottom: 32px;
+    max-width: none;
+    padding: 4px 8px;
+    border: 1px solid rgba(138, 31, 44, .35);
+    color: #8a1f2c;
+    background: rgba(255, 252, 243, .97);
+    font-size: 12px;
+    font-weight: 800;
+  }
   .ali-route-marker--airport { background: #2b7183; }
   .ali-route-marker--overnight { background: #17201d; }
   .ali-route-marker--city { background: #5d685e; }
+  .ali-route-marker--peak { background: #8a1f2c; }
   .ali-route-marker--attraction { background: #b64934; }
   .ali-route-marker--viewpoint { background: #c58927; }
   .ali-route-marker--supply { background: #367a60; }
@@ -593,6 +620,12 @@ const reservationStatusClass = {
     font-family: var(--sans) !important;
     font-size: 12px !important;
     font-weight: 700 !important;
+  }
+  .ali-route-place-label--peak {
+    border: 1px solid rgba(138, 31, 44, .35) !important;
+    color: #8a1f2c !important;
+    background: rgba(255, 252, 243, .97) !important;
+    font-weight: 800 !important;
   }
   .ali-route-place-label::before,
   .ali-route-line-label::before { display: none; }
@@ -948,6 +981,7 @@ const reservationStatusClass = {
     .ali-route-map .ali-road-shield:not(.ali-road-shield--major) { display: none; }
     .ali-route-map .ali-road-shield--major > span { display: none; }
     .ali-route-map .ali-amap-place-label { display: none; }
+    .ali-route-map .ali-amap-place-label--peak { display: block; }
     .ali-amap-layer-control { top: 8px; right: 8px; }
     .ali-route-map { height: 560px; min-height: 560px; }
     .ali-route-map-help { left: 10px; right: 10px; text-align: center; }

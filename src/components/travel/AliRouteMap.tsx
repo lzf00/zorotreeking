@@ -64,8 +64,13 @@ const kindLabel: Record<AliRoutePointKind, string> = {
   city: "途经城市",
   attraction: "景点",
   viewpoint: "观景点",
+  peak: "重点峰体",
   supply: "补给点",
 };
+
+function hasPermanentLabel(point: AliRoutePoint) {
+  return point.kind === "overnight" || point.kind === "airport" || point.kind === "peak";
+}
 const majorRoadRefs = new Set(["G6", "G0612", "G109", "G219", "G317", "G318"]);
 let amapLoader: Promise<AMapNamespace> | undefined;
 
@@ -83,7 +88,13 @@ function createPopup(point: AliRoutePoint, days: number[], provider: "amap" | "o
 
   const eyebrow = document.createElement("div");
   eyebrow.className = "ali-route-popup__eyebrow";
-  eyebrow.textContent = `${kindLabel[point.kind]} · ${days.map((day) => `D${String(day).padStart(2, "0")}`).join(" / ")}`;
+  if (point.kind === "peak") {
+    eyebrow.textContent = days.length > 0
+      ? `重点峰体 · ${days.map((day) => `D${String(day).padStart(2, "0")}`).join(" / ")}`
+      : "重点峰体 · 本版行驶日不进入";
+  } else {
+    eyebrow.textContent = `${kindLabel[point.kind]} · ${days.map((day) => `D${String(day).padStart(2, "0")}`).join(" / ")}`;
+  }
 
   const title = document.createElement("h3");
   title.textContent = point.name;
@@ -299,15 +310,15 @@ async function renderAmap(
   const placeOverlays: unknown[] = [];
   for (const point of points) {
     const markerContent = document.createElement("span");
-    markerContent.className = "ali-amap-place-marker";
+    markerContent.className = `ali-amap-place-marker${point.kind === "peak" ? " ali-amap-place-marker--peak" : ""}`;
     markerContent.title = `${point.name}，${kindLabel[point.kind]}`;
 
     const dot = document.createElement("i");
     dot.className = `ali-route-marker ali-route-marker--${point.kind}`;
     markerContent.append(dot);
-    if (point.kind === "overnight" || point.kind === "airport") {
+    if (hasPermanentLabel(point)) {
       const label = document.createElement("b");
-      label.className = "ali-amap-place-label";
+      label.className = `ali-amap-place-label${point.kind === "peak" ? " ali-amap-place-label--peak" : ""}`;
       label.textContent = point.shortName;
       markerContent.append(label);
     }
@@ -317,7 +328,7 @@ async function renderAmap(
       content: markerContent,
       anchor: "center",
       title: `${point.name}，${kindLabel[point.kind]}`,
-      zIndex: 160,
+      zIndex: point.kind === "peak" ? 180 : 160,
     });
     addAmapInfoWindow(AMap, map, marker, createPopup(point, dayNumbersByPoint.get(point.id) ?? [], "amap"));
     placeOverlays.push(marker);
@@ -410,19 +421,28 @@ async function renderOpenStreetMap(
   const markerLayer = L.featureGroup().addTo(map);
   for (const point of points) {
     const icon = L.divIcon({
-      className: "ali-route-div-icon",
+      className: `ali-route-div-icon${point.kind === "peak" ? " ali-route-div-icon--peak" : ""}`,
       html: `<span class="ali-route-marker ali-route-marker--${point.kind}" aria-hidden="true"></span>`,
-      iconSize: [22, 22], iconAnchor: [11, 11], popupAnchor: [0, -13],
+      iconSize: point.kind === "peak" ? [26, 26] : [22, 22],
+      iconAnchor: point.kind === "peak" ? [13, 13] : [11, 11],
+      popupAnchor: [0, -13],
     });
     const marker = L.marker([point.lat, point.lng], {
-      icon, keyboard: true, title: `${point.name}，${kindLabel[point.kind]}`, alt: point.name, riseOnHover: true,
+      icon,
+      keyboard: true,
+      title: `${point.name}，${kindLabel[point.kind]}`,
+      alt: point.name,
+      riseOnHover: true,
+      zIndexOffset: point.kind === "peak" ? 400 : 0,
     }).addTo(markerLayer);
     marker.bindPopup(createPopup(point, dayNumbersByPoint.get(point.id) ?? [], "osm"), {
       minWidth: 240, maxWidth: 320,
     });
     marker.bindTooltip(point.shortName, {
-      direction: "top", offset: [0, -10], permanent: point.kind === "overnight" || point.kind === "airport",
-      className: "ali-route-place-label",
+      direction: "top",
+      offset: [0, -10],
+      permanent: hasPermanentLabel(point),
+      className: point.kind === "peak" ? "ali-route-place-label ali-route-place-label--peak" : "ali-route-place-label",
     });
   }
 
