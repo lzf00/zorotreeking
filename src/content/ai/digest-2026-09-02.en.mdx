@@ -1,0 +1,205 @@
+---
+lang: en
+translationKey: digest-2026-09-02
+title: "Daily AI Highlights · 2026-09-02"
+description: "20 papers · Multi-source aggregation + AI summaries"
+date: 2026-09-02
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second daily recap</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Over ten new AI papers were released on Hugging Face and arXiv today, covering technical directions including LLM inference, multimodality, MoE and more</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI, Anthropic, and DeepMind successively released major updates including model roadmaps, security standards, and new Gemini capabilities</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Multiple industrial updates were officially announced today, including enterprise-grade agent deployment, new Claude model releases, and Hong Kong service robot launches</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏭 Major Tech Firm Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Industrial Deployment</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ New Model Releases</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💻 Open Source Technology</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2609.01591" target="_blank" rel="noopener noreferrer">StudentSim: Training LLM-based Student Simulators</a>
+
+*HF ★ 37 · Ke Yang, Chenglong Wang, Michel Galley… · [HF Mirror](https://huggingface.co/papers/2609.01591)*
+
+To address the pain point that existing student simulators cannot balance behavior fit and guidance responsiveness, this paper proposes the StudentSim training framework: first cross-sample joint training, then student-specific fine-tuning, which can convert sparse individual data into highly realistic personalized simulators. Tests across three domains: board games, English writing, and mathematics show that its core indicators outperform baselines including GPT-5.4, and AI tutors trained with it deliver better personalization and adaptability performance.
+
+<FeedbackButtons slug="item:arxiv-2609.01591" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.30468" target="_blank" rel="noopener noreferrer">Hi-Q: Hierarchical Evidence-guided Query Refinement for Multi-Hop Question Answering</a>
+
+*HF ★ 14 · Jueun Kim, Sungho Park, Wook-Shin Han · [HF Mirror](https://huggingface.co/papers/2608.30468)*
+
+To address the pain points in multi-hop question answering where the granularity of question statements does not match the granularity of retrievable evidence in corpora, and existing methods cannot dynamically judge the completeness of query evidence, this paper proposes the Hi-Q hierarchical evidence-guided query refinement framework, which dynamically builds query trees based on corpus support signals, without the need for pre-built global corpus graphs or fixed decomposition templates. In full-corpus and restricted scenarios across three types of multi-hop QA benchmarks, its performance significantly outperforms mainstream baselines including IRCoT and PropRAG. (122 words total)
+
+<FeedbackButtons slug="item:arxiv-2608.30468" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.01607" target="_blank" rel="noopener noreferrer">Uncovering Understanding-Generation Synergy in Native Unified Multimodal Models: From Representation, Task to System</a>
+
+*HF ★ 10 · Penghao Wu, Haiwen Diao, Weichen Fan… · [HF Mirror](https://huggingface.co/papers/2609.01607)*
+
+This research focuses on the synergy between visual understanding and generation tasks in native unified multimodal models, conducting controlled experiments without pre-trained visual priors from three layers: representation, task, and system. It finds that the two have natural bidirectional gains, but task crowding occurs when sharing the same computing path. Adopting a task decoupling architecture, relying on shared knowledge, and end-to-end optimization can achieve synergy, with performance on complex tasks significantly outperforming traditional planning-execution pipelines.
+
+<FeedbackButtons slug="item:arxiv-2609.01607" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.01343" target="_blank" rel="noopener noreferrer">SMELT: Scaling Laws for Compute-Matched MoE Looped Transformers</a>
+
+*HF ★ 10 · Shaowen Wang, Ge Zhang, Kairong Luo… · [HF Mirror](https://huggingface.co/papers/2609.01343)*
+
+To address the problem that previous recurrent Transformer evaluations did not strictly control computing resources, confusing architectural advantages with extra computing power, this paper matches three core budgets: per-token FLOPs, non-embedding parameter count, and KV cache, and proposes SMELT, a sparse MoE architecture with two cycles of the intermediate half-layer. Experiments show that its optimal training computing power can be saved by 6.8-18%, with more significant gains on code, long-sequence, and few-shot tasks. The root cause is that the secondary cycle optimizes attention weight allocation, verifying the efficiency improvement value of recurrent architectures under controlled budgets.
+
+<FeedbackButtons slug="item:arxiv-2609.01343" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.01404" target="_blank" rel="noopener noreferrer">Evaluating Multimodal LLMs as Generalist Vision-Language-Action Agents for Drone Control: Commanding, Approaching, Tracking and Searching</a>
+
+*HF ★ 8 · Jaewoo Park, Minyoung Lee, Sukmin Seo… · [HF Mirror](https://huggingface.co/papers/2609.01404)*
+
+This research focuses on the drone control capability of multimodal LLMs, proposes the DroneCATS-Agent architecture with replaceable model components, paired with the DroneCATS benchmark, which can cover four types of tasks: approaching, tracking, searching, and multi-drone scheduling without fine-tuning or function calls. Tests found that small models outperform cutting-edge large models in navigation performance, but generally have problems with wrong task termination judgment and disordered multi-drone scheduling, with the core shortcoming being action rule compliance ability rather than spatial perception.
+
+<FeedbackButtons slug="item:arxiv-2609.01404" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2608.28771" target="_blank" rel="noopener noreferrer">ERR+: Sequential Entropy Resolution for Efficient and Decisive LLM Reasoning</a>
+
+*Xin Jiang, Minhao Wang, Wen Wu…*
+
+To address the problem that existing RLVR methods only optimize LLM reasoning with accuracy rewards, without paying attention to the quality of the reasoning process, the study found that token-level entropy drops are more frequent and larger in the thinking stage of correct reasoning chains. Based on this, a two-stage ERR+ framework is proposed: first, use entropy mitigation rewards to encourage uncertainty resolution, then use robust relative efficiency rewards to compress reasoning length. Experiments on multiple datasets verify that it can simultaneously improve reasoning accuracy and output conciseness.
+
+<FeedbackButtons slug="item:arxiv-2608.28771" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.28840" target="_blank" rel="noopener noreferrer">Unsupervised Latent Space Alignment with Hyperspherical Geodesic Matching</a>
+
+*Cameron Ryan, Vivek Sivaraman Narayanaswamy, Kowshik Thopalli…*
+
+To address the limitation that existing latent space alignment methods rely on paired anchor samples, this paper proposes the hyperspherical Gaussian alignment method HGA, which does not require paired data, directly optimizes the transformation mapping by maximizing the geometric fit of the latent space, and supports unsupervised/weakly supervised scenarios. On model stitching and multilingual word embedding correspondence recovery tasks, this method requires very little or even no supervision, and its performance can match that of supervised solutions.
+
+<FeedbackButtons slug="item:arxiv-2608.28840" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.28843" target="_blank" rel="noopener noreferrer">Curvature Cryptanalysis of Smooth Transformer Feed-Forward Networks</a>
+
+*Munawar Hasan, Apostol Vassilev*
+
+This paper targets smooth Transformer Feed-Forward Networks (FFN) with GELU/SiLU activation, and proposes a curvature-based black-box model stealing method: using the second-order leakage of the projected Hessian matrix induced by FFN input weights, the query cost is reduced to 1/16 of the original through partial symmetric decomposition technology. Only 8193 black-box queries are needed to restore the hidden direction of the FFN with an alignment degree of more than 94%, and the Top-1 consistency between the fitted surrogate model and the original model exceeds 93%. Even with output noise added, high-accuracy recovery can still be achieved after adjusting the differential step.
+
+<FeedbackButtons slug="item:arxiv-2608.28843" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/ai-native-company-workflows" target="_blank" rel="noopener noreferrer">How AI-native companies turn workflows into operating capability</a>
+
+*OpenAI*
+
+This paper studies the practical path for AI-native companies to transform workflows into operational capabilities, taking three companies: Basis, Clay, and Exa Labs as samples. The core method is to deploy AI agents to optimize three core business processes: new user onboarding, customer account management, and developer integration respectively. Finally, it summarizes AI implementation experience that can be reused by enterprise managers in various industries, providing reference for operational efficiency improvement.
+
+<FeedbackButtons slug="item:openai-blog-ai-native-company-workflows" client:visible />
+
+## <a href="https://openai.com/index/path-to-astra" target="_blank" rel="noopener noreferrer">Path to Astra: critical capabilities and frontier safeguards</a>
+
+*OpenAI*
+
+This paper focuses on the launch path of OpenAI's new model Astra. Taking its internal "Preparedness Framework" as the evaluation standard, it confirms that Astra is the first LLM to reach the key cybersecurity capability threshold of this framework. It was only launched after supporting its high cybersecurity capability with stricter cutting-edge risk protection mechanisms, providing practical reference for the secure launch of LLMs with high specialized capabilities.
+
+<FeedbackButtons slug="item:openai-blog-path-to-astra" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/model-hardware-standard-research-preview" target="_blank" rel="noopener noreferrer">Previewing the Model Hardware Standard</a>
+
+*Anthropic*
+
+Anthropic recently launched a research preview of the Model Hardware Standard (MHS), which is first open to research laboratories and advanced manufacturers. This standard is a unified technical specification specially formulated for AI agents to safely control various physical devices, which can solve problems such as chaotic adaptation and inconsistent security rules in the interaction between AI and physical hardware, and provide general security benchmark support for the large-scale deployment of AI-enabled physical industries.
+
+<FeedbackButtons slug="item:anthropic-model-hardware-standard-research-preview" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-text-watermark" target="_blank" rel="noopener noreferrer">How Claude&#x27;s text watermarking works</a>
+
+*Anthropic*
+
+To comply with the regulatory requirements of the EU AI Act, Anthropic will cooperate with multiple leading AI manufacturers to embed invisible watermarks in text generated by future versions of the Claude LLM, which can quickly determine whether text is generated with the participation of Claude. This article publicly answers three core issues of public concern: the implementation logic of the watermark, whether it affects output quality, and the motivation for its launch.
+
+<FeedbackButtons slug="item:anthropic-claude-text-watermark" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/introducing-agentic-video-in-gemini/" target="_blank" rel="noopener noreferrer">Introducing agentic video understanding with Gemini</a>
+
+*Google DeepMind*
+
+This paper proposes a new agentic video understanding paradigm based on Gemini, which breaks through the limitations of traditional models: passive processing and weak long-term perception. It can independently plan reasoning paths, and call tools such as key frame positioning, cross-modal knowledge base retrieval, and temporal causal verification as needed for iterative analysis. Tests show that its accuracy on long video event tracing and complex behavior reasoning tasks is 27% higher than the existing SOTA, which can support complex video analysis needs in scenarios such as security and content moderation.
+
+<FeedbackButtons slug="item:deepmind-introducing-agentic-video-in-gemini" client:visible />
+
+## <a href="https://deepmind.google/blog/gemini-omni-1-1-flash-lets-you-build-with-more-control/" target="_blank" rel="noopener noreferrer">Gemini Omni 1.1 Flash lets you build with more control</a>
+
+*Google DeepMind*
+
+Google's launched Gemini Omni 1.1 Flash is a lightweight multimodal LLM focusing on high controllability, with special optimization for developer deployment scenarios: it supports strict output of specified formats such as JSON, adds low-threshold custom fine-tuning capabilities, multimodal inference speed is 32% higher than the previous generation, and inference cost is reduced by 40%, which can greatly reduce the adaptation workload for developers, and is suitable for low-latency demand scenarios such as real-time interaction and intelligent tool development.
+
+<FeedbackButtons slug="item:deepmind-gemini-omni-1-1-flash-lets-you-build-with-more-control" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/benchmirt" target="_blank" rel="noopener noreferrer">BenchMIRT: What are LLM benchmarks actually measuring?</a>
+
+*Hugging Face*
+
+This research launches the BenchMIRT analysis tool, which disassembles the actual measurement dimensions of mainstream LLM benchmarks based on multidimensional item response theory. The study found that existing benchmarks generally have validity bias, do not accurately match the target capabilities they claim to test, such as reasoning and general knowledge, but instead measure a large number of features such as knowledge memory and sensitivity to reasoning shortcuts, and even overestimate the performance of gimmicky small models, proving that the fairness of existing benchmark evaluations needs to be optimized.
+
+<FeedbackButtons slug="item:hf-blog-benchmirt" client:visible />
+
+## <a href="https://huggingface.co/blog/webgpu-kernels" target="_blank" rel="noopener noreferrer">Introducing @huggingface/kernels: 200+ WebGPU Kernels for Local AI</a>
+
+*Hugging Face*
+
+Hugging Face has launched the @huggingface/kernels low-level tool library, with more than 200 built-in operator kernels adapted to WebGPU, supporting AI models to run efficiently directly on the local browser side without relying on cloud computing power. This tool greatly reduces the threshold for local AI deployment on the Web, balances inference efficiency and user data privacy, and can meet the deployment needs of various lightweight web AI applications.
+
+<FeedbackButtons slug="item:hf-blog-webgpu-kernels" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This article sorts out the research context of Recursive Self-Improvement (RSI): In 1965, I. J. Good first proposed that superintelligent machines can surpass all human intellectual activities, and can also iteratively design better systems to achieve self-upgrade; in 2008, Eliezer Yudkowsky clarified that its core is the feedback loop where AI optimizes its own cognitive mechanism relying on existing intelligence. The current RSI implementation paths in the AI field are divided into two categories: directly rewriting their own weights, or broadly optimizing their own training pipelines.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/09/482967.html" target="_blank" rel="noopener noreferrer">Sample use case for enterprise-grade agent deployment! Bairong's silicon-based employees go live in batches, paid based on results</a>
+
+*QbitAI*
+
+Bairong Intelligence is advancing strategic upgrading, focusing on the AICC intelligent contact enterprise-grade agent polished maturely in financial scenarios, and replicating it to multiple industries such as logistics and securities firms. Adopting the RaaS (Result as a Service) model of charging based on results, the deployment scale is rising rapidly. It also expands business entrances through industrial integration, forms an optimization flywheel based on operational data that can be reused across scenarios. In the first half of the year, its AICC business increased by 52% year-on-year, and revenue from new scenarios rose by 195%.
+
+<FeedbackButtons slug="item:qbitai-482967" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/482652.html" target="_blank" rel="noopener noreferrer">Claude's most powerful Fable 5.1 released! Tops 8 public benchmarks, price cut by up to 45%, anti-distillation mechanism launched</a>
+
+*QbitAI*
+
+Anthropic's newly released Claude Fable 5.1 ranks first in 8 public benchmark tests, with scientific research and code performance significantly better than the previous generation and GPT-5.6 Sol. Stability on multi-step tasks and compliance with style instructions have both improved. Its cache reading cost is reduced by 75%, typical workload cost is reduced by 25%, and agent-type tasks save up to 45%, open to all users. The simultaneously launched Mythos 5.1 is only open to audited institutions in specific fields.
+
+<FeedbackButtons slug="item:qbitai-482652" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/482855.html" target="_blank" rel="noopener noreferrer">Hong Kong's first real open-scenario service robot deployed in Lan Kwai Fong</a>
+
+*QbitAI*
+
+In August 2026, the AlphaBot2 bartender robot from Greater Bay Area embodied intelligence company Zhipingfang was officially deployed in Hong Kong's Lan Kwai Fong, making it the first commercial service robot to enter this international nightlife landmark in Hong Kong. It is equipped with an original brain-inspired architecture embodied LLM, which can adapt to local complex pedestrian flow and diverse interaction scenarios. The enterprise has completed the full chain of compliance processes for overseas expansion, marking that China's embodied intelligence has moved from the demonstration stage to real regular commercial operation.
+
+<FeedbackButtons slug="item:qbitai-482855" client:visible />
