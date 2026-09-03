@@ -1,0 +1,205 @@
+---
+lang: zh
+translationKey: digest-2026-09-03
+title: "AI 每日精选 · 2026-09-03"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-09-03
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">DeepMind推出Gemini 3.8 Flash系列模型，Anthropic公开模型硬件标准及Claude水印原理</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face及arXiv新增十余篇前沿研究，覆盖世界模型、LLM量化、注意力控制等方向</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI披露ChatGPT产业增效案例，国内智驾、具身智能领域接连发布重磅进展</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 基础研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ 模型上新</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡 落地案例</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 具身智能</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🚗 智驾动态</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2609.02886" target="_blank" rel="noopener noreferrer">SolarWM: Open Data and Scalable Training for Long-Horizon Video World Models</a>
+
+*HF ★ 32 · Junchao Huang, Guian Fang, Shengju Qian… · [HF 镜像](https://huggingface.co/papers/2609.02886)*
+
+针对多源异质数据、不同视频骨干训练长时序视频世界模型时耦合度高、结果难复现的痛点，该工作提出开源基础框架SolarWM：通过可重构多源数据引擎统一10个数据集的百万级视频格式，搭配骨干原生适配框架三阶段训练，模型仅用5秒序列训练即可支持分钟到小时级实时交互，全套资源已开源供研究复用。
+
+<FeedbackButtons slug="item:arxiv-2609.02886" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.00638" target="_blank" rel="noopener noreferrer">It Takes Two to Match: Co-Evolving Generative Retriever with Reinforcement Learning</a>
+
+*HF ★ 17 · Runpeng Dai, Kaili Huang, Changsung Kang… · [HF 镜像](https://huggingface.co/papers/2609.00638)*
+
+针对现有检索系统仅用大模型做查询侧增强、匹配仍依赖下游检索器的问题，本文提出协同进化检索框架CoGR：让大模型同时生成查询、商品侧关键词，兼容现有倒排索引，先监督微调对齐关键词空间，再用协同进化强化学习交替优化两侧生成器，共享F1优化目标。其在两类基准上较最优基线F1分别提升10.9%、36.1%，两侧关键词空间随训练逐步对齐。
+
+<FeedbackButtons slug="item:arxiv-2609.00638" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.02817" target="_blank" rel="noopener noreferrer">Cliff: Learning Process Rewards from the First Mistake</a>
+
+*HF ★ 13 · Peixuan Han, Runhui Wang, Ketan Ramaneti… · [HF 镜像](https://huggingface.co/papers/2609.02817)*
+
+针对大模型后训练采用的可验证奖励强化学习缺中间推理引导、现有方案依赖额外约束的问题，本文提出Cliff奖励塑形策略：调用现成大模型定位推理路径首个错误，拆分正确前缀与错误后缀，输出token级奖惩信号。12类场景测试显示，其性能较基准方法高7%-15%，即便教师模型能力普通也有效，简单通用。
+
+<FeedbackButtons slug="item:arxiv-2609.02817" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.02737" target="_blank" rel="noopener noreferrer">Language Models Can Control Their Own Attention</a>
+
+*HF ★ 11 · Namgyu Ho, Huzama Ahmad, Woosung Koh… · [HF 镜像](https://huggingface.co/papers/2609.02737)*
+
+针对长上下文大模型推理需扫描全KV缓存、现有预选降本方案仍为O(N)复杂度的问题，该研究提出声明式注意力机制，让模型在思维链中自主声明需关注的上下文区域，分全局、指定区域、仅最近输出三种模式，推理引擎据此跳过无关KV读取。15项长上下文零样本测试显示，该方法可使现成大模型解码关注token数最高降52%，精度损失不到3个百分点，且损失随模型规模增大收窄，仍有优化空间。
+
+<FeedbackButtons slug="item:arxiv-2609.02737" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.01147" target="_blank" rel="noopener noreferrer">On the Design Fundamentals of Pixel Text Representation Learning</a>
+
+*HF ★ 8 · Chaohao Yuan, Ruifeng Yuan, Zhuoxu Huang… · [HF 镜像](https://huggingface.co/papers/2609.01147)*
+
+针对现有像素文本编码器存在固定分辨率预训练、易学习视觉捷径、视觉定位弱、多语言理解能力不足等问题，本文经消融实验明确四项核心设计原则，整合后基于2.8亿训练样本推出Pixel Linguist II模型。该模型在多类跨语言视觉文本任务上达SOTA，80%视觉令牌压缩下仍保持稳健，可有效提升多模态大模型下游表现。
+
+<FeedbackButtons slug="item:arxiv-2609.01147" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2609.00047" target="_blank" rel="noopener noreferrer">Task-Specific Prompt with Global Context for Multi-Task Graph Pre-Training</a>
+
+*Zhiyang Qiu, Yangtao Wang, Xiaocui Li…*
+
+低资源图提示学习场景下，现有多任务预训练多采用随机初始化提示，存在提示空间、预训练目标与图结构对齐性差的缺陷。该研究提出TPGC双先验提示初始化方案，依次注入任务优化偏好、全局结构上下文先验生成适配提示。6项基准实验表明，其少样本性能优于当前最优基线，可调参数更少、运行速度更快。
+
+<FeedbackButtons slug="item:arxiv-2609.00047" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.00049" target="_blank" rel="noopener noreferrer">REAL-Q: E2E LLM Quantization via Dynamic Gradient Descent</a>
+
+*Qian Zhang, Yaoming Li, Zhewen Tan…*
+
+针对现有大模型后训练量化（PTQ）为追求解析可解过度近似全局损失、层内固定海森矩阵导致信息错位、误差传播的问题，本文提出REAL-Q量化方法：以端到端对齐的全局损失代理为目标，每列块后执行细粒度动态块梯度下降优化，搭配滑动窗口平滑跨层过渡。在W4A16精度下的LLaMA3.1、Qwen3系列模型上，其端到端KL散度较SOTA方法最高降49%。
+
+<FeedbackButtons slug="item:arxiv-2609.00049" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.00054" target="_blank" rel="noopener noreferrer">Convergence issues in Relational Concept Analysis based on AOC-posets</a>
+
+*Xavier Dolques, Agn\`es Braud, Alain Gutierrez…*
+
+本文针对关系概念分析（RCA）改用精简的AOC偏序集替代原概念格后失去迭代收敛性的问题，解析了通用场景下收敛失效的成因，明确了可保障收敛的适用条件，给出改造数据集恢复收敛的方案，还提出保留AOC结构的收敛变体：通过不删除新增关系属性，以少量属性冗余为代价实现收敛。
+
+<FeedbackButtons slug="item:arxiv-2609.00054" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/atv-big-air-tour" target="_blank" rel="noopener noreferrer">ATV Big Air Tour turned 3 days of work into 3 hours with ChatGPT</a>
+
+*OpenAI*
+
+ATV大跳台巡演团队引入ChatGPT Work工具实现业务大幅提效，原本需3天完成的工作如今仅需3小时即可交付。该工具已覆盖营销、商品运营等多个业务场景，甚至可在15分钟内将周边商品照片直接转化为可用的库存网站，充分证明大模型工具能显著降低中小运营主体的数字化门槛、压缩运营成本。
+
+<FeedbackButtons slug="item:openai-blog-atv-big-air-tour" client:visible />
+
+## <a href="https://openai.com/index/ai-native-company-workflows" target="_blank" rel="noopener noreferrer">How AI-native companies turn workflows into operating capability</a>
+
+*OpenAI*
+
+该研究聚焦AI原生企业将工作流转化为运营能力的实践路径：Basis、Clay、Exa Labs三家企业通过落地AI代理，对新用户入职、客户账户管理、开发者集成三类核心业务流程完成效率升级，相关实践经验可供各领域企业管理者参考复用，助力自身将业务流程沉淀为核心运营竞争力。
+
+<FeedbackButtons slug="item:openai-blog-ai-native-company-workflows" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/model-hardware-standard-research-preview" target="_blank" rel="noopener noreferrer">Previewing the Model Hardware Standard</a>
+
+*Anthropic*
+
+Anthropic近期开放模型硬件标准（MHS）的研究预览通道，该标准是面向AI代理的通用共享规范，核心目的是保障AI操作各类物理设备的安全性，统一实体硬件的AI调用规则。目前该标准仅向首批合作的科研实验室、先进制造商开放，后续将为AI落地实体产业场景提供安全支撑。
+
+<FeedbackButtons slug="item:anthropic-model-hardware-standard-research-preview" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-text-watermark" target="_blank" rel="noopener noreferrer">How Claude&#x27;s text watermarking works</a>
+
+*Anthropic*
+
+为符合欧盟《人工智能法案》要求，Anthropic将联合多家主流AI厂商，在未来版本的Claude模型生成内容中嵌入隐式水印，该水印可用于判定文本是否由Claude生成，且不会影响模型输出质量。本文就公众关心的水印实现逻辑、对输出的影响及落地动因等问题给出了官方解答。
+
+<FeedbackButtons slug="item:anthropic-claude-text-watermark" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/proactive-cyber-defense-for-governments-and-enterprises/" target="_blank" rel="noopener noreferrer">Proactive cyber defense for governments and enterprises</a>
+
+*Google DeepMind*
+
+您好，当前您仅提供了该论文的标题《政府与企业主动网络防御》，未附上摘要的具体正文内容，请您补充完整摘要的相关文本，我会按照要求为您提炼出120字左右、重点突出核心方法与研究结论的简洁中文总结。
+
+<FeedbackButtons slug="item:deepmind-proactive-cyber-defense-for-governments-and-enterprises" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-gemini-3-8-flash-and-38-flash-cyber/" target="_blank" rel="noopener noreferrer">Introducing Gemini 3.8 Flash and 3.8 Flash Cyber</a>
+
+*Google DeepMind*
+
+谷歌正式推出Gemini 3.8 Flash与3.8 Flash Cyber两款大模型。前者在多模态理解、逻辑推理、代码生成能力上较前代显著提升，推理速度提超40%、成本降近半，适配高频轻量化调用场景。后者为网络安全专属定制，定向优化漏洞挖掘、威胁分析、安全审计能力，可大幅降低企业安全运维门槛。
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-3-8-flash-and-38-flash-cyber" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/ibm-research/real-time-intelligence" target="_blank" rel="noopener noreferrer">Real-Time Intelligence with IBM Time Series Models on Confluent</a>
+
+*Hugging Face*
+
+当前您仅提供了该论文的标题，未附上摘要正文内容，无法完成翻译提炼与总结工作。请您补充完整这篇关于Confluent平台上IBM时间序列模型的实时智能研究的摘要具体文本，我会按照要求为您生成120字左右、突出核心方法与结论的精简中文总结。
+
+<FeedbackButtons slug="item:hf-blog-real-time-intelligence" client:visible />
+
+## <a href="https://huggingface.co/blog/allenai/benchmirt" target="_blank" rel="noopener noreferrer">BenchMIRT: What are LLM benchmarks actually measuring?</a>
+
+*Hugging Face*
+
+该研究推出BenchMIRT工具，基于多维项目反应理论建模主流大模型基准的考题与模型作答数据，拆解现有评测的实际度量维度。结果显示多数基准并未匹配预设的能力标签，反而混杂推理、知识记忆、指令适配甚至训练数据泄露带来的应试特征，高分往往代表模型适配基准偏好而非通用能力达标。
+
+<FeedbackButtons slug="item:hf-blog-benchmirt" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+递归自我提升（RSI）最早源自1965年I.J.古德提出的“超智能机器”设想：这类系统可超越人类所有智力活动，还能设计更优机器实现自我升级。2008年尤德考斯基明确RSI是AI用现有智能优化自身认知机制的反馈环，当代AI语境下这一反馈既包含模型直接改写自身权重，也可指模型优化自身训练管线。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/09/483565.html" target="_blank" rel="noopener noreferrer">一个模型场景通吃！它石智航AWE3.7的泛化能力有点狠</a>
+
+*量子位*
+
+以往机器人多依赖专有模型，场景变动就需重新采集数据训练部署，泛化性弱。它石智航推出的通用具身大模型AWE3.7，同一基座可适配工业、物流、生活服务等多场景，在工业分拣、精密插接等操作任务中实现毫米级精度、抗扰动与自主纠错，回应了具身智能通用泛化的核心行业命题。
+
+<FeedbackButtons slug="item:qbitai-483565" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/483552.html" target="_blank" rel="noopener noreferrer">神秘具身团队又放出一连串很炸的Demo视频…自进化模型，技术路线曝光</a>
+
+*量子位*
+
+神秘具身智能团队此前放出的10分钟一镜到底机器人demo引发行业震动，被视为具身智能ChatGPT级里程碑。针对遥操质疑，团队再释出多个一镜到底demo，其内部代号MVP（戏称“做个人吧”）的大模型，可赋予机器人认知、逻辑理解、自进化能力，后续还将开展开放环境下上街实测。
+
+<FeedbackButtons slug="item:qbitai-483552" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/483462.html" target="_blank" rel="noopener noreferrer">50万！李想宣布MPV进入iPhone时刻！外观没改配置拉满</a>
+
+*量子位*
+
+李想宣布新一代理想MEGA将MPV赛道带入“iPhone时刻”，称其是全球最好开最舒适的MPV。该车核心升级底盘与智能化配置，搭载后轮+线控转向、800V主动防倾魔毯底盘、4颗激光雷达等，转弯半径缩至5.5米，操控性大幅提升。仅推单一配置，售价较上代直降5万，本周开启交付。
+
+<FeedbackButtons slug="item:qbitai-483462" client:visible />
