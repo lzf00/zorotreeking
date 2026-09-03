@@ -1,0 +1,205 @@
+---
+lang: en
+translationKey: digest-2026-09-03
+title: "Daily AI Picks · 2026-09-03"
+description: "20 papers · Multi-source aggregation + AI summaries"
+date: 2026-09-03
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Today's highlights in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">DeepMind launches the Gemini 3.8 Flash series of models, Anthropic releases its Model Hardware Standard and the principle behind Claude's watermarking</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Over 10 new cutting-edge research papers added to Hugging Face and arXiv, covering world models, LLM quantization, attention control and other fields</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI reveals ChatGPT industrial efficiency improvement cases, major developments are successively released in China's intelligent driving and embodied intelligence sectors</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Fundamental Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ New Model Releases</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡 Deployment Cases</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Embodied Intelligence</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🚗 Intelligent Driving Updates</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2609.02886" target="_blank" rel="noopener noreferrer">SolarWM: Open Data and Scalable Training for Long-Horizon Video World Models</a>
+
+*HF ★ 32 · Junchao Huang, Guian Fang, Shengju Qian… · [HF Mirror](https://huggingface.co/papers/2609.02886)*
+
+To address the pain points of high coupling and poor reproducibility when training long-horizon video world models with multi-source heterogeneous data and different video backbones, this work proposes SolarWM, an open-source foundational framework: it unifies the format of millions of videos across 10 datasets via a reconfigurable multi-source data engine, paired with a three-stage training framework natively adapted to backbones. Trained only on 5-second sequences, the model can support real-time interactions ranging from minutes to hours. All resources are open-sourced for research reuse.
+
+<FeedbackButtons slug="item:arxiv-2609.02886" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.00638" target="_blank" rel="noopener noreferrer">It Takes Two to Match: Co-Evolving Generative Retriever with Reinforcement Learning</a>
+
+*HF ★ 17 · Runpeng Dai, Kaili Huang, Changsung Kang… · [HF Mirror](https://huggingface.co/papers/2609.00638)*
+
+To address the problem that existing retrieval systems only use LLMs for query-side enhancement and matching still relies on downstream retrievers, this paper proposes CoGR, a co-evolving retrieval framework: it lets LLMs generate both queries and product-side keywords, compatible with existing inverted indexes. It first aligns the keyword space via supervised fine-tuning, then alternately optimizes generators on both sides with co-evolution reinforcement learning, sharing the F1 optimization objective. On two types of benchmarks, it outperforms the SOTA baseline by 10.9% and 36.1% in F1 score respectively, and the keyword spaces on both sides are gradually aligned as training progresses.
+
+<FeedbackButtons slug="item:arxiv-2609.00638" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.02817" target="_blank" rel="noopener noreferrer">Cliff: Learning Process Rewards from the First Mistake</a>
+
+*HF ★ 13 · Peixuan Han, Runhui Wang, Ketan Ramaneti… · [HF Mirror](https://huggingface.co/papers/2609.02817)*
+
+To address the lack of intermediate reasoning guidance in verifiable reward reinforcement learning used in LLM post-training, and the fact that existing solutions rely on additional constraints, this paper proposes the Cliff reward shaping strategy: it calls an off-the-shelf LLM to locate the first error in the reasoning path, splits the correct prefix and error suffix, and outputs token-level reward and punishment signals. Tests across 12 scenarios show that its performance is 7%-15% higher than baseline methods, it works even if the teacher model has average capability, and it is simple and universal.
+
+<FeedbackButtons slug="item:arxiv-2609.02817" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.02737" target="_blank" rel="noopener noreferrer">Language Models Can Control Their Own Attention</a>
+
+*HF ★ 11 · Namgyu Ho, Huzama Ahmad, Woosung Koh… · [HF Mirror](https://huggingface.co/papers/2609.02737)*
+
+To address the problem that long-context LLM inference requires scanning the full KV cache, and existing pre-selection cost reduction schemes still have O(N) complexity, this study proposes a declarative attention mechanism that allows the model to autonomously declare the context regions it needs to focus on in the chain of thought, with three modes: global, specified region, and only recent output. The inference engine skips reading irrelevant KVs based on this. 15 long-context zero-shot tests show that this method can reduce the number of tokens focused on during decoding of off-the-shelf LLMs by up to 52%, with accuracy loss of less than 3 percentage points, and the loss narrows as model scale increases, leaving further room for optimization.
+
+<FeedbackButtons slug="item:arxiv-2609.02737" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.01147" target="_blank" rel="noopener noreferrer">On the Design Fundamentals of Pixel Text Representation Learning</a>
+
+*HF ★ 8 · Chaohao Yuan, Ruifeng Yuan, Zhuoxu Huang… · [HF Mirror](https://huggingface.co/papers/2609.01147)*
+
+To address the shortcomings of existing pixel text encoders, including fixed-resolution pre-training, tendency to learn visual shortcuts, weak visual localization, and insufficient multilingual understanding, this paper identifies four core design principles through ablation studies. After integration, the Pixel Linguist II model is launched based on 280 million training samples. The model achieves SOTA on multiple types of cross-language visual text tasks, remains robust even under 80% visual token compression, and can effectively improve the downstream performance of multimodal LLMs.
+
+<FeedbackButtons slug="item:arxiv-2609.01147" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2609.00047" target="_blank" rel="noopener noreferrer">Task-Specific Prompt with Global Context for Multi-Task Graph Pre-Training</a>
+
+*Zhiyang Qiu, Yangtao Wang, Xiaocui Li…*
+
+In low-resource graph prompt learning scenarios, most existing multi-task pre-training uses randomly initialized prompts, which have the defect of poor alignment between the prompt space, pre-training objectives and graph structure. This study proposes the TPGC dual-prior prompt initialization scheme, which injects task optimization preference and global structure context prior in sequence to generate adapted prompts. 6 benchmark experiments show that its few-shot performance outperforms the current SOTA baseline, with fewer tunable parameters and faster running speed.
+
+<FeedbackButtons slug="item:arxiv-2609.00047" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.00049" target="_blank" rel="noopener noreferrer">REAL-Q: E2E LLM Quantization via Dynamic Gradient Descent</a>
+
+*Qian Zhang, Yaoming Li, Zhewen Tan…*
+
+To address the problems of excessive approximation of global loss for analytical solvability, information misalignment and error propagation caused by fixed intra-layer Hessian matrices in existing LLM post-training quantization (PTQ), this paper proposes the REAL-Q quantization method: targeting an end-to-end aligned global loss proxy, it performs fine-grained dynamic block gradient descent optimization after each column block, paired with a sliding window to smooth cross-layer transitions. For LLaMA 3.1 and Qwen 3 series models at W4A16 precision, its end-to-end KL divergence is reduced by up to 49% compared to SOTA methods.
+
+<FeedbackButtons slug="item:arxiv-2609.00049" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.00054" target="_blank" rel="noopener noreferrer">Convergence issues in Relational Concept Analysis based on AOC-posets</a>
+
+*Xavier Dolques, Agn\`es Braud, Alain Gutierrez…*
+
+This paper addresses the problem that relational concept analysis (RCA) loses iterative convergence after replacing the original concept lattice with a simplified AOC poset. It analyzes the causes of convergence failure in general scenarios, clarifies the applicable conditions that can guarantee convergence, provides a solution to modify datasets to restore convergence, and also proposes a convergent variant that retains the AOC structure: convergence is achieved at the cost of a small amount of attribute redundancy by not deleting newly added relational attributes.
+
+<FeedbackButtons slug="item:arxiv-2609.00054" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/atv-big-air-tour" target="_blank" rel="noopener noreferrer">ATV Big Air Tour turned 3 days of work into 3 hours with ChatGPT</a>
+
+*OpenAI*
+
+The ATV Big Air Tour team introduced the ChatGPT Work tool to achieve significant business efficiency improvements: work that originally took 3 days to complete can now be delivered in just 3 hours. The tool has covered multiple business scenarios including marketing and merchandise operations, and can even directly convert photos of peripheral products into a usable inventory website in 15 minutes, fully proving that LLM tools can significantly lower the digitalization threshold for small and medium-sized operators and reduce operational costs.
+
+<FeedbackButtons slug="item:openai-blog-atv-big-air-tour" client:visible />
+
+## <a href="https://openai.com/index/ai-native-company-workflows" target="_blank" rel="noopener noreferrer">How AI-native companies turn workflows into operating capability</a>
+
+*OpenAI*
+
+This study focuses on the practical path for AI-native companies to transform workflows into operational capabilities: three companies, Basis, Clay, and Exa Labs, have completed efficiency upgrades for three core business processes: new user onboarding, customer account management, and developer integration by deploying AI agents. The relevant practical experience can be referenced and reused by enterprise managers in various fields, helping them turn business processes into core operational competitiveness.
+
+<FeedbackButtons slug="item:openai-blog-ai-native-company-workflows" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/model-hardware-standard-research-preview" target="_blank" rel="noopener noreferrer">Previewing the Model Hardware Standard</a>
+
+*Anthropic*
+
+Anthropic recently opened the research preview channel for the Model Hardware Standard (MHS), a common shared specification for AI agents. Its core purpose is to ensure the safety of AI operating various physical devices and unify the AI invocation rules for physical hardware. Currently, the standard is only open to the first batch of cooperative research laboratories and advanced manufacturers, and will provide security support for AI deployment in real industrial scenarios in the future.
+
+<FeedbackButtons slug="item:anthropic-model-hardware-standard-research-preview" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-text-watermark" target="_blank" rel="noopener noreferrer">How Claude&#x27;s text watermarking works</a>
+
+*Anthropic*
+
+To comply with the requirements of the EU AI Act, Anthropic will cooperate with multiple leading AI vendors to embed invisible watermarks in content generated by future versions of the Claude model. The watermark can be used to determine whether text is generated by Claude, and will not affect the quality of the model's output. This article provides official answers to public concerns about the watermark implementation logic, its impact on output, and the motivation for its deployment.
+
+<FeedbackButtons slug="item:anthropic-claude-text-watermark" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/proactive-cyber-defense-for-governments-and-enterprises/" target="_blank" rel="noopener noreferrer">Proactive cyber defense for governments and enterprises</a>
+
+*Google DeepMind*
+
+Currently, only the title of this paper *Proactive Cyber Defense for Governments and Enterprises* is provided, no specific content of the abstract is attached. Please supplement the relevant text of the abstract, and I will extract a concise English summary of about 120 words highlighting the core methods and research conclusions as required.
+
+<FeedbackButtons slug="item:deepmind-proactive-cyber-defense-for-governments-and-enterprises" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-gemini-3-8-flash-and-38-flash-cyber/" target="_blank" rel="noopener noreferrer">Introducing Gemini 3.8 Flash and 3.8 Flash Cyber</a>
+
+*Google DeepMind*
+
+Google officially launches two LLMs: Gemini 3.8 Flash and 3.8 Flash Cyber. The former has significantly improved multimodal understanding, logical reasoning, and code generation capabilities compared to the previous generation, with inference speed increased by over 40% and cost reduced by nearly half, suitable for high-frequency lightweight invocation scenarios. The latter is exclusively customized for cybersecurity, with targeted optimizations for vulnerability discovery, threat analysis, and security audit capabilities, which can greatly lower the threshold for enterprise security operations and maintenance.
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-3-8-flash-and-38-flash-cyber" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/ibm-research/real-time-intelligence" target="_blank" rel="noopener noreferrer">Real-Time Intelligence with IBM Time Series Models on Confluent</a>
+
+*Hugging Face*
+
+Currently, only the title of this paper is provided, no content of the abstract is attached, so translation, extraction and summarization cannot be completed. Please supplement the full abstract text of this study on real-time intelligence with IBM time series models on the Confluent platform, and I will generate a concise English summary of about 120 words highlighting the core methods and conclusions as required.
+
+<FeedbackButtons slug="item:hf-blog-real-time-intelligence" client:visible />
+
+## <a href="https://huggingface.co/blog/allenai/benchmirt" target="_blank" rel="noopener noreferrer">BenchMIRT: What are LLM benchmarks actually measuring?</a>
+
+*Hugging Face*
+
+This study launches the BenchMIRT tool, which models exam questions and model response data from mainstream LLM benchmarks based on multidimensional item response theory, and disassembles the actual measurement dimensions of existing evaluations. The results show that most benchmarks do not match the preset ability labels, but instead mix reasoning, knowledge memory, instruction adaptation, and even test-taking characteristics brought by training data leakage. High scores often mean that the model adapts to the benchmark preferences rather than meeting the general ability standards.
+
+<FeedbackButtons slug="item:hf-blog-benchmirt" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+Recursive Self-Improvement (RSI) originated from the "ultraintelligent machine" concept proposed by I.J. Good in 1965: such systems can surpass all human intellectual activities, and can also design better machines to achieve self-upgrade. In 2008, Eliezer Yudkowsky clarified that RSI is a feedback loop where AI uses its existing intelligence to optimize its own cognitive mechanism. In the context of contemporary AI, this feedback includes both the model directly rewriting its own weights and the model optimizing its own training pipeline.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/09/483565.html" target="_blank" rel="noopener noreferrer">One model works for all scenarios! The generalization capability of Tashi Zhihang's AWE3.7 is impressively strong</a>
+
+*QbitAI*
+
+Previously, most robots relied on proprietary models, requiring re-collection of data, training and deployment when scenarios change, with weak generalization. The general embodied LLM AWE3.7 launched by Tashi Zhihang uses the same base to adapt to multiple scenarios including industry, logistics, and life services. It achieves millimeter-level accuracy, disturbance resistance and autonomous error correction in operation tasks such as industrial sorting and precision plugging, addressing the core industry proposition of universal generalization for embodied intelligence.
+
+<FeedbackButtons slug="item:qbitai-483565" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/483552.html" target="_blank" rel="noopener noreferrer">Mysterious embodied intelligence team releases another series of impressive demo videos... Technical route of self-evolving model revealed</a>
+
+*QbitAI*
+
+The 10-minute one-take robot demo previously released by the mysterious embodied intelligence team caused a stir in the industry, and is regarded as a ChatGPT-level milestone for embodied intelligence. In response to doubts about teleoperation, the team has released multiple additional one-take demos. Its internal code-named MVP (jokingly called "Be a human") LLM can endow robots with cognition, logical understanding, and self-evolution capabilities, and subsequent real-world tests on public streets in open environments will be carried out.
+
+<FeedbackButtons slug="item:qbitai-483552" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/483462.html" target="_blank" rel="noopener noreferrer">¥500,000! Li Xiang announces MPVs have entered the "iPhone moment"! No appearance changes, fully upgraded specifications</a>
+
+*QbitAI*
+
+Li Xiang announced that the new generation of Li Auto MEGA has brought the MPV track into the "iPhone moment", claiming it is the easiest to drive and most comfortable MPV in the world. The vehicle's core upgrades are in chassis and intelligent configuration, equipped with rear-wheel + steer-by-wire, 800V active anti-roll magic carpet chassis, 4 LiDARs, etc. Its turning radius is reduced to 5.5 meters, and handling is greatly improved. Only one configuration is offered, with a price cut of ¥50,000 directly compared to the previous generation, and deliveries start this week.
+
+<FeedbackButtons slug="item:qbitai-483462" client:visible />
