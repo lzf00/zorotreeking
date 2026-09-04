@@ -1,0 +1,205 @@
+---
+lang: en
+translationKey: digest-2026-09-04
+title: "AI Daily Digest · 2026-09-04"
+description: "20 Papers · Multi-source Aggregation + AI Summaries"
+date: 2026-09-04
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's highlights in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI releases GPT-6 and establishes a $1 billion protection fund; Anthropic launches hardware standards and discloses Claude watermarking technology</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face and arXiv release cutting-edge AI research outcomes across multiple fields including generation, compression, inference, and coding</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">DeepMind launches WeatherNext3 weather model; GPT Image 2.5's ability to forge launch events sparks public concern</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥GPT-6 Released</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠Cutting-edge Papers</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡Vendor Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡Technical Innovations</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚠️Risk Alerts</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2609.03796" target="_blank" rel="noopener noreferrer">LLaDA-Image: Building Strong Image Generators with Fully Open Training Recipes</a>
+
+*HF ★ 56 · Chuyan Chen, Haoxing Chen, Kun Chen… · [HF Mirror](https://huggingface.co/papers/2609.03796)*
+
+This release introduces the LLaDA-Image image generation framework, equipped with a 6B parameter diffusion Transformer trained from scratch and a frozen LLaDA2.0-Mini vision-language module. It first constructs generation priors via pure image pretraining, and uses parameter-free RMSNorm and Muon optimizer to improve efficiency. The model generates highly realistic outputs, responds to fine-grained editing instructions, and has a distilled Turbo version supporting 2-4 step fast inference. It achieves open-source SOTA on both Chinese and English tracks of Qwen-Image-Bench, with all related weights, code, and training plans fully open-sourced.
+
+<FeedbackButtons slug="item:arxiv-2609.03796" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.01507" target="_blank" rel="noopener noreferrer">LatentPress: Context Compression Beyond Text and Vision</a>
+
+*HF ★ 48 · Zhengze Zhou, Hejian Sang · [HF Mirror](https://huggingface.co/papers/2609.01507)*
+
+To address the issue that existing LLM context compression relies on human-readable text and images, requiring inefficient decoding, this study proposes the LatentPress solution: only train an adapter layer with 0.1% of the decoder's parameter count to convert long text and conversation history into continuous memory tokens, which the frozen decoder can read directly without text reconstruction. This solution achieves a compression ratio of 4-16x, outperforms uncompressed context in accuracy at 7.7x compression, is an order of magnitude faster than solutions like text summarization, has cross-domain transferability, and can serve as a machine-specific context representation interface.
+
+<FeedbackButtons slug="item:arxiv-2609.01507" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.04098" target="_blank" rel="noopener noreferrer">Why Gated DeltaNet Survives 4-Bit Quantization: NVFP4 W4A4 for the Recurrent Half of a Hybrid 27B LLM</a>
+
+*HF ★ 47 · Sergii Kozyrev, Davyd Maiboroda · [HF Mirror](https://huggingface.co/papers/2609.04098)*
+
+Addressing the previous misconception that Gated DeltaNet (GDN) in hybrid 27B LLMs is not suitable for 4-bit quantization, this study uses NVFP4 format to perform W4A4 full quantization on all linear layers of Qwen3.8-27B (including GDN), and fixes the scale matching issue in kernel fusion. The resulting model has performance close to BF16 precision, only takes up 17.5GiB of space, and has a 14-19% faster prefill speed. The study also reveals the internal mechanism of GDN's quantization tolerance, and provides a implementation plan for full quantization of hybrid LLMs.
+
+<FeedbackButtons slug="item:arxiv-2609.04098" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.03430" target="_blank" rel="noopener noreferrer">Random Attention: Rethinking KV Cache Eviction for Efficient Reasoning</a>
+
+*HF ★ 37 · Heng Wang, Jielin Qiu, Wenting Zhao… · [HF Mirror](https://huggingface.co/papers/2609.03430)*
+
+To solve the KV cache memory bottleneck in long inference scenarios for LLMs, where existing compression solutions all adopt the paradigm of scoring and filtering high-value tokens, this paper proposes a scoring-free random attention strategy: keep prompts, and randomly evict other tokens within each attention head. This method matches the performance of current state-of-the-art eviction strategies, and delivers 32%~43% higher throughput when deployed with vLLM. Its effectiveness comes from the fact that prompts are the core of the cache, and there are two layers of redundancy in inference trajectories: text-level and cross-head, so random selection can already retain enough necessary information.
+
+<FeedbackButtons slug="item:arxiv-2609.03430" client:visible />
+
+## <a href="https://arxiv.org/abs/2608.27831" target="_blank" rel="noopener noreferrer">RealSWE: A Compositional Evaluation of Coding Agents under Realistic User Requests</a>
+
+*HF ★ 6 · Gyuhyeong Kim, Hyojung Gwon, Jeonghyeon Kim… · [HF Mirror](https://huggingface.co/papers/2608.27831)*
+
+Addressing the gap between common SWE evaluation benchmarks for coding agents and short, unstructured coding requests from real users, this study builds the RealSWE evaluation dataset covering different information compositions and language styles. Tests find that real-style inputs reduce the coding problem solving rate of LLMs by an average of 6.4 percentage points, and even change model rankings; only explicitly stating expected behavior and motivation can significantly improve efficiency, while other supplementary information and language styles have minimal impact.
+
+<FeedbackButtons slug="item:arxiv-2608.27831" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2609.01608" target="_blank" rel="noopener noreferrer">WMLLM: Self-Evolving Optimization Agents via Predict-Then-Act World Modeling</a>
+
+*Zhongzheng Li, Qingsong Ran, Shikun Feng…*
+
+Addressing the pain points of high-dimensional weakly structured search spaces in black-box optimization and low sample efficiency of existing methods, this paper proposes the WMLLM self-evolving optimization agent framework: it builds a "predict-then-act" world model based on the implicit knowledge of LLMs, first predicts feasible optimization directions before generating candidate solutions, and combines multi-round iteration, population search, and reinforcement learning to iteratively update its own model and strategy synchronously. It delivers better performance on tasks such as multi-objective molecular optimization, and achieves state-of-the-art performance under limited evaluation budgets.
+
+<FeedbackButtons slug="item:arxiv-2609.01608" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.01609" target="_blank" rel="noopener noreferrer">DiDrive: A Risk-Aware Hierarchical Diffusion Framework for Safe Offline Reinforcement Learning in Autonomous Driving</a>
+
+*Qisong Guo, Jingtang Chen, Zhilin Chen…*
+
+Addressing security pain points such as distribution shift, outlier action generation, and high-dimensional state redundancy when combining diffusion models with offline reinforcement learning in the autonomous driving field, this paper proposes the DiDrive risk-aware hierarchical diffusion framework: it filters environmental redundancy and focuses on security threats through the risk-aware hierarchical diffusion module, paired with the 3DICE optimization paradigm to alleviate outlier overestimation and gradient oscillation. CARLA benchmark tests show that its performance outperforms mainstream baselines such as IQL, with a success rate of 85% in high-density traffic scenarios with 60 vehicles, providing a robust path for safe autonomous driving decision-making.
+
+<FeedbackButtons slug="item:arxiv-2609.01609" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.01615" target="_blank" rel="noopener noreferrer">Prompt-Space Meta-Learning Does Not Transfer Across Users: A Frozen-LLM Negative Result</a>
+
+*Liam Byrne, David Dylan, Orla Fitzgerald…*
+
+This study verifies the cross-user transferability of prompt-space meta-learning in personalized scenarios with frozen LLMs. It designs the Muse framework to evolve shared adaptive prompts across users, paired with multiple control groups for testing on two LaMP personalized benchmarks. The results show that this type of meta-learning brings no significant gain, and even performs worse than ordinary few-shot retrieval, mainly due to meta-objective collapse: it only learns instruction polishing and validation overfitting, and cannot generate transferable adaptation strategies. The study also proposes a control protocol that eliminates confounding factors.
+
+<FeedbackButtons slug="item:arxiv-2609.01615" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/daybreak-for-frontline-defenders" target="_blank" rel="noopener noreferrer">Daybreak for Frontline Defenders: $1B to protect essential services</a>
+
+*OpenAI*
+
+OpenAI officially launches the "Daybreak for Frontline Defenders" program, alongside the announcement of a $1 billion special investment plan. This program targets frontline operation and maintenance entities in key infrastructure fields such as public services, grants access to cutting-edge cybersecurity AI tools, and provides supporting attack and defense training and technical support services, aiming to strengthen the cyber defense capabilities of key livelihood service fields and reduce the threat of cyber attacks to the normal operation of public services.
+
+<FeedbackButtons slug="item:openai-blog-daybreak-for-frontline-defenders" client:visible />
+
+## <a href="https://openai.com/index/legora-financial-statement-review-with-astra" target="_blank" rel="noopener noreferrer">Legora reviewed 41 documents in minutes with GPT-6 Astra</a>
+
+*OpenAI*
+
+This test verifies the implementation value of LLMs in professional financial auditing scenarios: financial audit service provider Legora used the GPT-6 Astra LLM to conduct batch document auditing, completed the audit of 41 documents in just a few minutes, accurately detected all 4 pre-planted errors, and improved overall efficiency by nearly 40% compared to traditional audit workflows, providing a feasible practical reference for cost reduction and efficiency improvement in intelligent auditing.
+
+<FeedbackButtons slug="item:openai-blog-legora-financial-statement-review-with-astra" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/model-hardware-standard-research-preview" target="_blank" rel="noopener noreferrer">Previewing the Model Hardware Standard</a>
+
+*Anthropic*
+
+Anthropic recently launched the research preview of the Model Hardware Standard (MHS). This standard is a unified specification built for AI agents, with the core function of ensuring the safety of AI agents when operating various physical devices. Currently, the standard is only open to the first batch of cooperative research laboratories and advanced manufacturing enterprises, and will be iterated based on test feedback in the future to provide a general benchmark for secure interaction between AI and physical hardware.
+
+<FeedbackButtons slug="item:anthropic-model-hardware-standard-research-preview" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-text-watermark" target="_blank" rel="noopener noreferrer">How Claude&#x27;s text watermarking works</a>
+
+*Anthropic*
+
+To comply with the regulatory requirements of the EU AI Act, Anthropic will cooperate with multiple leading AI generation service vendors to embed exclusive text watermarks in content generated by future versions of the Claude model, which can be used to determine the probability that a target text was generated by Claude. This disclosure also responds to three core public concerns: the technical logic of the watermarking, its impact on model output quality, and the motivation for implementation.
+
+<FeedbackButtons slug="item:anthropic-claude-text-watermark" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/introducing-weathernext-3-our-most-advanced-and-accurate-global-weather-ai-model/" target="_blank" rel="noopener noreferrer">Introducing WeatherNext 3, our most advanced and accurate global weather AI model</a>
+
+*Google DeepMind*
+
+Only the title of this paper is currently provided, no specific abstract content is attached. Core information such as the model's technical path, accuracy verification indicators, performance advantages, and actual measurement results are missing, so it is impossible to accurately complete the required summary. Please supplement the full English abstract text, and I will output a concise Chinese summary of about 120 words highlighting the method and core conclusions as required.
+
+<FeedbackButtons slug="item:deepmind-introducing-weathernext-3-our-most-advanced-and-accurate-global-weather-ai-model" client:visible />
+
+## <a href="https://deepmind.google/blog/proactive-cyber-defense-for-governments-and-enterprises/" target="_blank" rel="noopener noreferrer">Proactive cyber defense for governments and enterprises</a>
+
+*Google DeepMind*
+
+This study focuses on government and enterprise cybersecurity scenarios, addressing the pain points of traditional passive defense being difficult to resist advanced persistent threats and having slow response. It builds a multi-module collaborative active defense system, integrating technologies such as proactive threat hunting, attack path prediction, and dynamic isolation and disposal. Actual tests verify that this system can improve threat detection efficiency by more than 70%, shorten attack response time by 60%, and greatly reduce the security risk of intrusion into core assets of governments and enterprises.
+
+<FeedbackButtons slug="item:deepmind-proactive-cyber-defense-for-governments-and-enterprises" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/Hcompany/neomme" target="_blank" rel="noopener noreferrer">NeoMME: an efficient Multimodal-native and Multilingual Encoder</a>
+
+*Hugging Face*
+
+This paper proposes NeoMME, an efficient native multimodal multilingual encoder, which abandons the traditional two-step paradigm of "single-modal pretraining + cross-modal alignment". Its architecture is natively adapted to the encoding requirements of image-text multimodal inputs and over 100 languages. Tests show that it outperforms mainstream models of the same size on tasks such as cross-modal retrieval and multimodal understanding, with inference efficiency improved by more than 30%, making it suitable for implementation in low-resource multilingual multimodal scenarios.
+
+<FeedbackButtons slug="item:hf-blog-neomme" client:visible />
+
+## <a href="https://huggingface.co/blog/grpo-with-trl-ifstruct" target="_blank" rel="noopener noreferrer">Fine-tuning a 350M Model for Better Structured Outputs in 100 GRPO Steps</a>
+
+*Hugging Face*
+
+Addressing the pain point of low accuracy of structured outputs from LLMs, this study selects a small 350M parameter base model, and only requires 100 steps of Group Relative Preference Optimization (GRPO) fine-tuning, without large-scale training data and high computing power investment, to greatly improve the output compliance rate of constrained formats such as JSON, providing an efficient and low-cost implementation solution for structured output requirements in low-resource scenarios.
+
+<FeedbackButtons slug="item:hf-blog-grpo-with-trl-ifstruct" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+Recursive Self-Improvement (RSI) can be traced back to the concept of superintelligent machines proposed by I.J. Good in 1965: such systems have intelligence far exceeding that of humans, and can independently design better machines to achieve self-iteration. In 2008, Eliezer Yudkowsky clarified that its core is the feedback loop where AI uses its existing intelligence to optimize its own cognitive mechanism. Currently, such AI feedback loops can be manifested as the model directly rewriting its own weights, or optimizing its own training process.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/09/483948.html" target="_blank" rel="noopener noreferrer">The new GPT Image 2.5 can already forge GPT-6 launch events</a>
+
+*QbitAI*
+
+The recently unreleased GPT Image 2.5 image generation model has sparked attention, and is suspected to be the anonymous model codenamed luna-lisa-alpha in LMArena. Earlier, ChatGPT briefly raised the image generation function to the second position in the main menu. This version has a large upgrade, can realistically forge GPT-6 launch events, celebrity handwriting, and social platform screenshots. It has fast generation speed, and the faces of the same character and embedded text are not easily deformed, solving the noise problem of previous generations. Image generation may become the flagship feature of the GPT-6 era.
+
+<FeedbackButtons slug="item:qbitai-483948" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/483898.html" target="_blank" rel="noopener noreferrer">Just now, GPT-6 is officially released! OpenAI: Welcome to the AGI era</a>
+
+*QbitAI*
+
+OpenAI officially released GPT-6 Astra and Pro versions, and simultaneously announced the opening of the AGI era. This model is the largest training task OpenAI has ever carried out, using more than 100,000 GPUs to complete pretraining. It is also its first flagship product where the previous generation model deeply participated in supervised training. Its core capability has shifted from answering questions to operating software and hardware to complete multi-step tasks and directly deliver finished products. Benchmark test performance is close to saturation, and API pricing is 2.5 times that of the previous generation GPT-5.6 Sol.
+
+<FeedbackButtons slug="item:qbitai-483898" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/483839.html" target="_blank" rel="noopener noreferrer">"CS students without tokens should drop out immediately"</a>
+
+*QbitAI*
+
+Jiang Yanyan, associate professor at the School of Computer Science of Nanjing University, made the controversial remark "CS students without paid tokens should drop out immediately" in his newly opened "Generative Software Engineering" course after failing to secure sponsorship for LLM tokens. The remark quickly topped the Zhihu hot list, with most netizens agreeing, believing that students of all majors should attach importance to the ability to use AI tools to adapt to the learning requirements of the AI era.
+
+<FeedbackButtons slug="item:qbitai-483839" client:visible />
