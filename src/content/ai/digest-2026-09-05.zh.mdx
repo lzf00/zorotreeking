@@ -1,0 +1,163 @@
+---
+lang: zh
+translationKey: digest-2026-09-05
+title: "AI 每日精选 · 2026-09-05"
+description: "15 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-09-05
+tags: [digest, auto, arxiv, openai, anthropic, deepmind, hf-blog, lil-log]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">全球多家机构发布多项AI前沿研究，覆盖大模型认知、算子学习、协同学习等领域。</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI、Anthropic、DeepMind接连推出新动作，涉及安全投入、硬件标准、气象模型等方向。</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内AI赛道频出突破性成果，费马大定理证明、国产算力、机器人方案均获进展。</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 前沿研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 大厂动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💻 国产突破</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚙️ 技术落地</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 多域创新</span>
+  </div>
+</div>
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2609.02959" target="_blank" rel="noopener noreferrer">The Geometry of Ignorance: LLMs Know When to Temper Bayesian Priors</a>
+
+*Toni J. B. Liu, Jiajun Bao, Yizhou Liu…*
+
+本研究通过几何分析发现，大模型未嵌入层存在通用“无知方向”，对应训练语料一元分布，是模型不确定时依赖的贝叶斯先验，在4类、0.4B-405B参数模型中均存在。向该方向投影得到的先验载荷λ随上下文信息量增加下降，预测可拆解为调温贝叶斯更新的两部分；大模型高上下文场景下先验依赖更低，调整λ可定向干预预测偏移。
+
+<FeedbackButtons slug="item:arxiv-2609.02959" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.02982" target="_blank" rel="noopener noreferrer">Equation Recast for Canonical Operator Learning Across Parametric PDEs</a>
+
+*Qiyun Cheng, Valentin Duruisseaux, Cesar F. Clauser…*
+
+针对纯数据驱动参数偏微分方程算子学习泛化弱、数据需求高的痛点，该研究提出方程重构方法：将参数导致的算子差异解析转化为等效源项，仅学习单个标准算子即可实现新参数区间零样本预测，支持异质稀疏数据融合、内置失效预警，在核聚变仿真等场景验证有效，兼顾迁移性与数据效率。
+
+<FeedbackButtons slug="item:arxiv-2609.02982" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.02984" target="_blank" rel="noopener noreferrer">From Euclidean to Graph-Structured Data: A Survey of Collaborative Learning</a>
+
+*R\'emi Bourgerie, \v\{S\}ar\=unas Girdzijauskas, Viktoria Fodor*
+
+针对传统单机机器学习的扩展性、隐私瓶颈，及现有协同学习（含联邦、去中心化学习）多适配欧氏数据、无法捕捉图数据关系特征的问题，该综述梳理了欧氏协同学习有效性、效率、隐私保护三维研究基础，构建了图协同学习的场景分类、异质性表征与算法框架，最后指明了领域待解挑战与前沿方向。
+
+<FeedbackButtons slug="item:arxiv-2609.02984" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/daybreak-for-frontline-defenders" target="_blank" rel="noopener noreferrer">Daybreak for Frontline Defenders: $1B to protect essential services</a>
+
+*OpenAI*
+
+OpenAI推出“前线守护者黎明计划”，官宣投入10亿美元专项资金。该计划面向医疗、能源、市政等关键公共服务运营主体，开放前沿网络安全AI工具使用权限，同步配套专项技术培训与安全运维支持，全方位强化基础民生服务的网络攻击防护能力，降低网络风险对公共服务正常运行的冲击。
+
+<FeedbackButtons slug="item:openai-blog-daybreak-for-frontline-defenders" client:visible />
+
+## <a href="https://openai.com/index/playco-game-prototyping-with-astra" target="_blank" rel="noopener noreferrer">Playco cut manual fixes 50% prototyping games with GPT-6 Astra</a>
+
+*OpenAI*
+
+游戏厂商Playco采用GPT-6 Astra大模型开发游戏原型：基于同一套灰盒基础框架，快速完成了三款不同主题的游戏原型搭建。和此前使用的前代模型相比，本次开发过程中需要人工修复的问题量下降了50%，充分证明高阶大模型可有效降低游戏原型开发的人工调试成本，提升研发效率。
+
+<FeedbackButtons slug="item:openai-blog-playco-game-prototyping-with-astra" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/model-hardware-standard-research-preview" target="_blank" rel="noopener noreferrer">Previewing the Model Hardware Standard</a>
+
+*Anthropic*
+
+AI机构Anthropic近期开放「模型硬件标准（MHS）」的研究预览通道，该标准是面向AI智能体的统一共享技术规范，核心目标是保障AI操控各类物理硬件设备时的运行安全性。目前该标准仅向首批合作的科研实验室、高端制造厂商开放试用，后续可覆盖更多产业场景。
+
+<FeedbackButtons slug="item:anthropic-model-hardware-standard-research-preview" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-text-watermark" target="_blank" rel="noopener noreferrer">How Claude&#x27;s text watermarking works</a>
+
+*Anthropic*
+
+为落实欧盟《人工智能法案》合规要求，Anthropic将为后续版本Claude大模型的生成内容嵌入文本水印，可溯源识别文本是否由Claude生成，这一改造目前也在多家头部AI厂商同步推进。本次公开内容针对外界关切的水印技术原理、对输出质量的影响、改造动因三类常见问题作出解答。
+
+<FeedbackButtons slug="item:anthropic-claude-text-watermark" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/introducing-weathernext-3-our-most-advanced-and-accurate-global-weather-ai-model/" target="_blank" rel="noopener noreferrer">Introducing WeatherNext 3, our most advanced and accurate global weather AI model</a>
+
+*Google DeepMind*
+
+目前您仅提供了该研究的标题，未附上对应的摘要核心内容，无法精准提炼其专属的技术方法与研究结论。请您补充完整论文摘要的具体文本，我会为您输出120字左右、重点突出方法创新与核心结果、精简清晰的中文总结内容。
+
+<FeedbackButtons slug="item:deepmind-introducing-weathernext-3-our-most-advanced-and-accurate-global-weather-ai-model" client:visible />
+
+## <a href="https://deepmind.google/blog/proactive-cyber-defense-for-governments-and-enterprises/" target="_blank" rel="noopener noreferrer">Proactive cyber defense for governments and enterprises</a>
+
+*Google DeepMind*
+
+您目前仅提供了该论文的标题，未粘贴对应的摘要正文内容，请您补充完整摘要的具体表述，我会按照要求为您完成翻译提炼，输出重点突出核心方法、研究结论，篇幅在120字左右的简洁中文总结。
+
+<FeedbackButtons slug="item:deepmind-proactive-cyber-defense-for-governments-and-enterprises" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/Hcompany/neomme" target="_blank" rel="noopener noreferrer">NeoMME: an efficient Multimodal-native and Multilingual Encoder</a>
+
+*Hugging Face*
+
+本文推出高效多模态原生多语言编码器NeoMME，摒弃传统单模态预训练后再做跨模态对齐的范式，原生融合多模态语义与百级多语言表征，预训练与推理效率显著提升。实测显示其在图文检索、跨语言多模态理解等下游任务上性能优于同量级主流模型，落地实用性更强。
+
+<FeedbackButtons slug="item:hf-blog-neomme" client:visible />
+
+## <a href="https://huggingface.co/blog/grpo-with-trl-ifstruct" target="_blank" rel="noopener noreferrer">Fine-tuning a 350M Model for Better Structured Outputs in 100 GRPO Steps</a>
+
+*Hugging Face*
+
+该研究针对小参数模型结构化输出准确率不足的痛点，采用群体相对策略优化（GRPO）对齐方法，仅用100步训练即可完成350M参数基座模型的微调，无需大量标注数据。结果显示，其结构化输出表现优于常规微调和提示工程方案，推理成本远低于大模型，可适配低资源场景下API调用、结构化生成等需求。
+
+<FeedbackButtons slug="item:hf-blog-grpo-with-trl-ifstruct" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我改进（RSI）的概念演进：1965年学者古德最早提出该概念，指超人类智能系统可自主设计更优机型实现自我迭代；2008年尤德考斯基明确其核心是AI依托现有能力升级自身认知架构的反馈闭环。当前AI领域的RSI分为直接改写自身权重、优化自身训练管线两类。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/09/484551.html" target="_blank" rel="noopener noreferrer">姚班校友主导，Claude攻克费马大定理首个完整形式化证明</a>
+
+*量子位*
+
+姚班校友主导的Anthropic团队借助Claude，仅用11天就完成费马大定理首个端到端可机器校验的形式化证明。该项目并未提出新证法，而是将怀尔斯的人类可读证明转译为1300万行Lean代码，包含超3万个中间定理，规模达Lean核心数学库的5倍，这项工程此前被学界预估需多年才能落地。
+
+<FeedbackButtons slug="item:qbitai-484551" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/484547.html" target="_blank" rel="noopener noreferrer">趋境科技与摩尔线程达成战略合作，高品质 AI Token 国产异构方案性价比超越国际先进算力</a>
+
+*量子位*
+
+9月3日趋境科技与摩尔线程达成战略合作，融合前者自研PD异构技术、ATaaS平台与后者MTT S5000智算卡、MUSA软件栈，优化大模型推理Prefill、Decode两阶段算力分配，打造的AI Token生产方案性价比超国际先进算力，已承接头部厂商真实业务流量，率先实现国产PD异构推理落地商用。
+
+<FeedbackButtons slug="item:qbitai-484547" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/484437.html" target="_blank" rel="noopener noreferrer">机器人不能停下来等模型：星尘发布 SmoothRL，让在线强化学习跟上大模型的异步推理</a>
+
+*量子位*
+
+针对大模型推理延迟高、真实机器人无法停等，异步推理部署模式下动作计划与实际执行不匹配，传统在线强化学习（RL）出现数据“对错账”的问题，星尘智能发布适配异步场景的在线RL框架SmoothRL，解决异步部署下RL的学习数据源选择问题，首次在真实高动态投掷任务验证，可适配无停顿动态操作需求。
+
+<FeedbackButtons slug="item:qbitai-484437" client:visible />
