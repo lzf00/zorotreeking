@@ -1,0 +1,163 @@
+---
+lang: en
+translationKey: digest-2026-09-05
+title: "AI Daily Digest · 2026-09-05"
+description: "15 papers · Multi-source aggregation + AI summary"
+date: 2026-09-05
+tags: [digest, auto, arxiv, openai, anthropic, deepmind, hf-blog, lil-log]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Get today's highlights in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Multiple institutions worldwide have released a number of cutting-edge AI studies covering fields such as LLM cognition, operator learning, collaborative learning and more.</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI, Anthropic, DeepMind have rolled out new initiatives successively, involving directions including security investment, hardware standards, meteorological models and more.</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Breakthrough achievements keep emerging in the domestic AI track, with progress made in Fermat's Last Theorem proof, domestic computing power, and robotics solutions.</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Big Tech Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💻 Domestic Breakthroughs</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚙️ Technology Implementation</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Multi-domain Innovation</span>
+  </div>
+</div>
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2609.02959" target="_blank" rel="noopener noreferrer">The Geometry of Ignorance: LLMs Know When to Temper Bayesian Priors</a>
+
+*Toni J. B. Liu, Jiajun Bao, Yizhou Liu…*
+
+Through geometric analysis, this study finds that there is a universal "ignorance direction" in the unembedding layer of LLMs, which corresponds to the unary distribution of training corpus and is the Bayesian prior that models rely on when uncertain. This direction exists across 4 categories of models with parameter sizes ranging from 0.4B to 405B. The prior load λ obtained by projecting to this direction decreases as the amount of context information increases, and predictions can be disassembled into two parts of tempered Bayesian update; LLMs have lower prior dependence in high-context scenarios, and adjusting λ can directionally intervene in prediction bias.
+
+<FeedbackButtons slug="item:arxiv-2609.02959" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.02982" target="_blank" rel="noopener noreferrer">Equation Recast for Canonical Operator Learning Across Parametric PDEs</a>
+
+*Qiyun Cheng, Valentin Duruisseaux, Cesar F. Clauser…*
+
+To address the pain points of weak generalization and high data demand of pure data-driven operator learning for parametric partial differential equations, this study proposes an equation recasting method: it analytically converts operator differences caused by parameters into equivalent source terms, and only needs to learn a single canonical operator to achieve zero-shot prediction in new parameter intervals. It supports heterogeneous sparse data fusion and built-in failure warning, has been verified effective in scenarios such as nuclear fusion simulation, and balances transferability and data efficiency.
+
+<FeedbackButtons slug="item:arxiv-2609.02982" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.02984" target="_blank" rel="noopener noreferrer">From Euclidean to Graph-Structured Data: A Survey of Collaborative Learning</a>
+
+*Rémi Bourgerie, Šarūnas Girdzijauskas, Viktoria Fodor*
+
+Aiming at the scalability and privacy bottlenecks of traditional single-machine machine learning, as well as the problem that existing collaborative learning (including federated and decentralized learning) is mostly adapted to Euclidean data and cannot capture relational features of graph data, this survey sorts out the three-dimensional research foundation of Euclidean collaborative learning covering effectiveness, efficiency and privacy protection, constructs the scenario classification, heterogeneity characterization and algorithm framework for graph collaborative learning, and finally points out unsolved challenges and cutting-edge directions in the field.
+
+<FeedbackButtons slug="item:arxiv-2609.02984" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/daybreak-for-frontline-defenders" target="_blank" rel="noopener noreferrer">Daybreak for Frontline Defenders: $1B to protect essential services</a>
+
+*OpenAI*
+
+OpenAI has launched the "Daybreak for Frontline Defenders" program, officially announcing a $1 billion special fund. This program is open to operators of key public services such as healthcare, energy, and municipal administration, grants access to cutting-edge cybersecurity AI tools, and comes with supporting special technical training and security operation and maintenance support, to comprehensively strengthen the cyber attack protection capabilities of basic people's livelihood services and reduce the impact of cyber risks on the normal operation of public services.
+
+<FeedbackButtons slug="item:openai-blog-daybreak-for-frontline-defenders" client:visible />
+
+## <a href="https://openai.com/index/playco-game-prototyping-with-astra" target="_blank" rel="noopener noreferrer">Playco cut manual fixes 50% prototyping games with GPT-6 Astra</a>
+
+*OpenAI*
+
+Game developer Playco used the GPT-6 Astra LLM to develop game prototypes: based on the same set of gray-box basic frameworks, it quickly completed the construction of three game prototypes with different themes. Compared with the previous generation of models used earlier, the number of problems requiring manual fixes during this development process dropped by 50%, fully proving that high-level LLMs can effectively reduce the manual debugging cost of game prototype development and improve R&D efficiency.
+
+<FeedbackButtons slug="item:openai-blog-playco-game-prototyping-with-astra" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/model-hardware-standard-research-preview" target="_blank" rel="noopener noreferrer">Previewing the Model Hardware Standard</a>
+
+*Anthropic*
+
+AI institution Anthropic recently opened the research preview channel for the "Model Hardware Standard (MHS)", which is a unified shared technical specification for AI agents, with the core goal of ensuring operational safety when AI controls various physical hardware devices. Currently, this standard is only open for trial to the first batch of cooperative scientific research laboratories and high-end manufacturing manufacturers, and will cover more industrial scenarios in the future.
+
+<FeedbackButtons slug="item:anthropic-model-hardware-standard-research-preview" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-text-watermark" target="_blank" rel="noopener noreferrer">How Claude&#x27;s text watermarking works</a>
+
+*Anthropic*
+
+To meet the compliance requirements of the EU AI Act, Anthropic will embed text watermarks in the generated content of subsequent versions of the Claude LLM, which can trace and identify whether text is generated by Claude. This transformation is also being promoted simultaneously by multiple leading AI manufacturers. The publicly released content answers three common questions of public concern: the principle of watermarking technology, its impact on output quality, and the motivation for the transformation.
+
+<FeedbackButtons slug="item:anthropic-claude-text-watermark" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/introducing-weathernext-3-our-most-advanced-and-accurate-global-weather-ai-model/" target="_blank" rel="noopener noreferrer">Introducing WeatherNext 3, our most advanced and accurate global weather AI model</a>
+
+*Google DeepMind*
+
+At present, only the title of this study is provided, and the corresponding core abstract content is not attached, so it is impossible to accurately extract its exclusive technical methods and research conclusions. Please supplement the specific text of the full paper abstract, and I will output a concise, clear summary of around 120 words highlighting methodological innovations and core results.
+
+<FeedbackButtons slug="item:deepmind-introducing-weathernext-3-our-most-advanced-and-accurate-global-weather-ai-model" client:visible />
+
+## <a href="https://deepmind.google/blog/proactive-cyber-defense-for-governments-and-enterprises/" target="_blank" rel="noopener noreferrer">Proactive cyber defense for governments and enterprises</a>
+
+*Google DeepMind*
+
+At present, you have only provided the title of this paper, and the corresponding abstract body content is not pasted. Please supplement the full content of the abstract, and I will complete the translation and extraction as required, and output a concise summary of around 120 words highlighting the core methods and research conclusions.
+
+<FeedbackButtons slug="item:deepmind-proactive-cyber-defense-for-governments-and-enterprises" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/Hcompany/neomme" target="_blank" rel="noopener noreferrer">NeoMME: an efficient Multimodal-native and Multilingual Encoder</a>
+
+*Hugging Face*
+
+This paper introduces NeoMME, an efficient multimodal-native and multilingual encoder. It abandons the traditional paradigm of cross-modal alignment after single-modal pretraining, and natively integrates multimodal semantics and hundreds of multilingual representations, significantly improving pretraining and inference efficiency. Tests show that its performance on downstream tasks such as image-text retrieval and cross-language multimodal understanding is better than mainstream models of the same size, with stronger practical application value.
+
+<FeedbackButtons slug="item:hf-blog-neomme" client:visible />
+
+## <a href="https://huggingface.co/blog/grpo-with-trl-ifstruct" target="_blank" rel="noopener noreferrer">Fine-tuning a 350M Model for Better Structured Outputs in 100 GRPO Steps</a>
+
+*Hugging Face*
+
+To address the pain point of insufficient structured output accuracy of small-parameter models, this study uses the Group Relative Policy Optimization (GRPO) alignment method, and can complete the fine-tuning of the 350M parameter base model in only 100 training steps without a large amount of labeled data. The results show that its structured output performance is better than conventional fine-tuning and prompt engineering solutions, and the inference cost is much lower than that of large models, which can adapt to needs such as API calls and structured generation in low-resource scenarios.
+
+<FeedbackButtons slug="item:hf-blog-grpo-with-trl-ifstruct" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This paper sorts out the conceptual evolution of Recursive Self-Improvement (RSI): the concept was first proposed by scholar I.J. Good in 1965, referring to superhuman intelligent systems that can independently design better models to achieve self-iteration; in 2008, Eliezer Yudkowsky clarified that its core is the feedback loop where AI upgrades its own cognitive architecture relying on existing capabilities. Current RSI in the AI field is divided into two categories: directly rewriting its own weights, and optimizing its own training pipeline.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/09/484551.html" target="_blank" rel="noopener noreferrer">Led by Yao Class alumni, Claude completes the first full formal proof of Fermat's Last Theorem</a>
+
+*QbitAI*
+
+The Anthropic team led by Yao Class alumni completed the first end-to-end machine-verifiable formal proof of Fermat's Last Theorem in only 11 days with the help of Claude. The project did not propose a new proof method, but translated Wiles' human-readable proof into 13 million lines of Lean code, including more than 30,000 intermediate theorems, which is 5 times the size of the Lean core math library. This project was previously estimated by the academic community to take many years to implement.
+
+<FeedbackButtons slug="item:qbitai-484551" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/484547.html" target="_blank" rel="noopener noreferrer">QuJing Technology and Moore Threads reach strategic cooperation, cost-performance of high-quality AI Token domestic heterogeneous solution surpasses international advanced computing power</a>
+
+*QbitAI*
+
+On September 3, QuJing Technology and Moore Threads reached a strategic cooperation, integrating the former's self-developed PD heterogeneous technology, ATaaS platform with the latter's MTT S5000 intelligent computing card and MUSA software stack, optimizing the computing power allocation in the two stages of LLM inference Prefill and Decode. The created AI Token production solution has a cost-performance ratio exceeding that of international advanced computing power, has undertaken real business traffic from leading manufacturers, and took the lead in realizing the commercialization of domestic PD heterogeneous inference.
+
+<FeedbackButtons slug="item:qbitai-484547" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/484437.html" target="_blank" rel="noopener noreferrer">Robots can't stop waiting for models: Stardust releases SmoothRL to enable online reinforcement learning to keep up with asynchronous inference of large models</a>
+
+*QbitAI*
+
+Aiming at the problems of high LLM inference latency, real robots cannot stop and wait, action plans do not match actual execution under the asynchronous inference deployment mode, and data "account mismatch" occurs in traditional online reinforcement learning (RL), Stardust Intelligence released SmoothRL, an online RL framework adapted to asynchronous scenarios, which solves the problem of learning data source selection for RL under asynchronous deployment. It was verified for the first time in real high-dynamic throwing tasks, and can adapt to the demand for non-stop dynamic operation.
+
+<FeedbackButtons slug="item:qbitai-484437" client:visible />
