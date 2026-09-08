@@ -1,0 +1,181 @@
+---
+lang: en
+translationKey: digest-2026-09-08
+title: "AI Daily Digest · 2026-09-08"
+description: "17 papers · multi-source aggregation + AI summaries"
+date: 2026-09-08
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second daily roundup</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Multiple cutting-edge results were announced in the AI academic community today, covering technical fields including knowledge distillation, world models, and multimodal encoding</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI, Anthropic, and DeepMind have successively released new updates, covering areas such as hardware standards, weather AI, and text watermarking</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">China's domestic AI industry is seeing active developments: DeepIntell Control has received major strategic investment, and the WAIC overseas edition as well as new startup models are drawing public attention</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📈 Industry Trends</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Big Tech News</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Academic Frontiers</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡 Technological Innovations</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Industry Applications</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2609.02998" target="_blank" rel="noopener noreferrer">Verify Before You Distill: Prompt-Level Teacher Gating for On-Policy Distillation</a>
+
+*HF ★ 3 · Zhiwei Zhang, Zechen Sun, Fei Zhao… · [HF Mirror](https://huggingface.co/papers/2609.02998)*
+
+To address the flaw of existing on-policy distillation (OPD) methods, which directly use teacher model supervision without verification and are easily misled by erroneous teacher outputs, this paper proposes TGOPD, a teacher-gated on-policy distillation approach: it first verifies teacher reliability at the prompt level. If passed, dense OPD training is used; otherwise, validator-anchored GRPO is adopted. Experiments show that its performance outperforms native OPD across multiple tasks and parameter scales, and it also increases teacher GPU utilization from 9.8% to 78.9%.
+
+<FeedbackButtons slug="item:arxiv-2609.02998" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.03254" target="_blank" rel="noopener noreferrer">What Else Needs Fixing? Exploring Cost-Effective Test-Time Compute for Revision Propagation in Artifacts Generated Through Conversation</a>
+
+*HF ★ 1 · Daisuke Kikuta · [HF Mirror](https://huggingface.co/papers/2609.03254)*
+
+To solve the pain point where users only request partial modifications to content generated via LLM conversations but all relevant parts need to be updated synchronously, this paper explores cost-effective test-time compute solutions, builds a dedicated evaluation benchmark, and tests 9 revision propagation methods across multiple LLMs of different sizes. Results show that the baseline accuracy ranges from 68.3% to 93%, and the most cost-effective solution is the 3-parallel-sample filtering scheme, which can improve accuracy by 2.2% to 9.7%. Related resources have been open-sourced.
+
+<FeedbackButtons slug="item:arxiv-2609.03254" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2609.04264" target="_blank" rel="noopener noreferrer">Spectral-Target Physical Latent Structuring for JEPA-Style World Models</a>
+
+*Penghao Zhu, Salvatore Penachio, Kaustav Mukherjee…*
+
+For JEPA-style latent variable world models, existing representation collapse prevention solutions cannot resolve the problem of physical representation inertia in highly dynamic environments: latent states fail to cover key physical attributes, leading to downstream planning failures. This paper proposes adding a lightweight Fourier auxiliary head during the training phase to inject physical structural constraints into the latent space, with no additional overhead during inference. It can greatly improve the success rate of planning in dynamic environments, with more prominent gains in small data scenarios, and also optimizes data efficiency.
+
+<FeedbackButtons slug="item:arxiv-2609.04264" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.04265" target="_blank" rel="noopener noreferrer">ProToMEx: Rapid, Interpretable Explanations via Structured Representations</a>
+
+*Athina Georgara, Adarsh Valoor, Sarvapali D. Ramchurn*
+
+To address the flaw of existing post-hoc explanation methods for machine learning classifiers, which only perform single-feature attribution and cannot present complex combinatorial patterns behind decisions, this paper proposes ProToMEx, a model-agnostic explainable framework. It learns implicit themes representing high-level decision drivers based on probabilistic topic models, and can output both global behavior explanations and multi-driver local explanations for individual samples. Experiments show that its fidelity is comparable to SHAP and LIME, while local explanation generation is 30-40 times faster, meeting the requirements of real-time scenarios.
+
+<FeedbackButtons slug="item:arxiv-2609.04265" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.04267" target="_blank" rel="noopener noreferrer">A Data Fusion Framework for Grounding Aerospace Surrogate Model via Experimental Wind-Tunnel Observations</a>
+
+*Nitin Nagesh Kulkarni, Dheeraj Vemula, Yin Yu…*
+
+To solve the problem of systematic deviation between aerodynamic surrogate models trained on CFD and wind tunnel test results, this paper proposes a test calibration fusion framework that does not require retraining the original model: based on the pre-trained CFD aerodynamic surrogate model, a correction network is added to learn the deviation between wind tunnel PSP pressure measurement data and the model output. After correction, the error of the surface pressure coefficient is significantly reduced, with the error at reserved test angles of attack only 2.3-2.7%, outperforming direct interpolation schemes, while retaining the generalization and computational efficiency of the original model.
+
+<FeedbackButtons slug="item:arxiv-2609.04267" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/supporting-independent-journalism-in-ukraine" target="_blank" rel="noopener noreferrer">Supporting independent journalism in Ukraine</a>
+
+*OpenAI*
+
+In response to the special operational difficulties currently faced by the journalism industry in Ukraine, OpenAI has jointly launched a special AI support program with the Artificial Intelligence Research for Public Policy Ukraine (AIRPPU) and the World Association of Newspapers and News Publishers (WAN-IFRA), providing technology-related support to local Ukrainian news organizations. The project aims to help local news outlets improve their innovation capacity and risk resilience, and support the development of independent journalism in Ukraine.
+
+<FeedbackButtons slug="item:openai-blog-supporting-independent-journalism-in-ukraine" client:visible />
+
+## <a href="https://openai.com/index/an-alien-mind" target="_blank" rel="noopener noreferrer">An Alien Mind</a>
+
+*OpenAI*
+
+Written by Jakub Pachocki, *An Alien Mind* focuses on the challenge of human value alignment against the background of rapid iteration of AI capabilities. The author points out that existing security protection mechanisms are no longer sufficient to meet the control requirements for high-capability AI, calling for the introduction of stricter AI security guarantees, while promoting international cross-stakeholder collaborative supervision, to jointly prevent the potential risk of AI development getting out of control from both technical and institutional levels.
+
+<FeedbackButtons slug="item:openai-blog-an-alien-mind" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/model-hardware-standard-research-preview" target="_blank" rel="noopener noreferrer">Previewing the Model Hardware Standard</a>
+
+*Anthropic*
+
+AI company Anthropic has released the first research preview of the Model Hardware Standard (MHS), a unified shared specification for AI agents to safely operate physical devices, which can solve the pain point of security adaptation for AI interacting with physical hardware. It is currently open to the first batch of research laboratories and advanced manufacturing vendors, and will provide standardized support for the large-scale deployment of AI physical applications in the future.
+
+<FeedbackButtons slug="item:anthropic-model-hardware-standard-research-preview" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-text-watermark" target="_blank" rel="noopener noreferrer">How Claude&#x27;s text watermarking works</a>
+
+*Anthropic*
+
+To comply with the requirements of the EU AI Act, Anthropic will partner with multiple leading AI vendors to add built-in text watermarking functionality to subsequent Claude series models, which can trace and determine whether a given text was generated by Claude. The published feature article responds to three public concerns: the technical logic of the watermark, its impact on model output quality, and the motivation for implementing this feature.
+
+<FeedbackButtons slug="item:anthropic-claude-text-watermark" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/introducing-weathernext-3-our-most-advanced-and-accurate-global-weather-ai-model/" target="_blank" rel="noopener noreferrer">Introducing WeatherNext 3, our most advanced and accurate global weather AI model</a>
+
+*Google DeepMind*
+
+The newly released WeatherNext 3 is the most accurate global weather AI forecast model to date. By optimizing the multi-scale spatiotemporal feature fusion network architecture, the team has improved forecast accuracy by more than 25% compared to traditional numerical models. It supports 1km high-resolution global forecasts for up to 15 days, improves extreme weather recognition accuracy by more than 40%, and increases inference speed by a thousand times, effectively supporting scenarios such as disaster prevention and mitigation.
+
+<FeedbackButtons slug="item:deepmind-introducing-weathernext-3-our-most-advanced-and-accurate-global-weather-ai-model" client:visible />
+
+## <a href="https://deepmind.google/blog/proactive-cyber-defense-for-governments-and-enterprises/" target="_blank" rel="noopener noreferrer">Proactive cyber defense for governments and enterprises</a>
+
+*Google DeepMind*
+
+Currently, only the title of this paper on proactive cyber defense for governments and enterprises has been provided, and the specific body of the abstract is not included. Please supplement the full abstract text of this paper, and I will extract the core methods and research conclusions as required, and output a concise 120-word Chinese summary with highlighted key points.
+
+<FeedbackButtons slug="item:deepmind-proactive-cyber-defense-for-governments-and-enterprises" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/Hcompany/neomme" target="_blank" rel="noopener noreferrer">NeoMME: an efficient Multimodal-native and Multilingual Encoder</a>
+
+*Hugging Face*
+
+NeoMME is an efficient multimodal-native multilingual pre-trained encoder. Its core adopts a unified modal representation architecture, abandoning the design paradigm of separate modal branches in traditional multimodal models, and can support cross-modal tasks in over 100 languages. Tests show that its inference efficiency is more than 30% higher than competing products of the same size, and its performance on tasks such as cross-modal retrieval and image-text understanding for low-resource languages outperforms mainstream similar models.
+
+<FeedbackButtons slug="item:hf-blog-neomme" client:visible />
+
+## <a href="https://huggingface.co/blog/grpo-with-trl-ifstruct" target="_blank" rel="noopener noreferrer">Fine-tuning a 350M Model for Better Structured Outputs in 100 GRPO Steps</a>
+
+*Hugging Face*
+
+This research addresses the pain point that structured outputs from large models are prone to format deviations and missing fields. It uses the GRPO (Group Relative Policy Optimization) alignment algorithm to adapt a 350M parameter small model with only 100 fine-tuning steps, significantly improving the accuracy of its output format compliance and field matching. It verifies that the solution of combining small models with lightweight iterative alignment can quickly meet structured generation requirements at low cost, with compute costs far lower than conventional full fine-tuning.
+
+<FeedbackButtons slug="item:hf-blog-grpo-with-trl-ifstruct" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This article sorts out harness engineering for recursive self-improvement (RSI): the concept of RSI was first proposed by I.J. Good in 1965, referring to a superintelligence mechanism that can surpass all human intellectual activities and iteratively design better intelligent systems on its own; in 2008, Eliezer Yudkowsky clarified that its core is the feedback loop where AI optimizes its own cognitive architecture based on existing capabilities. In the current AI context, RSI has two main implementation paths: directly rewriting its own weights, or optimizing its own training process.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位 (QbitAI)
+
+## <a href="https://www.qbitai.com/2026/09/485784.html" target="_blank" rel="noopener noreferrer">DeepIntell Control receives major strategic investment from CATL, Aramco and others, accelerating the building of computing and energy infrastructure for the physical AI era</a>
+
+*QbitAI*
+
+Physical AI company DeepIntell Control has recently completed three consecutive rounds of financing, with the latest hundreds of millions of yuan B+ round led by CATL, followed by multiple investors including Aramco's investment arm. Its self-developed PhyAI engine enables interpretable perception, decision-making and control for the physical world, has been deployed at scale, and is now developing liquid cooling intelligent control and computing-power collaboration products, relying on strategic investment resources to build the computing and energy base for the AI era.
+
+<FeedbackButtons slug="item:qbitai-485784" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/485630.html" target="_blank" rel="noopener noreferrer">On-site at Malaysia AI event! Full highlights of the first day of WAIC CONNECT MALAYSIA</a>
+
+*QbitAI*
+
+On September 7, WAIC CONNECT MALAYSIA officially kicked off in Kuala Lumpur. The first day was centered on "Scenario Insight Day", featuring a Huawei Cloud AI special forum, an all-day AI ecosystem exhibition, and the highly anticipated WAIC City Walk session. Government, enterprise and industry representatives from China and Malaysia visited local core science and innovation hubs on site, docking with AI implementation demands in manufacturing, public services and other fields in Malaysia, which is building a regional digital hub, deepening AI industry cooperation between the two countries.
+
+<FeedbackButtons slug="item:qbitai-485630" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/485555.html" target="_blank" rel="noopener noreferrer">Wang Yunhe launches first model after starting his business</a>
+
+*QbitAI*
+
+Jiyuan Lvdong, founded by Wang Yunhe, former head of Huawei's Pangu large model, has jointly launched the agent-native large model NeoHorse with teams from Tsinghua University and Peking University, available in 4B and 9B versions, focusing on agent-exclusive capabilities such as tool calling, environmental feedback processing, and dynamic path adjustment. The performance of the 4B version after specialized post-training has caught up with the 9B base version. This model is the parameterized precipitation of the team's multi-model collaboration experience, and the company still adheres to the multi-model division of labor route, and will not enter the general base model track.
+
+<FeedbackButtons slug="item:qbitai-485555" client:visible />
