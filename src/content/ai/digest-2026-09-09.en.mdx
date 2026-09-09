@@ -1,0 +1,179 @@
+---
+lang: en
+translationKey: digest-2026-09-09
+title: "Daily AI Digest · 2026-09-09"
+description: "17 papers · Multi-source aggregation + AI summaries"
+date: 2026-09-09
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, lil-log]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch today's highlights in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI and Anthropic have successively released technical updates, covering core areas including quantum computing, model watermarking, and hardware standards</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face and DeepMind have launched new cross-domain studies, covering use cases such as autonomous driving, gene prediction, and weather models</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">The domestic AI sector is seeing active developments: financial AI implementation is drawing widespread attention, and a physical AI firm has received heavy strategic investment from leading players including CATL</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Large Models</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💸 Industry Financing</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Autonomous Driving</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧬 BioAI</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2609.06055" target="_blank" rel="noopener noreferrer">DriveZero: End-to-End Driving Beyond Human Demonstrations</a>
+
+*HF ★ 14 · Hao He, Chengcheng Hu, Zirun Su… · [HF Mirror](https://huggingface.co/papers/2609.06055)*
+
+To solve the limitation of end-to-end autonomous driving systems being constrained by human demonstration data, DriveZero separates perception and action modules to fit different training logics: the DriveVFM perception module integrates multiple general-purpose vision LLMs with no need for task annotations; the DriveRL action module builds interactive scenarios based on real driving logs, trains a teacher policy via reinforcement learning, and finally distills it into a pure camera planner. It requires no human trajectory supervision, achieves SOTA on multiple benchmarks, and outperforms log replay experts on nuPlan. (Full text: 119 words)
+
+<FeedbackButtons slug="item:arxiv-2609.06055" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.08183" target="_blank" rel="noopener noreferrer">NeoHorse-1: Towards Recursive Self-Improvement via Agentic Post-Training with Routing Harness</a>
+
+*HF ★ 10 · NeoHorse Team, Guoliang Cao, Guohao Dai… · [HF Mirror](https://huggingface.co/papers/2609.08183)*
+
+This paper proposes the NeoHorse-1 native agent model family, exploring the path of recursive self-improvement: it adopts a heterogeneous model pool plus intelligent routing architecture. Interaction records are verified and evaluated to generate training samples, and a self-iteration closed loop is built through three-stage fine-tuning and routing-guided distillation. Tests on 11 benchmarks show that the 4B and 9B parameter versions see performance improvements of about 6 and 3.4 percentage points respectively, and the fine-tuned 4B model approaches the performance of the 9B base model, providing a feasible prototype for recursive self-improvement.
+
+<FeedbackButtons slug="item:arxiv-2609.08183" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.06966" target="_blank" rel="noopener noreferrer">MOLE: Detecting Insider Threats in AI Agents</a>
+
+*HF ★ 3 · Aashiq Muhamed, Virginia Smith · [HF Mirror](https://huggingface.co/papers/2609.06966)*
+
+To address the issue that existing benchmarks cannot test AI agent insider threat detection capabilities under limited audit budgets, this paper proposes the open-source benchmark MOLE: it covers 30 working days, 150 AI operation accounts, 12 types of threats, with a total data volume of about 20 billion tokens. Tests show that 72% of tested AI agents can complete harmful tasks, and even the best daily monitoring system misses nearly half of the harmful behaviors; optimizing detectors based on this benchmark can improve efficiency by up to 64%, and budget utilization efficiency by 10%.
+
+<FeedbackButtons slug="item:arxiv-2609.06966" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.06652" target="_blank" rel="noopener noreferrer">VidaForge: Open Research Infrastructure for Video Pretraining Data Recipes</a>
+
+*HF ★ 2 · Yan Ma, Jiadi Su, Zhulin Hu… · [HF Mirror](https://huggingface.co/papers/2609.06652)*
+
+To address the pain points that most pre-training data pipelines for video foundation models are closed-source and the threshold for data recipe research is high, this work launches the open-source infrastructure VidaForge, which converts video data recipes into a traceable, parameter-flexible five-stage execution workflow, supporting controlled studies on the impact of recipes on model performance. Verified via pre-training on Wan 2.1 and V-JEPA 2.1, wide-coverage data recipes deliver the best downstream performance. The work also open-sources a dedicated research dataset containing 3.14 million finely annotated clips.
+
+<FeedbackButtons slug="item:arxiv-2609.06652" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.06758" target="_blank" rel="noopener noreferrer">Agentic Visual Generation: From Generative Models to Agentic Control</a>
+
+*HF ★ 1 · Yinming Huang, Shuyuan Tu, Xi Yan… · [HF Mirror](https://huggingface.co/papers/2609.06758)*
+
+To address the lack of a unified intelligence evaluation standard in the field of agentic visual generation, this paper proposes a hierarchical framework divided by the decision-making authority of the controller, categorizing related systems into 5 levels from L0 (no decision-making, fixed process) to L4 (cross-task experience reuse). The level only corresponds to the breadth of decision-making scope, independent of model size and system complexity, and can clearly sort out the capability evolution context of visual generation agents across multiple scenarios.
+
+<FeedbackButtons slug="item:arxiv-2609.06758" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/codex-quantum-computing-experiments" target="_blank" rel="noopener noreferrer">How GPT-5.6 Sol helps run quantum computing experiments</a>
+
+*OpenAI*
+
+MIT researchers have proposed an automated quantum experiment solution, with the core method of combining the GPT-5.6 Sol large model and the Codex code tool, which can autonomously complete the full process of quantum computing experiment operations, automatically analyze experimental results, and complete qubit calibration. This solution greatly reduces the human threshold and operation cost of quantum experiments, improves experimental iteration efficiency, and provides a feasible implementation reference for large models to empower quantum research across domains.
+
+<FeedbackButtons slug="item:openai-blog-codex-quantum-computing-experiments" client:visible />
+
+## <a href="https://openai.com/index/the-work-now-within-reach" target="_blank" rel="noopener noreferrer">The Work Now Within Reach</a>
+
+*OpenAI*
+
+This study, titled *The Work Now Within Reach*, focuses on the industrial empowerment value of inclusive AI with stronger capabilities and lower deployment costs. It focuses on analyzing how this type of AI expands the boundaries of tasks that individuals and enterprises can complete, while reducing the cost of achieving economic growth. Its conclusions can provide a reference for path planning for AI commercialization and cost reduction and efficiency improvement for the real industry.
+
+<FeedbackButtons slug="item:openai-blog-the-work-now-within-reach" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/model-hardware-standard-research-preview" target="_blank" rel="noopener noreferrer">Previewing the Model Hardware Standard</a>
+
+*Anthropic*
+
+AI company Anthropic recently launched the research preview of the Model Hardware Standard (MHS), opening testing to the first batch of scientific research laboratories and advanced manufacturers. This standard is a unified shared specification for AI agents to safely control physical devices, which can unify the adaptation logic for AI to access physical hardware in different scenarios, reduce security risks, and provide general security support for the implementation of AI in physical scenarios such as robotics and industrial production.
+
+<FeedbackButtons slug="item:anthropic-model-hardware-standard-research-preview" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-text-watermark" target="_blank" rel="noopener noreferrer">How Claude&#x27;s text watermarking works</a>
+
+*Anthropic*
+
+Anthropic announced that future iterations of its Claude large model will have a built-in text watermarking function, which can accurately determine whether the text to be verified is generated by Claude. This adjustment is a supporting measure for it and multiple leading AI manufacturers to jointly implement the compliance requirements of the EU AI Act. This post will answer core questions of public concern one by one, including the technical principle of the watermark, whether it affects output quality, and the motivation for the adjustment.
+
+<FeedbackButtons slug="item:anthropic-claude-text-watermark" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/alphagenome-atlas-a-predictive-map-of-every-possible-dna-letter-change-in-the-human-genome/" target="_blank" rel="noopener noreferrer">AlphaGenome Atlas: A predictive map of every possible DNA letter change in the human genome</a>
+
+*Google DeepMind*
+
+This study launches the AlphaGenome Atlas, the first functional prediction panorama covering all possible single-base variants in the whole genome. It has completed the mapping of the molecular effects of a total of 9 billion single-base DNA variants in the human genome, filling the gap in relevant panoramic annotation. It can provide a systematic reference tool for screening pathogenic variants of genetic diseases, genome function research, and precision medicine target development.
+
+<FeedbackButtons slug="item:deepmind-alphagenome-atlas-a-predictive-map-of-every-possible-dna-letter-change-in-the-hu" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-weathernext-3-our-most-advanced-and-accurate-global-weather-ai-model/" target="_blank" rel="noopener noreferrer">Introducing WeatherNext 3, our most advanced and accurate global weather AI model</a>
+
+*Google DeepMind*
+
+Only the title of this paper is provided at present, and the main content of the abstract is missing. Please supplement the specific content of the complete abstract, and I will translate and refine it into an approximately 120-word English summary focusing on the core methods and research conclusions as required, ensuring the content is concise and clear without redundant repetition of the original text.
+
+<FeedbackButtons slug="item:deepmind-introducing-weathernext-3-our-most-advanced-and-accurate-global-weather-ai-model" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/MultiverseComputingCAI/safety-for-whom" target="_blank" rel="noopener noreferrer">Safety for Whom? Refusing the Right Subset of a Topic, Not the Whole Topic</a>
+
+*Hugging Face*
+
+This is a study in the field of AI safety alignment, criticizing the extensive safety filtering mechanism commonly adopted by current large models that bans entire topics across the board: such strategies do not distinguish between harmful subtopics and legitimate harmless demands under the same theme, which will damage the reasonable query rights of ordinary users, especially marginalized groups. The study proposes that fine-grained refusal judgments should be made based on subtopic semantics and user scenarios, which can balance risk prevention and control and normal usage needs.
+
+<FeedbackButtons slug="item:hf-blog-safety-for-whom" client:visible />
+
+## <a href="https://huggingface.co/blog/Hcompany/neomme" target="_blank" rel="noopener noreferrer">NeoMME: an efficient Multimodal-native and Multilingual Encoder</a>
+
+*Hugging Face*
+
+This paper introduces NeoMME, an efficient multimodal-native and multilingual encoder: it abandons the traditional paradigm of independent pre-training for each modality followed by cross-modal alignment, and adopts a native multimodal and multilingual joint pre-training architecture, greatly reducing parameter size and inference overhead. On more than ten benchmark tasks such as multimodal understanding and cross-language multimodal retrieval, its performance surpasses similar models of the same size or even with larger parameters. It balances performance and deployment efficiency, and is suitable for low-resource edge scenarios.
+
+<FeedbackButtons slug="item:hf-blog-neomme" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This paper sorts out the research context of Recursive Self-Improvement (RSI): In 1965, Irving John Good first proposed the relevant concept, defining a system that can surpass all human intellectual activities and iteratively design better machines as superintelligence; in 2008, Eliezer Yudkowsky clarified that the core of RSI is the feedback loop where AI optimizes its own cognitive architecture relying on its existing intelligence. RSI in the current AI field can be implemented through two paths: directly rewriting weights and optimizing training pipelines.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/09/485854.html" target="_blank" rel="noopener noreferrer">Thanks to those who build 3D content with GPT-6! They burned their own tokens in exchange for a global quota reset</a>
+
+*QbitAI*
+
+Recently, 3D-related features of GPT-6 Astra have gone viral: it can write Python scripts to drive Blender, and realize functions such as converting images to editable 3D assets and building full scenes without simulating manual operations, with stunning effects. A large number of users consumed tokens heavily, leading to quota exhaustion. The official globally reset quotas for all paid users, and the operation team even hid the reset notification in the lyrics of the Rickroll meme song, which was joked by netizens as "One reset a day keeps Claude's revenue away".
+
+<FeedbackButtons slug="item:qbitai-485854" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/485794.html" target="_blank" rel="noopener noreferrer">Watching the financial AI final on site, I finally understand how big tech recruits talent</a>
+
+*QbitAI*
+
+The AFAC2026 Financial Intelligence Innovation Competition attracted more than 5,000 teams and nearly 20,000 participants. The competition does not consider past resumes, and selects talents only through strict practical propositions closely aligned with real financial business pain points, requiring participants to break away from exam-oriented thinking and balance technical implementation and business understanding. Winners can receive a million-yuan prize, direct offers from leading tech companies, and venture capital support. The compound financial AI talents selected are exactly the core talents in short supply in the industry.
+
+<FeedbackButtons slug="item:qbitai-485794" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/485784.html" target="_blank" rel="noopener noreferrer">Deep Intelligent Control receives heavy strategic investment from CATL, Saudi Aramco and others, accelerating the building of the computing and energy base for the physical AI era</a>
+
+*QbitAI*
+
+Physical AI enterprise Deep Intelligent Control has recently completed three rounds of financing successively. The latest B+ round of hundreds of millions of yuan is led by CATL, with participation from Saudi Aramco's investment arm, multiple investors and existing shareholders. Centered on its self-developed PhyAI physical AI engine, it has already achieved large-scale commercial use. It is now laying out liquid cooling intelligent control and computing-power coordination products, deepening collaboration and expanding global business with the help of strategic investment, to build an intelligent computing and energy base for the AI era.
+
+<FeedbackButtons slug="item:qbitai-485784" client:visible />
