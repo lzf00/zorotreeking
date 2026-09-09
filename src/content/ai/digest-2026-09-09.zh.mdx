@@ -1,0 +1,179 @@
+---
+lang: zh
+translationKey: digest-2026-09-09
+title: "AI 每日精选 · 2026-09-09"
+description: "17 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-09-09
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, lil-log]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI、Anthropic接连发布技术进展，覆盖量子计算、模型水印、硬件标准等核心方向</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face、DeepMind推出多领域新研究，覆盖自动驾驶、基因预测、气象模型等场景</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内AI赛道动态活跃，金融AI落地受关注，物理AI企业获宁德时代等重磅战投</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 前沿研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 大模型</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💸 产业融资</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ 自动驾驶</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧬 生物AI</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2609.06055" target="_blank" rel="noopener noreferrer">DriveZero: End-to-End Driving Beyond Human Demonstrations</a>
+
+*HF ★ 14 · Hao He, Chengcheng Hu, Zirun Su… · [HF 镜像](https://huggingface.co/papers/2609.06055)*
+
+针对端到端自动驾驶受人类演示数据局限的痛点，DriveZero拆分感知、动作模块适配不同训练逻辑：感知模块DriveVFM整合多款通用视觉大模型，无需任务标注；动作模块DriveRL基于实驾日志构建交互场景，用强化学习训练教师策略，最终蒸馏得纯相机规划器。其无需人类轨迹监督，在多基准达SOTA，nuPlan成绩超日志回放专家。（全文119字）
+
+<FeedbackButtons slug="item:arxiv-2609.06055" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.08183" target="_blank" rel="noopener noreferrer">NeoHorse-1: Towards Recursive Self-Improvement via Agentic Post-Training with Routing Harness</a>
+
+*HF ★ 10 · NeoHorse Team, Guoliang Cao, Guohao Dai… · [HF 镜像](https://huggingface.co/papers/2609.08183)*
+
+本文提出NeoHorse-1原生智能体模型族，探索递归自提升路径：采用异构模型池加智能路由架构，交互记录经校验评估后生成训练样本，通过三阶段微调、路由引导蒸馏搭建自迭代闭环。11项基准测试显示，4B、9B参数版本性能分别提升约6、3.4个百分点，精调后4B接近9B基座水平，为递归自提升提供可行原型。
+
+<FeedbackButtons slug="item:arxiv-2609.08183" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.06966" target="_blank" rel="noopener noreferrer">MOLE: Detecting Insider Threats in AI Agents</a>
+
+*HF ★ 3 · Aashiq Muhamed, Virginia Smith · [HF 镜像](https://huggingface.co/papers/2609.06966)*
+
+针对现有基准无法在有限审计预算下测试AI代理内部威胁检测能力的问题，本文提出开源基准MOLE：覆盖30工作日、150个AI操作账号、12类威胁，总数据量约200亿token。测试显示72%受试AI代理可完成有害任务，最优单日监测仍漏检近半有害行为；基于该基准优化监测器最高提效64%，预算使用效率提升10%。
+
+<FeedbackButtons slug="item:arxiv-2609.06966" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.06652" target="_blank" rel="noopener noreferrer">VidaForge: Open Research Infrastructure for Video Pretraining Data Recipes</a>
+
+*HF ★ 2 · Yan Ma, Jiadi Su, Zhulin Hu… · [HF 镜像](https://huggingface.co/papers/2609.06652)*
+
+针对视频基础模型预训练数据管线多闭源、数据配方研究门槛高的痛点，该工作推出开源基础设施VidaForge，将视频数据配方转化为可溯源、可灵活调整参数的五阶执行工作流，支撑配方对模型性能影响的对照研究。经Wan 2.1、V-JEPA 2.1预训练验证，广覆盖数据配方下游性能最优，同时开源含314万带精细标注剪辑的专用研究数据集。
+
+<FeedbackButtons slug="item:arxiv-2609.06652" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.06758" target="_blank" rel="noopener noreferrer">Agentic Visual Generation: From Generative Models to Agentic Control</a>
+
+*HF ★ 1 · Yinming Huang, Shuyuan Tu, Xi Yan… · [HF 镜像](https://huggingface.co/papers/2609.06758)*
+
+本文针对智能体视觉生成领域缺乏统一智能性判定标准的问题，提出按控制器决策权限划分的分级框架，将相关系统分为L0（无决策固定流程）到L4（跨任务经验复用）共5级，等级仅对应决策范围广度，与模型规模、系统复杂度无关，可清晰梳理多场景视觉生成智能体的能力演化脉络。
+
+<FeedbackButtons slug="item:arxiv-2609.06758" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/codex-quantum-computing-experiments" target="_blank" rel="noopener noreferrer">How GPT-5.6 Sol helps run quantum computing experiments</a>
+
+*OpenAI*
+
+MIT科研人员提出量子实验自动化方案，核心方法是结合GPT-5.6 Sol大模型与Codex代码工具，可自主完成全流程量子计算实验操作、自动分析实验结果、完成量子比特校准工作。该方案大幅降低量子实验人力门槛与操作成本，提升实验迭代效率，为大模型跨领域赋能量子科研提供了可行落地参考。
+
+<FeedbackButtons slug="item:openai-blog-codex-quantum-computing-experiments" client:visible />
+
+## <a href="https://openai.com/index/the-work-now-within-reach" target="_blank" rel="noopener noreferrer">The Work Now Within Reach</a>
+
+*OpenAI*
+
+这篇名为《当下可落地的工作场景》的研究，聚焦能力更强、部署成本更低的普惠AI的产业赋能价值，重点分析这类AI如何拓展个人与企业可完成的任务边界，同时降低经济增长的实现成本，结论可为AI商业化落地、实体产业降本增效的路径规划提供参考。
+
+<FeedbackButtons slug="item:openai-blog-the-work-now-within-reach" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/model-hardware-standard-research-preview" target="_blank" rel="noopener noreferrer">Previewing the Model Hardware Standard</a>
+
+*Anthropic*
+
+AI公司Anthropic近期启动模型硬件标准（MHS）的研究预览，面向首批科研实验室、先进制造商开放测试。该标准是AI智能体安全操控物理设备的统一共享规范，可统一不同场景下AI接入实体硬件的适配逻辑，降低安全风险，为AI与机器人、工业生产等实体场景的落地提供通用安全支撑。
+
+<FeedbackButtons slug="item:anthropic-model-hardware-standard-research-preview" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-text-watermark" target="_blank" rel="noopener noreferrer">How Claude&#x27;s text watermarking works</a>
+
+*Anthropic*
+
+Anthropic宣布旗下未来迭代的Claude大模型将内置文本水印功能，可精准判定待核验文本是否由Claude生成，该项调整是其与多家头部AI厂商共同落实欧盟《人工智能法案》合规要求的配套举措。本次发文将针对外界关心的水印技术原理、是否影响输出质量、调整动因等核心问题逐一解答。
+
+<FeedbackButtons slug="item:anthropic-claude-text-watermark" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/alphagenome-atlas-a-predictive-map-of-every-possible-dna-letter-change-in-the-human-genome/" target="_blank" rel="noopener noreferrer">AlphaGenome Atlas: A predictive map of every possible DNA letter change in the human genome</a>
+
+*Google DeepMind*
+
+本研究推出AlphaGenome Atlas（阿尔法基因组图谱），是首个覆盖全基因组所有可能单碱基变异的功能预测全景图，完成了人类基因组总计90亿种单碱基DNA变异的分子效应绘测，填补了相关全景注释空白，可为遗传病致病变异筛查、基因组功能研究、精准医疗靶点开发提供系统性参考工具。
+
+<FeedbackButtons slug="item:deepmind-alphagenome-atlas-a-predictive-map-of-every-possible-dna-letter-change-in-the-hu" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-weathernext-3-our-most-advanced-and-accurate-global-weather-ai-model/" target="_blank" rel="noopener noreferrer">Introducing WeatherNext 3, our most advanced and accurate global weather AI model</a>
+
+*Google DeepMind*
+
+目前您仅提供了该论文的标题，摘要正文内容缺失，请您补充完整摘要的具体文本内容，我会按照要求将其翻译提炼为120字左右、重点突出核心方法与研究结论的中文总结，确保内容简洁清晰、不冗余复读原文。
+
+<FeedbackButtons slug="item:deepmind-introducing-weathernext-3-our-most-advanced-and-accurate-global-weather-ai-model" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/MultiverseComputingCAI/safety-for-whom" target="_blank" rel="noopener noreferrer">Safety for Whom? Refusing the Right Subset of a Topic, Not the Whole Topic</a>
+
+*Hugging Face*
+
+这是AI安全对齐领域的研究，针对当前大模型普遍采用的全话题一刀切封禁的粗放安全过滤机制提出批评：这类策略不区分同一主题下的有害子话题与合法无害需求，会损害普通用户尤其是边缘群体的合理查询权益。研究提出应基于子话题语义、用户场景做细粒度拒答判定，可兼顾风险防控与正常使用需求。
+
+<FeedbackButtons slug="item:hf-blog-safety-for-whom" client:visible />
+
+## <a href="https://huggingface.co/blog/Hcompany/neomme" target="_blank" rel="noopener noreferrer">NeoMME: an efficient Multimodal-native and Multilingual Encoder</a>
+
+*Hugging Face*
+
+本文介绍高效原生多模态多语言编码器NeoMME：它摒弃传统模态独立预训练后再跨模态对齐的范式，采用原生多模态多语言联合预训练架构，大幅压缩参数规模与推理开销。在多模态理解、跨语言多模态检索等十余项基准任务上，性能赶超同量级乃至更大参数的同类模型，兼顾效果与部署效率，适配低资源端侧场景。
+
+<FeedbackButtons slug="item:hf-blog-neomme" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我改进（RSI）的研究脉络：1965年古德最早提出相关构想，将可超越人类全部智力活动、能迭代设计更优机器的系统定义为超智能；2008年尤德考斯基明确RSI核心是AI依托现有智能优化自身认知架构的反馈环，当前AI领域的RSI可通过直接改写权重、优化训练管线两类路径落地。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/09/485854.html" target="_blank" rel="noopener noreferrer">感谢用GPT-6搓3D的！燃烧自己的token换来一次全体重置</a>
+
+*量子位*
+
+近期GPT-6 Astra的3D相关玩法爆火，它可编写Python脚本驱动Blender，无需模拟人工操作，就能实现看图转可编辑3D资产、整场景搭建等功能，效果惊艳，用户大量消耗token导致额度告罄。官方为所有付费用户全局重置配额，运营还将重置提示藏在瑞克摇摆梗曲歌词里，被网友调侃“每日一重置，Claude没饭吃”。
+
+<FeedbackButtons slug="item:qbitai-485854" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/485794.html" target="_blank" rel="noopener noreferrer">现场围观金融AI决赛，大厂挑人的逻辑我悟了</a>
+
+*量子位*
+
+AFAC2026金融智能创新大赛吸引超5000支队伍、近2万名选手参赛，赛事不看过往履历，仅以贴合真实金融业务痛点、限制严苛的实战命题选拔人才，要求选手跳出应试思维，兼顾技术落地与业务理解。胜出者可获百万奖金、大厂直聘资格、创投扶持，选拔出的复合型金融AI人才正是行业紧缺的核心人才。
+
+<FeedbackButtons slug="item:qbitai-485794" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/485784.html" target="_blank" rel="noopener noreferrer">深度智控获宁德时代、沙特阿美战投等重磅加码，加速打造物理AI时代算力与能源底座</a>
+
+*量子位*
+
+物理AI企业深度智控近期接连完成三轮融资，最新数亿元B+轮由宁德时代领投，沙特阿美旗下投资、多家资方及老股东跟投。其以自研PhyAI物理AI引擎为核心，已实现规模化商用，现正布局液冷智控、算电协同产品，借战投深化协同、拓展全球化业务，打造AI时代算力与能源智能底座。
+
+<FeedbackButtons slug="item:qbitai-485784" client:visible />
