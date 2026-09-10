@@ -1,0 +1,21 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ChuanxiLoopGuide from "@/components/travel/ChuanxiLoopGuide.astro";
+
+const title = "川西自驾 · 成都取还 2026";
+const description = "10 月 2 日上海飞成都取车，经阿坝、久治、色达、甘孜、巴塘、稻城亚丁、新都桥和四姑娘山，11 日回成都，12 日返沪。";
+const stops = ["上海", "成都", "阿坝", "久治", "甘孜", "巴塘", "稻城", "新都桥", "四姑娘山", "成都", "上海"];
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "TouristTrip",
+  name: title,
+  description,
+  touristType: "川西秋色自驾旅行者",
+  itinerary: { "@type": "ItemList", itemListElement: stops.map((name, index) => ({ "@type": "ListItem", position: index + 1, name })) },
+};
+---
+
+<BaseLayout title={title} description={description}>
+  <Fragment slot="head"><script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)}></script></Fragment>
+  <ChuanxiLoopGuide />
+</BaseLayout>

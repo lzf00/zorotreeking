@@ -1,0 +1,128 @@
+---
+import RouteGuideShell from "./RouteGuideShell.astro";
+import ChuanxiLoopSheet from "./ChuanxiLoopSheet.astro";
+import ChuanxiLoopRouteOverview from "./ChuanxiLoopRouteOverview.astro";
+
+const route = ["上海", "成都", "阿坝", "久治", "甘孜", "巴塘", "稻城", "新都桥", "四姑娘山", "成都", "上海"];
+---
+
+<RouteGuideShell
+  variant="chuanxi"
+  kicker="Western Sichuan loop · Chengdu pickup and return"
+  title="川西秋色自驾"
+  accentTitle="从成都再回成都"
+  lead="10 月 2 日上海飞成都，16:00 在武侯大道铁佛段 317 号取车。3 日凌晨出城翻鹧鸪山住阿坝，4 日短途看莲宝叶则住久治，5–6 日经色达、甘白路到巴塘，7 日长途赶稻城，8 日亚丁两海和日照金山，9 日回到新都桥，10 日住四姑娘山，11 日上午看山后回成都，12 日飞上海。"
+  facts={[["10.02", "成都 16:00 取车"], ["10.08", "亚丁两海"], ["10.11", "四姑娘山收尾"]]}
+  route={route}
+  nav={[
+    { href: "#loop-verdict", label: "规划结论" },
+    { href: "#loop-sheet", label: "总路书" },
+    { href: "#route-atlas", label: "交互地图" },
+    { href: "#loop-pacing", label: "日程取舍" },
+    { href: "#loop-return", label: "回成都" },
+    { href: "#loop-gates", label: "执行门槛" },
+  ]}
+  footerTitle="这是国庆秋色线，不是逐景打卡线。"
+  footerText="本页按 2026 年 10 月 2–12 日的执行表写成行前决策工具。酒店和房型以已锁订单为准；亚丁票、鹧鸪山天气和最长两天车程，出发前必须再核一次。"
+>
+  <section id="loop-verdict" class="rd-section">
+    <div class="rd-wrap rd-split">
+      <div><p class="rd-eyebrow">01 / Route verdict</p><div class="rd-rule"></div></div>
+      <div>
+        <h2>这是一条成都取还的<br />川西大环线，不是进藏线。</h2>
+        <p class="rd-copy">人不进西藏，证件压力比阿里小，但海拔和车程并不轻松。色达、理塘、稻城都在 3700–4100 米；10 月 3 日、5 日、7 日、9 日都是 370 公里以上。久治的冈仁波非遗酒店只是店名，和阿里的冈仁波齐不是一座山。亚丁五色海、牛奶海按景区规则走，原表 10 公里不能当成县城到两海的距离。</p>
+      </div>
+    </div>
+    <div class="rd-wrap rd-metrics">
+      <div><strong>10.02</strong><span>成都取车入住</span></div>
+      <div><strong>10.04</strong><span>莲宝叶则</span></div>
+      <div><strong>10.08</strong><span>亚丁两海</span></div>
+      <div><strong>10.11</strong><span>四姑娘山后回城</span></div>
+    </div>
+    <aside class="rd-alert">
+      <div class="rd-wrap">
+        <b>先看三个硬点</b>
+        <p>10 月 3 日 04:00 必须出成都，否则鹧鸪山会变成夜翻山。10 月 7 日 06:00 必须离巴塘，490 公里不容再晚。10 月 8 日若没有亚丁票或高反明显，只在日瓦看日照金山，不硬闯两海。</p>
+      </div>
+    </aside>
+  </section>
+
+  <ChuanxiLoopSheet />
+  <ChuanxiLoopRouteOverview />
+
+  <section id="loop-pacing" class="rd-section rd-section--deep">
+    <div class="rd-wrap rd-split">
+      <div><p class="rd-eyebrow">02 / Why this pacing</p><div class="rd-rule"></div></div>
+      <div>
+        <h2>短途日是为了还长途日，<br />不是每天都能慢慢拍。</h2>
+        <p class="rd-copy">4 日久治、8 日亚丁、10–11 日四姑娘山，是这条线真正能停下来的日子。3 日阿坝、5 日甘孜、7 日稻城、9 日新都桥，都是推进日。寺庙、草原和垭口只在不耽误到店时停车。</p>
+      </div>
+    </div>
+    <div class="rd-wrap rd-exit-grid">
+      <article class="rd-exit">
+        <span class="rd-status">早出发</span>
+        <h3>10.03 / 10.07<br />两个最长夜</h3>
+        <p>成都到阿坝要赶在出城高峰前；巴塘到稻城要赶在海子山天黑前。这两天宁肯少拍照，也不改住宿城。</p>
+        <ul>
+          <li>3 日 04:00 出成都</li>
+          <li>7 日 06:00 离巴塘</li>
+          <li>理塘只补油，不住宿</li>
+        </ul>
+      </article>
+      <article class="rd-exit">
+        <span class="rd-status">可放弃</span>
+        <h3>色达深度 / 塔公绕行</h3>
+        <p>色达、亚龙寺、冬古寺和塔公草原都是加分项。时间不够就留一座寺庙外观，或 G318 直达新都桥。</p>
+        <ul>
+          <li>不安排喇荣深度停留</li>
+          <li>亚青寺关闭就继续甘白路</li>
+          <li>鱼子西、塔公看天气</li>
+        </ul>
+      </article>
+      <article class="rd-exit">
+        <span class="rd-status">必须核票</span>
+        <h3>10.08<br />亚丁两海</h3>
+        <p>五色海和牛奶海在亚丁核心。没有票、观光车停运或高反，就改看日照金山，不把原表 10 公里当导航。</p>
+        <ul>
+          <li>提前实名购票</li>
+          <li>止山下按日瓦/亚丁口理解</li>
+          <li>两海走不动就停洛绒牛场</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section id="loop-return" class="rd-section">
+    <div class="rd-wrap rd-split">
+      <div><p class="rd-eyebrow">03 / Back to Chengdu</p><div class="rd-rule"></div></div>
+      <div>
+        <h2>四姑娘山只做上午，<br />把下午留给回城拥堵。</h2>
+        <p class="rd-copy">10 日住日隆是为了 11 日早进景区。双桥沟或长坪沟择一。11:30 还没结束就出山，经小金、汶川走 G4217 回成都。当晚酒店待定，先锁可免费取消；12 日只保留机场转场。</p>
+      </div>
+    </div>
+    <div class="rd-wrap rd-card-grid">
+      <article class="rd-card"><span>西段</span><h3>阿坝 → 久治 → 甘孜</h3><p>先翻鹧鸪山，再用一天短途看莲宝叶则，再经色达压到甘孜。寺庙全部按途经处理。</p></article>
+      <article class="rd-card rd-card--accent"><span>南段</span><h3>甘白路 → 稻城 → 亚丁</h3><p>巴塘低海拔恢复一夜，再冲 490 公里。亚丁是本线唯一完整景区日。</p></article>
+      <article class="rd-card rd-card--night"><span>东段</span><h3>新都桥 → 四姑娘山 → 成都</h3><p>光影和峰体收在最后两天，避免从稻城直接连夜赶回成都。</p></article>
+    </div>
+  </section>
+
+  <section id="loop-gates" class="rd-section rd-section--night">
+    <div class="rd-wrap">
+      <p class="rd-eyebrow">04 / Go or no-go</p>
+      <h2>四个决定，<br />守住秋色和返沪。</h2>
+      <div class="rd-gates">
+        <article><b>01</b><h3>两名司机</h3><p>连续四天超 370 公里。单车至少两名能夜路和高原驾驶的人，全尺寸备胎、防滑链、氧气和卫星通信。</p></article>
+        <article><b>02</b><h3>亚丁票是开关</h3><p>8 日前拿不到票，8 日改为日瓦休息和日照金山，9 日行程不顺延，以免 11 日回不了成都。</p></article>
+        <article><b>03</b><h3>理塘不住宿</h3><p>7 日若 16:00 未到理塘，才允许改住理塘并放弃或压缩亚丁。默认仍以稻城为目标。</p></article>
+        <article><b>04</b><h3>11 日必须回城</h3><p>四姑娘山再好看也不过夜到 12 日。返沪航班在 12 日，成都要留还车和睡觉的晚上。</p></article>
+      </div>
+      <div class="rd-links">
+        <b>同板块相关路线</b>
+        <a href="/hike/travel/ali-central-loop-nagqu-g317-chengdu-2026/">那曲 G317 至成都 ↗</a>
+        <a href="/hike/travel/ali-grand-loop-ali-permit-2026/">阿里绕证版 ↗</a>
+        <a href="/hike/">返回徒步旅行板块 ↗</a>
+      </div>
+    </div>
+  </section>
+</RouteGuideShell>

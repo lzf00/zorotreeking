@@ -48,6 +48,18 @@ import {
 } from "../src/data/nagqu-g317-chengdu-route";
 import { getTravelGuides } from "../src/data/travel-guides";
 import { wgs84ToGcj02 } from "../src/utils/amap-coordinate";
+import {
+  chuanxiLoopRoadLabels,
+  chuanxiLoopRoutedDayGeometry,
+} from "../src/data/chuanxi-loop-road-geometry";
+import {
+  chuanxiLoopDailyPlanning,
+  chuanxiLoopDepartures,
+  chuanxiLoopRooms,
+  chuanxiLoopRouteDays,
+  chuanxiLoopRoutePoints,
+  chuanxiLoopSheetRemarks,
+} from "../src/data/chuanxi-loop-route";
 
 const {
   aliLhasaReturnRouteDays,
@@ -71,10 +83,11 @@ test("hike section is presented as hiking and travel across navigation and home"
 
 test("Ali travel guide is indexed and keeps its complete standalone roadbook", async () => {
   const guides = getTravelGuides("zh");
-  assert.equal(guides.length, 7);
-  assert.equal(guides[0]?.slug, "ali-grand-loop-ali-permit-2026");
-  assert.equal(guides[1]?.slug, "ali-grand-loop-lhasa-return-2026");
-  assert.equal(guides[2]?.slug, "ali-central-loop-nagqu-g317-chengdu-2026");
+  assert.equal(guides.length, 8);
+  assert.equal(guides[0]?.slug, "chuanxi-loop-chengdu-2026");
+  assert.equal(guides[1]?.slug, "ali-grand-loop-ali-permit-2026");
+  assert.equal(guides[2]?.slug, "ali-grand-loop-lhasa-return-2026");
+  assert.equal(guides[3]?.slug, "ali-central-loop-nagqu-g317-chengdu-2026");
   assert.ok(guides.some((guide) => guide.slug === "ali-central-loop-nagqu-chengdu-2026"));
   assert.ok(guides.some((guide) => guide.slug === "ali-central-loop-lhasa-lanzhou-2026"));
   assert.ok(guides.some((guide) => guide.slug === "ali-grand-loop-lhasa-lanzhou-2026"));
@@ -107,13 +120,14 @@ test("travel guide catalog separates complete routes from destination-specific r
   assert.deepEqual(
     chengduGuides.map((guide) => guide.slug),
     [
+      "chuanxi-loop-chengdu-2026",
       "ali-central-loop-nagqu-g317-chengdu-2026",
       "ali-central-loop-nagqu-chengdu-2026",
     ],
   );
 
   const completeGuides = getTravelGuides("zh", { scope: "complete" });
-  assert.equal(completeGuides.length, 6);
+  assert.equal(completeGuides.length, 7);
   assert.ok(completeGuides.every((guide) => guide.scope === "complete"));
   assert.ok(completeGuides.every((guide) => guide.status === "planning"));
   assert.ok(completeGuides.every((guide) => /^2026-\d{2}-\d{2}$/.test(guide.updated)));
@@ -725,4 +739,53 @@ test("Shigatse permit-bypass loop skips Everest and restores Zanda overnight", a
     assert.ok(refs.has(expected), `bypass map is missing ${expected}`);
   }
   assert.equal(refs.has("昆莎航班"), false);
+});
+
+test("Western Sichuan Chengdu loop is indexed with the 11-day hotel table", async () => {
+  const [page, guide, overview] = await Promise.all([
+    readFile(
+      new URL("../src/pages/hike/travel/chuanxi-loop-chengdu-2026.astro", import.meta.url),
+      "utf8",
+    ),
+    readFile(new URL("../src/components/travel/ChuanxiLoopGuide.astro", import.meta.url), "utf8"),
+    readFile(
+      new URL("../src/components/travel/ChuanxiLoopRouteOverview.astro", import.meta.url),
+      "utf8",
+    ),
+  ]);
+
+  assert.match(page, /<ChuanxiLoopGuide/);
+  assert.match(guide, /武侯大道铁佛段 317 号/);
+  assert.match(guide, /莲宝叶则/);
+  assert.match(guide, /亚丁两海/);
+  assert.match(guide, /四姑娘山/);
+  assert.doesNotMatch(guide, /朋友分流|昆莎|日喀则电子边境通行证停发/);
+  assert.match(overview, /point\.id !== "shanghai"/);
+  assert.match(overview, /day\.day >= 2 && day\.day <= 10/);
+  assert.match(overview, /includeCoreSources=\{false\}/);
+
+  assert.equal(chuanxiLoopRouteDays.length, 11);
+  assert.equal(chuanxiLoopRouteDays[0]?.date, "10.02");
+  assert.equal(chuanxiLoopRouteDays[10]?.date, "10.12");
+  assert.match(chuanxiLoopDailyPlanning[0]?.stay.hotels[0]?.name ?? "", /南武/);
+  assert.match(chuanxiLoopDailyPlanning[6]?.stay.hotels[0]?.name ?? "", /止山下/);
+  assert.equal(chuanxiLoopDailyPlanning[10]?.stay.noHotelNeeded, true);
+  assert.equal(chuanxiLoopRooms[1], "一间三人间、一间双床");
+  assert.equal(chuanxiLoopDepartures[2], "04:00");
+  assert.match(chuanxiLoopSheetRemarks[1] ?? "", /亚朵酒店双流机场店/);
+
+  const ids = chuanxiLoopRoutePoints.map((point) => point.id);
+  assert.equal(new Set(ids).size, ids.length);
+  const known = new Set(ids);
+  for (const day of chuanxiLoopRouteDays) {
+    for (const id of day.pointIds) assert.ok(known.has(id), `D${day.day} references unknown ${id}`);
+    assert.ok((chuanxiLoopRoutedDayGeometry[day.day]?.length ?? 0) >= 1, `D${day.day} needs geometry`);
+  }
+  for (const id of ["genie", "yala", "siguniang"]) {
+    assert.equal(chuanxiLoopRoutePoints.find((point) => point.id === id)?.kind, "peak");
+  }
+  const refs = new Set(chuanxiLoopRoadLabels.map((road) => road.ref));
+  for (const expected of ["G4217", "G318", "甘白路", "亚丁路", "返沪航班"]) {
+    assert.ok(refs.has(expected), `chuanxi map is missing ${expected}`);
+  }
 });

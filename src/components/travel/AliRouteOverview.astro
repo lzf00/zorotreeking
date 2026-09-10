@@ -27,6 +27,7 @@ interface Props {
   extraSources?: { href: string; label: string }[];
   dailyPlanning?: AliRouteDailyPlanning[];
   planningReviewedAt?: string;
+  includeCoreSources?: boolean;
 }
 
 const {
@@ -42,6 +43,7 @@ const {
   extraSources = [],
   dailyPlanning = [],
   planningReviewedAt,
+  includeCoreSources = true,
 } = Astro.props;
 const pointById = new Map(points.map((point) => [point.id, point]));
 const planningByDay = new Map(dailyPlanning.map((plan) => [plan.day, plan]));
@@ -262,10 +264,14 @@ const reservationStatusClass = {
 
     <div class="ali-route-atlas__sources reveal">
       <span>规划资料</span>
-      <a href="https://wlt.xizang.gov.cn/xwzx_69/wlyw/wldt/202507/t20250725_491772.html" target="_blank" rel="noopener noreferrer">西藏文旅厅 · 阿里线路与沿途景观 ↗</a>
-      <a href="https://wlt.xizang.gov.cn/ztzl_69/wenlv/202512/t20251202_512215.html" target="_blank" rel="noopener noreferrer">西藏文旅厅 · 珠峰地标与开放区域 ↗</a>
-      <a href="https://s.nia.gov.cn/mps/bszy/dzbjtxz/blzy/202604/t20260414_1001.html" target="_blank" rel="noopener noreferrer">国家移民管理局 · 电子边境通行证 ↗</a>
-      <a href="https://www.peakwiki.org/peak.php?pid=1354" target="_blank" rel="noopener noreferrer">普拉喜琼峰体坐标资料 ↗</a>
+      {includeCoreSources && (
+        <>
+          <a href="https://wlt.xizang.gov.cn/xwzx_69/wlyw/wldt/202507/t20250725_491772.html" target="_blank" rel="noopener noreferrer">西藏文旅厅 · 阿里线路与沿途景观 ↗</a>
+          <a href="https://wlt.xizang.gov.cn/ztzl_69/wenlv/202512/t20251202_512215.html" target="_blank" rel="noopener noreferrer">西藏文旅厅 · 珠峰地标与开放区域 ↗</a>
+          <a href="https://s.nia.gov.cn/mps/bszy/dzbjtxz/blzy/202604/t20260414_1001.html" target="_blank" rel="noopener noreferrer">国家移民管理局 · 电子边境通行证 ↗</a>
+          <a href="https://www.peakwiki.org/peak.php?pid=1354" target="_blank" rel="noopener noreferrer">普拉喜琼峰体坐标资料 ↗</a>
+        </>
+      )}
       <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap · 道路与底图数据 ↗</a>
       <a href="https://project-osrm.org/" target="_blank" rel="noopener noreferrer">OSRM · 道路拟合引擎 ↗</a>
       <a href="https://lbs.amap.com/api/javascript-api-v2/summary" target="_blank" rel="noopener noreferrer">高德开放平台 · JS API 2.0 ↗</a>

@@ -1,0 +1,210 @@
+---
+import {
+  chuanxiLoopDepartures,
+  chuanxiLoopDailyPlanning,
+  chuanxiLoopRooms,
+  chuanxiLoopRouteDays,
+  chuanxiLoopSheetRemarks,
+} from "../../data/chuanxi-loop-route";
+
+const rows = chuanxiLoopRouteDays.map((day) => {
+  const plan = chuanxiLoopDailyPlanning.find((item) => item.day === day.day);
+  const hotelName = plan?.stay.noHotelNeeded
+    ? "家里"
+    : (plan?.stay.hotels[0]?.name ?? day.overnight);
+  const [from, to] = day.title.split(" → ");
+  return {
+    day: day.day,
+    date: day.date,
+    depart: chuanxiLoopDepartures[day.day] ?? "—",
+    from: from ?? day.title,
+    to: to ?? plan?.stay.city ?? "",
+    distance: day.distance,
+    driving: day.driving,
+    sights: day.highlights.join(" · "),
+    hotel: hotelName,
+    city: plan?.stay.city ?? "",
+    rooms: chuanxiLoopRooms[day.day] ?? "",
+    remark: chuanxiLoopSheetRemarks[day.day] ?? "",
+    accent: day.day === 2 || day.day === 6 || day.day === 7,
+  };
+});
+---
+
+<section id="loop-sheet" class="rd-section rd-sheet" aria-labelledby="loop-sheet-title">
+  <div class="rd-wrap rd-split">
+    <div>
+      <p class="rd-eyebrow">01A / One-page roadbook</p>
+      <div class="rd-rule"></div>
+    </div>
+    <div>
+      <h2 id="loop-sheet-title">11 天总路书，<br />一页看完时间、酒店和房型。</h2>
+      <p class="rd-copy">这张表按你们现在的执行表落地：出发时刻、起终点、公里、景点、住宿、房间和备注。下面的地图补地理方位；亚丁五色海按景区规则走，不把 10 公里当成县城到两海的真实车程。</p>
+      <button type="button" class="rd-sheet-print" data-print-sheet>打印这一页</button>
+    </div>
+  </div>
+
+  <div class="rd-wrap">
+    <div class="rd-sheet-paper">
+      <header class="rd-sheet-head">
+        <div>
+          <b>CHUANXI LOOP · CHENGDU 2026</b>
+          <strong>川西自驾 · 11 日执行表</strong>
+        </div>
+        <span>10.02–10.12 · 成都取还 · 亚丁择机 · 四姑娘山收尾</span>
+      </header>
+      <table class="rd-sheet-table">
+        <thead>
+          <tr>
+            <th>日期</th>
+            <th>出发</th>
+            <th>路线</th>
+            <th>景点</th>
+            <th>距离</th>
+            <th>住宿 / 房间</th>
+            <th>备注</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row) => (
+            <tr class={row.accent ? "rd-sheet-accent" : undefined}>
+              <th scope="row">
+                <b>D{String(row.day).padStart(2, "0")}</b>
+                <span>{row.date}</span>
+              </th>
+              <td>{row.depart}</td>
+              <td>
+                <strong>{row.from}{row.to ? ` → ${row.to}` : ""}</strong>
+                <small>{row.driving}</small>
+              </td>
+              <td>{row.sights}</td>
+              <td><strong>{row.distance}</strong></td>
+              <td>
+                <strong>{row.hotel}</strong>
+                <small>{row.rooms}</small>
+              </td>
+              <td>{row.remark}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<script>
+  const root = document.documentElement;
+  const printSheet = () => {
+    root.classList.add("rd-print-sheet");
+    window.print();
+  };
+  const clearPrintSheet = () => root.classList.remove("rd-print-sheet");
+  document.querySelector("[data-print-sheet]")?.addEventListener("click", printSheet);
+  window.addEventListener("afterprint", clearPrintSheet);
+</script>
+
+<style>
+  .rd-sheet-print {
+    margin-top: 22px;
+    padding: 10px 14px;
+    color: var(--rd-night);
+    border: 0;
+    background: var(--rd-accent-2);
+    font: 600 .72rem/1 var(--rd-mono);
+    cursor: pointer;
+  }
+  .rd-sheet-paper {
+    margin-top: 40px;
+    overflow: auto;
+    border: 1px solid var(--rd-line);
+    background: #f6f0e2;
+  }
+  .rd-sheet-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: flex-end;
+    padding: 16px 18px 14px;
+    border-bottom: 1px solid var(--rd-line);
+  }
+  .rd-sheet-head b {
+    display: block;
+    color: var(--rd-accent);
+    font: 700 .64rem/1.4 var(--rd-mono);
+    letter-spacing: .14em;
+  }
+  .rd-sheet-head strong {
+    display: block;
+    margin-top: 6px;
+    font: 400 1.55rem/1 var(--rd-serif);
+  }
+  .rd-sheet-head span {
+    color: var(--rd-muted);
+    font: .68rem/1.4 var(--rd-mono);
+    white-space: nowrap;
+  }
+  .rd-sheet-table {
+    width: 100%;
+    min-width: 980px;
+    border-collapse: collapse;
+  }
+  .rd-sheet-table th,
+  .rd-sheet-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--rd-line);
+    text-align: left;
+    vertical-align: top;
+  }
+  .rd-sheet-table thead th {
+    color: var(--rd-muted);
+    background: rgba(25, 32, 30, .04);
+    font: 700 .64rem/1.3 var(--rd-mono);
+    letter-spacing: .08em;
+  }
+  .rd-sheet-table tbody th {
+    width: 76px;
+    white-space: nowrap;
+  }
+  .rd-sheet-table tbody th b,
+  .rd-sheet-table tbody th span,
+  .rd-sheet-table td strong,
+  .rd-sheet-table td small {
+    display: block;
+  }
+  .rd-sheet-table tbody th b {
+    color: var(--rd-accent);
+    font: 700 .72rem/1.2 var(--rd-mono);
+  }
+  .rd-sheet-table tbody th span {
+    margin-top: 3px;
+    color: var(--rd-muted);
+    font: .68rem/1.2 var(--rd-mono);
+  }
+  .rd-sheet-table td strong {
+    font-size: .82rem;
+    line-height: 1.35;
+  }
+  .rd-sheet-table td,
+  .rd-sheet-table td small {
+    color: var(--rd-ink);
+    font-size: .78rem;
+    line-height: 1.45;
+  }
+  .rd-sheet-table td small {
+    margin-top: 4px;
+    color: var(--rd-muted);
+  }
+  .rd-sheet-table tbody tr:last-child th,
+  .rd-sheet-table tbody tr:last-child td {
+    border-bottom: 0;
+  }
+  .rd-sheet-table tbody tr.rd-sheet-accent {
+    background: color-mix(in srgb, var(--rd-accent-2) 16%, transparent);
+  }
+  @media (max-width: 900px) {
+    .rd-sheet-head {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+</style>

@@ -1,6 +1,6 @@
 ---
 interface Props {
-  variant: "g317" | "lhasa-loop";
+  variant: "g317" | "lhasa-loop" | "chuanxi";
   kicker: string;
   title: string;
   accentTitle: string;
@@ -87,6 +87,7 @@ const {
   }
   .route-decision-guide--g317 { --rd-accent: #cf5a31; --rd-accent-2: #e2b54e; --rd-night: #132521; }
   .route-decision-guide--lhasa-loop { --rd-accent: #176f73; --rd-accent-2: #d69c38; --rd-night: #162624; }
+  .route-decision-guide--chuanxi { --rd-accent: #3f6b4e; --rd-accent-2: #c48a3a; --rd-night: #1a2620; }
   .route-decision-guide *, .route-decision-guide *::before, .route-decision-guide *::after { box-sizing: border-box; }
   .rd-wrap, .route-decision-guide .wrap { width: min(1180px, calc(100% - 40px)); margin-inline: auto; }
   .rd-hero { position: relative; min-height: 740px; overflow: hidden; color: #f5efdf; background: var(--rd-night); }

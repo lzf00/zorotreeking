@@ -1,0 +1,51 @@
+---
+import AliRouteOverview from "./AliRouteOverview.astro";
+import {
+  chuanxiLoopRoadLabels,
+  chuanxiLoopRoutedDayGeometry,
+} from "../../data/chuanxi-loop-road-geometry";
+import {
+  chuanxiLoopDailyPlanning,
+  chuanxiLoopPlanningReviewedAt,
+  chuanxiLoopRouteDays,
+  chuanxiLoopRoutePoints,
+} from "../../data/chuanxi-loop-route";
+
+const extraSources = [
+  {
+    href: "https://www.yading.gov.cn/",
+    label: "稻城亚丁景区 · 门票与观光车",
+  },
+  {
+    href: "https://www.sgns.gov.cn/",
+    label: "四姑娘山景区",
+  },
+  {
+    href: "https://www.scjgj.gov.cn/",
+    label: "四川交通运输厅 · 路况与管制",
+  },
+  {
+    href: "https://whlyt.qinghai.gov.cn/",
+    label: "青海文旅厅 · 久治方向",
+  },
+];
+
+const drivingMapPoints = chuanxiLoopRoutePoints.filter((point) => point.id !== "shanghai");
+const drivingMapDays = chuanxiLoopRouteDays.filter((day) => day.day >= 2 && day.day <= 10);
+---
+
+<AliRouteOverview
+  points={chuanxiLoopRoutePoints}
+  days={chuanxiLoopRouteDays}
+  mapPoints={drivingMapPoints}
+  mapDays={drivingMapDays}
+  dailyPlanning={chuanxiLoopDailyPlanning}
+  planningReviewedAt={chuanxiLoopPlanningReviewedAt}
+  roadLabels={chuanxiLoopRoadLabels}
+  routedDayGeometry={chuanxiLoopRoutedDayGeometry}
+  heading="从成都进川西，绕久治、色达、亚丁，再回到成都。"
+  intro="地图按住宿城和关键途经点连线，方便对照执行表，不是逐弯导航。酒红标记为格聂峰、雅拉雪山和四姑娘山。五色海、牛奶海只标亚丁核心方位，不能当驾车终点。"
+  mapAriaLabel="川西自驾交互地图，常显标注格聂峰、雅拉雪山和四姑娘山"
+  extraSources={extraSources}
+  includeCoreSources={false}
+/>
