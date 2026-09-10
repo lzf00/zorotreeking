@@ -1,0 +1,179 @@
+---
+lang: zh
+translationKey: digest-2026-09-10
+title: "AI 每日精选 · 2026-09-10"
+description: "17 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-09-10
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, lil-log]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI官宣GPT-6 Astra，DeepMind发布基因组图谱、气象大模型，Anthropic公开硬件标准与水印技术</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face披露VLM智能体、世界模型等前沿研究，IBM发布商用友好的时序SOTA模型</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">京东推出10万卡算力集群与JoyAI世界模型，讯飞星火X2.5、苹果折叠屏均落地AI能力</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥模型上新</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧬科研突破</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚙️标准规范</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📜政策倡议</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🇨🇳产研动态</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2609.10522" target="_blank" rel="noopener noreferrer">Show-Harness: Just a VLM Agent Can Play Robots</a>
+
+*HF ★ 23 · Yanzhe Chen, Zechen Bai, Zhijun Cao… · [HF 镜像](https://huggingface.co/papers/2609.10522)*
+
+针对视觉语言大模型（VLM）通用能力难以落地机器人控制的痛点，该研究提出语义接口框架Show-Harness，搭配无需专用硬件的GUMI演示采集界面，可直接解锁闭源前沿VLM零样本控制机器人，小开源VLM仅需数GPU小时微调即可低成本部署，实验表现优于现有代表性范式，验证了合适接口无需额外预训练即可释放VLM强具身能力。
+
+<FeedbackButtons slug="item:arxiv-2609.10522" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.10540" target="_blank" rel="noopener noreferrer">Programmable World Model</a>
+
+*HF ★ 16 · Zheng-Hui Huang, Guixu Lin, Jiacheng Lin… · [HF 镜像](https://huggingface.co/papers/2609.10540)*
+
+针对现有视频世界模型难维护持久状态、无法长期遵循可编程规则的痛点，本文提出可编程世界模型框架：解耦状态演化与视觉生成，可将自然语言指令转可执行程序维护显式全局状态，通过状态增强3D包围盒衔接预训练视频渲染模型。自建测试集上状态准确率超94%，远优于现有模型，可支撑长时序连贯的可编程交互场景。
+
+<FeedbackButtons slug="item:arxiv-2609.10540" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.09219" target="_blank" rel="noopener noreferrer">Scores Alone Do Not Prove Discovery: The Discovery Certification Protocol for Auditing AI Research Agents</a>
+
+*HF ★ 4 · Jingjie Ning, Shanshan Zhong, Xiaochuan Li… · [HF 镜像](https://huggingface.co/papers/2609.09219)*
+
+针对AI科研代理仅靠输出得分无法证明成果为原创发现的痛点，该研究提出发现认证协议DCP，设置多道关卡验证性能提升、排除剽窃目标研究历史的可能、校准真实反馈效应。经两类任务实测，96轮测试复原率为0、上界0.0468，决策可复现，为AI科研成果认证提供统一证据标准。
+
+<FeedbackButtons slug="item:arxiv-2609.09219" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.07103" target="_blank" rel="noopener noreferrer">Revisiting Complete Reasoning Traces for Post-Training</a>
+
+*HF ★ 2 · Jaehui Hwang, Sangdoo Yun, Byeongho Heo… · [HF 镜像](https://huggingface.co/papers/2609.07103)*
+
+针对大模型常采用完整推理轨迹开展后训练提升推理能力的做法，该研究通过注意力分析、受控删词实验验证：完整推理轨迹增益有限，严重截断的部分轨迹反而有效，中间冗余标记对最终推理质量贡献极小。仅用轨迹端点训练即可稳定优化推理表现，还适配强化学习、在线蒸馏等后训练方法，无需迷信完整推理轨迹。
+
+<FeedbackButtons slug="item:arxiv-2609.07103" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.10226" target="_blank" rel="noopener noreferrer">Φ-Bench: Can Large Language Models Engineer the Infrastructure That Powers Them?</a>
+
+*HF ★ 1 · Leilei Ding, Shumin Wang, Yuting Huang… · [HF 镜像](https://huggingface.co/papers/2609.10226)*
+
+针对现有基准无法评估大模型完成开放式长周期自身基础设施研发任务的缺陷，该研究推出Φ-Bench基准，基于前沿研究优化问题与真实代码库，覆盖从内核补全到端到端系统优化的全栈任务。经测试前沿大模型，明确了其自研复杂LLM基础设施的能力边界，为AI基础设施自主优化研究指明待解挑战。
+
+<FeedbackButtons slug="item:arxiv-2609.10226" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/ai-policy-window" target="_blank" rel="noopener noreferrer">The AI policy window is open. We need to act.</a>
+
+*OpenAI*
+
+本文作者克里斯·莱恩提出，当前AI监管的政策窗口已开放，需抓住该时间窗口尽快行动。他主张，随着AI能力持续迭代增强，必须同步配套更严格的安全合规举证要求，建立全行业统一的共享安全标准，及时推出长效监管政策，避免错过政策落地最优时机，防控AI发展的潜在安全风险。
+
+<FeedbackButtons slug="item:openai-blog-ai-policy-window" client:visible />
+
+## <a href="https://openai.com/index/gpt-6-astra-next-generation-work" target="_blank" rel="noopener noreferrer">GPT-6 Astra: The next generation in intelligence for work</a>
+
+*OpenAI*
+
+OpenAI最新发布面向商用场景的旗舰大模型GPT-6 Astra，定位为下一代工作类智能产品。该模型是OpenAI当前商用能力最强的版本，核心升级包含高阶推理能力、原生计算机操作支持，以及更出色的文案创作、设计审美判断能力，可适配复杂办公、创作辅助、决策支撑等多元企业工作需求。
+
+<FeedbackButtons slug="item:openai-blog-gpt-6-astra-next-generation-work" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/model-hardware-standard-research-preview" target="_blank" rel="noopener noreferrer">Previewing the Model Hardware Standard</a>
+
+*Anthropic*
+
+AI公司Anthropic近期首次开放模型硬件标准（MHS）的研究预览，该标准是面向AI智能体的通用规范，核心作用是保障AI操控各类物理设备时的运行安全性。目前该标准仅对首批合作的科研实验室、高端制造厂商开放，后续有望为AI实体应用的安全落地提供统一行业参考。
+
+<FeedbackButtons slug="item:anthropic-model-hardware-standard-research-preview" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-text-watermark" target="_blank" rel="noopener noreferrer">How Claude&#x27;s text watermarking works</a>
+
+*Anthropic*
+
+为适配欧盟《人工智能法案》监管要求，Anthropic未来迭代的Claude大模型，生成文本将内置专属水印。本文针对该水印技术的运行逻辑进行说明，同时明确水印不会干扰模型正常输出，不会对生成内容的流畅度、表意准确性等核心表现造成负面影响，回应了行业相关疑问。
+
+<FeedbackButtons slug="item:anthropic-claude-text-watermark" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/alphagenome-atlas-a-predictive-map-of-every-possible-dna-letter-change-in-the-human-genome/" target="_blank" rel="noopener noreferrer">AlphaGenome Atlas: A predictive map of every possible DNA letter change in the human genome</a>
+
+*Google DeepMind*
+
+AlphaGenome Atlas是最新发布的预测级人类基因组变异图谱，核心成果是完成了人类基因组全部90亿种单碱基DNA变异的分子效应映射，可系统解读单碱基突变的功能影响，为遗传病致病变异溯源、疾病风险预判、精准医药研发等提供全基因组级别的底层参考依据。
+
+<FeedbackButtons slug="item:deepmind-alphagenome-atlas-a-predictive-map-of-every-possible-dna-letter-change-in-the-hu" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-weathernext-3-our-most-advanced-and-accurate-global-weather-ai-model/" target="_blank" rel="noopener noreferrer">Introducing WeatherNext 3, our most advanced and accurate global weather AI model</a>
+
+*Google DeepMind*
+
+本次发布的WeatherNext 3是研发方当前技术最先进、预测精度最高的全球级气象AI模型。相较传统数值预报和前代同类产品，其1公里分辨率预报最长可达10天，极端降水等灾害性天气预警准确率提升超40%，可广泛支撑防灾减灾、工农业生产、交通出行等多场景的精细化气象服务需求。
+
+<FeedbackButtons slug="item:deepmind-introducing-weathernext-3-our-most-advanced-and-accurate-global-weather-ai-model" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/ibm-research/ibm-releases-sota-granite-time-series" target="_blank" rel="noopener noreferrer">IBM releases SOTA Granite Time Series PatchTST-FM-r2 model with commercial-friendly license</a>
+
+*Hugging Face*
+
+IBM近日发布时序领域当前最优（SOTA）模型Granite Time Series PatchTST-FM-r2，采用商业友好授权，企业可合规商用无需负担高额版权成本。该模型基于PatchTST架构优化预训练范式，在长时序预测、异常检测等任务上精度领先现有开源方案，零少样本适配能力突出，可覆盖工业、金融等多场景时序分析需求。
+
+<FeedbackButtons slug="item:hf-blog-ibm-releases-sota-granite-time-series" client:visible />
+
+## <a href="https://huggingface.co/blog/MultiverseComputingCAI/safety-for-whom" target="_blank" rel="noopener noreferrer">Safety for Whom? Refusing the Right Subset of a Topic, Not the Whole Topic</a>
+
+*Hugging Face*
+
+这篇聚焦大模型内容安全的论文指出，当前主流安全对齐机制普遍采取一刀切策略，对涉敏感的整类话题全部拒答，反而挤压了边缘群体合理讨论、权益主张等合法诉求的表达空间。论文提出安全校准应精准拦截同话题下的歧视、仇恨等有害子内容，而非封禁整个议题，可兼顾内容安全与不同群体的合理表达需求。
+
+<FeedbackButtons slug="item:hf-blog-safety-for-whom" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我提升（RSI）的概念脉络：1965年古德最早提出超智能设想，指可超越人类所有智力活动、能迭代设计更优机器的系统；2008年尤德考斯基明确其核心是AI依托现有智能优化自身认知机制的反馈环。当前AI领域的RSI既包括模型直接改写自身权重，也可广义涵盖模型优化自身训练管线的行为。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/09/486436.html" target="_blank" rel="noopener noreferrer">打造10万卡国产算力集群推出JoyAI世界模型，京东发布物理AI建设最新成果</a>
+
+*量子位*
+
+9月京东举办2026全球科技探索者大会，启动物理AI加速计划，发布多项建设成果：落地十万卡国产算力集群，推出JoyAI系列世界模型，构建以“云数模端场链”为核心的超级AI供应链，通过“智能+产业”双飞轮模式适配多实体场景，开放技术能力推动AI从数字世界向物理世界落地应用。
+
+<FeedbackButtons slug="item:qbitai-486436" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/486350.html" target="_blank" rel="noopener noreferrer">实测星火X2.5：手搓粒子月亮、拆完61页财报……还顺手揪出了我的Bug</a>
+
+*量子位*
+
+讯飞293B参数星火X2.5大模型近期上线，重点升级代码、智能体能力，支持超200种语言。此前其开源的4B、1.7B端侧版因支持百万Token上下文获社区热捧，登顶Hugging Face趋势榜。本次测评趁API五折优惠设三关实测，首关生成的中秋手势交互3D粒子网页效果出众。
+
+<FeedbackButtons slug="item:qbitai-486350" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/486450.html" target="_blank" rel="noopener noreferrer">刚刚，苹果首款折叠屏发布！15999元起，AI参与设计</a>
+
+*量子位*
+
+苹果正式发布首款折叠屏手机iPhone Duo，起售价15999元，AI参与研发。该机外屏5.4英寸、展开为7.6英寸OLED屏，折痕完全隐形，为目前最薄iPhone，支持Apple Pencil。同场还推出全系统打通的Siri AI、降噪提50%的AirPods 5、心率监测更精准的新Apple Watch，发布后苹果股价转涨。
+
+<FeedbackButtons slug="item:qbitai-486450" client:visible />
