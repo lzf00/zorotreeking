@@ -568,7 +568,7 @@ export const chuanxiLoopRouteDays: AliRouteDay[] = [
   {
     day: 7,
     date: "10.08",
-    title: "稻城周边 · 亚丁五色海",
+    title: "稻城 → 稻城",
     distance: "10 km 规划 / 亚丁另计",
     driving: "06:00 出发 · 景区步行日",
     roads: "亚丁景区道路 / 观光车",
