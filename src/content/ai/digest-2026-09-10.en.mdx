@@ -1,0 +1,179 @@
+---
+lang: en
+translationKey: digest-2026-09-10
+title: "AI Daily Highlights · 2026-09-10"
+description: "17 papers · multi-source aggregation + AI summarization"
+date: 2026-09-10
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, lil-log]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's updates in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI officially announces GPT-6 Astra, DeepMind releases genome atlas and meteorology foundation model, Anthropic unveils hardware standards and watermarking technology</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face reveals cutting-edge research including VLM agents and world models, IBM releases commercially friendly time-series SOTA model</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">JD.com launches 100,000-card computing cluster and JoyAI world model, iFlytek Spark X2.5 and Apple's foldable device both roll out AI capabilities</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 New Model Releases</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧬 Research Breakthroughs</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚙️ Standards & Specifications</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📜 Policy Initiatives</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🇨🇳 Industry & R&D Updates</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2609.10522" target="_blank" rel="noopener noreferrer">Show-Harness: Just a VLM Agent Can Play Robots</a>
+
+*HF ★ 23 · Yanzhe Chen, Zechen Bai, Zhijun Cao… · [HF Mirror](https://huggingface.co/papers/2609.10522)*
+
+To address the pain point that the general capabilities of vision language models (VLM) are difficult to apply to robot control, this research proposes the semantic interface framework Show-Harness, paired with the GUMI demonstration collection interface that requires no dedicated hardware. It can directly enable cutting-edge closed-source VLMs to control robots zero-shot, and small open-source VLMs can be deployed at low cost with only a few GPU hours of fine-tuning. Experimental performance outperforms existing representative paradigms, verifying that a suitable interface can unlock strong embodied capabilities of VLMs without additional pretraining.
+
+<FeedbackButtons slug="item:arxiv-2609.10522" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.10540" target="_blank" rel="noopener noreferrer">Programmable World Model</a>
+
+*HF ★ 16 · Zheng-Hui Huang, Guixu Lin, Jiacheng Lin… · [HF Mirror](https://huggingface.co/papers/2609.10540)*
+
+To address the pain points that existing video world models struggle to maintain persistent states and cannot follow programmable rules over long periods, this paper proposes a programmable world model framework: it decouples state evolution from visual generation, can convert natural language instructions into executable programs to maintain explicit global states, and connects to pretrained video rendering models via state-augmented 3D bounding boxes. It achieves over 94% state accuracy on a self-built test set, far outperforming existing models, and can support long-term coherent programmable interactive scenarios.
+
+<FeedbackButtons slug="item:arxiv-2609.10540" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.09219" target="_blank" rel="noopener noreferrer">Scores Alone Do Not Prove Discovery: The Discovery Certification Protocol for Auditing AI Research Agents</a>
+
+*HF ★ 4 · Jingjie Ning, Shanshan Zhong, Xiaochuan Li… · [HF Mirror](https://huggingface.co/papers/2609.09219)*
+
+To address the pain point that AI research agents cannot prove their output results are original discoveries relying solely on output scores, this research proposes the Discovery Certification Protocol (DCP), which sets up multiple checkpoints to verify performance improvements, rule out the possibility of plagiarizing the history of target research, and calibrate real feedback effects. Tested on two types of tasks, the recovery rate across 96 rounds of testing is 0 with an upper bound of 0.0468, and the decisions are reproducible, providing a unified evidence standard for the certification of AI scientific research results.
+
+<FeedbackButtons slug="item:arxiv-2609.09219" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.07103" target="_blank" rel="noopener noreferrer">Revisiting Complete Reasoning Traces for Post-Training</a>
+
+*HF ★ 2 · Jaehui Hwang, Sangdoo Yun, Byeongho Heo… · [HF Mirror](https://huggingface.co/papers/2609.07103)*
+
+Targeting the common practice of using complete reasoning traces for post-training of large models to improve reasoning capabilities, this research verifies through attention analysis and controlled word deletion experiments: complete reasoning traces provide limited gains, while severely truncated partial traces are actually effective, and intermediate redundant tokens contribute very little to the final reasoning quality. Training only with trace endpoints can stably optimize reasoning performance, and is also compatible with post-training methods such as reinforcement learning and online distillation, so there is no need to overemphasize the value of complete reasoning traces.
+
+<FeedbackButtons slug="item:arxiv-2609.07103" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.10226" target="_blank" rel="noopener noreferrer">Φ-Bench: Can Large Language Models Engineer the Infrastructure That Powers Them?</a>
+
+*HF ★ 1 · Leilei Ding, Shumin Wang, Yuting Huang… · [HF Mirror](https://huggingface.co/papers/2609.10226)*
+
+To address the limitation that existing benchmarks cannot evaluate the ability of large models to complete open-ended, long-cycle R&D tasks for their own infrastructure, this research launches the Φ-Bench benchmark, which is built on cutting-edge research optimization problems and real codebases, covering full-stack tasks from kernel completion to end-to-end system optimization. Tests on cutting-edge large models have clarified the capability boundary of self-developed complex LLM infrastructure, pointing out unsolved challenges for research on autonomous optimization of AI infrastructure.
+
+<FeedbackButtons slug="item:arxiv-2609.10226" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/ai-policy-window" target="_blank" rel="noopener noreferrer">The AI policy window is open. We need to act.</a>
+
+*OpenAI*
+
+The author of this article, Chris Ryan, argues that the current policy window for AI regulation is open, and we need to seize this window to act as soon as possible. He advocates that as AI capabilities continue to iterate and strengthen, stricter safety compliance proof requirements must be matched simultaneously, a unified shared safety standard for the entire industry must be established, and long-term regulatory policies must be introduced in time to avoid missing the optimal opportunity for policy implementation and prevent potential safety risks of AI development.
+
+<FeedbackButtons slug="item:openai-blog-ai-policy-window" client:visible />
+
+## <a href="https://openai.com/index/gpt-6-astra-next-generation-work" target="_blank" rel="noopener noreferrer">GPT-6 Astra: The next generation in intelligence for work</a>
+
+*OpenAI*
+
+OpenAI has just released GPT-6 Astra, its flagship large model for commercial scenarios, positioned as the next generation of intelligent products for work. This model is OpenAI's most capable commercial version to date, with core upgrades including high-order reasoning capabilities, native computer operation support, as well as better copywriting creation and design aesthetic judgment capabilities, which can adapt to diverse enterprise work needs such as complex office work, creation assistance, and decision support.
+
+<FeedbackButtons slug="item:openai-blog-gpt-6-astra-next-generation-work" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/model-hardware-standard-research-preview" target="_blank" rel="noopener noreferrer">Previewing the Model Hardware Standard</a>
+
+*Anthropic*
+
+AI company Anthropic recently released the first research preview of the Model Hardware Standard (MHS), a general specification for AI agents whose core function is to ensure operational safety when AI controls various physical devices. Currently, the standard is only open to the first batch of cooperating research laboratories and high-end manufacturing vendors, and is expected to provide a unified industry reference for the safe implementation of AI physical applications in the future.
+
+<FeedbackButtons slug="item:anthropic-model-hardware-standard-research-preview" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-text-watermark" target="_blank" rel="noopener noreferrer">How Claude&#x27;s text watermarking works</a>
+
+*Anthropic*
+
+To comply with the regulatory requirements of the EU AI Act, future iterations of Anthropic's Claude large model will have built-in exclusive watermarks in generated text. This article explains the operating logic of this watermark technology, and clarifies that the watermark will not interfere with the normal output of the model, nor will it negatively affect the core performance of the generated content such as fluency and semantic accuracy, responding to relevant industry questions.
+
+<FeedbackButtons slug="item:anthropic-claude-text-watermark" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/alphagenome-atlas-a-predictive-map-of-every-possible-dna-letter-change-in-the-human-genome/" target="_blank" rel="noopener noreferrer">AlphaGenome Atlas: A predictive map of every possible DNA letter change in the human genome</a>
+
+*Google DeepMind*
+
+AlphaGenome Atlas is the newly released predictive human genome variation map, whose core achievement is completing the molecular effect mapping of all 9 billion single-base DNA variations in the human genome. It can systematically interpret the functional impact of single-base mutations, providing a genome-wide underlying reference for tracing pathogenic variants of genetic diseases, predicting disease risks, and developing precision medicine, among other use cases.
+
+<FeedbackButtons slug="item:deepmind-alphagenome-atlas-a-predictive-map-of-every-possible-dna-letter-change-in-the-hu" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-weathernext-3-our-most-advanced-and-accurate-global-weather-ai-model/" target="_blank" rel="noopener noreferrer">Introducing WeatherNext 3, our most advanced and accurate global weather AI model</a>
+
+*Google DeepMind*
+
+The newly released WeatherNext 3 is the developer's most technologically advanced and highest-precision global meteorological AI model to date. Compared with traditional numerical forecasting and previous generation similar products, its 1km resolution forecast can extend up to 10 days, and the early warning accuracy for extreme weather such as heavy precipitation has increased by more than 40%. It can widely support refined meteorological service needs in multiple scenarios such as disaster prevention and mitigation, industrial and agricultural production, and transportation.
+
+<FeedbackButtons slug="item:deepmind-introducing-weathernext-3-our-most-advanced-and-accurate-global-weather-ai-model" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/ibm-research/ibm-releases-sota-granite-time-series" target="_blank" rel="noopener noreferrer">IBM releases SOTA Granite Time Series PatchTST-FM-r2 model with commercial-friendly license</a>
+
+*Hugging Face*
+
+IBM recently released the current state-of-the-art (SOTA) model in the time series field, Granite Time Series PatchTST-FM-r2, which adopts a commercial-friendly license, allowing enterprises to use it commercially compliantly without bearing high copyright costs. The model optimizes the pretraining paradigm based on the PatchTST architecture, leading existing open-source solutions in accuracy on tasks such as long time series forecasting and anomaly detection, with outstanding zero-shot and few-shot adaptation capabilities, which can cover time series analysis needs in multiple scenarios such as industry and finance.
+
+<FeedbackButtons slug="item:hf-blog-ibm-releases-sota-granite-time-series" client:visible />
+
+## <a href="https://huggingface.co/blog/MultiverseComputingCAI/safety-for-whom" target="_blank" rel="noopener noreferrer">Safety for Whom? Refusing the Right Subset of a Topic, Not the Whole Topic</a>
+
+*Hugging Face*
+
+This paper focusing on LLM content safety points out that the current mainstream safety alignment mechanisms generally adopt a one-size-fits-all strategy, refusing to answer all questions related to entire categories of sensitive topics, which instead squeezes the expression space for legitimate demands such as reasonable discussion and rights claims of marginalized groups. The paper proposes that safety calibration should accurately intercept harmful sub-content such as discrimination and hate speech under the same topic, rather than banning the entire topic, which can balance content safety and the reasonable expression needs of different groups.
+
+<FeedbackButtons slug="item:hf-blog-safety-for-whom" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This article sorts out the conceptual context of Recursive Self-Improvement (RSI): In 1965, I.J. Good first proposed the idea of superintelligence, referring to a system that can surpass all human intellectual activities and iteratively design better machines; In 2008, Eliezer Yudkowsky clarified that its core is the feedback loop where AI optimizes its own cognitive mechanism relying on existing intelligence. Current RSI in the AI field includes both models directly rewriting their own weights, and broadly covers the behavior of models optimizing their own training pipelines.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/09/486436.html" target="_blank" rel="noopener noreferrer">Build 100,000-card domestic computing cluster and launch JoyAI world model, JD releases latest achievements in physical AI construction</a>
+
+*QbitAI*
+
+In September, JD held its 2026 Global Tech Explorers Conference, launched the Physical AI Acceleration Plan, and released a number of construction achievements: it has launched a 100,000-card domestic computing cluster, launched the JoyAI series of world models, built a super AI supply chain centered on "cloud, data, model, end, scenario, chain", adapts to multiple physical scenarios through the dual flywheel model of "intelligence + industry", and opens up technical capabilities to promote the application of AI from the digital world to the physical world.
+
+<FeedbackButtons slug="item:qbitai-486436" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/486350.html" target="_blank" rel="noopener noreferrer">Hands-on test of Spark X2.5: Hand-crafted particle moon, analyzed 61-page financial report... and even caught my Bug by the way</a>
+
+*QbitAI*
+
+iFlytek's 293B parameter Spark X2.5 large model was recently launched, with key upgrades to code and agent capabilities, supporting more than 200 languages. Previously, its open-source 4B and 1.7B edge versions were widely praised by the community for supporting million-token context window, topping the Hugging Face trending list. This evaluation set up three test levels taking advantage of the 50% off API offer, and the Mid-Autumn Festival gesture interaction 3D particle web page generated in the first level had outstanding effects.
+
+<FeedbackButtons slug="item:qbitai-486350" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/486450.html" target="_blank" rel="noopener noreferrer">Just now, Apple's first foldable screen released! Starting at 15999 yuan, AI participated in the design</a>
+
+*QbitAI*
+
+Apple officially released its first foldable screen phone iPhone Duo, with a starting price of 15999 yuan, with AI participating in its R&D. The device has a 5.4-inch external screen and a 7.6-inch OLED screen when unfolded, with completely invisible creases, making it the thinnest iPhone to date, and supports Apple Pencil. Also launched at the same event are the fully system-integrated Siri AI, AirPods 5 with 50% better noise cancellation, and a new Apple Watch with more accurate heart rate monitoring. Apple's stock turned higher after the release.
+
+<FeedbackButtons slug="item:qbitai-486450" client:visible />
