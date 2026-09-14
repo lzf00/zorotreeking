@@ -3,39 +3,66 @@ import {
   aliLhasaReturnRouteDays,
   aliLhasaReturnRoutePoints,
 } from "./ali-lhasa-return-route";
-import type { AliRouteDailyPlanning, AliRouteDay } from "./ali-route";
+import type { AliRouteDailyPlanning, AliRouteDay, AliRoutePoint } from "./ali-route";
 
 const everestDetourPointIds = new Set(["tingri", "gawula", "rongbuk"]);
 
-export const aliPermitBypassRoutePoints = aliLhasaReturnRoutePoints
-  .filter((point) => !everestDetourPointIds.has(point.id))
-  .map((point) => {
-    if (point.id === "ebc") {
-      return {
-        ...point,
-        detail: "地图重点峰体，本版因日喀则边防证停发不进入定日和珠峰景区。只用来辨认方位，严禁把此点当作驾车终点或离开 G219 寻路。",
-      };
-    }
-    if (point.id === "shigatse") {
-      return {
-        ...point,
-        detail: "南线枢纽。本版只把日喀则市区作为过夜和补给，不去定日、珠峰或吉隆；次日经拉孜走 G219 去萨嘎。",
-      };
-    }
-    if (point.id === "saga") {
-      return {
-        ...point,
-        detail: "G219 西行关键住宿点。本版 9 月 28 日直接到这里，不再经定日；萨嘎、仲巴检查站出发前再核阿里电子证口径。",
-      };
-    }
-    if (point.id === "shiquanhe") {
-      return {
-        ...point,
-        detail: "阿里地区综合补给中心。本版 10 月 2 日到这里过夜，只做车辆、油料和北线物资复核，第二天进入 G317。",
-      };
-    }
-    return { ...point };
-  });
+const pangongPoints: AliRoutePoint[] = [
+  {
+    id: "rutog",
+    name: "日土县城",
+    shortName: "日土",
+    kind: "city",
+    lat: 33.3875,
+    lng: 79.7314,
+    elevationM: 4270,
+    detail: "班公湖往返的补给和检查节点。只走开放公路；检查站可能核对电子证前往地是否含日土县。",
+    services: "餐饮、加油、有限住宿",
+  },
+  {
+    id: "pangong",
+    name: "班公湖开放观景区域",
+    shortName: "班公湖",
+    kind: "attraction",
+    lat: 33.56,
+    lng: 79.18,
+    elevationM: 4241,
+    detail: "10 月 2 日机动景点。只使用中国一侧正规开放观景点，不驶向未开放边境湖段，下午必须返回狮泉河。",
+  },
+];
+
+export const aliPermitBypassRoutePoints = [
+  ...aliLhasaReturnRoutePoints
+    .filter((point) => !everestDetourPointIds.has(point.id))
+    .map((point) => {
+      if (point.id === "ebc") {
+        return {
+          ...point,
+          detail: "地图重点峰体，本版因日喀则边防证停发不进入定日和珠峰景区。只用来辨认方位，严禁把此点当作驾车终点或离开 G219 寻路。",
+        };
+      }
+      if (point.id === "shigatse") {
+        return {
+          ...point,
+          detail: "南线枢纽。本版只把日喀则市区作为过夜和补给，不去定日、珠峰或吉隆；次日经拉孜走 G219 去萨嘎。",
+        };
+      }
+      if (point.id === "saga") {
+        return {
+          ...point,
+          detail: "G219 西行关键住宿点。本版 9 月 28 日直接到这里，不再经定日；萨嘎、仲巴检查站出发前再核阿里电子证口径。",
+        };
+      }
+      if (point.id === "shiquanhe") {
+        return {
+          ...point,
+          detail: "阿里地区综合补给中心。札达满房后本版 10 月 1–2 日在此连住；1 日穿土林后到店，2 日可机动班公湖，再进 G317。",
+        };
+      }
+      return { ...point };
+    }),
+  ...pangongPoints,
+];
 
 const clonePlanning = (day: number): AliRouteDailyPlanning => {
   const plan = aliLhasaReturnDailyPlanning.find((item) => item.day === day);
@@ -69,7 +96,7 @@ export const aliPermitBypassRouteDays: AliRouteDay[] = [
   }),
   replaceDay("09.27", {
     overnight: "日喀则市区。只作为过夜和补给，不把次日改成定日或珠峰。",
-    decision: "若羊湖段出现降雪、结冰或封控，跳过卡若拉/江孜支线，按交警建议改走可行路线，仍以日喀则市区为当晚目标。",
+    decision: "准时则保留卡若拉短停和江孜白居寺。若羊湖段出现降雪、结冰或封控，跳过卡若拉/江孜支线，按交警建议改走可行路线，仍以日喀则市区为当晚目标。",
   }),
   {
     day: 3,
@@ -88,7 +115,8 @@ export const aliPermitBypassRouteDays: AliRouteDay[] = [
   replaceDay("10.01", {
     day: 4,
     date: "09.29",
-    decision: "若到帕羊已明显晚于计划，缩短玛旁雍措停留但保留塔钦住宿；不得夜间绕湖。萨嘎检查站若临时加查日喀则证，停止西进并启动北线预案。",
+    highlights: ["国王峰远观", "仲巴沙丘河谷", "玛旁雍措", "拉昂措短停", "冈仁波齐日落"],
+    decision: "若到帕羊已明显晚于计划，缩短玛旁雍措和拉昂措停留但保留塔钦住宿；不得夜间绕湖。萨嘎检查站若临时加查日喀则证，停止西进并启动北线预案。",
   }),
   {
     day: 5,
@@ -107,30 +135,30 @@ export const aliPermitBypassRouteDays: AliRouteDay[] = [
   {
     day: 6,
     date: "10.01",
-    title: "塔钦 → 门士 → 札达土林 → 札达",
-    distance: "约 330–380 km",
-    driving: "约 7–9 小时，日落前进入县城",
+    title: "塔钦 → 门士 → 札达土林穿行 → 狮泉河",
+    distance: "约 500–540 km",
+    driving: "约 10–12 小时；札达县城满房，不住宿",
     roads: "G219 / G565 / 札达方向连接道路",
-    pointIds: ["darchen", "kailash", "menshi", "zanda-earth", "zanda"],
-    highlights: ["冈仁波齐南麓", "札达土林", "峡谷落日", "札达住宿"],
-    supply: "塔钦满油并带午餐，门士只做状态检查；札达到店后补油、热水和次日古格材料。",
-    overnight: "札达县城。",
-    risk: "札达支线弯多、落差大，峡谷阴影区可能结冰；国庆住宿紧张，必须先锁可免费取消房。",
-    decision: "以日落前抵达札达为硬边界；不足时放弃沿途多次停车，不摸黑走土林支线。",
+    pointIds: ["darchen", "kailash", "menshi", "zanda-earth", "zanda", "shiquanhe"],
+    highlights: ["冈仁波齐南麓", "札达土林穿行", "出盆地", "狮泉河连住"],
+    supply: "塔钦满油并带午餐，门士只做状态检查；土林短停后在札达县城只补油补餐，不住宿；狮泉河到店后补给并与次日连住。",
+    overnight: "狮泉河镇，与 10 月 2 日连住。",
+    risk: "札达支线弯多、落差大，峡谷阴影区可能结冰。没有县城确认房，不能在盆地过夜，也不得摸黑走土林支线。",
+    decision: "06:30 前离开塔钦。13:30 仍未进入札达盆地则取消土林停留，改巴尔直走 G219。古格和托林一律取消。日落前必须出谷，当晚唯一目标是狮泉河。",
   },
   {
     day: 7,
     date: "10.02",
-    title: "札达 → 古格或托林择一 → 狮泉河",
-    distance: "约 240–280 km",
-    driving: "约 6–8 小时，含一处短参观",
-    roads: "札达县道 / G565 / G219 方向道路",
-    pointIds: ["zanda", "guge", "tholing", "shiquanhe"],
-    highlights: ["古格或托林择一", "土林回望", "狮泉河补给", "北线前总检"],
-    supply: "札达出发前补油；抵达狮泉河完成全车检查、清洁空滤并补齐北线食品。不安排班公湖。",
-    overnight: "狮泉河镇。",
-    risk: "景点参观易超时，返程山路不宜夜驾；北线前必须确认轮胎和备胎状态。",
-    decision: "古格与托林寺只执行一处；14:30 仍未离开札达盆地则取消参观，天黑前以狮泉河为唯一目标。",
+    title: "狮泉河 ⇄ 日土 / 班公湖｜可整日取消",
+    distance: "约 280–320 km 往返",
+    driving: "约 6–8 小时；任一项不佳则留在狮泉河",
+    roads: "G219 狮泉河至日土开放道路",
+    pointIds: ["shiquanhe", "rutog", "pangong", "shiquanhe"],
+    highlights: ["班公湖", "日土短停", "狮泉河连住", "北线前总检"],
+    supply: "狮泉河满油出发；日土补热食；下午返回后完成全车检查、清洁空滤并补齐北线食品。",
+    overnight: "狮泉河镇连住。",
+    risk: "班公湖在边境管理区，检查站可能核对电子证前往地。湖区风大，只停正规开放点，不驶向未开放边境湖段。",
+    decision: "07:00 先看天气、身体、车况和证件前往地。任一项不佳，或 10 月 1 日到店过晚，整日取消班公湖，留在狮泉河休息。不去札达往返古格。",
   },
   replaceDay("10.03", { day: 8 }),
   replaceDay("10.04", { day: 9 }),
@@ -148,7 +176,7 @@ const day1 = clonePlanning(1);
 day1.reservations[0] = {
   ...day1.reservations[0]!,
   subject: "阿里地区电子边境通行证",
-  note: "2026 年 4 月 15 日起启用电子边境通行证。本版只申请阿里地区（普兰、札达、噶尔等），不要勾选日喀则市。有效期选项需能勾选阿里；获批后下载并打印纸质备份。",
+  note: "2026 年 4 月 15 日起启用电子边境通行证。本版只申请阿里地区，不要勾选日喀则市。阿里边境县包括普兰、札达、噶尔、日土等；班公湖在日土县。已获批后打开电子证核对前往地：写阿里地区整区或已列日土，一般不必重办；若只列了部分县且没有日土，去班公湖前按移民局说明重新申请，新证签发后旧证失效。不确定打 12367。",
 };
 day1.reservations.unshift({
   subject: "日喀则电子边境通行证停发",
@@ -224,49 +252,41 @@ const day6 = clonePlanning(7);
 day6.day = 6;
 day6.reservations = [
   {
-    subject: "札达土林",
+    subject: "札达土林穿行（不住宿）",
     status: "出发前复核",
-    leadTime: "提前 1–3 天查看“智游阿里”和札达当地公告，入谷前再确认道路",
+    leadTime: "提前 1–3 天查看“智游阿里”和札达道路公告，入谷前再确认",
     channel: "“智游阿里”微信小程序或景区正规现场窗口",
     documents: "二代身份证、阿里地区电子边境通行证；车辆证件随车",
-    note: "本版取消珠峰后把札达过夜加回来。未查到 2026 国庆统一强制预约条款；按正规开放道路进入，不驶入未开放土林沟谷，日落前回到县城。",
+    note: "札达县城 10 月 1 日满房，本版改为穿行后住狮泉河。不安排古格或托林。未进盆地或时间不够，在巴尔直走 G219。不驶入未开放土林沟谷，日落前必须出盆地。",
     sourceLabel: "西藏文旅厅 · 阿里智慧旅游平台",
     sourceUrl: "https://wlt.xizang.gov.cn/xwzx_69/xydt/202507/t20250718_490235.html",
   },
 ];
 day6.stay = {
-  city: "札达县城",
-  budget: standardRoomBudget,
-  bookingAdvice: `${nationalDayHotelAdvice} 札达国庆房少，必须先锁可免费取消；订前确认停车、供暖、热水和 10 月 2 日早出城。`,
-  hotels: [
-    {
-      name: "札达古格宾馆",
-      strengths: "县城成熟住宿点，停车方便，适合土林日后的恢复；订前确认供暖和夜间热水。",
-      bookingUrl: "https://hotels.ctrip.com/hotels/2279762.html",
-    },
-    {
-      name: "札达县城富氧酒店备选",
-      strengths: "古格宾馆满房或供氧不足时的退路；必须电话确认独卫、热水、停车和真实供氧时段。",
-      bookingUrl: "https://www.amap.com/search?query=%E6%9C%AD%E8%BE%BE%E5%8E%BF%20%E9%85%92%E5%BA%97",
-    },
-  ],
+  ...day6.stay,
+  city: "狮泉河镇",
+  bookingAdvice: `${nationalDayHotelAdvice} 札达满房后本晚改住狮泉河，与 10 月 2 日同店连住；订前确认晚到保留房、停车和供氧。`,
 };
 
 const day7 = clonePlanning(7);
 day7.day = 7;
 day7.reservations = [
   {
-    subject: "古格遗址或托林寺择一",
-    status: "建议提前",
-    leadTime: "提前 1–3 天查看“智游阿里”和札达当地公告；当天只执行一处短参观",
-    channel: "“智游阿里”微信小程序、寺院正规售票窗口或景区现场公告",
-    documents: "二代身份证、阿里地区电子边境通行证；保存订单二维码",
-    note: "札达已过夜，但仍要在下午离开盆地赶狮泉河。古格和托林寺只择一；排队、天气或道路耗时超预期，直接取消参观。",
-    sourceLabel: "西藏文旅厅 · 智游阿里古格预订",
-    sourceUrl: "https://wlt.xizang.gov.cn/xwzx_69/xydt/202507/t20250718_490235.html",
+    subject: "班公湖（可整日取消）",
+    status: "出发前复核",
+    leadTime: "10 月 1 日到店后核对天气、开放范围和电子证前往地",
+    channel: "日土县现场管理、12345、景区正规开放点；未查到 2026 国庆统一强制预约",
+    documents: "二代身份证、阿里地区电子边境通行证及打印件；前往地含日土或阿里整区",
+    note: "狮泉河往返约 300 公里。只使用中国一侧正规观景点，不驶向未开放边境湖段。电子证若未覆盖日土，当天取消，不要赌检查站。高反、风雪或前一日过晚到店，整日留在狮泉河修车睡觉。",
+    sourceLabel: "国家移民管理局 · 电子边境通行证办理",
+    sourceUrl: "https://s.nia.gov.cn/mps/bszy/dzbjtxz/blzy/202604/t20260414_1001.html",
   },
 ];
-day7.stay.bookingAdvice = `${nationalDayHotelAdvice} 本版 10 月 2 日住狮泉河，只做补给和车辆检查；到店后复核洞措住宿和 10 月 5 日拉萨保留房。`;
+day7.stay = {
+  ...day7.stay,
+  city: "狮泉河镇连住",
+  bookingAdvice: `${nationalDayHotelAdvice} 本晚与 10 月 1 日同店连住；到店后复核洞措住宿和 10 月 5 日拉萨保留房。`,
+};
 
 const laterDays = [8, 9, 10, 11, 12].map((day) => {
   const plan = clonePlanning(day);
@@ -274,7 +294,7 @@ const laterDays = [8, 9, 10, 11, 12].map((day) => {
   return plan;
 });
 
-export const aliPermitBypassPlanningReviewedAt = "2026-09-01";
+export const aliPermitBypassPlanningReviewedAt = "2026-09-14";
 
 export const aliPermitBypassDailyPlanning: AliRouteDailyPlanning[] = [
   day1,

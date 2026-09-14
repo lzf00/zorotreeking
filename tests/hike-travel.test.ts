@@ -678,7 +678,7 @@ test("Nagqu G317 deadline route keeps the shortest north-line handoff and mapped
   }
 });
 
-test("Shigatse permit-bypass loop skips Everest and restores Zanda overnight", async () => {
+test("Shigatse permit-bypass loop skips Everest and stays in Shiquanhe after Zanda sold out", async () => {
   const [page, guide, overview] = await Promise.all([
     readFile(
       new URL("../src/pages/hike/travel/ali-grand-loop-ali-permit-2026.astro", import.meta.url),
@@ -693,7 +693,8 @@ test("Shigatse permit-bypass loop skips Everest and restores Zanda overnight", a
 
   assert.match(page, /<AliPermitBypassGuide/);
   assert.match(guide, /只办阿里证/);
-  assert.match(guide, /札达过夜/);
+  assert.match(guide, /狮泉河连住/);
+  assert.match(guide, /前往地含阿里整区或日土/);
   assert.match(guide, /不去定日、珠峰和吉隆/);
   assert.match(guide, /n897453\/c1797217/);
   assert.doesNotMatch(guide, /吉山吉舍|9 月 29 日上午进珠峰景区/);
@@ -711,9 +712,14 @@ test("Shigatse permit-bypass loop skips Everest and restores Zanda overnight", a
   assert.match(aliPermitBypassRouteDays[2]?.title ?? "", /日喀则.*拉孜.*萨嘎/);
   assert.match(aliPermitBypassRouteDays[3]?.title ?? "", /萨嘎.*塔钦/);
   assert.match(aliPermitBypassRouteDays[4]?.title ?? "", /塔钦/);
-  assert.match(aliPermitBypassRouteDays[5]?.title ?? "", /札达/);
-  assert.match(aliPermitBypassRouteDays[6]?.title ?? "", /札达.*狮泉河/);
-  assert.match(aliPermitBypassDailyPlanning[5]?.stay.city ?? "", /札达/);
+  assert.match(aliPermitBypassRouteDays[5]?.title ?? "", /土林.*狮泉河/);
+  assert.match(aliPermitBypassRouteDays[6]?.title ?? "", /班公湖/);
+  assert.match(aliPermitBypassDailyPlanning[5]?.stay.city ?? "", /狮泉河/);
+  assert.match(aliPermitBypassDailyPlanning[6]?.stay.city ?? "", /狮泉河/);
+  assert.match(aliPermitBypassDailyPlanning[6]?.reservations[0]?.subject ?? "", /班公湖/);
+  assert.match(aliPermitBypassRouteDays[5]?.overnight ?? "", /狮泉河/);
+  assert.doesNotMatch(aliPermitBypassRouteDays[5]?.overnight ?? "", /札达/);
+  assert.match(aliPermitBypassDailyPlanning[0]?.reservations[1]?.note ?? "", /写阿里地区整区或已列日土，一般不必重办/);
   assert.match(aliPermitBypassDailyPlanning[0]?.reservations[0]?.subject ?? "", /日喀则电子边境通行证停发/);
 
   const pointIds = new Set(aliPermitBypassRoutePoints.map((point) => point.id));
@@ -727,6 +733,9 @@ test("Shigatse permit-bypass loop skips Everest and restores Zanda overnight", a
       "peak",
       `${id} should be a focus peak on the bypass map`,
     );
+  }
+  for (const id of ["pangong", "rutog"]) {
+    assert.equal(pointIds.has(id), true, `bypass map should still mark ${id}`);
   }
   for (const day of aliPermitBypassRouteDays) {
     for (const id of day.pointIds) assert.ok(pointIds.has(id), `bypass D${day.day} references unknown ${id}`);

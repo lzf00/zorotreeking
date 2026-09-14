@@ -37,15 +37,48 @@ const taqinLocalGeometry: [number, number][] = [
   [31.02, 81.3],
   [30.9779, 81.2857],
 ];
+const pangongRoundtripGeometry: [number, number][] = [
+  [32.4951, 80.1004],
+  [32.7, 79.95],
+  [33.0, 79.85],
+  [33.25, 79.78],
+  [33.3875, 79.7314],
+  [33.48, 79.45],
+  [33.56, 79.18],
+  [33.48, 79.45],
+  [33.3875, 79.7314],
+  [33.0, 79.85],
+  [32.4951, 80.1004],
+];
 
 export const aliPermitBypassRoadLabels: AliRoadLabel[] = [
   ...aliRoadLabels
-    .map((road) => ({
-      ...road,
-      id: `permit-bypass-${road.id}`,
-      days: Array.from(new Set(road.days.flatMap(remapDays))),
-    }))
+    .map((road) => {
+      const days = Array.from(new Set(road.days.flatMap(remapDays)));
+      if (road.id === "zanda-road") {
+        return {
+          ...road,
+          id: `permit-bypass-${road.id}`,
+          days: days.filter((day) => day === 6),
+        };
+      }
+      return {
+        ...road,
+        id: `permit-bypass-${road.id}`,
+        days,
+      };
+    })
     .filter((road) => road.days.length > 0),
+  {
+    id: "permit-bypass-pangong",
+    ref: "G219",
+    name: "狮泉河至班公湖",
+    roadClass: "scenic",
+    lat: 33.2,
+    lng: 79.7,
+    days: [7],
+    description: "10 月 2 日狮泉河往返日土、班公湖的机动支线，可整日取消。",
+  },
   {
     id: "permit-bypass-flight",
     ref: "返沪航班",
@@ -64,8 +97,8 @@ export const aliPermitBypassRoutedDayGeometry: Record<number, [number, number][]
   3: [...shigatseToLhatseGeometry, ...lhatseToSagaGeometry],
   4: aliRoutedDayGeometry[6]!,
   5: taqinLocalGeometry,
-  6: aliRoutedDayGeometry[7]!,
-  7: aliRoutedDayGeometry[8]!,
+  6: [...aliRoutedDayGeometry[7]!, ...aliRoutedDayGeometry[8]!],
+  7: pangongRoundtripGeometry,
   8: aliLhasaReturnRoutedDayGeometry[8]!,
   9: aliLhasaReturnRoutedDayGeometry[9]!,
   10: aliLhasaReturnRoutedDayGeometry[10]!,
