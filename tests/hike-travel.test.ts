@@ -84,9 +84,9 @@ test("hike section is presented as hiking and travel across navigation and home"
 test("Ali travel guide is indexed and keeps its complete standalone roadbook", async () => {
   const guides = getTravelGuides("zh");
   assert.equal(guides.length, 8);
-  assert.equal(guides[0]?.slug, "chuanxi-loop-chengdu-2026");
-  assert.equal(guides[1]?.slug, "ali-grand-loop-ali-permit-2026");
-  assert.equal(guides[2]?.slug, "ali-grand-loop-lhasa-return-2026");
+  assert.equal(guides[0]?.slug, "ali-grand-loop-lhasa-return-2026");
+  assert.equal(guides[1]?.slug, "chuanxi-loop-chengdu-2026");
+  assert.equal(guides[2]?.slug, "ali-grand-loop-ali-permit-2026");
   assert.equal(guides[3]?.slug, "ali-central-loop-nagqu-g317-chengdu-2026");
   assert.ok(guides.some((guide) => guide.slug === "ali-central-loop-nagqu-chengdu-2026"));
   assert.ok(guides.some((guide) => guide.slug === "ali-central-loop-lhasa-lanzhou-2026"));
@@ -201,7 +201,10 @@ test("G317 Chengdu and Lhasa-return loop are independent indexed roadbooks", asy
   assert.match(loopGuide, /G317.*改则.*纳木措/s);
   assert.match(loopGuide, /10 月 5 日晚回拉萨住宿/);
   assert.doesNotMatch(loopGuide, /阿里昆莎机场|阿里普兰机场|最晚10月5日到上海|朋友/);
-  assert.match(loopGuide, /去掉分流之后/);
+  assert.match(loopGuide, /出发前订单/);
+  assert.match(loopGuide, /取消智行 09.28 萨嘎强吉福/);
+  assert.match(loopGuide, /不去班公湖/);
+  assert.match(loopGuide, /09.27 白居寺和 10.01 拉昂措/);
   assert.match(loopGuide, /狮泉河只做补给/);
   assert.match(loopGuide, /绕证方案/);
   assert.match(loopGuide, /可进入定日和珠峰/);
@@ -648,7 +651,13 @@ test("Lhasa-return one-page sheet lists sights, distance, and hotels for every d
   assert.match(aliLhasaReturnRouteDays[3]?.highlights.join(" ") ?? "", /珠峰/);
   assert.match(aliLhasaReturnRouteDays[8]?.highlights.join(" ") ?? "", /色林措/);
   assert.match(aliLhasaReturnRouteDays[9]?.highlights.join(" ") ?? "", /纳木措/);
+  assert.match(aliLhasaReturnRouteDays[1]?.decision ?? "", /白居寺/);
+  assert.match(aliLhasaReturnRouteDays[5]?.highlights.join(" ") ?? "", /拉昂措/);
+  assert.match(aliLhasaReturnRouteDays[6]?.decision ?? "", /班公湖/);
   assert.match(aliLhasaReturnDailyPlanning[3]?.stay.hotels[0]?.name ?? "", /顺康富氧/);
+  assert.match(aliLhasaReturnDailyPlanning[3]?.stay.city ?? "", /定日巴松村/);
+  assert.doesNotMatch(aliLhasaReturnDailyPlanning[3]?.stay.city ?? "", /顺康富氧/);
+  assert.doesNotMatch(aliLhasaReturnDailyPlanning[7]?.stay.hotels[1]?.name ?? "", /洞措/);
   assert.match(aliLhasaReturnDailyPlanning[9]?.stay.city ?? "", /拉萨/);
 });
 
@@ -697,6 +706,7 @@ test("Shigatse permit-bypass loop skips Everest and stays in Shiquanhe after Zan
   assert.match(guide, /狮泉河连住/);
   assert.match(guide, /前往地含阿里整区或日土/);
   assert.match(guide, /不去定日、珠峰和吉隆/);
+  assert.match(guide, /备用路书/);
   assert.match(guide, /当前执行：珠峰过夜拉萨还车版/);
   assert.match(guide, /n897453\/c1797217/);
   assert.doesNotMatch(guide, /吉山吉舍|9 月 29 日上午进珠峰景区/);

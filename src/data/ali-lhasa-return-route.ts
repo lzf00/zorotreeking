@@ -38,6 +38,12 @@ export const aliLhasaReturnRoutePoints: AliRoutePoint[] = [
         detail: "阿里地区综合补给中心。本版 10 月 2 日到这里过夜，只做车辆、油料和北线物资复核，第二天进入 G317。",
       };
     }
+    if (point.id === "gyantse") {
+      return {
+        ...point,
+        detail: "南线历史城镇。09.27 准时则进白居寺，不准时只补给后直奔日喀则至格酒店。",
+      };
+    }
     if (point.id === "dongco") {
       return {
         ...point,
@@ -69,6 +75,18 @@ const replaceCopiedDrivingDay = (date: string, replacement: Partial<AliRouteDay>
     highlights: replacement.highlights ? [...replacement.highlights] : day.highlights,
   };
 };
+
+replaceCopiedDrivingDay("09.27", {
+  overnight: "至格酒店（日喀则藏隆广场店），山东中路 16 号；已锁 09.27 一晚。",
+  decision:
+    "准时则保留卡若拉短停和江孜白居寺。12:30 仍未离开浪卡子，跳过卡若拉和白居寺，仍以日喀则至格酒店为当晚目标。羊湖段降雪、结冰或封控时，按交警建议改走可行路线。",
+});
+
+replaceCopiedDrivingDay("09.28", {
+  overnight: "我与乔木酒店；已锁 09.28 三间。执行珠峰过夜则当晚住这里。",
+  decision:
+    "扎什伦布只做早场。排队超过计划就缩短参观，不压缩定日到达缓冲。若珠峰次日不开放，取消珠峰折返，直接把萨嘎作为下一安全目的地。",
+});
 
 replaceCopiedDrivingDay("09.29", {
   title: "定日 → 加乌拉 → 珠峰景区开放区域 → 巴松顺康富氧",
@@ -102,11 +120,12 @@ replaceCopiedDrivingDay("10.01", {
   driving: "约 10–12 小时",
   roads: "G219",
   pointIds: ["saga", "king-peak", "zhongba", "paryang", "manasarovar", "darchen"],
-  highlights: ["国王峰远观", "仲巴沙丘河谷", "玛旁雍措", "冈仁波齐日落"],
+  highlights: ["国王峰远观", "仲巴沙丘河谷", "玛旁雍措", "拉昂措短停", "冈仁波齐日落"],
   supply: "萨嘎满油早出发，仲巴必须补油，帕羊二次热食；塔钦到店后补齐次日札达段水粮。",
   overnight: "普兰塔尔庆大酒店；订单目前是 09.29–10.01，执行本路书需改成 10.01 入住。",
   risk: "这是前段保留神山圣湖时间后的长途日；只在正规观景点短停，不驶离 G219 追湖岸机位。",
-  decision: "若到帕羊已明显晚于计划，缩短玛旁雍措停留但保留塔钦住宿；不得夜间绕湖。",
+  decision:
+    "准时可在玛旁雍措后再停拉昂措。若到帕羊已明显晚于计划，取消拉昂措并缩短玛旁雍措停留，仍保留塔钦住宿；不得夜间绕湖。",
 });
 
 replaceCopiedDrivingDay("10.02", {
@@ -118,8 +137,9 @@ replaceCopiedDrivingDay("10.02", {
   highlights: ["冈仁波齐南麓", "札达土林穿行", "古格或托林择一", "狮泉河补给"],
   supply: "塔钦满油和早餐后出发，门士只做状态检查；札达县城补餐和加油，不住宿；狮泉河完成车辆、油料和北线物资复核。",
   overnight: "云朵酒店，狮泉路 1 号；已锁 10.02 一晚。",
-  risk: "珠峰景区过夜占掉一天，札达仍排不进单独住宿；古格和托林寺只能择一，排队或道路耗时超预期就直接进狮泉河。",
-  decision: "06:30 前从塔钦出发；13:30 仍未进入札达盆地则取消古格/托林；日落前离开札达盆地，夜里不在峡谷赶车。",
+  risk: "珠峰景区过夜占掉一天，札达仍排不进单独住宿；古格和托林寺只能择一。狮泉河当晚要赶改则，这版加不进班公湖。",
+  decision:
+    "06:30 前从塔钦出发。土林穿行优先；13:30 仍未进入札达盆地则取消古格/托林。日落前离开札达盆地，夜里不在峡谷赶车，也不从狮泉河再折返班公湖。",
 });
 
 replaceCopiedDrivingDay("10.03", {
@@ -355,7 +375,7 @@ export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
       },
     ],
     stay: {
-      city: "巴松村 · 顺康富氧",
+      city: "定日巴松村",
       budget: standardRoomBudget,
       bookingAdvice: `${nationalDayHotelAdvice} 09.29 已锁顺康富氧一晚（巴松村）。去哪儿上的普兰塔尔庆 09.29–10.01 与本晚撞期，执行珠峰过夜则改期或取消塔尔庆。`,
       hotels: [
@@ -513,9 +533,9 @@ export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
           bookingUrl: "https://m.ctrip.com/webapp/hotel/Gertse21289",
         },
         {
-          name: "洞措乡扶贫宾馆 / 乡镇宾馆",
-          strengths: "仅当改则无法入住、仍要继续东进时的电话确认退路。",
-          bookingUrl: "https://www.amap.com/search?query=%E6%B4%9E%E6%8E%AA%E4%B9%A1%20%E5%AE%BE%E9%A6%86",
+          name: "改则县城其他供氧宾馆",
+          strengths: "康盛到店异常时同城电话确认，不继续赶洞措过夜。",
+          bookingUrl: "https://www.amap.com/search?query=%E6%94%B9%E5%88%99%E4%BE%9B%E6%B0%A7%E9%85%92%E5%BA%97",
         },
       ],
     },
