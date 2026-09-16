@@ -42,7 +42,7 @@ export const aliLhasaReturnRoutePoints: AliRoutePoint[] = [
       return {
         ...point,
         kind: "overnight" as const,
-        detail: "用来把狮泉河到班戈的两段长路拆开的乡镇落脚点；不是景点停留，住宿必须提前电话确认。",
+        detail: "G317 途经乡镇。本版 10 月 3 日已锁改则过夜，不再把洞措当作住宿开关。",
         services: "乡镇住宿、有限餐饮与基础补给，以当日电话确认结果为准",
       };
     }
@@ -71,27 +71,27 @@ const replaceCopiedDrivingDay = (date: string, replacement: Partial<AliRouteDay>
 };
 
 replaceCopiedDrivingDay("09.29", {
-  title: "定日 → 加乌拉 → 珠峰景区开放区域 → 巴松吉山吉舍",
+  title: "定日 → 加乌拉 → 珠峰景区开放区域 → 巴松顺康富氧",
   distance: "约 110–150 km",
   driving: "约 4–6 小时，上午进景区，傍晚回到巴松看日落",
   roads: "G318 / 珠峰景区道路",
   pointIds: ["tingri", "gawula", "rongbuk", "ebc"],
-  highlights: ["加乌拉群峰", "绒布寺", "珠峰日落", "吉山吉舍星空"],
-  supply: "定日早餐后满油出发，午餐和热水随车带入；吉山吉舍可晚餐和热水，不依赖景区内简陋补给。",
-  overnight: "吉山吉舍（珠峰大本营店），巴松村；屋顶和景观房可看珠峰与星空。满房时改住绒布寺或景区开放住宿点。",
-  risk: "吉山吉舍在巴松村、距大本营约 24 公里，不要看完景区日落再摸黑赶回；星空和珠峰夜景改在酒店附近看。",
-  decision: "门票、观光车和吉山吉舍订房都要先确认；下午离开景区开放区域，日落前回到巴松。订不到吉山吉舍，才退绒布寺或大本营开放住宿。",
+  highlights: ["加乌拉群峰", "绒布寺", "珠峰日落", "巴松星空"],
+  supply: "定日早餐后满油出发，午餐和热水随车带入；巴松顺康富氧可晚餐和热水，不依赖景区内简陋补给。",
+  overnight: "顺康富氧酒店，定日扎西宗乡巴松村；已锁 09.29 一晚。满房或到店异常时改住同村吉山吉舍。",
+  risk: "顺康在巴松村、距大本营约 24 公里，不要看完景区日落再摸黑赶回；星空和珠峰夜景改在酒店附近看。",
+  decision: "门票、观光车和顺康保留房都要先确认；下午离开景区开放区域，日落前回到巴松。",
 });
 
 replaceCopiedDrivingDay("09.30", {
-  title: "巴松吉山吉舍 → 定日 → 萨嘎",
+  title: "巴松顺康 → 定日 → 萨嘎",
   distance: "约 330–380 km",
-  driving: "约 8–10 小时，早上离开吉山吉舍",
+  driving: "约 8–10 小时，早上离开巴松",
   roads: "珠峰景区道路 / G318 / G219",
   pointIds: ["tingri", "saga"],
-  highlights: ["吉山吉舍晨光", "加乌拉回望", "G219 西行", "萨嘎补给"],
+  highlights: ["巴松晨光", "加乌拉回望", "G219 西行", "萨嘎补给"],
   supply: "酒店早餐后出发，定日/白坝片区补油和热食，再沿 G219 去萨嘎；抵达后补满燃油。",
-  overnight: "萨嘎县城。",
+  overnight: "萨嘎强吉福酒店，格桑街 172 号；已锁 09.30 一晚。",
   risk: "前一晚高海拔睡眠质量可能差，本日不再安排新的深度景点，也不再折返进珠峰景区；若早晨风雪延误，优先保证白天抵达萨嘎。",
   decision: "10:00 前离开巴松；若中午仍未回到定日主路，取消沿途停留，只把萨嘎作为安全住宿目标。",
 });
@@ -104,7 +104,7 @@ replaceCopiedDrivingDay("10.01", {
   pointIds: ["saga", "king-peak", "zhongba", "paryang", "manasarovar", "darchen"],
   highlights: ["国王峰远观", "仲巴沙丘河谷", "玛旁雍措", "冈仁波齐日落"],
   supply: "萨嘎满油早出发，仲巴必须补油，帕羊二次热食；塔钦到店后补齐次日札达段水粮。",
-  overnight: "塔钦。",
+  overnight: "普兰塔尔庆大酒店；订单目前是 09.29–10.01，执行本路书需改成 10.01 入住。",
   risk: "这是前段保留神山圣湖时间后的长途日；只在正规观景点短停，不驶离 G219 追湖岸机位。",
   decision: "若到帕羊已明显晚于计划，缩短玛旁雍措停留但保留塔钦住宿；不得夜间绕湖。",
 });
@@ -117,48 +117,48 @@ replaceCopiedDrivingDay("10.02", {
   pointIds: ["darchen", "kailash", "menshi", "zanda-earth", "zanda", "guge", "tholing", "shiquanhe"],
   highlights: ["冈仁波齐南麓", "札达土林穿行", "古格或托林择一", "狮泉河补给"],
   supply: "塔钦满油和早餐后出发，门士只做状态检查；札达县城补餐和加油，不住宿；狮泉河完成车辆、油料和北线物资复核。",
-  overnight: "狮泉河镇。",
+  overnight: "云朵酒店，狮泉路 1 号；已锁 10.02 一晚。",
   risk: "珠峰景区过夜占掉一天，札达仍排不进单独住宿；古格和托林寺只能择一，排队或道路耗时超预期就直接进狮泉河。",
   decision: "06:30 前从塔钦出发；13:30 仍未进入札达盆地则取消古格/托林；日落前离开札达盆地，夜里不在峡谷赶车。",
 });
 
 replaceCopiedDrivingDay("10.03", {
-  title: "狮泉河 → 革吉 → 改则 → 洞措",
-  distance: "约 480–560 km",
-  driving: "约 9–11 小时，北线纯赶路日",
+  title: "狮泉河 → 革吉 → 改则",
+  distance: "约 380–450 km",
+  driving: "约 7–9 小时，北线赶到改则过夜",
   roads: "G317",
-  pointIds: ["shiquanhe", "geji", "xiongba", "gerze", "dongco"],
-  highlights: ["G317 长直路段", "改则补给", "洞措乡落脚"],
-  supply: "狮泉河满油；革吉见站即补，改则强制补满油和热食，洞措只作为已确认住宿点，不依赖稳定补给。",
-  overnight: "洞措乡镇住宿，必须提前电话确认可住、可停车、有热水；无法确认时改住改则，并启动次日长途预案。",
-  risk: "洞措不是景点，只用来把狮泉河到班戈拆成两段可执行车程；住宿不如县城稳定。",
-  decision: "出发前仍确认不了洞措住宿，就不得离开改则继续东进；主车每 90–120 分钟换人休息。",
+  pointIds: ["shiquanhe", "geji", "xiongba", "gerze"],
+  highlights: ["G317 长直路段", "革吉短停", "改则补给住宿"],
+  supply: "狮泉河满油；革吉见站即补，改则到店后补满油和热食。",
+  overnight: "改则康盛富氧酒店；已锁 10.03 一晚。不再继续赶洞措。",
+  risk: "改则过夜比洞措稳，代价是次日改则到当雄/纳木措会变成长途推进。",
+  decision: "主车每 90–120 分钟换人休息；天黑前必须进改则，不把洞措当天硬赶完。",
 });
 
 replaceCopiedDrivingDay("10.04", {
-  title: "洞措 → 尼玛 → 色林措 → 班戈",
-  distance: "约 520–580 km",
-  driving: "约 9–11 小时，只保留色林措一个核心停留",
+  title: "改则 → 尼玛 → 色林措 → 当雄/纳木措",
+  distance: "约 580–680 km",
+  driving: "约 10–12 小时，只保留色林措一个核心停留",
   roads: "G317 及开放观景连接道路",
-  pointIds: ["dongco", "nyima", "selin", "baingoin"],
-  highlights: ["尼玛补给", "色林措远观", "藏北湖群", "班戈住宿"],
-  supply: "洞措早餐后早出发，尼玛补油和热食，色林措只在正规开放点短停，班戈到店后补给住宿。",
-  overnight: "班戈县城。",
-  risk: "色林措是本日唯一景观目标，不再加洞措湖岸、草场或其他支线；湖区风大、保护区管制必须服从现场要求。",
-  decision: "12:30 仍未到尼玛或天气变差，取消色林措停留，直接沿主线到班戈；不得把停留时间挪到夜驾。",
+  pointIds: ["gerze", "nyima", "selin", "baingoin", "namtso", "damxung"],
+  highlights: ["尼玛补给", "色林措远观", "藏北湖群", "纳木措住宿"],
+  supply: "改则早餐后早出发，尼玛补油和热食，色林措只在正规开放点短停，班戈只做补给，当晚住纳木错富氧大酒店。",
+  overnight: "纳木错富氧大酒店；已锁 10.04 一晚。",
+  risk: "这是北线最长赶路日。色林措是本日唯一景观目标；湖区风大、保护区管制必须服从现场要求。",
+  decision: "12:30 仍未到尼玛或天气变差，取消色林措停留，直接沿主线赶往当雄/纳木措酒店；不得把停留时间挪到夜驾。",
 });
 
 replaceCopiedDrivingDay("10.05", {
-  title: "班戈 → 纳木措 → 当雄 → 拉萨",
-  distance: "约 400–450 km",
-  driving: "约 8–10 小时，傍晚到晚间到店",
-  roads: "G317 / 纳木措开放道路 / G109",
-  pointIds: ["baingoin", "namtso", "damxung", "lhasa"],
-  highlights: ["纳木措", "念青唐古拉山", "当雄补给", "10 月 5 日回到拉萨"],
-  supply: "班戈满油出发，车内保留热饮和路餐；纳木措只按开放道路短停，当雄强制补油和热食，抵达拉萨后只做停车、入住和必要车辆检查。",
-  overnight: "拉萨市区，必须预付保留房并电话确认 24 小时前台；预计 10 月 5 日傍晚到晚间到店，极端延误可接受 10 月 6 日凌晨到店。",
-  risk: "纳木措只保留为回拉萨路上的第二个大景，不安排圣象天门、扎西半岛深度游或湖边支线；国庆返程车流可能让抵达时间后移。",
-  decision: "08:00 前从班戈出发；若纳木措关闭、摆渡排队或午后仍未完成湖区通过，直接经当雄回拉萨，守住当晚住宿。",
+  title: "当雄/纳木措 → 拉萨",
+  distance: "约 160–220 km",
+  driving: "约 3–5 小时，上午离开，下午到拉萨",
+  roads: "纳木措开放道路 / G109",
+  pointIds: ["namtso", "damxung", "lhasa"],
+  highlights: ["纳木措回望", "念青唐古拉山", "当雄补给", "10 月 5 日回到拉萨"],
+  supply: "酒店早餐后出发；纳木措只按开放道路短停，当雄补油后回拉萨，抵达后只做停车、入住和必要车辆检查。",
+  overnight: "拉萨市区。09.26 已住过柏丽艾尚，10.05–06 连住优先同一家，截图尚未出这两晚订单。",
+  risk: "纳木措不安排圣象天门、扎西半岛深度游或湖边支线；国庆返程车流可能让抵达时间后移。",
+  decision: "08:00 前离开酒店；若纳木措关闭或排队过长，直接经当雄回拉萨，守住当晚住宿。",
 });
 
 export const aliLhasaReturnRouteDays: AliRouteDay[] = [
@@ -172,7 +172,7 @@ export const aliLhasaReturnRouteDays: AliRouteDay[] = [
     pointIds: ["gonggar-airport", "lhasa"],
     highlights: ["落地取车", "车辆留档", "高原适应", "全程物资补给"],
     supply: "在拉萨一次性补齐边境通行证材料、氧气、现金、离线地图、水粮和保暖装备，车辆拍照并核对轮胎、备胎和救援范围。",
-    overnight: "拉萨市区，选择有电梯、停车方便并靠近医院的住宿。",
+    overnight: "柏丽艾尚酒店（军区总医院慈松塘西路店），慈松塘西路北侧附 2 号；已锁 09.26 一晚。",
     risk: "落地当天最需要防范高反、饮酒、久热水澡和过度兴奋；不要把城市游览排进取车适应日。",
     decision: "静息状态仍明显不适、血氧持续异常或车辆关键装备不齐，第二天不离开拉萨，宁可缩短阿里行程。",
   },
@@ -211,7 +211,7 @@ const standardRoomBudget = "¥200–400 / 标间";
 const nationalDayHotelAdvice =
   "国庆房价与库存波动很大：现在先锁可免费取消房，入住前 7 天、72 小时各复核一次；若超出预算，按同城候选顺序切换，不订无独卫、无热水或无法确认停车的房间。";
 
-export const aliLhasaReturnPlanningReviewedAt = "2026-08-26";
+export const aliLhasaReturnPlanningReviewedAt = "2026-09-16";
 
 export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
   {
@@ -223,7 +223,7 @@ export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
         leadTime: "建议出发前 7–15 天申请，获批后下载并打印一份备份",
         channel: "国家移民管理局政务服务平台，或“移民局12367”App / 微信、支付宝小程序",
         documents: "二代身份证；16 岁以下同行儿童需到现场作为随行人添加",
-        note: "2026 年 4 月 15 日起启用电子边境通行证，证件有效期最长 3 个月且免费办理。珠峰、普兰、札达等边境方向出发前逐项核对通行范围。",
+        note: "2026 年 4 月 15 日起启用电子边境通行证，证件有效期最长 3 个月且免费办理。本行程按可办日喀则证、可进入定日和珠峰执行；前往地需含日喀则市定日县，并继续持有阿里证（普兰、札达、噶尔、日土等）。获批后下载并打印纸质备份，出发前再核 12367 与检查站口径。",
         sourceLabel: "国家移民管理局 · 电子边境通行证问答",
         sourceUrl: "https://s.nia.gov.cn/mps/bszy/dzbjtxz/blzy/202604/t20260414_1001.html",
       },
@@ -241,16 +241,16 @@ export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
     stay: {
       city: "拉萨市区",
       budget: standardRoomBudget,
-      bookingAdvice: nationalDayHotelAdvice,
+      bookingAdvice: `${nationalDayHotelAdvice} 09.26 已锁柏丽艾尚一晚。`,
       hotels: [
         {
-          name: "如家商旅酒店（拉萨堆龙经济开发区店）",
-          strengths: "免费停车、洗衣方便，靠近西出城方向；适合取车后整理装备，进老城游览需打车。",
-          bookingUrl: "https://hotels.ctrip.com/hotels/29597640.html",
+          name: "柏丽艾尚酒店（军区总医院慈松塘西路店）",
+          strengths: "已锁 09.26 一晚。慈松塘西路北侧附 2 号整栋楼，靠近军区总医院，适合落地适应。",
+          bookingUrl: "https://www.bthhotels.com/hotel/PL0009",
         },
         {
           name: "拉萨新气象酒店（八廓街店）",
-          strengths: "近老城、停车评价较多，适合轻量适应；订房前电话确认院内车位和供氧房差价。",
+          strengths: "近老城、停车评价较多；仅作 09.26 无法确认停车时的备选。",
           bookingUrl: "https://hotels.ctrip.com/hotel/113895184.html",
         },
       ],
@@ -283,17 +283,17 @@ export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
     stay: {
       city: "日喀则市区",
       budget: standardRoomBudget,
-      bookingAdvice: nationalDayHotelAdvice,
+      bookingAdvice: `${nationalDayHotelAdvice} 09.27 已锁至格酒店一晚。`,
       hotels: [
         {
-          name: "如家精选富氧酒店（日喀则吉林南路店）",
-          strengths: "供氧、免费停车和充电桩，出城前往珠峰顺路；优先确认双床供氧是否含在房价。",
-          bookingUrl: "https://hotels.ctrip.com/hotels/129144954.html",
+          name: "至格酒店（日喀则藏隆广场店）",
+          strengths: "已锁 09.27 一晚。山东中路 16 号，藏隆广场，出城前往定日/珠峰顺路。",
+          bookingUrl: "https://hotels.ctrip.com/hotels/133284776.html",
         },
         {
-          name: "如家商旅酒店（日喀则汽车总站贡觉林卡店）",
-          strengths: "免费停车、洗衣，靠近市区补给；作为富氧房超预算时的实用备选。",
-          bookingUrl: "https://hotels.ctrip.com/hotels/80127997.html",
+          name: "如家精选富氧酒店（日喀则吉林南路店）",
+          strengths: "供氧、免费停车和充电桩；仅作至格无法入住时的备选。",
+          bookingUrl: "https://hotels.ctrip.com/hotels/129144954.html",
         },
       ],
     },
@@ -314,10 +314,10 @@ export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
       {
         subject: "珠峰景区次日门票、观光车与住宿",
         status: "建议提前",
-        leadTime: "提前 1–3 天锁定门票、观光车和吉山吉舍；抵达定日后再次核验班次",
-        channel: "正规在线旅游平台、景区售票渠道和吉山吉舍订单；不向个人转账买票或订房",
-        documents: "二代身份证、电子边境通行证；优惠人群带证件原件；吉山吉舍入住确认",
-        note: "本版按上午进珠峰景区、傍晚回到巴松吉山吉舍看日落和星空处理。购票后保存订单二维码，前一晚核对发车时间、风雪、开放区域和吉山吉舍保留房。",
+        leadTime: "提前 1–3 天锁定门票、观光车；抵达定日后再次核验班次和巴松顺康保留房",
+        channel: "正规在线旅游平台、景区售票渠道和顺康富氧订单；不向个人转账买票或订房",
+        documents: "二代身份证、电子边境通行证；优惠人群带证件原件；顺康入住确认",
+        note: "本版按上午进珠峰景区、傍晚回到巴松顺康富氧看日落和星空处理。购票后保存订单二维码，前一晚核对发车时间、风雪、开放区域和顺康保留房。",
         sourceLabel: "西藏文旅厅 · 珠峰景区 2026 开放与实名规则",
         sourceUrl: "https://wlt.xizang.gov.cn/xccx/lytg/202603/t20260316_529530.html",
       },
@@ -325,17 +325,17 @@ export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
     stay: {
       city: "定日白坝片区",
       budget: standardRoomBudget,
-      bookingAdvice: nationalDayHotelAdvice,
+      bookingAdvice: `${nationalDayHotelAdvice} 09.28 已锁我与乔木三间。智行另有 09.28 萨嘎强吉福，与定日撞期，执行珠峰版则取消那一晚萨嘎。`,
       hotels: [
         {
-          name: "汇峰酒店（珠峰小镇店）",
-          strengths: "珠峰小镇入口附近、停车和充电方便，评价提到供氧与早班路餐；确认 9 月底供暖。",
-          bookingUrl: "https://hotels.ctrip.com/hotels/131626747.html",
+          name: "我与乔木酒店",
+          strengths: "已锁 09.28 三间（两间标准双床 + 一间供氧家庭套房）。执行珠峰过夜则当晚住这里，次日转巴松顺康。",
+          bookingUrl: "https://hotels.ctrip.com/hotel/tingri21137",
         },
         {
-          name: "定日格桑花大酒店",
-          strengths: "白坝镇内补给方便、免费停车，作为新酒店满房时的稳妥备选。",
-          bookingUrl: "https://hotels.ctrip.com/hotels/46270495.html",
+          name: "汇峰酒店（珠峰小镇店）",
+          strengths: "珠峰小镇入口附近、停车和充电方便；仅作我与乔木无法入住时的定日备选。",
+          bookingUrl: "https://hotels.ctrip.com/hotels/131626747.html",
         },
       ],
     },
@@ -344,30 +344,30 @@ export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
     day: 4,
     reservations: [
       {
-        subject: "珠峰景区、绒布寺与吉山吉舍",
+        subject: "珠峰景区、绒布寺与巴松顺康",
         status: "必须提前",
-        leadTime: "前一晚完成门票、观光车和吉山吉舍订房复核；建议提前 1–3 天购票订房",
-        channel: "景区正规票务/在线旅游平台 + 定日游客换乘点 + 吉山吉舍（珠峰大本营店）",
-        documents: "二代身份证、电子边境通行证、门票与观光车订单、吉山吉舍入住确认",
-        note: "社会车辆按现场组织停放并换乘观光车；上午进景区，下午离开开放区域，日落前回到巴松吉山吉舍。日落和星空改在酒店屋顶和景观房看，不从大本营摸黑赶回。吉山吉舍满房时，才退绒布寺或景区开放住宿点。",
+        leadTime: "前一晚完成门票、观光车和顺康保留房复核；建议提前 1–3 天购票",
+        channel: "景区正规票务/在线旅游平台 + 定日游客换乘点 + 顺康富氧酒店",
+        documents: "二代身份证、电子边境通行证、门票与观光车订单、顺康入住确认",
+        note: "社会车辆按现场组织停放并换乘观光车；上午进景区，下午离开开放区域，日落前回到巴松顺康。日落和星空改在酒店附近看，不从大本营摸黑赶回。",
         sourceLabel: "西藏文旅厅 · 珠峰景区 2026 实名与观光车",
         sourceUrl: "https://wlt.xizang.gov.cn/xccx/lytg/202603/t20260316_529530.html",
       },
     ],
     stay: {
-      city: "巴松村 · 吉山吉舍",
+      city: "巴松村 · 顺康富氧",
       budget: standardRoomBudget,
-      bookingAdvice: `${nationalDayHotelAdvice} 吉山吉舍只有约 9 间房，国庆必须先锁可免费取消；订前确认珠峰景观房、供暖、停车和 12:00 退房。房价可能高于 ¥200–400 标间预算。`,
+      bookingAdvice: `${nationalDayHotelAdvice} 09.29 已锁顺康富氧一晚（巴松村）。去哪儿上的普兰塔尔庆 09.29–10.01 与本晚撞期，执行珠峰过夜则改期或取消塔尔庆。`,
       hotels: [
         {
-          name: "吉山吉舍（珠峰大本营店）",
-          strengths: "巴松村珠峰路，距大本营约 24 公里；景观房和屋顶可看珠峰与星空，停车和热水条件比营地好。",
-          bookingUrl: "https://hotels.ctrip.com/hotels/80810143.html",
+          name: "顺康富氧酒店（定日扎西宗乡巴松村）",
+          strengths: "已锁 09.29 供氧三人间。巴松村珠峰路，距大本营约 24 公里，方便看日落星空后就近住下。",
+          bookingUrl: "https://hotels.ctrip.com/hotels/78367749.html",
         },
         {
-          name: "绒布寺 / 珠峰大本营开放住宿点",
-          strengths: "吉山吉舍满房时的退路，更靠近景区核心，但条件简陋、海拔更高；必须确认当季开放、保暖和应急氧。",
-          bookingUrl: "https://hotels.ctrip.com/hotels/tingri201",
+          name: "吉山吉舍（珠峰大本营店）",
+          strengths: "同村约 9 间景观房备选；顺康到店异常时再转。",
+          bookingUrl: "https://hotels.ctrip.com/hotels/80810143.html",
         },
       ],
     },
@@ -378,10 +378,10 @@ export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
       {
         subject: "珠峰景区清晨离场与 G219 西行",
         status: "出发前复核",
-        leadTime: "9 月 29 日入住吉山吉舍时确认次日 12:00 前退房、道路和萨嘎住宿",
-        channel: "吉山吉舍前台、定日游客换乘点、当地交警和萨嘎酒店",
-        documents: "身份证、电子边境通行证、门票订单、萨嘎酒店订单",
-        note: "本日从巴松吉山吉舍看珠峰晨光后西行，不再折返进景区，也不把佩枯措或其他支线设为必到点。前一晚睡眠差、头痛明显或风雪延误时，优先安全抵达萨嘎。",
+        leadTime: "9 月 29 日入住顺康时确认次日退房、道路和萨嘎强吉福保留房",
+        channel: "顺康前台、定日游客换乘点、当地交警和萨嘎酒店",
+        documents: "身份证、电子边境通行证、门票订单、萨嘎强吉福订单",
+        note: "本日从巴松顺康看珠峰晨光后西行，不再折返进景区，也不把佩枯措或其他支线设为必到点。前一晚睡眠差、头痛明显或风雪延误时，优先安全抵达萨嘎。",
         sourceLabel: "西藏文旅厅 · 珠峰景区 2026 实名与观光车",
         sourceUrl: "https://wlt.xizang.gov.cn/xccx/lytg/202603/t20260316_529530.html",
       },
@@ -389,17 +389,17 @@ export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
     stay: {
       city: "萨嘎县城",
       budget: standardRoomBudget,
-      bookingAdvice: nationalDayHotelAdvice,
+      bookingAdvice: `${nationalDayHotelAdvice} 09.30 已锁萨嘎强吉福一晚。智行里另有一单 09.28 同店，与定日我与乔木撞期，执行珠峰版则取消 09.28 萨嘎。`,
       hotels: [
         {
-          name: "云水际·未来酒店（萨嘎店）",
-          strengths: "独立停车场、供氧与自驾评价较好，适合珠峰景区高海拔夜宿后的恢复；先确认房内供氧是否另收费。",
-          bookingUrl: "https://hotels.ctrip.com/hotels/124069440.html",
+          name: "萨嘎强吉福酒店",
+          strengths: "已锁 09.30 一晚。格桑街 172 号，珠峰高海拔夜宿后的县城落脚。",
+          bookingUrl: "https://m.ctrip.com/html5/hotel/hoteldetail/109179736.html",
         },
         {
-          name: "如家酒店（萨嘎店）",
-          strengths: "连锁型备选、县城补给方便；订前电话确认装修影响、停车位置与夜间热水。",
-          bookingUrl: "https://hotels.corporatetravel.ctrip.com/hotels/131302999.html",
+          name: "云水际·未来酒店（萨嘎店）",
+          strengths: "独立停车场、供氧与自驾评价较好；仅作强吉福无法入住时的备选。",
+          bookingUrl: "https://hotels.ctrip.com/hotels/124069440.html",
         },
       ],
     },
@@ -421,16 +421,16 @@ export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
     stay: {
       city: "塔钦（巴嘎镇）",
       budget: standardRoomBudget,
-      bookingAdvice: nationalDayHotelAdvice,
+      bookingAdvice: `${nationalDayHotelAdvice} 去哪儿已锁普兰塔尔庆，但日期是 09.29–10.01，与珠峰/萨嘎撞期。执行本路书需改成 10.01 入住、10.02 离店。`,
       hotels: [
         {
-          name: "天马国际富氧酒店（塔钦冈仁波齐风景区店）",
-          strengths: "新开供氧型候选，目标价命中时优先；订前确认停车、地暖和供氧时段。",
-          bookingUrl: "https://m.ctrip.com/webapp/hotel/ali97",
+          name: "普兰塔尔庆大酒店",
+          strengths: "已锁订单，当前是 09.29–10.01 两晚普通标间。改期到 10.01 后作为塔钦过夜首选。",
+          bookingUrl: "https://m.ctrip.com/webapp/hotel/pulan21774",
         },
         {
-          name: "喜玛拉雅酒店（冈仁波齐景区店）",
-          strengths: "停车方便、可供氧，位置适合次日出城；作为价格更稳定的候选交叉比价。",
+          name: "天马国际富氧酒店（塔钦冈仁波齐风景区店）",
+          strengths: "塔尔庆改期失败时的供氧备选；订前确认停车、地暖和供氧时段。",
           bookingUrl: "https://m.ctrip.com/webapp/hotel/ali97",
         },
       ],
@@ -473,17 +473,17 @@ export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
     stay: {
       city: "狮泉河镇",
       budget: standardRoomBudget,
-      bookingAdvice: `${nationalDayHotelAdvice} 本版 10 月 2 日住狮泉河，只做补给和车辆检查，不是分流点；到店后复核洞措住宿和 10 月 5 日拉萨保留房。`,
+      bookingAdvice: `${nationalDayHotelAdvice} 10.02 已锁云朵酒店一晚，狮泉路 1 号。到店后复核次日改则康盛保留房。`,
       hotels: [
         {
-          name: "尚客优酒店（阿里噶尔县噶尔路店）",
-          strengths: "供氧、免费停车、早餐，靠近客运与补给区域；适合全车检查日。",
-          bookingUrl: "https://m.ctrip.com/webapp/hotel/gaer21068/h436",
+          name: "云朵酒店（狮泉河店）",
+          strengths: "已锁 10.02 一晚。狮泉路 1 号，停车场大，带洗衣与充电，适合全车检查。",
+          bookingUrl: "https://m.ctrip.com/webapp/hotel/gaer21068",
         },
         {
-          name: "云朵酒店（狮泉河店）",
-          strengths: "停车场大、带洗衣与充电条件，作为连锁房满或超预算时的备选。",
-          bookingUrl: "https://m.ctrip.com/webapp/hotel/gaer21068",
+          name: "尚客优酒店（阿里噶尔县噶尔路店）",
+          strengths: "供氧、免费停车、早餐；仅作云朵无法入住时的备选。",
+          bookingUrl: "https://m.ctrip.com/webapp/hotel/gaer21068/h436",
         },
       ],
     },
@@ -492,30 +492,30 @@ export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
     day: 8,
     reservations: [
       {
-        subject: "G317 狮泉河至洞措赶路段",
+        subject: "G317 狮泉河至改则赶路段",
         status: "无需预约",
-        leadTime: "出发前 24 小时核对交通、天气、加油站和洞措住宿状态",
+        leadTime: "出发前 24 小时核对交通、天气、加油站和改则康盛保留房",
         channel: "无票务渠道；只走 G317 主线和已开放停车点",
         documents: "身份证、驾驶证、车辆订单或行驶证、电子边境通行证备份",
-        note: "狮泉河以后全员继续走 G317，沿途不新增景点。革吉、雄巴短停，改则强制补油和热食；当天真正需要提前锁定的是洞措住宿、车辆救援联系方式和次日班戈房间。",
+        note: "狮泉河以后全员继续走 G317，沿途不新增景点。革吉、雄巴短停，当晚住改则康盛富氧，不再赶洞措。",
         sourceLabel: "西藏文旅厅 · 阿里北线线路资料",
         sourceUrl: "https://wlt.xizang.gov.cn/xwzx_69/wlyw/wldt/202507/t20250725_491772.html",
       },
     ],
     stay: {
-      city: "洞措乡镇住宿",
+      city: "改则县城",
       budget: standardRoomBudget,
-      bookingAdvice: `${nationalDayHotelAdvice} 洞措不是稳定 OTA 县城酒店点，必须提前逐家电话确认可住、可停车、有热水；确认不了就住改则县城，并接受 10 月 4 日更长赶路。`,
+      bookingAdvice: `${nationalDayHotelAdvice} 10.03 已锁改则康盛富氧一晚，不再住洞措。`,
       hotels: [
         {
-          name: "洞措乡扶贫宾馆 / 乡镇宾馆",
-          strengths: "用于把狮泉河到班戈拆成两段；不是标准景区酒店，需电话确认床位、热水、供暖和停车。",
-          bookingUrl: "https://www.amap.com/search?query=%E6%B4%9E%E6%8E%AA%E4%B9%A1%20%E5%AE%BE%E9%A6%86",
+          name: "改则康盛富氧酒店",
+          strengths: "已锁 10.03 一晚。移动南路改则县林业局向西约 200 米，比洞措乡镇住宿稳定。",
+          bookingUrl: "https://m.ctrip.com/webapp/hotel/Gertse21289",
         },
         {
-          name: "改则县城后撤住宿",
-          strengths: "洞措订不到或道路延误时的安全退路；代价是次日改则到班戈会重新变成长途推进。",
-          bookingUrl: "https://m.ctrip.com/webapp/hotel/Gertse21289",
+          name: "洞措乡扶贫宾馆 / 乡镇宾馆",
+          strengths: "仅当改则无法入住、仍要继续东进时的电话确认退路。",
+          bookingUrl: "https://www.amap.com/search?query=%E6%B4%9E%E6%8E%AA%E4%B9%A1%20%E5%AE%BE%E9%A6%86",
         },
       ],
     },
@@ -535,19 +535,19 @@ export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
       },
     ],
     stay: {
-      city: "班戈县城",
+      city: "当雄 / 纳木措",
       budget: standardRoomBudget,
-      bookingAdvice: `${nationalDayHotelAdvice} 本晚从洞措经尼玛和色林措到班戈，订房时优先确认供氧、停车、夜间热水和晚到保留房。`,
+      bookingAdvice: `${nationalDayHotelAdvice} 10.04 已锁纳木错富氧大酒店一晚。本晚从改则经色林措赶到当雄/纳木措，班戈只做补给。`,
       hotels: [
         {
-          name: "尚客优品酒店（班戈店）",
-          strengths: "班戈县城连锁候选，页面显示可供氧、停车和供暖；订前核对国庆实际房价、供氧方式和晚到保留房。",
-          bookingUrl: "https://hotels.ctrip.com/hotels/129496888.html",
+          name: "纳木错富氧大酒店",
+          strengths: "已锁 10.04 标准三人间。当晚住纳木措方向，次日回拉萨，不再住班戈。",
+          bookingUrl: "https://hotels.ctrip.com/hotel/damxung217",
         },
         {
-          name: "班戈景禾供氧酒店",
-          strengths: "县城供氧酒店备选，适合尚客优品满房或超预算时交叉比价；必须电话确认停车和热水。",
-          bookingUrl: "https://hotels.ctrip.com/hotels/124582616.html",
+          name: "尚客优品酒店（班戈店）",
+          strengths: "仅当纳木措方向延误、无法赶到酒店时的班戈退路。",
+          bookingUrl: "https://hotels.ctrip.com/hotels/129496888.html",
         },
       ],
     },
@@ -558,10 +558,10 @@ export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
       {
         subject: "纳木措开放观景区域与返拉主线",
         status: "出发前复核",
-        leadTime: "10 月 4 日抵达班戈后核对纳木措开放、G317/G109 通行、当雄补给和拉萨酒店保留房",
+        leadTime: "10 月 4 日抵达纳木措酒店后核对次日开放、G109 通行和拉萨酒店",
         channel: "当地交警、12345、纳木措景区正规渠道、酒店前台和租车门店",
         documents: "身份证、驾驶证、车辆订单或行驶证、拉萨酒店订单",
-        note: "10 月 5 日把纳木措作为狮泉河到拉萨段第二个大景，但只在开放道路和正规观景点短停；不安排圣象天门、扎西半岛深度游或湖边支线，当雄只做补给与状态检查。班戈到拉萨约 400–450 公里，按傍晚到晚间到店预留房。",
+        note: "10 月 5 日从纳木措/当雄回拉萨，只在开放道路短停；不安排圣象天门、扎西半岛深度游。10.05–06 拉萨连住尚未出订单，优先续订柏丽艾尚。",
         sourceLabel: "西藏文旅厅 · 班戈与纳木措北部旅游资料",
         sourceUrl: "https://wlt.xizang.gov.cn/xccx/lytg/202403/t20240327_409224.html",
       },
@@ -569,16 +569,16 @@ export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
     stay: {
       city: "拉萨市区",
       budget: standardRoomBudget,
-      bookingAdvice: `${nationalDayHotelAdvice} 本晚从班戈经纳木措返拉，预计傍晚到晚间到店；必须预付保留房并电话确认 24 小时前台，优先与 10 月 6 日连住。`,
+      bookingAdvice: `${nationalDayHotelAdvice} 10.05–06 拉萨连住截图尚未出单。优先续订 09.26 住过的柏丽艾尚，并电话确认 24 小时前台。`,
       hotels: [
         {
-          name: "如家商旅酒店（拉萨堆龙经济开发区店）",
-          strengths: "靠近西侧与机场方向、免费停车，适合傍晚进城、还车和次日离藏；必须确认夜间保留房。",
-          bookingUrl: "https://hotels.ctrip.com/hotels/29597640.html",
+          name: "柏丽艾尚酒店（军区总医院慈松塘西路店）",
+          strengths: "09.26 已住过，熟悉停车和供氧；10.05–06 连住待锁，适合还车和次日离藏。",
+          bookingUrl: "https://www.bthhotels.com/hotel/PL0009",
         },
         {
           name: "拉萨新气象酒店（八廓街店）",
-          strengths: "近老城、停车评价较多；若晚间到店，订前必须电话确认院内车位、前台值守和保留房政策。",
+          strengths: "近老城；若晚间到店，订前必须电话确认院内车位、前台值守和保留房政策。",
           bookingUrl: "https://hotels.ctrip.com/hotel/113895184.html",
         },
       ],
@@ -604,13 +604,13 @@ export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
       bookingAdvice: `${nationalDayHotelAdvice} 本晚优先与 10 月 5 日同店连住，减少搬运行李，并确认次日机场接驳。`,
       hotels: [
         {
-          name: "如家商旅酒店（拉萨堆龙经济开发区店）",
-          strengths: "靠近西侧与机场方向、免费停车，适合还车和次日离藏；优先与 10 月 5 日同店连住。",
-          bookingUrl: "https://hotels.ctrip.com/hotels/29597640.html",
+          name: "柏丽艾尚酒店（军区总医院慈松塘西路店）",
+          strengths: "优先与 10 月 5 日同店连住，减少搬运行李，并确认次日机场接驳。",
+          bookingUrl: "https://www.bthhotels.com/hotel/PL0009",
         },
         {
           name: "拉萨新气象酒店（八廓街店）",
-          strengths: "若还想短暂逛老城可选，停车评价较多；必须确认车位、供氧房差价和次日机场接驳。",
+          strengths: "若还想短暂逛老城可选；必须确认车位和次日机场接驳。",
           bookingUrl: "https://hotels.ctrip.com/hotel/113895184.html",
         },
       ],
