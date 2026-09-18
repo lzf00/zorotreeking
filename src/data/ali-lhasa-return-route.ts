@@ -56,14 +56,14 @@ export const aliLhasaReturnRoutePoints: AliRoutePoint[] = [
       return {
         ...point,
         kind: "supply" as const,
-        detail: "G317 途经补给。本版不在尼玛过夜，只补油热食后继续东进纳木措。",
+        detail: "G317 途经补给。本版不在尼玛过夜，只补油热食后继续东进班戈。",
       };
     }
     if (point.id === "baingoin") {
       return {
         ...point,
-        kind: "supply" as const,
-        detail: "北线途经补给。本版 10 月 4 日继续赶到纳木错富氧，班戈只做加油热食；延误才启用尚客优品退路。",
+        kind: "overnight" as const,
+        detail: "北线 10 月 4 日过夜点。本版当晚住纳木错富氧酒店（班戈店），次日再去纳木措后回拉萨。",
       };
     }
     return { ...point };
@@ -165,34 +165,34 @@ replaceCopiedDrivingDay("10.03", {
   highlights: ["G317 长直路段", "革吉短停", "改则补给住宿"],
   supply: "狮泉河满油；革吉见站即补，改则到店后补满油和热食。",
   overnight: "改则康盛富氧酒店；已锁 10.03 一晚。不再继续赶洞措。",
-  risk: "改则过夜比洞措稳，代价是次日改则到当雄/纳木措会变成长途推进。",
+  risk: "改则过夜比洞措稳。次日只赶到班戈，把纳木措留给 10 月 5 日上午，避免再叠成 600 公里长途日。",
   decision: "主车每 90–120 分钟换人休息；天黑前必须进改则，不把洞措当天硬赶完。",
 });
 
 replaceCopiedDrivingDay("10.04", {
-  title: "改则 → 尼玛 → 色林措 → 当雄/纳木措",
-  distance: "约 580–680 km",
-  driving: "约 10–12 小时，只保留色林措一个核心停留",
+  title: "改则 → 尼玛 → 色林措 → 班戈",
+  distance: "约 450–550 km",
+  driving: "约 8–10 小时，只保留色林措一个核心停留",
   roads: "G317 及开放观景连接道路",
-  pointIds: ["gerze", "dongco", "nyima", "selin", "baingoin", "namtso", "damxung"],
-  highlights: ["尼玛补给", "色林措远观", "藏北湖群", "纳木措住宿"],
-  supply: "改则早餐后早出发，洞措只做路况观察，尼玛补油和热食，色林措只在正规开放点短停，班戈只做补给，当晚住纳木错富氧大酒店。",
-  overnight: "纳木错富氧大酒店；已锁 10.04 一晚。",
-  risk: "这是北线最长赶路日。色林措是本日唯一景观目标；湖区风大、保护区管制必须服从现场要求。延误时班戈尚客优品只作退路，不改成计划住宿。",
-  decision: "12:30 仍未到尼玛或天气变差，取消色林措停留，直接沿主线赶往当雄/纳木措酒店；不得把停留时间挪到夜驾。",
+  pointIds: ["gerze", "dongco", "nyima", "selin", "baingoin"],
+  highlights: ["尼玛补给", "色林措远观", "藏北湖群", "班戈过夜"],
+  supply: "改则早餐后早出发，洞措只做路况观察，尼玛补油和热食，色林措只在正规开放点短停，当晚住班戈。",
+  overnight: "纳木错富氧酒店（班戈店）；已锁 10.04 一晚。",
+  risk: "仍是北线较长赶路日，但比直接赶到纳木措少 150–200 公里。湖区风大、保护区管制必须服从现场要求。",
+  decision: "12:30 仍未到尼玛或天气变差，取消色林措停留，直接沿主线赶班戈；不得继续东进纳木措过夜。",
 });
 
 replaceCopiedDrivingDay("10.05", {
-  title: "纳木措 → 当雄 → 拉萨",
-  distance: "约 160–250 km",
-  driving: "约 4–6 小时；酒店出发后先看湖，再回拉萨",
-  roads: "纳木措开放道路 / G109",
-  pointIds: ["namtso", "damxung", "lhasa"],
-  highlights: ["纳木措晨看", "念青唐古拉山", "当雄补给", "10 月 5 日回到拉萨"],
-  supply: "酒店早餐后出发；纳木措只按开放道路停留，当雄补油后回拉萨，抵达后只做停车、入住和必要车辆检查。",
+  title: "班戈 → 纳木措 → 当雄 → 拉萨",
+  distance: "约 320–400 km",
+  driving: "约 6–8 小时，上午看纳木措，下午到拉萨",
+  roads: "G317 / 纳木措开放道路 / G109",
+  pointIds: ["baingoin", "namtso", "damxung", "lhasa"],
+  highlights: ["纳木措", "念青唐古拉山", "当雄补给", "10 月 5 日回到拉萨"],
+  supply: "班戈早餐后早出发；纳木措只按开放道路停留，当雄补油后回拉萨，抵达后只做停车、入住和必要车辆检查。",
   overnight: "拉萨市区。09.26 已住过柏丽艾尚，10.05–06 连住优先同一家，截图尚未出这两晚订单。",
-  risk: "纳木措不去圣象天门、扎西半岛深度游或湖边支线；国庆返程车流可能让抵达时间后移。",
-  decision: "07:30 前离开酒店。先在纳木措开放道路看湖，再经当雄回拉萨。若关闭、排队过长或 12:00 仍未离开湖区，直接经当雄回拉萨，守住当晚住宿。",
+  risk: "纳木措现在有上午窗口，但仍不去圣象天门、扎西半岛深度游或湖边支线；国庆返程车流可能让抵达时间后移。",
+  decision: "07:30 前离开班戈。若纳木措关闭、排队过长或 14:00 仍未离开湖区，直接经当雄回拉萨，守住当晚住宿。",
 });
 
 export const aliLhasaReturnRouteDays: AliRouteDay[] = [
@@ -563,24 +563,24 @@ export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
         leadTime: "出发前 24 小时向尼玛、申扎或班戈当地文旅/12345 核对开放与管制",
         channel: "未查到 2026 统一线上票务；以现场保护区和交通管理为准",
         documents: "身份证、驾驶证、车辆证件；如现场要求实名登记则配合办理",
-        note: "色林措是 10 月 4 日唯一景观目标，当晚继续赶到纳木错富氧。只使用 G317 及正规开放观景点，不进入草场、湿地和湖滩。没有可靠预约入口时，不从非官方渠道购买所谓通行名额。",
+        note: "色林措是 10 月 4 日唯一景观目标，当晚住班戈，把纳木措留给次日上午。只使用 G317 及正规开放观景点，不进入草场、湿地和湖滩。没有可靠预约入口时，不从非官方渠道购买所谓通行名额。",
         sourceLabel: "西藏自治区发改委 · 色林措景区规划资料",
         sourceUrl: "https://drc.xizang.gov.cn/zwgk_1941/fz/zxx/201806/P020200909428490530433.pdf",
       },
     ],
     stay: {
-      city: "当雄 / 纳木措",
+      city: "班戈县城",
       budget: standardRoomBudget,
-      bookingAdvice: `${nationalDayHotelAdvice} 10.04 已锁纳木错富氧大酒店一晚。本晚从改则经色林措赶到当雄/纳木措，班戈只做补给。`,
+      bookingAdvice: `${nationalDayHotelAdvice} 10.04 住班戈。已锁的纳木错富氧按班戈过夜执行，次日再去纳木措。`,
       hotels: [
         {
-          name: "纳木错富氧大酒店",
-          strengths: "已锁 10.04 标准三人间。当晚住纳木措方向，次日从酒店出发看湖后回拉萨。",
+          name: "纳木错富氧酒店（班戈店）",
+          strengths: "已锁 10.04 一晚。当晚停在班戈，拆开改则到拉萨的车程。",
           bookingUrl: "https://hotels.ctrip.com/hotel/damxung217",
         },
         {
           name: "尚客优品酒店（班戈店）",
-          strengths: "仅当纳木措方向延误、无法赶到酒店时的班戈退路。",
+          strengths: "纳木错富氧无法入住时的同城备选；订前确认供氧、停车和晚到保留。",
           bookingUrl: "https://hotels.ctrip.com/hotels/129496888.html",
         },
       ],
@@ -592,10 +592,10 @@ export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
       {
         subject: "纳木措开放观景区域与返拉主线",
         status: "出发前复核",
-        leadTime: "10 月 4 日抵达纳木措酒店后核对次日开放、G109 通行和拉萨酒店",
-        channel: "当地交警、12345、纳木措景区正规渠道、酒店前台和租车门店",
+        leadTime: "10 月 4 日抵达班戈后核对次日开放、G109 通行和拉萨酒店",
+        channel: "当地交警、12345、纳木措景区正规渠道、班戈酒店前台和租车门店",
         documents: "身份证、驾驶证、车辆订单或行驶证、拉萨酒店订单",
-        note: "10 月 5 日从纳木错富氧出发，上午在开放道路看湖，再经当雄回拉萨。不安排圣象天门、扎西半岛深度游。10.05–06 拉萨连住尚未出订单，优先续订柏丽艾尚。",
+        note: "10 月 5 日从班戈出发，上午在纳木措开放道路停留，下午经当雄回拉萨。不安排圣象天门、扎西半岛深度游。10.05–06 拉萨连住尚未出订单，优先续订柏丽艾尚。",
         sourceLabel: "西藏文旅厅 · 班戈与纳木措北部旅游资料",
         sourceUrl: "https://wlt.xizang.gov.cn/xccx/lytg/202403/t20240327_409224.html",
       },
