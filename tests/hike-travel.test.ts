@@ -201,7 +201,8 @@ test("G317 Chengdu and Lhasa-return loop are independent indexed roadbooks", asy
   assert.match(loopGuide, /G317.*改则.*纳木措/s);
   assert.match(loopGuide, /10 月 5 日晚回拉萨住宿/);
   assert.doesNotMatch(loopGuide, /阿里昆莎机场|阿里普兰机场|最晚10月5日到上海|朋友/);
-  assert.match(loopGuide, /出发前订单/);
+  assert.match(loopGuide, /10 月 4 日住班戈/);
+  assert.match(loopGuide, /纳木错富氧改成班戈尚客优品/);
   assert.match(loopGuide, /取消智行 09.28 萨嘎强吉福/);
   assert.match(loopGuide, /不去班公湖/);
   assert.match(loopGuide, /09.27 白居寺和 10.01 拉昂措/);
@@ -597,8 +598,8 @@ test("Lhasa-return loop covers Sep 26 through Oct 7 without early-flight friend 
   assert.match(aliLhasaReturnRouteDays[5]?.title ?? "", /萨嘎.*塔钦/);
   assert.match(aliLhasaReturnRouteDays[6]?.title ?? "", /塔钦.*狮泉河/);
   assert.match(aliLhasaReturnRouteDays[7]?.title ?? "", /狮泉河.*改则/);
-  assert.match(aliLhasaReturnRouteDays[8]?.title ?? "", /改则.*色林措.*纳木措/);
-  assert.match(aliLhasaReturnRouteDays[9]?.title ?? "", /纳木措.*拉萨/);
+  assert.match(aliLhasaReturnRouteDays[8]?.title ?? "", /改则.*色林措.*班戈/);
+  assert.match(aliLhasaReturnRouteDays[9]?.title ?? "", /班戈.*纳木措.*拉萨/);
   assert.match(aliLhasaReturnRouteDays[10]?.title ?? "", /拉萨.*还车/);
   assert.match(aliLhasaReturnRouteDays[11]?.title ?? "", /拉萨.*上海/);
 
@@ -658,6 +659,9 @@ test("Lhasa-return one-page sheet lists sights, distance, and hotels for every d
   assert.match(aliLhasaReturnDailyPlanning[3]?.stay.city ?? "", /定日巴松村/);
   assert.doesNotMatch(aliLhasaReturnDailyPlanning[3]?.stay.city ?? "", /顺康富氧/);
   assert.doesNotMatch(aliLhasaReturnDailyPlanning[7]?.stay.hotels[1]?.name ?? "", /洞措/);
+  assert.match(aliLhasaReturnDailyPlanning[8]?.stay.city ?? "", /班戈/);
+  assert.match(aliLhasaReturnDailyPlanning[8]?.stay.hotels[0]?.name ?? "", /班戈/);
+  assert.doesNotMatch(aliLhasaReturnDailyPlanning[8]?.stay.hotels[0]?.name ?? "", /纳木错富氧/);
   assert.match(aliLhasaReturnDailyPlanning[9]?.stay.city ?? "", /拉萨/);
 });
 
