@@ -458,9 +458,9 @@ def main() -> None:
         else:
             cd.text((36, 28), "全线总览  12 天闭环", font=font_day, fill=(36, 28, 22, 255))
             cd.text((36, 78), "拉萨 → 日喀则 → 定日/珠峰过夜 → 萨嘎 → 塔钦", font=font_body, fill=(36, 28, 22, 255))
-            cd.text((36, 116), "土林穿行 → 狮泉河 → 洞措 → 色林措 → 班戈 → 纳木措 → 拉萨", font=font_small, fill=(92, 78, 64, 255))
+            cd.text((36, 116), "土林穿行 → 狮泉河 → 改则 → 色林措 → 纳木措 → 拉萨", font=font_small, fill=(92, 78, 64, 255))
             cd.text((36, 158), "10.05 回拉萨住宿  ·  10.06 还车缓冲  ·  10.07 飞上海", font=font_small, fill=(92, 78, 64, 255))
-            cd.text((36, 200), "札达不过夜  ·  不去吉隆  ·  吉山吉舍看珠峰日落星空", font=font_small, fill=(166, 84, 32, 255))
+            cd.text((36, 200), "札达不过夜  ·  不去吉隆  ·  巴松顺康看珠峰日落星空", font=font_small, fill=(166, 84, 32, 255))
         shadow = Image.new("RGBA", (W, 18), (0, 0, 0, 0))
         sd = ImageDraw.Draw(shadow)
         sd.rectangle((0, 0, W, 18), fill=(0, 0, 0, 40))

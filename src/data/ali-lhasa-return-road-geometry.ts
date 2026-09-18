@@ -9,24 +9,21 @@ const remapDays = (day: number): number[] => {
   if (day === 6) return [6];
   if (day === 7 || day === 8) return [7];
   if (day === 9) return [8];
-  if (day === 10) return [8, 9];
-  if (day === 11) return [9];
-  if (day === 12) return [10];
+  if (day === 10 || day === 11) return [9];
+  if (day === 12) return [9, 10];
   return [];
 };
 
 const everestScenicSplitIndex = 55;
-const dongcoSplitIndex = 14;
+const namtsoSplitIndex = 50;
 const everestEntryGeometry = aliRoutedDayGeometry[5]!.slice(0, everestScenicSplitIndex + 1);
 const everestToSagaGeometry = aliRoutedDayGeometry[5]!.slice(everestScenicSplitIndex);
-const shiquanheToDongcoGeometry = [
-  ...aliRoutedDayGeometry[9]!,
-  ...aliRoutedDayGeometry[10]!.slice(1, dongcoSplitIndex + 1),
-];
-const dongcoToBaingoinGeometry = [
-  ...aliRoutedDayGeometry[10]!.slice(dongcoSplitIndex),
+const gerzeToNamtsoGeometry = [
+  ...aliRoutedDayGeometry[10]!,
   ...aliRoutedDayGeometry[11]!.slice(1),
+  ...aliRoutedDayGeometry[12]!.slice(1, namtsoSplitIndex + 1),
 ];
+const namtsoToLhasaGeometry = aliRoutedDayGeometry[12]!.slice(namtsoSplitIndex);
 
 export const aliLhasaReturnRoadLabels: AliRoadLabel[] = [
   ...aliRoadLabels.map((road) => {
@@ -59,9 +56,9 @@ export const aliLhasaReturnRoutedDayGeometry: Record<number, [number, number][]>
     ...aliRoutedDayGeometry[7]!,
     ...aliRoutedDayGeometry[8]!.slice(1),
   ],
-  8: shiquanheToDongcoGeometry,
-  9: dongcoToBaingoinGeometry,
-  10: aliRoutedDayGeometry[12]!,
+  8: aliRoutedDayGeometry[9]!,
+  9: gerzeToNamtsoGeometry,
+  10: namtsoToLhasaGeometry,
   11: [
     [29.652, 91.1721],
     [29.645, 91.12],
