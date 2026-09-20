@@ -656,6 +656,8 @@ test("Lhasa-return one-page sheet lists sights, distance, and hotels for every d
   assert.match(aliLhasaReturnRouteDays[5]?.highlights.join(" ") ?? "", /拉昂措/);
   assert.match(aliLhasaReturnRouteDays[6]?.decision ?? "", /班公湖/);
   assert.match(aliLhasaReturnDailyPlanning[3]?.stay.hotels[0]?.name ?? "", /顺康富氧/);
+  assert.match(aliLhasaReturnDailyPlanning[5]?.stay.hotels[0]?.name ?? "", /云端盛景/);
+  assert.match(aliLhasaReturnRouteDays[5]?.overnight ?? "", /云端盛景/);
   assert.match(aliLhasaReturnDailyPlanning[3]?.stay.city ?? "", /定日巴松村/);
   assert.doesNotMatch(aliLhasaReturnDailyPlanning[3]?.stay.city ?? "", /顺康富氧/);
   assert.doesNotMatch(aliLhasaReturnDailyPlanning[7]?.stay.hotels[1]?.name ?? "", /洞措/);

@@ -136,7 +136,7 @@ replaceCopiedDrivingDay("10.01", {
   pointIds: ["saga", "king-peak", "zhongba", "paryang", "manasarovar", "darchen"],
   highlights: ["国王峰远观", "仲巴沙丘河谷", "玛旁雍措", "拉昂措短停", "冈仁波齐日落"],
   supply: "萨嘎满油早出发，仲巴必须补油，帕羊二次热食；塔钦到店后补齐次日札达段水粮。",
-  overnight: "普兰塔尔庆大酒店；订单目前是 09.29–10.01，执行本路书需改成 10.01 入住。",
+  overnight: "塔钦云端盛景酒店；已锁 10.01 一晚。去哪儿塔尔庆 09.29–10.01 仍要取消。",
   risk: "这是前段保留神山圣湖时间后的长途日；只在正规观景点短停，不驶离 G219 追湖岸机位。",
   decision:
     "准时可在玛旁雍措后再停拉昂措。若到帕羊已明显晚于计划，取消拉昂措并缩短玛旁雍措停留，仍保留塔钦住宿；不得夜间绕湖。",
@@ -391,7 +391,7 @@ export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
     stay: {
       city: "定日巴松村",
       budget: standardRoomBudget,
-      bookingAdvice: `${nationalDayHotelAdvice} 09.29 已锁顺康富氧一晚（巴松村）。去哪儿上的普兰塔尔庆 09.29–10.01 与本晚撞期，执行珠峰过夜则改期或取消塔尔庆。`,
+      bookingAdvice: `${nationalDayHotelAdvice} 09.29 已锁顺康富氧一晚（巴松村）。去哪儿塔尔庆 09.29–10.01 与本晚撞期，执行珠峰过夜则取消；10.01 已改住塔钦云端盛景。`,
       hotels: [
         {
           name: "顺康富氧酒店（定日扎西宗乡巴松村）",
@@ -455,17 +455,17 @@ export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
     stay: {
       city: "塔钦（巴嘎镇）",
       budget: standardRoomBudget,
-      bookingAdvice: `${nationalDayHotelAdvice} 去哪儿已锁普兰塔尔庆，但日期是 09.29–10.01，与珠峰/萨嘎撞期。执行本路书需改成 10.01 入住、10.02 离店。`,
+      bookingAdvice: `${nationalDayHotelAdvice} 10.01 已锁塔钦云端盛景一晚。去哪儿塔尔庆 09.29–10.01 与顺康、萨嘎撞期，取消即可，不必再改期。`,
       hotels: [
         {
-          name: "普兰塔尔庆大酒店",
-          strengths: "已锁订单，当前是 09.29–10.01 两晚普通标间。改期到 10.01 后作为塔钦过夜首选。",
-          bookingUrl: "https://m.ctrip.com/webapp/hotel/pulan21774",
+          name: "塔钦云端盛景酒店",
+          strengths: "已锁 10.01 一晚。OTA 名神山云端盛景酒店，巴嘎乡湘醴大饭店南 50 米，距塔钦小镇约 800 米，有停车和供氧。",
+          bookingUrl: "https://hotels.ctrip.com/hotels/122756916.html",
         },
         {
           name: "天马国际富氧酒店（塔钦冈仁波齐风景区店）",
-          strengths: "塔尔庆改期失败时的供氧备选；订前确认停车、地暖和供氧时段。",
-          bookingUrl: "https://m.ctrip.com/webapp/hotel/ali97",
+          strengths: "云端盛景到店异常时的供氧备选；订前确认停车、地暖和供氧时段。",
+          bookingUrl: "https://hotels.ctrip.com/hotels/134306415.html",
         },
       ],
     },
