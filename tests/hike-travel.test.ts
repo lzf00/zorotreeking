@@ -21,6 +21,7 @@ import {
   aliLhasaReturnRoutedDayGeometry,
 } from "../src/data/ali-lhasa-return-road-geometry";
 import * as aliLhasaReturnData from "../src/data/ali-lhasa-return-route";
+import { aliLhasaReturnWeatherByDate } from "../src/data/ali-lhasa-return-weather";
 import {
   aliPermitBypassRoadLabels,
   aliPermitBypassRoutedDayGeometry,
@@ -638,7 +639,9 @@ test("Lhasa-return one-page sheet lists sights, distance, and hotels for every d
   );
   assert.match(sheet, /id="loop-sheet"/);
   assert.match(sheet, /12 天总路书/);
+  assert.match(sheet, /天气/);
   assert.match(sheet, /data-print-sheet/);
+  assert.match(sheet, /getAliLhasaReturnWeather/);
 
   assert.equal(aliLhasaReturnRouteDays.length, aliLhasaReturnDailyPlanning.length);
   for (const day of aliLhasaReturnRouteDays) {
@@ -646,6 +649,10 @@ test("Lhasa-return one-page sheet lists sights, distance, and hotels for every d
     assert.ok(planning, `D${day.day} needs a stay plan for the one-page sheet`);
     assert.ok(day.highlights.length > 0, `D${day.day} needs sights`);
     assert.match(day.distance, /\d/);
+    const weather = aliLhasaReturnWeatherByDate[day.date];
+    assert.ok(weather, `D${day.day} ${day.date} needs overnight weather`);
+    assert.ok(weather.summary.length > 0);
+    assert.match(weather.range, /°C/);
     if (planning.stay.noHotelNeeded) {
       assert.equal(planning.stay.hotels.length, 0);
     } else {
@@ -665,6 +672,11 @@ test("Lhasa-return one-page sheet lists sights, distance, and hotels for every d
   assert.match(aliLhasaReturnDailyPlanning[3]?.stay.city ?? "", /定日巴松村/);
   assert.doesNotMatch(aliLhasaReturnDailyPlanning[3]?.stay.city ?? "", /顺康富氧/);
   assert.doesNotMatch(aliLhasaReturnDailyPlanning[7]?.stay.hotels[1]?.name ?? "", /洞措/);
+  assert.match(aliLhasaReturnWeatherByDate["09.29"]?.summary ?? "", /阵雪/);
+  assert.match(aliLhasaReturnWeatherByDate["10.01"]?.range ?? "", /-/);
+  assert.match(aliLhasaReturnWeatherByDate["10.05"]?.summary ?? "", /纳木措/);
+  assert.equal(aliLhasaReturnWeatherByDate["10.06"]?.kind, "trend");
+  assert.equal(aliLhasaReturnWeatherByDate["10.07"]?.kind, "trend");
   assert.match(aliLhasaReturnDailyPlanning[8]?.stay.city ?? "", /班戈/);
   assert.match(aliLhasaReturnDailyPlanning[8]?.stay.hotels[0]?.name ?? "", /纳木错富氧/);
   assert.match(aliLhasaReturnRouteDays[8]?.overnight ?? "", /纳木错富氧/);

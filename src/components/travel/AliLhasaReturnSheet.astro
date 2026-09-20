@@ -3,6 +3,10 @@ import {
   aliLhasaReturnDailyPlanning,
   aliLhasaReturnRouteDays,
 } from "../../data/ali-lhasa-return-route";
+import {
+  aliLhasaReturnWeatherReviewedAt,
+  getAliLhasaReturnWeather,
+} from "../../data/ali-lhasa-return-weather";
 import type { AliRouteDailyPlanning, AliRouteDay } from "../../data/ali-route";
 
 interface Props {
@@ -20,10 +24,10 @@ const {
   days = aliLhasaReturnRouteDays,
   planning = aliLhasaReturnDailyPlanning,
   kicker = "01A / One-page roadbook",
-  heading = "12 天总路书，<br />一页看完景点、车程和酒店。",
-  lead = "这张表只写每天必看的点、估算距离和当晚首选/备选酒店。下面的地图和逐日清单有预约、风险和退出条件；出门前把这一页打出来即可。",
+  heading = "12 天总路书，<br />一页看完景点、车程、天气和酒店。",
+  lead = "这张表只写每天必看的点、估算距离、过夜点天气和当晚首选/备选酒店。天气按过夜城取值，山口和湖区会再低几度。下面的地图和逐日清单有预约、风险和退出条件；出门前把这一页打出来即可。",
   sheetTitle = "拉萨取还 · 12 日执行表",
-  sheetMeta = "09.26–10.07 · 珠峰过夜 · 10.05 回拉萨",
+  sheetMeta = `09.26–10.07 · 珠峰过夜 · 10.05 回拉萨 · 天气 ${aliLhasaReturnWeatherReviewedAt.slice(5).replace("-", ".")}`,
   accentDays = [4, 10],
 } = Astro.props;
 
@@ -45,6 +49,7 @@ const rows = days.map((day) => {
   } else if (primaryHotel) {
     hotelLine = shortenHotel(primaryHotel);
   }
+  const weather = getAliLhasaReturnWeather(day.date);
   return {
     day: day.day,
     date: day.date,
@@ -53,6 +58,10 @@ const rows = days.map((day) => {
     sights: day.highlights.join(" · "),
     distance: day.distance,
     driving: day.driving,
+    weatherSummary: weather?.summary ?? "出发前再核",
+    weatherRange: weather?.range ?? "",
+    weatherNote: weather?.note,
+    weatherKind: weather?.kind ?? "trend",
     city: stay?.city ?? day.overnight,
     hotelLine,
     accent: accentDaySet.has(day.day),
@@ -90,6 +99,7 @@ const rows = days.map((day) => {
             <th>路线</th>
             <th>景点</th>
             <th>距离</th>
+            <th>天气</th>
             <th>酒店</th>
           </tr>
         </thead>
@@ -109,6 +119,14 @@ const rows = days.map((day) => {
                 <strong>{row.distance}</strong>
                 <small>{row.driving}</small>
               </td>
+              <td class={row.weatherKind === "trend" ? "rd-sheet-weather rd-sheet-weather--trend" : "rd-sheet-weather"}>
+                <strong>{row.weatherSummary}</strong>
+                <small>
+                  {row.weatherRange}
+                  {row.weatherNote ? ` · ${row.weatherNote}` : ""}
+                  {row.weatherKind === "trend" ? " · 趋势" : ""}
+                </small>
+              </td>
               <td>
                 <strong>{row.city}</strong>
                 <small>{row.hotelLine}</small>
@@ -117,6 +135,9 @@ const rows = days.map((day) => {
           ))}
         </tbody>
       </table>
+      <p class="rd-sheet-weather-note">
+        天气按过夜点，{aliLhasaReturnWeatherReviewedAt.replaceAll("-", ".")} 取 Open-Meteo ECMWF，有效到 10.05。09.29 巴松和 10.05 纳木措以现场为准；10.06–07 超出预报窗口，只写趋势。出发前再核中国天气网。
+      </p>
     </div>
   </div>
 </section>
@@ -174,8 +195,20 @@ const rows = days.map((day) => {
   }
   .rd-sheet-table {
     width: 100%;
-    min-width: 860px;
+    min-width: 980px;
     border-collapse: collapse;
+  }
+  .rd-sheet-weather {
+    width: 148px;
+  }
+  .rd-sheet-weather--trend strong {
+    color: var(--rd-muted);
+  }
+  .rd-sheet-weather-note {
+    margin: 0;
+    padding: 10px 18px 14px;
+    color: var(--rd-muted);
+    font: .68rem/1.5 var(--rd-mono);
   }
   .rd-sheet-table th,
   .rd-sheet-table td {
