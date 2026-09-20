@@ -207,6 +207,9 @@ test("G317 Chengdu and Lhasa-return loop are independent indexed roadbooks", asy
   assert.match(loopGuide, /不去班公湖/);
   assert.match(loopGuide, /09.27 白居寺和 10.01 拉昂措/);
   assert.match(loopGuide, /狮泉河只做补给/);
+  assert.match(loopGuide, /#loop-pack/);
+  assert.match(loopGuide, /润唇膏至少 2 支/);
+  assert.match(loopGuide, /冲锋衣 1 件/);
   assert.match(loopGuide, /绕证方案/);
   assert.match(loopGuide, /可进入定日和珠峰/);
   assert.match(loopGuide, /ali-grand-loop-ali-permit-2026/);
