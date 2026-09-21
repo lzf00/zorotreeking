@@ -652,7 +652,11 @@ test("Lhasa-return one-page sheet lists sights, distance, and hotels for every d
     const weather = aliLhasaReturnWeatherByDate[day.date];
     assert.ok(weather, `D${day.day} ${day.date} needs overnight weather`);
     assert.ok(weather.summary.length > 0);
-    assert.match(weather.range, /°C/);
+    assert.match(weather.range, /白天.*°C/);
+    assert.ok(weather.dayHighC >= weather.nightLowC);
+    if (day.date !== "09.29") {
+      assert.ok(weather.dayHighC >= 6, `D${day.day} daytime ${weather.dayHighC} looks like a night low`);
+    }
     if (planning.stay.noHotelNeeded) {
       assert.equal(planning.stay.hotels.length, 0);
     } else {
@@ -672,10 +676,10 @@ test("Lhasa-return one-page sheet lists sights, distance, and hotels for every d
   assert.match(aliLhasaReturnDailyPlanning[3]?.stay.city ?? "", /定日巴松村/);
   assert.doesNotMatch(aliLhasaReturnDailyPlanning[3]?.stay.city ?? "", /顺康富氧/);
   assert.doesNotMatch(aliLhasaReturnDailyPlanning[7]?.stay.hotels[1]?.name ?? "", /洞措/);
-  assert.match(aliLhasaReturnWeatherByDate["09.29"]?.summary ?? "", /阵雪/);
-  assert.match(aliLhasaReturnWeatherByDate["10.01"]?.range ?? "", /-/);
-  assert.match(aliLhasaReturnWeatherByDate["10.05"]?.summary ?? "", /纳木措/);
-  assert.equal(aliLhasaReturnWeatherByDate["10.06"]?.kind, "trend");
+  assert.equal(aliLhasaReturnWeatherByDate["09.29"]?.dayHighC, 8);
+  assert.equal(aliLhasaReturnWeatherByDate["10.01"]?.dayHighC, 6);
+  assert.match(aliLhasaReturnWeatherByDate["10.05"]?.note ?? "", /纳木措/);
+  assert.equal(aliLhasaReturnWeatherByDate["10.06"]?.kind, "forecast");
   assert.equal(aliLhasaReturnWeatherByDate["10.07"]?.kind, "trend");
   assert.match(aliLhasaReturnDailyPlanning[8]?.stay.city ?? "", /班戈/);
   assert.match(aliLhasaReturnDailyPlanning[8]?.stay.hotels[0]?.name ?? "", /纳木错富氧/);

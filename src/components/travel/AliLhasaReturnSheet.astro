@@ -25,7 +25,7 @@ const {
   planning = aliLhasaReturnDailyPlanning,
   kicker = "01A / One-page roadbook",
   heading = "12 天总路书，<br />一页看完景点、车程、天气和酒店。",
-  lead = "这张表只写每天必看的点、估算距离、过夜点天气和当晚首选/备选酒店。天气按过夜城取值，山口和湖区会再低几度。下面的地图和逐日清单有预约、风险和退出条件；出门前把这一页打出来即可。",
+  lead = "这张表只写每天必看的点、估算距离、白天最高温、夜间最低温和当晚首选/备选酒店。开车看白天那一行；羽绒主要留给早出和夜里。山口、景区会比县城再低几度。下面的地图和逐日清单有预约、风险和退出条件；出门前把这一页打出来即可。",
   sheetTitle = "拉萨取还 · 12 日执行表",
   sheetMeta = `09.26–10.07 · 珠峰过夜 · 10.05 回拉萨 · 天气 ${aliLhasaReturnWeatherReviewedAt.slice(5).replace("-", ".")}`,
   accentDays = [4, 10],
@@ -120,9 +120,9 @@ const rows = days.map((day) => {
                 <small>{row.driving}</small>
               </td>
               <td class={row.weatherKind === "trend" ? "rd-sheet-weather rd-sheet-weather--trend" : "rd-sheet-weather"}>
-                <strong>{row.weatherSummary}</strong>
+                <strong>{row.weatherRange}</strong>
                 <small>
-                  {row.weatherRange}
+                  {row.weatherSummary}
                   {row.weatherNote ? ` · ${row.weatherNote}` : ""}
                   {row.weatherKind === "trend" ? " · 趋势" : ""}
                 </small>
@@ -136,7 +136,7 @@ const rows = days.map((day) => {
         </tbody>
       </table>
       <p class="rd-sheet-weather-note">
-        天气按过夜点，{aliLhasaReturnWeatherReviewedAt.replaceAll("-", ".")} 取 Open-Meteo ECMWF，有效到 10.05。09.29 巴松和 10.05 纳木措以现场为准；10.06–07 超出预报窗口，只写趋势。出发前再核中国天气网。
+        表内先写白天最高温。{aliLhasaReturnWeatherReviewedAt.replaceAll("-", ".")} 取值：09.26–09.27 用中国天气网县城预报，更远日子用 Open-Meteo GFS。09.29 巴松、10.05 纳木措比县城冷、风更大。10.07 超出窗口，只写趋势。出发前再核中国天气网。
       </p>
     </div>
   </div>

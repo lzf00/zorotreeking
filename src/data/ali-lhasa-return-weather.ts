@@ -2,89 +2,46 @@ export type AliLhasaReturnWeatherKind = "forecast" | "trend";
 
 export interface AliLhasaReturnWeatherDay {
   summary: string;
+  dayHighC: number;
+  nightLowC: number;
   range: string;
   note?: string;
   kind: AliLhasaReturnWeatherKind;
 }
 
-/** 2026-09-20 取值。中国天气网县级预报当时只出到 09.26；行程日用 Open-Meteo ECMWF。 */
-export const aliLhasaReturnWeatherReviewedAt = "2026-09-20";
-export const aliLhasaReturnWeatherCutoff = "2026-10-05";
-export const aliLhasaReturnWeatherSource = "Open-Meteo ECMWF";
+function day(summary: string, dayHighC: number, nightLowC: number, note: string, kind: AliLhasaReturnWeatherKind = "forecast"): AliLhasaReturnWeatherDay {
+  return {
+    summary,
+    dayHighC,
+    nightLowC,
+    range: `白天${dayHighC}°C`,
+    note: `夜${nightLowC}°C · ${note}`,
+    kind,
+  };
+}
+
+/**
+ * 2026-09-21 取值。
+ * 县城白天以中国天气网 09.26–09.27 为准；更远的日子用 Open-Meteo GFS 日最高。
+ * 上一版用 ECMWF 日最低～日最高，把夜里的温度写成了白天。
+ */
+export const aliLhasaReturnWeatherReviewedAt = "2026-09-21";
+export const aliLhasaReturnWeatherCutoff = "2026-10-06";
+export const aliLhasaReturnWeatherSource = "中国天气网 + Open-Meteo GFS";
 
 export const aliLhasaReturnWeatherByDate: Record<string, AliLhasaReturnWeatherDay> = {
-  "09.26": {
-    summary: "阴转小雨",
-    range: "9~16°C",
-    note: "拉萨市区",
-    kind: "forecast",
-  },
-  "09.27": {
-    summary: "阴",
-    range: "8~18°C",
-    note: "卡若拉更冷、阵风约45",
-    kind: "forecast",
-  },
-  "09.28": {
-    summary: "阴",
-    range: "4~11°C",
-    note: "白坝过夜",
-    kind: "forecast",
-  },
-  "09.29": {
-    summary: "阵雪",
-    range: "-8~5°C",
-    note: "巴松积雪、能见度差",
-    kind: "forecast",
-  },
-  "09.30": {
-    summary: "阴",
-    range: "-4~7°C",
-    note: "萨嘎县城",
-    kind: "forecast",
-  },
-  "10.01": {
-    summary: "多云",
-    range: "-10~-2°C",
-    note: "塔钦很冷",
-    kind: "forecast",
-  },
-  "10.02": {
-    summary: "阴到小雪",
-    range: "-4~10°C",
-    note: "狮泉河过夜",
-    kind: "forecast",
-  },
-  "10.03": {
-    summary: "晴间多云",
-    range: "-8~8°C",
-    note: "改则县城",
-    kind: "forecast",
-  },
-  "10.04": {
-    summary: "阴",
-    range: "-4~6°C",
-    note: "班戈风大",
-    kind: "forecast",
-  },
-  "10.05": {
-    summary: "纳木措阵雪",
-    range: "0~13°C",
-    note: "阵风约50 · 拉萨晚 5~19",
-    kind: "forecast",
-  },
-  "10.06": {
-    summary: "多云",
-    range: "5~19°C",
-    note: "拉萨趋势，出发前再核",
-    kind: "trend",
-  },
-  "10.07": {
-    summary: "阴有雨",
-    range: "20~24°C",
-    note: "上海趋势",
-    kind: "trend",
-  },
+  "09.26": day("阴", 20, 10, "拉萨市区"),
+  "09.27": day("阴", 18, 4, "日喀则；卡若拉更冷"),
+  "09.28": day("小雨", 13, 3, "定日白坝"),
+  "09.29": day("阴", 8, -4, "巴松景区，比定日县城冷"),
+  "09.30": day("阴", 10, 0, "萨嘎县城"),
+  "10.01": day("多云", 6, 0, "塔钦；羽绒留给早出晚归"),
+  "10.02": day("多云", 12, 2, "狮泉河"),
+  "10.03": day("晴", 12, 4, "改则县城"),
+  "10.04": day("多云", 14, 4, "班戈；湖区风大"),
+  "10.05": day("多云", 13, 5, "纳木措白天；拉萨晚约20"),
+  "10.06": day("晴", 21, 9, "拉萨还车日"),
+  "10.07": day("阴", 22, 20, "上海趋势", "trend"),
 };
 
 export function getAliLhasaReturnWeather(date: string): AliLhasaReturnWeatherDay | undefined {
