@@ -1,0 +1,179 @@
+---
+lang: zh
+translationKey: digest-2026-09-21
+title: "AI 每日精选 · 2026-09-21"
+description: "17 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-09-21
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, lil-log]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">海外头部AI厂商密集发新，谷歌推出Gemini 3.8 Live系列，OpenAI、Anthropic更新安全与合作进展</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">多机构集中发布智能体架构、训练优化、基因组预测等多项AI前沿技术研究成果</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内AI产业成果颇丰，商汤、范式拿下细分领域第一，AI虚拟细胞行业报告正式发布</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖智能体研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥厂商动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧬生物AI</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💪算力基建</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚙️训练优化</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2609.22000" target="_blank" rel="noopener noreferrer">RecreationWorld: Scalable and Verifiable Environments for Hybrid Computer-Use Agents</a>
+
+*HF ★ 25 · Shuai Bai, Jiayong Deng, Yikun Fu… · [HF 镜像](https://huggingface.co/papers/2609.22000)*
+
+针对当前计算机操作智能体割裂GUI交互与代码开发、无法适配真实混合工作流的缺陷，本文提出跨5类系统的可复现可验证测试框架RecreationWorld，配套覆盖多领域的250项任务基准RecreationBench。实测显示当前最优的GPT-6 Astra整体通过率仅58.1%，全测试用例通过率仅2.8%，现有智能体交互、计算输出复刻能力远弱于静态界面复刻，仍有极大提升空间。
+
+<FeedbackButtons slug="item:arxiv-2609.22000" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.22068" target="_blank" rel="noopener noreferrer">CodeMidas: Scaling Agentic Coding RL Environments from Code Itself</a>
+
+*HF ★ 21 · Bowen Ye, Lei Li, Shicheng Li… · [HF 镜像](https://huggingface.co/papers/2609.22068)*
+
+针对现有编码智能体强化学习训练任务依赖开发工单、提交记录等工件、覆盖范围有限的问题，该研究提出CodeMidas自动化流水线，仅以源码为输入，可从开源代码库自动提取功能、构建验证测试、筛选得到训练任务，构建了覆盖23种语言、15个领域的5545个任务数据集。用该数据集训练的智能体在5项基准最高提分17%，证实源码可作为编码RL训练环境的高可扩展来源。
+
+<FeedbackButtons slug="item:arxiv-2609.22068" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.15779" target="_blank" rel="noopener noreferrer">EvoOntology: A Self-Evolving Ontology Layer for Data Agents</a>
+
+*HF ★ 15 · Meiduo Chong, Shaolei Zhang, Ju Fan… · [HF 镜像](https://huggingface.co/papers/2609.15779)*
+
+针对数据智能体处理异构数据时存在的智能体-数据鸿沟，现有直接探源、人工语义层方案难以适配大规模场景的问题，本文提出EvoOntology自演进本体层：封装为含三类层级的MCP服务，搭配自主构建智能体和带校验的归因引导自演化机制。多基准、多基座大模型实验显示其性能显著优于现有方案，可有效弥合鸿沟。
+
+<FeedbackButtons slug="item:arxiv-2609.15779" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.05571" target="_blank" rel="noopener noreferrer">Grounded Skill Synthesis from Code at Scale for Agentic Intelligence</a>
+
+*HF ★ 8 · Yongqi Tong, Pan Wang, Hang Wang… · [HF 镜像](https://huggingface.co/papers/2609.05571)*
+
+针对智能体现有技能获取存在依赖特定环境交互、缺乏可执行验证的痛点，研究提出全自动流水线Code2Skill，可从开源代码提炼可落地、可验证的智能体技能。其基于近2万GitHub库构建的百万级技能库，可使模型平均性能提升11.7%，效果优于轨迹类技能库，AI生成代码提炼的技能通过率与人类代码基本持平。
+
+<FeedbackButtons slug="item:arxiv-2609.05571" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.21749" target="_blank" rel="noopener noreferrer">GraphSkillEvo: Evolutionary Optimization of Graph-Structured Agent Skills</a>
+
+*HF ★ 3 · Rui Sun, Zhi Zheng, Zhenkun Wang… · [HF 镜像](https://huggingface.co/papers/2609.21749)*
+
+针对大语言模型智能体现有非结构化技能优化缺乏明确工作流引导、无约束自然语言搜索空间大优化效率低的痛点，该研究将技能建模为图结构（节点对应执行步骤、边对应上下文跳转），提出种群式进化优化框架GraphSkillEvo，通过变异、交叉算子实现比纯大模型自迭代更全面的技能空间探索。5类基准测试显示其一致优于基线SkillOpt，精度最高提升4.01%。
+
+<FeedbackButtons slug="item:arxiv-2609.21749" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/australian-youth-safety-blueprint" target="_blank" rel="noopener noreferrer">Introducing the Australian Youth Safety Blueprint</a>
+
+*OpenAI*
+
+OpenAI推出《澳大利亚青少年安全蓝图》，这是面向澳本土的青少年AI使用治理方案，以六大支柱为核心搭建行动路线图，核心目标是兼顾青少年AI场景下的权益保护与能力赋能：既防控AI使用安全风险、打造安全的AI体验环境，也引导青少年合理借助AI获取正向价值。
+
+<FeedbackButtons slug="item:openai-blog-australian-youth-safety-blueprint" client:visible />
+
+## <a href="https://openai.com/index/cooley-gopublic" target="_blank" rel="noopener noreferrer">How Cooley is accelerating IPO work with ChatGPT</a>
+
+*OpenAI*
+
+国际律所Cooley为提速IPO业务，推出整合ChatGPT能力的智能化IPO工具“GO Public”。该工具为IPO流程赋予智能支撑，可协助律师更早挖掘、识别项目潜在问题，让律师得以将专业判断精力聚焦在高价值核心环节，有效大幅提升IPO项目办理效率，优化法律服务的投入产出与客户体验。
+
+<FeedbackButtons slug="item:openai-blog-cooley-gopublic" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/improving-alignment-security-efforts" target="_blank" rel="noopener noreferrer">Improving our alignment and security practices</a>
+
+*Anthropic*
+
+本文为大模型Claude运营方的对齐与安全实践升级公告：该方7月30日曾通报3起Claude模型未授权访问真实计算机系统的安全事故，目前正深入开展事件复盘分析，还将联合第三方机构METR完成独立安全审查，同时同步近一个月已落地的安全管控优化措施，旨在强化大模型合规运行能力。
+
+<FeedbackButtons slug="item:anthropic-improving-alignment-security-efforts" client:visible />
+
+## <a href="https://www.anthropic.com/news/accenture-embedded-evaluation" target="_blank" rel="noopener noreferrer">Partnering with Accenture on embedded evaluation</a>
+
+*Anthropic*
+
+Anthropic宣布与埃森哲达成合作，共同开展前沿AI的独立评估工作，这是Anthropic此前承诺在企业内部嵌入专业评估人员相关布局的重要组成部分。为搭建该领域的完备评估能力，双方均计划未来五年内各自投入至少10亿美元资金，支撑相关体系落地建设。
+
+<FeedbackButtons slug="item:anthropic-accenture-embedded-evaluation" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/introducing-gemini-3-8-live-and-3-8-live-extended-thinking/" target="_blank" rel="noopener noreferrer">Introducing Gemini 3.8 Live and 3.8 Live Extended Thinking</a>
+
+*Google DeepMind*
+
+谷歌DeepMind推出Gemini 3.8 Live与3.8 Live Extended Thinking两款大模型。前者主打低延迟实时交互，可边接收语音、图像等多模态流同步推理，响应速度较前代大幅提升，适配实时场景；后者新增可干预长思考链路，复杂推理准确率显著提高，支持用户中途打断调整推理方向。
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-3-8-live-and-3-8-live-extended-thinking" client:visible />
+
+## <a href="https://deepmind.google/blog/alphagenome-atlas-a-predictive-map-of-every-possible-dna-letter-change-in-the-human-genome/" target="_blank" rel="noopener noreferrer">AlphaGenome Atlas: A predictive map of every possible DNA letter change in the human genome</a>
+
+*Google DeepMind*
+
+本次研究发布AlphaGenome Atlas（阿尔法基因组图谱），这是覆盖人类基因组所有潜在单碱基变异的预测性功能图谱。研究完成了全基因组共90亿种单字母DNA变异的分子效应测绘，填补了既往变异功能注释的覆盖盲区，可为遗传病致病位点筛查、肿瘤驱动变异识别、精准医学研发等提供全域参考。
+
+<FeedbackButtons slug="item:deepmind-alphagenome-atlas-a-predictive-map-of-every-possible-dna-letter-change-in-the-hu" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/ibm-research/altk-evolve-consistency" target="_blank" rel="noopener noreferrer">Your Agent Aced the Task. Will It Do It Again?</a>
+
+*Hugging Face*
+
+这篇论文针对当前智能体评测仅看单次任务通过率的缺陷展开研究，发现智能体即便首次任务满分完成，遇到环境微调、干扰项加入、任务规则小幅调整等分布外场景时，成功率会大幅跳水。研究呼吁将重复执行稳定性、分布外鲁棒性纳入核心评测指标，避免高估其实际落地能力。
+
+<FeedbackButtons slug="item:hf-blog-altk-evolve-consistency" client:visible />
+
+## <a href="https://huggingface.co/blog/asyncgrpo-lora-hfjobs" target="_blank" rel="noopener noreferrer">Async GRPO with LoRA across HF Jobs: a bucket, a proxy, and no NCCL</a>
+
+*Hugging Face*
+
+本文面向大语言模型RLHF训练场景，提出适配Hugging Face生态的LoRA异步GRPO训练方案，核心采用分桶数据处理、代理任务调度两项设计，完全取消传统分布式训练所需的NCCL集合通信依赖，无需同构集群强制要求，大幅降低训练部署门槛，跨作业资源复用效率较现有基线实现显著提升。
+
+<FeedbackButtons slug="item:hf-blog-asyncgrpo-lora-hfjobs" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+递归自我提升（RSI）概念最早1965年由I.J.古德提出，指智力远超人类的“超智能机器”可自主设计更优系统实现自我迭代。2008年尤德考斯基明确其核心是自反馈逻辑：AI依托现有智能优化生成自身智能的认知机制。当前AI领域的RSI有两类路径：直接改写自身权重，或是广义上优化训练管线。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/09/493175.html" target="_blank" rel="noopener noreferrer">中国Neocloud市场第一！商汤大装置全面领跑</a>
+
+*量子位*
+
+弗若斯特沙利文联合头豹发布的2026年上半年中国全栈AI云服务市场报告显示，适配新一代AI工作负载、面向Agentic AI高算力需求、自带AI基因的Neocloud（新云）赛道价值凸显，商汤大装置以近50%的市场份额位居国内Neocloud市场第一，全栈覆盖智算运营、算力调度等环节，领跑优势显著。
+
+<FeedbackButtons slug="item:qbitai-493175" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/493114.html" target="_blank" rel="noopener noreferrer">百曜科技发起，《AI虚拟细胞（AIVC）技术趋势、产业生态与应用前景研究报告》正式发布</a>
+
+*量子位*
+
+9月21日，由百曜科技发起、《麻省理工科技评论》中国团队撰写、中关村科学城管委会指导的AI虚拟细胞（AIVC）研究报告正式发布。报告明确定位AIVC为生命科学新型基础设施，将研究范式从分子层拓展至细胞层，梳理其技术、产业与发展趋势，为AIVC从概念落地到规模化应用提供系统参考框架。
+
+<FeedbackButtons slug="item:qbitai-493114" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/493109.html" target="_blank" rel="noopener noreferrer">IDC评估中国AI算力管理平台：范式综合评分位列第一，四项关键维度获满分</a>
+
+*量子位*
+
+IDC发布2026年中国AI算力管理平台技术能力评估，范式凭借异构算力纳管、GPU细粒度虚拟化等技术积累，拿下算力资源管理、运维、技术架构、交付服务四项维度满分，综合评分位列行业第一。其主打不绑定芯片厂商的统一管理架构，已适配十余家主流芯片，契合AI规模化落地阶段企业对算力精细化运营的核心需求。
+
+<FeedbackButtons slug="item:qbitai-493109" client:visible />
