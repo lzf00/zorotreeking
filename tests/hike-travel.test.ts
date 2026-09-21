@@ -23,6 +23,10 @@ import {
 import * as aliLhasaReturnData from "../src/data/ali-lhasa-return-route";
 import { aliLhasaReturnWeatherByDate } from "../src/data/ali-lhasa-return-weather";
 import {
+  aliLhasaReturnExecAltitudeByDate,
+  aliLhasaReturnExecNoteByDate,
+} from "../src/data/ali-lhasa-return-exec-sheet";
+import {
   aliPermitBypassRoadLabels,
   aliPermitBypassRoutedDayGeometry,
 } from "../src/data/ali-permit-bypass-road-geometry";
@@ -638,10 +642,11 @@ test("Lhasa-return one-page sheet lists sights, distance, and hotels for every d
     "utf8",
   );
   assert.match(sheet, /id="loop-sheet"/);
-  assert.match(sheet, /12 天总路书/);
-  assert.match(sheet, /天气/);
+  assert.match(sheet, /12 日执行总表/);
+  assert.match(sheet, /白天天气/);
   assert.match(sheet, /data-print-sheet/);
   assert.match(sheet, /getAliLhasaReturnWeather/);
+  assert.match(sheet, /aliLhasaReturnExecNoteByDate/);
 
   assert.equal(aliLhasaReturnRouteDays.length, aliLhasaReturnDailyPlanning.length);
   for (const day of aliLhasaReturnRouteDays) {
@@ -649,7 +654,11 @@ test("Lhasa-return one-page sheet lists sights, distance, and hotels for every d
     assert.ok(planning, `D${day.day} needs a stay plan for the one-page sheet`);
     assert.ok(day.highlights.length > 0, `D${day.day} needs sights`);
     assert.match(day.distance, /\d/);
+    const note = aliLhasaReturnExecNoteByDate[day.date];
+    const altitude = aliLhasaReturnExecAltitudeByDate[day.date];
     const weather = aliLhasaReturnWeatherByDate[day.date];
+    assert.ok(note, `D${day.day} ${day.date} needs an exec-sheet note`);
+    assert.ok(altitude, `D${day.day} ${day.date} needs overnight altitude`);
     assert.ok(weather, `D${day.day} ${day.date} needs overnight weather`);
     assert.ok(weather.summary.length > 0);
     assert.match(weather.range, /白天.*°C/);

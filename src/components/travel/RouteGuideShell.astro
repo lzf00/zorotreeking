@@ -231,9 +231,28 @@ const {
       padding: 5px 6px;
       font-size: 9.5px;
     }
+    html.rd-print-sheet-wide .rd-sheet-table th,
+    html.rd-print-sheet-wide .rd-sheet-table td {
+      padding: 4px 5px;
+      font-size: 8.5px;
+    }
+    html.rd-print-sheet-wide .rd-sheet-foot {
+      grid-template-columns: 1fr 1fr;
+      font-size: 8.5px;
+    }
+    html.rd-print-sheet-wide .rd-sheet-tag {
+      font-size: 7.5px;
+    }
     @page {
       size: A4 portrait;
       margin: 8mm;
+    }
+    @page rd-exec {
+      size: A4 landscape;
+      margin: 6mm;
+    }
+    html.rd-print-sheet-wide {
+      page: rd-exec;
     }
   }
 </style>

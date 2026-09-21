@@ -4,10 +4,16 @@ import {
   aliLhasaReturnRouteDays,
 } from "../../data/ali-lhasa-return-route";
 import {
+  aliLhasaReturnExecAltitudeByDate,
+  aliLhasaReturnExecLongDays,
+  aliLhasaReturnExecNoteByDate,
+  aliLhasaReturnExecRestDays,
+} from "../../data/ali-lhasa-return-exec-sheet";
+import {
   aliLhasaReturnWeatherReviewedAt,
   getAliLhasaReturnWeather,
 } from "../../data/ali-lhasa-return-weather";
-import type { AliRouteDailyPlanning, AliRouteDay } from "../../data/ali-route";
+import type { AliReservationStatus, AliRouteDailyPlanning, AliRouteDay } from "../../data/ali-route";
 
 interface Props {
   days?: AliRouteDay[];
@@ -17,54 +23,69 @@ interface Props {
   lead?: string;
   sheetTitle?: string;
   sheetMeta?: string;
-  accentDays?: number[];
 }
 
 const {
   days = aliLhasaReturnRouteDays,
   planning = aliLhasaReturnDailyPlanning,
   kicker = "01A / One-page roadbook",
-  heading = "12 天总路书，<br />一页看完景点、车程、天气和酒店。",
-  lead = "这张表只写每天必看的点、估算距离、白天最高温、夜间最低温和当晚首选/备选酒店。开车看白天那一行；羽绒主要留给早出和夜里。山口、景区会比县城再低几度。下面的地图和逐日清单有预约、风险和退出条件；出门前把这一页打出来即可。",
-  sheetTitle = "拉萨取还 · 12 日执行表",
+  heading = "12 日执行总表，<br />一页看完路线、天气、注意和预约。",
+  lead = "这张表和打印海报同一口径：每天路线、住宿海拔、白天最高温、行程取舍和预约状态。开车看白天温度；羽绒留给巴松、塔钦早出和夜里。出门前把这一页打出来即可。",
+  sheetTitle = "拉萨取还 · 12 日执行总表",
   sheetMeta = `09.26–10.07 · 珠峰过夜 · 10.05 回拉萨 · 天气 ${aliLhasaReturnWeatherReviewedAt.slice(5).replace("-", ".")}`,
-  accentDays = [4, 10],
 } = Astro.props;
 
-const accentDaySet = new Set(accentDays);
+const longDaySet = new Set(aliLhasaReturnExecLongDays);
+const restDaySet = new Set(aliLhasaReturnExecRestDays);
 
 const shortenHotel = (name: string) =>
   name.replace(/（.*?）/g, "").replace(/\(.*?\)/g, "").replace(/\s+/g, " ").trim();
 
+const tagClass: Record<AliReservationStatus, string> = {
+  必须提前: "rd-sheet-tag rd-sheet-tag--must",
+  建议提前: "rd-sheet-tag rd-sheet-tag--should",
+  出发前复核: "rd-sheet-tag rd-sheet-tag--check",
+  现场办理: "rd-sheet-tag rd-sheet-tag--walk",
+  无需预约: "rd-sheet-tag rd-sheet-tag--none",
+};
+
 const rows = days.map((day) => {
   const plan = planning.find((item) => item.day === day.day);
   const stay = plan?.stay;
-  const primaryHotel = stay?.hotels[0]?.name;
-  const backupHotel = stay?.hotels[1]?.name;
+  const primaryHotel = stay?.hotels[0];
+  const lockText = `${day.overnight} ${primaryHotel?.strengths ?? ""} ${stay?.bookingAdvice ?? ""}`;
   let hotelLine = day.overnight;
+  let hotelStatus = "";
   if (stay?.noHotelNeeded) {
-    hotelLine = "当日抵沪，无需酒店";
-  } else if (primaryHotel && backupHotel) {
-    hotelLine = shortenHotel(primaryHotel) + " / 备选" + shortenHotel(backupHotel);
+    hotelLine = "抵达上海";
+    hotelStatus = "无酒店";
   } else if (primaryHotel) {
-    hotelLine = shortenHotel(primaryHotel);
+    hotelLine = shortenHotel(primaryHotel.name);
+    if (/待续订|尚未出/.test(lockText)) hotelStatus = "待续订";
+    else if (/已锁/.test(lockText)) hotelStatus = "已锁";
   }
   const weather = getAliLhasaReturnWeather(day.date);
+  const useExecCopy = days === aliLhasaReturnRouteDays;
   return {
     day: day.day,
     date: day.date,
     title: day.title,
-    roads: day.roads,
-    sights: day.highlights.join(" · "),
-    distance: day.distance,
-    driving: day.driving,
-    weatherSummary: weather?.summary ?? "出发前再核",
-    weatherRange: weather?.range ?? "",
-    weatherNote: weather?.note,
-    weatherKind: weather?.kind ?? "trend",
-    city: stay?.city ?? day.overnight,
+    drive: `${day.distance} · ${day.driving}`,
     hotelLine,
-    accent: accentDaySet.has(day.day),
+    hotelStatus,
+    altitude: (useExecCopy && aliLhasaReturnExecAltitudeByDate[day.date]) || stay?.city || "",
+    weatherRange: weather?.range ?? "出发前再核",
+    weatherDetail: weather
+      ? `${weather.summary} · 夜 ${weather.nightLowC}°C${weather.kind === "trend" ? " · 趋势" : ""}`
+      : "",
+    weatherKind: weather?.kind ?? "trend",
+    note: (useExecCopy && aliLhasaReturnExecNoteByDate[day.date]) || day.decision,
+    bookings: (plan?.reservations ?? []).map((item) => ({
+      status: item.status,
+      subject: item.subject,
+      className: tagClass[item.status],
+    })),
+    tone: longDaySet.has(day.day) ? "long" : restDaySet.has(day.day) ? "rest" : "normal",
   };
 });
 ---
@@ -96,48 +117,51 @@ const rows = days.map((day) => {
         <thead>
           <tr>
             <th>日期</th>
-            <th>路线</th>
-            <th>景点</th>
-            <th>距离</th>
-            <th>天气</th>
-            <th>酒店</th>
+            <th>路线 / 车程</th>
+            <th>住宿 / 海拔</th>
+            <th>白天天气</th>
+            <th>行程注意</th>
+            <th>景点 / 手续预约</th>
           </tr>
         </thead>
         <tbody>
           {rows.map((row) => (
-            <tr class={row.accent ? "rd-sheet-accent" : undefined}>
+            <tr class={row.tone === "normal" ? undefined : `rd-sheet-${row.tone}`}>
               <th scope="row">
                 <b>D{String(row.day).padStart(2, "0")}</b>
                 <span>{row.date}</span>
               </th>
               <td>
                 <strong>{row.title}</strong>
-                <small>{row.roads}</small>
+                <small>{row.drive}</small>
               </td>
-              <td>{row.sights}</td>
               <td>
-                <strong>{row.distance}</strong>
-                <small>{row.driving}</small>
+                <strong>{row.hotelStatus ? `${row.hotelLine} · ${row.hotelStatus}` : row.hotelLine}</strong>
+                <small>{row.altitude}</small>
               </td>
               <td class={row.weatherKind === "trend" ? "rd-sheet-weather rd-sheet-weather--trend" : "rd-sheet-weather"}>
                 <strong>{row.weatherRange}</strong>
-                <small>
-                  {row.weatherSummary}
-                  {row.weatherNote ? ` · ${row.weatherNote}` : ""}
-                  {row.weatherKind === "trend" ? " · 趋势" : ""}
-                </small>
+                <small>{row.weatherDetail}</small>
               </td>
+              <td>{row.note}</td>
               <td>
-                <strong>{row.city}</strong>
-                <small>{row.hotelLine}</small>
+                {row.bookings.map((item) => (
+                  <p class="rd-sheet-book">
+                    <span class={item.className}>{item.status}</span>
+                    {item.subject}
+                  </p>
+                ))}
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <p class="rd-sheet-weather-note">
-        表内先写白天最高温。{aliLhasaReturnWeatherReviewedAt.replaceAll("-", ".")} 取值：09.26–09.27 用中国天气网县城预报，更远日子用 Open-Meteo GFS。09.29 巴松、10.05 纳木措比县城冷、风更大。10.07 超出窗口，只写趋势。出发前再核中国天气网。
-      </p>
+      <div class="rd-sheet-foot">
+        <p><b>出发前订单还差三件</b>取消智行 09.28 萨嘎强吉福；取消去哪儿塔尔庆 09.29–10.01（10.01 已改住云端盛景）；续订 10.05–06 拉萨柏丽艾尚。</p>
+        <p><b>白天天气</b>先写白天最高。{aliLhasaReturnWeatherReviewedAt.replaceAll("-", ".")} 取值。羽绒留给巴松、塔钦早出和夜里。</p>
+        <p><b>海拔</b>过夜按酒店。珠峰、国王峰、冈仁波齐只远观。09.29 巴松约 5200 是睡眠最高点。</p>
+        <p><b>红底</b>10.01 / 10.02 是长途日。两名司机轮换，天黑不赶生路。</p>
+      </div>
     </div>
   </div>
 </section>
@@ -145,7 +169,7 @@ const rows = days.map((day) => {
 <script>
   const root = document.documentElement;
   const printSheet = () => {
-    root.classList.add("rd-print-sheet");
+    root.classList.add("rd-print-sheet", "rd-print-sheet-wide");
     window.print();
   };
   const clearPrintSheet = () => root.classList.remove("rd-print-sheet");
@@ -195,20 +219,28 @@ const rows = days.map((day) => {
   }
   .rd-sheet-table {
     width: 100%;
-    min-width: 980px;
+    min-width: 1180px;
     border-collapse: collapse;
   }
   .rd-sheet-weather {
-    width: 148px;
+    width: 128px;
+    white-space: nowrap;
   }
   .rd-sheet-weather--trend strong {
     color: var(--rd-muted);
   }
-  .rd-sheet-weather-note {
-    margin: 0;
-    padding: 10px 18px 14px;
+  .rd-sheet-foot {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr 0.9fr;
+    gap: 14px;
+    padding: 12px 18px 14px;
     color: var(--rd-muted);
     font: .68rem/1.5 var(--rd-mono);
+  }
+  .rd-sheet-foot b {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--rd-ink);
   }
   .rd-sheet-table th,
   .rd-sheet-table td {
@@ -256,17 +288,50 @@ const rows = days.map((day) => {
     margin-top: 4px;
     color: var(--rd-muted);
   }
+  .rd-sheet-book {
+    margin: 0 0 6px;
+    font-size: .74rem;
+    line-height: 1.4;
+  }
+  .rd-sheet-book:last-child {
+    margin-bottom: 0;
+  }
+  .rd-sheet-tag {
+    display: inline-block;
+    margin: 0 6px 2px 0;
+    padding: 0 5px;
+    border: 1px solid currentColor;
+    font: 700 .62rem/1.5 var(--rd-mono);
+    letter-spacing: .04em;
+    vertical-align: 1px;
+  }
+  .rd-sheet-tag--must { color: #b42318; }
+  .rd-sheet-tag--should { color: #9a6700; }
+  .rd-sheet-tag--check { color: #175cd3; }
+  .rd-sheet-tag--walk { color: #067647; }
+  .rd-sheet-tag--none { color: #667085; }
   .rd-sheet-table tbody tr:last-child th,
   .rd-sheet-table tbody tr:last-child td {
     border-bottom: 0;
   }
-  .rd-sheet-table tbody tr.rd-sheet-accent {
+  .rd-sheet-table tbody tr.rd-sheet-long {
     background: color-mix(in srgb, var(--rd-accent-2) 16%, transparent);
   }
+  .rd-sheet-table tbody tr.rd-sheet-rest {
+    background: rgba(25, 32, 30, .035);
+  }
   @media (max-width: 900px) {
-    .rd-sheet-head {
+    .rd-sheet-head,
+    .rd-sheet-foot {
+      grid-template-columns: 1fr;
       align-items: flex-start;
       flex-direction: column;
+    }
+  }
+  @media print {
+    @page {
+      size: A4 landscape;
+      margin: 6mm;
     }
   }
 </style>
