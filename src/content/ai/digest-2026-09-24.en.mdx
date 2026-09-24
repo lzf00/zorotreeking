@@ -1,0 +1,205 @@
+---
+lang: en
+translationKey: digest-2026-09-24
+title: "AI Daily Digest · 2026-09-24"
+description: "20 papers · Multi-source aggregation + AI summarization"
+date: 2026-09-24
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading AI vendors including OpenAI, Anthropic, and DeepMind have collectively released updates on technical progress and new implementation partnership developments</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face and arXiv unveiled cutting-edge research results across multiple fields including video generation, conversational memory, and quantum computing</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Meta's self-developed AI product's growth rate outpaced ChatGPT, driving a sharp stock price rise; domestic firms Hisense and CAS Brain++ released new AI-related progress</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📈 Industry Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Big Tech News</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Cutting-edge Papers</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Generative AI</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔐 Privacy Technology</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2609.28466" target="_blank" rel="noopener noreferrer">The Past Frames the Future: Memory for Autoregressive Video Generation</a>
+
+*HF ★ 22 · Harold Haodong Chen, Rongjin Guo, Disen Lan… · [HF Mirror](https://huggingface.co/papers/2609.28466)*
+
+To address the pain point of autoregressive video generation being limited by context window, storage and computing power boundaries, which leads to easy loss of key historical information such as entity attributes and causal changes, this paper is a systematic review of memory mechanisms in this field. It sorts out existing research from five dimensions: information representation, storage function, read/write operations, learning paradigms, and evaluation methods, summarizes the current core challenges, and provides a structured research foundation for the development of memory-enhanced video generation systems.
+
+<FeedbackButtons slug="item:arxiv-2609.28466" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.26780" target="_blank" rel="noopener noreferrer">SpeakerMem-R1: Speaker-Centered Dual-Track Memory for Multi-Party Dialogue</a>
+
+*HF ★ 16 · Haobo Zheng, Tan Tang, Yan Chen… · [HF Mirror](https://huggingface.co/papers/2609.26780)*
+
+To address the pain points of long-term memory in multi-party conversations, including incorrect attribution of speaker information and difficulties in sorting out relationships and cross-temporal states, this paper proposes the SpeakerMem-R1 dual-track memory solution: it simultaneously stores original text with speaker tags and hierarchical structured states at individual/group levels, fuses evidence across dimensions during query, and the accompanying trained Writer-R1 reduces memory construction errors. This solution achieves SOTA results on multiple public memory benchmarks, and ablation studies verify the complementarity of the dual-track and hierarchical design.
+
+<FeedbackButtons slug="item:arxiv-2609.26780" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.22947" target="_blank" rel="noopener noreferrer">RewardVerse: Rubric-Guided Policy Optimization for Video Reward Modeling</a>
+
+*HF ★ 15 · Zhenchen Tang, Yang Li, Songlin Yang… · [HF Mirror](https://huggingface.co/papers/2609.22947)*
+
+To address the problem that existing video reward models directly output scalar scores without clear evaluation criteria, which is prone to cross-prompt scalar drift and unreliable rewards, this paper proposes the RewardVerse framework, which first generates explicit scoring rubrics before guiding scoring, paired with a two-stage RGPO training algorithm. Experiments verify that it can alleviate scalar drift, achieves SOTA in both single-sample and pairwise evaluation, and provides reliable and interpretable reward signals for video generation reinforcement learning.
+
+<FeedbackButtons slug="item:arxiv-2609.22947" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.27891" target="_blank" rel="noopener noreferrer">Schrödinger's Code Repository: Have LLMs Learned SWE-bench or Memorized It?</a>
+
+*HF ★ 10 · Silin Chen, Yufei Yang, Xiaodong Gu… · [HF Mirror](https://huggingface.co/papers/2609.27891)*
+
+To address the problems of data leakage in existing code agent evaluation benchmarks, where model performance may come from memory rather than reasoning, this paper proposes the SchrodingerRepo dynamic evaluation framework, which eliminates familiar clues such as naming and layout of test repositories through four layers of function-preserving transformations. Testing on mainstream large models found that their performance generally declined and interaction costs increased significantly, proving that current coding models do partially rely on repository clue memory, and dynamic instantiation evaluation is required to ensure reliable results.
+
+<FeedbackButtons slug="item:arxiv-2609.27891" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.26355" target="_blank" rel="noopener noreferrer">PACT: From Credit Assignment to Critic Alignment</a>
+
+*HF ★ 9 · Jiayan Fu, Hang Xu, Yong Zhang… · [HF Mirror](https://huggingface.co/papers/2609.26355)*
+
+To address the lack of a unified definition of token-level credit in post-training reinforcement learning for large language models, this paper proposes three regular conditions: completeness, prefix consistency, and neutrality, proving that they can uniquely determine token-level credit. It further proposes the PACT algorithm: it uses an update order of Actor first then Critic, and adds importance sampling correction to Critic training to achieve alignment between the two. Experiments show that it significantly outperforms mainstream algorithms such as PPO and GRPO on both mathematical reasoning and SWE-bench.
+
+<FeedbackButtons slug="item:arxiv-2609.26355" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2609.25021" target="_blank" rel="noopener noreferrer">"As a Language Model...": Chat Template Switches LLM Self-Referential Voice and Activation Steering Reproduces It</a>
+
+*Jędrzej Maczan*
+
+This study addresses the unclear motivation behind large models' self-referential responses (such as the "I am just an AI" disclaimer), testing 8 open-source instruction-tuned large models with under 9B parameters and analyzing the activation space characteristics of 3 of them. The results show that chat templates are the switch for disclaimer statements, and there is a specific direction in the activation space that can regulate such statements. The self-reported content of large models is not solely determined by weights, but is also affected by deployment configuration, so relevant AI safety and self-awareness research needs to control for this confounding variable.
+
+<FeedbackButtons slug="item:arxiv-2609.25021" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.25082" target="_blank" rel="noopener noreferrer">Federating Quantum and Classical Computing: A Privacy-Preserving Hybrid Approach</a>
+
+*Carlos Cano, Daniel M. Jimenez-Gutierrez, Diego Sal…*
+
+To address the pain points of quantum-classical hybrid machine learning in privacy-sensitive multi-node scenarios, where raw data cannot be centralized and quantum circuit parameter efficiency requirements are high, this paper uses a blind vertical federated learning protocol to enable privacy-preserving collaboration between quantum-classical hybrid parties and classical parties. Verification on the self-developed SMPP benchmark shows that the accuracy of the solution is improved from 0.7227 for local training to 0.8757, close to the level of non-privacy centralized training, with the number of parameters far lower than classical models with the same performance, enabling high-performance cross-party collaboration without centralizing raw data.
+
+<FeedbackButtons slug="item:arxiv-2609.25082" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.25131" target="_blank" rel="noopener noreferrer">Entropy Can Flow, or It Can Guide. Be Entropy. LEDFlow: Introducing Entropy-guided Generation Order into Uniform Discrete Flow</a>
+
+*Tung Sum Thomas Kwok, Yidong Ouyang, Yingjia Wan…*
+
+To address the problem that uniform discrete flow easily incorrectly modifies correct intermediate predictions, this paper proposes the training-free sampler LEDFlow: it adaptively determines the generation order based on local entropy, prioritizes fixing predictions at low-entropy positions, retains the characteristics of flow sampling while avoiding absorbing erroneous results, and theoretical verification shows that this strategy can minimize the error upper bound. Its performance is better than baselines on Sudoku (improvement is particularly significant for strongly constrained tasks), text-to-image, and multimodal understanding tasks, with inference costs comparable to standard flow sampling.
+
+<FeedbackButtons slug="item:arxiv-2609.25131" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/two-years-of-openai-academy" target="_blank" rel="noopener noreferrer">Two years of OpenAI Academy</a>
+
+*OpenAI*
+
+This is the official announcement for the second anniversary of the founding of OpenAI Academy, with two core pieces of information: first, it officially marks the key milestone of the Academy having been in operation for two full years, and second, it clarifies the core goal of future development, which is to further expand service coverage, promote and popularize AI skills to more diverse communities, lower the threshold for AI learning, and bring cutting-edge AI technology to a wider range of social groups.
+
+<FeedbackButtons slug="item:openai-blog-two-years-of-openai-academy" client:visible />
+
+## <a href="https://openai.com/index/openai-extends-cyber-access-to-ukraine-for-civilian-defense" target="_blank" rel="noopener noreferrer">OpenAI extends cyber access to Ukraine for civilian defense</a>
+
+*OpenAI*
+
+This update discloses OpenAI's latest technical support initiative: it will open access to its Daybreak project to the Ukrainian government, with the core goal of providing technical support for the cyber defense of Ukraine's civilian infrastructure. This deployment leverages OpenAI's AI technical capabilities to improve the cybersecurity protection level of Ukraine's key civilian facilities and reduce the impact of cyber attacks on local people's livelihoods.
+
+<FeedbackButtons slug="item:openai-blog-openai-extends-cyber-access-to-ukraine-for-civilian-defense" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-discovers-novel-enzyme-system" target="_blank" rel="noopener noreferrer">Claude discovers a novel enzyme system</a>
+
+*Anthropic*
+
+This is an early result from the newly built life science research laboratory. The research relied on Claude agents to carry out enzyme-related mining and exploration, and successfully discovered a completely new enzyme system that has not been reported before. The specific biological function of this enzyme system is not yet clear, and future research can be carried out around its functional analysis and application potential evaluation, which can provide new research directions for fields such as enzyme engineering and synthetic biology.
+
+<FeedbackButtons slug="item:anthropic-claude-discovers-novel-enzyme-system" client:visible />
+
+## <a href="https://www.anthropic.com/news/accenture-embedded-evaluation" target="_blank" rel="noopener noreferrer">Partnering with Accenture on embedded evaluation</a>
+
+*Anthropic*
+
+To implement its previously proposed security governance commitment of "embedding full-time evaluators internally", AI company Anthropic will partner with Accenture to carry out independent evaluation of cutting-edge AI. The two parties have agreed that each will invest at least US$1 billion in this field over the next five years to build technical and personnel supporting capabilities for cutting-edge AI evaluation and strengthen the risk prevention and control level of cutting-edge AI.
+
+<FeedbackButtons slug="item:anthropic-accenture-embedded-evaluation" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/advancing-private-ai-compute-with-secure-server-side-memory/" target="_blank" rel="noopener noreferrer">Advancing Private AI Compute with secure, server-side memory</a>
+
+*Google DeepMind*
+
+This research targets the private AI computing needs of personal AI scenarios, with its core innovation being the introduction of an encryption-secure server-side private memory mechanism. This solution breaks the bottleneck of traditional end-side private AI computing being limited by device computing power, and avoids the risk of user privacy data leakage that exists in conventional server-side computing. It can balance both privacy security and computing power support capabilities, providing a feasible technical direction for the large-scale implementation of personal AI services.
+
+<FeedbackButtons slug="item:deepmind-advancing-private-ai-compute-with-secure-server-side-memory" client:visible />
+
+## <a href="https://deepmind.google/blog/say-hello-to-gemini-38-text-to-speech/" target="_blank" rel="noopener noreferrer">Gemini 3.8 text-to-speech says hello</a>
+
+*Google DeepMind*
+
+Google officially launched the new text-to-speech (TTS) feature added to Gemini 3.8. Technically, it relies on the large model's multimodal semantic alignment framework, optimizes speech prosody fitting and context emotion matching logic, and supports dozens of languages and multiple customized timbres. Actual testing shows that the speech naturalness is close to that of real people, and the adaptation effect for content tone and accent is significantly improved compared to previous generation solutions, which can meet the speech generation needs of multiple scenarios.
+
+<FeedbackButtons slug="item:deepmind-say-hello-to-gemini-38-text-to-speech" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/how-to-use-nvidia-warp-and-mjwarp" target="_blank" rel="noopener noreferrer">How to Use NVIDIA Warp and MjWarp to Accelerate Robotics Simulation and Learning Workflows</a>
+
+*Hugging Face*
+
+This article introduces NVIDIA's Warp parallel computing framework and MjWarp adaptation tool, which can efficiently accelerate robotics simulation and learning workflows: Warp provides GPU-native high-performance parallel computing support, MjWarp connects the MuJoCo simulator and Warp link, enabling the entire process of simulation, data generation, and reinforcement learning training to run on the GPU side without cross-device data transmission. Compared with traditional CPU solutions, the efficiency is increased by dozens of times, training convergence is accelerated by an order of magnitude, and the R&D cycle is greatly shortened.
+
+<FeedbackButtons slug="item:hf-blog-how-to-use-nvidia-warp-and-mjwarp" client:visible />
+
+## <a href="https://huggingface.co/blog/evaleval-aisi" target="_blank" rel="noopener noreferrer">How UK AISI and EvalEval Are Making Benchmark Results Reproducible</a>
+
+*Hugging Face*
+
+The EvalEval tool launched by the UK AI Safety Institute (AISI) addresses the pain points of opaque large model benchmarking processes and difficult-to-reproduce results. Through standardized evaluation workflows, supporting traceability mechanisms and unified verification logic, it greatly reduces the cost of reproducing benchmark results, improves the comparability of cross-team evaluation results, and provides support for reliable research in the field of AI safety alignment.
+
+<FeedbackButtons slug="item:hf-blog-evaleval-aisi" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+The concept of Recursive Self-Improvement (RSI) first originated from the hypothetical superintelligent machine proposed by I.J. Good in 1965, referring to a system whose capabilities far exceed all human intellectual activities and can design better machines on its own to achieve iteration. In 2008, Eliezer Yudkowsky clarified that its core is the feedback loop where AI uses existing intelligence to optimize its own cognitive architecture. In the current AI context, this mechanism includes both the model directly rewriting its own weights and, in a broad sense, the optimization of training processes.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/09/496658.html" target="_blank" rel="noopener noreferrer">Hisense officially launches new generation performance flagship E7S Pro+, with further advancements in native true color</a>
+
+*QbitAI*
+
+On September 23, 2026, Hisense officially launched its new generation performance flagship E7S Pro+ at its autumn TV new product launch conference. This product is a brand-new RGB-Mini LED category, positioned as "native true color, performance flagship", achieving further advancements in native true color display technology. It is a heavyweight implementation result of Hisense's layout in the high-end Mini LED track and expansion of its performance-level product matrix.
+
+<FeedbackButtons slug="item:qbitai-496658" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/496647.html" target="_blank" rel="noopener noreferrer">Meta turns the tide with self-developed Manus! Stock price soars 11% overnight, tops App Store, growth rate outpaces ChatGPT</a>
+
+*QbitAI*
+
+Meta launched its self-developed personal AI agent Muse, which can directly handle practical tasks for users such as negotiating insurance surrender, finding low-cost car insurance, and applying for returns and refunds. Only 13 days after launch, it topped the North American App Store, with a growth rate exceeding that of ChatGPT when it was first released. Boosted by this positive news, Meta's stock price soared 11% in a single day, marking the largest single-day gain in nearly a year, and its market value returned to a high level.
+
+<FeedbackButtons slug="item:qbitai-496647" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/496615.html" target="_blank" rel="noopener noreferrer">Founded nine years ago, CAS Brain++ integrates its accumulated experience into Token Factory</a>
+
+*QbitAI*
+
+In the large-scale inference stage of large models, data center evaluation standards have shifted from the number of cards, computing power scale, and PUE to effective Token output capacity. CAS Brain++ has launched the "computing-power collaborative Token Factory" system, which unifies the scheduling of heterogeneous chips, computing power, electricity, and user tasks, and has launched the Beta Cloud platform, positioned at the Token production and operation layer. With the same investment, it can improve Token output efficiency, reduce costs, ensure quality, and be responsible for delivery results.
+
+<FeedbackButtons slug="item:qbitai-496615" client:visible />
