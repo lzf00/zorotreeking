@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>阿里大环线 · 注意事项</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1350px; height: 1800px; overflow: hidden; background: #ead9c4; }
+  body {
+    font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", sans-serif;
+    color: #1c1610;
+    background:
+      radial-gradient(1000px 640px at 0% 0%, rgba(15, 157, 115, 0.10), transparent 50%),
+      linear-gradient(180deg, #f6ead8 0%, #ead7bf 100%);
+  }
+  .sheet {
+    width: 1350px; height: 1800px;
+    padding: 42px 46px 32px;
+    display: flex; flex-direction: column;
+  }
+  header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    align-items: end;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #1c1610;
+  }
+  .kicker {
+    font-size: 13px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: #0f6f56;
+    font-weight: 600;
+  }
+  h1 {
+    margin-top: 8px;
+    font-family: "Songti SC", "STSong", serif;
+    font-size: 46px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    line-height: 1.05;
+  }
+  .legend {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    max-width: 520px;
+  }
+  .pill {
+    font-size: 12px;
+    padding: 4px 8px;
+    border: 1px solid currentColor;
+    letter-spacing: 0.04em;
+  }
+  .must { color: #b42318; }
+  .should { color: #9a6700; }
+  .check { color: #175cd3; }
+  .walk { color: #067647; }
+  .none { color: #667085; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+    flex: 0 0 auto;
+    align-self: stretch;
+  }
+  th {
+    text-align: left;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    color: #7a6858;
+    padding: 0 8px 10px;
+    border-bottom: 1px solid #cbb59a;
+  }
+  td {
+    vertical-align: top;
+    padding: 11px 8px 10px;
+    border-bottom: 1px solid #e0ccb4;
+  }
+  .d {
+    width: 78px;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    font-size: 14px;
+    color: #b5522a;
+  }
+  .d span { display: block; color: #1c1610; font-size: 16px; margin-top: 1px; }
+  .alt { width: 158px; font-variant-numeric: tabular-nums; }
+  .alt b { display: block; font-size: 16px; }
+  .alt span { font-size: 12px; color: #6d5c4d; line-height: 1.35; }
+  .wx { width: 128px; font-variant-numeric: tabular-nums; }
+  .wx b { display: block; font-size: 16px; }
+  .wx span { font-size: 12px; color: #6d5c4d; line-height: 1.35; }
+  .trip { width: 370px; font-size: 13.5px; line-height: 1.45; color: #2c241c; }
+  .book { width: 370px; font-size: 13.5px; line-height: 1.45; }
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    padding: 1px 6px;
+    margin: 0 4px 4px 0;
+    border: 1px solid currentColor;
+    vertical-align: 1px;
+  }
+  footer {
+    margin-top: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    padding-top: 16px;
+    border-top: 2px solid #1c1610;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #4b3e33;
+  }
+  footer b { display: block; color: #1c1610; margin-bottom: 4px; font-size: 14px; }
+</style>
+</head>
+<body>
+  <div class="sheet">
+    <header>
+      <div>
+        <p class="kicker">Altitude · Booking · Go / No-go</p>
+        <h1>注意事项图</h1>
+      </div>
+      <div class="legend">
+        <span class="pill must">必须提前</span>
+        <span class="pill should">建议提前</span>
+        <span class="pill check">出发前复核</span>
+        <span class="pill walk">现场办理</span>
+        <span class="pill none">无需预约</span>
+      </div>
+    </header>
+    <table>
+      <thead>
+        <tr>
+          <th>日期</th>
+          <th>海拔</th>
+          <th>白天天气</th>
+          <th>行程注意</th>
+          <th>景点 / 手续是否预约</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="d">D01<span>09.26</span></td>
+          <td class="alt"><b>过夜 3650 m</b><span>贡嘎 3570 · 不爬升</span></td>
+          <td class="wx"><b>白天 20°C</b><span>多云 · 夜 7°C</span></td>
+          <td class="trip">落地只取车适应。不饮酒、不暴食、不长时间热水澡。血氧不稳则第二天不离开拉萨。</td>
+          <td class="book"><span class="tag must">必须提前</span>电子边境通行证（定日县 + 阿里）<br /><span class="tag must">必须提前</span>四驱租车、同城还车、10.06 还车缓冲</td>
+        </tr>
+        <tr>
+          <td class="d">D02<span>09.27</span></td>
+          <td class="alt"><b>过夜 3840 m</b><span>最高 岗巴拉 4990 / 卡若拉 5020</span></td>
+          <td class="wx"><b>白天 18°C</b><span>多云 · 夜 2°C · 山口更冷</span></td>
+          <td class="trip">第一天真正上到五千。山口短停。12:30 未离浪卡子：跳过卡若拉和白居寺，直奔日喀则。</td>
+          <td class="book"><span class="tag should">建议提前</span>羊卓雍措 1–3 天实名购票<br /><span class="tag check">出发前复核</span>卡若拉开放/停车<br />白居寺无强制预约，不准时不去</td>
+        </tr>
+        <tr>
+          <td class="d">D03<span>09.28</span></td>
+          <td class="alt"><b>过夜 4300 m</b><span>日喀则 3840 → 定日 4300</span></td>
+          <td class="wx"><b>白天 15°C</b><span>多云 · 夜 0°C</span></td>
+          <td class="trip">扎寺排队超时就缩短参观，不压缩定日到达。当晚核次日珠峰门票、观光车、顺康保留房。</td>
+          <td class="book"><span class="tag walk">现场办理</span>扎什伦布寺，开门后早到<br /><span class="tag should">建议提前</span>珠峰次日门票 + 观光车</td>
+        </tr>
+        <tr>
+          <td class="d">D04<span>09.29</span></td>
+          <td class="alt"><b>过夜约 5200 m</b><span>加乌拉 5200 · 绒布 4980<br />珠峰只远观，不登顶</span></td>
+          <td class="wx"><b>白天 8°C</b><span>阴 · 夜 -1°C</span></td>
+          <td class="trip">全线最高过夜。社会车辆换乘观光车。下午离开开放区，日落星空在顺康看，不从大本营摸黑赶回。</td>
+          <td class="book"><span class="tag must">必须提前</span>珠峰门票、观光车、顺康保留房<br />证件：身份证 + 电子边境通行证</td>
+        </tr>
+        <tr>
+          <td class="d">D05<span>09.30</span></td>
+          <td class="alt"><b>过夜 4487 m</b><span>晨间仍在 5200，再下到萨嘎</span></td>
+          <td class="wx"><b>白天 14°C</b><span>晴 · 夜 -3°C</span></td>
+          <td class="trip">高海拔夜宿后的恢复赶路日。10:00 前离开巴松。头痛/风雪则取消停留，只保萨嘎。</td>
+          <td class="book"><span class="tag check">出发前复核</span>退房、景区出线、G219 路况<br />本日无新购票景点</td>
+        </tr>
+        <tr>
+          <td class="d">D06<span>10.01</span></td>
+          <td class="alt"><b>过夜 4675 m</b><span>仲巴/帕羊 4600<br />国王峰只远观，不离开 G219</span></td>
+          <td class="wx"><b>白天 3°C</b><span>晴 · 夜 -6°C</span></td>
+          <td class="trip">长途日。只在正规观景点短停。到帕羊已晚：取消拉昂措，缩短玛旁雍措，仍住塔钦。不得夜绕湖。</td>
+          <td class="book"><span class="tag should">建议提前</span>神山圣湖 3–7 天购票<br />不转山 · 拉昂措不准时取消</td>
+        </tr>
+        <tr>
+          <td class="d">D07<span>10.02</span></td>
+          <td class="alt"><b>过夜 4280 m</b><span>门士 4500 · 土林 3800<br />冈仁波齐只远观</span></td>
+          <td class="wx"><b>白天 11°C</b><span>晴 · 夜 1°C</span></td>
+          <td class="trip">06:30 出发。土林穿行优先。13:30 未入盆地取消古格/托林。日落前出峡谷。不去班公湖。</td>
+          <td class="book"><span class="tag none">无需预约</span>塔钦远观<br /><span class="tag check">出发前复核</span>札达土林道路<br /><span class="tag should">建议提前</span>古格或托林择一</td>
+        </tr>
+        <tr>
+          <td class="d">D08<span>10.03</span></td>
+          <td class="alt"><b>过夜 4416 m</b><span>最高约 雄巴 4550</span></td>
+          <td class="wx"><b>白天 13°C</b><span>晴间多云 · 夜 1°C</span></td>
+          <td class="trip">纯赶路。90–120 分钟换司机。天黑前进改则，不赌洞措住宿。</td>
+          <td class="book"><span class="tag none">无需预约</span>G317 无景点票<br />出发前核加油站和康盛保留房</td>
+        </tr>
+        <tr>
+          <td class="d">D09<span>10.04</span></td>
+          <td class="alt"><b>过夜 4750 m</b><span>班戈县城 · 色林措 4530</span></td>
+          <td class="wx"><b>白天 10°C</b><span>小雨 · 夜 2°C</span></td>
+          <td class="trip">12:30 未到尼玛则取消色林措，直赶班戈。当晚不住纳木措。不得夜驾追湖。</td>
+          <td class="book"><span class="tag check">出发前复核</span>色林措开放/管制<br />无 2026 统一线上票，不买非官方名额</td>
+        </tr>
+        <tr>
+          <td class="d">D10<span>10.05</span></td>
+          <td class="alt"><b>过夜 3650 m</b><span>班戈出发 · 纳木措 4718 → 拉萨</span></td>
+          <td class="wx"><b>白天 11°C</b><span>小雨 · 纳木措 · 拉萨晚约 18°C</span></td>
+          <td class="trip">07:30 离开班戈。不去圣象天门、扎西半岛。14:00 未离湖区则直经当雄回拉萨。</td>
+          <td class="book"><span class="tag check">出发前复核</span>纳木措开放与 G109<br />10.05–06 柏丽艾尚待续订</td>
+        </tr>
+        <tr>
+          <td class="d">D11<span>10.06</span></td>
+          <td class="alt"><b>过夜 3650 m</b><span>全天拉萨，不再爬升</span></td>
+          <td class="wx"><b>白天 18°C</b><span>小雨 · 夜 6°C</span></td>
+          <td class="trip">休整还车日。不出城、不排布达拉宫。若 10.05 凌晨才到店，本日只睡觉和还车。</td>
+          <td class="book"><span class="tag must">必须提前</span>门店还车时段、夜间停车<br />复核 10.07 直飞可退改机票</td>
+        </tr>
+        <tr>
+          <td class="d">D12<span>10.07</span></td>
+          <td class="alt"><b>抵沪 4 m</b><span>贡嘎 3570 转场</span></td>
+          <td class="wx"><b>白天 27°C</b><span>小雨 · 夜 22°C</span></td>
+          <td class="trip">当日必须抵沪。候补和紧张中转不算有效方案。当天无景点。</td>
+          <td class="book"><span class="tag must">必须提前</span>拉萨直飞上海机票<br />还车凭证、身份证、行李额</td>
+        </tr>
+      </tbody>
+    </table>
+    <footer>
+      <p><b>海拔怎么看</b>过夜按酒店所在地。峰体（珠峰、国王峰、冈仁波齐）只远观，数字不是你要爬到的高度。</p>
+      <p><b>白天天气</b>先看白天最高温。09.24 取值。羽绒留给巴松、塔钦早出和夜里，开车不必按零下穿。</p>
+      <p><b>预约原则</b>红色必须出发前办完。黄色尽量提前。蓝色当天早上再核开放。没有统一票务的湖区，不从黄牛买通行。</p>
+    </footer>
+  </div>
+</body>
+</html>

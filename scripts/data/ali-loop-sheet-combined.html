@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>阿里大环线 · 12 日总表</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: max-content; background: #ead9c4; }
+  body {
+    font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", sans-serif;
+    color: #1c1610;
+    background: #f3e4cd;
+  }
+  .sheet {
+    width: max-content;
+    padding: 28px 32px 24px;
+    background:
+      radial-gradient(1400px 520px at 100% 0%, rgba(196, 92, 40, 0.10), transparent 52%),
+      #f3e4cd;
+  }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    width: 1580px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #1c1610;
+  }
+  .kicker {
+    font-size: 12px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: #b5522a;
+    font-weight: 600;
+  }
+  h1 {
+    margin-top: 2px;
+    font-family: "Songti SC", "STSong", serif;
+    font-size: 40px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    line-height: 1.05;
+  }
+  .head-right { text-align: right; }
+  .legend { display: flex; justify-content: flex-end; gap: 6px; margin-bottom: 6px; }
+  .pill {
+    font-size: 12px;
+    padding: 3px 8px;
+    border: 1px solid currentColor;
+    letter-spacing: 0.04em;
+    background: rgba(255,255,255,0.4);
+  }
+  .must { color: #b42318; }
+  .should { color: #9a6700; }
+  .check { color: #175cd3; }
+  .walk { color: #067647; }
+  .none { color: #667085; }
+  .meta { font-size: 15px; line-height: 1.4; color: #5b4d40; }
+  .meta b { color: #1c1610; }
+  table {
+    width: auto;
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin-top: 10px;
+  }
+  th {
+    text-align: left;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: #7a6858;
+    padding: 0 10px 7px;
+    border-bottom: 1px solid #cbb59a;
+  }
+  td {
+    vertical-align: top;
+    padding: 8px 10px;
+    border-bottom: 1px solid #e0ccb4;
+  }
+  tr.long td { background: rgba(181, 82, 42, 0.08); }
+  tr.rest td { background: rgba(28, 22, 16, 0.035); }
+  .c-date { width: 82px; }
+  .c-route { width: 400px; }
+  .c-stay { width: 230px; }
+  .c-wx { width: 128px; }
+  .c-note { width: 340px; }
+  .c-book { width: 400px; }
+  .d {
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    font-size: 13px;
+    color: #b5522a;
+    line-height: 1.2;
+  }
+  .d span { display: block; color: #1c1610; font-size: 18px; margin-top: 1px; }
+  .route b { display: block; font-size: 17px; font-weight: 600; line-height: 1.25; }
+  .route em { font-style: normal; display: block; font-size: 13px; color: #6d5c4d; margin-top: 2px; line-height: 1.35; }
+  .stay b { display: block; font-size: 16px; line-height: 1.25; }
+  .stay span { display: block; font-size: 13px; color: #6d5c4d; margin-top: 2px; line-height: 1.35; }
+  .wx b { display: block; font-size: 16px; font-variant-numeric: tabular-nums; line-height: 1.25; }
+  .wx span { display: block; font-size: 13px; color: #6d5c4d; margin-top: 2px; line-height: 1.35; }
+  .note, .book { font-size: 14px; line-height: 1.4; color: #2c241c; }
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    padding: 0 6px;
+    margin: 0 4px 2px 0;
+    border: 1px solid currentColor;
+    line-height: 1.5;
+    vertical-align: 1px;
+  }
+  footer {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr 0.85fr 0.85fr 0.9fr;
+    gap: 16px;
+    width: 1580px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 2px solid #1c1610;
+    font-size: 13px;
+    line-height: 1.45;
+    color: #4b3e33;
+  }
+  footer b { display: block; color: #1c1610; margin-bottom: 3px; font-size: 14px; }
+  footer strong { color: #b5522a; }
+</style>
+</head>
+<body>
+  <div class="sheet">
+    <header>
+      <div>
+        <p class="kicker">Ali Grand Loop · Lhasa Return 2026</p>
+        <h1>12 日执行总表</h1>
+      </div>
+      <div class="head-right">
+        <div class="legend">
+          <span class="pill must">必须提前</span>
+          <span class="pill should">建议提前</span>
+          <span class="pill check">出发前复核</span>
+          <span class="pill walk">现场办理</span>
+          <span class="pill none">无需预约</span>
+        </div>
+        <p class="meta"><b>09.26 取车 · 10.06 还车 · 10.07 抵沪</b>　珠峰过夜版 · G317 回拉萨 · 10.04 住班戈　天气先看白天　红底为长途日</p>
+      </div>
+    </header>
+    <table>
+      <colgroup>
+        <col class="c-date" />
+        <col class="c-route" />
+        <col class="c-stay" />
+        <col class="c-wx" />
+        <col class="c-note" />
+        <col class="c-book" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th>日期</th>
+          <th>路线 / 车程</th>
+          <th>住宿 / 海拔</th>
+          <th>白天天气</th>
+          <th>行程注意</th>
+          <th>景点 / 手续预约</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="d">D01<span>09.26</span></td>
+          <td class="route"><b>贡嘎机场 → 拉萨取车</b><em>约 65 km · 1–1.5 小时 · 适应日，不安排城市游览</em></td>
+          <td class="stay"><b>柏丽艾尚 · 已锁</b><span>拉萨过夜 3650 m · 贡嘎 3570</span></td>
+          <td class="wx"><b>白天 20°C</b><span>多云 · 夜 7°C</span></td>
+          <td class="note">只取车适应。不饮酒、不暴食、不长时间热水澡。血氧不稳则第二天不离拉萨。</td>
+          <td class="book"><span class="tag must">必须提前</span>电子边境通行证（定日县 + 阿里）<br /><span class="tag must">必须提前</span>四驱租车、同城还车、10.06 还车缓冲</td>
+        </tr>
+        <tr>
+          <td class="d">D02<span>09.27</span></td>
+          <td class="route"><b>羊湖 → 卡若拉 → 江孜 → 日喀则</b><em>约 360 km · 7–9 小时 · 12:30 未离浪卡子则跳过卡若拉和白居寺</em></td>
+          <td class="stay"><b>至格藏隆广场 · 已锁</b><span>日喀则 3840 m · 最高卡若拉 5020</span></td>
+          <td class="wx"><b>白天 18°C</b><span>多云 · 夜 2°C · 山口更冷</span></td>
+          <td class="note">第一天真正上到五千，山口短停。不准时只保日喀则住宿。</td>
+          <td class="book"><span class="tag should">建议提前</span>羊卓雍措 1–3 天实名购票<br /><span class="tag check">出发前复核</span>卡若拉开放/停车 · 白居寺不准时不去</td>
+        </tr>
+        <tr>
+          <td class="d">D03<span>09.28</span></td>
+          <td class="route"><b>日喀则 → 拉孜 → 定日</b><em>约 250 km · 5–6 小时 · 扎寺只做早场，不压缩定日缓冲</em></td>
+          <td class="stay"><b>我与乔木 · 已锁三间</b><span>定日过夜 4300 m</span></td>
+          <td class="wx"><b>白天 15°C</b><span>多云 · 夜 0°C</span></td>
+          <td class="note">排队超时就缩短参观。当晚核次日珠峰门票、观光车、顺康保留房。</td>
+          <td class="book"><span class="tag walk">现场办理</span>扎什伦布寺，开门后早到<br /><span class="tag should">建议提前</span>珠峰次日门票 + 观光车</td>
+        </tr>
+        <tr>
+          <td class="d">D04<span>09.29</span></td>
+          <td class="route"><b>定日 → 珠峰景区 → 巴松顺康</b><em>110–150 km · 4–6 小时 · 下午离开放区，日落前回到巴松</em></td>
+          <td class="stay"><b>顺康富氧 · 已锁</b><span>巴松约 5200 m · 珠峰只远观</span></td>
+          <td class="wx"><b>白天 8°C</b><span>阴 · 夜 -1°C</span></td>
+          <td class="note">全线最高过夜。换乘观光车。日落星空在酒店看，不从大本营摸黑赶回。</td>
+          <td class="book"><span class="tag must">必须提前</span>珠峰门票、观光车、顺康保留房<br />证件：身份证 + 电子边境通行证</td>
+        </tr>
+        <tr>
+          <td class="d">D05<span>09.30</span></td>
+          <td class="route"><b>巴松 → 定日 → 萨嘎</b><em>330–380 km · 8–10 小时 · 10:00 前离开，不再折返景区</em></td>
+          <td class="stay"><b>萨嘎强吉福 · 已锁</b><span>萨嘎 4487 m · 晨间仍在 5200</span></td>
+          <td class="wx"><b>白天 14°C</b><span>晴 · 夜 -3°C</span></td>
+          <td class="note">高海拔夜宿后的恢复赶路日。头痛或风雪则取消停留，只保萨嘎。</td>
+          <td class="book"><span class="tag check">出发前复核</span>退房、景区出线、G219 路况　本日无新购票景点</td>
+        </tr>
+        <tr class="long">
+          <td class="d">D06<span>10.01</span></td>
+          <td class="route"><b>萨嘎 → 圣湖 → 塔钦</b><em>500–520 km · 10–12 小时 · 到帕羊已晚则取消拉昂措</em></td>
+          <td class="stay"><b>云端盛景 · 已锁</b><span>塔钦 4675 m · 国王峰只远观</span></td>
+          <td class="wx"><b>白天 3°C</b><span>晴 · 夜 -6°C</span></td>
+          <td class="note">长途日。只在正规观景点短停。不得夜间绕湖。仍以塔钦住宿为硬目标。</td>
+          <td class="book"><span class="tag should">建议提前</span>神山圣湖 3–7 天购票　不转山 · 拉昂措不准时取消</td>
+        </tr>
+        <tr class="long">
+          <td class="d">D07<span>10.02</span></td>
+          <td class="route"><b>塔钦 → 土林穿行 → 狮泉河</b><em>500–540 km · 10–12 小时 · 13:30 未入盆地则取消古格/托林</em></td>
+          <td class="stay"><b>云朵酒店 · 已锁</b><span>狮泉河 4280 m · 冈仁波齐只远观</span></td>
+          <td class="wx"><b>白天 11°C</b><span>晴 · 夜 1°C</span></td>
+          <td class="note">06:30 出发。土林优先。日落前出峡谷。不去班公湖。</td>
+          <td class="book"><span class="tag none">无需预约</span>塔钦远观　<span class="tag check">出发前复核</span>札达土林　<span class="tag should">建议提前</span>古格或托林择一</td>
+        </tr>
+        <tr>
+          <td class="d">D08<span>10.03</span></td>
+          <td class="route"><b>狮泉河 → 革吉 → 改则</b><em>380–450 km · 7–9 小时 · 天黑前进店，不赶洞措</em></td>
+          <td class="stay"><b>改则康盛 · 已锁</b><span>改则 4416 m · 最高雄巴 4550</span></td>
+          <td class="wx"><b>白天 13°C</b><span>晴间多云 · 夜 1°C</span></td>
+          <td class="note">纯赶路。90–120 分钟换司机。不赌洞措乡镇住宿。</td>
+          <td class="book"><span class="tag none">无需预约</span>G317 无景点票　出发前核加油站和康盛保留房</td>
+        </tr>
+        <tr>
+          <td class="d">D09<span>10.04</span></td>
+          <td class="route"><b>改则 → 尼玛 → 色林措 → 班戈</b><em>450–550 km · 8–10 小时 · 12:30 未到尼玛则取消色林措，直赶班戈</em></td>
+          <td class="stay"><b>纳木错富氧（班戈店）· 已锁</b><span>班戈 4750 m · 色林措 4530</span></td>
+          <td class="wx"><b>白天 10°C</b><span>小雨 · 夜 2°C</span></td>
+          <td class="note">当晚停班戈。不得继续东进纳木措过夜。尚客优品同城备选。</td>
+          <td class="book"><span class="tag check">出发前复核</span>色林措开放/管制　无 2026 统一线上票，不买非官方名额</td>
+        </tr>
+        <tr>
+          <td class="d">D10<span>10.05</span></td>
+          <td class="route"><b>班戈 → 纳木措 → 当雄 → 拉萨</b><em>320–400 km · 6–8 小时 · 07:30 离班戈；14:00 未离湖则直奔拉萨</em></td>
+          <td class="stay"><b>柏丽艾尚 · 待续订</b><span>拉萨 3650 m · 纳木措 4718</span></td>
+          <td class="wx"><b>白天 11°C</b><span>小雨 · 纳木措 · 拉萨晚约 18°C</span></td>
+          <td class="note">上午看湖，下午回拉萨。不去圣象天门、扎西半岛。</td>
+          <td class="book"><span class="tag check">出发前复核</span>纳木措开放与 G109　10.05–06 柏丽艾尚待续订</td>
+        </tr>
+        <tr class="rest">
+          <td class="d">D11<span>10.06</span></td>
+          <td class="route"><b>拉萨休整 → 洗车还车</b><em>市内 0–65 km · 弹性安排 · 不出城，不排布达拉宫</em></td>
+          <td class="stay"><b>柏丽艾尚 · 待续订</b><span>拉萨连住 3650 m</span></td>
+          <td class="wx"><b>白天 18°C</b><span>小雨 · 夜 6°C</span></td>
+          <td class="note">若 10.05 凌晨才到店，本日只睡觉和还车。</td>
+          <td class="book"><span class="tag must">必须提前</span>门店还车时段、夜间停车　复核 10.07 直飞可退改机票</td>
+        </tr>
+        <tr class="rest">
+          <td class="d">D12<span>10.07</span></td>
+          <td class="route"><b>拉萨 → 贡嘎 → 上海</b><em>机场 65 km + 航班 · 当日必须抵沪，只走直飞可退改</em></td>
+          <td class="stay"><b>抵达上海 · 无酒店</b><span>贡嘎 3570 m → 上海 4 m</span></td>
+          <td class="wx"><b>白天 27°C</b><span>小雨 · 夜 22°C</span></td>
+          <td class="note">候补和紧张中转不算有效方案。当天无景点。</td>
+          <td class="book"><span class="tag must">必须提前</span>拉萨直飞上海机票　还车凭证、身份证、行李额</td>
+        </tr>
+      </tbody>
+    </table>
+    <footer>
+      <p><b>出发前订单还差三件</b><strong>取消</strong>智行 09.28 萨嘎强吉福；<strong>取消</strong>去哪儿塔尔庆 09.29–10.01（10.01 已改住云端盛景）；<strong>续订</strong> 10.05–06 拉萨柏丽艾尚。10.04 纳木错富氧按班戈过夜执行。</p>
+      <p><b>白天天气</b>表内先写白天最高。09.24 取值：县城看中国天气网，更远日子看 GFS。羽绒留给巴松、塔钦早出和夜里。</p>
+      <p><b>海拔怎么看</b>过夜按酒店所在地。珠峰、国王峰、冈仁波齐只远观，不是登顶高度。09.29 巴松约 5200 是睡眠最高点。</p>
+      <p><b>长途与高反</b>10.01 / 10.02 红底长途日。两名司机轮换，天黑不赶生路。氧气、止痛药、卫星通信随车。</p>
+      <p><b>预约原则</b>红必须出发前办完。黄尽量提前。蓝当天早上再核开放。没有统一票务的湖区，不从黄牛买通行。</p>
+    </footer>
+  </div>
+</body>
+</html>

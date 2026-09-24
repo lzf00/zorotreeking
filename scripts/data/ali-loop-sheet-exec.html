@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>阿里大环线 · 12 日执行表</title>
+<style>
+  @page { size: 1500px 1800px; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1500px; height: 1800px; overflow: hidden; background: #ead9c4; }
+  body {
+    font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", sans-serif;
+    color: #1c1610;
+    background:
+      radial-gradient(1200px 700px at 100% 0%, rgba(196, 92, 40, 0.12), transparent 55%),
+      linear-gradient(180deg, #f6ead8 0%, #ead7bf 100%);
+  }
+  .sheet {
+    width: 1500px; height: 1800px;
+    padding: 42px 46px 36px;
+    display: flex; flex-direction: column;
+  }
+  header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    align-items: end;
+    padding-bottom: 22px;
+    border-bottom: 2px solid #1c1610;
+  }
+  .kicker {
+    font-size: 13px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: #b5522a;
+    font-weight: 600;
+  }
+  h1 {
+    margin-top: 8px;
+    font-family: "Songti SC", "STSong", serif;
+    font-size: 46px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    line-height: 1.05;
+  }
+  .meta {
+    text-align: right;
+    font-size: 15px;
+    line-height: 1.55;
+    color: #5b4d40;
+  }
+  .meta b { color: #1c1610; font-weight: 600; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 18px;
+    flex: 0 0 auto;
+    align-self: stretch;
+  }
+  th {
+    text-align: left;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    color: #7a6858;
+    padding: 0 10px 10px;
+    border-bottom: 1px solid #cbb59a;
+  }
+  td {
+    vertical-align: top;
+    padding: 13px 10px 12px;
+    border-bottom: 1px solid #e0ccb4;
+  }
+  tr.long td { background: rgba(181, 82, 42, 0.08); }
+  tr.rest td { background: rgba(28, 22, 16, 0.03); }
+  .d {
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    font-size: 15px;
+    color: #b5522a;
+    width: 86px;
+  }
+  .d span { display: block; color: #1c1610; font-size: 18px; letter-spacing: 0.02em; margin-top: 2px; }
+  .route { width: 400px; }
+  .route b {
+    display: block;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    margin-bottom: 4px;
+  }
+  .route em {
+    font-style: normal;
+    font-size: 13px;
+    color: #6d5c4d;
+    line-height: 1.4;
+  }
+  .km { width: 150px; font-variant-numeric: tabular-nums; }
+  .km b { display: block; font-size: 16px; }
+  .km span { font-size: 13px; color: #6d5c4d; }
+  .wx { width: 132px; font-variant-numeric: tabular-nums; }
+  .wx b { display: block; font-size: 16px; }
+  .wx span { font-size: 13px; color: #6d5c4d; }
+  .see { width: 250px; font-size: 14px; line-height: 1.45; color: #3a2f26; }
+  .stay { width: 250px; }
+  .stay b { display: block; font-size: 16px; }
+  .stay span { font-size: 13px; color: #6d5c4d; }
+  footer {
+    margin-top: 16px;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 18px;
+    padding-top: 16px;
+    border-top: 2px solid #1c1610;
+    font-size: 13px;
+    line-height: 1.55;
+    color: #4b3e33;
+  }
+  footer strong { color: #b5522a; }
+</style>
+</head>
+<body>
+  <div class="sheet">
+    <header>
+      <div>
+        <p class="kicker">Ali Grand Loop · Lhasa Return 2026</p>
+        <h1>12 日路线执行表</h1>
+      </div>
+      <div class="meta">
+        <b>09.26 拉萨取车 · 10.06 还车 · 10.07 抵沪</b><br />
+        珠峰过夜版 · 全员走 G317<br />
+        10.04 住班戈 · 10.05 经纳木措回拉萨
+      </div>
+    </header>
+    <table>
+      <thead>
+        <tr>
+          <th>日期</th>
+          <th>当日路线</th>
+          <th>车程</th>
+          <th>白天天气</th>
+          <th>必看 / 可取消</th>
+          <th>当晚住宿</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="d">D01<span>09.26</span></td>
+          <td class="route"><b>贡嘎机场 → 拉萨取车</b><em>适应日，不安排城市游览</em></td>
+          <td class="km"><b>约 65 km</b><span>1–1.5 小时</span></td>
+          <td class="wx"><b>白天 20°C</b><span>多云 · 夜 7°C</span></td>
+          <td class="see">取车验车 · 补物资 · 休息</td>
+          <td class="stay"><b>柏丽艾尚</b><span>拉萨 · 已锁</span></td>
+        </tr>
+        <tr>
+          <td class="d">D02<span>09.27</span></td>
+          <td class="route"><b>羊湖 → 卡若拉 → 江孜 → 日喀则</b><em>12:30 未离浪卡子则跳过卡若拉和白居寺</em></td>
+          <td class="km"><b>约 360 km</b><span>7–9 小时</span></td>
+          <td class="wx"><b>白天 18°C</b><span>多云 · 夜 2°C</span></td>
+          <td class="see">羊湖必看 · 卡若拉/白居寺准时才进</td>
+          <td class="stay"><b>至格藏隆广场</b><span>日喀则 · 已锁</span></td>
+        </tr>
+        <tr>
+          <td class="d">D03<span>09.28</span></td>
+          <td class="route"><b>日喀则 → 拉孜 → 定日</b><em>扎寺只做早场，不压缩定日缓冲</em></td>
+          <td class="km"><b>约 250 km</b><span>5–6 小时</span></td>
+          <td class="wx"><b>白天 15°C</b><span>多云 · 夜 0°C</span></td>
+          <td class="see">扎什伦布寺早场 · 当晚核珠峰票</td>
+          <td class="stay"><b>我与乔木</b><span>定日 · 已锁三间</span></td>
+        </tr>
+        <tr>
+          <td class="d">D04<span>09.29</span></td>
+          <td class="route"><b>定日 → 珠峰景区 → 巴松顺康</b><em>下午离开放区，日落前回到巴松</em></td>
+          <td class="km"><b>110–150 km</b><span>4–6 小时</span></td>
+          <td class="wx"><b>白天 8°C</b><span>阴 · 夜 -1°C</span></td>
+          <td class="see">加乌拉 · 绒布 · 酒店看日落星空</td>
+          <td class="stay"><b>顺康富氧</b><span>巴松村 · 已锁</span></td>
+        </tr>
+        <tr>
+          <td class="d">D05<span>09.30</span></td>
+          <td class="route"><b>巴松 → 定日 → 萨嘎</b><em>10:00 前离开；不再折返景区</em></td>
+          <td class="km"><b>330–380 km</b><span>8–10 小时</span></td>
+          <td class="wx"><b>白天 14°C</b><span>晴 · 夜 -3°C</span></td>
+          <td class="see">巴松晨光 · 本日无新景点</td>
+          <td class="stay"><b>萨嘎强吉福</b><span>萨嘎 · 已锁</span></td>
+        </tr>
+        <tr class="long">
+          <td class="d">D06<span>10.01</span></td>
+          <td class="route"><b>萨嘎 → 圣湖 → 塔钦</b><em>到帕羊已晚则取消拉昂措</em></td>
+          <td class="km"><b>500–520 km</b><span>10–12 小时</span></td>
+          <td class="wx"><b>白天 3°C</b><span>晴 · 夜 -6°C</span></td>
+          <td class="see">玛旁雍措 · 拉昂措准时才停</td>
+          <td class="stay"><b>云端盛景</b><span>塔钦 · 已锁 10.01</span></td>
+        </tr>
+        <tr class="long">
+          <td class="d">D07<span>10.02</span></td>
+          <td class="route"><b>塔钦 → 土林穿行 → 狮泉河</b><em>13:30 未入盆地则取消古格/托林</em></td>
+          <td class="km"><b>500–540 km</b><span>10–12 小时</span></td>
+          <td class="wx"><b>白天 11°C</b><span>晴 · 夜 1°C</span></td>
+          <td class="see">土林优先 · 古格或托林择一 · 不去班公湖</td>
+          <td class="stay"><b>云朵酒店</b><span>狮泉河 · 已锁</span></td>
+        </tr>
+        <tr>
+          <td class="d">D08<span>10.03</span></td>
+          <td class="route"><b>狮泉河 → 革吉 → 改则</b><em>天黑前进店，不赶洞措</em></td>
+          <td class="km"><b>380–450 km</b><span>7–9 小时</span></td>
+          <td class="wx"><b>白天 13°C</b><span>晴间多云 · 夜 1°C</span></td>
+          <td class="see">北线赶路日 · 沿途不新增景点</td>
+          <td class="stay"><b>改则康盛</b><span>改则 · 已锁</span></td>
+        </tr>
+        <tr>
+          <td class="d">D09<span>10.04</span></td>
+          <td class="route"><b>改则 → 尼玛 → 色林措 → 班戈</b><em>12:30 未到尼玛则取消色林措，直赶班戈</em></td>
+          <td class="km"><b>450–550 km</b><span>8–10 小时</span></td>
+          <td class="wx"><b>白天 10°C</b><span>小雨 · 夜 2°C</span></td>
+          <td class="see">色林措唯一大景 · 当晚停班戈</td>
+          <td class="stay"><b>纳木错富氧（班戈店）</b><span>班戈 · 已锁</span></td>
+        </tr>
+        <tr>
+          <td class="d">D10<span>10.05</span></td>
+          <td class="route"><b>班戈 → 纳木措 → 当雄 → 拉萨</b><em>07:30 离班戈；14:00 未离湖则直奔拉萨</em></td>
+          <td class="km"><b>320–400 km</b><span>6–8 小时</span></td>
+          <td class="wx"><b>白天 11°C</b><span>小雨 · 纳木措 · 拉萨晚 18°C</span></td>
+          <td class="see">纳木措开放道路 · 不去圣象天门</td>
+          <td class="stay"><b>柏丽艾尚</b><span>拉萨 · 待续订 10.05–06</span></td>
+        </tr>
+        <tr class="rest">
+          <td class="d">D11<span>10.06</span></td>
+          <td class="route"><b>拉萨休整 → 洗车还车</b><em>不出城，不排布达拉宫</em></td>
+          <td class="km"><b>市内 0–65 km</b><span>弹性安排</span></td>
+          <td class="wx"><b>白天 18°C</b><span>小雨 · 夜 6°C</span></td>
+          <td class="see">补觉 · 还车验收 · 核航班</td>
+          <td class="stay"><b>柏丽艾尚</b><span>拉萨连住 · 待续订</span></td>
+        </tr>
+        <tr class="rest">
+          <td class="d">D12<span>10.07</span></td>
+          <td class="route"><b>拉萨 → 贡嘎 → 上海</b><em>当日必须抵沪，只走直飞可退改</em></td>
+          <td class="km"><b>机场 65 km</b><span>+ 航班</span></td>
+          <td class="wx"><b>白天 27°C</b><span>小雨 · 夜 22°C</span></td>
+          <td class="see">无景点 · 只转场</td>
+          <td class="stay"><b>抵达上海</b><span>无需本路线酒店</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <footer>
+      <p><strong>出发前订单还差三件：</strong>取消智行 09.28 萨嘎强吉福；取消去哪儿塔尔庆 09.29–10.01（10.01 已改住云端盛景）；续订 10.05–06 拉萨柏丽艾尚。10.04 纳木错富氧按班戈过夜执行。</p>
+      <p>红底两天是长途日（10.01 / 10.02）。两名司机轮换，天黑不赶生路。证件需含日喀则定日县 + 阿里证。天气先看白天最高，羽绒留给巴松、塔钦早出和夜里。</p>
+    </footer>
+  </div>
+</body>
+</html>

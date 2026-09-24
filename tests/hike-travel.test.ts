@@ -21,7 +21,7 @@ import {
   aliLhasaReturnRoutedDayGeometry,
 } from "../src/data/ali-lhasa-return-road-geometry";
 import * as aliLhasaReturnData from "../src/data/ali-lhasa-return-route";
-import { aliLhasaReturnWeatherByDate } from "../src/data/ali-lhasa-return-weather";
+import { aliLhasaReturnWeatherByDate, aliLhasaReturnWeatherReviewedAt } from "../src/data/ali-lhasa-return-weather";
 import {
   aliLhasaReturnExecAltitudeByDate,
   aliLhasaReturnExecNoteByDate,
@@ -663,7 +663,7 @@ test("Lhasa-return one-page sheet lists sights, distance, and hotels for every d
     assert.ok(weather.summary.length > 0);
     assert.match(weather.range, /白天.*°C/);
     assert.ok(weather.dayHighC >= weather.nightLowC);
-    if (day.date !== "09.29") {
+    if (!["09.29", "10.01"].includes(day.date)) {
       assert.ok(weather.dayHighC >= 6, `D${day.day} daytime ${weather.dayHighC} looks like a night low`);
     }
     if (planning.stay.noHotelNeeded) {
@@ -686,10 +686,11 @@ test("Lhasa-return one-page sheet lists sights, distance, and hotels for every d
   assert.doesNotMatch(aliLhasaReturnDailyPlanning[3]?.stay.city ?? "", /顺康富氧/);
   assert.doesNotMatch(aliLhasaReturnDailyPlanning[7]?.stay.hotels[1]?.name ?? "", /洞措/);
   assert.equal(aliLhasaReturnWeatherByDate["09.29"]?.dayHighC, 8);
-  assert.equal(aliLhasaReturnWeatherByDate["10.01"]?.dayHighC, 6);
+  assert.equal(aliLhasaReturnWeatherByDate["10.01"]?.dayHighC, 3);
   assert.match(aliLhasaReturnWeatherByDate["10.05"]?.note ?? "", /纳木措/);
   assert.equal(aliLhasaReturnWeatherByDate["10.06"]?.kind, "forecast");
-  assert.equal(aliLhasaReturnWeatherByDate["10.07"]?.kind, "trend");
+  assert.equal(aliLhasaReturnWeatherByDate["10.07"]?.kind, "forecast");
+  assert.equal(aliLhasaReturnWeatherReviewedAt, "2026-09-24");
   assert.match(aliLhasaReturnDailyPlanning[8]?.stay.city ?? "", /班戈/);
   assert.match(aliLhasaReturnDailyPlanning[8]?.stay.hotels[0]?.name ?? "", /纳木错富氧/);
   assert.match(aliLhasaReturnRouteDays[8]?.overnight ?? "", /纳木错富氧/);
