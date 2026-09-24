@@ -1,0 +1,205 @@
+---
+lang: zh
+translationKey: digest-2026-09-24
+title: "AI 每日精选 · 2026-09-24"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-09-24
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI、Anthropic、DeepMind等头部AI厂商集中发布技术进展与落地合作新动态</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face、arXiv披露视频生成、对话记忆、量子计算等多领域前沿研究成果</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Meta自研AI产品增速反超ChatGPT股价大涨，国内海信、中科类脑发布AI相关新进展</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📈产业动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥大厂动向</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠前沿论文</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖生成AI</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔐隐私技术</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2609.28466" target="_blank" rel="noopener noreferrer">The Past Frames the Future: Memory for Autoregressive Video Generation</a>
+
+*HF ★ 22 · Harold Haodong Chen, Rongjin Guo, Disen Lan… · [HF 镜像](https://huggingface.co/papers/2609.28466)*
+
+针对自回归视频生成受上下文窗口、存储算力边界限制，易丢失实体属性、因果变化等关键历史信息的痛点，本文是该领域记忆机制的系统性综述，从信息表征、存储功能、读写操作、学习范式、评估方法五个维度梳理现有研究，总结现存核心挑战，为记忆增强型视频生成系统研发提供了结构化研究基础。
+
+<FeedbackButtons slug="item:arxiv-2609.28466" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.26780" target="_blank" rel="noopener noreferrer">SpeakerMem-R1: Speaker-Centered Dual-Track Memory for Multi-Party Dialogue</a>
+
+*HF ★ 16 · Haobo Zheng, Tan Tang, Yan Chen… · [HF 镜像](https://huggingface.co/papers/2609.26780)*
+
+针对多方对话长时记忆存在的说话人信息归因错误、关系与跨时序状态梳理困难的痛点，本文提出SpeakerMem-R1双轨记忆方案：同时存储带说话人标签的原文、分个体/群体层级的结构化状态，查询时跨维度融合证据，配套训练的Writer-R1可降低记忆构建误差。该方案在多个公开记忆基准上取得SOTA结果，消融验证了双轨、分层设计的互补性。
+
+<FeedbackButtons slug="item:arxiv-2609.26780" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.22947" target="_blank" rel="noopener noreferrer">RewardVerse: Rubric-Guided Policy Optimization for Video Reward Modeling</a>
+
+*HF ★ 15 · Zhenchen Tang, Yang Li, Songlin Yang… · [HF 镜像](https://huggingface.co/papers/2609.22947)*
+
+针对现有视频奖励模型无明确评估准则直接输出标量分，易出现跨提示标量漂移、奖励不可靠的问题，本文提出RewardVerse框架，先生成显式评分准则再引导打分，配套两阶段RGPO训练算法。实验验证其可缓解标量漂移，单样本、成对评估均达SOTA，为视频生成强化学习提供可靠可解释奖励信号。
+
+<FeedbackButtons slug="item:arxiv-2609.22947" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.27891" target="_blank" rel="noopener noreferrer">Schrödinger's Code Repository: Have LLMs Learned SWE-bench or Memorized It?</a>
+
+*HF ★ 10 · Silin Chen, Yufei Yang, Xiaodong Gu… · [HF 镜像](https://huggingface.co/papers/2609.27891)*
+
+针对现有代码智能体评测基准存在数据泄露、模型性能或来自记忆而非推理的问题，该文提出SchrodingerRepo动态评测框架，通过四层保功能变换消除测试仓库的命名、布局等熟悉线索。测试主流大模型发现其性能普遍下降、交互成本显著提升，证明当前编码模型确实部分依赖仓库线索记忆，需采用动态实例化评测保障结果可靠。
+
+<FeedbackButtons slug="item:arxiv-2609.27891" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.26355" target="_blank" rel="noopener noreferrer">PACT: From Credit Assignment to Critic Alignment</a>
+
+*HF ★ 9 · Jiayan Fu, Hang Xu, Yong Zhang… · [HF 镜像](https://huggingface.co/papers/2609.26355)*
+
+针对大语言模型强化学习后训中token级信贷缺乏统一定义的问题，本文提出完备性、前缀一致性、中立性三正则条件，证明其可唯一确定token级信贷，进而提出PACT算法：采用先Actor后Critic的更新顺序，对Critic训练加重要性采样修正实现二者对齐。实验显示其在数学推理、SWE-bench上均显著优于PPO、GRPO等主流算法。
+
+<FeedbackButtons slug="item:arxiv-2609.26355" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2609.25021" target="_blank" rel="noopener noreferrer">"As a Language Model...": Chat Template Switches LLM Self-Referential Voice and Activation Steering Reproduces It</a>
+
+*J\k\{e\}drzej Maczan*
+
+本研究针对大模型自我指涉回应（如“我只是AI”免责声明）动因不明的问题，测试8款9B参数以下开源指令大模型，分析3款的激活空间特征。结果表明：聊天模板是免责表述的开关，激活空间存在可调控该表述的特定方向。大模型自陈内容不单纯由权重决定，受部署配置影响，相关AI安全、自我认知研究需控制该混淆变量。
+
+<FeedbackButtons slug="item:arxiv-2609.25021" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.25082" target="_blank" rel="noopener noreferrer">Federating Quantum and Classical Computing: A Privacy-Preserving Hybrid Approach</a>
+
+*Carlos Cano, Daniel M. Jimenez-Gutierrez, Diego Sal…*
+
+针对量子-经典混合机器学习在隐私敏感多节点场景下的原始数据无法集中、量子电路参数效率要求高的痛点，本文采用盲纵向联邦学习协议实现量子经典混合方与经典方的隐私协作，自研SMPP基准验证：方案精度较本地训练从0.7227提升至0.8757，接近非隐私集中训练水平，参数量远低于同效经典模型，无需集中原始数据即可实现高性能跨方协作。
+
+<FeedbackButtons slug="item:arxiv-2609.25082" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.25131" target="_blank" rel="noopener noreferrer">Entropy Can Flow, or It Can Guide. Be Entropy. LEDFlow: Introducing Entropy-guided Generation Order into Uniform Discrete Flow</a>
+
+*Tung Sum Thomas Kwok, Yidong Ouyang, Yingjia Wan…*
+
+针对均匀离散流易误改中间正确预测的问题，本文提出无训练采样器LEDFlow：以局部熵自适应决定生成顺序，优先固定低熵位置的预测，在保留流采样特性的同时避免吸收错误结果，理论验证该策略可最小化误差上界。其在数独（强约束任务提升尤为显著）、文生图、多模态理解任务上性能均优于基线，推理成本与标准流采样相当。
+
+<FeedbackButtons slug="item:arxiv-2609.25131" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/two-years-of-openai-academy" target="_blank" rel="noopener noreferrer">Two years of OpenAI Academy</a>
+
+*OpenAI*
+
+本次是OpenAI学院成立两周年的官方公告内容，核心信息共两点：一是正式标记学院落地运营已满两周年的关键节点，二是明确后续发展核心目标，即进一步扩大服务覆盖范围，面向更多元的社群推广普及AI技能，降低AI学习门槛，让前沿AI技术惠及更广泛的社会群体。
+
+<FeedbackButtons slug="item:openai-blog-two-years-of-openai-academy" client:visible />
+
+## <a href="https://openai.com/index/openai-extends-cyber-access-to-ukraine-for-civilian-defense" target="_blank" rel="noopener noreferrer">OpenAI extends cyber access to Ukraine for civilian defense</a>
+
+*OpenAI*
+
+该动态披露了OpenAI的最新技术支援举措：其将向乌克兰政府开放旗下Daybreak项目的使用权限，核心目标是为乌克兰民用基础设施的网络防御工作提供技术支撑。该部署可依托OpenAI的AI技术能力，提升乌方民用关键设施的网络安全防护水平，降低网络攻击对当地民生领域的冲击。
+
+<FeedbackButtons slug="item:openai-blog-openai-extends-cyber-access-to-ukraine-for-civilian-defense" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-discovers-novel-enzyme-system" target="_blank" rel="noopener noreferrer">Claude discovers a novel enzyme system</a>
+
+*Anthropic*
+
+本项为新搭建的生命科学研究实验室的早期成果，研究依托Claude智能体开展酶相关挖掘探索，成功发现了一种此前未被报道的全新酶系统。目前该酶系统的具体生物学功能尚未明确，后续可围绕其功能解析、应用潜力评估展开研究，可为酶工程、合成生物学等领域提供新研究方向。
+
+<FeedbackButtons slug="item:anthropic-claude-discovers-novel-enzyme-system" client:visible />
+
+## <a href="https://www.anthropic.com/news/accenture-embedded-evaluation" target="_blank" rel="noopener noreferrer">Partnering with Accenture on embedded evaluation</a>
+
+*Anthropic*
+
+AI企业Anthropic为落地此前提出的“内部嵌入专职评估人员”的安全治理承诺，将与埃森哲合作开展前沿AI的独立评估工作。双方约定，未来五年内各自将在该领域投入至少10亿美元，用于搭建前沿AI评估的技术、人员配套能力，强化前沿AI的风险防控水平。
+
+<FeedbackButtons slug="item:anthropic-accenture-embedded-evaluation" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/advancing-private-ai-compute-with-secure-server-side-memory/" target="_blank" rel="noopener noreferrer">Advancing Private AI Compute with secure, server-side memory</a>
+
+*Google DeepMind*
+
+本研究面向个人AI场景的私有AI计算需求，核心创新为引入加密安全的服务端私有内存机制。该方案既破解了传统端侧私有AI计算受设备算力限制的瓶颈，又规避了常规服务端计算存在的用户隐私数据泄露风险，可同时兼顾隐私安全性与算力支撑能力，为个人类AI服务的规模化落地提供了可行技术方向。
+
+<FeedbackButtons slug="item:deepmind-advancing-private-ai-compute-with-secure-server-side-memory" client:visible />
+
+## <a href="https://deepmind.google/blog/say-hello-to-gemini-38-text-to-speech/" target="_blank" rel="noopener noreferrer">Gemini 3.8 text-to-speech says hello</a>
+
+*Google DeepMind*
+
+谷歌正式推出Gemini 3.8版本新增的文本转语音（TTS）功能，技术上依托大模型多模态语义对齐框架，优化了语音韵律拟合、语境情感匹配逻辑，支持数十种语言与多款定制音色。实测语音自然度接近真人，对内容语气、口音的适配效果较前代方案提升显著，可满足多场景语音生成需求。
+
+<FeedbackButtons slug="item:deepmind-say-hello-to-gemini-38-text-to-speech" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/how-to-use-nvidia-warp-and-mjwarp" target="_blank" rel="noopener noreferrer">How to Use NVIDIA Warp and MjWarp to Accelerate Robotics Simulation and Learning Workflows</a>
+
+*Hugging Face*
+
+本文介绍英伟达Warp并行计算框架与MjWarp适配工具，可高效加速机器人仿真与学习流程：Warp提供GPU原生高性能并行运算支持，MjWarp打通MuJoCo仿真器与Warp链路，实现仿真、数据生成、强化学习训练全流程GPU端运行，无需跨设备传数，相比传统CPU方案效率提数十倍，训练收敛提速1个量级，大幅压缩研发周期。
+
+<FeedbackButtons slug="item:hf-blog-how-to-use-nvidia-warp-and-mjwarp" client:visible />
+
+## <a href="https://huggingface.co/blog/evaleval-aisi" target="_blank" rel="noopener noreferrer">How UK AISI and EvalEval Are Making Benchmark Results Reproducible</a>
+
+*Hugging Face*
+
+英国AI安全研究所（AISI）推出的EvalEval工具，针对大模型基准测试流程不透明、结果难复现的痛点，通过标准化评测工作流、配套溯源机制与统一校验逻辑，大幅降低基准结果复现成本，提升跨团队评测结果可比性，为AI安全对齐领域可靠研究提供支撑。
+
+<FeedbackButtons slug="item:hf-blog-evaleval-aisi" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+递归自我改进（RSI）概念最早源自1965年I.J.古德提出的超智能机器设想，指能力远超人类所有智力活动、可自行设计更优机器实现迭代的系统。2008年尤德考斯基明确其核心是AI用现有智能优化自身认知架构的反馈环，当前AI语境下，该机制既包括模型直接改写自身权重，也可广义覆盖对训练流程的优化。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/09/496658.html" target="_blank" rel="noopener noreferrer">海信新一代性能旗舰E7S Pro+正式发布，原生真彩再进阶</a>
+
+*量子位*
+
+2026年9月23日，海信在秋季电视新品发布会上正式推出新一代性能旗舰E7S Pro+。该产品为全新RGB-Mini LED品类，定位“原生真彩，性能旗舰”，实现了原生真彩显示技术的再进阶，是海信布局高端Mini LED赛道、扩充性能级产品矩阵的重磅落地成果。
+
+<FeedbackButtons slug="item:qbitai-496658" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/496647.html" target="_blank" rel="noopener noreferrer">Meta靠自研Manus翻身！股价一夜暴涨11%，登顶苹果商店，增速反超ChatGPT</a>
+
+*量子位*
+
+Meta推出自研个人AI智能体Muse，可直接代用户完成协商退保、找低价车险、申请退货退款等实操类事务，上线仅13天就登顶北美App Store，增速超过刚发布时的ChatGPT。受此利好，Meta股价单日暴涨11%，创近一年最大单日涨幅，市值重回高位。
+
+<FeedbackButtons slug="item:qbitai-496647" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/496615.html" target="_blank" rel="noopener noreferrer">成立九年，中科类脑把积累装进Token工厂</a>
+
+*量子位*
+
+大模型规模化推理阶段，数据中心评价标准从卡数、算力规模、PUE转向有效Token产出能力。中科类脑推出“算电协同型Token工厂”体系，将异构芯片、算力、电力、用户任务统一调度，落地彼塔云平台，定位Token生产运营层，同等投入下可提升Token产出效率、压低成本、保障质量，对交付结果负责。
+
+<FeedbackButtons slug="item:qbitai-496615" client:visible />
