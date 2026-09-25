@@ -1,0 +1,205 @@
+---
+lang: en
+translationKey: digest-2026-09-25
+title: "AI Daily Highlights · 2026-09-25"
+description: "20 papers · Multi-source aggregation + AI summaries"
+date: 2026-09-25
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's content in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Top AI players have made frequent moves: DeepMind launched Gemini 3.8 Live, Claude discovered new enzymes, OpenAI extended civilian services for Ukraine</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Cutting-edge AI research delivers abundant results, covering world models, embodied intelligence, temporal reasoning and other frontier directions</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Industrial implementation progress is impressive: DeepSeek inference throughput nearly increased 7x, overseas-focused agent Xiaoyuan AI joined Tencent WorkBuddy</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏢 Vendor Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Performance Optimization</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🚀 Industrial Implementation</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Model Innovation</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2609.28654" target="_blank" rel="noopener noreferrer">Training Object Permanence in World Models</a>
+
+*HF ★ 21 · Haotian Zhang, Fengyuan Yu, Dezhi Luo… · [HF Mirror](https://huggingface.co/papers/2609.28654)*
+
+To explore whether video generation world models have object permanence, a cognitive prior in humans, this study built the WROP dataset containing 150 types of cognitive tasks, 1.5 million samples and a 300-question test set, and trained the 16B-parameter PWM-WROP model. Evaluation of 14 mainstream models shows that this model ranks first in video continuation tasks and third in the overall ranking. Related resources including the dataset and model weights are all open-source.
+
+<FeedbackButtons slug="item:arxiv-2609.28654" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.23407" target="_blank" rel="noopener noreferrer">OmniEcho: Spatial Audio Understanding for Embodied Agents</a>
+
+*HF ★ 9 · Ruixun Liu, Yuxuan Wang, Jiacheng Xie… · [HF Mirror](https://huggingface.co/papers/2609.23407)*
+
+To address the pain points of lack of mature evaluation systems and modeling solutions for spatial audio understanding in embodied intelligence, this study launched the unified benchmark OmniEchoBench, paired with a controllable spatial audio rendering pipeline, and also developed the OmniEcho multimodal model equipped with a FOA spatial encoder. Experiments show that its spatial audio-visual perception reaches SOTA, and sound-guided navigation performance is close to traditional vision-text navigation, verifying the value of spatial audio for embodied tasks, while also pointing out that fine-grained positioning and ranging remains an unsolved difficulty. (Total 127 words)
+
+<FeedbackButtons slug="item:arxiv-2609.23407" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.28416" target="_blank" rel="noopener noreferrer">Agent-Editing World Model: Rethinking World Modeling for LLM Agents</a>
+
+*HF ★ 8 · Shuang Sun, Guoxin Chen, Fanzhe Meng… · [HF Mirror](https://huggingface.co/papers/2609.28416)*
+
+To address the pain points of existing world models for LLM agents having low value in tool response prediction and being easily interfered by historical wrong assumptions, this paper proposes the AEWM model, which skips tool feedback simulation and directly models the impact of reasoning and actions on task progress, paired with the EditAct framework for action discrimination and state correction, as well as a validation trajectory fine-tuning strategy. Experiments show that its action classification outperforms the baseline by 10.6 percentage points, the average score across multiple benchmarks increases by 3.2-6.7, and the fine-tuning strategy further improves performance by 2.2-2.6 percentage points.
+
+<FeedbackButtons slug="item:arxiv-2609.28416" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.29892" target="_blank" rel="noopener noreferrer">Qwen-Planner-Agent: A Closed-Loop AI-for-AI Framework for Real-World Mobile Planner Agents</a>
+
+*HF ★ 4 · Tingyu Qu, Weigao Sun, Yuecheng Liu… · [HF Mirror](https://huggingface.co/papers/2609.29892)*
+
+This paper proposes Qwen-Planner-Agent, a closed-loop AI-for-AI framework for mobile planner agents in real-world scenarios, which achieves iterative optimization through three paths: AI-generated manually verified training data, hybrid training with a capability-aware reward mechanism, and execution feedback-driven co-evolution of the model and toolchain. It delivers the best performance on mobile planning benchmarks, improves performance on non-mobile agent tasks while basically retaining general capabilities.
+
+<FeedbackButtons slug="item:arxiv-2609.29892" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.29444" target="_blank" rel="noopener noreferrer">IterSynth: Rethinking Deep Search Agents via Role-Decoupled Iterative Synthesis</a>
+
+*HF ★ 2 · Xingyu Wu, Yuchen Yan, Zhengxi Lu… · [HF Mirror](https://huggingface.co/papers/2609.29444)*
+
+To address the two major flaws of existing ReAct-like deep search LLM agents: role coupling and accumulated noise in search context, this paper proposes IterSynth, a role-decoupled iterative synthesis paradigm, which splits planning and evidence integration modules, paired with an exclusive role-decoupling strategy optimization algorithm for training. Experiments show that its 8B version outperforms the strongest baseline with the same parameter size by 4.2%, and it can also be used as a general prompt paradigm to bring significant zero-shot gains to cutting-edge closed-source models.
+
+<FeedbackButtons slug="item:arxiv-2609.29444" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2609.26811" target="_blank" rel="noopener noreferrer">The Drift Contract: Spectral Updates for Depth-Robust Local Learning</a>
+
+*Fabien Polly*
+
+To address the pain points of local learning having no global backpropagation, accuracy degradation as depth increases, and high sensitivity to hyperparameters, this paper introduces Muon-style spectral updates into layer-wise local optimization, and also proposes the drift contract dynamic step size that constrains pre-activation changes. Experiments show that it does not require hyperparameter readjustment as network width and depth change, its accuracy on the CIFAR-10 benchmark is better than local Adam, and the local advantage disappears when only the backbone is added with RMSNorm and weight decay.
+
+<FeedbackButtons slug="item:arxiv-2609.26811" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.26820" target="_blank" rel="noopener noreferrer">Signal2Symbol: Neuro-Symbolic Temporal Reasoning for Explainable Physiological Time-Series Anomaly Detection</a>
+
+*Naser Mansour, Sidahmed Benabderrahmane, Ameer Rahwan*
+
+To address the lack of interpretability of deep learning models in physiological time series anomaly detection such as ECG and EEG, this paper proposes the neuro-symbolic framework Signal2Symbol to achieve highly interpretable anomaly detection: it first converts signals into symbol sequences, and outputs interpretable anomaly classifications with temporal logic through rare itemset mining, Allen interval algebra, and formal concept analysis. Tested on three public datasets and noise robustness tests, this framework balances detection performance and can output compact and easy-to-understand anomaly reasoning conclusions.
+
+<FeedbackButtons slug="item:arxiv-2609.26820" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.26822" target="_blank" rel="noopener noreferrer">HARN: Hierarchical Associative Resonance Network for Event-Driven Multi-Timeframe Forecasting</a>
+
+*Nabeel Ahmad Saidd*
+
+To address the pain point of repeated computation of invariant representations required for multi-timeframe financial time series prediction, this paper proposes the Hierarchical Associative Resonance Network (HARN): it updates the persistent representation of each layer only when the corresponding candlestick is completed, integrates modules such as multi-scale causal encoding and gated associative memory, and restores prices after prediction in the basis point space. Tested on four types of assets including stocks, foreign exchange, and commodities, its accuracy is better than mainstream single-timeframe baselines, it is audited to comply with event-driven protocols, and it is an efficient persistent multi-timeframe prediction framework.
+
+<FeedbackButtons slug="item:arxiv-2609.26822" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/two-years-of-openai-academy" target="_blank" rel="noopener noreferrer">Two years of OpenAI Academy</a>
+
+*OpenAI*
+
+This is the official announcement for the second anniversary of OpenAI Academy, OpenAI's AI skill popularization program. Since its establishment two years ago, the program has focused on providing public practical AI skill training resources. On the occasion of the second anniversary, it clearly states its follow-up core plan: it will further expand service coverage, deliver AI skill resources to more diverse communities, lower the threshold for AI use, and help more groups master AI capabilities.
+
+<FeedbackButtons slug="item:openai-blog-two-years-of-openai-academy" client:visible />
+
+## <a href="https://openai.com/index/openai-extends-cyber-access-to-ukraine-for-civilian-defense" target="_blank" rel="noopener noreferrer">OpenAI extends cyber access to Ukraine for civilian defense</a>
+
+*OpenAI*
+
+Recently, OpenAI announced that it will open access to its Daybreak project for the Ukrainian government, a move aimed at providing technical support for the cyber defense of Ukrainian civilian infrastructure. Against the backdrop of the ongoing Russia-Ukraine conflict, Ukrainian civilian facilities are frequently hit by cyberattacks. This move can use AI technology to improve Ukraine's ability to respond to cyber threats and ensure the stable operation of people's livelihood-related facilities such as water and power supply.
+
+<FeedbackButtons slug="item:openai-blog-openai-extends-cyber-access-to-ukraine-for-civilian-defense" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-discovers-novel-enzyme-system" target="_blank" rel="noopener noreferrer">Claude discovers a novel enzyme system</a>
+
+*Anthropic*
+
+This is an early research result of the newly established life science laboratory. The research relied on Claude agents to carry out exploration and screening in the field of life sciences, and discovered a completely new enzyme system with yet unproven functions for the first time. This result expands the coverage of currently known enzymes, and can provide new research objects and entry points for subsequent enzyme function analysis, synthetic biology component development and related application scenario research.
+
+<FeedbackButtons slug="item:anthropic-claude-discovers-novel-enzyme-system" client:visible />
+
+## <a href="https://www.anthropic.com/news/accenture-embedded-evaluation" target="_blank" rel="noopener noreferrer">Partnering with Accenture on embedded evaluation</a>
+
+*Anthropic*
+
+Anthropic officially announced a cooperation with Accenture on independent evaluation of cutting-edge AI, which is the implementation of Anthropic's previous commitment to embed third-party evaluation entities internally. Over the next five years, both parties will invest at least $1 billion each to build technical and operational capabilities in the field of AI evaluation, building a risk verification line of defense for the safe and compliant development of cutting-edge AI.
+
+<FeedbackButtons slug="item:anthropic-accenture-embedded-evaluation" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/introducing-gemini-38-live-with-live-avatar/" target="_blank" rel="noopener noreferrer">Introducing Gemini 3.8 Live with Live Avatar</a>
+
+*Google DeepMind*
+
+This time Google launched the new version of Gemini 3.8 Live with real-time digital human function. This version integrates three types of algorithms: high-speed inference of multimodal large models, low-latency audio and video synchronization, and real-time fitting of lip shape and body movements, controlling end-to-end interaction latency at the hundred-millisecond level. The digital human's lip shape and expressions are highly matched with the output content. Compared with the previous generation of pure voice/text interaction mode, the fidelity and immersion are greatly improved, which can cover the needs of multiple scenarios such as popular science demonstrations and real-time consultation.
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-38-live-with-live-avatar" client:visible />
+
+## <a href="https://deepmind.google/blog/advancing-private-ai-compute-with-secure-server-side-memory/" target="_blank" rel="noopener noreferrer">Advancing Private AI Compute with secure, server-side memory</a>
+
+*Google DeepMind*
+
+This research focuses on the upgrade of private AI computing technology for personal AI scenarios, with the core innovation being the introduction of a secure server-side private memory mechanism. This solution can fill the privacy gap of original private AI computing in server-side data processing and temporary storage links, strengthen the full-link privacy security of user data and AI jobs while ensuring computing efficiency, and provide reliable support for the large-scale implementation of personal AI services.
+
+<FeedbackButtons slug="item:deepmind-advancing-private-ai-compute-with-secure-server-side-memory" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/LiquidAI/lfm2-5-vl-dspark" target="_blank" rel="noopener noreferrer">Accelerating vision-language models with LFM2.5-VL-DSpark</a>
+
+*Hugging Face*
+
+This work proposes the LFM2.5-VL-DSpark acceleration solution, targeting the pain points of high inference latency and insufficient video memory utilization of large-parameter vision-language models (VLM), optimizing cross-modal feature scheduling, video memory fragmentation management and distributed inference load balancing strategies. Measured at the same accuracy, this solution is 3-5 times faster than mainstream frameworks, and throughput is increased by more than 4 times, which can support the efficient implementation of large-parameter VLMs in multimodal interaction scenarios.
+
+<FeedbackButtons slug="item:hf-blog-lfm2-5-vl-dspark" client:visible />
+
+## <a href="https://huggingface.co/blog/nvidia/how-to-use-nvidia-warp-and-mjwarp" target="_blank" rel="noopener noreferrer">How to Use NVIDIA Warp and MjWarp to Accelerate Robotics Simulation and Learning Workflows</a>
+
+*Hugging Face*
+
+This article introduces two NVIDIA tools adapted for robotics research: Warp, a GPU computing framework that supports high-throughput parallelism, and MjWarp, a packaging tool adapted for the MuJoCo physics engine. The two can offload the entire workflow originally running on the CPU, such as robot simulation, reinforcement learning sampling, and trajectory optimization, to the GPU for parallel operation, which is dozens of times faster than traditional solutions, greatly improving the R&D iteration efficiency of related tasks.
+
+<FeedbackButtons slug="item:hf-blog-how-to-use-nvidia-warp-and-mjwarp" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This article sorts out the conceptual evolution of Recursive Self-Improvement (RSI): In 1965, I.J. Good proposed the idea that superintelligent machines can surpass all human intellectual activities and iteratively design better systems. In 2008, Eliezer Yudkowsky clarified that RSI is a feedback loop where AI relies on existing intelligence to optimize its own cognitive mechanism. This article further clarifies two implementation forms of RSI in modern AI scenarios: it can either directly rewrite its own weights, or broadly optimize its own training pipeline.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/09/496961.html" target="_blank" rel="noopener noreferrer">Overseas-focused Agent "Xiaoyuan AI" Joins Tencent WorkBuddy: Find Buyers, Write Development Letters, Negotiate Deals</a>
+
+*QbitAI*
+
+Currently, competition in the AI office and agent track has shifted from response accuracy to implementation effectiveness. Both domestic and overseas players are tackling self-evolution technology and laying out vertical scenarios, and AI empowering overseas operations has become a new outlet. Meorient released "Xiaoyuan AI" for foreign trade enterprises at the 5th Global Digital Trade Expo, which will join Tencent WorkBuddy and can help enterprises find buyers, write development letters, and connect business opportunities.
+
+<FeedbackButtons slug="item:qbitai-496961" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/496925.html" target="_blank" rel="noopener noreferrer">PCIe GPUs Are Undervalued! Kernel Completion + Communication Reconstruction Boosts DeepSeek Inference Throughput by Nearly 7x</a>
+
+*QbitAI*
+
+Currently, the demand for large model inference computing power is high, and the supply of high-end GPUs is tight. Ordinary PCIe GPUs have far from reached their hardware potential due to software and hardware adaptation shortcomings. Shishi Technology's self-developed Meta-Infer inference engine, through pure software optimizations such as kernel completion and communication reconstruction, does not require changes to models or hardware, can increase DeepSeek inference throughput by nearly 7 times, making the inference performance of low-cost PCIe cards close to that of high-end GPUs, greatly reducing computing power costs.
+
+<FeedbackButtons slug="item:qbitai-496925" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/496834.html" target="_blank" rel="noopener noreferrer">After 10 Years, Top AI Researcher Publishes New Paper as Corresponding Author</a>
+
+*QbitAI*
+
+Shaoqing Ren, who once led classic CV works such as Faster R-CNN and ResNet, has co-published a new autonomous driving paper *MM-Future* with the NIO team as the corresponding author after many years. To address the defect of cascaded world action models that information is transmitted unidirectionally and cannot reverse correct decisions, the team proposed a multi-modal world-action joint model, which can simultaneously deduce multiple sets of scenario-action possibilities and select the optimal path, making decisions closer to those of experienced drivers.
+
+<FeedbackButtons slug="item:qbitai-496834" client:visible />
