@@ -1,0 +1,205 @@
+---
+lang: zh
+translationKey: digest-2026-09-25
+title: "AI 每日精选 · 2026-09-25"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-09-25
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">头部AI厂商动作密集，DeepMind推Gemini 3.8 Live、Claude发现新酶、OpenAI延伸乌克兰民用服务</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">AI前沿研究成果丰富，覆盖世界模型、具身智能、时序推理等多个前沿方向</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">产业落地进展亮眼，DeepSeek推理吞吐翻近7倍、出海Agent小元AI入驻腾讯WorkBuddy</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 前沿研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏢 厂商动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ 性能优化</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🚀 产业落地</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 模型创新</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2609.28654" target="_blank" rel="noopener noreferrer">Training Object Permanence in World Models</a>
+
+*HF ★ 21 · Haotian Zhang, Fengyuan Yu, Dezhi Luo… · [HF 镜像](https://huggingface.co/papers/2609.28654)*
+
+为探究视频生成类世界模型是否具备人类认知先验中的客体永久性，该研究构建了含150类认知任务、150万样本的WROP数据集及300题测试集，训练了16B参数的PWM-WROP模型。对14款主流模型评测显示，该模型在视频续写类中排名第一、总榜第三，相关数据集、模型权重等资源均已开源。
+
+<FeedbackButtons slug="item:arxiv-2609.28654" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.23407" target="_blank" rel="noopener noreferrer">OmniEcho: Spatial Audio Understanding for Embodied Agents</a>
+
+*HF ★ 9 · Ruixun Liu, Yuxuan Wang, Jiacheng Xie… · [HF 镜像](https://huggingface.co/papers/2609.23407)*
+
+针对具身智能空间音频理解缺乏成熟评估体系与建模方案的痛点，该研究推出统一基准OmniEchoBench，配套可控空间音频渲染管线，同时研发搭载FOA空间编码器的多模态模型OmniEcho。实验显示其空间音视感知达SOTA，声导导航性能接近传统视文导航，验证了空间音频对具身任务的价值，也指明细粒度定位测距仍是待解难点。（共127字）
+
+<FeedbackButtons slug="item:arxiv-2609.23407" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.28416" target="_blank" rel="noopener noreferrer">Agent-Editing World Model: Rethinking World Modeling for LLM Agents</a>
+
+*HF ★ 8 · Shuang Sun, Guoxin Chen, Fanzhe Meng… · [HF 镜像](https://huggingface.co/papers/2609.28416)*
+
+针对大模型智能体现有世界模型预测工具响应价值低、易受历史错误假设干扰的痛点，本文提出AEWM模型，跳过工具反馈模拟，直接建模推理、动作对任务进展的影响，配套动作判别、状态修正的EditAct框架及验证轨迹微调策略。实验显示其动作分类超基线10.6个百分点，多基准平均提分3.2-6.7，微调策略再提2.2-2.6个点。
+
+<FeedbackButtons slug="item:arxiv-2609.28416" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.29892" target="_blank" rel="noopener noreferrer">Qwen-Planner-Agent: A Closed-Loop AI-for-AI Framework for Real-World Mobile Planner Agents</a>
+
+*HF ★ 4 · Tingyu Qu, Weigao Sun, Yuecheng Liu… · [HF 镜像](https://huggingface.co/papers/2609.29892)*
+
+本文提出面向现实场景移动端规划智能体的闭环AI-for-AI框架Qwen-Planner-Agent，通过AI生成人工校验的训练数据、带能力感知奖励机制的混合训练、执行反馈驱动的模型-工具链协同进化三大路径实现迭代优化。其在移动端规划基准上性能最优，非移动端代理任务表现提升且基本保留通用能力。
+
+<FeedbackButtons slug="item:arxiv-2609.29892" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.29444" target="_blank" rel="noopener noreferrer">IterSynth: Rethinking Deep Search Agents via Role-Decoupled Iterative Synthesis</a>
+
+*HF ★ 2 · Xingyu Wu, Yuchen Yan, Zhengxi Lu… · [HF 镜像](https://huggingface.co/papers/2609.29444)*
+
+针对现有ReAct类深度搜索大模型智能体存在的角色耦合、搜索上下文累积噪声两大缺陷，本文提出角色解耦的迭代合成范式IterSynth，拆分规划、证据整合模块，配套专属角色解耦策略优化算法训练。实验显示其8B版本性能超同参数最强基线4.2%，还可作为通用提示范式，为前沿闭源模型带来显著零样本增益。
+
+<FeedbackButtons slug="item:arxiv-2609.29444" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2609.26811" target="_blank" rel="noopener noreferrer">The Drift Contract: Spectral Updates for Depth-Robust Local Learning</a>
+
+*Fabien Polly*
+
+针对局部学习无全局反向传播、深度升高时精度退化、超参敏感的痛点，本文将Muon式谱更新引入逐层局部优化，还提出约束预激活变化的漂移契约动态步长。实验显示其无需随网络宽、深度重调超参，CIFAR-10基准精度优于局部Adam，仅主干加RMSNorm与权重衰减时局部优势消失。
+
+<FeedbackButtons slug="item:arxiv-2609.26811" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.26820" target="_blank" rel="noopener noreferrer">Signal2Symbol: Neuro-Symbolic Temporal Reasoning for Explainable Physiological Time-Series Anomaly Detection</a>
+
+*Naser Mansour, Sidahmed Benabderrahmane, Ameer Rahwan*
+
+针对心电、脑电等生理时序异常检测中深度学习模型可解释性不足的痛点，本文提出神经符号框架Signal2Symbol实现高可解释性异常检测：先将信号转为符号序列，通过稀有项集挖掘、艾伦区间代数、形式概念分析输出带时序逻辑的可解释异常分类。经三个公开数据集及噪声鲁棒性测试，该框架兼顾检测性能，可输出紧凑易理解的异常推理结论。
+
+<FeedbackButtons slug="item:arxiv-2609.26820" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.26822" target="_blank" rel="noopener noreferrer">HARN: Hierarchical Associative Resonance Network for Event-Driven Multi-Timeframe Forecasting</a>
+
+*Nabeel Ahmad Saidd*
+
+针对金融时序多时间尺度预测需重复计算不变表征的痛点，本文提出层级关联共振网络HARN：仅当对应K线完成时更新各层级持久表征，融合多尺度因果编码、门控关联记忆等模块，在基点空间预测后还原价格。在股、汇、大宗商品四类资产上实测，精度优于主流单时间尺度基线，经审计符合事件驱动协议，是高效的持久化多时间尺度预测框架。
+
+<FeedbackButtons slug="item:arxiv-2609.26822" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/two-years-of-openai-academy" target="_blank" rel="noopener noreferrer">Two years of OpenAI Academy</a>
+
+*OpenAI*
+
+本次是OpenAI旗下AI技能普及项目「OpenAI Academy」的两周年纪念官宣。该项目成立两年来核心面向公众输出AI相关实用技能培训资源，此次借两周年节点明确后续核心规划：将进一步拓展服务覆盖范围，把AI技能资源输送到更多元的社群，降低AI使用门槛，助力更多群体掌握AI能力。
+
+<FeedbackButtons slug="item:openai-blog-two-years-of-openai-academy" client:visible />
+
+## <a href="https://openai.com/index/openai-extends-cyber-access-to-ukraine-for-civilian-defense" target="_blank" rel="noopener noreferrer">OpenAI extends cyber access to Ukraine for civilian defense</a>
+
+*OpenAI*
+
+近期OpenAI宣布向乌克兰政府开放旗下Daybreak项目的使用权限，该举措旨在为乌方民用基础设施的网络防御工作提供技术支持。俄乌冲突持续背景下乌方民用设施频繁遭网络攻击，此举可借助AI技术提升乌方应对网络威胁、保障供水供电等民生相关设施平稳运行的能力。
+
+<FeedbackButtons slug="item:openai-blog-openai-extends-cyber-access-to-ukraine-for-civilian-defense" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-discovers-novel-enzyme-system" target="_blank" rel="noopener noreferrer">Claude discovers a novel enzyme system</a>
+
+*Anthropic*
+
+本项为新建生命科学实验室的早期研究成果，研究依托Claude智能体开展生命科学领域的探索筛选，首次发现了一套功能暂未探明的全新酶系统。该成果拓展了现有已知酶类的覆盖范围，可为后续酶功能解析、合成生物学元件开发及相关应用场景研究提供全新的研究对象与切入点。
+
+<FeedbackButtons slug="item:anthropic-claude-discovers-novel-enzyme-system" client:visible />
+
+## <a href="https://www.anthropic.com/news/accenture-embedded-evaluation" target="_blank" rel="noopener noreferrer">Partnering with Accenture on embedded evaluation</a>
+
+*Anthropic*
+
+Anthropic官宣与埃森哲达成前沿AI独立评估合作，这是Anthropic此前承诺在内部嵌入第三方评估主体的落地举措。未来五年内，双方将各自投入至少10亿美元，用于搭建AI评估领域的技术与运营能力，为前沿AI的安全合规发展筑牢风险校验防线。
+
+<FeedbackButtons slug="item:anthropic-accenture-embedded-evaluation" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/introducing-gemini-38-live-with-live-avatar/" target="_blank" rel="noopener noreferrer">Introducing Gemini 3.8 Live with Live Avatar</a>
+
+*Google DeepMind*
+
+本次谷歌推出搭载实时数字人功能的Gemini 3.8 Live新版本。该版本融合多模态大模型高速推理、低延迟音视频同步、唇形与肢体动作实时拟合三类算法，将端到端交互延迟控制在百毫秒级，数字人口型、表情与输出内容高度匹配，相较前代纯语音/文本交互模式，拟真度与沉浸感大幅提升，可覆盖科普演示、实时咨询等多场景需求。
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-38-live-with-live-avatar" client:visible />
+
+## <a href="https://deepmind.google/blog/advancing-private-ai-compute-with-secure-server-side-memory/" target="_blank" rel="noopener noreferrer">Advancing Private AI Compute with secure, server-side memory</a>
+
+*Google DeepMind*
+
+这篇研究聚焦个人AI场景下的私有AI计算技术升级，核心创新是为其引入安全服务端私有内存机制。该方案可补齐原有私有AI计算在服务端数据处理、暂存环节的隐私短板，在保障算力效率的同时强化用户数据、AI作业全链路隐私安全，为个人AI服务规模化落地提供可靠支撑。
+
+<FeedbackButtons slug="item:deepmind-advancing-private-ai-compute-with-secure-server-side-memory" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/LiquidAI/lfm2-5-vl-dspark" target="_blank" rel="noopener noreferrer">Accelerating vision-language models with LFM2.5-VL-DSpark</a>
+
+*Hugging Face*
+
+本工作提出LFM2.5-VL-DSpark加速方案，针对大参数视觉语言模型（VLM）推理延迟高、显存利用率不足的痛点，优化跨模态特征调度、显存碎片化治理及分布式推理负载均衡策略。实测同精度下，该方案较主流框架提速3-5倍，吞吐提升4倍以上，可支撑大参数VLM在多模态交互场景高效落地。
+
+<FeedbackButtons slug="item:hf-blog-lfm2-5-vl-dspark" client:visible />
+
+## <a href="https://huggingface.co/blog/nvidia/how-to-use-nvidia-warp-and-mjwarp" target="_blank" rel="noopener noreferrer">How to Use NVIDIA Warp and MjWarp to Accelerate Robotics Simulation and Learning Workflows</a>
+
+*Hugging Face*
+
+本文介绍英伟达两款适配机器人研发的工具：支持高通量并行的GPU计算框架Warp，及适配MuJoCo物理引擎的封装工具MjWarp。二者可将机器人仿真、强化学习采样、轨迹优化等原CPU端工作流全链路卸载到GPU并行运行，较传统方案提速数十倍，大幅提升相关任务的研发迭代效率。
+
+<FeedbackButtons slug="item:hf-blog-how-to-use-nvidia-warp-and-mjwarp" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我改进（RSI）的概念演进：1965年I.J.古德提出超智能机器可超越人类所有智力活动、迭代设计更优系统的设想，2008年尤德考斯基明确RSI是AI依托现有智能优化自身认知机制的反馈回路。本文进一步明确现代AI场景下RSI两类落地形式：既可直接改写自身权重，也可广义上优化自身训练管线。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/09/496961.html" target="_blank" rel="noopener noreferrer">出海Agent“小元AI”入驻腾讯WorkBuddy：找买家写开发信谈生意</a>
+
+*量子位*
+
+当前AI办公与Agent赛道竞争已从应答精度转向落地实效，海内外均在攻坚自进化技术、布局垂直场景，AI赋能出海经营成新风口。米奥兰特于第五届全球数字贸易博览会上发布面向外贸企业的“小元AI”，将入驻腾讯WorkBuddy，可帮企业找买家、写开发信、对接生意。
+
+<FeedbackButtons slug="item:qbitai-496961" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/496925.html" target="_blank" rel="noopener noreferrer">PCIe显卡被低估了！内核补齐+通信重构，DeepSeek推理吞吐翻近7倍</a>
+
+*量子位*
+
+当前大模型推理算力需求高企，高端GPU供给紧张，普通PCIe显卡因软硬件适配短板，实际性能远未达硬件潜力。是石科技自研Meta-Infer推理引擎，通过内核补齐、通信重构等纯软件优化，无需改动模型与硬件，可将DeepSeek推理吞吐提升近7倍，让平价PCIe卡推理性能逼近高端GPU，大幅降低算力成本。
+
+<FeedbackButtons slug="item:qbitai-496925" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/496834.html" target="_blank" rel="noopener noreferrer">时隔十年，AI大牛署名新论文</a>
+
+*量子位*
+
+曾主导Faster R-CNN、ResNet等经典CV工作的任少卿，时隔多年以通讯作者身份联合蔚来团队发布自动驾驶新论文《MM-Future》。针对级联式世界动作模型信息单向传递、无法反向修正决策的缺陷，团队提出多模式世界-动作联合模型，可同步推演多组场景-动作可能性后选最优路径，决策更贴近老司机。
+
+<FeedbackButtons slug="item:qbitai-496834" client:visible />
