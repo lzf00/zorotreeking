@@ -1,0 +1,179 @@
+---
+lang: en
+translationKey: digest-2026-09-28
+title: "AI Daily Highlights · 2026-09-28"
+description: "17 papers · Multi-source aggregation + AI summaries"
+date: 2026-09-28
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, lil-log]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Today's highlights in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">DeepMind launches Gemini 3.8 Live with real-time digital humans, while Anthropic and OpenAI announce new technical and deployment progress in quick succession</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face releases multiple LLM optimization technologies, covering attention mechanisms, tool calling RL, multimodal acceleration and other areas</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">China's quantum AI track sees a Tsinghua-founded startup team, desktop quantum computing products, and the anonymous Yutu model tops two performance rankings</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Model Releases</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔬 Technical Breakthroughs</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💼 Commercial Deployment</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚛️ Quantum AI</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Performance Optimization</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2609.31620" target="_blank" rel="noopener noreferrer">FuseReg: Regularizing Layer Fusion Mitigates the Reconstruction-Generation Gap in Representation Autoencoders</a>
+
+*HF ★ 31 · Hongyang Du, Yunfei Xie, Junjie Ye… · [HF Mirror](https://huggingface.co/papers/2609.31620)*
+
+Aiming at the problems of performance trade-off between deep and shallow layers when selecting encoder layers corresponding to shared latent space for Representational Autoencoders (RAE), and the reconstruction-generation gap caused by fixed heuristic fusion, this paper proposes the FuseReg regularization method, which trains by randomly sampling subsets of encoder layers and penalizes cross-layer inconsistency sensitivity. This method does not require modifying the pretrained encoder, can improve reconstruction PSNR, reduces gFID of unguided image generation by up to 29%, and effectively narrows the performance gap between the two types of tasks.
+
+<FeedbackButtons slug="item:arxiv-2609.31620" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.31394" target="_blank" rel="noopener noreferrer">InternW0-Δ: A World Action Model Bridging Predictive Dynamics and Actions with 20K+ Hours of Open Data</a>
+
+*HF ★ 11 · Xingyu Miao, Zizun Li, Baole Fang… · [HF Mirror](https://huggingface.co/papers/2609.31394)*
+
+For general robot manipulation tasks, this paper proposes InternW0-Δ, a unified world action model, which adopts a hybrid Transformer framework to integrate multiple types of pretrained priors, and is equipped with a causal imprint module to reduce inference overhead; after pretraining on a self-built multi-source heterogeneous open-source robot corpus of more than 20,000 hours, the model outperforms existing methods in both simulation and real-machine benchmark tests, and relevant resources will be open-sourced as required.
+
+<FeedbackButtons slug="item:arxiv-2609.31394" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.31473" target="_blank" rel="noopener noreferrer">Game Arena: Strategic LLM Evaluation in Competitive Environments</a>
+
+*HF ★ 3 · Bovard Doerschuk-Tiberi, Yao Yan, Justin Chiu… · [HF Mirror](https://huggingface.co/papers/2609.31473)*
+
+This research launches Kaggle Game Arena, an open and scalable LLM competitive evaluation platform. Different from traditional static evaluation benchmarks, the platform uses three types of competitive games covering perfect/imperfect information and multi-player scenarios: chess, poker, and Werewolf, which can dynamically evaluate LLM capabilities such as strategic planning and adaptability under uncertainty, avoid the performance saturation problem of static evaluation, have reproducible and highly transparent evaluation, and can also adapt to new game types.
+
+<FeedbackButtons slug="item:arxiv-2609.31473" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.31093" target="_blank" rel="noopener noreferrer">Block Sparse Attention with Log-Linear Complexity</a>
+
+*HF ★ 1 · Bohao Tang, Zhen Qin, Yuqi Pan… · [HF Mirror](https://huggingface.co/papers/2609.31093)*
+
+Aiming at the pain point that the quadratic complexity of self-attention limits the long context expansion of LLMs, and the block selection of traditional block sparse attention still has quadratic complexity, this paper proposes the PISA pyramid block sparse attention mechanism: it screens candidate blocks through a coarse-to-fine hierarchical LogSumExp, reduces the complexity to O(NlogN), and is equipped with hardware-adapted Triton operators. Its commonsense reasoning performance is comparable to the baseline, and its performance on retrieval tasks is better.
+
+<FeedbackButtons slug="item:arxiv-2609.31093" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.29050" target="_blank" rel="noopener noreferrer">SLCA-GRPO: Resolving Cross-Segment Credit Misattribution in Tool-Calling RL</a>
+
+*HF ★ 1 · Yan Zhan, Shaobo Liu, Qiunan Liu… · [HF Mirror](https://huggingface.co/papers/2609.29050)*
+
+Aiming at the problem of cross-segment credit misattribution and gradient noise interfering with tool decision-making in on-policy reinforcement learning such as GRPO in tool calling scenarios, this paper proposes the SLCA-GRPO framework: first build a pattern-guided LLM simulator as the training base, and match execution and preference advantages to tool and text generation segments respectively through segment-locked credit allocation combined with hierarchical rewards. Under the 7B base model, its performance is better than multiple baselines, and the accuracy on τ²-Bench is improved by up to 9.15 percentage points, with faster convergence and lower tool calling costs.
+
+<FeedbackButtons slug="item:arxiv-2609.29050" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/proaction" target="_blank" rel="noopener noreferrer">Proaction boosts sales 60% and saves 75+ hours with Codex</a>
+
+*OpenAI*
+
+The publicly released deployment results show that enterprise service vendor Proaction uses three AI tools: Codex, GPT-Live-1, and GPT-6 Astra to intelligently improve the efficiency of the entire process of product construction, operation, and sales of its modern fleet management business, finally achieving a 60% increase in sales, while saving a total of more than 75 hours of operational labor hours, providing a measured reference for the deployment benefits of LLMs in ToB vertical business scenarios.
+
+<FeedbackButtons slug="item:openai-blog-proaction" client:visible />
+
+## <a href="https://openai.com/index/two-years-of-openai-academy" target="_blank" rel="noopener noreferrer">Two years of OpenAI Academy</a>
+
+*OpenAI*
+
+This is a commemorative disclosure for the second anniversary of the operation of OpenAI Academy, a skill inclusive project under OpenAI. The core function of the project is to promote and teach practical AI-related skills to the public. On the occasion of the second anniversary, the project will further expand its service coverage, reach more diverse community groups, promote AI skill inclusion, and lower the threshold for AI technology learning for different groups.
+
+<FeedbackButtons slug="item:openai-blog-two-years-of-openai-academy" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-discovers-novel-enzyme-system" target="_blank" rel="noopener noreferrer">Claude discovers a novel enzyme system</a>
+
+*Anthropic*
+
+A newly established life science laboratory announced its initial research results: during the research process, a Claude agent discovered a completely new enzyme system that has not been reported before. At present, the specific physiological function and mechanism of action of this system have not been clearly analyzed. This discovery expands the boundary of human understanding of the enzyme family, and provides a new research target for subsequent basic enzymology research and synthetic biology application exploration.
+
+<FeedbackButtons slug="item:anthropic-claude-discovers-novel-enzyme-system" client:visible />
+
+## <a href="https://www.anthropic.com/news/accenture-embedded-evaluation" target="_blank" rel="noopener noreferrer">Partnering with Accenture on embedded evaluation</a>
+
+*Anthropic*
+
+AI company Anthropic announced a partnership with Accenture to carry out third-party independent evaluation of cutting-edge AI. This cooperation is part of the "embedded evaluators" governance commitment previously proposed by Anthropic. To build a suitable evaluation capability system, the two parties agreed to invest no less than US$1 billion each in this field in the next five years, and work together to consolidate the relevant foundation for cutting-edge AI risk assessment.
+
+<FeedbackButtons slug="item:anthropic-accenture-embedded-evaluation" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/introducing-gemini-38-live-with-live-avatar/" target="_blank" rel="noopener noreferrer">Introducing Gemini 3.8 Live with Live Avatar</a>
+
+*Google DeepMind*
+
+Google officially launched the real-time interactive version of Gemini 3.8 Live, with the core new Live Avatar real-time virtual human function. This version adopts an optimized end-to-end low-latency multimodal scheduling framework, paired with a dedicated generation model that integrates lip sync and micro-expression fitting, which can synchronously respond to voice and text input and output anthropomorphic virtual image interaction, with end-to-end latency lower than 200ms, supporting smooth multi-turn conversations, and the interaction naturalness is greatly improved compared to the previous generation, which can be adapted to multiple scenarios such as virtual customer service and online companionship.
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-38-live-with-live-avatar" client:visible />
+
+## <a href="https://deepmind.google/blog/advancing-private-ai-compute-with-secure-server-side-memory/" target="_blank" rel="noopener noreferrer">Advancing Private AI Compute with secure, server-side memory</a>
+
+*Google DeepMind*
+
+This paper focuses on the pain point of private AI computing privacy protection in personal AI scenarios, and proposes an innovative solution of introducing secure server-side private memory into the private AI computing system. This solution not only retains the advantages of cloud computing power, but also blocks the risk of personal sensitive data leakage in the AI computing link, taking into account both AI service operation efficiency and user privacy security, providing a more reliable architectural support for the deployment of personal private AI.
+
+<FeedbackButtons slug="item:deepmind-advancing-private-ai-compute-with-secure-server-side-memory" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/LiquidAI/lfm2-5-vl-dspark" target="_blank" rel="noopener noreferrer">Accelerating vision-language models with LFM2.5-VL-DSpark</a>
+
+*Hugging Face*
+
+At present, only the title of the paper is provided, and the full text of the abstract is not pasted, so translation and extraction work cannot be carried out. Please supplement the complete text information of this paper's abstract, and I will highlight the core methods and conclusions as required to generate a streamlined Chinese summary of about 120 words for you.
+
+<FeedbackButtons slug="item:hf-blog-lfm2-5-vl-dspark" client:visible />
+
+## <a href="https://huggingface.co/blog/nvidia/how-to-use-nvidia-warp-and-mjwarp" target="_blank" rel="noopener noreferrer">How to Use NVIDIA Warp and MjWarp to Accelerate Robotics Simulation and Learning Workflows</a>
+
+*Hugging Face*
+
+This article introduces the implementation method of NVIDIA's high-performance GPU parallel computing framework Warp, and the MjWarp interface adapted to the MuJoCo physics engine: by offloading all links such as simulation sampling, gradient calculation, and strategy optimization to GPU for parallel execution, without major reconstruction of existing robotics code pipelines, the efficiency of reinforcement learning training, motion planning and other tasks can be increased several times, greatly shortening the R&D iteration cycle.
+
+<FeedbackButtons slug="item:hf-blog-how-to-use-nvidia-warp-and-mjwarp" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This article sorts out the evolution of the concept of Recursive Self-Improvement (RSI): In 1965, scholar I.J. Good first proposed the core idea, referring to a superintelligent system with performance far exceeding that of humans that can independently design better models to achieve self-iteration; in 2008, Eliezer Yudkowsky clarified that its feedback logic is that AI relies on existing intelligence to optimize its own cognitive bottom layer. The study points out that current AI RSI can be realized either by directly rewriting its own weights, or expanded to optimize the entire training process.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/09/498633.html" target="_blank" rel="noopener noreferrer">A "Tsinghua Dream Team" emerges in quantum AI entrepreneurship: valued at 1 billion RMB, transforming the underlying layer of LLMs with quantum technology</a>
+
+*QbitAI*
+
+The core team of Fermi Universe, China's first quantum-enabled AI (Q4AI) startup, is mostly from Tsinghua University, and has completed a 100 million RMB seed round of financing, with a post-investment valuation of 1 billion RMB, the largest seed round in the same field in China. It has launched the world's first full-link quantum-enhanced LLM FermiQLLM 1.0, which embeds quantum methods into the full link of LLMs, does not rely on immature quantum hardware, can be deployed on existing computing power, has significantly improved inference performance compared with traditional LLMs of the same parameters, and is suitable for industrial deployment.
+
+<FeedbackButtons slug="item:qbitai-498633" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/498605.html" target="_blank" rel="noopener noreferrer">Quantum computing goes to the desktop! The "small box" implements end-to-end operation, with data never leaving the local environment throughout the process</a>
+
+*QbitAI*
+
+Unitary Quantum, incubated by Shanghai Jiao Tong University, recently released UnitarySpark, the world's first heterogeneous computing hardware base, and simultaneously launched the public beta version of UnitaryLab 2.5, a natural language-driven quantum scientific computing platform. Both have built-in AI Agent, users do not need quantum professional background, describe requirements in plain language to automatically schedule quantum and classical computing power to complete calculations, support local deployment to ensure data security, and greatly lower the threshold for using quantum computing.
+
+<FeedbackButtons slug="item:qbitai-498605" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/498584.html" target="_blank" rel="noopener noreferrer">Fast and powerful! The anonymous Yutu model tops two rankings, full record of actual Coding test</a>
+
+*QbitAI*
+
+The recently popular anonymous AI model "Space Bunny (Yutu)" has topped the daily call volume rankings of both OpenRouter and OpenCode. Many overseas users have expressed disbelief, generally reporting that its output quality is excellent, it runs fast, and its performance exceeds Astra. QbitAI specially conducted an actual test of its coding ability, assigning the task of generating an interactive cube-style Temple of Heaven using Three.js, which was completed in less than 2 hours and met the standards, with performance exceeding expectations.
+
+<FeedbackButtons slug="item:qbitai-498584" client:visible />
