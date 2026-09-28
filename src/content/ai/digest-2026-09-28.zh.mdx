@@ -1,0 +1,179 @@
+---
+lang: zh
+translationKey: digest-2026-09-28
+title: "AI 每日精选 · 2026-09-28"
+description: "17 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-09-28
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, lil-log]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">DeepMind推出搭载实时数字人的Gemini 3.8 Live，Anthropic、OpenAI接连发布技术与落地新进展</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face公开多项大模型优化技术，覆盖注意力机制、工具调用RL、多模态加速等方向</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内量子AI赛道现清华创业团队、桌面量子计算产品，匿名玉兔模型登顶双性能榜</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 模型发布</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔬 技术突破</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💼 商业落地</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚛️ 量子AI</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ 性能优化</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2609.31620" target="_blank" rel="noopener noreferrer">FuseReg: Regularizing Layer Fusion Mitigates the Reconstruction-Generation Gap in Representation Autoencoders</a>
+
+*HF ★ 31 · Hongyang Du, Yunfei Xie, Junjie Ye… · [HF 镜像](https://huggingface.co/papers/2609.31620)*
+
+针对表征自编码器（RAE）选择共享隐空间对应编码器层时存在深浅层性能权衡、固定启发式融合导致重建-生成差距的问题，本文提出FuseReg正则化方法，通过随机采样编码器层子集训练，惩罚跨层不一致敏感度。该方法无需修改预训练编码器，即可提升重建PSNR，无引导图像生成gFID最高降29%，有效缩小两类任务性能差距。
+
+<FeedbackButtons slug="item:arxiv-2609.31620" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.31394" target="_blank" rel="noopener noreferrer">InternW0-Δ: A World Action Model Bridging Predictive Dynamics and Actions with 20K+ Hours of Open Data</a>
+
+*HF ★ 11 · Xingyu Miao, Zizun Li, Baole Fang… · [HF 镜像](https://huggingface.co/papers/2609.31394)*
+
+针对通用机器人操作任务，本文提出统一世界动作模型InternW0-Δ，采用混合Transformer框架融合多类预训练先验，搭配因果印记模块降低推理开销；基于自建的2万余小时多源异构开源机器人语料预训练后，模型在仿真、真机基准测试中性能均优于现有方法，相关资源将依规开源。
+
+<FeedbackButtons slug="item:arxiv-2609.31394" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.31473" target="_blank" rel="noopener noreferrer">Game Arena: Strategic LLM Evaluation in Competitive Environments</a>
+
+*HF ★ 3 · Bovard Doerschuk-Tiberi, Yao Yan, Justin Chiu… · [HF 镜像](https://huggingface.co/papers/2609.31473)*
+
+该研究推出开放可拓展的大模型竞技评估平台Kaggle Game Arena。不同于传统静态评估基准，平台采用国际象棋、扑克、狼人杀三类覆盖完全/不完全信息、多人场景的对战游戏，可动态评估大模型战略规划、不确定性下适应性等能力，规避静态评估性能饱和问题，评估可复现、透明度高，还可适配新游戏类型。
+
+<FeedbackButtons slug="item:arxiv-2609.31473" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.31093" target="_blank" rel="noopener noreferrer">Block Sparse Attention with Log-Linear Complexity</a>
+
+*HF ★ 1 · Bohao Tang, Zhen Qin, Yuqi Pan… · [HF 镜像](https://huggingface.co/papers/2609.31093)*
+
+针对自注意力平方复杂度限制大模型长上下文扩展、传统块稀疏注意力选块仍为平方复杂度的痛点，本文提出PISA金字塔式块稀疏注意力机制：通过粗到细的层级LogSumExp筛选候选块，复杂度降至O(NlogN)，配套硬件适配的Triton算子。其常识推理性能与基线相当，检索任务表现更优。
+
+<FeedbackButtons slug="item:arxiv-2609.31093" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.29050" target="_blank" rel="noopener noreferrer">SLCA-GRPO: Resolving Cross-Segment Credit Misattribution in Tool-Calling RL</a>
+
+*HF ★ 1 · Yan Zhan, Shaobo Liu, Qiunan Liu… · [HF 镜像](https://huggingface.co/papers/2609.29050)*
+
+针对工具调用场景下GRPO等同策强化学习存在跨段信用错配、梯度噪声干扰工具决策的问题，本文提出SLCA-GRPO框架：先构建模式引导大语言模型模拟器作为训练底座，通过段锁定信用分配结合分层奖励，将执行、偏好优势分别匹配给工具、文本生成段。7B基座下其性能优于多款基线，在τ²-Bench上精度最高提升9.15个百分点，收敛更快、工具调用成本更低。
+
+<FeedbackButtons slug="item:arxiv-2609.29050" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/proaction" target="_blank" rel="noopener noreferrer">Proaction boosts sales 60% and saves 75+ hours with Codex</a>
+
+*OpenAI*
+
+本次公开的落地成果显示，企业服务厂商Proaction借助Codex、GPT-Live-1、GPT-6 Astra三款AI工具，对旗下现代车队管理业务的产品搭建、运营、销售全流程进行智能化提效，最终实现销售额上涨60%，同时累计节省运营人力工时超75小时，为大模型在ToB垂直业务场景的落地增益提供了实测参考。
+
+<FeedbackButtons slug="item:openai-blog-proaction" client:visible />
+
+## <a href="https://openai.com/index/two-years-of-openai-academy" target="_blank" rel="noopener noreferrer">Two years of OpenAI Academy</a>
+
+*OpenAI*
+
+本次为OpenAI旗下技能普惠项目OpenAI学院（OpenAI Academy）运营满两周年的纪念披露，该项目核心功能是向公众推广、传授AI相关实用技能，值此两周年节点，项目将进一步扩容服务覆盖半径，触达更多元的社群主体，推进AI技能普惠，降低不同群体的AI技术学习门槛。
+
+<FeedbackButtons slug="item:openai-blog-two-years-of-openai-academy" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-discovers-novel-enzyme-system" target="_blank" rel="noopener noreferrer">Claude discovers a novel enzyme system</a>
+
+*Anthropic*
+
+某新设生命科学实验室公布初期研究成果：研究过程中由Claude智能体发现了一套此前未被报道的全新酶系统，目前该系统的具体生理功能、作用机制均尚未得到明确解析。该发现拓展了人类对酶家族的认知边界，为后续酶学基础研究及合成生物学应用挖掘提供全新研究靶点。
+
+<FeedbackButtons slug="item:anthropic-claude-discovers-novel-enzyme-system" client:visible />
+
+## <a href="https://www.anthropic.com/news/accenture-embedded-evaluation" target="_blank" rel="noopener noreferrer">Partnering with Accenture on embedded evaluation</a>
+
+*Anthropic*
+
+AI企业Anthropic宣布与埃森哲达成合作，共同开展前沿AI的第三方独立评估工作，该合作是Anthropic此前提出的「内嵌评估人员」治理承诺的组成部分。为搭建适配的评估能力体系，双方约定未来五年各自向该领域投入不低于10亿美元，合力夯实前沿AI风险评估的相关基础。
+
+<FeedbackButtons slug="item:anthropic-accenture-embedded-evaluation" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/introducing-gemini-38-live-with-live-avatar/" target="_blank" rel="noopener noreferrer">Introducing Gemini 3.8 Live with Live Avatar</a>
+
+*Google DeepMind*
+
+谷歌正式推出Gemini 3.8 Live实时交互版本，核心新增Live Avatar实时虚拟人功能。该版本采用优化的端到端低延迟多模态调度框架，配套融合唇形同步、微表情拟合的专用生成模型，可同步响应语音、文本输入输出拟人化虚拟形象交互，端到端延迟低于200ms，支持多轮流畅对话，交互自然度较前代大幅提升，可适配虚拟客服、在线陪伴等多元场景。
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-38-live-with-live-avatar" client:visible />
+
+## <a href="https://deepmind.google/blog/advancing-private-ai-compute-with-secure-server-side-memory/" target="_blank" rel="noopener noreferrer">Advancing Private AI Compute with secure, server-side memory</a>
+
+*Google DeepMind*
+
+本文聚焦个人AI场景下的私有AI计算隐私防护痛点，提出为私有AI计算体系引入安全服务端私有内存的创新方案。该方案既保留云端算力优势，又能阻断个人敏感数据在AI计算链路中的泄露风险，兼顾AI服务运行效率与用户隐私安全，为个人私有AI落地提供了更可靠的架构支撑。
+
+<FeedbackButtons slug="item:deepmind-advancing-private-ai-compute-with-secure-server-side-memory" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/LiquidAI/lfm2-5-vl-dspark" target="_blank" rel="noopener noreferrer">Accelerating vision-language models with LFM2.5-VL-DSpark</a>
+
+*Hugging Face*
+
+目前您仅提供了论文标题，未粘贴摘要的具体正文内容，无法开展翻译提炼工作。请您补充该论文摘要的完整文本信息，我会按照要求突出核心方法与结论，为您生成120字左右的精简中文总结。
+
+<FeedbackButtons slug="item:hf-blog-lfm2-5-vl-dspark" client:visible />
+
+## <a href="https://huggingface.co/blog/nvidia/how-to-use-nvidia-warp-and-mjwarp" target="_blank" rel="noopener noreferrer">How to Use NVIDIA Warp and MjWarp to Accelerate Robotics Simulation and Learning Workflows</a>
+
+*Hugging Face*
+
+本文介绍英伟达高性能GPU并行计算框架Warp，及适配MuJoCo物理引擎的MjWarp接口的落地方法：通过将仿真采样、梯度计算、策略优化等环节全量卸载到GPU并行执行，无需大幅重构现有机器人学代码管线，即可将强化学习训练、运动规划等任务效率提升数倍，大幅压缩研发迭代周期。
+
+<FeedbackButtons slug="item:hf-blog-how-to-use-nvidia-warp-and-mjwarp" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我改进（RSI）概念的演进脉络：1965年学者古德最早提出核心构想，指性能远超人类的超智能系统可自主设计更优机型实现自我迭代；2008年尤德考斯基明确其反馈逻辑为AI依托现有智能优化自身认知底层。研究指出当前AI的RSI既可直接改写自身权重实现，也可拓展为优化训练全流程。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/09/498633.html" target="_blank" rel="noopener noreferrer">量子AI创业来了一支“清华梦之队”：10亿估值，用量子改造大模型底层</a>
+
+*量子位*
+
+国内首家量子赋能AI（Q4AI）创企费米宇宙核心团队多出自清华，已完成1亿元种子轮融资，投后估值10亿，为国内同领域最大规模种子轮。其推出全球首个全链路量子增强大模型FermiQLLM 1.0，将量子方法嵌入大模型全链路，无需依赖不成熟的量子硬件，可在现有算力上部署，较同参数传统大模型推理性能提升显著，适配工业化落地。
+
+<FeedbackButtons slug="item:qbitai-498633" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/498605.html" target="_blank" rel="noopener noreferrer">量子计算走上桌面！“小盒子”跑通端到端，数据全程不出门</a>
+
+*量子位*
+
+上海交大孵化的酉术量子日前发布全球首个异构计算硬件底座UnitarySpark，同步上线自然语言驱动的量子科学计算平台UnitaryLab 2.5公测版。二者内置AI Agent，用户无需量子专业背景，用大白话描述需求即可自动调度量子、经典算力完成计算，支持本地部署保障数据安全，大幅降低了量子计算的使用门槛。
+
+<FeedbackButtons slug="item:qbitai-498605" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/498584.html" target="_blank" rel="noopener noreferrer">又快又能打！匿名模型玉兔模型杀上双榜第一，Coding实测全记录</a>
+
+*量子位*
+
+近期爆火的匿名AI模型“Space Bunny（玉兔）”冲上OpenRouter、OpenCode双榜日调用量第一，不少海外用户直呼难以置信，普遍反馈其输出质量优异、运行速度快，表现超过Astra。量子位专门对其编码能力实测，布置用Three.js生成交互式立方体风格天坛的任务，仅用时不到2小时就达标完成，表现超出预期。
+
+<FeedbackButtons slug="item:qbitai-498584" client:visible />
