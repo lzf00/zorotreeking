@@ -1,0 +1,205 @@
+---
+lang: zh
+translationKey: digest-2026-09-29
+title: "AI 每日精选 · 2026-09-29"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-09-29
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">头部大模型厂商密集更新：DeepMind发Gemini3.8 Live，Anthropic、OpenAI公布多项合作与科研成果</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">李飞飞创办的世界模型公司被AMD以550亿元收购，创下该领域最大规模交易记录</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">AI Agent基准、推理优化等前沿技术集中发布，华为、西门子布局AI基建与工业生态</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥大模型动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💸重磅并购</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠Agent研发</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡技术突破</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏗️基建布局</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2609.33295" target="_blank" rel="noopener noreferrer">TraceDance: An Automated System for Building Agent Behavior Benchmarks from Real-World Agent Deployment Traces</a>
+
+*HF ★ 39 · Dehai Min, Daoan Zhang, Yiming Zeng… · [HF 镜像](https://huggingface.co/papers/2609.33295)*
+
+针对现有智能体基准固定、无法覆盖部署中实际不良行为的问题，该研究提出TraceDance系统，通过锚定确认、锚定合成循环两项核心技术，从真实部署轨迹自动构建定制行为基准，无需参考答案或环境复现。实测显示基准构建成功率达95.3%，9款前沿大模型平均通过率仅26.7%，可有效暴露智能体缺陷，支撑递归自优化闭环。
+
+<FeedbackButtons slug="item:arxiv-2609.33295" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.33757" target="_blank" rel="noopener noreferrer">YuE2: Unifying Symbolic and Audio Music Generation at Frontier Quality</a>
+
+*HF ★ 37 · Ruibin Yuan, Jiahao Pan, Junyan Jiang… · [HF 镜像](https://huggingface.co/papers/2609.33757)*
+
+本文推出统一符号与音频的高质量音乐生成模型YuE2，采用AR-NAR混合Transformer架构，经符号规划流程先生成可读谱面，再转语义token最终输出完整音频，配套的MERT2、SheetSage2分别刷新音乐表征、主旋律转写SOTA。其效果超现有公开基线，选优版本性能比肩甚至部分优于Suno系列商业模型，还支持谱面编辑、零样本翻唱。
+
+<FeedbackButtons slug="item:arxiv-2609.33757" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.33665" target="_blank" rel="noopener noreferrer">CompoWorld: Compositional Environment Scaling for General Agents</a>
+
+*HF ★ 20 · Xiao-Wen Yang, Weiyi Xu, Wen Da… · [HF 镜像](https://huggingface.co/papers/2609.33665)*
+
+针对现有自动生成环境多局限单场景、无法适配跨服务任务的痛点，该工作提出CompoWorld框架，通过组合可复用服务库扩展任务空间，搭配随机游走机制生成跨服务任务，设计专项奖励函数引导强化学习。用其训练的Qwen3.6-35B-A3B在8项基准平均涨9.17分，AutomationBench上超Claude Opus 4.6，领先同规模专用智能体模型。
+
+<FeedbackButtons slug="item:arxiv-2609.33665" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.33642" target="_blank" rel="noopener noreferrer">Learning to Learn from Context: Synthetic Training from Perturbed Public Documents</a>
+
+*HF ★ 19 · Haoyi Wu, Yang Xiao, Yusong Sun… · [HF 镜像](https://huggingface.co/papers/2609.33642)*
+
+针对大模型上下文学习能力弱、相关人工标注成本高难扩容，且直接用预训练已见公开文档易诱导记忆而非上下文学习的问题，本文提出无人工标注的合成训练流程：扰动公开文档后自动生成需依托文档推理的问答，筛选真依赖上下文的样本。以此训练的350亿参数千问模型在上下文学习基准上追平万亿参数同类模型，还提升了长理解等能力，原有代码、知识表现不受影响。
+
+<FeedbackButtons slug="item:arxiv-2609.33642" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.33772" target="_blank" rel="noopener noreferrer">Skill2Env: Capability-Oriented Environment Synthesis from Skills for General Agents</a>
+
+*HF ★ 16 · Weiyi Xu, Xiaowen Yang, Wen Da… · [HF 镜像](https://huggingface.co/papers/2609.33772)*
+
+针对通用智能体后训练所需可执行任务环境难规模化、现有技能与完整任务环境存在鸿沟的问题，本文提出能力导向的Skill2Env框架，依托可复用难度模式生成任务蓝图，配套迭代任务强化机制优化环境难度。用其生成的1.5k条高分轨迹微调智能体后，多基准测试表现均一致提升，验证了该环境合成方法的有效性。
+
+<FeedbackButtons slug="item:arxiv-2609.33772" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2609.30270" target="_blank" rel="noopener noreferrer">HybridInfer: Thermal-Aware Reinforcement-Learning Tier Routing for On-Device, Edge, and Cloud LLM Inference</a>
+
+*Simran Koul*
+
+针对端侧LLM推理受温控约束、连续查询易崩溃，现有多阶路由无温控感知的问题，本文提出HybridInfer温控强化学习路由：以手机温控余量、查询复杂度为状态，用离线训练的Q-learning策略选择端/边/云推理层，奖励兼顾质量、延迟、成本、温控惩罚和端侧执行加成。实机测试显示其较手工启发式策略质优本低，兼顾可靠性、延迟和覆盖度，是首个实装的温控感知多阶LLM路由方案。
+
+<FeedbackButtons slug="item:arxiv-2609.30270" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.30271" target="_blank" rel="noopener noreferrer">When the Preconditioning Exponent Turns Negative: Learning-Rate Coupling and Cross-Environment Generalization</a>
+
+*Gongyue Zhang, Honghai Liu*
+
+该研究针对自适应优化器预条件指数与学习率的耦合关系开展控制实验，采用含稳定特征、环境关联伪特征、噪声的四环境分类任务，遍历多组指数、学习率参数组合，发现最优跨环境泛化的指数随学习率对数线性负相关；高学习率下负指数可抑制伪特征提升鲁棒性，但源域验证倾向选正指数，存在选型冲突，负指数非通用最优。
+
+<FeedbackButtons slug="item:arxiv-2609.30271" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.30272" target="_blank" rel="noopener noreferrer">ENAS: An Efficient Hardware-Aware Neural Architecture Search Framework for TinyML on Resource-Constrained Microcontrollers</a>
+
+*Mohd Moin Khan, Naman Srivastava, Pandarasamy Arjunan*
+
+本文提出面向资源受限微控制器TinyML场景的硬件感知神经架构搜索框架ENAS，无需GPU即可运行，采用静态可行性校验、多元单元搜索空间、三阶段混合搜索加跨轮缓存策略。实测适配20KB~1MB内存的多款微控器，搜索速度较NanoNAS快1.7~2.41倍，同精度下峰值激活内存更低，STM32平台精度超基线2.6个百分点，框架已开源。
+
+<FeedbackButtons slug="item:arxiv-2609.30272" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/how-we-will-do-better-for-australia" target="_blank" rel="noopener noreferrer">How we will do better for Australia</a>
+
+*OpenAI*
+
+OpenAI发布的题为《我们将如何为澳大利亚做得更好》的公告核心内容如下：OpenAI就此前发生的涉及澳大利亚政府网站的相关安全事件正式致歉，后续将落地更严格的安全保障机制，配套提供针对性的技术支持服务，最终目标是助力澳大利亚进一步强化整体网络防御体系建设。
+
+<FeedbackButtons slug="item:openai-blog-how-we-will-do-better-for-australia" client:visible />
+
+## <a href="https://openai.com/index/lenfest-ai-collaborative-expansion" target="_blank" rel="noopener noreferrer">The Lenfest Institute grows landmark program with expanded OpenAI support</a>
+
+*OpenAI*
+
+伦费斯特研究所旗下标杆项目获OpenAI加码扶持，双方将升级扩容伦费斯特AI协作与奖学金计划：OpenAI将提供500万美元直接资金，同时配套最高500万美元的软件使用权益与工程技术支持，共同推动该项目规模扩张，为相关AI协作落地、行业人才培育提供充足资源保障。
+
+<FeedbackButtons slug="item:openai-blog-lenfest-ai-collaborative-expansion" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-discovers-novel-enzyme-system" target="_blank" rel="noopener noreferrer">Claude discovers a novel enzyme system</a>
+
+*Anthropic*
+
+本内容来自某新设生命科学实验室的初期研发进展：研究人员借助Claude智能体开展相关研发工作时，发现了一套此前未被学界报道过的全新酶系统，目前该酶系统的生物学作用、调控机制等功能属性均尚未探明，后续团队将围绕其功能解析及潜在应用方向展开进一步探索。
+
+<FeedbackButtons slug="item:anthropic-claude-discovers-novel-enzyme-system" client:visible />
+
+## <a href="https://www.anthropic.com/news/accenture-embedded-evaluation" target="_blank" rel="noopener noreferrer">Partnering with Accenture on embedded evaluation</a>
+
+*Anthropic*
+
+Anthropic为落实此前提出的“内嵌AI评估人员”的安全管控承诺，宣布与埃森哲合作开展前沿AI独立评估工作。双方均计划未来五年内向该领域投入至少10亿美元，专项用于搭建AI评估相关的技术、运营能力，夯实前沿AI安全治理的支撑基础。
+
+<FeedbackButtons slug="item:anthropic-accenture-embedded-evaluation" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/introducing-gemini-38-live-with-live-avatar/" target="_blank" rel="noopener noreferrer">Introducing Gemini 3.8 Live with Live Avatar</a>
+
+*Google DeepMind*
+
+谷歌正式推出Gemini 3.8 Live交互版本，核心新增Live Avatar实时数字人功能。该版本优化低延迟多模态流推理框架，搭配高保真面部动作捕捉、情绪实时驱动算法，可实现音画完全同步的自然人机交互，数字人表现力、交互真实感较前代大幅提升，可落地虚拟客服、教育伴学、线上活动主持等多元场景。
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-38-live-with-live-avatar" client:visible />
+
+## <a href="https://deepmind.google/blog/advancing-private-ai-compute-with-secure-server-side-memory/" target="_blank" rel="noopener noreferrer">Advancing Private AI Compute with secure, server-side memory</a>
+
+*Google DeepMind*
+
+本文面向个人AI应用的隐私计算需求提出优化方案，核心创新是在私有AI计算框架中引入安全服务端私有内存模块。该方案可规避个人AI任务在服务端运算时的用户数据、运行参数泄露风险，同时无需端侧承担过高算力负荷，兼顾隐私性与运行效率，为个人AI产品规模化安全落地提供新路径。
+
+<FeedbackButtons slug="item:deepmind-advancing-private-ai-compute-with-secure-server-side-memory" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/Hcompany/holo4" target="_blank" rel="noopener noreferrer">Holo4: powering generalist computer-use agents</a>
+
+*Hugging Face*
+
+本文介绍通用计算机操作智能体支撑框架Holo4。它具备跨系统界面感知、自然指令转操作流、多工具协同调度能力，解决了传统操作智能体适配性差、泛化弱的痛点，可大幅降低同类智能体开发门槛，实测办公、数据处理等场景任务完成率较现有方案提升超30%。
+
+<FeedbackButtons slug="item:hf-blog-holo4" client:visible />
+
+## <a href="https://huggingface.co/blog/LiquidAI/lfm2-5-vl-dspark" target="_blank" rel="noopener noreferrer">Accelerating vision-language models with LFM2.5-VL-DSpark</a>
+
+*Hugging Face*
+
+当前您仅提供了该视觉语言模型加速相关论文的标题，未粘贴摘要的具体原文内容，请您补充完整摘要的英文文本，我会按要求为您提炼翻译为120字左右的中文总结，重点突出核心优化方法与实验结论，避免冗余表述。
+
+<FeedbackButtons slug="item:hf-blog-lfm2-5-vl-dspark" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文聚焦递归自我改进（RSI）领域展开研究：RSI概念最早可追溯至1965年古德提出的超智能机器设想，2008年尤德考斯基明确其核心为AI依托现有智能迭代优化自身认知架构的反馈循环。研究进一步界定现代AI落地RSI的两类路径：一是直接改写自身权重，二是优化训练管线。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/09/499098.html" target="_blank" rel="noopener noreferrer">李飞飞创业公司被苏姿丰550亿收购！世界模型最大交易落地</a>
+
+*量子位*
+
+AMD以约550亿元全股票收购李飞飞2024年创办的世界模型企业World Labs，为该领域迄今最大交易。此前AMD已参与其B轮融资并开展技术合作，交割后李飞飞出任AMD执行副总裁兼首席科学家，团队并入后双方将共建端到端AI生态，交易待监管审批，预计2026年底完成。
+
+<FeedbackButtons slug="item:qbitai-499098" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/498877.html" target="_blank" rel="noopener noreferrer">工业创新进入“组队局”，拆解西门子Xcelerator开放生态的赋能链路</a>
+
+*量子位*
+
+当前工业领域供需两端存在错位：技术方产品落地需闯场景验证、渠道拓展、方案适配等多关，需求方筛选适配、可靠的数字化方案耗时耗力。西门子Xcelerator开放生态截至2026年8月已积累66万+用户、600余家伙伴、900余项方案，打通技术落地通道，实现供需高效匹配、能力互补。
+
+<FeedbackButtons slug="item:qbitai-498877" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/498787.html" target="_blank" rel="noopener noreferrer">HC归来，华为正重新定义AIDC基础设施</a>
+
+*量子位*
+
+当前AI算力扩张面临电力配套进度错配、高密度算力设施供电散热不足等痛点，能源算力协同已成AIDC新竞争焦点。海外英伟达、谷歌等组建AI能源管理联盟推动电网动态调电；华为在2026全联接大会推出源网荷储AIDC1.0方案，公布供电、储能、液冷领域最新进展。
+
+<FeedbackButtons slug="item:qbitai-498787" client:visible />
