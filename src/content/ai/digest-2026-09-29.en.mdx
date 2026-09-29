@@ -1,0 +1,205 @@
+---
+lang: en
+translationKey: digest-2026-09-29
+title: "Daily AI Highlights · 2026-09-29"
+description: "20 papers · multi-source aggregation + AI summaries"
+date: 2026-09-29
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second overview of today's content</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading LLM vendors roll out frequent updates: DeepMind releases Gemini 3.8 Live, Anthropic and OpenAI announce multiple partnerships and research achievements</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">The world model company founded by Fei-Fei Li is acquired by AMD for 55 billion yuan, marking the largest transaction record in this field</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Cutting-edge technologies such as AI Agent benchmarks and inference optimization are released in batches, Huawei and Siemens lay out AI infrastructure and industrial ecosystems</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 LLM Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💸 Major M&A</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Agent R&D</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Technological Breakthroughs</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏗️ Infrastructure Layout</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2609.33295" target="_blank" rel="noopener noreferrer">TraceDance: An Automated System for Building Agent Behavior Benchmarks from Real-World Agent Deployment Traces</a>
+
+*HF ★ 39 · Dehai Min, Daoan Zhang, Yiming Zeng… · [HF Mirror](https://huggingface.co/papers/2609.33295)*
+
+To address the problem that existing agent benchmarks are fixed and cannot cover actual undesirable behaviors during deployment, this study proposes the TraceDance system. Through two core technologies: anchor confirmation and anchor synthesis loop, it automatically constructs customized behavior benchmarks from real deployment traces without requiring reference answers or environment reproduction. Actual tests show that the benchmark construction success rate reaches 95.3%, while the average pass rate of 9 cutting-edge LLMs is only 26.7%, which can effectively expose agent defects and support the recursive self-optimization closed loop.
+
+<FeedbackButtons slug="item:arxiv-2609.33295" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.33757" target="_blank" rel="noopener noreferrer">YuE2: Unifying Symbolic and Audio Music Generation at Frontier Quality</a>
+
+*HF ★ 37 · Ruibin Yuan, Jiahao Pan, Junyan Jiang… · [HF Mirror](https://huggingface.co/papers/2609.33757)*
+
+This paper introduces YuE2, a high-quality music generation model that unifies symbolic and audio modalities. It adopts a hybrid AR-NAR Transformer architecture, first generates readable sheet music through a symbolic planning process, then converts it into semantic tokens and finally outputs complete audio. The supporting MERT2 and SheetSage2 have respectively set new SOTA for music representation and main melody transcription. Its performance exceeds existing public baselines, and the optimized version matches or even partially outperforms Suno series commercial models, while also supporting sheet music editing and zero-shot cover singing.
+
+<FeedbackButtons slug="item:arxiv-2609.33757" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.33665" target="_blank" rel="noopener noreferrer">CompoWorld: Compositional Environment Scaling for General Agents</a>
+
+*HF ★ 20 · Xiao-Wen Yang, Weiyi Xu, Wen Da… · [HF Mirror](https://huggingface.co/papers/2609.33665)*
+
+To address the pain point that existing automatically generated environments are mostly limited to single scenarios and cannot adapt to cross-service tasks, this work proposes the CompoWorld framework. It expands the task space by combining reusable service libraries, generates cross-service tasks with a random walk mechanism, and designs a dedicated reward function to guide reinforcement learning. The Qwen3.6-35B-A3B trained with it achieves an average improvement of 9.17 points across 8 benchmarks, outperforms Claude Opus by 4.6 points on AutomationBench, and leads dedicated agent models of the same scale.
+
+<FeedbackButtons slug="item:arxiv-2609.33665" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.33642" target="_blank" rel="noopener noreferrer">Learning to Learn from Context: Synthetic Training from Perturbed Public Documents</a>
+
+*HF ★ 19 · Haoyi Wu, Yang Xiao, Yusong Sun… · [HF Mirror](https://huggingface.co/papers/2609.33642)*
+
+To address the issues that LLMs have weak in-context learning capabilities, relevant manual annotation costs are high and difficult to scale, and directly using pre-training seen public documents easily induces memory rather than in-context learning, this paper proposes a synthetic training pipeline without manual annotation: after perturbing public documents, it automatically generates Q&A that requires document-based reasoning, and filters samples that truly rely on context. The 35B parameter Qwen model trained with this method matches the performance of trillion-parameter similar models on in-context learning benchmarks, also improves capabilities such as long-text understanding, while performance on original code and knowledge tasks is not affected.
+
+<FeedbackButtons slug="item:arxiv-2609.33642" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.33772" target="_blank" rel="noopener noreferrer">Skill2Env: Capability-Oriented Environment Synthesis from Skills for General Agents</a>
+
+*HF ★ 16 · Weiyi Xu, Xiaowen Yang, Wen Da… · [HF Mirror](https://huggingface.co/papers/2609.33772)*
+
+To address the problems that executable task environments required for post-training of general agents are difficult to scale, and there is a gap between existing skills and complete task environments, this paper proposes the capability-oriented Skill2Env framework. It generates task blueprints based on reusable difficulty patterns, and supports an iterative task reinforcement mechanism to optimize environment difficulty. After fine-tuning agents with 1.5k high-score trajectories generated by it, performance on multiple benchmark tests is consistently improved, verifying the effectiveness of this environment synthesis method.
+
+<FeedbackButtons slug="item:arxiv-2609.33772" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2609.30270" target="_blank" rel="noopener noreferrer">HybridInfer: Thermal-Aware Reinforcement-Learning Tier Routing for On-Device, Edge, and Cloud LLM Inference</a>
+
+*Simran Koul*
+
+To address the issues that on-device LLM inference is constrained by thermal control, continuous queries are prone to crashes, and existing multi-tier routing has no thermal awareness, this paper proposes HybridInfer, a thermal-aware reinforcement learning routing solution: it takes the phone's thermal control margin and query complexity as states, uses an offline-trained Q-learning strategy to select on-device/edge/cloud inference tiers, and the reward takes into account quality, latency, cost, thermal control penalty and on-device execution bonus. Real-device tests show that it has better quality and lower cost than manual heuristic strategies, balances reliability, latency and coverage, and is the first commercially deployed thermal-aware multi-tier LLM routing solution.
+
+<FeedbackButtons slug="item:arxiv-2609.30270" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.30271" target="_blank" rel="noopener noreferrer">When the Preconditioning Exponent Turns Negative: Learning-Rate Coupling and Cross-Environment Generalization</a>
+
+*Gongyue Zhang, Honghai Liu*
+
+This study conducts controlled experiments on the coupling relationship between the preconditioning exponent of adaptive optimizers and the learning rate, using a four-environment classification task containing stable features, environment-associated spurious features and noise. After traversing multiple sets of exponent and learning rate parameter combinations, it finds that the exponent for optimal cross-environment generalization is logarithmically linearly negatively correlated with the learning rate; under high learning rates, negative exponents can suppress spurious features and improve robustness, but source domain validation tends to select positive exponents, there is a selection conflict, and negative exponents are not universally optimal.
+
+<FeedbackButtons slug="item:arxiv-2609.30271" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.30272" target="_blank" rel="noopener noreferrer">ENAS: An Efficient Hardware-Aware Neural Architecture Search Framework for TinyML on Resource-Constrained Microcontrollers</a>
+
+*Mohd Moin Khan, Naman Srivastava, Pandarasamy Arjunan*
+
+This paper proposes ENAS, an efficient hardware-aware neural architecture search framework for TinyML scenarios on resource-constrained microcontrollers, which can run without a GPU. It adopts static feasibility verification, a multi-cell search space, a three-stage hybrid search plus cross-round caching strategy. Actual tests show it adapts to multiple microcontrollers with 20KB~1MB memory, the search speed is 1.7~2.41 times faster than NanoNAS, the peak activation memory is lower under the same accuracy, and the accuracy on the STM32 platform exceeds the baseline by 2.6 percentage points. The framework has been open-sourced.
+
+<FeedbackButtons slug="item:arxiv-2609.30272" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/how-we-will-do-better-for-australia" target="_blank" rel="noopener noreferrer">How we will do better for Australia</a>
+
+*OpenAI*
+
+The core content of OpenAI's announcement titled "How we will do better for Australia" is as follows: OpenAI officially apologizes for the previous security incident involving Australian government websites. It will subsequently implement stricter security guarantee mechanisms and provide targeted technical support services, with the ultimate goal of helping Australia further strengthen the construction of its overall cyber defense system.
+
+<FeedbackButtons slug="item:openai-blog-how-we-will-do-better-for-australia" client:visible />
+
+## <a href="https://openai.com/index/lenfest-ai-collaborative-expansion" target="_blank" rel="noopener noreferrer">The Lenfest Institute grows landmark program with expanded OpenAI support</a>
+
+*OpenAI*
+
+The flagship project of the Lenfest Institute has received increased support from OpenAI, and the two sides will upgrade and expand the Lenfest AI Collaborative and Fellowship Program: OpenAI will provide $5 million in direct funding, along with up to $5 million in software usage rights and engineering technical support, to jointly promote the expansion of the program and provide sufficient resource guarantees for the implementation of relevant AI collaborations and the cultivation of industry talents.
+
+<FeedbackButtons slug="item:openai-blog-lenfest-ai-collaborative-expansion" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-discovers-novel-enzyme-system" target="_blank" rel="noopener noreferrer">Claude discovers a novel enzyme system</a>
+
+*Anthropic*
+
+This content comes from the early R&D progress of a newly established life science laboratory: when researchers carried out relevant R&D work with the help of Claude agent, they discovered a brand-new enzyme system that has not been previously reported in academic circles. At present, the functional attributes of the enzyme system such as biological function and regulatory mechanism are still unknown, and the team will carry out further exploration around its functional analysis and potential application directions in the future.
+
+<FeedbackButtons slug="item:anthropic-claude-discovers-novel-enzyme-system" client:visible />
+
+## <a href="https://www.anthropic.com/news/accenture-embedded-evaluation" target="_blank" rel="noopener noreferrer">Partnering with Accenture on embedded evaluation</a>
+
+*Anthropic*
+
+To fulfill its previously proposed security control commitment of "embedded AI evaluators", Anthropic announced a partnership with Accenture to carry out independent evaluation of cutting-edge AI. Both parties plan to invest at least $1 billion in this field in the next five years, specifically for building technical and operational capabilities related to AI evaluation, and consolidating the supporting foundation for cutting-edge AI security governance.
+
+<FeedbackButtons slug="item:anthropic-accenture-embedded-evaluation" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/introducing-gemini-38-live-with-live-avatar/" target="_blank" rel="noopener noreferrer">Introducing Gemini 3.8 Live with Live Avatar</a>
+
+*Google DeepMind*
+
+Google officially launches the interactive version of Gemini 3.8 Live, with the core new addition of the Live Avatar real-time digital human function. This version optimizes the low-latency multimodal stream inference framework, paired with high-fidelity facial motion capture and real-time emotion driving algorithms, to achieve fully synchronized audio and video for natural human-computer interaction. The expressiveness of the digital human and the realism of interaction are greatly improved compared to the previous generation, and it can be applied to multiple scenarios such as virtual customer service, educational tutoring, and online event hosting.
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-38-live-with-live-avatar" client:visible />
+
+## <a href="https://deepmind.google/blog/advancing-private-ai-compute-with-secure-server-side-memory/" target="_blank" rel="noopener noreferrer">Advancing Private AI Compute with secure, server-side memory</a>
+
+*Google DeepMind*
+
+This paper proposes an optimization solution for the privacy computing needs of personal AI applications, with the core innovation of introducing a secure server-side private memory module into the private AI computing framework. This solution can avoid the risk of leakage of user data and operating parameters when personal AI tasks are computed on the server side, while not requiring the end side to bear excessive computing load, balancing privacy and operating efficiency, and providing a new path for the large-scale safe deployment of personal AI products.
+
+<FeedbackButtons slug="item:deepmind-advancing-private-ai-compute-with-secure-server-side-memory" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/Hcompany/holo4" target="_blank" rel="noopener noreferrer">Holo4: powering generalist computer-use agents</a>
+
+*Hugging Face*
+
+This article introduces Holo4, a supporting framework for generalist computer-use agents. It has capabilities of cross-system interface perception, conversion of natural instructions to operation streams, and collaborative scheduling of multiple tools, solving the pain points of poor adaptability and weak generalization of traditional operation agents. It can greatly reduce the development threshold of similar agents, and actual tests show that the task completion rate in scenarios such as office work and data processing is improved by more than 30% compared with existing solutions.
+
+<FeedbackButtons slug="item:hf-blog-holo4" client:visible />
+
+## <a href="https://huggingface.co/blog/LiquidAI/lfm2-5-vl-dspark" target="_blank" rel="noopener noreferrer">Accelerating vision-language models with LFM2.5-VL-DSpark</a>
+
+*Hugging Face*
+
+Currently, only the title of this paper related to vision-language model acceleration is provided, the specific original content of the abstract is not included. Please supplement the full English text of the abstract, and I will refine and translate it into a Chinese summary of around 120 words as required, highlighting the core optimization method and experimental conclusions while avoiding redundant statements.
+
+<FeedbackButtons slug="item:hf-blog-lfm2-5-vl-dspark" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This paper focuses on research in the field of Recursive Self-Improvement (RSI): the concept of RSI can be traced back to the superintelligent machine concept proposed by Good in 1965, and in 2008 Yudkowsky clarified that its core is the feedback loop where AI iteratively optimizes its own cognitive architecture relying on existing intelligence. The study further defines two paths for modern AI to implement RSI: one is to directly rewrite its own weights, and the second is to optimize the training pipeline.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/09/499098.html" target="_blank" rel="noopener noreferrer">World model company founded by Fei-Fei Li acquired by Lisa Su for 55 billion yuan! Largest deal in the world model field closed</a>
+
+*QbitAI*
+
+AMD acquires World Labs, a world model company founded by Fei-Fei Li in 2024, for approximately 55 billion yuan in an all-stock deal, marking the largest transaction in this field to date. AMD previously participated in its Series B financing and carried out technical cooperation. After the transaction is completed, Fei-Fei Li will serve as Executive Vice President and Chief Scientist of AMD, and after the team is merged, the two parties will jointly build an end-to-end AI ecosystem. The transaction is pending regulatory approval and is expected to be completed by the end of 2026.
+
+<FeedbackButtons slug="item:qbitai-499098" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/498877.html" target="_blank" rel="noopener noreferrer">Industrial innovation enters the "team play" era, dissecting the empowerment chain of Siemens Xcelerator open ecosystem</a>
+
+*QbitAI*
+
+At present, there is a mismatch between supply and demand in the industrial field: technology providers need to go through multiple hurdles such as scenario verification, channel expansion, and solution adaptation to launch products, while demanders spend a lot of time and effort screening for suitable and reliable digital solutions. As of August 2026, the Siemens Xcelerator open ecosystem has accumulated more than 660,000 users, over 600 partners, and more than 900 solutions, opening up channels for technology implementation and achieving efficient matching and complementary capabilities between supply and demand.
+
+<FeedbackButtons slug="item:qbitai-498877" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/498787.html" target="_blank" rel="noopener noreferrer">Back from HC, Huawei is redefining AIDC infrastructure</a>
+
+*QbitAI*
+
+At present, the expansion of AI computing power faces pain points such as mismatched progress of power supporting facilities and insufficient power supply and heat dissipation of high-density computing facilities. Energy-computing power collaboration has become a new competitive focus for AIDC. Overseas companies such as NVIDIA and Google have formed an AI energy management alliance to promote dynamic power regulation of the power grid; Huawei launched the source-grid-load-storage AIDC 1.0 solution at the 2026 Huawei Connect conference, and announced the latest progress in the fields of power supply, energy storage, and liquid cooling.
+
+<FeedbackButtons slug="item:qbitai-498787" client:visible />
