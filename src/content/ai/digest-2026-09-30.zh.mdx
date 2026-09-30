@@ -1,0 +1,205 @@
+---
+lang: zh
+translationKey: digest-2026-09-30
+title: "AI 每日精选 · 2026-09-30"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-09-30
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">头部AI厂商集中推出重磅新品，OpenAI发布GPT-6.1 Sol、DeepMind上线带数字人的Gemini 3.8 Live</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">AI多领域前沿研究成果密集涌现，覆盖世界动作模型、长视频记忆、生成奖励模型等方向</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">产业生态进展丰富，DeepSeek开源昇腾基础组件、Anthropic联手埃森哲开展嵌入评估</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥大模型上新</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔬学术研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤝商业合作</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚙️生态共建</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡技术突破</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2609.34981" target="_blank" rel="noopener noreferrer">What Makes World Action Models Generalize? An Empirical Study of Test-Time Future Modeling</a>
+
+*HF ★ 40 · Renping Zhou, Zanlin Ni, Zihao Fan… · [HF 镜像](https://huggingface.co/papers/2609.34981)*
+
+本文针对世界动作模型（WAM）推理时是否需生成未来的争议展开实证研究，发现隐式WAM为提速丢弃未来生成，虽分布内任务性能与显式WAM相当，但泛化性大幅下降，核心原因是缺失首步去噪的未来预准备环节。据此提出的Simple-WAM仅需单步全噪声视频令牌前向传播，适配训练噪声调度，可同时兼顾隐式WAM的推理效率与显式WAM的强泛化性。
+
+<FeedbackButtons slug="item:arxiv-2609.34981" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.33439" target="_blank" rel="noopener noreferrer">Raven: The Harness of Harnesses for Composable Agentic Intelligence</a>
+
+*HF ★ 39 · EverMind AI · [HF 镜像](https://huggingface.co/papers/2609.33439)*
+
+针对当前AI代理执行框架（Harness）人工开发难扩展、绑定特定领域通用性弱的痛点，该研究提出开源多代理生态Raven（“框架之框架”），可自动生成适配特定模型与场景的模块化执行框架，配套任务拆解调度、跨任务经验复用机制，理论可在资源约束下拓展任务覆盖范围，实测长周期复杂任务表现远超现有最优系统，推进可组合代理智能前沿。
+
+<FeedbackButtons slug="item:arxiv-2609.33439" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.38155" target="_blank" rel="noopener noreferrer">Beyond the Timeline: Augmenting Long-Video Memory with Grounded Entity Biographies</a>
+
+*HF ★ 34 · Hui Ren, Lei Fan, Henry Pao… · [HF 镜像](https://huggingface.co/papers/2609.38155)*
+
+针对长视频问答中同一实体跨时段事件难关联、身份易混淆的痛点，本文提出接地实体履历（GEB）长视频记忆框架，将同一物理实体的跨片段视觉观测聚合为带上下文的可检索履历，问答时联动履历与事件证据推理。在4个基准测试中优于现有方案，EgoLifeQA准确率达72%，较当前最优高4.4个百分点，消融实验验证核心模块的增益作用。
+
+<FeedbackButtons slug="item:arxiv-2609.38155" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.34309" target="_blank" rel="noopener noreferrer">MaLiang-Harness: A Programmable Path to Image and Video Generation</a>
+
+*HF ★ 34 · Haoyu Zhao, Zihao Zhang, Xudong Wang… · [HF 镜像](https://huggingface.co/papers/2609.34309)*
+
+针对MLLM驱动的可编程视觉生成中程序可运行但效果不符需求的P2V缺口，该研究提出MaLiang-Harness统一框架，通过三类核心机制联动规划、执行与视觉反馈。实测显示GPT-6-Astra在对应基准上生成成功率达100%，同时发现模型通用能力评分和视觉生成表现不匹配，该框架可为相关研究提供系统支撑。
+
+<FeedbackButtons slug="item:arxiv-2609.34309" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.37372" target="_blank" rel="noopener noreferrer">Think Before You Score: Thinking Reward Model for Visual Generation</a>
+
+*HF ★ 28 · Xuehai Bai, Zhenchen Tang, Yang Shi… · [HF 镜像](https://huggingface.co/papers/2609.37372)*
+
+针对现有视觉奖励模型直接输出得分、评估逻辑隐式的问题，本文提出“先思考后打分”范式，推出可逐例生成适配评估规则、再输出细粒度得分的思考型奖励模型TRM，配套PD-GRPO方法解决传统成对优化的分数极化问题。实验表明TRM为开源同领域SOTA，媲美闭源方案，作为强化学习奖励可有效提升各类视觉生成模型性能。
+
+<FeedbackButtons slug="item:arxiv-2609.37372" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2609.35790" target="_blank" rel="noopener noreferrer">Sage: Formalization with Semantic Correction</a>
+
+*Thomas Hirtz, Farzad Jafarrahmani, Abdelmouksit Sagueni…*
+
+针对当前自然语言转数学形式化语句易丢失假设、语义偏差、答案泄露率高达70.9%的痛点，本文提出Sage智能体框架，采用四阶段分解生成管线搭配双信号语义修正环，融合Lean4编译器诊断与多维语义反馈。最终将答案泄露压至2.7%，两类测试集验证准确率远超基线，盲评胜率超79%。
+
+<FeedbackButtons slug="item:arxiv-2609.35790" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.35792" target="_blank" rel="noopener noreferrer">Serverless gossip training of LSTM failure detectors: A matched-protocol comparison with federated, local and centralized learning on NASA C-MAPSS</a>
+
+*Yusuf \"Ozt\"urk, Enes G\"oktekin, Bengisu Atl\{\i\}…*
+
+针对工业预测维护多站点数据难归集的痛点，本文在NASA C-MAPSS涡扇故障数据集上控制变量，对比无中心环形同步gossip学习、联邦平均、本地、集中式训练的堆叠LSTM故障检测器性能。结果显示gossip精度接近联邦平均，远优于本地训练，无需中心协调，数据异质性适中时可作为实用无中心方案，异质性较高时需优化拓扑。
+
+<FeedbackButtons slug="item:arxiv-2609.35792" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.35793" target="_blank" rel="noopener noreferrer">Learning from the Gap Between Pass@K and Pass@1</a>
+
+*Xuan Liu, Jingbin Qian, Haosheng Chen*
+
+针对大模型单样本解码性能远低于多采样筛选结果的问题，本文提出微调方法GapFT：仅选取模型单样本答错、但K次采样内能答对的样本微调，避免冗余训练，优于同预算的均匀验证微调。测试显示其仅用1/3标注数据就追平全量微调效果，单样本Pass@1较基线提升13-14个点，性能可匹配原模型4采样筛选精度。
+
+<FeedbackButtons slug="item:arxiv-2609.35793" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/introducing-gpt-6-1-sol" target="_blank" rel="noopener noreferrer">Introducing GPT-6.1 Sol</a>
+
+*OpenAI*
+
+本次推出的大模型新品GPT-6.1 Sol，智能表现接近Astra级别，可适配编程、自动化计算机操作、各类专业工作三类高要求应用场景。其最大亮点是API输入、输出Token的定价仅为Astra标准价格的五分之一，大幅压缩高性能大模型专业落地的使用成本，可为开发者、企业等用户提供高性价比的高阶智能支持。
+
+<FeedbackButtons slug="item:openai-blog-introducing-gpt-6-1-sol" client:visible />
+
+## <a href="https://openai.com/index/devday-2026-recap" target="_blank" rel="noopener noreferrer">DevDay 2026 Recap</a>
+
+*OpenAI*
+
+本篇为2026年OpenAI开发者日的活动复盘，本届大会共对外公布超20项新品及功能更新，核心覆盖GPT-6 Astra大模型、ChatGPT产品迭代、Codex编程模型、开发者API套件、安全能力升级，以及面向AI开发者的专属新工具矩阵，全方位优化平台开发生态、显著降低各类AI应用的落地门槛。
+
+<FeedbackButtons slug="item:openai-blog-devday-2026-recap" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-discovers-novel-enzyme-system" target="_blank" rel="noopener noreferrer">Claude discovers a novel enzyme system</a>
+
+*Anthropic*
+
+本成果来自新建生命科学实验室的早期研究：团队借助Claude智能体开展相关分析挖掘，首次发现了一套学界此前未报道过的全新酶系统，目前该系统的具体生理功能尚未得到解析。这一发现既是AI助力生命科学研究的典型成果，也为后续酶学研究、合成生物学应用开发提供了新方向。
+
+<FeedbackButtons slug="item:anthropic-claude-discovers-novel-enzyme-system" client:visible />
+
+## <a href="https://www.anthropic.com/news/accenture-embedded-evaluation" target="_blank" rel="noopener noreferrer">Partnering with Accenture on embedded evaluation</a>
+
+*Anthropic*
+
+Anthropic为落地此前提出的“内部嵌入专职AI评估人员”的相关承诺，宣布与埃森哲达成合作，共同开展前沿AI的独立评估工作。为搭建该领域的技术与服务能力，未来五年内双方预计各自对该方向投入不低于10亿美元的资金。
+
+<FeedbackButtons slug="item:anthropic-accenture-embedded-evaluation" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/introducing-gemini-38-live-with-live-avatar/" target="_blank" rel="noopener noreferrer">Introducing Gemini 3.8 Live with Live Avatar</a>
+
+*Google DeepMind*
+
+谷歌最新上线Gemini 3.8 Live版本，核心新增实时数字人功能：依托低延迟多模态感知、高精度动效同步生成技术，可在语音交互时同步输出口型、表情、动作高度匹配的虚拟形象，延迟远低于同类产品，突破了此前AI仅支持音文字交互的局限，可适配直播、教育等场景，交互真实感大幅提升。
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-38-live-with-live-avatar" client:visible />
+
+## <a href="https://deepmind.google/blog/advancing-private-ai-compute-with-secure-server-side-memory/" target="_blank" rel="noopener noreferrer">Advancing Private AI Compute with secure, server-side memory</a>
+
+*Google DeepMind*
+
+本文面向个人AI落地需求，聚焦私有AI计算技术优化，核心创新是在现有架构中引入安全服务端专属内存模块。该方案既解决端侧运行个人AI的算力不足痛点，又能保障用户交互数据全程不泄露隐私，兼顾隐私安全与运行效率，为个人AI规模化落地提供了新的技术思路。
+
+<FeedbackButtons slug="item:deepmind-advancing-private-ai-compute-with-secure-server-side-memory" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/kumo-tabular" target="_blank" rel="noopener noreferrer">NVIDIA Kumo Tabular Sets a New Accuracy-Efficiency Frontier for Tabular Prediction</a>
+
+*Hugging Face*
+
+英伟达推出Kumo Tabular表格预测框架，打破传统表格模型精度与推理效率难以兼顾的瓶颈，优化了特征交互建模逻辑及训练、推理全链路架构。其在通用公开表格数据集上精度超越XGBoost及主流深度表格模型，推理速度最高提升超10倍，为工业推荐、风控等场景提供能效更优的落地方案。
+
+<FeedbackButtons slug="item:hf-blog-kumo-tabular" client:visible />
+
+## <a href="https://huggingface.co/blog/MultiverseComputingCAI/getting-the-source-right-not-just-the-fact-source" target="_blank" rel="noopener noreferrer">Getting the Source Right, Not Just the Fact: Source-Aware Verification for MCP Agents</a>
+
+*Hugging Face*
+
+当前仅提供了该论文的标题，缺少摘要正文的具体内容，请您补充完整这篇论文摘要的全部文本信息，我才能按照要求为您完成翻译提炼，输出120字左右、突出核心方法与研究结论的简洁中文总结。
+
+<FeedbackButtons slug="item:hf-blog-getting-the-source-right-not-just-the-fact-source" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+递归自我改进（RSI）概念最早可追溯至1965年I.J.古德提出的超智能机器定义：该系统可在所有智能活动上超越人类，且能设计更优机器完成自我迭代。2008年尤德考夫斯基明确RSI为AI依托现有智能优化自身认知机制的反馈回路，当前AI领域的RSI既可表现为模型直接改写自身权重，也可广义表现为优化自身训练流程。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/09/499263.html" target="_blank" rel="noopener noreferrer">DeepSeek官方开源昇腾基础组件，与昇腾共建高效易用的AI芯片软件生态</a>
+
+*量子位*
+
+9月30日DeepSeek开源适配昇腾算力平台的全栈基础组件，含TileLang编译工具、高性能算子库、DeepEP分布式通信库。依托华为昇腾开放的底层接口、超节点组网方案支持，实测通信性能接近硬件上限，成果将落地CANN社区，对完善国内自主AI生态、提供大模型训练推理自主算力选项有里程碑意义。
+
+<FeedbackButtons slug="item:qbitai-499263" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/499246.html" target="_blank" rel="noopener noreferrer">OpenAI光速上新GPT-6.1 Sol！一晚上25项更新，都在这里了</a>
+
+*量子位*
+
+2026年OpenAI DevDay推出史上规模最大的25项更新：新增长驻个人智能体Dots；GPT-6.1 Sol模型在编码、系统操作等专业能力接近旗舰GPT-6 Astra，API成本仅为后者1/5；Codex升级为云端软件工程工具，Agent能力开放API，新增团队共享空间、账号互通等开发者功能，同步上线多档付费会员、算力加速等商业化服务。
+
+<FeedbackButtons slug="item:qbitai-499246" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/499239.html" target="_blank" rel="noopener noreferrer">正行创新联合创始人杨宇欣正式亮相：出任总裁，负责全球业务拓展</a>
+
+*量子位*
+
+2026年初成立的物理智能企业正行创新近日宣布，联合创始人杨宇欣正式出任总裁，全面负责全球市场拓展、产业生态建设与商业化落地。杨宇欣拥有二十余年跨科技领域产业与全球化经验，此前历任中科创达、黑芝麻智能高管，将推动公司具身智能全栈能力规模化落地真实场景。
+
+<FeedbackButtons slug="item:qbitai-499239" client:visible />
