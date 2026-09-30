@@ -1,5 +1,5 @@
 {
-  "asOf": "2026-09-30T15:00:52.142736",
+  "asOf": "2026-09-30T15:33:14.423567",
   "date": "2026-09-30",
   "indices": [
     {
@@ -44,7 +44,7 @@
   ],
   "hotStocks": [
     {
-      "error": "analytics_data.get_financial_data -> NETWORK_ERROR: [The operation was aborted due to timeout (server=analytics_data)] 网络/后端错误。detail 中有具体原因和 HTTP 状态码，分两种情况处理：1) 网络连接失败（detail 含 DNS/超时/代理/ECONNREFUSED）：检查本机网络和联网权限，修复后原样重试同一请求；2) 后端 HTTP 5xx（detail 含 HT"
+      "error": "analytics_data.get_financial_data -> QUOTA_ERROR: [账户积分余额不足，无法完成当前操作。请提示用户先进行充值。官网充值链接地址：https://market.windalice.com/#/user/credits (server=analytics_data)] 额度/限流错误。detail 中有具体原因，分三种情况处理：1) 日额度用完（detail 含'超限'或'daily'）：告知用户等次日 0 点额度刷新后重试，或换有额度的备用 Key"
     }
   ]
 }
