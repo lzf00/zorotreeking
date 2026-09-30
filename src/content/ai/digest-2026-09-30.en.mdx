@@ -1,0 +1,205 @@
+---
+lang: en
+translationKey: digest-2026-09-30
+title: "AI Daily Digest · 2026-09-30"
+description: "20 papers · multi-source aggregation + AI summaries"
+date: 2026-09-30
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's highlights in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Top AI vendors release major new products in a concentrated wave: OpenAI launches GPT-6.1 Sol, DeepMind rolls out Gemini 3.8 Live with digital human support</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Cutting-edge AI research results emerge intensively across multiple fields, covering world action models, long-video memory, generative reward models and other directions</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Rich progress in industrial ecosystem: DeepSeek open-sources Ascend foundational components, Anthropic partners with Accenture to carry out embedded evaluation</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 New LLM Release</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔬 Academic Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤝 Business Partnership</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚙️ Ecosystem Co-development</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡 Technological Breakthrough</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2609.34981" target="_blank" rel="noopener noreferrer">What Makes World Action Models Generalize? An Empirical Study of Test-Time Future Modeling</a>
+
+*HF ★ 40 · Renping Zhou, Zanlin Ni, Zihao Fan… · [HF Mirror](https://huggingface.co/papers/2609.34981)*
+
+This paper conducts an empirical study on the debate over whether World Action Models (WAMs) need to generate future states during inference. It finds that implicit WAMs discard future generation to speed up inference: while their performance on in-distribution tasks is comparable to explicit WAMs, their generalization ability drops significantly, with the core cause being the absence of the future pre-preparation step for first-step denoising. Based on this finding, the proposed Simple-WAM only requires single-step forward propagation of full-noise video tokens, adapted to the training noise schedule, and can achieve both the inference efficiency of implicit WAMs and the strong generalization of explicit WAMs.
+
+<FeedbackButtons slug="item:arxiv-2609.34981" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.33439" target="_blank" rel="noopener noreferrer">Raven: The Harness of Harnesses for Composable Agentic Intelligence</a>
+
+*HF ★ 39 · EverMind AI · [HF Mirror](https://huggingface.co/papers/2609.33439)*
+
+To address the pain points of current AI agent execution frameworks (Harness) being hard to scale with manual development and having weak generality due to being tied to specific domains, this research proposes Raven, an open-source multi-agent ecosystem dubbed the "harness of harnesses". It can automatically generate modular execution frameworks adapted to specific models and scenarios, with supporting mechanisms for task decomposition and scheduling, and cross-task experience reuse. Theoretically, it can expand task coverage under resource constraints, and real-world tests show its performance on long-cycle complex tasks far exceeds existing state-of-the-art systems, advancing the frontier of composable agentic intelligence.
+
+<FeedbackButtons slug="item:arxiv-2609.33439" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.38155" target="_blank" rel="noopener noreferrer">Beyond the Timeline: Augmenting Long-Video Memory with Grounded Entity Biographies</a>
+
+*HF ★ 34 · Hui Ren, Lei Fan, Henry Pao… · [HF Mirror](https://huggingface.co/papers/2609.38155)*
+
+To solve the pain points in long-video QA that cross-time events of the same entity are hard to correlate and identities are easily confused, this paper proposes the Grounded Entity Biography (GEB) long-video memory framework, which aggregates cross-segment visual observations of the same physical entity into retrievable biographies with context, and performs reasoning by linking biographies and event evidence during QA. It outperforms existing solutions on 4 benchmarks, reaching 72% accuracy on EgoLifeQA, 4.4 percentage points higher than the current SOTA. Ablation experiments verify the gain effect of core modules.
+
+<FeedbackButtons slug="item:arxiv-2609.38155" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.34309" target="_blank" rel="noopener noreferrer">MaLiang-Harness: A Programmable Path to Image and Video Generation</a>
+
+*HF ★ 34 · Haoyu Zhao, Zihao Zhang, Xudong Wang… · [HF Mirror](https://huggingface.co/papers/2609.34309)*
+
+To address the P2V gap in MLLM-driven programmable visual generation where programs are runnable but the output does not meet requirements, this research proposes the unified MaLiang-Harness framework, which links planning, execution and visual feedback through three core mechanisms. Testing shows that GPT-6-Astra achieves 100% generation success rate on the corresponding benchmark, and it also finds that the general capability score of models does not match their visual generation performance. This framework can provide systematic support for related research.
+
+<FeedbackButtons slug="item:arxiv-2609.34309" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.37372" target="_blank" rel="noopener noreferrer">Think Before You Score: Thinking Reward Model for Visual Generation</a>
+
+*HF ★ 28 · Xuehai Bai, Zhenchen Tang, Yang Shi… · [HF Mirror](https://huggingface.co/papers/2609.37372)*
+
+To address the problem that existing visual reward models output scores directly with implicit evaluation logic, this paper proposes the "think before scoring" paradigm, launching the Thinking Reward Model (TRM) that can generate adapted evaluation rules for each case before outputting fine-grained scores, paired with the PD-GRPO method to solve the score polarization problem of traditional pairwise optimization. Experiments show that TRM is the open-source SOTA in the same field, on par with closed-source solutions, and can effectively improve the performance of various visual generation models when used as a reward for reinforcement learning.
+
+<FeedbackButtons slug="item:arxiv-2609.37372" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2609.35790" target="_blank" rel="noopener noreferrer">Sage: Formalization with Semantic Correction</a>
+
+*Thomas Hirtz, Farzad Jafarrahmani, Abdelmouksit Sagueni…*
+
+To address the pain points that current natural language to mathematical formal statement conversion easily loses assumptions, has semantic deviations, and has an answer leakage rate as high as 70.9%, this paper proposes the Sage agent framework, which uses a four-stage decomposition generation pipeline paired with a dual-signal semantic correction loop, integrating Lean4 compiler diagnostics and multi-dimensional semantic feedback. It ultimately reduces answer leakage to 2.7%, achieves far higher verification accuracy than baselines on two test sets, and has a blind evaluation win rate of over 79%.
+
+<FeedbackButtons slug="item:arxiv-2609.35790" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.35792" target="_blank" rel="noopener noreferrer">Serverless gossip training of LSTM failure detectors: A matched-protocol comparison with federated, local and centralized learning on NASA C-MAPSS</a>
+
+*Yusuf \"Ozt\"urk, Enes G\"oktekin, Bengisu Atl\{\i\}…*
+
+To address the difficulty of aggregating multi-site data for industrial predictive maintenance, this paper conducts controlled variable tests on the NASA C-MAPSS turbofan failure dataset, comparing the performance of stacked LSTM failure detectors trained with centerless ring-synchronized gossip learning, federated averaging, local training, and centralized training. The results show that the accuracy of gossip learning is close to federated averaging, far better than local training, requires no central coordination, and can be used as a practical centerless solution when data heterogeneity is moderate, while topology optimization is required when heterogeneity is high.
+
+<FeedbackButtons slug="item:arxiv-2609.35792" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.35793" target="_blank" rel="noopener noreferrer">Learning from the Gap Between Pass@K and Pass@1</a>
+
+*Xuan Liu, Jingbin Qian, Haosheng Chen*
+
+To address the problem that the single-sample decoding performance of large models is far lower than the result of multi-sample screening, this paper proposes the fine-tuning method GapFT: it only selects samples that the model answers incorrectly in a single sample but correctly within K samplings for fine-tuning, avoiding redundant training, and outperforms uniform verification fine-tuning with the same budget. Tests show that it matches the effect of full fine-tuning with only 1/3 of the labeled data, improves single-sample Pass@1 by 13-14 percentage points over the baseline, and its performance can match the 4-sample screening accuracy of the original model.
+
+<FeedbackButtons slug="item:arxiv-2609.35793" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/introducing-gpt-6-1-sol" target="_blank" rel="noopener noreferrer">Introducing GPT-6.1 Sol</a>
+
+*OpenAI*
+
+The newly released large model GPT-6.1 Sol has intelligence performance close to the Astra level, and can adapt to three high-demand application scenarios: programming, automated computer operation, and various professional work. Its biggest highlight is that the pricing of API input and output tokens is only one-fifth of the standard price of Astra, greatly reducing the usage cost of high-performance large model professional implementation, and can provide cost-effective high-level intelligent support for developers, enterprises and other users.
+
+<FeedbackButtons slug="item:openai-blog-introducing-gpt-6-1-sol" client:visible />
+
+## <a href="https://openai.com/index/devday-2026-recap" target="_blank" rel="noopener noreferrer">DevDay 2026 Recap</a>
+
+*OpenAI*
+
+This is a review of the 2026 OpenAI DevDay event. This conference announced more than 20 new products and feature updates, covering the GPT-6 Astra large model, ChatGPT product iterations, Codex programming model, developer API suite, security capability upgrades, and a new exclusive tool matrix for AI developers, comprehensively optimizing the platform development ecosystem and significantly lowering the implementation threshold for various AI applications.
+
+<FeedbackButtons slug="item:openai-blog-devday-2026-recap" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-discovers-novel-enzyme-system" target="_blank" rel="noopener noreferrer">Claude discovers a novel enzyme system</a>
+
+*Anthropic*
+
+This result comes from early research of the newly established life science laboratory: the team used Claude agent to carry out relevant analysis and mining, and discovered a brand-new enzyme system that has not been reported in academic circles before, and the specific physiological function of this system has not been resolved yet. This discovery is a typical achievement of AI empowering life science research, and also provides a new direction for subsequent enzymology research and synthetic biology application development.
+
+<FeedbackButtons slug="item:anthropic-claude-discovers-novel-enzyme-system" client:visible />
+
+## <a href="https://www.anthropic.com/news/accenture-embedded-evaluation" target="_blank" rel="noopener noreferrer">Partnering with Accenture on embedded evaluation</a>
+
+*Anthropic*
+
+To fulfill its previously proposed commitment of "embedding full-time AI evaluators internally", Anthropic announced a partnership with Accenture to jointly carry out independent evaluation of cutting-edge AI. To build technical and service capabilities in this field, the two parties are expected to invest no less than US$1 billion each in this direction in the next five years.
+
+<FeedbackButtons slug="item:anthropic-accenture-embedded-evaluation" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/introducing-gemini-38-live-with-live-avatar/" target="_blank" rel="noopener noreferrer">Introducing Gemini 3.8 Live with Live Avatar</a>
+
+*Google DeepMind*
+
+Google has officially launched the latest Gemini 3.8 Live version, with the core new feature of real-time digital human: relying on low-latency multimodal perception and high-precision motion effect synchronous generation technology, it can output a virtual image with highly matched lip shape, expression and movement synchronously during voice interaction, with latency far lower than similar products. It breaks the previous limitation that AI only supports audio and text interaction, can adapt to scenarios such as live streaming and education, and greatly improves the realism of interaction.
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-38-live-with-live-avatar" client:visible />
+
+## <a href="https://deepmind.google/blog/advancing-private-ai-compute-with-secure-server-side-memory/" target="_blank" rel="noopener noreferrer">Advancing Private AI Compute with secure, server-side memory</a>
+
+*Google DeepMind*
+
+This paper targets the landing demand of personal AI, focuses on the optimization of private AI computing technology, and the core innovation is the introduction of a dedicated secure server-side memory module in the existing architecture. This solution not only solves the pain point of insufficient computing power for running personal AI on the end side, but also ensures that user interaction data does not leak privacy throughout the process, balancing privacy security and operating efficiency, providing a new technical idea for the large-scale implementation of personal AI.
+
+<FeedbackButtons slug="item:deepmind-advancing-private-ai-compute-with-secure-server-side-memory" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/kumo-tabular" target="_blank" rel="noopener noreferrer">NVIDIA Kumo Tabular Sets a New Accuracy-Efficiency Frontier for Tabular Prediction</a>
+
+*Hugging Face*
+
+NVIDIA has launched the Kumo Tabular tabular prediction framework, breaking the bottleneck of traditional tabular models that it is difficult to balance accuracy and inference efficiency, and optimizing the feature interaction modeling logic and the full link architecture of training and inference. Its accuracy on general public tabular datasets surpasses XGBoost and mainstream deep tabular models, and inference speed is increased by more than 10 times at maximum, providing a more energy-efficient implementation solution for scenarios such as industrial recommendation and risk control.
+
+<FeedbackButtons slug="item:hf-blog-kumo-tabular" client:visible />
+
+## <a href="https://huggingface.co/blog/MultiverseComputingCAI/getting-the-source-right-not-just-the-fact-source" target="_blank" rel="noopener noreferrer">Getting the Source Right, Not Just the Fact: Source-Aware Verification for MCP Agents</a>
+
+*Hugging Face*
+
+Only the title of this paper is currently available, and the specific content of the abstract is missing. Please supplement the full text of this paper's abstract so that I can complete the translation and refinement as required, and output a concise summary of about 120 words highlighting the core method and research conclusions.
+
+<FeedbackButtons slug="item:hf-blog-getting-the-source-right-not-just-the-fact-source" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+Recursive Self-Improvement (RSI) can be traced back to the definition of superintelligent machines proposed by I.J. Good in 1965: such a system can surpass humans in all intelligent activities, and can design better machines to complete self-iteration. In 2008, Eliezer Yudkowsky explicitly defined RSI as a feedback loop where AI optimizes its own cognitive mechanism relying on existing intelligence. Current RSI in the AI field can be expressed as the model directly rewriting its own weights, or broadly as optimizing its own training process.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/09/499263.html" target="_blank" rel="noopener noreferrer">DeepSeek Officially Open-Sources Ascend Foundational Components, Co-Builds Efficient and Easy-to-Use AI Chip Software Ecosystem with Ascend</a>
+
+*QbitAI*
+
+On September 30, DeepSeek open-sourced the full-stack foundational components adapted to the Ascend computing platform, including the TileLang compilation tool, high-performance operator library, and DeepEP distributed communication library. Supported by Huawei Ascend's open underlying interfaces and super-node networking solution, the measured communication performance is close to the hardware upper limit. The results will be implemented in the CANN community, which is of milestone significance for improving the domestic independent AI ecosystem and providing independent computing power options for large model training and inference.
+
+<FeedbackButtons slug="item:qbitai-499263" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/499246.html" target="_blank" rel="noopener noreferrer">OpenAI Launches GPT-6.1 Sol at Blazing Speed! All 25 updates released overnight are here</a>
+
+*QbitAI*
+
+The 2026 OpenAI DevDay launched the largest ever 25 updates: added permanent personal agent Dots; the GPT-6.1 Sol model has professional capabilities in coding, system operation and other fields close to the flagship GPT-6 Astra, with API cost only 1/5 of the latter; Codex has been upgraded to a cloud software engineering tool, Agent capabilities are open via API, added developer functions such as team shared space and account interoperability, and simultaneously launched multiple paid memberships, computing power acceleration and other commercial services.
+
+<FeedbackButtons slug="item:qbitai-499246" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/499239.html" target="_blank" rel="noopener noreferrer">Yang Yuxin, co-founder of Zhengxing Innovation, officially debuts: serves as President, responsible for global business expansion</a>
+
+*QbitAI*
+
+Zhengxing Innovation, a physical intelligence enterprise founded in early 2026, recently announced that co-founder Yang Yuxin has officially assumed the position of President, fully responsible for global market expansion, industrial ecosystem construction and commercial implementation. Yang Yuxin has more than 20 years of cross-technology industry and globalization experience, previously held senior positions at ThunderSoft and Black Sesame Technologies, and will promote the large-scale implementation of the company's full-stack embodied intelligence capabilities in real scenarios.
+
+<FeedbackButtons slug="item:qbitai-499239" client:visible />
