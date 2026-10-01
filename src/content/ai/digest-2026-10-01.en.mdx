@@ -1,0 +1,205 @@
+---
+lang: en
+translationKey: digest-2026-10-01
+title: "Daily AI Highlights · 2026-10-01"
+description: "20 papers · Multi-source aggregation + AI summaries"
+date: 2026-10-01
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">DeepMind released cutting-edge achievements including Gemini 4 Argon; OpenAI cracked down on coordinated model distillation and launched AI implementation solutions for small businesses</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Anthropic announced that Claude discovered a new enzyme system, partnered with Accenture to roll out embedded evaluation, and multiple cutting-edge research papers were published</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face launched an open multilingual TTS evaluation leaderboard; NVIDIA Kumo broke tabular prediction records; multiple industry interviews were released</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 LLM Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔬 Research Progress</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📊 Evaluation Leaderboards</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🛡️ Security & Governance</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💼 Industry Implementation</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2609.38143" target="_blank" rel="noopener noreferrer">Learning Meta-Skills for Agent Harness Design in Test-Time AI4AI</a>
+
+*HF ★ 33 · Cheng Qian, Kunlun Zhu, Beibin Li… · [HF Mirror](https://huggingface.co/papers/2609.38143)*
+
+This paper focuses on test-time AI-for-AI scenarios, and proposes the concept of meta-skills under the premise that both the constructor and target agent weights are fixed: meta-skills are general principles for determining when to provide support to the target agent and what resources to provide. The constructor learns the meta-skill library from development set feedback, which can adapt to unknown tasks and generate execution environments. It delivers an 8.95 percentage point performance improvement over skill-free solutions, and is 12.02 percentage points higher than directly providing the target agent with a skill library, offering a new idea for system self-optimization.
+
+<FeedbackButtons slug="item:arxiv-2609.38143" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.36484" target="_blank" rel="noopener noreferrer">The Teacher Is a Direction, Not a Destination: Extrapolating RL-Induced Representation Residuals in On-Policy Distillation</a>
+
+*HF ★ 30 · Hao Li, MeiJia Chen, Weijie Ren… · [HF Mirror](https://huggingface.co/papers/2609.36484)*
+
+To address the issues that existing output space extrapolation schemes for on-policy distillation are prone to introducing noise and lead to unstable training, this paper proposes the RIDE method: it directly extracts the direction of representation shift at each layer brought to the teacher model by RL training, guides the student's hidden state to optimize along this direction to a position beyond the teacher, while constraining the deviation amplitude. Multiple tests show that RIDE generally matches or outperforms RL teachers, and is significantly better than traditional output space extrapolation schemes.
+
+<FeedbackButtons slug="item:arxiv-2609.36484" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.40325" target="_blank" rel="noopener noreferrer">WorldAuditBench: Interactive 3D World Auditing with Multimodal Agents</a>
+
+*HF ★ 27 · Ziyan Jiang, Jingbo Yang, Jiabao Ji… · [HF Mirror](https://huggingface.co/papers/2609.40325)*
+
+To meet the requirement that anomaly detection in 3D interactive virtual environments requires linking navigation actions and visual reasoning, this paper releases the WorldAuditBench benchmark, covering 13 environments built with UE5 and Three.js, and 213 anomaly detection tasks across 5 categories. Tests on 5 cutting-edge multimodal models under two auditing paradigms show that the highest success rate is only 42.3%, far lower than the human level of 83.4%, highlighting the obvious shortcoming of current multimodal agents in coupling these two capabilities.
+
+<FeedbackButtons slug="item:arxiv-2609.40325" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.38827" target="_blank" rel="noopener noreferrer">More Choices, Fewer Decisions: Ordinal-Scale Bias in JEV-like Direct-Decision Models</a>
+
+*HF ★ 18 · Tianxiang Gao, Jinzhe Li, Zhiyuan Li… · [HF Mirror](https://huggingface.co/papers/2609.38827)*
+
+To address the ordinal scale usage bias problem of JEV-like direct decision models, the study analyzed JEV1.13 and 3 open-source KEV models and found that these models have a decision label range compression problem: the utilization rate of ordinal task labels is only 67%-76%, and the higher the label magnitude, the more significant the compression, which is unrelated to accuracy, label distribution, etc. Fine-tuning with BA-LoRA can increase the utilization rate to 86%, confirming that this bias is an acquired, correctable attribute, not an inherent architectural limitation.
+
+<FeedbackButtons slug="item:arxiv-2609.38827" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.40340" target="_blank" rel="noopener noreferrer">EvoDuet: Bilevel Co-Evolution of Web Searching and Task Solving for Scientific Discovery</a>
+
+*HF ★ 16 · Young-Jun Lee, Jinheon Baek, Soyeong Jeong… · [HF Mirror](https://huggingface.co/papers/2609.40340)*
+
+To address the problems that LLM-driven evolutionary scientific search is prone to stagnation due to lack of external knowledge, and simply integrating web search returns redundant content, this paper proposes the EvoDuet bilevel co-evolution method: it fixes model parameters, co-optimizes solutions and search queries, is equipped with a retrieval gate to independently select knowledge sources, the inner loop tunes queries and ranks documents, and the outer loop generates candidate retained results. Tests show that it improves scientific discovery gains for most LLMs, sets new state-of-the-art results on 8 tasks, and adapts to multiple types of evolutionary search frameworks.
+
+<FeedbackButtons slug="item:arxiv-2609.40340" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2609.35790" target="_blank" rel="noopener noreferrer">Sage: Formalization with Semantic Correction</a>
+
+*Thomas Hirtz, Farzad Jafarrahmani, Abdelmouksit Sagueni…*
+
+To address the pain points of neural theorem provers relying on ready-made Lean4 formal statements, semantic deviation in natural language to formalization, and answer leakage, this study proposes the Sage framework, which adopts a four-stage decomposition generation pipeline plus a dual-signal semantic correction loop, combining compilation diagnosis and multi-dimensional semantic feedback to ensure fidelity. It reduces the leakage rate to 2.7% on standard datasets, achieves a pass@4 accuracy of 73.3%, its zero-shot generalization on new IMO problems far exceeds the baseline, and its blind evaluation win rate exceeds 79%.
+
+<FeedbackButtons slug="item:arxiv-2609.35790" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.35792" target="_blank" rel="noopener noreferrer">Serverless gossip training of LSTM failure detectors: A matched-protocol comparison with federated, local and centralized learning on NASA C-MAPSS</a>
+
+*Yusuf \"Ozt\"urk, Enes G\"oktekin, Bengisu Atl\{\i\}…*
+
+To address the pain point that cross-site data for industrial predictive maintenance is difficult to centralize, this paper controls variables on the NASA aeroengine failure dataset, and compares the performance of LSTM failure detectors under four schemes: decentralized ring gossip training, federated averaging, local training, and centralized training. The results show that the performance of decentralized gossip is close to federated averaging, far better than local training, no coordination node is required, and it is a practical serverless alternative when data heterogeneity is moderate; when heterogeneity is high, the topology needs to be optimized.
+
+<FeedbackButtons slug="item:arxiv-2609.35792" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.35793" target="_blank" rel="noopener noreferrer">Learning from the Gap Between Pass@K and Pass@1</a>
+
+*Xuan Liu, Jingbin Qian, Haosheng Chen*
+
+To address the problem that the Pass@K performance of LLMs through multi-sample verification and screening is far better than the commonly used single-sample Pass@1 in deployment, this paper proposes the GapFT fine-tuning method: only select samples that the model answers incorrectly with single sampling but can answer correctly within K samplings for training. On logical reasoning datasets, this method matches the effect of full fine-tuning with only 1/3 of the annotation volume, improves the Pass@1 of Llama-3.1-8B by more than 13 percentage points, makes the single-sample accuracy match the original model's Pass@4 level, and is effective when reproduced on multiple base models.
+
+<FeedbackButtons slug="item:arxiv-2609.35793" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/disrupting-a-coordinated-model-distillation-campaign" target="_blank" rel="noopener noreferrer">Disrupting a coordinated model-distillation campaign</a>
+
+*OpenAI*
+
+This article focuses on LLM intellectual property protection scenarios, disclosing that OpenAI recently successfully handled an organized malicious model distillation theft operation: the operation intended to steal the core inference capabilities of protected LLMs, and replicate LLM performance at low cost through adversarial distillation. OpenAI has now completed the interception and intervention of this operation, and is iteratively upgrading its special defense system against distillation attacks to strengthen the security protection of LLM core capabilities.
+
+<FeedbackButtons slug="item:openai-blog-disrupting-a-coordinated-model-distillation-campaign" client:visible />
+
+## <a href="https://openai.com/index/helping-small-businesses-put-ai-to-work" target="_blank" rel="noopener noreferrer">Helping small businesses put AI to work</a>
+
+*OpenAI*
+
+This content focuses on the AI implementation needs of small and micro enterprises, and promotes two core initiatives: first, OpenAI has reached a cooperation with the US Small Business Development Center (SBDC) to provide small and micro enterprises with practical AI skills training and localized implementation support; second, it has simultaneously released a special report on AI application scenarios for small teams, providing references for small and medium-sized business entities to use AI to improve efficiency, and lowering the threshold for small and micro enterprises to use AI.
+
+<FeedbackButtons slug="item:openai-blog-helping-small-businesses-put-ai-to-work" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-discovers-novel-enzyme-system" target="_blank" rel="noopener noreferrer">Claude discovers a novel enzyme system</a>
+
+*Anthropic*
+
+This early research from the newly established life science laboratory shows that the team carried out relevant research with the help of Claude agents, and successfully discovered a set of completely new enzyme systems that have not been previously reported by the academic community, and the specific physiological functions of this system are still unknown. This achievement verifies the application potential of large language model agents in the field of basic life science research, and provides new tool ideas for related research.
+
+<FeedbackButtons slug="item:anthropic-claude-discovers-novel-enzyme-system" client:visible />
+
+## <a href="https://www.anthropic.com/news/accenture-embedded-evaluation" target="_blank" rel="noopener noreferrer">Partnering with Accenture on embedded evaluation</a>
+
+*Anthropic*
+
+To fulfill its previously made public commitment to embed AI evaluators internally, Anthropic is cooperating with Accenture to carry out a cutting-edge AI independent evaluation project. The two parties have agreed that both will invest at least US$1 billion in this field in the next five years to build and improve the relevant evaluation capability system, and provide independent third-party professional technical support for safety testing and risk verification of cutting-edge AI.
+
+<FeedbackButtons slug="item:anthropic-accenture-embedded-evaluation" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/gemini-4-argon-our-next-era-of-frontier-intelligence/" target="_blank" rel="noopener noreferrer">Gemini 4 Argon: our next era of frontier intelligence</a>
+
+*Google DeepMind*
+
+You have only provided the paper title so far, and the abstract content is empty ~ Please supplement the full English content of the abstract for the Gemini 4 Argon related paper, and I will extract the core methods, innovations and conclusions as required, and output a logically clear, focused Chinese summary of around 120 characters.
+
+<FeedbackButtons slug="item:deepmind-gemini-4-argon-our-next-era-of-frontier-intelligence" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-synthid-bio/" target="_blank" rel="noopener noreferrer">Introducing SynthID Bio</a>
+
+*Google DeepMind*
+
+The newly launched SynthID Bio is an exclusive watermarking technology for AI-generated proteins, and the proof of concept has been completed at present: this technology can embed exclusive watermarks recognizable by special tools while fully retaining the original biological functions of AI-generated proteins, which can accurately trace the AI-generated attribute of proteins, providing a feasible technical path for intellectual property protection and compliance control of AI-synthesized proteins.
+
+<FeedbackButtons slug="item:deepmind-introducing-synthid-bio" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/open-tts-leaderboard" target="_blank" rel="noopener noreferrer">Open TTS Leaderboard: Scalable Evaluation for Multilingual Text-to-Speech and Voice Cloning</a>
+
+*Hugging Face*
+
+This work launches the first scalable public evaluation leaderboard for multilingual text-to-speech (TTS) and voice cloning tasks, builds a unified evaluation framework covering multi-dimensional subjective and objective indicators, supports standardized batch access and horizontal comparison of multiple languages and models, fills the gap of the lack of a unified public evaluation benchmark in the field, and can provide reliable references for the research and development of multilingual TTS and cross-lingual voice cloning.
+
+<FeedbackButtons slug="item:hf-blog-open-tts-leaderboard" client:visible />
+
+## <a href="https://huggingface.co/blog/nvidia/kumo-tabular" target="_blank" rel="noopener noreferrer">NVIDIA Kumo Tabular Sets a New Accuracy-Efficiency Frontier for Tabular Prediction</a>
+
+*Hugging Face*
+
+(LLM summarization failed, please supplement manually later)
+
+<FeedbackButtons slug="item:hf-blog-kumo-tabular" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+The concept of Recursive Self-Improvement (RSI) was first proposed by I.J. Good in 1965, referring to superintelligent machines that can surpass all human intellectual activities and can design better systems on their own to achieve iterative upgrades. In 2008, Eliezer Yudkowsky clarified its core logic as the feedback loop where AI optimizes its own cognitive mechanism relying on its existing intelligence. Currently, RSI implementation in the AI field is divided into two paths: one is that the model directly rewrites its own weights, and the other is optimizing its own training pipeline in a broad sense.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/09/499654.html" target="_blank" rel="noopener noreferrer">Latest interview with the father of OpenAI inference! Mathematics is just an appetizer in the multi-agent era</a>
+
+*QbitAI*
+
+This article summarizes the key points of the latest interview with Noam Brown, core author of OpenAI o1 and the "godfather of inference": he bet on the technical route of time-compute scaling for inference in his early years, which facilitated the launch of the o1 inference model, and he is currently focusing on multi-agent systems. He revealed that in the previous project that solved the millennium Navier-Stokes problem, 10,000 agents only contributed 10% of the credit. The interview also covers core AGI topics such as recursive self-improvement, super alignment, and chain-of-thought monitoring.
+
+<FeedbackButtons slug="item:qbitai-499654" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/499605.html" target="_blank" rel="noopener noreferrer">Live recap: Where is the next opportunity for industrial AI?</a>
+
+*QbitAI*
+
+QbitAI's industrial AI themed live broadcast invited Gu Xin from Siemens and Huang Yao from AQ Technology to discuss the path to large-scale implementation. Huang Yao introduced with the case of semiconductor wafer dicing: the team used multimodal models to improve recognition accuracy and generalization, and precipitated engineers' operating experience into agents, which can increase the overall equipment efficiency and production capacity by 25%. He pointed out that the core of industrial AI is to align with production indicators and be responsible for production results.
+
+<FeedbackButtons slug="item:qbitai-499605" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/499597.html" target="_blank" rel="noopener noreferrer">Anthropic, are you here to advertise for Zhipu AI?</a>
+
+*QbitAI*
+
+Recently, Anthropic released a security report accusing Zhipu GLM-5.3 of having strong vulnerability mining and attack code writing capabilities, and that its anti-abuse restrictions are easy to bypass. However, the actual test data in the report shows that GLM-5.3's performance in vulnerability exploitation tests is only slightly inferior to Anthropic's unreleased high-end model, and the report also cites NIST's conclusion that it is the open-source LLM with the strongest network capability currently, which was joked by netizens as advertising for Zhipu in disguise.
+
+<FeedbackButtons slug="item:qbitai-499597" client:visible />
