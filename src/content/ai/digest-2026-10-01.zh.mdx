@@ -1,0 +1,205 @@
+---
+lang: zh
+translationKey: digest-2026-10-01
+title: "AI 每日精选 · 2026-10-01"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-10-01
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">DeepMind发布Gemini 4 Argon等前沿成果，OpenAI打击协调式模型蒸馏并推小企业AI落地方案</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Anthropic宣布Claude发现全新酶系统，联合埃森哲落地嵌入式评估，多篇前沿研究论文上线</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face上线多语种TTS开放评测榜，NVIDIA Kumo刷新表格预测纪录，多份行业访谈发布</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 大模型动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔬 科研进展</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📊 评测榜单</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🛡️ 安全治理</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💼 产业落地</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2609.38143" target="_blank" rel="noopener noreferrer">Learning Meta-Skills for Agent Harness Design in Test-Time AI4AI</a>
+
+*HF ★ 33 · Cheng Qian, Kunlun Zhu, Beibin Li… · [HF 镜像](https://huggingface.co/papers/2609.38143)*
+
+本文聚焦测试阶段AI赋能AI场景，在构造器与目标Agent权重均固定的前提下，提出元技能概念：即判定何时为目标Agent提供支持、提供何种资源的通用原则。构造器从开发集反馈习得元技能存库，可适配未知任务生成执行环境，相较无技能方案性能提升8.95个百分点，较直接给目标Agent技能库高12.02个百分点，为系统自优化提供新思路。
+
+<FeedbackButtons slug="item:arxiv-2609.38143" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.36484" target="_blank" rel="noopener noreferrer">The Teacher Is a Direction, Not a Destination: Extrapolating RL-Induced Representation Residuals in On-Policy Distillation</a>
+
+*HF ★ 30 · Hao Li, MeiJia Chen, Weijie Ren… · [HF 镜像](https://huggingface.co/papers/2609.36484)*
+
+针对同策略蒸馏原有输出空间外推方案易引入噪声、训练不稳定的问题，本文提出RIDE方法：直接提取RL训练给教师模型带来的每层表征偏移方向，引导学生隐状态沿该方向优化至超出教师的位置，同时约束偏离幅度。多组测试显示，RIDE普遍追平或超越RL教师，显著优于传统输出空间外推方案。
+
+<FeedbackButtons slug="item:arxiv-2609.36484" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.40325" target="_blank" rel="noopener noreferrer">WorldAuditBench: Interactive 3D World Auditing with Multimodal Agents</a>
+
+*HF ★ 27 · Ziyan Jiang, Jingbo Yang, Jiabao Ji… · [HF 镜像](https://huggingface.co/papers/2609.40325)*
+
+针对3D交互虚拟环境异常检测需联动导航行动与视觉推理的需求，本文发布WorldAuditBench基准，覆盖13个用UE5、Three.js搭建的环境、5类共213项异常检测任务。测试两类审计范式下5款前沿多模态模型，最高成功率仅42.3%，远低于人类的83.4%，凸显当前多模态智能体两类能力耦合的明显短板。
+
+<FeedbackButtons slug="item:arxiv-2609.40325" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.38827" target="_blank" rel="noopener noreferrer">More Choices, Fewer Decisions: Ordinal-Scale Bias in JEV-like Direct-Decision Models</a>
+
+*HF ★ 18 · Tianxiang Gao, Jinzhe Li, Zhiyuan Li… · [HF 镜像](https://huggingface.co/papers/2609.38827)*
+
+针对JEV类直接决策模型的序级量表使用偏差问题，研究分析JEV1.13及3款开源KEV模型发现：这类模型存在决策标签范围压缩问题，序级任务标签利用率仅67%-76%，标签量级越高压缩越显著，与准确率、标签分布等无关。通过BA-LoRA微调可将利用率提至86%，证实该偏差为习得可修正属性，非架构固有局限。
+
+<FeedbackButtons slug="item:arxiv-2609.38827" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.40340" target="_blank" rel="noopener noreferrer">EvoDuet: Bilevel Co-Evolution of Web Searching and Task Solving for Scientific Discovery</a>
+
+*HF ★ 16 · Young-Jun Lee, Jinheon Baek, Soyeong Jeong… · [HF 镜像](https://huggingface.co/papers/2609.40340)*
+
+针对大模型驱动的演化科学搜索缺外部知识易停滞、单纯接入网页搜索返回内容冗余的问题，本文提出EvoDuet双层协同演化方法：固定模型参数，协同优化解决方案与搜索查询，配检索门控自选知识来源，内循环调优查询排序文档，外循环生成候选留存结果。测试显示其在多数大模型下提升科学发现增益，刷新8项任务最优，适配多类演化搜索框架。
+
+<FeedbackButtons slug="item:arxiv-2609.40340" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2609.35790" target="_blank" rel="noopener noreferrer">Sage: Formalization with Semantic Correction</a>
+
+*Thomas Hirtz, Farzad Jafarrahmani, Abdelmouksit Sagueni…*
+
+针对神经定理证明器依赖现成Lean4形式化语句、自然语言转形式化存在语义偏差、答案泄露的痛点，该研究提出Sage框架，采用四阶段分解生成管线加双信号语义校正环，结合编译诊断与多维语义反馈保真。其在标准数据集上将泄露率压至2.7%，pass@4准确率达73.3%，IMO新题零样本泛化远超基线，盲评胜率超79%。
+
+<FeedbackButtons slug="item:arxiv-2609.35790" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.35792" target="_blank" rel="noopener noreferrer">Serverless gossip training of LSTM failure detectors: A matched-protocol comparison with federated, local and centralized learning on NASA C-MAPSS</a>
+
+*Yusuf \"Ozt\"urk, Enes G\"oktekin, Bengisu Atl\{\i\}…*
+
+针对工业预测维护跨站点数据难以集中的痛点，该文在NASA航空发动机故障数据集上控制变量，对比无中心环式gossip训练、联邦平均、本地训练、中心化训练四种方案的LSTM故障检测器性能。结果显示无中心gossip效果接近联邦平均，远优于本地训练，无需协调节点，数据异质性适中时是实用的无服务器替代方案，异质性较高时需优化拓扑结构。
+
+<FeedbackButtons slug="item:arxiv-2609.35792" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.35793" target="_blank" rel="noopener noreferrer">Learning from the Gap Between Pass@K and Pass@1</a>
+
+*Xuan Liu, Jingbin Qian, Haosheng Chen*
+
+针对大模型多采样验证筛选的Pass@K效果远优于部署常用的单采样Pass@1的问题，该文提出GapFT微调方法：仅挑选模型单采样答错、但K次采样内能答对的样本训练。在逻辑推理数据集上，该方法仅用1/3标注量就追平全量微调效果，Llama-3.1-8B的Pass@1提升超13个点，单采样精度追平原模型Pass@4水平，多底座复现均有效。
+
+<FeedbackButtons slug="item:arxiv-2609.35793" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/disrupting-a-coordinated-model-distillation-campaign" target="_blank" rel="noopener noreferrer">Disrupting a coordinated model-distillation campaign</a>
+
+*OpenAI*
+
+本文聚焦大模型知识产权防护场景，披露OpenAI近期成功处置了一起有组织的恶意模型蒸馏窃密行动：该行动意图窃取受保护的大模型核心推理能力，通过对抗蒸馏手段低成本复刻大模型性能。目前OpenAI已完成对该行动的拦截干预，同时正在迭代升级对抗蒸馏攻击的专项防御体系，强化大模型核心能力安全防护。
+
+<FeedbackButtons slug="item:openai-blog-disrupting-a-coordinated-model-distillation-campaign" client:visible />
+
+## <a href="https://openai.com/index/helping-small-businesses-put-ai-to-work" target="_blank" rel="noopener noreferrer">Helping small businesses put AI to work</a>
+
+*OpenAI*
+
+本次内容聚焦小微企业AI落地需求，核心推进两项举措：一是OpenAI与美国小型企业发展中心（SBDC）达成合作，为小微企业提供实操性AI技能培训、本地化落地支持；二是同步发布小型团队AI应用场景专项报告，为中小经营主体应用AI提效提供参考，降低小微企业使用AI的门槛。
+
+<FeedbackButtons slug="item:openai-blog-helping-small-businesses-put-ai-to-work" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-discovers-novel-enzyme-system" target="_blank" rel="noopener noreferrer">Claude discovers a novel enzyme system</a>
+
+*Anthropic*
+
+本项来自新建生命科学实验室的早期研究显示，团队借助Claude智能体开展相关研究，成功发现了一套此前未被学界报道的全新酶系统，目前该系统的具体生理功能仍未探明。这一成果验证了大语言模型智能体在生命科学基础研究领域的应用潜力，为相关研究提供了新的工具思路。
+
+<FeedbackButtons slug="item:anthropic-claude-discovers-novel-enzyme-system" client:visible />
+
+## <a href="https://www.anthropic.com/news/accenture-embedded-evaluation" target="_blank" rel="noopener noreferrer">Partnering with Accenture on embedded evaluation</a>
+
+*Anthropic*
+
+Anthropic为落实此前提出的内部嵌入AI评估人员的公开承诺，正与埃森哲合作开展前沿AI独立评估项目。双方约定未来五年均将在该领域投入至少10亿美元，用于搭建完善相关评估能力体系，为前沿AI的安全测试、风险核验提供独立第三方的专业技术支撑。
+
+<FeedbackButtons slug="item:anthropic-accenture-embedded-evaluation" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/gemini-4-argon-our-next-era-of-frontier-intelligence/" target="_blank" rel="noopener noreferrer">Gemini 4 Argon: our next era of frontier intelligence</a>
+
+*Google DeepMind*
+
+你目前仅提供了论文标题，摘要内容为空哦~请补充完整Gemini 4 Argon相关论文摘要的具体英文内容，我会按照要求提炼核心方法、创新点与结论，输出120字左右逻辑清晰、重点突出的中文总结。
+
+<FeedbackButtons slug="item:deepmind-gemini-4-argon-our-next-era-of-frontier-intelligence" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-synthid-bio/" target="_blank" rel="noopener noreferrer">Introducing SynthID Bio</a>
+
+*Google DeepMind*
+
+本次推出的SynthID Bio是面向AI生成蛋白质的专属水印技术，目前已完成概念验证：该技术可在完全保留AI生成蛋白质原有生物学功能的前提下，嵌入可被专门工具识别的专属水印，能够精准溯源蛋白的AI生成属性，为AI合成蛋白的知识产权保护、合规管控提供了可行技术路径。
+
+<FeedbackButtons slug="item:deepmind-introducing-synthid-bio" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/open-tts-leaderboard" target="_blank" rel="noopener noreferrer">Open TTS Leaderboard: Scalable Evaluation for Multilingual Text-to-Speech and Voice Cloning</a>
+
+*Hugging Face*
+
+本工作推出首个面向多语种语音合成（TTS）与语音克隆任务的可扩展公开评测榜，搭建覆盖多维度主客观指标的统一评测框架，支持多语种、多模型的标准化批量接入与横向对比，填补了领域内缺乏统一公开评测基准的空白，可为多语种TTS、跨语种语音克隆的研发提供可靠参照。
+
+<FeedbackButtons slug="item:hf-blog-open-tts-leaderboard" client:visible />
+
+## <a href="https://huggingface.co/blog/nvidia/kumo-tabular" target="_blank" rel="noopener noreferrer">NVIDIA Kumo Tabular Sets a New Accuracy-Efficiency Frontier for Tabular Prediction</a>
+
+*Hugging Face*
+
+（LLM 摘要失败，请稍后手动补充）
+
+<FeedbackButtons slug="item:hf-blog-kumo-tabular" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+递归自提升（RSI）概念最早由I.J.古德1965年提出，指可超越人类所有智力活动的超智能机器，能自行设计更优系统实现迭代升级。2008年尤德考斯基明确其核心逻辑为AI靠现有智能优化自身认知机制的反馈闭环。当前AI领域的RSI落地分为两种路径：一是模型直接改写自身权重，二是广义上优化自身训练管线。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/09/499654.html" target="_blank" rel="noopener noreferrer">OpenAI推理之父最新访谈！数学只是多智能体时代的开胃菜</a>
+
+*量子位*
+
+本文汇总OpenAI o1核心作者、“推理教父”Noam Brown的最新访谈要点：他早年押注推理时计算缩放技术路线，促成o1推理模型落地，当前主攻多智能体系统。他透露此前破解千禧年纳维-斯托克斯难题的项目里，1万个智能体仅贡献10%功劳，访谈还覆盖递归自改进、超级对齐、思维链监测等AGI核心议题。
+
+<FeedbackButtons slug="item:qbitai-499654" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/499605.html" target="_blank" rel="noopener noreferrer">直播回顾：工业AI的下一个机会在哪？</a>
+
+*量子位*
+
+量子位工业AI主题直播邀请西门子顾欣、阿丘科技黄耀探讨其落地规模化路径。黄耀结合半导体晶圆切割案例介绍：团队用多模态模型提升识别精度与泛化性，将工程师操作经验沉淀为智能体，可实现设备综合效率、产能提升25%，点明工业AI核心要对接生产指标、对生产结果负责。
+
+<FeedbackButtons slug="item:qbitai-499605" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/499597.html" target="_blank" rel="noopener noreferrer">Anthropic，你是来给智谱打广告的吧！</a>
+
+*量子位*
+
+近期Anthropic发布安全报告指控智谱GLM-5.3具备较强漏洞挖掘、攻击代码编写能力，且防滥用限制易被绕过。但报告实测数据显示GLM-5.3在漏洞利用测试中表现仅略逊于Anthropic未公开发布的高端模型，还引用NIST结论称其为当前网络能力最强的开源大模型，被网友调侃是变相给智谱打广告。
+
+<FeedbackButtons slug="item:qbitai-499597" client:visible />
