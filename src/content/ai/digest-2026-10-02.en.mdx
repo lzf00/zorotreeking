@@ -1,0 +1,205 @@
+---
+lang: en
+translationKey: digest-2026-10-02
+title: "Daily AI Picks · 2026-10-02"
+description: "20 papers · multi-source aggregation + AI summaries"
+date: 2026-10-02
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's content in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Google released the cutting-edge Gemini 4 Argon large model, Anthropic Claude is deployed at Barclays and a new enzyme system was discovered</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face launched the Olmo-core 3 MoE training framework, and multiple multimodal and Agent-related technical studies were released</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Kaiming He's team's new work can tackle the ARC challenge through video learning, with updates in AI research for scenarios including healthcare and supply chains</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥Large Model Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠Cutting-Edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡Agent Technology</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏢Industry Implementation</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡Open Source Progress</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2609.37200" target="_blank" rel="noopener noreferrer">Adaptive Reward Routing: Dynamic Multi-Reward Optimization for Joint Audio-Video Diffusion via Forward-Process RL</a>
+
+*HF ★ 43 · Songlin Yang, Xiaotong Zhao, Jiacheng Zhang… · [HF Mirror](https://huggingface.co/papers/2609.37200)*
+
+To address the problem that fixed routing and reward weights cannot adapt to training dynamics in multi-reward reinforcement learning optimization for joint audio-video diffusion models, this paper proposes an adaptive reward routing method: cross-modal influence guided routing dynamically locates update positions, and preference-preserving modal-aware reweighting coordinates multi-reward conflicts. Experiments show that this method achieves stable improvements over strong baselines in modal quality, semantic consistency, and audio-video synchronization.
+
+<FeedbackButtons slug="item:arxiv-2609.37200" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.02193" target="_blank" rel="noopener noreferrer">Hierarchical Continuous Diffusion Language Models</a>
+
+*HF ★ 40 · Hui Ren, Zihan Li, Chang Liu… · [HF Mirror](https://huggingface.co/papers/2610.02193)*
+
+To address the flaws of discrete diffusion language models lacking statistical dependencies between tokens during parallel decoding, and continuous diffusion models having difficulty aligning valid token configurations before decoding, this paper proposes the Hierarchical Continuous Diffusion Language Model (HC-DLM): it couples discrete generation with continuous latent trajectories, constructs training objectives with variational lower bounds, takes latent states as the only persistent generation state, and the token feedback read out at each step guides subsequent updates. On three types of tasks: Sudoku inference, mathematical programming, and language modeling, its performance outperforms all types of diffusion baselines at the same scale.
+
+<FeedbackButtons slug="item:arxiv-2610.02193" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.01215" target="_blank" rel="noopener noreferrer">AutoGUIWorld: Image Generators as Visual World Models for GUI Agent</a>
+
+*HF ★ 23 · Cheng Yang, Yifan Wu, Yutao Huang… · [HF Mirror](https://huggingface.co/papers/2610.01215)*
+
+To address the problems of limited coverage of interaction trajectories required for GUI agent training and the excessively high cost of deploying real software, the AutoGUIWorld data generation framework is proposed: combining the visual priors of image generators with the task knowledge of planners, it can synthesize annotated GUI interaction trajectories across multiple systems without running the corresponding software. After fine-tuning the model with this data, performance on two benchmarks is significantly improved, verifying the performance gain effect of generated trajectories for GUI agents.
+
+<FeedbackButtons slug="item:arxiv-2610.01215" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.00906" target="_blank" rel="noopener noreferrer">ActiveSaddler: Automated Curriculum Learning for Agent Harness Optimization</a>
+
+*HF ★ 22 · Sungho Park, Wonjoong Kim, Jue Zhang… · [HF Mirror](https://huggingface.co/papers/2610.00906)*
+
+To address the problem that most optimizations of existing LLM agent harnesses (including prompts, tool interfaces, control logic) use fixed training scenarios and have insufficient adaptability, this paper proposes ActiveSaddler: it converts the optimization into an automatic curriculum learning problem, dynamically identifies failure modes and estimates benefits based on a non-stationary bandit model, balancing iteration on known weaknesses and exploration of new scenarios. Experiments show that its Pass@1 on two benchmarks is 4.4 and 7.5 percentage points higher than fixed-scenario solutions respectively, confirming that dynamic curriculum is a key dimension for harness optimization.
+
+<FeedbackButtons slug="item:arxiv-2610.00906" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.38024" target="_blank" rel="noopener noreferrer">Retrieval-Augmented Skill Optimization via Cross-Harness Adaptation</a>
+
+*HF ★ 17 · Jaewon Chu, Ji Soo Lee, Jihwan Park… · [HF Mirror](https://huggingface.co/papers/2609.38024)*
+
+To address the flaw that existing agent skill optimization ignores the prior value of public existing skill libraries and only relies on high-cost trial-and-error iteration, this paper proposes the Retrieval-Augmented Skill Optimization (RASO) framework, equipped with a cross-execution environment adaptation module to be compatible with domain and environment differences, divided into two stages: retrieval-augmented initialization without trial and error, and retrieval-augmented update combined with execution feedback. Experiments on multiple benchmarks and models show that its performance is significantly better than baseline solutions without retrieval augmentation.
+
+<FeedbackButtons slug="item:arxiv-2609.38024" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2609.38190" target="_blank" rel="noopener noreferrer">Travel Time Prediction in Supply Chain Management Using Machine Learning</a>
+
+*Balaji Venkateswaran*
+
+To address the problem of high complexity of supply chain logistics systems and the urgent demand for accurate travel time prediction, this study uses machine learning and deep learning technologies to build a high-precision travel time prediction model based on massive historical operation data. This model can support the optimization of capacity planning, demand forecasting, delivery time management and other links, improve the stability of last-mile delivery fulfillment, enhance customer satisfaction, and help improve the overall efficiency of the supply chain.
+
+<FeedbackButtons slug="item:arxiv-2609.38190" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.38193" target="_blank" rel="noopener noreferrer">EHR2Trace: Auditable EHR Data Infrastructure for Patient World Models and Clinical Agents</a>
+
+*Xinye Yang, Yuli Wang, Cheng Ting Lin…*
+
+To address the pain point that Electronic Health Record (EHR) recording standards are not unified, making it difficult to support the research and development of patient world models and clinical agents, this study proposes the EHR2Trace system, which can convert multi-source EHRs into traceable event streams, distinguish event time from information availability and the full medication administration process, and support multi-standard export and automatic verification. Verified by three major clinical datasets, it has high conversion accuracy, can avoid inflated model performance caused by time mismatch, and provides a reliable data foundation for related clinical AI systems.
+
+<FeedbackButtons slug="item:arxiv-2609.38193" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.38194" target="_blank" rel="noopener noreferrer">A Moving-Horizon Approximate Branch-and-Reduce Method for Deep Classification Trees</a>
+
+*Chenxuanyin Zou, Jiayang Ren, Qiangqiang Mao…*
+
+To address the pain point that existing global optimal methods for decision trees are limited to binary features and shallow tree depths, and heuristic methods have low accuracy, this paper proposes a moving-horizon approximate branch-and-reduce method: it adopts a hierarchical optimization framework, uses branch-and-reduce to solve for the root node, uses heuristic approximation for subtrees, combined with moving-horizon iterative tuning, and can train near-optimal deep classification trees adapted to large-scale datasets with continuous features. Its accuracy is better than heuristic baselines, and its scalability is greatly improved compared to global optimal solvers.
+
+<FeedbackButtons slug="item:arxiv-2609.38194" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/the-eternal-complement" target="_blank" rel="noopener noreferrer">The eternal complement</a>
+
+*OpenAI*
+
+This study titled *The Eternal Complement* focuses on the practical value of advanced AI, proposing that its core role is not to replace humans in producing breakthrough ideas, but to undertake the large number of routine tasks required to support the implementation of such ideas. The study sorts out the underlying logic of empowerment in the execution link, and the conclusion shows that AI's improvement of execution efficiency will become the core key factor determining the next generation of economic form and the rate of innovation and development of the whole society.
+
+<FeedbackButtons slug="item:openai-blog-the-eternal-complement" client:visible />
+
+## <a href="https://openai.com/index/albertsons-reimagining-retail" target="_blank" rel="noopener noreferrer">How Albertsons Companies is reimagining retail from the inside out</a>
+
+*OpenAI*
+
+US retail giant Albertsons Companies is advancing the innovation of the retail format from the inside out: the core measure is to access OpenAI's ChatGPT Enterprise and official API interfaces, empowering internal business teams to greatly improve internal collaboration and work efficiency, and optimizing the shopping service chain externally to improve the grocery shopping experience of millions of consumers, upgrading the retail model from both the operation end and the consumer end.
+
+<FeedbackButtons slug="item:openai-blog-albertsons-reimagining-retail" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/barclays-scales-claude" target="_blank" rel="noopener noreferrer">Barclays scales Claude to upgrade operations and improve client experience</a>
+
+*Anthropic*
+
+British universal bank Barclays is advancing the upgrade of its strategic cooperation with AI company Anthropic. Based on the existing cooperation, it will deploy the enterprise-level Claude large model that meets financial security requirements to all its global business lines, with the core goals of optimizing internal operational efficiency and upgrading external customer service experience, which is a typical attempt of leading financial institutions to implement commercial large model applications.
+
+<FeedbackButtons slug="item:anthropic-barclays-scales-claude" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-discovers-novel-enzyme-system" target="_blank" rel="noopener noreferrer">Claude discovers a novel enzyme system</a>
+
+*Anthropic*
+
+This study is an early result of the newly established life science laboratory: the team carried out relevant exploration with the help of the Claude agent, and successfully discovered a new type of enzyme system. The specific biological function of this enzyme system is still unclear at present, and the team will further analyze its mechanism of action in the follow-up, to explore its potential application value in fields such as enzyme engineering and synthetic biology.
+
+<FeedbackButtons slug="item:anthropic-claude-discovers-novel-enzyme-system" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/gemini-4-argon-our-next-era-of-frontier-intelligence/" target="_blank" rel="noopener noreferrer">Gemini 4 Argon: our next era of frontier intelligence</a>
+
+*Google DeepMind*
+
+Google DeepMind released the new generation of cutting-edge large model Gemini 4 Argon, which has core optimizations to the multimodal fusion architecture and long context reasoning engine, strengthening capabilities in mathematical logic deduction, complex task planning, and cross-modal semantic understanding. Compared with the previous generation, its performance has increased significantly, leading current similar cutting-edge models in multiple general AI benchmarks, and can support implementation needs in multiple scenarios such as scientific research breakthroughs and complex engineering development.
+
+<FeedbackButtons slug="item:deepmind-gemini-4-argon-our-next-era-of-frontier-intelligence" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-synthid-bio/" target="_blank" rel="noopener noreferrer">Introducing SynthID Bio</a>
+
+*Google DeepMind*
+
+This research launches the SynthID Bio technology, completing the proof of concept of a watermarking solution for AI-generated proteins. Its core is to embed invisible digital watermarks without touching the key sequences related to protein function. Tests show that the watermark does not affect the original biological function of the protein, and can be quickly identified and traced by special tools, providing a new feasible technical direction for property right protection and compliance supervision of AI-generated proteins.
+
+<FeedbackButtons slug="item:deepmind-introducing-synthid-bio" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/ServiceNow-AI/autosynthdata" target="_blank" rel="noopener noreferrer">AutoSynthData: Generating Training Data for Enterprise Agents</a>
+
+*Hugging Face*
+
+This paper addresses the pain points of high annotation cost and poor scenario adaptability of training data for enterprise intelligent agents, and proposes the AutoSynthData automated training data generation framework. This framework does not require a lot of manual intervention, can align with enterprise private knowledge bases and business rules, and guide large models to generate annotated multi-scenario simulated interaction samples. Compared with manual annotation, it reduces costs by more than 70%, and the task accuracy of the trained agent is improved by more than 14%.
+
+<FeedbackButtons slug="item:hf-blog-autosynthdata" client:visible />
+
+## <a href="https://huggingface.co/blog/allenai/olmocore3" target="_blank" rel="noopener noreferrer">Introducing Olmo-core 3: Open, scalable training infrastructure for large MoEs</a>
+
+*Hugging Face*
+
+Olmo-core 3, launched by the Allen Institute for AI, is an open-source scalable training infrastructure for large-scale Mixture of Experts (MoE) large models. This architecture specifically solves pain points such as MoE training communication bottlenecks, uneven load, and poor fault tolerance, supports efficient scheduling of thousand-card heterogeneous computing power, can improve the training efficiency of trillion-parameter MoEs by more than 40%, is fully open-source across the stack with no usage restrictions, and greatly reduces the threshold for large model research and development.
+
+<FeedbackButtons slug="item:hf-blog-olmocore3" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This article sorts out the conceptual context of Recursive Self-Improvement (RSI): In 1965, scholar I.J. Good first proposed the relevant idea, stating that "ultraintelligent machines" with intelligence far exceeding humans can design better devices themselves to achieve iterative upgrades; in 2008, Eliezer Yudkowsky clarified that its core is the feedback loop where AI relies on existing intelligence to optimize its own cognitive mechanism. In the current AI context, RSI can be implemented through two paths: directly rewriting its own weights, and optimizing the training pipeline.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/10/499812.html" target="_blank" rel="noopener noreferrer">New work from Kaiming He's team: learning from cat videos can solve the ARC challenge</a>
+
+*QbitAI*
+
+Kaiming He's team proposes the pure vision solution NAT-ARC for the ARC abstract reasoning challenge. Different from the previous mainstream idea of converting grids into symbols and handing them to large language models for processing, this solution only uses ordinary images of cats, dogs, flowers and plants from ImageNet for pre-training, and can realize transfer abstract reasoning without having been exposed to ARC data. The single model achieves 63.4% pass@2 on ARC-1, and reaches 70.2% after ensemble, which is the first time a pure vision solution approaches the level of dedicated LLM systems.
+
+<FeedbackButtons slug="item:qbitai-499812" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/499663.html" target="_blank" rel="noopener noreferrer">Google Gemini 4 suddenly released! With RSI support, GPT and Opus fall behind</a>
+
+*QbitAI*
+
+Google recently released its flagship large model Gemini 4 Argon, equipped with RSI technology, leading in multiple benchmark scores surpassing GPT-6 Astra and Claude Opus 5.5, with outstanding cybersecurity capabilities, supporting up to one million Token output, adapting to complex workflows such as programming and finance, and the single task cost is only half of competing products. It is currently only open to some cybersecurity teams, and ordinary users cannot use it for the time being.
+
+<FeedbackButtons slug="item:qbitai-499663" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/499654.html" target="_blank" rel="noopener noreferrer">Latest interview with OpenAI's father of inference: mathematics is just an appetizer in the multi-agent era</a>
+
+*QbitAI*
+
+Noam Brown, core author of OpenAI o1 and "godfather of inference", was the first to bet on the inference-time computing path, leading to benchmark inference models such as o1, and is currently focusing on multi-agent systems. He revealed that in the previous project that solved the Navier-Stokes millennium problem, ten-thousand-level agents only contributed 10% of the credit. Recently, he discussed core topics such as multi-agent implementation, recursive self-improvement, and superalignment in a podcast, raising multiple key questions about cutting-edge development.
+
+<FeedbackButtons slug="item:qbitai-499654" client:visible />
