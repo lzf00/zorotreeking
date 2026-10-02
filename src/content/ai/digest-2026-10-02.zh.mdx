@@ -1,0 +1,205 @@
+---
+lang: zh
+translationKey: digest-2026-10-02
+title: "AI 每日精选 · 2026-10-02"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-10-02
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">谷歌发布Gemini 4 Argon前沿大模型，Anthropic Claude落地巴克莱且发现新型酶系统</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face推出Olmo-core 3 MoE训练框架，多项多模态、Agent相关技术研究公开</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">何恺明团队新作可通过视频学习攻克ARC挑战，医疗、供应链等场景AI研究更新</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥大模型动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠前沿研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡Agent技术</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏢产业落地</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡开源进展</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2609.37200" target="_blank" rel="noopener noreferrer">Adaptive Reward Routing: Dynamic Multi-Reward Optimization for Joint Audio-Video Diffusion via Forward-Process RL</a>
+
+*HF ★ 43 · Songlin Yang, Xiaotong Zhao, Jiacheng Zhang… · [HF 镜像](https://huggingface.co/papers/2609.37200)*
+
+针对音视频联合扩散模型多奖励强化学习优化中，固定路由、奖励权重无法适配训练动态的问题，本文提出自适应奖励路由方法：跨模态影响引导路由动态定位更新位置，偏好保留模态感知重加权协调多奖励冲突。实验表明，该方法相较强基线在模态质量、语义一致性、音视频同步性上均实现稳定提升。
+
+<FeedbackButtons slug="item:arxiv-2609.37200" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.02193" target="_blank" rel="noopener noreferrer">Hierarchical Continuous Diffusion Language Models</a>
+
+*HF ★ 40 · Hui Ren, Zihan Li, Chang Liu… · [HF 镜像](https://huggingface.co/papers/2610.02193)*
+
+针对离散扩散语言模型并行解码时缺失token间统计依赖、连续扩散模型解码前难对齐有效token配置的缺陷，本文提出层级连续扩散语言模型HC-DLM：耦合离散生成与连续隐轨迹，以变分下界构造训练目标，隐态为唯一持久生成状态，每步读出的token反馈指导后续更新。在数独推理、数学规划、语言建模三类任务上，同规模下性能均优于各类扩散基线。
+
+<FeedbackButtons slug="item:arxiv-2610.02193" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.01215" target="_blank" rel="noopener noreferrer">AutoGUIWorld: Image Generators as Visual World Models for GUI Agent</a>
+
+*HF ★ 23 · Cheng Yang, Yifan Wu, Yutao Huang… · [HF 镜像](https://huggingface.co/papers/2610.01215)*
+
+针对GUI智能体训练所需交互轨迹覆盖受限、部署真实软件成本过高的问题，提出AutoGUIWorld数据生成框架：结合图像生成器视觉先验与规划器任务知识，无需运行对应软件即可合成跨多系统的带标注GUI交互轨迹。用该数据微调模型后，两项基准测试表现显著提升，验证了生成轨迹对GUI智能体性能的增益作用。
+
+<FeedbackButtons slug="item:arxiv-2610.01215" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.00906" target="_blank" rel="noopener noreferrer">ActiveSaddler: Automated Curriculum Learning for Agent Harness Optimization</a>
+
+*HF ★ 22 · Sungho Park, Wonjoong Kim, Jue Zhang… · [HF 镜像](https://huggingface.co/papers/2610.00906)*
+
+针对现有LLM代理的harness（含提示词、工具接口、控制逻辑）优化多采用固定训练场景、适配性不足的问题，本文提出ActiveSaddler：将优化转化为自动课程学习问题，基于非平稳老虎机模型动态识别失效模式、估算收益，平衡已知弱点迭代和新场景探索。实验显示其在两个基准上Pass@1较固定场景方案分别提4.4、7.5个百分点，证实动态课程是harness优化的关键维度。
+
+<FeedbackButtons slug="item:arxiv-2610.00906" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.38024" target="_blank" rel="noopener noreferrer">Retrieval-Augmented Skill Optimization via Cross-Harness Adaptation</a>
+
+*HF ★ 17 · Jaewon Chu, Ji Soo Lee, Jihwan Park… · [HF 镜像](https://huggingface.co/papers/2609.38024)*
+
+针对现有智能体技能优化忽略公开存量技能库的先验价值、仅依赖高成本试错迭代的缺陷，本文提出检索增强技能优化框架RASO，搭载跨执行环境适配模块兼容域与环境差异，分为无需试错的检索增强初始化、结合执行反馈的检索增强更新两个阶段。多基准多模型实验显示，其性能显著优于无检索增强的基线方案。
+
+<FeedbackButtons slug="item:arxiv-2609.38024" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2609.38190" target="_blank" rel="noopener noreferrer">Travel Time Prediction in Supply Chain Management Using Machine Learning</a>
+
+*Balaji Venkateswaran*
+
+针对供应链物流体系复杂度高、行程时间精准预测需求迫切的问题，该研究采用机器学习与深度学习技术，依托海量历史运营数据构建高精度行程时间预测模型。该模型可支撑优化运力规划、需求预测、交期管理等环节，提升末端配送履约稳定性，改善客户满意度，助力供应链整体提效。
+
+<FeedbackButtons slug="item:arxiv-2609.38190" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.38193" target="_blank" rel="noopener noreferrer">EHR2Trace: Auditable EHR Data Infrastructure for Patient World Models and Clinical Agents</a>
+
+*Xinye Yang, Yuli Wang, Cheng Ting Lin…*
+
+针对电子病历（EHR）记录标准不统一，难以支撑患者世界模型、临床智能体研发的痛点，该研究提出EHR2Trace系统，可将多源EHR转换为可溯源事件流，区分事件时间与信息可得性、给药全流程，支持多标准导出与自动校验。经三大临床数据集验证，其转换准确率高，可规避时间错配导致的模型性能虚高，为相关临床AI系统提供可靠数据底座。
+
+<FeedbackButtons slug="item:arxiv-2609.38193" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.38194" target="_blank" rel="noopener noreferrer">A Moving-Horizon Approximate Branch-and-Reduce Method for Deep Classification Trees</a>
+
+*Chenxuanyin Zou, Jiayang Ren, Qiangqiang Mao…*
+
+针对决策树现有全局最优方法受限于二元特征、浅树深，启发式方法精度偏低的痛点，该文提出移动时域近似分支约简法：采用分层优化框架，根节点用分支约简求解、子树用启发式近似，结合移动时域迭代调优，可训练适配连续特征大规模数据集的近最优深分类树，精度优于启发式基线，较全局最优求解器扩展性大幅提升。
+
+<FeedbackButtons slug="item:arxiv-2609.38194" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/the-eternal-complement" target="_blank" rel="noopener noreferrer">The eternal complement</a>
+
+*OpenAI*
+
+这篇题为《永恒的互补》的研究聚焦高级AI的实际价值，提出其核心作用并非替代人类产出突破性创意，而是承接支撑这类创意落地所需的大量常规性事务。研究梳理了执行环节赋能的底层逻辑，结论显示AI对执行效率的提升，将成为决定下一代经济形态、全社会创新发展速率的核心关键因素。
+
+<FeedbackButtons slug="item:openai-blog-the-eternal-complement" client:visible />
+
+## <a href="https://openai.com/index/albertsons-reimagining-retail" target="_blank" rel="noopener noreferrer">How Albertsons Companies is reimagining retail from the inside out</a>
+
+*OpenAI*
+
+美国零售巨头艾伯森集团正推进从内到外的零售业态革新：核心举措为接入OpenAI的ChatGPT企业版与官方API接口，对内赋能各业务团队、大幅提升内部协作与工作效率，对外优化购物服务链路，改善数百万消费者的生鲜杂货购物体验，从运营端和消费端双向升级零售模式。
+
+<FeedbackButtons slug="item:openai-blog-albertsons-reimagining-retail" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/barclays-scales-claude" target="_blank" rel="noopener noreferrer">Barclays scales Claude to upgrade operations and improve client experience</a>
+
+*Anthropic*
+
+英国全能银行巴克莱正推进与AI企业Anthropic的战略合作升级，在已有合作基础上将符合金融安全要求的企业级Claude大模型部署到自身全球全业务条线，核心目标为对内优化运营效率、对外升级客户服务体验，属于头部金融机构落地大模型商用的典型尝试。
+
+<FeedbackButtons slug="item:anthropic-barclays-scales-claude" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-discovers-novel-enzyme-system" target="_blank" rel="noopener noreferrer">Claude discovers a novel enzyme system</a>
+
+*Anthropic*
+
+本研究是新建生命科学实验室的早期成果：团队借助Claude智能体开展相关探索，成功发现了一类全新的酶系统。目前该酶系统的具体生物学功能仍未明确，后续团队将进一步解析其作用机制，挖掘其在酶工程、合成生物学等领域的潜在应用价值。
+
+<FeedbackButtons slug="item:anthropic-claude-discovers-novel-enzyme-system" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/gemini-4-argon-our-next-era-of-frontier-intelligence/" target="_blank" rel="noopener noreferrer">Gemini 4 Argon: our next era of frontier intelligence</a>
+
+*Google DeepMind*
+
+谷歌DeepMind发布的新一代前沿大模型Gemini 4 Argon，核心优化了多模态融合架构与长上下文推理引擎，强化数理逻辑推导、复杂任务规划、跨模态语义理解能力。相较前代性能大幅跃升，多项通用AI基准测试领跑当前同类前沿模型，可支撑科研攻坚、复杂工程开发等多场景落地需求。
+
+<FeedbackButtons slug="item:deepmind-gemini-4-argon-our-next-era-of-frontier-intelligence" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-synthid-bio/" target="_blank" rel="noopener noreferrer">Introducing SynthID Bio</a>
+
+*Google DeepMind*
+
+本次研究推出SynthID Bio技术，完成AI生成蛋白质水印方案的概念验证。其核心是在不触及蛋白质功能关键序列的前提下嵌入隐形数字水印，经测试水印不会影响蛋白质原有生物学功能，同时可被专门工具快速识别溯源，为AI生成蛋白质的产权保护、合规监管提供了全新可行的技术方向。
+
+<FeedbackButtons slug="item:deepmind-introducing-synthid-bio" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/ServiceNow-AI/autosynthdata" target="_blank" rel="noopener noreferrer">AutoSynthData: Generating Training Data for Enterprise Agents</a>
+
+*Hugging Face*
+
+本文针对企业智能代理训练数据标注成本高、场景适配性差的痛点，提出AutoSynthData自动化训练数据生成框架。该框架无需大量人工介入，可对齐企业私有知识库与业务规则，引导大模型生成带标注的多场景仿真交互样本，相比人工标注降本70%以上，训练的代理任务准确率提升超14%。
+
+<FeedbackButtons slug="item:hf-blog-autosynthdata" client:visible />
+
+## <a href="https://huggingface.co/blog/allenai/olmocore3" target="_blank" rel="noopener noreferrer">Introducing Olmo-core 3: Open, scalable training infrastructure for large MoEs</a>
+
+*Hugging Face*
+
+艾伦人工智能研究院推出的Olmo-core 3，是面向大规模混合专家（MoE）大模型的开源可扩展训练基础设施。该架构针对性破解MoE训练通信瓶颈、负载不均、容错性差等痛点，支持千卡级异构算力高效调度，可将万亿参数MoE训练效率提升40%以上，全栈开源无使用限制，大幅降低大模型研发门槛。
+
+<FeedbackButtons slug="item:hf-blog-olmocore3" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我改进（RSI）的概念脉络：1965年学者I.J.古德最早提出相关设想，称智力远超人类的“超智能机器”可自行设计更优设备实现迭代升级；2008年尤德考斯基明确其核心是AI依托现有智能优化自身认知机制的反馈环。当前AI语境下，RSI可通过直接改写自身权重、优化训练管线两类路径实现。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/10/499812.html" target="_blank" rel="noopener noreferrer">何恺明团队新作：看猫片就能学会ARC挑战</a>
+
+*量子位*
+
+何恺明团队针对ARC抽象推理挑战，提出纯视觉解题方案NAT-ARC。区别于过往将格子转成符号交给大语言模型处理的主流思路，该方案仅用ImageNet的普通猫狗、花草图像预训练，未接触过ARC数据即可迁移实现抽象推理，单模型在ARC-1上pass@2达63.4%，集成后达70.2%，是纯视觉方案首次逼近专用LLM系统水平。
+
+<FeedbackButtons slug="item:qbitai-499812" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/499663.html" target="_blank" rel="noopener noreferrer">谷歌Gemini 4突然发布！RSI加持，GPT和Opus都让让</a>
+
+*量子位*
+
+谷歌近日发布旗舰大模型Gemini 4 Argon，搭载RSI技术，多项基准跑分超GPT-6 Astra、Claude Opus 5.5登顶，网络安全能力突出，支持最高百万Token输出，适配编程、金融等复杂工作流，单任务成本仅为竞品一半。目前仅向部分网安团队开放，普通用户暂无法使用。
+
+<FeedbackButtons slug="item:qbitai-499663" client:visible />
+
+## <a href="https://www.qbitai.com/2026/09/499654.html" target="_blank" rel="noopener noreferrer">OpenAI推理之父最新访谈！数学只是多智能体时代的开胃菜</a>
+
+*量子位*
+
+OpenAI o1核心作者、“推理教父”Noam Brown曾率先押注推理时计算路线，催生o1等标杆推理模型，当前主攻多智能体系统。他透露此前破解纳维-斯托克斯千禧年难题的项目中，万级智能体仅贡献10%功劳。近期他在播客中就多智能体落地、递归自改进、超级对齐等核心议题展开讨论，抛出多个前沿发展关键疑问。
+
+<FeedbackButtons slug="item:qbitai-499654" client:visible />
