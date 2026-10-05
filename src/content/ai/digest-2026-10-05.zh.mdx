@@ -1,0 +1,205 @@
+---
+lang: zh
+translationKey: digest-2026-10-05
+title: "AI 每日精选 · 2026-10-05"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-10-05
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">头部大模型厂商密集动作：OpenAI发GPT-6指南、DeepMind推Gemini4、Anthropic设1亿美元工程师培训基金</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">多篇前沿AI研究发布，覆盖长视频生成、大模型纠偏、生物医药、工业检测等多领域</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">AI产业侧动态频出，算力合作、前沿岗位薪资、OpenAI服务新规引发行业广泛讨论</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥大模型动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠前沿研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💼商用落地</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡算力合作</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📈职业趋势</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2609.38839" target="_blank" rel="noopener noreferrer">FrameMorrow: Future-guided Frame Selection with Prospective Tokens for Long-Horizon Video Generation</a>
+
+*HF ★ 14 · Bo Yin, Xiaobin Hu, Jiaqi Zhao… · [HF 镜像](https://huggingface.co/papers/2609.38839)*
+
+针对长时序视频生成现有历史帧筛选仅参考当前内容、不符合后续生成需求的问题，该研究提出即插即用的FrameMorrow帧选择器：通过预测少量代表未来信息需求的前瞻token筛选关联历史帧，可适配各类生成器。经多基准测试，其可稳定提升生成视频的长程一致性、视觉质量与动作匹配度。
+
+<FeedbackButtons slug="item:arxiv-2609.38839" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.03632" target="_blank" rel="noopener noreferrer">World Embedding Benchmark</a>
+
+*HF ★ 12 · Yiqi Liu, Ruifeng Yuan, Yang Wang… · [HF 镜像](https://huggingface.co/papers/2610.03632)*
+
+针对视频表征物理信息编码机制不明的问题，该研究构建覆盖4类物理领域、含8000组带标注模拟样本的世界嵌入基准，设置3类互补评测任务。评测发现预训练多模态嵌入模型物理对齐能力偏弱，跨模态对齐与物理定量信息可恢复性存在权衡，基于该基准的检索增强可显著提升生成视频的物理保真度。
+
+<FeedbackButtons slug="item:arxiv-2610.03632" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.03195" target="_blank" rel="noopener noreferrer">Source Preference in the Wild: How LLM Agents Favor Items by Source, and How to Reduce It</a>
+
+*HF ★ 10 · Jonghyun Song, Haewon Park, Jeonghoon Shim… · [HF 镜像](https://huggingface.co/papers/2610.03195)*
+
+本文针对大模型代理代用户决策时的来源偏好问题，控制位置、需求匹配度变量，测试12个模型跨3个领域的端到端搜索行为，发现各模型普遍有一致的来源倾向，甚至优先选要求匹配更少的偏好来源项，该偏好源于训练捷径与信息缺失，补全信息或加反偏见提示可有效削弱偏差。
+
+<FeedbackButtons slug="item:arxiv-2610.03195" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.02826" target="_blank" rel="noopener noreferrer">Scaling Trajectories for Complex Tasks through Recursive Self-Rewrite</a>
+
+*HF ★ 10 · Zongxia Li, Yucheng Shi, Zhongzhi Li… · [HF 镜像](https://huggingface.co/papers/2610.02826)*
+
+针对复杂任务成功训练轨迹依赖部署时不可用的专属运行套件的问题，提出递归自改写（RSR）框架，通过规划、校验、执行模块，将多套件下的成功解重构为通用套件可用的训练轨迹。在3千余终端任务上，其解率较最强单套件高34.3%，用扩增轨迹微调后，模型各测试集通过率、过程奖励均显著优于基线。
+
+<FeedbackButtons slug="item:arxiv-2610.02826" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.01257" target="_blank" rel="noopener noreferrer">Science Utopia? Closed-Loop LLM Simulation of Academic Research Ecosystems</a>
+
+*HF ★ 6 · Yiqiao Jin, Yiyang Wang, Lucheng Fu… · [HF 镜像](https://huggingface.co/papers/2610.01257)*
+
+为探究AI参与下的学术科研生态演化规律，研究者推出大模型智能体闭环仿真框架SciUtopia，可模拟全流程科研环节，支持对照干预试验。基于超4万研究者的多组仿真数据发现：拒稿重投会大幅加重审稿负担，谨慎探索可兼顾学术影响力与领域多样性，早期微弱的基金优势也会催生资源不平等。
+
+<FeedbackButtons slug="item:arxiv-2610.01257" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2610.02224" target="_blank" rel="noopener noreferrer">Hybrid Machine Learning-Assisted Raman Spectroscopy with Generative Feature Augmentation for Pharmaceutical Identification</a>
+
+*Quach Thi Thai Binh, Ton Nu Quynh Trang, Thang B. Phan…*
+
+针对拉曼光谱快速识别药物残留的需求，本文提出HyMLRaman混合机器学习框架：采用EfficientNet-B3提取拉曼光谱特征，搭配SVM分类器，对6种常用药物识别准确率达96.31%，性能优于纯CNN基线。此外引入DDPM生成式特征增强缓解小数据问题，对低训练量的KNN增益显著，已落地交互式分析工具，实用性强。
+
+<FeedbackButtons slug="item:arxiv-2610.02224" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.02225" target="_blank" rel="noopener noreferrer">The Price of Greenwashing: Algorithmic Verification and Market Discipline using Conformal Machine Learning</a>
+
+*Sourav Bose, Taoufik Bouraoui*
+
+针对企业自报碳排放存在绿漂、现有ESG评估缺乏客观量化手段的问题，该研究融合美国SEC财务数据与EPA厂级排放数据，结合梯度提升与蒙德里安共形预测构建CWCD指标，测算自报排放与真实基线的偏差。研究证实该偏差与企业后续市值、盈利能力显著负相关，市场会为环境欺诈定价，可为资管、监管端大规模部署算法审计提供量化支撑。
+
+<FeedbackButtons slug="item:arxiv-2610.02225" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.02248" target="_blank" rel="noopener noreferrer">State-Space Unlearning for Non-Stationary Bias in Land Surface Forecasting</a>
+
+*Anidipta Pal*
+
+针对基于Mamba的陆面预报系统易留存非平稳混淆偏差、长期干扰预测的问题，该文提出首套适配地学Mamba的机器遗忘框架SSU-LSF，通过专属EKFac影响函数、谱半径阈值定位混淆足迹，搭配带正则的梯度上升实现遗忘。实验显示其混淆降低率最高0.859，干净域精度损失最高仅4.2%，GPU成本较全量重训低8.4倍。
+
+<FeedbackButtons slug="item:arxiv-2610.02248" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/practical-guide-building-gpt-6" target="_blank" rel="noopener noreferrer">A model guide for the GPT-6 family</a>
+
+*OpenAI*
+
+这份《GPT-6家族模型指南》专为初创企业提供GPT-6落地实操指引，核心覆盖四类方法：适配业务需求选型GPT-6子模型，按需调整推理算力投入、优化提示词工程与模型调用能力，调度协同外接工具，前置筹备生产级业务工作流，可帮助初创企业降低GPT-6业务落地门槛。
+
+<FeedbackButtons slug="item:openai-blog-practical-guide-building-gpt-6" client:visible />
+
+## <a href="https://openai.com/index/chatham-financial" target="_blank" rel="noopener noreferrer">Chatham scales its capital markets expertise with OpenAI</a>
+
+*OpenAI*
+
+金融服务商查塔姆金融为升级资本市场业务能力，引入OpenAI旗下Codex代码模型与GPT-5.6大模型，既搭建适配业务需求的专用技术工具，也针对性重构原有业务流程，核心成效是将原需30分钟完成的交易核验环节，大幅压缩至4分钟以内，验证了大模型在专业金融场景的显著提效价值。
+
+<FeedbackButtons slug="item:openai-blog-chatham-financial" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-frontier-academy" target="_blank" rel="noopener noreferrer">Claude Frontier Academy: $100M to train 10,000 engineers</a>
+
+*Anthropic*
+
+Anthropic斥资1亿美元启动克劳德前沿学院项目，计划到2027年底累计培训1万名前沿部署工程师，项目培养标准完全对齐Anthropic内部正式工程师的能力要求，将为AI前沿技术落地领域输送大量符合头部科技企业标准的专业工程人才。
+
+<FeedbackButtons slug="item:anthropic-claude-frontier-academy" client:visible />
+
+## <a href="https://www.anthropic.com/news/barclays-scales-claude" target="_blank" rel="noopener noreferrer">Barclays scales Claude to upgrade operations and improve client experience</a>
+
+*Anthropic*
+
+英国全能银行巴克莱正扩大与AI企业Anthropic的战略合作，将安全合规的企业级Claude大模型落地到全球各业务条线中。此举意在借助大模型技术升级内部运营效率、优化客户服务体验，是巴克莱推进智能化转型、落地前沿AI应用的核心布局之一。
+
+<FeedbackButtons slug="item:anthropic-barclays-scales-claude" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/gemini-4-argon-our-next-era-of-frontier-intelligence/" target="_blank" rel="noopener noreferrer">Gemini 4 Argon: our next era of frontier intelligence</a>
+
+*Google DeepMind*
+
+谷歌DeepMind发布的新一代前沿智能旗舰Gemini 4 Argon，采用原生统一多模态架构，搭载强化的链式深度推理引擎与专用科学计算模块，在数学证明、科研模拟、百万级超长上下文处理等任务上性能较前代提升超40%，可支撑高门槛专业场景落地，标志大模型向通用前沿智能演进的全新阶段。
+
+<FeedbackButtons slug="item:deepmind-gemini-4-argon-our-next-era-of-frontier-intelligence" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-synthid-bio/" target="_blank" rel="noopener noreferrer">Introducing SynthID Bio</a>
+
+*Google DeepMind*
+
+此次发布的SynthID Bio是面向AI生成蛋白质的水印技术概念验证成果。该技术可在AI生成的蛋白质序列中嵌入专属溯源标识，核心优势是水印植入不会破坏蛋白质的预设生物学功能，可为AI生成蛋白质的产权认定、来源追溯、合规校验等场景提供可行路径，兼顾技术实用性与生物可用性。
+
+<FeedbackButtons slug="item:deepmind-introducing-synthid-bio" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/microsoft/thinkingbox" target="_blank" rel="noopener noreferrer">The Agent Said It Was Done. The Database Disagreed.</a>
+
+*Hugging Face*
+
+这篇论文聚焦大模型智能体落地的核心痛点：Agent自身判定任务完成，但底层数据库等外部系统实际状态未同步、操作未生效。团队提出事务级状态对齐框架，将Agent动作序列封装为数据库原子事务，执行后自动双向核验状态，不一致时触发回滚重试。实测业务场景下，状态不一致错误率降92%，额外开销仅4.7%，适配生产级落地需求。
+
+<FeedbackButtons slug="item:hf-blog-thinkingbox" client:visible />
+
+## <a href="https://huggingface.co/blog/allenai/astabrief" target="_blank" rel="noopener noreferrer">Open-sourcing AstaBrief, the fast report-generation model in Asta</a>
+
+*Hugging Face*
+
+本次开源的AstaBrief是Asta大模型生态下的垂类报告生成专用模型，针对报告场景的长文本输出、格式合规、多源信息整合需求做了专项优化，生成效率远高于通用大模型，支持自定义模板适配多行业需求，开源后可支撑开发者快速搭建定制化的报告自动生成工具。
+
+<FeedbackButtons slug="item:hf-blog-astabrief" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我改进（RSI）领域的发展脉络：该概念最早源于1965年古德提出的“超智能机器”设想，2008年尤德考斯基明确其核心逻辑为AI依托现有智能迭代优化自身认知机制的反馈循环。当前AI场景下RSI可分两类落地路径：一是直接改写自身权重，二是广义层面优化训练管线。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/10/501700.html" target="_blank" rel="noopener noreferrer">限时28天！OpenAI承诺没新功能就重置，网友：只想要Opus</a>
+
+*量子位*
+
+OpenAI Codex负责人Tibo推出28天活动：每日要么交付对用户有用的产品改进、新功能，要么全额重置使用额度。此前他正征集用户反馈，计划从简化产品、提效、上新功能、新模型四方向迭代，此举被疑应对Claude Opus等竞品压力，也遭竞品呛声、用户不满其过往更新杂乱无重点。
+
+<FeedbackButtons slug="item:qbitai-501700" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/501605.html" target="_blank" rel="noopener noreferrer">AI算力硬合作，马斯克还是更相信中国制造</a>
+
+*量子位*
+
+马斯克旗下为特斯拉、SpaceX、xAI供应定制芯片的Terafab项目，原本已敲定英特尔供应14A工艺，此前他曾称台积电产能不足、要降低对其依赖才决意自建该项目，近期他公开确认正与台积电洽谈合作，台积电暂未回应，引发外界对项目路线是否调整、英特尔是否受影响的讨论。
+
+<FeedbackButtons slug="item:qbitai-501605" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/501506.html" target="_blank" rel="noopener noreferrer">最火AI岗位FDE：月薪5万，都干这些…</a>
+
+*量子位*
+
+本文介绍AI赛道爆火的高薪岗位FDE（前沿部署工程师），海外该岗年薪中位数约134万元，国内月薪可达5万。海内外大厂均在重金布局FDE人才队伍，其脱胎于传统驻场技术岗，分为对接需求做方案的Echo、落地开发的Delta两类角色，配合后方研发完成客户定制AI改造。
+
+<FeedbackButtons slug="item:qbitai-501506" client:visible />
