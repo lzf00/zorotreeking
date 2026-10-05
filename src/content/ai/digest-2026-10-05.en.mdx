@@ -1,0 +1,205 @@
+---
+lang: en
+translationKey: digest-2026-10-05
+title: "Daily AI Highlights · 2026-10-05"
+description: "20 papers · multi-source aggregation + AI-generated summaries"
+date: 2026-10-05
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second roundup of today's content</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading LLM vendors announce a flurry of updates: OpenAI releases GPT-6 guide, DeepMind launches Gemini 4, Anthropic establishes a $100 million engineer training fund</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Multiple cutting-edge AI research papers released, covering long video generation, LLM bias correction, biomedicine, industrial inspection and other fields</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Frequent updates on the AI industry side: computing power cooperation, cutting-edge job salaries, and new OpenAI service regulations trigger widespread industry discussion</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥LLM Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💼Commercial Deployment</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡Computing Power Cooperation</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📈Career Trends</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2609.38839" target="_blank" rel="noopener noreferrer">FrameMorrow: Future-guided Frame Selection with Prospective Tokens for Long-Horizon Video Generation</a>
+
+*HF ★ 14 · Bo Yin, Xiaobin Hu, Jiaqi Zhao… · [HF Mirror](https://huggingface.co/papers/2609.38839)*
+
+To address the issue that existing historical frame selection for long-sequence video generation only references current content and fails to meet subsequent generation requirements, this study proposes a plug-and-play FrameMorrow frame selector: it screens relevant historical frames by predicting a small number of prospective tokens representing future information needs, and is compatible with various generators. Tested across multiple benchmarks, it can stably improve the long-term consistency, visual quality, and motion matching of generated videos.
+
+<FeedbackButtons slug="item:arxiv-2609.38839" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.03632" target="_blank" rel="noopener noreferrer">World Embedding Benchmark</a>
+
+*HF ★ 12 · Yiqi Liu, Ruifeng Yuan, Yang Wang… · [HF Mirror](https://huggingface.co/papers/2610.03632)*
+
+To address the unclear mechanism of physical information encoding in video representations, this study constructs a world embedding benchmark covering 4 physical domains, containing 8,000 groups of annotated simulation samples, and sets up 3 types of complementary evaluation tasks. Evaluation finds that pretrained multimodal embedding models have weak physical alignment capabilities, there is a trade-off between cross-modal alignment and recoverability of quantitative physical information, and retrieval enhancement based on this benchmark can significantly improve the physical fidelity of generated videos.
+
+<FeedbackButtons slug="item:arxiv-2610.03632" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.03195" target="_blank" rel="noopener noreferrer">Source Preference in the Wild: How LLM Agents Favor Items by Source, and How to Reduce It</a>
+
+*HF ★ 10 · Jonghyun Song, Haewon Park, Jeonghoon Shim… · [HF Mirror](https://huggingface.co/papers/2610.03195)*
+
+This paper addresses the source preference issue when LLM agents make decisions on behalf of users. Controlling for variables such as position and demand matching degree, it tests the end-to-end search behavior of 12 models across 3 domains, and finds that all models generally have consistent source preferences, even prioritizing items from preferred sources that meet fewer requirements. This preference stems from training shortcuts and information gaps, and supplementing information or adding anti-bias prompts can effectively reduce the bias.
+
+<FeedbackButtons slug="item:arxiv-2610.03195" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.02826" target="_blank" rel="noopener noreferrer">Scaling Trajectories for Complex Tasks through Recursive Self-Rewrite</a>
+
+*HF ★ 10 · Zongxia Li, Yucheng Shi, Zhongzhi Li… · [HF Mirror](https://huggingface.co/papers/2610.02826)*
+
+To address the problem that successful training trajectories for complex tasks rely on proprietary runtime suites that are unavailable during deployment, the Recursive Self-Rewrite (RSR) framework is proposed. Through planning, verification, and execution modules, it reconstructs successful solutions from multiple suites into training trajectories usable by general-purpose suites. On more than 3,000 end tasks, its solution rate is 34.3% higher than the strongest single suite. After fine-tuning with augmented trajectories, the model's pass rate across all test sets and process rewards are significantly better than the baseline.
+
+<FeedbackButtons slug="item:arxiv-2610.02826" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.01257" target="_blank" rel="noopener noreferrer">Science Utopia? Closed-Loop LLM Simulation of Academic Research Ecosystems</a>
+
+*HF ★ 6 · Yiqiao Jin, Yiyang Wang, Lucheng Fu… · [HF Mirror](https://huggingface.co/papers/2610.01257)*
+
+To explore the evolution law of the academic research ecosystem with AI participation, researchers have launched SciUtopia, a closed-loop simulation framework for LLM agents that can simulate the full scientific research process and support controlled intervention experiments. Based on multiple sets of simulation data from more than 40,000 researchers, it is found that reject-and-resubmit significantly increases the review burden, cautious exploration can balance academic influence and domain diversity, and even a weak early funding advantage will lead to resource inequality.
+
+<FeedbackButtons slug="item:arxiv-2610.01257" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2610.02224" target="_blank" rel="noopener noreferrer">Hybrid Machine Learning-Assisted Raman Spectroscopy with Generative Feature Augmentation for Pharmaceutical Identification</a>
+
+*Quach Thi Thai Binh, Ton Nu Quynh Trang, Thang B. Phan…*
+
+To meet the demand for rapid identification of drug residues via Raman spectroscopy, this paper proposes the HyMLRaman hybrid machine learning framework: it uses EfficientNet-B3 to extract Raman spectral features, paired with an SVM classifier, achieving 96.31% recognition accuracy for 6 commonly used drugs, outperforming pure CNN baselines. In addition, DDPM generative feature augmentation is introduced to alleviate the small data problem, bringing significant gains to KNN under low training data volume. An interactive analysis tool has been deployed, with strong practicality.
+
+<FeedbackButtons slug="item:arxiv-2610.02224" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.02225" target="_blank" rel="noopener noreferrer">The Price of Greenwashing: Algorithmic Verification and Market Discipline using Conformal Machine Learning</a>
+
+*Sourav Bose, Taoufik Bouraoui*
+
+To address the issue of greenwashing in corporate self-reported carbon emissions and the lack of objective quantitative methods for existing ESG assessments, this study integrates U.S. SEC financial data and EPA plant-level emission data, combines gradient boosting and Mondrian conformal prediction to construct the CWCD index, which measures the deviation between self-reported emissions and the real baseline. The study confirms that this deviation is significantly negatively correlated with the subsequent market value and profitability of enterprises, meaning the market prices environmental fraud, and can provide quantitative support for large-scale deployment of algorithmic audits by asset management and regulatory authorities.
+
+<FeedbackButtons slug="item:arxiv-2610.02225" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.02248" target="_blank" rel="noopener noreferrer">State-Space Unlearning for Non-Stationary Bias in Land Surface Forecasting</a>
+
+*Anidipta Pal*
+
+To address the problem that Mamba-based land surface forecasting systems tend to retain non-stationary confounding bias that interferes with long-term predictions, this paper proposes the first machine unlearning framework SSU-LSF adapted for geoscience Mamba. It locates confounding footprints through a dedicated EKFac influence function and spectral radius threshold, and achieves unlearning with regularized gradient ascent. Experiments show that its confounding reduction rate reaches up to 0.859, the maximum accuracy loss in clean domains is only 4.2%, and the GPU cost is 8.4 times lower than full retraining.
+
+<FeedbackButtons slug="item:arxiv-2610.02248" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/practical-guide-building-gpt-6" target="_blank" rel="noopener noreferrer">A model guide for the GPT-6 family</a>
+
+*OpenAI*
+
+This GPT-6 Family Model Guide provides practical implementation guidance for GPT-6 specifically for startups, covering four core approaches: selecting GPT-6 sub-models adapted to business needs, adjusting inference computing power input as required, optimizing prompt engineering and model invocation capabilities, scheduling and coordinating external tools, and pre-preparing production-grade business workflows, which can help startups lower the threshold for GPT-6 business implementation.
+
+<FeedbackButtons slug="item:openai-blog-practical-guide-building-gpt-6" client:visible />
+
+## <a href="https://openai.com/index/chatham-financial" target="_blank" rel="noopener noreferrer">Chatham scales its capital markets expertise with OpenAI</a>
+
+*OpenAI*
+
+To upgrade its capital markets business capabilities, financial service provider Chatham Financial has introduced OpenAI's Codex code model and GPT-5.6 LLM, both building dedicated technical tools adapted to business needs and targeted at reconstructing original business processes. The core achievement is that the transaction verification link that originally took 30 minutes to complete has been greatly compressed to less than 4 minutes, verifying the significant efficiency improvement value of LLMs in professional financial scenarios.
+
+<FeedbackButtons slug="item:openai-blog-chatham-financial" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-frontier-academy" target="_blank" rel="noopener noreferrer">Claude Frontier Academy: $100M to train 10,000 engineers</a>
+
+*Anthropic*
+
+Anthropic is investing $100 million to launch the Claude Frontier Academy project, which plans to train a total of 10,000 frontier deployment engineers by the end of 2027. The training standards of the project are fully aligned with the capability requirements of Anthropic's internal formal engineers, and will deliver a large number of professional engineering talents meeting the standards of leading technology companies to the field of cutting-edge AI technology implementation.
+
+<FeedbackButtons slug="item:anthropic-claude-frontier-academy" client:visible />
+
+## <a href="https://www.anthropic.com/news/barclays-scales-claude" target="_blank" rel="noopener noreferrer">Barclays scales Claude to upgrade operations and improve client experience</a>
+
+*Anthropic*
+
+UK universal bank Barclays is expanding its strategic cooperation with AI company Anthropic, deploying the secure and compliant enterprise-grade Claude LLM across its global business lines. This move aims to upgrade internal operational efficiency and optimize customer service experience with LLM technology, and is one of Barclays' core layouts for promoting intelligent transformation and implementing cutting-edge AI applications.
+
+<FeedbackButtons slug="item:anthropic-barclays-scales-claude" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/gemini-4-argon-our-next-era-of-frontier-intelligence/" target="_blank" rel="noopener noreferrer">Gemini 4 Argon: our next era of frontier intelligence</a>
+
+*Google DeepMind*
+
+Google DeepMind's new generation of cutting-edge intelligence flagship Gemini 4 Argon adopts a native unified multimodal architecture, equipped with an enhanced chain-of-thought deep reasoning engine and dedicated scientific computing module. Its performance on tasks such as mathematical proof, scientific research simulation, and million-level ultra-long context processing is more than 40% higher than the previous generation, which can support the implementation of high-threshold professional scenarios, marking a new stage in the evolution of LLMs towards general cutting-edge intelligence.
+
+<FeedbackButtons slug="item:deepmind-gemini-4-argon-our-next-era-of-frontier-intelligence" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-synthid-bio/" target="_blank" rel="noopener noreferrer">Introducing SynthID Bio</a>
+
+*Google DeepMind*
+
+The newly released SynthID Bio is a proof-of-concept achievement of watermarking technology for AI-generated proteins. This technology can embed exclusive traceability identifiers in AI-generated protein sequences, with the core advantage that watermark implantation does not damage the preset biological functions of proteins. It can provide a feasible path for scenarios such as property right confirmation, source tracing, and compliance verification of AI-generated proteins, balancing technical practicality and biological usability.
+
+<FeedbackButtons slug="item:deepmind-introducing-synthid-bio" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/microsoft/thinkingbox" target="_blank" rel="noopener noreferrer">The Agent Said It Was Done. The Database Disagreed.</a>
+
+*Hugging Face*
+
+This paper focuses on the core pain point of LLM agent implementation: the agent itself determines that the task is completed, but the actual state of external systems such as the underlying database is not synchronized, and the operation does not take effect. The team proposes a transaction-level state alignment framework, which encapsulates the agent's action sequence into database atomic transactions, automatically verifies the state bidirectionally after execution, and triggers rollback and retry when inconsistent. In tested business scenarios, the state inconsistency error rate is reduced by 92%, with an additional overhead of only 4.7%, meeting production-grade implementation requirements.
+
+<FeedbackButtons slug="item:hf-blog-thinkingbox" client:visible />
+
+## <a href="https://huggingface.co/blog/allenai/astabrief" target="_blank" rel="noopener noreferrer">Open-sourcing AstaBrief, the fast report-generation model in Asta</a>
+
+*Hugging Face*
+
+The open-sourced AstaBrief is a vertical dedicated report generation model under the Asta LLM ecosystem, with special optimizations for the needs of long text output, format compliance, and multi-source information integration in report scenarios. Its generation efficiency is much higher than general-purpose LLMs, it supports custom templates to adapt to the needs of multiple industries, and after open sourcing, it can support developers to quickly build customized automatic report generation tools.
+
+<FeedbackButtons slug="item:hf-blog-astabrief" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This paper sorts out the development context of the recursive self-improvement (RSI) field: the concept first originated from the "ultraintelligent machine" hypothesis proposed by Irving John Good in 1965, and Eliezer Yudkowsky clarified its core logic in 2008 as the feedback loop where AI relies on existing intelligence to iteratively optimize its own cognitive mechanism. In current AI scenarios, RSI can be implemented in two categories of paths: one is to directly rewrite its own weights, and the other is to optimize the training pipeline at a broad level.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/10/501700.html" target="_blank" rel="noopener noreferrer">28-day limited time! OpenAI promises to reset credits if no new features are released, netizens: we just want Opus</a>
+
+*QbitAI*
+
+OpenAI Codex head Tibo launched a 28-day event: every day, either deliver user-useful product improvements and new features, or fully reset usage credits. Previously, he was collecting user feedback, planning to iterate in four directions: product simplification, efficiency improvement, new feature launch, and new model release. This move is suspected to be a response to pressure from competitors such as Claude Opus, and has also been taunted by competitors, with users dissatisfied with its previous messy and unfocused updates.
+
+<FeedbackButtons slug="item:qbitai-501700" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/501605.html" target="_blank" rel="noopener noreferrer">For AI computing power cooperation, Musk still trusts Chinese manufacturing more</a>
+
+*QbitAI*
+
+Musk's Terafab project, which supplies custom chips for Tesla, SpaceX, and xAI, originally finalized Intel to supply 14A process technology. Previously, he stated that TSMC had insufficient production capacity and that he decided to build the project himself to reduce dependence on TSMC. Recently, he publicly confirmed that he is negotiating cooperation with TSMC, and TSMC has not yet responded, triggering discussions on whether the project route will be adjusted and whether Intel will be affected.
+
+<FeedbackButtons slug="item:qbitai-501605" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/501506.html" target="_blank" rel="noopener noreferrer">The hottest AI position FDE: monthly salary of 50,000 RMB, here's what they do…</a>
+
+*QbitAI*
+
+This article introduces the highly popular high-paying AI position FDE (Frontier Deployment Engineer). The median annual salary for this position overseas is about 1.34 million RMB, and the monthly salary in China can reach 50,000 RMB. Leading domestic and international manufacturers are heavily investing in building FDE talent teams. The position evolved from traditional on-site technical positions, divided into two roles: Echo, which connects with stakeholders to draft requirement solutions, and Delta, which is responsible for implementation and development, cooperating with back-end R&D to complete customized AI transformation for clients.
+
+<FeedbackButtons slug="item:qbitai-501506" client:visible />
