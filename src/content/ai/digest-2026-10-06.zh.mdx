@@ -1,0 +1,179 @@
+---
+lang: zh
+translationKey: digest-2026-10-06
+title: "AI 每日精选 · 2026-10-06"
+description: "17 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-10-06
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, lil-log]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">谷歌发布Gemini 4 Argon前沿大模型，Anthropic投1亿美元培训万名AI工程师并落地巴克莱商用</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI公布欧盟文本溯源规则应对方案，启动AI广告搭建，推出28天无新功能重置会员政策</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face开源多模态、RAG、Agent类新工具，Hinton发布首篇RSI论文，光遗传学获诺奖</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥模型上新</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📰政策动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💸产业投入</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠学术突破</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖工具开源</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2610.04198" target="_blank" rel="noopener noreferrer">ALoDLM: Adaptively Looped Diffusion Language Models</a>
+
+*HF ★ 32 · Liancheng Fang, Zhuowei Li, Youngeun Kim… · [HF 镜像](https://huggingface.co/papers/2610.04198)*
+
+针对现有扩散语言模型（DLM）并行生成时算力分配统一、质量不及同规模自回归模型的问题，本文提出ALoDLM：采用token级自适应隐态循环，按预测难度分配算力，通过条件负证据下界联合学习预测与算力调度。1.7B、8B参数版本在11项基准上均优于现有DLM及对应自回归基线，保留并行解码优势，质效比突出。（全文118字）
+
+<FeedbackButtons slug="item:arxiv-2610.04198" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.05608" target="_blank" rel="noopener noreferrer">Kandinsky 6.0 Video: Foundation Models for Synchronized Video and Audio Generation</a>
+
+*HF ★ 13 · Team Kandinsky, Julia Agafonova, Bulat Akhmatov… · [HF 镜像](https://huggingface.co/papers/2610.05608)*
+
+本文推出Kandinsky 6.0 Video系列文本/图像驱动的音视频同步生成扩散大模型，含3B参Lite版与29B参Pro版。采用双流CrossDiT架构，双向交叉注意力对齐音视频时序语义，经分阶段训练可输出5秒1080P、带44kHz同步音频（含唇形对齐）的内容，实测优于前代，语音质量比肩业内顶尖，相关资源已开源。
+
+<FeedbackButtons slug="item:arxiv-2610.05608" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.05303" target="_blank" rel="noopener noreferrer">ASCENT: Online Test-Time Training of Long-Horizon Agents via Self-Distillation of Verified Experience</a>
+
+*HF ★ 11 · Haodong Lu, Dong Gong · [HF 镜像](https://huggingface.co/papers/2610.05303)*
+
+针对大语言模型智能体长时序任务测试时段在线优化依赖记忆检索、直接权重更新易不稳定的问题，本文提出ASCENT方法：以冻结的初始模型为稳定教师，将经验证的有效轨迹作为先验信息自蒸馏，通过LoRA轻量更新模型权重。在三类基准测试中，该方法随经验积累持续提升任务成功率与交互效率，优于现有在线适配方案，可泛化至未见场景。
+
+<FeedbackButtons slug="item:arxiv-2610.05303" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.00923" target="_blank" rel="noopener noreferrer">CANOPY: Adaptive-Granularity Evidence Compression for Multimodal RAG</a>
+
+*HF ★ 10 · Hyojeong Yun, Jueun Kim, Wook-Shin Han · [HF 镜像](https://huggingface.co/papers/2610.00923)*
+
+针对多模态RAG检索后证据粒度适配差、跨模态压缩方案不统一的痛点，本文提出CANOPY自适应粒度压缩框架：将召回内容映射为层级结构，通过微调编码器打分选择多粒度片段，还可自动判断并补召缺失证据。基于3300万条异质语料的5个QA基准测试显示，其准确率超基线，还能压缩14.2%~27.7%输入token且精度相当。
+
+<FeedbackButtons slug="item:arxiv-2610.00923" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.24890" target="_blank" rel="noopener noreferrer">OSWorld-Pro: Process-based Evaluation for Computer Use Agents</a>
+
+*HF ★ 7 · Zhilin Wang, Shaokun Zhang, Yifan Zhang… · [HF 镜像](https://huggingface.co/papers/2609.24890)*
+
+针对现有计算机操作智能体（CUA）评估仅看终态、无法定位失败原因的痛点，该研究推出OSWorld-Pro评估基准：含300余任务、2800余子目标，基于6.7万条人类标注，采用对齐人类的大模型评委做过程式评估。实测显示顶尖大模型Claude Opus 5得分仅75.7%，低于原有OSWorld基准表现，还识别出子目标无关操作、点击错误等典型失败模式，为CUA优化提供明确方向。
+
+<FeedbackButtons slug="item:arxiv-2609.24890" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/eu-text-provenance" target="_blank" rel="noopener noreferrer">Our approach to EU text provenance rules</a>
+
+*OpenAI*
+
+本文介绍OpenAI响应欧盟文本溯源监管新规的生成式AI文本水印落地方案。方案明确了水印技术的适用场景边界，阐明了水印检测的具体运行逻辑，现阶段水印检测权限仅面向研究人员开放，优先支持学界开展技术可靠性验证、滥用风险研判，在合规前提下稳妥推进水印技术落地应用。
+
+<FeedbackButtons slug="item:openai-blog-eu-text-provenance" client:visible />
+
+## <a href="https://openai.com/index/new-chatgpt-ads-format-and-measurement" target="_blank" rel="noopener noreferrer">Building advertising for the way people use AI</a>
+
+*OpenAI*
+
+OpenAI围绕用户使用AI的实际交互习惯，推出适配AI场景的专属广告解决方案：核心动作是在ChatGPT中上线全新视觉广告格式，同时面向广告主配套升级广告效果度量工具、拓展归因合作渠道、完善品牌适配性保障机制，可有效提升AI场景下的广告投放效率与品牌匹配度。
+
+<FeedbackButtons slug="item:openai-blog-new-chatgpt-ads-format-and-measurement" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-frontier-academy" target="_blank" rel="noopener noreferrer">Claude Frontier Academy: $100M to train 10,000 engineers</a>
+
+*Anthropic*
+
+Anthropic宣布启动Claude前沿学院人才培养项目，计划投入1亿美元，以自身内部工程师的能力水平为统一培养标准，聚焦前沿AI落地方向培育前沿部署工程师，目标到2027年底累计培养1万名符合要求的从业者，将为AI前沿技术安全落地、产业规模化应用补足高端工程人才储备。
+
+<FeedbackButtons slug="item:anthropic-claude-frontier-academy" client:visible />
+
+## <a href="https://www.anthropic.com/news/barclays-scales-claude" target="_blank" rel="noopener noreferrer">Barclays scales Claude to upgrade operations and improve client experience</a>
+
+*Anthropic*
+
+英国全能银行巴克莱近期深化与AI企业Anthropic的战略合作，核心举措是将安全合规的企业级Claude大模型规模化落地，全面接入自身全球各业务运营体系。此举旨在通过生成式AI赋能提效，升级内部运营流程，同时优化全链路客户服务体验，是头部金融机构落地大模型业务价值的典型实践。
+
+<FeedbackButtons slug="item:anthropic-barclays-scales-claude" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/gemini-4-argon-our-next-era-of-frontier-intelligence/" target="_blank" rel="noopener noreferrer">Gemini 4 Argon: our next era of frontier intelligence</a>
+
+*Google DeepMind*
+
+本文介绍谷歌Gemini 4系列旗舰大模型Argon，团队通过全栈推理优化、多模态融合架构升级、长上下文增强训练，使其在数学、代码、基础科学等十余项权威基准上超越前代Gemini Ultra及GPT-4o，可支撑科研攻关、复杂工业调度等高阶场景，标志大模型前沿能力进入新的发展阶段。
+
+<FeedbackButtons slug="item:deepmind-gemini-4-argon-our-next-era-of-frontier-intelligence" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-synthid-bio/" target="_blank" rel="noopener noreferrer">Introducing SynthID Bio</a>
+
+*Google DeepMind*
+
+本研究推出名为SynthID Bio的新技术，完成了AI生成蛋白质数字水印方案的概念验证。该技术可在AI生成的蛋白质中植入专属溯源水印，核心优势是水印植入全程不破坏蛋白质原本的生物学功能，既可为AI生成蛋白质的产权溯源、风险防控提供支撑，也不会影响其后续落地应用价值。
+
+<FeedbackButtons slug="item:deepmind-introducing-synthid-bio" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/microsoft/thinkingbox" target="_blank" rel="noopener noreferrer">The Agent Said It Was Done. The Database Disagreed.</a>
+
+*Hugging Face*
+
+本研究针对大模型智能体执行数据库交互任务时的状态误判问题：智能体常因报文解析错误、事务回滚未识别等，错判任务完成，与实际数据库状态不一致。提出事务级校验反馈框架，让智能体操作后主动校验目标数据变更、关联事务日志再确认状态，实测可将这类错配率降83%，显著提升智能体落地可靠性。
+
+<FeedbackButtons slug="item:hf-blog-thinkingbox" client:visible />
+
+## <a href="https://huggingface.co/blog/allenai/astabrief" target="_blank" rel="noopener noreferrer">Open-sourcing AstaBrief, the fast report-generation model in Asta</a>
+
+*Hugging Face*
+
+本次正式开源的AstaBrief，是Asta技术体系下专门面向报告生成场景优化的专项大模型，主打低延迟高速生成、高准确率优势，可适配多行业的结构化、定制化报告输出需求，支持多格式导出，能大幅降低开发者与企业搭建自动化报告生产工具的门槛，有效提升办公、数据分析等场景的内容生产效率。
+
+<FeedbackButtons slug="item:hf-blog-astabrief" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我提升（RSI）的研究脉络与现代落地范式：该概念源自1965年古德提出的超智能机器迭代设想，2008年尤德考斯基明确定义其为AI依托现有智能优化自身认知架构的反馈循环。研究进一步指出现代AI的RSI可分为两类路径：直接改写自身权重，或是更广义的训练流水线优化。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/10/501720.html" target="_blank" rel="noopener noreferrer">刚刚，诺贝尔奖颁给光遗传学！</a>
+
+*量子位*
+
+2026年诺贝尔生理学或医学奖授予Karl Deisseroth等三位科学家，表彰其在光控离子通道与光遗传学领域的突破。三人从趋光绿藻中发现光响应离子通道，实现毫秒级精准调控特定神经元活动，将神经研究从相关性观察推进到因果验证，现已成为脑功能、神经疾病研究的核心工具。
+
+<FeedbackButtons slug="item:qbitai-501720" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/501705.html" target="_blank" rel="noopener noreferrer">刚刚，Hinton发了首篇RSI论文</a>
+
+*量子位*
+
+这是Hinton、Bengio等22位AI顶尖学者联合发布的首篇递归自我改进（RSI）主题论文。核心指出无需先诞生超级智能，只要AI研发自动化效率越过临界点，就能启动RSI反馈闭环，原本数年的AI研发进展可压缩至数月甚至数周，等效研发规模可达百万级，很可能触发智能爆炸。
+
+<FeedbackButtons slug="item:qbitai-501705" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/501700.html" target="_blank" rel="noopener noreferrer">限时28天！OpenAI承诺没新功能就重置，网友：只想要Opus</a>
+
+*量子位*
+
+OpenAI Codex负责人Tibo推出28天限时活动：每日要么上线面向用户的功能改进或Bug修复，要么全额重置用户使用额度。此前他已征集用户意见，敲定简化产品、提效、突破性功能、新模型四大优化方向。此举被疑受Claude Opus等竞品压力，还引发与xAI Grok团队互呛，不少网友直言更想要Claude Opus。
+
+<FeedbackButtons slug="item:qbitai-501700" client:visible />
