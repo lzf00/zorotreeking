@@ -1,0 +1,179 @@
+---
+lang: en
+translationKey: digest-2026-10-06
+title: "AI Daily Picks · 2026-10-06"
+description: "17 papers · multi-source aggregation + AI summary"
+date: 2026-10-06
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, lil-log]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second recap of today's updates</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Google releases the cutting-edge Gemini 4 Argon large model, Anthropic invests $100 million to train 10,000 AI engineers and rolls out commercial deployment at Barclays</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI announces its response plan to EU text traceability rules, launches AI advertising framework, and introduces a 28-day membership reset policy if no new features are released</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face open-sources new multimodal, RAG, and Agent tools, Hinton publishes his first RSI paper, optogenetics wins the Nobel Prize</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥New Model Releases</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📰Policy Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💸Industry Investment</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠Academic Breakthroughs</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖Open Source Tools</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2610.04198" target="_blank" rel="noopener noreferrer">ALoDLM: Adaptively Looped Diffusion Language Models</a>
+
+*HF ★ 32 · Liancheng Fang, Zhuowei Li, Youngeun Kim… · [HF Mirror](https://huggingface.co/papers/2610.04198)*
+
+To address the issues of uniform computing power allocation during parallel generation of existing Diffusion Language Models (DLMs) and their lower quality compared to autoregressive models of the same scale, this paper proposes ALoDLM: it adopts token-level adaptive hidden state looping, allocates computing power according to prediction difficulty, and jointly learns prediction and computing power scheduling through a conditional negative evidence lower bound. The 1.7B and 8B parameter versions outperform existing DLMs and corresponding autoregressive baselines on 11 benchmarks, retain the advantage of parallel decoding, and deliver outstanding cost-effectiveness. (Full summary: 118 characters)
+
+<FeedbackButtons slug="item:arxiv-2610.04198" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.05608" target="_blank" rel="noopener noreferrer">Kandinsky 6.0 Video: Foundation Models for Synchronized Video and Audio Generation</a>
+
+*HF ★ 13 · Team Kandinsky, Julia Agafonova, Bulat Akhmatov… · [HF Mirror](https://huggingface.co/papers/2610.05608)*
+
+This paper launches the Kandinsky 6.0 Video series of text/image-driven audio-video synchronized generation diffusion large models, including a 3B parameter Lite version and a 29B parameter Pro version. It adopts a dual-stream CrossDiT architecture, aligns audio-video temporal semantics with bidirectional cross-attention, and can output 5-second 1080P content with 44kHz synchronized audio (including lip alignment) after phased training. Actual testing shows it outperforms previous generations, with speech quality on par with industry top levels, and relevant resources have been open-sourced.
+
+<FeedbackButtons slug="item:arxiv-2610.05608" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.05303" target="_blank" rel="noopener noreferrer">ASCENT: Online Test-Time Training of Long-Horizon Agents via Self-Distillation of Verified Experience</a>
+
+*HF ★ 11 · Haodong Lu, Dong Gong · [HF Mirror](https://huggingface.co/papers/2610.05303)*
+
+To address the problems that online optimization of LLM agents during long-sequence task testing relies on memory retrieval, and direct weight updates are prone to instability, this paper proposes the ASCENT method: it uses a frozen initial model as a stable teacher, self-distills verified effective trajectories as prior information, and updates model weights lightly via LoRA. In three types of benchmark tests, this method continuously improves task success rate and interaction efficiency as experience accumulates, outperforms existing online adaptation solutions, and can generalize to unseen scenarios.
+
+<FeedbackButtons slug="item:arxiv-2610.05303" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.00923" target="_blank" rel="noopener noreferrer">CANOPY: Adaptive-Granularity Evidence Compression for Multimodal RAG</a>
+
+*HF ★ 10 · Hyojeong Yun, Jueun Kim, Wook-Shin Han · [HF Mirror](https://huggingface.co/papers/2610.00923)*
+
+To address the pain points of poor evidence granularity adaptation after retrieval in multimodal RAG and inconsistent cross-modal compression solutions, this paper proposes the CANOPY adaptive granularity compression framework: it maps recalled content into a hierarchical structure, selects multi-granularity segments by scoring with a fine-tuned encoder, and can also automatically determine and recall missing evidence. Tests on 5 QA benchmarks based on 33 million heterogeneous corpora show that its accuracy exceeds baselines, and it can also compress input tokens by 14.2%~27.7% with comparable precision.
+
+<FeedbackButtons slug="item:arxiv-2610.00923" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.24890" target="_blank" rel="noopener noreferrer">OSWorld-Pro: Process-based Evaluation for Computer Use Agents</a>
+
+*HF ★ 7 · Zhilin Wang, Shaokun Zhang, Yifan Zhang… · [HF Mirror](https://huggingface.co/papers/2609.24890)*
+
+To address the pain point that existing Computer Use Agent (CUA) evaluations only check final states and cannot locate failure causes, this research launches the OSWorld-Pro evaluation benchmark: it includes over 300 tasks, over 2800 sub-goals, is based on 67,000 human annotations, and uses human-aligned LLM judges for procedural evaluation. Actual testing shows that the top large model Claude Opus 5 only scores 75.7%, lower than its performance on the original OSWorld benchmark, and typical failure modes such as sub-goal irrelevant operations and click errors are identified, providing a clear direction for CUA optimization.
+
+<FeedbackButtons slug="item:arxiv-2609.24890" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/eu-text-provenance" target="_blank" rel="noopener noreferrer">Our approach to EU text provenance rules</a>
+
+*OpenAI*
+
+This article introduces OpenAI's generative AI text watermarking implementation plan in response to the EU's new text traceability regulatory rules. The plan clarifies the applicable scenario boundaries of watermarking technology, explains the specific operating logic of watermark detection. At this stage, watermark detection permissions are only open to researchers, prioritizing support for academic circles to carry out technical reliability verification and abuse risk research, and steadily promote the implementation of watermarking technology under compliance premises.
+
+<FeedbackButtons slug="item:openai-blog-eu-text-provenance" client:visible />
+
+## <a href="https://openai.com/index/new-chatgpt-ads-format-and-measurement" target="_blank" rel="noopener noreferrer">Building advertising for the way people use AI</a>
+
+*OpenAI*
+
+Focusing on users' actual interaction habits when using AI, OpenAI launches an exclusive advertising solution adapted to AI scenarios: the core move is to launch a new visual advertising format in ChatGPT, while supporting advertisers with upgraded advertising effect measurement tools, expanded attribution cooperation channels, and improved brand adaptability guarantee mechanisms, which can effectively improve advertising delivery efficiency and brand matching degree in AI scenarios.
+
+<FeedbackButtons slug="item:openai-blog-new-chatgpt-ads-format-and-measurement" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/claude-frontier-academy" target="_blank" rel="noopener noreferrer">Claude Frontier Academy: $100M to train 10,000 engineers</a>
+
+*Anthropic*
+
+Anthropic announced the launch of the Claude Frontier Academy talent training program, planning to invest $100 million, using the competence level of its internal engineers as the unified training standard, focusing on cutting-edge AI implementation directions to cultivate frontier deployment engineers. The goal is to train a total of 10,000 qualified practitioners by the end of 2027, which will supplement the high-end engineering talent reserve for the safe implementation of cutting-edge AI technology and large-scale industrial application.
+
+<FeedbackButtons slug="item:anthropic-claude-frontier-academy" client:visible />
+
+## <a href="https://www.anthropic.com/news/barclays-scales-claude" target="_blank" rel="noopener noreferrer">Barclays scales Claude to upgrade operations and improve client experience</a>
+
+*Anthropic*
+
+UK universal bank Barclays recently deepened its strategic cooperation with AI company Anthropic, with the core measure being the large-scale deployment of the secure and compliant enterprise-level Claude large model, fully integrated into its global business operation system. This initiative aims to improve efficiency through generative AI empowerment, upgrade internal operation processes, and optimize the full-link customer service experience, making it a typical practice for leading financial institutions to realize the business value of large models.
+
+<FeedbackButtons slug="item:anthropic-barclays-scales-claude" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/gemini-4-argon-our-next-era-of-frontier-intelligence/" target="_blank" rel="noopener noreferrer">Gemini 4 Argon: our next era of frontier intelligence</a>
+
+*Google DeepMind*
+
+This article introduces Argon, the flagship large model of Google's Gemini 4 series. Through full-stack inference optimization, multimodal fusion architecture upgrade, and long context enhanced training, the team has made it surpass the previous generation Gemini Ultra and GPT-4o on more than ten authoritative benchmarks in mathematics, code, basic science and other fields. It can support high-level scenarios such as scientific research breakthroughs and complex industrial scheduling, marking that the cutting-edge capabilities of large models have entered a new stage of development.
+
+<FeedbackButtons slug="item:deepmind-gemini-4-argon-our-next-era-of-frontier-intelligence" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-synthid-bio/" target="_blank" rel="noopener noreferrer">Introducing SynthID Bio</a>
+
+*Google DeepMind*
+
+This research launches a new technology called SynthID Bio, completing the proof of concept of a digital watermarking solution for AI-generated proteins. This technology can implant exclusive traceability watermarks in AI-generated proteins, with the core advantage that the watermark implantation process does not destroy the original biological function of the protein. It can not only support property right traceability and risk prevention and control of AI-generated proteins, but also will not affect their subsequent application value.
+
+<FeedbackButtons slug="item:deepmind-introducing-synthid-bio" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/microsoft/thinkingbox" target="_blank" rel="noopener noreferrer">The Agent Said It Was Done. The Database Disagreed.</a>
+
+*Hugging Face*
+
+This research addresses the state misjudgment problem when LLM agents perform database interaction tasks: agents often misjudge task completion due to message parsing errors, unrecognized transaction rollbacks, etc., which is inconsistent with the actual database state. A transaction-level verification feedback framework is proposed, which allows agents to actively verify target data changes and associated transaction logs before confirming the state after operation. Actual testing can reduce such mismatch rates by 83%, significantly improving the reliability of agent deployment.
+
+<FeedbackButtons slug="item:hf-blog-thinkingbox" client:visible />
+
+## <a href="https://huggingface.co/blog/allenai/astabrief" target="_blank" rel="noopener noreferrer">Open-sourcing AstaBrief, the fast report-generation model in Asta</a>
+
+*Hugging Face*
+
+The officially open-sourced AstaBrief is a specialized large model optimized specifically for report generation scenarios under the Asta technical system, featuring low-latency high-speed generation and high accuracy advantages. It can adapt to structured and customized report output needs in multiple industries, supports multi-format export, can greatly reduce the threshold for developers and enterprises to build automated report production tools, and effectively improve content production efficiency in office, data analysis and other scenarios.
+
+<FeedbackButtons slug="item:hf-blog-astabrief" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This article sorts out the research context and modern implementation paradigms of Recursive Self-Improvement (RSI): the concept originated from the iterative设想 of superintelligent machines proposed by I.J. Good in 1965, and in 2008 Eliezer Yudkowsky clearly defined it as a feedback loop where AI relies on existing intelligence to optimize its own cognitive architecture. The research further points out that RSI of modern AI can be divided into two types of paths: directly rewriting its own weights, or broader training pipeline optimization.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/10/501720.html" target="_blank" rel="noopener noreferrer">Optogenetics wins the Nobel Prize!</a>
+
+*QbitAI*
+
+The 2026 Nobel Prize in Physiology or Medicine is awarded to three scientists including Karl Deisseroth, in recognition of their breakthroughs in the field of light-gated ion channels and optogenetics. The three discovered light-responsive ion channels from phototactic green algae, achieving millisecond-level precise regulation of specific neuronal activities, advancing neuroscience research from correlation observation to causal verification, and it has now become a core tool for brain function and neurological disease research.
+
+<FeedbackButtons slug="item:qbitai-501720" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/501705.html" target="_blank" rel="noopener noreferrer">Hinton publishes his first RSI paper</a>
+
+*QbitAI*
+
+This is the first RSI-themed paper jointly published by 22 top AI scholars including Geoffrey Hinton and Yoshua Bengio. The core point is that there is no need for superintelligence to emerge first: as long as the efficiency of automated AI research and development crosses the critical point, the RSI feedback loop can be launched. Original AI R&D progress that took years can be compressed to months or even weeks, with an equivalent R&D scale reaching millions, which is very likely to trigger an intelligence explosion.
+
+<FeedbackButtons slug="item:qbitai-501705" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/501700.html" target="_blank" rel="noopener noreferrer">28-day limited! OpenAI promises reset if no new features, netizens: We just want Opus</a>
+
+*QbitAI*
+
+OpenAI Codex lead Tibo launches a 28-day limited event: either release user-facing feature improvements or bug fixes every day, or fully reset users' usage quotas. Previously, he solicited user opinions and finalized four optimization directions: product simplification, efficiency improvement, breakthrough features, and new models. This move is suspected to be under pressure from competitors such as Claude Opus, and also triggered a verbal spar with the xAI Grok team, with many netizens saying bluntly that they prefer Claude Opus more.
+
+<FeedbackButtons slug="item:qbitai-501700" client:visible />
