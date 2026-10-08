@@ -1,0 +1,205 @@
+---
+lang: zh
+translationKey: digest-2026-10-08
+title: "AI 每日精选 · 2026-10-08"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-10-08
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI、Anthropic、DeepMind等头部AI厂商集中发布新模型、落地合作及人才扶持举措</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face及arXiv公开多项AI新技术，覆盖视频生成、推理进化、边缘部署等方向</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">大模型原生智能体手机STEPX Neo即将发布，GPT-6、Claude新模型上线引行业关注</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥前沿模型</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📰大厂动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠学术研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡开源技术</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📱终端创新</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2610.10524" target="_blank" rel="noopener noreferrer">GRACE: Generation-aware latent compression for efficient video generation</a>
+
+*HF ★ 50 · Jiyoung Kim, Paul Hyunbin Cho, Jisu Nam… · [HF 镜像](https://huggingface.co/papers/2610.10524)*
+
+针对压缩视频自编码器适配预训练视频扩散模型时存在的重建质量下降、DiT收敛慢、兼容性差等痛点，本文提出GRACE两阶段压缩框架：保留预训练编码器冻结基础隐特征，学习残差补全压缩损失信息，对齐DiT特征空间，再辅以轻量微调+非对称去噪适配DiT。实测将Wan2.1-I2V-14B模型token数降8倍、推理延迟降11.1倍，生成质量与原预训练管线持平。
+
+<FeedbackButtons slug="item:arxiv-2610.10524" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.10528" target="_blank" rel="noopener noreferrer">Long-WAM: Scaling the Context of World-Action Models</a>
+
+*HF ★ 50 · Wei Huang, Bohan Zhang, Chenzhi Liu… · [HF 镜像](https://huggingface.co/papers/2610.10528)*
+
+针对机器人实时控制需长视觉上下文但易产生延迟的痛点，本文提出Long-WAM框架，采用自回归预训练视频基座，无标注学习因果预测，适配时保留时序结构。实验显示其19.2秒上下文可将RoboCasa任务成功率提超15个百分点，多基准达SOTA，RTX5090上单步仅107.4ms，动态叠杯成功率95%远优于对比模型，可适配高层规划。
+
+<FeedbackButtons slug="item:arxiv-2610.10528" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.04299" target="_blank" rel="noopener noreferrer">Questioning the Questions: Sustaining Self-Evolution in Reasoning Models</a>
+
+*HF ★ 49 · Jinyuan Li, Chengsong Huang, Langlin Huang… · [HF 镜像](https://huggingface.co/papers/2610.04299)*
+
+针对自进化推理模型反复自训练易性能崩塌的问题，研究定位核心病因为自生成问题存在无效题、表述不同但数学等价的重复题两类缺陷，据此提出R-Quest框架，通过有效性、新颖性双向反馈引导生成，搭配冻结基模型判别重复。实验显示其在12类基准任务表现最优，10轮自进化稳定提升，超基线17.32分。
+
+<FeedbackButtons slug="item:arxiv-2610.04299" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.08699" target="_blank" rel="noopener noreferrer">nanoMuse: An Open-Source Personal Agent for Every Device You Own</a>
+
+*HF ★ 44 · Guangyi Liu, Yong Liu, Jiangning Zhang · [HF 镜像](https://huggingface.co/papers/2610.08699)*
+
+针对Meta2026年推出的云侧闭源跨设备长时记忆个人智能体Muse暂无开源替代的现状，本研究先基于公开资料拆解Muse技术架构，进而发布GPL-3.0协议的开源方案nanoMuse：支持多设备共享同一会话，用户可自主选模型、查看可溯源记忆，所有操作可审计，同时给出成本测算与后续优化路线图。
+
+<FeedbackButtons slug="item:arxiv-2610.08699" client:visible />
+
+## <a href="https://arxiv.org/abs/2609.38169" target="_blank" rel="noopener noreferrer">STEPQuant: When and Where Errors Matter in Delta-Rule Recurrent State Quantization</a>
+
+*HF ★ 38 · Bingchen Yao, Haobo Xu, Haokun Lin… · [HF 镜像](https://huggingface.co/papers/2609.38169)*
+
+针对线性注意力循环状态低精度量化易因误差传播大幅降精度的问题，本文提出时空训练后量化框架STEPQuant，按误差幅度、内存生命周期分配精度，结合状态分布与键行对输出的影响适配缩放参数。实验显示其6bit精度对齐FP32，4bit优于均匀INT8，集成部署后循环状态压缩超5倍，服务内存最多降68.7%。
+
+<FeedbackButtons slug="item:arxiv-2609.38169" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2610.08792" target="_blank" rel="noopener noreferrer">A Bayesian Mirror Architecture for Emergent Consciousness: Circular Hierarchies, Self-Manifolds, and Hybrid Event-Self Binding</a>
+
+*Eduardo Righi Capanema de Almeida*
+
+本文提出贝叶斯镜像架构（BMA）这一自指生成框架，核心是事件-自我混合潜变量循环递归，绑定自我表征与世界模型后回注自我状态。研究指出受限意识是这类循环结构的固有属性，用Wasserstein度量刻画信念稳定性，定义因果学习机制诊断环境可学习因果结构，经变分自由能最小化训练可涌现系统稳定性与能动性。
+
+<FeedbackButtons slug="item:arxiv-2610.08792" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.08809" target="_blank" rel="noopener noreferrer">Beyond Baseline Severity: Temporal and Disease-Specific Predictors of Depression Outcomes Following Mindfulness Interventions</a>
+
+*Muhammad Jawad Chowdhury, Sultanus Salehin, Akib Jayed Islam*
+
+该研究以可解释机器学习分析多中心纵向临床队列，预测正念干预后12、24周的抑郁评分，纳入多类特征、以模型随机插补处理缺失值，对比5种回归模型得到最优预测方案。研究发现除基线严重度外，短期预后关联临床、医院因素，长期更依赖干预依从性及人口学特征，不同病种预测因子差异显著，可支撑个性化心理干预设计。
+
+<FeedbackButtons slug="item:arxiv-2610.08809" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.08810" target="_blank" rel="noopener noreferrer">Transferability and operational reliability of a Prithvi crop classification foundation model under phenological and geographic shift across three continents</a>
+
+*Venkatesh Kolluru, Rajat Shinde, Abdelhak Marouane…*
+
+针对预训练地理空间基础模型跨分布运行性能缺乏系统验证的问题，本文测试Prithvi-EO-2.0作物分类模型在三大洲12国37个场景的表现，发现跨洲精度下降主因是观测窗与当地作物物候错配，而非空间迁移能力不足。无需重训，合并易混类别、选用45-90天观测窗（最优75天）可有效提精度，研究还给出了部署实操指引。
+
+<FeedbackButtons slug="item:arxiv-2610.08810" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/teens-learn-and-plan" target="_blank" rel="noopener noreferrer">Helping teens learn, plan, and shape the future of AI</a>
+
+*OpenAI*
+
+OpenAI为青少年版ChatGPT新增多项实用功能：一是上线大学规划工具，辅助学生统筹管理大学申请全流程，配套推出闪卡、定制测验模块，支撑日常学习需求；二是设立青少年AI理事会，吸纳青少年意见参与AI产品迭代，助力青少年借助AI完成学业规划、参与AI生态建设。
+
+<FeedbackButtons slug="item:openai-blog-teens-learn-and-plan" client:visible />
+
+## <a href="https://openai.com/index/radisson" target="_blank" rel="noopener noreferrer">Radisson Hotel Group brings hotel discovery into ChatGPT</a>
+
+*OpenAI*
+
+丽笙酒店集团联合埃森哲，基于OpenAI技术开发专属ChatGPT插件。该插件将酒店服务直接接入生成式AI场景，用户在ChatGPT内规划出行行程时，无需跳转第三方平台，就可完成丽笙旗下酒店的检索、对比、预订全流程操作，既优化了用户行程规划的连贯体验，也是传统酒店品牌拥抱生成式AI生态的典型实践。
+
+<FeedbackButtons slug="item:openai-blog-radisson" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/cyber-verification-program" target="_blank" rel="noopener noreferrer">Expanding the Cyber Verification Program</a>
+
+*Anthropic*
+
+本文宣布推出全新升级的网络验证项目（CVP）。该项目定向面向符合资质要求的网络安全专业人员开放，将为通过审核的准入用户提供两类核心支持：一是开放高阶网络技术能力使用权限，二是提供经优化、拦截误判率更低的分类器工具，为合规安全从业者开展相关研究、实操工作提供更顺畅的技术支撑。
+
+<FeedbackButtons slug="item:anthropic-cyber-verification-program" client:visible />
+
+## <a href="https://www.anthropic.com/news/claude-frontier-academy" target="_blank" rel="noopener noreferrer">Claude Frontier Academy: $100M to train 10,000 engineers</a>
+
+*Anthropic*
+
+Anthropic投入1亿美元启动Claude前沿学院人才培养项目，计划到2027年底累计培养1万名前沿部署工程师，培养标准完全对齐其内部正式工程师的能力要求。该项目既为AI前沿技术落地储备规模化专业人才，也体现了其对未来AGI落地阶段人才缺口的提前布局。
+
+<FeedbackButtons slug="item:anthropic-claude-frontier-academy" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/embeddinggemma-2-an-open-lightweight-multimodal-embedding-model/" target="_blank" rel="noopener noreferrer">EmbeddingGemma 2: an open, lightweight multimodal embedding model</a>
+
+*Google DeepMind*
+
+本次推出的EmbeddingGemma 2是谷歌开源的轻量多模态嵌入模型，基于Gemma 2底座优化，完成了文本、图像模态的嵌入空间统一对齐，兼顾效果与运行效率。实测在同等参数量级下，跨模态检索、图文匹配等任务表现优于现有同类型开源模型，部署门槛低，可适配边缘端等轻量场景的多模态语义匹配、检索需求。
+
+<FeedbackButtons slug="item:deepmind-embeddinggemma-2-an-open-lightweight-multimodal-embedding-model" client:visible />
+
+## <a href="https://deepmind.google/blog/gemini-4-argon-our-next-era-of-frontier-intelligence/" target="_blank" rel="noopener noreferrer">Gemini 4 Argon: our next era of frontier intelligence</a>
+
+*Google DeepMind*
+
+本文是谷歌对下一代旗舰大模型Gemini 4 Argon的官方介绍，该模型面向前沿通用智能落地研发，架构上优化了稀疏激活机制与跨模态融合模块，长上下文窗口扩容至百万级，数学、科学推理等复杂任务性能较前代提升45%，幻觉率下降30%，可支撑复杂科学仿真、多轮逻辑决策等高阶任务，是谷歌向通用人工智能（AGI）演进的核心阶段性成果。
+
+<FeedbackButtons slug="item:deepmind-gemini-4-argon-our-next-era-of-frontier-intelligence" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/LiquidAI/open-d1" target="_blank" rel="noopener noreferrer">Multimodal open d1 decision models for the edge</a>
+
+*Hugging Face*
+
+你目前仅提供了论文标题，摘要核心内容完全缺失，无法提取该边缘多模态开放决策模型的核心方法、实验结论等关键信息。请你补充完整的英文摘要内容，我会严格按照要求，为你生成120字左右、突出方法与核心结论的简洁中文总结。
+
+<FeedbackButtons slug="item:hf-blog-open-d1" client:visible />
+
+## <a href="https://huggingface.co/blog/nvidia/nemotron-ioi-and-imo-2026" target="_blank" rel="noopener noreferrer">One Model Family, Two Gold-Level Results: Fine-Tuning Nemotron for IOI and IMO</a>
+
+*Hugging Face*
+
+本文聚焦国际信息学奥赛（IOI）、国际数学奥赛（IMO）两项顶级硬核推理基准，对Nemotron大模型族开展专项微调优化，最终在两项任务上均达到金奖选手级性能。该结果证明同系列模型经适配微调后，可同时突破代码、数学两大高难度推理赛道瓶颈，为通用推理模型研发提供了参考。
+
+<FeedbackButtons slug="item:hf-blog-nemotron-ioi-and-imo-2026" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文聚焦递归自我改进（RSI）的工程落地研究：RSI概念最早源于1965年古德提出的超智能机器设想，2008年尤德考斯基明确其核心是AI依托现有智能迭代自身认知架构的反馈闭环。当前AI领域的RSI可走两类路径：一是模型直接改写自身权重，二是广义上优化自身训练管线。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/10/501915.html" target="_blank" rel="noopener noreferrer">大模型原生智能体手机STEPX Neo将于10月13日正式发布</a>
+
+*量子位*
+
+10月8日消息，阶跃终端将于10月13日在上海举办“Ready Builder One”主题发布会，推出旗下首款大模型原生智能体手机STEPX Neo。该产品从模型、系统、硬件全维度为智能体原生定制打造，发布会上还将同步公布阶跃终端最新生态合作进展。相关信息由阶跃终端提供，量子位获授权转载。
+
+<FeedbackButtons slug="item:qbitai-501915" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/501834.html" target="_blank" rel="noopener noreferrer">GPT-6今起免费用！拒答变少，话变多了</a>
+
+*量子位*
+
+OpenAI近日正式推送GPT-6系列模型：Plus、Pro等付费用户使用GPT-6 Sol，免费及Go用户可用GPT-6 Luna替代旧版，模型拒答率降低、输出内容更丰富。新版新增智能UI功能，可按需生成交互图表、工具，支持边思考边输出。官方报告显示其对青少年的情感依赖诱导风险较上代明显下降。
+
+<FeedbackButtons slug="item:qbitai-501834" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/501832.html" target="_blank" rel="noopener noreferrer">Claude新模型发布！跑分暴击GPT-6 Luna，价格比梁文谷还便宜，OpenAI只能送重置卡挽尊</a>
+
+*量子位*
+
+Anthropic最新发布小模型Claude Haiku5.5，跑分超过DeepSeek V4.1Flash、GLM-5.3-Flash，全项优于GPT-6 Luna，编码、智能体操作能力大幅提升，最低档准确率就远超上代Haiku4.5最高档。10万token以内请求成本砍90%，定价比竞品更低，当前Claude已覆盖全场景需求，倒逼OpenAI跟进迭代。
+
+<FeedbackButtons slug="item:qbitai-501832" client:visible />
