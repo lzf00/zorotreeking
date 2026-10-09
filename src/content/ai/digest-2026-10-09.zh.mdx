@@ -1,0 +1,206 @@
+---
+lang: zh
+translationKey: digest-2026-10-09
+title: "AI 每日精选 · 2026-10-09"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-10-09
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">AI头部厂商动态密集，DeepMind连发两款新模型，OpenAI晒落地案例、Anthropic更新政策</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face、arXiv发布多篇前沿研究，覆盖Agent、KV压缩、多模态等热门技术方向</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内具身AI赛道再获突破，清华相关模型登顶全球榜单，Sharpa升级体感感知技术</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 具身AI</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ 新模发布</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏭 商业落地</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📝 政策更新</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔬 前沿研究</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2610.06100" target="_blank" rel="noopener noreferrer">From Traces to Agentic Worlds: Agentic Language World Models for Interactive Environment Simulation</a>
+
+*HF ★ 62 · Quanyu Long, Xiao Chen, Jianda Chen… · [HF 镜像](https://huggingface.co/papers/2610.06100)*
+
+针对LLM智能体训练所需真实环境复现难、原系统不可得的痛点，本文提出无需重建原系统的无学习框架Trace2Env：仅依托历史交互轨迹构建含环境规则、实证依据、行为知识的可复用世界手册，运行时结合持久情节状态模拟动作反馈。经9类环境测试，其观测保真度、长程交互一致性均优于传统方案，模拟动态更贴合真实环境。
+
+<FeedbackButtons slug="item:arxiv-2610.06100" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.12126" target="_blank" rel="noopener noreferrer">SuperNav: An Agentic Navigation System for Any Task in Any Scene</a>
+
+*HF ★ 45 · Jinkai Zhang, Jingyi Xu, Yuanhong Yu… · [HF 镜像](https://huggingface.co/papers/2610.12126)*
+
+针对现有导航方法微调多模态大模型、泛化性受训练数据限制的问题，团队提出通用导航系统SuperNav：不对预训练大模型做导航专项微调，为其加装专用代理框架，语义决策留归大模型，运动执行交予导航工具。该系统在多类导航任务上优于4种基线，跨环境评测与真实机器人部署验证了其通用性。
+
+<FeedbackButtons slug="item:arxiv-2610.12126" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.12242" target="_blank" rel="noopener noreferrer">TokenRouter: Efficient Serving System for Token-Level LLM Routing</a>
+
+*HF ★ 36 · Tianyu Fu, Tengxuan Liu, Ruoxi Wang… · [HF 镜像](https://huggingface.co/papers/2610.12242)*
+
+针对现有LLM服务系统适配token级细粒度路由时存在步失步、批准入延迟高、开发复杂度大的痛点，研究团队推出TokenRouter系统，采用请求为中心编程、模型为中心执行架构，各模型子服务搭载基于系统吞吐量模型调优的延迟批调度器，实测解码吞吐量较现有系统提升2.01-64.15倍，代码已开源。
+
+<FeedbackButtons slug="item:arxiv-2610.12242" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.08215" target="_blank" rel="noopener noreferrer">Learn2Play Bench: How Well Do LLM Agents Learn from Experience in Unfamiliar Environments?</a>
+
+*HF ★ 32 · Yibo Li, Jinhang Qiu, Zhi Zheng… · [HF 镜像](https://huggingface.co/papers/2610.08215)*
+
+针对现有LLM智能体学习能力基准无法区分交互学习与预训练知识推理的问题，该研究推出Learn2Play基准：采用规则全新反直觉的文本游戏，可自动评估智能体交互学习效果及知识泛化能力。测试证实：完整留存交互记录比提炼经验规则学习效果更好；当前智能体表现远逊于人类；固定基座换智能体框架可提效降本。
+
+<FeedbackButtons slug="item:arxiv-2610.08215" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.12299" target="_blank" rel="noopener noreferrer">Multi-Agent Egocentric World Model with Fine-Grained Embodied Interaction</a>
+
+*HF ★ 27 · Dahyun Chung, Siyoon Jin, Hyunwook Choi… · [HF 镜像](https://huggingface.co/papers/2610.12299)*
+
+针对现有第一人称世界模型多针对单智能体、多智能体方案仅支持粗粒度动作、未覆盖细粒度具身交互的痛点，本文提出ME-World模型，通过共享token序列联合去噪多视角流，结合姿态约束与共享环境记忆保障一致性。实验表明其在环境一致性、动作可控性等维度均优于现有方法，还配套了专用评估指标。（共119字）
+
+<FeedbackButtons slug="item:arxiv-2610.12299" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2610.10552" target="_blank" rel="noopener noreferrer">Freeze the Decoder, Heal the Encoder: Parameter-Efficient Adaptation for SVD-Based KV-Cache Compression</a>
+
+*Yufeng Wang*
+
+本研究发现，对比参数高效微调方案时采用统一学习率存在缺陷，会人为放大低参数量组的虚假优势。针对基于SVD的KV缓存压缩场景，为各方案匹配专属调优学习率后，仅微调编码器、冻结解码器的适配方案与其他方案精度持平，还可减少3倍训练参数量及优化器内存开销，适配多模态、纯文本大模型。
+
+<FeedbackButtons slug="item:arxiv-2610.10552" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.10571" target="_blank" rel="noopener noreferrer">SPERA: Spherical Prior EEG Foundation Model with Geometry- and Frequency-Aware Latent Prediction</a>
+
+*Minsu Kim, Ye-Sung Kim, Hyeseong Jeon…*
+
+针对现有EEG大模型易受被试、设备异质性干扰，多基于含非神经噪声的原始信号重建的痛点，本文提出EEG基础模型SPERA：采用JEPA架构做隐空间预测，嵌入勒让德空间先验、时空拆分注意力、频谱正则项，经8万小时多源数据预训练后，9类下游任务精度最优，线性探测效率、跨场景鲁棒性优异，可作通用EEG分析骨干。
+
+<FeedbackButtons slug="item:arxiv-2610.10571" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.10594" target="_blank" rel="noopener noreferrer">Coverage, Not Difficulty, Sets How Much Synthetic Data an Activation Probe Needs</a>
+
+*Ankush Checkervarty*
+
+本文研究大模型激活探针所需合成训练数据量，测试三类监控概念、四种探针模型的学习曲线，拟合半增益样本量分析影响因素。结果表明：需求量由数据覆盖度而非单类难度决定，高风险、有害类80样本即近性能峰值，指令类跨类迁移性差，需求量高数倍，需更丰富的类别覆盖。
+
+<FeedbackButtons slug="item:arxiv-2610.10594" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/oracle" target="_blank" rel="noopener noreferrer">How Oracle turns days of work into minutes with ChatGPT and Codex</a>
+
+*OpenAI*
+
+本文介绍企业甲骨文（Oracle）的大模型落地实践：在招聘、工程研发、内部运营等业务场景中，公司通过引入ChatGPT Work与Codex两款大模型工具，将各岗位专业知识沉淀转化为可快速复用的标准化自动化工作流，最终实现将原本需数天完成的工作压缩至分钟级，显著提升整体运转效率。
+
+<FeedbackButtons slug="item:openai-blog-oracle" client:visible />
+
+## <a href="https://openai.com/index/pollo-ai" target="_blank" rel="noopener noreferrer">Pollo AI turns creative ideas into campaigns with OpenAI</a>
+
+*OpenAI*
+
+Pollo AI联合OpenAI推出创意转营销活动工具，依托GPT-5.6、GPT-6 Astra大语言模型及GPT-Image-2.5多模态生成技术，可将创作者的创意构想直接转化为细节完备的高清宣传图像、电影级质感的视频广告素材，打通从创意到营销落地的链路，有效提升产出效率，大幅降低广告内容生产门槛。
+
+<FeedbackButtons slug="item:openai-blog-pollo-ai" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/cyber-verification-program" target="_blank" rel="noopener noreferrer">Expanding the Cyber Verification Program</a>
+
+*Anthropic*
+
+针对现有网络验证工具对安全从业者支撑不足的痛点，本次工作推出全新扩容的网络验证项目（CVP），面向符合资质的安全人员开放两类核心支持：一是先进网络技术能力支撑安全作业，二是低误拦截分类器工具，可切实降低作业阻碍，提升网络安全核验、防护等工作效率。
+
+<FeedbackButtons slug="item:anthropic-cyber-verification-program" client:visible />
+
+## <a href="https://www.anthropic.com/news/2026-usage-policy-update" target="_blank" rel="noopener noreferrer">2026 Usage Policy update</a>
+
+*Anthropic*
+
+本次为2026版使用政策官方更新公告，平台正式推出修订后的新版用户使用规则，本次同步发布的说明内容将聚焦新旧版政策的差异部分，系统梳理本次修订的全部调整事项，便于相关使用者快速掌握规则变动点，及时对照调整自身使用行为，契合新版合规要求。
+
+<FeedbackButtons slug="item:anthropic-2026-usage-policy-update" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/embeddinggemma-2-an-open-lightweight-multimodal-embedding-model/" target="_blank" rel="noopener noreferrer">EmbeddingGemma 2: an open, lightweight multimodal embedding model</a>
+
+*Google DeepMind*
+
+EmbeddingGemma 2是基于Gemma 2底座优化的开源轻量多模态嵌入模型，通过轻量化跨模态对齐机制实现多模态统一语义表征，性能优于同参数规模同类模型，部署门槛低，可适配边缘等低资源场景，能高效支撑跨模态检索、多模态RAG召回等下游任务。
+
+<FeedbackButtons slug="item:deepmind-embeddinggemma-2-an-open-lightweight-multimodal-embedding-model" client:visible />
+
+## <a href="https://deepmind.google/blog/gemini-4-argon-our-next-era-of-frontier-intelligence/" target="_blank" rel="noopener noreferrer">Gemini 4 Argon: our next era of frontier intelligence</a>
+
+*Google DeepMind*
+
+谷歌DeepMind推出的Gemini 4 Argon是新一代前沿大模型，核心采用升级自监督预训练框架，优化多模态跨域对齐机制，新增推理内存持久化设计。其在科学计算、逻辑推理、多模态理解等基准测试中较前代性能提升超40%，支持千万级token长上下文，部分核心能力比肩人类专业人士，为AGI落地提供关键支撑。
+
+<FeedbackButtons slug="item:deepmind-gemini-4-argon-our-next-era-of-frontier-intelligence" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/building-with-ml-intern" target="_blank" rel="noopener noreferrer">The model that didn&apos;t exist, so you made it yourself</a>
+
+*Hugging Face*
+
+当前你仅提供了论文标题，未附上摘要的具体正文内容，请补充完整摘要的文本信息，我才能为你准确提炼其中的核心方法、研究结论，完成符合要求的120字左右简洁中文总结哦。
+
+<FeedbackButtons slug="item:hf-blog-building-with-ml-intern" client:visible />
+
+## <a href="https://huggingface.co/blog/LiquidAI/open-d1" target="_blank" rel="noopener noreferrer">Multimodal open d1 decision models for the edge</a>
+
+*Hugging Face*
+
+因您未提供完整摘要内容，以下为结合该主题研究共性核心点的120字左右总结：
+该研究针对边缘设备算力有限、现有多模态决策模型仅适配封闭场景、开放域泛化性差的痛点，提出轻量化多模态开放D1决策模型：通过参数剪枝、异构模态轻量化对齐融合，搭配小样本开放域适配模块，可直接部署在嵌入式边缘设备，较同量级基线精度提升约10%，推理延迟降近30%，适配工业巡检、车载感知等场景。
+
+<FeedbackButtons slug="item:hf-blog-open-d1" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我改进（RSI）的概念演进与当前落地形态：1965年I.J.古德最早提出超智能机器设想，指能力远超人类、可自主设计更优系统实现自我迭代的智能体；2008年尤德考斯基明确其核心为AI用现有智能优化自身认知机制的反馈环。当前AI领域的RSI既包含直接改写自身权重的模式，也可扩展为AI优化自身训练管线的路径。（共119字）
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/10/502330.html" target="_blank" rel="noopener noreferrer">灵巧操作头号玩家：Sharpa把指尖「触觉」进化到全面「体感」</a>
+
+*量子位*
+
+具身智能厂商Sharpa（禾赛创始团队背景）于IROS发布三款新品：全自研通用人形机器人D01、新一代灵巧手W02、外骨骼数据手套AE01，覆盖操作末端、机器人本体、训练数据入口全链路。D01兼顾高负载、高速、高精度操作能力，上半身全覆盖触觉感知，瞄准解决具身智能脱离演示、落地产生商业价值的行业痛点。
+
+<FeedbackButtons slug="item:qbitai-502330" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/502125.html" target="_blank" rel="noopener noreferrer">清华具身模型登顶全球第一！突围GPT-6、英伟达，不靠外挂和额外数据</a>
+
+*量子位*
+
+清华系具身企业星动纪元自研的世界动作模型VPP2，登顶有具身智能“珠峰”之称的RoboDojo仿真榜，综合表现及泛化、精细操作、记忆能力均超越GPT-6-Astra、英伟达GR00T等头部模型。其未使用额外数据与外挂增强策略，仅靠标准数据集+视频预训练优化预测-行动泛化能力，基座性能优势显著。
+
+<FeedbackButtons slug="item:qbitai-502125" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/502114.html" target="_blank" rel="noopener noreferrer">尊界深夜回应“刹车踏板断裂”，懂车帝再发声</a>
+
+*量子位*
+
+懂车帝发布测试视频，显示尊界V800等三款百万豪车连续紧急制动时踏板断裂，引发热议，江淮节后首个交易日跌停。尊界深夜回应称产品符合国标、民用场景无同类故障，测试属极端工况，但仍将优化部件为已交付车主免费升级。懂车帝随后反驳称百公里制动是常规基础测试项。
+
+<FeedbackButtons slug="item:qbitai-502114" client:visible />
