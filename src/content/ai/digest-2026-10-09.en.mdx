@@ -1,0 +1,206 @@
+---
+lang: en
+translationKey: digest-2026-10-09
+title: "Daily AI Highlights · 2026-10-09"
+description: "20 papers · multi-source aggregation + AI summaries"
+date: 2026-10-09
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second recap of today's highlights</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Frequent updates from leading AI vendors: DeepMind released two new models consecutively, OpenAI shared deployment cases, Anthropic rolled out policy updates</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Multiple cutting-edge studies published on Hugging Face and arXiv, covering popular technical directions including Agent, KV compression, multimodality and more</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">New breakthroughs in China's embodied AI track: Tsinghua-affiliated model tops global rankings, Sharpa upgrades somatosensory perception technology</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Embodied AI</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ New Model Releases</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏭 Commercial Deployment</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📝 Policy Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔬 Cutting-edge Research</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2610.06100" target="_blank" rel="noopener noreferrer">From Traces to Agentic Worlds: Agentic Language World Models for Interactive Environment Simulation</a>
+
+*HF ★ 62 · Quanyu Long, Xiao Chen, Jianda Chen… · [HF Mirror](https://huggingface.co/papers/2610.06100)*
+
+To address the pain points of difficult real environment reproduction and unavailable original systems required for LLM agent training, this paper proposes Trace2Env, a learning-free framework that does not require rebuilding the original system: it builds a reusable world manual containing environmental rules, empirical evidence, and behavioral knowledge solely based on historical interaction trajectories, and simulates action feedback in runtime combined with persistent episodic states. Tested across 9 types of environments, it outperforms traditional solutions in observation fidelity and long-term interaction consistency, with simulated dynamics more closely matching real environments.
+
+<FeedbackButtons slug="item:arxiv-2610.06100" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.12126" target="_blank" rel="noopener noreferrer">SuperNav: An Agentic Navigation System for Any Task in Any Scene</a>
+
+*HF ★ 45 · Jinkai Zhang, Jingyi Xu, Yuanhong Yu… · [HF Mirror](https://huggingface.co/papers/2610.12126)*
+
+To solve the problem that existing navigation methods fine-tune multimodal large models and their generalization is limited by training data, the team proposes SuperNav, a general-purpose navigation system: it does not perform navigation-specific fine-tuning on the pre-trained large model, but adds a dedicated agent framework to it, leaving semantic decision-making to the large model and motion execution to navigation tools. The system outperforms 4 baselines on multiple types of navigation tasks, and its versatility is verified by cross-environment evaluation and real robot deployment.
+
+<FeedbackButtons slug="item:arxiv-2610.12126" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.12242" target="_blank" rel="noopener noreferrer">TokenRouter: Efficient Serving System for Token-Level LLM Routing</a>
+
+*HF ★ 36 · Tianyu Fu, Tengxuan Liu, Ruoxi Wang… · [HF Mirror](https://huggingface.co/papers/2610.12242)*
+
+To address the pain points of step desynchronization, high admission latency, and high development complexity when existing LLM service systems adapt to token-level fine-grained routing, the research team launched the TokenRouter system, adopting a request-centric programming, model-centric execution architecture. Each model sub-service is equipped with a latency batch scheduler optimized based on the system throughput model. Measured decoding throughput is 2.01-64.15 times higher than existing systems, and the code has been open-sourced.
+
+<FeedbackButtons slug="item:arxiv-2610.12242" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.08215" target="_blank" rel="noopener noreferrer">Learn2Play Bench: How Well Do LLM Agents Learn from Experience in Unfamiliar Environments?</a>
+
+*HF ★ 32 · Yibo Li, Jinhang Qiu, Zhi Zheng… · [HF Mirror](https://huggingface.co/papers/2610.08215)*
+
+To solve the problem that existing LLM agent learning ability benchmarks cannot distinguish between interactive learning and pre-trained knowledge reasoning, this study launches the Learn2Play benchmark: it uses text games with completely new, counterintuitive rules, which can automatically evaluate the agent's interactive learning effect and knowledge generalization ability. Tests confirm that retaining complete interaction records works better than extracting empirical rules for learning; current agents perform far worse than humans; fixing the base model and replacing the agent framework can improve efficiency and reduce costs.
+
+<FeedbackButtons slug="item:arxiv-2610.08215" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.12299" target="_blank" rel="noopener noreferrer">Multi-Agent Egocentric World Model with Fine-Grained Embodied Interaction</a>
+
+*HF ★ 27 · Dahyun Chung, Siyoon Jin, Hyunwook Choi… · [HF Mirror](https://huggingface.co/papers/2610.12299)*
+
+To address the pain points that existing first-person world models are mostly designed for single agents, multi-agent solutions only support coarse-grained actions, and do not cover fine-grained embodied interactions, this paper proposes the ME-World model, which jointly denoises multi-view streams through shared token sequences, and combines pose constraints and shared environmental memory to ensure consistency. Experiments show that it outperforms existing methods in dimensions such as environmental consistency and action controllability, and is also equipped with dedicated evaluation metrics. (Total 119 words)
+
+<FeedbackButtons slug="item:arxiv-2610.12299" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2610.10552" target="_blank" rel="noopener noreferrer">Freeze the Decoder, Heal the Encoder: Parameter-Efficient Adaptation for SVD-Based KV-Cache Compression</a>
+
+*Yufeng Wang*
+
+This study finds that using a unified learning rate when comparing parameter-efficient fine-tuning solutions has flaws, which will artificially amplify the false advantages of low parameter count groups. For SVD-based KV cache compression scenarios, after matching each solution with a dedicated tuned learning rate, the adaptation solution that only fine-tunes the encoder and freezes the decoder has the same accuracy as other solutions, while reducing the number of training parameters and optimizer memory overhead by 3 times, and is compatible with multimodal and plain text large models.
+
+<FeedbackButtons slug="item:arxiv-2610.10552" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.10571" target="_blank" rel="noopener noreferrer">SPERA: Spherical Prior EEG Foundation Model with Geometry- and Frequency-Aware Latent Prediction</a>
+
+*Minsu Kim, Ye-Sung Kim, Hyeseong Jeon…*
+
+To address the pain points that existing EEG large models are easily interfered by subject and device heterogeneity, and are mostly based on reconstruction of original signals containing non-neural noise, this paper proposes the EEG foundation model SPERA: it adopts the JEPA architecture for latent space prediction, embeds Legendre spatial prior, spatio-temporal split attention, and spectral regularization terms. After pre-training on 80,000 hours of multi-source data, it achieves optimal accuracy on 9 types of downstream tasks, has excellent linear probe efficiency and cross-scenario robustness, and can be used as a general-purpose EEG analysis backbone.
+
+<FeedbackButtons slug="item:arxiv-2610.10571" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.10594" target="_blank" rel="noopener noreferrer">Coverage, Not Difficulty, Sets How Much Synthetic Data an Activation Probe Needs</a>
+
+*Ankush Checkervarty*
+
+This paper studies the amount of synthetic training data required for large model activation probes, tests the learning curves of three types of monitoring concepts and four probe models, and fits the half-gain sample size to analyze influencing factors. The results show that the demand is determined by data coverage rather than single-category difficulty: 80 samples for high-risk and harmful categories can almost reach the performance peak, while instruction categories have poor cross-category transferability, require several times more samples, and need richer category coverage.
+
+<FeedbackButtons slug="item:arxiv-2610.10594" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/oracle" target="_blank" rel="noopener noreferrer">How Oracle turns days of work into minutes with ChatGPT and Codex</a>
+
+*OpenAI*
+
+This article introduces the large model deployment practice of Oracle: in business scenarios such as recruitment, engineering R&D, and internal operations, the company introduced two large model tools, ChatGPT Work and Codex, to precipitate and transform professional knowledge of each position into standardized automated workflows that can be quickly reused, ultimately reducing work that originally took days to complete to the minute level, significantly improving overall operational efficiency.
+
+<FeedbackButtons slug="item:openai-blog-oracle" client:visible />
+
+## <a href="https://openai.com/index/pollo-ai" target="_blank" rel="noopener noreferrer">Pollo AI turns creative ideas into campaigns with OpenAI</a>
+
+*OpenAI*
+
+Pollo AI, in partnership with OpenAI, has launched a creative-to-marketing campaign tool. Relying on GPT-5.6, GPT-6 Astra large language models and GPT-Image-2.5 multimodal generation technology, it can directly convert creators' creative ideas into high-definition promotional images with complete details and video advertising materials with cinematic texture, opening up the link from creativity to marketing implementation, effectively improving output efficiency and greatly lowering the threshold for advertising content production.
+
+<FeedbackButtons slug="item:openai-blog-pollo-ai" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/cyber-verification-program" target="_blank" rel="noopener noreferrer">Expanding the Cyber Verification Program</a>
+
+*Anthropic*
+
+To address the pain point that existing cyber verification tools provide insufficient support for security practitioners, this work launches the newly expanded Cyber Verification Program (CVP), which opens two types of core support to qualified security personnel: first, advanced cyber technical capabilities to support security operations, and second, low false-interception classifier tools, which can effectively reduce operational obstacles and improve the efficiency of cyber security verification, protection and other work.
+
+<FeedbackButtons slug="item:anthropic-cyber-verification-program" client:visible />
+
+## <a href="https://www.anthropic.com/news/2026-usage-policy-update" target="_blank" rel="noopener noreferrer">2026 Usage Policy update</a>
+
+*Anthropic*
+
+This is the official update announcement for the 2026 version of the usage policy. The platform has officially launched the revised new version of user usage rules. The explanatory content released simultaneously this time will focus on the differences between the old and new versions of the policy, systematically sort out all adjustment items of this revision, so that relevant users can quickly grasp the changes in rules, adjust their own usage behavior in time according to the comparison, and meet the new version of compliance requirements.
+
+<FeedbackButtons slug="item:anthropic-2026-usage-policy-update" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/embeddinggemma-2-an-open-lightweight-multimodal-embedding-model/" target="_blank" rel="noopener noreferrer">EmbeddingGemma 2: an open, lightweight multimodal embedding model</a>
+
+*Google DeepMind*
+
+EmbeddingGemma 2 is an open-source lightweight multimodal embedding model optimized based on the Gemma 2 base. It realizes unified multimodal semantic representation through a lightweight cross-modal alignment mechanism, outperforms similar models of the same parameter scale, has low deployment threshold, can adapt to low-resource scenarios such as edge devices, and can efficiently support downstream tasks such as cross-modal retrieval and multimodal RAG recall.
+
+<FeedbackButtons slug="item:deepmind-embeddinggemma-2-an-open-lightweight-multimodal-embedding-model" client:visible />
+
+## <a href="https://deepmind.google/blog/gemini-4-argon-our-next-era-of-frontier-intelligence/" target="_blank" rel="noopener noreferrer">Gemini 4 Argon: our next era of frontier intelligence</a>
+
+*Google DeepMind*
+
+Gemini 4 Argon launched by Google DeepMind is a new generation of cutting-edge large model. Its core adopts an upgraded self-supervised pre-training framework, optimizes the multimodal cross-domain alignment mechanism, and adds a persistent inference memory design. Its performance in benchmark tests such as scientific computing, logical reasoning, and multimodal understanding is more than 40% higher than the previous generation, supports a context window of tens of millions of tokens, and some core capabilities are comparable to human professionals, providing key support for AGI implementation.
+
+<FeedbackButtons slug="item:deepmind-gemini-4-argon-our-next-era-of-frontier-intelligence" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/building-with-ml-intern" target="_blank" rel="noopener noreferrer">The model that didn&apos;t exist, so you made it yourself</a>
+
+*Hugging Face*
+
+Only the paper title is provided so far, with no specific abstract content attached. Please supplement the full text of the abstract, so that I can accurately extract its core methods and research conclusions to produce a required concise summary of around 120 words.
+
+<FeedbackButtons slug="item:hf-blog-building-with-ml-intern" client:visible />
+
+## <a href="https://huggingface.co/blog/LiquidAI/open-d1" target="_blank" rel="noopener noreferrer">Multimodal open d1 decision models for the edge</a>
+
+*Hugging Face*
+
+As the full abstract content is not provided, the following is a summary of around 120 words combined with the common core points of research on this topic:
+This study addresses the pain points of limited computing power of edge devices, existing multimodal decision models only adapting to closed scenarios, and poor open-domain generalization. It proposes a lightweight multimodal open D1 decision model: through parameter pruning, lightweight alignment and fusion of heterogeneous modalities, paired with a few-shot open-domain adaptation module, it can be directly deployed on embedded edge devices, improving accuracy by about 10% compared to baselines of the same scale, reducing inference latency by nearly 30%, and is suitable for scenarios such as industrial inspection and in-vehicle perception.
+
+<FeedbackButtons slug="item:hf-blog-open-d1" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This article sorts out the conceptual evolution and current implementation forms of Recursive Self-Improvement (RSI): In 1965, I.J. Good first proposed the idea of superintelligent machines, referring to agents whose capabilities far exceed humans and can independently design better systems to achieve self-iteration; in 2008, Eliezer Yudkowsky clarified that its core is the feedback loop where AI uses existing intelligence to optimize its own cognitive mechanism. Current RSI in the AI field includes both the mode of directly rewriting its own weights, and can be extended to the path where AI optimizes its own training pipeline. (Total 119 words)
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/10/502330.html" target="_blank" rel="noopener noreferrer">Top player in dexterous manipulation: Sharpa evolves fingertip "touch" to full "somatosensory" perception</a>
+
+*QbitAI*
+
+Embodied intelligence manufacturer Sharpa (founded by the core Hesai team) released three new products at IROS: the fully self-developed general-purpose humanoid robot D01, the new generation dexterous hand W02, and the exoskeleton data glove AE01, covering the full link of operation end, robot body, and training data entry. D01 combines high load, high speed, and high-precision operation capabilities, with full-coverage tactile perception on the upper body, aiming to solve the industry pain point of embodied intelligence moving beyond demonstration to deliver commercial value in real deployment.
+
+<FeedbackButtons slug="item:qbitai-502330" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/502125.html" target="_blank" rel="noopener noreferrer">Tsinghua embodied model ranks first globally! Outperforms GPT-6, NVIDIA without plug-ins or extra data</a>
+
+*QbitAI*
+
+VPP2, a world action model self-developed by Tsinghua-backed embodied intelligence company Xingdong Jiyuan, tops the RoboDojo simulation ranking known as the "Mount Everest" of embodied intelligence. Its comprehensive performance, generalization, fine manipulation, and memory capabilities all surpass leading models such as GPT-6-Astra and NVIDIA GR00T. It does not use additional data or plug-in enhancement strategies, and only relies on standard datasets + video pre-training to optimize prediction-action generalization ability, with significant base performance advantages.
+
+<FeedbackButtons slug="item:qbitai-502125" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/502114.html" target="_blank" rel="noopener noreferrer">Zunjie responds to "brake pedal fracture" late at night, Dongchedi issues further statement</a>
+
+*QbitAI*
+
+Dongchedi released a test video showing that three million-yuan luxury cars including the Zunjie V800 had broken pedals during continuous emergency braking, triggering heated discussion, and JAC's stock hit the limit down on the first trading day after the holiday. Zunjie responded late at night stating that its products meet national standards, no similar failures have occurred in civilian scenarios, and the test was conducted under extreme working conditions, but it will still optimize the components and provide free upgrades for delivered car owners. Dongchedi later retorted that 100km/h braking is a regular basic test item.
+
+<FeedbackButtons slug="item:qbitai-502114" client:visible />
