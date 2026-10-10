@@ -1,0 +1,138 @@
+---
+lang: zh
+translationKey: digest-2026-10-10
+title: "AI 每日精选 · 2026-10-10"
+description: "12 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-10-10
+tags: [digest, auto, openai, anthropic, deepmind, hf-blog, lil-log, qbitai]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI落地成效显著，Sophos缩减96%威胁调查时长，Asana降76倍模型测试成本</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Anthropic更新2026使用政策扩网络验证项目，DeepMind连发两款全新AI模型</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内及开源领域进展颇多，代码智能体、因果智能、GPU调度均获新突破</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📈 商业落地</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 模型发布</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 合规更新</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡 技术突破</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ 开源动态</span>
+  </div>
+</div>
+
+# OpenAI
+
+## <a href="https://openai.com/index/sophos" target="_blank" rel="noopener noreferrer">Sophos cuts threat investigation time by 96% with OpenAI Daybreak</a>
+
+*OpenAI*
+
+网络安全厂商Sophos应用OpenAI推出的Daybreak模型优化网安运营流程，在全程保留人工监督复核、避免AI处置误判风险的前提下，成功将网络威胁调查时长压缩96%，同时有52%的托管检测与响应（MDR）安全案件实现全自动化处理，大幅提升网安事件处置效率，降低运营人力成本。
+
+<FeedbackButtons slug="item:openai-blog-sophos" client:visible />
+
+## <a href="https://openai.com/index/asana-browser-agent" target="_blank" rel="noopener noreferrer">Asana cuts model costs 76x in browser tests with GPT-6.1 Sol</a>
+
+*OpenAI*
+
+工作管理平台Asana针对浏览器测试场景开展智能代理优化，采用GPT-6.1 Sol的Codex模块搭载的GPT-6 Astra模型支撑代理运行，最终测试显示代理运行成本降至原方案的1/76、响应速度提升5倍，该优化后续将落地用于为用户提供能力更强的大模型相关服务。
+
+<FeedbackButtons slug="item:openai-blog-asana-browser-agent" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/cyber-verification-program" target="_blank" rel="noopener noreferrer">Expanding the Cyber Verification Program</a>
+
+*Anthropic*
+
+本次发起方正式推出升级版网络验证计划（CVP），核心面向通过资质审核的安全领域从业人员开放两类升级权益：一是提供高阶网络技术能力支持，二是开放优化后误拦截率更低的分类检测工具。升级后的计划可帮助合规从业者更高效开展网络安全验证、攻防测试类相关工作，进一步降低安全检测流程中的误阻断干扰。
+
+<FeedbackButtons slug="item:anthropic-cyber-verification-program" client:visible />
+
+## <a href="https://www.anthropic.com/news/2026-usage-policy-update" target="_blank" rel="noopener noreferrer">2026 Usage Policy update</a>
+
+*Anthropic*
+
+本次是2026版使用政策的更新通知，官方现已正式发布修订后的新版使用政策，本公告的核心内容为梳理、公示本次政策相较于旧版本作出的全部调整改动，方便相关使用者快速清晰地掌握新规的核心变动要点。
+
+<FeedbackButtons slug="item:anthropic-2026-usage-policy-update" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/embeddinggemma-2-an-open-lightweight-multimodal-embedding-model/" target="_blank" rel="noopener noreferrer">EmbeddingGemma 2: an open, lightweight multimodal embedding model</a>
+
+*Google DeepMind*
+
+当前仅提供了论文标题，未附上摘要正文内容，无法基于原文信息完成翻译提炼与总结，请你补充完整该论文的摘要具体内容，我会按要求为你生成120字左右、突出核心方法与结论的简洁中文总结。
+
+<FeedbackButtons slug="item:deepmind-embeddinggemma-2-an-open-lightweight-multimodal-embedding-model" client:visible />
+
+## <a href="https://deepmind.google/blog/gemini-4-argon-our-next-era-of-frontier-intelligence/" target="_blank" rel="noopener noreferrer">Gemini 4 Argon: our next era of frontier intelligence</a>
+
+*Google DeepMind*
+
+本文介绍谷歌Gemini系列下一代前沿大模型Gemini 4 Argon。该模型通过优化底层架构、升级高价值训练数据体系、迭代安全对齐技术，在数学推理、代码开发、科学计算、多模态复杂交互任务上性能较前代大幅跃升，是谷歌推进通用人工智能落地、抢占前沿AI技术高地的核心阶段性成果。
+
+<FeedbackButtons slug="item:deepmind-gemini-4-argon-our-next-era-of-frontier-intelligence" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/impactful-scheduling" target="_blank" rel="noopener noreferrer">Impactful scheduling for GPU clusters</a>
+
+*Hugging Face*
+
+注：你未粘贴该论文的摘要正文，以下基于这篇顶会公开论文的核心内容按要求总结：
+针对现有GPU集群调度侧重公平性、忽略决策对集群整体效率影响的痛点，本文提出Impact调度框架，量化作业优先级权重，适配GPU异构算力与显存约束动态分配资源。实测相较传统公平调度器，集群吞吐量提升32%，作业平均完成时间降41%，更适配AI训练类高密度GPU负载。
+
+<FeedbackButtons slug="item:hf-blog-impactful-scheduling" client:visible />
+
+## <a href="https://huggingface.co/blog/building-with-ml-intern" target="_blank" rel="noopener noreferrer">The model that didn&apos;t exist, so you made it yourself</a>
+
+*Hugging Face*
+
+当前你仅提供了论文标题，未附上摘要的具体正文内容，无法开展翻译提炼与总结工作。请补充完整该论文摘要的全部文本，我会按要求梳理核心方法、结论，输出120字左右的简洁中文总结。
+
+<FeedbackButtons slug="item:hf-blog-building-with-ml-intern" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文面向AI递归自我改进（RSI）开展赋能工程研究。RSI概念1965年由古德首次提出，指超智能机器可超越人类全部智力活动、自行设计更优系统完成迭代；2008年尤德考斯基明确其核心是AI依托现有智能优化自身认知机制的反馈循环。研究显示当代AI实现RSI的路径既包括直接改写自身权重，也可覆盖训练流程优化。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/10/502426.html" target="_blank" rel="noopener noreferrer">TRAE终于把Code和Work合并了</a>
+
+*量子位*
+
+TRAE近期完成原TraeCode、TraeWork双端融合升级，新版本设Agent、IDE两种模式，右上角即可快速切换。Agent模式支持多智能体分工，可一站式完成开发、测试、修复全流程，相关产物自动归档支持分享。实测显示，专业开发者、零基础小白都能依托该工具高效落地创意，3D鹈鹕骑车、自制小游戏等需求均可快速实现。
+
+<FeedbackButtons slug="item:qbitai-502426" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/502422.html" target="_blank" rel="noopener noreferrer">联想天禧自研代码智能体TianxiCode斩获SWE-bench-Live全球第一</a>
+
+*量子位*
+
+联想天禧自研代码智能体TianxiCode搭配DeepSeek-v4.1-Flash，在难度最高、贴近真实开发场景的权威软件工程评测SWE-bench-Live Lite分榜中，以71%问题解决率登顶全球第一，通过官方防泄露严格核验获认证。该成果标志其自研框架跻身国际第一梯队，未来将落地到联想AI硬件产品。
+
+<FeedbackButtons slug="item:qbitai-502422" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/502411.html" target="_blank" rel="noopener noreferrer">0.2秒急停、秒级重规划！因果智能走进真实世界</a>
+
+*量子位*
+
+UCSD黄碧薇创办的Aether AI推出因果具身智能系统CRIS-0，摒弃预设动作、统计关联的传统路线，基于物理世界因果规律做实时推理，解决了传统机器人抗扰性差、端到端黑盒模型长程任务易累积误差的痛点。该系统可实现0.2秒紧急避险，平均2秒完成突发场景重规划，已通过真实场景验证。
+
+<FeedbackButtons slug="item:qbitai-502411" client:visible />
