@@ -1,0 +1,137 @@
+---
+lang: en
+translationKey: digest-2026-10-11
+title: "AI Daily Picks · 2026-10-11"
+description: "12 papers · multi-source aggregation + AI summary"
+date: 2026-10-11
+tags: [digest, auto, openai, anthropic, deepmind, hf-blog, lil-log, qbitai]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI and DeepMind have successively released new models and implementation results, while Anthropic has updated its usage policy and expanded its cyber verification program</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face has launched GPU cluster scheduling technology, DeepSeek has rolled out a community version Bot plugin, and Siemens is advancing industrial AI deployment</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">AI startup Jev's valuation rose to $7.5 billion in just 24 days, becoming Silicon Valley's most high-profile underdog startup case this year</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Big Tech Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 New Model Releases</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💻 Technical Tools</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏭 Industrial AI</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🚀 Startup & VC Updates</span>
+  </div>
+</div>
+
+# OpenAI
+
+## <a href="https://openai.com/index/sophos" target="_blank" rel="noopener noreferrer">Sophos cuts threat investigation time by 96% with OpenAI Daybreak</a>
+
+*OpenAI*
+
+(LLM summarization failed, please manually supplement content later)
+
+<FeedbackButtons slug="item:openai-blog-sophos" client:visible />
+
+## <a href="https://openai.com/index/asana-browser-agent" target="_blank" rel="noopener noreferrer">Asana cuts model costs 76x in browser tests with GPT-6.1 Sol</a>
+
+*OpenAI*
+
+Office collaboration vendor Asana carried out performance optimization for browser-side agents, adopting the technical solution of calling GPT-6 Astra (the GPT-6.1 Sol mentioned here) in the Codex module. Actual tests delivered significant cost reduction and efficiency improvement: model usage cost is 76 times lower than the original solution, and running speed is 5 times faster. The company can subsequently rely on this optimization result to provide customers with more capable LLM services.
+
+<FeedbackButtons slug="item:openai-blog-asana-browser-agent" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/cyber-verification-program" target="_blank" rel="noopener noreferrer">Expanding the Cyber Verification Program</a>
+
+*Anthropic*
+
+This expanded and upgraded Cyber Verification Program (CVP) is selectively open to qualified security professionals. The program provides two core types of resources for compliance practitioners: first, access to advanced cyber technical capabilities, and second, an optimized classifier with a lower false interception rate, which can effectively reduce system blocking interference during legitimate security research and support related work.
+
+<FeedbackButtons slug="item:anthropic-cyber-verification-program" client:visible />
+
+## <a href="https://www.anthropic.com/news/2026-usage-policy-update" target="_blank" rel="noopener noreferrer">2026 Usage Policy update</a>
+
+*Anthropic*
+
+This is the announcement of the 2026 usage policy update. The official has officially launched the new version of the usage policy, and this announcement is intended to sort out and summarize all adjustments made in the new policy compared to the previous old version, so that entities subject to the policy can quickly understand the key points of the rule changes. The specific complete policy terms are subject to the full version of the new policy text officially released.
+
+<FeedbackButtons slug="item:anthropic-2026-usage-policy-update" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/embeddinggemma-2-an-open-lightweight-multimodal-embedding-model/" target="_blank" rel="noopener noreferrer">EmbeddingGemma 2: an open, lightweight multimodal embedding model</a>
+
+*Google DeepMind*
+
+EmbeddingGemma 2 is an open-source lightweight multimodal embedding model launched by Google, with a far smaller parameter scale than mainstream models of the same type. On benchmark tasks such as image-text retrieval, cross-modal semantic matching, and multimodal classification, its performance matches or even outperforms large-parameter competing products. It supports end-side deployment, can adapt to multimodal retrieval and content understanding needs in low-resource scenarios, and greatly lowers the application threshold of multimodal embedding technology.
+
+<FeedbackButtons slug="item:deepmind-embeddinggemma-2-an-open-lightweight-multimodal-embedding-model" client:visible />
+
+## <a href="https://deepmind.google/blog/gemini-4-argon-our-next-era-of-frontier-intelligence/" target="_blank" rel="noopener noreferrer">Gemini 4 Argon: our next era of frontier intelligence</a>
+
+*Google DeepMind*
+
+Currently, only the title of the paper *Gemini 4 Argon: our next era of frontier intelligence* is provided, with no full English abstract attached, so it is not possible to extract, translate, and organize its core methods and conclusions for a summary. Please supplement the full abstract text of this paper, and we will output a concise 120-word English summary as required.
+
+<FeedbackButtons slug="item:deepmind-gemini-4-argon-our-next-era-of-frontier-intelligence" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/impactful-scheduling" target="_blank" rel="noopener noreferrer">Impactful scheduling for GPU clusters</a>
+
+*Hugging Face*
+
+This article addresses the issues of traditional GPU cluster scheduling that fails to accurately match task computing power requirements and does not distinguish business priorities, leading to resource waste and difficulty guaranteeing SLA for high-priority tasks. It proposes the Impactful scheduling strategy that perceives task business value and computing power profiles: pre-model the resource requirements and business weights of tasks, dynamically prioritize scheduling tasks with high adaptability and high impact. Actual tests show that compared with baseline scheduling, GPU utilization increased by 24%, and the time consumption of high-priority tasks was reduced by 32%, balancing resource efficiency and business priorities.
+
+<FeedbackButtons slug="item:hf-blog-impactful-scheduling" client:visible />
+
+## <a href="https://huggingface.co/blog/building-with-ml-intern" target="_blank" rel="noopener noreferrer">The model that didn&apos;t exist, so you made it yourself</a>
+
+*Hugging Face*
+
+Currently, only the title information of this paper is obtained, and the core abstract content is not fully pasted, so it is impossible to accurately sort out the core methods, experimental results and core conclusions of the paper. Please supplement the full text of this abstract, and we will extract a concise 120-word English summary highlighting methods and conclusions as required.
+
+<FeedbackButtons slug="item:hf-blog-building-with-ml-intern" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This article sorts out the conceptual context of Recursive Self-Improvement (RSI): In 1965, scholar I.J. Good first proposed the relevant concept, defining that a superintelligent system can surpass all human intellectual activities and independently design better machines to achieve iterative upgrades; in 2008, Eliezer Yudkowsky clarified that its core is the feedback loop where AI relies on existing intelligence to optimize its own cognitive architecture. Current RSI in the AI field can be manifested in two paths: directly rewriting its own weights, or optimizing the training process in a broad sense.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/10/502544.html" target="_blank" rel="noopener noreferrer">DeepSeek Bot is here! Community version, usable with a plugin on DSH</a>
+
+*QbitAI*
+
+This is an unofficial DeepSeek-Bot plugin launched by community developers, built based on DeepSeek Harness, and adopts a plugin-based architecture to ensure scalability. It supports customizing the identities of multiple Bots and connected models, comes with a long-term memory function, and allows setting a supervisor Bot to coordinate and schedule other Bots, greatly reducing multi-Agent management costs and token consumption. It will support access to local Agents in the future, and has received more than 250 stars less than 1 day after launch.
+
+<FeedbackButtons slug="item:qbitai-502544" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/502541.html" target="_blank" rel="noopener noreferrer">Siemens to appear at 2026 Industrial Fair: promote accelerated deployment of physical AI with software-hardware collaborative industrial full-stack capabilities</a>
+
+*QbitAI*
+
+Siemens will appear at the 26th Industrial Fair 2026, where it will fully display the end-to-end full-process solution for humanoid robots from design to industrial application for the first time, simultaneously launch more than 20 new products, and open 6 types of embodied intelligence factory entry scenarios. Relying on its software-hardware collaborative industrial full-stack capabilities, integrating technology and industry accumulation, it promotes the deployment of physical AI to the production frontline, helps customers improve efficiency and resilience, and drives intelligent growth through the integration of digital and physical worlds.
+
+<FeedbackButtons slug="item:qbitai-502541" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/502492.html" target="_blank" rel="noopener noreferrer">24 days! Jev's valuation rose to $7.5 billion, probably Silicon Valley's best underdog story of the year</a>
+
+*QbitAI*
+
+Founded in 2024, San Francisco startup TypeSafe AI previously stayed under the radar in Silicon Valley. Its launched AI model Jev cuts out the generation function of traditional large models and only focuses on binary decision-making, with extremely low cost and token pricing far below the industry level. Only 24 days after launch, the company completed an $870 million Series A financing, with a post-money valuation of $7.5 billion, receiving heavy investment from top capital firms such as a16z and Sequoia.
+
+<FeedbackButtons slug="item:qbitai-502492" client:visible />
