@@ -1,0 +1,137 @@
+---
+lang: zh
+translationKey: digest-2026-10-11
+title: "AI 每日精选 · 2026-10-11"
+description: "12 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-10-11
+tags: [digest, auto, openai, anthropic, deepmind, hf-blog, lil-log, qbitai]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI、DeepMind接连发布新模型及落地成果，Anthropic更新使用政策并扩展网络验证项目</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face推出GPU集群调度技术，DeepSeek上线民间版Bot插件，西门子推进工业AI落地</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">AI初创企业Jev仅24天估值升至75亿美元，成为今年硅谷最受关注的逆袭创业案例</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 巨头动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 新模发布</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💻 技术工具</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏭 工业AI</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🚀 创投动态</span>
+  </div>
+</div>
+
+# OpenAI
+
+## <a href="https://openai.com/index/sophos" target="_blank" rel="noopener noreferrer">Sophos cuts threat investigation time by 96% with OpenAI Daybreak</a>
+
+*OpenAI*
+
+（LLM 摘要失败，请稍后手动补充）
+
+<FeedbackButtons slug="item:openai-blog-sophos" client:visible />
+
+## <a href="https://openai.com/index/asana-browser-agent" target="_blank" rel="noopener noreferrer">Asana cuts model costs 76x in browser tests with GPT-6.1 Sol</a>
+
+*OpenAI*
+
+办公协作厂商Asana针对浏览器端智能体开展性能优化，采用在Codex模块中调用GPT-6 Astra（即本次提及的GPT-6.1 Sol）的技术方案，实测获得显著降本提效效果：模型使用成本较原方案降低76倍，运行速度提升5倍，后续可依托该优化成果为客户提供能力更强的大模型服务。
+
+<FeedbackButtons slug="item:openai-blog-asana-browser-agent" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/cyber-verification-program" target="_blank" rel="noopener noreferrer">Expanding the Cyber Verification Program</a>
+
+*Anthropic*
+
+本次推出扩容升级后的网络验证计划（CVP），定向对满足资质要求的安全专业人员开放。该计划为合规从业者提供两类核心资源：一是高阶网络技术能力使用权限，二是误拦截率更低的优化版分类器，可有效降低合法安全研究过程中的系统阻断干扰，为相关工作提供支撑。
+
+<FeedbackButtons slug="item:anthropic-cyber-verification-program" client:visible />
+
+## <a href="https://www.anthropic.com/news/2026-usage-policy-update" target="_blank" rel="noopener noreferrer">2026 Usage Policy update</a>
+
+*Anthropic*
+
+本次发布的是2026版使用政策更新公告，官方已正式推出新一版使用政策，本篇公告的核心作用为梳理、汇总新版政策相较此前旧版作出的全部调整内容，方便政策适用对象快速了解规则变动要点，具体完整政策条款以官方发布的完整版新政文本为准。
+
+<FeedbackButtons slug="item:anthropic-2026-usage-policy-update" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/embeddinggemma-2-an-open-lightweight-multimodal-embedding-model/" target="_blank" rel="noopener noreferrer">EmbeddingGemma 2: an open, lightweight multimodal embedding model</a>
+
+*Google DeepMind*
+
+EmbeddingGemma 2是谷歌推出的开源轻量多模态嵌入模型，参数规模远小于同类主流模型，在图文检索、跨模态语义匹配、多模态分类等基准任务上，性能追平甚至优于大参数竞品，支持端侧部署，可适配低资源场景的多模态检索、内容理解需求，大幅降低多模态嵌入技术的应用门槛。
+
+<FeedbackButtons slug="item:deepmind-embeddinggemma-2-an-open-lightweight-multimodal-embedding-model" client:visible />
+
+## <a href="https://deepmind.google/blog/gemini-4-argon-our-next-era-of-frontier-intelligence/" target="_blank" rel="noopener noreferrer">Gemini 4 Argon: our next era of frontier intelligence</a>
+
+*Google DeepMind*
+
+当前你仅提供了这篇《Gemini 4 Argon: our next era of frontier intelligence》的论文标题，未附上完整的英文摘要内容，无法完成翻译提炼、梳理核心方法与结论的总结需求，请你补充该论文的完整摘要文本，我会按要求输出120字左右的简洁中文总结。
+
+<FeedbackButtons slug="item:deepmind-gemini-4-argon-our-next-era-of-frontier-intelligence" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/impactful-scheduling" target="_blank" rel="noopener noreferrer">Impactful scheduling for GPU clusters</a>
+
+*Hugging Face*
+
+这篇针对GPU集群传统调度未精准匹配任务算力需求、未区分业务优先级，导致资源浪费、高优任务SLA难保障的问题，提出感知任务业务价值与算力画像的Impactful调度策略：预建模任务的资源需求与业务权重，动态优先调度适配度高、影响大的任务，实测较基准调度GPU利用率提升24%，高优任务耗时缩短32%，兼顾资源效率与业务优先级。
+
+<FeedbackButtons slug="item:hf-blog-impactful-scheduling" client:visible />
+
+## <a href="https://huggingface.co/blog/building-with-ml-intern" target="_blank" rel="noopener noreferrer">The model that didn&apos;t exist, so you made it yourself</a>
+
+*Hugging Face*
+
+当前仅获取到该论文的标题信息，核心摘要正文内容未粘贴完整，无法准确梳理论文的核心方法、实验结果与核心结论。请您补充完整该摘要的全部文本内容，我会按照要求为您提炼出120字左右、重点突出方法与结论的简洁中文总结。
+
+<FeedbackButtons slug="item:hf-blog-building-with-ml-intern" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我提升（RSI）的概念脉络：1965年学者I.J.古德最早提出相关构想，定义超智能系统可超越人类所有智力活动，能自主设计更优机器实现迭代升级；2008年尤德考斯基明确其核心是AI依托现有智能优化自身认知架构的反馈循环，当前AI领域的RSI可表现为直接改写自身权重、或广义上优化训练流程两种路径。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/10/502544.html" target="_blank" rel="noopener noreferrer">DeepSeek Bot来了！民间版，DSH装个插件就能用</a>
+
+*量子位*
+
+这是民间开发者推出的非官方DeepSeek-Bot插件，基于DeepSeek Harness搭建，采用插件化架构保障扩展性。支持自定义多Bot的身份、对接模型，自带长期记忆功能，还可设置主管Bot统筹调度其他Bot，大幅降低多Agent管理成本与token消耗，后续将支持接入本地Agent，上线不到1天已获250+星标。
+
+<FeedbackButtons slug="item:qbitai-502544" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/502541.html" target="_blank" rel="noopener noreferrer">西门子将亮相2026工博会：以软硬协同的工业全栈能力，推动物理AI加速落地</a>
+
+*量子位*
+
+西门子将亮相2026年第26届工博会，首次完整展出人形机器人从设计到工业应用的端到端全流程解决方案，同步推出20余款新品、开放6类具身智能进厂场景。其依托软硬协同的工业全栈能力，融合技术与行业沉淀，推动物理AI落地生产一线，助力客户提效增韧，以数实融合驱动智能增长。
+
+<FeedbackButtons slug="item:qbitai-502541" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/502492.html" target="_blank" rel="noopener noreferrer">24天！Jev估值翻至75亿美元，年度硅谷最爽逆袭了吧</a>
+
+*量子位*
+
+2024年成立的旧金山创企TypeSafe AI此前在硅谷隐身蛰伏，其推出的AI模型Jev砍掉传统大模型生成功能，仅专注二元决策判断，成本极低、token定价远低于行业水平。上线仅24天，公司就完成8.7亿美元A轮融资，投后估值达75亿美元，获a16z、红杉等顶级资方重仓。
+
+<FeedbackButtons slug="item:qbitai-502492" client:visible />
