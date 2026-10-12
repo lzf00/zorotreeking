@@ -10,7 +10,16 @@ from unittest.mock import patch
 OPS = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(OPS))
 
-from guardian import BJT, Guardian, _notify_feishu, _process_exit_code, _snapshot_reason, _systemctl, notify
+from guardian import (
+    BJT,
+    Guardian,
+    _notify_feishu,
+    _process_exit_code,
+    _snapshot_reason,
+    _systemctl,
+    decide_daily_notification,
+    notify,
+)
 
 
 REGISTRY_PATH = Path(__file__).resolve().parents[3] / "src" / "data" / "etf-registry.json"
@@ -152,7 +161,7 @@ class GuardianRepairTests(unittest.TestCase):
         self.assertEqual(_process_exit_code("unhealthy", fail_on_unhealthy=False), 0)
         self.assertEqual(_process_exit_code("unhealthy", fail_on_unhealthy=True), 1)
 
-    def test_transition_from_alarm_to_waiting_sends_one_explanatory_notice(self):
+    def test_waiting_for_shares_does_not_notify_midday(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             guardian = Guardian(self.args(root))
@@ -164,18 +173,107 @@ class GuardianRepairTests(unittest.TestCase):
                 "issues": [{"code": "share_source_pending", "severity": "warning"}],
             }
             guardian.args.repair = False
+            fixed_now = datetime(2026, 8, 4, 20, 0, tzinfo=BJT)
+
+            class FixedDateTime:
+                @staticmethod
+                def now(tz=None):
+                    return fixed_now
+
             with (
                 patch.object(guardian, "_check_realtime", return_value=(realtime, {})),
                 patch.object(guardian, "_check_snapshot", return_value=snapshot),
-                patch("guardian.notify", return_value={"feishu": True}) as notify,
+                patch("guardian.notify", return_value={"feishu": True}) as notify_mock,
+                patch("guardian.datetime", FixedDateTime),
             ):
                 result = guardian.run()
             self.assertEqual(result["status"], "degraded")
-            self.assertEqual(result["notification_policy"], "feishu_only")
+            self.assertEqual(result["notification_policy"], "feishu_daily_result")
             self.assertEqual(result["notification_channels"], {"feishu_configured": False})
-            title, body = notify.call_args.args
-            self.assertIn("等待份额", title)
-            self.assertIn("份额数据源尚未发布", body)
+            notify_mock.assert_not_called()
+
+    def test_daily_result_notifies_once_on_healthy_and_skips_second_run(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            guardian = Guardian(self.args(root))
+            realtime = {"status": "healthy", "scope": "realtime", "metrics": {}, "issues": []}
+            snapshot = {
+                "status": "healthy", "scope": "snapshot", "phase": "complete",
+                "metrics": {"expected": 12, "share_coverage": 12, "factor_coverage": 12, "complete_deadline": "23:00"},
+                "issues": [],
+            }
+            guardian.args.repair = False
+            fixed_now = datetime(2026, 8, 4, 20, 15, tzinfo=BJT)
+
+            class FixedDateTime:
+                @staticmethod
+                def now(tz=None):
+                    return fixed_now
+
+            with (
+                patch.object(guardian, "_check_realtime", return_value=(realtime, {})),
+                patch.object(guardian, "_check_snapshot", return_value=snapshot),
+                patch("guardian.notify", return_value={"feishu": True}) as notify_mock,
+                patch("guardian.datetime", FixedDateTime),
+            ):
+                first = guardian.run()
+                self.assertEqual(first["daily_notify_date"], "2026-08-04")
+                title, _body = notify_mock.call_args.args
+                self.assertIn("今日结果", title)
+                self.assertIn("✅", title)
+                notify_mock.reset_mock()
+                second = guardian.run()
+                self.assertEqual(second["daily_notify_date"], "2026-08-04")
+                notify_mock.assert_not_called()
+
+    def test_decide_daily_notification_only_after_deadline_when_unhealthy(self):
+        realtime = {"status": "unhealthy"}
+        snapshot = {
+            "status": "degraded",
+            "metrics": {"expected": 12, "share_coverage": 8, "factor_coverage": 8, "complete_deadline": "23:00"},
+            "issues": [{"code": "early_partial_shares"}],
+        }
+        midday = datetime(2026, 8, 4, 20, 0, tzinfo=BJT)
+        self.assertIsNone(
+            decide_daily_notification(
+                overall="unhealthy",
+                realtime=realtime,
+                snapshot=snapshot,
+                already_notified_date="",
+                now=midday,
+            )
+        )
+        late = datetime(2026, 8, 4, 23, 5, tzinfo=BJT)
+        decision = decide_daily_notification(
+            overall="unhealthy",
+            realtime=realtime,
+            snapshot=snapshot,
+            already_notified_date="",
+            now=late,
+        )
+        self.assertIsNotNone(decision)
+        title, body = decision
+        self.assertIn("今日结果", title)
+        self.assertIn("early_partial_shares", body)
+        self.assertIsNone(
+            decide_daily_notification(
+                overall="unhealthy",
+                realtime=realtime,
+                snapshot=snapshot,
+                already_notified_date="2026-08-04",
+                now=late,
+            )
+        )
+        saturday = datetime(2026, 8, 8, 23, 5, tzinfo=BJT)
+        self.assertIsNone(
+            decide_daily_notification(
+                overall="healthy",
+                realtime={"status": "healthy"},
+                snapshot=snapshot,
+                already_notified_date="",
+                now=saturday,
+            )
+        )
 
     def test_systemctl_rejects_every_non_allowlisted_action(self):
         with self.assertRaises(ValueError):

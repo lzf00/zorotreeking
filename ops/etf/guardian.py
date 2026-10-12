@@ -173,6 +173,62 @@ def _snapshot_reason(report: Optional[Mapping[str, Any]]) -> str:
     return f"问题: {issue_text}；份额 {shares}/{expected}，份额因子 {factors}/{expected}"
 
 
+def _bjt_today(now: Optional[datetime] = None) -> str:
+    return (now or datetime.now(BJT)).astimezone(BJT).date().isoformat()
+
+
+def _past_snapshot_deadline(now: Optional[datetime] = None) -> bool:
+    bjt_now = (now or datetime.now(BJT)).astimezone(BJT)
+    _retry, _retry_text, deadline_minutes, _deadline_text = _snapshot_window()
+    return (bjt_now.hour * 60 + bjt_now.minute) >= deadline_minutes
+
+
+def _daily_result_message(
+    overall: str,
+    realtime: Mapping[str, Any],
+    snapshot: Optional[Mapping[str, Any]],
+) -> tuple[str, str]:
+    """Build the once-per-day Feishu body for a conclusive Guardian result."""
+    snap_status = (snapshot or {}).get("status", "not_checked")
+    body = (
+        f"状态: {overall}\n"
+        f"实时: {realtime.get('status')}\n"
+        f"三因子: {snap_status}\n"
+        f"原因: {_snapshot_reason(snapshot)}"
+    )
+    if overall == "healthy":
+        return "✅ ETF Guardian 今日结果", body
+    return "🚨 ETF Guardian 今日结果", body
+
+
+def decide_daily_notification(
+    *,
+    overall: str,
+    realtime: Mapping[str, Any],
+    snapshot: Optional[Mapping[str, Any]],
+    already_notified_date: str,
+    now: Optional[datetime] = None,
+) -> Optional[tuple[str, str]]:
+    """Notify at most once per BJT calendar day with the conclusive result.
+
+    Intermediate waiting (degraded / share pending) and midday flaps are silent.
+    A message is sent only when:
+    - overall becomes healthy (daily success), or
+    - the publication deadline has passed and the day is still not healthy.
+    """
+    today = _bjt_today(now)
+    if already_notified_date == today:
+        return None
+    bjt_now = (now or datetime.now(BJT)).astimezone(BJT)
+    if bjt_now.weekday() >= 5:
+        return None
+    if overall == "healthy":
+        return _daily_result_message(overall, realtime, snapshot)
+    if overall in {"unhealthy", "degraded"} and _past_snapshot_deadline(now):
+        return _daily_result_message(overall, realtime, snapshot)
+    return None
+
+
 def _process_exit_code(status: str, *, fail_on_unhealthy: bool) -> int:
     """Keep business health separate from systemd process execution health."""
     return 1 if fail_on_unhealthy and status == "unhealthy" else 0
@@ -376,24 +432,34 @@ class Guardian:
             "notification_channels": {
                 "feishu_configured": bool(os.getenv("ETF_FEISHU_WEBHOOK_URL", "").strip()),
             },
-            "notification_policy": "feishu_only",
+            "notification_policy": "feishu_daily_result",
         }
-        atomic_write_json(self.args.status, status)
         delivery: Optional[Dict[str, bool]] = None
-        if overall == "unhealthy" and previous != "unhealthy":
-            delivery = notify(
-                "🚨 ETF Guardian 告警",
-                f"状态: {overall}\n实时: {realtime.get('status')}\n三因子: {(snapshot or {}).get('status', 'not_checked')}\n原因: {_snapshot_reason(snapshot)}",
+        already = self.store.get("daily_notify_date", "")
+        now = datetime.now(BJT)
+        decision = decide_daily_notification(
+            overall=overall,
+            realtime=realtime,
+            snapshot=snapshot,
+            already_notified_date=already,
+            now=now,
+        )
+        status["daily_notify_date"] = already or None
+        if decision is not None:
+            title, body = decision
+            delivery = notify(title, body)
+            today = _bjt_today(now)
+            self.store.set("daily_notify_date", today)
+            status["daily_notify_date"] = today
+            structured_log(
+                "notification",
+                previous=previous,
+                status=overall,
+                channels=delivery,
+                policy="feishu_daily_result",
+                notify_date=today,
             )
-        elif overall == "degraded" and previous != "degraded":
-            delivery = notify(
-                "🟡 ETF Guardian 等待份额数据",
-                f"状态: degraded（非故障）\n实时: {realtime.get('status')}\n三因子: 等待发布\n原因: {_snapshot_reason(snapshot)}",
-            )
-        elif overall == "healthy" and previous in {"degraded", "unhealthy"}:
-            delivery = notify("✅ ETF Guardian 已恢复", f"上一状态: {previous}\n当前状态: healthy")
-        if delivery is not None:
-            structured_log("notification", previous=previous, status=overall, channels=delivery)
+        atomic_write_json(self.args.status, status)
         structured_log("guardian_complete", status=overall, duration_ms=status["duration_ms"], repair=self.args.repair)
         return status
 

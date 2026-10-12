@@ -51,10 +51,13 @@ ETF Guardian notifications are Feishu-only. Enable them by adding
 `ETF_FEISHU_WEBHOOK_URL` and, when the bot requires it,
 `ETF_FEISHU_KEYWORD` to `/opt/zoro-etf-ops/.env`; no secret belongs in this
 repository. The default keyword is `ZoroTreeking`.
-State transitions send one message: yellow while waiting for the source, red
-only after the final deadline or for a genuine data-contract failure, and green
-after recovery. Messages include coverage and the specific issue instead of a
-bare `unhealthy` label.
+
+Notification policy is **one conclusive result per Beijing trading day**
+(`feishu_daily_result`): intermediate “等待份额数据” and midday status flaps
+are silent. A Feishu message is sent at most once after either the day becomes
+`healthy`, or the publication deadline passes while still not healthy.
+Messages include coverage and the specific issue instead of a bare
+`unhealthy` label.
 
 ## Verification
 
