@@ -1,0 +1,179 @@
+---
+lang: zh
+translationKey: digest-2026-10-14
+title: "AI 每日精选 · 2026-10-14"
+description: "17 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-10-14
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, lil-log]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI、Anthropic、DeepMind等大厂发布AI视频工具、安全政策、反诈AI等多项新进展</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">多款国产开源AI产品落地，含iPhone断网跑35B模型、Reflex Agent响应超Claude Code3倍</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face推出稀疏注意力、UltraBERT、自改进智能体等多项前沿AI技术成果</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 大模型</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 智能体</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ 端侧AI</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔒 安全合规</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📹 生成视频</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2610.13990" target="_blank" rel="noopener noreferrer">DoSA: Dots Sparse Attention</a>
+
+*HF ★ 24 · Fanxu Meng, Taosong Fang · [HF 镜像](https://huggingface.co/papers/2610.13990)*
+
+针对现有稀疏注意力仍需遍历所有键打分的冗余问题，本文提出无损稀疏注意力方法DoSA：无需计算候选全部分值，通过得分上下界先筛除明确不符合Top-K要求的候选，仅对剩余候选全量打分，保证选取结果完全无损。其GPU实现在多场景下索引器最高提速2.74倍，端到端首token生成最高提速1.94倍。
+
+<FeedbackButtons slug="item:arxiv-2610.13990" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.12818" target="_blank" rel="noopener noreferrer">LeWAM: End-to-End World and Action Modeling with JEPAs</a>
+
+*HF ★ 22 · Minghao Fu, Tavis Siebert, Eryk Halicki… · [HF 镜像](https://huggingface.co/papers/2610.12818)*
+
+针对现有联合嵌入预测架构（JEPA）分阶段训练、难以端到端适配控制任务的缺陷，本文提出端到端控制框架LeWAM：采用隐态预测+动作流匹配联合训练目标，对隐态施加各向同性高斯约束，单模型即可支持策略执行与高效规划。相比现有JEPA，其接触密集任务成功率提至89.7%，长时序任务提至46.2%，规划速度快32倍，行为克隆性能也比肩主流方法。
+
+<FeedbackButtons slug="item:arxiv-2610.12818" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.14224" target="_blank" rel="noopener noreferrer">Harness^2: Recursive Agent Harnessing for an Open World</a>
+
+*HF ★ 13 · Ruiyao Xu, Yanfei Chen, Zhongying CuiZhu… · [HF 镜像](https://huggingface.co/papers/2610.14224)*
+
+针对大模型智能体执行框架的递归自提升方案在开放场景下缺乏真值校验引导、泛化性差的痛点，本文提出Harness²双递归框架：任务层通过“提议-探测-组合”对比流程无真值优化当前任务框架，框架层递归沉淀优化经验适配未来任务。跨多模型多基准测试显示单步优化最高提11.8个百分点，增加递归预算可进一步涨点。
+
+<FeedbackButtons slug="item:arxiv-2610.14224" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.15028" target="_blank" rel="noopener noreferrer">UltraBERT: Beyond the Limit of BERT Pre-Training</a>
+
+*HF ★ 11 · Jungwoo Park, Taewhoo Lee, Jaewoo Kang · [HF 镜像](https://huggingface.co/papers/2610.15028)*
+
+针对现有双向编码器预训练沿用小模型范式，无单模型可同时在分类、检索任务上取得优效的问题，研究者探明三大预训练核心规律，据此提出UltraBERT：同批次为高低掩码率设置专属预测头，仅低掩码率分支引入蒸馏约束。它是首个在GLUE（91.0）、BEIR（47.7）基准上同时达SOTA的单编码器，也为双向模型预训练优化提供了原则性参考。
+
+<FeedbackButtons slug="item:arxiv-2610.15028" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.14118" target="_blank" rel="noopener noreferrer">ClawLoop: Self-Improving Agents via Harness-Native Training Loop</a>
+
+*HF ★ 6 · Hansi Yang, Linji Hao, Hongyan Hao… · [HF 镜像](https://huggingface.co/papers/2610.14118)*
+
+针对现有harness环境大模型智能体训练依赖外部强模型、无自改进空间的缺陷，本文提出ClawLoop自进化框架，无需外部教师模型，通过任务合成-训练-诊断反馈的闭环循环迭代优化。经测试，该框架使千问27B模型在多基准上持续提升，生成的训练任务还可迁移给更小的千问4B、9B模型涨点，验证了数据有效性。（共119字）
+
+<FeedbackButtons slug="item:arxiv-2610.14118" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/higgsfield-longer-videos-voice" target="_blank" rel="noopener noreferrer">Higgsfield takes AI video from 1 minute to over 10</a>
+
+*OpenAI*
+
+AI技术厂商Higgsfield近期推出三款全新大模型产品，突破现有AI视频生成的行业能力瓶颈：GPT-6 Astra将生成时长上限从1分钟提升至10分钟以上，GPT-Image-2.5大幅优化生成画面精准度，GPT-Live探索语音驱动影片制作的可行路径，为内容创作者提供了效率更高、能力边界更广的AI创作解决方案。
+
+<FeedbackButtons slug="item:openai-blog-higgsfield-longer-videos-voice" client:visible />
+
+## <a href="https://openai.com/index/sophos" target="_blank" rel="noopener noreferrer">Sophos cuts threat investigation time by 96% with OpenAI Daybreak</a>
+
+*OpenAI*
+
+网络安全厂商Sophos采用OpenAI推出的Daybreak工具优化安全运营流程，提效成果显著：网络威胁调查时长直接缩减96%，旗下托管检测与响应（MDR）业务中52%的案件可实现自动化处置，且全流程保留人工监管机制，可有效规避AI误判风险，保障安全处置准确性。
+
+<FeedbackButtons slug="item:openai-blog-sophos" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/cyber-verification-program" target="_blank" rel="noopener noreferrer">Expanding the Cyber Verification Program</a>
+
+*Anthropic*
+
+本次工作正式推出升级版网络验证项目（CVP），项目定向为满足资质要求的安全专业人员开放两类核心资源：一是业内先进的网络技术能力支持，二是经过优化、误拦截概率更低的分类器工具，可帮助合规安全从业者降低研发阻碍，提升网络安全相关工作的开展效率。
+
+<FeedbackButtons slug="item:anthropic-cyber-verification-program" client:visible />
+
+## <a href="https://www.anthropic.com/news/2026-usage-policy-update" target="_blank" rel="noopener noreferrer">2026 Usage Policy update</a>
+
+*Anthropic*
+
+本次为2026版使用政策更新公示，相关运营方已完成新版使用政策的修订并正式对外发布。本次公示内容核心为新版政策相较于此前生效版本的全部调整事项汇总，方便相关用户快速掌握规则变动、及时适配新规，若需了解完整规则可查阅新版使用政策全文。
+
+<FeedbackButtons slug="item:anthropic-2026-usage-policy-update" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/on-device-ai-scam-detection-mddi/" target="_blank" rel="noopener noreferrer">Google DeepMind and Singapore Government announce new AI tool to protect citizens against scams</a>
+
+*Google DeepMind*
+
+谷歌DeepMind联合新加坡政府科技局推出新型反诈AI工具。该工具采用轻量端侧部署的Gemma模型，无需将用户私人聊天数据上传云端即可运行，实现零云数据流出，在充分保障用户隐私的前提下，可精准识别拦截即时通讯场景中的对话类诈骗，为民众通信安全提供防护。
+
+<FeedbackButtons slug="item:deepmind-on-device-ai-scam-detection-mddi" client:visible />
+
+## <a href="https://deepmind.google/blog/developing-gemini-4-argon-responsibly-and-safely/" target="_blank" rel="noopener noreferrer">Developing Gemini 4 Argon responsibly and safely</a>
+
+*Google DeepMind*
+
+本文为谷歌Gemini 4 Argon大模型的安全开发总结，全流程嵌入安全治理机制：预训练阶段过滤高风险数据，对齐阶段引入多领域专家做红蓝对抗测试，对生物危害、网络攻击等高风险输出能力做权限隔离，上线前完成多轮风险核验。最终模型在保留强性能的同时，高危内容输出风险降低超98%，符合通用AI安全伦理要求。
+
+<FeedbackButtons slug="item:deepmind-developing-gemini-4-argon-responsibly-and-safely" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/LiquidAI/lfm25-24b-a2b" target="_blank" rel="noopener noreferrer">Run fast, private agents on-device with LFM2.5-24B-A2B</a>
+
+*Hugging Face*
+
+本文针对端侧智能代理对隐私、运行效率的需求，推出适配端侧算力的24B参数专用模型LFM2.5-24B-A2B。该模型可全程在端设备本地运行，无需云端交互，既规避数据上传的隐私泄露风险，又实现低延迟高速推理，可满足本地工具调用、任务规划等各类智能代理需求，适配端侧私有Agent落地场景。
+
+<FeedbackButtons slug="item:hf-blog-lfm25-24b-a2b" client:visible />
+
+## <a href="https://huggingface.co/blog/allenai/impactful-scheduling" target="_blank" rel="noopener noreferrer">Impactful scheduling for GPU clusters</a>
+
+*Hugging Face*
+
+你尚未附上这篇《GPU集群高效调度》论文的摘要正文内容哦，请补充完整摘要的英文原文，我会按照要求提炼其核心方法、实验结论，输出120字左右简洁清晰、重点突出的中文总结。
+
+<FeedbackButtons slug="item:hf-blog-impactful-scheduling" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文聚焦AI递归自我改进（RSI）的管控工程研究，梳理RSI概念演进：1965年古德最早提出超人类智能系统可自主设计更优机器实现迭代，2008年尤德考斯基明确其核心是AI依托现有能力优化自身认知机制的反馈环，当代AI的RSI可通过直接改写权重、优化训练管线两类路径落地。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/10/503165.html" target="_blank" rel="noopener noreferrer">响应速度比Claude Code快3倍，实现真正无限上下文！APUS AI开源Reflex Agent</a>
+
+*量子位*
+
+10月13日，APUS AI（麒麟合盛）正式开源个人智能体产品Reflex Agent。该智能体相较同类产品Claude Code响应速度提升3倍，同时实现了真正的无限上下文能力，可支撑长文本、多轮复杂交互场景，为个人智能体的应用开发、技术迭代提供了高价值开源参考。
+
+<FeedbackButtons slug="item:qbitai-503165" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/503157.html" target="_blank" rel="noopener noreferrer">告别资料散落，让知识持续积累：openJiuwen首发个人知识空间，重塑个人办公智能体新体验！</a>
+
+*量子位*
+
+针对办公智能体每次执行任务都需重复上传整理资料，耗时耗token且易出错的痛点，openJiuwen首发个人知识空间功能，支持多源资料手动/定时增量采集，经多模式处理后形成带目录、关联、出处的可复用知识，供智能体按需调用，可提升任务准确率，降低时间与token成本。
+
+<FeedbackButtons slug="item:qbitai-503157" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/503109.html" target="_blank" rel="noopener noreferrer">iPhone断网跑35B多模态！国产开源新模型，只占3G内存</a>
+
+*量子位*
+
+面壁智能联合OpenBMB开源多模态大模型MiniCPM-V 4.7，其中35B参数MoE版推理仅激活3B参数，仅占3G内存即可在iOS、安卓端运行，断网状态下iPhone17 Pro Max解码速度超13token/s，可流畅完成多模态任务；另有1.3B小版本，同体量性能位列第一梯队。
+
+<FeedbackButtons slug="item:qbitai-503109" client:visible />
