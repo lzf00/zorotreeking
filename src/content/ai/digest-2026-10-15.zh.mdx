@@ -1,0 +1,179 @@
+---
+lang: zh
+translationKey: digest-2026-10-15
+title: "AI 每日精选 · 2026-10-15"
+description: "17 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-10-15
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, lil-log]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI、Anthropic、DeepMind等头部厂商接连发布技术落地、安全合规及产品迭代动态</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face推出多项技术方案，覆盖AI生成、天气模拟、端侧私有Agent部署等场景</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">行业热点频出，DeepSeek全球宕机、Claude Code技术路线5年前已规划引发广泛关注</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 前沿研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 大厂动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💻 开源进展</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ 行业热点</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🌐 落地应用</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2610.20571" target="_blank" rel="noopener noreferrer">Any Time, Any Space: A World-State-Centric Framework for Agentic Video Generation</a>
+
+*HF ★ 45 · Weijie Wang, Haomin Zhang, Ye Li… · [HF 镜像](https://huggingface.co/papers/2610.20571)*
+
+针对长视频智能体生成跨镜头时空一致性差的痛点，本文提出ATAS框架：将剧本转化为带位置、相机、时间标注的镜头请求，通过静态场景几何、动态事件双记忆库检索参考，生成结果校验通过后才更新记忆。该框架适配多类视频生成基座，跨镜头一致性、场景复现等指标及人评均优于现有方法。
+
+<FeedbackButtons slug="item:arxiv-2610.20571" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.19975" target="_blank" rel="noopener noreferrer">LatentLoop: Scaling Looped MoE Models with Asymmetric Compute Allocation</a>
+
+*HF ★ 31 · Zefeng He, Yunkai Chai, Xiaoyang Chen… · [HF 镜像](https://huggingface.co/papers/2610.19975)*
+
+本文针对循环混合专家（MoE）模型不同轮次作用不对称的特性，提出LatentLoop方法：首轮压缩序列降低计算量，次轮保留全分辨率，省出的算力用于提升隐藏层尺寸，跨轮共享MoE权重、采用独立注意力参数适配不同分辨率。1.3B-7B参数实验显示，同效果下该方法比普通MoE省19%算力、比循环基线省7.9%，零/少样本基准得分全尺寸段均有提升。
+
+<FeedbackButtons slug="item:arxiv-2610.19975" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.19366" target="_blank" rel="noopener noreferrer">Seeing, Maintaining, and Learning: The Evolution of Multimodal Agent Memory</a>
+
+*HF ★ 23 · Minghao Guo, Qingyue Jiao, Xiujin Liu… · [HF 镜像](https://huggingface.co/papers/2610.19366)*
+
+针对多模态智能体在长周期、终身任务场景下难以持续从异质多模态数据中获取有效信息的痛点，该研究提出双轴分析框架：轴一梳理多模态信息的留存规则与编码形式，轴二将内存管理划分为静态复用、固定策略动态更新、策略自进化三层。基于框架提炼了记忆设计核心原则，同时指明了该领域后续的研究挑战与方向。
+
+<FeedbackButtons slug="item:arxiv-2610.19366" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.18072" target="_blank" rel="noopener noreferrer">LensErase: A Foundation Model for Erase Anything</a>
+
+*HF ★ 23 · Yunuo Chen, Xiuyu Wu, Qinhong Yang… · [HF 镜像](https://huggingface.co/papers/2610.18072)*
+
+本文提出通用任意擦除基础模型LensErase，可覆盖物体、文字、水印等各类现实擦除场景。团队构建了含1.01亿对样本的大规模擦除数据集，基于文生图模型Lens适配训练，提出掩码感知RoPE注入掩码信息，配套专门的精调策略与推理保真方案，在多类基准测试中性能显著领先，可为擦除类应用提供底座支撑。
+
+<FeedbackButtons slug="item:arxiv-2610.18072" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.13521" target="_blank" rel="noopener noreferrer">Beyond Domain-Routed Supervision: Cross-Teacher Guarding for Multi-Teacher On-Policy Distillation</a>
+
+*HF ★ 18 · Shi-Yu Tian, Yong Liu, Ximan Liu… · [HF 镜像](https://huggingface.co/papers/2610.13521)*
+
+针对多教师在线蒸馏原有域路由机制易因教师风格、专长差异引发梯度冲突、能力退化的问题，本文提出跨教师守护的Road MOPD方法，引入非路由教师作为跨域批评家，通过令牌级信用分配、自适应梯度投影协调多源监督。实验显示其在高冲突场景性能提升超5个百分点，弱势域退化缓解，多场景整体表现更优。
+
+<FeedbackButtons slug="item:arxiv-2610.13521" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/amp-beyond-coding" target="_blank" rel="noopener noreferrer">Amp puts AI agents to work beyond code with OpenAI models</a>
+
+*OpenAI*
+
+本文聚焦AI平台Amp的能力升级：其通过集成OpenAI的GPT-6 Astra、Ultrafast、GPT-Live-1三款新模型，搭配ChatGPT登录能力，突破了过往AI代理多局限于代码场景的瓶颈。依托模型高性能、低延迟、实时交互的特性加账户体系打通，Amp可支撑AI代理在各类非代码通用场景落地作业，大幅拓宽代理应用边界。
+
+<FeedbackButtons slug="item:openai-blog-amp-beyond-coding" client:visible />
+
+## <a href="https://openai.com/index/sentinelone" target="_blank" rel="noopener noreferrer">SentinelOne cuts malware analysis from weeks to hours</a>
+
+*OpenAI*
+
+网络安全厂商SentinelOne借助OpenAI推出的Daybreak大模型优化恶意软件分析流程，将原本需要数周才能完成的分析工作大幅压缩至小时级，不仅显著降低威胁研判的时间成本，释放出的产能还可支撑更多潜在威胁的调查工作，有效提升整体威胁响应效率，适配攻防对抗下的快速处置需求。
+
+<FeedbackButtons slug="item:openai-blog-sentinelone" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/cyber-verification-program" target="_blank" rel="noopener noreferrer">Expanding the Cyber Verification Program</a>
+
+*Anthropic*
+
+本次工作推出迭代升级后的新版网络验证项目（CVP），面向满足资质要求的网络安全从业者开放两大核心权益：一是赋能其使用更先进的网络安全技术与能力资源，二是提供优化后的低误拦截分类器工具，旨在降低合规安全研究的阻碍，支撑专业人员高效开展安全验证相关工作。
+
+<FeedbackButtons slug="item:anthropic-cyber-verification-program" client:visible />
+
+## <a href="https://www.anthropic.com/news/2026-us-midterms" target="_blank" rel="noopener noreferrer">Preparing for the 2026 US midterms</a>
+
+*Anthropic*
+
+本次内容聚焦2026年美国中期选举的安全筹备工作，相关负责主体今年年初已对外发布过选举安全保障措施的阶段性更新通报。本次披露的核心内容，是该主体为适配本次选举的防护需求，在现有选举防护机制基础上持续优化升级、强化各类安全保障举措的最新工作进展。
+
+<FeedbackButtons slug="item:anthropic-2026-us-midterms" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/on-device-ai-scam-detection-mddi/" target="_blank" rel="noopener noreferrer">Google DeepMind and Singapore Government collaborate to build fine-tuned AI model for scam detection</a>
+
+*Google DeepMind*
+
+谷歌DeepMind与新加坡政府科技局联合研发反诈专用AI模型，针对私域聊天场景的对话式诈骗拦截需求，采用轻量级Gemma模型端侧部署方案，全程无需将用户私人聊天数据上传云端，在零云数据流出的前提下即可在设备本地完成诈骗识别拦截，兼顾反诈效能与隐私安全。
+
+<FeedbackButtons slug="item:deepmind-on-device-ai-scam-detection-mddi" client:visible />
+
+## <a href="https://deepmind.google/blog/developing-gemini-4-argon-responsibly-and-safely/" target="_blank" rel="noopener noreferrer">Developing Gemini 4 Argon responsibly and safely</a>
+
+*Google DeepMind*
+
+本文介绍谷歌Gemini 4 Argon模型的负责任安全开发实践：核心采用前置风险预判、全链路红蓝对抗测试、多维度风险（虚假信息、安全漏洞、伦理冲突等）缓释、价值观对齐微调的流程，经实测可大幅降低模型不安全输出概率，为通用大模型迭代的安全合规落地提供可复用的实践框架。
+
+<FeedbackButtons slug="item:deepmind-developing-gemini-4-argon-responsibly-and-safely" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/hiro-acev2" target="_blank" rel="noopener noreferrer">HiRO-ACEv2: Simulating extreme weather at 3 km resolution for a fraction of the cost</a>
+
+*Hugging Face*
+
+本研究推出AI驱动的极端天气模拟系统HiRO-ACEv2，针对传统3km高分辨率数值模式算力成本高昂的痛点，仅需传统模式几分之一的算力投入，即可实现同等精度的3km分辨率极端天气模拟，可精准捕捉强对流、极端降水等小尺度灾害过程，为低成本高分辨率气象预报、气候模拟研究提供高效方案。
+
+<FeedbackButtons slug="item:hf-blog-hiro-acev2" client:visible />
+
+## <a href="https://huggingface.co/blog/LiquidAI/lfm25-24b-a2b" target="_blank" rel="noopener noreferrer">Run fast, private agents on-device with LFM2.5-24B-A2B</a>
+
+*Hugging Face*
+
+LFM2.5-24B-A2B是面向端侧场景优化的24B参数大模型，主打本地部署私有智能体需求：通过架构适配大幅降低端侧运行算力门槛，无需上传数据到云端即可完成智能体全链路推理，兼顾隐私安全性与低延迟响应，运行效率与任务表现均优于同参数级通用大模型。
+
+<FeedbackButtons slug="item:hf-blog-lfm25-24b-a2b" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我改进（RSI）的概念发展脉络：1965年学者古德最早提出相关构想，指超人类智能水平的系统可自主设计更优机型实现迭代升级；2008年尤德考斯基明确其核心反馈逻辑，即AI依托现有智能优化自身认知生成机制。现代AI语境下的RSI落地可分两类：直接改写自身权重，或是优化训练流水线。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/10/503350.html" target="_blank" rel="noopener noreferrer">复杂高客单新品如何靠YouTube 的“全链路叙事”斩获全球大奖？</a>
+
+*量子位*
+
+当前中国品牌出海已从产品输出转向品牌全球化，低价买量模式难获海外用户长期信任，高客单复杂新品尤难打破认知壁垒。智能安防品牌eufy针对单价超200美元的高端安防新品，调研明确用户痛点后，以YouTube为主阵地围绕“枪球一体”差异点布局全链路叙事营销，斩获YouTube营销大赏最佳全链路营销奖。
+
+<FeedbackButtons slug="item:qbitai-503350" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/503341.html" target="_blank" rel="noopener noreferrer">有预言家！A社研究蓝图曝光，Claude Code来自5年前</a>
+
+*量子位*
+
+因版权纠纷，Anthropic2021年的最高机密内部路线图近日曝光。当时该公司刚从OpenAI独立、仅十余员工，就明确要研发具备完整软件工程师能力的通用AI助手，规划了工具调用、自评判、万亿参数、超长上下文等方向，如今的Claude Code完全契合当年规划，打破了大模型Agent能力是近年顺势发展的普遍认知。
+
+<FeedbackButtons slug="item:qbitai-503341" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/503326.html" target="_blank" rel="noopener noreferrer">DeepSeek服务器全球宕机！神秘Harness账号同时现身</a>
+
+*量子位*
+
+10月15日早8点11分起DeepSeek出现全球范围服务故障，网页端、对话服务、V4 Pro及V4.1 Flash API均受影响，多国用户反馈无回复、加载卡顿、服务器繁忙，第三方监测已收到超86条报障。目前官方已定位故障正在修复，不少用户猜测本次宕机或与新模型上线相关。
+
+<FeedbackButtons slug="item:qbitai-503326" client:visible />
