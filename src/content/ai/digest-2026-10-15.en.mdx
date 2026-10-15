@@ -1,0 +1,179 @@
+---
+lang: en
+translationKey: digest-2026-10-15
+title: "AI Daily Digest · 2026-10-15"
+description: "17 papers · Multi-source aggregation + AI summaries"
+date: 2026-10-15
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, lil-log]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's content in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading vendors including OpenAI, Anthropic, and DeepMind have successively released updates on technology implementation, security compliance, and product iterations</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face has launched multiple technical solutions covering scenarios such as AI generation, weather simulation, and on-device private Agent deployment</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Frequent industry hotspots: DeepSeek's global outage and the revelation that Claude Code's technical roadmap was planned 5 years ago have sparked widespread attention</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Big Tech Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💻 Open Source Progress</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Industry Hotspots</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🌐 Real-world Applications</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2610.20571" target="_blank" rel="noopener noreferrer">Any Time, Any Space: A World-State-Centric Framework for Agentic Video Generation</a>
+
+*HF ★ 45 · Weijie Wang, Haomin Zhang, Ye Li… · [HF Mirror](https://huggingface.co/papers/2610.20571)*
+
+To address the pain point of poor cross-shot spatiotemporal consistency in long video agent generation, this paper proposes the ATAS framework: it converts scripts into shot requests annotated with position, camera, and time information, retrieves references from dual memory banks for static scene geometry and dynamic events, and only updates the memory after the generated result passes verification. This framework is compatible with multiple types of video generation base models, outperforming existing methods in metrics such as cross-shot consistency, scene reproduction, and human evaluation.
+
+<FeedbackButtons slug="item:arxiv-2610.20571" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.19975" target="_blank" rel="noopener noreferrer">LatentLoop: Scaling Looped MoE Models with Asymmetric Compute Allocation</a>
+
+*HF ★ 31 · Zefeng He, Yunkai Chai, Xiaoyang Chen… · [HF Mirror](https://huggingface.co/papers/2610.19975)*
+
+Focusing on the asymmetric role of different iterations in recurrent Mixture of Experts (MoE) models, this paper proposes the LatentLoop method: the first iteration compresses the sequence to reduce computational load, the second iteration retains full resolution, and the saved computing power is used to increase the hidden layer size. MoE weights are shared across iterations, and independent attention parameters are used to adapt to different resolutions. Experiments on 1.3B to 7B parameter models show that with the same performance, this method saves 19% of computing power compared to standard MoE, and 7.9% compared to recurrent baselines, with improved zero-shot/few-shot benchmark scores across all parameter size ranges.
+
+<FeedbackButtons slug="item:arxiv-2610.19975" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.19366" target="_blank" rel="noopener noreferrer">Seeing, Maintaining, and Learning: The Evolution of Multimodal Agent Memory</a>
+
+*HF ★ 23 · Minghao Guo, Qingyue Jiao, Xiujin Liu… · [HF Mirror](https://huggingface.co/papers/2610.19366)*
+
+To address the pain point that multimodal agents struggle to continuously obtain valid information from heterogeneous multimodal data in long-cycle, lifelong task scenarios, this study proposes a dual-axis analysis framework: Axis 1 sorts out the retention rules and encoding forms of multimodal information, and Axis 2 divides memory management into three layers: static reuse, dynamic update with fixed policies, and policy self-evolution. Based on the framework, core principles for memory design are summarized, and future research challenges and directions in this field are also pointed out.
+
+<FeedbackButtons slug="item:arxiv-2610.19366" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.18072" target="_blank" rel="noopener noreferrer">LensErase: A Foundation Model for Erase Anything</a>
+
+*HF ★ 23 · Yunuo Chen, Xiuyu Wu, Qinhong Yang… · [HF Mirror](https://huggingface.co/papers/2610.18072)*
+
+This paper proposes LensErase, a general foundation model for arbitrary erasure that covers various real-world erasure scenarios including objects, text, and watermarks. The team built a large-scale erasure dataset containing 101 million sample pairs, performed adaptive training based on the text-to-image model Lens, proposed mask-aware RoPE to inject mask information, and paired it with dedicated fine-tuning strategies and inference fidelity schemes. Its performance is significantly leading in multiple benchmark tests, and it can provide base support for erasure-related applications.
+
+<FeedbackButtons slug="item:arxiv-2610.18072" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.13521" target="_blank" rel="noopener noreferrer">Beyond Domain-Routed Supervision: Cross-Teacher Guarding for Multi-Teacher On-Policy Distillation</a>
+
+*HF ★ 18 · Shi-Yu Tian, Yong Liu, Ximan Liu… · [HF Mirror](https://huggingface.co/papers/2610.13521)*
+
+To solve the problem that the original domain routing mechanism in multi-teacher online distillation is prone to gradient conflicts and performance degradation due to differences in teacher styles and expertise, this paper proposes the Road MOPD method with cross-teacher guarding. It introduces non-routing teachers as cross-domain critics, and coordinates multi-source supervision through token-level credit allocation and adaptive gradient projection. Experiments show that its performance improves by more than 5 percentage points in high-conflict scenarios, degradation in weak domains is alleviated, and overall performance across multiple scenarios is better.
+
+<FeedbackButtons slug="item:arxiv-2610.13521" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/amp-beyond-coding" target="_blank" rel="noopener noreferrer">Amp puts AI agents to work beyond code with OpenAI models</a>
+
+*OpenAI*
+
+This article focuses on the capability upgrade of the AI platform Amp: by integrating OpenAI's three new models GPT-6 Astra, Ultrafast, and GPT-Live-1, paired with ChatGPT login capabilities, it breaks through the previous bottleneck where AI agents were mostly limited to code scenarios. Relying on the models' high performance, low latency, real-time interaction features and the connected account system, Amp can support AI agents to operate in various non-code general scenarios, greatly expanding the application boundaries of agents.
+
+<FeedbackButtons slug="item:openai-blog-amp-beyond-coding" client:visible />
+
+## <a href="https://openai.com/index/sentinelone" target="_blank" rel="noopener noreferrer">SentinelOne cuts malware analysis from weeks to hours</a>
+
+*OpenAI*
+
+Cybersecurity vendor SentinelOne uses OpenAI's Daybreak large model to optimize its malware analysis process, drastically reducing the analysis work that originally took weeks to the hour level. This not only significantly reduces the time cost of threat assessment, but also frees up capacity to support investigations of more potential threats, effectively improving overall threat response efficiency and meeting the demand for rapid disposal in offensive and defensive confrontations.
+
+<FeedbackButtons slug="item:openai-blog-sentinelone" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/cyber-verification-program" target="_blank" rel="noopener noreferrer">Expanding the Cyber Verification Program</a>
+
+*Anthropic*
+
+This work launches the updated and upgraded version of the Cyber Verification Program (CVP), which opens two core benefits to qualified cybersecurity practitioners: first, empowering them to use more advanced cybersecurity technologies and capability resources, and second, providing optimized low false-positive interception classifier tools. It aims to reduce barriers to compliant security research and support professionals to carry out security verification-related work efficiently.
+
+<FeedbackButtons slug="item:anthropic-cyber-verification-program" client:visible />
+
+## <a href="https://www.anthropic.com/news/2026-us-midterms" target="_blank" rel="noopener noreferrer">Preparing for the 2026 US midterms</a>
+
+*Anthropic*
+
+This content focuses on the security preparation for the 2026 US midterm elections. The relevant responsible entity released a phased update on election security guarantee measures earlier this year. The core content of this disclosure is the latest work progress of the entity's continuous optimization and upgrading of existing election protection mechanisms and strengthening of various security guarantee measures to meet the protection needs of this election.
+
+<FeedbackButtons slug="item:anthropic-2026-us-midterms" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/on-device-ai-scam-detection-mddi/" target="_blank" rel="noopener noreferrer">Google DeepMind and Singapore Government collaborate to build fine-tuned AI model for scam detection</a>
+
+*Google DeepMind*
+
+Google DeepMind and the Government Technology Agency of Singapore have jointly developed a dedicated anti-fraud AI model. Targeting the demand for conversational fraud interception in private chat scenarios, it adopts a lightweight Gemma model on-device deployment solution, which does not require uploading users' private chat data to the cloud throughout the process. It can complete fraud identification and interception locally on the device with zero cloud data outflow, balancing anti-fraud efficiency and privacy security.
+
+<FeedbackButtons slug="item:deepmind-on-device-ai-scam-detection-mddi" client:visible />
+
+## <a href="https://deepmind.google/blog/developing-gemini-4-argon-responsibly-and-safely/" target="_blank" rel="noopener noreferrer">Developing Gemini 4 Argon responsibly and safely</a>
+
+*Google DeepMind*
+
+This article introduces the responsible and safe development practices for Google's Gemini 4 Argon model: the core process adopts proactive risk prediction, full-process red-teaming testing, multi-dimensional risk (disinformation, security vulnerabilities, ethical conflicts, etc.) mitigation, and value alignment fine-tuning. Actual tests show that it can greatly reduce the probability of unsafe model outputs, providing a reusable practical framework for the safe and compliant implementation of general large model iterations.
+
+<FeedbackButtons slug="item:deepmind-developing-gemini-4-argon-responsibly-and-safely" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/hiro-acev2" target="_blank" rel="noopener noreferrer">HiRO-ACEv2: Simulating extreme weather at 3 km resolution for a fraction of the cost</a>
+
+*Hugging Face*
+
+This research launches the AI-driven extreme weather simulation system HiRO-ACEv2. Addressing the pain point of high computing cost of traditional 3km high-resolution numerical models, it only requires a fraction of the computing power investment of traditional models to achieve 3km resolution extreme weather simulation with the same accuracy. It can accurately capture small-scale disaster processes such as strong convection and extreme precipitation, providing an efficient solution for low-cost high-resolution weather forecasting and climate simulation research.
+
+<FeedbackButtons slug="item:hf-blog-hiro-acev2" client:visible />
+
+## <a href="https://huggingface.co/blog/LiquidAI/lfm25-24b-a2b" target="_blank" rel="noopener noreferrer">Run fast, private agents on-device with LFM2.5-24B-A2B</a>
+
+*Hugging Face*
+
+LFM2.5-24B-A2B is a 24B parameter large model optimized for on-device scenarios, focusing on the demand for locally deployed private agents: through architectural adaptation, it greatly reduces the computing threshold for on-device operation, and can complete the full inference pipeline of the agent without uploading data to the cloud, balancing privacy security and low-latency response. Its operating efficiency and task performance are better than general large models of the same parameter level.
+
+<FeedbackButtons slug="item:hf-blog-lfm25-24b-a2b" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This article sorts out the development history of the concept of Recursive Self-Improvement (RSI): In 1965, scholar Irving John Good first proposed the relevant concept, referring to systems with superhuman intelligence that can independently design better models to achieve iterative upgrades. In 2008, Eliezer Yudkowsky clarified its core feedback logic, that is, AI relies on its existing intelligence to optimize its own cognitive generation mechanism. The implementation of RSI in the modern AI context can be divided into two categories: directly rewriting its own weights, or optimizing the training pipeline.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/10/503350.html" target="_blank" rel="noopener noreferrer">How do complex high-ticket new products win global awards with YouTube's "full-funnel narrative"?</a>
+
+*QbitAI*
+
+Currently, Chinese brands' overseas expansion has shifted from product export to brand globalization. The low-cost user acquisition model is difficult to gain long-term trust from overseas users, and complex high-ticket new products find it even harder to break through cognitive barriers. For its high-end security new product priced at over $200, smart security brand eufy first identified user pain points through research, then took YouTube as the main position to deploy full-funnel narrative marketing around the differentiating feature of "integrated bullet and dome camera", and won the Best Full-Funnel Marketing Award at the YouTube Marketing Awards.
+
+<FeedbackButtons slug="item:qbitai-503350" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/503341.html" target="_blank" rel="noopener noreferrer">Prophets ahead of time! Anthropic's research blueprint leaked, Claude Code was planned 5 years ago</a>
+
+*QbitAI*
+
+Due to a copyright dispute, Anthropic's 2021 top-secret internal roadmap was recently leaked. At that time, the company had just spun off from OpenAI with only a dozen employees, and had already clearly stated its goal to develop a general AI assistant with full software engineer capabilities, planning directions including tool calling, self-evaluation, trillion parameters, and ultra-long context window. Today's Claude Code fully aligns with the original plan, breaking the common perception that large model Agent capabilities developed opportunistically in recent years.
+
+<FeedbackButtons slug="item:qbitai-503341" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/503326.html" target="_blank" rel="noopener noreferrer">DeepSeek servers suffer global outage! Mysterious Harness account appears at the same time</a>
+
+*QbitAI*
+
+Starting from 8:11 AM on October 15, DeepSeek experienced a global service outage, affecting its web client, chat service, V4 Pro and V4.1 Flash APIs. Users from multiple countries reported no response, stuck loading, and server busy errors, with third-party monitoring platforms receiving over 86 fault reports. Currently, the official team has located the fault and is repairing it, and many users speculate that the outage may be related to the launch of a new model.
+
+<FeedbackButtons slug="item:qbitai-503326" client:visible />
