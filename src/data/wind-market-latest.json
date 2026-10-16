@@ -1,308 +1,66 @@
 {
-  "asOf": "2026-10-16T15:32:34.934575",
+  "asOf": "2026-10-16T16:00:43.247547",
   "date": "2026-10-16",
   "indices": [
     {
-      "code": "000001.SH",
       "name": "上证指数",
-      "price": 3716.28,
-      "change_amount": 8.81,
-      "change_pct": 0.24,
-      "emoji": "🔴"
+      "error": "index_data.get_index_price_indicators -> QUOTA_ERROR: [账户积分余额不足，无法完成当前操作。请提示用户先进行充值。官网充值链接地址：https://market.windalice.com/#/user/credits (server=index_data)] 额度/限流错误。detail 中有具体原因，分三种情况处理：1) 日额度用完（detail 含'超限'或'daily'）：告知用户等次日 0 点额度刷新后重试，或换有额度的备用 Key；2) "
     },
     {
-      "code": "399001.SZ",
       "name": "深证成指",
-      "price": 11802.46,
-      "change_amount": -14.33,
-      "change_pct": -0.12,
-      "emoji": "🟢"
+      "error": "index_data.get_index_price_indicators -> QUOTA_ERROR: [账户积分余额不足，无法完成当前操作。请提示用户先进行充值。官网充值链接地址：https://market.windalice.com/#/user/credits (server=index_data)] 额度/限流错误。detail 中有具体原因，分三种情况处理：1) 日额度用完（detail 含'超限'或'daily'）：告知用户等次日 0 点额度刷新后重试，或换有额度的备用 Key；2) "
     },
     {
-      "code": "399006.SZ",
       "name": "创业板指",
-      "price": 2772.38,
-      "change_amount": -10.79,
-      "change_pct": -0.39,
-      "emoji": "🟢"
+      "error": "index_data.get_index_price_indicators -> QUOTA_ERROR: [账户积分余额不足，无法完成当前操作。请提示用户先进行充值。官网充值链接地址：https://market.windalice.com/#/user/credits (server=index_data)] 额度/限流错误。detail 中有具体原因，分三种情况处理：1) 日额度用完（detail 含'超限'或'daily'）：告知用户等次日 0 点额度刷新后重试，或换有额度的备用 Key；2) "
     }
   ],
   "sentiment": {
-    "limit_up": 63,
-    "limit_down": 12,
-    "main_flow_yi": null
+    "limit_up": null,
+    "limit_down": null,
+    "main_flow_yi": null,
+    "error": "analytics_data.get_financial_data -> QUOTA_ERROR: [账户积分余额不足，无法完成当前操作。请提示用户先进行充值。官网充值链接地址：https://market.windalice.com/#/user/credits (server=analytics_data)] 额度/限流错误。detail 中有具体原因，分三种情况处理：1) 日额度用完（detail 含'超限'或'daily'）：告知用户等次日 0 点额度刷新后重试，或换有额度的备用 Key"
   },
   "watchlist": [
     {
       "code": "600519.SH",
-      "name": "贵州茅台",
-      "price": 1329.0,
-      "yesterday_close": 1312.97,
-      "open": 1311.57,
-      "high": 1329.88,
-      "low": 1301.68,
-      "amount_yi": 50.75528306,
-      "change_pct": 1.22,
-      "amplitude": 2.15,
-      "turnover": 0.308,
-      "chg_5d": 5.23,
-      "chg_20d": 3.41,
-      "chg_ytd": -1.21,
-      "pe_ttm": 20.401,
-      "pb": 6.612,
-      "market_cap_yi": 16613.6,
-      "dividend_yield": 3.91,
-      "high_52w": 1531.75,
-      "low_52w": 1151.01,
-      "main_net_today_yi": 5.45855054,
-      "main_net_5d_yi": 24.19238861,
-      "main_net_5d_pct": 14.785400000000001,
-      "main_net_10d_yi": 38.21093809,
-      "main_net_20d_yi": 14.32588107,
-      "kline_5d": [
-        1288.0,
-        1274.89,
-        1286.0,
-        1312.97,
-        1329.0
-      ],
-      "emoji": "🔴"
+      "name": "600519.SH",
+      "error": "stock_data.get_stock_price_indicators -> QUOTA_ERROR: [账户积分余额不足，无法完成当前操作。请提示用户先进行充值。官网充值链接地址：https://market.windalice.com/#/user/credits (server=stock_data)] 额度/限流错误。detail 中有具体原因，分三种情况处理：1) 日额度用完（detail 含'超限'或'daily'）：告知用户等次日 0 点额度刷新后重试，或换有额度的备用 Key；2) "
     },
     {
       "code": "601318.SH",
-      "name": "中国平安",
-      "price": 51.88,
-      "yesterday_close": 51.78,
-      "open": 51.43,
-      "high": 51.88,
-      "low": 51.01,
-      "amount_yi": 34.23651105,
-      "change_pct": 0.19,
-      "amplitude": 1.68,
-      "turnover": 0.623,
-      "chg_5d": -1.8,
-      "chg_20d": -6.56,
-      "chg_ytd": -20.22,
-      "pe_ttm": 5.897,
-      "pb": 0.93,
-      "market_cap_yi": 9394.24,
-      "dividend_yield": 5.26,
-      "high_52w": 71.1882,
-      "low_52w": 46.083,
-      "main_net_today_yi": -1.62652272,
-      "main_net_5d_yi": -7.24474765,
-      "main_net_5d_pct": -13.053400000000002,
-      "main_net_10d_yi": -14.22159718,
-      "main_net_20d_yi": -21.08792434,
-      "kline_5d": [
-        53.24,
-        51.69,
-        51.23,
-        51.78,
-        51.88
-      ],
-      "emoji": "🔴"
+      "name": "601318.SH",
+      "error": "stock_data.get_stock_price_indicators -> QUOTA_ERROR: [账户积分余额不足，无法完成当前操作。请提示用户先进行充值。官网充值链接地址：https://market.windalice.com/#/user/credits (server=stock_data)] 额度/限流错误。detail 中有具体原因，分三种情况处理：1) 日额度用完（detail 含'超限'或'daily'）：告知用户等次日 0 点额度刷新后重试，或换有额度的备用 Key；2) "
     },
     {
       "code": "000858.SZ",
-      "name": "五粮液",
-      "price": 72.07,
-      "yesterday_close": 71.3,
-      "open": 70.98,
-      "high": 72.25,
-      "low": 70.9,
-      "amount_yi": 21.73217873,
-      "change_pct": 1.08,
-      "amplitude": 1.89,
-      "turnover": 0.779,
-      "chg_5d": 2.14,
-      "chg_20d": 2.26,
-      "chg_ytd": -29.59,
-      "pe_ttm": 21.382,
-      "pb": 2.361,
-      "market_cap_yi": 2797.47,
-      "dividend_yield": 7.15,
-      "high_52w": 116.105,
-      "low_52w": 68.1386,
-      "main_net_today_yi": 2.92858458,
-      "main_net_5d_yi": 7.40398033,
-      "main_net_5d_pct": 26.640399999999996,
-      "main_net_10d_yi": 12.1225351,
-      "main_net_20d_yi": 11.38911201,
-      "kline_5d": [
-        71.06,
-        70.46,
-        70.82,
-        71.3,
-        72.07
-      ],
-      "emoji": "🔴"
+      "name": "000858.SZ",
+      "error": "stock_data.get_stock_price_indicators -> QUOTA_ERROR: [账户积分余额不足，无法完成当前操作。请提示用户先进行充值。官网充值链接地址：https://market.windalice.com/#/user/credits (server=stock_data)] 额度/限流错误。detail 中有具体原因，分三种情况处理：1) 日额度用完（detail 含'超限'或'daily'）：告知用户等次日 0 点额度刷新后重试，或换有额度的备用 Key；2) "
     },
     {
       "code": "300750.SZ",
-      "name": "宁德时代",
-      "price": 277.0,
-      "yesterday_close": 278.5,
-      "open": 281.79,
-      "high": 282.0,
-      "low": 273.29,
-      "amount_yi": 82.20747631,
-      "change_pct": -0.54,
-      "amplitude": 3.13,
-      "turnover": 0.698,
-      "chg_5d": -6.97,
-      "chg_20d": -18.06,
-      "chg_ytd": -23.12,
-      "pe_ttm": 15.079,
-      "pb": 3.437,
-      "market_cap_yi": 12817.5,
-      "dividend_yield": 3.0,
-      "high_52w": 467.059,
-      "low_52w": 272.0,
-      "main_net_today_yi": 2.45078806,
-      "main_net_5d_yi": -2.08414024,
-      "main_net_5d_pct": -0.8940999999999999,
-      "main_net_10d_yi": 13.6699666,
-      "main_net_20d_yi": -22.35993187,
-      "kline_5d": [
-        298.38,
-        289.1,
-        280.12,
-        278.5,
-        277.0
-      ],
-      "emoji": "🟢"
+      "name": "300750.SZ",
+      "error": "stock_data.get_stock_price_indicators -> QUOTA_ERROR: [账户积分余额不足，无法完成当前操作。请提示用户先进行充值。官网充值链接地址：https://market.windalice.com/#/user/credits (server=stock_data)] 额度/限流错误。detail 中有具体原因，分三种情况处理：1) 日额度用完（detail 含'超限'或'daily'）：告知用户等次日 0 点额度刷新后重试，或换有额度的备用 Key；2) "
     },
     {
       "code": "688981.SH",
-      "name": "中芯国际",
-      "price": 102.66,
-      "yesterday_close": 104.44,
-      "open": 105.0,
-      "high": 105.0,
-      "low": 100.52,
-      "amount_yi": 38.79162094,
-      "change_pct": -1.7,
-      "amplitude": 4.29,
-      "turnover": 1.892,
-      "chg_5d": -5.31,
-      "chg_20d": -13.86,
-      "chg_ytd": -16.42,
-      "pe_ttm": 121.962,
-      "pb": 5.126,
-      "market_cap_yi": 8790.14,
-      "dividend_yield": 0.0,
-      "high_52w": 176.34,
-      "low_52w": 91.2,
-      "main_net_today_yi": -4.16851154,
-      "main_net_5d_yi": -1.66273858,
-      "main_net_5d_pct": -8.3505,
-      "main_net_10d_yi": -0.71690559,
-      "main_net_20d_yi": -2.80069331,
-      "kline_5d": [
-        106.68,
-        106.0,
-        102.55,
-        104.44,
-        102.66
-      ],
-      "emoji": "🟢"
+      "name": "688981.SH",
+      "error": "stock_data.get_stock_price_indicators -> QUOTA_ERROR: [账户积分余额不足，无法完成当前操作。请提示用户先进行充值。官网充值链接地址：https://market.windalice.com/#/user/credits (server=stock_data)] 额度/限流错误。detail 中有具体原因，分三种情况处理：1) 日额度用完（detail 含'超限'或'daily'）：告知用户等次日 0 点额度刷新后重试，或换有额度的备用 Key；2) "
     }
   ],
   "hotStocks": [
     {
-      "name": "华力创通",
-      "code": "300045.SZ",
-      "price": 0.0,
-      "change_pct": 0.0,
-      "is_limit_up": false,
-      "limit": 20
-    },
-    {
-      "name": "晨曦航空",
-      "code": "300581.SZ",
-      "price": 0.0,
-      "change_pct": 0.0,
-      "is_limit_up": false,
-      "limit": 20
-    },
-    {
-      "name": "金盾股份",
-      "code": "300411.SZ",
-      "price": 0.0,
-      "change_pct": 0.0,
-      "is_limit_up": false,
-      "limit": 20
-    },
-    {
-      "name": "佳力奇",
-      "code": "301586.SZ",
-      "price": 0.0,
-      "change_pct": 0.0,
-      "is_limit_up": false,
-      "limit": 20
-    },
-    {
-      "name": "英搏尔",
-      "code": "300681.SZ",
-      "price": 0.0,
-      "change_pct": 0.0,
-      "is_limit_up": false,
-      "limit": 20
+      "error": "analytics_data.get_financial_data -> QUOTA_ERROR: [账户积分余额不足，无法完成当前操作。请提示用户先进行充值。官网充值链接地址：https://market.windalice.com/#/user/credits (server=analytics_data)] 额度/限流错误。detail 中有具体原因，分三种情况处理：1) 日额度用完（detail 含'超限'或'daily'）：告知用户等次日 0 点额度刷新后重试，或换有额度的备用 Key"
     }
   ],
   "sectors": [
     {
-      "code": "000573.SZ",
-      "name": "粤宏远A",
-      "change_pct": 10.1,
-      "lead_stock": "",
-      "emoji": "🔴"
-    },
-    {
-      "code": "600802.SH",
-      "name": "福建水泥",
-      "change_pct": 10.06,
-      "lead_stock": "",
-      "emoji": "🔴"
-    },
-    {
-      "code": "603668.SH",
-      "name": "天马科技",
-      "change_pct": 10.06,
-      "lead_stock": "",
-      "emoji": "🔴"
-    },
-    {
-      "code": "300681.SZ",
-      "name": "英搏尔",
-      "change_pct": 19.98,
-      "lead_stock": "",
-      "emoji": "🔴"
-    },
-    {
-      "code": "300045.SZ",
-      "name": "华力创通",
-      "change_pct": 20.04,
-      "lead_stock": "",
-      "emoji": "🔴"
+      "error": "analytics_data.get_financial_data -> QUOTA_ERROR: [账户积分余额不足，无法完成当前操作。请提示用户先进行充值。官网充值链接地址：https://market.windalice.com/#/user/credits (server=analytics_data)] 额度/限流错误。detail 中有具体原因，分三种情况处理：1) 日额度用完（detail 含'超限'或'daily'）：告知用户等次日 0 点额度刷新后重试，或换有额度的备用 Key"
     }
   ],
   "news": [
     {
-      "title": "今日A股市场重要快讯汇总｜2026年10月16日",
-      "date": "2026-10-16",
-      "snippet": "一、外围市场与关联资产 隔夜美股三大股指集体收涨，道指涨1.08%，标普500指数涨0.33%，纳指涨0.07%，个股层"
-    },
-    {
-      "title": "A股早报2026年10月16日星期五",
-      "date": "2026-10-16",
-      "snippet": "题材炒股 1、人工智能+ | 工信部正式发布“人工智能赋能新型工业化高价值场景”，覆盖石化、钢铁、汽车、消费电子等20个"
-    },
-    {
-      "title": "A股收评：沪指涨0.24%，军工装备、飞行汽车概念爆发",
-      "date": "2026-10-16",
-      "snippet": "A股主要指数今日盘中冲高回落，截至收盘，沪指涨0.24%报3716.28点，深证成指跌0.12%，创业板指跌0.39%，"
+      "error": "financial_docs.get_financial_news -> QUOTA_ERROR: [账户积分余额不足，无法完成当前操作。请提示用户先进行充值。官网充值链接地址：https://market.windalice.com/#/user/credits (server=financial_docs)] 额度/限流错误。detail 中有具体原因，分三种情况处理：1) 日额度用完（detail 含'超限'或'daily'）：告知用户等次日 0 点额度刷新后重试，或换有额度的备用 Key"
     }
   ]
 }
