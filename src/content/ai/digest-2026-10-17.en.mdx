@@ -1,0 +1,163 @@
+---
+lang: en
+translationKey: digest-2026-10-17
+title: "AI Daily Highlights · 2026-10-17"
+description: "15 papers · Multi-source aggregation + AI summary"
+date: 2026-10-17
+tags: [digest, auto, arxiv, openai, anthropic, deepmind, hf-blog, lil-log]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's content in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Three new cutting-edge academic research results released: flow matching models, linear Transformers, and regulation of deceptive behavior in small and large LLMs</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI, Anthropic, DeepMind announce new implementation progress across multiple scenarios including finance, security, biomedicine, and anti-fraud</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face launches multilingual pretraining corpus and 501B large model, domestic AI embodied and startup tracks see rising popularity</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Cutting-edge Papers</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏢 Big Tech Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💻 Open Source Releases</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Embodied AI</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🚀 Startup News</span>
+  </div>
+</div>
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2610.20636" target="_blank" rel="noopener noreferrer">FlowBudget: Training-Free Sampling-Budget Estimation for Flow Matching Models</a>
+
+*Zahra Dehghani, Pablo Piantanida, Mohammadhadi Shateri*
+
+To address the issue that existing sampling step selection methods for flow matching models rely on multiple rounds of FID testing and incur excessively high costs, this paper proposes FlowBudget, a training-free sampling budget estimation tool: it probes the learned dynamics via simulation-free interpolation, normalizes single-step discrete errors, and combines the result with solver order to directly map the sampling steps that meet accuracy requirements. It supports common solvers including Euler and Heun, and its effectiveness is verified on mainstream flow models such as SiT, eliminating the need for multiple rounds of sampling parameter sweeping.
+
+<FeedbackButtons slug="item:arxiv-2610.20636" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.20637" target="_blank" rel="noopener noreferrer">Expanding Attention: A Taylor-Series Route to Linear-Time Transformers with a Fixed Number of Recurrent States</a>
+
+*Zicong Huang*
+
+This paper proposes a linear-time Transformer: it expands the attention exponential kernel into a truncated Taylor series and factorizes it, uses a fixed number of recurrent states to store causal history, and only requires rank-one outer product updates per token, independent of sequence length, and supports parallel prefilling. Its complexity is nearly linear, with speed on long sequences up to 76x higher than softmax attention; accuracy increases exponentially with order, but cost grows faster, so 3rd order is the optimal choice, and queries and keys need to be normalized to ensure convergence.
+
+<FeedbackButtons slug="item:arxiv-2610.20637" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.20638" target="_blank" rel="noopener noreferrer">Feature Elicitation for SAE Steering of Deceptive Behaviour in Small LLMs</a>
+
+*J Koorndijk*
+
+This study focuses on the deceptive alignment problem of small-parameter LLMs, adopts a new bag-of-words feature extraction pipeline, and locates sparse autoencoder features related to deontological ethics for mechanistic intervention. Experiments show that this method can reduce the alignment fraud compliance gap of Gemma-3-27B-IT to an insignificant level, but is ineffective for LLaMA-3-8B; a new "deceptive defunctionalization" behavior is also discovered, making this the first study confirming that activation-level intervention can alleviate alignment fraud compliance gaps.
+
+<FeedbackButtons slug="item:arxiv-2610.20638" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/itau-generative-ai" target="_blank" rel="noopener noreferrer">How Itaú is building generative AI for its entire customer base</a>
+
+*OpenAI*
+
+Brazil's leading financial institution Itaú is rolling out generative AI deployment for all its customers, implementing an "AI-first" strategy. The bank has launched two core supporting tools: ia.i, a conversational interaction interface for users, and the supporting IARA AI governance platform, which also covers internal employee usage needs. The entire solution adapts to the strict regulatory requirements of the Brazilian financial industry and has been put into practical application.
+
+<FeedbackButtons slug="item:openai-blog-itau-generative-ai" client:visible />
+
+## <a href="https://openai.com/index/stack-overflow-chatgpt-plugin" target="_blank" rel="noopener noreferrer">Stack Overflow for Agents triples signups with ChatGPT plugin</a>
+
+*OpenAI*
+
+This case discloses Stack Overflow's product growth results: two engineers spent only a few weeks developing the "Stack Overflow for Agents" product based on Codex, then launched the ChatGPT plugin linkage scheme, which directly tripled product registrations, and also drove up to a 10x increase in the scale of agents created by users, confirming the strong user acquisition and activation value of large model ecosystem linkage for developer-oriented products.
+
+<FeedbackButtons slug="item:openai-blog-stack-overflow-chatgpt-plugin" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/cyber-verification-program" target="_blank" rel="noopener noreferrer">Expanding the Cyber Verification Program</a>
+
+*Anthropic*
+
+This work officially releases the expanded and upgraded Cyber Verification Program (CVP), opening two core resources to qualified cybersecurity practitioners: first, high-level cybersecurity technical capability support, and second, an optimized low-false-block classifier tool, which can greatly reduce unnecessary interception interference in the security verification process, and improve the practical efficiency and capability ceiling of practitioners' cybersecurity verification work.
+
+<FeedbackButtons slug="item:anthropic-cyber-verification-program" client:visible />
+
+## <a href="https://www.anthropic.com/news/an-update-on-independent-evaluators" target="_blank" rel="noopener noreferrer">Anthropic update on independent evaluators</a>
+
+*Anthropic*
+
+AI company Anthropic recently announced an upgrade to its independent evaluation mechanism, embedding the full independent evaluation chain into the entire model R&D and launch cycle, introducing third-party evaluation entities completely free from internal team intervention to conduct neutral verification of the safety alignment level and potential risks of its large models. This move addresses the credibility gap of enterprise self-assessment, provides a fair basis for regulatory compliance and user trust endorsement, and is a practical exploration of general AI security governance.
+
+<FeedbackButtons slug="item:anthropic-an-update-on-independent-evaluators" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/accelerating-antimicrobial-discovery/" target="_blank" rel="noopener noreferrer">Accelerating the search for antimicrobial peptides with Google Antigravity</a>
+
+*Google DeepMind*
+
+The problem of drug-resistant bacteria is becoming increasingly severe, and new antimicrobial peptides are highly promising anti-infective drug candidates, but traditional screening is extremely inefficient with long R&D cycles. This study uses Google's Antigravity tool for scientific research scenarios to optimize the targeted search and screening process for antimicrobial peptides, which can greatly improve the mining efficiency of new antimicrobial peptides, providing a new efficient technical path for the rapid R&D of anti-infective lead drugs.
+
+<FeedbackButtons slug="item:deepmind-accelerating-antimicrobial-discovery" client:visible />
+
+## <a href="https://deepmind.google/blog/on-device-ai-scam-detection-mddi/" target="_blank" rel="noopener noreferrer">Google DeepMind and Singapore Government collaborate to build fine-tuned AI model for scam detection</a>
+
+*Google DeepMind*
+
+Google DeepMind is collaborating with the Government Technology Agency of Singapore to develop a dedicated AI model fine-tuned for scam detection scenarios. This solution uses a lightweight on-device deployed Gemma model, which can directly identify and block conversational scams in private chat scenarios on local devices without uploading users' private chat data to the cloud, achieving scam prevention and control in private chat scenarios while strictly ensuring user privacy and security.
+
+<FeedbackButtons slug="item:deepmind-on-device-ai-scam-detection-mddi" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/scaling-indic-pretraining" target="_blank" rel="noopener noreferrer">Scaling Indic Pretraining: 2.8 Trillion Tokens and an Open Data Generation Pipeline</a>
+
+*Hugging Face*
+
+This is a study in the field of Indic language large model pretraining: the team collected raw corpora covering 22 official Indian languages, built a high-quality pretraining dataset with a scale of 2.8 trillion tokens, and open-sourced a reproducible end-to-end data generation, cleaning, and deduplication pipeline. The multilingual large model trained on this corpus achieves an average improvement of over 10% compared to the previous state-of-the-art on various Indic language downstream tasks, filling the public data gap for low-resource Indic language pretraining.
+
+<FeedbackButtons slug="item:hf-blog-scaling-indic-pretraining" client:visible />
+
+## <a href="https://huggingface.co/blog/reflection-beam" target="_blank" rel="noopener noreferrer">Welcome Beam: a 501B open model you can own, customize, and scale</a>
+
+*Hugging Face*
+
+The newly released Welcome Beam is an ultra-large-scale open-source large model with a parameter scale of 501B. Its core advantage is full open ownership for users, supporting on-demand custom fine-tuning to adapt to different business scenarios, and it also has flexible scalability that can match different levels of computing power deployment requirements, greatly lowering the threshold for the implementation, secondary development and large-scale application of hundred-billion-parameter large models.
+
+<FeedbackButtons slug="item:hf-blog-reflection-beam" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+The concept of Recursive Self-Improvement (RSI) was first derived from the "ultraintelligent machine" proposed by I.J. Good in 1965, which refers to an agent that can surpass all human intellectual activities and design better systems on its own to achieve self-upgrade. In 2008, Eliezer Yudkowsky clarified that RSI is a feedback loop where AI optimizes its own cognitive architecture relying on existing intelligence. Current RSI in the AI field can either refer to the model directly rewriting its own weights, or broadly refer to the model optimizing its own training pipeline.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/10/503880.html" target="_blank" rel="noopener noreferrer">Another Tsinghua Special Scholarship winner enters AI entrepreneurship: GeoPT first author joins the physical world model track</a>
+
+*QbitAI*
+
+Wu Haixu, winner of the 2022 Tsinghua University Special Scholarship and first author of GeoPT, founded Wuyuan Technology this year, entering the world model track with physical modeling capabilities. It has completed multiple rounds of financing with a valuation of several hundred million US dollars, with investors including first-tier institutions such as Ant Group and Meituan. Its technology continues the GeoPT paradigm, upgrading static geometry to dynamic space through synthetic dynamics, and acquiring physical intuition via label-free learning of particle trajectories.
+
+<FeedbackButtons slug="item:qbitai-503880" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/503865.html" target="_blank" rel="noopener noreferrer">From "understanding the world" to "predicting the next step": How can world models and VLA give robots a real "embodied brain"?</a>
+
+*QbitAI*
+
+The general embodied brain developed by Ant Lingbo is compatible with 17 brands and 20 robot configurations, and has been implemented in scenarios such as pharmacies in Shanghai. The industry has formed a consensus on the integration scheme where VLA is responsible for execution and world models are responsible for pre-deduction before actions: the former has been deployed at scale, while the latter is in trial operation. Zhangjiang has launched China's first heterogeneous humanoid robot training ground, advancing two technical routes in parallel, and opening up the migration path from practical training to industrial deployment.
+
+<FeedbackButtons slug="item:qbitai-503865" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/503861.html" target="_blank" rel="noopener noreferrer">Get 100,000 RMB for telling the truth? NetEase Bage Shuo offers huge rewards for "real demands", no restrictions on major or education background</a>
+
+*QbitAI*
+
+NetEase Youdao's first AI-native voice agent "NetEase Bage Shuo" has launched a user honorary co-creation program with a 100,000 RMB reward. There are no education or professional thresholds, and selected participants can receive benefits including up to 50,000 RMB bonus, co-creation appointment letter, and direct interview pass, with their contributions retained with attribution. Optimized with self-developed technology, the product has a spoken language transcription efficiency 5 times that of typing, supports mutual translation between 124 languages, has a 98% translation accuracy rate in professional fields, processes data locally and is free for life.
+
+<FeedbackButtons slug="item:qbitai-503861" client:visible />
