@@ -1,0 +1,179 @@
+---
+lang: en
+translationKey: digest-2026-10-19
+title: "Daily AI Picks · 2026-10-19"
+description: "17 papers · multi-source aggregation + AI summaries"
+date: 2026-10-19
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, lil-log]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second overview of today's content</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Dense releases of cutting-edge AI technologies, covering agent benchmarks, 501B open-source Beam, new DeepSeek model, and real-time world model EdenLive</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Rich implementation outcomes on the industry side: financial institutions launch generative AI applications, government-enterprise cooperation develops special anti-fraud models</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading institutions simultaneously promote ecosystem construction, covering directions including security verification, multilingual infrastructure, and AI self-improvement research</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Agent</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Large Model</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💼 Industrial Application</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Open Source Progress</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔬 Research Breakthrough</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2610.18784" target="_blank" rel="noopener noreferrer">Pack Light, CarryOn: Building Object-Oriented Context for Long-Horizon Agents</a>
+
+*HF ★ 61 · Yuchen Lu, Julian McAuley, Lei Zhang · [HF Mirror](https://huggingface.co/papers/2610.18784)*
+
+(LLM summarization failed, please supplement manually later)
+
+<FeedbackButtons slug="item:arxiv-2610.18784" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.22471" target="_blank" rel="noopener noreferrer">Has GPT-6-Astra Achieved Embodied Intelligence?</a>
+
+*HF ★ 37 · SenseNova, Joint Research Team, Zhongang Cai… · [HF Mirror](https://huggingface.co/papers/2610.22471)*
+
+This study evaluates the embodied intelligence level of GPT-6-Astra: tests across 12 categories of manipulation and navigation benchmarks show that the model, which supports in-context learning, achieves state-of-the-art performance, and the high-low level agent closed-loop control scheme delivers excellent results. However, real machine deployment has shortcomings such as high demonstration collection costs, and difficulty balancing efficiency and success rate under physical constraints. Currently, it has only crossed the threshold of embodied capability, and has not yet met the requirements for practical embodied intelligence.
+
+<FeedbackButtons slug="item:arxiv-2610.22471" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.20424" target="_blank" rel="noopener noreferrer">BizBench: Unveiling Hidden Challenges in Deploying Long-Horizon Agents for Real-World Business</a>
+
+*HF ★ 28 · Enhan Zhao, Yongqi Tong, Xuejun Yu… · [HF Mirror](https://huggingface.co/papers/2610.20424)*
+
+Addressing the issue that existing long-horizon agent benchmarks only assess final results and cannot adapt to the full-process compliance requirements of high-risk businesses, this paper proposes the BizBench benchmark based on real workflows of payment enterprises. It integrates hundreds of pieces of business knowledge, tools, and 50 complex tasks, evaluating both target completion rate and execution compliance at the same time. Tests show that the highest strict pass rate of cutting-edge models is only 64%, result-oriented assessments will conceal execution violations, and redundant tool calls are common.
+
+<FeedbackButtons slug="item:arxiv-2610.20424" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.19159" target="_blank" rel="noopener noreferrer">Into the Unknown: Benchmarking AI agents on open scientific research problems</a>
+
+*HF ★ 21 · Seungone Kim, Jiayi Geng, Young-Jun Lee… · [HF Mirror](https://huggingface.co/papers/2610.19159)*
+
+To verify whether AI agents can carry out open scientific research, researchers teamed up with the U.S. Department of Energy National Laboratories to launch the "Into the Unknown" benchmark, which requires agents to produce follow-up research papers that meet preset specifications based on given papers, covering 5 cutting-edge fields including quantum computing and materials science. Tests on 135 outputs from 9 cutting-edge agents show that none meet all requirements, more than 80% have problems such as fictional research and data contradictions, and existing AI is far from meeting the threshold for independent scientific research.
+
+<FeedbackButtons slug="item:arxiv-2610.19159" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.23479" target="_blank" rel="noopener noreferrer">HexaShell: A Thin Harness for Exploring the Limits of VLM Agents as Robot Coding Agents</a>
+
+*HF ★ 20 · Hongcheng Gao, Alex Zhou, Jay Zhu… · [HF Mirror](https://huggingface.co/papers/2610.23479)*
+
+To explore the performance boundary of VLM coding agents for robot control, this paper proposes the lightweight framework HexaShell, which is only responsible for translating agent instructions into robot actions, supporting agents to iteratively optimize tool code based on failure logs and locate targets through visual triangulation. It achieves a 39.7% success rate on 42 tasks of the RoboDojo benchmark, setting a new SOTA. Its shortcoming lies in fine contact tasks (such as tight insertion, which only has an 8.3% success rate), and related tools have been open-sourced.
+
+<FeedbackButtons slug="item:arxiv-2610.23479" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/itau-generative-ai" target="_blank" rel="noopener noreferrer">How Itaú is building generative AI for its entire customer base</a>
+
+*OpenAI*
+
+This case focuses on the practice of Brazil's Itaú Unibanco implementing generative AI in the heavily regulated local financial industry: the bank has implemented an AI-first strategy, built two core support systems, namely the generative conversational interaction interface ia.i for all customer groups, and the IARA AI governance platform. The related AI capabilities cover both C-end customer service and internal employee office scenarios, providing practical reference for generative AI implementation in highly regulated industries.
+
+<FeedbackButtons slug="item:openai-blog-itau-generative-ai" client:visible />
+
+## <a href="https://openai.com/index/benefit-street-partners" target="_blank" rel="noopener noreferrer">Benefit Street Partners answers questions faster with Codex</a>
+
+*OpenAI*
+
+Anant Kumar, a researcher at Benefit Street Partners, is developing a professional tool that can compare loan valuations and analyze credit agreements. He introduced Codex into the code review process, which greatly reduced the time spent following up on code iterations, effectively improved the response efficiency for business issues, can faster support credit analysis needs, and meets the high requirements of financial business for feedback timeliness.
+
+<FeedbackButtons slug="item:openai-blog-benefit-street-partners" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/cyber-verification-program" target="_blank" rel="noopener noreferrer">Expanding the Cyber Verification Program</a>
+
+*Anthropic*
+
+The upgraded Cyber Verification Program (CVP) is officially launched, offering two core upgrade benefits to eligible security practitioners: first, providing more advanced cyber technical capability support, and second, launching classifier tools with lower interception false positive rates. This program can reduce the extra operating costs caused by false interceptions, help security personnel improve the efficiency of attack and defense verification and threat handling, and optimize the practicality of the cybersecurity verification process.
+
+<FeedbackButtons slug="item:anthropic-cyber-verification-program" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+Leading AGI enterprise Anthropic has announced a public benefit-oriented equity arrangement: part of the company's shares will be transferred to the newly established Anthropic Public Benefit Fund, which adopts a special structure where the shareholding ratio will increase synchronously with the company's scale expansion and valuation growth. This can ensure that the public continues to share the benefits of AI industry growth, and is an innovative attempt to balance commercial development and public welfare in the AI field.
+
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/accelerating-antimicrobial-discovery/" target="_blank" rel="noopener noreferrer">Accelerating the search for antimicrobial peptides with Google Antigravity</a>
+
+*Google DeepMind*
+
+Currently, drug-resistant bacteria are spreading, and there is an urgent demand for the development of new antibacterial drugs. Traditional antimicrobial peptide screening has low efficiency and long cycles, which limits the R&D process. This research uses Google Antigravity scientific computing tool to carry out antimicrobial peptide screening. With its high-performance computing power and adapted biological computing models, it can greatly improve the efficiency of discovering new antimicrobial peptides, reduce costs and improve efficiency for antibacterial new drug R&D, and provide a new technical path for the prevention and control of drug-resistant bacteria.
+
+<FeedbackButtons slug="item:deepmind-accelerating-antimicrobial-discovery" client:visible />
+
+## <a href="https://deepmind.google/blog/on-device-ai-scam-detection-mddi/" target="_blank" rel="noopener noreferrer">Google DeepMind and Singapore Government collaborate to build fine-tuned AI model for scam detection</a>
+
+*Google DeepMind*
+
+Google DeepMind has reached a cooperation with the Government Technology Agency of Singapore to jointly develop a specially fine-tuned dedicated AI model for scam detection. This solution uses a lightweight on-device Gemma model, which can directly identify and block conversational scam content in private chats locally on the user's device, without uploading private chat data to the cloud throughout the process, balancing scam prevention and control effectiveness and user communication privacy security.
+
+<FeedbackButtons slug="item:deepmind-on-device-ai-scam-detection-mddi" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/scaling-indic-pretraining" target="_blank" rel="noopener noreferrer">Scaling Indic Pretraining: 2.8 Trillion Tokens and an Open Data Generation Pipeline</a>
+
+*Hugging Face*
+
+Addressing the pain points of scarce and uneven quality pretraining data for Indic languages, this research open-sources a standardized high-quality data generation pipeline, based on which an ultra-large-scale multilingual pretraining corpus of 2.8 trillion tokens is built. Models pretrained on this corpus significantly outperform existing baselines on downstream tasks of understanding and generation in various Indian languages, and all resources are open and reproducible.
+
+<FeedbackButtons slug="item:hf-blog-scaling-indic-pretraining" client:visible />
+
+## <a href="https://huggingface.co/blog/reflection-beam" target="_blank" rel="noopener noreferrer">Welcome Beam: a 501B open model you can own, customize, and scale</a>
+
+*Hugging Face*
+
+This paper launches Welcome Beam, a 501B parameter open-source large model that adopts a Mixture of Experts (MoE) architecture, only activating 128B parameters per inference step. It supports users with full authority for private deployment and custom fine-tuning, and can flexibly adapt to different computing scales from a single GPU to supercomputing clusters. Tests show that its performance on tasks such as general reasoning and code generation is comparable to closed-source models of the same scale, and inference efficiency is about 15% higher than similar open-source MoE models.
+
+<FeedbackButtons slug="item:hf-blog-reflection-beam" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This paper sorts out the research context of AI Recursive Self-Improvement (RSI): In 1965, I.J. Good first proposed the related concept, arguing that superintelligent machines can surpass humans in all intellectual activities, and can also design better machines to complete self-iteration; in 2008, Eliezer Yudkowsky clarified that its core is that AI uses its existing capabilities to optimize its own cognitive mechanism. Currently, RSI implementation in the AI field mainly has two paths: directly rewriting its own weights, and optimizing its own training pipeline.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/10/504184.html" target="_blank" rel="noopener noreferrer">Google open-sources new RSI achievement! High proportion of Chinese researchers</a>
+
+*QbitAI*
+
+Google has recently open-sourced the Recursive Self-Improvement (RSI) framework Harness², which allows large models to independently iterate components such as prompts and toolchains. Addressing the pain points of previous RSI lacking evaluation standards in real scenarios and being prone to overfitting to single tasks and falling into noise spirals, it adopts a two-layer recursive architecture of task-level controlled experiments and improvement-level precipitation of general optimizations. GLM-5 equipped with this framework scores 11.5 points higher on office benchmarks, surpassing Gemini 3.5 Flash, and it is now open-source and adapted to multiple coding models.
+
+<FeedbackButtons slug="item:qbitai-504184" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/504136.html" target="_blank" rel="noopener noreferrer">VAST open-sources real-time world model EdenLive! Runs on a single consumer GPU, over 24 FPS at 720P</a>
+
+*QbitAI*
+
+VAST has open-sourced the real-time world model EdenLive, which adopts a core architecture that decouples state maintenance and visual rendering, with related layout 3-4 months ahead of industry consensus. It supports arbitrary reference input and long-term continuous real-time generation in multiple art styles. The 5B parameter model achieves over 24 FPS at 720P resolution on a single RTX 5090, with end-to-end latency at the hundred-millisecond level. It can connect to interactive systems to output corresponding visual content, and weights, code and Demo are now open.
+
+<FeedbackButtons slug="item:qbitai-504136" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/504067.html" target="_blank" rel="noopener noreferrer">Breaking! DeepSeek releases new model, unbeatable cost performance</a>
+
+*QbitAI*
+
+DeepSeek recently launched the new model V4.1-Flash-1017, which has been updated synchronously across all endpoints. The model is specially optimized for DeepSeek Harness version 0.2.1, with significantly improved performance on code and Agent tasks. It also reduces runtime, cuts invalid outputs, and lowers token consumption, achieving a Pareto improvement in performance and cost. The platform has also launched a benefit: eligible new users can receive a limited-time limited-quantity 6 yuan bonus upon first login.
+
+<FeedbackButtons slug="item:qbitai-504067" client:visible />
