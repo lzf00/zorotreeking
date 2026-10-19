@@ -1,0 +1,179 @@
+---
+lang: zh
+translationKey: digest-2026-10-19
+title: "AI 每日精选 · 2026-10-19"
+description: "17 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-10-19
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, lil-log]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">前沿AI技术密集发布，涵盖智能体基准、501B开源Beam、DeepSeek新模、实时世界模型EdenLive</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">产业侧落地成果丰富，金融机构上线生成式AI应用，政企合作研发反诈骗专用模型</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">头部机构同步推进生态建设，覆盖安全验证、多语言基建、AI自改进研究等方向</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖智能体</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥大模型</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💼产业应用</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡开源进展</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔬科研突破</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2610.18784" target="_blank" rel="noopener noreferrer">Pack Light, CarryOn: Building Object-Oriented Context for Long-Horizon Agents</a>
+
+*HF ★ 61 · Yuchen Lu, Julian McAuley, Lei Zhang · [HF 镜像](https://huggingface.co/papers/2610.18784)*
+
+（LLM 摘要失败，请稍后手动补充）
+
+<FeedbackButtons slug="item:arxiv-2610.18784" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.22471" target="_blank" rel="noopener noreferrer">Has GPT-6-Astra Achieved Embodied Intelligence?</a>
+
+*HF ★ 37 · SenseNova, Joint Research Team, Zhongang Cai… · [HF 镜像](https://huggingface.co/papers/2610.22471)*
+
+本研究评估GPT-6-Astra的具身智能水平：跨12类操控导航基准测试显示，支持上下文示例学习的该模型性能达历史最优，高低阶智能体闭环控制方案效果优异，但实机部署存在演示采集成本高、物理约束下效率与成功率难兼顾等短板，目前仅跨过具身能力门槛，尚未达到实用具身智能要求。
+
+<FeedbackButtons slug="item:arxiv-2610.22471" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.20424" target="_blank" rel="noopener noreferrer">BizBench: Unveiling Hidden Challenges in Deploying Long-Horizon Agents for Real-World Business</a>
+
+*HF ★ 28 · Enhan Zhao, Yongqi Tong, Xuejun Yu… · [HF 镜像](https://huggingface.co/papers/2610.20424)*
+
+针对现有长周期智能体基准仅考核最终结果、无法适配高风险业务全流程合规要求的问题，本文提出基于支付企业真实流程的BizBench基准，整合数百份业务知识、工具与50项复杂任务，同时评估目标完成度与执行合规性。测试显示前沿模型最高严格通过率仅64%，结果导向评估会掩盖执行违规，且普遍存在工具调用冗余。
+
+<FeedbackButtons slug="item:arxiv-2610.20424" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.19159" target="_blank" rel="noopener noreferrer">Into the Unknown: Benchmarking AI agents on open scientific research problems</a>
+
+*HF ★ 21 · Seungone Kim, Jiayi Geng, Young-Jun Lee… · [HF 镜像](https://huggingface.co/papers/2610.19159)*
+
+为验证AI智能体能否开展开放科研，研究者联合美国能源部国家实验室推出「未知之境」基准，要求智能体基于给定论文产出符合预设规范的后续研究论文，覆盖量子计算、材料学等5个前沿领域。对9款前沿智能体的135份产出测试显示，无一篇满足全部要求，超8成存在虚构研究、数据矛盾等问题，现有AI远达不到独立科研门槛。
+
+<FeedbackButtons slug="item:arxiv-2610.19159" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.23479" target="_blank" rel="noopener noreferrer">HexaShell: A Thin Harness for Exploring the Limits of VLM Agents as Robot Coding Agents</a>
+
+*HF ★ 20 · Hongcheng Gao, Alex Zhou, Jay Zhu… · [HF 镜像](https://huggingface.co/papers/2610.23479)*
+
+为探索VLM编码智能体的机器人控制性能边界，本文提出轻量框架HexaShell，仅负责转译智能体指令为机器人动作，支持智能体依据失败日志迭代优化工具代码、通过视觉三角测量定位目标。在RoboDojo基准42项任务上达39.7%成功率，刷新SOTA，短板为精细接触类任务（如紧插入仅8.3%），相关工具已开源。
+
+<FeedbackButtons slug="item:arxiv-2610.23479" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/itau-generative-ai" target="_blank" rel="noopener noreferrer">How Itaú is building generative AI for its entire customer base</a>
+
+*OpenAI*
+
+本案例聚焦巴西伊塔乌银行在监管严苛的本土金融行业落地生成式AI的实践：该行推行AI优先战略，搭建两大核心支撑体系，分别是面向全客户群的生成式对话交互界面ia.i，以及IARA AI治理平台，相关AI能力同时覆盖C端客户服务与内部员工办公场景，为高监管行业的生成式AI落地提供了实践参考。
+
+<FeedbackButtons slug="item:openai-blog-itau-generative-ai" client:visible />
+
+## <a href="https://openai.com/index/benefit-street-partners" target="_blank" rel="noopener noreferrer">Benefit Street Partners answers questions faster with Codex</a>
+
+*OpenAI*
+
+Benefit Street Partners的研究员Anant Kumar，正在开发可实现贷款估值比对、信贷协议分析的专业工具。他将Codex引入代码审核环节，大幅压缩了代码迭代的跟进耗时，有效提升了业务问题的响应效率，能够更快支撑信贷类分析需求，适配金融业务对反馈时效的高要求。
+
+<FeedbackButtons slug="item:openai-blog-benefit-street-partners" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/cyber-verification-program" target="_blank" rel="noopener noreferrer">Expanding the Cyber Verification Program</a>
+
+*Anthropic*
+
+本次正式推出升级版网络验证计划（CVP），面向符合资质要求的安全从业者开放两项核心升级权益：一是提供更先进的网络技术能力支持，二是上线拦截误判率更低的分类器工具。该计划可降低误拦带来的额外运营成本，帮助安全人员提升攻防验证、威胁处置效率，优化网络安全验证流程实用性。
+
+<FeedbackButtons slug="item:anthropic-cyber-verification-program" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+头部通用人工智能企业Anthropic公布了公共利益导向的股权安排：将公司部分股份划入新设立的Anthropic公共利益基金，该基金采用特殊架构，持股占比会随公司规模扩张、估值提升同步上涨，可保障公共群体持续分享AI产业成长收益，是AI领域平衡商业发展与公共福祉的创新尝试。
+
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/accelerating-antimicrobial-discovery/" target="_blank" rel="noopener noreferrer">Accelerating the search for antimicrobial peptides with Google Antigravity</a>
+
+*Google DeepMind*
+
+当前耐药菌蔓延，新型抗菌药物研发需求迫切，传统抗菌肽筛选效率低、周期长，限制研发进程。该研究依托谷歌Antigravity科学计算工具开展抗菌肽筛选，借助其高性能算力与适配生物计算模型，可大幅提升新型抗菌肽发掘效率，为抗菌新药研发降本提效，给耐药菌防治提供新的技术路径。
+
+<FeedbackButtons slug="item:deepmind-accelerating-antimicrobial-discovery" client:visible />
+
+## <a href="https://deepmind.google/blog/on-device-ai-scam-detection-mddi/" target="_blank" rel="noopener noreferrer">Google DeepMind and Singapore Government collaborate to build fine-tuned AI model for scam detection</a>
+
+*Google DeepMind*
+
+谷歌DeepMind与新加坡政府科技局达成合作，共同开发经针对性微调的诈骗检测专用AI模型。该方案采用轻量化端侧Gemma模型，可直接在用户设备本地识别拦截私人聊天中的对话类诈骗内容，全程无需将隐私聊天数据上传至云端，兼顾诈骗防控效能与用户通信隐私安全。
+
+<FeedbackButtons slug="item:deepmind-on-device-ai-scam-detection-mddi" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/scaling-indic-pretraining" target="_blank" rel="noopener noreferrer">Scaling Indic Pretraining: 2.8 Trillion Tokens and an Open Data Generation Pipeline</a>
+
+*Hugging Face*
+
+该研究针对印度诸语言（Indic）预训练数据稀缺、质量参差的痛点，开源了标准化高质量数据生成管线，依托其构建了2.8万亿token的超大规模多语言预训练语料。基于该语料预训练的模型，在印度各语言理解、生成类下游任务上性能显著优于现有基线，全部资源开放可复现。
+
+<FeedbackButtons slug="item:hf-blog-scaling-indic-pretraining" client:visible />
+
+## <a href="https://huggingface.co/blog/reflection-beam" target="_blank" rel="noopener noreferrer">Welcome Beam: a 501B open model you can own, customize, and scale</a>
+
+*Hugging Face*
+
+本文推出501B参数的开源大模型Welcome Beam，采用混合专家（MoE）架构，单步推理仅激活128B参数，支持用户全权限私有化部署、定制微调，可灵活适配从单GPU到超算集群的不同算力规模，实测在通用推理、代码生成等任务上性能比肩同量级闭源模型，推理效率较同类开源MoE提升约15%。
+
+<FeedbackButtons slug="item:hf-blog-reflection-beam" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理AI递归自我改进（RSI）的研究脉络：1965年I.J.古德最早提出相关设想，认为超智能机器可在所有智力活动上超越人类，还能设计更优机器完成自我迭代；2008年尤德考斯基明确其核心是AI用现有能力优化自身认知机制。当前AI领域RSI落地主要有直接改写自身权重、优化自身训练管线两类路径。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/10/504184.html" target="_blank" rel="noopener noreferrer">谷歌开源RSI新成果！华人浓度爆表</a>
+
+*量子位*
+
+谷歌最新开源递归自我改进（RSI）框架Harness²，可让大模型自主迭代提示词、工具链等组件，针对过往RSI真实场景无评估标准、易过拟合单任务陷入噪声螺旋的痛点，采用任务级对照实验、改进级沉淀通用优化的双层递归架构。装配该框架的GLM-5在办公基准上提分11.5，反超Gemini 3.5 Flash，目前已开源适配多编码模型。
+
+<FeedbackButtons slug="item:qbitai-504184" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/504136.html" target="_blank" rel="noopener noreferrer">VAST开源实时世界模型EdenLive！单消费级显卡、720P超24FPS</a>
+
+*量子位*
+
+VAST开源实时世界模型EdenLive，采用状态维护与视觉渲染解耦的核心架构，相关布局早于行业共识3-4个月。其支持任意参考输入、多画风长时连续实时生成，单张RTX5090下720P分辨率的5B参数模型生成帧率超24，端到端延迟百毫秒级，可对接交互系统输出对应视觉内容，目前已开放权重、代码及Demo。
+
+<FeedbackButtons slug="item:qbitai-504136" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/504067.html" target="_blank" rel="noopener noreferrer">突发！DeepSeek新模型发布，超级性价比斩杀一切</a>
+
+*量子位*
+
+DeepSeek近日上线新模型V4.1-Flash-1017，已实现全端同步更新。该模型针对DeepSeek Harness 0.2.1版本专项优化，代码、Agent类任务性能显著提升，同时压缩运行时长、减少无效输出、降低token消耗，实现性能与成本的帕累托改进。平台同步推出福利，符合条件的新用户首次登录可领6元限时限量赠金。
+
+<FeedbackButtons slug="item:qbitai-504067" client:visible />
