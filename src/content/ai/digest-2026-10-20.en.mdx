@@ -1,0 +1,205 @@
+---
+lang: en
+translationKey: digest-2026-10-20
+title: "Daily AI Highlights · 2026-10-20"
+description: "20 papers · multi-source aggregation + AI summaries"
+date: 2026-10-20
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second overview of today's content</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Today, 8 cutting-edge AI research papers in fields including multimodality, coding agents, diffusion models and more have been publicly released</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading players including OpenAI, Anthropic and DeepMind have successively announced technological progress and cross-industry cooperation projects</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Frequent industry updates include exposed features of the new Claude model, servitization of quantum computing power, and new teams entering the RSI track</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📝 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Big Tech Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Model Iterations</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💻 Industry Deployment</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚛️ Quantum Computing Power</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2610.25404" target="_blank" rel="noopener noreferrer">MT Forcing: Towards Stable and Consistent Multi-Turn Image Editing with Autoregressive Diffusion</a>
+
+*HF ★ 27 · Houyuan Chen, Fanzhou Wang, Xiangyu Fan… · [HF Mirror](https://huggingface.co/papers/2610.25404)*
+
+To address the pain points of existing multi-turn image editing methods, such as image quality drift, accidental changes to reserved regions or historical edited content after only a few rounds, this paper proposes the MT Forcing training paradigm adapted to autoregressive diffusion-based unified multimodal models: it avoids recursive error accumulation through single-turn distribution matching distillation, and is paired with teacher forcing guidance regularization to ensure cross-turn consistency. Experiments verify that it can significantly improve the image quality stability and content coherence of multi-turn editing.
+
+<FeedbackButtons slug="item:arxiv-2610.25404" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.22791" target="_blank" rel="noopener noreferrer">Self-Evolving Coding Agents via Harness-Policy Optimization</a>
+
+*HF ★ 24 · Zhepei Wei, Wenlin Yao, Baolin Peng… · [HF Mirror](https://huggingface.co/papers/2610.22791)*
+
+To address the suboptimal performance of LLM coding agents when optimizing only the interaction control module or model policy separately, this paper proposes the Self-HPO self-evolution framework: it alternately executes the H step (the current policy independently analyzes defects and generates candidate control modules) and the P step (updates the policy via reinforcement learning based on the selected module). Experiments show that it outperforms single-module optimization baselines on three coding benchmarks, with the average resolution rate of Qwen 3.5-35B increasing by 7 percentage points, with improved generalization and reliability; access to more powerful external models can further boost efficiency.
+
+<FeedbackButtons slug="item:arxiv-2610.22791" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.25690" target="_blank" rel="noopener noreferrer">ScaleNav: Scalable Internet Video Pretraining for Language-Conditioned Local Navigation</a>
+
+*HF ★ 17 · Yihui Yang, Yuanhong Yu, Jiawei Wang… · [HF Mirror](https://huggingface.co/papers/2610.25690)*
+
+To address the pain points of high real-world data collection costs and the sim-to-real gap in simulation data for language-conditioned local robot navigation tasks, the team proposes the three-stage ScaleNav framework: first, use first-person internet videos for instruction-conditioned pretraining to learn goal-oriented visual dynamics, then align executable actions using simulation data with action labels, and finally perform joint fine-tuning. This method far outperforms baselines on two navigation benchmarks, and testing on real quadruped robots verifies its generalization ability in real-world scenarios.
+
+<FeedbackButtons slug="item:arxiv-2610.25690" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.26216" target="_blank" rel="noopener noreferrer">RoAR-VAE: Improving Latent Diffusability through Robust Prediction</a>
+
+*HF ★ 17 · Yang Yue, Fangyun Wei, Yitong Wang… · [HF Mirror](https://huggingface.co/papers/2610.26216)*
+
+This paper addresses the need for visual tokenizers to balance image fidelity and ease of learning for downstream diffusion models. Based on the robust prediction principle that "corrupted latent variables can recover generation-related information", it proposes the RoAR-VAE tokenizer that integrates the dual objectives of robust semantic alignment and robust image reconstruction. With the same training budget, its generation performance exceeds the strongest baseline by 2.19 points, and small text reconstruction accuracy is 16.93 percentage points higher than FLUX.1-VAE, achieving a balance between the two types of performance.
+
+<FeedbackButtons slug="item:arxiv-2610.26216" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.24087" target="_blank" rel="noopener noreferrer">OR-License: Evaluating LLM Agents as Real-World Operations Research Practitioners</a>
+
+*HF ★ 15 · Peisong Wang, Feixue Liu, Yize Meng… · [HF Mirror](https://huggingface.co/papers/2610.24087)*
+
+To address the pain point that existing Operations Research (OR) benchmarks do not cover the full process from raw business materials to deployed solutions, this research launches OR-License, an end-to-end benchmark containing 10 types of industrial scenarios and 31 real paid OR projects with a total value of 3.68 million USD. Paired with the customer simulator ORSim, it uses the DAQ metric to measure the feasibility and quality of solutions. Tests on 11 cutting-edge LLMs show that the strongest model, Claude Code, only reaches 0.87 DAQ (the expert benchmark is 1), still has defects in problem transformation and deployment, and remains far from replacing human experts.
+
+<FeedbackButtons slug="item:arxiv-2610.24087" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2610.22379" target="_blank" rel="noopener noreferrer">When is a large language model a good calibration agent? Physics-labeled prompting for budgeted engineering simulator calibration</a>
+
+*Ruo-Qian Wang*
+
+To address the computing power constraint problem of high-cost engineering simulator calibration, this research proposes an LLM prompt calibration scheme with physical labeling. Tests found that LLMs improve calibration accuracy quickly in the early stage, but the advantage is not long-lasting and output volatility is high. Based on this, a hybrid workflow is designed: first use LLM for warm start, then switch to a traditional optimizer, which far outperforms baselines such as standalone LLMs and Bayesian optimization in calibration efficiency under limited computing power.
+
+<FeedbackButtons slug="item:arxiv-2610.22379" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.22380" target="_blank" rel="noopener noreferrer">Trust but Verify: Designing Region-Inhomogeneous Forward Dynamics for Discrete Diffusion</a>
+
+*Gunmay Jhingran*
+
+To address the problem that discrete text diffusion defaults to fully trusting context, which easily propagates errors, this paper designs region-inhomogeneous forward dynamics: use absorption kernels for missing positions, low-rate random replacement for context positions, and anneal and inject noise into suspicious context during inference. The 170M model only requires 5 hours of fine-tuning on a 6G laptop GPU, with a random dirty data detection recall of 0.96 and precision of 0.91, completion F1 score improved by up to 6.4, no degradation on clean inputs, and no significant improvement on near-distribution dirty data.
+
+<FeedbackButtons slug="item:arxiv-2610.22380" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.22381" target="_blank" rel="noopener noreferrer">Binding-Specific Relearning Savings for Test-Time Continual Learning</a>
+
+*Zhe Zhou*
+
+To address the problem that test-time continual learning is only evaluated by current output accuracy, which cannot reflect the impact of old experience on subsequent updates, this research sets up three groups of controlled experiments using Qwen2.5-1.5B as the test subject. It finds that models that have correctly learned fact bindings, even at the stage of partial forgetting, still have a relearning efficiency about 18% higher than control groups without relevant learning, proving that current behavioral accuracy will underestimate the retention effect of acquired experience.
+
+<FeedbackButtons slug="item:arxiv-2610.22381" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/low-resource-programming-languages" target="_blank" rel="noopener noreferrer">Advancing coding in low‑resource programming languages</a>
+
+*OpenAI*
+
+This paper addresses the pain point of insufficient AI coding ability for low-resource programming languages. OpenAI has built a new dedicated evaluation system around three core requirements: general software engineering tasks, SQLite scenario adaptation, and COBOL system migration. Using this as a guide to optimize ChatGPT, the model's code generation, adaptation and migration capabilities for niche programming languages have been significantly improved, providing technical support for scenarios such as legacy system transformation.
+
+<FeedbackButtons slug="item:openai-blog-low-resource-programming-languages" client:visible />
+
+## <a href="https://openai.com/index/itau-generative-ai" target="_blank" rel="noopener noreferrer">How Itaú is building generative AI for its entire customer base</a>
+
+*OpenAI*
+
+Itaú, Brazil's leading financial institution operating in the most strictly regulated financial sector in the region, is advancing a system-wide generative AI layout, implementing an AI-first strategy, and building two core pillars: one is ia.i, a conversational interaction interface for all customer groups, and the other is the supporting IARA AI governance platform, which covers the needs of both end consumers and internal employees, realizing full-scenario deployment of generative AI within the compliance framework.
+
+<FeedbackButtons slug="item:openai-blog-itau-generative-ai" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/cyber-verification-program" target="_blank" rel="noopener noreferrer">Expanding the Cyber Verification Program</a>
+
+*Anthropic*
+
+The upgraded Cyber Verification Program (CVP) is officially launched, offering two core benefits exclusively to qualified security professionals: first, providing more advanced technical support for cybersecurity capabilities, and second, launching an optimized low-false-block classifier, which can significantly reduce the probability of legitimate security research activities being incorrectly intercepted, enabling security practitioners to efficiently carry out legal security testing, vulnerability discovery and other research work.
+
+<FeedbackButtons slug="item:anthropic-cyber-verification-program" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+AI company Anthropic has released a public benefit investment plan: it will allocate part of the company's shares to establish a dedicated Anthropic Public Benefit Fund, which adopts a special dynamic shareholding structure. The proportion of shares held by the fund will automatically increase synchronously with the expansion of the company's scale and valuation growth, ensuring that a stable share of the company's development dividends is continuously invested in public welfare, fulfilling the core goal of AI technology development benefiting the public.
+
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/accelerating-antimicrobial-discovery/" target="_blank" rel="noopener noreferrer">Accelerating the search for antimicrobial peptides with Google Antigravity</a>
+
+*Google DeepMind*
+
+This paper addresses the pain points of low efficiency and long cycles of traditional screening processes for new antimicrobial peptides, which are difficult to meet the clinical needs of drug-resistant bacterial infection prevention and control. It proposes a technical solution for high-throughput screening relying on Google's Antigravity for Science tool launched for scientific research scenarios, which can greatly shorten the discovery cycle of antimicrobial peptide candidate molecules and reduce screening costs, providing an efficient new path for the research and development of new antimicrobial peptides.
+
+<FeedbackButtons slug="item:deepmind-accelerating-antimicrobial-discovery" client:visible />
+
+## <a href="https://deepmind.google/blog/on-device-ai-scam-detection-mddi/" target="_blank" rel="noopener noreferrer">Google DeepMind and Singapore Government collaborate to build fine-tuned AI model for scam detection</a>
+
+*Google DeepMind*
+
+Google DeepMind and the Government Technology Agency of Singapore have jointly developed a dedicated fine-tuned AI model for fraud detection. This solution uses a lightweight on-device deployed Gemma model, which can directly identify and block conversational fraud on local devices without uploading users' private chat data to the cloud for processing. Under the premise of strictly protecting user privacy, it realizes fraud risk prevention and control in private chat scenarios, providing a feasible path for the deployment of privacy-first anti-fraud technology.
+
+<FeedbackButtons slug="item:deepmind-on-device-ai-scam-detection-mddi" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/hf-torchneuron" target="_blank" rel="noopener noreferrer">TorchNeuron: running HF models on AWS Trainium is easier than ever</a>
+
+*Hugging Face*
+
+The newly launched TorchNeuron is a PyTorch toolchain adapted to AWS's self-developed Trainium training chip. Its core value is to greatly simplify the deployment process of Hugging Face ecosystem models. Developers do not need to make a large number of low-level adaptation changes to existing HF models to run them directly on Trainium chips, fully leveraging its cost-effective computing power advantages, lowering the threshold for LLM training deployment, and reducing the time and technical cost of model migration.
+
+<FeedbackButtons slug="item:hf-blog-hf-torchneuron" client:visible />
+
+## <a href="https://huggingface.co/blog/nvidia/scaling-indic-pretraining" target="_blank" rel="noopener noreferrer">Scaling Indic Pretraining: 2.8 Trillion Tokens and an Open Data Generation Pipeline</a>
+
+*Hugging Face*
+
+This paper addresses the pain point that most Indic languages are low-resource and lack pretraining data. It open-sources a reproducible multimodal data generation and cleaning pipeline, and builds a large-scale pretraining corpus covering more than 20 Indian languages with a total size of 2.8 trillion tokens. The multilingual pretrained model trained on this corpus significantly outperforms existing baselines on various understanding and generation tasks for Indic languages, and all full-stack resources are open-source.
+
+<FeedbackButtons slug="item:hf-blog-scaling-indic-pretraining" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This article sorts out the development context of AI recursive self-improvement (RSI): the concept was first proposed by Irving John Good in 1965, referring to superintelligence that can surpass all human intellectual activities and iteratively design better systems; in 2008, Eliezer Yudkowsky clarified that its core is the feedback loop where AI upgrades its own cognitive mechanism relying on existing capabilities. Current implementation paths include two categories: directly rewriting its own weights, and optimizing training pipelines.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/10/504314.html" target="_blank" rel="noopener noreferrer">New Claude model exposed! It breaks fixed thinking patterns and fixes bugs both symptomatically and at the root</a>
+
+*QbitAI*
+
+Recently, the top three AI players will intensively launch new models: Anthropic's new version of Claude has upgraded reasoning and intent recognition capabilities, can trace root causes when fixing bugs to solve similar problems all at once, and can also break out of habitual thinking to provide innovative solutions; Google's Gemini 4 Carbon has improved programming and vision capabilities, with internal test feedback benchmarking it against Claude Opus 5.5; OpenAI will also release GPT-6.1 Terra.
+
+<FeedbackButtons slug="item:qbitai-504314" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/504277.html" target="_blank" rel="noopener noreferrer">From hundred-qubit chips to complete machine delivery, this quantum computing firm is turning quantum computing power into callable services</a>
+
+*QbitAI*
+
+Currently, classical computing power supply is tight and prices are soaring. Limited by the underlying computing paradigm, even stacking a large number of GPUs cannot efficiently process NP-hard problems such as molecular simulation and large-scale combinatorial optimization. Quantum computing relies on the properties of qubit superposition and entanglement, with computing power growing exponentially with the number of qubits. As the third type of computing power, QPU can break through the ceiling of classical computing, and relevant enterprises are promoting the deployment of quantum computing power as callable services.
+
+<FeedbackButtons slug="item:qbitai-504277" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/504294.html" target="_blank" rel="noopener noreferrer">Team incubated by Tongyan Research Institute also enters the RSI space</a>
+
+*QbitAI*
+
+Currently, AI competition is shifting from general capabilities to the accumulation of personalized long-term exclusive capabilities. Both OpenAI and Meta have laid out technologies for long-term memory and personalized execution, and the trend of AI evolving towards exclusive long-term intelligent services is clear. Tongyan Lingzhi, a company incubated by the Tongyan Research Institute, has entered the RSI track, focusing on the research and development of continuously self-evolving exclusive models, which can precipitate the business experience of enterprises and individuals into iterable exclusive intelligent assets.
+
+<FeedbackButtons slug="item:qbitai-504294" client:visible />
