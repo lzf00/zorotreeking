@@ -1,0 +1,179 @@
+---
+lang: en
+translationKey: digest-2026-10-21
+title: "AI Daily Digest · 2026-10-21"
+description: "17 papers · multi-source aggregation + AI summary"
+date: 2026-10-21
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, lil-log]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's content in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Multiple AI institutions around the world have collectively released cutting-edge technological achievements in fields including multimodal agents, generative rendering, and surgical simulation</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI released implementation data for ChatGPT Work and GPT-6.1, with outstanding performance in enterprise efficiency improvement and investment decision-making</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">DeepMind and domestic manufacturers have made new progress in biological research, anti-fraud, domestic agents, large model memory and other fields</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📈 Commercial Implementation</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔬 Research Empowerment</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Domestic Model Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Technological Breakthroughs</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2610.26203" target="_blank" rel="noopener noreferrer">Focused Omni-Modal GUI Agents</a>
+
+*HF ★ 36 · Fuyao Zhang, Wenwen He, Jiaming Zhang… · [HF mirror](https://huggingface.co/papers/2610.26203)*
+
+To address the problem that full-modal GUI agents are prone to sequence distraction and trajectory drift when processing full context uniformly, this paper proposes FocusGUI, a lightweight adapter: it can dynamically sort the priority of multimodal channels according to single-step decision requirements, compress relevant features and inject them into the frozen decoder, and only relies on action supervision training without fine-tuning the backbone. Experiments show that compared with the frozen backbone, it improves average type matching by 33.2 and exact matching by 3 times, and is 30.1 higher in type matching than existing state-of-the-art enhancement methods.
+
+<FeedbackButtons slug="item:arxiv-2610.26203" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.28578" target="_blank" rel="noopener noreferrer">Sage-A1.5: From Long-Horizon Execution to Scientific Exploration with Capability Composition</a>
+
+*HF ★ 31 · Wenjie Lou, Tianshuo Peng, Shiyang Feng… · [HF mirror](https://huggingface.co/papers/2610.28578)*
+
+Sage-A1.5 is a 35B parameter MoE architecture agent model developed based on the previous generation A1, with three core optimizations: parallel task orchestration supporting context isolation of multiple sub-agents, a verification mechanism with progress check and policy reflection, and scientific research capabilities for open exploratory research. Compared with the previous generation, it can complete long-cycle complex tasks more reliably and efficiently, and also supports interdisciplinary scientific research exploration, providing a usable foundation for relevant academic research.
+
+<FeedbackButtons slug="item:arxiv-2610.28578" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.28630" target="_blank" rel="noopener noreferrer">SolarRenderer: Few-Step Generative Reference Rendering</a>
+
+*HF ★ 22 · Guian Fang, Shengju Qian, Dongyue Lu… · [HF mirror](https://huggingface.co/papers/2610.28630)*
+
+Aiming at the pain points of existing video renderers being engine-bound, requiring many sampling steps, and having weak generalization, this paper proposes SolarRenderer, a structure-conditioned renderer, which adapts the frozen large model backbone through two lightweight LoRAs, requiring only 4 sampling steps, with a speed 12.3 times that of 50-step solutions, and its block causal variant can generate 768p videos in real time. Trained on 136,000 aligned clips, it achieves SOTA performance and can generalize to 11 unseen structure representations such as skeletons and hand-drawn sketches.
+
+<FeedbackButtons slug="item:arxiv-2610.28630" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.25844" target="_blank" rel="noopener noreferrer">SWIFT: Self-guided Weak-to-strong dIFfusion models via Target extrapolation</a>
+
+*HF ★ 18 · Yanjin He, Cuifeng Shen, Wanzhou Lei… · [HF mirror](https://huggingface.co/papers/2610.25844)*
+
+To address the pain points of high training cost of diffusion models and additional overhead of inference guidance, this paper proposes SWIFT, a self-guided weak-to-strong diffusion training method: it reuses the frozen early-stage weak denoiser to extrapolate the regression target, strengthens the underfitting components of the model, and discards the guidance after training with no additional inference overhead. Theoretical proof shows that this method can reduce errors, and in experiments, the ImageNet-256 task outperforms the baseline FID with only half the computing power, and high-quality generation can be achieved without inference guidance.
+
+<FeedbackButtons slug="item:arxiv-2610.25844" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.26067" target="_blank" rel="noopener noreferrer">PhysSkin++: Real-Time and Generalizable Physics-Based Animation via Self-Supervised Neural Skinning</a>
+
+*HF ★ 12 · Yuanhang Lei, Baofei Liu, Xingxuan Li… · [HF mirror](https://huggingface.co/papers/2610.26067)*
+
+Aiming at the generalization challenge of real-time physical animation across diverse 3D shapes and discrete representations, this paper proposes the PhysSkin++ physics-aware framework: it uses a neural skinning field autoencoder to generate deformation subspaces without per-object training, paired with a physical self-supervised strategy combined with gradient correction to stabilize constraint optimization, and adds a self-supervised complementary objective to learn elastic responses. Verification shows that it supports real-time controllable animation with collision for multiple types of 3D representations, and has excellent cross-shape generalization performance.
+
+<FeedbackButtons slug="item:arxiv-2610.26067" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/ted-taylor-restaurant" target="_blank" rel="noopener noreferrer">Franchisee reconciles cash in 94% less time with ChatGPT Work</a>
+
+*OpenAI*
+
+An independent catering franchisee operating both Schlotzsky's and Cinnabon brands introduced ChatGPT Work to restructure its operational workflow, reducing cash reconciliation time by 94% and menu repricing time by 95%. The new process built is expected to unlock $100,000 in cash flow, fully verifying the practical implementation value of generative AI tools in reducing costs, improving efficiency, and optimizing capital turnover for physical franchise stores.
+
+<FeedbackButtons slug="item:openai-blog-ted-taylor-restaurant" client:visible />
+
+## <a href="https://openai.com/index/terminal-x" target="_blank" rel="noopener noreferrer">Terminal X matches senior investor judgment 88.6% with GPT-6.1</a>
+
+*OpenAI*
+
+This study discloses the actual performance of the investment research tool Terminal X equipped with the GPT-6.1 Sol large model: its built-in Eval Agent uses 54 professional indicators to score output results, and finally achieves an 88.6% matching rate with the judgments of senior investors. At the same time, it detects 25% more deviation items that violate fund entrustment requirements than the original solution, which can effectively adapt to the judgment and compliance verification needs of professional investment research scenarios.
+
+<FeedbackButtons slug="item:openai-blog-terminal-x" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/announcements" target="_blank" rel="noopener noreferrer">Announcements</a>
+
+*Anthropic*
+
+This is the official public statement of AI safety R&D enterprise Anthropic. As a professional institution focusing on AI safety, its core R&D goal is to build AI systems that are highly reliable, interpretable, and controllable by humans, prioritize safety as the core orientation to promote technology implementation, explore feasible development paths that balance AI technology iteration and risk prevention and control, and provide a reference for the safe development of the industry.
+
+<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+This announcement titled *Investing in the Public Benefit* shows that AI enterprise Anthropic has announced that it will inject part of the company's shares into the newly established Anthropic Public Benefit Fund. The fund has a special structure that gradually increases the shareholding ratio as the enterprise grows, aiming to tie the development dividends of the enterprise to public interests, and explore a feasible path for technology enterprises to fulfill public responsibilities in the stage of AI commercialization.
+
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/accelerating-antimicrobial-discovery/" target="_blank" rel="noopener noreferrer">Accelerating the search for antimicrobial peptides with Google Antigravity</a>
+
+*Google DeepMind*
+
+In response to the current insufficient clinical response to drug-resistant bacterial infections, new antimicrobial peptides are a highly promising R&D direction, but the traditional screening mode has low efficiency and long cycles. This research relies on Google's Antigravity research tool to accelerate the screening process of new antimicrobial peptides, which can greatly reduce R&D costs and shorten the mining cycle of candidate molecules, providing a new technical path for the rapid R&D of lead drugs against drug-resistant bacteria.
+
+<FeedbackButtons slug="item:deepmind-accelerating-antimicrobial-discovery" client:visible />
+
+## <a href="https://deepmind.google/blog/on-device-ai-scam-detection-mddi/" target="_blank" rel="noopener noreferrer">Google DeepMind and Singapore Government collaborate to build fine-tuned AI model for scam detection</a>
+
+*Google DeepMind*
+
+Google DeepMind and the Government Technology Agency of Singapore have jointly developed a special fine-tuned AI model for fraud detection, which adopts a lightweight Gemma model deployed on the end side, which can directly identify and block conversational fraud in private chats locally on the user's device, without uploading private chat data to the cloud throughout the process, achieving zero cloud data outflow, fully protecting user communication privacy while ensuring anti-fraud efficiency.
+
+<FeedbackButtons slug="item:deepmind-on-device-ai-scam-detection-mddi" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/cosmos3-h-dreams" target="_blank" rel="noopener noreferrer">NVIDIA Cosmos3-H-Dreams: Bringing Clinical Surgery to Life Through Generative Simulation</a>
+
+*Hugging Face*
+
+This article introduces NVIDIA's launched Cosmos3-H-Dreams generative surgery simulation platform, which uses multimodal generative AI modeling to reproduce human anatomical structures, instrument interaction feedback and intraoperative physiological changes with high accuracy, supports customization of different case scenarios and emergency simulation, and its realism far exceeds traditional simulation solutions. It can be applied to practical training for surgeons and pre-rehearsal of individualized surgical plans, effectively reducing clinical practical operation risks.
+
+<FeedbackButtons slug="item:hf-blog-cosmos3-h-dreams" client:visible />
+
+## <a href="https://huggingface.co/blog/allenai/fairstress" target="_blank" rel="noopener noreferrer">FairStress: A deeper evaluation of fairness in LLM decision-making</a>
+
+*Hugging Face*
+
+This paper proposes FairStress, a deep evaluation framework for the fairness of LLM decision-making, which breaks through the limitations of traditional surface-level fairness detection by constructing boundary stress test cases covering multiple sensitive attributes and multiple decision scenarios. Tests found that the fairness degradation of mainstream large models in high-pressure boundary scenarios far exceeds that in conventional scenarios, and ordinary evaluations will greatly underestimate fairness risks. This framework can accurately locate the implicit fairness defects of large models.
+
+<FeedbackButtons slug="item:hf-blog-fairstress" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This article sorts out the conceptual evolution of recursive self-improvement (RSI): In 1965, I.J. Good first proposed the idea of superintelligent machines, referring to agents that can surpass all human intellectual activities and design better systems to complete self-iteration; In 2008, Eliezer Yudkowsky clarified that the core of RSI is the feedback loop through which AI upgrades its own cognitive base relying on existing intelligence. The current implementation of RSI in the AI field includes two paths: directly rewriting its own weights and optimizing training pipelines.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/10/504608.html" target="_blank" rel="noopener noreferrer">Feishu Doubao Work AI Pioneer Future Talent Competition: Enterprises are scrambling for people who can use AI to get things done</a>
+
+*QbitAI*
+
+On October 20, the Feishu Doubao Work AI Pioneer Future Talent Competition concluded in Beijing, with 12 teams of contestants relying on Feishu and Doubao tools to solve real business problems for enterprises. The competition aims to bridge the gap between supply and demand of AI talents between universities and enterprises. At the same time, it jointly released an AI talent observation report with the Digital Intelligence Education University Alliance, which collects data from more than 4,300 teams and hundreds of enterprises, highlighting the new orientation of enterprise recruitment: more emphasis is placed on candidates' ability to implement business and deliver results using AI.
+
+<FeedbackButtons slug="item:qbitai-504608" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/504517.html" target="_blank" rel="noopener noreferrer">Top Domestic Model Agent! MiniMax's Overhauled Flash Boasts Strong Performance, Full-Time Ultra-Low Pricing</a>
+
+*QbitAI*
+
+MiniMax's launched M3.1 Flash is the previously anonymous top-ranking "Jade Rabbit" model. Its ALE score for agent tasks ranks first among domestic models, with capabilities in coding, cybersecurity and other fields among the first echelon globally, and output peak exceeding 200 TPS. The pricing is extremely low: only 1 yuan per million input tokens, the comprehensive cost is 30% of the previous generation, and the cost performance matches the low price of GPT-4.1 Flash, bringing new cost performance pressure to overseas closed-source large models.
+
+<FeedbackButtons slug="item:qbitai-504517" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/504456.html" target="_blank" rel="noopener noreferrer">Three Key Pieces of the RSI Puzzle, MemT 1.0 Fills the "Memory" Gap from the Model Layer</a>
+
+*QbitAI*
+
+Current research on AI self-improvement (RSI) urgently needs a reusable experience inheritance mechanism, and existing solutions are mostly external experience libraries. The newly open-sourced MemT 1.0 is the first memory-native model verified at nearly 300B parameter scale, which encodes experience into internal dynamic states, allowing the model to autonomously learn the logic of memory reading, writing and updating. Its performance is not inferior to external memory and has a higher expansion ceiling, with two parameter versions of 36B and 288B launched.
+
+<FeedbackButtons slug="item:qbitai-504456" client:visible />
