@@ -1,0 +1,205 @@
+---
+lang: zh
+translationKey: digest-2026-10-22
+title: "AI 每日精选 · 2026-10-22"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-10-22
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face、arXiv集中发布智能体、视频生成、大模型机制等十余项前沿AI研究成果</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI、DeepMind等大厂接连披露企业服务、反诈骗、生物医药等领域落地进展</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内清华系团队在医疗AI、具身智能、Physical AI赛道接连取得技术突破</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 智能体</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 大模型</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔬 学术研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏭 产业落地</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ 具身智能</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2610.26828" target="_blank" rel="noopener noreferrer">Agent World Model in the Wild: Computer-Use Agent Environment Synthesis</a>
+
+*HF ★ 25 · Zhaoyang Wang, Qianhui Wu, Haorui Wang… · [HF 镜像](https://huggingface.co/papers/2610.26828)*
+
+（LLM 摘要失败，请稍后手动补充）
+
+<FeedbackButtons slug="item:arxiv-2610.26828" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.28577" target="_blank" rel="noopener noreferrer">Cache Engineering for Agents</a>
+
+*HF ★ 22 · Tianyu Fu, Ruoxi Wang, Zihan Min… · [HF 镜像](https://huggingface.co/papers/2610.28577)*
+
+（LLM 摘要失败，请稍后手动补充）
+
+<FeedbackButtons slug="item:arxiv-2610.28577" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.17860" target="_blank" rel="noopener noreferrer">Socratic Skill Learning: Interleaving Teaching and Practice for Transferable Agent Skills</a>
+
+*HF ★ 21 · Letian Zhu, Han Li, Yifan Yao… · [HF 镜像](https://huggingface.co/papers/2610.17860)*
+
+针对大模型智能体可迁移技能学习中适用条件验证不足的痛点，提出苏格拉底技能学习（SSL）方法，交替融合专家引导和智能体自主实操，智能体自主完成环境交互、技能适配。新建SkillTransferBench评测集验证显示，优化后的问题引导型SSL效用达0.805，优于现有蒸馏类基线，专家交互token成本较基础版降61.7%。
+
+<FeedbackButtons slug="item:arxiv-2610.17860" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.29989" target="_blank" rel="noopener noreferrer">Looking Ahead: Modeling Future Evolution in Autoregressive Video Generation</a>
+
+*HF ★ 13 · Ruopeng Gao, Yukun Huang, Jiarui Hu… · [HF 镜像](https://huggingface.co/papers/2610.29989)*
+
+针对自回归视频扩散逐块生成时，教师强制训练易依赖时序冗余走局部连续性捷径、未有效建模场景演化的问题，本文提出未来块预测（FCP）辅助目标，无需额外预训练编码器，联合原目标优化时要求模型跳过中间帧预测远期块。该方法以更低训练算力生成物理合理性更优的视频，还能习得更结构化表征，可支撑自回归世界模型研发。
+
+<FeedbackButtons slug="item:arxiv-2610.29989" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.28589" target="_blank" rel="noopener noreferrer">AgenticRoboRL: Bringing Coding-Agent Post-Training to Agentic Robotics</a>
+
+*HF ★ 12 · Xinxin Liu, Bingxin Xu, Wenrui Bao… · [HF 镜像](https://huggingface.co/papers/2610.28589)*
+
+针对现有智能体机器人系统依赖闭源大模型作规划器、未优化规划器本身能力的问题，本文提出AgenticRoboRL框架，采用监督微调加多轮强化学习方案，配工具链专属适配层适配不同执行机制，可跨执行端对规划器做后训练。在LIBERO-PRO上，9B参数规划器成功率从18.1%升至71%，接近带外挂存储的Codex水平，验证了方案有效性，相关资源将开源。
+
+<FeedbackButtons slug="item:arxiv-2610.28589" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2610.26866" target="_blank" rel="noopener noreferrer">High-dimensional layer-state trajectories reveal the internal dynamics of transformer inference</a>
+
+*Heng Zhao, Yufei Wang, Ruidian Song…*
+
+针对过往大模型机理研究仅定位功能部件、未刻画推理动态的问题，该研究经多个主流大模型验证，通过分析Transformer推理的高维层状态轨迹，证实层序是架构适配的通用计算支架而非训练特有产物，可通过局部执行器、置信门在不干扰正常输出的前提下精准调控内部轨迹，为其推理观测与干预提供可行路径。
+
+<FeedbackButtons slug="item:arxiv-2610.26866" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.26914" target="_blank" rel="noopener noreferrer">Steerable Pluralistic Policy Alignment from Anonymized Crowd Feedback</a>
+
+*Akansha Kalra, Ellen R. Novoseller, Vernon J. Lawhern…*
+
+针对现有AI多元偏好对齐需获取标注者身份、算力成本高的问题，本文提出P3L框架，无需标注者身份，通过PCA从匿名众包反馈中联合学习轨迹嵌入与偏好方向共享基。多具身控制任务实验表明，该方法可快速实现个性化对齐，泛化至分布外新用户，性能达标同时显著降本，适配不同查询预算。
+
+<FeedbackButtons slug="item:arxiv-2610.26914" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.26932" target="_blank" rel="noopener noreferrer">Expert-Guided Rubrics as Dense Reward Signals for Reinforcement Learning in Non-Verifiable Domains</a>
+
+*Ashish Bansal, Hossam Amer, Keerat Kaur Guliani…*
+
+针对金融等不可验证领域的大模型智能体，原有强化学习依赖可验证任务的二元奖励，稀疏的专家分级奖励易导致GRPO算法优化停滞。该研究提出将少量专家制定的评分规则转化为密集奖励，结合检索指标生成适配GRPO的混合训练信号。实验显示，较稀疏奖励基线，其Recall@3最高提升6%，MRR@3提升6.7%。
+
+<FeedbackButtons slug="item:arxiv-2610.26932" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/att-legal" target="_blank" rel="noopener noreferrer">How AT&T is rethinking in-house legal work with OpenAI</a>
+
+*OpenAI*
+
+本文介绍AT&T联合OpenAI优化内部法务工作的实践：AT&T依托OpenAI的技术支撑，由旗下LegalEdge团队重点重构法律需求受理流程、推动专业法律判断能力的规模化复用，提升法务运转效率，有效降低内部法律知识获取门槛，为AI在大型企业法务、合规场景的落地探索了可参考的实操方向。
+
+<FeedbackButtons slug="item:openai-blog-att-legal" client:visible />
+
+## <a href="https://openai.com/index/broad-access-through-consistent-standards" target="_blank" rel="noopener noreferrer">Broad access through consistent standards</a>
+
+*OpenAI*
+
+本文聚焦大模型技术普惠推广中的合规落地问题，核心做法是OpenAI依托统一标准体系，与分发合作伙伴协同运作，落地一致的安全防护机制，同时在官方使用政策中明确各方使用规则与权责预期，最终在保障AI技术负责任访问的前提下，降低合规摩擦，支撑技术安全、广泛触达合规用户。
+
+<FeedbackButtons slug="item:openai-blog-broad-access-through-consistent-standards" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/announcements" target="_blank" rel="noopener noreferrer">Announcements</a>
+
+*Anthropic*
+
+这份机构公告明确了AI安全领域知名企业Anthropic的核心定位与研发方向：作为深耕AI安全赛道的专业研发公司，Anthropic的核心研发目标是打造具备三类核心特性的AI系统：运行表现稳定可靠、决策逻辑可被人类清晰解释、行为路径可被人类有效引导，所有研发工作均围绕AI安全核心需求推进。
+
+<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+前沿AI企业Anthropic公布公共福利投入方案：将部分公司股份划转至新设立的Anthropic公共福利基金，该基金采用特殊架构设计，其持股占比会随Anthropic经营规模增长动态提升，以此将企业商业增长收益与公共利益绑定，探索科技企业反哺公共福祉的创新机制。
+
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/accelerating-antimicrobial-discovery/" target="_blank" rel="noopener noreferrer">Accelerating the search for antimicrobial peptides with Google Antigravity</a>
+
+*Google DeepMind*
+
+当前耐药菌感染已成为全球公共卫生突出威胁，新型抗菌肽是抗耐药菌药物研发的重要方向，但传统湿实验筛选效率偏低、成本较高。本研究引入谷歌Antigravity科学计算工具赋能抗菌肽挖掘，可大幅压缩筛选周期、提升命中率，为抗菌肽先导物研发提供高效新路径。
+
+<FeedbackButtons slug="item:deepmind-accelerating-antimicrobial-discovery" client:visible />
+
+## <a href="https://deepmind.google/blog/on-device-ai-scam-detection-mddi/" target="_blank" rel="noopener noreferrer">Google DeepMind and Singapore Government collaborate to build fine-tuned AI model for scam detection</a>
+
+*Google DeepMind*
+
+谷歌DeepMind与新加坡政府科技局合作研发反诈专用微调AI模型。该方案采用轻量化端侧部署的Gemma模型，可针对用户私密聊天场景拦截会话类诈骗，全程无需将用户聊天数据上传云端，实现零云侧数据流出，在保障反诈效能的同时充分保护用户隐私。
+
+<FeedbackButtons slug="item:deepmind-on-device-ai-scam-detection-mddi" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/kumo-relational" target="_blank" rel="noopener noreferrer">NVIDIA Kumo Relational Outperforms Supervised Machine Learning on Relational Data, No Training Required</a>
+
+*Hugging Face*
+
+本研究针对传统有监督机器学习处理关系数据时需标注训练、部署流程繁琐的痛点，推出英伟达自研Kumo关系型模型，该模型无需额外训练即可直接适配各类关系数据任务，实测性能全面优于常规有监督学习方案，为关系数据的高效分析与预测落地提供了轻量化新路径。
+
+<FeedbackButtons slug="item:hf-blog-kumo-relational" client:visible />
+
+## <a href="https://huggingface.co/blog/Dharma-AI/vocabx-vocabulary-specialization" target="_blank" rel="noopener noreferrer">How Specializing the Vocabulary of SLMs Can Cut Inference Cost by 77% in Real Applications</a>
+
+*Hugging Face*
+
+该研究针对小语言模型（SLM）落地的推理成本痛点，提出对SLM词表做场景专属化适配的优化方案，无需改动核心模型架构，在保障业务效果的前提下，可将真实应用场景下的SLM推理成本显著降低77%，为垂直领域轻量化大模型低成本部署、减少算力开销提供了可行路径。
+
+<FeedbackButtons slug="item:hf-blog-vocabx-vocabulary-specialization" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我改进（RSI）的概念脉络与当前落地方向：1965年I.J.古德提出超智能机器设想，即能超越人类全部智力活动、可迭代设计更优系统的智能体；2008年尤德考斯基将RSI明确定义为AI依托现有智能优化自身认知机制的反馈闭环。当前AI领域的RSI可分为两类路径：直接改写自身权重，或广义上优化自身训练流水线。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/10/504734.html" target="_blank" rel="noopener noreferrer">多智能体协同重构医疗AI！清华AIR孵化：医生AI分身“坐诊”医院</a>
+
+*量子位*
+
+清华AIR孵化的紫荆智康推出医学多分身智能体协同技术，升级“紫荆AI医院”系统，目前已在国内多地医院测试。该技术可实现不同专科医生的专属AI分身跨域协作，解决传统跨科室诊疗转诊繁琐、多学科会诊成本高易错过治疗窗的痛点，有望缓解优质医疗资源稀缺问题。
+
+<FeedbackButtons slug="item:qbitai-504734" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/504730.html" target="_blank" rel="noopener noreferrer">生数科技Motubrain团队将直播Physical AI训练全流程，持续半个月</a>
+
+*量子位*
+
+10月21日起，生数科技Motubrain团队将开启为期半个月的Physical AI训练全流程直播，公开其即将开源的具身模型Motubrain 2.0从预训练、后训练、任务执行到递归自我改进的完整迭代过程，打破具身智能研发黑盒，提升行业透明度，直观展示Physical AI落地路径。
+
+<FeedbackButtons slug="item:qbitai-504730" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/504653.html" target="_blank" rel="noopener noreferrer">LeCun押注的世界模型，中国一家清华系公司已经做进了机器人</a>
+
+*量子位*
+
+当前全球顶尖AI团队均在加码布局世界模型技术，清华系具身智能企业千诀科技近日在行业大会上发布预测式世界模型Polibrain。其相关理论研究比LeCun团队同类成果早约一年，目前技术已落地，可适配多形态机器人，实现感知、预测、规划全链路自主决策，为通用机器人大脑提供新解法。
+
+<FeedbackButtons slug="item:qbitai-504653" client:visible />
