@@ -1,0 +1,205 @@
+---
+lang: en
+translationKey: digest-2026-10-22
+title: "Daily AI Highlights · 2026-10-22"
+description: "20 papers · Multi-source aggregation + AI summaries"
+date: 2026-10-22
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face and arXiv have collectively released more than 10 cutting-edge AI research results covering agents, video generation, LLM mechanisms and more</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Major players including OpenAI and DeepMind have successively disclosed implementation progress in fields such as enterprise services, anti-fraud, and biomedicine</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Domestic Tsinghua-affiliated teams have made consecutive technological breakthroughs in medical AI, embodied intelligence, and Physical AI tracks</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Agent</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 LLM</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔬 Academic Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏭 Industry Implementation</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Embodied Intelligence</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2610.26828" target="_blank" rel="noopener noreferrer">Agent World Model in the Wild: Computer-Use Agent Environment Synthesis</a>
+
+*HF ★ 25 · Zhaoyang Wang, Qianhui Wu, Haorui Wang… · [HF Mirror](https://huggingface.co/papers/2610.26828)*
+
+(LLM summarization failed, please manually supplement later)
+
+<FeedbackButtons slug="item:arxiv-2610.26828" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.28577" target="_blank" rel="noopener noreferrer">Cache Engineering for Agents</a>
+
+*HF ★ 22 · Tianyu Fu, Ruoxi Wang, Zihan Min… · [HF Mirror](https://huggingface.co/papers/2610.28577)*
+
+(LLM summarization failed, please manually supplement later)
+
+<FeedbackButtons slug="item:arxiv-2610.28577" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.17860" target="_blank" rel="noopener noreferrer">Socratic Skill Learning: Interleaving Teaching and Practice for Transferable Agent Skills</a>
+
+*HF ★ 21 · Letian Zhu, Han Li, Yifan Yao… · [HF Mirror](https://huggingface.co/papers/2610.17860)*
+
+Addressing the pain point of insufficient verification of applicable conditions in transferable skill learning for LLM agents, the Socratic Skill Learning (SSL) method is proposed, which alternately integrates expert guidance and independent agent practice, allowing agents to independently complete environment interaction and skill adaptation. Verification on the newly built SkillTransferBench benchmark shows that the optimized question-guided SSL achieves a utility score of 0.805, outperforming existing distillation-based baselines, and the token cost for expert interaction is reduced by 61.7% compared to the basic version.
+
+<FeedbackButtons slug="item:arxiv-2610.17860" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.29989" target="_blank" rel="noopener noreferrer">Looking Ahead: Modeling Future Evolution in Autoregressive Video Generation</a>
+
+*HF ★ 13 · Ruopeng Gao, Yukun Huang, Jiarui Hu… · [HF Mirror](https://huggingface.co/papers/2610.29989)*
+
+To address the issue that during block-by-block generation of autoregressive video diffusion, teacher forcing training tends to rely on temporal redundancy to take the shortcut of local continuity, failing to effectively model scene evolution, this paper proposes the Future Chunk Prediction (FCP) auxiliary objective, which requires no additional pretrained encoder. When optimized jointly with the original objective, it asks the model to skip intermediate frames and predict distant chunks. This method generates videos with better physical plausibility with lower training computing power, and can also learn more structured representations, supporting the research and development of autoregressive world models.
+
+<FeedbackButtons slug="item:arxiv-2610.29989" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.28589" target="_blank" rel="noopener noreferrer">AgenticRoboRL: Bringing Coding-Agent Post-Training to Agentic Robotics</a>
+
+*HF ★ 12 · Xinxin Liu, Bingxin Xu, Wenrui Bao… · [HF Mirror](https://huggingface.co/papers/2610.28589)*
+
+Addressing the problem that existing agent robotic systems rely on closed-source LLMs as planners and do not optimize the capability of the planner itself, this paper proposes the AgenticRoboRL framework, which adopts a solution of supervised fine-tuning plus multi-round reinforcement learning, equipped with a toolchain-specific adaptation layer to fit different execution mechanisms, enabling post-training of planners across execution endpoints. On LIBERO-PRO, the success rate of the 9B-parameter planner increased from 18.1% to 71%, close to the level of Codex with external storage, verifying the effectiveness of the solution, and relevant resources will be open-sourced.
+
+<FeedbackButtons slug="item:arxiv-2610.28589" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2610.26866" target="_blank" rel="noopener noreferrer">High-dimensional layer-state trajectories reveal the internal dynamics of transformer inference</a>
+
+*Heng Zhao, Yufei Wang, Ruidian Song…*
+
+Addressing the limitation that previous LLM mechanism research only locates functional components and does not characterize inference dynamics, this study, verified on multiple mainstream LLMs, analyzes the high-dimensional layer-state trajectories of Transformer inference, confirming that layer order is a general computing scaffold for architecture adaptation rather than a training-specific product. Internal trajectories can be precisely regulated via local actuators and confidence gates without interfering with normal output, providing a feasible path for inference observation and intervention.
+
+<FeedbackButtons slug="item:arxiv-2610.26866" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.26914" target="_blank" rel="noopener noreferrer">Steerable Pluralistic Policy Alignment from Anonymized Crowd Feedback</a>
+
+*Akansha Kalra, Ellen R. Novoseller, Vernon J. Lawhern…*
+
+Addressing the problem that existing AI pluralistic preference alignment requires obtaining annotator identities and has high computing cost, this paper proposes the P3L framework, which does not require annotator identities, and jointly learns trajectory embeddings and shared bases for preference directions from anonymous crowd feedback via PCA. Experiments on multiple embodied control tasks show that this method can quickly achieve personalized alignment, generalize to out-of-distribution new users, meet performance requirements while significantly reducing costs, and adapt to different query budgets.
+
+<FeedbackButtons slug="item:arxiv-2610.26914" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.26932" target="_blank" rel="noopener noreferrer">Expert-Guided Rubrics as Dense Reward Signals for Reinforcement Learning in Non-Verifiable Domains</a>
+
+*Ashish Bansal, Hossam Amer, Keerat Kaur Guliani…*
+
+For LLM agents in non-verifiable domains such as finance, traditional reinforcement learning relies on binary rewards for verifiable tasks, and sparse expert graded rewards easily lead to stagnation in GRPO algorithm optimization. This study proposes converting a small number of expert-formulated scoring rules into dense rewards, combined with retrieval metrics to generate hybrid training signals adapted for GRPO. Experiments show that compared to the sparse reward baseline, its Recall@3 is improved by up to 6%, and MRR@3 is increased by 6.7%.
+
+<FeedbackButtons slug="item:arxiv-2610.26932" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/att-legal" target="_blank" rel="noopener noreferrer">How AT&T is rethinking in-house legal work with OpenAI</a>
+
+*OpenAI*
+
+This article introduces the practice of AT&T collaborating with OpenAI to optimize internal legal work: with OpenAI's technical support, AT&T's LegalEdge team focuses on reconstructing the legal demand acceptance process and promoting the large-scale reuse of professional legal judgment capabilities, improving legal operation efficiency, effectively lowering the threshold for internal legal knowledge acquisition, and exploring a referable practical direction for the implementation of AI in legal and compliance scenarios of large enterprises.
+
+<FeedbackButtons slug="item:openai-blog-att-legal" client:visible />
+
+## <a href="https://openai.com/index/broad-access-through-consistent-standards" target="_blank" rel="noopener noreferrer">Broad access through consistent standards</a>
+
+*OpenAI*
+
+This article focuses on the compliance implementation issue in the inclusive promotion of LLM technology. The core approach is that OpenAI relies on a unified standard system, collaborates with distribution partners to implement consistent security protection mechanisms, while clarifying the usage rules and responsibility expectations for all parties in the official usage policy. Ultimately, on the premise of ensuring responsible access to AI technology, it reduces compliance friction and supports the safe and wide reach of the technology to compliant users.
+
+<FeedbackButtons slug="item:openai-blog-broad-access-through-consistent-standards" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/announcements" target="_blank" rel="noopener noreferrer">Announcements</a>
+
+*Anthropic*
+
+This institutional announcement clarifies the core positioning and R&D direction of Anthropic, a well-known enterprise in the AI security field: as a professional R&D company deeply engaged in the AI security track, Anthropic's core R&D goal is to build AI systems with three core characteristics: stable and reliable operation performance, decision-making logic that can be clearly explained by humans, and behavior paths that can be effectively guided by humans. All R&D work is promoted around the core needs of AI security.
+
+<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+Cutting-edge AI enterprise Anthropic has announced its public welfare investment plan: part of the company's shares will be transferred to the newly established Anthropic Public Benefit Fund, which adopts a special structural design, and its shareholding ratio will dynamically increase as Anthropic's business scale grows, thus binding the enterprise's commercial growth benefits with public interests, and exploring an innovative mechanism for technology enterprises to feed back public welfare.
+
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/accelerating-antimicrobial-discovery/" target="_blank" rel="noopener noreferrer">Accelerating the search for antimicrobial peptides with Google Antigravity</a>
+
+*Google DeepMind*
+
+Currently, drug-resistant bacterial infections have become a prominent threat to global public health, and novel antimicrobial peptides are an important direction for the R&D of anti-drug-resistant bacteria drugs, but traditional wet lab screening has low efficiency and high cost. This study introduces Google Antigravity scientific computing tool to empower antimicrobial peptide discovery, which can greatly shorten the screening cycle and improve the hit rate, providing an efficient new path for the R&D of antimicrobial peptide lead compounds.
+
+<FeedbackButtons slug="item:deepmind-accelerating-antimicrobial-discovery" client:visible />
+
+## <a href="https://deepmind.google/blog/on-device-ai-scam-detection-mddi/" target="_blank" rel="noopener noreferrer">Google DeepMind and Singapore Government collaborate to build fine-tuned AI model for scam detection</a>
+
+*Google DeepMind*
+
+Google DeepMind collaborates with the Government Technology Agency of Singapore to develop a dedicated fine-tuned AI model for fraud detection. This solution adopts a lightweight Gemma model deployed on the end side, which can block conversational fraud in users' private chat scenarios, without uploading users' chat data to the cloud throughout the process, achieving zero cloud-side data outflow, fully protecting user privacy while ensuring anti-fraud effectiveness.
+
+<FeedbackButtons slug="item:deepmind-on-device-ai-scam-detection-mddi" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/kumo-relational" target="_blank" rel="noopener noreferrer">NVIDIA Kumo Relational Outperforms Supervised Machine Learning on Relational Data, No Training Required</a>
+
+*Hugging Face*
+
+Addressing the pain points of traditional supervised machine learning requiring labeled training and cumbersome deployment processes when processing relational data, this study launches NVIDIA's self-developed Kumo relational model, which can directly adapt to various relational data tasks without additional training. The measured performance is comprehensively better than conventional supervised learning solutions, providing a new lightweight path for efficient analysis and prediction implementation of relational data.
+
+<FeedbackButtons slug="item:hf-blog-kumo-relational" client:visible />
+
+## <a href="https://huggingface.co/blog/Dharma-AI/vocabx-vocabulary-specialization" target="_blank" rel="noopener noreferrer">How Specializing the Vocabulary of SLMs Can Cut Inference Cost by 77% in Real Applications</a>
+
+*Hugging Face*
+
+Addressing the pain point of inference cost for Small Language Model (SLM) implementation, this study proposes an optimization solution of scenario-specific adaptation for SLM vocabularies, without modifying the core model architecture. On the premise of ensuring business performance, it can significantly reduce SLM inference cost in real application scenarios by 77%, providing a feasible path for low-cost deployment of lightweight large models in vertical domains and reducing computing overhead.
+
+<FeedbackButtons slug="item:hf-blog-vocabx-vocabulary-specialization" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This article sorts out the conceptual context and current implementation directions of Recursive Self-Improvement (RSI): In 1965, I.J. Good proposed the idea of ultra-intelligent machines, that is, agents that can surpass all human intellectual activities and iteratively design better systems; in 2008, Eliezer Yudkowsky clearly defined RSI as a feedback loop where AI optimizes its own cognitive mechanism relying on existing intelligence. Currently, RSI in the AI field can be divided into two types of paths: directly rewriting its own weights, or optimizing its own training pipeline in a broad sense.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/10/504734.html" target="_blank" rel="noopener noreferrer">Multi-agent collaboration restructures medical AI! Incubated by Tsinghua AIR: Doctor AI avatars "consult" in hospitals</a>
+
+*QbitAI*
+
+Zijing Zhikang, incubated by Tsinghua AIR, has launched a medical multi-avatar agent collaboration technology to upgrade the "Zijing AI Hospital" system, which is currently being tested in hospitals in many parts of China. This technology enables cross-domain collaboration of exclusive AI avatars of doctors from different specialties, solving the pain points of cumbersome inter-departmental diagnosis and treatment referrals, high cost of multi-disciplinary consultation, and easy missed treatment windows, and is expected to alleviate the shortage of high-quality medical resources.
+
+<FeedbackButtons slug="item:qbitai-504734" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/504730.html" target="_blank" rel="noopener noreferrer">Shengshu Technology Motubrain team will live stream the full Physical AI training process for half a month</a>
+
+*QbitAI*
+
+Starting from October 21, the Motubrain team of Shengshu Technology will launch a half-month live broadcast of the full Physical AI training process, disclosing the complete iteration process of its soon-to-be open-source embodied model Motubrain 2.0 from pretraining, post-training, task execution to recursive self-improvement, breaking the black box of embodied intelligence R&D, improving industry transparency, and intuitively demonstrating the implementation path of Physical AI.
+
+<FeedbackButtons slug="item:qbitai-504730" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/504653.html" target="_blank" rel="noopener noreferrer">The world model LeCun is betting on has already been integrated into robots by a Tsinghua-affiliated Chinese company</a>
+
+*QbitAI*
+
+Currently, the world's top AI teams are increasing their layout of world model technology. Tsinghua-affiliated embodied intelligence enterprise Qianjue Technology recently released the predictive world model Polibrain at an industry conference. Its relevant theoretical research is about one year earlier than similar results of Yann LeCun's team, and the technology has been implemented now, which can adapt to multi-form robots, realize full-link autonomous decision-making of perception, prediction, and planning, providing a new solution for the general robot brain.
+
+<FeedbackButtons slug="item:qbitai-504653" client:visible />
