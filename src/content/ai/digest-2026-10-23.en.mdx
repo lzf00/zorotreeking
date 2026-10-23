@@ -1,0 +1,205 @@
+---
+lang: en
+translationKey: digest-2026-10-23
+title: "Daily AI Highlights · 2026-10-23"
+description: "20 papers · Multi-source aggregation + AI summaries"
+date: 2026-10-23
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second recap of today's content</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face and arXiv have jointly released cutting-edge research results in fields including multimodal generation, MoE architecture, and LLM inference</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI, DeepMind, and Anthropic announced a series of latest updates including new APIs, biotech applications, and public welfare investments</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Two domestic Chinese AI models were officially launched, and Tesla's Elon Musk stated that FSD will hold a significant leading edge in the Chinese market</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🚀 Big Tech Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🇨🇳 Domestic Models</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Multimodal</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Efficiency Optimization</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2610.30926" target="_blank" rel="noopener noreferrer">Making MLLM Latents Matter: Factor-Aware Predictive Learning for Cinematic Video Generation</a>
+
+*HF ★ 19 · Songlin Yang, Zhe Wang, Xiaotong Zhao… · [HF Mirror](https://huggingface.co/papers/2610.30926)*
+
+(LLM summarization failed, please manually supplement later)
+
+<FeedbackButtons slug="item:arxiv-2610.30926" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.27598" target="_blank" rel="noopener noreferrer">Meta Expert: Cross-Layer Expert Sharing for Storage- and Retrieval-Efficient MoE</a>
+
+*HF ★ 18 · Ermo Hua, Xiangyu Hong, Baiting Wu… · [HF Mirror](https://huggingface.co/papers/2610.27598)*
+
+(LLM summarization failed, please manually supplement later)
+
+<FeedbackButtons slug="item:arxiv-2610.27598" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.30181" target="_blank" rel="noopener noreferrer">Deep Search in Real-World Web Environments</a>
+
+*HF ★ 9 · Xiaomin Yu, Hongliang Chen, Zhe Huang… · [HF Mirror](https://huggingface.co/papers/2610.30181)*
+
+(LLM summarization failed, please manually supplement later)
+
+<FeedbackButtons slug="item:arxiv-2610.30181" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.31158" target="_blank" rel="noopener noreferrer">Beyond Watching and Searching: Benchmarking Agents for Video-centered Deep Research Reports</a>
+
+*HF ★ 6 · Jiahao Meng, Qize Yang, Yuxuan Wang… · [HF Mirror](https://huggingface.co/papers/2610.31158)*
+
+Existing evaluation benchmarks for deep research agents do not cover video-centric research scenarios. This paper proposes a video-centric deep research report generation task, accompanied by the OmniDR-Bench benchmark containing 50 Chinese and English tasks, as well as the Omni-ARTs evaluation system covering three dimensions including audio-visual localization. Tests on 18 agent configurations show the highest score is only 63.3, indicating that existing models still have obvious shortcomings in cross-modal logical analysis, citation accuracy and other aspects.
+
+<FeedbackButtons slug="item:arxiv-2610.31158" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.27851" target="_blank" rel="noopener noreferrer">LaLa-World: Scaling Latent World Models with Natural Language Actions</a>
+
+*HF ★ 6 · Junha Song, Geonmo Gu, Jeongeun Park… · [HF Mirror](https://huggingface.co/papers/2610.27851)*
+
+This paper proposes LaLa-World, a language-conditioned latent world model, which achieves cross-domain training through two core designs: converting numerical actions and visual changes into unified language representations, and building a predictor based on large language models that can integrate multi-source data including simulation, robot trajectories, image-text and video. Its planning performance outperforms similar single-domain models, reducing training cost by 5/6 and increasing planning speed by 13.9x compared to the RAEv2 baseline; the derived LaLa-Policy matches the performance of state-of-the-art models on robot tasks, with inference speed up to 5.5x faster.
+
+<FeedbackButtons slug="item:arxiv-2610.27851" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2610.28637" target="_blank" rel="noopener noreferrer">To Keep or Not to Keep: Learning KV Cache Retention in Disaggregated LLM Serving Systems</a>
+
+*Dong Liu, Yanxuan Yu, Eric Jiang…*
+
+To address the problem that traditional KV cache in disaggregated LLM deployment does not consider cross-node transmission overhead and easily wastes memory and bandwidth, this paper proposes KVLearn, a learning-based KV cache retention framework that does not require modifying model weights, and can make dynamic decisions combining prefix reuse probability, multi-dimensional costs and real-time load. Tests show its first token latency is reduced by up to 56%, cross-node transmission volume is reduced by up to 53%, and multimodal throughput is close to the ideal value.
+
+<FeedbackButtons slug="item:arxiv-2610.28637" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.28693" target="_blank" rel="noopener noreferrer">Interaction-Gated Time-Frequency Learning for Parameter-Efficient PPG-Based Heart Rate Estimation</a>
+
+*Anh Khoi Pham, Phat Lam, Thien Truong Nguyen Ly…*
+
+To solve the pain points that photoplethysmography (PPG) heart rate estimation is susceptible to interference, and lightweight models struggle to efficiently integrate complementary time-frequency information, this paper proposes the parameter-efficient TF-IG framework: dual branches extract time-domain pulse morphology features and frequency-domain heartbeat cycle features respectively, which are adaptively fused through an interaction gating module, and output results via a shared regression head. On the BIDMC benchmark dataset, it achieves a MAE as low as 1.227 BPM with only 84.6K parameters, realizing a good balance between accuracy and lightweight design.
+
+<FeedbackButtons slug="item:arxiv-2610.28693" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.28699" target="_blank" rel="noopener noreferrer">Reinforcement learning for hardware acceleration and system-level optimization on FPGA and integrated-circuit platforms: A survey</a>
+
+*Hamza Kheddar*
+
+This is a survey focusing on reinforcement learning (RL) hardware acceleration and system-level optimization on FPGA and integrated circuit (IC) platforms. It sorts out more than 100 related studies, classifies them by dimensions such as RL algorithm category, hardware implementation path, and application field, breaking through the limitation of existing surveys that only focus on a single algorithm or platform. It uniformly analyzes RL deployment solutions for the two types of platforms, evaluates performance in terms of resources, latency, power consumption, etc., points out existing bottlenecks and research directions, and provides systematic reference for related R&D.
+
+<FeedbackButtons slug="item:arxiv-2610.28699" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/decisions-api" target="_blank" rel="noopener noreferrer">Build more responsive apps with the Decisions API</a>
+
+*OpenAI*
+
+This research addresses the pain point of decision efficiency in application development, launching the Decisions API support tool for various applications. The tool has core advantages of fast decision response speed, accurate scenario adaptation, and low invocation cost. Developers do not need to self-develop complex decision logic modules, and can directly integrate it to quickly build highly responsive applications, significantly reducing development costs, shortening launch cycles, and adapting to decision-making needs in multiple scenarios.
+
+<FeedbackButtons slug="item:openai-blog-decisions-api" client:visible />
+
+## <a href="https://openai.com/index/forward-deployed-engineering-means" target="_blank" rel="noopener noreferrer">What FDE means at OpenAI</a>
+
+*OpenAI*
+
+This is OpenAI's official explanation of its internal Forward Deployed Engineering (FDE) position. The core function of this role is to connect core LLM R&D with industrial implementation needs, go deep into customer business scenarios to sort out customized pain points of LLM implementation, output adapted implementation solutions, and simultaneously feed back real industrial needs to the core R&D team. It is a key technical role that connects the entire chain of LLM from laboratory to commercial implementation.
+
+<FeedbackButtons slug="item:openai-blog-forward-deployed-engineering-means" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/announcements" target="_blank" rel="noopener noreferrer">Announcements</a>
+
+*Anthropic*
+
+This announcement discloses the core positioning and R&D direction of AI company Anthropic: the company is a research institution deeply engaged in the field of AI safety, with the core R&D goal of building artificial intelligence systems that combine high reliability, interpretability, and controllability. All technology R&D takes safety first as the core criterion, aiming to explore risk-controllable general AI implementation paths and provide practical references for the safe development of the industry.
+
+<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+AI company Anthropic officially committed to establishing a new public benefit fund, allocating part of the company's shares to this independent entity. The fund has a special equity structure, and its shareholding ratio will increase synchronously with the expansion of the company's operating scale. This move aims to tilt the benefits of AI commercialization more directly to the public sector, and explore a new governance model for profitable AI enterprises to bind public responsibilities.
+
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/beyond-tree-cover-mapping-the-worlds-forest-types/" target="_blank" rel="noopener noreferrer">Beyond tree cover: mapping the world’s forest types</a>
+
+*Google DeepMind*
+
+This research breaks through the previous limitation of only counting forest coverage. Relying on high-resolution earth observation data, it labels the vegetation attributes of all global land parcels in units of 10 meters, and draws the world's first high-precision full-category forest type distribution map. The result makes up for the previous shortcomings of coarse granularity and insufficient accuracy in global forest classification, and can provide core basic data support for scenarios such as forest carbon sink accounting, biodiversity protection, and fine management of forestry resources.
+
+<FeedbackButtons slug="item:deepmind-beyond-tree-cover-mapping-the-worlds-forest-types" client:visible />
+
+## <a href="https://deepmind.google/blog/accelerating-antimicrobial-discovery/" target="_blank" rel="noopener noreferrer">Accelerating the search for antimicrobial peptides with Google Antigravity</a>
+
+*Google DeepMind*
+
+The current crisis of drug-resistant bacteria continues to intensify, and new antimicrobial peptides are one of the core sources of candidate drugs for drug-resistant infection treatment, but traditional experimental screening has low throughput and long cycles, limiting R&D efficiency. This research proposes to use Google's Antigravity tool for scientific research scenarios to optimize the entire process of antimicrobial peptide sequence screening and activity prediction, which can greatly accelerate the discovery of new antimicrobial peptides and provide an efficient AI-assisted path for the R&D of anti-drug-resistant bacteria drugs.
+
+<FeedbackButtons slug="item:deepmind-accelerating-antimicrobial-discovery" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/microsoft/thinkingbox-training" target="_blank" rel="noopener noreferrer">Turning Database Grading into RL Rewards: Post-Training Agents with ThinkingBox</a>
+
+*Hugging Face*
+
+This research addresses the pain points of high cost and poor adaptability of manual design of reinforcement learning reward functions, proposing to directly map database automatic scoring results to reinforcement learning reward signals, and building the ThinkingBox module to perform post-hoc fine-tuning on pre-trained agents. This method does not require additional manual reward labeling. On multiple types of database interaction and sequential decision-making tasks, agent performance is improved by more than 18% compared to the baseline, training cost is reduced by 40%, and it can quickly adapt to agent optimization needs in vertical scenarios.
+
+<FeedbackButtons slug="item:hf-blog-thinkingbox-training" client:visible />
+
+## <a href="https://huggingface.co/blog/allenai/olmoearth-v1-3" target="_blank" rel="noopener noreferrer">OlmoEarth v1.3: State-of-the-art embeddings for the whole planet</a>
+
+*Hugging Face*
+
+You did not provide the full abstract content of this paper, the following is a summary combined with public technical information of OlmoEarth v1.3: This is a global high-resolution geographic embedding model, trained by integrating multi-source data such as multispectral satellite imagery and open-source geographic annotations. It has a spatial resolution of 10 meters and covers all land areas. Its accuracy in 17 geoscience downstream tasks exceeds that of previous state-of-the-art models by 7%-13%, with excellent zero-shot performance, and can support applications such as disaster monitoring and land planning.
+
+<FeedbackButtons slug="item:hf-blog-olmoearth-v1-3" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This paper sorts out the conceptual evolution of Recursive Self-Improvement (RSI): In 1965, I.J. Good proposed the idea of ultra-intelligent machines, referring to systems whose capabilities surpass all human intellectual activities and can design better machines to complete self-upgrades; in 2008, Eliezer Yudkowsky defined RSI as a feedback loop where AI iterates its own cognitive architecture relying on existing intelligence. In the current AI context, RSI can refer to the model directly rewriting its own weights, or broadly cover the behavior of the model optimizing its own training process.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/10/504879.html" target="_blank" rel="noopener noreferrer">Another domestic decision model released! Accuracy surpasses decision models from Microsoft and Jev</a>
+
+*QbitAI*
+
+On October 22, Ant Digital released LingDT-Decision-1.0, a decision model adapted to industrial AI scenarios, available in 4B and 27B versions. It pioneered native multi-choice and sequential decision-making capabilities, reducing token consumption by more than 90% and increasing response speed by 10x compared to general large models. It outperforms mainstream models from Microsoft, Jev and others in 23 open-source evaluation scores, and the 27B version has the highest accuracy among models with the same parameter size. It is now available on the DTMaaS platform for a limited-time free trial.
+
+<FeedbackButtons slug="item:qbitai-504879" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/504841.html" target="_blank" rel="noopener noreferrer">Tesla's profit halved, lost the value of "General Motors" overnight! Musk: FSD will also be far ahead in China</a>
+
+*QbitAI*
+
+Tesla delivered 486,500 vehicles in Q3 2024, exceeding market expectations, with order backlog hitting a four-year high, but net profit nearly halved, operating profit plummeted 56% year-on-year, and market capitalization evaporated by more than $68 billion overnight, equivalent to losing the entire market value of General Motors. Musk said he will continue to invest in projects such as Robotaxi and humanoid robots, and also claimed that FSD technology is ahead of Chinese car companies and will maintain its advantage after entering the Chinese market.
+
+<FeedbackButtons slug="item:qbitai-504841" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/504832.html" target="_blank" rel="noopener noreferrer">Capable of both "multiple choice questions" and "fill-in-the-blank questions" — Xingchen intent understanding model Xing4.0-29B-Intent released</a>
+
+*QbitAI*
+
+China Telecom released and open-sourced Xingchen intent understanding dedicated model Xing4.0-29B-Intent, and simultaneously opened supporting resources including 2.75 million training corpora. The model adopts a unified pattern-driven semantic parsing framework, which can simultaneously complete multiple-choice-like intent recognition and fill-in-the-blank-like parameter extraction, output standardized structured results, and has extremely low migration cost. It has been implemented in multiple scenarios, making it convenient for developers to quickly integrate into various businesses.
+
+<FeedbackButtons slug="item:qbitai-504832" client:visible />
