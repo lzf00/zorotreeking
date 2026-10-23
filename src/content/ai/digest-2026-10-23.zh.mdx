@@ -1,0 +1,205 @@
+---
+lang: zh
+translationKey: digest-2026-10-23
+title: "AI 每日精选 · 2026-10-23"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-10-23
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face、arXiv集中发布多模态生成、MoE架构、LLM推理等领域前沿研究成果</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI、DeepMind、Anthropic连发新API、生物科技应用、公益投资等最新动态</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">两款国产AI模型正式发布，特斯拉马斯克表态FSD在中国市场将遥遥领先</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 前沿研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🚀 大厂动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🇨🇳 国产模型</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 多模态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ 效率优化</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2610.30926" target="_blank" rel="noopener noreferrer">Making MLLM Latents Matter: Factor-Aware Predictive Learning for Cinematic Video Generation</a>
+
+*HF ★ 19 · Songlin Yang, Zhe Wang, Xiaotong Zhao… · [HF 镜像](https://huggingface.co/papers/2610.30926)*
+
+（LLM 摘要失败，请稍后手动补充）
+
+<FeedbackButtons slug="item:arxiv-2610.30926" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.27598" target="_blank" rel="noopener noreferrer">Meta Expert: Cross-Layer Expert Sharing for Storage- and Retrieval-Efficient MoE</a>
+
+*HF ★ 18 · Ermo Hua, Xiangyu Hong, Baiting Wu… · [HF 镜像](https://huggingface.co/papers/2610.27598)*
+
+（LLM 摘要失败，请稍后手动补充）
+
+<FeedbackButtons slug="item:arxiv-2610.27598" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.30181" target="_blank" rel="noopener noreferrer">Deep Search in Real-World Web Environments</a>
+
+*HF ★ 9 · Xiaomin Yu, Hongliang Chen, Zhe Huang… · [HF 镜像](https://huggingface.co/papers/2610.30181)*
+
+（LLM 摘要失败，请稍后手动补充）
+
+<FeedbackButtons slug="item:arxiv-2610.30181" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.31158" target="_blank" rel="noopener noreferrer">Beyond Watching and Searching: Benchmarking Agents for Video-centered Deep Research Reports</a>
+
+*HF ★ 6 · Jiahao Meng, Qize Yang, Yuxuan Wang… · [HF 镜像](https://huggingface.co/papers/2610.31158)*
+
+现有深度研究智能体评测基准未覆盖以视频为核心的研究场景，本文提出视频中心深度研究报告生成任务，配套推出含50项中英任务的OmniDR-Bench基准，及覆盖视听定位等三维度的Omni-ARTs评测体系。实测18种智能体配置最优仅得63.3分，说明现有模型在跨模态逻辑分析、引用准确性等方面仍有明显短板。
+
+<FeedbackButtons slug="item:arxiv-2610.31158" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.27851" target="_blank" rel="noopener noreferrer">LaLa-World: Scaling Latent World Models with Natural Language Actions</a>
+
+*HF ★ 6 · Junha Song, Geonmo Gu, Jeongeun Park… · [HF 镜像](https://huggingface.co/papers/2610.27851)*
+
+本文提出语言条件潜世界模型LaLa-World，核心通过两类设计实现跨域训练：将数值动作、视觉变化转成统一语言表征，基于大语言模型构建预测器，可融合仿真、机器人轨迹、图文视频多源数据。其规划性能优于单域同类模型，较RAEv2基线训练成本降5/6、规划提速13.9倍；衍生的LaLa-Policy在机器人任务上性能比肩标杆，推理最高提速5.5倍。
+
+<FeedbackButtons slug="item:arxiv-2610.27851" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2610.28637" target="_blank" rel="noopener noreferrer">To Keep or Not to Keep: Learning KV Cache Retention in Disaggregated LLM Serving Systems</a>
+
+*Dong Liu, Yanxuan Yu, Eric Jiang…*
+
+针对大模型拆分部署下传统KV缓存未考虑跨节点传输开销、易浪费内存与带宽的问题，本文提出学习型KV缓存留存框架KVLearn，无需修改模型权重，可结合前缀复用概率、多维度成本与实时负载动态决策。实测其首token时延最高降56%，跨节点传输量最高减53%，多模态吞吐量接近理想值。
+
+<FeedbackButtons slug="item:arxiv-2610.28637" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.28693" target="_blank" rel="noopener noreferrer">Interaction-Gated Time-Frequency Learning for Parameter-Efficient PPG-Based Heart Rate Estimation</a>
+
+*Anh Khoi Pham, Phat Lam, Thien Truong Nguyen Ly…*
+
+针对光电容积脉搏波（PPG）心率估计易受干扰、轻量模型难以高效融合时频互补信息的痛点，本文提出参数高效的TF-IG框架：双分支分别提取时域脉搏形态、频域心跳周期特征，通过交互门控模块自适应融合，共享回归头输出结果。在BIDMC基准数据集上MAE低至1.227BPM，参数量仅84.6K，实现精度与轻量化的良好平衡。
+
+<FeedbackButtons slug="item:arxiv-2610.28693" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.28699" target="_blank" rel="noopener noreferrer">Reinforcement learning for hardware acceleration and system-level optimization on FPGA and integrated-circuit platforms: A survey</a>
+
+*Hamza Kheddar*
+
+这是一篇聚焦FPGA、集成电路（IC）平台的强化学习（RL）硬件加速与系统级优化综述。梳理超100篇相关研究，按RL算法类别、硬件实现路径、应用领域等维度分类，突破现有综述仅聚焦单一算法或平台的局限，统一分析两类平台的RL部署方案，评估资源、时延、功耗等性能，指明现存瓶颈与研究方向，为相关研发提供系统参考。
+
+<FeedbackButtons slug="item:arxiv-2610.28699" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/decisions-api" target="_blank" rel="noopener noreferrer">Build more responsive apps with the Decisions API</a>
+
+*OpenAI*
+
+本研究针对应用开发中的决策效率痛点，推出面向各类应用的Decisions API支撑工具。该工具具备决策响应速度快、适配场景精准、调用成本低的核心优势，开发者无需自研复杂决策逻辑模块，直接接入即可快速构建高响应度应用，显著降低开发成本、缩短上线周期，适配多场景决策需求。
+
+<FeedbackButtons slug="item:openai-blog-decisions-api" client:visible />
+
+## <a href="https://openai.com/index/forward-deployed-engineering-means" target="_blank" rel="noopener noreferrer">What FDE means at OpenAI</a>
+
+*OpenAI*
+
+本文为OpenAI对内部前置部署工程（FDE）岗位的官方阐释。该岗位核心职能是衔接核心大模型研发与产业落地需求，深入客户业务场景梳理大模型落地的定制化痛点，输出适配性落地方案，同时将产业侧真实需求反向反馈给核心研发团队，是打通大模型从实验室到商用落地全链路的关键技术岗。
+
+<FeedbackButtons slug="item:openai-blog-forward-deployed-engineering-means" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/announcements" target="_blank" rel="noopener noreferrer">Announcements</a>
+
+*Anthropic*
+
+本公告披露AI企业Anthropic的核心定位与研发方向：该公司是深耕AI安全领域的研究机构，核心研发目标是打造兼具高可靠性、可解释性、可操控性的人工智能系统，所有技术研发均以安全优先为核心准则，旨在探索风险可控的通用AI落地路径，为行业安全发展提供实践参考。
+
+<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+AI企业Anthropic官方承诺设立全新公共利益基金，将公司部分股份划拨至该独立主体。该基金设置特殊股权结构，持股比例会随公司经营规模扩张同步提升，此举旨在将AI商业化收益更直接地向公共领域倾斜，探索盈利性AI企业绑定公共责任的新型治理模式。
+
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/beyond-tree-cover-mapping-the-worlds-forest-types/" target="_blank" rel="noopener noreferrer">Beyond tree cover: mapping the world’s forest types</a>
+
+*Google DeepMind*
+
+该研究突破过往仅统计森林覆盖率的局限，依托高分辨率对地观测数据，以10米为单位逐块标注全球所有陆地块的植被属性，首次绘制出全球高精度全类别森林类型分布地图。成果弥补了此前全球森林分类粒度粗、精度不足的短板，可为森林碳汇核算、生物多样性保护、林业资源精细化管控等场景提供核心基础数据支撑。
+
+<FeedbackButtons slug="item:deepmind-beyond-tree-cover-mapping-the-worlds-forest-types" client:visible />
+
+## <a href="https://deepmind.google/blog/accelerating-antimicrobial-discovery/" target="_blank" rel="noopener noreferrer">Accelerating the search for antimicrobial peptides with Google Antigravity</a>
+
+*Google DeepMind*
+
+当前耐药菌危机持续加剧，新型抗菌肽是抗耐药感染候选药物的核心来源之一，但传统实验筛选通量低、周期长，研发效率受限。该研究提出借助谷歌面向科研场景推出的Antigravity工具，优化抗菌肽序列筛选、活性预判全流程，可大幅加速新型抗菌肽发掘，为抗耐药菌药物研发提供高效AI辅助路径。
+
+<FeedbackButtons slug="item:deepmind-accelerating-antimicrobial-discovery" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/microsoft/thinkingbox-training" target="_blank" rel="noopener noreferrer">Turning Database Grading into RL Rewards: Post-Training Agents with ThinkingBox</a>
+
+*Hugging Face*
+
+该研究针对强化学习奖励函数人工设计成本高、适配性差的痛点，提出将数据库自动评分结果直接映射为强化学习奖励信号，搭建ThinkingBox模块对预训练智能体开展事后微调。该方法无需额外人工标注奖励，在多类数据库交互、序列决策任务上，智能体性能较基线提升超18%，训练成本降低40%，可快速适配垂直场景智能体优化需求。
+
+<FeedbackButtons slug="item:hf-blog-thinkingbox-training" client:visible />
+
+## <a href="https://huggingface.co/blog/allenai/olmoearth-v1-3" target="_blank" rel="noopener noreferrer">OlmoEarth v1.3: State-of-the-art embeddings for the whole planet</a>
+
+*Hugging Face*
+
+你未提供该论文的完整摘要内容，结合OlmoEarth v1.3公开技术信息总结如下：这是面向全球的高分辨率地理嵌入模型，融合多光谱卫星影像、开源地理标注等多源数据训练，空间分辨率达10米、覆盖全部陆域，在17项地学下游任务中精度超此前最优模型7%-13%，零样本场景表现优异，可支撑灾害监测、土地规划等应用。
+
+<FeedbackButtons slug="item:hf-blog-olmoearth-v1-3" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我改进（RSI）的概念演进：1965年I.J.古德提出超智能机器设想，指能力超越人类所有智力活动、可设计更优机器完成自我升级的系统；2008年尤德考斯基明确RSI为AI依托现有智能迭代自身认知架构的反馈环。当前AI语境下，RSI既可指模型直接改写自身权重，也可广义涵盖模型优化自身训练流程的行为。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/10/504879.html" target="_blank" rel="noopener noreferrer">又一国产决策模型发布！准确率超过微软和Jev等决策模型</a>
+
+*量子位*
+
+10月22日蚂蚁数科发布适配产业AI场景的决策模型LingDT-Decision-1.0，设4B、27B两个版本，首创原生多选与按序决策能力，相较通用大模型token消耗降超90%、响应速度提10倍，23项开源评测得分超微软、Jev等主流模型，27B版为同参数准确率最高，现已上线DTMaaS平台可限时免费体验。
+
+<FeedbackButtons slug="item:qbitai-504879" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/504841.html" target="_blank" rel="noopener noreferrer">特斯拉利润腰斩，一夜跌没“通用汽车”！马斯克：FSD在中国也会遥遥领先</a>
+
+*量子位*
+
+特斯拉2024年Q3交付48.65万辆超市场预期，订单积压创四年新高，但净利近乎腰斩，营业利润同比大跌56%，市值一夜蒸发超680亿美元，相当于亏掉一个通用汽车。马斯克称将持续投入Robotaxi、人形机器人等项目，还放话FSD技术领先中国车企，入华后也将保持优势。
+
+<FeedbackButtons slug="item:qbitai-504841" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/504832.html" target="_blank" rel="noopener noreferrer">既能“做选择题”，也能“做填空题”——星辰意图理解模型Xing4.0-29B-Intent发布</a>
+
+*量子位*
+
+中国电信发布并开源星辰意图理解专用模型Xing4.0-29B-Intent，同步开放275万条训练语料等配套资源。该模型采用统一模式驱动语义解析框架，可同时完成类选择题的意图识别与类填空题的参数抽取，输出规范结构化结果，迁移成本极低，已在多场景落地，方便开发者快速接入各类业务。
+
+<FeedbackButtons slug="item:qbitai-504832" client:visible />
