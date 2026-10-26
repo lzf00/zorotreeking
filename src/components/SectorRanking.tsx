@@ -22,10 +22,18 @@ type Resp = {
   top_up?: Sector[];
   top_down?: Sector[];
   stale?: boolean;
+  source?: string;
   error?: string;
 };
 
 const POLL_MS = 60_000;
+
+function sectorSourceLabel(data: Resp): string {
+  if (data.source === "sina_hy") return "新浪行业板块";
+  if (data.source === "eastmoney") return "东方财富公开行情";
+  if (data.stale) return "收盘快照";
+  return "东方财富公开行情";
+}
 
 interface Props {
   /** SSR 兜底：服务端从 wind-market-latest.json sectors 映射好 */
@@ -104,7 +112,7 @@ export default function SectorRanking({ initialData }: Props = {}) {
         />
       </div>
       <p className="mt-3 text-[11px] text-[var(--text-tertiary)] font-mono">
-        数据源 {data.stale ? "Wind 静态兜底快照" : "东方财富公开行情"} · 细分行业板块共 {data.total ?? "?"} 个 · {data.ts ? `${data.stale ? "快照时间" : "接口响应"} ${formatChinaMarketTime(data.ts)}` : "时间未知"}
+        数据源 {sectorSourceLabel(data)} · 细分行业板块共 {data.total ?? "?"} 个 · {data.ts ? `${data.stale ? "快照时间" : "接口响应"} ${formatChinaMarketTime(data.ts)}` : "时间未知"}
         {data.stale && <span className="ml-2 text-amber-600 dark:text-amber-400">· 实时接口尚未成功更新</span>}
       </p>
     </div>

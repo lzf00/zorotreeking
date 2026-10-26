@@ -8,7 +8,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from quality import is_publishable, looks_like_credit_failure, payload_quality, scrub_credit_errors
 from publisher import publish_to_zorotreeking
 from fetcher import build_report
-from fallback_eastmoney import bars_as_of, classify_hq_rows, parse_sina_hy_map, quote_from_bars
+from fallback_eastmoney import bars_as_of, board_sector_rows, classify_hq_rows, parse_sina_hy_map, quote_from_bars
 
 
 CREDIT = "原因：账户积分余额不足，无法完成当前操作。官网充值地址： https://market.windalice.co"
@@ -111,6 +111,18 @@ def test_parse_sina_hy_map_ranks_by_change():
     assert [row["name"] for row in rows] == ["石油行业", "酿酒行业"]
     assert rows[0]["lead_stock"] == "中海油服"
     assert rows[0]["change_pct"] == 1.77
+
+
+def test_board_sector_rows_keeps_gainers_and_losers():
+    rows = parse_sina_hy_map({
+        "a": "new_a,石油行业,10,1,0,1.77,0,0,sh600000,1,1,1,中海油服",
+        "b": "new_b,酿酒行业,8,1,0,1.33,0,0,sz000858,1,1,1,五粮液",
+        "c": "new_c,银行,20,1,0,-0.5,0,0,sh601398,1,1,1,工商银行",
+        "d": "new_d,软件服务,20,1,0,-1.2,0,0,sz000063,1,1,1,中兴通讯",
+    }, size=10)
+    board = board_sector_rows(rows, up=2, down=2)
+    assert [row["name"] for row in board[:2]] == ["石油行业", "酿酒行业"]
+    assert [row["name"] for row in board[2:]] == ["银行", "软件服务"]
 
 
 def test_report_does_not_leak_windalice():

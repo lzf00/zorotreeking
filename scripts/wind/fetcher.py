@@ -1041,7 +1041,7 @@ def build_report(stock_codes: list, prefetched: dict = None, as_of: datetime.dat
     sectors = _rows("sectors")
     if not any(isinstance(s, dict) and "error" not in s for s in sectors):
         lines.append("板块排行暂缺（公开接口未返回）。")
-    for s in sectors:
+    for s in sectors[:5]:
         if not isinstance(s, dict) or "error" in s:
             lines.append("| ⚠️ 数据暂缺 |  |  |")
             continue
@@ -1234,7 +1234,7 @@ def build_report_en(stock_codes: list, prefetched: dict = None, as_of: datetime.
     sectors = _rows("sectors")
     if not any(isinstance(s, dict) and "error" not in s for s in sectors):
         lines.append("Sector ranking unavailable from the public feed.")
-    for s in sectors:
+    for s in sectors[:5]:
         if not isinstance(s, dict) or "error" in s:
             continue
         lines.append(

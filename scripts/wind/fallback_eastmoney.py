@@ -599,6 +599,16 @@ def _fetch_sina_hot_stocks(size: int = 5) -> list[dict[str, Any]]:
     return out
 
 
+def board_sector_rows(rows: list[dict[str, Any]], up: int = 10, down: int = 10) -> list[dict[str, Any]]:
+    """Keep both gainers and losers so the invest board can fill 涨幅榜 / 跌幅榜."""
+    ranked = [row for row in rows if isinstance(row, dict) and row.get("name")]
+    ranked.sort(key=lambda item: item.get("change_pct") or 0, reverse=True)
+    head = ranked[:up]
+    tail = ranked[-down:] if len(ranked) > up else []
+    seen = {row.get("code") for row in head}
+    return head + [row for row in tail if row.get("code") not in seen]
+
+
 def parse_sina_hy_map(data: dict[str, Any], size: int = 5) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     for value in data.values():
@@ -786,7 +796,7 @@ def fetch_public_market(stock_codes: Iterable[str], hk_stock_codes: Iterable[str
         "indices": fetch_a_indices(),
         "watchlist": fetch_watchlist(stock_codes),
         "hot_stocks": fetch_hot_stocks(),
-        "sectors": fetch_sectors(),
+        "sectors": board_sector_rows(fetch_sectors(size=200)),
         "sentiment": sentiment,
         "news": fetch_news(),
     }

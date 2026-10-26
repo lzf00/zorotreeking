@@ -24,7 +24,7 @@ type Quote = {
   change_pct: number | null;
 };
 
-type Resp = { ok: boolean; ts: number; stocks: Quote[]; error?: string };
+type Resp = { ok: boolean; ts: number; stocks: Quote[]; source?: string; error?: string };
 
 interface Props {
   stocks: StockSeed[];
@@ -37,11 +37,18 @@ interface Props {
 
 const POLL_MS = 60_000;
 
+function sourceLabel(source: string): string {
+  if (source === "tencent") return "腾讯行情";
+  if (source === "snapshot") return "收盘快照";
+  return "东方财富公开行情";
+}
+
 export default function StockSpotlight({ stocks, showNote = true, initialQuotes, initialUpdated }: Props) {
   const [quotes, setQuotes] = useState<Record<string, Quote> | null>(
     initialQuotes && Object.keys(initialQuotes).length > 0 ? initialQuotes : null,
   );
   const [updated, setUpdated] = useState<number | null>(initialUpdated ?? null);
+  const [source, setSource] = useState<string>(initialQuotes && Object.keys(initialQuotes).length > 0 ? "snapshot" : "");
   const [error, setError] = useState<string | null>(null);
   const inFlight = useRef(false);
 
@@ -58,6 +65,7 @@ export default function StockSpotlight({ stocks, showNote = true, initialQuotes,
         for (const q of d.stocks) map[q.secid] = q;
         setQuotes(map);
         setUpdated(d.ts);
+        setSource(d.source || "eastmoney");
         setError(null);
       } else if (!quotes) setError(d.error || "加载失败");
     } catch (e: any) {
@@ -110,7 +118,7 @@ export default function StockSpotlight({ stocks, showNote = true, initialQuotes,
             {avg == null ? "—" : `${avg > 0 ? "+" : ""}${avg.toFixed(2)}%`}
           </span>
         </span>
-        <span className="font-mono text-[10.5px]">{updated ? `东方财富接口响应 ${formatChinaMarketTime(updated)}` : ""}</span>
+        <span className="font-mono text-[10.5px]">{updated ? `${sourceLabel(source)} ${formatChinaMarketTime(updated)}` : ""}</span>
       </div>
       <div className="rounded-2xl border border-[var(--border)] overflow-hidden">
         <div className="overflow-x-auto">
