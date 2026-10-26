@@ -14,6 +14,7 @@ import ssl
 import time
 import urllib.error
 import urllib.request
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Any, Iterable
 from urllib.parse import urlencode
 
@@ -367,7 +368,119 @@ def _price_limit(name: str, code: str) -> int:
     bare = (code or "").split(".")[0]
     if bare.startswith("688") or bare.startswith("300") or bare.startswith("301"):
         return 20
+    if bare[:1] in ("4", "8", "9"):
+        return 30
     return 10
+
+
+def classify_hq_rows(rows: Iterable[dict[str, Any]]) -> dict[str, Any]:
+    """Turn Sina/Eastmoney-style changepercent rows into breadth + limit counts."""
+    ups = downs = flats = 0
+    lu10 = lu20 = ld10 = ld20 = 0
+    total = 0
+    for item in rows:
+        if not isinstance(item, dict):
+            continue
+        pct = item.get("changepercent")
+        if pct is None:
+            pct = item.get("change_pct")
+        pct = _to_float(pct)
+        name = str(item.get("name") or "")
+        code = str(item.get("code") or item.get("symbol") or "")
+        if code.lower().startswith(("sh", "sz", "bj")):
+            code = code[2:]
+        total += 1
+        if pct > 0:
+            ups += 1
+        elif pct < 0:
+            downs += 1
+        else:
+            flats += 1
+        limit = _price_limit(name, code)
+        if pct >= limit - 0.3:
+            if limit >= 20:
+                lu20 += 1
+            else:
+                lu10 += 1
+        if pct <= -(limit - 0.3):
+            if limit >= 20:
+                ld20 += 1
+            else:
+                ld10 += 1
+    return {
+        "total": total,
+        "ups": ups,
+        "downs": downs,
+        "flats": flats,
+        "limit_up": lu10 + lu20,
+        "limit_up_breakdown": {"10cm": lu10, "20cm": lu20},
+        "limit_down": ld10 + ld20,
+        "limit_down_breakdown": {"10cm": ld10, "20cm": ld20},
+    }
+
+
+def _sina_hq_page(page: int, node: str = "hs_a", num: int = 100) -> list[dict]:
+    url = (
+        "https://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/"
+        f"Market_Center.getHQNodeData?page={page}&num={num}&sort=changepercent&asc=0&node={node}"
+    )
+    payload = json.loads(_http_bytes(url, timeout=15, retries=2).decode("utf-8", "replace"))
+    return payload if isinstance(payload, list) else []
+
+
+def fetch_breadth(max_pages: int = 70) -> dict[str, Any]:
+    """沪深 A 股涨跌家数 + 涨停跌停。新浪 hs_a 全量分页，约 3 秒。"""
+    pages: list[list[dict]] = []
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        futs = {pool.submit(_sina_hq_page, page): page for page in range(1, max_pages + 1)}
+        for fut in as_completed(futs):
+            try:
+                chunk = fut.result()
+            except Exception as exc:
+                log.warning("sina hs_a page failed: %s", exc)
+                continue
+            if chunk:
+                pages.append(chunk)
+    rows = [row for chunk in pages for row in chunk]
+    if len(rows) < 1000:
+        raise RuntimeError(f"sina breadth too small: {len(rows)}")
+    return classify_hq_rows(rows)
+
+
+def _is_cn_a_symbol(symbol: str) -> bool:
+    raw = (symbol or "").lower()
+    code = raw[2:] if raw.startswith(("sh", "sz", "bj")) else raw
+    if not code.isdigit() or len(code) != 6:
+        return False
+    return code.startswith(("60", "00", "30", "68", "92", "83", "87", "43", "82"))
+
+
+def _sina_moneyflow_page(page: int, num: int = 100) -> list[dict]:
+    url = (
+        "https://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/"
+        f"MoneyFlow.ssl_bkzj_ssggzj?page={page}&num={num}&sort=symbol&asc=0"
+    )
+    payload = json.loads(_http_bytes(url, timeout=15, retries=2).decode("utf-8", "replace"))
+    return payload if isinstance(payload, list) else []
+
+
+def fetch_main_flow_yi(max_pages: int = 80) -> float | None:
+    """A 股超大单净额合计（新浪 r0_net），单位亿。不是 Wind 主力口径。"""
+    rows: list[dict] = []
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        futs = [pool.submit(_sina_moneyflow_page, page) for page in range(1, max_pages + 1)]
+        for fut in as_completed(futs):
+            try:
+                chunk = fut.result()
+            except Exception as exc:
+                log.warning("sina moneyflow page failed: %s", exc)
+                continue
+            rows.extend(chunk or [])
+    a_rows = [row for row in rows if isinstance(row, dict) and _is_cn_a_symbol(str(row.get("symbol") or ""))]
+    if len(a_rows) < 1000:
+        return None
+    total = sum(_to_float(row.get("r0_net")) for row in a_rows)
+    return round(total / 1e8, 2)
 
 
 def fetch_a_indices() -> list[dict[str, Any]]:
@@ -650,6 +763,23 @@ def fetch_hk_hot_stocks(size: int = 5) -> list[dict[str, Any]]:
 
 
 def fetch_public_market(stock_codes: Iterable[str], hk_stock_codes: Iterable[str] | None = None) -> dict[str, Any]:
+    sentiment = {"limit_up": None, "limit_down": None, "main_flow_yi": None}
+    try:
+        breadth = fetch_breadth()
+        sentiment.update({
+            "limit_up": breadth["limit_up"],
+            "limit_down": breadth["limit_down"],
+            "ups": breadth["ups"],
+            "downs": breadth["downs"],
+            "flats": breadth["flats"],
+            "total": breadth["total"],
+        })
+    except Exception as exc:
+        log.warning("sina breadth failed: %s", exc)
+    try:
+        sentiment["main_flow_yi"] = fetch_main_flow_yi()
+    except Exception as exc:
+        log.warning("sina main flow failed: %s", exc)
     out: dict[str, Any] = {
         "asOf": datetime.datetime.now().isoformat(timespec="seconds"),
         "source": "eastmoney_fallback",
@@ -657,7 +787,7 @@ def fetch_public_market(stock_codes: Iterable[str], hk_stock_codes: Iterable[str
         "watchlist": fetch_watchlist(stock_codes),
         "hot_stocks": fetch_hot_stocks(),
         "sectors": fetch_sectors(),
-        "sentiment": {"limit_up": None, "limit_down": None, "main_flow_yi": None},
+        "sentiment": sentiment,
         "news": fetch_news(),
     }
     if hk_stock_codes:
@@ -690,9 +820,12 @@ def overlay_public_quotes(
     if news_broken:
         data["news"] = public.get("news") or []
         replaced.append("news")
-    sentiment = data.get("sentiment")
-    if isinstance(sentiment, dict) and sentiment.get("error"):
-        data["sentiment"] = public["sentiment"]
+    sentiment = data.get("sentiment") if isinstance(data.get("sentiment"), dict) else {}
+    public_sentiment = public.get("sentiment") if isinstance(public.get("sentiment"), dict) else {}
+    if sentiment.get("error") or (
+        sentiment.get("limit_up") is None and public_sentiment.get("limit_up") is not None
+    ):
+        data["sentiment"] = public_sentiment
         replaced.append("sentiment")
     data["source"] = "eastmoney_fallback" if replaced else data.get("source") or "wind"
     if replaced and any(has_price(row) for row in as_list(data.get("indices"))):

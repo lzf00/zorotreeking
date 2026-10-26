@@ -171,7 +171,7 @@ export default function MarketSentiment({ initialData }: Props = {}) {
         </div>
       </div>
       <p className="mt-3 text-[11px] text-[var(--text-tertiary)] font-mono">
-        数据 腾讯/东方财富公开行情 · 成交额优先腾讯指数 · 后端缓存 90s
+        数据 腾讯成交额 + 新浪/东财涨跌家数 · 后端缓存 90s
         {data.ts ? `· 接口响应 ${formatChinaMarketTime(data.ts)}` : ""}
         {data.stale && <span className="ml-2" style={{ color: "#dc2626" }}>· 数据陈旧（上游异常）</span>}
       </p>

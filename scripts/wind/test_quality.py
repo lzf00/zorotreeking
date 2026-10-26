@@ -8,7 +8,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from quality import is_publishable, looks_like_credit_failure, payload_quality
 from publisher import publish_to_zorotreeking
 from fetcher import build_report
-from fallback_eastmoney import bars_as_of, parse_sina_hy_map, quote_from_bars
+from fallback_eastmoney import bars_as_of, classify_hq_rows, parse_sina_hy_map, quote_from_bars
 
 
 CREDIT = "原因：账户积分余额不足，无法完成当前操作。官网充值地址： https://market.windalice.co"
@@ -68,6 +68,25 @@ def test_quote_from_bars_uses_as_of_close():
     assert row["price"] == 3697.52
     assert row["change_pct"] == round((3697.52 / 3700 - 1) * 100, 2)
     assert quote_from_bars("000001.SH", "上证指数", bars, "2026-10-25") is None
+
+
+def test_classify_hq_rows_counts_limits_by_board():
+    rows = [
+        {"name": "中邮科技", "code": "688648", "changepercent": 20.01},
+        {"name": "贵州茅台", "code": "600519", "changepercent": 1.12},
+        {"name": "某主板跌停", "code": "600000", "changepercent": -10.0},
+        {"name": "平盘", "code": "000001", "changepercent": 0},
+        {"name": "北交所深跌", "code": "920285", "changepercent": -29.19},
+    ]
+    stats = classify_hq_rows(rows)
+    assert stats["total"] == 5
+    assert stats["ups"] == 2
+    assert stats["downs"] == 2
+    assert stats["flats"] == 1
+    assert stats["limit_up"] == 1
+    assert stats["limit_up_breakdown"]["20cm"] == 1
+    assert stats["limit_down"] == 1
+    assert stats["limit_down_breakdown"]["10cm"] == 1
 
 
 def test_parse_sina_hy_map_ranks_by_change():

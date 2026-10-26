@@ -966,7 +966,8 @@ def build_report(stock_codes: list, prefetched: dict = None, as_of: datetime.dat
             if mf is not None:
                 flow_emoji = "🔴" if mf > 0 else ("🟢" if mf < 0 else "⚪")
                 flow_label = "净流入" if mf > 0 else ("净流出" if mf < 0 else "持平")
-                lines.append(f"| 💰 主力资金 | {flow_emoji} **{mf:+.2f}亿** ({flow_label}) |")
+                flow_name = "超大单净额" if data.get("source") == "eastmoney_fallback" else "主力资金"
+                lines.append(f"| 💰 {flow_name} | {flow_emoji} **{mf:+.2f}亿** ({flow_label}) |")
     lines.append("")
 
     # 3. 自选股（按涨跌幅降序）
@@ -1174,7 +1175,8 @@ def build_report_en(stock_codes: list, prefetched: dict = None, as_of: datetime.
                 lines.append(f"| 💥 Number of limit down stocks | **{ld}** |")
             if mf is not None:
                 flow_emoji = "🔴" if mf > 0 else ("🟢" if mf < 0 else "⚪")
-                lines.append(f"| 💰 Main-force flow | {flow_emoji} **{mf:+.2f}** (100M CNY) |")
+                flow_name = "Super-large-order net" if data.get("source") == "eastmoney_fallback" else "Main-force flow"
+                lines.append(f"| 💰 {flow_name} | {flow_emoji} **{mf:+.2f}** (100M CNY) |")
     lines += [
         "",
         "## 💼 Watchlist Stocks",
