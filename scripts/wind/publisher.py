@@ -52,7 +52,7 @@ tags: [market-recap, wind, daily]
 draft: false
 ---
 
-> 由 stock_pusher 每个交易日 15:30 收盘后自动调用 Wind 数据生成。**仅供研究参考，不构成投资建议。**
+> 由 stock_pusher 每个交易日 15:30 收盘后自动生成。Wind 不可用时改用东财/腾讯公开行情。**仅供研究参考，不构成投资建议。**
 
 """
     return frontmatter + content + "\n"
@@ -263,6 +263,10 @@ def publish_to_zorotreeking(title: str, content: str, data: dict,
     """
     now = datetime.datetime.now()
     date_str = now.strftime("%Y-%m-%d")
+    from quality import is_publishable, looks_like_credit_failure
+    if not is_publishable(data) or looks_like_credit_failure(data):
+        log.error("❌ 拒绝归档：快照没有可用行情，或仍含 Wind 积分错误。保留站上一次有效数据。")
+        return False
     sentiment_summary = _build_sentiment_summary(data)
     mdx = _build_mdx(title, content, data, sentiment_summary)
 

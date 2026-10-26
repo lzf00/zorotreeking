@@ -126,6 +126,7 @@ WantedBy=timers.target
 | Wind 调用失败 | `cat ~/.wind-aifinmarket/config` 看 key、`WIND_SKILL_DIR=/opt/wind-mcp-skill node /opt/wind-mcp-skill/scripts/cli.mjs call stock_data get_indexes '{"index_codes":"000001.SH"}'` 手测 |
 | GitHub API 推送失败 | 看 stderr；常见：token 过期 / scope 不含 `repo`；用 `curl -H "Authorization: Bearer $GITHUB_TOKEN" https://api.github.com/repos/lzf00/zorotreeking` 验证 |
 | Wind 单股深度数据缺失（quota 超限） | 主链路不阻断，等次日额度重置即可 |
+| A/港看板变 `--`、日报出现「积分余额不足」 | Wind Alice 积分用尽。fetcher 会改用东财/腾讯公开行情；publisher 拒绝覆盖上次有效快照。充值：https://market.windalice.co |
 | 非交易日还是触发 | `holidays.py STOCK_HOLIDAYS` 更新 |
 
 ## 节假日表更新

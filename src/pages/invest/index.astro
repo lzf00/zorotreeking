@@ -126,7 +126,9 @@ try {
     const snapshotTime = Date.parse(`${wind.asOf}+08:00`);
     if (Number.isFinite(snapshotTime)) initialMarketUpdated = snapshotTime / 1000;
   }
-  initialIndices = (wind.indices || []).map((i: any) => ({
+  initialIndices = (wind.indices || [])
+    .filter((i: any) => i && !i.error && Number(i.price) > 0)
+    .map((i: any) => ({
     code: i.code,
     name: i.name,
     market: i.code?.endsWith?.(".HK") ? "HK" :
@@ -137,7 +139,9 @@ try {
   }));
 
   // 板块涨跌排行：Wind 的 sectors 是已按 change_pct 排序的，取前 10 / 后 10
-  const sectors = (wind.sectors || []).map((s: any) => ({
+  const sectors = (wind.sectors || [])
+    .filter((s: any) => s && !s.error && s.name && Number.isFinite(Number(s.change_pct)))
+    .map((s: any) => ({
     code: s.code, name: s.name, price: null, change_pct: s.change_pct,
   }));
   const up = [...sectors].filter((s) => (s.change_pct ?? 0) > 0).slice(0, 10);

@@ -863,8 +863,17 @@ def fetch_all_data(stock_codes: list, hk_stock_codes: list = None,
         wave1["hk_hot_stocks"] = get_hk_hot_stocks
 
     r1 = _parallel_run(wave1)
-    out = {"asOf": datetime.datetime.now().isoformat(), **r1}
+    out = {"asOf": datetime.datetime.now().isoformat(), "source": "wind", **r1}
     log.info(f"📊 第一波完成 {time.time() - t0:.1f}s ({len(wave1)} 个任务)")
+
+    from quality import is_publishable, looks_like_credit_failure
+    if not is_publishable(out) or looks_like_credit_failure(out):
+        log.warning("⚠️ Wind 快照不可用（积分不足或空数据），改用东财/腾讯公开行情兜底")
+        try:
+            from fallback_eastmoney import overlay_public_quotes
+            overlay_public_quotes(out, stock_codes, hk_stock_codes)
+        except Exception as exc:
+            log.error(f"❌ 公开行情兜底失败: {exc}")
 
     # —— 第二波：单股深度 —— #
     if detail_codes:
@@ -900,10 +909,22 @@ def build_report(stock_codes: list, prefetched: dict = None) -> tuple:
     title = f"📊 {today}股票日报"
 
     data = prefetched if prefetched else fetch_all_data(stock_codes)
+    source_label = {
+        "eastmoney_fallback": "东财/腾讯公开行情（Wind 暂不可用）",
+        "mixed": "Wind + 公开行情兜底",
+    }.get(str(data.get("source") or "wind"), "Wind 数据")
+
+    def _rows(key: str) -> list:
+        value = data.get(key)
+        return value if isinstance(value, list) else []
+
+    def _missing_cell(name: str = "") -> str:
+        label = name or "数据"
+        return f"| ⚠️ {label} | 数据暂缺 |  |"
 
     lines = []
     lines.append(f"# {title}")
-    lines.append(f"`{time_str} 更新` · `Wind 数据` · `Zoro AI`")
+    lines.append(f"`{time_str} 更新` · `{source_label}` · `Zoro AI`")
     lines.append("")
 
     # 1. 大盘
@@ -911,9 +932,9 @@ def build_report(stock_codes: list, prefetched: dict = None) -> tuple:
     lines.append("")
     lines.append("| 指数 | 点位 | 涨跌 |")
     lines.append("|------|------|------|")
-    for idx in data["indices"]:
-        if "error" in idx:
-            lines.append(f"| ⚠️ {idx.get('name','')} | {idx['error']} |  |")
+    for idx in _rows("indices"):
+        if not isinstance(idx, dict) or "error" in idx:
+            lines.append(_missing_cell((idx or {}).get("name", "") if isinstance(idx, dict) else ""))
             continue
         lines.append(
             f"| {idx['emoji']} {idx['name']} "
@@ -925,23 +946,26 @@ def build_report(stock_codes: list, prefetched: dict = None) -> tuple:
     # 2. 市场情绪温度计
     lines.append("## 🌡️ 市场情绪")
     lines.append("")
-    sentiment = data["sentiment"]
+    sentiment = data.get("sentiment") if isinstance(data.get("sentiment"), dict) else {}
     if "error" in sentiment:
-        lines.append(f"⚠️ {sentiment['error']}")
+        lines.append("⚠️ 市场情绪暂缺")
     else:
         lu = sentiment.get("limit_up")
         ld = sentiment.get("limit_down")
         mf = sentiment.get("main_flow_yi")
-        lines.append("| 指标 | 数值 |")
-        lines.append("|------|------|")
-        if lu is not None:
-            lines.append(f"| 🚀 涨停家数 | **{lu}** 家 |")
-        if ld is not None:
-            lines.append(f"| 💥 跌停家数 | **{ld}** 家 |")
-        if mf is not None:
-            flow_emoji = "🔴" if mf > 0 else ("🟢" if mf < 0 else "⚪")
-            flow_label = "净流入" if mf > 0 else ("净流出" if mf < 0 else "持平")
-            lines.append(f"| 💰 主力资金 | {flow_emoji} **{mf:+.2f}亿** ({flow_label}) |")
+        if lu is None and ld is None and mf is None:
+            lines.append("公开行情兜底不含涨停家数 / 主力资金。")
+        else:
+            lines.append("| 指标 | 数值 |")
+            lines.append("|------|------|")
+            if lu is not None:
+                lines.append(f"| 🚀 涨停家数 | **{lu}** 家 |")
+            if ld is not None:
+                lines.append(f"| 💥 跌停家数 | **{ld}** 家 |")
+            if mf is not None:
+                flow_emoji = "🔴" if mf > 0 else ("🟢" if mf < 0 else "⚪")
+                flow_label = "净流入" if mf > 0 else ("净流出" if mf < 0 else "持平")
+                lines.append(f"| 💰 主力资金 | {flow_emoji} **{mf:+.2f}亿** ({flow_label}) |")
     lines.append("")
 
     # 3. 自选股（按涨跌幅降序）
@@ -950,21 +974,25 @@ def build_report(stock_codes: list, prefetched: dict = None) -> tuple:
     lines.append("| 股票 | 现价 | 今日 | 5日 | 20日 | 主力5日(亿) |")
     lines.append("|------|------|------|-----|------|-----------|")
     # 拷贝一份再排序，避免修改原 data["watchlist"] 顺序（publisher 也要用）
-    stocks = list(data["watchlist"])
-    stocks.sort(key=lambda x: (0, -x["change_pct"]) if "error" not in x else (1, 0))
+    stocks = list(_rows("watchlist"))
+    stocks.sort(key=lambda x: (0, -(x.get("change_pct") or 0)) if isinstance(x, dict) and "error" not in x else (1, 0))
     for s in stocks:
-        if "error" in s:
-            lines.append(f"| ⚠️ {s.get('code','')} | {s['error']} |  |  |  |  |")
+        if not isinstance(s, dict) or "error" in s:
+            lines.append(f"| ⚠️ {(s or {}).get('code','') if isinstance(s, dict) else ''} | 数据暂缺 |  |  |  |  |")
             continue
-        main_net = s.get("main_net_5d_yi", 0)
-        main_emoji = "🔴" if main_net > 0 else ("🟢" if main_net < 0 else "⚪")
+        main_net = s.get("main_net_5d_yi")
+        if main_net is None:
+            net_cell = "--"
+        else:
+            main_emoji = "🔴" if main_net > 0 else ("🟢" if main_net < 0 else "⚪")
+            net_cell = f"{main_emoji} {main_net:+.1f}"
         lines.append(
             f"| {s['emoji']} {s['name']} "
             f"| {_fmt_price(s['price'])} "
             f"| **{s['change_pct']:+.2f}%** "
             f"| {_fmt_pct(s['chg_5d'])} "
             f"| {_fmt_pct(s['chg_20d'])} "
-            f"| {main_emoji} {main_net:+.1f} |"
+            f"| {net_cell} |"
         )
     lines.append("")
 
@@ -973,10 +1001,12 @@ def build_report(stock_codes: list, prefetched: dict = None) -> tuple:
     lines.append("")
     lines.append("| # | 股票 | 现价 | 涨幅 |")
     lines.append("|---|------|------|------|")
-    hot = data["hot_stocks"]
+    hot = _rows("hot_stocks")
+    if not any(isinstance(h, dict) and "error" not in h for h in hot):
+        lines.append("涨幅榜暂缺（公开接口未返回）。")
     for i, h in enumerate(hot, 1):
-        if "error" in h:
-            lines.append(f"| ⚠️ | {h['error']} |  |  |")
+        if not isinstance(h, dict) or "error" in h:
+            lines.append("| ⚠️ | 数据暂缺 |  |  |")
             continue
         tag = " 🚀" if h.get("is_limit_up") else ""
         lines.append(
@@ -991,10 +1021,12 @@ def build_report(stock_codes: list, prefetched: dict = None) -> tuple:
     lines.append("")
     lines.append("| 板块 | 涨幅 | 领涨股 |")
     lines.append("|------|------|--------|")
-    sectors = data["sectors"]
+    sectors = _rows("sectors")
+    if not any(isinstance(s, dict) and "error" not in s for s in sectors):
+        lines.append("板块排行暂缺（公开接口未返回）。")
     for s in sectors:
-        if "error" in s:
-            lines.append(f"| ⚠️ {s['error']} |  |  |")
+        if not isinstance(s, dict) or "error" in s:
+            lines.append("| ⚠️ 数据暂缺 |  |  |")
             continue
         lead = s.get("lead_stock") or "—"
         lines.append(
@@ -1043,10 +1075,12 @@ def build_report(stock_codes: list, prefetched: dict = None) -> tuple:
     # 7. 财经要闻 TOP3（标题做成百度搜索链接 + 60 字摘要）
     lines.append("## 📰 今日要闻")
     lines.append("")
-    news = data["news"]
+    news = _rows("news")
+    if not news:
+        lines.append("今日要闻暂缺。")
     for i, n in enumerate(news, 1):
-        if "error" in n:
-            lines.append(f"{i}. ⚠️ {n['error']}")
+        if not isinstance(n, dict) or "error" in n:
+            lines.append(f"{i}. 要闻暂缺")
             continue
         search_url = f"https://www.baidu.com/s?wd={quote(n['title'])}"
         date_tag = f" `{n['date']}`" if n.get("date") else ""
@@ -1059,6 +1093,6 @@ def build_report(stock_codes: list, prefetched: dict = None) -> tuple:
         lines.pop()
 
     lines.append("---")
-    lines.append("🚀 涨停 · 🔴 涨/流入 · 🟢 跌/流出 · ⚪ 平 · 数据来源 Wind")
+    lines.append(f"🚀 涨停 · 🔴 涨/流入 · 🟢 跌/流出 · ⚪ 平 · 数据来源 {source_label}")
 
     return title, "\n".join(lines)
