@@ -23,6 +23,12 @@ export default defineConfig({
     locales: ["zh", "en"],
     routing: { prefixDefaultLocale: false },
   },
+  redirects: {
+    "/photography": "/photo",
+    "/photography/": "/photo",
+    "/en/photography": "/en/photo",
+    "/en/photography/": "/en/photo",
+  },
   markdown: {
     processor: unified({
       rehypePlugins: [

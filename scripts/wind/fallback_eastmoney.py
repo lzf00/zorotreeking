@@ -27,6 +27,10 @@ _HEADERS = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/120.0 Safari/537.36",
     "Referer": "https://quote.eastmoney.com/",
 }
+_SINA_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/120.0 Safari/537.36",
+    "Referer": "https://finance.sina.com.cn/",
+}
 
 INDEX_LIST = [
     ("000001.SH", "上证指数"),
@@ -101,13 +105,20 @@ def wind_to_tencent(code: str) -> str:
     return special.get(wind, "")
 
 
-def _http_json(url: str, timeout: int = 12, retries: int = 3) -> dict[str, Any]:
+def _headers_for(url: str) -> dict[str, str]:
+    if "sina.com" in url:
+        return _SINA_HEADERS
+    return _HEADERS
+
+
+def _http_bytes(url: str, timeout: int = 12, retries: int = 3) -> bytes:
     last_error: Exception | None = None
+    headers = _headers_for(url)
     for attempt in range(retries):
         try:
-            request = urllib.request.Request(url, headers=_HEADERS)
+            request = urllib.request.Request(url, headers=headers)
             with urllib.request.urlopen(request, timeout=timeout, context=_CTX) as response:
-                return json.loads(response.read().decode("utf-8", "replace"))
+                return response.read()
         except Exception as exc:
             last_error = exc
             time.sleep(0.8 * (attempt + 1))
@@ -116,10 +127,15 @@ def _http_json(url: str, timeout: int = 12, retries: int = 3) -> dict[str, Any]:
         try:
             request = urllib.request.Request(alt, headers=_HEADERS)
             with urllib.request.urlopen(request, timeout=timeout, context=_CTX) as response:
-                return json.loads(response.read().decode("utf-8", "replace"))
+                return response.read()
         except Exception as exc:
             last_error = exc
     raise RuntimeError(f"GET {url[:80]} failed: {last_error}")
+
+
+def _http_json(url: str, timeout: int = 12, retries: int = 3) -> dict[str, Any]:
+    body = _http_bytes(url, timeout=timeout, retries=retries)
+    return json.loads(body.decode("utf-8", "replace"))
 
 
 def _eastmoney_ulist(secids: Iterable[str], fields: str) -> dict[str, dict]:
@@ -203,21 +219,75 @@ def _quote_from_tencent(fields: list[str], code: str, name: str) -> dict[str, An
     }
 
 
-def _tencent_closes(symbol: str, n: int = 30) -> list[float]:
+def tencent_kline_bars(symbol: str, n: int = 80) -> list[dict[str, Any]]:
+    """Daily bars. Index feeds use `day`; stocks usually `qfqday`."""
     if not symbol:
         return []
     query = urlencode({"param": f"{symbol},day,,,{n},qfq"})
     payload = _http_json(f"https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?{query}", timeout=15)
     node = ((payload.get("data") or {}).get(symbol) or {})
-    rows = node.get("qfqday") or node.get("day") or []
-    closes: list[float] = []
+    rows = node.get("qfqday") or node.get("day") or node.get("hfqday") or []
+    bars: list[dict[str, Any]] = []
     for row in rows:
         if not isinstance(row, (list, tuple)) or len(row) < 3:
             continue
-        price = _to_float(row[2])
-        if price > 0:
-            closes.append(price)
-    return closes
+        close = _to_float(row[2])
+        if close <= 0:
+            continue
+        bars.append({
+            "date": str(row[0])[:10],
+            "open": _to_float(row[1]),
+            "close": close,
+            "high": _to_float(row[3]) if len(row) > 3 else close,
+            "low": _to_float(row[4]) if len(row) > 4 else close,
+        })
+    return bars
+
+
+def bars_as_of(bars: list[dict[str, Any]], as_of: str) -> list[dict[str, Any]]:
+    return [bar for bar in bars if str(bar.get("date") or "") <= as_of]
+
+
+def quote_from_bars(code: str, name: str, bars: list[dict[str, Any]], as_of: str) -> dict[str, Any] | None:
+    kept = bars_as_of(bars, as_of)
+    if not kept or kept[-1]["date"] != as_of:
+        return None
+    last = kept[-1]
+    prev = kept[-2] if len(kept) >= 2 else None
+    close = last["close"]
+    prev_close = prev["close"] if prev and prev["close"] > 0 else last["open"]
+    chg = close - prev_close if prev_close else 0.0
+    pct = round((close / prev_close - 1) * 100, 2) if prev_close else 0.0
+    closes = [bar["close"] for bar in kept]
+    amplitude = 0.0
+    if prev_close > 0 and last["high"] and last["low"]:
+        amplitude = round((last["high"] - last["low"]) / prev_close * 100, 2)
+    row: dict[str, Any] = {
+        "code": code,
+        "name": name,
+        "price": close,
+        "yesterday_close": prev_close,
+        "open": last["open"],
+        "high": last["high"],
+        "low": last["low"],
+        "change_amount": round(chg, 2),
+        "change_pct": pct,
+        "amplitude": amplitude,
+        "amount_yi": 0,
+        "turnover": 0,
+        "chg_5d": _chg_from_closes(closes, 5),
+        "chg_20d": _chg_from_closes(closes, 20),
+        "chg_ytd": _ytd_from_closes(closes),
+        "kline_5d": closes[-5:],
+        "emoji": _emoji(pct),
+    }
+    if code.upper().endswith(".HK"):
+        row["currency"] = "HKD"
+    return row
+
+
+def _tencent_closes(symbol: str, n: int = 30) -> list[float]:
+    return [bar["close"] for bar in tencent_kline_bars(symbol, n=n)]
 
 
 def _chg_from_closes(closes: list[float], lookback: int) -> float | None:
@@ -378,6 +448,77 @@ def fetch_watchlist(codes: Iterable[str]) -> list[dict[str, Any]]:
     return rows
 
 
+def _hot_row(code: str, name: str, price: float, chg: float) -> dict[str, Any] | None:
+    if not code or price <= 0:
+        return None
+    suffix = ".SH" if code.startswith("6") else ".SZ"
+    limit = _price_limit(name, code)
+    return {
+        "name": name,
+        "code": f"{code}{suffix}",
+        "price": price,
+        "change_pct": chg,
+        "is_limit_up": chg >= limit - 0.3,
+        "limit": limit,
+    }
+
+
+def _fetch_sina_hot_stocks(size: int = 5) -> list[dict[str, Any]]:
+    url = (
+        "https://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/"
+        f"Market_Center.getHQNodeData?page=1&num={size}&sort=changepercent&asc=0&node=hs_a"
+    )
+    payload = json.loads(_http_bytes(url).decode("utf-8", "replace"))
+    if not isinstance(payload, list):
+        return []
+    out: list[dict[str, Any]] = []
+    for item in payload[:size]:
+        if not isinstance(item, dict):
+            continue
+        row = _hot_row(
+            str(item.get("code") or ""),
+            str(item.get("name") or "").replace(" ", ""),
+            _to_float(item.get("trade")),
+            _to_float(item.get("changepercent")),
+        )
+        if row:
+            out.append(row)
+    return out
+
+
+def parse_sina_hy_map(data: dict[str, Any], size: int = 5) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for value in data.values():
+        parts = str(value).split(",")
+        if len(parts) < 13:
+            continue
+        name = parts[1].strip()
+        chg = _to_float(parts[5])
+        if not name:
+            continue
+        rows.append({
+            "code": parts[0],
+            "name": name,
+            "change_pct": round(chg, 2),
+            "lead_stock": parts[12].strip(),
+            "emoji": _emoji(chg),
+        })
+    rows.sort(key=lambda item: item["change_pct"], reverse=True)
+    return rows[:size]
+
+
+def _fetch_sina_sectors(size: int = 5) -> list[dict[str, Any]]:
+    raw = _http_bytes("https://vip.stock.finance.sina.com.cn/q/view/newSinaHy.php")
+    text = raw.decode("gbk", "replace")
+    start, end = text.find("{"), text.rfind("}")
+    if start < 0 or end <= start:
+        return []
+    payload = json.loads(text[start:end + 1])
+    if not isinstance(payload, dict):
+        return []
+    return parse_sina_hy_map(payload, size=size)
+
+
 def fetch_hot_stocks(size: int = 5) -> list[dict[str, Any]]:
     try:
         raw = _eastmoney_clist(
@@ -387,34 +528,32 @@ def fetch_hot_stocks(size: int = 5) -> list[dict[str, Any]]:
         )
     except Exception as exc:
         log.warning("eastmoney hot stocks failed: %s", exc)
-        return []
+        raw = []
     out: list[dict[str, Any]] = []
     for item in raw[:size]:
-        code = str(item.get("f12") or "")
-        name = str(item.get("f14") or "").replace(" ", "")
-        price = _to_float(item.get("f2"))
-        chg = _to_float(item.get("f3"))
-        if not code or price <= 0:
-            continue
-        suffix = ".SH" if code.startswith("6") else ".SZ"
-        limit = _price_limit(name, code)
-        out.append({
-            "name": name,
-            "code": f"{code}{suffix}",
-            "price": price,
-            "change_pct": chg,
-            "is_limit_up": chg >= limit - 0.3,
-            "limit": limit,
-        })
-    return out
+        row = _hot_row(
+            str(item.get("f12") or ""),
+            str(item.get("f14") or "").replace(" ", ""),
+            _to_float(item.get("f2")),
+            _to_float(item.get("f3")),
+        )
+        if row:
+            out.append(row)
+    if out:
+        return out
+    try:
+        return _fetch_sina_hot_stocks(size=size)
+    except Exception as exc:
+        log.warning("sina hot stocks failed: %s", exc)
+        return []
 
 
 def fetch_sectors(size: int = 5) -> list[dict[str, Any]]:
     try:
-        raw = _eastmoney_clist("m:90+t:2", "f3,f12,f14", size=size)
+        raw = _eastmoney_clist("m:90+t:2", "f3,f12,f14,f128", size=size)
     except Exception as exc:
         log.warning("eastmoney sectors failed: %s", exc)
-        return []
+        raw = []
     out: list[dict[str, Any]] = []
     for item in raw[:size]:
         name = str(item.get("f14") or "").strip()
@@ -425,8 +564,46 @@ def fetch_sectors(size: int = 5) -> list[dict[str, Any]]:
             "code": str(item.get("f12") or ""),
             "name": name,
             "change_pct": chg,
-            "lead_stock": "",
+            "lead_stock": str(item.get("f128") or "").strip(),
             "emoji": _emoji(chg),
+        })
+    if out:
+        return out
+    try:
+        return _fetch_sina_sectors(size=size)
+    except Exception as exc:
+        log.warning("sina sectors failed: %s", exc)
+        return []
+
+
+def fetch_news(size: int = 3) -> list[dict[str, Any]]:
+    url = f"https://feed.mix.sina.com.cn/api/roll/get?pageid=153&lid=2516&k=&num={size}&page=1"
+    try:
+        payload = _http_json(url, timeout=10)
+    except Exception as exc:
+        log.warning("sina news failed: %s", exc)
+        return []
+    items = ((payload.get("result") or {}).get("data") or [])
+    out: list[dict[str, Any]] = []
+    for item in items[:size]:
+        if not isinstance(item, dict):
+            continue
+        title = str(item.get("title") or "").strip()
+        if not title:
+            continue
+        snippet = str(item.get("intro") or item.get("summary") or "").replace("\n", " ").strip()
+        date = ""
+        try:
+            ts = int(item.get("ctime") or 0)
+            if ts:
+                date = datetime.datetime.utcfromtimestamp(ts + 8 * 3600).strftime("%Y-%m-%d")
+        except (TypeError, ValueError, OSError):
+            date = ""
+        out.append({
+            "title": title,
+            "snippet": snippet[:80],
+            "url": str(item.get("url") or ""),
+            "date": date,
         })
     return out
 
@@ -481,7 +658,7 @@ def fetch_public_market(stock_codes: Iterable[str], hk_stock_codes: Iterable[str
         "hot_stocks": fetch_hot_stocks(),
         "sectors": fetch_sectors(),
         "sentiment": {"limit_up": None, "limit_down": None, "main_flow_yi": None},
-        "news": [],
+        "news": fetch_news(),
     }
     if hk_stock_codes:
         out["hk_indices"] = fetch_hk_indices()
@@ -504,10 +681,14 @@ def overlay_public_quotes(
         if len(valid_rows(data.get(key))) == 0 and public.get(key):
             data[key] = public[key]
             replaced.append(key)
-    if isinstance(data.get("news"), list) and data["news"] and all(
-        isinstance(item, dict) and item.get("error") for item in data["news"]
-    ):
-        data["news"] = []
+    news = data.get("news")
+    news_broken = (
+        not isinstance(news, list)
+        or not news
+        or all(isinstance(item, dict) and (item.get("error") or not item.get("title")) for item in news)
+    )
+    if news_broken:
+        data["news"] = public.get("news") or []
         replaced.append("news")
     sentiment = data.get("sentiment")
     if isinstance(sentiment, dict) and sentiment.get("error"):

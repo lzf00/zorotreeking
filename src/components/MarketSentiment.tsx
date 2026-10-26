@@ -86,7 +86,7 @@ export default function MarketSentiment({ initialData }: Props = {}) {
     );
   }
 
-  if (!data || !data.turnover || !data.breadth) {
+  if (!data || !data.turnover) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {[1,2,3].map(i => <div key={i} className="rounded-2xl bg-[var(--bg-soft)] h-[180px] animate-pulse" />)}
@@ -95,9 +95,10 @@ export default function MarketSentiment({ initialData }: Props = {}) {
   }
 
   const { turnover, breadth } = data;
-  const upRate = breadth.total > 0 ? (breadth.ups / breadth.total) * 100 : 0;
-  const downRate = breadth.total > 0 ? (breadth.downs / breadth.total) * 100 : 0;
-  const flatRate = breadth.total > 0 ? (breadth.flats / breadth.total) * 100 : 0;
+  const missingBreadth = !breadth;
+  const upRate = breadth && breadth.total > 0 ? (breadth.ups / breadth.total) * 100 : 0;
+  const downRate = breadth && breadth.total > 0 ? (breadth.downs / breadth.total) * 100 : 0;
+  const flatRate = breadth && breadth.total > 0 ? (breadth.flats / breadth.total) * 100 : 0;
 
   return (
     <div>
@@ -114,50 +115,63 @@ export default function MarketSentiment({ initialData }: Props = {}) {
 
         {/* 涨跌家数 */}
         <div className="rounded-2xl bg-[var(--bg-soft)] p-5">
-          <div className="text-xs text-[var(--text-tertiary)] mb-3">市场宽度 <span className="opacity-60">({breadth.total} 只)</span></div>
-          <div className="flex items-baseline gap-3 mb-3 tabular-nums">
-            <span className="text-2xl font-semibold" style={{ color: "#dc2626" }}>{breadth.ups}</span>
-            <span className="text-[var(--text-tertiary)]">/</span>
-            <span className="text-2xl font-semibold" style={{ color: "#16a34a" }}>{breadth.downs}</span>
-            <span className="text-xs text-[var(--text-tertiary)] ml-auto">平 {breadth.flats}</span>
+          <div className="text-xs text-[var(--text-tertiary)] mb-3">
+            市场宽度 {breadth ? <span className="opacity-60">({breadth.total} 只)</span> : null}
           </div>
-          {/* 比例条 */}
-          <div className="flex h-2 rounded-full overflow-hidden bg-[var(--border)] mb-2">
-            <div style={{ width: `${upRate}%`, background: "#dc2626" }} />
-            <div style={{ width: `${flatRate}%`, background: "#9ca3af" }} />
-            <div style={{ width: `${downRate}%`, background: "#16a34a" }} />
-          </div>
-          <div className="text-[11px] text-[var(--text-tertiary)] tabular-nums">
-            涨 {upRate.toFixed(1)}% · 平 {flatRate.toFixed(1)}% · 跌 {downRate.toFixed(1)}%
-          </div>
+          {missingBreadth ? (
+            <div className="text-sm text-[var(--text-tertiary)]">涨跌家数暂缺（公开接口未返回）</div>
+          ) : (
+            <>
+              <div className="flex items-baseline gap-3 mb-3 tabular-nums">
+                <span className="text-2xl font-semibold" style={{ color: "#dc2626" }}>{breadth.ups}</span>
+                <span className="text-[var(--text-tertiary)]">/</span>
+                <span className="text-2xl font-semibold" style={{ color: "#16a34a" }}>{breadth.downs}</span>
+                <span className="text-xs text-[var(--text-tertiary)] ml-auto">平 {breadth.flats}</span>
+              </div>
+              <div className="flex h-2 rounded-full overflow-hidden bg-[var(--border)] mb-2">
+                <div style={{ width: `${upRate}%`, background: "#dc2626" }} />
+                <div style={{ width: `${flatRate}%`, background: "#9ca3af" }} />
+                <div style={{ width: `${downRate}%`, background: "#16a34a" }} />
+              </div>
+              <div className="text-[11px] text-[var(--text-tertiary)] tabular-nums">
+                涨 {upRate.toFixed(1)}% · 平 {flatRate.toFixed(1)}% · 跌 {downRate.toFixed(1)}%
+              </div>
+            </>
+          )}
         </div>
 
         {/* 涨停 / 跌停 */}
         <div className="rounded-2xl bg-[var(--bg-soft)] p-5">
           <div className="text-xs text-[var(--text-tertiary)] mb-3">涨停 / 跌停</div>
-          <div className="flex items-baseline gap-3 mb-3 tabular-nums">
-            <span className="text-2xl font-semibold" style={{ color: "#dc2626" }}>{breadth.limit_up}</span>
-            <span className="text-[var(--text-tertiary)]">/</span>
-            <span className="text-2xl font-semibold" style={{ color: "#16a34a" }}>{breadth.limit_down}</span>
-          </div>
-          <div className="text-xs text-[var(--text-secondary)] space-y-1 tabular-nums">
-            {breadth.limit_up_breakdown && (
-              <div className="flex justify-between">
-                <span>涨停 10cm/20cm</span>
-                <span style={{ color: "#dc2626" }}>{breadth.limit_up_breakdown["10cm"]} / {breadth.limit_up_breakdown["20cm"]}</span>
+          {missingBreadth ? (
+            <div className="text-sm text-[var(--text-tertiary)]">涨停统计暂缺</div>
+          ) : (
+            <>
+              <div className="flex items-baseline gap-3 mb-3 tabular-nums">
+                <span className="text-2xl font-semibold" style={{ color: "#dc2626" }}>{breadth.limit_up}</span>
+                <span className="text-[var(--text-tertiary)]">/</span>
+                <span className="text-2xl font-semibold" style={{ color: "#16a34a" }}>{breadth.limit_down}</span>
               </div>
-            )}
-            {breadth.limit_down_breakdown && (
-              <div className="flex justify-between">
-                <span>跌停 10cm/20cm</span>
-                <span style={{ color: "#16a34a" }}>{breadth.limit_down_breakdown["10cm"]} / {breadth.limit_down_breakdown["20cm"]}</span>
+              <div className="text-xs text-[var(--text-secondary)] space-y-1 tabular-nums">
+                {breadth.limit_up_breakdown && (
+                  <div className="flex justify-between">
+                    <span>涨停 10cm/20cm</span>
+                    <span style={{ color: "#dc2626" }}>{breadth.limit_up_breakdown["10cm"]} / {breadth.limit_up_breakdown["20cm"]}</span>
+                  </div>
+                )}
+                {breadth.limit_down_breakdown && (
+                  <div className="flex justify-between">
+                    <span>跌停 10cm/20cm</span>
+                    <span style={{ color: "#16a34a" }}>{breadth.limit_down_breakdown["10cm"]} / {breadth.limit_down_breakdown["20cm"]}</span>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
+            </>
+          )}
         </div>
       </div>
       <p className="mt-3 text-[11px] text-[var(--text-tertiary)] font-mono">
-        数据 东方财富 push2delay · 全市场 A 股 + 创业板 + 科创板 · 后端缓存 90s
+        数据 腾讯/东方财富公开行情 · 成交额优先腾讯指数 · 后端缓存 90s
         {data.ts ? `· 接口响应 ${formatChinaMarketTime(data.ts)}` : ""}
         {data.stale && <span className="ml-2" style={{ color: "#dc2626" }}>· 数据陈旧（上游异常）</span>}
       </p>

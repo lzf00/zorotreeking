@@ -896,14 +896,15 @@ def fetch_all_data(stock_codes: list, hk_stock_codes: list = None,
     return out
 
 
-def build_report(stock_codes: list, prefetched: dict = None) -> tuple:
+def build_report(stock_codes: list, prefetched: dict = None, as_of: datetime.datetime = None) -> tuple:
     """
     构建紧凑版股票日报（Markdown 表格）
     返回 (title, markdown_content)
 
     prefetched: 已通过 fetch_all_data 拉好的数据；传入则跳过重复 Wind 调用
+    as_of: 归档日期（回填历史日报时传入，默认现在）
     """
-    now = datetime.datetime.now()
+    now = as_of or datetime.datetime.now()
     today = now.strftime("%m月%d日")
     time_str = now.strftime("%H:%M")
     title = f"📊 {today}股票日报"
@@ -1082,7 +1083,7 @@ def build_report(stock_codes: list, prefetched: dict = None) -> tuple:
         if not isinstance(n, dict) or "error" in n:
             lines.append(f"{i}. 要闻暂缺")
             continue
-        search_url = f"https://www.baidu.com/s?wd={quote(n['title'])}"
+        search_url = n.get("url") or f"https://www.baidu.com/s?wd={quote(n['title'])}"
         date_tag = f" `{n['date']}`" if n.get("date") else ""
         lines.append(f"{i}. [**{n['title']}**]({search_url}){date_tag}")
         if n.get("snippet"):
@@ -1095,4 +1096,179 @@ def build_report(stock_codes: list, prefetched: dict = None) -> tuple:
     lines.append("---")
     lines.append(f"🚀 涨停 · 🔴 涨/流入 · 🟢 跌/流出 · ⚪ 平 · 数据来源 {source_label}")
 
+    return title, "\n".join(lines)
+
+
+_EN_NAMES = {
+    "上证指数": "Shanghai Composite Index",
+    "深证成指": "Shenzhen Component Index",
+    "创业板指": "ChiNext Index",
+    "恒生指数": "Hang Seng Index",
+    "国企指数": "Hang Seng China Enterprises Index",
+    "恒生科技": "Hang Seng TECH Index",
+    "贵州茅台": "Kweichow Moutai",
+    "中国平安": "Ping An of China",
+    "五粮液": "Wuliangye",
+    "宁德时代": "CATL",
+    "中芯国际": "SMIC",
+    "美团-W": "Meituan-W",
+    "小米集团-W": "Xiaomi Group-W",
+    "阿里巴巴-W": "Alibaba-W",
+    "腾讯控股": "Tencent Holdings",
+    "比亚迪股份": "BYD Company",
+}
+
+
+def _en_name(name: str) -> str:
+    return _EN_NAMES.get(name, name)
+
+
+def build_report_en(stock_codes: list, prefetched: dict = None, as_of: datetime.datetime = None) -> tuple:
+    """English twin of build_report for the same snapshot."""
+    now = as_of or datetime.datetime.now()
+    title = f"📊 {now.strftime('%B')} {now.day} Stock Daily Report"
+    time_str = now.strftime("%H:%M")
+    data = prefetched if prefetched else fetch_all_data(stock_codes)
+    source_label = {
+        "eastmoney_fallback": "Eastmoney/Tencent public quotes (Wind unavailable)",
+        "mixed": "Wind + public-quote fallback",
+    }.get(str(data.get("source") or "wind"), "Wind Data")
+
+    def _rows(key: str) -> list:
+        value = data.get(key)
+        return value if isinstance(value, list) else []
+
+    lines = [
+        f"# {title}",
+        f"`Updated at {time_str}` · `{source_label}` · `Zoro AI`",
+        "",
+        "## 📈 Broad Market",
+        "",
+        "| Index | Point | Change |",
+        "|------|------|------|",
+    ]
+    for idx in _rows("indices"):
+        if not isinstance(idx, dict) or "error" in idx:
+            lines.append("| ⚠️ Data unavailable |  |  |")
+            continue
+        lines.append(
+            f"| {idx['emoji']} {_en_name(idx['name'])} "
+            f"| {idx['price']:.2f} "
+            f"| **{idx['change_amount']:+.2f}** ({idx['change_pct']:+.2f}%) |"
+        )
+    lines += ["", "## 🌡️ Market Sentiment", ""]
+    sentiment = data.get("sentiment") if isinstance(data.get("sentiment"), dict) else {}
+    if "error" in sentiment:
+        lines.append("⚠️ Market sentiment unavailable")
+    else:
+        lu = sentiment.get("limit_up")
+        ld = sentiment.get("limit_down")
+        mf = sentiment.get("main_flow_yi")
+        if lu is None and ld is None and mf is None:
+            lines.append("Public-quote fallback does not include limit-up counts or main-force flow.")
+        else:
+            lines += ["| Indicator | Value |", "|------|------|"]
+            if lu is not None:
+                lines.append(f"| 🚀 Number of limit up stocks | **{lu}** |")
+            if ld is not None:
+                lines.append(f"| 💥 Number of limit down stocks | **{ld}** |")
+            if mf is not None:
+                flow_emoji = "🔴" if mf > 0 else ("🟢" if mf < 0 else "⚪")
+                lines.append(f"| 💰 Main-force flow | {flow_emoji} **{mf:+.2f}** (100M CNY) |")
+    lines += [
+        "",
+        "## 💼 Watchlist Stocks",
+        "",
+        "| Stock | Current Price | Today | 5-Day | 20-Day | Institutional 5-Day (100M CNY) |",
+        "|------|------|------|-----|------|-----------|",
+    ]
+    stocks = list(_rows("watchlist"))
+    stocks.sort(key=lambda x: (0, -(x.get("change_pct") or 0)) if isinstance(x, dict) and "error" not in x else (1, 0))
+    for s in stocks:
+        if not isinstance(s, dict) or "error" in s:
+            lines.append("| ⚠️ Data unavailable |  |  |  |  |  |")
+            continue
+        main_net = s.get("main_net_5d_yi")
+        net_cell = "--" if main_net is None else (
+            f"{'🔴' if main_net > 0 else ('🟢' if main_net < 0 else '⚪')} {main_net:+.1f}"
+        )
+        lines.append(
+            f"| {s['emoji']} {_en_name(s['name'])} "
+            f"| {_fmt_price(s['price'])} "
+            f"| **{s['change_pct']:+.2f}%** "
+            f"| {_fmt_pct(s['chg_5d'])} "
+            f"| {_fmt_pct(s['chg_20d'])} "
+            f"| {net_cell} |"
+        )
+    lines += ["", "## 🔥 Top Gainers", "", "| Rank | Stock | Current Price | Change |", "|---|------|------|------|"]
+    hot = _rows("hot_stocks")
+    if not any(isinstance(h, dict) and "error" not in h for h in hot):
+        lines.append("Top gainers unavailable from the public feed.")
+    for i, h in enumerate(hot, 1):
+        if not isinstance(h, dict) or "error" in h:
+            continue
+        tag = " 🚀" if h.get("is_limit_up") else ""
+        lines.append(
+            f"| {i} | {h['name']} `{h['code']}` "
+            f"| {h['price']:.2f} "
+            f"| **{h['change_pct']:+.2f}%**{tag} |"
+        )
+    lines += ["", "## 💰 Hot Sectors", "", "| Sector | Change | Leading Gainer |", "|------|------|--------|"]
+    sectors = _rows("sectors")
+    if not any(isinstance(s, dict) and "error" not in s for s in sectors):
+        lines.append("Sector ranking unavailable from the public feed.")
+    for s in sectors:
+        if not isinstance(s, dict) or "error" in s:
+            continue
+        lines.append(
+            f"| {s['emoji']} {s['name']} "
+            f"| **{s['change_pct']:+.2f}%** "
+            f"| {s.get('lead_stock') or '—'} |"
+        )
+    hk_indices_valid = [x for x in _rows("hk_indices") if isinstance(x, dict) and "error" not in x]
+    hk_watchlist_valid = [x for x in _rows("hk_watchlist") if isinstance(x, dict) and "error" not in x]
+    if hk_indices_valid or hk_watchlist_valid:
+        lines += ["", "## 🇭🇰 Hong Kong Market", ""]
+        if hk_indices_valid:
+            lines += ["| Index | Point | Change |", "|------|------|------|"]
+            for idx in hk_indices_valid:
+                lines.append(
+                    f"| {idx['emoji']} {_en_name(idx['name'])} "
+                    f"| {idx['price']:.2f} "
+                    f"| **{idx['change_amount']:+.2f}** ({idx['change_pct']:+.2f}%) |"
+                )
+            lines.append("")
+        if hk_watchlist_valid:
+            lines += [
+                "### Hong Kong Watchlist",
+                "",
+                "| Stock | Current Price | Today | 5-Day | 20-Day |",
+                "|------|------|------|-----|------|",
+            ]
+            for s in sorted(hk_watchlist_valid, key=lambda x: -x.get("change_pct", 0)):
+                lines.append(
+                    f"| {s['emoji']} {_en_name(s['name'])} "
+                    f"| HK$ {_fmt_price(s['price'])} "
+                    f"| **{s['change_pct']:+.2f}%** "
+                    f"| {_fmt_pct(s.get('chg_5d'))} "
+                    f"| {_fmt_pct(s.get('chg_20d'))} |"
+                )
+            lines.append("")
+    lines += ["", "## 📰 Today's Headlines", ""]
+    news = _rows("news")
+    if not news:
+        lines.append("No headlines from the public feed.")
+    for i, n in enumerate(news, 1):
+        if not isinstance(n, dict) or "error" in n or not n.get("title"):
+            continue
+        search_url = n.get("url") or f"https://www.baidu.com/s?wd={quote(n['title'])}"
+        date_tag = f" `{n['date']}`" if n.get("date") else ""
+        lines.append(f"{i}. [**{n['title']}**]({search_url}){date_tag}")
+        if n.get("snippet"):
+            lines.append(f"   > {n['snippet']}")
+        lines.append("")
+    if lines and lines[-1] == "":
+        lines.pop()
+    lines.append("---")
+    lines.append(f"🚀 Limit Up · 🔴 Rise/Inflow · 🟢 Fall/Outflow · ⚪ Flat · Data Source: {source_label}")
     return title, "\n".join(lines)

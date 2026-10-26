@@ -8,6 +8,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from quality import is_publishable, looks_like_credit_failure, payload_quality
 from publisher import publish_to_zorotreeking
 from fetcher import build_report
+from fallback_eastmoney import bars_as_of, parse_sina_hy_map, quote_from_bars
 
 
 CREDIT = "原因：账户积分余额不足，无法完成当前操作。官网充值地址： https://market.windalice.co"
@@ -53,6 +54,31 @@ def test_publisher_refuses_unusable_snapshot():
         "indices": [{"name": "上证指数", "error": CREDIT}],
         "watchlist": [{"code": "600519.SH", "error": CREDIT}],
     }, dry_run=True) is False
+
+
+def test_quote_from_bars_uses_as_of_close():
+    bars = [
+        {"date": "2026-10-23", "open": 3670, "close": 3680, "high": 3690, "low": 3660},
+        {"date": "2026-10-24", "open": 3681, "close": 3700, "high": 3710, "low": 3670},
+        {"date": "2026-10-26", "open": 3671, "close": 3697.52, "high": 3699, "low": 3664},
+    ]
+    assert bars_as_of(bars, "2026-10-24")[-1]["date"] == "2026-10-24"
+    row = quote_from_bars("000001.SH", "上证指数", bars, "2026-10-26")
+    assert row is not None
+    assert row["price"] == 3697.52
+    assert row["change_pct"] == round((3697.52 / 3700 - 1) * 100, 2)
+    assert quote_from_bars("000001.SH", "上证指数", bars, "2026-10-25") is None
+
+
+def test_parse_sina_hy_map_ranks_by_change():
+    rows = parse_sina_hy_map({
+        "a": "new_a,石油行业,10,1,0,1.77,0,0,sh600000,1,1,1,中海油服",
+        "b": "new_b,酿酒行业,8,1,0,1.33,0,0,sz000858,1,1,1,五粮液",
+        "c": "new_c,银行,20,1,0,-0.5,0,0,sh601398,1,1,1,工商银行",
+    }, size=2)
+    assert [row["name"] for row in rows] == ["石油行业", "酿酒行业"]
+    assert rows[0]["lead_stock"] == "中海油服"
+    assert rows[0]["change_pct"] == 1.77
 
 
 def test_report_does_not_leak_windalice():
