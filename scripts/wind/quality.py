@@ -51,13 +51,50 @@ def credit_error_text(value: Any) -> bool:
     return "积分余额不足" in text or "windalice" in text.lower()
 
 
+_LIST_KEYS = (
+    "indices", "watchlist", "hot_stocks", "sectors", "news",
+    "hk_indices", "hk_watchlist", "hk_hot_stocks",
+)
+
+
 def looks_like_credit_failure(data: Mapping[str, Any] | None) -> bool:
     payload = data or {}
     chunks: list[Any] = [payload]
-    for key in ("indices", "watchlist", "hot_stocks", "sectors", "news",
-                "hk_indices", "hk_watchlist", "hk_hot_stocks", "sentiment"):
+    for key in (*_LIST_KEYS, "sentiment", "details"):
         chunks.append(payload.get(key))
     return any(_walk_credit_error(chunk) for chunk in chunks)
+
+
+def scrub_credit_errors(data: dict[str, Any] | None) -> dict[str, Any]:
+    """Drop leftover Windalice recharge nodes so a public overlay can publish."""
+    payload = data if isinstance(data, dict) else {}
+    for key in _LIST_KEYS:
+        value = payload.get(key)
+        if not _walk_credit_error(value):
+            continue
+        if isinstance(value, list):
+            payload[key] = [
+                item for item in value
+                if isinstance(item, dict) and not _walk_credit_error(item)
+            ]
+        else:
+            payload[key] = []
+    sentiment = payload.get("sentiment")
+    if _walk_credit_error(sentiment):
+        if isinstance(sentiment, dict):
+            payload["sentiment"] = {
+                key: value for key, value in sentiment.items()
+                if key != "error" and not credit_error_text(value)
+            }
+        else:
+            payload["sentiment"] = {}
+    details = payload.get("details")
+    if isinstance(details, dict) and _walk_credit_error(details):
+        payload["details"] = {
+            code: row for code, row in details.items()
+            if not _walk_credit_error(row)
+        }
+    return payload
 
 
 def _walk_credit_error(node: Any) -> bool:

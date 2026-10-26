@@ -18,7 +18,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Any, Iterable
 from urllib.parse import urlencode
 
-from quality import as_list, has_price, is_publishable, valid_rows
+from quality import as_list, has_price, is_publishable, scrub_credit_errors, valid_rows
 
 
 log = logging.getLogger("wind.fallback")
@@ -832,5 +832,6 @@ def overlay_public_quotes(
         # Mixed if Wind still had something usable before overlay; after a total
         # failure every core field is public.
         data["source"] = "eastmoney_fallback"
+    scrub_credit_errors(data)
     log.info("public overlay replaced: %s (publishable=%s)", ",".join(replaced) or "none", is_publishable(data))
     return data

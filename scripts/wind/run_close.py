@@ -84,8 +84,11 @@ def main() -> int:
         ok = publish_to_zorotreeking(title, content, data, force=True, dry_run=False)
         log.info(f"📤 归档结果: {'ok' if ok else 'failed'}")
     except Exception as e:
-        log.warning(f"⚠️  归档异常（不影响主流程）: {e}")
-
+        log.error(f"❌ 归档异常: {e}")
+        return 1
+    if not ok:
+        log.error("❌ 收盘归档失败；16:00 / 16:30 盘中任务会再用公开行情补档")
+        return 1
     return 0
 
 

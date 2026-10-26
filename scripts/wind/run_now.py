@@ -43,6 +43,8 @@ def main() -> int:
                         help="跳过微信推送")
     parser.add_argument("--no-archive", action="store_true",
                         help="跳过归档到 zoro repo（mode=close 时有效）")
+    parser.add_argument("--no-detail", action="store_true",
+                        help="跳过单股深度（盘中刷新 / 公开行情补档用）")
     parser.add_argument("--dry-run", action="store_true",
                         help="等同 --no-push --no-archive，仅拉数据")
     parser.add_argument("--print", action="store_true", dest="print_md",
@@ -114,14 +116,16 @@ def main() -> int:
         # 开盘版：只拉 A 股 + 大盘等
         data = fetch_all_data(stock_codes)
     else:
-        # 收盘版：A + HK + 单股深度
-        detail_codes = [_to_wind(c) for c in stock_codes]
-        if hk_codes:
-            for raw in hk_codes:
-                code = raw.upper()
-                if "." not in code:
-                    code = f"{code}.HK"
-                detail_codes.append(code)
+        # 收盘版：A + HK；--no-detail 跳过单股深度（盘中补档）
+        detail_codes = None
+        if not args.no_detail:
+            detail_codes = [_to_wind(c) for c in stock_codes]
+            if hk_codes:
+                for raw in hk_codes:
+                    code = raw.upper()
+                    if "." not in code:
+                        code = f"{code}.HK"
+                    detail_codes.append(code)
         data = fetch_all_data(stock_codes,
                               hk_stock_codes=hk_codes or None,
                               detail_codes=detail_codes)
@@ -152,18 +156,23 @@ def main() -> int:
         log.info("⏭️  --no-push 跳过微信推送")
 
     # 归档（仅 close mode）
+    archived_ok = True
     if args.mode == "close":
         if not args.no_archive:
             from publisher import publish_to_zorotreeking
             try:
-                ok = publish_to_zorotreeking(title, content, data,
+                archived_ok = publish_to_zorotreeking(title, content, data,
                                               force=True, dry_run=False)
-                log.info(f"📤 归档结果: {'ok' if ok else 'failed'}")
+                log.info(f"📤 归档结果: {'ok' if archived_ok else 'failed'}")
             except Exception as e:
-                log.warning(f"⚠️  归档异常: {e}")
+                log.error(f"❌ 归档异常: {e}")
+                archived_ok = False
         else:
             log.info("⏭️  --no-archive 跳过归档")
 
+    if not archived_ok:
+        log.error("❌ run_now 归档失败")
+        return 1
     log.info("🎉 run_now 完成")
     return 0
 

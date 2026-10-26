@@ -1,0 +1,19 @@
+[Unit]
+Description=Wind recap refresh Mon-Fri during trading + 16:30 close backup (BJT)
+
+[Timer]
+# 盘中整点：10:00 / 11:00 / 13:00 / 14:00 / 15:00 / 16:00 BJT
+# 收盘补档：16:30 BJT（15:30 close 失败或公开行情晚到时再写一次，不发微信）
+# UTC: 02:00 / 03:00 / 05:00 / 06:00 / 07:00 / 08:00 / 08:30
+OnCalendar=Mon..Fri *-*-* 02:00:00 UTC
+OnCalendar=Mon..Fri *-*-* 03:00:00 UTC
+OnCalendar=Mon..Fri *-*-* 05:00:00 UTC
+OnCalendar=Mon..Fri *-*-* 06:00:00 UTC
+OnCalendar=Mon..Fri *-*-* 07:00:00 UTC
+OnCalendar=Mon..Fri *-*-* 08:00:00 UTC
+OnCalendar=Mon..Fri *-*-* 08:30:00 UTC
+Persistent=false
+Unit=wind-recap-intraday.service
+
+[Install]
+WantedBy=timers.target

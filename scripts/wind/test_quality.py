@@ -5,7 +5,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from quality import is_publishable, looks_like_credit_failure, payload_quality
+from quality import is_publishable, looks_like_credit_failure, payload_quality, scrub_credit_errors
 from publisher import publish_to_zorotreeking
 from fetcher import build_report
 from fallback_eastmoney import bars_as_of, classify_hq_rows, parse_sina_hy_map, quote_from_bars
@@ -47,6 +47,19 @@ def test_rejects_credit_error_payload():
 def test_accepts_public_quotes():
     assert is_publishable(_good())
     assert not looks_like_credit_failure(_good())
+
+
+def test_scrub_credit_errors_allows_publish():
+    data = _good()
+    data["hk_hot_stocks"] = [{"error": CREDIT}]
+    data["sentiment"] = {"error": CREDIT, "limit_up": 10, "limit_down": 4}
+    assert looks_like_credit_failure(data)
+    scrub_credit_errors(data)
+    assert data["hk_hot_stocks"] == []
+    assert data["sentiment"]["limit_up"] == 10
+    assert "error" not in data["sentiment"]
+    assert not looks_like_credit_failure(data)
+    assert is_publishable(data)
 
 
 def test_publisher_refuses_unusable_snapshot():

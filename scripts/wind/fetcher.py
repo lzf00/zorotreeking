@@ -186,12 +186,24 @@ def _to_wind(code: str) -> str:
 
 # -------------------- Wind CLI 调用 --------------------
 
+def _is_quota_error(exc: BaseException) -> bool:
+    """积分不足/日额度用完：立刻失败，不要指数退避空转。"""
+    text = str(exc)
+    return (
+        "QUOTA_ERROR" in text
+        or "积分余额不足" in text
+        or "额度/限流" in text
+        or "daily" in text.lower() and "超限" in text
+    )
+
+
 def _wind_call(server_type: str, tool_name: str, params: dict,
                timeout: int = 60, retries: int = 3, base_delay: float = 1.5):
     """
     调用 Wind CLI 子进程
     返回解析后的 inner['data']（具体结构因工具而异）
     失败抛 RuntimeError；指数退避：base_delay * 2^i (1.5s → 3s → 6s)
+    积分不足不重试，立刻交给公开行情兜底。
     """
     cmd = WIND_CLI + ["call", server_type, tool_name,
                       json.dumps(params, ensure_ascii=False)]
@@ -223,12 +235,11 @@ def _wind_call(server_type: str, tool_name: str, params: dict,
                 raise RuntimeError(f"data error: {inner['error']}")
             return inner.get("data")
         except Exception as e:
-            if i < retries - 1:
-                delay = base_delay * (2 ** i)
-                log.warning(f"⚠️ Wind 调用 {server_type}.{tool_name} 失败（第 {i+1}/{retries} 次），{delay:.1f}s 后重试: {e}")
-                time.sleep(delay)
-            else:
+            if _is_quota_error(e) or i >= retries - 1:
                 raise RuntimeError(f"{server_type}.{tool_name} -> {e}") from e
+            delay = base_delay * (2 ** i)
+            log.warning(f"⚠️ Wind 调用 {server_type}.{tool_name} 失败（第 {i+1}/{retries} 次），{delay:.1f}s 后重试: {e}")
+            time.sleep(delay)
 
 
 def _row_to_dict(data: dict) -> dict:
@@ -867,16 +878,20 @@ def fetch_all_data(stock_codes: list, hk_stock_codes: list = None,
     log.info(f"📊 第一波完成 {time.time() - t0:.1f}s ({len(wave1)} 个任务)")
 
     from quality import is_publishable, looks_like_credit_failure
+    used_public = False
     if not is_publishable(out) or looks_like_credit_failure(out):
         log.warning("⚠️ Wind 快照不可用（积分不足或空数据），改用东财/腾讯公开行情兜底")
+        used_public = True
         try:
             from fallback_eastmoney import overlay_public_quotes
             overlay_public_quotes(out, stock_codes, hk_stock_codes)
         except Exception as exc:
             log.error(f"❌ 公开行情兜底失败: {exc}")
 
-    # —— 第二波：单股深度 —— #
-    if detail_codes:
+    # —— 第二波：单股深度（Wind 专有；积分不足时跳过，避免再空转数分钟）—— #
+    if detail_codes and used_public:
+        log.info("⏭️ 公开行情兜底中，跳过 Wind 单股深度")
+    if detail_codes and not used_public:
         # name 映射来自第一波的 watchlist（A + HK，code 互不冲突）
         watchlist = out.get("watchlist", [])
         hk_watchlist = out.get("hk_watchlist", [])

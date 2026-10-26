@@ -10,7 +10,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from fetcher import (
     _emoji, _fmt_price, _fmt_pct, _fmt_yi,
-    _to_float, _to_wind, _price_limit, _limit_tag,
+    _is_quota_error, _to_float, _to_wind, _price_limit, _limit_tag,
     _row_to_dict, _rows_to_dicts,
 )
 
@@ -108,6 +108,13 @@ def test_limit_tag():
     assert _limit_tag("贵州茅台", "600519.SH", 10.0) == " 🚀"
     # 主板 5% 远低于 9.7% 阈值
     assert _limit_tag("贵州茅台", "600519.SH", 5.0) == ""
+
+
+def test_quota_error_no_retry():
+    assert _is_quota_error(RuntimeError("QUOTA_ERROR: 账户积分余额不足"))
+    assert _is_quota_error(RuntimeError("原因：账户积分余额不足，无法完成当前操作"))
+    assert not _is_quota_error(RuntimeError("timeout after 60s"))
+    assert not _is_quota_error(RuntimeError("empty stdout"))
 
 
 def test_row_to_dict():

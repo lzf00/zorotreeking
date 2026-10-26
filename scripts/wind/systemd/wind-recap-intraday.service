@@ -1,0 +1,13 @@
+[Unit]
+Description=Wind market recap (intraday / close backup, no detail, no push)
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/wind-recap
+EnvironmentFile=/opt/wind-recap/.env
+Environment=WIND_SKILL_DIR=/opt/wind-mcp-skill
+ExecStart=/usr/bin/python3 /opt/wind-recap/run_now.py --mode close --no-push --no-detail
+TimeoutSec=600
+StandardOutput=journal
+StandardError=journal

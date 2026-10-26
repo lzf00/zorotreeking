@@ -33,11 +33,13 @@ scripts/wind/
 ## 数据流
 
 ```
-systemd wind-recap-{open,close}.timer  ──触发──▶  run_{open,close}.py
+systemd wind-recap-{open,close,intraday}.timer
+   10:30 开盘 / 15:30 收盘 / 盘中整点 + 16:30 补档
                                                    ├─ fetcher.fetch_all_data
-                                                   │   └─ wind-mcp-skill CLI (node)
+                                                   │   ├─ wind-mcp-skill CLI（积分不足立刻停）
+                                                   │   └─ 东财/腾讯/新浪公开行情兜底
                                                    ├─ fetcher.build_report  → markdown
-                                                   ├─ wechat.push_via_serverchan
+                                                   ├─ wechat.push_via_serverchan（仅 open/close）
                                                    └─ publisher.publish_to_zorotreeking
                                                        ├─ 写 src/content/invest/market-recap-*.mdx
                                                        ├─ 写 src/data/wind-*.json
@@ -110,7 +112,9 @@ Persistent=true
 WantedBy=timers.target
 ```
 
-收盘版同结构，OnCalendar 改 `Mon..Fri *-*-* 07:30:00 UTC`（15:30 BJT），ExecStart 改 `run_close.py`。
+收盘版同结构，OnCalendar 改 `Mon..Fri *-*-* 07:30:00 UTC`（15:30 BJT），ExecStart 改 `run_close.py`。归档失败返回非 0；16:00 / 16:30 盘中任务会再用公开行情补档（`--no-push --no-detail`，不重复发微信）。
+
+盘中 timer 单元见 `scripts/wind/systemd/`。Wind 积分不足时不重试 CLI，直接走腾讯/新浪，保证每个交易日都有收盘快照。
 
 **变量覆盖**：所有路径 / 行为都可以通过 `.env` 调（避免改 systemd unit）：
 - `NODE_BIN=/path/to/node` 显式指定 node（nvm 路径找不到时）
