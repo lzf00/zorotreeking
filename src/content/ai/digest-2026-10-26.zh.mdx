@@ -1,0 +1,179 @@
+---
+lang: zh
+translationKey: digest-2026-10-26
+title: "AI 每日精选 · 2026-10-26"
+description: "17 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-10-26
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, lil-log]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI、Anthropic、DeepMind等海外大厂公布技术、公益、科研多领域最新动态</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">HuggingFace发布多款Agent、具身智能、大模型幻觉修正相关前沿研究工具</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内AI领域推出星辰TaaS平台、单卡跑34B世界模型等多项创新成果</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📈 大厂动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 前沿研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 智能体</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡 模型优化</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ 国内进展</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2610.30932" target="_blank" rel="noopener noreferrer">UserArena: Benchmarking Interactive User Simulation for Long-Horizon Shopping Agents</a>
+
+*HF ★ 19 · Jujia Zhao, Jiakai Tang, Jing Yu… · [HF 镜像](https://huggingface.co/papers/2610.30932)*
+
+针对电商长周期智能推荐代理缺乏真实交互评测基准、难对齐线上A/B结果的痛点，本文提出UserArena交互基准，覆盖1.1万用户的6.47万条真实会话轨迹，含56万余商品、13类交互动作，支持五级全链路离线评测。同时提出同策略轨迹蒸馏方法OPTD，依托轨迹级意图提升长交互模拟保真度，实验显示其在该基准下表现最优，最贴近线上策略实际效果。
+
+<FeedbackButtons slug="item:arxiv-2610.30932" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.32253" target="_blank" rel="noopener noreferrer">RSIHub: A Composable Framework for Agent-Evolution Methods</a>
+
+*HF ★ 17 · Zimu Wang, Xiaobo Wang, Siyu Ye… · [HF 镜像](https://huggingface.co/papers/2610.32253)*
+
+针对智能体进化方法重复开发实验底座的痛点，本文提出可组合开源框架RSIHub：采用可复用算子+可变资源声明的配方机制，内置执行、评测、溯源等通用能力，研究者无需修改核心即可适配各类进化策略。评测显示，框架下的进化方法最高将pass@1提升13.5个百分点，但方法排名随场景变化，优化收益不总能跨任务迁移。
+
+<FeedbackButtons slug="item:arxiv-2610.32253" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.32965" target="_blank" rel="noopener noreferrer">RynnUnify: Towards Unified Embodied Brain</a>
+
+*HF ★ 8 · Minghao Zhu, Bohan Hou, Kun Xiang… · [HF 镜像](https://huggingface.co/papers/2610.32965)*
+
+本文提出160亿参数的统一具身模型RynnUnify，依托交错式视频-语言推理，兼具具身理解与长时序视觉规划能力，配套研发强化学习智能体扩展、适配机器人控制的世界动作扩展及专属评测基准。实验显示其多项具身任务表现显著优于现有基线，可作为具身智能通用基础底座，向统一具身脑目标迈进一步。
+
+<FeedbackButtons slug="item:arxiv-2610.32965" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.27103" target="_blank" rel="noopener noreferrer">Omni-Woodpecker: Hallucination Correction via Evidence-Prior Rebalancing for Omni LLMs</a>
+
+*HF ★ 7 · Zijian Liu, Chaoyou Fu, Yan Yang… · [HF 镜像](https://huggingface.co/papers/2610.27103)*
+
+针对全模态大模型音视频推理的跨模态幻觉问题，现有仅在输出层干预的方案未解决融合表征中事实证据与训练先验的纠缠缺陷，本文提出免训练框架Omni-Woodpecker：先识别跨模态冲突，正交拆分表征后解码前重平衡证据与先验权重抑制幻觉。该框架跨架构泛化性强，在多款主流模型及多个基准上均实现稳定性能提升，代码已开源。
+
+<FeedbackButtons slug="item:arxiv-2610.27103" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.31569" target="_blank" rel="noopener noreferrer">Echo: Coupled Action and Task Status Signal Denoising for Vision Language Action Models</a>
+
+*HF ★ 2 · Yufeng Liu, Bohao Fan, Juntu Zhao… · [HF 镜像](https://huggingface.co/papers/2610.31569)*
+
+针对现有视觉语言动作（VLA）模型新增任务状态预测需细粒度标注、额外配套模块，且未充分挖掘状态信号对动作生成的引导价值的痛点，本文提出Echo框架：无需帧级进度标注，将停止、失败两类状态信号作为动作维度联合去噪，构造三类轨迹实现弱监督，让状态信号更快去噪以引导动作生成。实机实验显示其状态预测精准，策略性能稳定提升。
+
+<FeedbackButtons slug="item:arxiv-2610.31569" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/scaling-storage-one-billion-users-part-two" target="_blank" rel="noopener noreferrer">Rapidly scaling online storage to serve over 1 billion ChatGPT users (Part II)</a>
+
+*OpenAI*
+
+这是OpenAI发布的《支撑超10亿ChatGPT用户的在线存储快速扩容》系列技术分享第二篇，核心介绍Habitat存储系统的优化方案：通过落地高可靠多租户架构、全球分布式缓存，搭配Azure Cosmos DB数据库提供底层支撑，最终实现ChatGPT读请求速率提升12倍，解决了超大规模访问下的存储响应瓶颈。
+
+<FeedbackButtons slug="item:openai-blog-scaling-storage-one-billion-users-part-two" client:visible />
+
+## <a href="https://openai.com/index/securing-our-frontier-model-training-environment" target="_blank" rel="noopener noreferrer">Securing our frontier model training environment</a>
+
+*OpenAI*
+
+本文是OpenAI针对前沿大模型训练环境的安全防护研究，核心落地两项管控措施：一是搭建完全离线的隔离环境开展模型训练与评估，切断外部渗透、风险外泄的传输通道；二是调度高算力资源开展定向红队对抗测试，主动挖掘模型潜在安全漏洞。整套方案显著强化了前沿大模型研发全流程的风险管控能力，为高能力模型安全研发筑牢底层屏障。
+
+<FeedbackButtons slug="item:openai-blog-securing-our-frontier-model-training-environment" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/announcements" target="_blank" rel="noopener noreferrer">Announcements</a>
+
+*Anthropic*
+
+这份官方公告明确了AI企业Anthropic的核心定位与发展方向：该公司是主攻AI安全方向的专业研究机构，核心业务围绕AI安全技术研发展开，长期目标是打造具备三类核心特性的AI系统：运行稳定可靠、决策逻辑可解释、运行过程可被人类有效引导调控。
+
+<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+AI企业Anthropic推出公共利益专项安排：将部分股份划归新设立的Anthropic公共利益基金，且设置特殊股权结构，基金持股占比会随公司规模扩张同步提升。这一机制将企业商业成长与公共福祉直接绑定，公司发展越好可投入公共事业的资源越多，是科技企业平衡商业收益与公共责任的创新尝试。
+
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/beyond-tree-cover-mapping-the-worlds-forest-types/" target="_blank" rel="noopener noreferrer">Beyond tree cover: mapping the world’s forest types</a>
+
+*Google DeepMind*
+
+本研究突破仅统计森林覆盖率的传统研究局限，以10米分辨率为最小评估单元，首次实现全球陆域地块的森林类型精细化分类，产出全新全球森林类型分布图。该成果填补了过往全球森林分类产品精度不足的空白，可为碳汇核算、生物多样性保护、林业管控及气候变化应对等提供高精度数据支撑。
+
+<FeedbackButtons slug="item:deepmind-beyond-tree-cover-mapping-the-worlds-forest-types" client:visible />
+
+## <a href="https://deepmind.google/blog/accelerating-antimicrobial-discovery/" target="_blank" rel="noopener noreferrer">Accelerating the search for antimicrobial peptides with Google Antigravity</a>
+
+*Google DeepMind*
+
+当前针对全球细菌耐药性加剧、新型抗菌肽传统筛选效率低的产业痛点，本研究提出借助谷歌Antigravity for Science科研工具加速候选抗菌肽挖掘的方案，通过优化高通量筛选链路，可大幅压缩新型抗菌肽的研发周期、降低试错成本，为新型抗菌药物的快速落地提供了高效技术新思路。（全文119字）
+
+<FeedbackButtons slug="item:deepmind-accelerating-antimicrobial-discovery" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/litpivot" target="_blank" rel="noopener noreferrer">LitPivot: Developing research ideas through dynamic contextualization within the literature landscape</a>
+
+*Hugging Face*
+
+本文提出科研创意辅助工具LitPivot，核心方法是在全域文献生态中实现动态语境关联，可自动梳理细分领域研究脉络、识别不同方向的研究缺口与交叉契合点。实测表明其能帮助研究者打破思维定式，高效挖掘跨领域创新切入点，创意产出的质量与效率均优于传统文献检索模式。
+
+<FeedbackButtons slug="item:hf-blog-litpivot" client:visible />
+
+## <a href="https://huggingface.co/blog/torch-neuronx-model-support" target="_blank" rel="noopener noreferrer">Does Your Model Run on AWS Trainium? Look It Up</a>
+
+*Hugging Face*
+
+本文针对AWS自研Trainium训练芯片适配性不透明的痛点，推出公开可查询的模型适配校验库，覆盖主流CV、NLP、多模态大模型。实测显示，适配成功的模型相比A10G训练成本可降30%以上，性能损失控制在5%以内，配套的适配调优指南可帮助开发者快速判断模型是否适合迁移至Trainium部署。
+
+<FeedbackButtons slug="item:hf-blog-torch-neuronx-model-support" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我改进（RSI）的概念脉络：1965年学者古德最早提出可超越人类全部智力活动、自主设计更优机器的“超智能机器”构想；2008年尤德考斯基明确RSI核心是AI依托现有智能迭代优化自身认知架构的反馈环。当前AI场景下的RSI既包括模型直接改写自身权重，也可广义指代模型优化自身训练流程。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/10/505083.html" target="_blank" rel="noopener noreferrer">科大讯飞首发星辰TaaS平台，让Token真正成为千行百业的生产力</a>
+
+*量子位*
+
+2026年10月22日科大讯飞1024开发者节发布多项AI成果：星火X2.6大模型扩容至百万token上下文、开源4B端侧版本，端云路由准确率提至96.1%；全国产算力训练的SparkAudio1.0语音基座效果升20%、调用成本降60%；还推出Agent OS等开发工具。当前平台开发者达1187万，生态向好，推动Token落地为各行业生产力。
+
+<FeedbackButtons slug="item:qbitai-505083" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/505032.html" target="_blank" rel="noopener noreferrer">企业AI需要两个世界模型</a>
+
+*量子位*
+
+当前企业AI应用普遍陷入“普及率高但生产力无明显提升”的困境，95%的生成式AI试点未产生可衡量收益，多停留在员工个人私用层面。特赞创始人范凌提出破局需搭建两套世界模型：向外建基于用户数据的客户世界模型摸清用户偏好，向内建基于内部数据的企业世界模型打通决策落地流程，让AI真正转化为生产力。
+
+<FeedbackButtons slug="item:qbitai-505032" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/504931.html" target="_blank" rel="noopener noreferrer">一张5090跑起34B实时世界模型，国产玩家拿下英伟达大奖！</a>
+
+*量子位*
+
+重庆达瓦科技的实时世界模型Scenes AI，从580余家参赛企业中突围，斩获2026英伟达创业展半程卓越奖。该模型无需引擎输入，仅用普通摄像头的真实画面，即可维护可独立读写的世界状态变量，仅更新变化部分而非全量重绘，单张RTX5090即可跑通34B参数，可实时推演变量调整后的世界演化，全局结构稳定。
+
+<FeedbackButtons slug="item:qbitai-504931" client:visible />
