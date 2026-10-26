@@ -1,0 +1,179 @@
+---
+lang: en
+translationKey: digest-2026-10-26
+title: "Daily AI Highlights · 2026-10-26"
+description: "17 papers · multi-source aggregation + AI summaries"
+date: 2026-10-26
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, lil-log]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second overview of today's updates</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Overseas leading firms including OpenAI, Anthropic, and DeepMind announced latest updates across technology, public welfare, and scientific research fields</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face released multiple cutting-edge research tools related to Agents, embodied intelligence, and LLM hallucination correction</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">China's AI sector launched multiple innovative achievements including the Star TaaS platform and a 34B world model running on a single GPU</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📈 Big Tech Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Agents</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡 Model Optimization</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ China Local Progress</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2610.30932" target="_blank" rel="noopener noreferrer">UserArena: Benchmarking Interactive User Simulation for Long-Horizon Shopping Agents</a>
+
+*HF ★ 19 · Jujia Zhao, Jiakai Tang, Jing Yu… · [HF Mirror](https://huggingface.co/papers/2610.30932)*
+
+To address the pain point that long-horizon intelligent recommendation agents for e-commerce lack real interaction evaluation benchmarks and are hard to align with online A/B test results, this paper proposes the UserArena interaction benchmark, which covers 64,700 real conversation trajectories from 11,000 users, includes over 560,000 products and 13 types of interaction actions, and supports 5-level full-link offline evaluation. The paper also proposes the on-policy trajectory distillation method OPTD, which improves the fidelity of long-interaction simulation relying on trajectory-level intent. Experiments show it performs best on this benchmark and is closest to the actual effect of online policies.
+
+<FeedbackButtons slug="item:arxiv-2610.30932" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.32253" target="_blank" rel="noopener noreferrer">RSIHub: A Composable Framework for Agent-Evolution Methods</a>
+
+*HF ★ 17 · Zimu Wang, Xiaobo Wang, Siyu Ye… · [HF Mirror](https://huggingface.co/papers/2610.32253)*
+
+To address the pain point of repeated development of experimental bases for agent evolution methods, this paper proposes the composable open-source framework RSIHub: it adopts a recipe mechanism of reusable operators + variable resource declarations, with built-in general capabilities including execution, evaluation, and traceability. Researchers can adapt to various evolution strategies without modifying the core code. Evaluations show that evolution methods built on this framework improve pass@1 by up to 13.5 percentage points, but method rankings vary by scenario, and optimization benefits cannot always be transferred across tasks.
+
+<FeedbackButtons slug="item:arxiv-2610.32253" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.32965" target="_blank" rel="noopener noreferrer">RynnUnify: Towards Unified Embodied Brain</a>
+
+*HF ★ 8 · Minghao Zhu, Bohan Hou, Kun Xiang… · [HF Mirror](https://huggingface.co/papers/2610.32965)*
+
+This paper proposes RynnUnify, a 16B-parameter unified embodied model. Relying on interleaved video-language reasoning, it has both embodied understanding and long-sequence visual planning capabilities, paired with extended RL agent capabilities, world action extensions adapted for robot control, and an exclusive evaluation benchmark. Experiments show its performance on multiple embodied tasks is significantly better than existing baselines, and it can serve as a general foundation for embodied intelligence, taking a step toward the goal of a unified embodied brain.
+
+<FeedbackButtons slug="item:arxiv-2610.32965" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.27103" target="_blank" rel="noopener noreferrer">Omni-Woodpecker: Hallucination Correction via Evidence-Prior Rebalancing for Omni LLMs</a>
+
+*HF ★ 7 · Zijian Liu, Chaoyou Fu, Yan Yang… · [HF Mirror](https://huggingface.co/papers/2610.27103)*
+
+To address the cross-modal hallucination problem in audio-visual reasoning of omni-modal LLMs, existing solutions that only intervene at the output layer fail to solve the entanglement defect between factual evidence and training priors in fused representations. This paper proposes the training-free framework Omni-Woodpecker: it first identifies cross-modal conflicts, orthogonally splits representations, and rebalances the weights of evidence and priors before decoding to suppress hallucinations. This framework has strong cross-architecture generalization, delivers stable performance improvements on multiple mainstream models and benchmarks, and its code is open-sourced.
+
+<FeedbackButtons slug="item:arxiv-2610.27103" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.31569" target="_blank" rel="noopener noreferrer">Echo: Coupled Action and Task Status Signal Denoising for Vision Language Action Models</a>
+
+*HF ★ 2 · Yufeng Liu, Bohao Fan, Juntu Zhao… · [HF Mirror](https://huggingface.co/papers/2610.31569)*
+
+Existing Vision-Language Action (VLA) models require fine-grained annotation and additional supporting modules to add task state prediction, and do not fully exploit the guiding value of state signals for action generation. To address this pain point, this paper proposes the Echo framework: it does not require frame-level progress annotation, jointly denoises two types of state signals (stop and failure) as action dimensions, constructs three types of trajectories to implement weak supervision, and allows state signals to be denoised faster to guide action generation. Real-world experiments show its state prediction is accurate, and strategy performance is stably improved.
+
+<FeedbackButtons slug="item:arxiv-2610.31569" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/scaling-storage-one-billion-users-part-two" target="_blank" rel="noopener noreferrer">Rapidly scaling online storage to serve over 1 billion ChatGPT users (Part II)</a>
+
+*OpenAI*
+
+This is the second part of OpenAI's technical sharing series *Rapidly Scaling Online Storage to Support Over 1 Billion ChatGPT Users*, which focuses on the optimization scheme of the Habitat storage system: by implementing a highly reliable multi-tenant architecture, global distributed cache, paired with Azure Cosmos DB as underlying support, it finally increases ChatGPT's read request rate by 12 times, solving the storage response bottleneck under ultra-large-scale access.
+
+<FeedbackButtons slug="item:openai-blog-scaling-storage-one-billion-users-part-two" client:visible />
+
+## <a href="https://openai.com/index/securing-our-frontier-model-training-environment" target="_blank" rel="noopener noreferrer">Securing our frontier model training environment</a>
+
+*OpenAI*
+
+This is OpenAI's research on security protection for frontier LLM training environments, with two core control measures implemented: first, building a completely offline isolated environment for model training and evaluation, cutting off transmission channels for external penetration and risk leakage; second, allocating high-computing resources to carry out targeted red team adversarial testing, proactively identifying potential security vulnerabilities of the model. The whole set of solutions significantly strengthens the risk management capability of the entire frontier LLM R&D process, and builds a solid underlying barrier for the safe R&D of high-capability models.
+
+<FeedbackButtons slug="item:openai-blog-securing-our-frontier-model-training-environment" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/announcements" target="_blank" rel="noopener noreferrer">Announcements</a>
+
+*Anthropic*
+
+This official announcement clarifies the core positioning and development direction of AI firm Anthropic: the company is a professional research institution focusing on AI safety, with core business centered on AI safety technology R&D. Its long-term goal is to build AI systems with three core characteristics: stable and reliable operation, interpretable decision-making logic, and operation processes that can be effectively guided and regulated by humans.
+
+<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+AI firm Anthropic has launched a special public benefit arrangement: part of its shares will be allocated to the newly established Anthropic Public Benefit Fund, and a special equity structure is set so that the fund's shareholding ratio will increase synchronously with the expansion of the company's scale. This mechanism directly binds the company's commercial growth with public welfare: the better the company develops, the more resources can be invested in public welfare undertakings, which is an innovative attempt by technology companies to balance commercial returns and public responsibility.
+
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/beyond-tree-cover-mapping-the-worlds-forest-types/" target="_blank" rel="noopener noreferrer">Beyond tree cover: mapping the world’s forest types</a>
+
+*Google DeepMind*
+
+This research breaks through the limitation of traditional research that only counts forest coverage. Taking 10-meter resolution as the minimum evaluation unit, it achieves the first fine-grained classification of forest types for global land plots, and produces a new global forest type distribution map. This achievement fills the gap of insufficient accuracy of previous global forest classification products, and can provide high-precision data support for carbon sink accounting, biodiversity protection, forestry management and control, and climate change response.
+
+<FeedbackButtons slug="item:deepmind-beyond-tree-cover-mapping-the-worlds-forest-types" client:visible />
+
+## <a href="https://deepmind.google/blog/accelerating-antimicrobial-discovery/" target="_blank" rel="noopener noreferrer">Accelerating the search for antimicrobial peptides with Google Antigravity</a>
+
+*Google DeepMind*
+
+Against the current industrial pain point of rising global bacterial resistance and low efficiency of traditional screening for new antimicrobial peptides, this research proposes a solution to accelerate the discovery of candidate antimicrobial peptides with the Google Antigravity for Science research tool. By optimizing the high-throughput screening pipeline, it can greatly shorten the R&D cycle of new antimicrobial peptides and reduce trial and error costs, providing an efficient new technical idea for the rapid launch of new antibacterial drugs. (Full text 119 words)
+
+<FeedbackButtons slug="item:deepmind-accelerating-antimicrobial-discovery" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/litpivot" target="_blank" rel="noopener noreferrer">LitPivot: Developing research ideas through dynamic contextualization within the literature landscape</a>
+
+*Hugging Face*
+
+This paper proposes LitPivot, a research idea assistance tool. Its core method is to realize dynamic context association in the global literature ecosystem, which can automatically sort out the research context of specific subfields, identify research gaps and cross-cutting integration points in different directions. Actual tests show it can help researchers break through thinking stereotypes, efficiently explore cross-domain innovation entry points, and the quality and efficiency of idea output are better than traditional literature retrieval modes.
+
+<FeedbackButtons slug="item:hf-blog-litpivot" client:visible />
+
+## <a href="https://huggingface.co/blog/torch-neuronx-model-support" target="_blank" rel="noopener noreferrer">Does Your Model Run on AWS Trainium? Look It Up</a>
+
+*Hugging Face*
+
+To address the pain point of opaque compatibility of AWS's self-developed Trainium training chip, this article launches a publicly queryable model compatibility verification library, covering mainstream CV, NLP, and multimodal LLMs. Actual tests show that successfully adapted models can reduce training costs by more than 30% compared to A10G, with performance loss controlled within 5%. The supporting adaptation and tuning guide can help developers quickly judge whether a model is suitable for migration to Trainium deployment.
+
+<FeedbackButtons slug="item:hf-blog-torch-neuronx-model-support" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This article sorts out the conceptual context of Recursive Self-Improvement (RSI): in 1965, scholar Irving John Good first proposed the concept of "ultraintelligent machines" that can surpass all human intellectual activities and independently design better machines; in 2008, Eliezer Yudkowsky clarified that the core of RSI is the feedback loop where AI iteratively optimizes its own cognitive architecture relying on its existing intelligence. RSI in current AI scenarios includes both models directly rewriting their own weights, and can also broadly refer to models optimizing their own training processes.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/10/505083.html" target="_blank" rel="noopener noreferrer">iFLYTEK launches Star TaaS platform, making Token a true productivity tool for thousands of industries</a>
+
+*QbitAI*
+
+On October 22, 2026, iFLYTEK released multiple AI achievements at its 1024 Developer Festival: the Spark X2.6 LLM expanded to a 1 million token context window, open-sourced the 4B edge version, and edge-cloud routing accuracy increased to 96.1%; the SparkAudio 1.0 speech base trained on fully domestic computing power has 20% better performance and 60% lower invocation cost; development tools including Agent OS were also launched. The platform currently has 11.87 million developers, with a positive ecosystem, promoting Token to become a productivity tool for various industries.
+
+<FeedbackButtons slug="item:qbitai-505083" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/505032.html" target="_blank" rel="noopener noreferrer">Enterprise AI needs two world models</a>
+
+*QbitAI*
+
+Currently, enterprise AI applications are generally caught in the dilemma of "high penetration rate but no obvious productivity improvement". 95% of generative AI pilots have not produced measurable returns, and most remain at the level of personal private use by employees. Fan Ling, founder of Tezign, proposed that to break the deadlock, two sets of world models need to be built: externally, build a customer world model based on user data to understand user preferences; internally, build an enterprise world model based on internal data to unblock the decision-making and implementation process, so that AI can be truly transformed into productivity.
+
+<FeedbackButtons slug="item:qbitai-505032" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/504931.html" target="_blank" rel="noopener noreferrer">Run a 34B real-time world model on a single RTX 5090, domestic player wins NVIDIA award!</a>
+
+*QbitAI*
+
+Chongqing Dawar Technology's real-time world model Scenes AI stood out from more than 580 participating companies and won the Halfway Excellence Award at the 2026 NVIDIA Startup Showcase. This model does not require engine input, only uses real footage from ordinary cameras to maintain independently readable and writable world state variables, only updates changed parts instead of full redrawing. The 34B parameter model can run on a single RTX 5090, and can deduce the evolution of the world after variable adjustment in real time, with stable global structure.
+
+<FeedbackButtons slug="item:qbitai-504931" client:visible />
