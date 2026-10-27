@@ -1,0 +1,205 @@
+---
+lang: en
+translationKey: digest-2026-10-27
+title: "Daily AI Picks · 2026-10-27"
+description: "20 papers · multi-source aggregation + AI summaries"
+date: 2026-10-27
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second daily roundup</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Multiple cutting-edge AI studies were released today, covering core areas including agents, video generation, world modeling, and interdisciplinary scientific research</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI launches GPT-6 Astra to enhance code bug detection, Anthropic releases 335-page prospectus to pursue the largest AI IPO in history</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Domestic AI industry implementation is booming, with enterprise-grade Pro-Agent and personal cross-device AI collaboration solutions unveiled one after another</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Big Tech Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Agents</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🎬 Video Generation</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📈 Industry Implementation</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2610.33568" target="_blank" rel="noopener noreferrer">Trajectory2Gym: Decision-Grounded Compositional Interaction Synthesis for Tool-Use Agents</a>
+
+*HF ★ 49 · Yihao Hu, Zhihao Wen, Yitong Lin… · [HF Mirror](https://huggingface.co/papers/2610.33568)*
+
+(LLM summary failed, please add manually later)
+
+<FeedbackButtons slug="item:arxiv-2610.33568" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.34662" target="_blank" rel="noopener noreferrer">StreamVibe: Proactive Video Agents for Evolving User Intent</a>
+
+*HF ★ 42 · Chengzhi Liu, Yuxiang Lai, Yuzhe Yang… · [HF Mirror](https://huggingface.co/papers/2610.34662)*
+
+Addressing the limitations of existing vision-language models that struggle to capture implicit, dynamic user intents and cannot adapt to real-time interactions, this research releases the StreamVibe interaction benchmark covering 3 types of user intents with a total of 89,100 samples, and proposes a streaming active interaction solution with a hierarchical memory mechanism. Its response quality is 10.7% higher than the baseline, and the active interaction performance increases by another 12.3% when paired with the memory component. The study also verifies the performance shortcomings of existing active models in complex intent scenarios.
+
+<FeedbackButtons slug="item:arxiv-2610.34662" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.33135" target="_blank" rel="noopener noreferrer">WorldCast: World-Consistent Character Video Generation with Large-Angle Camera Control</a>
+
+*HF ★ 37 · Lei Cao, Yu Liu, Wenhua Liao… · [HF Mirror](https://huggingface.co/papers/2610.33135)*
+
+Targeting the problems of existing character video generation methods that struggle to adapt to large-angle camera movements, and are prone to character geometric distortion, appearance degradation, and identity drift, this paper first constructs CLACT, a large-scale character dataset for large-angle camera trajectories, and then proposes the WorldCast framework: it provides geometric guidance through 3D point clouds, paired with geometrically aligned memory attention to complete perspective information, enabling accurate tracking under large-angle camera movements while stably retaining the geometric, appearance, and identity characteristics of the character.
+
+<FeedbackButtons slug="item:arxiv-2610.33135" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.32285" target="_blank" rel="noopener noreferrer">Trial by Trace: Benchmarking AI Agent Harnesses for Reliability and Failure Attribution</a>
+
+*HF ★ 23 · Zhiyong Cao, Hengjie Zhu, Yongxin Wang… · [HF Mirror](https://huggingface.co/papers/2610.32285)*
+
+Addressing the gap that existing LLM agent benchmarks mostly focus on models and overall performance, and lack special evaluation of the supporting frameworks for agent operation, this research launches the TraceTrial-Bench benchmark, covering 7 reliability dimensions, 95 expert tasks, and supporting modules such as trajectory tracking and two-layer evaluation. Tests on 4 frameworks show scores ranging from 59.8% to 72.0%, and 31.1% of successfully completed task runs actually have framework defects, providing an auditable evaluation basis for framework optimization.
+
+<FeedbackButtons slug="item:arxiv-2610.32285" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.33169" target="_blank" rel="noopener noreferrer">World-in-Context: Interactive Video World Modeling with In-Context Conditioning</a>
+
+*HF ★ 14 · Harold Haodong Chen, Rui Peng, Rongjin Guo… · [HF Mirror](https://huggingface.co/papers/2610.33169)*
+
+Targeting the problems of existing interactive video world models: vague perspective control, confusion between actions and camera movements, and fragmented control paths, this paper proposes the World-in-Context framework: through an in-context conditioning mechanism, three types of control are unified into explicit tokens and incorporated into the shared self-attention space, supplemented by interactive transmission RoPE to ensure temporal continuity. Its 5B parameter version matches the navigation performance of the 22B baseline, with a perspective switching success rate of 93.8%, far exceeding models of the same scale, and also has data efficiency advantages.
+
+<FeedbackButtons slug="item:arxiv-2610.33169" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2610.31702" target="_blank" rel="noopener noreferrer">Collaborative In-Context Learning for Indoor Radio Map Estimation</a>
+
+*Yuanzhe Peng, Jie Xu*
+
+Addressing the pain points of existing supervised methods for indoor radio map estimation that require a large number of annotations and cannot centralize scenario privacy data, this study models it as a collaborative in-context learning problem for the first time, and proposes the Poly-Ripple framework: relying on a large autoregressive vision model, it models the causality of wireless propagation in ripple order, introduces importance-aware aggregation of cross-device knowledge, and requires no fine-tuning. Public benchmark tests show its performance is better than similar baselines, consistent with theoretical analysis.
+
+<FeedbackButtons slug="item:arxiv-2610.31702" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.31704" target="_blank" rel="noopener noreferrer">The Path to NDE 4.0: A Review of Algorithms, Techniques, and Strategies for Autonomous Inspection</a>
+
+*Ashiqur Rahmana, Venkata Devesh Reddy Seethi, Zachary Kral…*
+
+This review sorts out the development trajectory of Non-Destructive Inspection (NDI) from four dimensions: algorithms, technologies, applications, and research objectives, clarifying that the current industry takes ultrasonic and visual inspection as core technologies, and deep learning and generative models have become the mainstream solutions for automatic defect recognition. Targeting implementation bottlenecks such as the lack of standardized public datasets and AI black boxes, it points out that future efforts need to focus on interpretable AI and digital twin standards, to promote the integration of intelligent autonomous inspection into asset lifecycle management.
+
+<FeedbackButtons slug="item:arxiv-2610.31704" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.31716" target="_blank" rel="noopener noreferrer">Does LeWorldModel Preserve Local Action Geometry?</a>
+
+*Vasil Vasilev, Siddharth Nayak*
+
+This study verifies the ability of the pre-trained LeWorldModel (LeWM) to preserve local action geometry. By matching simulator and model responses, action sensitivity is measured using Gram matrices under two types of control tasks and three perturbation scales. The results show that under small perturbations, the deviation between the model's most sensitive action direction and the real environment is 36°~42°, and the deviation decreases significantly when the perturbation is amplified. LeWM has higher errors at small scales, so action sensitivity needs to be evaluated by scale, and its impact on control remains to be explored.
+
+<FeedbackButtons slug="item:arxiv-2610.31716" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/greptile-code-review-codex-astra" target="_blank" rel="noopener noreferrer">Greptile takes bug detection beyond code review with GPT-6 Astra</a>
+
+*OpenAI*
+
+This article introduces the technical upgrade path of the code bug detection tool Greptile: breaking through the capability boundaries of traditional code review, GPT-6 Astra is used to cover defect detection in users' full workflow scenarios, paired with the Daybreak module to enhance the security of the entire detection link, while invoking Codex capabilities to proactively fix potential problems, which can greatly reduce the rework rate in the development stage, achieving triple optimization of detection efficiency, security compliance, and development cost.
+
+<FeedbackButtons slug="item:openai-blog-greptile-code-review-codex-astra" client:visible />
+
+## <a href="https://openai.com/index/building-scientific-understanding-with-academic-communities" target="_blank" rel="noopener noreferrer">Working with academic communities to build scientific understanding</a>
+
+*OpenAI*
+
+OpenAI recently released the research outputs of its AI models in three fundamental frontier fields to the academic community: related research results on the Kakeya conjecture in mathematics, the exponential time hypothesis in theoretical computer science, and quantum chromodynamics in physics. This initiative aims to support researchers in verifying the credibility of relevant results, and also to expand research based on existing conclusions, exploring collaborative paths for AI-assisted basic scientific research.
+
+<FeedbackButtons slug="item:openai-blog-building-scientific-understanding-with-academic-communities" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/announcements" target="_blank" rel="noopener noreferrer">Announcements</a>
+
+*Anthropic*
+
+This announcement is the official positioning statement of AI security R&D enterprise Anthropic. The company focuses on technical research and implementation practice in the field of AI security, with core development goals of building AI systems with three core attributes: high reliability, interpretability, and controllability. It follows a security-first technical route, explores an AI development path that combines both performance and controllability, and provides a security-oriented technical reference paradigm for the industry.
+
+<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+AI company Anthropic announced its public benefit investment arrangement: it will inject part of the company's shares into the newly established "Anthropic Public Benefit Fund". The fund adopts a dynamic shareholding mechanism, which will increase its shareholding ratio synchronously as the company's operating scale expands and valuation increases, thus binding corporate development with public benefits and ensuring that more growth dividends are tilted towards the public sector.
+
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/beyond-tree-cover-mapping-the-worlds-forest-types/" target="_blank" rel="noopener noreferrer">Beyond tree cover: mapping the world’s forest types</a>
+
+*Google DeepMind*
+
+This study breaks through the limitation of traditional research that only counts tree cover, and completes the world's first fine-grained forest type mapping with 10-meter resolution, clarifying the forest category of all 10-meter precision land patches around the world one by one. This achievement fills the gap in high-resolution global forest type classification, and can provide high-precision data support for forest carbon sink accounting, biodiversity protection, and forestry policy formulation.
+
+<FeedbackButtons slug="item:deepmind-beyond-tree-cover-mapping-the-worlds-forest-types" client:visible />
+
+## <a href="https://deepmind.google/blog/accelerating-antimicrobial-discovery/" target="_blank" rel="noopener noreferrer">Accelerating the search for antimicrobial peptides with Google Antigravity</a>
+
+*Google DeepMind*
+
+This study targets the industry pain points of traditional screening for new antimicrobial peptides: high cost, low hit rate, and long cycle. It innovatively introduces Google Antigravity for Science research tool to optimize the screening process, which can greatly shorten the discovery cycle of candidate functional peptides. This technical path provides a more efficient new solution to address the global crisis of pathogenic bacteria resistance and accelerate the development of anti-infective candidate drugs.
+
+<FeedbackButtons slug="item:deepmind-accelerating-antimicrobial-discovery" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/litpivot" target="_blank" rel="noopener noreferrer">LitPivot: Developing research ideas through dynamic contextualization within the literature landscape</a>
+
+*Hugging Face*
+
+This paper proposes LitPivot, a research creativity assistance tool, which mines innovative research ideas through a dynamic contextualization method under the full landscape of literature: the tool correlates the research context and knowledge gaps of massive literature, dynamically matches cross-domain related contexts and locates interdisciplinary research gaps for the research direction input by users. Actual tests show that the novelty and feasibility of the research topics it generates are better than traditional literature research models, and it can effectively help researchers break through thinking limitations.
+
+<FeedbackButtons slug="item:hf-blog-litpivot" client:visible />
+
+## <a href="https://huggingface.co/blog/torch-neuronx-model-support" target="_blank" rel="noopener noreferrer">Does Your Model Run on AWS Trainium? Look It Up</a>
+
+*Hugging Face*
+
+Addressing the pain points of AWS's self-developed Trainium training chip: opaque adaptation rules and high trial-and-error cost for model migration, this article launches a publicly accessible compatibility search tool, covering mainstream open-source models in NLP, CV, multimodality and other fields, and simultaneously marks adapted framework versions, performance benchmarks, and optimal configuration templates. Actual tests show that the training cost-effectiveness of adapted models is 40% higher than that of GPU instances of the same level, which can help developers quickly determine whether a model can be migrated to Trainium for deployment.
+
+<FeedbackButtons slug="item:hf-blog-torch-neuronx-model-support" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This article sorts out the research context of Recursive Self-Improvement (RSI): in 1965, scholar Irving John Good first proposed the concept of "ultraintelligent machine", that is, an agent that can surpass all human intellectual activities and design better systems by itself to achieve self-iteration; in 2008, Eliezer Yudkowsky clarified that RSI is a feedback loop where AI uses its existing intelligence to optimize its own cognitive architecture. For contemporary AI, this type of feedback can be manifested as directly rewriting its own weights or optimizing the training process.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/10/505580.html" target="_blank" rel="noopener noreferrer">Titanium Motion Technology releases the industry's first Pro-Agent, Navos Pro defines result-oriented AI for Work | TGC 2026 Technology Growth Conference</a>
+
+*QbitAI*
+
+On October 23, the 2026 TGC Technology Growth Conference with the theme of "Profitable AI" was held in Guangzhou. Participants reached a consensus: the commercial value of AI needs to be verified by real business indicators, and AI for Work is the core application track. Titanium Motion Technology, a world-leading AI marketing technology enterprise, released the industry's first Pro-Agent product Navos Pro at the conference, with professionalism, proactivity, and profitability as core attributes, implementing result-oriented AI for Work to seize the trillion-level market.
+
+<FeedbackButtons slug="item:qbitai-505580" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/505551.html" target="_blank" rel="noopener noreferrer">Just now, Anthropic released 335-page prospectus: the largest IPO in history, the most unprofitable AI company ever</a>
+
+*QbitAI*
+
+Claude's parent company Anthropic has officially submitted its IPO application to NASDAQ, with the stock code "ANT", and is expected to become the first pure cutting-edge large model listed company in the 美股 market. Its highest target valuation once reached $2 trillion, and was recently lowered to $1.5 trillion. If the IPO is successful, it will surpass SpaceX to become the largest IPO in history. The company's revenue in the first half of the year was $16.286 billion, but its net loss was $80.7 billion, and it has signed a long-term computing power procurement agreement worth more than $500 billion.
+
+<FeedbackButtons slug="item:qbitai-505551" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/505539.html" target="_blank" rel="noopener noreferrer">How much power can one person have in the AI era? Tianxi AI × Guancha Conference on-site test of new personal AI cross-device collaboration experience</a>
+
+*QbitAI*
+
+From October 23 to 25, Tianxi AI co-hosted a themed conference with Guancha Community in Hangzhou, where the personal AI cross-device collaboration capability was tested on site: users only need to issue tasks by voice, and multiple devices can automatically collaborate to complete the work, greatly improving efficiency. At the conference, participants exchanged views on the individual developer ecosystem and the evolution path of personal AI, stating that the current period is a dividend period for individual developers, and Tianxi AI is advancing commercial verification in the organizational collaboration stage.
+
+<FeedbackButtons slug="item:qbitai-505539" client:visible />
