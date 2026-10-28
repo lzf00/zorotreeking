@@ -1,0 +1,205 @@
+---
+lang: en
+translationKey: digest-2026-10-28
+title: "AI Daily Highlights · 2026-10-28"
+description: "20 papers · Multi-source aggregation + AI summaries"
+date: 2026-10-28
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's content in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">The global academic community released 9 cutting-edge AI research results today covering world models, LLM self-evolution, video generation and other fields</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI officially announced an expanded partnership with Oracle, and its models now power 100 million customer service calls per month for Retell</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Chinese firm Ant Group open-sourced the Ling-3.1-flash personal agent, while a full-stack open-source humanoid robot and 4D radar technology were also announced simultaneously</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 World Models</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏢 Big Tech Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🇨🇳 Open Source Roundup</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Robotics Technology</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2610.34283" target="_blank" rel="noopener noreferrer">ChronoReplay: One Answer Interface Is Not Enough for Streaming Spatial Intelligence</a>
+
+*HF ★ 72 · Yihao Hu, Yitong Lin, Pan Wang… · [HF Mirror](https://huggingface.co/papers/2610.34283)*
+
+This paper addresses the "interface locking" issue in spatial vision LLM training (single-task optimization impairs transfer performance on other spatial tasks) by proposing the ChronoReplay method: it replays heterogeneous spatial supervision in chronological order, preserving native objectives and balancing supervision across task families. The method delivers performance improvements on three spatial benchmarks, including a 13.41 point gain on OST-Bench, marking the highest average score across the three benchmarks among comparison groups. Adaptive frame selection on the inference side can further reduce costs and boost efficiency.
+
+<FeedbackButtons slug="item:arxiv-2610.34283" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.36729" target="_blank" rel="noopener noreferrer">Hy-Nomas: Towards Free-form Interactive World Generation</a>
+
+*HF ★ 41 · Qiaoling Chen, Jiaxiang Cheng, Xueqing Deng… · [HF Mirror](https://huggingface.co/papers/2610.36729)*
+
+To meet the requirements of interactive world generation to follow instructions and retain historical causality, this paper proposes Hy-Nomas, a video world model equipped with an 8B parameter diffusion backbone that supports multi-round free text instructions and continuous camera control. Its core designs include motion-aware causal attention and a multimodal prompt enhancer, paired with multi-stage curriculum training and diffusion distillation. Human evaluation shows its performance outperforms existing similar models, and related resources have been open-sourced to support further research in the field.
+
+<FeedbackButtons slug="item:arxiv-2610.36729" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.36068" target="_blank" rel="noopener noreferrer">Rollback: Experience Backtracking in World Models for Policy Improvement</a>
+
+*HF ★ 41 · Jiayi Luo, Yang Zhang, Liliang Chen… · [HF Mirror](https://huggingface.co/papers/2610.36068)*
+
+Aiming at the limitation that existing world model-based robot policy optimization only uses forward simulation and does not exploit counterfactual reasoning capabilities, this paper proposes the Rollback paradigm: it backtracks key decision points, compares returns of different actions to generate fine-grained action supervision without requiring an additional value model; it also builds a closed loop between real-world robot execution and world model training, using real machine data to correct dynamics via LoRA fine-tuning. Experiments show the success rate of three real-world tasks is over 10% higher than the baseline, and some tasks exceed average human performance after 8 hours of training.
+
+<FeedbackButtons slug="item:arxiv-2610.36068" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.37666" target="_blank" rel="noopener noreferrer">ThinkWorld: World Imagination Reinforces Chain-of-Dynamics Reasoning</a>
+
+*HF ★ 36 · Chaehyun Kim, Chi-Pin Huang, Jisoo Kim… · [HF Mirror](https://huggingface.co/papers/2610.37666)*
+
+Aiming at the problem that generalization of existing vision-language-action (VLA) models is limited by annotated robot demonstrations, and unannotated human video learning struggles to balance data scale and action grounding, this paper proposes the ThinkWorld framework: it uses the dynamics chain as a universal action representation, first initialized with annotated demonstrations, then optimized via world imagination reinforcement learning, which can use unannotated video state transitions for supervision. Experiments verify its strong human-robot transfer performance and excellent generalization to unknown tasks and environments.
+
+<FeedbackButtons slug="item:arxiv-2610.37666" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.36456" target="_blank" rel="noopener noreferrer">LociArt: A Unified Paradigm for Free-Style Local Video Stylization</a>
+
+*HF ★ 25 · Yuxuan Chen, Feng Xie, Jiagao Hu… · [HF Mirror](https://huggingface.co/papers/2610.36456)*
+
+Aiming at the pain points that existing video stylization solutions are mostly adapted to full scenes, and local editing is difficult to balance regional accuracy, style controllability and temporal consistency, this paper proposes LociArt, a unified paradigm for free-form local video stylization. Its core GRNStyle module adopts a style-aware polar coordinate mask combined with a representation-geometry constraint scheme, paired with a 100,000-sample dataset and evaluation benchmark built for this task. Experiments show its performance outperforms existing methods, and single-region training supports multi-region editing with the same or different styles.
+
+<FeedbackButtons slug="item:arxiv-2610.36456" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2610.33024" target="_blank" rel="noopener noreferrer">Evolving to Match Capabilities: Improving Harness Self-Evolution via Skill Adaptation</a>
+
+*Zhihao Yang, Haojin Wang, Juncheng Wu…*
+
+Aiming at the poor skill adaptability issue in LLM agent Harness self-evolution — skills suitable for strong models反而 reduce performance of weak models, this paper proposes a skill adaptation scheme: it builds a meta-skill diagnosis tool to identify four types of execution failures including tool calls and context management, guiding skill rewriting and self-evolution to match model capabilities. Experiments show weak model performance improves by up to 14.1 points, and models across all capability segments outperform baselines by 2.0-5.1 points after self-evolution, providing practical guidance for related designs.
+
+<FeedbackButtons slug="item:arxiv-2610.33024" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.33025" target="_blank" rel="noopener noreferrer">Can Language Models Learn While They Think? Testing Gradient Adaptation Across Architectures</a>
+
+*Surya Saka*
+
+This paper tests the effect of dynamic gradient adaptation during inference for LLMs of different architectures: applying single-step SGD updates to soft attention and diffusion models in 128-token blocks reduces next-token loss by 5%-20%, outperforming a 32k context window, while hybrid linear attention models show no significant gain. This type of gradient adaptation only captures stylistic vocabulary and does not memorize facts, and a scheme of distilling conclusions into low-rank adapters can reach the upper limit of in-context learning without affecting inference capabilities.
+
+<FeedbackButtons slug="item:arxiv-2610.33025" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.33029" target="_blank" rel="noopener noreferrer">Lessons from Luck: Do LLM-Written Lessons Carry Chance into an Agent's Next Decision?</a>
+
+*Kazuki Nakayashiki*
+
+This study verifies whether LLM-generated experience carries accidental results into an agent's subsequent decisions: a total of 90,000 controlled tests were conducted on 11 LLM endpoints across 256 dual-tool synthetic task scenarios. Results show that experience of good tools failing accidentally increases the probability of choosing suboptimal tools later to 11.6%, with more significant deviation in scenarios where failure independence is not explicitly stated. Optimizing experience writing prompts can reduce the deviation but does not fully eliminate the risk.
+
+<FeedbackButtons slug="item:arxiv-2610.33029" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/retell-ai" target="_blank" rel="noopener noreferrer">Retell uses OpenAI models to help power 100M monthly calls</a>
+
+*OpenAI*
+
+Retell, an enterprise focused on intelligent voice agent services, has deployed its business based on OpenAI models: technically, it uses GPT-6 Astra as the core base, which ranks first in its internal voice agent performance benchmark test; operationally, it improves efficiency with the Codex model, currently supporting 100 million calls per month, with an annual revenue per capita run rate of $1.6 million, delivering outstanding technology implementation and commercialization results.
+
+<FeedbackButtons slug="item:openai-blog-retell-ai" client:visible />
+
+## <a href="https://openai.com/index/oracle-apps-in-chatgpt" target="_blank" rel="noopener noreferrer">OpenAI expands partnership with Oracle to bring its apps to ChatGPT</a>
+
+*OpenAI*
+
+OpenAI and Oracle officially announced the expansion of their existing partnership, covering two core business segments: first, integrating Oracle's commercial applications and AI agent capabilities into ChatGPT, greatly expanding the coverage of ChatGPT's enterprise-level service scenarios; second, providing AI technical support for Oracle's new business products. The two parties will jointly explore the potential market for B-side AI services through this cooperation.
+
+<FeedbackButtons slug="item:openai-blog-oracle-apps-in-chatgpt" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/announcements" target="_blank" rel="noopener noreferrer">Announcements</a>
+
+*Anthropic*
+
+This announcement is from AI security R&D enterprise Anthropic, which positions AI security implementation as its core focus, with core R&D direction to build AI systems that are reliable, interpretable, and controllable, placing security attributes first throughout the R&D process, aiming to solve common industry security pain points of current general AI such as black-box operation, uncontrollable behavior, and unstable output, exploring feasible paths for the safe implementation of artificial general intelligence.
+
+<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+AI enterprise Anthropic announced the establishment of a special public benefit fund, with the core arrangement: transferring part of the company's shares to this independent entity, with a special structure designed to automatically increase the fund's shareholding ratio as the enterprise scale expands and revenue increases. This move directly binds commercial growth with public welfare, aiming to continuously invest enterprise development dividends into the public sector, exploring a new path for technology enterprises to balance profit and public responsibility.
+
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/genie-4-a-new-generation-of-world-simulation/" target="_blank" rel="noopener noreferrer">Genie 4: A new generation of world simulation</a>
+
+*Google DeepMind*
+
+Genie 4 is the newly launched next-generation world simulation model. As the latest achievement in the world model field, it delivers a breakthrough improvement in real-time simulation realism, achieving high-fidelity real-time simulation effects that previous similar technologies could not reach, and can provide core technical support for the implementation of scenarios such as digital twins, embodied intelligence training environment construction, and immersive virtual content generation.
+
+<FeedbackButtons slug="item:deepmind-genie-4-a-new-generation-of-world-simulation" client:visible />
+
+## <a href="https://deepmind.google/blog/beyond-tree-cover-mapping-the-worlds-forest-types/" target="_blank" rel="noopener noreferrer">Beyond tree cover: mapping the world’s forest types</a>
+
+*Google DeepMind*
+
+This study breaks through the limitation of previous global forest mapping that only focuses on forest coverage, and for the first time realizes fine-grained classification and mapping of forest types for global land plots at 10-meter resolution, filling the gap in global high-resolution forest type distribution datasets, and can provide more accurate core data support for biodiversity assessment, carbon sink accounting, forest resource management and protection, and ecological protection policy formulation.
+
+<FeedbackButtons slug="item:deepmind-beyond-tree-cover-mapping-the-worlds-forest-types" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/LiquidAI/lfm3" target="_blank" rel="noopener noreferrer">Build specialized multimodal models with LFM3</a>
+
+*Hugging Face*
+
+Currently only the paper title has been provided, the body of the abstract is missing. Please supplement the full specific content of the abstract for this paper on LFM3, and I will extract the core methods and key conclusions as required to generate a concise and clear Chinese summary of around 120 words, accurately presenting its core value of building specialized multimodal models.
+
+<FeedbackButtons slug="item:hf-blog-lfm3" client:visible />
+
+## <a href="https://huggingface.co/blog/allenai/novelty-bench" target="_blank" rel="noopener noreferrer">Can we trust LLMs to judge whether a research idea is novel?</a>
+
+*Hugging Face*
+
+This paper verifies whether LLMs can judge the novelty of research ideas: computer science research topics of different novelty levels are scored independently by LLMs and senior domain reviewers respectively, and the consistency of the two judgments is compared. Results show the current agreement between LLMs and expert judgments is less than 40%: LLMs tend to overestimate the novelty of niche directions, underestimate incremental contributions with substantive value, and are easily misled by rhetorical packaging. They can only be used as auxiliary references for now, and cannot replace experts to complete initial novelty screening.
+
+<FeedbackButtons slug="item:hf-blog-novelty-bench" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+The concept of recursive self-improvement (RSI) was first proposed by I.J. Good in 1965, referring to superintelligent machines whose capabilities surpass all human intellectual activities, which can design better systems by themselves to achieve iterative upgrades. In 2008, Eliezer Yudkowsky clarified its core as a feedback loop: AI uses its existing intelligence to optimize its own cognitive generation mechanism. There are currently two types of RSI paths in the AI field: one is for the model to directly rewrite its own weights, and the other is to broadly optimize its own training pipeline.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/10/505928.html" target="_blank" rel="noopener noreferrer">Personal Agents move to real tasks, Ant Bailing open-sources Ling-3.1-flash-1019</a>
+
+*QbitAI*
+
+At the end of October, Ant Bailing open-sourced Ling-3.1-flash-1019 for personal agent scenarios and its supporting base model. The new version is optimized on the basis of the original version, with significantly improved processing capabilities for complex workflows and multi-step tasks, with improvements across multiple evaluation indicators. It can support the long-term task scheduling and active management needs of the newly upgraded Lingguang 2.0 personal AI assistant, realizing the model's capability upgrade from answering questions to continuous task execution.
+
+<FeedbackButtons slug="item:qbitai-505928" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/505865.html" target="_blank" rel="noopener noreferrer">No more holding back! Full-stack open-source humanoid robot goes official, open from mechanical structure to motion algorithm</a>
+
+*QbitAI*
+
+RoboParty recently released the full-stack open-source humanoid robot RP1. Different from previous limited open-source models that only open SDK and partial algorithms, this release covers the full chain from mechanical drawings, electrical systems, self-developed joints, low-level control to simulation training. RP1 is equipped with a self-developed ROMOMO joint module, supports 24~30 degrees of freedom configurations, has capabilities such as continuous walking and disturbance recovery, and can adapt to multi-scenario R&D needs.
+
+<FeedbackButtons slug="item:qbitai-505865" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/505852.html" target="_blank" rel="noopener noreferrer">Yin Qi launches end-to-end 4D radar</a>
+
+*QbitAI*
+
+Qianli Technology, helmed by Yin Qi, has launched an end-to-end AI 4D millimeter-wave radar with a built-in 10TOPS NPU. The entire chain from antenna design to point cloud output uses AI instead of traditional manual rule processing, and supports OTA upgrades of perception capabilities. The product adds the pitch angle dimension missing from traditional 3D radars, solving pain points of traditional 4D radars such as clutter interference, ghost images, and weak target loss. It adopts a chain collaboration route with scenario support from Step Astral and Geely.
+
+<FeedbackButtons slug="item:qbitai-505852" client:visible />
