@@ -1,0 +1,205 @@
+---
+lang: zh
+translationKey: digest-2026-10-28
+title: "AI 每日精选 · 2026-10-28"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-10-28
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">今日全球学术圈发布世界模型、大模型自进化、视频生成等9篇AI领域前沿研究成果</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI官宣扩大与Oracle的合作，其模型已支撑Retell每月完成1亿次客户服务通话</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内蚂蚁开源Ling-3.1-flash个人Agent，人形机器人全栈开源、4D雷达技术同步公布</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 前沿研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 世界模型</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏢 大厂动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🇨🇳 开源速递</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ 机器人技术</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2610.34283" target="_blank" rel="noopener noreferrer">ChronoReplay: One Answer Interface Is Not Enough for Streaming Spatial Intelligence</a>
+
+*HF ★ 72 · Yihao Hu, Yitong Lin, Pan Wang… · [HF 镜像](https://huggingface.co/papers/2610.34283)*
+
+本文针对空间视觉大模型训练的「接口锁定」问题（单任务优化会损害其他空间任务迁移能力），提出ChronoReplay方法：将异构空间监督按时序重放，保留原生目标、平衡任务族监督。该方法在三个空间基准上均获提升，OST-Bench涨13.41点，为对比组三基准均值最高，推理端自适应选帧还可进一步降本提效。
+
+<FeedbackButtons slug="item:arxiv-2610.34283" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.36729" target="_blank" rel="noopener noreferrer">Hy-Nomas: Towards Free-form Interactive World Generation</a>
+
+*HF ★ 41 · Qiaoling Chen, Jiaxiang Cheng, Xueqing Deng… · [HF 镜像](https://huggingface.co/papers/2610.36729)*
+
+针对交互式世界生成需遵循指令、保留历史因果的需求，本文提出搭载8B参数扩散骨干的视频世界模型Hy-Nomas，支持多轮自由文本指令与连续相机控制。核心采用动作感知因果注意力、多模态提示增强器设计，搭配多阶段课程训练与扩散蒸馏，人工评估性能优于现有同类模型，已开源相关资源支撑领域研究。
+
+<FeedbackButtons slug="item:arxiv-2610.36729" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.36068" target="_blank" rel="noopener noreferrer">Rollback: Experience Backtracking in World Models for Policy Improvement</a>
+
+*HF ★ 41 · Jiayi Luo, Yang Zhang, Liliang Chen… · [HF 镜像](https://huggingface.co/papers/2610.36068)*
+
+针对现有基于世界模型的机器人策略优化仅用前向仿真、未挖掘反事实推演能力的缺陷，本文提出Rollback范式：回溯关键决策点，对比不同动作收益生成细粒度动作监督，无需额外价值模型；还构建实机执行与世界模型训练的闭环，用实机数据经LoRA微调修正动力学。实验显示三个实机任务成功率较基线高10%以上，部分任务8小时训练超人类平均水平。
+
+<FeedbackButtons slug="item:arxiv-2610.36068" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.37666" target="_blank" rel="noopener noreferrer">ThinkWorld: World Imagination Reinforces Chain-of-Dynamics Reasoning</a>
+
+*HF ★ 36 · Chaehyun Kim, Chi-Pin Huang, Jisoo Kim… · [HF 镜像](https://huggingface.co/papers/2610.37666)*
+
+针对现有视觉-语言-动作（VLA）模型泛化受标注机器人演示限制、无标注人类视频学习难兼顾数据规模与动作接地的问题，本文提出ThinkWorld框架：以动力学链为通用动作表征，先靠标注演示初始化，再通过世界想象强化学习优化，可利用无标注视频状态跃迁做监督。实验验证其人-机迁移效果好，未知任务、环境泛化性强。
+
+<FeedbackButtons slug="item:arxiv-2610.37666" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.36456" target="_blank" rel="noopener noreferrer">LociArt: A Unified Paradigm for Free-Style Local Video Stylization</a>
+
+*HF ★ 25 · Yuxuan Chen, Feng Xie, Jiagao Hu… · [HF 镜像](https://huggingface.co/papers/2610.36456)*
+
+针对现有视频风格化多适配全场景、局部编辑难兼顾区域精准性、风格可控性与时序一致性的痛点，本文提出局部自由风格化统一范式LociArt，核心GRNStyle模块采用风格感知极坐标掩码结合表征-几何约束方案，配套构建10万样本数据集与评测基准。实验显示其效果优于现有方法，单区域训练即可支持多区域同/异风格编辑。
+
+<FeedbackButtons slug="item:arxiv-2610.36456" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2610.33024" target="_blank" rel="noopener noreferrer">Evolving to Match Capabilities: Improving Harness Self-Evolution via Skill Adaptation</a>
+
+*Zhihao Yang, Haojin Wang, Juncheng Wu…*
+
+针对大模型代理Harness自进化中技能适配性差的问题——强模型适用的技能反而会拉低弱模型性能，本文提出技能适配方案：构建元技能诊断工具调用、上下文管理等四类执行失败，指导技能改写与自进化适配模型能力。实验显示弱模型性能最高提升14.1分，全能力段模型自进化后较基线高2.0-5.1分，为相关设计提供实用指导。
+
+<FeedbackButtons slug="item:arxiv-2610.33024" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.33025" target="_blank" rel="noopener noreferrer">Can Language Models Learn While They Think? Testing Gradient Adaptation Across Architectures</a>
+
+*Surya Saka*
+
+本文测试不同架构大模型推理时梯度动态适配效果：对软注意力、扩散模型按128token块做单步SGD更新，可降低5%-20%的下一词损失，效果优于32k长上下文窗口，混合线性注意力模型无明显增益。这类梯度适配仅捕获风格词汇不记忆事实，改用结论蒸馏到低秩适配器的方案可达上下文学习上限且不影响推理能力。
+
+<FeedbackButtons slug="item:arxiv-2610.33025" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.33029" target="_blank" rel="noopener noreferrer">Lessons from Luck: Do LLM-Written Lessons Carry Chance into an Agent's Next Decision?</a>
+
+*Kazuki Nakayashiki*
+
+该研究验证大模型生成的经验是否会将偶然结果带入智能体后续决策：在256个双工具合成任务场景下，对11个大模型端点开展共9万次受控测试。结果显示，好工具偶然失败的经验会让后续选次优工具的概率升至11.6%，未明确说明失败独立性的场景偏差更显著，优化经验写入指令可降低偏差但未完全消除风险。
+
+<FeedbackButtons slug="item:arxiv-2610.33029" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/retell-ai" target="_blank" rel="noopener noreferrer">Retell uses OpenAI models to help power 100M monthly calls</a>
+
+*OpenAI*
+
+主打智能语音Agent服务的企业Retell依托OpenAI模型落地业务：技术上以GPT-6 Astra为核心基座，在其内部语音Agent性能基准测试中位列榜首；运营上借助Codex模型提效，目前已支撑每月1亿次通话服务，人均年营收跑率达160万美元，技术落地与商业化成效突出。
+
+<FeedbackButtons slug="item:openai-blog-retell-ai" client:visible />
+
+## <a href="https://openai.com/index/oracle-apps-in-chatgpt" target="_blank" rel="noopener noreferrer">OpenAI expands partnership with Oracle to bring its apps to ChatGPT</a>
+
+*OpenAI*
+
+OpenAI与甲骨文（Oracle）官方宣布扩大现有合作伙伴关系，本次合作核心覆盖两大业务板块：一是将甲骨文旗下的商业应用、AI代理能力接入ChatGPT，大幅拓展ChatGPT的企业级服务场景覆盖；二是为甲骨文的新业务产品提供AI技术支撑，二者将依托合作共同开拓B端AI服务潜在市场。
+
+<FeedbackButtons slug="item:openai-blog-oracle-apps-in-chatgpt" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/announcements" target="_blank" rel="noopener noreferrer">Announcements</a>
+
+*Anthropic*
+
+本次公告主体为AI安全研发企业Anthropic，该公司以AI安全落地为核心定位，核心研发方向为打造兼具可靠性、可解释性、可操控性的AI系统，研发全程将安全属性前置，旨在破解当前通用AI普遍存在的黑箱运行、行为不可控、输出不稳定等行业共性安全痛点，为通用人工智能的安全落地探索可行路径。
+
+<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+AI企业Anthropic宣布设立公共利益专项基金，核心安排为：拿出公司部分股份划入该独立实体，且设计了随企业规模扩张、收益提升自动调高基金持股比例的特殊架构。此举将商业增长与公共福祉直接绑定，旨在把企业发展红利持续投向公共领域，探索科技企业兼顾营利与公共责任的新路径。
+
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/genie-4-a-new-generation-of-world-simulation/" target="_blank" rel="noopener noreferrer">Genie 4: A new generation of world simulation</a>
+
+*Google DeepMind*
+
+Genie 4是最新推出的新一代世界仿真模型，作为世界模型领域的最新成果，它突破性提升了实时仿真的真实度表现，可实现此前同类技术无法达到的高拟真实时仿真效果，能为数字孪生、具身智能训练环境搭建、沉浸式虚拟内容生成等场景的落地应用提供核心技术支撑。
+
+<FeedbackButtons slug="item:deepmind-genie-4-a-new-generation-of-world-simulation" client:visible />
+
+## <a href="https://deepmind.google/blog/beyond-tree-cover-mapping-the-worlds-forest-types/" target="_blank" rel="noopener noreferrer">Beyond tree cover: mapping the world’s forest types</a>
+
+*Google DeepMind*
+
+该研究突破过往全球森林测绘仅聚焦林木覆盖率的局限，首次实现10米分辨率尺度下全球陆域地块的森林类型精细化分类制图，填补了全球高分辨率森林类型分布数据集的空白，可为生物多样性评估、碳汇核算、森林资源管护、生态保护政策制定提供更精准的核心数据支撑。
+
+<FeedbackButtons slug="item:deepmind-beyond-tree-cover-mapping-the-worlds-forest-types" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/LiquidAI/lfm3" target="_blank" rel="noopener noreferrer">Build specialized multimodal models with LFM3</a>
+
+*Hugging Face*
+
+当前你仅提供了论文标题，摘要正文内容缺失，请补充完整该篇关于LFM3的论文摘要具体内容，我会按要求提炼核心方法、关键结论，生成120字左右简洁清晰的中文总结，精准呈现其构建专用多模态模型的核心价值。
+
+<FeedbackButtons slug="item:hf-blog-lfm3" client:visible />
+
+## <a href="https://huggingface.co/blog/allenai/novelty-bench" target="_blank" rel="noopener noreferrer">Can we trust LLMs to judge whether a research idea is novel?</a>
+
+*Hugging Face*
+
+该论文围绕大语言模型（LLM）能否判断科研想法创新性展开验证：将不同创新等级的计算机领域科研选题，分别交由LLM与领域资深评审独立打分，比对两者判断一致性。结果显示当前LLM与专家判断吻合度不足40%，易高估小众方向创新度、低估有实质价值的增量贡献，还易被话术包装误导，仅可作辅助参考，暂无法替代专家完成创新性初筛。
+
+<FeedbackButtons slug="item:hf-blog-novelty-bench" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+递归自我改进（RSI）概念最早1965年由I.J.古德提出，指能力超越人类所有智力活动的超智能机器，可自行设计更优系统实现迭代升级。2008年尤德考斯基明确其核心为反馈循环：AI用现有智能优化自身认知生成机制。当前AI领域的RSI有两类路径：一是模型直接改写自身权重，二是广义优化自身训练管线。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/10/505928.html" target="_blank" rel="noopener noreferrer">Personal Agent走向真实任务，蚂蚁百灵开源 Ling-3.1-flash-1019</a>
+
+*量子位*
+
+10月底蚂蚁百灵开源面向个人智能体场景的Ling-3.1-flash-1019及配套基础模型，新版本在原有版本基础上优化，复杂工作流、多步骤任务处理能力显著提升，多项测评指标均有上涨，可支撑刚升级的灵光2.0个人AI助理的长程任务调度、主动管事需求，实现模型从答问到持续办事的能力升级。
+
+<FeedbackButtons slug="item:qbitai-505928" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/505865.html" target="_blank" rel="noopener noreferrer">不藏了！人形机器人全开源动真格，从机械结构一路拆到运动算法</a>
+
+*量子位*
+
+RoboParty日前发布全栈开源人形机器人RP1，区别于过往仅开放SDK、部分算法的有限开源模式，本次开放覆盖机械图纸、电气系统、自研关节、底层控制到仿真训练全链路。RP1搭载自研ROMOMO关节模组，支持24~30种自由度配置，具备连续行走、扰动恢复等能力，可适配多场景研发需求。
+
+<FeedbackButtons slug="item:qbitai-505865" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/505852.html" target="_blank" rel="noopener noreferrer">印奇把4D雷达也端到端了</a>
+
+*量子位*
+
+印奇掌舵的千里科技推出端到端AI 4D毫米波雷达，内置10TOPS NPU，从天线设计到点云输出全链路用AI替代传统人工规则处理，支持OTA升级感知能力。产品补全传统3D雷达缺失的俯仰角维度，解决了传统4D雷达杂波干扰、鬼影、弱目标丢失等痛点，依托阶跃星辰、吉利的场景支持走链式协同路线。
+
+<FeedbackButtons slug="item:qbitai-505852" client:visible />
