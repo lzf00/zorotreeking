@@ -1,0 +1,179 @@
+---
+lang: en
+translationKey: digest-2026-10-30
+title: "Daily AI Picks · 2026-10-30"
+description: "17 papers · multi-source aggregation + AI summaries"
+date: 2026-10-30
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, lil-log]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's content in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading AI vendors are rolling out new updates intensively: OpenAI has updated its model specification, DeepMind has launched the Gemini 4 Carbon and Genie 4 models</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face has launched a variety of AI tools and datasets, covering scenarios including game generation, long-form video editing, Agent training, etc.</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Domestic AI industry, academia and research are making joint efforts: Tsinghua University has proposed a new path for embodied intelligence, and new AI-related benefits have been launched for consumer end users</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥Model Iteration</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠Agent Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🎬Generation Tools</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖Embodied Intelligence</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡Industry Implementation</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2610.33106" target="_blank" rel="noopener noreferrer">VibeGame: Prompt-to-Game Development with AI-Native Engine and Self-Evolving Adversarial Agent Team</a>
+
+*HF ★ 11 · Wenbo Hu, Ken Li, Jiazhe Wei… · [HF Mirror](https://huggingface.co/papers/2610.33106)*
+
+To address the pain point that LLM agents struggle to achieve end-to-end game development, this paper proposes the VibeGame framework, which can generate complete 2D game projects from natural language prompts (reference images can be optionally provided). It is equipped with an AI-native engine that converts project states into verifiable structured text, designs an adversarial team composed of 8 professional agents to separate development and review, and also supports training-free self-evolution to accumulate reusable components. In game generation benchmark tests, the framework significantly outperforms all similar solutions based on the same base model, including GPT-6.1-Sol.
+
+<FeedbackButtons slug="item:arxiv-2610.33106" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.38352" target="_blank" rel="noopener noreferrer">WeVisCut: The Whole Editing Room in One Agent From Narration to Long-Form Video</a>
+
+*HF ★ 9 · Chenyu Mu, Wenming Weng, Qinrui Wang… · [HF Mirror](https://huggingface.co/papers/2610.38352)*
+
+To solve the problems that narration-driven long-form video editing requires coherent cross-shot decision-making, and existing general multi-stage intelligent editing solutions fail to strike a good balance between quality and efficiency, this research proposes WeVisCut, an end-to-end script-to-long-video system. It links tool execution and policy learning through shared production status, and is paired with a four-stage data pipeline that generates 130,000 training samples to train a unified 9B-parameter policy. Actual tests show its performance far exceeds the baseline, is comparable to Claude Opus 5 but consumes 33 times fewer tokens per minute of output, and also outperforms native editing tools for the same task.
+
+<FeedbackButtons slug="item:arxiv-2610.38352" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.38425" target="_blank" rel="noopener noreferrer">IntReal: A Real-World Dataset and Benchmark for Multimodal Interleaved Generation</a>
+
+*HF ★ 8 · Shaohan Yu, Jie Qin, Wende Tan… · [HF Mirror](https://huggingface.co/papers/2610.38425)*
+
+To address the pain point that the multimodal interleaved generation field lacks standard tasks, training data and fine-grained evaluation solutions, this paper launches the IntReal suite: it includes a dataset of 100,000 real-world interleaved samples covering four major categories, as well as a 7-dimensional fine-grained evaluation system. The evaluation is highly reliable and well aligned with human judgments, can distinguish the performance of different unified multimodal models, and also finds that unimodal training can also improve interleaved generation effects, eliminating the need for full-stage joint image-text training.
+
+<FeedbackButtons slug="item:arxiv-2610.38425" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.37786" target="_blank" rel="noopener noreferrer">WebAnything: From the Wild Web to Scalable Agent Environments</a>
+
+*HF ★ 8 · Tianci Xie, Zikun Cai, Chaoyun Zhang… · [HF Mirror](https://huggingface.co/papers/2610.37786)*
+
+To address the pain point that existing environments for Web agent training and evaluation require manual adaptation site by site and have insufficient fidelity, this paper proposes the fully automatic framework WebAnything: it can reconstruct environments based on real URLs without manual adjustment per site, captures web page structure and interaction logic through an exploration and collection module, and is paired with a verification module for automatic repair and supplementary collection. The fidelity of the 244 cross-domain site environments it builds is better than manual solutions, and fine-tuning models with the trajectories it generates can improve task success rate by up to 13.33 percentage points.
+
+<FeedbackButtons slug="item:arxiv-2610.37786" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.37161" target="_blank" rel="noopener noreferrer">WorkFactory: Turning Professional Intents into Executable Work for Scalable Agent Training</a>
+
+*HF ★ 6 · Ziyang Zeng, Tingyang Chen, Jia Deng… · [HF Mirror](https://huggingface.co/papers/2610.37161)*
+
+To solve the problems of missing task information and poor consistency in supervised training of agents for professional tasks, this paper proposes the WorkFactory framework: it first builds an information support graph based on professional intent to generate tasks, then executes probe runs to fix defects and ensure executability. More than 110,000 tasks covering 612 occupations are built based on this framework, and the fine-tuned WorkPilot series models outperform base models of the same size across all professional benchmarks, verifying the effectiveness of the framework.
+
+<FeedbackButtons slug="item:arxiv-2610.37161" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/updated-model-spec" target="_blank" rel="noopener noreferrer">An updated Model Spec for more capable and beneficial AI</a>
+
+*OpenAI*
+
+OpenAI recently released an updated version of the Model Spec, which anchors five core values as the core guidance for development for increasingly capable AI systems. The specification aims to guide advanced AI to form reasonable decisions and judgments, fully ensure human dominance, and always faithfully match the real intentions of humans, providing a clear framework for the research and development of more controllable advanced AI with positive social value.
+
+<FeedbackButtons slug="item:openai-blog-updated-model-spec" client:visible />
+
+## <a href="https://openai.com/index/how-we-detect-frontier-model-misalignment" target="_blank" rel="noopener noreferrer">How we detect frontier model misalignment</a>
+
+*OpenAI*
+
+This article focuses on the problem of misalignment detection for frontier large models, and introduces the layered monitoring technical solution adopted by OpenAI: this mechanism can simultaneously identify the risk of model alignment failure and abnormal behavior of unauthorized autonomous agents, and can support security response personnel to complete intervention and disposal before risk events ferment and escalate, providing a practical reference for implementable pre-monitoring for the full lifecycle security protection of frontier large models.
+
+<FeedbackButtons slug="item:openai-blog-how-we-detect-frontier-model-misalignment" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/announcements" target="_blank" rel="noopener noreferrer">Announcements</a>
+
+*Anthropic*
+
+This announcement comes from AI security R&D enterprise Anthropic, which clarifies its core positioning: focusing on technical research and implementation in the field of AI security, with core R&D goals of building AI systems with three characteristics: high reliability for stable operation, interpretability with traceable and understandable decision-making logic, and steerability that can be accurately guided by humans, highlighting the development orientation of leading AI vendors to prioritize security and promote technology for good.
+
+<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+AI company Anthropic has launched a public benefit-oriented equity mechanism: part of the company's shares are allocated to the newly established Anthropic Public Benefit Fund, which adopts a special structural design, and the proportion of shares it holds will increase synchronously as the company's development scale expands. This move directly binds enterprise growth dividends with public interests, providing a new practical paradigm for AI commercialization enterprises to balance commercial value and fulfill public responsibilities.
+
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/gemini-4-carbon-our-next-frontier-model/" target="_blank" rel="noopener noreferrer">Gemini 4 Carbon: Our next frontier model</a>
+
+*Google DeepMind*
+
+This article introduces Google's next-generation frontier large model Gemini 4 Carbon, whose core innovation is the use of 24/7 uninterrupted carbon-free energy to support the entire process of training and inference throughout its lifecycle. Its performance has achieved a leapfrog improvement compared to the previous generation Gemini 3, matching or surpassing current top similar models in tasks such as multimodal understanding, complex reasoning, and code generation, while greatly reducing the carbon emissions from LLM computing power, providing a feasible paradigm for the low-carbon development of the AI industry.
+
+<FeedbackButtons slug="item:deepmind-gemini-4-carbon-our-next-frontier-model" client:visible />
+
+## <a href="https://deepmind.google/blog/genie-4-a-new-generation-of-world-simulation/" target="_blank" rel="noopener noreferrer">Genie 4: A new generation of world simulation</a>
+
+*Google DeepMind*
+
+This research launches Genie 4, a new generation of iterative product in the field of world simulation. As a self-developed new world model, its core breakthrough is overcoming the realism bottleneck of real-time simulation, achieving high-fidelity real-time simulation effects that previous similar technologies cannot reach. In the future, it can adapt to the high-fidelity real-time simulation needs of multiple scenarios such as embodied intelligence training, digital twins, and virtual content generation, with high industrial implementation value.
+
+<FeedbackButtons slug="item:deepmind-genie-4-a-new-generation-of-world-simulation" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/ibm-granite/granite-switch-4-1-1" target="_blank" rel="noopener noreferrer">Granite Switch 4.1.1 — Update models like you update software</a>
+
+*Hugging Face*
+
+Granite Switch 4.1.1 is a dedicated tool for LLM iteration, which draws on the paradigm of software version updates at its core. It enables incremental model upgrades without full retraining, can quickly fix model defects and add specialized capabilities, while fully retaining the core performance of the original model, greatly reducing the computing power and time costs of LLM iteration, and adapting to the high-frequency update needs of enterprise-level LLMs.
+
+<FeedbackButtons slug="item:hf-blog-granite-switch-4-1-1" client:visible />
+
+## <a href="https://huggingface.co/blog/announcing-project-protostar" target="_blank" rel="noopener noreferrer">Announcing Project ProtoStar: Making Publicly Funded Science AI-Ready</a>
+
+*Hugging Face*
+
+Project ProtoStar aims to convert various publicly funded scientific research resources into AI-usable formats. The project performs standardized cleaning and structured semantic annotation on public domain scientific research literature, experimental records, and open datasets to adapt to the input requirements of AI training and inference, breaking through the adaptation barriers of existing public scientific research resources such as scattered formats and high proportion of unstructured content. It can lower the threshold for AI to mine scientific research knowledge, activate the spillover value of public scientific research investment, and support the implementation of scientific research AI applications.
+
+<FeedbackButtons slug="item:hf-blog-announcing-project-protostar" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This article sorts out the theoretical context of Recursive Self-Improvement (RSI): In 1965, I.J. Good first proposed the relevant concept, defining a system that can surpass all human intellectual activities and design better machines to achieve self-iteration as an ultra-intelligent machine; In 2008, Eliezer Yudkowsky clarified that the core of RSI is the feedback loop where AI relies on existing intelligence to iteratively optimize its own cognitive modules. Currently, RSI implementation in the AI field can be divided into two categories: directly rewriting its own weights, and optimizing its own training pipeline.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/10/506662.html" target="_blank" rel="noopener noreferrer">From learning from humans to learning from robot peers, Tsinghua University, together with InfiniCore and ZhiYuan Robotics, proposes a new path for the large-scale implementation of embodied intelligence</a>
+
+*QbitAI*
+
+Tsinghua University, together with InfiniCore and ZhiYuan Robotics, proposes a new paradigm of Collective Experience Learning (CEL), which solves the industry pain point of relying on human demonstration teaching where human resources cannot keep up with the mass deployment of robots. Robots can share and reuse the practical experience of their peers, and group capabilities iterate with the accumulation of experience. It has been verified on a cluster of 96 real machines, with a 97.5% success rate for five types of household and industrial tasks, all exceeding the average human level, providing a new path for the large-scale implementation of embodied intelligence.
+
+<FeedbackButtons slug="item:qbitai-506662" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/506609.html" target="_blank" rel="noopener noreferrer">Get front row seats! Registration for MEET2027 is officially open, first batch of heavyweight guests are in place</a>
+
+*QbitAI*
+
+QbitAI's MEET2027 Intelligent Future Conference will be held on December 9, with the theme of "Unity of Intelligence and Action · Foresee the Future". It will focus on hot topics such as AI implementation, embodied intelligence, and digital intelligence transformation, and release the annual AI list and trend report. The first batch of guests includes Wang Jinqiao, an authority in the field of multimodal large models. The registration channel is now open, and you can register via the QbitAI official WeChat account, with limited seats available.
+
+<FeedbackButtons slug="item:qbitai-506609" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/506569.html" target="_blank" rel="noopener noreferrer">Get lifetime AI for free when buying a car? IM LS8 pure electric version starts at 250,000 RMB! Full series comes standard with steer-by-wire chassis and CATL batteries</a>
+
+*QbitAI*
+
+The IM LS8 NEO pure electric version recently opened for pre-sale, with a starting price of 250,000 RMB. SAIC's 8-year developed full steer-by-wire chassis is available at this price range, and the full series comes standard with custom CATL batteries, with a maximum range of 752km. The chassis has large-angle rear wheel steering, with a turning radius of only 4.85 meters, and supports silent parking. First-time owners enjoy free lifetime access to the co-branded Qwen agent, and customers who place orders during the pre-sale period will also receive a lifetime full-feature advanced driver assistance package.
+
+<FeedbackButtons slug="item:qbitai-506569" client:visible />
