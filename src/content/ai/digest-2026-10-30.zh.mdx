@@ -1,0 +1,179 @@
+---
+lang: zh
+translationKey: digest-2026-10-30
+title: "AI 每日精选 · 2026-10-30"
+description: "17 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-10-30
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, lil-log]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">头部AI厂商密集发布新进展：OpenAI更新模型规范，DeepMind推出Gemini 4 Carbon与Genie 4模型</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face推出多类AI工具与数据集，覆盖游戏生成、长视频剪辑、Agent训练等场景</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内AI产学研多端发力：清华提出具身智能新路径，消费端落地AI相关新权益</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥模型迭代</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠Agent研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🎬生成工具</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖具身智能</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡产业落地</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2610.33106" target="_blank" rel="noopener noreferrer">VibeGame: Prompt-to-Game Development with AI-Native Engine and Self-Evolving Adversarial Agent Team</a>
+
+*HF ★ 11 · Wenbo Hu, Ken Li, Jiazhe Wei… · [HF 镜像](https://huggingface.co/papers/2610.33106)*
+
+针对大模型代理难以实现端到端游戏开发的痛点，本文提出VibeGame框架，可凭自然语言提示（可选配参考图）生成完整2D游戏项目。其搭载AI原生引擎将项目状态转为可校验结构化文本，设计8个专业代理组成的对抗团队分离开发与评审，还支持免训练自进化沉淀可复用组件。在游戏生成基准测试中，该框架表现显著优于同基底的各类同类方案，包括GPT-6.1-Sol。
+
+<FeedbackButtons slug="item:arxiv-2610.33106" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.38352" target="_blank" rel="noopener noreferrer">WeVisCut: The Whole Editing Room in One Agent From Narration to Long-Form Video</a>
+
+*HF ★ 9 · Chenyu Mu, Wenming Weng, Qinrui Wang… · [HF 镜像](https://huggingface.co/papers/2610.38352)*
+
+针对旁白驱动长视频剪辑跨镜头决策需连贯、现有通用多阶段智能剪辑方案质效平衡不足的问题，研究提出WeVisCut端到端脚本转长视频系统，通过共享制作状态联动工具执行与策略学习，配套四阶段数据 pipeline 生成13万训练样例训得9B参数统一策略。实测其性能远超基线，与Claude Opus 5效果相当但单分钟输出token消耗低33倍，也优于同任务原生剪辑工具。
+
+<FeedbackButtons slug="item:arxiv-2610.38352" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.38425" target="_blank" rel="noopener noreferrer">IntReal: A Real-World Dataset and Benchmark for Multimodal Interleaved Generation</a>
+
+*HF ★ 8 · Shaohan Yu, Jie Qin, Wende Tan… · [HF 镜像](https://huggingface.co/papers/2610.38425)*
+
+针对多模态交错生成领域缺乏标准任务、训练数据及细粒度评测方案的痛点，本文推出IntReal套件：含覆盖四大类的10万条真实世界交错样本数据集，及7维度细粒度评测体系。该评测可靠性强、与人类判断对齐度高，可区分不同统一多模态模型优劣，还发现单模态训练也能提升交错生成效果，无需全阶段执行图文联合训练。
+
+<FeedbackButtons slug="item:arxiv-2610.38425" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.37786" target="_blank" rel="noopener noreferrer">WebAnything: From the Wild Web to Scalable Agent Environments</a>
+
+*HF ★ 8 · Tianci Xie, Zikun Cai, Chaoyun Zhang… · [HF 镜像](https://huggingface.co/papers/2610.37786)*
+
+针对Web智能体训练评估的现有环境需人工逐站适配、保真度不足的痛点，本文提出全自动框架WebAnything：可基于真实URL重建环境，无需逐站人工调整，通过探索采集模块抓取网页结构与交互逻辑，配套验证模块自动修复补采。其构建的244个跨领域站点环境保真度优于人工方案，用其生成的轨迹微调模型，任务成功率最高提升13.33个百分点。
+
+<FeedbackButtons slug="item:arxiv-2610.37786" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.37161" target="_blank" rel="noopener noreferrer">WorkFactory: Turning Professional Intents into Executable Work for Scalable Agent Training</a>
+
+*HF ★ 6 · Ziyang Zeng, Tingyang Chen, Jia Deng… · [HF 镜像](https://huggingface.co/papers/2610.37161)*
+
+针对智能体专业任务监督训练存在的任务信息缺失、一致性差问题，本文提出WorkFactory框架：先基于专业意图构建信息支持图生成任务，再通过探针执行修复缺陷保障可执行性。基于该框架构建覆盖612个职业的11万余项任务，微调得到的WorkPilot系列模型在专业基准上全面优于同规模基座，验证了框架有效性。
+
+<FeedbackButtons slug="item:arxiv-2610.37161" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/updated-model-spec" target="_blank" rel="noopener noreferrer">An updated Model Spec for more capable and beneficial AI</a>
+
+*OpenAI*
+
+OpenAI近期发布更新版《模型规范》，针对能力不断进阶的AI系统，锚定五大核心价值作为开发核心指引。该规范旨在引导高阶AI形成合理决策判断、充分保障人类主导权、始终忠实匹配人类真实意图，为研发更可控、更具正向社会价值的先进AI提供明确框架遵循。
+
+<FeedbackButtons slug="item:openai-blog-updated-model-spec" client:visible />
+
+## <a href="https://openai.com/index/how-we-detect-frontier-model-misalignment" target="_blank" rel="noopener noreferrer">How we detect frontier model misalignment</a>
+
+*OpenAI*
+
+该文聚焦前沿大模型对齐偏差检测问题，介绍OpenAI采用的分层监测技术方案：该机制可同时识别模型对齐失效风险、未授权自主代理异常行为，能支撑安全响应人员在风险事件发酵升级前完成干预处置，为前沿大模型全生命周期安全防护提供了可落地的前置监测实践参考。
+
+<FeedbackButtons slug="item:openai-blog-how-we-detect-frontier-model-misalignment" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/announcements" target="_blank" rel="noopener noreferrer">Announcements</a>
+
+*Anthropic*
+
+这份公告来自AI安全研发企业Anthropic，明确了自身核心定位：专注AI安全方向的技术研究与落地，核心研发目标是打造三类特性的AI系统，分别是运行稳定的高可靠性、决策逻辑可追溯可理解的可解释性、可被人类精准引导的可操控性，凸显了头部AI厂商将安全前置、推动技术向善的发展导向。
+
+<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+AI企业Anthropic推出公共利益导向的股权机制：将部分公司股份划归新设立的Anthropic公共利益基金，该基金采用特殊结构设计，所持股份占比会随公司发展规模扩张同步提升。此举将企业成长红利与公共利益直接绑定，为AI商业化企业兼顾商业价值、履行公共责任提供了新的实践范式。
+
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/gemini-4-carbon-our-next-frontier-model/" target="_blank" rel="noopener noreferrer">Gemini 4 Carbon: Our next frontier model</a>
+
+*Google DeepMind*
+
+本次介绍谷歌下一代前沿大模型Gemini 4 Carbon，核心创新为全生命周期采用24/7不间断无碳能源支撑训练、推理全流程，性能较前代Gemini 3实现跨越式提升，在多模态理解、复杂推理、代码生成等任务表现追平或赶超当前顶级同类模型，同时大幅削减大模型算力碳排放，为AI产业低碳发展提供可行范式。
+
+<FeedbackButtons slug="item:deepmind-gemini-4-carbon-our-next-frontier-model" client:visible />
+
+## <a href="https://deepmind.google/blog/genie-4-a-new-generation-of-world-simulation/" target="_blank" rel="noopener noreferrer">Genie 4: A new generation of world simulation</a>
+
+*Google DeepMind*
+
+本次研究推出世界仿真领域的新一代迭代产品Genie 4，作为自研全新世界模型，其核心突破是攻克了实时仿真的真实度瓶颈，可实现过往同类技术无法企及的高拟真度实时仿真效果，未来可适配具身智能训练、数字孪生、虚拟内容生成等多场景的高保真实时仿真需求，具备较高产业落地价值。
+
+<FeedbackButtons slug="item:deepmind-genie-4-a-new-generation-of-world-simulation" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/ibm-granite/granite-switch-4-1-1" target="_blank" rel="noopener noreferrer">Granite Switch 4.1.1 — Update models like you update software</a>
+
+*Hugging Face*
+
+Granite Switch 4.1.1是面向大模型迭代的专用工具，核心借鉴软件版本更新的范式，无需全量重训即可实现模型增量升级，可快速修复模型缺陷、新增专项能力，同时完整保留原模型的核心性能，大幅降低大模型迭代的算力与时间成本，适配企业级大模型的高频更新需求。
+
+<FeedbackButtons slug="item:hf-blog-granite-switch-4-1-1" client:visible />
+
+## <a href="https://huggingface.co/blog/announcing-project-protostar" target="_blank" rel="noopener noreferrer">Announcing Project ProtoStar: Making Publicly Funded Science AI-Ready</a>
+
+*Hugging Face*
+
+ProtoStar项目旨在将公共资助的各类科研资源转化为AI可用形态。项目通过对公域科研文献、实验记录、开放数据集做标准化清洗、结构化语义标注，适配AI训练、推理的输入要求，破除现有公共科研资源格式零散、非结构化占比高的适配障碍，可降低AI挖掘科研知识的门槛，激活公共科研投入的溢出价值，支撑科研类AI应用落地。
+
+<FeedbackButtons slug="item:hf-blog-announcing-project-protostar" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我改进（RSI）的理论脉络：1965年I.J.古德最早提出相关构想，将可超越人类全部智力活动、能设计更优机器实现自我迭代的系统定义为超智能机器；2008年尤德考斯基明确RSI核心是AI依托现有智能迭代优化自身认知模块的反馈环，当前AI领域RSI落地可分为直接改写自身权重、优化自身训练管线两类。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/10/506662.html" target="_blank" rel="noopener noreferrer">从学习人类到学习机器人同伴，清华大学联合无问芯穹、智元提出具身智能规模化落地新路径</a>
+
+*量子位*
+
+清华大学联合无问芯穹、智元提出群体经验学习（CEL）新范式，破解依赖人类示范教学、人力跟不上机器人批量部署的行业卡点。机器人可共享复用同伴实践经验，群体能力随经验积累迭代，已在96台真机集群验证，五类家居、工业任务成功率97.5%，全超人类平均水平，为具身智能规模化落地提供新路径。
+
+<FeedbackButtons slug="item:qbitai-506662" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/506609.html" target="_blank" rel="noopener noreferrer">前排围观！MEET2027报名通道正式开启，首批重磅嘉宾已就位</a>
+
+*量子位*
+
+量子位MEET2027智能未来大会将于12月9日举办，主题为「智行合一·驭见未来」，将围绕AI落地、具身智能、数智化转型等热点展开研讨，发布AI年度榜单及趋势报告，首批嘉宾含多模态大模型领域权威王金桥。目前报名通道已开启，可通过量子位公众号报名，席位有限。
+
+<FeedbackButtons slug="item:qbitai-506609" client:visible />
+
+## <a href="https://www.qbitai.com/2026/10/506569.html" target="_blank" rel="noopener noreferrer">买车送终身AI？智己LS8纯电版25万起！全系线控底盘宁德时代标配</a>
+
+*量子位*
+
+智己LS8 NEO纯电版近日开启预售，起售价25万，将上汽八年研发的全线控底盘下放到该价位段，全系标配宁德时代定制电池，最高续航752km。底盘带大角度后轮转向，转弯半径仅4.85米，支持静默泊车，首任车主享联名千问的智能体终身免费，预售期下定还赠终身辅助驾驶全功能包。
+
+<FeedbackButtons slug="item:qbitai-506569" client:visible />
