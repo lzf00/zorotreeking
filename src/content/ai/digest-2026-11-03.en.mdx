@@ -1,0 +1,179 @@
+---
+lang: en
+translationKey: digest-2026-11-03
+title: "AI Daily Highlights · 2026-11-03"
+description: "17 papers · Multi-source aggregation + AI summary"
+date: 2026-11-03
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, lil-log]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second overview of today's content</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face has released cutting-edge AI research results across multiple directions including video generation, embodied agents, and multimodal embeddings</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI, Anthropic, and DeepMind announced updates on engineering optimization, public welfare projects, and progress of the new Gemini 4 Carbon model</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Xiaomi won two awards at the Wuzhen Summit, Peking University and IBM achieved a breakthrough in analog computing, and Anthropic updated its prospectus to warn of RSI risks</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📈 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Big Tech Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Embodied Intelligence</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🎥 Video Generation</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Industrial Breakthroughs</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2611.00859" target="_blank" rel="noopener noreferrer">Wave Forcing: Towards Speed-of-Light Streaming Video Generation</a>
+
+*HF ★ 27 · Yijie Jin, Yuxuan Liu, Jiajun Xu… · [HF Mirror](https://huggingface.co/papers/2611.00859)*
+
+To address the low efficiency, long-term quality degradation, and camera drift issues of existing chunked autoregressive long video generation, this paper proposes the Wave Forcing real-time streaming video generation framework: it designs chunked causal attention, three-stage adaptive training, and Wave parallel runtime, achieving 1 chunk of video output per forward pass after pipeline filling. Tests on 8 H200 GPUs show an end-to-end frame rate of 134.8, 7 times that of a single card, with parallel throughput up to 153% higher than the baseline, and higher video dynamicity while maintaining equivalent quality.
+
+<FeedbackButtons slug="item:arxiv-2611.00859" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.40191" target="_blank" rel="noopener noreferrer">Video Generation Meets Agent Harness: Agentic Video Generation, Agentic World Modeling and Recursive Self-Improvement</a>
+
+*HF ★ 24 · Liaoyuan Fan, Yuhao Zheng, Dongxing Mao… · [HF Mirror](https://huggingface.co/papers/2610.40191)*
+
+This paper focuses on the intersection of agent paradigms and video technology, and proposes an executable agent control layer as the core carrier to implement three lines of research: first, coordinate the full workflow including scripts and storyboards to realize controllable and coherent agentic video generation; second, combine game engines and other tools to maintain world state and build an interactive agentic world model; third, support full-link recursive self-optimization of video models. Finally, it sorts out core capability requirements and implementation challenges.
+
+<FeedbackButtons slug="item:arxiv-2610.40191" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.01560" target="_blank" rel="noopener noreferrer">Democratizing Robot-Use Agents: A Unified Harness with Open Models</a>
+
+*HF ★ 19 · Jiarui Yuan, Yuxin Zuo, Xiaoyu Huang… · [HF Mirror](https://huggingface.co/papers/2611.01560)*
+
+Robot-Use Agents (RUA) with outstanding zero-shot manipulation performance generally rely on cutting-edge closed-source models, which is not conducive to subsequent training research. The team launched uni-robot-agent, a unified framework compatible with open-weight models and supporting training: the off-the-shelf Qwen3.8-Flash-Next achieves a RoboDojo score of 31.39 without privileged input, outperforming the corresponding version of GPT-6 and most baselines, with excellent performance on 19 real-world tasks. It also clarifies the four core capabilities that RUA needs to develop collaboratively.
+
+<FeedbackButtons slug="item:arxiv-2611.01560" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.00172" target="_blank" rel="noopener noreferrer">From Fragmentation to Fusion: A Survey and Roadmap for Omnimodal Embeddings</a>
+
+*HF ★ 16 · Ziyin Zhang, Yuyu Guo, Ying Zhang… · [HF Mirror](https://huggingface.co/papers/2611.00172)*
+
+This survey of omnimodal embeddings addresses the current fragmentation of embedding research across different modalities, where communities develop independently and lack interoperability. It points out that contrastive learning, Transformer architecture and other technologies are driving the gradual convergence of multimodal embedding research, and proposes a three-level progressive capability framework of coverage, comparability, and compositionality, corresponding to three unification paths: transformation, alignment, and joint embedding. This is the first cross-domain review and development roadmap for omnimodal embedding research.
+
+<FeedbackButtons slug="item:arxiv-2611.00172" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.02102" target="_blank" rel="noopener noreferrer">NorthCUA Technical Report: Turbocharging Computer-Use Agents through Experience at Scale</a>
+
+*HF ★ 14 · Chaoyun Zhang, Bingxuan Li, Pinxue Guo… · [HF Mirror](https://huggingface.co/papers/2611.02102)*
+
+This report introduces the NorthCUA system for accelerating the iteration of computer-use agents, which adopts a core experience flywheel architecture: it collects long-cycle interactive decision-making data through the execution framework, precipitates verified trajectories through recursive self-optimization, and forms an iterative closed loop combined with phased training and desktop-web joint reinforcement learning. Its open-source Nano/Mini/Pro series achieves open-source SOTA in GUI interaction, desktop execution, and web operation tasks, and a low-latency version is also available to provide a quality-latency trade-off solution, which can be used as a general base for complex software operation agents.
+
+<FeedbackButtons slug="item:arxiv-2611.02102" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/scaling-git-at-openai" target="_blank" rel="noopener noreferrer">Scaling Git at OpenAI</a>
+
+*OpenAI*
+
+After the launch of Codex, code generation efficiency increased sharply, and the original Git architecture could not meet the needs of ultra-large-scale development collaboration. To address this pain point, OpenAI developed Pando, a backend system compatible with the native Git protocol. The system does not require developers to change their existing Git usage habits, and can support ultra-high concurrency collaboration and large codebase management empowered by AI, solving the performance bottleneck of Git under extreme development scale and adapting to the R&D rhythm of the AI era.
+
+<FeedbackButtons slug="item:openai-blog-scaling-git-at-openai" client:visible />
+
+## <a href="https://openai.com/index/grid-protectors-program" target="_blank" rel="noopener noreferrer">Introducing the Grid Protectors Program</a>
+
+*OpenAI*
+
+OpenAI has launched the "Grid Protectors Program", which will cooperate with various electric utility institutions to adapt and optimize for the electricity demand of large-scale AI computing parks in the future. On the one hand, it ensures the reliability of the overall operation of the power grid, and on the other hand, it avoids the high electricity demand of computing clusters from pushing up residential electricity costs, protecting the electricity rights and interests of ordinary power consumers.
+
+<FeedbackButtons slug="item:openai-blog-grid-protectors-program" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/announcements" target="_blank" rel="noopener noreferrer">Announcements</a>
+
+*Anthropic*
+
+This content is the core summary of the official announcement of AI company Anthropic, a research-oriented enterprise focusing on AI safety. Its core business revolves around cutting-edge AI technology research and development, and its long-term R&D goal is to build three types of AI systems: AI systems with stable and reliable operation performance, decision-making logic explainable to humans, and operation process accurately controllable by humans. All R&D layouts are promoted around this core direction.
+
+<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+AI company Anthropic has launched a public benefit-oriented equity mechanism: part of the company's shares will be allocated to the newly established Anthropic Public Benefit Fund, which has a special structure where the shareholding ratio will increase simultaneously with the expansion of the company's scale, so as to bind the enterprise growth dividend with public benefits, avoid excessive tilting of AI commercialization benefits to private capital, and ensure the public attribute of technological development.
+
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/speeding-up-planning-decisions-with-ai/" target="_blank" rel="noopener noreferrer">Speeding up planning decisions with AI</a>
+
+*Google DeepMind*
+
+This project is jointly promoted by Google DeepMind and the UK government, with the core of applying artificial intelligence technology to planning approval scenarios, compressing the evaluation cycle of planning matters through AI empowerment and improving planning decision efficiency. The cooperation is expected to solve the pain points of long traditional planning evaluation processes and high administrative costs, providing a new feasible direction for intelligent government approval and accelerating the implementation of urban planning.
+
+<FeedbackButtons slug="item:deepmind-speeding-up-planning-decisions-with-ai" client:visible />
+
+## <a href="https://deepmind.google/blog/gemini-4-carbon-our-next-frontier-model/" target="_blank" rel="noopener noreferrer">Gemini 4 Carbon: Our next frontier model</a>
+
+*Google DeepMind*
+
+Gemini 4 Carbon launched by Google DeepMind is the next-generation cutting-edge large model for the dual-carbon field. Based on the general Gemini 4 base, it is specially fine-tuned with massive multi-source multimodal datasets including climate science, carbon accounting, and industrial emissions. It can accurately complete professional tasks such as carbon data analysis, emission traceability, and emission reduction path deduction. Its accuracy on carbon-related tasks is more than 40% higher than that of general large models, and it can support intelligent carbon management for enterprises and regulators.
+
+<FeedbackButtons slug="item:deepmind-gemini-4-carbon-our-next-frontier-model" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/nemotron-halloween" target="_blank" rel="noopener noreferrer">nemotron-halloween</a>
+
+*Hugging Face*
+
+Currently only the paper title *Nemotron-Halloween* is provided, without the specific research content of the abstract. Please supplement the full text of the abstract of this paper, so that I can accurately sort out its core research methods, conclusions and other key content, and output a concise English summary of about 120 words that meets the requirements.
+
+<FeedbackButtons slug="item:hf-blog-nemotron-halloween" client:visible />
+
+## <a href="https://huggingface.co/blog/ibm-granite/granite-switch-4-1-1" target="_blank" rel="noopener noreferrer">Granite Switch 4.1.1 — Update models like you update software</a>
+
+*Hugging Face*
+
+Currently only the title of this paper is provided, without the full text of the abstract, so we cannot complete the translation and extraction work for you~ Please supplement the full abstract text of this paper on Granite Switch 4.1.1, and I will strictly follow the requirements to highlight the core methods and core conclusions, and output a concise and clear English summary of about 120 words.
+
+<FeedbackButtons slug="item:hf-blog-granite-switch-4-1-1" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This paper sorts out the development context of Recursive Self-Improvement (RSI): the concept was proposed by I.J. Good in 1965, referring to the "superintelligent machine" that can surpass all human intellectual activities and can independently design better systems to achieve iteration. In 2008, Yudkowsky clarified that its core is the feedback loop where AI optimizes its own cognitive mechanism relying on existing intelligence. The implementation paths in modern AI scenarios include directly rewriting its own weights and optimizing training pipelines.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/11/507396.html" target="_blank" rel="noopener noreferrer">Xiaomi wins two awards at Wuzhen Summit: Xiaomi Group wins "Outstanding Contribution Award", Xiaomi's embodied base model wins "Leading Technology Award"</a>
+
+*QbitAI*
+
+At the 2026 World Internet Conference Wuzhen Summit, Xiaomi won two awards: the group won the "Outstanding Contribution Award" in the innovation breakthrough category, and the key technology of its general robot embodied base model won the "Leading Technology Award". Its humanoid robot has completed 8 hours of production line operation verification in an automobile factory, and its embodied model has also completed long-term testing in home scenarios. Relying on its own manufacturing and full ecosystem advantages, it has established a positive cycle of mutual feeding between technology and scenarios.
+
+<FeedbackButtons slug="item:qbitai-507396" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/507382.html" target="_blank" rel="noopener noreferrer">Anthropic urgently revises its prospectus! We are about to lose control of RSI</a>
+
+*QbitAI*
+
+Anthropic updated its prospectus to disclose that its revenue in Q3 2026 was $17 billion, a year-on-year surge of 1127%. The large net loss is mostly non-cash write-downs under accounting standards, not actual cash burn. It also warned that the next generation of large models is about to break through the AI self-evolution (RSI) safety red line, and the acceleration of AI self-research may be faster than the progress of safety control, making it difficult for humans to fully control the evolution of models.
+
+<FeedbackButtons slug="item:qbitai-507382" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/507367.html" target="_blank" rel="noopener noreferrer">Analog computing enters the matrix era! Peking University teams up with IBM in Silicon Valley to write a new definition</a>
+
+*QbitAI*
+
+Sun Zhong, a tenured associate professor at Peking University, together with core forces in the field including IBM Zurich Research Institute and Silicon Valley analog computing startup teams, published a review in a non-traditional computing journal under Nature, officially defining "modern analog computing" for the first time. This field is currently highly sought after by capital, and related technologies can reduce AI computing power energy consumption to one-thousandth of the original. This is another move by Sun Zhong's team to establish industry specifications for emerging computing directions after the unified definition of in-memory computing.
+
+<FeedbackButtons slug="item:qbitai-507367" client:visible />
