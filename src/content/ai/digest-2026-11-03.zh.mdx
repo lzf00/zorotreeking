@@ -1,0 +1,180 @@
+---
+lang: zh
+translationKey: digest-2026-11-03
+title: "AI 每日精选 · 2026-11-03"
+description: "17 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-11-03
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, lil-log]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">HuggingFace集中发布视频生成、具身智能体、多模态嵌入等多方向前沿AI研究成果</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI、Anthropic、DeepMind公布工程优化、公益项目及Gemini 4 Carbon新模型进展</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">小米获乌镇峰会双料大奖，北大联合IBM突破模拟计算，A社更新招股书提示RSI风险</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📈 前沿研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 大厂动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 具身智能</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🎥 视频生成</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ 产业突破</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2611.00859" target="_blank" rel="noopener noreferrer">Wave Forcing: Towards Speed-of-Light Streaming Video Generation</a>
+
+*HF ★ 27 · Yijie Jin, Yuxuan Liu, Jiajun Xu… · [HF 镜像](https://huggingface.co/papers/2611.00859)*
+
+针对现有分块自回归长视频生成效率低、长时易出现质量衰减、相机漂移的问题，本文提出Wave Forcing实时流视频生成框架：设计分块因果注意力、三阶段适配训练、Wave并行运行时，实现流水线填充后每轮前向输出1块视频。实测8卡H200上端到端帧率达134.8，是单卡7倍，并行吞吐量较基线最高提153%，质量持平前提下视频动态度更高。
+
+<FeedbackButtons slug="item:arxiv-2611.00859" client:visible />
+
+## <a href="https://arxiv.org/abs/2610.40191" target="_blank" rel="noopener noreferrer">Video Generation Meets Agent Harness: Agentic Video Generation, Agentic World Modeling and Recursive Self-Improvement</a>
+
+*HF ★ 24 · Liaoyuan Fan, Yuhao Zheng, Dongxing Mao… · [HF 镜像](https://huggingface.co/papers/2610.40191)*
+
+本文聚焦智能体范式与视频技术的交叉领域，提出以可执行智能体管控层为核心载体，落地三类研究：一是统筹脚本、分镜等全流程，实现可控连贯的智能体视频生成；二是结合游戏引擎等维护世界状态，搭建可交互智能体世界模型；三是支撑视频模型全链路递归自优化。最后梳理了核心能力需求与落地挑战。
+
+<FeedbackButtons slug="item:arxiv-2610.40191" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.01560" target="_blank" rel="noopener noreferrer">Democratizing Robot-Use Agents: A Unified Harness with Open Models</a>
+
+*HF ★ 19 · Jiarui Yuan, Yuxin Zuo, Xiaoyu Huang… · [HF 镜像](https://huggingface.co/papers/2611.01560)*
+
+零样本操纵性能突出的机器人使用代理（RUA）普遍依赖前沿闭源模型，不利于后续训练研究。团队推出适配开源权重模型、支持训练的统一框架uni-robot-agent：现成Qwen3.8-Flash-Next无特权输入下RoboDojo得分31.39，超GPT-6对应版本及多数基线，19项真实任务表现优异，还明确了RUA需协同发展的4项核心能力。
+
+<FeedbackButtons slug="item:arxiv-2611.01560" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.00172" target="_blank" rel="noopener noreferrer">From Fragmentation to Fusion: A Survey and Roadmap for Omnimodal Embeddings</a>
+
+*HF ★ 16 · Ziyin Zhang, Yuyu Guo, Ying Zhang… · [HF 镜像](https://huggingface.co/papers/2611.00172)*
+
+这篇全模态嵌入综述针对现有不同模态嵌入研究碎片化、各社区独立发展缺乏互通的问题，指出对比学习、Transformer架构等正推动多模态嵌入研究逐步趋同，提出覆盖性、可比性、组合性三层递进能力框架，对应变换、对齐、联合嵌入三条统一路径，是首份跨领域全模态嵌入研究梳理与发展路线图。
+
+<FeedbackButtons slug="item:arxiv-2611.00172" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.02102" target="_blank" rel="noopener noreferrer">NorthCUA Technical Report: Turbocharging Computer-Use Agents through Experience at Scale</a>
+
+*HF ★ 14 · Chaoyun Zhang, Bingxuan Li, Pinxue Guo… · [HF 镜像](https://huggingface.co/papers/2611.02102)*
+
+本报告推出加速计算机操作智能体迭代的NorthCUA系统，核心采用经验飞轮架构：通过执行框架采集长周期交互决策数据，经递归自优化沉淀验证轨迹，结合分阶段训练、桌面-网页联合强化学习形成迭代闭环。其开源Nano/Mini/Pro系列在GUI交互、桌面执行、网页操作任务达开源SOTA，另有低延迟版本提供质量-时延权衡方案，可作为复杂软件操作智能体的通用基座。
+
+<FeedbackButtons slug="item:arxiv-2611.02102" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/scaling-git-at-openai" target="_blank" rel="noopener noreferrer">Scaling Git at OpenAI</a>
+
+*OpenAI*
+
+针对Codex落地后代码生成效率陡增、原有Git架构无法匹配超大规模开发协作需求的痛点，OpenAI研发了兼容原生Git协议的后端系统Pando。该系统无需开发者改动现有Git使用习惯，即可支撑AI赋能下的超高并发协作、大体积代码库管理，解决了Git在极端开发规模下的性能瓶颈，适配AI时代的研发节奏。
+
+<FeedbackButtons slug="item:openai-blog-scaling-git-at-openai" client:visible />
+
+## <a href="https://openai.com/index/grid-protectors-program" target="_blank" rel="noopener noreferrer">Introducing the Grid Protectors Program</a>
+
+*OpenAI*
+
+OpenAI推出“电网守护者计划”，将联动各电力公用事业机构开展合作，针对未来大规模AI算力园区的用电需求做适配优化，一方面保障电网整体运行的可靠性，另一方面避免算力集群的高用电需求传导推高居民用电成本，保护普通电力消费者的用电权益。
+
+<FeedbackButtons slug="item:openai-blog-grid-protectors-program" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/announcements" target="_blank" rel="noopener noreferrer">Announcements</a>
+
+*Anthropic*
+
+本内容为AI企业Anthropic的官方公告核心摘要。该公司是聚焦AI安全方向的研究型企业，核心业务围绕前沿AI技术研发展开，长期研发目标是打造三类AI系统：运行表现稳定可靠、决策逻辑可被人类解释、运行过程可被人类精准调控的AI体系，全部研发布局均围绕该核心方向推进。
+
+<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+AI企业Anthropic推出公共利益导向的股权机制：将划出部分公司股份注入新设立的Anthropic公共利益基金，该基金设置特殊结构，持股比例会随公司规模扩张同步提升，以此将企业增长红利与公共收益绑定，避免AI商业化收益过度向私人资本倾斜，保障技术发展的公共属性。
+
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/speeding-up-planning-decisions-with-ai/" target="_blank" rel="noopener noreferrer">Speeding up planning decisions with AI</a>
+
+*Google DeepMind*
+
+本项目由谷歌DeepMind联合英国政府共同推进，核心是将人工智能技术应用于规划审批场景，通过AI赋能压缩规划事项的评估周期，提升规划决策效率。该合作预期可破解传统规划评估流程冗长、行政成本偏高的痛点，为政务审批智能化、城市规划落地提速提供新的可行方向。
+
+<FeedbackButtons slug="item:deepmind-speeding-up-planning-decisions-with-ai" client:visible />
+
+## <a href="https://deepmind.google/blog/gemini-4-carbon-our-next-frontier-model/" target="_blank" rel="noopener noreferrer">Gemini 4 Carbon: Our next frontier model</a>
+
+*Google DeepMind*
+
+谷歌DeepMind推出的Gemini 4 Carbon是面向双碳领域的下一代前沿大模型。它以通用Gemini 4为底座，融合海量气候科学、碳核算、工业排放多源多模态数据集专项微调，可精准完成碳数据解析、排放溯源、减排路径推演等专业任务，碳相关任务准确率较通用大模型提升超40%，能支撑企业、监管端的智能化碳管理。
+
+<FeedbackButtons slug="item:deepmind-gemini-4-carbon-our-next-frontier-model" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/nemotron-halloween" target="_blank" rel="noopener noreferrer">nemotron-halloween</a>
+
+*Hugging Face*
+
+目前你仅提供了论文标题《Nemotron-Halloween》，未附上摘要的具体研究内容，请你补充完整该篇论文摘要的正文信息，我才能准确梳理其核心研究方法、结论等关键内容，为你输出符合要求的120字左右的简洁中文总结。
+
+<FeedbackButtons slug="item:hf-blog-nemotron-halloween" client:visible />
+
+## <a href="https://huggingface.co/blog/ibm-granite/granite-switch-4-1-1" target="_blank" rel="noopener noreferrer">Granite Switch 4.1.1 — Update models like you update software</a>
+
+*Hugging Face*
+
+当前仅提供了该论文的标题，未附上摘要的正文内容，无法为您完成翻译提炼工作~
+请您补充该篇关于Granite Switch 4.1.1的论文摘要完整文本，我会严格按照要求突出核心方法、核心结论，输出120字左右的精简清晰中文总结。
+
+<FeedbackButtons slug="item:hf-blog-granite-switch-4-1-1" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我改进（RSI）的发展脉络：该概念1965年由I.J.古德提出，指能超越人类所有智力活动的“超智能机器”可自主设计更优系统实现迭代。2008年尤德考斯基明确其核心是AI依托现有智能优化自身认知机制的反馈闭环，现代AI场景下的实现路径包括直接改写自身权重、优化训练管线两类。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/11/507396.html" target="_blank" rel="noopener noreferrer">小米斩获乌镇峰会双料大奖：小米集团获“杰出贡献奖”，小米具身基座模型获“领先科技奖”</a>
+
+*量子位*
+
+2026世界互联网大会乌镇峰会上，小米斩获双料大奖：集团获创新突破类“杰出贡献奖”，通用机器人具身基座模型关键技术获“领先科技奖”。其人形机器人已完成汽车工厂8小时产线作业验证，具身模型也完成家庭场景长程测试，依托自有制造与全生态优势，已跑通技术与场景互哺的正向循环。
+
+<FeedbackButtons slug="item:qbitai-507396" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/507382.html" target="_blank" rel="noopener noreferrer">A社紧急修改招股书！RSI我们快要控制不住了</a>
+
+*量子位*
+
+Anthropic更新招股书披露，2026年第三季度营收170亿美元、同比暴增1127%，大额净亏损多为会计准则非现金减计，并非实际烧钱。其同时预警：下一代大模型即将突破AI自进化（RSI）安全红线，AI自研加速可能快于安全管控进度，人类或难完全把控模型进化。
+
+<FeedbackButtons slug="item:qbitai-507382" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/507367.html" target="_blank" rel="noopener noreferrer">模拟计算进入矩阵时代！北大联手硅谷IBM，写下新定义</a>
+
+*量子位*
+
+北大长聘副教授孙仲联合IBM苏黎世研究院、硅谷模拟计算初创团队等领域核心力量，在Nature旗下非传统计算期刊发表综述，首次正式定义“现代模拟计算”。该领域当前受资本热捧，相关技术可将AI算力能耗降至千分之一，此次是孙仲团队继统一定义存内计算后，为新兴计算方向确立行业规范的又一动作。
+
+<FeedbackButtons slug="item:qbitai-507367" client:visible />
