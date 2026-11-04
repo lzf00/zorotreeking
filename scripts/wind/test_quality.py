@@ -9,8 +9,9 @@ from quality import is_publishable, looks_like_credit_failure, payload_quality, 
 from publisher import publish_to_zorotreeking
 from fetcher import build_report
 from fallback_eastmoney import (
-    bars_as_of, board_sector_rows, classify_hq_rows, fill_missing_quotes,
-    parse_sina_hy_map, quote_from_bars,
+    bars_as_of, board_sector_rows, build_public_details, classify_hq_rows,
+    fill_missing_quotes, parse_sina_hy_map, quote_from_bars,
+    _range_52w, _ytd_from_bars,
 )
 
 
@@ -233,6 +234,53 @@ def main():
         return 1
     print(f"✅ {len(tests)} 个测试全部通过")
     return 0
+
+
+def test_build_public_details_carries_kline():
+    data = {
+        "watchlist": [
+            {"code": "600519.SH", "name": "贵州茅台", "kline_20d": [1, 2, 3]},
+            {"code": "300750.SZ", "name": "宁德时代"},   # 没有 kline_20d
+        ],
+        "hk_watchlist": [{"code": "0981.HK", "name": "中芯国际", "kline_20d": [4, 5]}],
+    }
+    # 5 位港股写法会被归一化成 4 位（站点路由要求）
+    out = build_public_details(data, ["600519.SH", "300750.SZ", "00981.HK"])
+    assert set(out) == {"600519.SH", "300750.SZ", "0981.HK"}
+    assert out["600519.SH"]["kline_20d"] == [1, 2, 3]
+    assert out["600519.SH"]["source"] == "public"
+    # 缺 kline 也要有条目，否则 publisher 不写详情快照，页面就一直冻在旧数据
+    assert out["300750.SZ"] == {"source": "public"}
+    assert out["0981.HK"]["kline_20d"] == [4, 5]
+
+
+def test_build_public_details_filters_by_detail_codes():
+    data = {"watchlist": [{"code": "600519.SH", "kline_20d": [1]},
+                          {"code": "300750.SZ", "kline_20d": [2]}]}
+    assert set(build_public_details(data, ["300750.SZ"])) == {"300750.SZ"}
+
+
+def test_ytd_from_bars_uses_previous_year_close():
+    bars = [
+        {"date": "2025-12-30", "close": 100.0, "high": 101, "low": 99},
+        {"date": "2025-12-31", "close": 102.0, "high": 103, "low": 98},
+        {"date": "2026-01-02", "close": 105.0, "high": 106, "low": 101},
+        {"date": "2026-11-04", "close": 112.2, "high": 115, "low": 104},
+    ]
+    # 基准是 2025 最后一个交易日 102 → +10%，不是"近一年"涨幅
+    assert _ytd_from_bars(bars) == 10.0
+    assert _ytd_from_bars([]) is None
+    assert _ytd_from_bars([{"date": "2026-11-04", "close": 1}]) is None
+
+
+def test_range_52w_uses_high_low():
+    bars = [
+        {"date": "2025-12-30", "close": 100.0, "high": 101, "low": 99},
+        {"date": "2025-12-31", "close": 102.0, "high": 103, "low": 98},
+        {"date": "2026-11-04", "close": 112.2, "high": 115, "low": 104},
+    ]
+    assert _range_52w(bars) == (115.0, 98.0)
+    assert _range_52w([]) == (None, None)
 
 
 if __name__ == "__main__":

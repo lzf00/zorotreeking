@@ -70,7 +70,14 @@ def _to_wind(code: str) -> str:
     if not code:
         return ""
     if "." in code:
-        return code.upper()
+        out = code.upper()
+        # 港股统一成 Wind 的 4 位写法（0700.HK / 9988.HK），与站点路由一致；
+        # 5 位写法会被 nginx 301 成 4 位，导致 /invest/stock 详情页 404。
+        if out.endswith(".HK"):
+            num = out[:-3]
+            if num.isdigit() and len(num) > 4:
+                out = f"{num[-4:]}.HK"
+        return out
     raw = code.lower()
     if raw.startswith("sh"):
         return f"{raw[2:]}.SH"
@@ -301,6 +308,44 @@ def _chg_from_closes(closes: list[float], lookback: int) -> float | None:
     return round((last / base - 1) * 100, 2)
 
 
+def _ytd_from_bars(bars: list[dict]) -> float | None:
+    """真正的年初至今：以上一年最后一个交易日收盘为基准。
+
+    `_ytd_from_closes` 实际算的是"近一年涨跌"，标签却写成 YTD，
+    个股详情页（/invest/stock）会直接误读，所以有日期时优先走这里。
+    """
+    if not bars:
+        return None
+    last = bars[-1]
+    year = str(last.get("date") or "")[:4]
+    if not year:
+        return None
+    prev_year = [b for b in bars if str(b.get("date") or "")[:4] < year]
+    if not prev_year:
+        return None
+    base = _to_float(prev_year[-1].get("close"))
+    last_close = _to_float(last.get("close"))
+    if base <= 0 or last_close <= 0:
+        return None
+    return round((last_close / base - 1) * 100, 2)
+
+
+def _range_52w(bars: list[dict]) -> tuple[float | None, float | None]:
+    """近 52 周最高 / 最低，按最高价、最低价算（不是收盘价）。"""
+    if not bars:
+        return None, None
+    last_date = str(bars[-1].get("date") or "")
+    window = bars[-250:]
+    try:
+        cutoff = (datetime.date.fromisoformat(last_date) - datetime.timedelta(days=365)).isoformat()
+        window = [b for b in bars if str(b.get("date") or "") >= cutoff] or window
+    except ValueError:
+        pass
+    highs = [h for h in (_to_float(b.get("high")) for b in window) if h > 0]
+    lows = [v for v in (_to_float(b.get("low")) for b in window) if v > 0]
+    return (max(highs) if highs else None, min(lows) if lows else None)
+
+
 def _ytd_from_closes(closes: list[float], dates_ok: bool = False) -> float | None:
     if len(closes) < 2:
         return None
@@ -529,11 +574,14 @@ def fetch_watchlist(codes: Iterable[str]) -> list[dict[str, Any]]:
         if not fields:
             continue
         q = _quote_from_tencent(fields, wind_code, wind_code)
+        is_hk = wind_code.endswith(".HK")
         try:
-            closes = _tencent_closes(symbol, n=40)
+            # 250 根日线 ≈ 一年，够算 52 周高低和 20 日走势（/invest/stock 详情页要用）
+            bars = tencent_kline_bars(symbol, n=250)
+            closes = [b["close"] for b in bars]
         except Exception as exc:
             log.warning("kline %s failed: %s", symbol, exc)
-            closes = []
+            bars, closes = [], []
         kline_5d = closes[-5:] if closes else ([q["price"]] if q["price"] else [])
         prev = q["yesterday_close"]
         amplitude = round((q["high"] - q["low"]) / prev * 100, 2) if prev > 0 and q["high"] and q["low"] else 0.0
@@ -548,11 +596,19 @@ def fetch_watchlist(codes: Iterable[str]) -> list[dict[str, Any]]:
             "amount_yi": q["amount_yi"],
             "change_pct": q["change_pct"],
             "amplitude": amplitude,
-            "turnover": 0,
+            # 腾讯行情字段：38 换手率 / 39 市盈率 / 45 总市值(亿) / 46 市净率
+            # 港股该位是英文名，跳过；港股也不给换手率，填 0 会显示 "0.00"，留空更好
+            "turnover": None if is_hk else (_to_float(fields[38]) if len(fields) > 38 else None),
+            "pe_ttm": (_to_float(fields[39]) or None) if len(fields) > 39 else None,
+            "pb": None if is_hk else ((_to_float(fields[46]) or None) if len(fields) > 46 else None),
+            "market_cap_yi": (_to_float(fields[45]) or None) if len(fields) > 45 else None,
             "chg_5d": _chg_from_closes(closes, 5),
             "chg_20d": _chg_from_closes(closes, 20),
-            "chg_ytd": _ytd_from_closes(closes),
+            "chg_ytd": _ytd_from_bars(bars) if bars else _ytd_from_closes(closes),
             "kline_5d": kline_5d,
+            "kline_20d": closes[-20:] if len(closes) >= 20 else closes,
+            "high_52w": _range_52w(bars)[0] if bars else (max(closes) if closes else None),
+            "low_52w": _range_52w(bars)[1] if bars else (min(closes) if closes else None),
             "emoji": q["emoji"],
         }
         if wind_code.endswith(".HK"):
@@ -973,3 +1029,27 @@ def fill_missing_quotes(
     # Wind 额度耗尽的节点会留在 details / 新闻里，不清掉 publisher 会拒档
     scrub_credit_errors(data)
     return data
+
+
+def build_public_details(data: dict, detail_codes: Iterable[str] | None = None) -> dict[str, dict]:
+    """Wind 单股深度不可用时，用公开行情拼一份等价的 details 快照。
+
+    publisher._build_details_json_snapshot() 会用 watchlist 行填 Stock 的顶层字段
+    （价格 / 涨跌 / 换手 / PE / PB / 总市值 / 52 周高低都已由 fetch_watchlist 带出），
+    这里补 details 里唯一能靠公开行情拿到的 kline_20d，让 /invest/stock 的走势图
+    不至于空着。Wind 独有的 consensus / 资金流 / 一致预期 / 公告仍缺失，页面显示 "—"。
+    """
+    wanted = {_to_wind(c) for c in (detail_codes or []) if c}
+    out: dict[str, dict] = {}
+    for key in ("watchlist", "hk_watchlist"):
+        for row in data.get(key) or []:
+            if not isinstance(row, dict) or not row.get("code"):
+                continue
+            code = row["code"]
+            if wanted and code not in wanted:
+                continue
+            entry: dict[str, Any] = {"source": "public"}
+            if row.get("kline_20d"):
+                entry["kline_20d"] = row["kline_20d"]
+            out[code] = entry
+    return out

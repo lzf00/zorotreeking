@@ -169,7 +169,15 @@ def _to_wind(code: str) -> str:
     if not code:
         return ""
     if "." in code:
-        return code.upper()
+        out = code.upper()
+        # 港股统一成 Wind 的 4 位写法（0700.HK / 9988.HK）。
+        # 站点 nginx 会把 5 位的 00700.HK 301 到 0700.HK，若数据里写 5 位，
+        # /invest/stock/00700.HK 这类详情页就会全 404（2026-11-04 发现的坑）。
+        if out.endswith(".HK"):
+            num = out[:-3]
+            if num.isdigit() and len(num) > 4:
+                out = f"{num[-4:]}.HK"
+        return out
     c = code.lower()
     if c.startswith("sh"):
         return f"{c[2:]}.SH"
@@ -908,7 +916,13 @@ def fetch_all_data(stock_codes: list, hk_stock_codes: list = None,
 
     # —— 第二波：单股深度（Wind 专有；积分不足时跳过，避免再空转数分钟）—— #
     if detail_codes and used_public:
-        log.info("⏭️ 公开行情兜底中，跳过 Wind 单股深度")
+        log.info("⏭️ 跳过 Wind 单股深度，改用公开行情拼详情快照")
+        try:
+            from fallback_eastmoney import build_public_details
+            out["details"] = build_public_details(out, detail_codes)
+            log.info(f"📊 公开行情详情 {len(out['details'])} 只")
+        except Exception as exc:
+            log.warning(f"⚠️ 公开行情详情拼装失败: {exc}")
     if detail_codes and not used_public:
         # name 映射来自第一波的 watchlist（A + HK，code 互不冲突）
         watchlist = out.get("watchlist", [])

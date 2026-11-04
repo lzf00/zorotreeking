@@ -16,6 +16,18 @@ from fetcher import (
 )
 
 
+
+def test_to_wind_normalizes_hk_to_four_digits():
+    """港股要用 Wind 的 4 位写法，否则站点 nginx 301 到 4 位后详情页 404。"""
+    assert _to_wind("00700.HK") == "0700.HK"
+    assert _to_wind("01810.HK") == "1810.HK"
+    assert _to_wind("09988.HK") == "9988.HK"
+    assert _to_wind("00981.HK") == "0981.HK"
+    # A 股 6 位代码不能被截断
+    assert _to_wind("000858") == "000858.SZ"
+    assert _to_wind("600519.SH") == "600519.SH"
+
+
 def test_emoji():
     assert _emoji(0.5) == "🔴"
     assert _emoji(-0.5) == "🟢"
