@@ -845,3 +845,131 @@ def overlay_public_quotes(
     scrub_credit_errors(data)
     log.info("public overlay replaced: %s (publishable=%s)", ",".join(replaced) or "none", is_publishable(data))
     return data
+
+
+def fill_missing_quotes(
+    data: dict[str, Any],
+    stock_codes: Iterable[str],
+    hk_stock_codes: Iterable[str] | None = None,
+    public: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Wind 部分成功、部分行缺价时，逐行/逐字段用公开行情补齐空洞。
+
+    `overlay_public_quotes` 只在整个板块"全空"时替换；Wind 只是 QPS 限流
+    掉几行（典型：深证成指、某只自选股、涨幅榜全 0）时不会触发，日报就会
+    出现"数据暂缺"。本函数按 code / 字段对齐，只补坏掉的那几行。
+    """
+    public = public if isinstance(public, dict) else fetch_public_market(stock_codes, hk_stock_codes)
+    filled: list[str] = []
+
+    def _index(rows: Any) -> dict[str, dict]:
+        out: dict[str, dict] = {}
+        for row in as_list(rows):
+            if isinstance(row, dict) and row.get("code"):
+                out[str(row["code"])] = row
+        return out
+
+    # ── A 股指数：按 INDEX_LIST 顺序重建，坏行用公开行情顶上 ──
+    wind_idx = _index(data.get("indices"))
+    pub_idx = _index(public.get("indices"))
+    if wind_idx or pub_idx:
+        merged: list[dict] = []
+        for code, name in INDEX_LIST:
+            wind_row = wind_idx.get(code)
+            pub_row = pub_idx.get(code)
+            if isinstance(wind_row, dict) and has_price(wind_row):
+                merged.append(wind_row)
+            elif isinstance(pub_row, dict) and has_price(pub_row):
+                merged.append(pub_row)
+                filled.append(f"index:{name}")
+            elif isinstance(wind_row, dict):
+                merged.append(wind_row)
+            elif isinstance(pub_row, dict):
+                merged.append(pub_row)
+        known = {code for code, _ in INDEX_LIST}
+        for code, row in wind_idx.items():
+            if code not in known and has_price(row):
+                merged.append(row)  # 保留 Wind 额外指数（如科创50）
+        if merged:
+            data["indices"] = merged
+
+    # ── 自选股 / 港股：按 code 对齐，缺价或被丢掉的行补回来 ──
+    def _fill_list(key: str, label: str) -> None:
+        wind_rows = _index(data.get(key))
+        pub_rows = _index(public.get(key))
+        if not wind_rows and not pub_rows:
+            return
+        merged_rows = []
+        seen: set[str] = set()
+        for row in as_list(data.get(key)):
+            if not isinstance(row, dict):
+                continue
+            code = str(row.get("code") or "")
+            if has_price(row) or not code:
+                merged_rows.append(row)
+                seen.add(code)
+                continue
+            replacement = pub_rows.get(code)
+            if isinstance(replacement, dict) and has_price(replacement):
+                merged_rows.append(replacement)
+                filled.append(f"{label}:{replacement.get('name') or code}")
+            else:
+                merged_rows.append(row)
+            seen.add(code)
+        for code, row in pub_rows.items():
+            if code not in seen and has_price(row):
+                merged_rows.append(row)
+                filled.append(f"{label}:{row.get('name') or code}(append)")
+        if merged_rows:
+            data[key] = merged_rows
+
+    _fill_list("watchlist", "watch")
+    _fill_list("hk_watchlist", "hk_watch")
+    _fill_list("hk_indices", "hk_index")
+
+    # ── 涨幅榜：Wind 只返回占位 0 时整段替换（口径同为涨幅榜，可替换） ──
+    hot = as_list(data.get("hot_stocks"))
+    pub_hot = as_list(public.get("hot_stocks"))
+    if pub_hot and (not hot or not all(has_price(row) for row in hot)):
+        data["hot_stocks"] = pub_hot
+        filled.append("hot_stocks")
+
+    # ── 板块：Wind 是申万一级，公开行情是东财细分行业，只在整个板块失效时替换 ──
+    # 注意 has_price() 不适用：板块行只有 change_pct，没有 price。
+    sectors = as_list(data.get("sectors"))
+    pub_sectors = as_list(public.get("sectors"))
+
+    def _sector_ok(row: Any) -> bool:
+        if not isinstance(row, dict) or row.get("error"):
+            return False
+        try:
+            float(row.get("change_pct"))
+        except (TypeError, ValueError):
+            return False
+        return True
+
+    sectors_usable = bool(sectors) and any(_sector_ok(row) for row in sectors) and not all(
+        isinstance(row, dict) and row.get("error") for row in sectors
+    )
+    if pub_sectors and not sectors_usable:
+        data["sectors"] = pub_sectors
+        filled.append("sectors")
+
+    # ── 市场情绪：逐字段补 ──
+    sentiment = data.get("sentiment") if isinstance(data.get("sentiment"), dict) else {}
+    pub_sentiment = public.get("sentiment") if isinstance(public.get("sentiment"), dict) else {}
+    if sentiment.get("error"):
+        sentiment = {}
+    for field in ("limit_up", "limit_down", "main_flow_yi", "ups", "downs", "flats", "total"):
+        if sentiment.get(field) is None and pub_sentiment.get(field) is not None:
+            sentiment[field] = pub_sentiment[field]
+            filled.append(f"sentiment.{field}")
+    if sentiment:
+        data["sentiment"] = sentiment
+
+    if filled:
+        data["source"] = "mixed" if data.get("source") in (None, "wind") else data.get("source")
+        log.info("gap fill from public quotes: %s", ", ".join(filled))
+    # Wind 额度耗尽的节点会留在 details / 新闻里，不清掉 publisher 会拒档
+    scrub_credit_errors(data)
+    return data

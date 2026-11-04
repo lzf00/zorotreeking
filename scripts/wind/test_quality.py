@@ -8,7 +8,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from quality import is_publishable, looks_like_credit_failure, payload_quality, scrub_credit_errors
 from publisher import publish_to_zorotreeking
 from fetcher import build_report
-from fallback_eastmoney import bars_as_of, board_sector_rows, classify_hq_rows, parse_sina_hy_map, quote_from_bars
+from fallback_eastmoney import (
+    bars_as_of, board_sector_rows, classify_hq_rows, fill_missing_quotes,
+    parse_sina_hy_map, quote_from_bars,
+)
 
 
 CREDIT = "原因：账户积分余额不足，无法完成当前操作。官网充值地址： https://market.windalice.co"
@@ -139,6 +142,80 @@ def test_report_does_not_leak_windalice():
     assert "积分余额不足" not in content
     assert "数据暂缺" in content
     assert "东财/腾讯公开行情" in content
+
+
+def _partial_wind():
+    """Wind 被 QPS 限流打掉几行：深成指报错、宁德时代缺价、涨幅榜全 0、主力资金缺失。"""
+    return {
+        "source": "wind",
+        "indices": [
+            {"code": "000001.SH", "name": "上证指数", "price": 3673.92, "change_amount": 65.82, "change_pct": 1.82, "emoji": "🔴"},
+            {"code": "399001.SZ", "name": "深证成指", "error": "QPS 限流"},
+            {"code": "399006.SZ", "name": "创业板指", "price": 2537.51, "change_amount": 145.86, "change_pct": 6.10, "emoji": "🔴"},
+        ],
+        "watchlist": [
+            {"code": "688981.SH", "name": "中芯国际", "price": 110.60, "change_pct": 8.31, "emoji": "🔴"},
+            {"code": "300750.SZ", "name": "宁德时代", "price": 0, "change_pct": 0, "emoji": "⚪"},
+        ],
+        "hot_stocks": [
+            {"name": "贝特利", "code": "301697.SZ", "price": 0.0, "change_pct": 0.0},
+        ],
+        "sectors": [{"code": "BK1036", "name": "半导体", "change_pct": 10.8, "lead_stock": "新洁能", "emoji": "🔴"}],
+        "sentiment": {"limit_up": 114, "limit_down": 11, "main_flow_yi": None},
+        "news": [],
+    }
+
+
+def _public_quotes():
+    return {
+        "indices": [
+            {"code": "000001.SH", "name": "上证指数", "price": 3673.92, "change_amount": 65.82, "change_pct": 1.82, "emoji": "🔴"},
+            {"code": "399001.SZ", "name": "深证成指", "price": 11307.44, "change_amount": 430.45, "change_pct": 3.96, "emoji": "🔴"},
+            {"code": "399006.SZ", "name": "创业板指", "price": 2537.51, "change_amount": 145.86, "change_pct": 6.10, "emoji": "🔴"},
+        ],
+        "watchlist": [
+            {"code": "688981.SH", "name": "中芯国际", "price": 110.60, "change_pct": 8.31, "emoji": "🔴"},
+            {"code": "300750.SZ", "name": "宁德时代", "price": 253.80, "change_pct": 1.80, "emoji": "🔴"},
+        ],
+        "hot_stocks": [
+            {"name": "金冠电气", "code": "688517.SH", "price": 21.46, "change_pct": 20.02, "is_limit_up": True},
+        ],
+        "sectors": [{"code": "BK1", "name": "半导体设备", "change_pct": 14.6, "lead_stock": "托伦斯", "emoji": "🔴"}],
+        "sentiment": {"limit_up": 128, "limit_down": 15, "main_flow_yi": 1380.8},
+        "news": [],
+    }
+
+
+def test_fill_missing_quotes_repairs_partial_wind_rows():
+    data = _partial_wind()
+    fill_missing_quotes(data, ["688981.SH", "300750.SZ"], public=_public_quotes())
+    names = [row["name"] for row in data["indices"]]
+    assert names == ["上证指数", "深证成指", "创业板指"], names
+    assert data["indices"][1]["price"] == 11307.44
+    watch = {row["code"]: row for row in data["watchlist"]}
+    assert watch["300750.SZ"]["price"] == 253.80
+    assert data["hot_stocks"][0]["name"] == "金冠电气"
+    assert data["sentiment"]["main_flow_yi"] == 1380.8
+    # Wind 自己的板块口径（申万一级）不能被东财细分行业顶掉
+    assert data["sectors"][0]["name"] == "半导体"
+    assert data["source"] == "mixed"
+
+
+def test_fill_missing_quotes_keeps_good_wind_data():
+    data = _partial_wind()
+    data["sentiment"]["main_flow_yi"] = 999.9
+    data["hot_stocks"] = [{"name": "京仪装备", "code": "688652.SH", "price": 94.13, "change_pct": 20.0}]
+    fill_missing_quotes(data, ["688981.SH"], public=_public_quotes())
+    assert data["sentiment"]["main_flow_yi"] == 999.9
+    assert data["hot_stocks"][0]["name"] == "京仪装备"
+
+
+def test_fill_missing_quotes_scrubs_credit_errors():
+    data = _partial_wind()
+    data["details"] = {"688981.SH": {"error": CREDIT}}
+    fill_missing_quotes(data, ["688981.SH"], public=_public_quotes())
+    assert not looks_like_credit_failure(data)
+    assert is_publishable(data)
 
 
 def main():

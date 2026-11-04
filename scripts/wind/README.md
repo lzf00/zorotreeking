@@ -130,6 +130,8 @@ WantedBy=timers.target
 | Wind 调用失败 | `cat ~/.wind-aifinmarket/config` 看 key、`WIND_SKILL_DIR=/opt/wind-mcp-skill node /opt/wind-mcp-skill/scripts/cli.mjs call stock_data get_indexes '{"index_codes":"000001.SH"}'` 手测 |
 | GitHub API 推送失败 | 看 stderr；常见：token 过期 / scope 不含 `repo`；用 `curl -H "Authorization: Bearer $GITHUB_TOKEN" https://api.github.com/repos/lzf00/zorotreeking` 验证 |
 | Wind 单股深度数据缺失（quota 超限） | 主链路不阻断，等次日额度重置即可 |
+| Wind 积分用尽且不续费 | 在 `.env` 里设 `WIND_ENABLED=0`，跳过 Wind 直接用东财/腾讯公开行情，每轮省 60~90 秒限流重试；代价是「主力5日净流入」列显示 `--`（Wind 独家字段）。续费后改回 1 |
+| 涨幅榜全 `0.00`、深证成指「数据暂缺」、超大单净额缺失 | Wind 被 QPS 限流打掉几行，但整份快照仍"可发布"，旧逻辑不会触发兜底。已由 `fallback_eastmoney.fill_missing_quotes()` 按 code/字段逐行补齐（source 变成 `mixed`），见 2026-11-04 修复 |
 | A/港看板变 `--`、日报出现「积分余额不足」 | Wind Alice 积分用尽。fetcher 会改用东财/腾讯公开行情；publisher 拒绝覆盖上次有效快照。充值：https://market.windalice.co |
 | 非交易日还是触发 | `holidays.py STOCK_HOLIDAYS` 更新 |
 

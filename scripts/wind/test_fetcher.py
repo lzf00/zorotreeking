@@ -8,6 +8,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
+import fetcher
 from fetcher import (
     _emoji, _fmt_price, _fmt_pct, _fmt_yi,
     _is_quota_error, _to_float, _to_wind, _price_limit, _limit_tag,
@@ -115,6 +116,21 @@ def test_quota_error_no_retry():
     assert _is_quota_error(RuntimeError("原因：账户积分余额不足，无法完成当前操作"))
     assert not _is_quota_error(RuntimeError("timeout after 60s"))
     assert not _is_quota_error(RuntimeError("empty stdout"))
+
+
+def test_wind_disabled_short_circuits():
+    """WIND_ENABLED=0 时不应再 spawn Wind CLI，直接抛 WIND_DISABLED 交给公开行情。"""
+    original = fetcher.WIND_ENABLED
+    fetcher.WIND_ENABLED = False
+    try:
+        try:
+            fetcher._wind_call("index_data", "get_indexes", {})
+        except RuntimeError as exc:
+            assert "WIND_DISABLED" in str(exc), exc
+        else:
+            raise AssertionError("WIND_ENABLED=0 时 _wind_call 必须直接抛错")
+    finally:
+        fetcher.WIND_ENABLED = original
 
 
 def test_row_to_dict():

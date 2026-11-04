@@ -33,6 +33,12 @@ WIND_SKILL_DIR = os.environ.get(
 # 实测 4-6 比较稳；环境变量 WIND_MAX_WORKERS 可覆盖
 WIND_MAX_WORKERS = int(os.environ.get("WIND_MAX_WORKERS", "5"))
 
+# Wind 积分用尽且不续费时置 WIND_ENABLED=0：直接走东财/腾讯公开行情，
+# 不再每次空转 60~90 秒重试 Wind。恢复续费后改回 1 即可。
+WIND_ENABLED = os.environ.get("WIND_ENABLED", "1").strip().lower() not in (
+    "0", "false", "no", "off",
+)
+
 
 def _find_node() -> str:
     """
@@ -205,6 +211,10 @@ def _wind_call(server_type: str, tool_name: str, params: dict,
     失败抛 RuntimeError；指数退避：base_delay * 2^i (1.5s → 3s → 6s)
     积分不足不重试，立刻交给公开行情兜底。
     """
+    if not WIND_ENABLED:
+        raise RuntimeError(
+            "WIND_DISABLED: 已配置 WIND_ENABLED=0，跳过 Wind 直接使用公开行情"
+        )
     cmd = WIND_CLI + ["call", server_type, tool_name,
                       json.dumps(params, ensure_ascii=False)]
     # 给子进程注入完整 PATH（兼容 launchd / cron / systemd 等窄 PATH 环境）
@@ -887,6 +897,14 @@ def fetch_all_data(stock_codes: list, hk_stock_codes: list = None,
             overlay_public_quotes(out, stock_codes, hk_stock_codes)
         except Exception as exc:
             log.error(f"❌ 公开行情兜底失败: {exc}")
+    else:
+        # Wind 部分成功、被 QPS 限流打掉几行（深证成指 / 某只自选 / 涨幅榜全 0）：
+        # 逐行补齐，别让日报出现"数据暂缺"。
+        try:
+            from fallback_eastmoney import fill_missing_quotes
+            fill_missing_quotes(out, stock_codes, hk_stock_codes)
+        except Exception as exc:
+            log.error(f"❌ 公开行情补洞失败: {exc}")
 
     # —— 第二波：单股深度（Wind 专有；积分不足时跳过，避免再空转数分钟）—— #
     if detail_codes and used_public:
