@@ -1,0 +1,189 @@
+---
+lang: zh
+translationKey: digest-2026-11-04
+title: "AI 每日精选 · 2026-11-04"
+description: "18 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-11-04
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国际头部AI机构OpenAI、DeepMind、Anthropic、Hugging Face密集发布多领域最新AI研究成果</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">视频与多模态领域技术迭代加速，覆盖生成编辑、长视频理解、智能体视听记忆等场景</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">AI技术落地场景持续拓宽，覆盖智能仓储、自动驾驶、网络安全、药物研发等实体领域</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📈 产业落地</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 多模态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 模型研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡 智能体</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ 视频技术</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2611.04916" target="_blank" rel="noopener noreferrer">Behind Video Generation: Observations and Insights on Multimodal Understanding from Kling</a>
+
+*HF ★ 21 · Kling Team, Dong Chen, Jialu Chen… · [HF 镜像](https://huggingface.co/papers/2611.04916)*
+
+当前视频生成瓶颈已从渲染转向语义控制，本文总结可灵（Kling）迭代过程中积累的多模态理解经验：打通数据-条件-对齐-评估全链路，研发统一多模态基座Kling-MLLM适配各下游模块，通过高密度参考字幕、提示增强、感知优先文本编码器、双奖励模型、定向自动评估优化全流程，为可控视频生成落地提供实操指导。
+
+<FeedbackButtons slug="item:arxiv-2611.04916" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.02497" target="_blank" rel="noopener noreferrer">RoboColosseum: Evaluating Physical Intelligence at Scale In-The-Wild</a>
+
+*HF ★ 20 · Tan Sang Nguyen, Yi Ru Wang, Shailesh Shailesh… · [HF 镜像](https://huggingface.co/papers/2611.02497)*
+
+本文推出RoboColosseum分布式真机评估框架，统一策略调度与评估协议，可联动多环境分散机器人节点开展规模化物理智能评估。测试8款模型跨4类机器人形态的表现后发现：前沿通用智能体性能接近专用视觉语言动作模型，不同形态最优微调策略差异大，跨形态性能排名一致性低，开放赛道表现难预测微调后性能，该框架可更全面反映机器人策略的泛化适配能力。
+
+<FeedbackButtons slug="item:arxiv-2611.02497" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.02737" target="_blank" rel="noopener noreferrer">MoviEdit: Long-form Multi-Shot Video Editing Made Easy</a>
+
+*HF ★ 14 · Suhyeon Lee, Zhengang Li, Soo Ye Kim… · [HF 镜像](https://huggingface.co/papers/2611.02737)*
+
+针对长视频多镜头编辑需跨场景、视角保持编辑一致性的难点，团队推出MoviEdit端到端编辑框架：搭建自动数据生成管线得到8.7万对无标注多镜头编辑数据集，采用级联双向自回归架构，先在压缩域生成全局一致草稿再细化，还配套专属评测基准。实验显示其性能远超现有开源模型，与业界前沿水平相当。
+
+<FeedbackButtons slug="item:arxiv-2611.02737" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.02501" target="_blank" rel="noopener noreferrer">SpecPilot: Autonomous Algorithm Discovery and Systems Optimization for Speculative Decoding</a>
+
+*HF ★ 11 · Kunjun Li, Wenhao Chai, Yihao Liang… · [HF 镜像](https://huggingface.co/papers/2611.02501)*
+
+针对现有并行投机解码未达理论提速上限，存在单请求权重冗余读取、批处理验证开销高、无全场景通用优化三大问题，本文提出自主优化框架SpecPilot：通过成本模型定位瓶颈、多智能体并行探索方案、输出校验保正确性、结构化记忆沉淀有效机制，无精度损失下将单请求、批处理场景较自回归解码的提速比分别从4.46倍、1.94倍提升至10.87倍、3.93倍。
+
+<FeedbackButtons slug="item:arxiv-2611.02501" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.03233" target="_blank" rel="noopener noreferrer">Axion 1.0: Open Agent Foundation Models, Simplified</a>
+
+*HF ★ 9 · Yuqi Jia, Yunjie Tian, Jiayu Zheng… · [HF 镜像](https://huggingface.co/papers/2611.03233)*
+
+本文推出全开源智能体基座模型Axion1.0，仅采用三阶段极简训练流程：两轮轻量有监督微调分别实现自洽推理、工具调用能力，再经强化学习提升长程推理性能，无需DPO等复杂训练步骤。其性能对标头部商用智能体模型，且完全开放训练全链路资源，为开源智能体发展提供了可复现的简洁路径。
+
+<FeedbackButtons slug="item:arxiv-2611.03233" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2303.12212" target="_blank" rel="noopener noreferrer">Community detection in complex networks via node similarity, graph representation learning, and hierarchical clustering</a>
+
+*\{\L\}ukasz Brzozowski, Grzegorz Siudem, Marek Gagolewski*
+
+本文针对复杂网络社区检测难题，提出3种通用层级框架，兼容多类链接聚类、节点相似度矩阵与图表示学习模型。经364组模块对比验证，最优方案性能比肩Leiden、Louvain算法，几乎无损输出嵌套分区适配社区数未知场景，小多社区精度更高，仅受复杂度限制，适配单机万节点以内网络。
+
+<FeedbackButtons slug="item:arxiv-2303.12212" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/accelerating-engineering-for-the-physical-world" target="_blank" rel="noopener noreferrer">Accelerating engineering for the physical world</a>
+
+*OpenAI*
+
+这篇研究聚焦物理世界实体领域的工程研发提速需求，核心方案是将ChatGPT、Codex两类大模型工具嵌入工程核心工作流，已在CAD建模、PCB设计、性能仿真等多个硬件研发核心场景落地验证，可大幅压缩各环节作业周期，为传统实体工程的效率升级、快速迭代提供了可复用的落地路径。
+
+<FeedbackButtons slug="item:openai-blog-accelerating-engineering-for-the-physical-world" client:visible />
+
+## <a href="https://openai.com/index/cisco-cyber" target="_blank" rel="noopener noreferrer">How Cisco defends at machine speed with OpenAI</a>
+
+*OpenAI*
+
+该内容介绍思科的企业安全防护升级方案：核心方法是将其深耕网络领域积累的全量网络情报、威胁特征数据库，与OpenAI大模型的智能推理能力深度融合。最终可实现机器级的极速威胁识别响应，相较传统规则式防御更灵活，能适配不断演化的新型攻击，构建高效的自适应安全防护体系。
+
+<FeedbackButtons slug="item:openai-blog-cisco-cyber" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/announcements" target="_blank" rel="noopener noreferrer">Announcements</a>
+
+*Anthropic*
+
+本内容为AI安全厂商Anthropic的官方公告摘要，核心明确企业定位为专注AI安全方向的研究与落地机构，核心研发目标为构建三类AI系统：一是输出稳定的高可靠性系统，二是决策逻辑可追溯的可解释系统，三是可跟随人类需求灵活调控的可引导系统，也为其后续技术发布锚定了核心方向。
+
+<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+AI企业Anthropic推出“投资公共利益”相关安排，设立全新的Anthropic公共利益基金：核心机制为划拨公司部分股份归入该基金，且基金采用特殊结构，其持股占比将随公司发展规模扩大同步提升，以此将企业商业增长的收益更充分反哺公共领域，探索AI企业兼顾盈利与公共责任的新路径。
+
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/agentic-cheminformatics-with-google-antigravity/" target="_blank" rel="noopener noreferrer">Agentic cheminformatics with Google Antigravity</a>
+
+*Google DeepMind*
+
+面向新药研发周期长、成本高的痛点，本研究将智能体范式引入化学信息学领域，依托谷歌Antigravity平台能力，结合团队化学信息学技术积累，可显著提速药物研发全流程：不仅大幅提升化合物检索效率，还能自主设计具备高成药性潜力的新型刚性大环分子，为新药研发降本增效提供了可行技术路径。
+
+<FeedbackButtons slug="item:deepmind-agentic-cheminformatics-with-google-antigravity" client:visible />
+
+## <a href="https://deepmind.google/blog/speeding-up-planning-decisions-with-ai/" target="_blank" rel="noopener noreferrer">Speeding up planning decisions with AI</a>
+
+*Google DeepMind*
+
+本项目由Google DeepMind与英国政府合作推进，核心是将人工智能技术引入公共规划评估环节，针对性破解传统规划审批流程繁琐、耗时过长、人力成本高的痛点，目标是大幅压缩规划决策的评估周期，提升政务服务效能，该探索也能为AI赋能公共治理领域提供可参考的实践样本。
+
+<FeedbackButtons slug="item:deepmind-speeding-up-planning-decisions-with-ai" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/statebench" target="_blank" rel="noopener noreferrer">StateBench: Testing how language models track state changes over long documents</a>
+
+*Hugging Face*
+
+你当前仅提供了该论文的标题，未附上摘要的正文内容，请补充完整这篇论文摘要的具体文本，我才能按照要求为你提炼出120字左右、重点突出研究方法与核心结论的精简中文总结内容。
+
+<FeedbackButtons slug="item:hf-blog-statebench" client:visible />
+
+## <a href="https://huggingface.co/blog/ibm-research/palette-deck-building" target="_blank" rel="noopener noreferrer">Palette: teaching a small model to build decks in your design language</a>
+
+*Hugging Face*
+
+你目前仅提供了该论文的标题，未附上摘要的具体正文内容，请补充完整摘要的文本信息，我才能按照要求提炼其核心方法、结论，输出120字左右的精简中文总结。
+
+<FeedbackButtons slug="item:hf-blog-palette-deck-building" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文聚焦自改进工程研究，梳理递归自我改进（RSI）概念演化：1965年I.J.古德最早提出超智能机器构想，指其可超越人类全部智力活动，自主设计更优系统迭代。2008年尤德考斯基明确RSI核心为反馈环：AI依托现有智能优化自身认知机制。当前AI落地RSI可通过直接改写权重、优化训练管线两类路径实现。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/11/507533.html" target="_blank" rel="noopener noreferrer">让Agent首次拥有“视听双流记忆”：openJiuwen Agent-Memory看懂长视频，关键事件一个不落</a>
+
+*量子位*
+
+openJiuwen AgentMemory新上线多模态记忆能力OmniMem-Lens，摒弃行业通用的固定时长切分长视频的方案，采用视听双流按真实事件存储记忆，解决了传统方案记忆碎片化、关键信息被噪音淹没、单模态分割失灵的痛点，召回精度最高提升45.7%，在线问答时延最高降低97%，可高效处理超长视频信息提取需求。
+
+<FeedbackButtons slug="item:qbitai-507533" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/507507.html" target="_blank" rel="noopener noreferrer">机器人干活，AI当厂长！这家巨头要造下一代自主智能仓</a>
+
+*量子位*
+
+头部智能机器人企业极智嘉瞄准具身智能仓储赛道，针对当前仓储自动化仅能实现单点标准化作业提效、复杂拣选等场景仍依赖人工的痛点，推出《24/7自主智能仓计划》，目标打造可7×24小时自主运行、持续自进化的智能仓，突破人工班次限制，提升运营收益，打造新一代生产力基础设施。
+
+<FeedbackButtons slug="item:qbitai-507507" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/507473.html" target="_blank" rel="noopener noreferrer">智己LS8纯电版背后：8年研发底盘，两大厂联合开发电池</a>
+
+*量子位*
+
+智己LS8纯电版底盘历经8年研发，电池由智己与宁德时代联合开发。双方曾就技术指标反复磨合：智己要求103度电池维持93度电池重量、提升超快充性能且不额外占用热管理资源，推动宁德时代优化能量密度、降低内阻，最终双方坚持专业分工路线，将全系搭载宁德电池作为核心卖点。
+
+<FeedbackButtons slug="item:qbitai-507473" client:visible />
