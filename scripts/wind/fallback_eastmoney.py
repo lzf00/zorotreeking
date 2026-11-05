@@ -11,6 +11,7 @@ import datetime
 import json
 import logging
 import ssl
+import threading
 import time
 import urllib.error
 import urllib.request
@@ -248,6 +249,8 @@ def tencent_kline_bars(symbol: str, n: int = 80) -> list[dict[str, Any]]:
             "close": close,
             "high": _to_float(row[3]) if len(row) > 3 else close,
             "low": _to_float(row[4]) if len(row) > 4 else close,
+            # 成交量（手），用来估算成交额，东财被限流时不用再请求
+            "volume": _to_float(row[5]) if len(row) > 5 else 0.0,
         })
     return bars
 
@@ -574,6 +577,38 @@ def _main_flow_from_rows(rows: Any) -> dict[str, float]:
     }
 
 
+def _bars_amount_yi(bars: list[dict[str, Any]], n: int = 5) -> float | None:
+    """用日线成交量（手）× 均价估算近 n 日成交额（亿元）。
+
+    腾讯/新浪都只给成交量不给成交额，东财 kline 又被限流，所以本地估算。
+    用 (高+低+收)/3 当均价，大盘股误差约 0.1%~0.3%，够展示「占比」。
+    """
+    if not bars:
+        return None
+    total = 0.0
+    used = 0
+    for bar in bars[-n:]:
+        volume = _to_float(bar.get("volume"))
+        high = _to_float(bar.get("high"))
+        low = _to_float(bar.get("low"))
+        close = _to_float(bar.get("close"))
+        prices = [x for x in (high, low, close) if x and x > 0]
+        if volume <= 0 or not prices:
+            continue
+        total += volume * 100 * (sum(prices) / len(prices))
+        used += 1
+    if used == 0:
+        return None
+    return total / 1e8
+
+
+def _main_flow_pct(net_yi: float | None, amount_yi: float | None) -> float | None:
+    """主力净流入占成交额的比例（%）。Wind 的「近5日主力净流入占比」同口径。"""
+    if net_yi is None or amount_yi is None or amount_yi <= 0:
+        return None
+    return round(net_yi / amount_yi * 100, 2)
+
+
 def fetch_main_flow(wind_code: str) -> dict[str, float]:
     """单只 A 股的主力资金流（新浪）。港股/失败返回 {}，不影响主链路。"""
     wind_code = _to_wind(wind_code)
@@ -687,6 +722,12 @@ def fetch_watchlist(codes: Iterable[str]) -> list[dict[str, Any]]:
         }
         if wind_code.endswith(".HK"):
             item["currency"] = "HKD"
+        flow = flows.get(wind_code)
+        if flow:
+            item.update(flow)
+            pct = _main_flow_pct(flow.get("main_net_5d_yi"), _bars_amount_yi(bars, 5))
+            if pct is not None:
+                item["main_net_5d_pct"] = pct
         rows.append(item)
 
     for row in rows:

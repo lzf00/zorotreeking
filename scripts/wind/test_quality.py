@@ -12,6 +12,7 @@ from fallback_eastmoney import (
     bars_as_of, board_sector_rows, build_public_details, classify_hq_rows,
     fill_missing_quotes, parse_sina_hy_map, quote_from_bars,
     _range_52w, _ytd_from_bars, _main_flow_from_rows,
+    _bars_amount_yi, _main_flow_pct,
 )
 
 
@@ -252,6 +253,24 @@ def test_main_flow_from_rows_sums_days():
     assert out["main_net_5d_yi"] == 30.0
     assert out["main_net_10d_yi"] == 20.0
     assert out["main_net_20d_yi"] == 20.0
+
+
+
+def test_bars_amount_yi_estimates_turnover():
+    """成交量（手）× 均价 ≈ 成交额，用来算「主力5日占比」的分母。"""
+    bars = [{"date": "2026-11-05", "high": 1466.0, "low": 1430.0, "close": 1452.0, "volume": 46712}]
+    assert abs(_bars_amount_yi(bars) - 67.69) < 0.2
+    assert _bars_amount_yi([]) is None
+    assert _bars_amount_yi([{"volume": 0, "close": 10}]) is None
+    assert _bars_amount_yi([{"volume": 100}]) is None
+
+
+def test_main_flow_pct_ratio():
+    assert _main_flow_pct(72.7, 472.0) == 15.4
+    assert _main_flow_pct(-5.82, 357.0) == -1.63
+    assert _main_flow_pct(None, 100) is None
+    assert _main_flow_pct(10, 0) is None
+    assert _main_flow_pct(10, None) is None
 
 
 def test_main_flow_from_rows_ignores_garbage():
