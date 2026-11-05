@@ -12,7 +12,7 @@ from fallback_eastmoney import (
     bars_as_of, board_sector_rows, build_public_details, classify_hq_rows,
     fill_missing_quotes, parse_sina_hy_map, quote_from_bars,
     _range_52w, _ytd_from_bars, _main_flow_from_rows,
-    _bars_amount_yi, _main_flow_pct,
+    _bars_amount_yi, _main_flow_pct, sina_kline_bars,
 )
 
 
@@ -254,6 +254,34 @@ def test_main_flow_from_rows_sums_days():
     assert out["main_net_10d_yi"] == 20.0
     assert out["main_net_20d_yi"] == 20.0
 
+
+
+
+def test_sina_kline_bars_parses_and_scales_volume():
+    """新浪日线兜底：volume 是「股」，要换算成「手」才能和腾讯口径一致。"""
+    import fallback_eastmoney as fe
+    original = fe._http_json
+
+    def fake(url, timeout=15):
+        assert "symbol=sh600519" in url
+        # 新浪/腾讯都是「旧→新」，最后一个才是最新交易日
+        return [
+            {"day": "2026-11-04", "open": "1470.0", "high": "1480.6",
+             "low": "1439.0", "close": "1446.44", "volume": "6543400"},
+            {"day": "2026-11-05", "open": "1446.7", "high": "1466.0",
+             "low": "1430.0", "close": "1452.0", "volume": "4671220"},
+        ]
+
+    fe._http_json = fake
+    try:
+        bars = sina_kline_bars("sh600519", 2)
+    finally:
+        fe._http_json = original
+    assert [b["date"] for b in bars] == ["2026-11-04", "2026-11-05"]
+    assert bars[-1]["volume"] == 46712.2
+    assert abs(_bars_amount_yi(bars, 1) - 67.7) < 0.2
+    # 港股没有新浪日线接口
+    assert sina_kline_bars("hk00700", 6) == []
 
 
 def test_bars_amount_yi_estimates_turnover():

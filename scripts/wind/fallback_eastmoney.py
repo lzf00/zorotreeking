@@ -233,7 +233,18 @@ def tencent_kline_bars(symbol: str, n: int = 80) -> list[dict[str, Any]]:
     if not symbol:
         return []
     query = urlencode({"param": f"{symbol},day,,,{n},qfq"})
-    payload = _http_json(f"https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?{query}", timeout=15)
+    # web.ifzq.gtimg.cn 在部分机房会被限流成 HTTP 501，proxy 域名是同一份数据
+    payload = None
+    last_error: Exception | None = None
+    for host in ("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get",
+                 "https://proxy.finance.qq.com/ifzqgtimg/appstock/app/fqkline/get"):
+        try:
+            payload = _http_json(f"{host}?{query}", timeout=15)
+            break
+        except Exception as exc:
+            last_error = exc
+    if payload is None:
+        raise RuntimeError(f"tencent kline {symbol} failed: {last_error}")
     node = ((payload.get("data") or {}).get(symbol) or {})
     rows = node.get("qfqday") or node.get("day") or node.get("hfqday") or []
     bars: list[dict[str, Any]] = []
@@ -253,6 +264,57 @@ def tencent_kline_bars(symbol: str, n: int = 80) -> list[dict[str, Any]]:
             "volume": _to_float(row[5]) if len(row) > 5 else 0.0,
         })
     return bars
+
+
+def sina_kline_bars(symbol: str, n: int = 80) -> list[dict[str, Any]]:
+    """新浪日线兜底：腾讯 fqkline 被限流（HTTP 501）时用。
+
+    新浪 volume 单位是「股」，统一换算成「手」，与腾讯口径一致。
+    港股无该接口，直接返回空。
+    """
+    if not symbol or symbol.startswith("hk"):
+        return []
+    query = urlencode({"symbol": symbol, "scale": "240", "ma": "no", "datalen": str(n)})
+    url = ("https://quotes.sina.cn/cn/api/json_v2.php/"
+           f"CN_MarketDataService.getKLineData?{query}")
+    try:
+        rows = _http_json(url, timeout=15)
+    except Exception as exc:
+        log.warning("sina kline %s failed: %s", symbol, exc)
+        return []
+    bars: list[dict[str, Any]] = []
+    for row in rows or []:
+        if not isinstance(row, dict):
+            continue
+        close = _to_float(row.get("close"))
+        if close <= 0:
+            continue
+        bars.append({
+            "date": str(row.get("day"))[:10],
+            "open": _to_float(row.get("open")),
+            "close": close,
+            "high": _to_float(row.get("high")) or close,
+            "low": _to_float(row.get("low")) or close,
+            "volume": _to_float(row.get("volume")) / 100.0,
+        })
+    return bars
+
+
+def daily_bars(wind_code: str, n: int = 250) -> list[dict[str, Any]]:
+    """日线统一入口：腾讯优先，被限流时退新浪（港股只有腾讯）。"""
+    symbol = wind_to_tencent(wind_code)
+    if not symbol:
+        return []
+    try:
+        bars = tencent_kline_bars(symbol, n=n)
+    except Exception as exc:
+        # 腾讯被限流时会抛 501，而不是返回空列表
+        log.warning("tencent kline %s failed (%s), trying sina", wind_code, exc)
+        bars = []
+    if bars:
+        return bars
+    log.warning("tencent kline %s empty, falling back to sina", wind_code)
+    return sina_kline_bars(symbol, n=n)
 
 
 def bars_as_of(bars: list[dict[str, Any]], as_of: str) -> list[dict[str, Any]]:
@@ -687,7 +749,7 @@ def fetch_watchlist(codes: Iterable[str]) -> list[dict[str, Any]]:
         is_hk = wind_code.endswith(".HK")
         try:
             # 250 根日线 ≈ 一年，够算 52 周高低和 20 日走势（/invest/stock 详情页要用）
-            bars = tencent_kline_bars(symbol, n=250)
+            bars = daily_bars(wind_code, n=250)
             closes = [b["close"] for b in bars]
         except Exception as exc:
             log.warning("kline %s failed: %s", symbol, exc)
@@ -737,7 +799,7 @@ def fetch_watchlist(codes: Iterable[str]) -> list[dict[str, Any]]:
             bars = bars_by_code.get(code)
             if bars is None:
                 try:
-                    bars = tencent_kline_bars(wind_to_tencent(code), n=6)
+                    bars = daily_bars(code, n=6)
                 except Exception as exc:
                     log.warning("bars for %s failed: %s", code, exc)
                     bars = []
