@@ -11,7 +11,7 @@ from fetcher import build_report
 from fallback_eastmoney import (
     bars_as_of, board_sector_rows, build_public_details, classify_hq_rows,
     fill_missing_quotes, parse_sina_hy_map, quote_from_bars,
-    _range_52w, _ytd_from_bars,
+    _range_52w, _ytd_from_bars, _main_flow_from_rows,
 )
 
 
@@ -235,6 +235,29 @@ def main():
     print(f"✅ {len(tests)} 个测试全部通过")
     return 0
 
+
+
+def test_main_flow_from_rows_sums_days():
+    """新浪资金流日线按日累加，还原 Wind 的「主力5日净流入」。"""
+    rows = [
+        {"opendate": "2026-11-04", "netamount": "1000000000"},   # +10亿
+        {"opendate": "2026-11-03", "netamount": "-500000000"},   # -5亿
+        {"opendate": "2026-11-02", "netamount": "2000000000"},   # +20亿
+        {"opendate": "2026-10-31", "netamount": "0"},            # 0
+        {"opendate": "2026-10-30", "netamount": "500000000"},    # +5亿
+        {"opendate": "2026-10-29", "netamount": "-1000000000"},  # -10亿（第 6 天）
+    ]
+    out = _main_flow_from_rows(rows)
+    assert out["main_net_today_yi"] == 10.0
+    assert out["main_net_5d_yi"] == 30.0
+    assert out["main_net_10d_yi"] == 20.0
+    assert out["main_net_20d_yi"] == 20.0
+
+
+def test_main_flow_from_rows_ignores_garbage():
+    assert _main_flow_from_rows(None) == {}
+    assert _main_flow_from_rows([]) == {}
+    assert _main_flow_from_rows([{"foo": 1}, "bad"]) == {}
 
 def test_build_public_details_carries_kline():
     data = {

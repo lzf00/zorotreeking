@@ -545,6 +545,77 @@ def fetch_a_indices() -> list[dict[str, Any]]:
     return rows
 
 
+_MAIN_FLOW_CACHE: dict[str, dict] = {}
+
+
+def _main_flow_from_rows(rows: Any) -> dict[str, float]:
+    """把新浪资金流日线（新→旧）折算成今日/5日/10日/20日主力净流入（亿元）。
+
+    Wind 额度用尽后「主力5日(亿)」这一列一直是 `--`。新浪的
+    MoneyFlow.ssl_qsfx_zjlrqs 每天都给 netamount（主力净流入额，元），
+    按日累加即可还原 Wind 的同口径字段。港股没有该接口，调用方会跳过。
+    """
+    if not isinstance(rows, list) or not rows:
+        return {}
+    amounts: list[float] = []
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        if not row.get("opendate"):
+            continue
+        amounts.append(_to_float(row.get("netamount")) / 1e8)
+    if not amounts:
+        return {}
+    return {
+        "main_net_today_yi": round(amounts[0], 2),
+        "main_net_5d_yi": round(sum(amounts[:5]), 2),
+        "main_net_10d_yi": round(sum(amounts[:10]), 2),
+        "main_net_20d_yi": round(sum(amounts[:20]), 2),
+    }
+
+
+def fetch_main_flow(wind_code: str) -> dict[str, float]:
+    """单只 A 股的主力资金流（新浪）。港股/失败返回 {}，不影响主链路。"""
+    wind_code = _to_wind(wind_code)
+    if not wind_code or wind_code.upper().endswith(".HK"):
+        return {}
+    if wind_code in _MAIN_FLOW_CACHE:
+        return _MAIN_FLOW_CACHE[wind_code]
+    symbol = wind_to_tencent(wind_code)
+    if not symbol:
+        return {}
+    url = ("https://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/"
+           f"MoneyFlow.ssl_qsfx_zjlrqs?daima={symbol}")
+    try:
+        rows = _http_json(url, timeout=15)
+    except Exception as exc:
+        log.warning("sina moneyflow %s failed: %s", symbol, exc)
+        return {}
+    out = _main_flow_from_rows(rows)
+    _MAIN_FLOW_CACHE[wind_code] = out
+    return out
+
+
+def fetch_main_flow_map(wind_codes: Iterable[str]) -> dict[str, dict]:
+    """并发拉多只股票的资金流；单只失败只影响自己那一列。"""
+    codes = [c for c in (_to_wind(x) for x in wind_codes) if c and not c.upper().endswith(".HK")]
+    if not codes:
+        return {}
+    out: dict[str, dict] = {}
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        futures = {pool.submit(fetch_main_flow, code): code for code in codes}
+        for fut in as_completed(futures):
+            code = futures[fut]
+            try:
+                res = fut.result()
+            except Exception as exc:
+                log.warning("moneyflow %s failed: %s", code, exc)
+                continue
+            if res:
+                out[code] = res
+    return out
+
+
 def fetch_watchlist(codes: Iterable[str]) -> list[dict[str, Any]]:
     wind_codes = [_to_wind(code) for code in codes if code]
     east: dict[str, dict] = {}
@@ -559,6 +630,9 @@ def fetch_watchlist(codes: Iterable[str]) -> list[dict[str, Any]]:
         tencent = _tencent_quotes(tencent_keys)
     except Exception as exc:
         log.warning("tencent watchlist failed: %s", exc)
+
+    # 资金流走新浪（东财 fflow 已失效），并发拉取，失败只影响「主力5日」一列
+    flows = fetch_main_flow_map(wind_codes)
 
     rows: list[dict[str, Any]] = []
     for wind_code in wind_codes:
@@ -614,6 +688,11 @@ def fetch_watchlist(codes: Iterable[str]) -> list[dict[str, Any]]:
         if wind_code.endswith(".HK"):
             item["currency"] = "HKD"
         rows.append(item)
+
+    for row in rows:
+        flow = flows.get(_to_wind(row.get("code") or ""))
+        if flow:
+            row.update(flow)
     return rows
 
 
