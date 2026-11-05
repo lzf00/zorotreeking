@@ -1,0 +1,205 @@
+---
+lang: zh
+translationKey: digest-2026-11-05
+title: "AI 每日精选 · 2026-11-05"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-11-05
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI官宣收购Pierre公司、Daybreak Red登AWS GovCloud，Anthropic、DeepMind发布新动态</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">HuggingFace推出多模态、智能体相关数据集与工具，arXiv更新多篇AI前沿学术论文</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内厂商QbitAI上线GPT-Image-2.6，发布机器人到岗计划及智能体落地链路</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 大厂动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 前沿研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 机器人</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚙️ 工具上新</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📊 产业落地</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2610.37257" target="_blank" rel="noopener noreferrer">GameVerse: A Minute-Scale Gameplay Dataset for Long-Horizon Interactive World Modeling</a>
+
+*HF ★ 18 · Kang He, Wenshuo Peng, Chuanhao Li… · [HF 镜像](https://huggingface.co/papers/2610.37257)*
+
+（LLM 摘要失败，请稍后手动补充）
+
+<FeedbackButtons slug="item:arxiv-2610.37257" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.05320" target="_blank" rel="noopener noreferrer">PyRUA-DataFarm: LLM Agent as a Cost-Efficient Teleoperator for Real-Ready Robot Data</a>
+
+*HF ★ 13 · Kewei Zhang, Juncheng Ma, Guodong Lv… · [HF 镜像](https://huggingface.co/papers/2611.05320)*
+
+本文提出PyRUA-DataFarm机器人数据生成框架，采用大模型代码代理替代人工遥操作采集数据：仅需1次目标场景校准样本，即可在仿真生成带动作标注、多视角同步的真实可用数据。实测5项任务中，该数据训练的策略性能与人工采集相当，抗干扰鲁棒性远超后者，采集成本显著低于中美人工遥操作成本。
+
+<FeedbackButtons slug="item:arxiv-2611.05320" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.06918" target="_blank" rel="noopener noreferrer">From Pixels to Actions - Towards Native Vision-Language-Action Policies</a>
+
+*HF ★ 11 · Weichen Fan, Haiwen Diao, Penghao Wu… · [HF 镜像](https://huggingface.co/papers/2611.06918)*
+
+针对现有视觉-语言-动作模型依赖固定视觉编码器、易丢失操控关键细粒度视觉信息的缺陷，本文提出无编码器架构NEO-VLA：图像经轻量分块卷积后与语言在骨干网全程联合计算，动作模块可调用不同深度的指令对齐视觉表征。实验显示其在各类操控场景、分布偏移下性能和鲁棒性更优，验证了具身控制需接入跨层级视觉表征的结论。
+
+<FeedbackButtons slug="item:arxiv-2611.06918" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.02857" target="_blank" rel="noopener noreferrer">Solv3R: 3D Looped Transformer as a Multi-view Solver</a>
+
+*HF ★ 8 · Jeong-gi Kwak, Andrea Tagliasacchi, Sho Kagami… · [HF 镜像](https://huggingface.co/papers/2611.02857)*
+
+针对传统运动恢复结构可迭代优化、增量扩展，而现有几何基础模型单次前向或顺序更新难以适配这类需求的问题，本文提出Solv3R循环Transformer，其更新算子不受迭代次数限制，支持已解视图缓存复用。单模型无需任务定制训练即可覆盖离线/增量重建、重定位、流处理等多任务，性能优于现有最优水平。
+
+<FeedbackButtons slug="item:arxiv-2611.02857" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.01120" target="_blank" rel="noopener noreferrer">StreamDuo: A Live Commentator and a Research Agent for Unseen Games</a>
+
+*HF ★ 7 · Zixian Gao, Penghao Luo, Xiangcheng Cao… · [HF 镜像](https://huggingface.co/papers/2611.01120)*
+
+针对现有游戏直播解说大模型仅适配训练见过的游戏、跨游戏泛化时知识缺失的问题，本文提出StreamDuo架构：配对可训练解说模块与冻结的游戏维基检索智能体，仅需单游戏分两阶段训练解说模块。经《博德之门3》训练后在10款未知游戏测试，其实体召回率显著提升，源游戏泄露率从9.9%降至1.0%，解说时效性、生动度等均达最优。
+
+<FeedbackButtons slug="item:arxiv-2611.01120" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2611.05436" target="_blank" rel="noopener noreferrer">Constraint-Preserving Flow Matching for Spectral Graph Generation</a>
+
+*Anita Yang, Ken-ichi Kawarabayashi, Yohan Jung*
+
+针对现有谱图生成方法仅保留拉普拉斯特征向量正交性、未约束零空间，导致生成特征系统不符合图结构的问题，本文提出拉普拉斯约束施蒂费尔流匹配方法LaSFM，在对应约束流形上构建流匹配，同时保证零空间条件、特征向量正交性与特征值正性，还支持属性引导生成，实验显示其在谱、图级指标及属性对齐效果上均有明显提升。
+
+<FeedbackButtons slug="item:arxiv-2611.05436" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.05439" target="_blank" rel="noopener noreferrer">Learning Implicit Solves for Dynamic Simulations</a>
+
+*Chawit Kaewnuratchadasorn, Jiaji Wang, Xin Nie*
+
+针对高保真动力学仿真算力成本高的痛点，该研究提出隐式神经算子求解器INOS：基于静态平衡解预训练神经算子，嵌入Newmark-β积分框架求解动态问题，无需动态轨迹监督。实验显示其零样本精度优于同类基线，非线性仿真较传统有限元快4600倍，支持跨时空离散复用，可稳定完成百万步推演，是高效鲁棒的动态建模范式。
+
+<FeedbackButtons slug="item:arxiv-2611.05439" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.05442" target="_blank" rel="noopener noreferrer">Matched but Not Better: An Equivalence-Tested Benchmark of Quantum Machine Learning on Six Clinical Datasets and the QML-Health-READY Reporting Framework</a>
+
+*Mohammed Siraj B, Gousia Habib, Ruban S*
+
+本研究对比量子核支持向量机、变分量子分类器与5种调优经典模型，基于6个公开临床数据集开展严格等价性检验及消融分析，提出医疗场景量子机器学习八维度报告规范QML-Health-READY。结果显示两类量子模型性能与经典模型相当但无优势，有限采样是主要应用瓶颈，配置误差易误导结论，新框架可保障结果可信度。
+
+<FeedbackButtons slug="item:arxiv-2611.05442" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/openai-to-acquire-pierre" target="_blank" rel="noopener noreferrer">OpenAI to acquire Pierre Computer Company, Inc.</a>
+
+*OpenAI*
+
+OpenAI近期已公布收购皮埃尔计算机公司的计划，本次收购核心指向其旗下代码生成大模型Codex的能力升级：将进一步拓展Codex覆盖代码开发搭建、代码语义理解、代码合规审查三大核心研发场景的工具矩阵，为开发者提供功能更完善的AI辅助编程支持。
+
+<FeedbackButtons slug="item:openai-blog-openai-to-acquire-pierre" client:visible />
+
+## <a href="https://openai.com/index/daybreak-red-aws-govcloud" target="_blank" rel="noopener noreferrer">Daybreak Red is now available in AWS GovCloud (US-East)</a>
+
+*OpenAI*
+
+本次为AWS美东政府云区域的服务更新公告：名为「破晓红」的大模型服务现已正式上线，该服务搭载GPT-5.6 Cyber模型，依托亚马逊Bedrock平台部署，仅向通过资质审核的客户开放，使用场景严格限定为经授权的网络安全相关作业，适配高合规要求的网络安全业务需求。
+
+<FeedbackButtons slug="item:openai-blog-daybreak-red-aws-govcloud" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/announcements" target="_blank" rel="noopener noreferrer">Announcements</a>
+
+*Anthropic*
+
+本公告核心披露AI安全研究企业Anthropic的定位与核心研发方向：作为深耕AI安全赛道的机构，Anthropic核心目标是打造三类关键特性齐备的AI系统：运行表现稳定可靠、决策逻辑可被人类解释、行为路径可被人类调控，相关研发方向契合当前通用人工智能安全对齐的核心需求。
+
+<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+本公告来自AI企业Anthropic，其宣布将划拨公司部分股份注入新设的「Anthropic公共利益基金」；该基金设置特殊动态调增机制，随着公司经营规模扩张、估值上涨，基金所持股份占比将同步提升，以此将企业发展收益与公共利益深度绑定，确保公共利益得到长期优先保障。
+
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/agentic-cheminformatics-with-google-antigravity/" target="_blank" rel="noopener noreferrer">Agentic cheminformatics with Google Antigravity</a>
+
+*Google DeepMind*
+
+该文聚焦智能体化学信息学领域，提出融合Google Antigravity工具与专业化学信息学技术的方案，可大幅提升药物研发全流程效率，同时支持高通量化合物检索，还能定向设计生成新型刚性大环分子，为难成药靶点先导物挖掘、大环类药物分子创新开发提供了新的实用技术路径。
+
+<FeedbackButtons slug="item:deepmind-agentic-cheminformatics-with-google-antigravity" client:visible />
+
+## <a href="https://deepmind.google/blog/speeding-up-planning-decisions-with-ai/" target="_blank" rel="noopener noreferrer">Speeding up planning decisions with AI</a>
+
+*Google DeepMind*
+
+本项目由谷歌DeepMind联合英国政府共同推进，核心是将AI技术应用于政务规划审批场景，着力压缩规划事项的评估耗时、加快相关决策落地。这是AI赋能政务流程提效的重要实践，落地后可大幅缩减规划类事项的行政办理周期，为政务场景的AI技术落地提供可参考的新实践范式。
+
+<FeedbackButtons slug="item:deepmind-speeding-up-planning-decisions-with-ai" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/Dharma-AI/dharma-field-extractor" target="_blank" rel="noopener noreferrer">Dharma Field Extractor: Any Document In, Structured Fields in JSON Out</a>
+
+*Hugging Face*
+
+本文介绍通用文档抽取工具Dharma Field Extractor，该工具无需针对特定文档类型定制抽取模板，支持扫描件、PDF、纯文本等多模态任意格式文档输入，可自动识别抽取目标信息字段，直接输出标准JSON格式结构化结果，大幅降低政务、金融等多场景文档信息抽取落地成本，效率远超传统模板化方案。
+
+<FeedbackButtons slug="item:hf-blog-dharma-field-extractor" client:visible />
+
+## <a href="https://huggingface.co/blog/allenai/statebench" target="_blank" rel="noopener noreferrer">StateBench: Testing how language models track state changes over long documents</a>
+
+*Hugging Face*
+
+针对现有长文本基准多侧重静态信息召回，缺乏对大模型长文档动态状态追踪能力的针对性评估，该研究构建了StateBench测试集，覆盖实体属性、关联关系等多类跨段落动态变更场景。实测显示，当前主流大模型即便上下文窗口满足长度要求，长文档状态更新准确率仍远低于短文本，核心错误为状态冲突、历史信息混淆。
+
+<FeedbackButtons slug="item:hf-blog-statebench" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+递归自我改进（RSI）概念最早由I.J.古德1965年提出，核心是可超越人类的超智能系统能自主设计更优机型实现迭代升级；2008年尤德考斯基明确其核心逻辑为AI依托现有智能优化自身认知架构形成反馈闭环，当前该机制落地可通过直接改写自身权重、优化训练管线两类路径实现。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/11/507767.html" target="_blank" rel="noopener noreferrer">以“真实工作”检验机器人价值，XROGO在CeMAT ASIA发布机器人到岗计划</a>
+
+*量子位*
+
+11月3日CeMAT ASIA 2026物流展期间，XROGO发布“机器人到岗计划”，首批聚焦制造上下料、机房配电室巡检两类场景，后续将拓展仓内分拣、装卸等场景，以“租赁服务+工人带教”模式降低使用门槛，联合生态伙伴共建适配方案，推动机器人落地真实岗位，替代高危重复劳动。
+
+<FeedbackButtons slug="item:qbitai-507767" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/507696.html" target="_blank" rel="noopener noreferrer">基于本体+知识+Harness+Datat Agent的智能体完整落地链路！</a>
+
+*量子位*
+
+Datafun主办的「源点ORIGIN：Data+AI技术实践巡展·上海站」将于11月10日13:00-16:30在上海徐汇新漕河泾国际商务中心举办。活动邀请蚂蚁密算、合合信息等5家机构的行业专家，拆解从本体、知识引擎到可信智能体、Data Agent的全链路落地实践，感兴趣者可通过原文链接免费报名线下参会。
+
+<FeedbackButtons slug="item:qbitai-507696" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/507707.html" target="_blank" rel="noopener noreferrer">GPT-Image-2.6全量上线！直出GIF和SVG，6.2 Astra也现身了</a>
+
+*量子位*
+
+GPT-Image 2.6现已在ChatGPT、API等渠道全量上线，全体免费及付费用户均可使用。本次升级生成耗时减半、最快6秒出图，原生支持GIF、SVG导出；首次将场景规划算力与渲染画质解耦为独立参数，分设侧重速度的Flare、侧重高画质一致性的Sunburst子模型，大幅降低多轮改图成本。
+
+<FeedbackButtons slug="item:qbitai-507707" client:visible />
