@@ -670,6 +670,7 @@ def fetch_watchlist(codes: Iterable[str]) -> list[dict[str, Any]]:
     flows = fetch_main_flow_map(wind_codes)
 
     rows: list[dict[str, Any]] = []
+    bars_by_code: dict[str, list[dict[str, Any]]] = {}
     for wind_code in wind_codes:
         bare = wind_code.split(".")[0]
         if wind_code.endswith(".HK"):
@@ -722,18 +723,28 @@ def fetch_watchlist(codes: Iterable[str]) -> list[dict[str, Any]]:
         }
         if wind_code.endswith(".HK"):
             item["currency"] = "HKD"
-        flow = flows.get(wind_code)
-        if flow:
-            item.update(flow)
-            pct = _main_flow_pct(flow.get("main_net_5d_yi"), _bars_amount_yi(bars, 5))
-            if pct is not None:
-                item["main_net_5d_pct"] = pct
+        bars_by_code[wind_code] = bars
         rows.append(item)
 
     for row in rows:
-        flow = flows.get(_to_wind(row.get("code") or ""))
-        if flow:
-            row.update(flow)
+        code = _to_wind(row.get("code") or "")
+        flow = flows.get(code)
+        if not flow:
+            continue
+        row.update(flow)
+        # 占比要 5 日成交额：腾讯分支已拿到 bars，东财分支按需补一次日线
+        if row.get("main_net_5d_pct") is None and row.get("main_net_5d_yi") is not None:
+            bars = bars_by_code.get(code)
+            if bars is None:
+                try:
+                    bars = tencent_kline_bars(wind_to_tencent(code), n=6)
+                except Exception as exc:
+                    log.warning("bars for %s failed: %s", code, exc)
+                    bars = []
+                bars_by_code[code] = bars
+            pct = _main_flow_pct(row.get("main_net_5d_yi"), _bars_amount_yi(bars, 5))
+            if pct is not None:
+                row["main_net_5d_pct"] = pct
     return rows
 
 
