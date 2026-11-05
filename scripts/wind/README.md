@@ -130,10 +130,11 @@ WantedBy=timers.target
 | Wind 调用失败 | `cat ~/.wind-aifinmarket/config` 看 key、`WIND_SKILL_DIR=/opt/wind-mcp-skill node /opt/wind-mcp-skill/scripts/cli.mjs call stock_data get_indexes '{"index_codes":"000001.SH"}'` 手测 |
 | GitHub API 推送失败 | 看 stderr；常见：token 过期 / scope 不含 `repo`；用 `curl -H "Authorization: Bearer $GITHUB_TOKEN" https://api.github.com/repos/lzf00/zorotreeking` 验证 |
 | Wind 单股深度数据缺失（quota 超限） | 主链路不阻断，等次日额度重置即可 |
-| Wind 积分用尽且不续费 | 在 `.env` 里设 `WIND_ENABLED=0`，跳过 Wind 直接用东财/腾讯/新浪公开行情，每轮省 60~90 秒限流重试。`/invest/stock` 详情快照由 `fallback_eastmoney.build_public_details()` 用腾讯 K 线补齐；「主力5日净流入」列由新浪 `MoneyFlow.ssl_qsfx_zjlrqs` 按日累加（`fetch_main_flow_map()`），港股无该接口仍显示 `--`。续费后改回 1 |
+| Wind 积分用尽且不续费 | 在 `.env` 里设 `WIND_ENABLED=0`，跳过 Wind 直接用东财/腾讯/新浪公开行情，每轮省 60~90 秒限流重试。`/invest/stock` 详情快照由 `fallback_eastmoney.build_public_details()` 用腾讯 K 线补齐；「主力5日净流入」列由新浪 `MoneyFlow.ssl_qsfx_zjlrqs` 按日累加（`fetch_main_flow_map()`），个股页的「占比」用 5 日净额 ÷ 5 日成交额估算（`_bars_amount_yi()`：成交量×均价，误差 0.1%~0.3%）；港股无资金流接口仍显示 `--`。续费后改回 1 |
 | 涨幅榜全 `0.00`、深证成指「数据暂缺」、超大单净额缺失 | Wind 被 QPS 限流打掉几行，但整份快照仍"可发布"，旧逻辑不会触发兜底。已由 `fallback_eastmoney.fill_missing_quotes()` 按 code/字段逐行补齐（source 变成 `mixed`），见 2026-11-04 修复 |
 | A/港看板变 `--`、日报出现「积分余额不足」 | Wind Alice 积分用尽。fetcher 会改用东财/腾讯公开行情；publisher 拒绝覆盖上次有效快照。充值：https://market.windalice.co |
 | 非交易日还是触发 | `holidays.py STOCK_HOLIDAYS` 更新 |
+| 详情页 52 周高低 / 20 日线突然全空 | 腾讯 `web.ifzq.gtimg.cn` 日线被限流成 HTTP 501（2026-11-05 在服务器上出现过） | `tencent_kline_bars()` 会先改走 `proxy.finance.qq.com` 镜像；A 股再兜底新浪日线 `sina_kline_bars()`（volume 由「股」换算成「手」），港股只靠腾讯镜像 |
 | `/invest/stock/00700.HK` 等港股详情页 404 | 站点 nginx 会把 5 位港股代码 301 到 4 位（`00700.HK` → `0700.HK`）。数据侧必须统一成 Wind 的 4 位写法：`_to_wind()` 已做归一化，新增港股时写 5 位也能兜住，见 2026-11-04 修复 |
 
 ## 节假日表更新
