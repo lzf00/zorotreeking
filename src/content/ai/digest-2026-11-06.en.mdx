@@ -1,0 +1,205 @@
+---
+lang: en
+translationKey: digest-2026-11-06
+title: "AI Daily Digest · 2026-11-06"
+description: "20 Papers · Multi-source Aggregation + AI Summaries"
+date: 2026-11-06
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Today's highlights in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Cutting-edge AI research results have been released intensively, covering multiple directions including benchmark compression, large decision models, and embodied intelligence</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Tech giants roll out new products frequently: Google's new Gemini model, NVIDIA Cosmos 3, and on-device TTS are all unveiled</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">AI industry implementation is progressing across multiple sectors, with the rollout speed in scenarios such as education, industry, finance, and content creation continuing to accelerate</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Cutting-edge Papers</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Model Releases</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏭 Industry Implementation</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🇨🇳 Domestic Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🎬 AIGC Applications</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2611.00883" target="_blank" rel="noopener noreferrer">Random Is Almost Enough? Stable and Low-Cost Benchmark Compression via BestRand</a>
+
+*HF ★ 13 · George Ling, Shanshan Zhong, Lijin Yang… · [HF Mirror](https://huggingface.co/papers/2611.00883)*
+
+To reduce the cost of model benchmark evaluation, this study first derives the distribution of estimation errors for benchmark subsets, confirming that random sampling performs well but has inherent issues of large long-tail errors and poor stability. Based on this, the BestRand compression method is proposed, which retains the high efficiency of random sampling while cutting off the high-error tail. Verified by over 70 types of benchmarks, this method reduces high-error risk by 50.2% compared to existing solutions, cuts average estimation error by 16.4%, has only 51.3% of the construction cost of previous solutions, and reduces average error in out-of-distribution scenarios by 21.8%, delivering better overall performance.
+
+<FeedbackButtons slug="item:arxiv-2611.00883" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.07854" target="_blank" rel="noopener noreferrer">Towards Foundation Decision Models: Drex</a>
+
+*HF ★ 10 · Nischay Dhankhar, Alisher Amantay, Zhanibek Datbayev… · [HF Mirror](https://huggingface.co/papers/2611.07854)*
+
+Aiming at the pain points of unstable autoregressive inference output of large models, required output parsing, and high latency cost, this paper launches 4 open-source decision models of the Drex series, which can directly output option probability distributions without autoregressive decoding. The models are trained with supervised fine-tuning + RLAF, and the top-tier Max version is additionally optimized for vision, with performance comparable to commercial large models such as GPT-6 Sol, several times faster inference speed, and stable output, making it the best open-source decision model of its kind currently available.
+
+<FeedbackButtons slug="item:arxiv-2611.07854" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.07909" target="_blank" rel="noopener noreferrer">EDGAR: Efficient Diffusion-Driven Gaussian Avatar Refinement via Synthetic Failure</a>
+
+*HF ★ 7 · Kwan Yun, Minhyeok Bang, Colette Suhjung Koo… · [HF Mirror](https://huggingface.co/papers/2611.07909)*
+
+Aiming at defects like blurring, stretching, and temporal instability in Gaussian head avatars reconstructed from monocular views, this paper proposes the EDGAR diffusion optimization framework: a ternary training set containing simulated failure samples is constructed, identity features extracted by the Sapiens self-supervised model are injected into the single-step diffusion + MoE structure to adapt to different degradations, and the optimized unified Gaussian model does not require frame-by-frame calling. Multiple experiments verify that its perceptual quality, reconstruction accuracy, cross-view consistency, and robustness to extreme poses are all better than existing baselines. (Full text 121 words)
+
+<FeedbackButtons slug="item:arxiv-2611.07909" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.04894" target="_blank" rel="noopener noreferrer">VisSearch-Bench: Evaluating Long Horizon Visual Search in Multimodal Agents</a>
+
+*HF ★ 3 · ZhengXian Wu, Qianhao Nie, Zhuohong Chen… · [HF Mirror](https://huggingface.co/papers/2611.04894)*
+
+Existing visual search evaluations for multimodal agents mostly fail to measure the ability to associate visual information across images and steps. To address this gap, this study launches the VisSearch-Bench evaluation set, covering 204 manually written long-horizon visual search tasks across 7 major fields, with complete supporting evidence, answers, and two-dimensional evaluation rules. Tests on 16 models show that even with search tools equipped, the best system only achieves a 26.47% task completion rate, highlighting the significant technical challenges of this type of task.
+
+<FeedbackButtons slug="item:arxiv-2611.04894" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.06817" target="_blank" rel="noopener noreferrer">Open-HumanScale: An Open Recipe for Scaling Human and Robot Experience for Embodied Foundation Models</a>
+
+*HF ★ 2 · Juncheng Ma, Jiaxin Li, Jiankai Tu… · [HF Mirror](https://huggingface.co/papers/2611.06817)*
+
+This paper launches Open-HumanScale, an open-source solution for embodied foundation models, paired with a 50,000-hour annotated library of first-person human operation videos, empirically deriving a log-linear scaling law between pre-training data volume and downstream robot task success rate. Two types of world action models trained based on this scheme: the version pre-trained with pure human data delivers excellent performance, while the human-robot hybrid pre-trained version refreshes SOTA on multiple benchmarks, with zero-shot generalization and embodied in-context learning capabilities. All resources have been open-sourced.
+
+<FeedbackButtons slug="item:arxiv-2611.06817" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2611.06953" target="_blank" rel="noopener noreferrer">SteelAgent: LLM-Orchestrated, Physics-Informed Steel Property Prediction with Audited Generalization and Calibrated Uncertainty</a>
+
+*Aleksandr Volkov, Roman Sultimov, Mikhail Kuzin…*
+
+This paper proposes SteelAgent: an LLM-orchestrated steel property prediction framework integrated with metallurgical physical information, supporting performance prediction, uncertainty output, and reverse design. Tests show that the model's generalization ability is greatly affected by dataset splitting methods: under random splitting, the gradient boosting model achieves an R² of 0.859, which plummets to 0.113 during steel family hold-out validation, with uncertainty calibration greatly degraded, and physical feature gains fluctuating across scenarios. The study recommends that performance reports clearly mark the evaluation sample population.
+
+<FeedbackButtons slug="item:arxiv-2611.06953" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.06956" target="_blank" rel="noopener noreferrer">Octopus: One Brain, Many Branches for Latent-KV Multi-Agent Reinforcement Learning</a>
+
+*Tianming Sha*
+
+Aiming at the problems of redundant KV cache and lost cross-branch dependencies in existing multi-agent large model frameworks, this paper proposes the multi-agent reinforcement learning framework Octopus, relying on a shared backbone and directed acyclic graph of KV states, adopting three mechanisms: zero-copy branching, cross-branch KV mounting, and DAG structure credit allocation. On retrieval tasks, accuracy is improved by up to 17.5 percentage points compared to baselines, training throughput is increased by 3.3x, and peak KV memory usage is reduced by 2.8x.
+
+<FeedbackButtons slug="item:arxiv-2611.06956" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.06979" target="_blank" rel="noopener noreferrer">Uncertainty calibration in Bayesian M/EEG source imaging</a>
+
+*Ismail Huseynov, Mohammad Orabe, Srikantan Nagarajan…*
+
+Aiming at the lack of calibration of posterior credible intervals in M/EEG source imaging, this paper proposes a simulation-driven Bayesian inversion uncertainty quantification calibration framework, comparing Bayesian minimum norm with sLORETA weighting and sparse Bayesian learning method with S-FLEX extension, paired with isotonic recalibration post-processing. Simulations and real-world measurements show that before recalibration, the sparse scheme has more accurate positioning and uncertainty more aligned with nominal values; after recalibration, both methods are improved, and the sparse scheme delivers more focused positioning and higher statistical power in real MEG tasks.
+
+<FeedbackButtons slug="item:arxiv-2611.06979" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/australian-universities-ai-native-graduates" target="_blank" rel="noopener noreferrer">Australian universities are creating AI-native graduates</a>
+
+*OpenAI*
+
+This study focuses on new trends in AI talent training in Australian universities: currently, Australian universities are proactively adjusting their teaching systems, on one hand expanding students' access to generative AI tools such as ChatGPT, and on the other hand fully integrating AI applications into the entire teaching and learning process. The core goal is to adapt to future workplace needs where AI is deeply integrated, targetedly cultivate graduates with AI-native application capabilities, and explore talent supply paths for higher education to align with industrial digital transformation.
+
+<FeedbackButtons slug="item:openai-blog-australian-universities-ai-native-graduates" client:visible />
+
+## <a href="https://openai.com/index/cultfit-builds-with-codex" target="_blank" rel="noopener noreferrer">Cult.fit builds operational muscle with Codex</a>
+
+*OpenAI*
+
+Health and lifestyle service platform Cult.fit has launched a Codex-based operational efficiency improvement solution: the core approach is to open Codex's code generation capabilities to employees across all functional lines, supporting fast, independent construction of internal tools adapted to business needs without going through traditional technical scheduling processes. After the implementation of this solution, the company's overall business progress speed has been greatly improved, internal work processes have been restructured, effectively enhancing the enterprise's overall operational capacity.
+
+<FeedbackButtons slug="item:openai-blog-cultfit-builds-with-codex" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/announcements" target="_blank" rel="noopener noreferrer">Announcements</a>
+
+*Anthropic*
+
+This announcement is the official positioning statement of AI company Anthropic: the company is a research-focused enterprise focusing on AI safety and cutting-edge technology research, with the core R&D goal of building AI systems with three core characteristics: stable and reliable operation performance, human-explainable decision-making logic, and behavior paths that can be effectively guided and controlled by humans. All of the company's technology R&D and implementation work is carried out around this positioning.
+
+<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+AI company Anthropic announced its public benefit investment plan, allocating part of the company's shares to the newly established "Anthropic Public Welfare Fund". The fund adopts a special structure, where its shareholding ratio increases simultaneously as the company's development scale expands, ensuring that more of the enterprise's growth benefits flow to public welfare fields, making it an innovative attempt by technology enterprises to bind commercial development and public interests.
+
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/gemini-omni-12-flash-fast-and-cost-effective-with-longer-clips/" target="_blank" rel="noopener noreferrer">Gemini Omni 1.2 Flash: Fast and cost-effective with longer clips</a>
+
+*Google DeepMind*
+
+Google has launched the Gemini Omni 1.2 Flash multimodal model. By optimizing the temporal attention mechanism and lightweight inference architecture, it supports up to 1 hour of continuous audio and video input, delivers 3x faster inference speed than the previous generation, reduces inference cost by 40%, and maintains flagship-level long-sequence cross-modal understanding accuracy. It can be adapted to commercial implementation scenarios such as real-time live broadcast analysis, long video review, and multimodal interaction.
+
+<FeedbackButtons slug="item:deepmind-gemini-omni-12-flash-fast-and-cost-effective-with-longer-clips" client:visible />
+
+## <a href="https://deepmind.google/blog/agentic-cheminformatics-with-google-antigravity/" target="_blank" rel="noopener noreferrer">Agentic cheminformatics with Google Antigravity</a>
+
+*Google DeepMind*
+
+This study launches an agentic cheminformatics technology solution equipped with Google Antigravity tools, which can significantly accelerate the entire drug discovery process: it not only supports efficient and accurate compound retrieval, but also can independently design and generate rigid macrocyclic molecules with novel structures. This technology greatly shortens the lead compound discovery cycle and reduces early screening costs, providing a new intelligent implementation path for macrocyclic innovative drug R&D.
+
+<FeedbackButtons slug="item:deepmind-agentic-cheminformatics-with-google-antigravity" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/cosmos-interactive-world-simulation" target="_blank" rel="noopener noreferrer">New NVIDIA Cosmos 3 Open Models for Interactive World Simulation</a>
+
+*Hugging Face*
+
+NVIDIA has launched the new generation Cosmos 3 open-source interactive world simulation model. Relying on a large model-driven physics engine, it supports multimodal input control, can generate high-fidelity dynamic 3D scenes, and accurately restore real physical rules for multi-object interaction. Interaction latency and simulation accuracy are improved by over 30% compared to the previous generation. This model can be used in scenarios such as robot training and autonomous driving simulation, and its open-source attribute greatly lowers the threshold for industry simulation technology implementation.
+
+<FeedbackButtons slug="item:hf-blog-cosmos-interactive-world-simulation" client:visible />
+
+## <a href="https://huggingface.co/blog/phonon-tts" target="_blank" rel="noopener noreferrer">A Closer Look at Phonon TTS. Launching High-Quality On-Device Speech That Tops the Benchmarks.</a>
+
+*Hugging Face*
+
+This study addresses the demand for high-quality on-device speech synthesis, and proposes the Phonon TTS solution: it uses finer-grained phonons as the intermediate representation for modeling, optimizes the lightweight inference architecture, and greatly reduces computing power consumption. Its speech naturalness and robustness are better than existing on-device TTS solutions, comparable to cloud large models, and it tops mainstream public benchmark tests, enabling high-quality real-time synthesis offline on consumer terminals such as mobile phones.
+
+<FeedbackButtons slug="item:hf-blog-phonon-tts" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This paper sorts out the conceptual evolution of Recursive Self-Improvement (RSI): In 1965, I.J. Good first proposed the idea of superintelligent machines, that is, systems that can fully surpass human intelligence and independently iteratively design better machines. In 2008, Eliezer Yudkowsky clearly defined RSI: the feedback loop where AI relies on its existing intelligence to optimize its own cognitive mechanisms. In the current AI context, such feedback loops can be manifested as models directly rewriting their own weights, or broadly refer to autonomous optimization of training processes.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/11/508107.html" target="_blank" rel="noopener noreferrer">99.4% tops global first! This Chinese AI is mentored by world champions</a>
+
+*QbitAI*
+
+360's self-developed AI security attack and defense system "Tulongfeng" topped the CyberGym list, known as the "AI Security World Cup", with a 99.4% vulnerability reproduction success rate after 1507 real vulnerability tasks and three rounds of independent evaluation, far exceeding the previous industry highest record of 11.9%, beating similar dedicated cybersecurity models from OpenAI, Google, and Anthropic. Its core advantage comes from the championship-level attack and defense experience accumulated by its team over many years of participating in top hacker competitions.
+
+<FeedbackButtons slug="item:qbitai-508107" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/507988.html" target="_blank" rel="noopener noreferrer">Hong Kong FinTech Week x StartmeupHK 2026 Main Forum: Exploring new opportunities through "Finance+", "AI+" and global expansion</a>
+
+*QbitAI*
+
+The 11th Hong Kong FinTech Week x StartmeupHK 2026 main forum concluded in Hong Kong in early November, gathering representatives from the global political, business, and tech innovation sectors, focusing on three directions: "Finance+", "AI+", and global expansion, discussing how to tap growth opportunities relying on Hong Kong's capital, technology, and international connectivity advantages. Chief Executive John Lee stated in his speech that Hong Kong's stable business environment and the newly released first five-year plan will help enterprises seize national and global development opportunities.
+
+<FeedbackButtons slug="item:qbitai-507988" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/507972.html" target="_blank" rel="noopener noreferrer">AI short drama threshold keeps dropping! Actual test of Jimeng Short Drama Studio: one-stop script, storyboard, previsualization, partner program for long-term support</a>
+
+*QbitAI*
+
+Currently, AI continuous short drama creation faces pain points such as difficulty ensuring content consistency and high energy consumption for non-creative processes. The Jimeng Short Drama Studio under CapCut integrates the capabilities of the Little Skylark short drama agent, opening up the full creation workflow covering scripts, asset libraries, and storyboards. Actual tests show that it supports fast generation of short drama solutions matching requirements from a single sentence of inspiration, paired with a partner program for long-term support, greatly lowering the threshold for AI short drama creation.
+
+<FeedbackButtons slug="item:qbitai-507972" client:visible />

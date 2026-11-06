@@ -1,0 +1,205 @@
+---
+lang: en
+translationKey: digest-2026-11-05
+title: "Daily AI Picks · 2026-11-05"
+description: "20 papers · Multi-source aggregation + AI summaries"
+date: 2026-11-05
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up today in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI officially announces acquisition of Pierre, Daybreak Red launches on AWS GovCloud, Anthropic and DeepMind release new updates</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face launches multimodal and agent-related datasets and tools, arXiv updates multiple cutting-edge AI academic papers</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Domestic vendor QbitAI launches GPT-Image-2.6, releases robot onboarding plan and agent implementation pipeline</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Big Tech Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Robotics</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚙️ New Tools</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📊 Industry Implementation</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2610.37257" target="_blank" rel="noopener noreferrer">GameVerse: A Minute-Scale Gameplay Dataset for Long-Horizon Interactive World Modeling</a>
+
+*HF ★ 18 · Kang He, Wenshuo Peng, Chuanhao Li… · [HF Mirror](https://huggingface.co/papers/2610.37257)*
+
+(LLM summary failed, please manually supplement later)
+
+<FeedbackButtons slug="item:arxiv-2610.37257" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.05320" target="_blank" rel="noopener noreferrer">PyRUA-DataFarm: LLM Agent as a Cost-Efficient Teleoperator for Real-Ready Robot Data</a>
+
+*HF ★ 13 · Kewei Zhang, Juncheng Ma, Guodong Lv… · [HF Mirror](https://huggingface.co/papers/2611.05320)*
+
+This paper proposes the PyRUA-DataFarm robot data generation framework, which uses LLM code agents to replace manual teleoperation for data collection: only 1 calibration sample of the target scene is required to generate usable real-world data with action annotations and multi-view synchronization in simulation. Tests across 5 tasks show that the performance of policies trained on this data is comparable to those trained on manually collected data, its anti-interference robustness far exceeds the latter, and collection costs are significantly lower than manual teleoperation costs in China and the US.
+
+<FeedbackButtons slug="item:arxiv-2611.05320" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.06918" target="_blank" rel="noopener noreferrer">From Pixels to Actions - Towards Native Vision-Language-Action Policies</a>
+
+*HF ★ 11 · Weichen Fan, Haiwen Diao, Penghao Wu… · [HF Mirror](https://huggingface.co/papers/2611.06918)*
+
+To address the flaw of existing vision-language-action models that rely on fixed vision encoders and easily lose fine-grained visual information critical for manipulation, this paper proposes the encoder-free architecture NEO-VLA: images are processed via lightweight patch convolution and then jointly computed with language throughout the backbone network, and the action module can call instruction-aligned visual representations of different depths. Experiments show that its performance and robustness are better across various manipulation scenarios and distribution shifts, validating the conclusion that embodied control requires access to cross-level visual representations.
+
+<FeedbackButtons slug="item:arxiv-2611.06918" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.02857" target="_blank" rel="noopener noreferrer">Solv3R: 3D Looped Transformer as a Multi-view Solver</a>
+
+*HF ★ 8 · Jeong-gi Kwak, Andrea Tagliasacchi, Sho Kagami… · [HF Mirror](https://huggingface.co/papers/2611.02857)*
+
+To address the issue that traditional structure from motion supports iterative optimization and incremental expansion, while existing geometric foundation models are difficult to adapt to such requirements with single forward pass or sequential updates, this paper proposes Solv3R, a looped Transformer whose update operator is not limited by the number of iterations and supports caching and reuse of solved views. A single model can cover multiple tasks including offline/incremental reconstruction, relocalization, and stream processing without task-specific training, outperforming current state-of-the-art levels.
+
+<FeedbackButtons slug="item:arxiv-2611.02857" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.01120" target="_blank" rel="noopener noreferrer">StreamDuo: A Live Commentator and a Research Agent for Unseen Games</a>
+
+*HF ★ 7 · Zixian Gao, Penghao Luo, Xiangcheng Cao… · [HF Mirror](https://huggingface.co/papers/2611.01120)*
+
+To address the problem that existing game live commentary LLMs only adapt to games seen during training and suffer from knowledge gaps when generalizing across games, this paper proposes the StreamDuo architecture: it pairs a trainable commentary module with a frozen game wiki retrieval agent, requiring only two-stage training of the commentary module on a single game. After training on *Baldur's Gate 3*, it was tested on 10 unknown games, with entity recall rate significantly improved, source game leakage rate reduced from 9.9% to 1.0%, and commentary timeliness, vividness and other indicators all reaching optimal levels.
+
+<FeedbackButtons slug="item:arxiv-2611.01120" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2611.05436" target="_blank" rel="noopener noreferrer">Constraint-Preserving Flow Matching for Spectral Graph Generation</a>
+
+*Anita Yang, Ken-ichi Kawarabayashi, Yohan Jung*
+
+To address the problem that existing spectral graph generation methods only preserve the orthogonality of Laplacian eigenvectors and do not constrain the null space, resulting in generated eigen systems that do not conform to the graph structure, this paper proposes LaSFM, a Laplacian-constrained Stiefel flow matching method. It constructs flow matching on the corresponding constrained manifold, simultaneously ensuring null space conditions, eigenvector orthogonality and eigenvalue positivity, and also supports attribute-guided generation. Experiments show that it achieves significant improvements in spectral, graph-level metrics and attribute alignment effects.
+
+<FeedbackButtons slug="item:arxiv-2611.05436" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.05439" target="_blank" rel="noopener noreferrer">Learning Implicit Solves for Dynamic Simulations</a>
+
+*Chawit Kaewnuratchadasorn, Jiaji Wang, Xin Nie*
+
+To address the pain point of high computing cost for high-fidelity dynamic simulation, this study proposes INOS, an implicit neural operator solver: it pre-trains neural operators based on static equilibrium solutions, and embeds them into the Newmark-β integration framework to solve dynamic problems without dynamic trajectory supervision. Experiments show that its zero-shot accuracy outperforms similar baselines, non-linear simulation is 4600 times faster than traditional finite element methods, it supports cross-spatiotemporal discrete reuse, and can stably complete million-step simulation runs, making it an efficient and robust dynamic modeling paradigm.
+
+<FeedbackButtons slug="item:arxiv-2611.05439" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.05442" target="_blank" rel="noopener noreferrer">Matched but Not Better: An Equivalence-Tested Benchmark of Quantum Machine Learning on Six Clinical Datasets and the QML-Health-READY Reporting Framework</a>
+
+*Mohammed Siraj B, Gousia Habib, Ruban S*
+
+This study compares quantum kernel support vector machines, variational quantum classifiers and 5 tuned classical models, conducts rigorous equivalence testing and ablation analysis based on 6 public clinical datasets, and proposes QML-Health-READY, an 8-dimensional reporting specification for quantum machine learning in medical scenarios. The results show that the two types of quantum models have comparable performance to classical models but no advantages, limited sampling is the main application bottleneck, configuration errors can easily mislead conclusions, and the new framework can ensure the credibility of results.
+
+<FeedbackButtons slug="item:arxiv-2611.05442" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/openai-to-acquire-pierre" target="_blank" rel="noopener noreferrer">OpenAI to acquire Pierre Computer Company, Inc.</a>
+
+*OpenAI*
+
+OpenAI recently announced its plan to acquire Pierre Computer Company, Inc. The core goal of this acquisition is to upgrade the capabilities of its code generation LLM Codex: it will further expand Codex's tool matrix covering three core R&D scenarios: code development and construction, code semantic understanding, and code compliance review, to provide developers with more fully functional AI-assisted programming support.
+
+<FeedbackButtons slug="item:openai-blog-openai-to-acquire-pierre" client:visible />
+
+## <a href="https://openai.com/index/daybreak-red-aws-govcloud" target="_blank" rel="noopener noreferrer">Daybreak Red is now available in AWS GovCloud (US-East)</a>
+
+*OpenAI*
+
+This is a service update announcement for the AWS GovCloud (US-East) region: the LLM service named "Daybreak Red" is now officially launched. The service is equipped with the GPT-5.6 Cyber model, deployed on the Amazon Bedrock platform, only open to customers who have passed qualification verification, its use scenarios are strictly limited to authorized cybersecurity-related operations, adapting to the needs of cybersecurity businesses with high compliance requirements.
+
+<FeedbackButtons slug="item:openai-blog-daybreak-red-aws-govcloud" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/announcements" target="_blank" rel="noopener noreferrer">Announcements</a>
+
+*Anthropic*
+
+This announcement mainly discloses the positioning and core R&D direction of AI security research company Anthropic: as an organization deeply engaged in the AI security track, Anthropic's core goal is to build AI systems with three key characteristics: stable and reliable operation, human-interpretable decision-making logic, and human-controllable behavior paths. These R&D directions align with the current core requirements for AGI safety alignment.
+
+<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+This announcement is from AI company Anthropic, which announced that it will allocate part of the company's shares to the newly established "Anthropic Public Benefit Fund"; the fund has a special dynamic adjustment mechanism, as the company's operating scale expands and valuation rises, the proportion of shares held by the fund will increase simultaneously, thus deeply binding the benefits of enterprise development with public interests, ensuring that public interests receive long-term priority protection.
+
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/agentic-cheminformatics-with-google-antigravity/" target="_blank" rel="noopener noreferrer">Agentic cheminformatics with Google Antigravity</a>
+
+*Google DeepMind*
+
+This article focuses on the field of agentic cheminformatics, proposes a solution integrating Google Antigravity tools and professional cheminformatics technology, which can greatly improve the efficiency of the entire drug R&D process, support high-throughput compound retrieval, and also enable targeted design and generation of new rigid macrocyclic molecules, providing a new practical technical path for the discovery of lead compounds for undruggable targets and the innovative development of macrocyclic drug molecules.
+
+<FeedbackButtons slug="item:deepmind-agentic-cheminformatics-with-google-antigravity" client:visible />
+
+## <a href="https://deepmind.google/blog/speeding-up-planning-decisions-with-ai/" target="_blank" rel="noopener noreferrer">Speeding up planning decisions with AI</a>
+
+*Google DeepMind*
+
+This project is jointly promoted by Google DeepMind and the UK government, with the core of applying AI technology to government planning approval scenarios, focusing on reducing the evaluation time of planning matters and accelerating the implementation of relevant decisions. This is an important practice of AI empowering government process efficiency improvement. After implementation, it can greatly shorten the administrative processing cycle of planning matters, providing a new referable practice paradigm for the implementation of AI technology in government scenarios.
+
+<FeedbackButtons slug="item:deepmind-speeding-up-planning-decisions-with-ai" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/Dharma-AI/dharma-field-extractor" target="_blank" rel="noopener noreferrer">Dharma Field Extractor: Any Document In, Structured Fields in JSON Out</a>
+
+*Hugging Face*
+
+This article introduces the general document extraction tool Dharma Field Extractor, which does not require custom extraction templates for specific document types, supports multimodal input of documents in any format including scanned copies, PDFs, plain text, etc., can automatically identify and extract target information fields, and directly output structured results in standard JSON format, greatly reducing the implementation cost of document information extraction in scenarios such as government, finance, etc., with efficiency far exceeding traditional template-based solutions.
+
+<FeedbackButtons slug="item:hf-blog-dharma-field-extractor" client:visible />
+
+## <a href="https://huggingface.co/blog/allenai/statebench" target="_blank" rel="noopener noreferrer">StateBench: Testing how language models track state changes over long documents</a>
+
+*Hugging Face*
+
+To address the issue that existing long text benchmarks mostly focus on static information recall and lack targeted evaluation of LLMs' ability to track dynamic states in long documents, this study constructs the StateBench test set, covering multiple types of cross-paragraph dynamic change scenarios such as entity attributes and association relationships. Actual tests show that even if the context window of current mainstream LLMs meets the length requirement, their long document state update accuracy is still far lower than that of short texts, with core errors being state conflicts and historical information confusion.
+
+<FeedbackButtons slug="item:hf-blog-statebench" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+The concept of Recursive Self-Improvement (RSI) was first proposed by I.J. Good in 1965, with the core that superintelligent systems that can surpass humans can independently design better models to achieve iterative upgrades; in 2008, Eliezer Yudkowsky clarified its core logic as AI relying on existing intelligence to optimize its own cognitive architecture to form a feedback loop. Currently, this mechanism can be implemented through two paths: directly rewriting its own weights and optimizing training pipelines.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/11/507767.html" target="_blank" rel="noopener noreferrer">Testing robot value with "real work", XROGO releases robot onboarding plan at CeMAT ASIA</a>
+
+*QbitAI*
+
+During the CeMAT ASIA 2026 logistics exhibition on November 3, XROGO released the "Robot Onboarding Plan", the first batch focuses on two scenarios: manufacturing loading and unloading, and data center power distribution room inspection. It will later expand to scenarios such as in-warehouse sorting, loading and unloading, etc. It adopts the "rental service + worker coaching" model to lower the threshold for use, and jointly builds adaptation solutions with ecological partners to promote the implementation of robots in real positions, replacing high-risk repetitive labor.
+
+<FeedbackButtons slug="item:qbitai-507767" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/507696.html" target="_blank" rel="noopener noreferrer">Complete agent implementation pipeline based on ontology + knowledge + Harness + Data Agent!</a>
+
+*QbitAI*
+
+The "Origin ORIGIN: Data+AI Technology Practice Tour · Shanghai Station" hosted by Datafun will be held at Xuhui New Caohejing International Business Center in Shanghai from 13:00 to 16:30 on November 10. Industry experts from 5 institutions including Ant MPC and Intsig will be invited to analyze the full-chain implementation practice from ontology, knowledge engine to trusted agent and Data Agent. Interested parties can sign up for free offline attendance through the original article link.
+
+<FeedbackButtons slug="item:qbitai-507696" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/507707.html" target="_blank" rel="noopener noreferrer">GPT-Image-2.6 fully launched! Directly outputs GIF and SVG, 6.2 Astra also makes an appearance</a>
+
+*QbitAI*
+
+GPT-Image 2.6 is now fully launched on ChatGPT, API and other channels, available to all free and paid users. This upgrade halves generation time, with the fastest image output in 6 seconds, and natively supports GIF and SVG export; for the first time, it decouples scene planning computing power and rendering quality into independent parameters, and sets up two sub-models: Flare focusing on speed, and Sunburst focusing on high-quality consistency, greatly reducing the cost of multi-round image revision.
+
+<FeedbackButtons slug="item:qbitai-507707" client:visible />
