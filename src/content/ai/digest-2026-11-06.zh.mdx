@@ -1,0 +1,205 @@
+---
+lang: zh
+translationKey: digest-2026-11-06
+title: "AI 每日精选 · 2026-11-06"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-11-06
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">AI前沿研究成果集中发布，覆盖基准压缩、决策大模型、具身智能等多个方向</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">科技巨头密集推新：谷歌Gemini新模型、英伟达Cosmos 3、端侧TTS悉数亮相</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">AI产业落地多点开花，教育、工业、金融、内容创作等场景落地进程持续提速</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 前沿论文</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ 模型发布</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏭 产业落地</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🇨🇳 国内动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🎬 AIGC应用</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2611.00883" target="_blank" rel="noopener noreferrer">Random Is Almost Enough? Stable and Low-Cost Benchmark Compression via BestRand</a>
+
+*HF ★ 13 · George Ling, Shanshan Zhong, Lijin Yang… · [HF 镜像](https://huggingface.co/papers/2611.00883)*
+
+为降低模型基准评估成本，该研究先推导基准子集估测误差的分布，证实随机采样效果较好但存在固有长尾大误差、稳定性差的问题。据此提出BestRand压缩方法，保留随机采样高效性的同时削减高误差尾。经70+多类基准验证，该方法较现有方案高误差风险降50.2%，估测误差平均降16.4%，构建成本仅为前者的51.3%，分布外场景误差平均降21.8%，表现更优。
+
+<FeedbackButtons slug="item:arxiv-2611.00883" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.07854" target="_blank" rel="noopener noreferrer">Towards Foundation Decision Models: Drex</a>
+
+*HF ★ 10 · Nischay Dhankhar, Alisher Amantay, Zhanibek Datbayev… · [HF 镜像](https://huggingface.co/papers/2611.07854)*
+
+针对大模型自回归推理输出不稳定、需解析输出、延迟成本高的痛点，本文推出Drex系列4款开源决策模型，无需自回归解码即可直接输出选项概率分布。模型采用监督微调+RLAF训练，顶配Max版加视觉调优，性能比肩GPT-6 Sol等商用大模型，推理速度快数倍，输出稳定，是当前同类最优开源决策模型。
+
+<FeedbackButtons slug="item:arxiv-2611.07854" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.07909" target="_blank" rel="noopener noreferrer">EDGAR: Efficient Diffusion-Driven Gaussian Avatar Refinement via Synthetic Failure</a>
+
+*HF ★ 7 · Kwan Yun, Minhyeok Bang, Colette Suhjung Koo… · [HF 镜像](https://huggingface.co/papers/2611.07909)*
+
+针对单目重建的高斯人头Avatar存在模糊、拉伸、时序不稳定等缺陷，本文提出EDGAR扩散优化框架：构建含仿真故障样本的三元训练集，将Sapiens自监督模型提取的身份特征注入单步扩散+MoE结构适配不同退化，优化得到的统一高斯模型无需逐帧调用。多组实验验证其感知质量、重建精度、跨视角一致性及极端姿态鲁棒性均优于现有基线。（全文121字）
+
+<FeedbackButtons slug="item:arxiv-2611.07909" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.04894" target="_blank" rel="noopener noreferrer">VisSearch-Bench: Evaluating Long Horizon Visual Search in Multimodal Agents</a>
+
+*HF ★ 3 · ZhengXian Wu, Qianhao Nie, Zhuohong Chen… · [HF 镜像](https://huggingface.co/papers/2611.04894)*
+
+现有多模态智能体视觉搜索评测多无法衡量跨图像、跨步骤的视觉信息关联能力，为此该研究推出VisSearch-Bench评测集，覆盖7大领域共204项人工撰写的长程视觉搜索任务，配套完整证据、答案和双维度评测规则。对16个模型的测试显示，即便搭载搜索工具，最优系统任务完成率仅26.47%，凸显该类任务的技术挑战。
+
+<FeedbackButtons slug="item:arxiv-2611.04894" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.06817" target="_blank" rel="noopener noreferrer">Open-HumanScale: An Open Recipe for Scaling Human and Robot Experience for Embodied Foundation Models</a>
+
+*HF ★ 2 · Juncheng Ma, Jiaxin Li, Jiankai Tu… · [HF 镜像](https://huggingface.co/papers/2611.06817)*
+
+本文推出面向具身基础模型的开源方案Open-HumanScale，配套5万小时标注完成的人类第一人称操作视频库，实证得出预训练数据量与机器人下游任务成功率呈对数线性缩放规律。基于此训练的两类世界动作模型，纯人数据预训练版表现优异，人-机混合预训练版刷新多项基准SOTA，具备零样本泛化、具身上下文学习能力，全套资源已开源。
+
+<FeedbackButtons slug="item:arxiv-2611.06817" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2611.06953" target="_blank" rel="noopener noreferrer">SteelAgent: LLM-Orchestrated, Physics-Informed Steel Property Prediction with Audited Generalization and Calibrated Uncertainty</a>
+
+*Aleksandr Volkov, Roman Sultimov, Mikhail Kuzin…*
+
+本文提出SteelAgent：大模型编排、融合冶金物理信息的钢材性能预测框架，支持性能预测、不确定性输出与逆向设计。测试显示模型泛化能力受划分方式影响极大：随机拆分下梯度提升模型R²达0.859，按钢族留出验证时骤降至0.113，不确定性校准大幅退化，物理特征增益随场景波动，建议性能报告需明确标注评估样本群体。
+
+<FeedbackButtons slug="item:arxiv-2611.06953" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.06956" target="_blank" rel="noopener noreferrer">Octopus: One Brain, Many Branches for Latent-KV Multi-Agent Reinforcement Learning</a>
+
+*Tianming Sha*
+
+针对现有多智能体大模型框架KV缓存冗余、跨分支依赖丢失的问题，本文提出多智能体强化学习框架Octopus，依托共享主干与KV状态有向无环图，采用零拷贝分叉、跨分支KV挂载、DAG结构信用分配三类机制，在检索类任务上精度较基线最高提升17.5个点，训练吞吐提升3.3倍，峰值KV内存降低2.8倍。
+
+<FeedbackButtons slug="item:arxiv-2611.06956" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.06979" target="_blank" rel="noopener noreferrer">Uncertainty calibration in Bayesian M/EEG source imaging</a>
+
+*Ismail Huseynov, Mohammad Orabe, Srikantan Nagarajan…*
+
+针对M/EEG源成像后验可信区间校准缺失问题，提出模拟驱动的贝叶斯反演不确定度量化校准框架，对比带sLORETA加权的贝叶斯最小范数、带S-FLEX扩展的稀疏贝叶斯学习方法，配套保序重校准后处理。仿真及实测显示：重校准前稀疏方案定位更准、不确定度更贴合标称值，重校准后两类方法均有提升，稀疏方案在真实MEG任务中定位更聚焦、统计效力更高。
+
+<FeedbackButtons slug="item:arxiv-2611.06979" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/australian-universities-ai-native-graduates" target="_blank" rel="noopener noreferrer">Australian universities are creating AI-native graduates</a>
+
+*OpenAI*
+
+这份研究聚焦澳大利亚高校的AI人才培养新动向：当前澳高校主动调整教学体系，一方面扩大ChatGPT等生成式AI工具的学生使用权限，另一方面将AI应用全面融入教、学全流程，核心目的是适配未来AI深度渗透的职场需求，定向培养具备AI原生应用能力的毕业生，探索高等教育对接产业数字化转型的人才供给路径。
+
+<FeedbackButtons slug="item:openai-blog-australian-universities-ai-native-graduates" client:visible />
+
+## <a href="https://openai.com/index/cultfit-builds-with-codex" target="_blank" rel="noopener noreferrer">Cult.fit builds operational muscle with Codex</a>
+
+*OpenAI*
+
+健康生活服务平台Cult.fit落地了基于Codex的运营提效方案：核心方法是将Codex的代码生成能力开放给各职能线员工，支持快速自主搭建适配业务需求的内部工具，无需走传统技术排期流程。该方案落地后，全司业务推进速度大幅提升，内部工作流程得到重构，有效强化了企业整体运营能力。
+
+<FeedbackButtons slug="item:openai-blog-cultfit-builds-with-codex" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/announcements" target="_blank" rel="noopener noreferrer">Announcements</a>
+
+*Anthropic*
+
+本公告是AI企业Anthropic的官方定位说明：该公司是聚焦AI安全与前沿技术研究的研究型企业，核心研发目标是打造三类特性兼备的AI系统：运行表现稳定可靠、决策逻辑可被人类解释、行为路径可被人类有效引导管控，全公司的技术研发与落地工作均围绕该定位展开。
+
+<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+AI企业Anthropic公布公共利益投入方案，将公司部分股份划拨至新设立的「Anthropic公益基金」。该基金采用特殊架构，持股占比会随公司发展规模扩张同步提升，确保企业增长收益能更多流向公共福祉领域，是科技企业绑定商业发展与公共利益的创新尝试。
+
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/gemini-omni-12-flash-fast-and-cost-effective-with-longer-clips/" target="_blank" rel="noopener noreferrer">Gemini Omni 1.2 Flash: Fast and cost-effective with longer clips</a>
+
+*Google DeepMind*
+
+谷歌推出Gemini Omni 1.2 Flash多模态模型，通过优化时序注意力机制、轻量化推理架构，支持最长1小时连续音视频输入，推理速度较前代提升3倍，推理成本降低40%，长时序跨模态理解精度保持旗舰级水平，可适配实时直播分析、长视频审核、多模态交互等商用落地场景。
+
+<FeedbackButtons slug="item:deepmind-gemini-omni-12-flash-fast-and-cost-effective-with-longer-clips" client:visible />
+
+## <a href="https://deepmind.google/blog/agentic-cheminformatics-with-google-antigravity/" target="_blank" rel="noopener noreferrer">Agentic cheminformatics with Google Antigravity</a>
+
+*Google DeepMind*
+
+本研究推出搭载谷歌Antigravity工具的自主代理型化学信息学技术方案，可显著提速药物发现全流程：既支持化合物的高效精准检索，还能自主设计生成全新结构的刚性大环分子。该技术大幅压缩先导化合物发现周期、降低早期筛选成本，为大环类创新药研发提供了新的智能化落地路径。
+
+<FeedbackButtons slug="item:deepmind-agentic-cheminformatics-with-google-antigravity" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/cosmos-interactive-world-simulation" target="_blank" rel="noopener noreferrer">New NVIDIA Cosmos 3 Open Models for Interactive World Simulation</a>
+
+*Hugging Face*
+
+英伟达推出新一代Cosmos 3开源交互世界仿真模型，依托大模型驱动的物理引擎，支持多模态输入控制，可生成高保真动态3D场景，精准还原多物体交互的真实物理规则，交互延迟、仿真精度较前代提升超30%。该模型可用于机器人训练、自动驾驶仿真等场景，开源属性大幅降低行业仿真技术落地门槛。
+
+<FeedbackButtons slug="item:hf-blog-cosmos-interactive-world-simulation" client:visible />
+
+## <a href="https://huggingface.co/blog/phonon-tts" target="_blank" rel="noopener noreferrer">A Closer Look at Phonon TTS. Launching High-Quality On-Device Speech That Tops the Benchmarks.</a>
+
+*Hugging Face*
+
+本研究针对端侧高音质语音合成需求，提出Phonon（声子）TTS方案：以更细粒度的声子作为建模中间表示，优化轻量化推理架构，大幅降低算力消耗。其语音自然度、鲁棒性均优于现有端侧TTS方案，媲美云端大模型，在主流公开基准测试中登顶，可在手机等消费级终端离线实现高音质实时合成。
+
+<FeedbackButtons slug="item:hf-blog-phonon-tts" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我改进（RSI）的概念演进：1965年I.J.古德最早提出超智能机器设想，即能全面超越人类智力、自行迭代设计更优机器的系统。2008年尤德考斯基明确RSI定义：AI依托现有智能优化自身认知机制的反馈环。当前AI语境下，这类反馈环既可表现为模型直接改写自身权重，也可广义指向自主优化训练流程。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/11/508107.html" target="_blank" rel="noopener noreferrer">99.4%登顶全球第一！这个中国AI师承世界冠军</a>
+
+*量子位*
+
+360自研AI安全攻防系统“图龙锋”，在有“AI安全世界杯”之称的CyberGym榜单中，经1507个真实漏洞任务、三轮独立评测，以99.4%的漏洞复现成功率登顶，远超此前11.9%的行业最高纪录，击败OpenAI、谷歌、Anthropic的同类专用网安模型，核心优势源于其团队多年顶级黑客大赛积累的冠军级攻防经验。
+
+<FeedbackButtons slug="item:qbitai-508107" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/507988.html" target="_blank" rel="noopener noreferrer">香港金融科技周 x StartmeupHK 2026主论坛：以「金融+」、「AI+」及全球拓展开拓新机遇</a>
+
+*量子位*
+
+第11届香港金融科技周xStartmeupHK2026主论坛11月初在港落幕，汇聚全球政商、科创界代表，围绕“金融+”“AI+”、全球拓展三大方向，探讨依托香港资本、科技及国际联通优势挖掘增长机遇。行政长官李家超致辞称，香港确定性营商环境及新发布的首个五年规划，将助力企业把握国家及全球发展机遇。
+
+<FeedbackButtons slug="item:qbitai-507988" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/507972.html" target="_blank" rel="noopener noreferrer">AI短剧门槛降降降！实测即梦短剧工作室：剧本分镜预演一条龙，伙伴计划长期护航</a>
+
+*量子位*
+
+当前AI连续短剧创作存在内容一致性难保障、非创意流程耗精力等痛点。剪映旗下即梦短剧工作室整合小云雀短剧agent能力，打通剧本、资产库、分镜全链路创作流程，实测支持从一句话灵感快速生成匹配需求的短剧方案，配套伙伴计划长期护航，大幅降低AI短剧创作门槛。
+
+<FeedbackButtons slug="item:qbitai-507972" client:visible />
