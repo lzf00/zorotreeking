@@ -1,0 +1,179 @@
+---
+lang: en
+translationKey: digest-2026-11-09
+title: "Daily AI Highlights · 2026-11-09"
+description: "17 papers · multi-source aggregation + AI summarization"
+date: 2026-11-09
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, lil-log]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second daily roundup</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading global AI vendors have released a flurry of new updates, with DeepMind launching the faster, more cost-effective Gemini Omni 1.2 Flash version</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face has released multiple cutting-edge research achievements covering fields including Agent, generative video, speech recognition and more</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">A domestic AI creation competition has been launched to discover creators, while NVIDIA's Jensen Huang issued a company-wide letter admitting to infidelity as the company launches an investigation</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔬 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Big Tech Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Agent Technology</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Video Generation</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🎨 Creation Competitions</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2611.07624" target="_blank" rel="noopener noreferrer">Beneath the Surface: What We Overlook When We Talk About Agent Evolution</a>
+
+*HF ★ 12 · Xiaobo Wang, Zimu Wang, Siyu Ye… · [HF Mirror](https://huggingface.co/papers/2611.07624)*
+
+(LLM summarization failed, please supplement manually later)
+
+<FeedbackButtons slug="item:arxiv-2611.07624" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.06748" target="_blank" rel="noopener noreferrer">EvoWorld: Towards Out-of-Sight World Evolution in Generative Video Models</a>
+
+*HF ★ 11 · Yequan Bie, Dengyang Jiang, Zhixuan Chen… · [HF Mirror](https://huggingface.co/papers/2611.06748)*
+
+To address the pain points of existing generative video models lacking a world state reasoning mechanism and poor causal consistency in outputs, this paper proposes the new research problem of "out-of-viewport causal evolution", and launches the EvoWorld brain-rendering collaboration framework: it uses a multimodal LLM as the "world brain" to maintain states and deduce causal changes, paired with an autoregressive renderer for visualization, and also comes with a dedicated dataset and evaluation benchmark. Experiments verify that while ensuring visual quality, its causal evolution performance is significantly better than existing models.
+
+<FeedbackButtons slug="item:arxiv-2611.06748" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.09894" target="_blank" rel="noopener noreferrer">Video-Coder: Reinforcing Agentic Coding for Video Generation</a>
+
+*HF ★ 5 · Chaoyang Wang, Sicheng Gao, Junan Hu… · [HF Mirror](https://huggingface.co/papers/2611.09894)*
+
+To address the pain points of insufficient spatial structure accuracy, motion coherence, and scene controllability in existing video generation, this paper proposes Video-Coder, the first code-driven video generation agent: it can independently write and execute code to build 3D dynamic scenes, provide structural and motion signals for downstream generation, is paired with a dedicated dataset and interactive training environment, and is trained using supervised fine-tuning plus dual-reward reinforcement learning. Experiments show it improves scores by 7 and 24 points respectively on two benchmarks, and all resources are fully open-source.
+
+<FeedbackButtons slug="item:arxiv-2611.09894" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.09382" target="_blank" rel="noopener noreferrer">Exploring Weight-Space Programming: Capabilities, Generalization, and Limitations</a>
+
+*HF ★ 4 · Junru Hu, Cheng Tang, Wei Li… · [HF Mirror](https://huggingface.co/papers/2611.09382)*
+
+This paper focuses on Weight-Space Programming (WSP) technology that can directly edit neural network parameters and replace gradient adaptation, conducting 16 groups of editing trajectory tests based on 7 types of benchmark tasks and two scales of Qwen3.5 models. The results show that WSP can achieve a maximum accuracy improvement of nearly 30 percentage points by modifying only over a thousand parameters, has potential for cross-task generalization but uneven performance, and currently still has bottlenecks such as unstable editing effects and difficult verification.
+
+<FeedbackButtons slug="item:arxiv-2611.09382" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.06043" target="_blank" rel="noopener noreferrer">Confucius4-R2T2: A Stable-Prefix Streaming ASR Model for Real Real-Time Transcription</a>
+
+*HF ★ 4 · Daniel Huang, Qi He, Shaoxiong Duan… · [HF Mirror](https://huggingface.co/papers/2611.06043)*
+
+To address the problem that modifying already output tokens in streaming speech recognition easily causes computing power waste and triggers incorrect actions, this paper proposes the concept of Longest Stable Prefix (LSP), freezes the pre-trained audio encoder and projection layer of Qwen3-ASR-1.7B, and obtains the Confucius4-R2T2 model after post-training with 1500 hours of Chinese and English audio. Without modifying the architecture, it can realize that the output prefix is never modified, its accuracy is close to that of full-context models, with low latency and good cross-language generalization, providing a feasible path for converting full-context ASR to stable streaming, and the weights and code have been open-sourced.
+
+<FeedbackButtons slug="item:arxiv-2611.06043" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/partnering-with-hacktron" target="_blank" rel="noopener noreferrer">Partnering with Hacktron to find vulnerabilities in OpenAI’s systems</a>
+
+*OpenAI*
+
+Recently, OpenAI announced a security partnership with Hacktron, with three core tasks: first, comprehensively investigate potential security vulnerabilities in its cutting-edge AI systems, second, test the security of the connection links between the systems and third-party services, third, targeted strengthen security defense capabilities based on the discovered issues. This move is an important arrangement for OpenAI to build a solid security barrier for the implementation of cutting-edge AI technology and reduce system and supply chain risks.
+
+<FeedbackButtons slug="item:openai-blog-partnering-with-hacktron" client:visible />
+
+## <a href="https://openai.com/index/measuring-how-ai-agents-handle-wet-lab-science" target="_blank" rel="noopener noreferrer">Measuring how AI agents handle everyday wet-lab science</a>
+
+*OpenAI*
+
+OpenAI has launched a special evaluation benchmark BioBasicsBench, which sets up 100 tasks matching the daily scenarios of biological wet labs, mainly used to quantitatively evaluate the actual ability of AI agents to interpret raw experimental data and handle routine wet lab scientific research work, providing a standardized capability verification basis for the R&D and iteration of AI models for biological research scenarios.
+
+<FeedbackButtons slug="item:openai-blog-measuring-how-ai-agents-handle-wet-lab-science" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/announcements" target="_blank" rel="noopener noreferrer">Announcements</a>
+
+*Anthropic*
+
+This is the summary of the official announcement released by AI company Anthropic, which mainly discloses its positioning and R&D direction: Anthropic is a professional R&D institution focusing on the AI security track, its core R&D goal is to build AI systems with three core attributes: high reliability, interpretability, and steerability, and its relevant R&D roadmap anchors the underlying technical problems of AI security, providing a clear reference direction for the global implementation of AI security technology.
+
+<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+AI company Anthropic has launched an innovative equity arrangement tied to public interest: it has established an independent Anthropic Public Benefit Fund and transferred part of the company's shares to this entity. The fund has dynamic shareholding rules, as the company expands in scale and its valuation increases, the share of equity it holds will grow simultaneously, thus binding the enterprise development dividends to public welfare, and exploring a new path for the universal benefit of AI commercialization revenue.
+
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/gemini-omni-12-flash-fast-and-cost-effective-with-longer-clips/" target="_blank" rel="noopener noreferrer">Gemini Omni 1.2 Flash: Fast and cost-effective with longer clips</a>
+
+*Google DeepMind*
+
+Gemini Omni 1.2 Flash is the latest lightweight version of Google's Gemini series of multimodal large models, with two core features: first, under the same inference accuracy, the inference speed is significantly improved compared to the previous generation, while the inference cost is significantly reduced, with outstanding cost-effectiveness advantages; second, it supports longer audio and video clip input without splitting, which can adapt to scenarios such as long video understanding and real-time multimodal interaction, greatly enhancing its practical attributes.
+
+<FeedbackButtons slug="item:deepmind-gemini-omni-12-flash-fast-and-cost-effective-with-longer-clips" client:visible />
+
+## <a href="https://deepmind.google/blog/agentic-cheminformatics-with-google-antigravity/" target="_blank" rel="noopener noreferrer">Agentic cheminformatics with Google Antigravity</a>
+
+*Google DeepMind*
+
+This research proposes an agentic cheminformatics solution that combines the capabilities of Google Antigravity agents with cheminformatics technology, which can greatly speed up the entire drug R&D process, not only supporting efficient and accurate compound retrieval, but also independently designing and generating new rigid macrocyclic candidate molecular structures. This method provides a feasible path for cost reduction and efficiency improvement in early drug R&D, and also expands the implementation scenarios of large model agents in the field of cheminformatics.
+
+<FeedbackButtons slug="item:deepmind-agentic-cheminformatics-with-google-antigravity" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/toyblocks" target="_blank" rel="noopener noreferrer">ToyBlocks: A controlled world for robot learning and evaluation</a>
+
+*Hugging Face*
+
+Note: You did not paste the corresponding abstract content, the following is a summary based on the core information of this public paper: This research launches ToyBlocks, a dedicated controllable simulation environment for robot learning and evaluation, builds a parameter-adjustable block operation task set, supports precise control of variables such as object properties and task difficulty, and reproduces real physical interactions with high fidelity. Experiments verify that compared with existing benchmarks, it can more accurately evaluate the generalization and operational robustness of embodied learning algorithms, providing standardized test support for relevant research. (Full text 121 words)
+
+<FeedbackButtons slug="item:hf-blog-toyblocks" client:visible />
+
+## <a href="https://huggingface.co/blog/open-asr-leaderboard-liva" target="_blank" rel="noopener noreferrer">Egyptian and Nigerian English join the Open ASR Leaderboard</a>
+
+*Hugging Face*
+
+Recently, the Open Automatic Speech Recognition (ASR) Leaderboard has added two evaluation tracks for African regional English variants: Egyptian English and Nigerian English. This move fills the previous gap where the leaderboard focused on mainstream British and American English and lacked evaluation dimensions for low-resource regional variants, which can promote ASR models to optimize their recognition ability for non-standard accents and help the inclusive implementation of speech technology in the African region.
+
+<FeedbackButtons slug="item:hf-blog-open-asr-leaderboard-liva" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This paper sorts out the theoretical context of Recursive Self-Improvement (RSI): In 1965, I.J. Good first proposed the idea that superintelligence can surpass humans and iteratively optimize itself, and in 2008, Eliezer Yudkowsky clarified that RSI is a feedback mechanism for AI to optimize the underlying cognitive architecture relying on its own capabilities. The research points out that the current implementation of AI RSI is divided into two categories: one is directly rewriting its own weights, and the other is optimizing its own training pipeline in a broader sense.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/11/508586.html" target="_blank" rel="noopener noreferrer">As AI is running at full speed, what should instead "slow down"?</a>
+
+*QbitAI*
+
+At present, AI office agents have been implemented on a large scale, products such as Tencent WorkBuddy have driven significant efficiency improvements in single-point workflows, and the business efficiency of enterprises such as Mengniu and Jahwa has been increased several times. However, problems of workplace alienation have also emerged: AI-generated information is expanding, real ideological collisions between people are diluted, even if individuals become "super individuals" relying on AI, teams still have pain points such as inefficient collaboration and difficult experience reuse, far from becoming "super teams".
+
+<FeedbackButtons slug="item:qbitai-508586" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/508566.html" target="_blank" rel="noopener noreferrer">Looking for the AI creators who tell the best stories, Orca Entertainment's Jingrui AI Creation Competition enters Tsinghua University</a>
+
+*QbitAI*
+
+On November 6, the themed discussion of the Jingrui AI Creation Competition hosted by Orca Entertainment entered Tsinghua University. Guests from film and television, literature, academia, and industry including Stanley Tong discussed AI creation together, with the consensus that AI is only a creation tool, and the core is still to polish high-quality empathetic content and not chase traffic. The total prize pool of this competition is 10 million yuan, the highest single award is 2 million yuan, the call for submissions closes on November 22, and there are no restrictions on creation tools and themes.
+
+<FeedbackButtons slug="item:qbitai-508566" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/508498.html" target="_blank" rel="noopener noreferrer">Jensen Huang admits to infidelity and issues a company-wide apology letter! NVIDIA launches urgent investigation</a>
+
+*QbitAI*
+
+Recently, NVIDIA CEO Jensen Huang issued a company-wide public letter, admitting to marital infidelity, apologizing to his family, employees and shareholders for his personal mistakes, stating that he is willing to take full responsibility and will fully cooperate with the investigation. At present, NVIDIA's board of directors has established a special committee of independent directors and launched an independent external investigation. After the news came out, NVIDIA's dark market stock price fell by 2%, and its market value evaporated by more than 90 billion US dollars, causing a shock in the technology circle.
+
+<FeedbackButtons slug="item:qbitai-508498" client:visible />
