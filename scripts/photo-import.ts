@@ -169,9 +169,10 @@ function renderMdx(opts: {
   lines.push(`draft: false`);
   lines.push("---");
   lines.push("");
+  // 注意：这里是 .mdx，HTML 注释 <!-- --> 会让 @mdx-js 直接报错，必须用 JSX 注释
   lines.push(lang === "zh"
-    ? "<!-- 可以在这里写这次拍摄的手记；也可以留空，相册页会展示图片瀑布流 + 地图。 -->"
-    : "<!-- Optional notes about this shoot. Can be left empty — the album page will show a waterfall + map. -->"
+    ? "{/* 可以在这里写这次拍摄的手记；也可以留空，相册页会展示图片瀑布流 + 地图。 */}"
+    : "{/* Optional notes about this shoot. Can be left empty — the album page will show a waterfall + map. */}"
   );
   lines.push("");
   return lines.join("\n");
