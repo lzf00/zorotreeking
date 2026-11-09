@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import PhotoLayout from "@/layouts/PhotoLayout.astro";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
 import { loadPhotoManifest, resolveAlbumKey } from "@/lib/photo-manifests";
+import { siteDateString } from "@/lib/site-date";
 
 const lang = "zh" as const;
 const t = useTranslations(lang);
@@ -63,7 +64,7 @@ function aspect(i: number) {
               <div class="absolute inset-x-0 bottom-0 p-4 sm:p-5 transition-all duration-300" style="background: linear-gradient(to top, rgba(0,0,0,0.78), rgba(0,0,0,0))">
                 <h3 class="font-serif text-xl sm:text-2xl leading-tight text-white">{album.data.title}</h3>
                 <div class="mt-1 flex items-center gap-2 text-[10.5px] uppercase tracking-[0.14em] font-mono text-white/65">
-                  <time>{album.data.date.toISOString().slice(0, 10)}</time>
+                  <time>{siteDateString(album.data.date)}</time>
                   <span class="opacity-50">/</span>
                   <span>{count} frames</span>
                   {album.data.location && <><span class="opacity-50">/</span><span class="normal-case tracking-normal">{album.data.location}</span></>}

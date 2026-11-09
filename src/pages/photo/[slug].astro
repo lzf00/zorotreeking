@@ -6,6 +6,7 @@ import PhotoGallery from "@/components/PhotoGallery";
 import PhotoMap from "@/components/PhotoMap";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
 import { loadPhotoManifest, resolveAlbumKey } from "@/lib/photo-manifests";
+import { siteDateString } from "@/lib/site-date";
 
 export async function getStaticPaths() {
   const all = await getCollection("photo", (p) => p.data.lang === "zh" && !p.data.draft);
@@ -22,7 +23,7 @@ const t = useTranslations(lang);
 const photos = loadPhotoManifest(resolveAlbumKey(entry.data));
 const cover = photos[0];
 const rest = photos.slice(1);
-const dateStr = entry.data.date.toISOString().slice(0, 10);
+const dateStr = siteDateString(entry.data.date);
 // 有 GPS 的照片提出来给地图用
 const geoPoints = photos
   .filter((p: any) => Number.isFinite(p.lat) && Number.isFinite(p.lng))
