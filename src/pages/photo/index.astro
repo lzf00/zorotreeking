@@ -13,7 +13,8 @@ const albums = (await getCollection("photo", (p) => p.data.lang === lang && !p.d
 
 const enriched = albums.map((album) => {
   const manifest = loadPhotoManifest(resolveAlbumKey(album.data));
-  return { album, cover: manifest[0]?.src || manifest[0]?.thumb, count: manifest.length };
+  // 封面优先用 frontmatter.cover（后台可点选）；留空则退回第一张
+  return { album, cover: album.data.cover || manifest[0]?.src || manifest[0]?.thumb, count: manifest.length };
 });
 
 // 编辑性网格：第 0、3、6… 张占 2 列，其余 1 列（更接近 VCG / Behance）

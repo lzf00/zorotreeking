@@ -4,7 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ZoroTreeking · 管理后台</title>
+  <meta name="robots" content="noindex,nofollow" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <!-- unpkg 上取 Decap，预热连接省一个 RTT -->
+  <link rel="preconnect" href="https://unpkg.com" crossorigin />
 
   <!-- 站点字体（与主站一致） -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -275,7 +278,9 @@
   </a>
 
   <!-- Decap CMS via CDN -->
-  <script src="https://unpkg.com/decap-cms@^3.5.0/dist/decap-cms.js"></script>
+  <!-- 版本写死：用 ^3.5.0 时 unpkg 会解析到最新 3.x，Decap 换代可能改
+       DOM/class，下面那套样式和上传补丁会静默失效。升级请改这一个数字。 -->
+  <script src="https://unpkg.com/decap-cms@3.17.3/dist/decap-cms.js"></script>
 
   <!-- 后台 UX 补丁：
        1) 把媒体库不必要的按钮（复制/下载/删除）隐掉，让"上传"成为视觉主线
@@ -288,9 +293,11 @@
       // 媒体库默认要点"选用已选中项目"把文件挂到当前字段。但我们的相册
       // 是靠扫文件夹生成 manifest 的，frontmatter 里写不写文件路径都不影响
       // 渲染——所以这一步对用户来说是多余的，隐了。
+      // ⚠ 不要隐「选用已选中项目 / Insert selected」：封面字段要用它确认选图。
+      // 相册批量上传那条路径靠上传后自动发 Esc 关模态，不依赖这个按钮。
       const HIDE_TEXTS = new Set([
-        '复制', '下载', '删除已选中项目', '选用已选中项目',
-        'Copy', 'Download', 'Delete selected', 'Insert selected',
+        '复制', '下载', '删除已选中项目',
+        'Copy', 'Download', 'Delete selected',
       ]);
       const PRIMARY_TEXTS = new Set(['上传', 'Upload']);
 

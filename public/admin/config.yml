@@ -45,7 +45,7 @@ collections:
     slug: "{{slug}}.{{fields.lang}}"
     extension: mdx
     format: frontmatter
-    summary: "{{title}} · {{date | date('YYYY-MM-DD')}}"
+    summary: "[{{lang}}] {{title}} · {{date | date('YYYY-MM-DD')}}"
     sortable_fields: [date, title]
     view_filters:
       - { label: "仅中文", field: lang, pattern: "zh" }
@@ -75,11 +75,12 @@ collections:
     slug: "{{slug}}.{{fields.lang}}"
     extension: mdx
     format: frontmatter
-    summary: "{{title}} · {{date | date('YYYY-MM-DD')}}"
+    summary: "[{{lang}}] {{title}} · {{date | date('YYYY-MM-DD')}}"
     sortable_fields: [date, title]
     view_filters:
       - { label: "仅中文", field: lang, pattern: "zh" }
       - { label: "仅英文", field: lang, pattern: "en" }
+      - { label: "草稿", field: draft, pattern: true }
     fields:
       - { label: 标题, name: title, widget: string }
       - { label: 文章编号, name: translationKey, widget: string, hint: "中英文用同一个，例：2026-05-review" }
@@ -104,7 +105,7 @@ collections:
     slug: "{{fields.translationKey}}.{{fields.lang}}"
     extension: mdx
     format: frontmatter
-    summary: "{{title}} · {{date | date('YYYY-MM-DD')}}"
+    summary: "[{{lang}}] {{title}} · {{date | date('YYYY-MM-DD')}}"
     sortable_fields: [date, title]
     # 上传的图片落到 public/photos/uploads/<相册编号>/，部署期由
     # scripts/build-photo-manifests.ts 扫一遍自动生成 manifest（EXIF + 尺寸）
@@ -148,6 +149,15 @@ collections:
           ① 单击方框 → 系统文件框，按 ⌘ / Shift 多选；
           ② 也可直接把一组图拖进方框。
           文件落到「相册编号」对应的文件夹，部署期自动抽 EXIF + 尺寸生成相册。
+          ⚠ 传完别再改「相册编号」——图片已经在旧文件夹里了，改编号等于换目录。
+      - label: 封面
+        name: cover
+        widget: image
+        required: false
+        choose_url: false
+        hint: |
+          列表页和相册顶部的那张大图。点开 →「媒体库」→ 选本相册里任意一张即可。
+          留空 = 自动用文件名排序第一张（想换封面又不想点选，就把它重命名成 00 开头）。
       - label: "🌐 语言"
         name: lang
         widget: select
@@ -157,6 +167,10 @@ collections:
         name: draft
         widget: boolean
         default: false
+    view_filters:
+      - { label: "仅中文", field: lang, pattern: "zh" }
+      - { label: "仅英文", field: lang, pattern: "en" }
+      - { label: "草稿", field: draft, pattern: true }
 
   # ────────────────────────────────────────
   # 徒步路线
@@ -169,8 +183,12 @@ collections:
     slug: "{{slug}}.{{fields.lang}}"
     extension: mdx
     format: frontmatter
-    summary: "{{title}} · {{date | date('YYYY-MM-DD')}}"
+    summary: "[{{lang}}] {{title}} · {{date | date('YYYY-MM-DD')}}"
     sortable_fields: [date, title]
+    view_filters:
+      - { label: "仅中文", field: lang, pattern: "zh" }
+      - { label: "仅英文", field: lang, pattern: "en" }
+      - { label: "草稿", field: draft, pattern: true }
     fields:
       - { label: 标题, name: title, widget: string }
       - { label: 路线编号, name: translationKey, widget: string, hint: "中英文用同一个，例：lingshan-traverse" }

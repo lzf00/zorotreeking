@@ -39,6 +39,15 @@ export function resolveAlbumKey(data: {
   manifest?: string;
   translationKey?: string;
 }): string {
+  // 1) 显式 manifest 字段
+  if (data.manifest && manifests[data.manifest]?.length) return data.manifest;
+  // 2) translationKey 对应的文件夹里真有图 → 直接用。
+  //    这条优先于 photos[0]：后台改过「相册编号」后，frontmatter 里 Decap
+  //    写的旧路径会指向老目录，照它渲染就会出现整册变空（2026-11-09 踩过）。
+  if (data.translationKey && manifests[data.translationKey]?.length) {
+    return data.translationKey;
+  }
+
   const photos = data.photos;
   if (Array.isArray(photos) && photos.length > 0) {
     const first = photos[0];
