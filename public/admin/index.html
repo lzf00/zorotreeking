@@ -344,6 +344,10 @@
       gap: 6px;
       transition: opacity 0.15s, transform 0.15s;
       backdrop-filter: blur(6px);
+      /* 只是悬浮小按钮，绝不拦截下面内容的点击（历史 bug：竖条挡死左栏） */
+      pointer-events: auto;
+      width: fit-content;
+      height: auto;
     }
     .back-to-site:hover {
       opacity: 0.85;
@@ -357,6 +361,25 @@
       fill: none;
       stroke-width: 2;
     }
+    /* ── 上传结果提示条 ── */
+    .zt-toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      transform: translateX(-50%);
+      z-index: 100000;
+      max-width: 72vw;
+      padding: 12px 18px;
+      border-radius: 12px;
+      background: var(--zt-text);
+      color: var(--zt-bg);
+      font: 500 13px/1.5 "Inter", sans-serif;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+      display: none;
+    }
+    .zt-toast[data-kind="error"] { background: #b42318; color: #fff; }
+    .zt-toast[data-kind="ok"] { background: #0b6b3a; color: #fff; }
+
     /* ── 右下角主题开关 ── */
     .theme-toggle {
       position: fixed;
@@ -375,7 +398,16 @@
     }
     .theme-toggle:hover { opacity: 0.85; transform: translateY(-1px); }
 
-    .ops-center { top: 64px; }
+    /* ── ETF 运维入口：叠在「回到主站」上方 ──
+       ⚠ 历史 bug：这里原本写的是 `.ops-center { top: 64px }`，但 .back-to-site
+       自己带 `bottom: 24px`，fixed 元素同时给了 top 和 bottom 就会被拉成一根
+       87×912 的竖条——既是一块挡在左边的大黑框，又覆盖了左栏 87px 的宽度，
+       把下面所有点击全部吃掉（上传按钮点不动就是这么来的）。*/
+    .back-to-site.ops-center {
+      top: auto;
+      bottom: 68px;
+      left: 24px;
+    }
   </style>
   <script>
     // 主题：默认跟随系统；右下角按钮可手动切换，选择存在 localStorage。
@@ -467,69 +499,172 @@
         });
       }
 
-      // ── B. 多文件上传补丁 ─────────────────────────
-      // Decap bundle 里 file upload 按钮长这样：
-      //   <label class="nc-fileUploadButton">
-      //     <span>上传</span>
-      //     <input type="file" accept="image/*" onChange=...>
-      //   </label>
-      // 没有 multiple；handlePersist 又只取第一个文件。
-      // 补丁：给 input 加 multiple，拦 change，把多文件拆成 N 次单文件分发。
-      async function processMultiFiles(input, files) {
-        for (let i = 0; i < files.length; i++) {
-          const dt = new DataTransfer();
-          dt.items.add(files[i]);
-          try {
-            input.files = dt.files;
-          } catch (_) {
-            Object.defineProperty(input, 'files', {
-              value: dt.files, writable: true, configurable: true,
-            });
-          }
-          input.__ztSynthetic = true;
-          input.dispatchEvent(new Event('change', { bubbles: true }));
-          input.__ztSynthetic = false;
-          // 给 Decap 一点处理 + GitHub commit 的时间，避免并发把 SHA 撞坏
-          await new Promise((r) => setTimeout(r, 1500));
-        }
-        // 全部上传完，发个 Escape 关闭媒体库模态
-        // （用户不再需要"选用已选中项目"——文件已经落到正确文件夹，
-        // 部署时会自动扫盘出 manifest）
+      // ── B. 批量上传：自己组一次 commit 推到 main ─────
+      // 为什么不再借 Decap 的上传：
+      //   1) 3.17.3 的 media library 一次只 persist 一个文件（handlePersist
+      //      里写死 [...files][0]），多选直接丢；
+      //   2) 老补丁靠"把一个 change 事件拆成 N 个合成 change"去骗 React，
+      //      Decap 升级后合成事件不再触发它的 handler——实测 0 个写请求，
+      //      用户看到的现象就是"选了图、什么都没发生"；
+      //   3) 相册本来就靠扫文件夹生成 manifest，frontmatter 里记不记路径都
+      //      不影响渲染，所以根本不必走它的媒体库。
+      // 现在直接调 GitHub API，一次 commit 提交所有图；CI 收到后重建 manifest，
+      // 连「发布」都不用点。
+      const REPO = 'lzf00/zorotreeking';
+      const BRANCH = 'main';
+
+      function readUserToken() {
         try {
-          document.dispatchEvent(
-            new KeyboardEvent('keydown', { key: 'Escape', code: 'Escape', keyCode: 27, which: 27, bubbles: true })
-          );
-        } catch (_) {}
+          const raw = localStorage.getItem('decap-cms-user');
+          const user = raw ? JSON.parse(raw) : null;
+          return user && typeof user.token === 'string' ? user.token : null;
+        } catch (_) {
+          return null;
+        }
       }
 
+      function fieldValue(labelPrefix) {
+        const boxes = document.querySelectorAll('[class*="ControlContainer"]');
+        for (const box of boxes) {
+          const label = box.querySelector('label');
+          if (!label) continue;
+          if (!(label.textContent || '').trim().startsWith(labelPrefix)) continue;
+          const input = box.querySelector('input[type="text"], input:not([type])');
+          if (input && input.value.trim()) return input.value.trim();
+        }
+        return '';
+      }
+
+      function albumKey() {
+        const fromField = fieldValue('相册编号');
+        if (fromField) return fromField;
+        const m = location.hash.match(/entries\/([^/?#]+)/);
+        return m ? decodeURIComponent(m[1]) : '';
+      }
+
+      async function gh(pathname, options) {
+        const token = readUserToken();
+        const res = await fetch('https://api.github.com' + pathname, {
+          ...options,
+          headers: {
+            Authorization: 'Bearer ' + token,
+            Accept: 'application/vnd.github+json',
+            'Content-Type': 'application/json',
+            ...(options && options.headers ? options.headers : {}),
+          },
+        });
+        if (!res.ok) {
+          let detail = '';
+          try {
+            const body = await res.json();
+            detail = body && body.message ? body.message : '';
+          } catch (_) {}
+          throw new Error(String(res.status) + (detail ? ' ' + detail : ''));
+        }
+        return res.json();
+      }
+
+      function fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(String(reader.result).split(',')[1]);
+          reader.onerror = () => reject(reader.error);
+          reader.readAsDataURL(file);
+        });
+      }
+
+      async function commitPhotos(files, folder) {
+        const ref = await gh('/repos/' + REPO + '/git/ref/heads/' + BRANCH);
+        const baseSha = ref.object.sha;
+        const base = await gh('/repos/' + REPO + '/git/commits/' + baseSha);
+        const entries = [];
+        for (const file of files) {
+          const content = await fileToBase64(file);
+          const blob = await gh('/repos/' + REPO + '/git/blobs', {
+            method: 'POST',
+            body: JSON.stringify({ content: content, encoding: 'base64' }),
+          });
+          entries.push({ path: folder + '/' + file.name, mode: '100644', type: 'blob', sha: blob.sha });
+        }
+        const tree = await gh('/repos/' + REPO + '/git/trees', {
+          method: 'POST',
+          body: JSON.stringify({ base_tree: base.tree.sha, tree: entries }),
+        });
+        const commit = await gh('/repos/' + REPO + '/git/commits', {
+          method: 'POST',
+          body: JSON.stringify({
+            message: 'content(photo): 上传 ' + files.length + ' 张照片到 ' + folder,
+            tree: tree.sha,
+            parents: [baseSha],
+          }),
+        });
+        await gh('/repos/' + REPO + '/git/refs/heads/' + BRANCH, {
+          method: 'PATCH',
+          body: JSON.stringify({ sha: commit.sha }),
+        });
+      }
+
+      function toast(message, kind) {
+        let el = document.getElementById('zt-toast');
+        if (!el) {
+          el = document.createElement('div');
+          el.id = 'zt-toast';
+          el.className = 'zt-toast';
+          document.body.appendChild(el);
+        }
+        el.textContent = message;
+        el.dataset.kind = kind || 'info';
+        el.style.display = 'block';
+        clearTimeout(toast.timer);
+        toast.timer = setTimeout(() => { el.style.display = 'none'; }, kind === 'error' ? 15000 : 7000);
+      }
+
+      async function handleFiles(input) {
+        const files = Array.from(input.files || []);
+        if (!files.length) return;
+        const folder = albumKey();
+        if (!folder) {
+          toast('先填「相册编号」再上传——它决定图片落到哪个文件夹', 'error');
+          return;
+        }
+        const dir = 'public/photos/uploads/' + folder;
+        toast('正在上传 ' + files.length + ' 张到 ' + dir + ' …');
+        try {
+          await commitPhotos(files, dir);
+          toast('已上传 ' + files.length + ' 张到 ' + dir + '。部署约 1~2 分钟后自动重建相册，不用点「发布」。', 'ok');
+          try {
+            document.dispatchEvent(
+              new KeyboardEvent('keydown', { key: 'Escape', code: 'Escape', keyCode: 27, which: 27, bubbles: true })
+            );
+          } catch (_) {}
+        } catch (err) {
+          toast('上传失败：' + (err && err.message ? err.message : err), 'error');
+          console.error('[zt] photo upload failed', err);
+        }
+        input.value = '';
+      }
+
+      // 拦下文件选择：不管 1 张还是 50 张，都走上面的直传逻辑，
+      // 不再依赖 Decap 的 change handler（它已经接不住了）。
       function shimInput(input) {
         if (input.dataset.ztShimmed) return;
         input.dataset.ztShimmed = '1';
-
-        if (!input.hasAttribute('multiple')) {
-          input.setAttribute('multiple', 'multiple');
-        }
-
+        input.setAttribute('multiple', 'multiple');
         input.addEventListener(
           'change',
           (e) => {
-            // 我们自己 dispatch 出来的合成 change，让它正常走
             if (input.__ztSynthetic) return;
-
             const files = Array.from(input.files || []);
-            if (files.length <= 1) return; // 单文件不拦
-
-            // 多文件：阻止 Decap 原始 handler 跑，自己拆开重发
+            if (!files.length) return;
+            // 没登录（拿不到 token）就把事件放回给原生逻辑，别把上传吞掉
+            if (!readUserToken()) return;
             e.stopImmediatePropagation();
             e.preventDefault();
-            processMultiFiles(input, files).catch((err) => {
-              console.error('[zt] multi-upload failed', err);
-            });
+            handleFiles(input);
           },
-          true // capture phase：抢在 React 根 delegate 之前
+          true
         );
-
-        console.log('[zt] file input shimmed →', input);
+        console.log('[zt] upload input hooked →', input);
       }
 
       function scan(root) {
