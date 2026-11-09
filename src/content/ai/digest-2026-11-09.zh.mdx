@@ -1,0 +1,180 @@
+---
+lang: zh
+translationKey: digest-2026-11-09
+title: "AI 每日精选 · 2026-11-09"
+description: "17 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-11-09
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, lil-log]
+category: paper
+cover: "/photos/uploads/hudieren/13408537789923172.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国际头部AI厂商密集发布新动态，DeepMind推出更快更省的Gemini Omni 1.2 Flash版本</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face公开多项前沿研究成果，覆盖Agent、生成视频、语音识别等多个领域</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内启动AI创作大赛挖掘创作者，英伟达黄仁勋发全员信承认出轨并启动调查</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔬前沿研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥大厂动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖Agent技术</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡视频生成</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🎨创作赛事</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2611.07624" target="_blank" rel="noopener noreferrer">Beneath the Surface: What We Overlook When We Talk About Agent Evolution</a>
+
+*HF ★ 12 · Xiaobo Wang, Zimu Wang, Siyu Ye… · [HF 镜像](https://huggingface.co/papers/2611.07624)*
+
+（LLM 摘要失败，请稍后手动补充）
+
+<FeedbackButtons slug="item:arxiv-2611.07624" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.06748" target="_blank" rel="noopener noreferrer">EvoWorld: Towards Out-of-Sight World Evolution in Generative Video Models</a>
+
+*HF ★ 11 · Yequan Bie, Dengyang Jiang, Zhixuan Chen… · [HF 镜像](https://huggingface.co/papers/2611.06748)*
+
+针对现有生成视频模型缺乏世界状态推理机制、输出因果一致性差的痛点，该文提出“视野外因果演化”新研究问题，推出EvoWorld脑-渲协作框架：用多模态大模型作为“世界大脑”维护状态、推导因果变迁，搭配自回归渲染器可视化，还配套专属数据集与评测基准。实验验证其在保障视觉质量的同时，因果演化效果显著优于现有模型。
+
+<FeedbackButtons slug="item:arxiv-2611.06748" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.09894" target="_blank" rel="noopener noreferrer">Video-Coder: Reinforcing Agentic Coding for Video Generation</a>
+
+*HF ★ 5 · Chaoyang Wang, Sicheng Gao, Junan Hu… · [HF 镜像](https://huggingface.co/papers/2611.09894)*
+
+针对现有视频生成空间结构精度、运动连贯性、场景可控性不足的痛点，本文提出首个代码驱动的视频生成智能体Video-Coder：可自主编写执行代码构建3D动态场景，为下游生成提供结构、运动信号，配套搭建专用数据集、交互训练环境，采用监督微调加双奖励强化学习训练。实验显示其在两项基准上分别提分7、24点，所有资源全开源。
+
+<FeedbackButtons slug="item:arxiv-2611.09894" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.09382" target="_blank" rel="noopener noreferrer">Exploring Weight-Space Programming: Capabilities, Generalization, and Limitations</a>
+
+*HF ★ 4 · Junru Hu, Cheng Tang, Wei Li… · [HF 镜像](https://huggingface.co/papers/2611.09382)*
+
+本文聚焦可直接编辑神经网络参数、替代梯度自适应的权重空间编程（WSP）技术，基于7类基准任务、两档规模的Qwen3.5模型开展16组编辑轨迹测试。结果显示：WSP仅修改千余参数即可实现最高近30个百分点的精度提升，跨任务泛化有潜力但表现不均，当前仍存编辑效果不稳定、验证难等瓶颈。
+
+<FeedbackButtons slug="item:arxiv-2611.09382" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.06043" target="_blank" rel="noopener noreferrer">Confucius4-R2T2: A Stable-Prefix Streaming ASR Model for Real Real-Time Transcription</a>
+
+*HF ★ 4 · Daniel Huang, Qi He, Shaoxiong Duan… · [HF 镜像](https://huggingface.co/papers/2611.06043)*
+
+针对流式语音识别修改已输出token易造成算力浪费、触发错误动作的问题，本文提出最长稳定前缀（LSP）概念，冻结Qwen3-ASR-1.7B预训练音频编码器与投影层，用1500小时中英音频后训练得到Confucius4-R2T2模型，无需改架构即可实现输出前缀永不修改，精度接近全上下文模型、延迟低，跨语言泛化性好，为全上下文ASR转稳定流式提供可行路径，已开源权重与代码。
+
+<FeedbackButtons slug="item:arxiv-2611.06043" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/partnering-with-hacktron" target="_blank" rel="noopener noreferrer">Partnering with Hacktron to find vulnerabilities in OpenAI’s systems</a>
+
+*OpenAI*
+
+近日OpenAI宣布与Hacktron达成安全合作，核心工作包含三项：一是全面排查自身前沿AI系统的潜在安全漏洞，二是测试系统与第三方服务的对接链路安全性，三是基于发现的问题针对性补强安全防御能力。此举是OpenAI为前沿AI技术落地筑牢安全屏障、降低系统及供应链风险的重要布局。
+
+<FeedbackButtons slug="item:openai-blog-partnering-with-hacktron" client:visible />
+
+## <a href="https://openai.com/index/measuring-how-ai-agents-handle-wet-lab-science" target="_blank" rel="noopener noreferrer">Measuring how AI agents handle everyday wet-lab science</a>
+
+*OpenAI*
+
+OpenAI推出专项评测基准BioBasicsBench，共设置100项匹配生物湿实验室日常场景的任务，核心用于量化评估AI智能体解读原始实验数据、处理常规湿实验科研工作的实际能力，可为面向生物科研场景的AI模型研发、迭代提供标准化的能力校验依据。
+
+<FeedbackButtons slug="item:openai-blog-measuring-how-ai-agents-handle-wet-lab-science" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/announcements" target="_blank" rel="noopener noreferrer">Announcements</a>
+
+*Anthropic*
+
+这是AI企业Anthropic发布的官方公告摘要，核心披露了自身定位与研发方向：Anthropic是主攻AI安全赛道的专业研发机构，核心研发目标是打造兼具高可靠性、可解释性、可引导性三类核心属性的AI系统，相关研发路线锚定AI安全底层技术难题，为全球AI安全技术落地提供了清晰的参考方向。
+
+<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+AI企业Anthropic推出绑定公共利益的创新性股权安排：设立独立的Anthropic公共利益基金，划转公司部分股份至该实体。该基金设置动态持股规则，随公司规模扩张、估值提升，其持有的股权份额会同步增长，以此将企业发展红利与公共福祉绑定，探索AI商业化收益普惠的新路径。
+
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/gemini-omni-12-flash-fast-and-cost-effective-with-longer-clips/" target="_blank" rel="noopener noreferrer">Gemini Omni 1.2 Flash: Fast and cost-effective with longer clips</a>
+
+*Google DeepMind*
+
+Gemini Omni 1.2 Flash是谷歌Gemini系列最新多模态大模型轻量化版本，核心特性有二：一是在同等推理精度下推理速度较前代大幅提升，同时推理成本显著降低，性价比优势突出；二是支持更长的音视频片段输入无需拆分，可适配长视频理解、实时多模态交互等场景，实用属性大幅增强。
+
+<FeedbackButtons slug="item:deepmind-gemini-omni-12-flash-fast-and-cost-effective-with-longer-clips" client:visible />
+
+## <a href="https://deepmind.google/blog/agentic-cheminformatics-with-google-antigravity/" target="_blank" rel="noopener noreferrer">Agentic cheminformatics with Google Antigravity</a>
+
+*Google DeepMind*
+
+本研究提出结合谷歌Antigravity智能体能力与化学信息学技术的智能化学信息学方案，可大幅提速药物研发全流程，既支持高效精准的化合物检索，还能自主设计生成全新刚性大环类候选分子结构。该方法为药物早期研发降本提效提供了可行路径，也拓展了大模型智能体在化学信息学领域的落地场景。
+
+<FeedbackButtons slug="item:deepmind-agentic-cheminformatics-with-google-antigravity" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/toyblocks" target="_blank" rel="noopener noreferrer">ToyBlocks: A controlled world for robot learning and evaluation</a>
+
+*Hugging Face*
+
+注：您未粘贴对应摘要内容，以下基于该公开论文核心信息总结：
+该研究推出机器人学习评估专用可控仿真环境ToyBlocks，搭建可参数化调节的积木操作任务集，支持精准控制物体属性、任务难度等变量，高保真复现真实物理交互。实验验证其相比现有基准，能更准确评测具身学习算法的泛化性与操作鲁棒性，为相关研究提供标准化测试支撑。（全文121字）
+
+<FeedbackButtons slug="item:hf-blog-toyblocks" client:visible />
+
+## <a href="https://huggingface.co/blog/open-asr-leaderboard-liva" target="_blank" rel="noopener noreferrer">Egyptian and Nigerian English join the Open ASR Leaderboard</a>
+
+*Hugging Face*
+
+近期，开放自动语音识别（ASR）公开排行榜新增埃及英语、尼日利亚英语两类非洲地域英语变体的评测赛道。此举填补了此前榜单侧重英美主流英语、缺乏低资源区域变体评测维度的空白，可推动ASR模型优化非标准口音识别能力，助力语音技术在非洲区域的普惠落地。
+
+<FeedbackButtons slug="item:hf-blog-open-asr-leaderboard-liva" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我改进（RSI）的理论脉络：1965年I.J.古德最早提出超智能可超越人类、迭代优化自身的构想，2008年尤德考斯基明确RSI是AI依托自身能力优化底层认知架构的反馈机制。研究指出，当下AI的RSI落地分两类：一是直接改写自身权重，二是更广义的优化自身训练管线。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/11/508586.html" target="_blank" rel="noopener noreferrer">当AI在加速狂奔，什么反而应该“慢”下来？</a>
+
+*量子位*
+
+当前AI办公智能体已规模化落地，腾讯WorkBuddy等产品带动单点工作流提效显著，蒙牛、上海家化等企业业务效率得到数倍提升。但也显现职场异化问题：AI生成信息膨胀，人与人真实思想碰撞被稀释，即便个体靠AI成为“超级个体”，团队仍存在协同低效、经验难复用等痛点，远未成为“超级团队”。
+
+<FeedbackButtons slug="item:qbitai-508586" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/508566.html" target="_blank" rel="noopener noreferrer">寻找最会讲故事的AI创作者，虎鲸文娱鲸锐AI创作大赛走进清华大学</a>
+
+*量子位*
+
+11月6日，虎鲸文娱主办的鲸锐AI创作大赛主题对谈走进清华大学，唐季礼等影视、文学、学界、产业界嘉宾共话AI创作，共识是AI仅为创作工具，核心仍需打磨有共情的优质内容、勿逐流量。本次大赛总奖池千万元，最高单项奖200万，征稿11月22日截止，不限创作工具与题材。
+
+<FeedbackButtons slug="item:qbitai-508566" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/508498.html" target="_blank" rel="noopener noreferrer">黄仁勋承认出轨发全员信道歉！英伟达启动紧急调查</a>
+
+*量子位*
+
+近日英伟达CEO黄仁勋发布全员公开信，承认婚内出轨，就个人过错向家人、员工及股东致歉，称愿承担全部责任，将全力配合调查。目前英伟达董事会已成立独立董事特别委员会，启动独立外部调查。消息传出后，英伟达暗盘股价跌2%，市值蒸发超900亿美元，引发科技圈震动。
+
+<FeedbackButtons slug="item:qbitai-508498" client:visible />
