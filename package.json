@@ -11,7 +11,7 @@
     "dev": "astro dev",
     "start": "astro dev",
     "prebuild": "bash scripts/setup-fonts.sh",
-    "build": "tsx scripts/build-photo-manifests.ts && astro build && pagefind --site dist",
+    "build": "tsx scripts/build-photo-manifests.ts && tsx scripts/check-content-lang.ts && astro build && pagefind --site dist",
     "photo:manifests": "tsx scripts/build-photo-manifests.ts",
     "preview": "astro preview",
     "test": "node --import tsx --test tests/*.test.ts",

@@ -32,6 +32,44 @@
       --zt-accent: #1d1d1f;
     }
 
+    /* ── 深色模式：只翻 CSS 变量，下面所有规则都是 var() 驱动 ── */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --zt-bg: #0b0b0d;
+        --zt-card: #151517;
+        --zt-soft: #1c1c1f;
+        --zt-soft-2: #26262a;
+        --zt-text: #f2f2f4;
+        --zt-text-secondary: #b5b5bb;
+        --zt-text-tertiary: #86868b;
+        --zt-border: #2a2a2e;
+        --zt-accent: #f2f2f4;
+      }
+      /* 主按钮底色变浅了，字必须反过来 */
+      button[class*="primary"],
+      button[type="submit"],
+      [data-testid*="publish"],
+      [class*="PublishButton"],
+      button[data-zt-role="primary-media"] {
+        color: #0b0b0d !important;
+      }
+      /* 浮动按钮：浅底白字会看不见，改成卡片色 */
+      .back-to-site {
+        background: var(--zt-card) !important;
+        color: var(--zt-text) !important;
+        border: 1px solid var(--zt-border);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+      }
+      .back-to-site:hover { color: var(--zt-text) !important; }
+      /* 顶栏半透明底的深色版 */
+      [class*="AppHeader"],
+      header[class*="App"],
+      nav[class*="App"] {
+        background: rgba(11, 11, 13, 0.78) !important;
+      }
+      a:hover { color: #fff !important; }
+    }
+
     /* ── 字体 / 全局底色 ── */
     html, body {
       font-family: "Inter", ui-sans-serif, system-ui, "PingFang SC", "Hiragino Sans GB", sans-serif !important;
