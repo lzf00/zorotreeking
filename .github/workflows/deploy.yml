@@ -97,6 +97,14 @@ jobs:
           PUBLIC_AMAP_SECURITY_CODE: ${{ secrets.PUBLIC_AMAP_SECURITY_CODE }}
         run: npm run build
 
+      # config.yml 的 schema 只有在浏览器里跑 Decap 才会校验：YAML 合法不代表
+      # Decap 认（多一个键就白屏）。这里用无头浏览器真的加载 dist/admin/，
+      # 报配置错就挡住这次部署；浏览器装不上时脚本自己降级为警告。
+      - name: Validate admin (Decap) config
+        run: |
+          npx playwright install chromium || echo "::warning::playwright chromium 安装失败，校验将降级为跳过"
+          npm run check:admin
+
       - name: Stamp release identity
         run: |
           python3 - <<'PY'

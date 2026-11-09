@@ -32,42 +32,100 @@
       --zt-accent: #1d1d1f;
     }
 
-    /* ── 深色模式：只翻 CSS 变量，下面所有规则都是 var() 驱动 ── */
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --zt-bg: #0b0b0d;
-        --zt-card: #151517;
-        --zt-soft: #1c1c1f;
-        --zt-soft-2: #26262a;
-        --zt-text: #f2f2f4;
-        --zt-text-secondary: #b5b5bb;
-        --zt-text-tertiary: #86868b;
-        --zt-border: #2a2a2e;
-        --zt-accent: #f2f2f4;
-      }
-      /* 主按钮底色变浅了，字必须反过来 */
-      button[class*="primary"],
-      button[type="submit"],
-      [data-testid*="publish"],
-      [class*="PublishButton"],
-      button[data-zt-role="primary-media"] {
-        color: #0b0b0d !important;
-      }
-      /* 浮动按钮：浅底白字会看不见，改成卡片色 */
-      .back-to-site {
-        background: var(--zt-card) !important;
-        color: var(--zt-text) !important;
-        border: 1px solid var(--zt-border);
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
-      }
-      .back-to-site:hover { color: var(--zt-text) !important; }
-      /* 顶栏半透明底的深色版 */
-      [class*="AppHeader"],
-      header[class*="App"],
-      nav[class*="App"] {
-        background: rgba(11, 11, 13, 0.78) !important;
-      }
-      a:hover { color: #fff !important; }
+    /* ── 主题：默认跟随系统，右下角可手动切换（记忆在 localStorage） ──
+       这里不用 @media 直接写深色，是因为手动开关需要能覆盖系统设置；
+       统一由 JS 把最终结果写到 <html data-theme>，CSS 只认这一个属性。 */
+    html[data-theme="dark"] {
+      --zt-bg: #0b0b0d;
+      --zt-card: #151517;
+      --zt-soft: #1c1c1f;
+      --zt-soft-2: #26262a;
+      --zt-text: #f2f2f4;
+      --zt-text-secondary: #b5b5bb;
+      --zt-text-tertiary: #86868b;
+      --zt-border: #2a2a2e;
+      --zt-accent: #f2f2f4;
+    }
+    /* 主按钮底色变浅了，字必须反过来 */
+    html[data-theme="dark"] button[class*="primary"],
+    html[data-theme="dark"] button[type="submit"],
+    html[data-theme="dark"] [data-testid*="publish"],
+    html[data-theme="dark"] [class*="PublishButton"],
+    html[data-theme="dark"] button[data-zt-role="primary-media"] {
+      color: #0b0b0d !important;
+    }
+    /* 浮动按钮：浅底白字会看不见，改成卡片色 */
+    html[data-theme="dark"] .back-to-site {
+      background: var(--zt-card) !important;
+      color: var(--zt-text) !important;
+      border: 1px solid var(--zt-border);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+    }
+    html[data-theme="dark"] .back-to-site:hover { color: var(--zt-text) !important; }
+    html[data-theme="dark"] [class*="AppHeader"],
+    html[data-theme="dark"] header[class*="App"],
+    html[data-theme="dark"] nav[class*="App"] {
+      background: rgba(11, 11, 13, 0.78) !important;
+    }
+    html[data-theme="dark"] a:hover { color: #fff !important; }
+
+    /* ── 深色下「登录后才出现」的界面 ──
+       媒体库模态、编辑器、下拉菜单这些是 Decap 自己写死的浅色。未登录状态
+       没法实测，所以只做保守覆盖：容器给深底 + 内部文字转浅，按钮单独兜住，
+       避免出现「黑底黑字」这种比白底更糟的结果。 */
+    html[data-theme="dark"] [role="dialog"],
+    html[data-theme="dark"] [class*="Modal"],
+    html[data-theme="dark"] [class*="modal"]:not([class*="modal-"]),
+    html[data-theme="dark"] [class*="MediaLibrary"],
+    html[data-theme="dark"] [class*="MediaCard"] {
+      background: var(--zt-card) !important;
+      color: var(--zt-text) !important;
+      border-color: var(--zt-border) !important;
+    }
+    html[data-theme="dark"] [role="dialog"] *,
+    html[data-theme="dark"] [class*="Modal"] * {
+      color: var(--zt-text) !important;
+      border-color: var(--zt-border) !important;
+    }
+    html[data-theme="dark"] [role="dialog"] button,
+    html[data-theme="dark"] [class*="Modal"] button {
+      background: var(--zt-soft) !important;
+      color: var(--zt-text) !important;
+      border-color: var(--zt-border) !important;
+    }
+    html[data-theme="dark"] [role="dialog"] button[class*="primary"],
+    html[data-theme="dark"] [class*="Modal"] button[class*="primary"],
+    html[data-theme="dark"] [role="dialog"] button[data-zt-role="primary-media"],
+    html[data-theme="dark"] [class*="Modal"] button[data-zt-role="primary-media"] {
+      background: var(--zt-accent) !important;
+      color: #0b0b0d !important;
+    }
+    /* 下拉菜单 / 编辑器 */
+    html[data-theme="dark"] [role="menu"],
+    html[data-theme="dark"] [class*="Dropdown"],
+    html[data-theme="dark"] [class*="MenuList"] {
+      background: var(--zt-card) !important;
+      color: var(--zt-text) !important;
+      border-color: var(--zt-border) !important;
+    }
+    html[data-theme="dark"] .cm-editor,
+    html[data-theme="dark"] .cm-editor .cm-content,
+    html[data-theme="dark"] .CodeMirror,
+    html[data-theme="dark"] [contenteditable="true"] {
+      background: var(--zt-soft) !important;
+      color: var(--zt-text) !important;
+    }
+    html[data-theme="dark"] select,
+    html[data-theme="dark"] option {
+      background: var(--zt-soft) !important;
+      color: var(--zt-text) !important;
+    }
+    /* 表格分隔线 */
+    html[data-theme="dark"] table,
+    html[data-theme="dark"] th,
+    html[data-theme="dark"] td {
+      border-color: var(--zt-border) !important;
+      color: var(--zt-text) !important;
     }
 
     /* ── 字体 / 全局底色 ── */
@@ -299,8 +357,57 @@
       fill: none;
       stroke-width: 2;
     }
+    /* ── 右下角主题开关 ── */
+    .theme-toggle {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 99999;
+      padding: 9px 16px;
+      border-radius: 9999px;
+      border: 1px solid var(--zt-border);
+      background: var(--zt-card);
+      color: var(--zt-text);
+      font: 500 13px/1 "Inter", sans-serif;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.18), 0 1px 3px rgba(0,0,0,0.06);
+      transition: opacity 0.15s, transform 0.15s;
+    }
+    .theme-toggle:hover { opacity: 0.85; transform: translateY(-1px); }
+
     .ops-center { top: 64px; }
   </style>
+  <script>
+    // 主题：默认跟随系统；右下角按钮可手动切换，选择存在 localStorage。
+    (function () {
+      var KEY = "zt-admin-theme";
+      var mq = window.matchMedia("(prefers-color-scheme: dark)");
+      function resolve() {
+        var saved = null;
+        try { saved = localStorage.getItem(KEY); } catch (e) {}
+        if (saved === "dark" || saved === "light") return saved;
+        return mq.matches ? "dark" : "light";
+      }
+      function paint() {
+        var mode = resolve();
+        document.documentElement.dataset.theme = mode;
+        var btn = document.getElementById("zt-theme-toggle");
+        if (btn) {
+          btn.textContent = mode === "dark" ? "☀️ 浅色" : "🌙 深色";
+          btn.title = "当前" + (mode === "dark" ? "深色" : "浅色") + "，点一下切换（会记住选择）";
+        }
+      }
+      window.ztToggleTheme = function () {
+        try {
+          localStorage.setItem(KEY, document.documentElement.dataset.theme === "dark" ? "light" : "dark");
+        } catch (e) {}
+        paint();
+      };
+      if (mq.addEventListener) mq.addEventListener("change", paint);
+      paint();
+      document.addEventListener("DOMContentLoaded", paint);
+    })();
+  </script>
 </head>
 <body>
   <!-- 跳回主站 -->
@@ -311,6 +418,11 @@
     </svg>
     <span>回到主站</span>
   </a>
+
+  <!-- 主题开关：默认跟随系统，点一下在深/浅之间切换并记住 -->
+  <button id="zt-theme-toggle" class="theme-toggle" type="button"
+          onclick="window.ztToggleTheme && window.ztToggleTheme()"
+          aria-label="切换深色 / 浅色主题">🌙 深色</button>
   <a class="back-to-site ops-center" href="/admin/etf-ops" aria-label="打开 ETF 运维中心" title="ETF 运维中心">
     <span>ETF 运维</span>
   </a>
