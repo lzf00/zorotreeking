@@ -111,7 +111,8 @@ test("Ali travel guide is indexed and keeps its complete standalone roadbook", a
     "utf8",
   );
   assert.match(html, /<title>向西 · 阿里大环线 2026<\/title>/);
-  assert.match(html, /返回徒步旅行板块/);
+  // 返回链接靠可见文案识别：aria-label 与可见文本重复时已删掉（a11y 冗余标注）
+  assert.match(html, /<a class="brand" href="\/hike">← ZoroTreeking · 徒步旅行<\/a>/);
   assert.match(html, /id="itinerary"/);
   assert.match(html, /id="roadbook"/);
   assert.match(html, /id="permit"/);

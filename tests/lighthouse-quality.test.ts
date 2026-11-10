@@ -21,7 +21,9 @@ test("Astro inlines the render-blocking site stylesheet", async () => {
 test("explore map uses one shared tooltip instead of a title node per point", async () => {
   const page = await readProjectFile("src/pages/explore.astro");
   assert.doesNotMatch(page, /<title>/);
-  assert.match(page, /data-tooltip=/);
+  // tooltip 文本直接复用 aria-label（早前是 data-tooltip 再抄一份）。断言读的是
+  // 「共享 tooltip + 每个点有可读名字」，不是具体属性名。
+  assert.match(page, /aria-label=\{label\}/);
   assert.match(page, /id="explore-tooltip"/);
   assert.match(page, /role="tooltip"/);
 });

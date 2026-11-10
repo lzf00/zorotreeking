@@ -84,7 +84,7 @@ test("deploy uses versioned releases, commit identity smoke, and automatic rollb
   const contents = await workflow("deploy.yml");
   assert.match(contents, /releases\/\$GITHUB_SHA/);
   assert.match(contents, /cp -al "\$current"\/\. "\$target"\//);
-  assert.match(contents, /rsync -avz --checksum --delete/);
+  assert.match(contents, /rsync -az --checksum --stats --delete --no-perms --no-owner --no-group/);
   assert.match(contents, /dist\/deploy-meta\.json/);
   assert.match(contents, /meta\.get\("sha"\) != os\.environ\["GITHUB_SHA"\]/);
   assert.match(contents, /Roll back failed release/);
