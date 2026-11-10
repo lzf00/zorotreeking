@@ -60,6 +60,23 @@ const SKIP_DOMAINS = [
 // 默认 timeout
 const TIMEOUT_MS = 12_000;
 
+// 单条链接最多探几次：跨境链路丢包、对方限流都会让一次探测失败，
+// 一次失败就判死刑会制造大量假阳性（2026-11-10 全量扫描就出现过
+// 74 个 baidu.com「死链」，全是美国 runner 连中国站超时）。
+const MAX_ATTEMPTS = 3;
+
+// 这些状态码说明「我们看不到内容」，但没法证明链接失效：
+//   401/403/405/407/451 WAF、订阅墙、不支持 HEAD
+//   408/429            超时、限流
+//   5xx                对方服务器故障
+const UNKNOWN_STATUS = new Set([401, 403, 405, 407, 408, 429, 451, 999]);
+const isUnknownStatus = (status: number) => UNKNOWN_STATUS.has(status) || status >= 500;
+
+// 只有这些才叫死链
+const isDeadStatus = (status: number) => status >= 400 && status < 500 && !isUnknownStatus(status);
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
 type LinkRef = { url: string; fromFile: string };
 type LinkResult = LinkRef & {
   status: number | null;
@@ -115,11 +132,7 @@ function isTolerated(url: string): boolean {
   }
 }
 
-async function probe(url: string): Promise<LinkResult> {
-  const baseRef: LinkRef = { url, fromFile: "" };
-  if (shouldSkip(url)) {
-    return { ...baseRef, status: null, ok: true, tolerated: true, reason: "skipped" };
-  }
+async function probeOnce(url: string): Promise<{ status: number | null; reason?: string }> {
   const ctl = new AbortController();
   const timer = setTimeout(() => ctl.abort(), TIMEOUT_MS);
   try {
@@ -142,21 +155,44 @@ async function probe(url: string): Promise<LinkResult> {
         },
       });
     }
-    const status = r?.status ?? 0;
-    const ok = status > 0 && status < 400;
-    const tolerated = !ok && isTolerated(url);
-    return { ...baseRef, status, ok, tolerated };
+    return { status: r?.status ?? null };
   } catch (e: any) {
-    return {
-      ...baseRef,
-      status: null,
-      ok: false,
-      tolerated: isTolerated(url),
-      reason: e.name === "AbortError" ? "timeout" : (e.message || "err").slice(0, 100),
-    };
+    return { status: null, reason: e.name === "AbortError" ? "timeout" : (e.message || "err").slice(0, 100) };
   } finally {
     clearTimeout(timer);
   }
+}
+
+async function probe(url: string): Promise<LinkResult> {
+  const baseRef: LinkRef = { url, fromFile: "" };
+  if (shouldSkip(url)) {
+    return { ...baseRef, status: null, ok: true, tolerated: true, reason: "skipped" };
+  }
+
+  let last: { status: number | null; reason?: string } = { status: null, reason: "unreachable" };
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt += 1) {
+    last = await probeOnce(url);
+    const status = last.status;
+    // 有明确结论（2xx/3xx 或 404/410 这类死链）就别再重试
+    if (status !== null && (status < 400 || isDeadStatus(status))) break;
+    if (attempt < MAX_ATTEMPTS) await sleep(600 * attempt);
+  }
+
+  const status = last.status;
+  if (status === null) {
+    // 重试后仍拿不到 HTTP 状态：网络问题，不能算死链
+    return { ...baseRef, status, ok: false, tolerated: true, reason: last.reason || "unreachable" };
+  }
+  const ok = status < 400;
+  if (ok) return { ...baseRef, status, ok, tolerated: false };
+  const dead = isDeadStatus(status) && !isTolerated(url);
+  return {
+    ...baseRef,
+    status,
+    ok: false,
+    tolerated: !dead,
+    reason: dead ? undefined : isUnknownStatus(status) ? "unknown-status" : "tolerated-domain",
+  };
 }
 
 const hostSlots = new Map<string, { active: number; waiters: Array<() => void> }>();
@@ -225,7 +261,7 @@ async function main() {
   console.log();
   console.log(`╔════ 死链巡查报告 ════════════════════════════════════╗`);
   console.log(`  ✓ 健康     : ${okCount}`);
-  console.log(`  ⚠ 容忍     : ${tolerated.length}（rate-limit / WAF 域名）`);
+  console.log(`  ⚠ 容忍     : ${tolerated.length}（限流 / WAF / 5xx / 网络不可达，未计入死链）`);
   console.log(`  ✗ 死链     : ${dead.length}`);
   console.log(`╚══════════════════════════════════════════════════════╝`);
   console.log();
