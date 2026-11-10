@@ -148,6 +148,16 @@ src/data/embeddings.json (2048 维 × N 篇)
 | `src/components/Sparkline.astro` | 表格内嵌 SVG 走势线 |
 | `src/components/ContentPulse.astro` | 365 天产出热力图 |
 
+### 岛水合冒烟：`scripts/check-hydration.mjs`
+
+`npm run check:hydration`（需先 `npm run build` 并起一个静态服务器，`BASE_URL` 可覆盖）。
+遍历 7 个岛密集型页面，滚动触发 `client:visible`，收集 `pageerror` / `console.error`，
+过滤掉本地没有 FastAPI 后端造成的 `/api/*` 404，有任何其它报错即退出码 1。
+
+存在的理由：React 19 / recharts 3 这类升级，Lighthouse 分数和 axe 都不会变红，
+只有「组件到底有没有在浏览器里画出来」能拦住回归（2026-11-11 升级时用它验证：
+23 个岛全部水合，`/en/invest/` 的 2 个图表容器、10 个饼图扇区、1 条折线都正常渲染）。
+
 ## 配置文件
 
 | 文件 | 编辑后影响 |

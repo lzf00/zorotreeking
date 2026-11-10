@@ -19,7 +19,8 @@
     "validate:etf": "tsx scripts/validate-etf-snapshot.ts",
     "verify": "npm run validate:etf && npm run check && npm test && npm run build",
     "astro": "astro",
-    "check:admin": "node scripts/check-admin-config.mjs"
+    "check:admin": "node scripts/check-admin-config.mjs",
+    "check:hydration": "node scripts/check-hydration.mjs"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.3.6",
