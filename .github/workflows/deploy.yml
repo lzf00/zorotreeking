@@ -280,9 +280,32 @@ jobs:
           # --checksum：CI 每次都重新 build，所有文件 mtime 都是新的，光靠
           # size+mtime 会让 189MB HTML 全部重传；checksum 模式只传真正变了的字节。
           # --stats 把实际传输量写进日志，方便判断增量是否生效。
-          rsync -az --checksum --stats --delete --no-perms --no-owner --no-group \
-            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new" \
-            dist/ "$SSH_USER@$SSH_HOST:$release_root/releases/$GITHUB_SHA/"
+          #
+          # 重试 + 超时：跨境链路会偶发劣化（2026-11-10 晚 runner→服务器实测掉到
+          # 15KB/s，同一时刻本机直传是 2.4MB/s），一次失败就整轮白跑太亏。
+          #   --timeout=180     连续 3 分钟没有进展就放弃本次尝试，而不是挂到 job 超时
+          #   ServerAlive       SSH 层心跳，避免半开连接一直等待
+          # 重试是幂等的：目标目录内容由 checksum 判定，重复 rsync 只会继续补齐。
+          attempt=1
+          while :; do
+            echo "::group::rsync attempt $attempt"
+            if rsync -az --checksum --stats --delete --no-perms --no-owner --no-group \
+                 --timeout=180 \
+                 -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new -o ServerAliveInterval=15 -o ServerAliveCountMax=4" \
+                 dist/ "$SSH_USER@$SSH_HOST:$release_root/releases/$GITHUB_SHA/"; then
+              echo "::endgroup::"
+              echo "rsync succeeded on attempt $attempt"
+              break
+            fi
+            echo "::endgroup::"
+            if [ "$attempt" -ge 3 ]; then
+              echo "rsync failed after $attempt attempts"
+              exit 1
+            fi
+            attempt=$((attempt + 1))
+            echo "transfer failed, retrying in 30s (attempt $attempt/3)"
+            sleep 30
+          done
 
       - name: Activate release atomically
         id: activate

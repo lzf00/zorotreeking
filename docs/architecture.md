@@ -74,8 +74,24 @@
 4. **`astro check`** 类型检查守门
 5. `astro build`
 6. pagefind 索引
-7. rsync → VPS nginx
-8. **IndexNow ping**（POST 新 URL 给 Bing/Yandex/Naver 加速索引）
+7. **Prepare versioned release**：`cp -al current/. releases/<sha>/` 用硬链接做种子
+8. rsync（`--checksum` 只传真正变化的字节；`--timeout=180` 防挂死；失败重试 3 次）
+9. **Activate release atomically**：`ln -sfn` + `mv -Tf` 原子切换 `current`
+10. Prune：保留最近 20 个 release，`current` / `previous` 永不删除
+11. Production acceptance smoke test，失败自动回滚到 `previous`
+12. **IndexNow ping**（POST 新 URL 给 Bing/Yandex/Naver 加速索引）
+
+#### 部署传输量（重要）
+- **平常**（只改内容）：~2.3MB。硬链接种子 + checksum 让 rsync 只传变化文件。
+- **改 CSS 时**：因为 CSS 内联进每个页面，1140 个 HTML 全部变化。实测
+  `Total transferred file size` 215MB，但 rsync 的块级 delta 后 **Literal data 只有 22MB**
+  （2026-11-10 实测）。
+- **runner → 国内服务器链路会劣化**：同一时刻本机直传 2.4MB/s，GitHub runner 掉到
+  15KB/s。所以 job 超时设为 30 分钟、rsync 带 `--timeout=180` + 3 次重试，
+  失败/取消时自动删除半成品 release 目录。
+- 紧急恢复手法：把 `dist/` 在本机按同样步骤（cp -al 种子 → rsync → 原子切换 → prune）
+  手工推上去，本机 8 秒可完成；随后推一个只改文档的 commit，让 CI 以增量方式
+  验证整条流水线仍是绿的。
 
 ### `.github/workflows/lighthouse.yml`
 **触发**: deploy 完成后自动 + workflow_dispatch（手动跑会强制审计，不受 scope 跳过影响）。
