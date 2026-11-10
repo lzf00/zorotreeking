@@ -26,6 +26,7 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { toStoredVector } from "../src/lib/embedding-codec.ts";
 import {
   EMBED_MODEL,
   assertEmbeddingCacheWriteSafe,
@@ -151,6 +152,11 @@ async function main() {
       delete cache.items[k];
       removed++;
     }
+  }
+
+  // 写盘前统一量化：float 数组 → int16 + base64（文件从 ~16MB 降到 ~2.6MB）
+  for (const k of Object.keys(cache.items)) {
+    cache.items[k] = toStoredVector(cache.items[k]);
   }
 
   await fs.mkdir(path.dirname(OUTFILE), { recursive: true });

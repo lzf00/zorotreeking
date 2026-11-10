@@ -14,10 +14,12 @@
 const EMBED_URL = "https://ark.cn-beijing.volces.com/api/v3/embeddings/multimodal";
 export const EMBED_MODEL = process.env.DOUBAO_EMBEDDING_MODEL || "doubao-embedding-large-text-250515";
 
+import type { StoredVector } from "../../src/lib/embedding-codec.ts";
+
 export interface EmbeddingCache {
   model: string;
   dim: number;
-  items: Record<string, { hash: string; vec: number[] }>;
+  items: Record<string, StoredVector>;
 }
 
 export function ensureEmbeddingCacheModel(

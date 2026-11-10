@@ -14,7 +14,7 @@
 | `/{section}/{slug}` | 文章详情 | mdx |
 | `/about` | "我是谁" 模块 | `src/data/about.ts` |
 | `/uses` | 工具栈清单 | `src/data/uses.ts` |
-| `/explore` | 主题地图 (PCA 2D 散点) | `src/data/embeddings.json` |
+| `/explore` | 主题地图 (PCA 2D 散点) | `src/data/embeddings.json`（int16 量化 + base64，见 `src/lib/embedding-codec.ts`） |
 | `/changelog` | git log 自动渲染 | build 时 execSync |
 | `/subscribe` | RSS + Buttondown 邮件订阅 | `PUBLIC_BUTTONDOWN_USERNAME`（默认公开 handle） |
 | `/tag/[tag]` | tag 索引 | content collections |

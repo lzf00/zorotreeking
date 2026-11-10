@@ -12,9 +12,10 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 import embeddingsData from "@/data/embeddings.json";
 import { projectTo2D } from "@/lib/pca";
+import { decodeVector, type StoredCache } from "@/lib/embedding-codec";
 
 interface CacheItem { hash: string; vec: number[] }
-const cache = embeddingsData as { items?: Record<string, CacheItem> };
+const cache = embeddingsData as StoredCache;
 const itemsObj = cache.items ?? {};
 
 // 拿所有文章 metadata
@@ -38,10 +39,12 @@ for (const p of all) {
   });
 }
 
-// 只保留 embeddings 里有的 + 有 metadata 的
+// 只保留 embeddings 里有的 + 有 metadata 的（JSON 里是 int16+base64，先解码）
 const valid: Record<string, CacheItem> = {};
 for (const [k, v] of Object.entries(itemsObj)) {
-  if (metaMap.has(k) && v.vec?.length > 0) valid[k] = v;
+  if (!metaMap.has(k)) continue;
+  const vec = decodeVector(v);
+  if (vec.length > 0) valid[k] = { hash: v.hash, vec: Array.from(vec) };
 }
 
 const points = projectTo2D(valid);

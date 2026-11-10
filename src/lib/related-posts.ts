@@ -8,15 +8,14 @@
  * 在 daily-digest cron 中维护，每篇 mdx 一个 doubao-embedding 向量）
  */
 import embeddingsData from "../data/embeddings.json";
+import { decodeVector, type StoredCache, type StoredVector } from "./embedding-codec";
 
-export interface EmbeddingCache {
-  model?: string;
-  dim?: number;
-  items?: Record<string, { hash: string; vec: number[] }>;
-}
+export type EmbeddingCache = StoredCache;
 const EMBEDDINGS = embeddingsData as EmbeddingCache;
 
-function cosine(a: number[], b: number[]): number {
+// JSON 里存的是 int8+base64（16MB→1.4MB），解码成 Float32Array 后才算 cosine。
+// 每次调用建一个局部 memo：一篇文章要跟 ~495 个候选比，不 memo 会重复解码。
+function cosine(a: ArrayLike<number>, b: ArrayLike<number>): number {
   if (a.length !== b.length || a.length === 0) return 0;
   let dot = 0, na = 0, nb = 0;
   for (let i = 0; i < a.length; i++) {
@@ -100,8 +99,19 @@ export function getRelatedPosts(
     .filter((p) => currentIsDigest || !isDigestPost(p));
 
   const items = embeddingCache.items ?? {};
+  const vecMemo = new Map<string, Float32Array>();
+  const vecOf = (key: string): Float32Array | undefined => {
+    const hit = vecMemo.get(key);
+    if (hit) return hit;
+    const item: StoredVector | undefined = items[key];
+    if (!item) return undefined;
+    const vec = decodeVector(item);
+    if (vec.length === 0) return undefined;
+    vecMemo.set(key, vec);
+    return vec;
+  };
   const curKey = `${current.collection}/${current.data.translationKey}`;
-  const curVec = items[curKey]?.vec;
+  const curVec = vecOf(curKey) ?? new Float32Array(0);
   const selected: PostLike[] = [];
   const selectedKeys = new Set<string>();
   const addSelected = (post: PostLike) => {
@@ -115,8 +125,7 @@ export function getRelatedPosts(
   if (curVec && curVec.length > 0) {
     const semantic = candidates
       .map((p) => {
-        const k = `${p.collection}/${p.data.translationKey}`;
-        const v = items[k]?.vec;
+        const v = vecOf(`${p.collection}/${p.data.translationKey}`);
         const sim = v ? cosine(curVec, v) : -1;
         return { p, sim, ts: p.data.date.getTime() };
       })
