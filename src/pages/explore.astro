@@ -138,7 +138,7 @@ const stats = {
             // tooltip 文本直接用 aria-label（本来内容一样，复制一份等于白占 45B×500），
             // opacity=1 是默认值就省略。
             return (
-              <a href={`/${m.collection}/${m.key}`} class="explore-point" aria-label={label}>
+              <a href={`/${m.collection}/${m.key}`} aria-label={label}>
                 <circle cx={cx} cy={cy} r={r} fill={color}
                         opacity={opacity === 1 ? undefined : opacity} />
               </a>
@@ -185,9 +185,9 @@ const stats = {
   </article>
 </BaseLayout>
 
-<style>
-  .explore-point { cursor: pointer; }
-  .explore-point circle:hover { r: 2.2; opacity: 1; }
+<style is:global>
+  /* 全局：地图上有 495 个节点，作用域样式会给每个 <a>/<circle>/<svg> 挂
+     data-astro-cid（21B x 3 x 495 ≈ 31KB），而这些选择器靠 id 已经足够唯一。 */
   #explore-tooltip {
     position: absolute;
     z-index: 10;
@@ -229,7 +229,7 @@ const stats = {
 
   const pointFrom = (target: EventTarget | null) =>
     target instanceof Element
-      ? target.closest<SVGAElement>(".explore-point[aria-label]")
+      ? target.closest<SVGAElement>("#explore-map a[aria-label]")
       : null;
 
   const hideTooltip = () => {
