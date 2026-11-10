@@ -30,7 +30,11 @@ env:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    # 12 分钟不够：站点把 CSS 内联进每个页面，所以任何影响 CSS 的改动
+    # （换 tailwind 插件版本、改 @font-face、动 global.css）都会重写全部 1140 个
+    # HTML，rsync 实测要同步 ~215MB。跨境链路 300-500KB/s 时 12 分钟刚好被砍
+    # （2026-11-10 run 42832275324 就是这样超时取消的，站点未受影响，但白跑一次）。
+    timeout-minutes: 30
 
     steps:
       - name: Checkout
@@ -391,6 +395,31 @@ jobs:
           ln -sfn "$previous" "$release_root/current.rollback"
           mv -Tf "$release_root/current.rollback" "$release_root/current"
           echo "Rollback completed"
+          SH
+
+      # 失败或被取消时，把本次 sha 的半成品目录删掉：rsync 传了一半的目录
+      # 既占磁盘也会让 releases 计数虚高。只动 releases/<本次 sha>，绝不碰
+      # current/previous。
+      - name: Drop half-written release
+        if: failure() || cancelled()
+        run: |
+          release_root="${DEPLOY_PATH%/}"
+          release_root="${release_root%/dist}"
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new "$SSH_USER@$SSH_HOST" \
+            sh -s -- "$release_root" "$GITHUB_SHA" <<'SH' || true
+          set -eu
+          release_root=$1
+          sha=$2
+          cur=$(basename "$(readlink -f "$release_root/current")")
+          prev=$(basename "$(readlink -f "$release_root/previous" 2>/dev/null || echo /nonexistent)")
+          if [ "$sha" = "$cur" ] || [ "$sha" = "$prev" ]; then
+            echo "refusing to delete active release $sha"
+            exit 0
+          fi
+          if [ -d "$release_root/releases/$sha" ]; then
+            rm -rf "$release_root/releases/$sha"
+            echo "removed half-written release $sha"
+          fi
           SH
 
       # 通知 IndexNow（Bing/Yandex/Naver/Seznam）新增/改动 URL，加速索引
