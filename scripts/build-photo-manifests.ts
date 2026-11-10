@@ -23,6 +23,11 @@ const MANIFEST_DIR = path.join(ROOT, "src", "data", "photo-manifest");
 
 const IMAGE_RE = /\.(jpe?g|png|webp|avif)$/i;
 
+const photoUrl = (albumSlug: string, fileName: string) =>
+  // 文件名里常有空格 / 中文 / 括号：srcset 用空格分隔候选图，
+  // 未编码的 URL 会被整体丢弃，浏览器退回 <img src> 拉原图。
+  encodeURI(`/photos/uploads/${albumSlug}/${fileName}`);
+
 type PhotoEntry = {
   src: string;
   srcWebp?: string;       // 同图 .webp 版本（sharp 生成，质量 80，体积通常 -40%）
@@ -85,6 +90,8 @@ async function main() {
     for (const f of rawFiles) {
       // xxx.og.jpg 一律跳过（永远是派生）
       if (/\.og\.jpg$/i.test(f)) continue;
+      // xxx.thumb.webp 一律跳过（网格缩略图，永远是派生）
+      if (/\.thumb\.webp$/i.test(f)) continue;
       // xxx.webp：如果同目录有 xxx.jpg/jpeg/png 原图，则跳过（派生）；否则保留（孤立 webp 当原图）
       if (/\.webp$/i.test(f)) {
         const base = f.replace(/\.webp$/i, "");
@@ -106,6 +113,7 @@ async function main() {
       let height = 0;
       let webpRelative: string | undefined;
       let ogRelative: string | undefined;
+      let thumbRelative: string | undefined;
       if (sharp) {
         try {
           const meta = await sharp(buf).rotate().metadata();
@@ -136,7 +144,33 @@ async function main() {
               console.warn(`    ✗ webp gen failed ${webpName}:`, e);
             }
           }
-          webpRelative = `/photos/uploads/${albumSlug}/${webpName}`;
+          webpRelative = photoUrl(albumSlug, webpName);
+
+          // 网格缩略图：相册页一次滚到底要拉全部图，原先用的是全尺寸 webp
+          // （1920px、平均 34KB、最大 604KB），一页 1.7MB。三列布局每格
+          // 实际显示宽度 ~400px，2x 屏 800px 足够，缩到 720px 基本无感。
+          // 原图宽度本来就 ≤720 的不再生成，直接用全尺寸 webp 充当缩略图。
+          if (width > 720) {
+            const thumbName = path.basename(f, ext) + ".thumb.webp";
+            const thumbPath = path.join(albumDir, thumbName);
+            let needThumb = true;
+            try {
+              const srcStat = await fs.stat(inputPath);
+              const thumbStat = await fs.stat(thumbPath);
+              if (thumbStat.mtimeMs >= srcStat.mtimeMs) needThumb = false;
+            } catch {
+              /* 不存在 → 生成 */
+            }
+            if (needThumb) {
+              try {
+                await sharp(buf).rotate().resize({ width: 720, withoutEnlargement: true }).webp({ quality: 78 }).toFile(thumbPath);
+                console.log(`    + ${thumbName}`);
+              } catch (e) {
+                console.warn(`    ✗ thumb gen failed ${thumbName}:`, e);
+              }
+            }
+            thumbRelative = photoUrl(albumSlug, thumbName);
+          }
 
           // 生成 1200×630 OG 专用尺寸（jpg，cover fit，质量 82，社交分享专用）
           // 仅当原图够宽（≥ 1200px）且横版（宽 ≥ 高 × 1.2）才生成 og 版本
@@ -161,7 +195,7 @@ async function main() {
                 console.warn(`    ✗ og gen failed ${ogName}:`, e);
               }
             }
-            ogRelative = `/photos/uploads/${albumSlug}/${ogName}`;
+            ogRelative = photoUrl(albumSlug, ogName);
           }
         }
       }
@@ -185,11 +219,11 @@ async function main() {
       }
 
       entries.push({
-        src: `/photos/uploads/${albumSlug}/${f}`,
+        src: photoUrl(albumSlug, f),
         srcWebp: webpRelative,
         srcOg: ogRelative,
-        thumb: `/photos/uploads/${albumSlug}/${f}`,
-        thumbWebp: webpRelative,
+        thumb: photoUrl(albumSlug, f),
+        thumbWebp: thumbRelative ?? webpRelative,
         width,
         height,
         alt: path.basename(f, path.extname(f)),

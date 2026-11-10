@@ -24,7 +24,11 @@ const photos = loadPhotoManifest(resolveAlbumKey(entry.data));
 // hero 优先用 frontmatter.cover；找不到对应 manifest 条目时退化成裸路径
 const coverPick = (() => {
   if (!entry.data.cover) return photos[0];
-  const hit = photos.find((p) => p.src === entry.data.cover || p.thumb === entry.data.cover);
+  // manifest 里的 URL 是编码过的（文件名含空格时 srcset 必须编码），
+  // frontmatter 里写的是原始路径，直接比对永远不相等 → hero 会退化成裸路径。
+  const sameFile = (a?: string, b?: string) =>
+    !!a && !!b && decodeURI(a) === decodeURI(b);
+  const hit = photos.find((p) => sameFile(p.src, entry.data.cover) || sameFile(p.thumb, entry.data.cover));
   return hit ?? { src: entry.data.cover, thumb: entry.data.cover, alt: entry.data.title, width: 0, height: 0 };
 })();
 const cover = coverPick;
