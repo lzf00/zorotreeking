@@ -5,44 +5,77 @@
     ":separateMultipleMajorReleases",
     ":semanticCommits"
   ],
-  "labels": ["dependencies"],
+  "labels": [
+    "dependencies"
+  ],
   "rangeStrategy": "bump",
   "prConcurrentLimit": 3,
   "prHourlyLimit": 1,
-  "schedule": ["before 6am on monday"],
+  "schedule": [
+    "before 6am on monday"
+  ],
   "timezone": "Asia/Shanghai",
   "packageRules": [
     {
       "description": "Minor/patch 自动合并（passes CI 时）",
-      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "digest"
+      ],
       "matchCurrentVersion": "!/^0/",
       "automerge": true,
       "automergeType": "branch"
     },
     {
       "description": "Major 单独 PR 让人审",
-      "matchUpdateTypes": ["major"],
-      "labels": ["dependencies", "major-update"],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "labels": [
+        "dependencies",
+        "major-update"
+      ],
       "automerge": false
     },
     {
-      "description": "Astro / 主框架 慎合并",
-      "matchPackageNames": ["astro", "@astrojs/mdx", "@astrojs/react", "@astrojs/tailwind", "@astrojs/rss"],
+      "description": "Astro 全家桶：必须同一个 PR 一起升（astro 7.4 需要 mdx 8 / react 7，单独升会把 npm ci 弄坏）",
+      "matchPackageNames": [
+        "astro",
+        "@astrojs/mdx",
+        "@astrojs/react",
+        "@astrojs/tailwind",
+        "@astrojs/rss"
+      ],
       "automerge": false,
-      "labels": ["dependencies", "astro"]
+      "labels": [
+        "dependencies",
+        "astro"
+      ],
+      "groupName": "astro-stack"
     },
     {
       "description": "React 18 锁住，不自动升 19",
-      "matchPackageNames": ["react", "react-dom", "@types/react", "@types/react-dom"],
+      "matchPackageNames": [
+        "react",
+        "react-dom",
+        "@types/react",
+        "@types/react-dom"
+      ],
       "allowedVersions": "^18"
     }
   ],
   "vulnerabilityAlerts": {
-    "labels": ["security"],
+    "labels": [
+      "security"
+    ],
     "automerge": true
   },
   "lockFileMaintenance": {
     "enabled": true,
-    "schedule": ["before 6am on monday"]
+    "schedule": [
+      "before 6am on monday"
+    ]
   }
 }

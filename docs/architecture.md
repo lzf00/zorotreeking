@@ -144,9 +144,22 @@ src/data/embeddings.json (2048 维 × N 篇)
 
 | 字体 | 用途 | 加载方式 |
 |---|---|---|
-| Inter 400/600 | sans body | Google Fonts CSS |
-| Instrument Serif | display 大标题 | Google Fonts CSS |
-| JetBrains Mono | code / meta | Google Fonts CSS |
-| Noto Sans SC | CJK / og:image | build 时下到 `.fonts/`（不进 dist） |
+| Inter（可变 100-900） | sans body | **自托管** `src/assets/fonts/` → `/_astro/*.woff2` |
+| Instrument Serif 400 + italic | display 大标题 | 自托管，同上 |
+| JetBrains Mono（可变 100-800） | code / meta | 自托管，同上 |
+| Noto Sans SC | og:image 里的中文 | build 时下到 `.fonts/`（不进 dist） |
 
-og:image 生成必须有 `.fonts/`，由 `scripts/setup-fonts.sh` 在 `prebuild` 阶段从 Google Fonts CSS 抓 TTF。
+- 浏览器端字体由 `scripts/fetch-fonts.ts` 抓 latin 子集放进 `src/assets/fonts/`，经 Vite 输出成带内容哈希的 `/_astro/*.woff2`，nginx 对 `/_astro/` 返回 `public, immutable, max-age=31536000`。**不再依赖 fonts.googleapis.com**（大陆经常超时/被墙）。
+- 不加 `<link rel="preload" as="font">`：限速 1.6Mbps 时字体和 HTML 抢带宽，实测让首屏晚 ~300ms；所有 `@font-face` 都是 `font-display: swap`，FCP 不等字体。
+- og:image 生成必须有 `.fonts/`，由 `scripts/setup-fonts.sh` 在 `prebuild` 阶段从 Google Fonts CSS 抓 TTF。
+
+## 依赖版本
+
+| 约束 | 原因 |
+|---|---|
+| `astro` 钉在 `~7.3.8` | `<=7.3.2` 有 XSS / AVIF RCE 等 advisory；`7.4.x` 要求 `@astrojs/internal-helpers@0.13.0`，而 `@astrojs/mdx@7.x` 钉 `0.10.4`，`npm ci` 会因 lockfile 不自洽直接失败 |
+| 升级顺序 | astro 7.4 → 必须同时升 `@astrojs/mdx@8`、`@astrojs/react@7`，后者会拉 React 19（`recharts@2`、现有 island 都要回归），所以单独排期 |
+| `npm ci` 是防火墙 | CI 的 Install 步骤跑 `npm ci`，任何「本地 `npm install` 能过但 lockfile 不自洽」的改动都会在部署前被拦住（2026-11-10 踩过一次） |
+| Renovate | astro / `@astrojs/*` 分组为 `astro-stack`，不自动合并；React 锁 `^18` |
+
+剩下 3 个 moderate advisory 都在构建期、不进浏览器：`satori`（只用于 `/og/*.png`）、`postcss-selector-parser`（被 `@tailwindcss/typography` 钉版本）。
