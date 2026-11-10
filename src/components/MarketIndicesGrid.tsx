@@ -131,7 +131,7 @@ function IndexCard({ d }: { d: Index }) {
     <div className="rounded-2xl bg-[var(--bg-soft)] hover:bg-[var(--bg-soft-2)] transition-colors p-4">
       <div className="flex items-center justify-between mb-2">
         <span className="text-xs text-[var(--text-tertiary)]">{d.name}</span>
-        <span className="text-[10px] font-mono text-[var(--text-tertiary)] opacity-70">{d.market}</span>
+        <span className="text-[10px] font-mono text-[var(--text-secondary)]">{d.market}</span>
       </div>
       <div className="text-xl font-semibold tabular-nums leading-none mb-2">
         {fmt(d.price)}

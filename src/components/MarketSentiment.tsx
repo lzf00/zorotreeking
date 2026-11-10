@@ -116,7 +116,7 @@ export default function MarketSentiment({ initialData }: Props = {}) {
         {/* 涨跌家数 */}
         <div className="rounded-2xl bg-[var(--bg-soft)] p-5">
           <div className="text-xs text-[var(--text-tertiary)] mb-3">
-            市场宽度 {breadth ? <span className="opacity-60">({breadth.total} 只)</span> : null}
+            市场宽度 {breadth ? <span className="text-[var(--text-secondary)]">({breadth.total} 只)</span> : null}
           </div>
           {missingBreadth ? (
             <div className="text-sm text-[var(--text-tertiary)]">涨跌家数暂缺（公开接口未返回）</div>

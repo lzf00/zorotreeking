@@ -136,7 +136,10 @@ export default function PhotoGallery({ photos, galleryId }: Props) {
               <img
                 src={p.thumb}
                 alt={p.alt}
+                width={p.width || undefined}
+                height={p.height || undefined}
                 loading="lazy"
+                decoding="async"
                 className="w-full h-auto block transition-transform duration-[600ms] group-hover:scale-[1.03]"
               />
             </picture>

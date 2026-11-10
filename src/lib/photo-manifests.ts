@@ -5,6 +5,12 @@ type Photo = {
   width: number;
   height: number;
   alt: string;
+  /** sharp 生成的同图 webp（质量 80），用于 hero 降字节 */
+  srcWebp?: string;
+  /** 列表缩略图的 webp 版本 */
+  thumbWebp?: string;
+  /** 1200×630 社交分享裁剪图（横构图才有） */
+  srcOg?: string;
   exif?: Record<string, unknown>;
 };
 

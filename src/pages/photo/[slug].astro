@@ -27,7 +27,7 @@ const coverPick = (() => {
   const hit = photos.find((p) => p.src === entry.data.cover || p.thumb === entry.data.cover);
   return hit ?? { src: entry.data.cover, thumb: entry.data.cover, alt: entry.data.title, width: 0, height: 0 };
 })();
-const cover = coverPick as typeof photos[number] & { srcOg?: string };
+const cover = coverPick;
 const rest = photos.filter((p) => p.src !== cover?.src);
 // 社交卡片优先用 1200×630 的 .og.jpg 派生图（体积小、比例对）；没有派生图时
 // 退回原图，但必须把真实宽高一并传下去，否则平台按 1200×630 裁切会变形。
@@ -58,12 +58,21 @@ const geoPoints = photos
   {cover && (
     <section class="mt-6 mb-10">
       <div class="w-full bg-black overflow-hidden">
-        <img
-          src={cover.src}
-          alt={cover.alt}
-          class="w-full h-auto max-h-[88vh] object-contain mx-auto block"
-          loading="eager"
-        />
+        {/* width/height 必须给：没有内在尺寸的图片加载完会把下方内容顶下去，
+            实测相册页 CLS 0.232（Lighthouse 限值 0.1）。webp 版本让 LCP 字节数减半。 */}
+        <picture>
+          {cover.srcWebp && <source type="image/webp" srcset={cover.srcWebp} />}
+          <img
+            src={cover.src}
+            alt={cover.alt}
+            width={cover.width || undefined}
+            height={cover.height || undefined}
+            class="w-full h-auto max-h-[88vh] object-contain mx-auto block"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </picture>
       </div>
     </section>
   )}

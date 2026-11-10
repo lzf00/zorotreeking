@@ -16,7 +16,7 @@ const { Content } = await render(entry);
 const lang = "en" as const;
 const t = useTranslations(lang);
 const photos = loadPhotoManifest(resolveAlbumKey(entry.data));
-const cover = photos[0] as (typeof photos[number]) & { srcOg?: string };
+const cover = photos[0];
 const rest = photos.slice(1);
 const dateStr = entry.data.date.toISOString().slice(0, 10);
 // 与中文相册页保持一致：优先 1200×630 派生图，否则用原图 + 真实尺寸。
@@ -39,7 +39,20 @@ const shareDims = cover?.srcOg
   {cover && (
     <section class="mt-6 mb-10">
       <div class="w-full bg-black overflow-hidden">
-        <img src={cover.src} alt={cover.alt} class="w-full h-auto max-h-[88vh] object-contain mx-auto block" loading="eager" />
+        {/* 与中文相册页一致：内在宽高防 CLS，webp 降 LCP 字节 */}
+        <picture>
+          {cover.srcWebp && <source type="image/webp" srcset={cover.srcWebp} />}
+          <img
+            src={cover.src}
+            alt={cover.alt}
+            width={cover.width || undefined}
+            height={cover.height || undefined}
+            class="w-full h-auto max-h-[88vh] object-contain mx-auto block"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </picture>
       </div>
     </section>
   )}
