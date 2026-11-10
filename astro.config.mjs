@@ -13,9 +13,12 @@ export default defineConfig({
   site: SITE,
   output: "static",
   build: {
-    // The shared stylesheet is small enough to inline and otherwise becomes
-    // the render-blocking request that dominates FCP under Lighthouse throttling.
-    inlineStylesheets: "always",
+    // 之前是 "always"：当时样式表不大，内联能省掉一个渲染阻塞请求。
+    // 现在 global.css 长到 82KB（Tailwind 全量 preflight + 变量），每页都内联
+    // 等于把 1136 个页面各撑大 82KB（dist 里约 93MB 是重复 CSS），而且 Lighthouse
+    // 跑在境外 runner 上、源站在国内，多出来的字节要走跨境链路。
+    // "auto" 只内联小样式表，主样式走 /_astro/*.css（可缓存、跨页复用）。
+    inlineStylesheets: "auto",
   },
   integrations: [mdx(), react()],
   i18n: {
