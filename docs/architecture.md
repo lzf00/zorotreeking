@@ -70,16 +70,18 @@
 **Steps**:
 1. Checkout (fetch-depth: 0 拿全部 git history 给 changelog 用)
 2. npm ci
-3. Build photo manifests (sharp 生成 WebP 增量)
-4. **`astro check`** 类型检查守门
-5. `astro build`
-6. pagefind 索引
-7. **Prepare versioned release**：`cp -al current/. releases/<sha>/` 用硬链接做种子
-8. rsync（`--checksum` 只传真正变化的字节；`--timeout=180` 防挂死；失败重试 3 次）
-9. **Activate release atomically**：`ln -sfn` + `mv -Tf` 原子切换 `current`
-10. Prune：保留最近 20 个 release，`current` / `previous` 永不删除
-11. Production acceptance smoke test，失败自动回滚到 `previous`
-12. **IndexNow ping**（POST 新 URL 给 Bing/Yandex/Naver 加速索引）
+3. **`npm test`** 守卫测试（87 个断言，约 1s；2026-11-11 才补进部署流程，
+   之前红着也能部署），不通过直接挡住
+4. Build photo manifests (sharp 生成 WebP 增量)
+5. **`astro check`** 类型检查守门
+6. `astro build`
+7. pagefind 索引
+8. **Prepare versioned release**：`cp -al current/. releases/<sha>/` 用硬链接做种子
+9. rsync（`--checksum` 只传真正变化的字节；`--timeout=180` 防挂死；失败重试 3 次）
+10. **Activate release atomically**：`ln -sfn` + `mv -Tf` 原子切换 `current`
+11. Prune：保留最近 20 个 release，`current` / `previous` 永不删除
+12. Production acceptance smoke test，失败自动回滚到 `previous`
+13. **IndexNow ping**（POST 新 URL 给 Bing/Yandex/Naver 加速索引）
 
 #### 部署传输量（重要）
 - **平常**（只改内容）：~2.3MB。硬链接种子 + checksum 让 rsync 只传变化文件。

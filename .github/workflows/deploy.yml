@@ -53,6 +53,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # 守卫测试一直没进部署流程：2026-11-11 发现 tests/ 里有 3 个断言因为前几轮
+      # 重构失效，红着也照样部署了 20 多次。整套只跑 ~1s，放在 build 前面。
+      - name: Unit and guard tests
+        run: npm test
+
       # NOTE: scripts/invest-snapshot.ts 不再在每次 build 跑。
       # 它原本设计是月末归档持仓快照（每月一次），但每次 build 跑会：
       #   1) 当前 _holdings.yaml 全是基金（market: Fund），脚本 filter 只匹配 A/ETF，noop；
