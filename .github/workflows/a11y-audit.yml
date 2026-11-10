@@ -10,6 +10,9 @@ name: A11y (both themes)
 #
 # 用 axe-core + Playwright 直接对线上站点跑，每页浅色/深色各测一次，
 # 只看 color-contrast 与 heading-order 两条规则（成本低、假阳性少）。
+#
+# 同一个 job 里还会跑 scripts/check-hydration.mjs：确认线上每个 React 岛
+# 都能水合、控制台没有意外报错（这类回归 Lighthouse 和 axe 都看不见）。
 
 on:
   schedule:
@@ -46,6 +49,14 @@ jobs:
 
       - name: Run a11y audit (light + dark)
         run: node scripts/check-a11y.mjs
+
+      # 同一条流水线顺手验一遍「岛在浏览器里到底有没有水合」：
+      # Lighthouse 分数和 axe 都不会因为 React 组件崩掉而变红，
+      # 这条是 2026-11-11 升 React 19 / recharts 3 时补的网。
+      - name: Island hydration smoke test
+        env:
+          BASE_URL: https://www.zorotreeking.online
+        run: node scripts/check-hydration.mjs
 
       - name: Upload report as artifact
         if: always()
