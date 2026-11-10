@@ -212,7 +212,7 @@ async function renderAmap(
   days: AliRouteDay[],
   roadLabels: AliRoadLabel[],
   routedDayGeometry: Record<number, [number, number][]>,
-  layerGroups: React.MutableRefObject<Partial<Record<LayerKey, AMapOverlayGroup>>>,
+  layerGroups: React.RefObject<Partial<Record<LayerKey, AMapOverlayGroup>>>,
 ) {
   const { pointById, dayNumbersByPoint } = getRouteIndexes(points, days);
   const map = new AMap.Map(element, {

@@ -137,7 +137,7 @@ export default function GuestbookBoard({ lang = "zh" }: Props) {
     }
   }
 
-  async function submit(e: React.FormEvent) {
+  async function submit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
     setNotice(null);
     const trimmed = content.trim();
