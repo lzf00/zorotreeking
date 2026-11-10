@@ -1,0 +1,81 @@
+{
+  "ci": {
+    "collect": {
+      "url": [
+        "https://www.zorotreeking.online/",
+        "https://www.zorotreeking.online/ai/",
+        "https://www.zorotreeking.online/ai/digest-2026-06-05/",
+        "https://www.zorotreeking.online/about/",
+        "https://www.zorotreeking.online/explore/",
+        "https://www.zorotreeking.online/photo/baokemeng/",
+        "https://www.zorotreeking.online/invest/",
+        "https://www.zorotreeking.online/en/"
+      ],
+      "numberOfRuns": 3,
+      "settings": {
+        "throttlingMethod": "devtools",
+        "chromeFlags": "--headless=new"
+      }
+    },
+    "assert": {
+      "assertions": {
+        "categories:performance": [
+          "warn",
+          {
+            "minScore": 0.7,
+            "aggregationMethod": "median"
+          }
+        ],
+        "categories:accessibility": [
+          "error",
+          {
+            "minScore": 0.95,
+            "aggregationMethod": "median"
+          }
+        ],
+        "categories:best-practices": [
+          "warn",
+          {
+            "minScore": 0.9,
+            "aggregationMethod": "median"
+          }
+        ],
+        "categories:seo": [
+          "error",
+          {
+            "minScore": 0.95,
+            "aggregationMethod": "median"
+          }
+        ],
+        "target-size": [
+          "error",
+          {
+            "minScore": 1
+          }
+        ],
+        "color-contrast": [
+          "error",
+          {
+            "minScore": 1
+          }
+        ],
+        "cumulative-layout-shift": [
+          "error",
+          {
+            "maxNumericValue": 0.1,
+            "aggregationMethod": "median"
+          }
+        ],
+        "is-on-https": [
+          "error",
+          {
+            "minScore": 1
+          }
+        ]
+      }
+    },
+    "upload": {
+      "target": "temporary-public-storage"
+    }
+  }
+}

@@ -1,0 +1,52 @@
+name: Lighthouse Mobile
+
+# 移动端跑分：每周一次 + 手动触发。
+#
+# 为什么单独一条流水线而不是塞进 deploy 门禁：
+#   桌面 preset 已经是每次部署必过的门禁，移动端 8 URL × 3 次再来 24 次跑分
+#   会把每次部署的 CI 时间翻倍。折中成周检 —— 移动端独有的问题（触摸目标
+#   太小、字体缩放、折叠布局）本来就是缓慢漂移的，一周一测够用。
+#
+# 2026-11-10 上线第一天就抓到真问题：页脚 4 个链接高度只有 16px，
+# WCAG 2.2「目标尺寸（最小）」要 24×24，桌面端永远测不出来。
+
+on:
+  schedule:
+    - cron: "0 2 * * 1"   # UTC 02:00 = BJT 10:00 周一
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  statuses: write
+
+concurrency:
+  group: lighthouse-mobile
+  cancel-in-progress: false
+
+jobs:
+  lhci-mobile:
+    runs-on: ubuntu-latest
+    # 8 个 URL × 3 次 = 24 次移动端跑分（移动端比桌面慢）
+    timeout-minutes: 40
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node 22
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+
+      - name: Run Lighthouse CI (mobile preset)
+        env:
+          LHCI_UPLOAD__GITHUB_TOKEN: ${{ github.token }}
+        run: npx --yes @lhci/cli@0.13.x autorun --config=.lighthouserc.mobile.json
+
+      - name: Upload reports as artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: lighthouse-mobile-reports
+          path: .lighthouseci/
+          include-hidden-files: true
+          retention-days: 30
