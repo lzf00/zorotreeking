@@ -40,7 +40,7 @@
       "automerge": false
     },
     {
-      "description": "Astro 全家桶：必须同一个 PR 一起升（astro 7.4 需要 mdx 8 / react 7，单独升会把 npm ci 弄坏）",
+      "description": "Astro 全家桶：同一 PR 一起升（astro 7.4+ 需要 mdx 8 / react 7，单独升会把 npm ci 弄坏）",
       "matchPackageNames": [
         "astro",
         "@astrojs/mdx",
@@ -56,14 +56,14 @@
       "groupName": "astro-stack"
     },
     {
-      "description": "React 18 锁住，不自动升 19",
+      "description": "React 19：不再锁 18，大版本仍走人工 PR",
       "matchPackageNames": [
         "react",
         "react-dom",
         "@types/react",
         "@types/react-dom"
       ],
-      "allowedVersions": "^18"
+      "allowedVersions": "^19"
     }
   ],
   "vulnerabilityAlerts": {

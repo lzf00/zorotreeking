@@ -180,11 +180,19 @@ src/data/embeddings.json (2048 维 × N 篇)
 
 ## 依赖版本
 
+2026-11-11 完成一轮栈升级（astro 7.4.1 / @astrojs/mdx 8 / @astrojs/react 7 / React 19 /
+recharts 3 / marked 18），每条单独提交、单独回归，细节见 `docs/tailwind4-migration.md`
+同目录的提交历史。
+
 | 约束 | 原因 |
 |---|---|
-| `astro` 钉在 `~7.3.8` | `<=7.3.2` 有 XSS / AVIF RCE 等 advisory；`7.4.x` 要求 `@astrojs/internal-helpers@0.13.0`，而 `@astrojs/mdx@7.x` 钉 `0.10.4`，`npm ci` 会因 lockfile 不自洽直接失败 |
-| 升级顺序 | astro 7.4 → 必须同时升 `@astrojs/mdx@8`、`@astrojs/react@7`，后者会拉 React 19（`recharts@2`、现有 island 都要回归），所以单独排期 |
+| `astro` 钉在 `~7.4.1` | 7.4.x 与 `@astrojs/mdx@8`（`@astrojs/internal-helpers@0.13`）已经自洽，早期 7.3 ↔ mdx 7 的 lockfile 冲突不再存在；`<=7.3.2` 的 XSS / AVIF RCE advisory 早被覆盖 |
+| Astro 栈必须整组升 | astro / `@astrojs/mdx` / `@astrojs/react` 之间有 peer 锁，单个升会让 `npm ci` 不自洽 |
+| React 19 类型差异 | `React.FormEvent`、`React.MutableRefObject` 已废弃：用 `SyntheticEvent<HTMLFormElement>`、`RefObject` |
+| recharts 3 | `<Cell>` 已废弃（4.0 移除），逐扇区上色改用 `shape` + `<Sector>`；Tooltip formatter 首参是 `ValueType \| undefined`，取值要 `Number(v)` |
+| Tailwind 留在 3.4 | 669 处隐式 `border` 默认色在 v4 会变 `currentColor`，且内联 CSS 让回归落在 1139 个页面上；迁移方案见 `docs/tailwind4-migration.md` |
+| TypeScript 留在 5.9 | `typescript@7` 是原生端口，`astro check` 兼容性未验证；只影响类型检查不妨碍产物 |
 | `npm ci` 是防火墙 | CI 的 Install 步骤跑 `npm ci`，任何「本地 `npm install` 能过但 lockfile 不自洽」的改动都会在部署前被拦住（2026-11-10 踩过一次） |
-| Renovate | astro / `@astrojs/*` 分组为 `astro-stack`，不自动合并；React 锁 `^18` |
+| Renovate | astro / `@astrojs/*` 分组为 `astro-stack` 不自动合并；React 允许 `^19`，大版本仍人工审 |
 
 剩下 3 个 moderate advisory 都在构建期、不进浏览器：`satori`（只用于 `/og/*.png`）、`postcss-selector-parser`（被 `@tailwindcss/typography` 钉版本）。
