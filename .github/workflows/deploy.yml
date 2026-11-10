@@ -273,7 +273,10 @@ jobs:
         run: |
           release_root="${DEPLOY_PATH%/}"
           release_root="${release_root%/dist}"
-          rsync -avz --checksum --delete --no-perms --no-owner --no-group \
+          # --checksum：CI 每次都重新 build，所有文件 mtime 都是新的，光靠
+          # size+mtime 会让 189MB HTML 全部重传；checksum 模式只传真正变了的字节。
+          # --stats 把实际传输量写进日志，方便判断增量是否生效。
+          rsync -az --checksum --stats --delete --no-perms --no-owner --no-group \
             -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new" \
             dist/ "$SSH_USER@$SSH_HOST:$release_root/releases/$GITHUB_SHA/"
 
@@ -297,6 +300,39 @@ jobs:
           fi
           ln -sfn "$new_release" "$release_root/current.next"
           mv -Tf "$release_root/current.next" "$release_root/current"
+          SH
+
+      - name: Prune old releases
+        # 每个 release 约 3000 个文件（大部分是 --link/hardlink 共享），但目录会无限堆积：
+        # 2026-11 时已有 1343 个 release / 6.1GB。保留最近 20 个，current 与 previous
+        # 指向的永远不删。失败不阻塞部署。
+        continue-on-error: true
+        run: |
+          release_root="${DEPLOY_PATH%/}"
+          release_root="${release_root%/dist}"
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new "$SSH_USER@$SSH_HOST" \
+            sh -s -- "$release_root" 20 <<'SH'
+          set -eu
+          root=$1
+          keep=$2
+          [ -d "$root/releases" ] || exit 0
+          cur=$(readlink -f "$root/current" 2>/dev/null || true)
+          prev=$(readlink -f "$root/previous" 2>/dev/null || true)
+          removed=0
+          kept=$(ls -1 "$root/releases" | wc -l)
+          for d in $(ls -1t "$root/releases" | tail -n "+$((keep + 1))"); do
+            # 只处理 40 位 git sha 目录，避免误删别的目录
+            case "$d" in
+              *[!0-9a-f]*) continue ;;
+            esac
+            [ ${#d} -eq 40 ] || continue
+            p="$root/releases/$d"
+            [ "$p" = "$cur" ] && continue
+            [ "$p" = "$prev" ] && continue
+            rm -rf "$p"
+            removed=$((removed + 1))
+          done
+          echo "releases: $kept → $(ls -1 "$root/releases" | wc -l)（本次清理 $removed 个）"
           SH
 
       - name: Production acceptance smoke test
