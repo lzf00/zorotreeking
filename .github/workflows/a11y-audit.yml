@@ -1,0 +1,56 @@
+name: A11y (both themes)
+
+# 双主题可访问性巡检：每周一次 + 手动触发。
+#
+# 为什么需要单独一条流水线：Lighthouse 只测浅色主题，而本站深色主题是
+# html.dark 类切出来的（不走 prefers-color-scheme），所以深色一直是盲区。
+# 2026-11-11 第一次跑就抓到：板块染料色在近黑底上只有 2.3:1（每个页面的
+# 导航链接都中招）、608 个正文文件里的 text-zinc-500 只有 4.09:1、
+# 更新日志的彩色徽章把同一个色既当底色又当字色（lime 只有 2.71:1）。
+#
+# 用 axe-core + Playwright 直接对线上站点跑，每页浅色/深色各测一次，
+# 只看 color-contrast 与 heading-order 两条规则（成本低、假阳性少）。
+
+on:
+  schedule:
+    - cron: "0 3 * * 1"   # UTC 03:00 = BJT 11:00 周一（错开 10:00 的移动端跑分）
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: a11y-audit
+  cancel-in-progress: false
+
+jobs:
+  a11y:
+    runs-on: ubuntu-latest
+    # 16 个页面 × 2 个主题，含 2.5s 动画等待
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node 22
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium for Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Run a11y audit (light + dark)
+        run: node scripts/check-a11y.mjs
+
+      - name: Upload report as artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: a11y-report
+          path: a11y-report.json
+          retention-days: 30
