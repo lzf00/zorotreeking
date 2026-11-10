@@ -48,6 +48,62 @@ jobs:
           if [ -z "$CONC" ]; then CONC="8"; fi
           npx tsx scripts/check-deadlinks.ts --concurrency=$CONC
 
+      # 没有这一步的时候，跑出 66 个死链的周报也是「success」，
+      # 只有点进 artifact 才知道有死链 —— 等于没人看。这里把结论顶到
+      # run 页面的 Summary，并在有死链时打 warning 注解。
+      - name: Summarize into the run page
+        if: always()
+        run: |
+          REPO_ROOT="$(pwd)"
+          node - "$REPO_ROOT" <<'NODE'
+          const fs = require("node:fs");
+          const path = require("node:path");
+          const root = process.argv[2];
+          const dir = path.join(root, "reports");
+          const files = fs.existsSync(dir)
+            ? fs.readdirSync(dir).filter((f) => /^deadlinks-.*\.json$/.test(f)).sort()
+            : [];
+          const summary = process.env.GITHUB_STEP_SUMMARY;
+          const write = (line) => summary ? fs.appendFileSync(summary, line + "\n") : console.log(line);
+          if (!files.length) {
+            write("## 死链巡查：没找到报告文件");
+            write("");
+            write("`scripts/check-deadlinks.ts` 没有产出 `reports/deadlinks-*.json`，看上面的步骤日志。");
+            process.exit(0);
+          }
+          const report = JSON.parse(fs.readFileSync(path.join(dir, files[files.length - 1]), "utf8"));
+          const dead = report.deadList || [];
+          write(`## 死链巡查：${report.dead} 个死链 / ${report.total} 条外链`);
+          write("");
+          write(`| 分类 | 数量 |`);
+          write(`| --- | --- |`);
+          write(`| 健康 | ${report.ok} |`);
+          write(`| 容忍（限流 / WAF） | ${report.tolerated} |`);
+          write(`| **死链** | **${report.dead}** |`);
+          if (dead.length) {
+            write("");
+            write("### 前 15 个死链");
+            write("");
+            write("| 状态 | URL | 出现于 |");
+            write("| --- | --- | --- |");
+            for (const d of dead.slice(0, 15)) {
+              write(`| ${d.status} | ${d.url} | ${d.fromFile} |`);
+            }
+            if (dead.length > 15) write("");
+            if (dead.length > 15) write(`…… 其余 ${dead.length - 15} 个见 artifact。`);
+            const byHost = {};
+            for (const d of dead) {
+              const host = new URL(d.url).host;
+              byHost[host] = (byHost[host] || 0) + 1;
+            }
+            const worst = Object.entries(byHost).sort((a, b) => b[1] - a[1])[0];
+            console.log(`::warning title=发现 ${dead.length} 个死链::${worst[0]} 占 ${worst[1]} 个，详情见 job summary`);
+          } else {
+            write("");
+            write("全部通过 ✅");
+          }
+          NODE
+
       - name: Upload report artifact
         if: always()
         uses: actions/upload-artifact@v4
