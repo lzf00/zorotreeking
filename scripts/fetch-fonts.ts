@@ -10,13 +10,15 @@
  * 只取 latin / latin-ext 子集（中文走系统字体，不需要 webfont）。
  *
  * 用法：npx tsx scripts/fetch-fonts.ts
- * 产物：public/fonts/*.woff2 + src/styles/fonts.css（都进 git，避免构建期联网）
+ * 产物：src/assets/fonts/*.woff2 + src/styles/fonts.css（都进 git，避免构建期联网）
  */
 import { promises as fs } from "node:fs";
 import path from "node:path";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
-const FONT_DIR = path.join(ROOT, "public", "fonts");
+// 放 src/assets 而不是 public：Vite 会给文件名加内容哈希并输出到 /_astro/，
+// 那里 nginx 配了 public, immutable —— 字体是二进制、内容变了哈希才变，值得长缓存。
+const FONT_DIR = path.join(ROOT, "src", "assets", "fonts");
 const CSS_OUT = path.join(ROOT, "src", "styles", "fonts.css");
 const UA =
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36";
@@ -57,7 +59,7 @@ async function main() {
       await fs.writeFile(path.join(FONT_DIR, file), buf);
       console.log(`  ↓ ${file} (${(buf.length / 1024).toFixed(1)}KB)`);
       faces.push(
-        `@font-face {\n  font-family: "${v.family}";\n  font-style: ${style};\n  font-weight: ${weight};\n  font-display: swap;\n  src: url("/fonts/${file}") format("woff2");\n  unicode-range: ${range};\n}`,
+        `@font-face {\n  font-family: "${v.family}";\n  font-style: ${style};\n  font-weight: ${weight};\n  font-display: swap;\n  src: url("../assets/fonts/${file}") format("woff2");\n  unicode-range: ${range};\n}`,
       );
     }
   }
