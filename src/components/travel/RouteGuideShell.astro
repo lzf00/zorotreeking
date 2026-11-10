@@ -73,10 +73,11 @@ const {
     --rd-ink: #19201e;
     --rd-paper: #eee8da;
     --rd-paper-deep: #ddd2bd;
-    --rd-muted: #606863;
+    --rd-muted: #4b524d;  /* 原 #606863 在 #ddd2bd 深纸底上只有 3.84:1 */
     --rd-line: rgba(25, 32, 30, .2);
     --rd-accent: #b34d35;
     --rd-accent-2: #d8a33a;
+    --rd-eyebrow-ink: #6b4f0a;  /* 纸底/深纸底上 5.10:1 起 */
     --rd-night: #16221f;
     --rd-serif: "Instrument Serif", "Noto Serif SC", Georgia, serif;
     --rd-mono: "JetBrains Mono", ui-monospace, monospace;
@@ -85,7 +86,8 @@ const {
     background: var(--rd-paper);
     font-family: "Noto Sans SC", system-ui, sans-serif;
   }
-  .route-decision-guide--g317 { --rd-accent: #cf5a31; --rd-accent-2: #e2b54e; --rd-night: #132521; }
+  /* g317 的 #cf5a31 在纸底上只有 3.33:1，文字/细框统一用加深版；--rd-accent-2 是金色装饰不动 */
+  .route-decision-guide--g317 { --rd-accent: #8f3d20; --rd-accent-2: #e2b54e; --rd-night: #132521; }
   .route-decision-guide--lhasa-loop { --rd-accent: #176f73; --rd-accent-2: #d69c38; --rd-night: #162624; }
   .route-decision-guide--chuanxi { --rd-accent: #3f6b4e; --rd-accent-2: #c48a3a; --rd-night: #1a2620; }
   .route-decision-guide *, .route-decision-guide *::before, .route-decision-guide *::after { box-sizing: border-box; }
@@ -98,6 +100,13 @@ const {
   .rd-topline a { color: inherit; text-decoration: none; }
   .rd-hero__body { position: relative; z-index: 1; padding: 108px 0 66px; }
   .rd-kicker, .rd-eyebrow { margin: 0; color: var(--rd-accent-2); font: 700 .7rem/1.4 var(--rd-mono); letter-spacing: .18em; text-transform: uppercase; }
+  /* 金色 accent-2 在纸底上只有 1.98:1（#d69c38 on #eee8da），拿来当文字色不合格。
+     金色本身是这套版式的装饰语言，所以：深底保留金色，纸底换同色系深墨 5.10:1。 */
+  .rd-eyebrow { color: var(--rd-eyebrow-ink); }
+  .rd-section--night .rd-eyebrow,
+  .rd-hero .rd-kicker,
+  .rd-section--night .rd-kicker { color: var(--rd-accent-2); }
+  .rd-alert .rd-eyebrow { color: #ffe3a8; }  /* #176f73 提示框内：4.72:1 */
   .rd-hero h1 { max-width: 1000px; margin: 22px 0 0; font: 400 clamp(4.8rem, 10vw, 8.6rem)/.8 var(--rd-serif); letter-spacing: -.05em; }
   .rd-hero h1 em { color: var(--rd-accent-2); font-style: normal; }
   .rd-lead { max-width: 860px; margin: 38px 0 0; color: #c7cbc2; font-size: 1.04rem; line-height: 1.9; }
@@ -140,10 +149,11 @@ const {
   .rd-card--accent { color: #f6efe2; background: var(--rd-accent); }
   .rd-card--night { color: #f6efe2; background: var(--rd-night); }
   .rd-card > span { color: var(--rd-accent); font: 700 .69rem/1.4 var(--rd-mono); letter-spacing: .12em; text-transform: uppercase; }
-  .rd-card--accent > span, .rd-card--night > span { color: var(--rd-accent-2); }
+  /* 强调卡片底是 accent 实色（#176f73），金色文字只有 2.43:1 → 用浅金 #ffe3a8（4.72:1） */
+  .rd-card--accent > span, .rd-card--night > span { color: #ffe3a8; }
   .rd-card h3 { margin: 24px 0 0; font-size: 2rem; line-height: 1.05; }
   .rd-card p { margin: 18px 0 0; color: var(--rd-muted); line-height: 1.8; }
-  .rd-card--accent p, .rd-card--night p { color: #e7dfd1; }
+  .rd-card--accent p, .rd-card--night p { color: #f2ece0; }  /* 原 #e7dfd1 在 #176f73 上 4.46:1 */
   .rd-table { margin-top: 52px; border: 1px solid var(--rd-line); }
   .rd-table-row { display: grid; grid-template-columns: 140px 1fr 160px 160px; align-items: center; min-height: 92px; border-bottom: 1px solid var(--rd-line); }
   .rd-table-row:last-child { border-bottom: 0; }
@@ -154,7 +164,8 @@ const {
   .rd-exit-grid { display: grid; grid-template-columns: 1.25fr 1fr 1fr; gap: 18px; margin-top: 54px; }
   .rd-exit { position: relative; min-height: 330px; padding: 32px; border: 1px solid var(--rd-line); background: #e8dfcd; }
   .rd-exit:first-child { color: #f4eddf; background: var(--rd-night); }
-  .rd-exit .rd-status { display: inline-flex; padding: 7px 9px; color: var(--rd-accent); border: 1px solid currentColor; font: 700 .67rem/1 var(--rd-mono); letter-spacing: .1em; }
+  /* accent 本色在纸底上只有 4.46:1（#176f73 on #e8dfcd），压深 ~22% 到 5.99:1 */
+  .rd-exit .rd-status { display: inline-flex; padding: 7px 9px; color: color-mix(in srgb, var(--rd-accent) 78%, #19201e); border: 1px solid currentColor; font: 700 .67rem/1 var(--rd-mono); letter-spacing: .1em; }
   .rd-exit:first-child .rd-status { color: var(--rd-accent-2); }
   .rd-exit h3 { margin: 28px 0 0; font-size: 2.2rem; line-height: 1.04; }
   .rd-exit p { margin: 18px 0 0; color: var(--rd-muted); line-height: 1.82; }

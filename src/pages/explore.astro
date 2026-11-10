@@ -67,6 +67,22 @@ const colorMap: Record<string, string> = {
   hike: "#166534",
 };
 
+// 手机端：100×100 的 viewBox 里每个点只有 1~2 个 SVG 单位，换算到 412px 宽的屏幕上
+// 就是 4~8px 的可点区域——完全没法用手指点（Lighthouse 移动端 tap-targets 只有 0.01）。
+// 所以小屏不显示地图，改成一个 44px 行高的列表；地图只在 sm 以上出现。
+const COLLECTION_LABEL: Record<string, string> = { ai: "AI", invest: "投资", hike: "徒步" };
+const recentTopics = all
+  .slice()
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 24)
+  .map((p) => ({
+    href: `/${p.collection}/${p.data.translationKey}`,
+    title: p.data.title,
+    date: p.data.date.toISOString().slice(0, 10),
+    collection: p.collection,
+    color: colorMap[p.collection] ?? "#71717a",
+  }));
+
 const stats = {
   total: points.length,
   ai: points.filter((p) => p.key.startsWith("ai/")).length,
@@ -105,7 +121,7 @@ const stats = {
     {points.length === 0 ? (
       <p class="text-[var(--text-tertiary)]">embeddings.json 还没数据。等 daily-digest workflow 跑完后回来。</p>
     ) : (
-      <div id="explore-map-shell" class="relative w-full bg-[var(--bg-soft)] rounded-2xl border border-[var(--border)] overflow-hidden">
+      <div id="explore-map-shell" class="hidden sm:block relative w-full bg-[var(--bg-soft)] rounded-2xl border border-[var(--border)] overflow-hidden">
         <div id="explore-tooltip" role="tooltip" aria-hidden="true"></div>
         <svg id="explore-map" viewBox={`0 0 ${VBW} ${VBH}`} class="w-full h-auto block" preserveAspectRatio="xMidYMid meet" aria-label="文章主题关系图">
           {points.map((p) => {
@@ -131,6 +147,28 @@ const stats = {
         </svg>
       </div>
     )}
+
+    {/* 小屏：地图上的点太小，改用列表，每行 44px 高 */}
+    <div class="sm:hidden">
+      <div class="flex items-baseline justify-between mb-3">
+        <h2 class="text-sm font-semibold tracking-tight">最新 24 篇</h2>
+        <a href="/tag/" class="inline-flex items-center min-h-6 px-1 -mx-1 text-xs text-[var(--text-secondary)] hover:text-[var(--text)]">全部标签 →</a>
+      </div>
+      <ul class="divide-y divide-[var(--border)] border-y border-[var(--border)]">
+        {recentTopics.map((t) => (
+          <li>
+            <a href={t.href} class="flex items-center gap-3 min-h-11 py-2.5">
+              <i class="w-2 h-2 rounded-full shrink-0" style={`background:${t.color}`} aria-hidden="true"></i>
+              <span class="flex-1 min-w-0 text-sm leading-snug truncate">{t.title}</span>
+              <span class="shrink-0 text-[11px] font-mono text-[var(--text-tertiary)]">{t.date.slice(5)}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p class="mt-4 text-xs text-[var(--text-tertiary)] leading-relaxed">
+        主题地图需要更大的屏幕才能看清点与点的距离，桌面端打开可以看到完整的 {stats.total} 点投影。
+      </p>
+    </div>
 
     <section class="mt-8 text-sm text-[var(--text-secondary)] leading-relaxed">
       <p>

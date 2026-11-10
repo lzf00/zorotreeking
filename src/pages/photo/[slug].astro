@@ -110,7 +110,7 @@ const geoPoints = photos
   <!-- 主图集（PhotoSwipe 瀑布流；用第二张起，避免与 hero 重复） -->
   {rest.length > 0 ? (
     <section class="max-w-7xl mx-auto px-2 sm:px-3 mt-12">
-      <PhotoGallery photos={rest} galleryId={`gallery-${entry.data.translationKey}`} client:only="react" />
+      <PhotoGallery photos={rest} galleryId={`gallery-${entry.data.translationKey}`} client:load />
     </section>
   ) : null}
 

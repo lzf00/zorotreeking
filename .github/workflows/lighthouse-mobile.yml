@@ -26,8 +26,8 @@ concurrency:
 jobs:
   lhci-mobile:
     runs-on: ubuntu-latest
-    # 8 个 URL × 3 次 = 24 次移动端跑分（移动端比桌面慢）
-    timeout-minutes: 40
+    # 10 个 URL × 3 次 = 30 次移动端跑分（移动端比桌面慢）
+    timeout-minutes: 50
     steps:
       - name: Checkout
         uses: actions/checkout@v6

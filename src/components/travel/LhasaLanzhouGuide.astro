@@ -283,7 +283,7 @@ const route = [
     --ink: #17201d;
     --paper: #eee7d7;
     --paper-deep: #d9cfb9;
-    --muted: #62665f;
+    --muted: #4d534e;  /* 原 #62665f 在 #d9cfb9 深纸底上 3.79:1 */
     --line: rgba(23, 32, 29, .22);
     --red: #a8422f;
     --teal: #176d73;
@@ -304,8 +304,11 @@ const route = [
   .ll-hero__topline { position: relative; z-index: 1; display: flex; justify-content: space-between; gap: 24px; padding-top: 28px; font: .68rem/1.4 var(--mono); letter-spacing: .12em; text-transform: uppercase; }
   .ll-hero__topline a { color: inherit; text-decoration: none; }
   .ll-hero__body { position: relative; z-index: 1; padding: 112px 0 72px; }
-  .ll-kicker, .ll-eyebrow { margin: 0; color: var(--red); font: 700 .7rem/1.4 var(--mono); letter-spacing: .18em; text-transform: uppercase; }
+  /* 纸底上用深一档的红（5.68:1）；深色底上换成亮红（5.90:1），金色 kicker 不变 */
+  .ll-kicker, .ll-eyebrow { margin: 0; color: #82301f; font: 700 .7rem/1.4 var(--mono); letter-spacing: .18em; text-transform: uppercase; }
+  /* 深色区块（.ll-gates / .ll-permit / hero）里的 eyebrow 用亮红 5.90:1；金色留给 kicker */
   .ll-hero .ll-kicker { color: #e3ad46; }
+  .ll-hero .ll-eyebrow, .ll-gates .ll-eyebrow, .ll-permit .ll-eyebrow { color: #e2907c; }
   .ll-hero h1 { max-width: 940px; margin: 22px 0 0; font: 400 clamp(4.5rem, 10vw, 8.6rem)/.82 var(--serif); letter-spacing: -.045em; }
   .ll-hero h1 span { color: #e3ad46; }
   .ll-lead { max-width: 760px; margin: 34px 0 0; color: #c7c4b9; font-size: 1.05rem; line-height: 1.9; }
@@ -351,7 +354,7 @@ const route = [
   .ll-return-grid span { font: 700 .67rem/1 var(--mono); letter-spacing: .13em; text-transform: uppercase; }
   .ll-return-grid h3 { margin: 22px 0 0; font: 400 2rem/1.05 var(--serif); }
   .ll-return-grid p { min-height: 132px; margin: 18px 0 0; color: var(--muted); line-height: 1.8; }
-  .ll-return-grid .is-primary p { color: #d0dfdc; }
+  .ll-return-grid .is-primary p { color: #e8f1ef;  /* 原 #d0dfdc 在 #176d73 上 4.40:1 */ }
   .ll-return-grid ul, .ll-check-grid ul { margin: 24px 0 0; padding: 20px 0 0 18px; border-top: 1px solid currentColor; }
   .ll-return-grid li, .ll-check-grid li { margin: 8px 0; line-height: 1.55; }
   .ll-cuts { background: #eee7d7; }
