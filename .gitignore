@@ -27,3 +27,12 @@ reports/
 # Python generated artifacts
 __pycache__/
 *.py[cod]
+
+# 照片派生图：build 时 scripts/build-photo-manifests.ts 用 sharp 重新生成
+# （.webp 质量 80、.og.jpg 1200×630）。原图（jpg/jpeg/png）进版本库，
+# 派生图不进，避免仓库里存两份二进制、也避免本地/CI 产物不一致。
+# 例外：没有同名原图的 webp 本身就是原图，需要保留 —— 新增这类图时
+# 用 `git add -f <file>.webp` 例外提交，并把路径加到下面的白名单。
+public/photos/uploads/**/*.og.jpg
+public/photos/uploads/**/*.webp
+!public/photos/uploads/hudieren/task_01ke8qfnhbevaar61ete75k03k_1767672132_img_0.webp

@@ -8,8 +8,8 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
+    "dev": "tsx scripts/build-photo-manifests.ts && astro dev",
+    "start": "tsx scripts/build-photo-manifests.ts && astro dev",
     "prebuild": "bash scripts/setup-fonts.sh",
     "build": "tsx scripts/build-photo-manifests.ts && tsx scripts/check-content-lang.ts && astro build && pagefind --site dist",
     "photo:manifests": "tsx scripts/build-photo-manifests.ts",
