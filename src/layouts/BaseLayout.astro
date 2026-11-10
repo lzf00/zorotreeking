@@ -1,6 +1,4 @@
 ---
-import interFontUrl from "@/assets/fonts/inter-100-900-latin.woff2?url";
-import serifFontUrl from "@/assets/fonts/instrument-serif-400-latin.woff2?url";
 import "@/styles/fonts.css";
 import "@/styles/global.css";
 import Navbar from "@/components/Navbar.astro";
@@ -189,8 +187,9 @@ if (ogType === "article") {
     <!-- editorial 字体组合：Instrument Serif（display）+ Inter（body）+ JetBrains Mono（code）
          全部自托管（public/fonts/ + src/styles/fonts.css，由 scripts/fetch-fonts.ts 生成）：
          fonts.googleapis.com 在大陆经常超时或被墙，第三方 CSS 实测要 550ms+ 才到。 -->
-    <link rel="preload" as="font" type="font/woff2" href={interFontUrl} crossorigin />
-    <link rel="preload" as="font" type="font/woff2" href={serifFontUrl} crossorigin />
+    {/* 不 preload 字体：Lighthouse 限速 1.6Mbps 时，两字体共 63KB 会和 HTML 抢带宽，
+        实测让首屏晚 ~300ms。@font-face 都是 font-display: swap，正文先以系统字体绘制，
+        字体到货后自行替换，对 FCP 无影响。 */}
   </head>
   <body class="min-h-screen flex flex-col" data-pagefind-ignore={noindex ? true : undefined}>
     <!-- A11y skip-to-content：键盘用户按 Tab 第一个出现这个；视觉默认隐藏，focus 时浮在左上角 -->

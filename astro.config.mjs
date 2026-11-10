@@ -13,12 +13,12 @@ export default defineConfig({
   site: SITE,
   output: "static",
   build: {
-    // 之前是 "always"：当时样式表不大，内联能省掉一个渲染阻塞请求。
-    // 现在 global.css 长到 82KB（Tailwind 全量 preflight + 变量），每页都内联
-    // 等于把 1136 个页面各撑大 82KB（dist 里约 93MB 是重复 CSS），而且 Lighthouse
-    // 跑在境外 runner 上、源站在国内，多出来的字节要走跨境链路。
-    // "auto" 只内联小样式表，主样式走 /_astro/*.css（可缓存、跨页复用）。
-    inlineStylesheets: "auto",
+    // 内联样式表。2026-11 实测对比（Lighthouse 各 3 次取中位数，preset=desktop）：
+    //   内联  : / 0.95  /about 0.95  /ai 0.95  /explore 0.96
+    //   外链  : / 0.86  /about 0.83  /ai 0.83  /explore 0.88
+    // 站点在国内、Lighthouse 跑在美国 runner，外链样式表多出的一个往返（约 240ms）
+    // 比 83KB CSS（gzip 14KB）的内联开销更贵，所以保持内联。
+    inlineStylesheets: "always",
   },
   integrations: [mdx(), react()],
   i18n: {
