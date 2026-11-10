@@ -44,13 +44,13 @@ const t = (zh: string, en: string) => (lang === "zh" ? zh : en);
       {prev ? (
         <a href={`${pathWithLang(`/${section}/${prev.translationKey}`, lang)}?utm_source=prev&utm_medium=post-footer`}
            class={`group block border border-[var(--border)] rounded-lg p-4 transition-colors ${sectionBorder[section]}`}>
-          <div class="text-[11px] uppercase tracking-[0.18em] text-zinc-500 font-mono mb-1.5">
+          <div class="text-[11px] uppercase tracking-[0.18em] text-zinc-500 dark:text-zinc-400 font-mono mb-1.5">
             ← {t("上一篇", "Previous")}
           </div>
           <div class={`text-sm font-semibold leading-snug line-clamp-2 group-${sectionHover[section]} transition-colors`}>
             {prev.title}
           </div>
-          <time class="mt-1.5 block text-[11px] text-zinc-500 font-mono tabular-nums">
+          <time class="mt-1.5 block text-[11px] text-zinc-500 dark:text-zinc-400 font-mono tabular-nums">
             {prev.date.toISOString().slice(0, 10)}
           </time>
         </a>
@@ -59,13 +59,13 @@ const t = (zh: string, en: string) => (lang === "zh" ? zh : en);
       {next ? (
         <a href={`${pathWithLang(`/${section}/${next.translationKey}`, lang)}?utm_source=next&utm_medium=post-footer`}
            class={`group block border border-[var(--border)] rounded-lg p-4 sm:text-right transition-colors ${sectionBorder[section]}`}>
-          <div class="text-[11px] uppercase tracking-[0.18em] text-zinc-500 font-mono mb-1.5">
+          <div class="text-[11px] uppercase tracking-[0.18em] text-zinc-500 dark:text-zinc-400 font-mono mb-1.5">
             {t("下一篇", "Next")} →
           </div>
           <div class={`text-sm font-semibold leading-snug line-clamp-2 group-${sectionHover[section]} transition-colors`}>
             {next.title}
           </div>
-          <time class="mt-1.5 block text-[11px] text-zinc-500 font-mono tabular-nums">
+          <time class="mt-1.5 block text-[11px] text-zinc-500 dark:text-zinc-400 font-mono tabular-nums">
             {next.date.toISOString().slice(0, 10)}
           </time>
         </a>
@@ -76,7 +76,7 @@ const t = (zh: string, en: string) => (lang === "zh" ? zh : en);
   {/* 相关阅读 */}
   {related.length > 0 && (
     <div>
-      <div class="text-[11px] uppercase tracking-[0.2em] text-zinc-500 font-mono mb-4 pb-2 border-b border-[var(--border)]">
+      <div class="text-[11px] uppercase tracking-[0.2em] text-zinc-500 dark:text-zinc-400 font-mono mb-4 pb-2 border-b border-[var(--border)]">
         {t("相关阅读", "Related")}
       </div>
       <ul class="space-y-3">
@@ -88,7 +88,7 @@ const t = (zh: string, en: string) => (lang === "zh" ? zh : en);
                 <span class={`text-sm font-medium group-${sectionHover[section]} transition-colors line-clamp-1`}>
                   {r.title}
                 </span>
-                <time class="text-[11px] text-zinc-500 font-mono tabular-nums shrink-0">
+                <time class="text-[11px] text-zinc-500 dark:text-zinc-400 font-mono tabular-nums shrink-0">
                   {r.date.toISOString().slice(0, 10)}
                 </time>
               </div>
@@ -108,7 +108,7 @@ const t = (zh: string, en: string) => (lang === "zh" ? zh : en);
        class={`mt-8 group block border border-[var(--border)] rounded-lg p-4 transition-colors ${sectionBorder[section]}`}>
       <div class="flex items-center justify-between gap-3">
         <div>
-          <div class="text-[11px] uppercase tracking-[0.18em] text-zinc-500 font-mono mb-1">
+          <div class="text-[11px] uppercase tracking-[0.18em] text-zinc-500 dark:text-zinc-400 font-mono mb-1">
             {t("归档", "Archive")}
           </div>
           <div class={`text-sm font-semibold group-${sectionHover[section]} transition-colors`}>

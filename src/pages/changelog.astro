@@ -69,7 +69,7 @@ const autoCount = commits.length - meaningful.length;
   <article class="max-w-2xl mx-auto px-6 sm:px-8 pt-12 sm:pt-20 pb-24 sm:pb-32">
 
     <header class="mb-14 sm:mb-16">
-      <div class="text-[11px] uppercase tracking-[0.2em] text-zinc-500 font-mono mb-3">CHANGELOG</div>
+      <div class="text-[11px] uppercase tracking-[0.2em] text-zinc-500 dark:text-zinc-400 font-mono mb-3">CHANGELOG</div>
       <h1 class="text-3xl sm:text-5xl leading-tight tracking-tight font-semibold text-[#1d1d1f] dark:text-zinc-100">
         站点更新日志
       </h1>
@@ -92,8 +92,8 @@ const autoCount = commits.length - meaningful.length;
             const cfg = TYPE_LABEL[c.type] ?? { label: c.type, color: "#71717a", show: true };
             return (
               <li class="flex items-start gap-3">
-                <span class="shrink-0 mt-0.5 inline-flex items-center px-2 py-0.5 rounded text-[10px] uppercase tracking-wider font-mono font-medium"
-                      style={`background:${cfg.color}1a;color:${cfg.color}`}>
+                <span class="type-badge shrink-0 mt-0.5 inline-flex items-center px-2 py-0.5 rounded text-[10px] uppercase tracking-wider font-mono font-medium"
+                      style={`--badge:${cfg.color}`}>
                   {cfg.label}
                 </span>
                 <div class="flex-1 min-w-0">
@@ -118,3 +118,13 @@ const autoCount = commits.length - meaningful.length;
 
   </article>
 </BaseLayout>
+
+<style>
+  /* 徽章底色用 10% 淡染保留颜色语义，文字色跟正文色混，
+     这样浅色/深色两种主题下都能过 4.5:1，而原先是把同一个颜色
+     同时当底色和字色（10px 小字下 #ea580c 只有 3.06）。 */
+  .type-badge {
+    background: color-mix(in srgb, var(--badge) 12%, transparent);
+    color: color-mix(in srgb, var(--badge) 62%, var(--text));
+  }
+</style>

@@ -50,6 +50,7 @@ function aspect(i: number) {
         </p>
       </div>
     ) : (
+      <h2 class="sr-only">全部相册</h2>
       <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
         {enriched.map(({ album, cover, count }, i) => (
           <li class={colSpan(i)}>

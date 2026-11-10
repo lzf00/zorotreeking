@@ -27,6 +27,11 @@
     --border-soft: #f0f0f2;
     --rule: rgba(0,0,0,0.08);
     --grain-opacity: 0;          /* 默认关闭噪点 */
+    /* 板块染料色（墨色）：浅底上 4.5:1 以上 */
+    --section-ai-rgb: 29 78 216;      /* #1d4ed8 */
+    --section-invest-rgb: 153 27 27;  /* #991b1b */
+    --section-photo-rgb: 107 33 168;  /* #6b21a8 */
+    --section-hike-rgb: 22 101 52;    /* #166534 */
     color-scheme: light;
   }
   .dark {
@@ -36,7 +41,7 @@
     --text: #f5f5f7;
     --text-secondary: #a1a1a6;
     /* #6e6e73 在 #0a0a0a 上只有 3.9:1，暗色主题下也提到 AA */
-    --text-tertiary: #7d7d82;
+    --text-tertiary: #87878d;
     /* 暗底上要用更亮的涨跌色才够对比 */
     --market-up: #f87171;
     --market-down: #4ade80;
@@ -45,6 +50,11 @@
     --border-soft: #1a1a1d;
     --rule: rgba(255,255,255,0.08);
     --grain-opacity: 0;
+    /* 暗底上换成同色系亮一档，否则 #1d4ed8 之类只有 2.3–3.0:1 */
+    --section-ai-rgb: 147 180 255;      /* #93b4ff */
+    --section-invest-rgb: 252 165 165;  /* #fca5a5 */
+    --section-photo-rgb: 216 180 254;   /* #d8b4fe */
+    --section-hike-rgb: 134 239 172;    /* #86efac */
     color-scheme: dark;
   }
 

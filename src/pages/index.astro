@@ -92,12 +92,6 @@ const sectionLabel = {
   photo: t("nav.photo"),
   hike: t("nav.hike"),
 };
-const sectionAccent: Record<string, string> = {
-  ai: "#1d4ed8",
-  invest: "#991b1b",
-  photo: "#6b21a8",
-  hike: "#166534",
-};
 ---
 
 <BaseLayout>
@@ -205,13 +199,13 @@ const sectionAccent: Record<string, string> = {
                style={`animation-delay: ${i * 100}ms`}>
               <div>
                 <div class="flex items-center gap-2 mb-3">
-                  <span class="w-1.5 h-1.5 rounded-full" style={`background:${sectionAccent[sec]}`}></span>
+                  <span class="w-1.5 h-1.5 rounded-full" style={`background:rgb(var(--section-${sec}-rgb))`}></span>
                   <span class="text-[10px] uppercase tracking-[0.18em] font-mono text-[var(--text-tertiary)]">
                     {sectionLabel[sec]}{isDg ? " · DAILY" : ""}
                   </span>
                 </div>
                 <h3 class="text-lg sm:text-xl font-semibold leading-snug tracking-tight line-clamp-3"
-                    style={`color:${sectionAccent[sec]}`}>
+                    style={`color:rgb(var(--section-${sec}-rgb))`}>
                   {p.data.title}
                 </h3>
                 {p.data.description && (
@@ -289,7 +283,7 @@ const sectionAccent: Record<string, string> = {
         {latest.map((p, i) => (
           <li class="py-4 animate-rise" style={`animation-delay: ${100 + i * 50}ms`}>
             <a href={pathWithLang(`/${p.section}/${p.data.translationKey}`, lang)} class="flex items-center gap-4 group">
-              <span class="w-1.5 h-1.5 rounded-full shrink-0" style={`background:${sectionAccent[p.section]}`}></span>
+              <span class="w-1.5 h-1.5 rounded-full shrink-0" style={`background:rgb(var(--section-${p.section}-rgb))`}></span>
               <span class="text-xs text-[var(--text-tertiary)] uppercase tracking-wide shrink-0 w-16">{sectionLabel[p.section]}</span>
               <span class="flex-1 truncate text-[15px] group-hover:text-[var(--text)] text-[var(--text-secondary)] transition-colors">{p.data.title}</span>
               <time class="text-xs text-[var(--text-tertiary)] shrink-0 tabular-nums">{p.data.date.toISOString().slice(0, 10)}</time>

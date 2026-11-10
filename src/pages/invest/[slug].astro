@@ -57,7 +57,7 @@ const isDigest = (entry.data.tags ?? []).includes("digest") || entry.data.transl
           {entry.data.description}
         </p>
       )}
-      <div class="mt-10 flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] uppercase tracking-[0.15em] text-zinc-500 font-mono">
+      <div class="mt-10 flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] uppercase tracking-[0.15em] text-zinc-500 dark:text-zinc-400 font-mono">
         <time>{entry.data.date.toISOString().slice(0, 10)}</time>
         {entry.data.tags.map((tag) => <TagChip tag={tag} lang={lang} />)}
       </div>
@@ -78,7 +78,7 @@ const isDigest = (entry.data.tags ?? []).includes("digest") || entry.data.transl
                 hover:prose-a:underline
                 prose-em:not-italic prose-em:text-[11px] prose-em:uppercase
                 prose-em:tracking-[0.1em] prose-em:font-mono prose-em:font-normal
-                prose-em:text-zinc-500
+                prose-em:text-zinc-500 dark:text-zinc-400
                 prose-em:block prose-em:mb-8
                 prose-p:text-[17px] sm:prose-p:text-[18px] prose-p:leading-[1.75]
                 prose-p:text-zinc-700 dark:prose-p:text-zinc-300
@@ -86,7 +86,7 @@ const isDigest = (entry.data.tags ?? []).includes("digest") || entry.data.transl
                 prose-blockquote:border-l-2 prose-blockquote:border-zinc-200
                 dark:prose-blockquote:border-zinc-800
                 prose-blockquote:font-light prose-blockquote:not-italic
-                prose-blockquote:text-zinc-500 prose-blockquote:my-10
+                prose-blockquote:text-zinc-500 dark:text-zinc-400 prose-blockquote:my-10
                 prose-blockquote:pl-6 prose-blockquote:py-0
                 prose-hr:hidden
                 prose-pre:bg-[#0d1117] prose-pre:rounded-xl">

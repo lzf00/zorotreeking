@@ -17,11 +17,13 @@ export default {
       },
       colors: {
         // 染料色：比原来更沉一档，更"墨色"
+        // 深色模式要换成同色系亮一档（见 global.css 的 --section-*-rgb）：
+        // 这几个墨色在 #0a0a0a 上只有 2.3–3.0:1，暗色主题下根本读不出来。
         section: {
-          ai: "#1d4ed8",      // royal blue
-          invest: "#991b1b",  // oxblood
-          photo: "#6b21a8",   // violet ink
-          hike: "#166534",    // forest
+          ai: "rgb(var(--section-ai-rgb) / <alpha-value>)",
+          invest: "rgb(var(--section-invest-rgb) / <alpha-value>)",
+          photo: "rgb(var(--section-photo-rgb) / <alpha-value>)",
+          hike: "rgb(var(--section-hike-rgb) / <alpha-value>)",
         },
       },
       maxWidth: {

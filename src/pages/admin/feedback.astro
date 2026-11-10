@@ -46,14 +46,14 @@ const rows: Row[] = [
 <BaseLayout title="Feedback 看板" description="文章 / digest 热度排行" noindex>
   <main class="max-w-4xl mx-auto px-6 pt-12 pb-32">
     <h1 class="text-2xl font-semibold tracking-tight">Feedback 看板</h1>
-    <p class="mt-2 text-sm text-zinc-500">
+    <p class="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
       文章 / digest 的 👍 / 👎 排行，数据来自 <code>/api/feedback</code>。
       仅本人查看 · 不被搜索引擎索引。
     </p>
 
     <!-- 主体 -->
     <div id="board" class="mt-10 space-y-6">
-      <div class="flex items-center gap-3 text-sm text-zinc-500">
+      <div class="flex items-center gap-3 text-sm text-zinc-500 dark:text-zinc-400">
         <span id="progress">加载中…</span>
         <button id="refresh"
                 class="ml-auto px-3 py-1 text-xs border border-zinc-200 dark:border-zinc-800 rounded hover:bg-zinc-50 dark:hover:bg-zinc-900">
@@ -63,9 +63,9 @@ const rows: Row[] = [
 
       <div class="flex gap-2 text-xs">
         <button data-filter="all" class="filter-btn px-2 py-1 rounded border border-zinc-300 dark:border-zinc-700 font-medium bg-zinc-100 dark:bg-zinc-800">全部</button>
-        <button data-filter="ai" class="filter-btn px-2 py-1 rounded border border-zinc-200 dark:border-zinc-800 text-zinc-500">AI</button>
-        <button data-filter="invest" class="filter-btn px-2 py-1 rounded border border-zinc-200 dark:border-zinc-800 text-zinc-500">投资</button>
-        <button data-filter="photo" class="filter-btn px-2 py-1 rounded border border-zinc-200 dark:border-zinc-800 text-zinc-500">影像</button>
+        <button data-filter="ai" class="filter-btn px-2 py-1 rounded border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400">AI</button>
+        <button data-filter="invest" class="filter-btn px-2 py-1 rounded border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400">投资</button>
+        <button data-filter="photo" class="filter-btn px-2 py-1 rounded border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400">影像</button>
       </div>
 
       <table class="w-full text-sm">
@@ -184,10 +184,10 @@ const rows: Row[] = [
         currentFilter = btn.getAttribute("data-filter");
         document.querySelectorAll(".filter-btn").forEach((b) => {
           b.classList.remove("font-medium", "bg-zinc-100", "dark:bg-zinc-800");
-          b.classList.add("text-zinc-500");
+          b.classList.add("text-zinc-500 dark:text-zinc-400");
         });
         btn.classList.add("font-medium", "bg-zinc-100", "dark:bg-zinc-800");
-        btn.classList.remove("text-zinc-500");
+        btn.classList.remove("text-zinc-500 dark:text-zinc-400");
         render();
       });
     });

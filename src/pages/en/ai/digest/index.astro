@@ -27,14 +27,14 @@ const months = Object.keys(groups).sort().reverse();
   description={`${digests.length} issues auto-generated daily from HF Daily Papers / arxiv / qbitai / Anthropic etc.`}>
   <section class="max-w-3xl mx-auto px-5 pt-12 pb-8">
     <a href={pathWithLang("/ai", lang)}
-       class="inline-block text-[11px] uppercase tracking-[0.2em] text-zinc-500 hover:text-section-ai transition-colors mb-6">
+       class="inline-block text-[11px] uppercase tracking-[0.2em] text-zinc-500 dark:text-zinc-400 hover:text-section-ai transition-colors mb-6">
       ← {t("section.ai.title")}
     </a>
-    <div class="text-[11px] uppercase tracking-[0.2em] text-zinc-500 font-mono mb-3">Auto Digest</div>
+    <div class="text-[11px] uppercase tracking-[0.2em] text-zinc-500 dark:text-zinc-400 font-mono mb-3">Auto Digest</div>
     <h1 class="text-3xl sm:text-5xl leading-tight tracking-tight font-semibold text-section-ai">
       Daily AI digest · archive
     </h1>
-    <p class="mt-4 text-base sm:text-lg leading-relaxed text-zinc-500 font-light">
+    <p class="mt-4 text-base sm:text-lg leading-relaxed text-zinc-500 dark:text-zinc-400 font-light">
       {digests.length} issues auto-generated at 08:00 Beijing daily, pulling from HF Daily Papers / arxiv cs.LG / qbitai / Anthropic / OpenAI / Google Research.
     </p>
   </section>
@@ -77,14 +77,14 @@ const months = Object.keys(groups).sort().reverse();
                   {!firstLine && fallbackHighlights.length > 0 && (
                     <ul class="mt-2 space-y-0.5">
                       {fallbackHighlights.map(h => (
-                        <li class="text-xs text-zinc-500 line-clamp-1">· {h}</li>
+                        <li class="text-xs text-zinc-500 dark:text-zinc-400 line-clamp-1">· {h}</li>
                       ))}
                     </ul>
                   )}
                   {tags.length > 0 && (
                     <div class="mt-3 flex flex-wrap gap-1.5">
                       {tags.map(tag => (
-                        <span class="text-[10.5px] px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-500">
+                        <span class="text-[10.5px] px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400">
                           {tag}
                         </span>
                       ))}
@@ -97,6 +97,6 @@ const months = Object.keys(groups).sort().reverse();
         </div>
       </div>
     ))}
-    {digests.length === 0 && <p class="py-12 text-center text-zinc-500">No digests yet</p>}
+    {digests.length === 0 && <p class="py-12 text-center text-zinc-500 dark:text-zinc-400">No digests yet</p>}
   </section>
 </BaseLayout>
