@@ -78,8 +78,17 @@
 8. **IndexNow ping**（POST 新 URL 给 Bing/Yandex/Naver 加速索引）
 
 ### `.github/workflows/lighthouse.yml`
-**触发**: deploy 完成后自动 + workflow_dispatch。
-跑 LHCI 对比 `.lighthouserc.json` 性能预算（Perf ≥ 0.85, A11y ≥ 0.90, SEO ≥ 0.95），未达标 fail。
+**触发**: deploy 完成后自动 + workflow_dispatch（手动跑会强制审计，不受 scope 跳过影响）。
+跑 LHCI 对比 `.lighthouserc.json` 性能预算（Perf ≥ 0.80, A11y ≥ 0.90, SEO ≥ 0.95，均取 5 次中位数），未达标 fail。
+
+性能阈值为什么是 0.80 而不是 0.85：站点在国内、Lighthouse 跑在 GitHub 的美国 runner 上，
+实测同一版本同一页面三次跑分可以是 `0.79 / 0.95 / 0.95`，TTFB 在 **241ms~986ms** 之间跳
+（同一台静态服务器，纯链路抖动）。按「每个 URL 中位数 ≥0.85」判会随机红，与代码质量无关。
+真正的解法是在源站前面加 CDN（需评估成本与备案/国内路由），在那之前用 0.80 守住真实回退：
+真出现回退时，中位数会整体塌到 0.8 以下，而不是单次毛刺。
+
+注意 `Decide whether audited pages changed` 步骤：只改了生成内容的提交会让 Lighthouse **skip**
+（job 显示 success 但没跑分），要真数据就手动 dispatch。
 
 ## 数据流：豆包 LLM
 
