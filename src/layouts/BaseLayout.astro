@@ -49,6 +49,10 @@ const bingVerification = normalizeVerificationToken(import.meta.env.PUBLIC_BING_
 // 让 Google / Bing / 微信分享等理解每个页面的语义。
 // Article 页输出 Article，首页输出 WebSite + Person，about 输出不含个人身份的 AboutPage。
 const siteName = "ZoroTreeking";
+// 页面没给封面图时统一用站点默认卡（public/og-default.png，由
+// scripts/generate-og-default.mjs 生成）：分享到微信/Telegram/Slack 时
+// 没有 og:image 会退化成一条纯文字链接，点击率差很多。
+const socialImage = ogImage ?? "/og-default.png";
 const author = {
   "@type": "Person",
   name: "Zifei Liu",
@@ -64,7 +68,7 @@ if (ogType === "article") {
     "@type": "Article",
     headline: title ?? siteName,
     description: desc,
-    image: ogImage ? new URL(ogImage, Astro.site).toString() : undefined,
+    image: new URL(socialImage, Astro.site).toString(),
     datePublished: publishedTime?.toISOString(),
     dateModified: (modifiedTime ?? publishedTime)?.toISOString(),
     author,
@@ -134,26 +138,22 @@ if (ogType === "article") {
     <meta property="og:description" content={desc} />
     <meta property="og:url" content={canonical} />
     <meta property="og:type" content={ogType} />
-    {ogImage && (
-      <>
-        <meta property="og:image" content={new URL(ogImage, Astro.site).toString()} />
-        {/* og:image:secure_url 部分国内 IM（微信/QQ）显式要 https URL */}
-        <meta property="og:image:secure_url" content={new URL(ogImage, Astro.site).toString()} />
-        {/* alt 文本帮无障碍 + 部分平台显示 */}
-        <meta property="og:image:alt" content={title || siteName} />
-        {/* MIME type 帮平台决定是否预览 */}
-        <meta property="og:image:type" content={
-          ogImage.endsWith(".webp") ? "image/webp"
-            : ogImage.endsWith(".png") ? "image/png"
-            : "image/jpeg"
-        } />
-        {/* 1200x630 是 OG / Twitter 推荐尺寸；相册图通常 ≥ 这个分辨率，平台会自己 fit */}
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-      </>
-    )}
-    <meta name="twitter:card" content={ogImage ? "summary_large_image" : "summary"} />
-    {ogImage && <meta name="twitter:image" content={new URL(ogImage, Astro.site).toString()} />}
+    <meta property="og:image" content={new URL(socialImage, Astro.site).toString()} />
+    {/* og:image:secure_url 部分国内 IM（微信/QQ）显式要 https URL */}
+    <meta property="og:image:secure_url" content={new URL(socialImage, Astro.site).toString()} />
+    {/* alt 文本帮无障碍 + 部分平台显示 */}
+    <meta property="og:image:alt" content={title || siteName} />
+    {/* MIME type 帮平台决定是否预览 */}
+    <meta property="og:image:type" content={
+      socialImage.endsWith(".webp") ? "image/webp"
+        : socialImage.endsWith(".png") ? "image/png"
+        : "image/jpeg"
+    } />
+    {/* 1200x630 是 OG / Twitter 推荐尺寸；相册图通常 ≥ 这个分辨率，平台会自己 fit */}
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={new URL(socialImage, Astro.site).toString()} />
     {ogType === "article" && publishedTime && (
       <meta property="article:published_time" content={publishedTime.toISOString()} />
     )}
