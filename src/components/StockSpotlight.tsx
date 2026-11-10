@@ -108,7 +108,7 @@ export default function StockSpotlight({ stocks, showNote = true, initialQuotes,
     .map(s => quotes[s.secid]?.change_pct)
     .filter((p): p is number => p != null);
   const avg = valid.length ? valid.reduce((a, b) => a + b, 0) / valid.length : null;
-  const avgColor = avg == null ? "var(--text-tertiary)" : avg > 0 ? "#dc2626" : avg < 0 ? "#16a34a" : "var(--text-tertiary)";
+  const avgColor = avg == null ? "var(--text-tertiary)" : avg > 0 ? "var(--market-up)" : avg < 0 ? "var(--market-down)" : "var(--text-tertiary)";
 
   return (
     <div className="space-y-3">
@@ -137,7 +137,7 @@ export default function StockSpotlight({ stocks, showNote = true, initialQuotes,
               {stocks.map(s => {
                 const q = quotes[s.secid];
                 const pct = q?.change_pct;
-                const color = pct == null ? "var(--text-tertiary)" : pct > 0 ? "#dc2626" : pct < 0 ? "#16a34a" : "var(--text-tertiary)";
+                const color = pct == null ? "var(--text-tertiary)" : pct > 0 ? "var(--market-up)" : pct < 0 ? "var(--market-down)" : "var(--text-tertiary)";
                 const sign = (n: number | null | undefined) => (n != null && n > 0 ? "+" : "");
                 const name = q?.name || s.display_name || s.secid;
                 return (

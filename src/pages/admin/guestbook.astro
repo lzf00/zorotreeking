@@ -76,7 +76,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
       const status = ["pending", "approved", "hidden"].includes(it.status) ? it.status : "pending";
       const statusColor = status === "approved" ? "text-green-600 dark:text-green-400"
         : status === "hidden" ? "text-zinc-500"
-        : "text-amber-600 dark:text-amber-400";
+        : "text-amber-700 dark:text-amber-400";
       return `
       <div class="rounded-lg border border-zinc-200 dark:border-zinc-800 p-4 bg-white dark:bg-zinc-900">
         <div class="flex items-center justify-between gap-3 mb-2 text-xs">

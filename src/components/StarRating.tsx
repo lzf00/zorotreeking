@@ -162,7 +162,7 @@ export default function StarRating({ slug, align = "right", label = "评分" }: 
         </span>
       )}
       {err && (
-        <span style={{ color: "#dc2626", cursor: "help" }} title={err}>
+        <span style={{ color: "var(--market-up)", cursor: "help" }} title={err}>
           · {err.startsWith("HTTP") ? err : err === "rate-limited" ? "太快" : "断网"}
         </span>
       )}

@@ -108,7 +108,7 @@ export default function MarketIndicesGrid({ initialIndices, initialUpdated, init
       </div>
       <p className="mt-3 text-[11px] text-[var(--text-tertiary)] font-mono tracking-wide">
         数据源 {source === "live" ? "东方财富公开行情" : "Wind 静态兜底快照"} · {source === "live" ? "接口响应" : "快照时间"} {updated ? formatChinaMarketTime(updated) : "—"}
-        {source === "wind_snapshot" && <span className="ml-2 text-amber-600 dark:text-amber-400">· 实时接口尚未成功更新</span>}
+        {source === "wind_snapshot" && <span className="ml-2 text-amber-700 dark:text-amber-400">· 实时接口尚未成功更新</span>}
         {!isChinaATradingHours() && <span className="ml-2">（非交易时段，已停止自动刷新）</span>}
         {loading && <span className="ml-2">…</span>}
       </p>
@@ -121,7 +121,7 @@ function IndexCard({ d }: { d: Index }) {
   const up = (pct ?? 0) > 0;
   const down = (pct ?? 0) < 0;
   // A 股配色：红涨绿跌
-  const color = up ? "#dc2626" : down ? "#16a34a" : "var(--text-tertiary)";
+  const color = up ? "var(--market-up)" : down ? "var(--market-down)" : "var(--text-tertiary)";
   const arrow = up ? "▲" : down ? "▼" : "—";
   const fmt = (n: number | null, digits = 2) =>
     n == null ? "—" : n.toLocaleString("en-US", { minimumFractionDigits: digits, maximumFractionDigits: digits });

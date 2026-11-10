@@ -545,7 +545,7 @@ function Bubble({ msg }: { msg: Message }) {
         <div
           style={{
             fontSize: "13.5px", lineHeight: 1.65,
-            color: msg.error ? "#dc2626" : "var(--text, #111827)",
+            color: msg.error ? "var(--market-up)" : "var(--text, #111827)",
             wordBreak: "break-word",
           }}
           dangerouslySetInnerHTML={{ __html: renderMd(msg.text) }}

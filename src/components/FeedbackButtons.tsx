@@ -76,7 +76,7 @@ export default function FeedbackButtons({ slug, align = "right" }: Props) {
         type="button"
         onClick={() => vote("like")}
         disabled={pending}
-        style={btnStyle(likeActive, "#dc2626")}
+        style={btnStyle(likeActive, "var(--market-up)")}
         aria-pressed={likeActive}
         aria-label="喜欢"
         title="喜欢"

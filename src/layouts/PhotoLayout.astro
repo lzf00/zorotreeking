@@ -38,6 +38,10 @@ const { title, description, ogImage, ogImageWidth, ogImageHeight } = Astro.props
   body:has(.photo-immersive) {
     background: #0a0a0a !important;
     color: #f0f0f0;
+    /* 次级文字在浅色页用 #6e6e73 没问题，但在 #0a0a0a 上只有 3.9:1，
+       WCAG AA 要求 4.5:1（相册页 footer 的链接会被 Lighthouse 判失败）。
+       提到 #7d7d82 = 4.83:1，仍然明显弱于正文，但过了 AA。 */
+    --text-tertiary: #7d7d82;
   }
   body:has(.photo-immersive) header {
     background: rgba(10,10,10,0.7) !important;

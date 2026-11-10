@@ -238,13 +238,13 @@ export default function LiveHoldings({ holdings, dataMode = "placeholder", simul
             label="最近净值日盈亏"
             value={hasTodayValue ? formatSignedCurrency(summary.todayPnl, 2) : "—"}
             sub={summary.todayPnlPct !== null ? `${summary.todayPnlPct >= 0 ? "+" : ""}${fmt(summary.todayPnlPct, 2)}%` : "—"}
-            color={summary.todayPnl > 0 ? "#dc2626" : summary.todayPnl < 0 ? "#16a34a" : undefined}
+            color={summary.todayPnl > 0 ? "var(--market-up)" : summary.todayPnl < 0 ? "var(--market-down)" : undefined}
           />
           <Card
             label={dataMode === "simulation" ? "累计模拟盈亏" : "累计盈亏"}
             value={hasMV ? formatSignedCurrency(summary.totalPnl, 0) : "—"}
             sub={summary.totalPnlPct !== null ? `${summary.totalPnlPct >= 0 ? "+" : ""}${fmt(summary.totalPnlPct, 2)}%` : "—"}
-            color={summary.totalPnl > 0 ? "#dc2626" : summary.totalPnl < 0 ? "#16a34a" : undefined}
+            color={summary.totalPnl > 0 ? "var(--market-up)" : summary.totalPnl < 0 ? "var(--market-down)" : undefined}
           />
           <Card
             label={dataMode === "simulation" ? "模拟本金" : "持仓数"}
@@ -279,8 +279,8 @@ export default function LiveHoldings({ holdings, dataMode = "placeholder", simul
             </thead>
             <tbody>
               {rows.map(r => {
-                const pctColor = r.pct == null ? "var(--text-tertiary)" : r.pct > 0 ? "#dc2626" : r.pct < 0 ? "#16a34a" : "var(--text-tertiary)";
-                const pnlColor = r.pnl == null ? "var(--text-tertiary)" : r.pnl > 0 ? "#dc2626" : r.pnl < 0 ? "#16a34a" : "var(--text-tertiary)";
+                const pctColor = r.pct == null ? "var(--text-tertiary)" : r.pct > 0 ? "var(--market-up)" : r.pct < 0 ? "var(--market-down)" : "var(--text-tertiary)";
+                const pnlColor = r.pnl == null ? "var(--text-tertiary)" : r.pnl > 0 ? "var(--market-up)" : r.pnl < 0 ? "var(--market-down)" : "var(--text-tertiary)";
                 const displayName = r.h.name;
                 return (
                   <tr key={r.h.symbol} className="border-t border-[var(--border)]">
@@ -330,7 +330,7 @@ export default function LiveHoldings({ holdings, dataMode = "placeholder", simul
           : <span className="ml-2">（当前不在净值发布窗口）</span>}
         {dataMode === "simulation" && <span className="ml-2">· 模拟起点 {simulationStartDate ?? "2026-02-01"}</span>}
         {partial !== null && (
-          <span className="ml-2 text-amber-600 dark:text-amber-400">· 部分基金缺失（{partial.succeeded}/{partial.requested}）</span>
+          <span className="ml-2 text-amber-700 dark:text-amber-400">· 部分基金缺失（{partial.succeeded}/{partial.requested}）</span>
         )}
         {loading && <span className="ml-2">…</span>}
       </p>

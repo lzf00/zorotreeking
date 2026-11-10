@@ -103,17 +103,17 @@ export default function SectorRanking({ initialData }: Props = {}) {
   return (
     <div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <SectorList title="涨幅榜" items={ups} color="#dc2626" arrow="▲" />
+        <SectorList title="涨幅榜" items={ups} color="var(--market-up)" arrow="▲" />
         <SectorList
           title={lagging.items.length === 0 ? "后十名待实时数据" : lagging.title}
           items={lagging.items}
-          color={lagging.direction === "down" ? "#16a34a" : "#dc2626"}
+          color={lagging.direction === "down" ? "var(--market-down)" : "var(--market-up)"}
           arrow={lagging.direction === "down" ? "▼" : "▲"}
         />
       </div>
       <p className="mt-3 text-[11px] text-[var(--text-tertiary)] font-mono">
         数据源 {sectorSourceLabel(data)} · 细分行业板块共 {data.total ?? "?"} 个 · {data.ts ? `${data.stale ? "快照时间" : "接口响应"} ${formatChinaMarketTime(data.ts)}` : "时间未知"}
-        {data.stale && <span className="ml-2 text-amber-600 dark:text-amber-400">· 实时接口尚未成功更新</span>}
+        {data.stale && <span className="ml-2 text-amber-700 dark:text-amber-400">· 实时接口尚未成功更新</span>}
       </p>
     </div>
   );

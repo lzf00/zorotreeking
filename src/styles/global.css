@@ -17,6 +17,12 @@
     --text-secondary: #515154;
     /* WCAG AA: #6e6e73 on white = 4.6:1（之前 #86868b 仅 3.2:1 A11y 不达标） */
     --text-tertiary: #6e6e73;
+    /* 市场涨跌「文字」色：浅底上 #dc2626 仅 4.43:1、#16a34a 仅 3.18:1，
+       都低于 AA 4.5:1。这里用深一档的品牌色专门给文字用，
+       图表描边/填充仍用原来的饱和色，视觉语义不变。 */
+    --market-up: #b91c1c;        /* 红涨：浅底 5.9:1 */
+    --market-down: #15803d;      /* 绿跌：浅底 4.9:1 */
+    --market-warn: #b45309;      /* 警示：浅底 4.7:1 */
     --border: #e5e5e7;
     --border-soft: #f0f0f2;
     --rule: rgba(0,0,0,0.08);
@@ -29,7 +35,12 @@
     --bg-soft-2: #1c1c1f;
     --text: #f5f5f7;
     --text-secondary: #a1a1a6;
-    --text-tertiary: #6e6e73;
+    /* #6e6e73 在 #0a0a0a 上只有 3.9:1，暗色主题下也提到 AA */
+    --text-tertiary: #7d7d82;
+    /* 暗底上要用更亮的涨跌色才够对比 */
+    --market-up: #f87171;
+    --market-down: #4ade80;
+    --market-warn: #fbbf24;
     --border: #2a2a2d;
     --border-soft: #1a1a1d;
     --rule: rgba(255,255,255,0.08);

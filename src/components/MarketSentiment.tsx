@@ -123,9 +123,9 @@ export default function MarketSentiment({ initialData }: Props = {}) {
           ) : (
             <>
               <div className="flex items-baseline gap-3 mb-3 tabular-nums">
-                <span className="text-2xl font-semibold" style={{ color: "#dc2626" }}>{breadth.ups}</span>
+                <span className="text-2xl font-semibold" style={{ color: "var(--market-up)" }}>{breadth.ups}</span>
                 <span className="text-[var(--text-tertiary)]">/</span>
-                <span className="text-2xl font-semibold" style={{ color: "#16a34a" }}>{breadth.downs}</span>
+                <span className="text-2xl font-semibold" style={{ color: "var(--market-down)" }}>{breadth.downs}</span>
                 <span className="text-xs text-[var(--text-tertiary)] ml-auto">平 {breadth.flats}</span>
               </div>
               <div className="flex h-2 rounded-full overflow-hidden bg-[var(--border)] mb-2">
@@ -148,21 +148,21 @@ export default function MarketSentiment({ initialData }: Props = {}) {
           ) : (
             <>
               <div className="flex items-baseline gap-3 mb-3 tabular-nums">
-                <span className="text-2xl font-semibold" style={{ color: "#dc2626" }}>{breadth.limit_up}</span>
+                <span className="text-2xl font-semibold" style={{ color: "var(--market-up)" }}>{breadth.limit_up}</span>
                 <span className="text-[var(--text-tertiary)]">/</span>
-                <span className="text-2xl font-semibold" style={{ color: "#16a34a" }}>{breadth.limit_down}</span>
+                <span className="text-2xl font-semibold" style={{ color: "var(--market-down)" }}>{breadth.limit_down}</span>
               </div>
               <div className="text-xs text-[var(--text-secondary)] space-y-1 tabular-nums">
                 {breadth.limit_up_breakdown && (
                   <div className="flex justify-between">
                     <span>涨停 10cm/20cm</span>
-                    <span style={{ color: "#dc2626" }}>{breadth.limit_up_breakdown["10cm"]} / {breadth.limit_up_breakdown["20cm"]}</span>
+                    <span style={{ color: "var(--market-up)" }}>{breadth.limit_up_breakdown["10cm"]} / {breadth.limit_up_breakdown["20cm"]}</span>
                   </div>
                 )}
                 {breadth.limit_down_breakdown && (
                   <div className="flex justify-between">
                     <span>跌停 10cm/20cm</span>
-                    <span style={{ color: "#16a34a" }}>{breadth.limit_down_breakdown["10cm"]} / {breadth.limit_down_breakdown["20cm"]}</span>
+                    <span style={{ color: "var(--market-down)" }}>{breadth.limit_down_breakdown["10cm"]} / {breadth.limit_down_breakdown["20cm"]}</span>
                   </div>
                 )}
               </div>
@@ -173,7 +173,7 @@ export default function MarketSentiment({ initialData }: Props = {}) {
       <p className="mt-3 text-[11px] text-[var(--text-tertiary)] font-mono">
         数据 腾讯成交额 + 新浪/东财涨跌家数 · 后端缓存 90s
         {data.ts ? `· 接口响应 ${formatChinaMarketTime(data.ts)}` : ""}
-        {data.stale && <span className="ml-2" style={{ color: "#dc2626" }}>· 数据陈旧（上游异常）</span>}
+        {data.stale && <span className="ml-2" style={{ color: "var(--market-up)" }}>· 数据陈旧（上游异常）</span>}
       </p>
     </div>
   );
