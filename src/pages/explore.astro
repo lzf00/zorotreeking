@@ -51,10 +51,13 @@ const points = projectTo2D(valid);
 
 // 显式规格：SVG viewBox -1.05..1.05，留 5% 边距
 const VBW = 100, VBH = 100, PAD = 6;
+// 坐标保留两位小数：SVG 默认会把 23.123456789012345 这 17 位都写出来，
+// 500 个点就是十几 KB 的纯噪声，视觉上两位小数（viewBox 100 单位）已经亚像素级。
+const round2 = (n: number) => Math.round(n * 100) / 100;
 function toSvg(x: number, y: number): { cx: number; cy: number } {
   return {
-    cx: PAD + ((x + 1) / 2) * (VBW - 2 * PAD),
-    cy: PAD + ((1 - y) / 2) * (VBH - 2 * PAD), // y 翻转：屏幕 y 向下
+    cx: round2(PAD + ((x + 1) / 2) * (VBW - 2 * PAD)),
+    cy: round2(PAD + ((1 - y) / 2) * (VBH - 2 * PAD)), // y 翻转：屏幕 y 向下
   };
 }
 
@@ -112,11 +115,16 @@ const stats = {
             const color = colorMap[m.collection] ?? "#71717a";
             const r = m.isDigest ? 0.7 : 1.1;
             const opacity = m.isDigest ? 0.55 : 1;
-            const label = `${m.title} · ${m.date.toISOString().slice(0, 10)}`;
+            // digest 的标题里已经含日期，再拼一次会出现 "2026-05-14 · 2026-05-14"
+            const dateStr = m.date.toISOString().slice(0, 10);
+            const label = m.title.includes(dateStr) ? m.title : `${m.title} · ${dateStr}`;
+            // 每节点只留必要属性：class 用 #explore-map a 统一控制，
+            // tooltip 文本直接用 aria-label（本来内容一样，复制一份等于白占 45B×500），
+            // opacity=1 是默认值就省略。
             return (
-              <a href={`/${m.collection}/${m.key}`} class="explore-point" data-tooltip={label} aria-label={label}>
-                <circle cx={cx} cy={cy} r={r} fill={color} opacity={opacity}
-                        class="transition-all hover:r-2 hover:opacity-100" />
+              <a href={`/${m.collection}/${m.key}`} class="explore-point" aria-label={label}>
+                <circle cx={cx} cy={cy} r={r} fill={color}
+                        opacity={opacity === 1 ? undefined : opacity} />
               </a>
             );
           })}
@@ -158,6 +166,18 @@ const stats = {
     opacity: 0;
     visibility: hidden;
   }
+  /* 点：过渡与 hover 放大统一在 CSS 里，避免每个 <a>/<circle> 重复携带 class */
+  #explore-map a {
+    cursor: pointer;
+  }
+  #explore-map circle {
+    transition: r 0.15s ease, opacity 0.15s ease;
+  }
+  #explore-map a:hover circle,
+  #explore-map a:focus-visible circle {
+    r: 2;
+    opacity: 1;
+  }
   #explore-tooltip[data-visible="true"] {
     opacity: 1;
     visibility: visible;
@@ -171,7 +191,7 @@ const stats = {
 
   const pointFrom = (target: EventTarget | null) =>
     target instanceof Element
-      ? target.closest<SVGAElement>(".explore-point[data-tooltip]")
+      ? target.closest<SVGAElement>(".explore-point[aria-label]")
       : null;
 
   const hideTooltip = () => {
@@ -182,7 +202,7 @@ const stats = {
 
   const showTooltip = (point: SVGAElement, clientX: number, clientY: number) => {
     if (!shell || !tooltip) return;
-    tooltip.textContent = point.dataset.tooltip ?? "";
+    tooltip.textContent = point.getAttribute("aria-label") ?? "";
     tooltip.dataset.visible = "true";
     tooltip.setAttribute("aria-hidden", "false");
 
