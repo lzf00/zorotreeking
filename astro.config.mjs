@@ -26,11 +26,11 @@ export default defineConfig({
     locales: ["zh", "en"],
     routing: { prefixDefaultLocale: false },
   },
+  // 只声明不带尾斜杠的形式：build.format=directory 下 /photography 和 /photography/
+  // 是同一个路由，两条都写会触发 Astro 的 duplicate route 警告（未来版本会变硬错误）。
   redirects: {
     "/photography": "/photo",
-    "/photography/": "/photo",
     "/en/photography": "/en/photo",
-    "/en/photography/": "/en/photo",
   },
   markdown: {
     processor: unified({
