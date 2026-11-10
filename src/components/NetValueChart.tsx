@@ -14,7 +14,11 @@ export default function NetValueChart({ data }: Props) {
           <XAxis dataKey="period" tick={{ fontSize: 11 }} stroke="var(--text-tertiary)" />
           <YAxis tick={{ fontSize: 11 }} stroke="var(--text-tertiary)" domain={["auto", "auto"]} />
           <Tooltip
-            formatter={(v: number, name: string) => [name === "netValue" ? v.toFixed(4) : `¥${v.toLocaleString()}`, name === "netValue" ? "净值" : "市值"]}
+            // recharts 3 的 formatter 首参类型放宽成 ValueType | undefined
+            formatter={(v: any, name: any) => [
+              name === "netValue" ? Number(v).toFixed(4) : `¥${Number(v).toLocaleString()}`,
+              name === "netValue" ? "净值" : "市值",
+            ]}
             contentStyle={{ background: "var(--bg-soft)", border: "1px solid var(--border)", borderRadius: 8 }}
           />
           <ReferenceLine y={1} stroke="var(--text-tertiary)" strokeDasharray="2 4" />

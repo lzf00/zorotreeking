@@ -1,4 +1,4 @@
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from "recharts";
+import { PieChart, Pie, Sector, Tooltip, ResponsiveContainer, Legend } from "recharts";
 
 type Holding = { name: string; symbol: string; weight: number; marketValue: number };
 
@@ -23,14 +23,27 @@ export default function HoldingsPie({ holdings }: Props) {
     <div className="w-full" style={{ height: 340 }}>
       <ResponsiveContainer>
         <PieChart>
-          <Pie data={data} dataKey="value" nameKey="name" innerRadius={60} outerRadius={120} paddingAngle={2}>
-            {data.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} stroke="transparent" />)}
-          </Pie>
+          <Pie
+            data={data}
+            dataKey="value"
+            nameKey="name"
+            innerRadius={60}
+            outerRadius={120}
+            paddingAngle={2}
+            // recharts 3 弃用了 <Cell>（4.0 会移除），改用 shape 逐扇区上色
+            shape={(props: any) => (
+              <Sector {...props} fill={COLORS[(props.index ?? 0) % COLORS.length]} stroke="transparent" />
+            )}
+          />
           <Tooltip
-            formatter={(v: number, _name, payload: any) => [`¥${v.toLocaleString()} · ${(payload.payload.weight * 100).toFixed(1)}%`, payload.payload.name]}
+            // recharts 3 的 formatter 首参类型放宽成 ValueType | undefined
+            formatter={(v: any, _name: any, item: any) => [
+              `¥${Number(v).toLocaleString()} · ${((item?.payload?.weight ?? 0) * 100).toFixed(1)}%`,
+              item?.payload?.name ?? "",
+            ]}
             contentStyle={{ background: "var(--bg-soft)", border: "1px solid var(--border)", borderRadius: 8 }}
           />
-          <Legend verticalAlign="bottom" iconSize={10} wrapperStyle={{ fontSize: 12 }} />
+          <Legend iconSize={10} wrapperStyle={{ fontSize: 12 }} />
         </PieChart>
       </ResponsiveContainer>
     </div>
