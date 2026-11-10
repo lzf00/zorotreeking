@@ -1,0 +1,37 @@
+---
+/**
+ * 活跃度脉冲图的格子层：纯标记，故意不放 <style>。
+ *
+ * 为什么单独拆出来：Astro 只给「带 scoped style 的组件渲染的元素」加
+ * data-astro-cid-xxx（21 字节/元素），而这个图有 368 个格子，光 cid 就
+ * 7.7KB。拆成无样式组件后这些属性全没了。
+ *
+ * 每格只保留位置和尺寸，颜色提到外层 <g fill>：同一颜色只写一次
+ * （原来是每格一个 fill="var(...)"，368 份重复）。
+ * 没有用 <use> + <defs> 压缩几何参数：那样能再省 2.6KB，但 <use> 里的
+ * <title> 在部分浏览器不弹原生 tooltip，不值。
+ */
+interface Cell {
+  x: number;
+  y: number;
+  tip: string;
+  fill: string;
+}
+
+const { cells } = Astro.props as { cells: Cell[] };
+
+const groups = new Map<string, Cell[]>();
+for (const c of cells) {
+  const list = groups.get(c.fill);
+  if (list) list.push(c);
+  else groups.set(c.fill, [c]);
+}
+---
+
+{Array.from(groups).map(([fill, list]) => (
+  <g fill={fill}>
+    {list.map((c) => (
+      <rect x={c.x} y={c.y} width="11" height="11" rx="2"><title>{c.tip}</title></rect>
+    ))}
+  </g>
+))}

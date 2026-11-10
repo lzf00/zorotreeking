@@ -16,6 +16,7 @@
  * 渲染纯 SVG（无 JS，hover 用 title）。
  */
 import { getCollection } from "astro:content";
+import ContentPulseCells from "@/components/ContentPulseCells.astro";
 import { getLangFromUrl } from "@/i18n/ui";
 
 const lang = getLangFromUrl(Astro.url);
@@ -124,6 +125,26 @@ const GAP = 3;
 const WIDTH = WEEKS * (SIZE + GAP);
 const HEIGHT = 7 * (SIZE + GAP);
 
+// 把格子拍平成子组件要的数据：位置 + tooltip + 填充色
+const cells: { x: number; y: number; tip: string; fill: string }[] = [];
+for (const [wi, week] of weeks.entries()) {
+  for (const [di, cell] of week.entries()) {
+    const n = cell.items.length;
+    const tags: string[] = [];
+    const orig = cell.items.filter((x) => !x.digest);
+    const dig = cell.items.filter((x) => x.digest);
+    if (orig.length > 0) tags.push(`${orig.length} ${labels.original}`);
+    if (dig.length > 0) tags.push(`${dig.length} ${labels.digest}`);
+    const sec = n === 0 ? labels.empty : tags.join(" · ");
+    cells.push({
+      x: wi * (SIZE + GAP),
+      y: di * (SIZE + GAP),
+      tip: `${cell.date} · ${sec}`,
+      fill: colorOf(cell.items),
+    });
+  }
+}
+
 const totalDays = items.length;
 const activeDays = Object.keys(byDay).length;
 ---
@@ -169,28 +190,7 @@ const activeDays = Object.keys(byDay).length;
 
   <div class="overflow-x-auto" data-pulse-scroll>
     <svg width={WIDTH} height={HEIGHT} viewBox={`0 0 ${WIDTH} ${HEIGHT}`} class="block">
-      {weeks.map((week, wi) =>
-        week.map((cell, di) => {
-          const x = wi * (SIZE + GAP);
-          const y = di * (SIZE + GAP);
-          const n = cell.items.length;
-          const sec = (() => {
-            if (n === 0) return labels.empty;
-            const tags: string[] = [];
-            const orig = cell.items.filter((x) => !x.digest);
-            const dig = cell.items.filter((x) => x.digest);
-            if (orig.length > 0) tags.push(`${orig.length} ${labels.original}`);
-            if (dig.length > 0) tags.push(`${dig.length} ${labels.digest}`);
-            return tags.join(" · ");
-          })();
-          return (
-            <rect x={x} y={y} width={SIZE} height={SIZE} rx="2"
-                  fill={colorOf(cell.items)}>
-              <title>{cell.date} · {sec}</title>
-            </rect>
-          );
-        }),
-      )}
+      <ContentPulseCells cells={cells} />
     </svg>
   </div>
 
