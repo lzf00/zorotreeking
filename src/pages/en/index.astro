@@ -54,7 +54,10 @@ const sectionAccent: Record<string, string> = {
     </div>
   </section>
 
+  {/* 卡片标题是 h3，前面没有 h2 时 axe 会报 heading-order（h1 直接跳 h3）；
+      视觉上这排卡片不需要标题，给屏幕阅读器补一个即可 */}
   <section class="max-w-6xl mx-auto px-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+    <h2 class="sr-only">{t("home.sections")}</h2>
     <SectionCard href={pathWithLang("/ai", lang)}     title={t("section.ai.title")}     desc={t("section.ai.desc")}     accent="ai"     count={aiPosts.length}     countLabel="posts"  index={0} />
     <SectionCard href={pathWithLang("/invest", lang)} title={t("section.invest.title")} desc={t("section.invest.desc")} accent="invest" count={investPosts.length} countLabel="posts"  index={1} />
     <SectionCard href={pathWithLang("/photo", lang)}  title={t("section.photo.title")}  desc={t("section.photo.desc")}  accent="photo"  count={photoAlbums.length}  countLabel="albums" index={2} />
