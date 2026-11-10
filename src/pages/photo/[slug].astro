@@ -27,8 +27,16 @@ const coverPick = (() => {
   const hit = photos.find((p) => p.src === entry.data.cover || p.thumb === entry.data.cover);
   return hit ?? { src: entry.data.cover, thumb: entry.data.cover, alt: entry.data.title, width: 0, height: 0 };
 })();
-const cover = coverPick;
+const cover = coverPick as typeof photos[number] & { srcOg?: string };
 const rest = photos.filter((p) => p.src !== cover?.src);
+// 社交卡片优先用 1200×630 的 .og.jpg 派生图（体积小、比例对）；没有派生图时
+// 退回原图，但必须把真实宽高一并传下去，否则平台按 1200×630 裁切会变形。
+const shareImage = cover?.srcOg ?? entry.data.cover ?? cover?.src;
+const shareDims = cover?.srcOg
+  ? undefined
+  : cover?.width && cover?.height
+    ? { ogImageWidth: cover.width, ogImageHeight: cover.height }
+    : undefined;
 const dateStr = siteDateString(entry.data.date);
 // 有 GPS 的照片提出来给地图用
 const geoPoints = photos
@@ -37,7 +45,7 @@ const geoPoints = photos
 ---
 
 <PhotoLayout title={entry.data.title} description={entry.data.description}
-             ogImage={entry.data.cover ?? cover?.src}>
+             ogImage={shareImage} {...shareDims}>
 
   <!-- 顶部细返回条 -->
   <div class="max-w-7xl mx-auto px-5 pt-6">

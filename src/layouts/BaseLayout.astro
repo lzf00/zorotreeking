@@ -20,6 +20,10 @@ interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
+  // og:image 的实际像素尺寸。默认 1200×630（站点生成的卡片都是这个尺寸）；
+  // 相册页直接用原图当封面时必须传真实尺寸，否则平台按错误比例裁切。
+  ogImageWidth?: number;
+  ogImageHeight?: number;
   ogType?: "website" | "article";
   publishedTime?: Date;     // 文章发布时间（仅 article 用）
   modifiedTime?: Date;
@@ -27,7 +31,18 @@ interface Props {
   noindex?: boolean;        // 后台/管理页用
 }
 
-const { title, description, ogImage, ogType = "website", publishedTime, modifiedTime, tags, noindex } = Astro.props;
+const {
+  title,
+  description,
+  ogImage,
+  ogImageWidth = 1200,
+  ogImageHeight = 630,
+  ogType = "website",
+  publishedTime,
+  modifiedTime,
+  tags,
+  noindex,
+} = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const fullTitle = title ? `${title} · ${t("site.title")}` : `${t("site.title")} — ${t("site.tagline")}`;
@@ -147,9 +162,10 @@ if (ogType === "article") {
         : socialImage.endsWith(".png") ? "image/png"
         : "image/jpeg"
     } />
-    {/* 1200x630 是 OG / Twitter 推荐尺寸；相册图通常 ≥ 这个分辨率，平台会自己 fit */}
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+    {/* 1200x630 是 OG / Twitter 推荐尺寸；传了真实尺寸就按真实值输出，
+        避免「声明 1200×630、实际 1920×1080」被平台按错误比例裁切 */}
+    <meta property="og:image:width" content={String(ogImageWidth)} />
+    <meta property="og:image:height" content={String(ogImageHeight)} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={new URL(socialImage, Astro.site).toString()} />
     {ogType === "article" && publishedTime && (

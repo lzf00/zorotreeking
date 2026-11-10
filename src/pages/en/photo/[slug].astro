@@ -16,12 +16,20 @@ const { Content } = await render(entry);
 const lang = "en" as const;
 const t = useTranslations(lang);
 const photos = loadPhotoManifest(resolveAlbumKey(entry.data));
-const cover = photos[0];
+const cover = photos[0] as (typeof photos[number]) & { srcOg?: string };
 const rest = photos.slice(1);
 const dateStr = entry.data.date.toISOString().slice(0, 10);
+// 与中文相册页保持一致：优先 1200×630 派生图，否则用原图 + 真实尺寸。
+const shareImage = cover?.srcOg ?? cover?.src;
+const shareDims = cover?.srcOg
+  ? undefined
+  : cover?.width && cover?.height
+    ? { ogImageWidth: cover.width, ogImageHeight: cover.height }
+    : undefined;
 ---
 
-<PhotoLayout title={entry.data.title} description={entry.data.description}>
+<PhotoLayout title={entry.data.title} description={entry.data.description}
+             ogImage={shareImage} {...shareDims}>
   <div class="max-w-7xl mx-auto px-5 pt-6">
     <a href={pathWithLang("/photo", lang)} class="text-xs uppercase tracking-[0.18em] text-white/55 hover:text-white transition-colors">
       ← {t("section.photo.title")}

@@ -14,11 +14,20 @@ interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
+  // 封面图真实尺寸（相册页直接用原图时必须传，否则平台按 1200×630 裁切）
+  ogImageWidth?: number;
+  ogImageHeight?: number;
 }
-const { title, description, ogImage } = Astro.props;
+const { title, description, ogImage, ogImageWidth, ogImageHeight } = Astro.props;
 ---
 
-<BaseLayout title={title} description={description} ogImage={ogImage}>
+<BaseLayout
+  title={title}
+  description={description}
+  ogImage={ogImage}
+  ogImageWidth={ogImageWidth}
+  ogImageHeight={ogImageHeight}
+>
   <div class="photo-immersive">
     <slot />
   </div>
