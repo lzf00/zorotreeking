@@ -9,6 +9,7 @@ import StockSpotlight from "@/components/StockSpotlight";
 import SectorRanking from "@/components/SectorRanking";
 import MarketSentiment from "@/components/MarketSentiment";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
+import { sectionDescription } from "@/lib/descriptions";
 import { extractDigestHighlights } from "@/lib/digest-highlights";
 
 // ── Phase C: AI 科创聚焦 + 创业板风向 ──
@@ -190,7 +191,17 @@ try {
 } catch { /* 没快照文件就走纯客户端 */ }
 ---
 
-<BaseLayout title={t("section.invest.title")} description={t("section.invest.desc")}>
+<BaseLayout
+  title={t("section.invest.title")}
+  description={sectionDescription(
+    "invest",
+    {
+      count: allInvest.length,
+      latest: allInvest[0] ? { title: allInvest[0].data.title, date: allInvest[0].data.date } : undefined,
+    },
+    lang,
+  )}
+>
   <section class="max-w-5xl mx-auto px-5 pt-12 pb-6">
     <h1 class="font-serif text-5xl sm:text-6xl leading-[0.95] tracking-tight" style="color:rgb(var(--section-invest-rgb))">{t("section.invest.title")}</h1>
     <p class="mt-2 text-[var(--text-secondary)]">{t("section.invest.desc")}</p>

@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import PhotoLayout from "@/layouts/PhotoLayout.astro";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
+import { sectionDescription } from "@/lib/descriptions";
 import { loadPhotoManifest, resolveAlbumKey } from "@/lib/photo-manifests";
 
 const lang = "en" as const;
@@ -23,7 +24,18 @@ function aspect(i: number) {
 }
 ---
 
-<PhotoLayout title={t("section.photo.title")} description={t("section.photo.desc")}>
+<PhotoLayout
+  title={t("section.photo.title")}
+  description={sectionDescription(
+    "photo",
+    {
+      count: enriched.length,
+      photos: enriched.reduce((sum, a) => sum + a.count, 0),
+      latest: albums[0] ? { title: albums[0].data.title, date: albums[0].data.date } : undefined,
+    },
+    lang,
+  )}
+>
   <section class="max-w-6xl mx-auto px-5 pt-16 sm:pt-24 pb-12 text-center">
     <p class="text-[11px] uppercase tracking-[0.22em] text-white/55 font-mono">{enriched.length} albums</p>
     <h1 class="mt-4 font-serif text-5xl sm:text-7xl leading-[0.95] tracking-tight text-white">{t("section.photo.title")}</h1>

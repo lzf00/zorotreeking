@@ -2,6 +2,7 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { buildTagIndex, tagToSlug } from "@/lib/tags";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
+import { tagIndexDescription } from "@/lib/descriptions";
 
 const lang = "en" as const;
 const t = useTranslations(lang);
@@ -16,7 +17,7 @@ function sizeClass(count: number, max: number) {
 const max = tags[0]?.count ?? 1;
 ---
 
-<BaseLayout title={t("tag.allTags")} description={t("tag.allTags")}>
+<BaseLayout title={t("tag.allTags")} description={tagIndexDescription(tags.length, lang)}>
   <section class="max-w-3xl mx-auto px-5 pt-12 pb-6">
     <h1 class="font-serif text-5xl sm:text-6xl leading-[0.95] tracking-tight">{t("tag.allTags")}</h1>
     <p class="mt-2 text-[var(--text-secondary)]">{tags.length} {t("tag.title")}</p>

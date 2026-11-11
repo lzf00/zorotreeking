@@ -4,6 +4,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import NetValueChart from "@/components/NetValueChart";
 import HoldingsPie from "@/components/HoldingsPie";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
+import { sectionDescription } from "@/lib/descriptions";
 
 const lang = "en" as const;
 const t = useTranslations(lang);
@@ -27,7 +28,17 @@ const digests = allInvest.filter(isDigest);
 const latestDigest = digests[0];
 ---
 
-<BaseLayout title={t("section.invest.title")} description={t("section.invest.desc")}>
+<BaseLayout
+  title={t("section.invest.title")}
+  description={sectionDescription(
+    "invest",
+    {
+      count: allInvest.length,
+      latest: allInvest[0] ? { title: allInvest[0].data.title, date: allInvest[0].data.date } : undefined,
+    },
+    lang,
+  )}
+>
   <section class="max-w-5xl mx-auto px-5 pt-12 pb-6">
     <h1 class="font-serif text-5xl sm:text-6xl leading-[0.95] tracking-tight" style="color:rgb(var(--section-invest-rgb))">{t("section.invest.title")}</h1>
     <p class="mt-2 text-[var(--text-secondary)]">{t("section.invest.desc")}</p>
