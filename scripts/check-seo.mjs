@@ -14,6 +14,10 @@
  *   description    非空、30–320 字符（超范围告警）
  *   h1             每页恰好 1 个
  *   html lang      zh-CN / en
+ *   hreflang       每条 alternate 都指向真实页面，且双向互指（中英对照页配对错
+ *                  会让 Google 直接忽略整组标注）
+ *   sitemap        每条 <loc> 都对应一个真实页面，且与该页 canonical 完全一致
+ *                  （尾斜杠不一致会让整份 sitemap 变成 301 中转）
  *   JSON-LD        能 json.parse；@context 为 schema.org；@type 已知；
  *                  按类型校验必填字段；日期可解析且 modified ≥ published；
  *                  URL 字段必须是绝对地址；BreadcrumbList 位次要连续、末项等于 canonical
@@ -274,6 +278,85 @@ function checkPage(html, siteOrigin) {
   return { errors, warnings, skipped: null };
 }
 
+/**
+ * hreflang 必须「指向真实页面 + 双向互指」。
+ *
+ * 中英对照页靠 translationKey 配对，配错或漏翻译时 Google 会整组忽略标注，
+ * 而且不会报错——只能自己对着检查。首页那种 `zh` 自指 + `en` 指向 /en/ 的写法
+ * 最容易在新增语言时写歪。
+ */
+function checkHreflangs(hreflangs, siteOrigin) {
+  const errors = [];
+  for (const [url, alts] of hreflangs) {
+    const own = url.startsWith(`${siteOrigin}/en/`) ? "en" : "zh";
+    const other = own === "en" ? "zh" : "en";
+    if (alts[own] && alts[own] !== url) {
+      errors.push(`hreflang 自指不是自己：${url} → ${alts[own]}`);
+    }
+    const target = alts[other];
+    if (!target) continue;
+    const back = hreflangs.get(target);
+    if (!back) {
+      errors.push(`hreflang 指向的页面没有对应标注：${url} → ${target}`);
+      continue;
+    }
+    if (back[own] !== url) {
+      errors.push(`hreflang 未双向互指：${url} → ${target}，但对面写的是 ${back[own] ?? "（无）"}`);
+    }
+  }
+  return errors;
+}
+
+/**
+ * sitemap 与 canonical 必须逐字一致。
+ *
+ * 2026-11 加这条校验时才发现 1138 条 <loc> 全都不带尾斜杠，而页面 canonical 和
+ * nginx 都是带斜杠的：整份 sitemap 在 Search Console 里都会被判「网页会重定向」，
+ * 爬取预算白烧。这种错两边各自看都没毛病，只有对起来才会暴露。
+ */
+async function checkSitemap(siteOrigin, indexable) {
+  const xmlPath = path.join(DIST, "sitemap.xml");
+  let xml;
+  try {
+    xml = await fs.readFile(xmlPath, "utf-8");
+  } catch {
+    return { errors: ["dist/sitemap.xml 不存在（先跑 npm run build）"], urls: 0 };
+  }
+
+  const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => decodeEntities(m[1]));
+  const errors = [];
+  if (locs.length === 0) errors.push("sitemap 里没有任何 <loc>");
+
+  const seen = new Set();
+  for (const loc of locs) {
+    if (seen.has(loc)) errors.push(`sitemap 有重复 URL：${loc}`);
+    seen.add(loc);
+    if (!loc.startsWith(`${siteOrigin}/`)) {
+      errors.push(`sitemap URL 不是本站绝对地址：${loc}`);
+      continue;
+    }
+    const rel = loc.slice(siteOrigin.length + 1);
+    let html;
+    try {
+      html = await fs.readFile(path.join(DIST, rel, "index.html"), "utf-8");
+    } catch {
+      errors.push(`sitemap 列出的页面不存在：${loc}`);
+      continue;
+    }
+    const canonical = [...html.matchAll(/<link[^>]+rel=["']canonical["'][^>]*>/gi)]
+      .map((m) => attr(m[0], "href"))[0];
+    if (canonical && canonical !== loc) {
+      errors.push(`sitemap 与 canonical 不一致：${loc} ≠ ${canonical}`);
+    }
+  }
+  // 覆盖率：可索引却没进 sitemap 的页面，搜索引擎只能靠外链自己发现
+  const missing = [...indexable].filter((url) => !seen.has(url)).sort();
+  for (const url of missing.slice(0, 5)) errors.push(`可索引但不在 sitemap：${url}`);
+  if (missing.length > 5) errors.push(`…另有 ${missing.length - 5} 个页面不在 sitemap`);
+
+  return { errors, urls: locs.length, missing: missing.length };
+}
+
 async function main() {
   const siteOrigin = (() => {
     const fromEnv = process.env.SITE_URL || process.env.PUBLIC_SITE_URL;
@@ -288,6 +371,10 @@ async function main() {
 
   let checked = 0;
   let skipped = 0;
+  /** 所有「既非 noindex、也不是跳转页」的页面 URL，用来查 sitemap 有没有漏收录 */
+  const indexable = new Set();
+  /** url → { 语言: 对照地址 }，循环结束后统一校验 hreflang 配对 */
+  const hreflangs = new Map();
   let errorPages = 0;
   let warningPages = 0;
   const samples = [];
@@ -302,6 +389,15 @@ async function main() {
       continue;
     }
     checked += 1;
+    const relDir = path.dirname(path.relative(DIST, abs)).replace(/\\/g, "/");
+    const pageUrl = `${siteOrigin}/${relDir === "." ? "" : `${relDir}/`}`;
+    indexable.add(pageUrl);
+    const alts = {};
+    for (const m of html.matchAll(/<link[^>]+rel=["']alternate["'][^>]+hreflang=["']([^"']+)["'][^>]*>/gi)) {
+      const href = attr(m[0], "href");
+      if (href) alts[m[1].toLowerCase()] = href;
+    }
+    if (Object.keys(alts).length) hreflangs.set(pageUrl, alts);
     if (result.errors.length) {
       errorPages += 1;
       samples.push({ rel, errors: result.errors, warnings: result.warnings });
@@ -319,7 +415,24 @@ async function main() {
     }
   }
 
+  const hreflangErrors = checkHreflangs(hreflangs, siteOrigin);
+  const sitemap = await checkSitemap(siteOrigin, indexable);
   console.log();
+  console.log(
+    `[sitemap] ${sitemap.urls} 条 URL` +
+      (sitemap.errors.length
+        ? ` · ${sitemap.errors.length} 条问题`
+        : ` · 与 canonical 一致 · 覆盖全部 ${indexable.size} 个可索引页面`),
+  );
+  for (const e of sitemap.errors.slice(0, 6)) console.log(`    · ${e}`);
+  if (sitemap.errors.length > 6) console.log(`    … 还有 ${sitemap.errors.length - 6} 条`);
+
+  console.log(
+    `[hreflang] ${hreflangs.size} 个页面有中英对照标注` +
+      (hreflangErrors.length ? ` · ${hreflangErrors.length} 条问题` : " · 双向互指正常"),
+  );
+  for (const e of hreflangErrors.slice(0, 6)) console.log(`    · ${e}`);
+
   console.log(`[seo] 检查 ${checked} 个页面（跳过 ${skipped}）`);
   const warningTotal = samples.reduce((n, s) => n + s.warnings.length, 0) + warningPages;
   console.log(`[seo] ${errorPages} 页有错误 / ${warningPages} 页只有告警 → 通过\n`);
@@ -328,8 +441,8 @@ async function main() {
     for (const s of samples.slice(0, 10)) {
       console.log(`  ${s.rel}: ${s.errors[0]}`);
     }
-    process.exit(1);
   }
+  if (errorPages > 0 || sitemap.errors.length > 0 || hreflangErrors.length > 0) process.exit(1);
   void warningTotal;
 }
 

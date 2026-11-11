@@ -205,6 +205,8 @@ src/data/embeddings.json (2048 维 × N 篇)
 | 日期 | `datePublished`/`dateModified` 可解析且 modified ≥ published | 错误 |
 | URL 字段 | `image` / `url` / `@id` 必须是绝对地址 | 错误 |
 | 面包屑 | 位次 1..n 连续、末项与 canonical 一致 | 错误 |
+| hreflang | 每条 alternate 指向真实页面，中英双向互指、自指正确 | 错误 |
+| sitemap | 每条 `<loc>` 与目标页 canonical 逐字一致（尾斜杠！），且覆盖全部可索引页 | 错误 |
 
 跳过带 `http-equiv="refresh"` 的跳转页和 `robots noindex` 的页面（admin / 404）。
 
@@ -218,6 +220,11 @@ src/data/embeddings.json (2048 维 × N 篇)
 - **230 个市场复盘页**：正文第一行 `# 📊 11月10日股票日报` 和 frontmatter title 完全重复。
 - **134 个列表 / 标签 / 相册页一条结构化数据都没有**：`BaseLayout` 加了 `WebPage` 兜底。
 - **2 个页面**（about 的中英版）嵌套的 `WebSite` 缺 `inLanguage`。
+- **整份 sitemap 都是 301 中转**：1138 条 `<loc>` 不带尾斜杠，而 nginx 与 canonical
+  都是带斜杠的，Search Console 会把每条都算「网页会重定向」。同一轮还发现
+  `/invest/us-market/` 这个可索引页面从来没进过 sitemap。两处都已修，并把
+  「sitemap ↔ canonical 逐字一致 + 覆盖率」做成门禁（以前的检查只验站内标签，
+  没人把两个文件对起来看）。
 
 ### 列表页与日报页的描述（`src/lib/descriptions.ts`）
 

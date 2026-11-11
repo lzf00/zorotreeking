@@ -8,6 +8,7 @@ const ZH_STATIC_PATHS = [
   "/invest/etf",
   "/invest/market",
   "/invest/hk-market",
+  "/invest/us-market",
   "/photo",
   "/hike",
   "/explore",
