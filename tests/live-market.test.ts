@@ -23,6 +23,22 @@ test("China market hours do not depend on the visitor's local timezone", () => {
   );
 });
 
+test("market phase separates pre-open from after-close", () => {
+  // 2026-11 事故：盘前 ETF 页显示"（已收盘）"、进度列写"基准待补采"，
+  // 让人以为数据丢了；实际只是还没开盘。
+  const phase = (iso: string) =>
+    (chinaMarket as typeof chinaMarket & { chinaMarketPhase?: (d: Date) => string }).chinaMarketPhase?.(new Date(iso));
+
+  assert.equal(phase("2026-08-03T01:29:00Z"), "premarket"); // 北京 09:29
+  assert.equal(phase("2026-08-03T01:30:00Z"), "morning"); // 09:30
+  assert.equal(phase("2026-08-03T03:30:00Z"), "morning"); // 11:30
+  assert.equal(phase("2026-08-03T04:00:00Z"), "lunch"); // 12:00
+  assert.equal(phase("2026-08-03T05:00:00Z"), "afternoon"); // 13:00
+  assert.equal(phase("2026-08-03T07:00:00Z"), "afternoon"); // 15:00
+  assert.equal(phase("2026-08-03T07:01:00Z"), "closed"); // 15:01
+  assert.equal(phase("2026-08-02T02:00:00Z"), "weekend"); // 周日 10:00
+});
+
 test("published fund NAV keeps refreshing after market close until the evening cutoff", () => {
   const refreshWindow = (chinaMarket as typeof chinaMarket & {
     isFundNavRefreshWindow?: (date: Date) => boolean;

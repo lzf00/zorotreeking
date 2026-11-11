@@ -20,6 +20,26 @@ function chinaClockParts(date: Date): Record<string, string> {
   );
 }
 
+/**
+ * 一天里 A 股的哪个阶段。收盘后和开盘前虽然都"不能交易"，但页面上该说的话不一样：
+ * 盘前说"未开盘/开盘后更新"，收盘后说"已收盘"，周末说"休市"。
+ * 2026-11 之前 ETF 页在 08:50 显示"（已收盘）"、实时进度列写着"基准待补采"，
+ * 把"今天还没开盘"说成了"昨天的数据丢了"，看着像故障。
+ */
+export type ChinaMarketPhase = "weekend" | "premarket" | "morning" | "lunch" | "afternoon" | "closed";
+
+export function chinaMarketPhase(date: Date = new Date()): ChinaMarketPhase {
+  const parts = chinaClockParts(date);
+  if (parts.weekday === "Sat" || parts.weekday === "Sun") return "weekend";
+
+  const minutes = Number(parts.hour) * 60 + Number(parts.minute);
+  if (minutes < 570) return "premarket"; // 09:30 之前
+  if (minutes <= 690) return "morning"; // 09:30–11:30
+  if (minutes < 780) return "lunch"; // 11:30–13:00
+  if (minutes <= 900) return "afternoon"; // 13:00–15:00
+  return "closed";
+}
+
 export function isChinaATradingHours(date: Date = new Date()): boolean {
   const parts = chinaClockParts(date);
   if (parts.weekday === "Sat" || parts.weekday === "Sun") return false;

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { formatChinaMarketTime, isChinaATradingHours } from "@/lib/china-market";
+import { chinaMarketPhase, formatChinaMarketTime, isChinaATradingHours } from "@/lib/china-market";
 
 /**
  * 宽基 ETF 盘中实时成交监测（/invest/etf/ 页顶部）。
@@ -47,6 +47,9 @@ export default function EtfLiveTurnover() {
   const [error, setError] = useState<string | null>(null);
   const [partial, setPartial] = useState<{ succeeded: number; requested: number } | null>(null);
   const [stale, setStale] = useState(false);
+  // 接口自己说"现在是否在交易时段"。盘前/休市时它是 false，配合全 0 成交额可以
+  // 判断"今天还没开盘"，而不是"昨日基准丢了"。
+  const [trading, setTrading] = useState<boolean | null>(null);
   const [baselineDate, setBaselineDate] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const inFlight = useRef(false);
@@ -78,6 +81,7 @@ export default function EtfLiveTurnover() {
           setPartial(null);
         }
         setStale(Boolean(d.stale));
+        setTrading(typeof d.trading === "boolean" ? d.trading : null);
         setBaselineDate(typeof d.baseline_date === "string" ? d.baseline_date : null);
       } else {
         throw new Error(d.error || "加载失败");
@@ -118,6 +122,13 @@ export default function EtfLiveTurnover() {
   }
 
   const over100 = data.filter((d) => (d.ratio_pct ?? 0) >= 100).length;
+  // 全部 ETF 今日成交额都是 0（或还没拿到）且接口说不在交易时段 → 今天根本没有成交，
+  // 不是基准缺失。开盘后第一笔成交进来，进度条就自己出来了。
+  const noTurnoverYet = data.every((d) => (d.turnover_yi ?? 0) === 0);
+  const premarket = noTurnoverYet && trading !== true;
+  const phase = chinaMarketPhase();
+  const marketNote =
+    phase === "premarket" ? "（未开盘）" : phase === "weekend" ? "（周末休市）" : phase === "lunch" ? "（午间休市）" : "（已收盘）";
 
   return (
     <section>
@@ -137,7 +148,7 @@ export default function EtfLiveTurnover() {
         <p className="text-[11px] text-[var(--text-tertiary)] font-mono">
           实时：东方财富 · 昨日基准：腾讯财经{baselineDate ? ` ${baselineDate}` : ""} · {updated ? formatChinaMarketTime(updated) : "—"}
           {stale && <span className="ml-2">（回退缓存）</span>}
-          {!isChinaATradingHours() && "（已收盘）"}
+          {!isChinaATradingHours() && marketNote}
           {loading && <span className="ml-2">刷新中…</span>}
         </p>
       </div>
@@ -180,7 +191,14 @@ export default function EtfLiveTurnover() {
                     {d.turnover_yi != null ? `${d.turnover_yi.toFixed(1)} 亿` : "—"}
                   </td>
                   <td className="px-3 py-2">
-                    {ratio == null ? (
+                    {ratio == null && premarket ? (
+                      <span
+                        className="text-[11px] text-[var(--text-tertiary)]"
+                        title="今天还没有成交额（开盘前 / 休市）。开盘后 60 秒内自动出现 vs 昨日全天的进度。"
+                      >
+                        开盘后更新
+                      </span>
+                    ) : ratio == null ? (
                       <span
                         className="text-[11px] text-amber-700 dark:text-amber-400"
                         title="上一交易日成交额正在补采，当前实时成交额仍然有效"

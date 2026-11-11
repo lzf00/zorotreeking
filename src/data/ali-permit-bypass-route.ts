@@ -168,7 +168,6 @@ export const aliPermitBypassRouteDays: AliRouteDay[] = [
 ];
 
 const niaPauseUrl = "https://www.nia.gov.cn/n897453/c1797217/content.html";
-const standardRoomBudget = "¥200–400 / 标间";
 const nationalDayHotelAdvice =
   "国庆房价与库存波动很大：现在先锁可免费取消房，入住前 7 天、72 小时各复核一次；若超出预算，按同城候选顺序切换，不订无独卫、无热水或无法确认停车的房间。";
 

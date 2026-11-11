@@ -70,7 +70,6 @@ const colorMap: Record<string, string> = {
 // 手机端：100×100 的 viewBox 里每个点只有 1~2 个 SVG 单位，换算到 412px 宽的屏幕上
 // 就是 4~8px 的可点区域——完全没法用手指点（Lighthouse 移动端 tap-targets 只有 0.01）。
 // 所以小屏不显示地图，改成一个 44px 行高的列表；地图只在 sm 以上出现。
-const COLLECTION_LABEL: Record<string, string> = { ai: "AI", invest: "投资", hike: "徒步" };
 const recentTopics = all
   .slice()
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
