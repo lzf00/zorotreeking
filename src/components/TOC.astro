@@ -13,8 +13,10 @@ const items = useH1Grouping
   : headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 ---
 
+{/* 侧边目录和顶部主导航都是 <nav>：必须各自有可读名字，
+    否则读屏器只报"导航"（axe: landmark-unique）。 */}
 {items.length > 0 && (
-  <nav class="hidden xl:block fixed top-24 right-8 max-w-[220px] text-sm">
+  <nav aria-label={label} class="hidden xl:block fixed top-24 right-8 max-w-[220px] text-sm">
     <div class="text-xs font-semibold text-[var(--text-tertiary)] uppercase tracking-wider mb-2">{label}</div>
     <ul class="space-y-1.5 border-l border-[var(--border)] pl-3">
       {items.map((h) => (

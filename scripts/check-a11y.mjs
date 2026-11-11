@@ -12,6 +12,11 @@
  *   node scripts/check-a11y.mjs --fail-on=warning       # 警告也当失败
  *
  * 输出：控制台汇总 + a11y-report.json（CI 里作为 artifact 上传）
+ *
+ * 规则集：跑 axe 的**全部**默认规则，不再只挑对比度和标题层级。
+ * 2026-11-11 第一次全量跑就抓到四类此前从没测过的问题：旅行攻略页嵌套了
+ * 第二个 <main>、首页热力图的横向滚动区不可键盘聚焦、主/侧/面包屑三个 <nav>
+ * 没有各自的可读名字。全量规则集在 25 个页面类型 × 2 主题上已经是 0 违规。
  */
 import fs from "node:fs";
 import { chromium } from "playwright";
@@ -37,10 +42,12 @@ const PATHS = [
   "/explore/",
   "/changelog/",
   "/tag/",
+  // 下面几类是"结构性"问题的高发区：嵌套地标、可滚动区域、图片替代文本
+  "/invest/stock/002371.SZ/",
+  "/invest/hk-market/",
+  "/en/ai/digest-2026-10-11/",
+  "/hike/travel/chuanxi-loop-chengdu-2026/",
 ];
-
-/** 只看这两个规则：对比度是深色主题最容易坏的地方，heading-order 是浅色主题的常客。 */
-const RULES = ["color-contrast", "heading-order"];
 
 const args = process.argv.slice(2);
 const failOn = (args.find((a) => a.startsWith("--fail-on=")) ?? "--fail-on=error").split("=")[1];
@@ -74,8 +81,9 @@ for (const path of PATHS) {
       // 入场动画（animate-rise 0.8s）跑完再测：半透明中间态会被当成对比度不足
       await page.waitForTimeout(2500);
       await page.addScriptTag({ content: axe.source });
-      const violations = await page.evaluate(async (rules) => {
-        const r = await window.axe.run(document, { runOnly: rules });
+      const violations = await page.evaluate(async () => {
+        // 不传 runOnly：跑 axe 全部默认规则
+        const r = await window.axe.run(document, { resultTypes: ["violations"] });
         return r.violations.map((v) => ({
           id: v.id,
           impact: v.impact,
@@ -85,7 +93,7 @@ for (const path of PATHS) {
             reason: (n.any[0]?.message ?? "").replace(/\s+/g, " ").slice(0, 240),
           })),
         }));
-      }, RULES);
+      });
 
       entry.violations = violations;
       if (violations.length) {

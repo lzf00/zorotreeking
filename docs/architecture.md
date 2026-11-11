@@ -108,6 +108,19 @@
 注意 `Decide whether audited pages changed` 步骤：只改了生成内容的提交会让 Lighthouse **skip**
 （job 显示 success 但没跑分），要真数据就手动 dispatch。
 
+### `.github/workflows/a11y-audit.yml`
+**触发**: 每周一 UTC 03:00（BJT 11:00，错开 10:00 的移动端跑分）+ 手动。
+对**线上**站点跑 `scripts/check-a11y.mjs`：20 个页面模板 × 浅色/深色 = 40 次检查，
+轴心是 axe-core 的**全部默认规则**（不只是对比度和标题层级），紧跟一步
+`scripts/check-hydration.mjs` 验证 React 岛真的在浏览器里水合。产物 `a11y-report` 保留 30 天。
+
+为什么必须单独一条：Lighthouse 只测浅色主题（本站深色走 `html.dark` 类，不是
+`prefers-color-scheme`）。2026-11 第一次全量跑抓到四类此前完全没测过的问题：
+① 板块染料色在 `#0a0a0a` 上只有 2.3:1（每页导航链接都中招）；② 608 个每日自动生成的
+MDX 里手写 `text-zinc-500` 只有 4.09:1；③ 旅行攻略页在 `<main id="main-content">` 里
+又套了一个 `<main>`（两个 main 地标）；④ 首页热力图的横向滚动区不可键盘聚焦、
+主导航与侧边目录两个 `<nav>` 没有各自的可读名字。修完后 40/40 全清。
+
 ## 数据流：豆包 LLM
 
 ### 一个豆包账号，两个调用形态

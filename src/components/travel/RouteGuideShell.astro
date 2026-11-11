@@ -53,7 +53,9 @@ const {
     </div>
   </nav>
 
-  <main><slot /></main>
+  {/* 不能再套 <main>：BaseLayout 已经有 <main id="main-content">，
+      嵌套会产生两个 main 地标（axe: landmark-no-duplicate-main）。 */}
+  <div class="rd-body"><slot /></div>
 
   <footer class="rd-footer">
     <div class="rd-wrap">

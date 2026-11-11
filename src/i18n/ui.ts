@@ -14,6 +14,9 @@ const ui = {
     "nav.about": "关于",
     "nav.guestbook": "留言板",
     "nav.admin": "管理后台（写新文章）",
+    // 屏幕上看得见的"主导航"这几个字要留给读屏器
+    "nav.primary": "主导航",
+    "nav.toc": "本页目录",
     "lang.switch": "English",
     "section.ai.title": "AI 学习",
     "section.ai.desc": "笔记、论文、工具、思考",
@@ -46,6 +49,8 @@ const ui = {
     "nav.about": "About",
     "nav.guestbook": "Guestbook",
     "nav.admin": "Admin (write a new post)",
+    "nav.primary": "Primary",
+    "nav.toc": "On this page",
     "lang.switch": "中文",
     "section.ai.title": "AI Learning",
     "section.ai.desc": "Notes, papers, tools, thoughts",

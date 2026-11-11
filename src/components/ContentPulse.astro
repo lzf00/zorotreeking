@@ -188,7 +188,9 @@ const activeDays = Object.keys(byDay).length;
     </div>
   </div>
 
-  <div class="overflow-x-auto" data-pulse-scroll>
+  {/* 热力图比容器宽，是横向滚动区：必须能键盘聚焦，否则键盘用户没法看早期数据
+      （axe: scrollable-region-focusable）。aria-label 只有配上 role 才生效。 */}
+  <div class="overflow-x-auto" data-pulse-scroll tabindex="0" role="group" aria-label={labels.title}>
     <svg width={WIDTH} height={HEIGHT} viewBox={`0 0 ${WIDTH} ${HEIGHT}`} class="block">
       <ContentPulseCells cells={cells} />
     </svg>
