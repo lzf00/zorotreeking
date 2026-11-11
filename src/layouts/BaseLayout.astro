@@ -292,37 +292,61 @@ if (ogType === "article") {
     <script is:inline>
       (() => {
         const label = document.documentElement.lang === "en" ? "Scrollable region" : "可横向滚动区域";
+        const SEL = "div, section, aside, figure, table, pre, nav";
         const focusableSelector = 'a[href], button, input, select, textarea, summary, [tabindex]:not([tabindex="-1"])';
-        const mark = () => {
-          const candidates = document.querySelectorAll("div, section, aside, figure, table, pre, nav");
-          for (const el of candidates) {
-            if (el.dataset.scrollMarked === "done") continue;
-            // 先做最便宜的判断：真的横向溢出了才继续
-            if (el.scrollWidth <= el.clientWidth + 2) continue;
-            const overflowX = getComputedStyle(el).overflowX;
-            if (overflowX !== "auto" && overflowX !== "scroll") continue;
-            if (el.hasAttribute("tabindex") || el.querySelector(focusableSelector)) {
-              el.dataset.scrollMarked = "done";
-              continue;
-            }
-            el.setAttribute("tabindex", "0");
-            el.setAttribute("role", "group");
-            if (!el.getAttribute("aria-label") && !el.getAttribute("aria-labelledby")) {
-              el.setAttribute("aria-label", el.dataset.scrollLabel || label);
-            }
+        const visit = (el) => {
+          if (el.dataset.scrollMarked === "done") return;
+          // 先做最便宜的判断：真的横向溢出了才继续
+          if (el.scrollWidth <= el.clientWidth + 2) return;
+          const overflowX = getComputedStyle(el).overflowX;
+          if (overflowX !== "auto" && overflowX !== "scroll") return;
+          if (el.hasAttribute("tabindex") || el.querySelector(focusableSelector)) {
             el.dataset.scrollMarked = "done";
+            return;
           }
+          el.setAttribute("tabindex", "0");
+          el.setAttribute("role", "group");
+          if (!el.getAttribute("aria-label") && !el.getAttribute("aria-labelledby")) {
+            el.setAttribute("aria-label", el.dataset.scrollLabel || label);
+          }
+          el.dataset.scrollMarked = "done";
+        };
+        const mark = (root) => {
+          if (root.nodeType !== 1) return;
+          if (root.matches?.(SEL)) visit(root);
+          if (root.querySelectorAll) for (const el of root.querySelectorAll(SEL)) visit(el);
         };
         if (document.readyState === "loading") {
-          document.addEventListener("DOMContentLoaded", mark, { once: true });
+          document.addEventListener("DOMContentLoaded", () => mark(document.body), { once: true });
         } else {
-          mark();
+          mark(document.body);
         }
+        window.addEventListener("resize", () => mark(document.body), { passive: true });
+        // React 岛水合后才长出表格的页面（/invest/ 的持仓表就是），首帧扫描时
+        // 容器还不溢出，必须等新节点插进来再补一遍；只扫新增子树 + 其祖先链，
+        // 避免每次变动都全页重排。
         let timer = 0;
-        window.addEventListener("resize", () => {
+        const pending = new Set();
+        const observer = new MutationObserver((records) => {
+          for (const record of records) {
+            for (const node of record.addedNodes) {
+              if (node.nodeType !== 1) continue;
+              pending.add(node);
+              let parent = node.parentElement;
+              while (parent && parent !== document.body) {
+                pending.add(parent);
+                parent = parent.parentElement;
+              }
+            }
+          }
+          if (pending.size === 0) return;
           clearTimeout(timer);
-          timer = setTimeout(mark, 200);
+          timer = setTimeout(() => {
+            for (const root of pending) mark(root);
+            pending.clear();
+          }, 150);
         });
+        observer.observe(document.body, { childList: true, subtree: true });
       })();
     </script>
   </body>
