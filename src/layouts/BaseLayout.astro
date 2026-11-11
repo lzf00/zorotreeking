@@ -316,12 +316,20 @@ if (ogType === "article") {
           if (root.matches?.(SEL)) visit(root);
           if (root.querySelectorAll) for (const el of root.querySelectorAll(SEL)) visit(el);
         };
+        // 第一次全页扫描会强制一次布局：如果在 DOMContentLoaded 里同步跑，
+        // 浏览器必须先算完样式和布局才能首绘，FCP 会被推后（2026-11 的 Lighthouse
+        // 首页 0.74 就是这么掉的）。放进空闲回调，等首绘之后再扫。
+        const idle = (fn) => {
+          if ("requestIdleCallback" in window) requestIdleCallback(fn, { timeout: 1500 });
+          else setTimeout(fn, 300);
+        };
         if (document.readyState === "loading") {
-          document.addEventListener("DOMContentLoaded", () => mark(document.body), { once: true });
+          document.addEventListener("DOMContentLoaded", () => idle(() => mark(document.body)), { once: true });
         } else {
-          mark(document.body);
+          idle(() => mark(document.body));
         }
-        window.addEventListener("resize", () => mark(document.body), { passive: true });
+        window.addEventListener("load", () => idle(() => mark(document.body)), { once: true });
+        window.addEventListener("resize", () => idle(() => mark(document.body)), { passive: true });
         // React 岛水合后才长出表格的页面（/invest/ 的持仓表就是），首帧扫描时
         // 容器还不溢出，必须等新节点插进来再补一遍；只扫新增子树 + 其祖先链，
         // 避免每次变动都全页重排。
@@ -341,10 +349,11 @@ if (ogType === "article") {
           }
           if (pending.size === 0) return;
           clearTimeout(timer);
-          timer = setTimeout(() => {
+          timer = setTimeout(() => idle(() => {
             for (const root of pending) mark(root);
             pending.clear();
-          }, 150);
+            timer = 0;
+          }), 150);
         });
         observer.observe(document.body, { childList: true, subtree: true });
       })();
