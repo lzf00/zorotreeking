@@ -3,6 +3,8 @@ import test from "node:test";
 
 import {
   clip,
+  digestDescription,
+  plainHeading,
   sectionDescription,
   tagDescription,
   tagIndexDescription,
@@ -71,4 +73,56 @@ test("三个板块描述各自点题，且都够长", () => {
 test("没有最新一篇时描述也成立（空板块构建不炸）", () => {
   assert.ok(sectionDescription("ai", { count: 0 }, "zh").includes("0 篇"));
   assert.ok(tagDescription("t", [], "en").includes("Nothing tagged"));
+});
+
+const digestBody = `---
+title: x
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+> 免责声明
+
+# 东方财富 7×24
+
+## <a href="http://example.com/a" target="_blank" rel="noopener noreferrer">先进封装“小巨人”今日登陆港交所</a>
+
+*2026/11/10 14:07:18*
+
+## 通威拟出资14.41亿元
+
+## 第三条标题
+`;
+
+test("plainHeading 去掉内联 HTML，保留引号", () => {
+  assert.equal(plainHeading('<a href="x">标题“甲”&amp;乙</a>'), '标题“甲”&乙');
+});
+
+test("日报描述用真实条目标题，一页一种", () => {
+  const zh = digestDescription(digestBody, "zh", "invest")!;
+  assert.match(zh, /^3 条快讯：/);
+  assert.match(zh, /先进封装/);
+  assert.match(zh, /通威/);
+  assert.ok(!zh.includes("多源聚合"), "不该再用套话");
+  // 英文页用英文标题（含中文的会走 CJK 回退，见下一条用例）
+  const enBody = `## <a href="x">First Paper Title</a>\n## Second Paper`;
+  assert.match(digestDescription(enBody, "en", "ai")!, /^2 paper picks:/);
+});
+
+test("日报描述不产生「…。」双标点，也不会超长", () => {
+  const long = `## ${"很长的标题".repeat(20)}\n## 第二`;
+  const zh = digestDescription(long, "zh", "invest")!;
+  assert.ok(!zh.includes("…。"));
+  assert.ok(zh.length < 90, `太长：${zh.length}`);
+});
+
+test("正文没有条目标题时返回 undefined（调用方回退 frontmatter）", () => {
+  assert.equal(digestDescription("---\ntitle: x\n---\n\n只有段落", "zh", "invest"), undefined);
+});
+
+test("英文描述里混进中文时返回 undefined，让调用方回退", () => {
+  const mixed = `## <a href="x">U.S. Silver Fell; 港股 Opening</a>\n## 第二条`;
+  assert.equal(digestDescription(mixed, "en", "invest"), undefined);
+  const clean = `## US Silver Fell\n## HK Opening`;
+  assert.match(digestDescription(clean, "en", "invest")!, /^2 news briefs: US Silver Fell/);
 });

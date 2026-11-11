@@ -11,6 +11,9 @@
 
 export type Lang = "zh" | "en";
 
+/** 只用来判断「英文描述里混进了中文」，不做别的转换。 */
+const CJK = /[\u4e00-\u9fff]/;
+
 /** 只要标题和日期，避免把 astro content 的具体类型搬进来。 */
 export interface PostLike {
   title: string;
@@ -101,4 +104,58 @@ export function sectionDescription(kind: SectionKind, stats: SectionStats, lang:
     case "photo":
       return `${count} photo albums, ${photos} photos in total, organised by place and subject${latestEn}.`;
   }
+}
+
+/** 把 digest/mdx 里的一行标题（常含内联 HTML `<a>`）还原成纯文本。 */
+export function plainHeading(line: string): string {
+  return collapse(
+    line
+      .replace(/<[^>]+>/g, "")
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&amp;/g, "&")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&nbsp;/g, " ")
+      // markdown 强调/链接的残留符号（标题里偶有 ** 或 *）
+      .replace(/\*\*/g, "")
+      .replace(/^\*|\*$/g, ""),
+  );
+}
+
+/**
+ * 日报页的描述：用正文里真实的条目标题拼，而不是「15 条快讯 · 多源聚合 + AI 改写」。
+ *
+ * 724 个日报页原来只有 121 种描述，最常见的一条重复了 129 次——搜索引擎看到的是
+ * 一堆几乎相同的页面。标题来自当天抓到的新闻，天然一页一种。
+ */
+export function digestDescription(
+  markdown: string,
+  lang: Lang,
+  kind: "ai" | "invest",
+): string | undefined {
+  const headings = markdown
+    .split("\n")
+    .filter((line) => line.startsWith("## "))
+    .map((line) => plainHeading(line.slice(3)))
+    .filter((text) => text.length > 0);
+
+  if (headings.length === 0) return undefined;
+
+  const count = headings.length;
+  const [first, second] = headings;
+  const unit = kind === "ai" ? "篇论文" : "条快讯";
+  const unitEn = kind === "ai" ? "paper picks" : "news briefs";
+
+  const end = (body: string, mark: string) => (body.endsWith("…") ? body : body + mark);
+
+  if (lang === "zh") {
+    const tail = second ? `；${clip(second, 30)}` : "";
+    return end(`${count} ${unit}：${clip(first, 34)}${tail}`, "。");
+  }
+
+  const tail = second ? `; ${clip(second, 50)}` : "";
+  const en = end(`${count} ${unitEn}: ${clip(first, 60)}${tail}`, ".");
+  // 个别英文稿的条目锚文本没被翻译（477 页里有 9 页），中英混排的描述不如回退 frontmatter
+  return CJK.test(en) ? undefined : en;
 }

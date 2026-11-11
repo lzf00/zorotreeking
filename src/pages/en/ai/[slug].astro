@@ -16,6 +16,7 @@ import { getAdjacentPosts, getRelatedPosts } from "@/lib/related-posts";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
 import { coverByTranslationKey } from "@/lib/social-image";
 import { DIGEST_AI_HEADINGS, CONTENT_AI_HEADINGS } from "@/lib/prose-headings";
+import { digestDescription } from "@/lib/descriptions";
 
 // 日报正文的标题降过一级（h2 分组 / h3 条目），普通文章保持 h1/h2
 
@@ -40,11 +41,15 @@ const isDigest = (entry.data.tags ?? []).includes("digest") || entry.data.transl
 const headingClasses = isDigest
   ? DIGEST_AI_HEADINGS
   : CONTENT_AI_HEADINGS;
+// 日报描述改用当天真实的条目标题拼（原来 724 个页面只有 121 种描述，
+// 重复最多的一条出现了 129 次），正文没有条目时回退 frontmatter。
+const description = (isDigest && digestDescription(entry.body ?? "", "en", "ai"))
+  || entry.data.description;
 ---
 
 <BaseLayout
   title={entry.data.title}
-  description={entry.data.description}
+  description={description}
   ogType="article"
   publishedTime={entry.data.date}
   modifiedTime={entry.data.updated}
