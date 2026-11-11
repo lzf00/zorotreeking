@@ -244,6 +244,26 @@ src/data/embeddings.json (2048 维 × N 篇)
 拿不到 git（浅克隆/没装 git）就**不写** lastmod，宁缺勿假。`check:seo` 会校验每条
 `<lastmod>` 可解析且不晚于今天。
 
+### 尾斜杠：49,883 处站内链接不再多走一次 301
+
+站点是 `build.format: "directory"`：每个页面是 `<路径>/index.html`，nginx 会把
+`/about` 301 到 `/about/`。但导航、页脚、卡片、正文里的链接以前全都写成不带斜杠的
+形式，于是**每一次点击、每一次爬取都要多一个 RTT**（跨境访问下这直接翻倍首包时间）。
+
+| 位置 | 改法 |
+|---|---|
+| 导航 / 页脚 / 卡片 / 语言切换 | 统一走 `pathWithLang()`，函数内补斜杠 |
+| 正文（日报条目、周报列表、手写文章） | 新增 `rehype-trailing-slash` 插件统一改写 |
+| 页脚、about 页数据、后台互链、重定向目标 | 逐处补成 canonical 形式 |
+
+两个容易踩的点：
+- **不能用「最后一段含点就不加斜杠」判断文件**：个股页是 `/invest/stock/688981.SH`，
+  代码里本来就带点。改成后缀白名单（`xml/json/png/webp/…`）判断。
+- 查询串和 hash 要保留（相关推荐链接带 `?utm_source=related`）。
+
+改完 `[内链] 69744 个站内引用 · 全部可解析且都是 canonical 形式`，`check:seo` 现在
+把「指向页面却缺尾斜杠」当错误处理，不会再退化。
+
 ### 站内链接：四个页面从「只有 sitemap 知道」变成可点
 
 用 dist 里的 `href` 建了张入链图，发现 `/topics`、`/explore`、`/uses`、`/changelog`

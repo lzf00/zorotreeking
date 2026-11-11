@@ -5,6 +5,7 @@ import react from "@astrojs/react";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeNormalizeContentHeadings from "./src/lib/rehype-normalize-headings.mjs";
+import rehypeTrailingSlash from "./src/lib/rehype-trailing-slash.mjs";
 
 const SITE = "https://www.zorotreeking.online";
 
@@ -30,8 +31,8 @@ export default defineConfig({
   // 只声明不带尾斜杠的形式：build.format=directory 下 /photography 和 /photography/
   // 是同一个路由，两条都写会触发 Astro 的 duplicate route 警告（未来版本会变硬错误）。
   redirects: {
-    "/photography": "/photo",
-    "/en/photography": "/en/photo",
+    "/photography": "/photo/",
+    "/en/photography": "/en/photo/",
   },
   markdown: {
     processor: unified({
@@ -39,6 +40,9 @@ export default defineConfig({
         // 日报正文整体降一级、复盘正文去掉重复标题 —— 模板已经有 h1 了，
         // 再让正文出 h1 会让 718 个页面各自有 2～10 个主标题。
         rehypeNormalizeContentHeadings,
+        // 正文里的站内链接补尾斜杠，避免每次点击都吃一次 301
+        // （站点是 directory 格式，canonical 一律带斜杠）
+        rehypeTrailingSlash,
         rehypeSlug,
         [rehypeAutolinkHeadings, {
           behavior: "append",

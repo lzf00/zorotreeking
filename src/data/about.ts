@@ -111,8 +111,8 @@ ZoroTreeking 是这些实践之外的一份长期记录。这里有 AI 学习、
     ],
     links: [
       { href: "/rss.xml", label: "RSS", icon: "📡" },
-      { href: "/subscribe", label: "订阅邮件", icon: "✉️" },
-      { href: "/guestbook", label: "留言板", icon: "💬" },
+      { href: "/subscribe/", label: "订阅邮件", icon: "✉️" },
+      { href: "/guestbook/", label: "留言板", icon: "💬" },
     ],
   },
   en: {
@@ -185,8 +185,8 @@ ZoroTreeking is a long-running record beside that work. It brings together AI le
     ],
     links: [
       { href: "/rss.xml", label: "RSS", icon: "📡" },
-      { href: "/en/subscribe", label: "Subscribe", icon: "✉️" },
-      { href: "/en/guestbook", label: "Guestbook", icon: "💬" },
+      { href: "/en/subscribe/", label: "Subscribe", icon: "✉️" },
+      { href: "/en/guestbook/", label: "Guestbook", icon: "💬" },
     ],
   },
 };

@@ -19,9 +19,25 @@ import { escapeXml } from "../src/lib/xml";
 
 test("pathWithLang keeps Chinese at the root and prefixes English", () => {
   assert.equal(pathWithLang("/", "zh"), "/");
-  assert.equal(pathWithLang("/ai", "zh"), "/ai");
+  assert.equal(pathWithLang("/ai", "zh"), "/ai/");
   assert.equal(pathWithLang("/", "en"), "/en/");
-  assert.equal(pathWithLang("/ai", "en"), "/en/ai");
+  assert.equal(pathWithLang("/ai", "en"), "/en/ai/");
+});
+
+test("pathWithLang 补尾斜杠：站点是 directory 格式，canonical 一律带斜杠", () => {
+  // 不带斜杠的写法每点一次都会 301 一次，所以导航/页脚/卡片统一走这个函数
+  assert.equal(pathWithLang("/about", "zh"), "/about/");
+  assert.equal(pathWithLang("/ai/digest", "en"), "/en/ai/digest/");
+  assert.equal(pathWithLang("/about/", "zh"), "/about/", "已经带斜杠不能变成两个");
+  assert.equal(pathWithLang("/tag/arxiv", "en"), "/en/tag/arxiv/");
+});
+
+test("pathWithLang 放过真正的静态文件，但个股代码不是文件", () => {
+  assert.equal(pathWithLang("/rss.xml", "zh"), "/rss.xml");
+  assert.equal(pathWithLang("/photos/a.jpg", "en"), "/en/photos/a.jpg");
+  // /invest/stock/688981.SH 里带点，但它是页面路由，必须加斜杠
+  assert.equal(pathWithLang("/invest/stock/688981.SH", "zh"), "/invest/stock/688981.SH/");
+  assert.equal(pathWithLang("/invest/stock/0981.HK", "en"), "/en/invest/stock/0981.HK/");
 });
 
 test("language switch only appears when the alternate page exists", () => {

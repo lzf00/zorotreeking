@@ -1,5 +1,5 @@
 ---
-import { getLangFromUrl, useTranslations } from "@/i18n/ui";
+import { getLangFromUrl, pathWithLang, useTranslations } from "@/i18n/ui";
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const year = new Date().getFullYear();
@@ -17,33 +17,33 @@ const year = new Date().getFullYear();
           {lang === "zh" ? "搜索 /" : "Search /"}
         </button>
         <span>·</span>
-        <a href={lang === "zh" ? "/subscribe" : "/en/subscribe"} class="inline-flex items-center min-h-6 px-1 -mx-1 hover:text-[var(--text)] transition-colors">
+        <a href={pathWithLang("/subscribe", lang)} class="inline-flex items-center min-h-6 px-1 -mx-1 hover:text-[var(--text)] transition-colors">
           {lang === "zh" ? "订阅" : "Subscribe"}
         </a>
         <span>·</span>
         <a href="/rss.xml" class="inline-flex items-center min-h-6 px-1 -mx-1 hover:text-[var(--text)] transition-colors">RSS</a>
         <span>·</span>
-        <a href={lang === "zh" ? "/tag" : "/en/tag"} class="inline-flex items-center min-h-6 px-1 -mx-1 hover:text-[var(--text)] transition-colors">Tags</a>
+        <a href={pathWithLang("/tag", lang)} class="inline-flex items-center min-h-6 px-1 -mx-1 hover:text-[var(--text)] transition-colors">Tags</a>
         <span>·</span>
-        <a href="/now" class="inline-flex items-center min-h-6 px-1 -mx-1 hover:text-[var(--text)] transition-colors">Now</a>
+        <a href="/now/" class="inline-flex items-center min-h-6 px-1 -mx-1 hover:text-[var(--text)] transition-colors">Now</a>
         <span>·</span>
-        <a href={lang === "zh" ? "/guestbook" : "/en/guestbook"} class="inline-flex items-center min-h-6 px-1 -mx-1 hover:text-[var(--text)] transition-colors">
+        <a href={pathWithLang("/guestbook", lang)} class="inline-flex items-center min-h-6 px-1 -mx-1 hover:text-[var(--text)] transition-colors">
           {lang === "zh" ? "留言板" : "Guestbook"}
         </a>
         <span>·</span>
-        <a href={lang === "zh" ? "/terms" : "/en/terms"} class="inline-flex items-center min-h-6 px-1 -mx-1 hover:text-[var(--text)] transition-colors">
+        <a href={pathWithLang("/terms", lang)} class="inline-flex items-center min-h-6 px-1 -mx-1 hover:text-[var(--text)] transition-colors">
           {lang === "zh" ? "使用条款" : "Terms"}
         </a>
         <span>·</span>
-        <a href={lang === "zh" ? "/privacy" : "/en/privacy"} class="inline-flex items-center min-h-6 px-1 -mx-1 hover:text-[var(--text)] transition-colors">
+        <a href={pathWithLang("/privacy", lang)} class="inline-flex items-center min-h-6 px-1 -mx-1 hover:text-[var(--text)] transition-colors">
           {lang === "zh" ? "隐私" : "Privacy"}
         </a>
         <span>·</span>
-        <a href={lang === "zh" ? "/data" : "/en/data"} class="inline-flex items-center min-h-6 px-1 -mx-1 hover:text-[var(--text)] transition-colors">
+        <a href={pathWithLang("/data", lang)} class="inline-flex items-center min-h-6 px-1 -mx-1 hover:text-[var(--text)] transition-colors">
           {lang === "zh" ? "我的数据" : "My Data"}
         </a>
         <span>·</span>
-        <a href={lang === "zh" ? "/contact" : "/en/contact"} class="inline-flex items-center min-h-6 px-1 -mx-1 hover:text-[var(--text)] transition-colors">
+        <a href={pathWithLang("/contact", lang)} class="inline-flex items-center min-h-6 px-1 -mx-1 hover:text-[var(--text)] transition-colors">
           {lang === "zh" ? "投诉举报" : "Contact"}
         </a>
         <span>·</span>
@@ -58,13 +58,13 @@ const year = new Date().getFullYear();
       <p class="flex flex-wrap items-center gap-x-3 gap-y-1">
         <span class="text-[var(--text-tertiary)]">探索</span>
         <span aria-hidden="true">·</span>
-        <a href="/topics" class="inline-flex items-center min-h-6 px-1 -mx-1 hover:text-[var(--text)] transition-colors">主题</a>
+        <a href="/topics/" class="inline-flex items-center min-h-6 px-1 -mx-1 hover:text-[var(--text)] transition-colors">主题</a>
         <span aria-hidden="true">·</span>
-        <a href="/explore" class="inline-flex items-center min-h-6 px-1 -mx-1 hover:text-[var(--text)] transition-colors">文章地图</a>
+        <a href="/explore/" class="inline-flex items-center min-h-6 px-1 -mx-1 hover:text-[var(--text)] transition-colors">文章地图</a>
         <span aria-hidden="true">·</span>
-        <a href="/uses" class="inline-flex items-center min-h-6 px-1 -mx-1 hover:text-[var(--text)] transition-colors">装备</a>
+        <a href="/uses/" class="inline-flex items-center min-h-6 px-1 -mx-1 hover:text-[var(--text)] transition-colors">装备</a>
         <span aria-hidden="true">·</span>
-        <a href="/changelog" class="inline-flex items-center min-h-6 px-1 -mx-1 hover:text-[var(--text)] transition-colors">更新日志</a>
+        <a href="/changelog/" class="inline-flex items-center min-h-6 px-1 -mx-1 hover:text-[var(--text)] transition-colors">更新日志</a>
       </p>
     )}
 

@@ -75,7 +75,7 @@ const recentTopics = all
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, 24)
   .map((p) => ({
-    href: `/${p.collection}/${p.data.translationKey}`,
+    href: `/${p.collection}/${p.data.translationKey}/`,
     title: p.data.title,
     date: p.data.date.toISOString().slice(0, 10),
     collection: p.collection,
@@ -137,7 +137,7 @@ const stats = {
             // tooltip 文本直接用 aria-label（本来内容一样，复制一份等于白占 45B×500），
             // opacity=1 是默认值就省略。
             return (
-              <a href={`/${m.collection}/${m.key}`} aria-label={label}>
+              <a href={`/${m.collection}/${m.key}/`} aria-label={label}>
                 <circle cx={cx} cy={cy} r={r} fill={color}
                         opacity={opacity === 1 ? undefined : opacity} />
               </a>

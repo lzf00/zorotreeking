@@ -16,7 +16,8 @@
  *   html lang      zh-CN / en
  *   hreflang       每条 alternate 都指向真实页面，且双向互指（中英对照页配对错
  *                  会让 Google 直接忽略整组标注）
- *   内链           href/src 指向的站内文件真的存在（区分大小写，Linux 上大小写错了就是 404）
+ *   内链           href/src 指向的站内文件真的存在（区分大小写，Linux 上大小写错了就是 404），
+ *                  且指向页面时必须是带尾斜杠的 canonical 形式（否则每点一次都吃一次 301）
  *   sitemap        <lastmod> 必须可解析且不晚于今天（假日期会让整份 sitemap 的
  *                  lastmod 被忽略）；每条 <loc> 都对应一个真实页面，且与该页 canonical 完全一致
  *                  （尾斜杠不一致会让整份 sitemap 变成 301 中转）
@@ -307,6 +308,7 @@ async function checkInternalLinks(siteOrigin) {
   }
 
   const unresolved = new Map();
+  const nonCanonical = new Map();
   let refs = 0;
   let caseOnly = 0;
   const lower = new Map();
@@ -326,6 +328,13 @@ async function checkInternalLinks(siteOrigin) {
       if (!raw.startsWith("/") || raw.startsWith("//")) continue;
       const clean = decodeURIComponent(raw.split("#")[0].split("?")[0]);
       refs += 1;
+      // 指向页面却少了尾斜杠 → 每次点击多一次 301（2026-11 全站修掉了 49883 处）
+      if (!clean.endsWith("/") && pageDirs.has(`${clean}/`)) {
+        const from = path.relative(DIST, abs);
+        if (!nonCanonical.has(clean)) nonCanonical.set(clean, { from, count: 0 });
+        nonCanonical.get(clean).count += 1;
+        continue;
+      }
       if (files.has(clean)) continue;
       if (pageDirs.has(clean) || pageDirs.has(`${clean}/`)) continue;
       if (pageDirs.has(`${clean}/`)) continue;
@@ -338,7 +347,7 @@ async function checkInternalLinks(siteOrigin) {
       unresolved.get(clean).count += 1;
     }
   }
-  return { refs, caseOnly, unresolved };
+  return { refs, caseOnly, unresolved, nonCanonical };
 }
 
 /**
@@ -533,12 +542,15 @@ async function main() {
 
   console.log(
     `[内链] ${links.refs} 个站内引用` +
-      (links.unresolved.size || links.caseOnly
-        ? ` · ${links.unresolved.size} 个打不开 · ${links.caseOnly} 个大小写错配`
-        : " · 全部可解析"),
+      (links.unresolved.size || links.caseOnly || links.nonCanonical.size
+        ? ` · ${links.unresolved.size} 个打不开 · ${links.caseOnly} 个大小写错配 · ${links.nonCanonical.size} 个缺尾斜杠`
+        : " · 全部可解析且都是 canonical 形式"),
   );
   for (const [target, info] of [...links.unresolved].slice(0, 6)) {
     console.log(`    · ${target}（${info.count} 处，例如 ${info.from}）`);
+  }
+  for (const [target, info] of [...links.nonCanonical].slice(0, 6)) {
+    console.log(`    · 缺尾斜杠 ${target}（${info.count} 处，例如 ${info.from}）`);
   }
 
   console.log(
@@ -556,7 +568,14 @@ async function main() {
       console.log(`  ${s.rel}: ${s.errors[0]}`);
     }
   }
-  if (errorPages > 0 || sitemap.errors.length > 0 || hreflangErrors.length > 0 || links.unresolved.size > 0 || links.caseOnly > 0) {
+  if (
+    errorPages > 0 ||
+    sitemap.errors.length > 0 ||
+    hreflangErrors.length > 0 ||
+    links.unresolved.size > 0 ||
+    links.caseOnly > 0 ||
+    links.nonCanonical.size > 0
+  ) {
     process.exit(1);
   }
   void warningTotal;

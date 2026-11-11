@@ -87,9 +87,29 @@ export function getLangFromUrl(url: URL): Lang {
   return seg in languages ? (seg as Lang) : defaultLang;
 }
 
+/**
+ * 站内页面一律带尾斜杠：站点是 `build.format: "directory"`，canonical 与 nginx 都是
+ * `/about/` 形式，而 `/about` 会 301 一次。导航、页脚、卡片全都走这个函数，所以在这里
+ * 统一补斜杠，一次改动消掉全站数万处多余的跳转。
+ * 带扩展名的静态文件（`/rss.xml`、`/photos/x.jpg`）保持原样，不能加斜杠。
+ */
+/** 需要保持原样的静态文件后缀（页面路由不会以这些结尾）。 */
+const ASSET_EXTENSIONS = new Set([
+  "xml", "json", "txt", "html", "css", "js", "mjs", "map",
+  "png", "jpg", "jpeg", "webp", "avif", "gif", "svg", "ico",
+  "pdf", "webmanifest", "mp4", "webm", "gpx", "zip",
+]);
+
 export function pathWithLang(path: string, lang: Lang): string {
   const clean = path.startsWith("/") ? path.slice(1) : path;
-  return lang === defaultLang ? `/${clean}` : `/${lang}/${clean}`;
+  const joined = (lang === defaultLang ? `/${clean}` : `/${lang}/${clean}`).replace(/\/{2,}/g, "/");
+  if (joined.endsWith("/")) return joined;
+  // 只有真正的静态文件才不加斜杠。不能简单地「含点就不加」：
+  // 个股页是 /invest/stock/688981.SH 这种形式，代码里本身就带点。
+  const lastSegment = joined.slice(joined.lastIndexOf("/") + 1);
+  const ext = lastSegment.includes(".") ? lastSegment.slice(lastSegment.lastIndexOf(".") + 1).toLowerCase() : "";
+  if (ASSET_EXTENSIONS.has(ext)) return joined;
+  return `${joined}/`;
 }
 
 const TRANSLATED_STATIC_PATHS = new Set([
