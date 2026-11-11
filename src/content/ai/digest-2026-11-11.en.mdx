@@ -1,0 +1,179 @@
+---
+lang: en
+translationKey: digest-2026-11-11
+title: "Daily AI Highlights · 2026-11-11"
+description: "17 papers · Multi-source aggregation + AI summaries"
+date: 2026-11-11
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, lil-log]
+category: paper
+cover: "/photos/uploads/baokemeng/baokemeng-28.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Top global AI vendors roll out new updates intensively: DeepMind launches Gemini 4 Carbon and AlphaProof Code, while OpenAI and Anthropic also release new developments</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face releases 5 cutting-edge papers on vision and video generation, and simultaneously launches new features including cloud payment and decision models</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Multiple breakthroughs in AI industry implementation: driverless tractors are put into operation in Xinjiang, and new progress is made in NVIDIA robotics and superconducting quantum computing</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 New Model Releases</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Robotics</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏭 Industry Implementation</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚛️ Quantum Computing</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2611.12426" target="_blank" rel="noopener noreferrer">dNaViT: Discrete Codes are General-Purpose Visual Representations</a>
+
+*HF ★ 19 · Xiaotong Li, Zhengrong Yue, Xu Huang… · [HF Mirror](https://huggingface.co/papers/2611.12426)*
+
+To explore the upper limit of discrete vocabulary for visual information representation and meet the needs of unified multimodal modeling, this paper proposes dNaViT, a Discrete Native Resolution Vision Transformer: based on a frozen pretraining encoder, it adopts lightweight residual modulation and grouped product quantization design, taking both semantic and pixel information into account. As a general-purpose discrete visual tokenizer, it matches or outperforms dedicated baselines on 17 visual understanding, generation, and editing benchmarks, verifying that compact discrete vocabularies can serve as general visual representations to support unified multimodal paradigms.
+
+<FeedbackButtons slug="item:arxiv-2611.12426" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.12885" target="_blank" rel="noopener noreferrer">World In-Context Learning for Agentic Robot Manipulation</a>
+
+*HF ★ 12 · Heng Fang, Zehui Guo, Yuehan Zhang… · [HF Mirror](https://huggingface.co/papers/2611.12885)*
+
+To address the pain points that traditional robot manipulation strategies are bound to training distributions, and existing in-context learning performs poorly due to lack of current environment feedback, the study finds that in-context learning acquires semantic information that can be transferred across scenarios. Based on this, the World In-Context Learning (WICL) paradigm is proposed, and the RoboScript architecture is built. It only requires a single demonstration plus simulation drills to be stored as task memory, no gradient update is needed. Its success rate on 50 manipulation tasks is 20 percentage points higher than the best training strategy, and it can be transferred to real robots across distributions and entities.
+
+<FeedbackButtons slug="item:arxiv-2611.12885" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.14033" target="_blank" rel="noopener noreferrer">Few-Step Streaming Video Generation via Condition Shifting</a>
+
+*HF ★ 9 · Deyuan Liu, Jungang Li, Kaiwen Zheng… · [HF Mirror](https://huggingface.co/papers/2611.14033)*
+
+To reduce the training cost of few-step sampling for streaming video generation, this paper proposes a condition shifting mechanism to modify the APEX model. The same set of parameters can realize both content generation and pseudo-sample estimation, eliminating the need for the independent pseudo-score network required by DMD. Experiments show that its instruction following of user preferences is 30% higher than that of S2-Avatar, with better visual effects. Under the same configuration, its VRAM usage is 4.4% lower and iteration speed is 9.2% faster than DMD, only its motion quality is slightly inferior to S2-Avatar.
+
+<FeedbackButtons slug="item:arxiv-2611.14033" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.03142" target="_blank" rel="noopener noreferrer">DepthGraft: Structural Regularization through Hierarchical Cross-Layer KV Reconstruction</a>
+
+*HF ★ 6 · Xiaohan Qin, Xiangdong Zhang, Yu Wang… · [HF Mirror](https://huggingface.co/papers/2611.03142)*
+
+To address the problems of inter-layer information dilution when scaling up Pre-LN architecture large models, and the high additional overhead of existing cross-layer connection solutions, this paper proposes the DepthGraft hierarchical KV sharing architecture: it reconstructs deep-layer KV using stride-aligned shallow and middle-layer KV pairs, which can serve as a structural regularization term to optimize KV representation, and also reduce KV cache by 1/3. Experiments on 0.5B-16B dense and MoE models show that it generally improves performance on downstream tasks, with a maximum improvement of 7% on MMLU-Pro for the 16B MoE, suitable for large-scale pretraining.
+
+<FeedbackButtons slug="item:arxiv-2611.03142" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.12411" target="_blank" rel="noopener noreferrer">PhysOPSD: Code as Privilege for Physically Plausible Video Generation</a>
+
+*HF ★ 6 · Harold Haodong Chen, Rui Peng, Lingteng Qiu… · [HF Mirror](https://huggingface.co/papers/2611.12411)*
+
+To address the weak physical dynamic plausibility of existing video generation models and the inherent flaws of traditional fine-tuning/reinforcement learning optimization, this paper proposes the PhysOPSD method, which introduces executable code as privileged physical context. It converts real physical scenarios into verifiable simulation programs through a dedicated engine, paired with a two-layer privilege mechanism and controllable physical variable design. Experiments show that with only 3,000 samples, its physical plausibility far exceeds the baseline, while retaining general generation quality, and is compatible with multiple types of base models.
+
+<FeedbackButtons slug="item:arxiv-2611.12411" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/gilbert-tobin-sam-nickless" target="_blank" rel="noopener noreferrer">Gilbert + Tobin rethinks the business of law with AI</a>
+
+*OpenAI*
+
+This content is a special interview with Sam Nickless, Partner and CEO of Gilbert + Tobin, Australia's top commercial law firm. It focuses on the core theme of the firm using artificial intelligence technology to reshape the legal business model and explore industry transformation paths, presenting frontline practical thinking of leading legal institutions on "AI + Law" implementation solutions, business value and long-term development prospects, totaling 121 words.
+
+<FeedbackButtons slug="item:openai-blog-gilbert-tobin-sam-nickless" client:visible />
+
+## <a href="https://openai.com/index/helping-caregivers-use-ai-in-everyday-life" target="_blank" rel="noopener noreferrer">Helping caregivers use AI in everyday life</a>
+
+*OpenAI*
+
+This project is initiated by OpenAI Academy, offering free ChatGPT practical training workshops for caregivers, with the first batch launched in five U.S. cities. The course is practice-oriented, helping caregivers master AI application skills suitable for daily scenarios through hands-on teaching, providing technical tool support for this group with heavy daily routines to optimize the efficiency of handling work and life affairs.
+
+<FeedbackButtons slug="item:openai-blog-helping-caregivers-use-ai-in-everyday-life" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/announcements" target="_blank" rel="noopener noreferrer">Announcements</a>
+
+*Anthropic*
+
+This announcement is an official statement from Anthropic, an AI security R&D enterprise: the company is a research institution focusing on the AI security field, with core business centered on AI security technology R&D, aiming to solve risks such as black boxes and uncontrollability in AI implementation. Its core R&D goal is to build AI systems with three characteristics: stable and reliable, interpretable, and able to be accurately guided and controlled by humans, exploring a safe and controllable AI development path.
+
+<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+AI company Anthropic announced the establishment of an exclusive public benefit fund, transferring part of the company's equity to this entity. The fund adopts a dynamic shareholding mechanism: as the company's operating scale grows, the proportion of shares it holds will further increase. This arrangement directly binds enterprise development dividends with public welfare, exploring a new equity structure sample for the AI industry to balance commercial returns and public responsibility.
+
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/gemini-4-carbon-is-now-available/" target="_blank" rel="noopener noreferrer">Gemini 4 Carbon is now available</a>
+
+*Google DeepMind*
+
+Google's new generation large model Gemini 4 Carbon is now officially available for access. This version is the low-carbon optimized variant of the Gemini 4 series, with a reconstructed inference scheduling framework. While fully retaining Gemini 4's original multimodal understanding and complex logical reasoning performance, its carbon emission during inference is more than 40% lower than the standard version, which can meet the efficient and low-carbon implementation needs of enterprise-level AI applications.
+
+<FeedbackButtons slug="item:deepmind-gemini-4-carbon-is-now-available" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-alphaproof-code/" target="_blank" rel="noopener noreferrer">Introducing AlphaProof Code: a breakthrough in verifying complex software at depth</a>
+
+*Google DeepMind*
+
+AlphaProof Code launched by DeepMind is a major breakthrough in the field of in-depth verification of complex software. For Signal, the high-security encrypted communication software, this agent relies on the formal verification tool Lean to automatically generate a total of 3 million lines of rigorous proof code, completing the correctness verification of its core encryption module, providing a new and efficient path for security verification of high-reliability complex software.
+
+<FeedbackButtons slug="item:deepmind-introducing-alphaproof-code" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/hub-gcp-marketplace" target="_blank" rel="noopener noreferrer">Pay for Hugging Face Hub with your Google Cloud Account</a>
+
+*Hugging Face*
+
+This is a new payment feature jointly launched by Hugging Face and Google Cloud: users do not need to open a separate payment channel on the Hugging Face platform, they can directly bind their own Google Cloud account to purchase commercial models, API quotas, exclusive computing power and other resources in the Hub. This feature simplifies the AI resource procurement process, adapts to developers and enterprises already using Google Cloud, connects the account systems of the two services, and lowers the access threshold.
+
+<FeedbackButtons slug="item:hf-blog-hub-gcp-marketplace" client:visible />
+
+## <a href="https://huggingface.co/blog/decision" target="_blank" rel="noopener noreferrer">Decision Models in Hugging Face</a>
+
+*Hugging Face*
+
+This article introduces Hugging Face's decision model ecosystem: methodologically, it takes Decision Transformer as the core, combines sequence generation paradigm with reinforcement learning and large model fine-tuning capabilities, connects the whole process of offline training and online interactive deployment, and is suitable for scenarios such as robot control, sequential decision-making, and multi-agent collaboration. This framework greatly lowers the threshold for decision intelligence implementation, helps practitioners quickly reproduce benchmarks and adapt to custom needs, significantly improving R&D efficiency.
+
+<FeedbackButtons slug="item:hf-blog-decision" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This article sorts out the development context of the Recursive Self-Improvement (RSI) concept: in 1965, scholar Irving John Good first proposed that "superintelligent machines" that can surpass all human intellectual activities can design better systems by themselves to achieve iteration; in 2008, Eliezer Yudkowsky clarified that its core is the feedback loop where AI optimizes its own cognitive mechanism relying on existing intelligence. Currently, RSI implementation in the AI field can be achieved by directly modifying weights and optimizing training processes.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/11/509052.html" target="_blank" rel="noopener noreferrer">Driverless tractors are officially put into field operation! Deep plowing of over 30 cm in Xinjiang's large fields, Qiuwo Intelligent Kaiwu™ system fully exposed for the first time</a>
+
+*QbitAI*
+
+Qiuwo Intelligent recently completed the debut of the Kaiwu™ L4 unmanned operation kit installed on actual machines. The hybrid tractor equipped with this kit realized fully automatic unmanned deep plowing in Xinjiang's large fields, with a plowing depth of over 30 cm and an operating speed of 11.8 km/h. The company has also recently reached cooperation with Zhuopin Intelligent on agricultural implement controllers and edge domain controllers. It will open its first direct flagship store in Xinjiang at the end of November, forming a full closed loop of unmanned agricultural operations relying on the software and hardware system, to meet the needs of field farming operations during agricultural seasons.
+
+<FeedbackButtons slug="item:qbitai-509052" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/509032.html" target="_blank" rel="noopener noreferrer">NVIDIA robotics open source coincides with Fable 5.2 release! Jim Fan: It's not a winter, it's a summer</a>
+
+*QbitAI*
+
+NVIDIA released the new generation robot foundation model GR00T 2 at the CoRL conference, which can cover full-scene robot tasks from fine bimanual operation to whole-body movement. It is equipped with the core Xadapt cross-body adaptation technology, which can directly transfer skills demonstrated by humans and handheld devices to robots that have not been trained for the corresponding tasks. Its related resources will be open-sourced successively, and 100,000 hours of human data are currently available. Jim Fan said that the robotics industry is in an upward period rather than a cold winter.
+
+<FeedbackButtons slug="item:qbitai-509032" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/509017.html" target="_blank" rel="noopener noreferrer">From chips to kilobit complete machines, superconducting quantum computing still faces a tough battle</a>
+
+*QbitAI*
+
+Currently, superconducting quantum computing has verified that expanding the error correction scale can reduce the logical error rate, but to implement it into large computing power systems, synchronous adaptation of technologies in all links such as packaging, interconnection, and measurement and control is still required. Zhengyuan Quantum, founded in 2026, has completed nearly 100 million yuan in angel round financing, focusing on the R&D of kilobit superconducting quantum complete machines, focusing on key technologies such as 3D packaging and low-temperature interconnection, solving system collaboration problems, and promoting practical implementation.
+
+<FeedbackButtons slug="item:qbitai-509017" client:visible />
