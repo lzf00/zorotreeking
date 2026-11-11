@@ -48,7 +48,8 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Run a11y audit (light + dark)
-        run: node scripts/check-a11y.mjs
+        # --mobile：加测 iPhone 13 视口，很多"只有窄屏才溢出/才露出"的问题桌面永远测不到
+        run: node scripts/check-a11y.mjs --mobile
 
       # 同一条流水线顺手验一遍「岛在浏览器里到底有没有水合」：
       # Lighthouse 分数和 axe 都不会因为 React 组件崩掉而变红，

@@ -11,11 +11,15 @@ import Breadcrumb from "@/components/Breadcrumb.astro";
 import KeyboardNav from "@/components/KeyboardNav.astro";
 import { getAdjacentPosts, getRelatedPosts } from "@/lib/related-posts";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
+import { coverByTranslationKey } from "@/lib/social-image";
 
 export async function getStaticPaths() {
   const all = await getCollection("invest", (p) => p.data.lang === "zh" && !p.data.draft);
   return all.map((entry) => ({ params: { slug: entry.data.translationKey }, props: { entry, all } }));
 }
+// 英文稿是机器翻译产物，部分历史文章没有 cover；同 translationKey 的中文稿有封面时借过来，
+// 否则 og:image 会指向一个从没生成过的 /og/invest/<slug>.png（社交卡片直接没有图）。
+const coversByKey = coverByTranslationKey(await getCollection("invest"));
 
 const { entry, all } = Astro.props;
 const { Content } = await render(entry);
@@ -34,7 +38,7 @@ const isDigest = (entry.data.tags ?? []).includes("digest") || entry.data.transl
   publishedTime={entry.data.date}
   modifiedTime={entry.data.updated}
   tags={entry.data.tags}
-  ogImage={entry.data.cover ?? `/og/invest/${entry.data.translationKey}.png`}>
+  ogImage={entry.data.cover ?? coversByKey.get(entry.data.translationKey) ?? `/og/invest/${entry.data.translationKey}.png`}>
   <ReadingProgress title={entry.data.title} section="invest"
     backHref={pathWithLang("/invest", lang)} backLabel={t("section.invest.title")} />
   <KeyboardNav

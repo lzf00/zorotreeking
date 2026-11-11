@@ -7,6 +7,7 @@ import AIChatWidget from "@/components/AIChatWidget";
 import SearchModal from "@/components/SearchModal";
 import ArticleImageLightbox from "@/components/ArticleImageLightbox.astro";
 import ReadTracker from "@/components/ReadTracker.astro";
+import { resolveSocialImage } from "@/lib/social-image";
 import {
   getLangFromUrl,
   hasAlternateLanguagePath,
@@ -65,7 +66,10 @@ const siteName = "ZoroTreeking";
 // 页面没给封面图时统一用站点默认卡（public/og-default.png，由
 // scripts/generate-og-default.mjs 生成）：分享到微信/Telegram/Slack 时
 // 没有 og:image 会退化成一条纯文字链接，点击率差很多。
-const socialImage = ogImage ?? "/og-default.png";
+// 统一在这一层兜底：封面文件不存在（历史遗留的 404 地址）就退默认卡，
+// 有 1200×630 的 .og.jpg 派生图就优先用它，避免几个 MB 的原图当分享卡。
+const social = resolveSocialImage([ogImage], { width: ogImageWidth, height: ogImageHeight });
+const socialImage = social.src;
 const author = {
   "@type": "Person",
   name: "Zifei Liu",
@@ -164,8 +168,8 @@ if (ogType === "article") {
     } />
     {/* 1200x630 是 OG / Twitter 推荐尺寸；传了真实尺寸就按真实值输出，
         避免「声明 1200×630、实际 1920×1080」被平台按错误比例裁切 */}
-    <meta property="og:image:width" content={String(ogImageWidth)} />
-    <meta property="og:image:height" content={String(ogImageHeight)} />
+    <meta property="og:image:width" content={String(social.width)} />
+    <meta property="og:image:height" content={String(social.height)} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={new URL(socialImage, Astro.site).toString()} />
     {ogType === "article" && publishedTime && (
@@ -275,6 +279,50 @@ if (ogType === "article") {
             keepalive: true,
           }).catch(() => {});
         } catch (_) {}
+      })();
+    </script>
+    {/*
+      横向滚动区键盘可达（axe: scrollable-region-focusable）。
+      表格、路线图、可打印路书这些容器在窄屏才 overflow，桌面测不出来，
+      2026-11 的 390px 巡检一口气抓出 24 张表格 + 3 个自定义滚动区。
+      与其在 20 多个标记里各补一遍 tabindex（还会漏掉新加的），
+      这里统一给"真的能横向滚动、里面又没有可聚焦元素"的容器补上
+      tabindex="0" + role="group" + 名字；窗口尺寸变化时重算。
+    */}
+    <script is:inline>
+      (() => {
+        const label = document.documentElement.lang === "en" ? "Scrollable region" : "可横向滚动区域";
+        const focusableSelector = 'a[href], button, input, select, textarea, summary, [tabindex]:not([tabindex="-1"])';
+        const mark = () => {
+          const candidates = document.querySelectorAll("div, section, aside, figure, table, pre, nav");
+          for (const el of candidates) {
+            if (el.dataset.scrollMarked === "done") continue;
+            // 先做最便宜的判断：真的横向溢出了才继续
+            if (el.scrollWidth <= el.clientWidth + 2) continue;
+            const overflowX = getComputedStyle(el).overflowX;
+            if (overflowX !== "auto" && overflowX !== "scroll") continue;
+            if (el.hasAttribute("tabindex") || el.querySelector(focusableSelector)) {
+              el.dataset.scrollMarked = "done";
+              continue;
+            }
+            el.setAttribute("tabindex", "0");
+            el.setAttribute("role", "group");
+            if (!el.getAttribute("aria-label") && !el.getAttribute("aria-labelledby")) {
+              el.setAttribute("aria-label", el.dataset.scrollLabel || label);
+            }
+            el.dataset.scrollMarked = "done";
+          }
+        };
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", mark, { once: true });
+        } else {
+          mark();
+        }
+        let timer = 0;
+        window.addEventListener("resize", () => {
+          clearTimeout(timer);
+          timer = setTimeout(mark, 200);
+        });
       })();
     </script>
   </body>

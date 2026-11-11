@@ -10,6 +10,7 @@
  *   node scripts/check-a11y.mjs                        # 默认测线上
  *   BASE_URL=http://127.0.0.1:4321 node scripts/...     # 测本地 dist
  *   node scripts/check-a11y.mjs --fail-on=warning       # 警告也当失败
+ *   node scripts/check-a11y.mjs --mobile                # 追加 iPhone 13 视口（窄屏才会溢出的问题）
  *
  * 输出：控制台汇总 + a11y-report.json（CI 里作为 artifact 上传）
  *
@@ -19,7 +20,7 @@
  * 没有各自的可读名字。全量规则集在 25 个页面类型 × 2 主题上已经是 0 违规。
  */
 import fs from "node:fs";
-import { chromium } from "playwright";
+import { chromium, devices } from "playwright";
 import axe from "axe-core";
 
 const BASE_URL = process.env.BASE_URL ?? "https://www.zorotreeking.online";
@@ -51,6 +52,12 @@ const PATHS = [
 ];
 
 const args = process.argv.slice(2);
+const MOBILE = args.includes("--mobile");
+/** 桌面 1280×900 一定有；--mobile 追加 iPhone 13（390×844，带触摸）。 */
+const VIEWPORTS = [
+  { id: "desktop", options: { viewport: { width: 1280, height: 900 } } },
+  ...(MOBILE ? [{ id: "mobile", options: { ...devices["iPhone 13"] } }] : []),
+];
 const failOn = (args.find((a) => a.startsWith("--fail-on=")) ?? "--fail-on=error").split("=")[1];
 
 /** 本地通常没装 Playwright 自带 chromium（用的是系统 Chrome），CI 里则会装。 */
@@ -67,10 +74,11 @@ const report = { baseUrl: BASE_URL, startedAt: new Date().toISOString(), results
 let failures = 0;
 let warnings = 0;
 
+for (const viewport of VIEWPORTS) {
 for (const path of PATHS) {
   for (const theme of ["light", "dark"]) {
-    const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
-    const entry = { path, theme, ok: true, violations: [] };
+    const page = await browser.newPage(viewport.options);
+    const entry = { path, theme, viewport: viewport.id, ok: true, violations: [] };
     try {
       await page.goto(BASE_URL + path, { waitUntil: "networkidle", timeout: 60_000 });
       if (theme === "dark") {
@@ -152,11 +160,13 @@ for (const path of PATHS) {
     const detail = entry.error
       ? `错误: ${entry.error}`
       : entry.violations.map((v) => `${v.id}×${v.count}`).join(" ");
-    console.log(`${mark} ${theme.padEnd(5)} ${path}${detail ? "  " + detail : ""}`);
+    const tag = viewport.id === "mobile" ? "📱 " : "";
+    console.log(`${mark} ${tag}${theme.padEnd(5)} ${path}${detail ? "  " + detail : ""}`);
     for (const v of entry.violations) {
       for (const n of v.nodes) console.log(`      ${n.target} — ${n.reason}`);
     }
   }
+}
 }
 
 await browser.close();

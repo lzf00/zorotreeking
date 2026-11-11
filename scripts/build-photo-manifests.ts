@@ -173,8 +173,10 @@ async function main() {
           }
 
           // 生成 1200×630 OG 专用尺寸（jpg，cover fit，质量 82，社交分享专用）
-          // 仅当原图够宽（≥ 1200px）且横版（宽 ≥ 高 × 1.2）才生成 og 版本
-          if (width >= 1200 && height > 0 && width / height >= 1.2) {
+          // 原来只给横版（宽 ≥ 高 × 1.2）生成，结果竖版照片当相册封面时只能拿原图
+          // 去当分享卡（1080×2400 会被平台横裁成一条）。竖版也生成一份 cover 裁切版本：
+          // 数量少（整站 60 张照片里约 20 张竖版），体积可控，卡片比例才对。
+          if (width >= 1000 && height > 0) {
             const ogName = path.basename(f, ext) + ".og.jpg";
             const ogPath = path.join(albumDir, ogName);
             let needOgGen = true;
