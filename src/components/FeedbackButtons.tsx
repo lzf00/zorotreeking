@@ -172,7 +172,9 @@ const numStyle: React.CSSProperties = {
 };
 
 const errStyle: React.CSSProperties = {
-  color: "#dc2626",
+  // 主题变量而不是写死 #dc2626：暗底上 #dc2626 只有约 3:1，
+  // 投票失败时那条 "·HTTP 404" 根本看不清（2026-11 axe 抓到）
+  color: "var(--danger-text, #b91c1c)",
   fontSize: 11,
   cursor: "help",
 };
