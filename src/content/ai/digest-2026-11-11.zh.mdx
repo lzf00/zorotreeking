@@ -1,0 +1,179 @@
+---
+lang: zh
+translationKey: digest-2026-11-11
+title: "AI 每日精选 · 2026-11-11"
+description: "17 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-11-11
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, lil-log]
+category: paper
+cover: "/photos/uploads/baokemeng/baokemeng-28.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">全球头部AI厂商密集发新：DeepMind推出Gemini 4 Carbon、AlphaProof Code，OpenAI、Anthropic更新动态</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face连发5篇视觉、视频生成类前沿论文，同步上线云支付、决策模型等新功能</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">AI产业落地多点突破：新疆无人拖拉机下地作业，英伟达机器人、超导量子计算获新进展</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 前沿研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 模型发新</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 机器人</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏭 产业落地</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚛️ 量子计算</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2611.12426" target="_blank" rel="noopener noreferrer">dNaViT: Discrete Codes are General-Purpose Visual Representations</a>
+
+*HF ★ 19 · Xiaotong Li, Zhengrong Yue, Xu Huang… · [HF 镜像](https://huggingface.co/papers/2611.12426)*
+
+为探索离散词表对视觉信息的表征上限、适配多模态统一建模需求，本文提出离散原生分辨率视觉Transformer dNaViT：基于冻结预训练编码器，采用轻量残差调制、分组乘积量化设计，兼顾语义与像素信息。其作为通用离散视觉分词器，在17项视觉理解、生成、编辑基准上持平或超越专用基线，验证了紧凑离散词表可作为通用视觉表征，支撑统一多模态范式。
+
+<FeedbackButtons slug="item:arxiv-2611.12426" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.12885" target="_blank" rel="noopener noreferrer">World In-Context Learning for Agentic Robot Manipulation</a>
+
+*HF ★ 12 · Heng Fang, Zehui Guo, Yuehan Zhang… · [HF 镜像](https://huggingface.co/papers/2611.12885)*
+
+针对传统机器人操作策略绑定训练分布、现有上下文学习缺当前环境反馈效果差的痛点，研究发现上下文学习习得的是可跨场景迁移的语义信息，据此提出世界上下文学习（WICL）范式，搭建RoboScript架构，仅需单演示加仿真演练存为任务记忆、无需梯度更新，在50项操作任务上成功率超最优训练策略20个百分点，可跨分布、跨实体迁移到真机。
+
+<FeedbackButtons slug="item:arxiv-2611.12885" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.14033" target="_blank" rel="noopener noreferrer">Few-Step Streaming Video Generation via Condition Shifting</a>
+
+*HF ★ 9 · Deyuan Liu, Jungang Li, Kaiwen Zheng… · [HF 镜像](https://huggingface.co/papers/2611.14033)*
+
+为降低流视频生成少步采样的训练开销，该文提出条件移位机制改造APEX模型，同套参数可同时实现内容生成与伪样本估算，无需DMD所需的独立伪分数网络。实验显示其指令遵循用户偏好较S2-Avatar高30%，视觉效果更优，同配置下比DMD显存低4.4%、迭代快9.2%，仅运动质量略逊于S2-Avatar。
+
+<FeedbackButtons slug="item:arxiv-2611.14033" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.03142" target="_blank" rel="noopener noreferrer">DepthGraft: Structural Regularization through Hierarchical Cross-Layer KV Reconstruction</a>
+
+*HF ★ 6 · Xiaohan Qin, Xiangdong Zhang, Yu Wang… · [HF 镜像](https://huggingface.co/papers/2611.03142)*
+
+针对Pre-LN架构大模型加深时存在层间信息稀释、现有跨层连接方案额外开销高的问题，本文提出DepthGraft分层KV共享架构：以步长对齐的浅中层KV对重构深层KV，既可作为结构正则项优化KV表征，还能降低1/3KV缓存。0.5B-16B稠密与MoE模型实验显示其下游任务普适提效，16B MoE上MMLU-Pro最高提7%，适配大规模预训练。
+
+<FeedbackButtons slug="item:arxiv-2611.03142" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.12411" target="_blank" rel="noopener noreferrer">PhysOPSD: Code as Privilege for Physically Plausible Video Generation</a>
+
+*HF ★ 6 · Harold Haodong Chen, Rui Peng, Lingteng Qiu… · [HF 镜像](https://huggingface.co/papers/2611.12411)*
+
+针对现有视频生成模型物理动态合理性弱、传统微调/强化学习优化存在固有缺陷的问题，本文提出PhysOPSD方法，引入可执行代码作为特权物理上下文，通过专属引擎将真实物理场景转换为可验证仿真程序，搭配双层特权机制与可控物理变量设计。实验显示其仅用3千样本，就远超基线物理合理性，还保留通用生成质量，适配多类基座。
+
+<FeedbackButtons slug="item:arxiv-2611.12411" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/gilbert-tobin-sam-nickless" target="_blank" rel="noopener noreferrer">Gilbert + Tobin rethinks the business of law with AI</a>
+
+*OpenAI*
+
+本次内容为对澳大利亚顶尖商事律所Gilbert + Tobin合伙人兼首席执行官萨姆·尼克利斯的专题访谈，围绕该律所运用人工智能技术重塑法律业务模式、探索行业转型路径的核心主题展开，将呈现头部法律机构对“AI+法律”落地方案、业务价值与长远发展前景的一线实践思考，共121字。
+
+<FeedbackButtons slug="item:openai-blog-gilbert-tobin-sam-nickless" client:visible />
+
+## <a href="https://openai.com/index/helping-caregivers-use-ai-in-everyday-life" target="_blank" rel="noopener noreferrer">Helping caregivers use AI in everyday life</a>
+
+*OpenAI*
+
+本项目由OpenAI学院发起，面向护理人员群体免费开展ChatGPT实操培训工作坊，首批落地美国五座城市。课程主打实用导向，通过手把手教学帮助护理人员掌握适配日常场景的AI应用技能，为这类日常事务繁杂的群体优化工作、生活事务处理效率提供技术工具支持。
+
+<FeedbackButtons slug="item:openai-blog-helping-caregivers-use-ai-in-everyday-life" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/announcements" target="_blank" rel="noopener noreferrer">Announcements</a>
+
+*Anthropic*
+
+本次公告来自AI安全研发企业Anthropic的官方说明：该公司是专注于AI安全领域的研究机构，核心业务围绕AI安全技术研发展开，旨在解决AI落地中的黑箱、不可控等风险，核心研发目标是打造具备稳定可靠、可解释、可被人类精准引导管控三类特性的AI系统，探索安全可控的AI发展路径。
+
+<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+AI企业Anthropic宣布设立专属公共利益基金，将公司部分股权划入该实体。该基金采用动态持股机制：伴随公司经营规模增长，其持有股份的占比还会进一步提升。这一安排将企业发展红利与公共福利直接绑定，为AI行业平衡商业收益与公共责任探索了新型股权结构样本。
+
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/gemini-4-carbon-is-now-available/" target="_blank" rel="noopener noreferrer">Gemini 4 Carbon is now available</a>
+
+*Google DeepMind*
+
+谷歌新一代大模型Gemini 4 Carbon现已正式开放调用。该版本是Gemini 4系列的低碳优化款，重构了推理调度框架，在完全保留Gemini 4原有多模态理解、复杂逻辑推理性能的前提下，推理阶段碳排放较标准版降低超40%，可满足企业级AI应用高效低碳的落地需求。
+
+<FeedbackButtons slug="item:deepmind-gemini-4-carbon-is-now-available" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-alphaproof-code/" target="_blank" rel="noopener noreferrer">Introducing AlphaProof Code: a breakthrough in verifying complex software at depth</a>
+
+*Google DeepMind*
+
+DeepMind推出的AlphaProof Code是复杂软件深度验证领域的重大突破。针对高安全级别的加密通讯软件Signal，该智能体依托形式化验证工具Lean，自动生成总计300万行严谨证明代码，完成了对其核心加密模块的正确性核验，为高可靠复杂软件的安全验证提供了全新高效路径。
+
+<FeedbackButtons slug="item:deepmind-introducing-alphaproof-code" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/hub-gcp-marketplace" target="_blank" rel="noopener noreferrer">Pay for Hugging Face Hub with your Google Cloud Account</a>
+
+*Hugging Face*
+
+这是Hugging Face与谷歌云联合推出的付费新功能：用户无需单独在Hugging Face平台开通支付渠道，直接绑定自有谷歌云账号，即可付费采购Hub内的商用模型、API额度、专属算力等资源。该功能简化了AI资源采购流程，适配已使用谷歌云的开发者与企业，打通两类服务账户体系，降低使用门槛。
+
+<FeedbackButtons slug="item:hf-blog-hub-gcp-marketplace" client:visible />
+
+## <a href="https://huggingface.co/blog/decision" target="_blank" rel="noopener noreferrer">Decision Models in Hugging Face</a>
+
+*Hugging Face*
+
+本文介绍Hugging Face的决策模型生态：方法上以决策Transformer为核心，将序列生成范式与强化学习、大模型微调能力结合，打通离线训练、在线交互部署全流程，适配机器人控制、序列决策、多智能体协作等场景。该框架大幅降低决策智能落地门槛，帮助从业者快速复现基准、适配定制需求，研发效率显著提升。
+
+<FeedbackButtons slug="item:hf-blog-decision" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我改进（RSI）概念的发展脉络：1965年学者古德最早提出，可超越人类所有智能活动的“超智能机器”能自行设计更优系统实现迭代；2008年尤德考斯基明确其核心是AI依托现有智能优化自身认知机制的反馈环，当前AI领域RSI落地可通过直接改写权重、优化训练流程实现。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/11/509052.html" target="_blank" rel="noopener noreferrer">无人拖拉机真正下地了！新疆大田深翻30+厘米，丘沃智能开物™系统首次完整曝光</a>
+
+*量子位*
+
+丘沃智能近日完成开物™L4无人作业套件实装首秀，搭载该套件的混动拖拉机在新疆大田实现全自动无人深翻，耕深超30厘米、作业时速11.8km/h。公司近期还与卓品智能达成农具控制器、边缘域控合作，11月底将落地新疆首家直营旗舰店，依托软硬件体系形成无人农业作业全闭环，适配大田农时作业需求。
+
+<FeedbackButtons slug="item:qbitai-509052" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/509032.html" target="_blank" rel="noopener noreferrer">英伟达机器人开源撞上Fable 5.2发布！Jim Fan：不是寒冬是夏天</a>
+
+*量子位*
+
+英伟达于CoRL大会发布新一代机器人基础模型GR00T 2，可覆盖从双手精细操作到全身移动的全场景机器人任务，核心搭载Xadapt跨本体适配技术，能将人类、手持设备示范的技能直接迁移给未训练过对应任务的机器人。其相关资源将陆续开源，目前已开放10万小时人类数据，Jim Fan称机器人行业正处上行期而非寒冬。
+
+<FeedbackButtons slug="item:qbitai-509032" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/509017.html" target="_blank" rel="noopener noreferrer">从芯片到千比特整机，超导量子计算还有一场硬仗</a>
+
+*量子位*
+
+当前超导量子计算已验证扩大纠错规模可降低逻辑错误率，但要落地到大算力系统，仍需封装、互连、测控等全环节技术同步适配。2026年成立的正元量子完成近亿元天使轮融资，核心聚焦千比特超导量子整机研发，重点攻关三维封装、低温互连等关键技术，破解系统协同难题，推进实用化落地。
+
+<FeedbackButtons slug="item:qbitai-509017" client:visible />
