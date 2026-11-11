@@ -396,10 +396,25 @@ jobs:
                       data = json.load(resp)
                   items = data.get("items") or []
                   missing = [x.get("code") for x in items if x.get("ratio_pct") is None]
-                  if data.get("ok") is True and len(items) == 12 and not missing and data.get("baseline_date"):
-                      print(f"✓ static sha={meta['sha']} · AMap CSP ready · ETF API 12/12 · baseline={data['baseline_date']}")
+                  codes = [x.get("code") for x in items]
+                  # 开盘前（约 08:30 数据源切到新交易日、09:30 才有成交）所有
+                  # turnover 都是 0，ratio 自然算不出来。2026-11-11 08:48 的部署
+                  # 就是被这个窗口挡下来的：静态发布本身完全没问题，被一个
+                  # 与发布无关的行情状态连坐。区分两种情况：
+                  #   · 盘前无成交 → 只发警告，不挡发布
+                  #   · 有成交却算不出 ratio → 契约坏了，照旧失败
+                  premarket = (
+                      bool(items)
+                      and all(x.get("turnover_yi") in (0, 0.0, None) for x in items)
+                      and data.get("trading") is False
+                  )
+                  if data.get("ok") is True and len(items) == 12 and data.get("baseline_date") and (not missing or premarket):
+                      note = "盘前无成交，ratio 待开盘" if missing else "12/12"
+                      print(f"✓ static sha={meta['sha']} · AMap CSP ready · ETF API {note} · baseline={data['baseline_date']}")
+                      if missing:
+                          print(f"::warning::ETF realtime ratios unavailable before the open ({len(missing)}/12) — data feed state, not this release")
                       break
-                  last = {"count": len(items), "missing": missing, "baseline": data.get("baseline_date")}
+                  last = {"count": len(items), "missing": missing, "codes": codes, "baseline": data.get("baseline_date"), "premarket": premarket}
               except Exception as exc:
                   last = str(exc)
               if attempt < 5:
