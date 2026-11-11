@@ -70,18 +70,23 @@
 **Steps**:
 1. Checkout (fetch-depth: 0 拿全部 git history 给 changelog 用)
 2. npm ci
-3. **`npm test`** 守卫测试（87 个断言，约 1s；2026-11-11 才补进部署流程，
+3. **`npm test`** 守卫测试（93 个断言，约 1s；2026-11-11 才补进部署流程，
    之前红着也能部署），不通过直接挡住
-4. Build photo manifests (sharp 生成 WebP 增量)
+4. Build photo manifests (sharp 生成 WebP 增量 + 1200×630 `.og.jpg` 分享图)
 5. **`astro check`** 类型检查守门
 6. `astro build`
 7. pagefind 索引
-8. **Prepare versioned release**：`cp -al current/. releases/<sha>/` 用硬链接做种子
-9. rsync（`--checksum` 只传真正变化的字节；`--timeout=180` 防挂死；失败重试 3 次）
-10. **Activate release atomically**：`ln -sfn` + `mv -Tf` 原子切换 `current`
-11. Prune：保留最近 20 个 release，`current` / `previous` 永不删除
-12. Production acceptance smoke test，失败自动回滚到 `previous`
-13. **IndexNow ping**（POST 新 URL 给 Bing/Yandex/Naver 加速索引）
+8. **`npm run check:og`** 分享卡校验（`scripts/check-og.mjs`：把 dist 里 1140 个
+   页面的 og:image 逐个解析，缺文件 / 非绝对 URL / 声明尺寸与实际不符直接失败；
+   >512KB、比例不像卡片的只告警）
+9. **Prepare versioned release**：`cp -al current/. releases/<sha>/` 用硬链接做种子
+10. rsync（`--checksum` 只传真正变化的字节；`--timeout=180` 防挂死；失败重试 3 次）
+11. **Activate release atomically**：`ln -sfn` + `mv -Tf` 原子切换 `current`
+12. Prune：保留最近 20 个 release，`current` / `previous` 永不删除
+13. Production acceptance smoke test，失败自动回滚到 `previous`
+    （ETF 实时 ratio 在开盘前必然为空，这种盘前状态只发 `::warning::` 不挡发布；
+    有成交却算不出 ratio 才算契约失败）
+14. **IndexNow ping**（POST 新 URL 给 Bing/Yandex/Naver 加速索引）
 
 #### 部署传输量（重要）
 - **平常**（只改内容）：~2.3MB。硬链接种子 + checksum 让 rsync 只传变化文件。
@@ -110,9 +115,19 @@
 
 ### `.github/workflows/a11y-audit.yml`
 **触发**: 每周一 UTC 03:00（BJT 11:00，错开 10:00 的移动端跑分）+ 手动。
-对**线上**站点跑 `scripts/check-a11y.mjs`：20 个页面模板 × 浅色/深色 = 40 次检查，
-轴心是 axe-core 的**全部默认规则**（不只是对比度和标题层级），紧跟一步
-`scripts/check-hydration.mjs` 验证 React 岛真的在浏览器里水合。产物 `a11y-report` 保留 30 天。
+对**线上**站点跑 `scripts/check-a11y.mjs --mobile`：21 个页面模板 × 浅色/深色 ×
+桌面 1280×900 / iPhone 13 两个视口 = 84 次检查，轴心是 axe-core 的**全部默认规则**
+（不只是对比度和标题层级），外加一次"键盘 Tab 30 次，每个落点都必须有可见焦点环"
+的检查（用 Playwright 真按 Tab，页面内 `el.focus()` 触发不了 `:focus-visible`，
+那样测永远是假绿）。紧跟一步 `scripts/check-hydration.mjs` 验证 React 岛真的水合。
+产物 `a11y-report` 保留 30 天。
+
+窄屏才会出现的横向滚动区（表格、可打印路书、路线图条）由 `BaseLayout.astro` 里的
+一段内联脚本兜底：首绘后的空闲回调里，把"真的横向溢出且内部没有可聚焦元素"的容器
+补上 `tabindex="0" role="group"` 和名字；React 岛水合后才长出来的表格由
+`MutationObserver`（防抖 150ms，只扫新增子树和祖先链）补扫。第一版把这段扫描放在
+`DOMContentLoaded` 同步执行，等于逼浏览器在首绘前做完整页布局，首页 Lighthouse
+perf 从 0.9x 掉到 0.74——所以它必须在 `requestIdleCallback` 里跑。
 
 为什么必须单独一条：Lighthouse 只测浅色主题（本站深色走 `html.dark` 类，不是
 `prefers-color-scheme`）。2026-11 第一次全量跑抓到四类此前完全没测过的问题：
