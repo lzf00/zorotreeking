@@ -2,7 +2,9 @@ name: Dead link check
 
 # 每周一 09:00 北京时间扫全站外链，死链推飞书群。
 #
-# 手动 dispatch 可以传 concurrency 调并发（默认 8）。
+# 手动 dispatch 可以传 concurrency 调并发（默认 8）；
+# 也可以传 delink=dry-run / apply，把报告里的死链一键摘成纯文本
+# （apply 会自动 commit + push 内容改动，只有手动触发才可能发生）。
 #
 # 需要 GitHub Secret（可选）：
 #   FEISHU_DEADLINK_WEBHOOK  飞书群 bot webhook URL
@@ -17,9 +19,14 @@ on:
         description: "并发数（1-16）"
         type: string
         default: "8"
+      delink:
+        description: "死链处理：off 只报告 / dry-run 看会改什么 / apply 摘链并提交"
+        type: choice
+        options: ["off", "dry-run", "apply"]
+        default: "off"
 
 permissions:
-  contents: read
+  contents: write   # delink=apply 时要提交内容改动；定时任务永远只报告
 
 concurrency:
   group: deadlink-check
@@ -49,6 +56,30 @@ jobs:
           CONC="${{ github.event.inputs.concurrency }}"
           if [ -z "$CONC" ]; then CONC="8"; fi
           npx tsx scripts/check-deadlinks.ts --concurrency=$CONC
+
+      # 一键摘链：默认 off（定时任务永远只报告）。dry-run 只打印，
+      # apply 才会落盘并进下一步提交。脚本本身幂等、只碰 src/content/**.mdx。
+      - name: De-link dead sources
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.delink != 'off' }}
+        run: |
+          if [ "${{ inputs.delink }}" = "dry-run" ]; then
+            npx tsx scripts/deadlink-delink.ts --dry-run
+          else
+            npx tsx scripts/deadlink-delink.ts
+          fi
+
+      - name: Commit de-linked content
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.delink == 'apply' }}
+        run: |
+          if git diff --quiet -- src/content; then
+            echo "没有需要提交的改动（内容已经是干净的）"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/content
+          git commit -m "content: de-link dead sources reported by the weekly sweep"
+          git push
 
       # 没有这一步的时候，跑出 66 个死链的周报也是「success」，
       # 只有点进 artifact 才知道有死链 —— 等于没人看。这里把结论顶到
