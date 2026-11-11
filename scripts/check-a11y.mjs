@@ -42,6 +42,7 @@ const PATHS = [
   "/explore/",
   "/changelog/",
   "/tag/",
+  "/subscribe/",
   // 下面几类是"结构性"问题的高发区：嵌套地标、可滚动区域、图片替代文本
   "/invest/stock/002371.SZ/",
   "/invest/hk-market/",
@@ -96,9 +97,45 @@ for (const path of PATHS) {
       });
 
       entry.violations = violations;
-      if (violations.length) {
+
+      // 键盘焦点环：axe 不检查这个，但它是 WCAG 2.4.7 的硬要求。
+      // 2026-11-11 之前有 14 处 outline-none 把浏览器默认环抹掉了，
+      // 其中邮箱输入框的焦点环是 rgba(0,0,0,0)（等于隐形）。
+      if (theme === "light") {
+        const missing = [];
+        // Tab 必须由 Playwright 真按：:focus-visible 只在真实键盘交互后生效，
+        // 页面内 el.focus() 触发不了它（那样测出来永远"没有环"是假绿）。
+        // 12 个不够：订阅页的邮箱输入框是第 15 个 tab stop，而它正是
+        // 之前唯一一个焦点环被 outline-none 抹成透明的控件。
+        for (let i = 0; i < 30; i++) {
+          await page.keyboard.press("Tab");
+          const res = await page.evaluate(() => {
+            const el = document.activeElement;
+            if (!el || el === document.body) return null;
+            const cs = getComputedStyle(el);
+            const transparent = /rgba\(0, 0, 0, 0\)|transparent/.test(cs.outlineColor);
+            const invisible = cs.outlineStyle === "none" || parseFloat(cs.outlineWidth) === 0 || transparent;
+            const label = el.getAttribute("aria-label") || (el.textContent || "").trim().slice(0, 18) || el.getAttribute("placeholder") || "";
+            return { invisible, label: `${el.tagName.toLowerCase()}${label ? `:${label}` : ""}` };
+          });
+          if (!res) break;
+          if (res.invisible) missing.push(res.label);
+        }
+        if (missing.length) {
+          violations.push({
+            id: "focus-visible-missing",
+            impact: "serious",
+            count: missing.length,
+            nodes: missing.slice(0, 5).map((target) => ({ target, reason: "键盘焦点没有可见指示" })),
+          });
+        }
+        entry.focusChecked = 30;
+      }
+
+      entry.violations = violations;
+      if (entry.violations.length) {
         entry.ok = false;
-        const isError = violations.some((v) => v.impact === "serious" || v.impact === "critical");
+        const isError = entry.violations.some((v) => v.impact === "serious" || v.impact === "critical");
         if (isError || failOn === "warning") failures += 1;
         else warnings += 1;
       }
