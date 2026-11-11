@@ -28,7 +28,9 @@ concurrency:
 jobs:
   check:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    # 5200 条外链、单域名并发 2、每条最多 2×12s 重试：2026-11-11 那次跑了 32 分钟，
+    # 离 40 分钟的旧上限只剩 8 分钟。跨境链路一抖就会超时误报，放到 60 分钟。
+    timeout-minutes: 60
 
     steps:
       - uses: actions/checkout@v4
