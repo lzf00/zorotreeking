@@ -17,7 +17,8 @@
  *   hreflang       每条 alternate 都指向真实页面，且双向互指（中英对照页配对错
  *                  会让 Google 直接忽略整组标注）
  *   内链           href/src 指向的站内文件真的存在（区分大小写，Linux 上大小写错了就是 404）
- *   sitemap        每条 <loc> 都对应一个真实页面，且与该页 canonical 完全一致
+ *   sitemap        <lastmod> 必须可解析且不晚于今天（假日期会让整份 sitemap 的
+ *                  lastmod 被忽略）；每条 <loc> 都对应一个真实页面，且与该页 canonical 完全一致
  *                  （尾斜杠不一致会让整份 sitemap 变成 301 中转）
  *   JSON-LD        能 json.parse；@context 为 schema.org；@type 已知；
  *                  按类型校验必填字段；日期可解析且 modified ≥ published；
@@ -385,8 +386,25 @@ async function checkSitemap(siteOrigin, indexable) {
     return { errors: ["dist/sitemap.xml 不存在（先跑 npm run build）"], urls: 0 };
   }
 
-  const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => decodeEntities(m[1]));
+  const entries = [...xml.matchAll(/<loc>([^<]+)<\/loc>(?:\s*<lastmod>([^<]+)<\/lastmod>)?/g)].map((m) => ({
+    loc: decodeEntities(m[1]),
+    lastmod: m[2] ? decodeEntities(m[2]).trim() : null,
+  }));
+  const locs = entries.map((e) => e.loc);
   const errors = [];
+  const today = new Date().toISOString().slice(0, 10);
+  let missingLastmod = 0;
+  for (const entry of entries) {
+    if (!entry.lastmod) {
+      missingLastmod += 1;
+      continue;
+    }
+    if (Number.isNaN(new Date(entry.lastmod).getTime())) {
+      errors.push(`lastmod 无法解析：${entry.loc} → ${entry.lastmod}`);
+    } else if (entry.lastmod > today) {
+      errors.push(`lastmod 晚于今天：${entry.loc} → ${entry.lastmod}`);
+    }
+  }
   if (locs.length === 0) errors.push("sitemap 里没有任何 <loc>");
 
   const seen = new Set();
@@ -416,7 +434,7 @@ async function checkSitemap(siteOrigin, indexable) {
   for (const url of missing.slice(0, 5)) errors.push(`可索引但不在 sitemap：${url}`);
   if (missing.length > 5) errors.push(`…另有 ${missing.length - 5} 个页面不在 sitemap`);
 
-  return { errors, urls: locs.length, missing: missing.length };
+  return { errors, urls: locs.length, missing: missing.length, missingLastmod };
 }
 
 async function main() {
@@ -495,7 +513,7 @@ async function main() {
   const sitemap = await checkSitemap(siteOrigin, indexable);
   console.log();
   console.log(
-    `[sitemap] ${sitemap.urls} 条 URL` +
+    `[sitemap] ${sitemap.urls} 条 URL · lastmod ${sitemap.urls - sitemap.missingLastmod}/${sitemap.urls}` +
       (sitemap.errors.length
         ? ` · ${sitemap.errors.length} 条问题`
         : ` · 与 canonical 一致 · 覆盖全部 ${indexable.size} 个可索引页面`),

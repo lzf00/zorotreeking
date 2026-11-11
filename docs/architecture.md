@@ -208,7 +208,7 @@ src/data/embeddings.json (2048 维 × N 篇)
 | hreflang | 每条 alternate 指向真实页面，中英双向互指、自指正确 | 错误 |
 | 内链 | 每个 `href`/`src` 指向的站内文件存在，且大小写一致（macOS 不区分、Linux 区分） | 错误 |
 | 描述去重 | 统计「多页共用一句 description」，打印最多的几组 | 告警 |
-| sitemap | 每条 `<loc>` 与目标页 canonical 逐字一致（尾斜杠！），且覆盖全部可索引页 | 错误 |
+| sitemap | 每条 `<loc>` 与目标页 canonical 逐字一致（尾斜杠！），覆盖全部可索引页，`<lastmod>` 可解析且不晚于今天 | 错误 |
 
 跳过带 `http-equiv="refresh"` 的跳转页和 `robots noindex` 的页面（admin / 404）。
 
@@ -227,6 +227,22 @@ src/data/embeddings.json (2048 维 × N 篇)
   `/invest/us-market/` 这个可索引页面从来没进过 sitemap。两处都已修，并把
   「sitemap ↔ canonical 逐字一致 + 覆盖率」做成门禁（以前的检查只验站内标签，
   没人把两个文件对起来看）。
+
+### sitemap 的 lastmod：1139 条全部有日期，且都是真的
+
+`<lastmod>` 只在「可信」时对搜索有用：写一个假的（比如构建时间）会被整体忽略。
+所以按来源分三类取值，全部是真实日期：
+
+| 页面类型 | lastmod 来源 |
+|---|---|
+| 文章 / 日报 / 相册 / 旅行指南 | frontmatter 的 `updated`，没有就用 `date` |
+| 板块首页（`/ai`、`/invest`、`/photo`、`/tag`…） | 该板块最新一篇的日期（比源码提交时间准） |
+| 标签页 | 该标签下最新一篇的日期 |
+| 个股页 | `wind-stock-details.json` 的 `date`（行情快照日） |
+| 其它静态页（`/about`、`/uses`、`/privacy`…） | 该页源码文件的最后一次 git 提交日期 |
+
+拿不到 git（浅克隆/没装 git）就**不写** lastmod，宁缺勿假。`check:seo` 会校验每条
+`<lastmod>` 可解析且不晚于今天。
 
 ### 站内链接：四个页面从「只有 sitemap 知道」变成可点
 
