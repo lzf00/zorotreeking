@@ -63,13 +63,13 @@
 </script>
 
 <style is:global>
-  /* 已读样式：淡化 + 行末 ✓ */
+  /* 已读样式：行末 ✓（不再整体降透明度）。
+     原来用 opacity: 0.55 淡化，读过的条目里 11px 的灰色小字
+     混到背景后只有 ~2.5:1，远低于 4.5:1 —— axe 一进"已读过几篇"的
+     浏览器就报 color-contrast（2026-11 移动端抽查查到，投资日报列表页）。
+     已读状态改为只加 ✓ 标记，不牺牲任何文字对比度。 */
   a.post-read {
-    opacity: 0.55;
     transition: opacity 0.2s;
-  }
-  a.post-read:hover {
-    opacity: 1;
   }
   a.post-read::after {
     content: " ✓";

@@ -48,6 +48,10 @@ const PATHS = [
   "/invest/stock/002371.SZ/",
   "/invest/hk-market/",
   "/en/ai/digest-2026-10-11/",
+  // 日报详情 / 市场复盘详情：模板和列表页不同（h2/h3 标题、em 时间戳、已读标记），
+  // 2026-11 的深色对比度问题就是这两个模板独有的，之前没进抽查范围
+  "/invest/digest-2026-11-10/",
+  "/invest/market-recap-2026-11-10/",
   "/hike/travel/chuanxi-loop-chengdu-2026/",
 ];
 

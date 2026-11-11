@@ -88,14 +88,17 @@
 8. **`npm run check:og`** 分享卡校验（`scripts/check-og.mjs`：把 dist 里 1140 个
    页面的 og:image 逐个解析，缺文件 / 非绝对 URL / 声明尺寸与实际不符直接失败；
    >512KB、比例不像卡片的只告警）
-9. **Prepare versioned release**：`cp -al current/. releases/<sha>/` 用硬链接做种子
-10. rsync（`--checksum` 只传真正变化的字节；`--timeout=180` 防挂死；失败重试 3 次）
-11. **Activate release atomically**：`ln -sfn` + `mv -Tf` 原子切换 `current`
-12. Prune：保留最近 20 个 release，`current` / `previous` 永不删除
-13. Production acceptance smoke test，失败自动回滚到 `previous`
+9. **`npm run check:seo`** SEO / 结构化数据校验（`scripts/check-seo.mjs`，见
+   「SEO 与结构化数据」一节；canonical、描述、单一 h1、JSON-LD 必填字段与
+   日期、面包屑位次，逐页 1140 个）
+10. **Prepare versioned release**：`cp -al current/. releases/<sha>/` 用硬链接做种子
+11. rsync（`--checksum` 只传真正变化的字节；`--timeout=180` 防挂死；失败重试 3 次）
+12. **Activate release atomically**：`ln -sfn` + `mv -Tf` 原子切换 `current`
+13. Prune：保留最近 20 个 release，`current` / `previous` 永不删除
+14. Production acceptance smoke test，失败自动回滚到 `previous`
     （ETF 实时 ratio 在开盘前必然为空，这种盘前状态只发 `::warning::` 不挡发布；
     有成交却算不出 ratio 才算契约失败）
-14. **IndexNow ping**（POST 新 URL 给 Bing/Yandex/Naver 加速索引）
+15. **IndexNow ping**（POST 新 URL 给 Bing/Yandex/Naver 加速索引）
 
 #### 部署传输量（重要）
 - **平常**（只改内容）：~2.3MB。硬链接种子 + checksum 让 rsync 只传变化文件。
@@ -186,6 +189,41 @@ src/data/embeddings.json (2048 维 × N 篇)
 | `src/components/ArticleImageLightbox.astro` | 文章正文图点击放大（零依赖） |
 | `src/components/Sparkline.astro` | 表格内嵌 SVG 走势线 |
 | `src/components/ContentPulse.astro` | 365 天产出热力图 |
+
+### SEO 与结构化数据：`scripts/check-seo.mjs`
+
+`npm run check:seo`（需先 `npm run build`），逐页校验 dist 里 1140 个页面：
+
+| 项目 | 规则 | 级别 |
+|---|---|---|
+| canonical | 恰好 1 个、本站绝对地址 | 错误 |
+| title / description | 非空；长度按"视觉宽度"折算（中文×1.7） | 告警 |
+| h1 | **恰好 1 个** | 错误 |
+| `<html lang>` | zh-CN / en | 告警 |
+| JSON-LD | 可解析、`@context=schema.org`、`@type` 已知 | 错误 |
+| 必填字段 | Article / BreadcrumbList / WebSite / AboutPage / WebPage / TouristTrip 等按类型 | 错误 |
+| 日期 | `datePublished`/`dateModified` 可解析且 modified ≥ published | 错误 |
+| URL 字段 | `image` / `url` / `@id` 必须是绝对地址 | 错误 |
+| 面包屑 | 位次 1..n 连续、末项与 canonical 一致 | 错误 |
+
+跳过带 `http-equiv="refresh"` 的跳转页和 `robots noindex` 的页面（admin / 404）。
+
+**2026-11 建门禁时查出来的问题**（都已修）：
+- **718 个日报页有 2~10 个 h1**：正文自己写 `# 来源分组`、`## 单条快讯`，
+  模板又渲染了页面标题的 `<h1>`。修法是渲染层归一化
+  （`src/lib/rehype-normalize-headings.mjs`）：日报正文整棵树降一级、复盘正文
+  去掉与页面标题重复的开头 h1，正文文件保持原样（每天自动生成，不该被手改）。
+  标题样式的两份类名放在 `src/lib/prose-headings.ts`——**必须写成完整字面量**，
+  Tailwind 是按源码字符串静态扫类名的，拼接出来的类名不会进 CSS。
+- **230 个市场复盘页**：正文第一行 `# 📊 11月10日股票日报` 和 frontmatter title 完全重复。
+- **134 个列表 / 标签 / 相册页一条结构化数据都没有**：`BaseLayout` 加了 `WebPage` 兜底。
+- **2 个页面**（about 的中英版）嵌套的 `WebSite` 缺 `inLanguage`。
+
+### 已读标记的可访问性（`src/components/ReadTracker.astro`）
+
+"读过的文章"原来用 `opacity: 0.55` 淡化整张卡片。回访用户（localStorage 里有记录）
+在列表页看到的是 11px 灰色小字被压到约 2.5:1 —— 低于 4.5:1。axe 只有在"已经读过
+几篇"的上下文里才会报，所以之前 84 次抽查一直是绿的。现在改为只加行末 ✓，不降透明度。
 
 ### 岛水合冒烟：`scripts/check-hydration.mjs`
 

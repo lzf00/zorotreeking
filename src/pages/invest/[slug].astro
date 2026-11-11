@@ -12,6 +12,9 @@ import KeyboardNav from "@/components/KeyboardNav.astro";
 import { getAdjacentPosts, getRelatedPosts } from "@/lib/related-posts";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
 import { coverByTranslationKey } from "@/lib/social-image";
+import { DIGEST_INVEST_HEADINGS, CONTENT_INVEST_HEADINGS } from "@/lib/prose-headings";
+
+// 日报正文的标题降过一级（h2 分组 / h3 条目），普通文章保持 h1/h2
 
 export async function getStaticPaths() {
   const all = await getCollection("invest", (p) => p.data.lang === "zh" && !p.data.draft);
@@ -29,6 +32,10 @@ const t = useTranslations(lang);
 const { prev, next } = getAdjacentPosts(entry as any, all as any);
 const related = getRelatedPosts(entry as any, all as any, 3);
 const isDigest = (entry.data.tags ?? []).includes("digest") || entry.data.translationKey.startsWith("digest-");
+// 日报正文标题降过一级，普通文章保持原样
+const headingClasses = isDigest
+  ? DIGEST_INVEST_HEADINGS
+  : CONTENT_INVEST_HEADINGS;
 ---
 
 <BaseLayout
@@ -67,22 +74,16 @@ const isDigest = (entry.data.tags ?? []).includes("digest") || entry.data.transl
       </div>
     </header>
 
-    <div class="prose prose-zinc dark:prose-invert max-w-none
+    <div class={`prose prose-zinc dark:prose-invert max-w-none
                 prose-headings:tracking-tight prose-headings:scroll-mt-20
-                prose-h1:text-[11px] prose-h1:uppercase prose-h1:tracking-[0.2em]
-                prose-h1:font-medium prose-h1:font-sans
-                prose-h1:text-zinc-500 dark:prose-h1:text-zinc-400
-                prose-h1:mt-24 prose-h1:mb-12 prose-h1:pb-3
-                prose-h1:border-b prose-h1:border-zinc-100 dark:prose-h1:border-zinc-800
-                prose-h2:text-xl sm:prose-h2:text-[22px]
-                prose-h2:leading-snug prose-h2:tracking-tight
-                prose-h2:font-bold prose-h2:mt-14 prose-h2:mb-3
-                prose-h2:text-section-invest
+                ${headingClasses}
                 prose-a:no-underline prose-a:font-inherit prose-a:text-inherit
                 hover:prose-a:underline
                 prose-em:not-italic prose-em:text-[11px] prose-em:uppercase
                 prose-em:tracking-[0.1em] prose-em:font-mono prose-em:font-normal
-                prose-em:text-zinc-500 dark:text-zinc-400
+                prose-em:text-zinc-500 dark:prose-em:text-zinc-400
+                {/* dark: 前缀必须带 prose-em: —— 只写 dark:text-zinc-400 会把颜色设在容器上，
+                    em 自己仍是 zinc-500，深色底上 4.09:1 不达标（2026-11 axe 查到，投资日报 718 页） */}
                 prose-em:block prose-em:mb-8
                 prose-p:text-[17px] sm:prose-p:text-[18px] prose-p:leading-[1.75]
                 prose-p:text-zinc-700 dark:prose-p:text-zinc-300
@@ -93,7 +94,7 @@ const isDigest = (entry.data.tags ?? []).includes("digest") || entry.data.transl
                 prose-blockquote:text-zinc-500 dark:text-zinc-400 prose-blockquote:my-10
                 prose-blockquote:pl-6 prose-blockquote:py-0
                 prose-hr:hidden
-                prose-pre:bg-[#0d1117] prose-pre:rounded-xl">
+                prose-pre:bg-[#0d1117] prose-pre:rounded-xl`}>
       <Content />
     </div>
 

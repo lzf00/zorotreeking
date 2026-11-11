@@ -4,6 +4,7 @@ import { unified } from "@astrojs/markdown-remark";
 import react from "@astrojs/react";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypeNormalizeContentHeadings from "./src/lib/rehype-normalize-headings.mjs";
 
 const SITE = "https://www.zorotreeking.online";
 
@@ -35,6 +36,9 @@ export default defineConfig({
   markdown: {
     processor: unified({
       rehypePlugins: [
+        // 日报正文整体降一级、复盘正文去掉重复标题 —— 模板已经有 h1 了，
+        // 再让正文出 h1 会让 718 个页面各自有 2～10 个主标题。
+        rehypeNormalizeContentHeadings,
         rehypeSlug,
         [rehypeAutolinkHeadings, {
           behavior: "append",

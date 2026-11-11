@@ -124,8 +124,26 @@ if (ogType === "article") {
       "@type": "WebSite",
       name: siteName,
       url: Astro.site?.toString(),
+      inLanguage: lang === "zh" ? "zh-CN" : "en",
     },
     inLanguage: lang === "zh" ? "zh-CN" : "en",
+  };
+} else {
+  // 列表页 / 标签页 / 相册页等没有专属 schema 的页面：补一个 WebPage。
+  // 之前这些页面（134 个）一条结构化数据都没有，搜索引擎看不出它们在站点里的位置。
+  jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: title ?? siteName,
+    description: desc,
+    url: canonical,
+    inLanguage: lang === "zh" ? "zh-CN" : "en",
+    isPartOf: {
+      "@type": "WebSite",
+      name: siteName,
+      url: Astro.site?.toString(),
+      inLanguage: lang === "zh" ? "zh-CN" : "en",
+    },
   };
 }
 ---

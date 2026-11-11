@@ -112,6 +112,13 @@ jobs:
       - name: Verify social share cards
         run: npm run check:og
 
+      # canonical / 描述 / 单一 h1 / JSON-LD 结构化数据，逐页校验 1140 个页面。
+      # 和分享卡巡查一样，属于"坏了没人报错、但 Google 静默降权"的那类问题：
+      # 2026-11 建这个门禁时才发现 718 个日报页有 2~10 个 h1、134 个页面
+      # 一条结构化数据都没有。
+      - name: Verify SEO and structured data
+        run: npm run check:seo
+
       - name: Validate admin (Decap) config
         run: |
           npx playwright install chromium || echo "::warning::playwright chromium 安装失败，校验将降级为跳过"
