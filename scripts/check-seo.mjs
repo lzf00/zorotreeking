@@ -133,6 +133,12 @@ function displayLength(text) {
 }
 
 
+/** 提取 meta description。content 里常见英文撇号（China's …），不能用 ['"] 当边界。 */
+function extractDescription(html) {
+  const tag = html.match(/<meta[^>]+name=["']description["'][^>]*>/i);
+  return tag ? (attr(tag[0], "content") ?? "").trim() : "";
+}
+
 function checkPage(html, siteOrigin) {
   const errors = [];
   const warnings = [];
@@ -156,8 +162,7 @@ function checkPage(html, siteOrigin) {
   if (!title) err("缺少 <title>");
   else if ([...title].length > 70) warn(`title ${[...title].length} 字符（建议 ≤70）：${title.slice(0, 40)}…`);
 
-  const descTag = html.match(/<meta[^>]+name=["']description["'][^>]*>/i);
-  const desc = descTag ? (attr(descTag[0], "content") ?? "").trim() : "";
+  const desc = extractDescription(html);
   if (!desc) err("缺少 meta description");
   else if (displayLength(desc) < 20) warn(`description 视觉宽度只有 ${displayLength(desc)}，偏短`);
   else if (displayLength(desc) > 320) warn(`description 视觉宽度 ${displayLength(desc)}，偏长`);
@@ -375,6 +380,8 @@ async function main() {
   const indexable = new Set();
   /** url → { 语言: 对照地址 }，循环结束后统一校验 hreflang 配对 */
   const hreflangs = new Map();
+  /** rel → description，用来查「多个页面共用一句描述」 */
+  const descriptions = new Map();
   let errorPages = 0;
   let warningPages = 0;
   const samples = [];
@@ -398,6 +405,8 @@ async function main() {
       if (href) alts[m[1].toLowerCase()] = href;
     }
     if (Object.keys(alts).length) hreflangs.set(pageUrl, alts);
+    const desc = extractDescription(html);
+    if (desc) descriptions.set(path.relative(DIST, abs), desc);
     if (result.errors.length) {
       errorPages += 1;
       samples.push({ rel, errors: result.errors, warnings: result.warnings });
@@ -416,6 +425,15 @@ async function main() {
   }
 
   const hreflangErrors = checkHreflangs(hreflangs, siteOrigin);
+  const descGroups = new Map();
+  for (const [rel, desc] of descriptions) {
+    if (!desc) continue;
+    if (!descGroups.has(desc)) descGroups.set(desc, []);
+    descGroups.get(desc).push(rel);
+  }
+  const dupDescriptions = [...descGroups.entries()]
+    .filter(([, rels]) => rels.length > 1)
+    .sort((a, b) => b[1].length - a[1].length);
   const sitemap = await checkSitemap(siteOrigin, indexable);
   console.log();
   console.log(
@@ -426,6 +444,16 @@ async function main() {
   );
   for (const e of sitemap.errors.slice(0, 6)) console.log(`    · ${e}`);
   if (sitemap.errors.length > 6) console.log(`    … 还有 ${sitemap.errors.length - 6} 条`);
+
+  if (dupDescriptions.length) {
+    const pages = dupDescriptions.reduce((n, [, rels]) => n + rels.length, 0);
+    console.log(`[描述去重] ${dupDescriptions.length} 组描述重复（共 ${pages} 页），最多的：`);
+    for (const [desc, rels] of dupDescriptions.slice(0, 3)) {
+      console.log(`    · ${rels.length}× ${desc.slice(0, 48)}… → ${rels[0]}`);
+    }
+  } else {
+    console.log(`[描述去重] 全部唯一`);
+  }
 
   console.log(
     `[hreflang] ${hreflangs.size} 个页面有中英对照标注` +

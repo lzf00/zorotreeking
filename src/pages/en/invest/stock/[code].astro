@@ -101,7 +101,7 @@ const backText = stock?.market === "HK" ? "HK market dashboard" : "Market dashbo
 
 <BaseLayout
   title={stock ? `${stock.name} (${stock.code}) · Stock deep dive` : "Stock deep dive"}
-  description={stock ? `${stock.name} — quote, multi-period, valuation, fund flow, consensus, filings, news (Wind data)` : ""}
+  description={stock ? `${stock.name} (${code}) — quote, multi-period, valuation, fund flow, consensus, filings, news (Wind data)` : ""}
 >
   <section class="max-w-5xl mx-auto px-5 pt-12 pb-4">
     <a href={backHref} class="text-sm text-section-invest hover:underline">← {backText}</a>

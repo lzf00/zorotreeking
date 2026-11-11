@@ -8,6 +8,7 @@ import {
   sectionDescription,
   tagDescription,
   tagIndexDescription,
+  weeklyDescription,
 } from "../src/lib/descriptions.ts";
 
 const d = (iso: string) => new Date(iso);
@@ -109,6 +110,13 @@ test("日报描述用真实条目标题，一页一种", () => {
   assert.match(digestDescription(enBody, "en", "ai")!, /^2 paper picks:/);
 });
 
+test("日报描述带日期，连续两天抓到同样头条也能区分开", () => {
+  const d1 = digestDescription(digestBody, "zh", "invest", new Date("2026-11-10T00:00:00Z"))!;
+  const d2 = digestDescription(digestBody, "zh", "invest", new Date("2026-11-11T00:00:00Z"))!;
+  assert.match(d1, /（2026-11-10）$/);
+  assert.notEqual(d1, d2);
+});
+
 test("日报描述不产生「…。」双标点，也不会超长", () => {
   const long = `## ${"很长的标题".repeat(20)}\n## 第二`;
   const zh = digestDescription(long, "zh", "invest")!;
@@ -125,4 +133,33 @@ test("英文描述里混进中文时返回 undefined，让调用方回退", () =
   assert.equal(digestDescription(mixed, "en", "invest"), undefined);
   const clean = `## US Silver Fell\n## HK Opening`;
   assert.match(digestDescription(clean, "en", "invest")!, /^2 news briefs: US Silver Fell/);
+});
+
+const weeklyBody = `## AI 学习
+
+- [AI 每日精选 · 2026-11-01](/ai/digest-2026-11-01/) · 2026-11-01
+- [AI 每日精选 · 2026-10-31](/ai/digest-2026-10-31/) · 2026-10-31
+
+## 投资
+
+- [投资资讯日报 · 2026-11-01](/invest/digest-2026-11-01/) · 2026-11-01
+`;
+
+test("周报描述带各栏目条目数，不再是固定套话", () => {
+  const zh = weeklyDescription(weeklyBody, "zh")!;
+  assert.match(zh, /本周共 3 篇/);
+  assert.match(zh, /AI 学习 2/);
+  assert.match(zh, /投资 1/);
+  assert.match(zh, /AI 每日精选/);
+  assert.ok(!zh.includes("站长本周观察"));
+});
+
+test("周报英文描述用英文栏目名，含中文则回退", () => {
+  const enBody = `## AI Learning\n\n- [Daily AI Picks · 2026-11-01](/x/) · 2026-11-01\n`;
+  assert.match(weeklyDescription(enBody, "en")!, /^1 posts this week/);
+  assert.equal(weeklyDescription(weeklyBody, "en"), undefined, "中文栏目名会让英文描述混排");
+});
+
+test("周报正文没有任何条目时返回 undefined", () => {
+  assert.equal(weeklyDescription("## 空\n\n没有列表", "zh"), undefined);
 });

@@ -16,7 +16,7 @@ import { getAdjacentPosts, getRelatedPosts } from "@/lib/related-posts";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
 import { coverByTranslationKey } from "@/lib/social-image";
 import { DIGEST_AI_HEADINGS, CONTENT_AI_HEADINGS } from "@/lib/prose-headings";
-import { digestDescription } from "@/lib/descriptions";
+import { digestDescription, weeklyDescription } from "@/lib/descriptions";
 
 // 日报正文的标题降过一级（h2 分组 / h3 条目），普通文章保持 h1/h2
 
@@ -43,8 +43,12 @@ const headingClasses = isDigest
   : CONTENT_AI_HEADINGS;
 // 日报描述改用当天真实的条目标题拼（原来 724 个页面只有 121 种描述，
 // 重复最多的一条出现了 129 次），正文没有条目时回退 frontmatter。
-const description = (isDigest && digestDescription(entry.body ?? "", "zh", "ai"))
-  || entry.data.description;
+const isWeekly = entry.data.translationKey.startsWith("weekly-");
+// 周报同理：19 个中文周报原来共用一句「AI 7 · 投资 12 · 徒步 0 · 站长本周观察」
+const description =
+  (isDigest && digestDescription(entry.body ?? "", "zh", "ai", entry.data.date)) ||
+  (isWeekly && weeklyDescription(entry.body ?? "", "zh")) ||
+  entry.data.description;
 ---
 
 <BaseLayout

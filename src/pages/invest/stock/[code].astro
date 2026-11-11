@@ -113,7 +113,7 @@ const backText = stock?.market === "HK" ? "港股市场看板" : "市场深度�
 
 <BaseLayout
   title={stock ? `${stock.name} (${stock.code}) · 单股深度` : "单股深度"}
-  description={stock ? `${stock.name} 行情 · 多周期 · 估值 · 资金 · 一致预期 · 公告 · 新闻 · Wind 数据` : ""}
+  description={stock ? `${stock.name}（${code}）行情 · 多周期 · 估值 · 资金 · 一致预期 · 公告 · 新闻 · Wind 数据` : ""}
 >
   <section class="max-w-5xl mx-auto px-5 pt-12 pb-4">
     <a href={backHref} class="text-sm text-section-invest hover:underline">← {backText}</a>

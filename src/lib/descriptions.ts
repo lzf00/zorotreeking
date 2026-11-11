@@ -133,6 +133,7 @@ export function digestDescription(
   markdown: string,
   lang: Lang,
   kind: "ai" | "invest",
+  date?: Date,
 ): string | undefined {
   const headings = markdown
     .split("\n")
@@ -147,7 +148,19 @@ export function digestDescription(
   const unit = kind === "ai" ? "篇论文" : "条快讯";
   const unitEn = kind === "ai" ? "paper picks" : "news briefs";
 
-  const end = (body: string, mark: string) => (body.endsWith("…") ? body : body + mark);
+  // 连续两天的日报偶尔会抓到同样的前两条（同一批博客还没更新），
+  // 末尾补日期让每页描述唯一，顺带让片段带上时间感
+  const stamp = date
+    ? lang === "zh"
+      ? `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, "0")}-${String(date.getUTCDate()).padStart(2, "0")}`
+      : `${EN_MONTHS[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}`
+    : null;
+
+  const end = (body: string, mark: string) => {
+    const withMark = body.endsWith("…") ? body : body + mark;
+    if (!stamp) return withMark;
+    return lang === "zh" ? `${withMark}（${stamp}）` : `${withMark} (${stamp})`;
+  };
 
   if (lang === "zh") {
     const tail = second ? `；${clip(second, 30)}` : "";
@@ -158,4 +171,57 @@ export function digestDescription(
   const en = end(`${count} ${unitEn}: ${clip(first, 60)}${tail}`, ".");
   // 个别英文稿的条目锚文本没被翻译（477 页里有 9 页），中英混排的描述不如回退 frontmatter
   return CJK.test(en) ? undefined : en;
+}
+
+/**
+ * 周报页（/ai/weekly-YYYY-Www）的描述。
+ *
+ * 原来 19 个中文周报共用一句「AI 7 · 投资 12 · 徒步 0 · 站长本周观察」，
+ * 英文 14 个也是同一句——和日报描述一个毛病。这里改成从正文里数出一周各栏目的
+ * 条目数，再带上前两条标题，让每周的片段都不同。
+ */
+export function weeklyDescription(markdown: string, lang: Lang): string | undefined {
+  const lines = markdown.split("\n");
+  const sections: { name: string; items: string[] }[] = [];
+  for (const line of lines) {
+    if (line.startsWith("## ")) {
+      sections.push({ name: plainHeading(line.slice(3)), items: [] });
+      continue;
+    }
+    const item = line.match(/^-\s*\[([^\]]+)\]/);
+    if (item && sections.length) sections[sections.length - 1].items.push(plainHeading(item[1]));
+  }
+
+  const filled = sections.filter((s) => s.items.length > 0);
+  if (filled.length === 0) return undefined;
+
+  const total = filled.reduce((n, s) => n + s.items.length, 0);
+  const counts = filled.map((s) => `${s.name} ${s.items.length}`);
+
+  if (lang === "zh") {
+    const first = filled[0].items[0];
+    const body = `本周共 ${total} 篇：${counts.join("、")}；含《${clip(first, 26)}》等。`;
+    return body.length > 20 ? body : undefined;
+  }
+
+  const first = filled[0].items[0];
+  const body = `${total} posts this week — ${filled.map((s) => `${s.name} ${s.items.length}`).join(", ")} — including “${clip(first, 46)}”.`;
+  return CJK.test(body) ? undefined : body;
+}
+
+/**
+ * 市场复盘页的描述：给指数涨跌前面加日期。
+ *
+ * 指数涨跌偶尔会连着几天一模一样（2026-10-01/02/05 都是「上证 +0.31% · 深成
+ * -0.11% · 创业板 -0.23%」），描述因此变成重复。日期是这几页唯一稳定的差异，
+ * 而且对搜索结果来说也更有用：读者能立刻看出是哪天的收盘。
+ */
+export function recapDescription(description: string | undefined, date: Date, lang: Lang): string | undefined {
+  if (!description) return undefined;
+  const year = date.getUTCFullYear();
+  const month = date.getUTCMonth() + 1;
+  const day = date.getUTCDate();
+  const stamp = lang === "zh" ? `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}` : EN_MONTHS[month - 1] + ` ${day}, ${year}`;
+  if (description.includes(stamp) || description.includes(`${month}月${day}日`)) return description;
+  return lang === "zh" ? `${stamp} 收盘：${description}` : `Close on ${stamp}: ${description}`;
 }
