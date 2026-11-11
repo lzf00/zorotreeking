@@ -48,7 +48,10 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const fullTitle = title ? `${title} · ${t("site.title")}` : `${t("site.title")} — ${t("site.tagline")}`;
 const desc = description ?? t("site.tagline");
-const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+// noindex 页（后台、404）不输出 canonical / og:url / 结构化数据：
+// 404 页的地址栏路径是假的，之前它把 canonical 指向 https://…/404/，一个不存在的 URL。
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
+const canonical = noindex ? null : canonicalUrl;
 const localPath = Astro.url.pathname
   .replace(/^\/en(\/|$)/, "/")
   .replace(/\/+/g, "/");
@@ -90,7 +93,7 @@ if (ogType === "article") {
     dateModified: (modifiedTime ?? publishedTime)?.toISOString(),
     author,
     publisher: { "@type": "Organization", name: siteName, url: Astro.site?.toString() },
-    mainEntityOfPage: { "@type": "WebPage", "@id": canonical },
+    mainEntityOfPage: { "@type": "WebPage", "@id": canonicalUrl },
     keywords: tags?.join(", "),
     inLanguage: lang === "zh" ? "zh-CN" : "en",
   };
@@ -119,7 +122,7 @@ if (ogType === "article") {
     "@type": "AboutPage",
     name: fullTitle,
     description: desc,
-    url: canonical,
+    url: canonicalUrl,
     isPartOf: {
       "@type": "WebSite",
       name: siteName,
@@ -136,7 +139,7 @@ if (ogType === "article") {
     "@type": "WebPage",
     name: title ?? siteName,
     description: desc,
-    url: canonical,
+    url: canonicalUrl,
     inLanguage: lang === "zh" ? "zh-CN" : "en",
     isPartOf: {
       "@type": "WebSite",
@@ -159,7 +162,7 @@ if (ogType === "article") {
     <meta name="format-detection" content="telephone=no,date=no,address=no,email=no" />
     <title>{fullTitle}</title>
     <meta name="description" content={desc} />
-    <link rel="canonical" href={canonical} />
+    {canonical && <link rel="canonical" href={canonical} />}
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     {hasLanguageAlternate && (
       <>
@@ -171,7 +174,7 @@ if (ogType === "article") {
     )}
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={desc} />
-    <meta property="og:url" content={canonical} />
+    {canonical && <meta property="og:url" content={canonical} />}
     <meta property="og:type" content={ogType} />
     <meta property="og:image" content={new URL(socialImage, Astro.site).toString()} />
     {/* og:image:secure_url 部分国内 IM（微信/QQ）显式要 https URL */}
@@ -197,7 +200,7 @@ if (ogType === "article") {
       <meta property="article:modified_time" content={modifiedTime.toISOString()} />
     )}
     {ogType === "article" && tags && tags.map((t) => <meta property="article:tag" content={t} />)}
-    {jsonLd && <script is:inline type="application/ld+json" set:html={serializeJsonLd(jsonLd)} />}
+    {jsonLd && !noindex && <script is:inline type="application/ld+json" set:html={serializeJsonLd(jsonLd)} />}
     {/* 搜索引擎站长验证（GitHub repo Variables 配后自动注入） */}
     {googleVerification && (
       <meta name="google-site-verification" content={googleVerification} />

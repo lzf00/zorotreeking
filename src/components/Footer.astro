@@ -51,6 +51,23 @@ const year = new Date().getFullYear();
       </p>
     </div>
 
+    <!-- 站内「探索入口」：/topics /explore /uses /changelog 四个页面原先既不在导航也不在页脚，
+         全站零入链，只有 sitemap 知道它们存在（2026-11 的内部链接统计发现）。
+         这些页面只有中文版，所以只给中文站点加。 -->
+    {lang === "zh" && (
+      <p class="flex flex-wrap items-center gap-x-3 gap-y-1">
+        <span class="text-[var(--text-tertiary)]">探索</span>
+        <span aria-hidden="true">·</span>
+        <a href="/topics" class="inline-flex items-center min-h-6 px-1 -mx-1 hover:text-[var(--text)] transition-colors">主题</a>
+        <span aria-hidden="true">·</span>
+        <a href="/explore" class="inline-flex items-center min-h-6 px-1 -mx-1 hover:text-[var(--text)] transition-colors">文章地图</a>
+        <span aria-hidden="true">·</span>
+        <a href="/uses" class="inline-flex items-center min-h-6 px-1 -mx-1 hover:text-[var(--text)] transition-colors">装备</a>
+        <span aria-hidden="true">·</span>
+        <a href="/changelog" class="inline-flex items-center min-h-6 px-1 -mx-1 hover:text-[var(--text)] transition-colors">更新日志</a>
+      </p>
+    )}
+
     <!-- 第二行：只保留公开备案入口，个人身份与邮箱放在独立合规页面 -->
     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 pt-2 border-t border-[var(--border-soft)] text-[11px]">
       <p class="flex flex-wrap items-center gap-x-3 gap-y-1">

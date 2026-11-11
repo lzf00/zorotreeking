@@ -206,6 +206,8 @@ src/data/embeddings.json (2048 维 × N 篇)
 | URL 字段 | `image` / `url` / `@id` 必须是绝对地址 | 错误 |
 | 面包屑 | 位次 1..n 连续、末项与 canonical 一致 | 错误 |
 | hreflang | 每条 alternate 指向真实页面，中英双向互指、自指正确 | 错误 |
+| 内链 | 每个 `href`/`src` 指向的站内文件存在，且大小写一致（macOS 不区分、Linux 区分） | 错误 |
+| 描述去重 | 统计「多页共用一句 description」，打印最多的几组 | 告警 |
 | sitemap | 每条 `<loc>` 与目标页 canonical 逐字一致（尾斜杠！），且覆盖全部可索引页 | 错误 |
 
 跳过带 `http-equiv="refresh"` 的跳转页和 `robots noindex` 的页面（admin / 404）。
@@ -225,6 +227,18 @@ src/data/embeddings.json (2048 维 × N 篇)
   `/invest/us-market/` 这个可索引页面从来没进过 sitemap。两处都已修，并把
   「sitemap ↔ canonical 逐字一致 + 覆盖率」做成门禁（以前的检查只验站内标签，
   没人把两个文件对起来看）。
+
+### 站内链接：四个页面从「只有 sitemap 知道」变成可点
+
+用 dist 里的 `href` 建了张入链图，发现 `/topics`、`/explore`、`/uses`、`/changelog`
+四个页面的入链数是 **0**——导航和页脚都没有入口，用户根本点不到，搜索引擎只能靠
+sitemap 知道它们存在。页脚加了一行「探索」入口后，每个页面都能到达（入链 581）。
+
+顺带把这件事做成门禁：`check:seo` 现在逐个校验 69744 个站内引用，要求目标文件存在
+且大小写完全一致。大小写这条专门为生产环境准备——本地 macOS 不区分大小写，写错也
+能打开，一上 Linux 就是 404。第一条跑出来就抓到 404 页的 `canonical` 指向
+`https://…/404/`（这个 URL 从来不存在），已改成 noindex 页不输出 canonical /
+`og:url` / 结构化数据。
 
 ### 列表页与日报页的描述（`src/lib/descriptions.ts`）
 

@@ -16,6 +16,7 @@
  *   html lang      zh-CN / en
  *   hreflang       每条 alternate 都指向真实页面，且双向互指（中英对照页配对错
  *                  会让 Google 直接忽略整组标注）
+ *   内链           href/src 指向的站内文件真的存在（区分大小写，Linux 上大小写错了就是 404）
  *   sitemap        每条 <loc> 都对应一个真实页面，且与该页 canonical 完全一致
  *                  （尾斜杠不一致会让整份 sitemap 变成 301 中转）
  *   JSON-LD        能 json.parse；@context 为 schema.org；@type 已知；
@@ -284,6 +285,62 @@ function checkPage(html, siteOrigin) {
 }
 
 /**
+ * 站内链接自检：每个 href/src 指向的本地文件都必须真的存在，且大小写完全一致。
+ *
+ * 线上每周有死链巡查（check-links，打的是真实 URL），但它一周才跑一次、而且要连外网；
+ * 2026-11 加这条时恰好验证了 1147 个页面、69703 个站内引用全部可解析、0 个大小写错配。
+ * 大小写必须区分：本地 macOS 不区分，生产 Linux 区分，写错只有上线才 404。
+ */
+async function checkInternalLinks(siteOrigin) {
+  const entries = await fs.readdir(DIST, { recursive: true, withFileTypes: true });
+  const files = new Set();
+  const pageDirs = new Set();
+  for (const entry of entries) {
+    const rel = path.relative(DIST, path.join(entry.parentPath ?? entry.path, entry.name)).split(path.sep).join("/");
+    if (entry.isDirectory()) continue;
+    files.add(`/${rel}`);
+    if (entry.name === "index.html") {
+      const dir = path.posix.dirname(rel);
+      pageDirs.add(dir === "." ? "/" : `/${dir}/`);
+    }
+  }
+
+  const unresolved = new Map();
+  let refs = 0;
+  let caseOnly = 0;
+  const lower = new Map();
+  for (const file of files) {
+    const key = file.toLowerCase();
+    if (!lower.has(key)) lower.set(key, file);
+  }
+
+  for await (const abs of walk(DIST)) {
+    const html = await fs.readFile(abs, "utf-8");
+    for (const m of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
+      let raw = decodeEntities(m[1]);
+      if (/^https?:\/\//i.test(raw)) {
+        if (!raw.startsWith(`${siteOrigin}/`)) continue;
+        raw = raw.slice(siteOrigin.length);
+      }
+      if (!raw.startsWith("/") || raw.startsWith("//")) continue;
+      const clean = decodeURIComponent(raw.split("#")[0].split("?")[0]);
+      refs += 1;
+      if (files.has(clean)) continue;
+      if (pageDirs.has(clean) || pageDirs.has(`${clean}/`)) continue;
+      if (pageDirs.has(`${clean}/`)) continue;
+      if (lower.has(clean.toLowerCase())) {
+        caseOnly += 1;
+        continue;
+      }
+      const from = path.relative(DIST, abs);
+      if (!unresolved.has(clean)) unresolved.set(clean, { from, count: 0 });
+      unresolved.get(clean).count += 1;
+    }
+  }
+  return { refs, caseOnly, unresolved };
+}
+
+/**
  * hreflang 必须「指向真实页面 + 双向互指」。
  *
  * 中英对照页靠 translationKey 配对，配错或漏翻译时 Google 会整组忽略标注，
@@ -434,6 +491,7 @@ async function main() {
   const dupDescriptions = [...descGroups.entries()]
     .filter(([, rels]) => rels.length > 1)
     .sort((a, b) => b[1].length - a[1].length);
+  const links = await checkInternalLinks(siteOrigin);
   const sitemap = await checkSitemap(siteOrigin, indexable);
   console.log();
   console.log(
@@ -456,6 +514,16 @@ async function main() {
   }
 
   console.log(
+    `[内链] ${links.refs} 个站内引用` +
+      (links.unresolved.size || links.caseOnly
+        ? ` · ${links.unresolved.size} 个打不开 · ${links.caseOnly} 个大小写错配`
+        : " · 全部可解析"),
+  );
+  for (const [target, info] of [...links.unresolved].slice(0, 6)) {
+    console.log(`    · ${target}（${info.count} 处，例如 ${info.from}）`);
+  }
+
+  console.log(
     `[hreflang] ${hreflangs.size} 个页面有中英对照标注` +
       (hreflangErrors.length ? ` · ${hreflangErrors.length} 条问题` : " · 双向互指正常"),
   );
@@ -470,7 +538,9 @@ async function main() {
       console.log(`  ${s.rel}: ${s.errors[0]}`);
     }
   }
-  if (errorPages > 0 || sitemap.errors.length > 0 || hreflangErrors.length > 0) process.exit(1);
+  if (errorPages > 0 || sitemap.errors.length > 0 || hreflangErrors.length > 0 || links.unresolved.size > 0 || links.caseOnly > 0) {
+    process.exit(1);
+  }
   void warningTotal;
 }
 
