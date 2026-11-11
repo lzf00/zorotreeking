@@ -56,6 +56,14 @@
 4. **更新 embeddings.json**（豆包 doubao-embedding-vision via ep-... endpoint）
 5. 合并 commit embeddings + 翻译
 
+**标题外链策略**（2026-11 死链复盘后定）：日报标题默认就是原文外链，但
+**东方财富 7×24 / 同花顺快讯**这类"当天跑完就删稿"的来源不生成 `<a href>`，
+只留标题文字（章节标题已经写明来源）。原因很直接：全站 66 个死链里 65 个是
+东方财富快讯、1 个同花顺，而日报是永久归档，做成外链等于每天往归档里埋 404。
+规则在 `scripts/lib/digest-links.ts`（`shouldLinkDigestHeadline`，带单测），
+`scripts/digest-fetch.ts` 渲染标题时调用。arXiv / Hugging Face / 官方博客这些
+稳定来源照旧保留链接。
+
 `workflow_dispatch` inputs:
 - `mode`: ai / invest / both
 - `translate_limit`: 单次最多翻译数量；历史回填走 `bulk-backfill.yml`

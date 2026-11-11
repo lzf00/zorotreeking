@@ -41,6 +41,7 @@ import {
   safeExternalUrl,
   sanitizeExternalTextForMdx,
 } from "./lib/content-safety.ts";
+import { shouldLinkDigestHeadline } from "./lib/digest-links.ts";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CONTENT_DIR = path.join(ROOT, "src", "content");
@@ -364,9 +365,12 @@ async function buildInvestDigest(date: string): Promise<void> {
     lines.push("");
     for (const n of grouped[sourceKey]) {
       const timeStr = new Date(n.publishedAt).toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" });
-      // 标题本身就是原文外链（新窗口）；不带编号
+      // 标题本身就是原文外链（新窗口）；不带编号。
+      // 但东方财富 / 同花顺的 7×24 快讯当天就会被来源方删掉，做成外链等于
+      // 给每篇日报埋 404（2026-11 全站 66 个死链里 65 个是这么来的），
+      // 这类来源只留标题文字。
       const newsHref = safeExternalUrl(n.url);
-      if (newsHref) {
+      if (shouldLinkDigestHeadline(newsHref)) {
         lines.push(`## <a href="${newsHref}" target="_blank" rel="noopener noreferrer">${sanitizeExternalTextForMdx(n.title)}</a>`);
       } else {
         lines.push(`## ${sanitizeExternalTextForMdx(n.title)}`);
