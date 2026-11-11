@@ -35,12 +35,15 @@ function hasAsset(src: string): boolean {
   }
 }
 
+/** 是否存在某个静态资源。测试里可以注入假实现，避免依赖构建产物。 */
+export type AssetChecker = (src: string) => boolean;
+
 /** `/a/b.jpg` → `/a/b.og.jpg`，前提是派生图真的存在。 */
-export function ogDerivative(src: string): string | null {
+export function ogDerivative(src: string, exists: AssetChecker = hasAsset): string | null {
   const match = src.match(/^(.*)\.(jpe?g|png|webp|avif)$/i);
   if (!match) return null;
   const candidate = `${match[1]}.og.jpg`;
-  return candidate !== src && hasAsset(candidate) ? candidate : null;
+  return candidate !== src && exists(candidate) ? candidate : null;
 }
 
 export interface SocialImage {
@@ -60,6 +63,7 @@ export interface SocialImage {
 export function resolveSocialImage(
   candidates: Array<string | undefined | null>,
   fallbackSize?: { width?: number; height?: number },
+  exists: AssetChecker = hasAsset,
 ): SocialImage {
   for (const raw of candidates) {
     const src = raw?.trim();
@@ -72,9 +76,9 @@ export function resolveSocialImage(
         substituted: false,
       };
     }
-    const og = ogDerivative(src);
+    const og = ogDerivative(src, exists);
     if (og) return { src: og, ...OG_DERIVATIVE, substituted: true };
-    if (hasAsset(src)) {
+    if (exists(src)) {
       return {
         src,
         width: fallbackSize?.width ?? OG_DERIVATIVE.width,
