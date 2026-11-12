@@ -9,10 +9,10 @@
  *   currentTitle 当前文章标题（仅作为视觉锚点，最末一级不可点击）
  *   lang "zh" | "en"
  *
- * 同时输出 schema.org BreadcrumbList JSON-LD，Google 富结果识别。
+ * 只负责视觉面包屑。BreadcrumbList JSON-LD 统一由 BaseLayout 按 URL 推导输出，
+ * 避免同一个页面出现两条面包屑、且保证没有视觉面包屑的页面（相册、徒步、个股）也有结构化数据。
  */
 import { pathWithLang } from "@/i18n/ui";
-import { serializeJsonLd } from "@/lib/json-ld";
 
 interface Props {
   section: "ai" | "invest" | "hike" | "photo";
@@ -36,17 +36,6 @@ const items: Array<{ label: string; href?: string }> = [
 if (isDigest) items.push({ label: digestLabel, href: digestHref });
 items.push({ label: currentTitle });
 
-const sitePrefix = Astro.site?.toString().replace(/\/$/, "") ?? "";
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: items.map((it, i) => ({
-    "@type": "ListItem",
-    position: i + 1,
-    name: it.label,
-    item: it.href ? `${sitePrefix}${it.href}` : undefined,
-  })),
-};
 ---
 
 <nav aria-label={lang === "zh" ? "面包屑" : "Breadcrumb"}
@@ -62,5 +51,3 @@ const jsonLd = {
     </>
   ))}
 </nav>
-
-<script is:inline type="application/ld+json" set:html={serializeJsonLd(jsonLd)}></script>

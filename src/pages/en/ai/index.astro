@@ -25,6 +25,7 @@ const recentDigests = digests.slice(0, 3);
     { count: all.length, latest: all[0] ? { title: all[0].data.title, date: all[0].data.date } : undefined },
     lang,
   )}
+  schemaType="CollectionPage"
 >
   <section class="max-w-3xl mx-auto px-5 pt-12 pb-6">
     <h1 class="font-serif text-5xl sm:text-6xl leading-[0.95] tracking-tight" style="color:rgb(var(--section-ai-rgb))">{t("section.ai.title")}</h1>

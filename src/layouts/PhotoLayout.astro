@@ -17,8 +17,11 @@ interface Props {
   // 封面图真实尺寸（相册页直接用原图时必须传，否则平台按 1200×630 裁切）
   ogImageWidth?: number;
   ogImageHeight?: number;
+  // 相册首页是列表页，用 CollectionPage 更准确（相册详情页保持默认 WebPage）
+  schemaType?: "WebPage" | "CollectionPage";
+  listItems?: { name: string; url: string }[];
 }
-const { title, description, ogImage, ogImageWidth, ogImageHeight } = Astro.props;
+const { title, description, ogImage, ogImageWidth, ogImageHeight, schemaType, listItems } = Astro.props;
 ---
 
 <BaseLayout
@@ -27,6 +30,8 @@ const { title, description, ogImage, ogImageWidth, ogImageHeight } = Astro.props
   ogImage={ogImage}
   ogImageWidth={ogImageWidth}
   ogImageHeight={ogImageHeight}
+  schemaType={schemaType}
+  listItems={listItems}
 >
   <div class="photo-immersive">
     <slot />

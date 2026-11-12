@@ -67,6 +67,9 @@ const SCHEMA_RULES = {
   Organization: { required: ["name"], urls: ["url"] },
   // WebPage 的规范写法里 url 和 @id 都可作页面标识，二者有其一即可
   WebPage: { required: [], anyOf: [["url", "@id"]], urls: ["url", "@id"] },
+  // 列表型页面（标签页、板块首页、相册首页）用 CollectionPage：比裸 WebPage 更准确，
+  // Google 也能据此知道这一页是「一组条目的集合」。字段要求与 WebPage 一致。
+  CollectionPage: { required: [], anyOf: [["url", "@id"]], urls: ["url", "@id"] },
   ItemList: { required: ["itemListElement"], urls: [] },
   ListItem: { required: ["position", "name"], urls: ["item"] },
   SearchAction: { required: ["target", "query-input"], urls: [] },
@@ -274,6 +277,15 @@ function checkPage(html, siteOrigin) {
           if (typeof url === "string" && !isAbsoluteUrl(url)) err(`BreadcrumbList item 不是绝对 URL：${url}`);
           if (typeof url === "string") lastUrl = url;
         }
+        // 第一级必须是首页：Google 用面包屑还原站点层级，起点错了整条链就没意义
+        const firstUrl = (() => {
+          const it = items[0];
+          const v = typeof it?.item === "object" ? it?.item?.["@id"] : it?.item;
+          return typeof v === "string" ? v : null;
+        })();
+        if (firstUrl && !/^https?:\/\/[^/]+\/(en\/)?$/.test(firstUrl)) {
+          warn(`BreadcrumbList 首项不是首页：${firstUrl}`);
+        }
         // 末项若是当前页（无 href），lastUrl 会停在上一级，这种情况跳过比较
         const lastHasLink = items.at(-1)?.item != null;
         if (canonical && lastUrl && lastHasLink && lastUrl.replace(/\/$/, "") !== canonical.replace(/\/$/, "")) {
@@ -281,6 +293,13 @@ function checkPage(html, siteOrigin) {
         }
       }
     }
+  }
+
+  // 回归守护：除首页外，每个可索引页面都应该有面包屑（文章页由 Breadcrumb.astro 输出，
+  // 其余由 BaseLayout 推导）。2026-11 之前 133 个列表页/相册页一条都没有。
+  const isHomePage = /^https?:\/\/[^/]+\/(en\/)?$/.test(canonical ?? "");
+  if (canonical && !isHomePage && !blocks.some((b) => b.includes('"BreadcrumbList"'))) {
+    warn("非首页缺少 BreadcrumbList 结构化数据");
   }
 
   return { errors, warnings, skipped: null };

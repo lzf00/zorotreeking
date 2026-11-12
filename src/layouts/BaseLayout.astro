@@ -16,6 +16,7 @@ import {
 } from "@/i18n/ui";
 import { serializeJsonLd } from "@/lib/json-ld";
 import { normalizeVerificationToken } from "@/lib/site-verification";
+import { breadcrumbJsonLd, buildBreadcrumb } from "@/lib/breadcrumbs";
 
 interface Props {
   title?: string;
@@ -30,6 +31,12 @@ interface Props {
   modifiedTime?: Date;
   tags?: string[];          // article:tag
   noindex?: boolean;        // 后台/管理页用
+  // 列表型页面（标签页、板块首页、归档页）用 CollectionPage，比裸 WebPage 更准确
+  schemaType?: "WebPage" | "CollectionPage";
+  // 列表型页面把条目交给 Google：ItemList 让搜索引擎知道这一页列了哪些文章
+  listItems?: { name: string; url: string }[];
+  // 面包屑末级的名字；默认用 title（例如标签页想要「#photo」而不是「标签: #photo」）
+  breadcrumbTitle?: string;
 }
 
 const {
@@ -43,6 +50,9 @@ const {
   modifiedTime,
   tags,
   noindex,
+  schemaType = "WebPage",
+  listItems,
+  breadcrumbTitle,
 } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -132,11 +142,11 @@ if (ogType === "article") {
     inLanguage: lang === "zh" ? "zh-CN" : "en",
   };
 } else {
-  // 列表页 / 标签页 / 相册页等没有专属 schema 的页面：补一个 WebPage。
-  // 之前这些页面（134 个）一条结构化数据都没有，搜索引擎看不出它们在站点里的位置。
+  // 列表页 / 标签页 / 相册页等没有专属 schema 的页面：补一个 WebPage 或 CollectionPage，
+  // 并推导面包屑。此前这些页面（133 个）只有一个裸 WebPage，没有层级信息。
   jsonLd = {
     "@context": "https://schema.org",
-    "@type": "WebPage",
+    "@type": schemaType,
     name: title ?? siteName,
     description: desc,
     url: canonicalUrl,
@@ -147,7 +157,51 @@ if (ogType === "article") {
       url: Astro.site?.toString(),
       inLanguage: lang === "zh" ? "zh-CN" : "en",
     },
+    ...(listItems && listItems.length > 0
+      ? {
+          mainEntity: {
+            "@type": "ItemList",
+            numberOfItems: listItems.length,
+            itemListElement: listItems.map((item, i) => ({
+              "@type": "ListItem",
+              position: i + 1,
+              name: item.name,
+              url: new URL(item.url, Astro.site).toString(),
+            })),
+          },
+        }
+      : {}),
   };
+}
+
+// 面包屑：文章页由 Breadcrumb.astro 负责，其余页面在这里补，输出成数组里的第二个块。
+const sitePrefix = Astro.site?.toString().replace(/\/$/, "") ?? "";
+const crumbTrail =
+  Astro.url.pathname === "/" || Astro.url.pathname === "/en/"
+    ? null
+    : buildBreadcrumb({
+        pathname: Astro.url.pathname,
+        lang,
+        title: breadcrumbTitle ?? title ?? siteName,
+        labels: {
+          home: lang === "zh" ? "首页" : "Home",
+          allTags: t("tag.allTags"),
+          sections: {
+            ai: t("section.ai.title"),
+            invest: t("section.invest.title"),
+            photo: t("section.photo.title"),
+            hike: t("section.hike.title"),
+            tag: t("tag.allTags"),
+          },
+          digest: lang === "zh" ? "日报归档" : "Digest archive",
+        },
+      });
+const jsonLdBlocks: object[] = [];
+if (jsonLd) {
+  jsonLdBlocks.push(jsonLd);
+  if (crumbTrail && crumbTrail.length > 1) {
+    jsonLdBlocks.push(breadcrumbJsonLd(crumbTrail, sitePrefix));
+  }
 }
 ---
 
@@ -200,7 +254,9 @@ if (ogType === "article") {
       <meta property="article:modified_time" content={modifiedTime.toISOString()} />
     )}
     {ogType === "article" && tags && tags.map((t) => <meta property="article:tag" content={t} />)}
-    {jsonLd && !noindex && <script is:inline type="application/ld+json" set:html={serializeJsonLd(jsonLd)} />}
+    {!noindex && jsonLdBlocks.map((block) => (
+      <script is:inline type="application/ld+json" set:html={serializeJsonLd(block)} />
+    ))}
     {/* 搜索引擎站长验证（GitHub repo Variables 配后自动注入） */}
     {googleVerification && (
       <meta name="google-site-verification" content={googleVerification} />

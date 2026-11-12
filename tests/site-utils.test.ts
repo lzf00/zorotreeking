@@ -11,6 +11,7 @@ import { serializeJsonLd } from "../src/lib/json-ld";
 import { selectCanonicalOgEntries } from "../src/lib/og-paths";
 import { projectTo2D } from "../src/lib/pca";
 import { relatedTags, tagSections } from "../src/lib/tag-relations";
+import { breadcrumbJsonLd, buildBreadcrumb, splitPath } from "../src/lib/breadcrumbs";
 import { estimateReadingTime } from "../src/lib/reading-time";
 import { getRelatedPosts } from "../src/lib/related-posts";
 import { normalizeSameOriginUrl } from "../src/lib/safe-url";
@@ -278,4 +279,57 @@ test("tagSections 按固定栏目顺序返回，不重复", () => {
 test("中文标签的 slug 与 URL 保持一致（encodeURIComponent）", () => {
   // 标签页文件名用的是 encodeURIComponent 后的结果，两者必须一直对得上
   assert.equal(relatedTags("投资", [{ section: "invest", tags: ["投资", "复盘 2026"] }])[0].slug, encodeURIComponent("复盘-2026"));
+});
+
+test("面包屑：标签页插入「全部标签」一级", () => {
+  const crumbs = buildBreadcrumb({
+    pathname: "/tag/photo/", lang: "zh", title: "标签: #photo",
+    labels: { home: "首页", allTags: "全部标签", sections: { ai: "AI 学习", invest: "个人投资", photo: "摄影", hike: "徒步旅行" } },
+  });
+  assert.deepEqual(crumbs, [
+    { name: "首页", path: "/" },
+    { name: "全部标签", path: "/tag/" },
+    { name: "标签: #photo" },
+  ]);
+});
+
+test("面包屑：板块子页插一级栏目，英文带 /en 前缀", () => {
+  const labels = { home: "Home", allTags: "All tags", sections: { photo: "Photography" } };
+  assert.deepEqual(buildBreadcrumb({ pathname: "/en/photo/baokemeng/", lang: "en", title: "Pokémon", labels }), [
+    { name: "Home", path: "/en/" },
+    { name: "Photography", path: "/en/photo/" },
+    { name: "Pokémon" },
+  ]);
+  // 板块首页自己只有两级
+  assert.deepEqual(buildBreadcrumb({ pathname: "/photo/", lang: "zh", title: "摄影", labels: { home: "首页", allTags: "全部标签", sections: { photo: "摄影" } } }), [
+    { name: "首页", path: "/" },
+    { name: "摄影" },
+  ]);
+});
+
+test("面包屑：静态页只有首页 + 当前页，首页返回 null", () => {
+  const labels = { home: "首页", allTags: "全部标签", sections: {} };
+  assert.deepEqual(buildBreadcrumb({ pathname: "/privacy/", lang: "zh", title: "隐私政策", labels }), [
+    { name: "首页", path: "/" },
+    { name: "隐私政策" },
+  ]);
+  assert.equal(buildBreadcrumb({ pathname: "/", lang: "zh", title: "首页", labels }), null);
+  assert.equal(buildBreadcrumb({ pathname: "/en/", lang: "en", title: "Home", labels }), null);
+});
+
+test("面包屑 JSON-LD：末级不带 item，position 从 1 开始", () => {
+  const ld = breadcrumbJsonLd(
+    [{ name: "首页", path: "/" }, { name: "摄影", path: "/photo/" }, { name: "宝可梦" }],
+    "https://www.zorotreeking.online",
+  );
+  assert.equal(ld["@type"], "BreadcrumbList");
+  assert.deepEqual(ld.itemListElement.map((i) => i.position), [1, 2, 3]);
+  assert.equal(ld.itemListElement[0].item, "https://www.zorotreeking.online/");
+  assert.equal("item" in ld.itemListElement[2], false, "末级是当前页，不带 item");
+});
+
+test("splitPath 去掉语言前缀、尾斜杠与查询串", () => {
+  assert.deepEqual(splitPath("/en/invest/stock/0700.HK/"), ["invest", "stock", "0700.HK"]);
+  assert.deepEqual(splitPath("/tag/photo/?x=1"), ["tag", "photo"]);
+  assert.deepEqual(splitPath("/"), []);
 });

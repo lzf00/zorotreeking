@@ -263,6 +263,32 @@ src/data/embeddings.json (2048 维 × N 篇)
 结果：`[描述长度] 1145 页 · 中位 84 · 最短 43 · 最长 193`，`check:seo` 会把这条统计
 打成一行，超过 45 字符以下会点名（当前只剩 1 篇由标题自动生成的日报摘要，43 字符）。
 
+### 结构化数据：面包屑覆盖 1143/1145 个可索引页
+
+改前只有文章页（1008）有 `BreadcrumbList`，其余 133 个列表页 / 相册页 / 个股页只有一个裸
+`WebPage`——Google 看不出它们在站点层级里的位置，SERP 也拿不到面包屑富结果。
+
+| 页面 | schema | 面包屑 |
+|---|---|---|
+| 文章（ai / invest / hike / photo 正文） | `Article` | 首页 → 栏目 →〔日报归档〕→ 当前 |
+| 首页 | `WebSite`（含 SearchAction） | —— |
+| 关于 | `AboutPage` | 首页 → 关于 |
+| 标签页 / 板块首页 / 相册首页 | `CollectionPage` + `mainEntity: ItemList` | 首页 →〔全部标签〕→ 当前 |
+| 相册详情 / 个股页 / 静态页 / 归档页 | `WebPage` | 首页 → 栏目 → 当前 |
+
+设计取舍：
+
+- **面包屑只在一处生成**。`Breadcrumb.astro` 现在只画视觉导航，`BreadcrumbList` JSON-LD 统一由
+  `BaseLayout` 用 `src/lib/breadcrumbs.ts` 从 URL 推导。原先两套并存，导致相册、徒步、个股页有
+  视觉面包屑以外的页面一条结构化面包屑都没有；统一后每页恰好 1 条（`check:seo` 会验）。
+- **末级不带 `item`**：当前页不必重复给 URL，和 Google 的示例一致；`check:seo` 里对「末项 URL 与
+  canonical 不一致」的判断会自动跳过这种情况。
+- **`CollectionPage` 代替裸 `WebPage`**：标签页、板块首页、相册首页确实是「一组条目的集合」，
+  `mainEntity.ItemList` 把条目（标题 + 绝对 URL）交给搜索引擎，`numberOfItems` 与实际渲染一致。
+  代价是体积：全站 HTML 208→210 MB（gzip 42.0→42.4 MB），可接受。
+- 规则写进 `check-seo.mjs` 的 `SCHEMA_RULES`（新增 `CollectionPage`），并加两条回归守护：
+  首项必须是首页；非首页缺 `BreadcrumbList` 直接告警。
+
 ### 正文厚度：45 个薄页面降到 22 个
 
 描述修好之后还有另一个问题：有些页面**正文**本身就薄。量法是取 `<main>` 内部、去掉
