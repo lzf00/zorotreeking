@@ -65,7 +65,10 @@ const sectionColor: Record<string, string> = {
 };
 ---
 
-<BaseLayout title="主题与关键词" description={`${tags.length} 个标签 · ${all.length} 篇内容的关键词云与体量对比`}>
+<BaseLayout
+  title="主题与关键词"
+  description={`把 ${all.length} 篇内容拆成 ${tags.length} 个标签，按体量排成一张关键词图：AI、投资、摄影、徒步旅行各自占多少，一眼能看出整站的重心。`}
+>
   <article class="max-w-3xl mx-auto px-6 sm:px-8 pt-12 sm:pt-20 pb-24">
 
     <header class="mb-12">

@@ -115,6 +115,8 @@
 ### `.github/workflows/lighthouse.yml`
 **触发**: deploy 完成后自动 + workflow_dispatch（手动跑会强制审计，不受 scope 跳过影响）。
 跑 LHCI 对比 `.lighthouserc.json` 性能预算（Perf ≥ 0.80, A11y ≥ 0.90, SEO ≥ 0.95，均取 5 次中位数），未达标 fail。
+审计 12 个 URL，覆盖每个模板：首页、板块首页（ai / invest / tag）、正文、相册、语义地图、
+最重的列表页（`/invest/digest/`，181 张卡片）、最长的旅行路书。
 
 性能阈值为什么是 0.80 而不是 0.85：站点在国内、Lighthouse 跑在 GitHub 的美国 runner 上，
 实测同一版本同一页面三次跑分可以是 `0.79 / 0.95 / 0.95`，TTFB 在 **241ms~986ms** 之间跳
@@ -243,6 +245,23 @@ src/data/embeddings.json (2048 维 × N 篇)
 
 拿不到 git（浅克隆/没装 git）就**不写** lastmod，宁缺勿假。`check:seo` 会校验每条
 `<lastmod>` 可解析且不晚于今天。
+
+### 描述长度：中位 84 字符，最短 43
+
+描述不是凑字数，但太短一定被搜索引擎改写。改前有 39 个页面短于 45 字符——首页
+（19 字符，直接复用 `site.tagline`）、`/about`、`/data`、`/now`、`/privacy` 这些静态页，
+还有三本相册。现在全部写成一句完整的话：
+
+| 类型 | 长度策略 |
+|---|---|
+| 首页 / 无 description 的页 | 用新增的 `site.description` 兜底（一句完整的定位说明） |
+| 静态页（about / data / now / privacy / terms / subscribe / contact / guestbook / uses） | 各自写 60–100 字符，说清这页能读到什么 |
+| 板块首页（ai / invest / photo / hike） | 内容统计 + 最新一篇，摄影板块额外说明可以逐张翻 + RSS |
+| 标签页 | 单篇文章的标签页会补一句「同主题内容归集页」 |
+| 相册 | 数量 + 地点 + 时间 + 拍什么 |
+
+结果：`[描述长度] 1145 页 · 中位 84 · 最短 43 · 最长 193`，`check:seo` 会把这条统计
+打成一行，超过 45 字符以下会点名（当前只剩 1 篇由标题自动生成的日报摘要，43 字符）。
 
 ### hover 预取：把一次跨境 RTT 藏起来
 

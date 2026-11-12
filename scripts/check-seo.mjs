@@ -18,7 +18,7 @@
  *                  会让 Google 直接忽略整组标注）
  *   内链           href/src 指向的站内文件真的存在（区分大小写，Linux 上大小写错了就是 404），
  *                  且指向页面时必须是带尾斜杠的 canonical 形式（否则每点一次都吃一次 301）
- *   sitemap        <lastmod> 必须可解析且不晚于今天（假日期会让整份 sitemap 的
+ *   描述长度        过短的 description（< 45 字符）搜索引擎基本会自己改写，按告警统计（假日期会让整份 sitemap 的
  *                  lastmod 被忽略）；每条 <loc> 都对应一个真实页面，且与该页 canonical 完全一致
  *                  （尾斜杠不一致会让整份 sitemap 变成 301 中转）
  *   JSON-LD        能 json.parse；@context 为 schema.org；@type 已知；
@@ -549,6 +549,23 @@ async function main() {
   for (const [target, info] of [...links.unresolved].slice(0, 6)) {
     console.log(`    · ${target}（${info.count} 处，例如 ${info.from}）`);
   }
+  // description 长度分布：过短的摘要搜索引擎几乎一定会自己改写，所以按告警盯着
+  const descLengths = [...descriptions.entries()]
+    .map(([rel, desc]) => ({ route: rel.replace(/(^|\/)index\.html$/, ""), len: desc.trim().length }));
+  descLengths.sort((a, b) => a.len - b.len);
+  const shortDesc = descLengths.filter((d) => d.len < 45);
+  const medianDesc = descLengths.length
+    ? descLengths[Math.floor(descLengths.length / 2)].len
+    : 0;
+  console.log(
+    `[描述长度] ${descLengths.length} 页 · 中位 ${medianDesc} 字符 · 最短 ${descLengths[0]?.len ?? 0} · 最长 ${
+      descLengths[descLengths.length - 1]?.len ?? 0
+    }` + (shortDesc.length ? ` · ${shortDesc.length} 页短于 45 字符` : " · 没有过短的摘要"),
+  );
+  for (const entry of shortDesc.slice(0, 5)) {
+    console.log(`    · ${entry.len} 字符 ${entry.route}`);
+  }
+
   for (const [target, info] of [...links.nonCanonical].slice(0, 6)) {
     console.log(`    · 缺尾斜杠 ${target}（${info.count} 处，例如 ${info.from}）`);
   }

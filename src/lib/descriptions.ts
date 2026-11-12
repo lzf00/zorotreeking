@@ -52,21 +52,24 @@ export function tagDescription(tag: string, posts: PostLike[], lang: Lang): stri
 
   if (lang === "zh") {
     if (count === 0) return `#${tag} 标签下暂无文章。`;
-    if (count === 1) return `#${tag} 标签下目前只有 1 篇文章：《${clip(latest!.title, 30)}》。`;
+    if (count === 1)
+      return `#${tag} 标签下目前只有 1 篇文章：《${clip(latest!.title, 30)}》。这是同主题内容的归集页，之后带这个标签的文章会自动出现在这里。`;
     const tail = latest ? `，最新一篇《${clip(latest.title, 26)}》（${monthYear(latest.date, lang)}）` : "";
     return `#${tag} 标签下共 ${count} 篇文章${tail}。`;
   }
 
   if (count === 0) return `Nothing tagged #${tag} yet.`;
-  if (count === 1) return `One post tagged #${tag}: “${clip(latest!.title, 50)}”.`;
+  if (count === 1)
+    return `One post tagged #${tag}: “${clip(latest!.title, 50)}”. This page collects everything on that theme — new posts with the tag appear here automatically.`;
   const tail = latest ? `, most recently “${clip(latest.title, 50)}” (${monthYear(latest.date, lang)})` : "";
   return `${count} posts tagged #${tag}${tail}.`;
 }
 
 /** 标签总览：`全部 96 个标签，按热度索引 AI、投资、摄影与旅行内容。` */
 export function tagIndexDescription(count: number, lang: Lang): string {
-  if (lang === "zh") return `全部 ${count} 个标签，按热度索引 AI、投资、摄影与旅行的内容。`;
-  return `All ${count} tags across AI notes, investing, photography and hiking.`;
+  if (lang === "zh")
+    return `全部 ${count} 个标签，按热度索引 AI、投资、摄影与旅行的全部内容：选一个标签，就能顺着同一条线索把相关文章读完。`;
+  return `All ${count} tags across AI notes, investing, photography and hiking — pick one and follow that single thread all the way through.`;
 }
 
 export type SectionKind = "ai" | "invest" | "photo";
@@ -92,7 +95,7 @@ export function sectionDescription(kind: SectionKind, stats: SectionStats, lang:
       case "invest":
         return `投资板块共 ${count} 篇复盘与公开数据（含每日市场复盘、持仓与 ETF 记录）${latestZh}。`;
       case "photo":
-        return `摄影板块共 ${count} 个相册、${photos} 张照片，按城市与主题整理${latestZh}。`;
+        return `摄影板块共 ${count} 个相册、${photos} 张照片，按城市与主题整理${latestZh}。点开相册可以逐张翻看，也能直接用 RSS 订阅新照片。`;
     }
   }
 

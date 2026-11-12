@@ -47,7 +47,7 @@ const {
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const fullTitle = title ? `${title} · ${t("site.title")}` : `${t("site.title")} — ${t("site.tagline")}`;
-const desc = description ?? t("site.tagline");
+const desc = description ?? t("site.description");
 // noindex 页（后台、404）不输出 canonical / og:url / 结构化数据：
 // 404 页的地址栏路径是假的，之前它把 canonical 指向 https://…/404/，一个不存在的 URL。
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
@@ -103,7 +103,7 @@ if (ogType === "article") {
     "@type": "WebSite",
     name: siteName,
     url: Astro.site?.toString(),
-    description: t("site.tagline"),
+    description: t("site.description"),
     inLanguage: lang === "zh" ? "zh-CN" : "en",
     author,
     potentialAction: {

@@ -6,6 +6,10 @@ const ui = {
   zh: {
     "site.title": "ZoroTreeking",
     "site.tagline": "AI · 投资 · 摄影 · 徒步旅行",
+    // 首页/无 description 页面的 meta description。tagline 只有 19 个字符，
+    // 搜索引擎几乎一定会自己改写摘要 —— 换成一句完整的话，命中率更高。
+    "site.description":
+      "在代码与山林之间留一份缓慢的笔记：AI 学习笔记、个人投资复盘与公开数据、摄影相册，以及徒步旅行的路线与攻略。",
     "nav.home": "首页",
     "nav.ai": "AI 学习",
     "nav.invest": "个人投资",
@@ -41,6 +45,8 @@ const ui = {
   en: {
     "site.title": "ZoroTreeking",
     "site.tagline": "AI · Investment · Photography · Hiking & Travel",
+    "site.description":
+      "Slow notes between code and mountains: AI study notes, personal investing recaps with open data, photography albums, and hiking routes with travel guides.",
     "nav.home": "Home",
     "nav.ai": "AI Learning",
     "nav.invest": "Investment",
