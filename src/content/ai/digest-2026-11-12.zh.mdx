@@ -1,0 +1,163 @@
+---
+lang: zh
+translationKey: digest-2026-11-12
+title: "AI 每日精选 · 2026-11-12"
+description: "15 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-11-12
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, lil-log]
+category: paper
+cover: "/photos/uploads/baokemeng/baokemeng-27.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国际头部AI机构发布RL训大模型、AlphaGenome2、Gemini 4 Carbon等多项前沿技术成果</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI落地法律行业AI服务，面向退伍及现役军人开放ChatGPT Plus权益</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内文心大模型、AI直播、AI编程工具落地加速，上海自研AI联动香港出海</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠前沿研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥商用落地</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡大模型</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡场景创新</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📈出海布局</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2610.39671" target="_blank" rel="noopener noreferrer">Incentivizing Self-Learning in Large Language Models via Reinforcement Learning</a>
+
+*HF ★ 9 · Lingkai Kong, Yuzhe Gu, Haiteng Zhao… · [HF 镜像](https://huggingface.co/papers/2610.39671)*
+
+（LLM 摘要失败，请稍后手动补充）
+
+<FeedbackButtons slug="item:arxiv-2610.39671" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.13028" target="_blank" rel="noopener noreferrer">GTAGym: Real AAA Game Tasks Environment for Evaluation and Reinforcement Learning</a>
+
+*HF ★ 8 · Jiajun Chen, Shicheng Fang, Jiahao Lu… · [HF 镜像](https://huggingface.co/papers/2611.13028)*
+
+针对AAA游戏智能体测评依赖人工、难以支撑强化学习的痛点，本文提出GTAGym——基于GTA V的智能体测评与强化学习框架，内置覆盖多场景的150项任务基准，支持自动判分、并行测试、批量任务生成。测评显示前沿大模型最高准确率70.9%，空中导航等任务仍存瓶颈；基于该框架微调的大模型跨域任务性能从15%提升至23%。
+
+<FeedbackButtons slug="item:arxiv-2611.13028" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.10193" target="_blank" rel="noopener noreferrer">Ensemble Routing for Prompt-Adaptive Cost-Aware LLM Inference</a>
+
+*HF ★ 0 · Saul Urso, Emanuele Carlini, Patrizio Dazzi… · [HF 镜像](https://huggingface.co/papers/2611.10193)*
+
+针对大模型线上服务需平衡响应质量与推理成本的需求，本文提出单模型路由方法PISA及其集成路由扩展PISA-E：通过软聚类结合模型专属预测器预估模型适配能力，可在推理时灵活调整成本-质量偏好无需重训。实验显示PISA为参评单模型路由中成本性能最优；PISA-E在分布内/外场景下性能最高超竞品2.87个百分点，最多可降本36%。
+
+<FeedbackButtons slug="item:arxiv-2611.10193" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/gilbert-tobin-sam-nickless" target="_blank" rel="noopener noreferrer">Gilbert + Tobin rethinks the business of law with AI</a>
+
+*OpenAI*
+
+本文是对澳大利亚顶尖律所Gilbert + Tobin合伙人兼首席执行官萨姆·尼克利斯的专题访谈，核心围绕该律所依托人工智能技术重新梳理法律业务逻辑、探索新型运营模式的实践展开，涉及AI落地路径、落地成效及行业转型前瞻，可为法律行业数字化升级提供头部机构的参考样本。
+
+<FeedbackButtons slug="item:openai-blog-gilbert-tobin-sam-nickless" client:visible />
+
+## <a href="https://openai.com/index/chatgpt-plus-for-veterans" target="_blank" rel="noopener noreferrer">ChatGPT Plus for veterans and servicemembers</a>
+
+*OpenAI*
+
+这篇研究聚焦面向退伍军人及待转业现役军人的ChatGPT Plus免费权益落地情况，目前已有超2万名目标群体申领为期1年的免费使用权限。研究核心是探析该类群体如何借助ChatGPT Plus的功能，开展转业后民用职业的技能适配、求职准备等实践，为同类数字拥军服务优化提供参考。
+
+<FeedbackButtons slug="item:openai-blog-chatgpt-plus-for-veterans" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/announcements" target="_blank" rel="noopener noreferrer">Announcements</a>
+
+*Anthropic*
+
+本公告披露，AI企业Anthropic的核心定位为AI安全研究公司，所有研发工作均以AI安全为核心锚点，现阶段核心目标是构建三类高可控性AI系统：一是运行表现稳定可靠的系统，二是决策逻辑可被人类解析的可解释系统，三是操作方向可被人类灵活引导的可操控系统。
+
+<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+本摘要公布AI企业Anthropic的公共利益相关安排：企业将划拨部分股权归入新设立的Anthropic公共利益基金，该基金采用特殊持股结构，会随公司发展规模扩张同步提升持股份额，以此将企业成长收益与公共利益绑定，探索营利性AI企业兼顾社会责任的可行模式。
+
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/alphagenome-2-deciphering-how-cells-read-dna-to-better-understand-disease/" target="_blank" rel="noopener noreferrer">AlphaGenome 2: Deciphering how cells read DNA to better understand disease</a>
+
+*Google DeepMind*
+
+本次推出的AlphaGenome 2工具旨在破解人类细胞读取DNA的内在机制，核心功能为精准预测DNA序列及其各类变异对不同特定细胞类型的功能效应，可帮助研究者厘清遗传变异与疾病发生的关联逻辑，为疾病分子机制解析、致病突变位点筛查及精准诊疗相关研究提供全新技术支撑。
+
+<FeedbackButtons slug="item:deepmind-alphagenome-2-deciphering-how-cells-read-dna-to-better-understand-disease" client:visible />
+
+## <a href="https://deepmind.google/blog/gemini-4-carbon-is-now-available/" target="_blank" rel="noopener noreferrer">Gemini 4 Carbon is now available</a>
+
+*Google DeepMind*
+
+谷歌宣布新一代大模型产品Gemini 4 Carbon现已正式开放使用。作为Gemini 4系列的轻量化迭代版本，它完整保留了原版多模态理解、复杂逻辑推理、代码生成等核心能力，推理速度较标准版提升超40%，调用成本降低60%，目前已接入谷歌AI Studio与云服务平台，可适配高频调用、轻量化部署等多元场景。
+
+<FeedbackButtons slug="item:deepmind-gemini-4-carbon-is-now-available" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/qvac/botpsy" target="_blank" rel="noopener noreferrer">BotPsy: On-Device Personal Assistant with a Sub-Billion-Parameter Agentic Language Model</a>
+
+*Hugging Face*
+
+本论文提出端侧个人助理方案BotPsy，核心采用十亿参数以下的智能体语言模型，无需依赖云端算力。通过针对性优化小参数模型的指令遵循、工具调用、个性化适配能力，其性能接近通用大模型，可在端侧低延迟响应用户日常需求，同时实现用户数据全程不出本地，大幅提升隐私安全性。
+
+<FeedbackButtons slug="item:hf-blog-botpsy" client:visible />
+
+## <a href="https://huggingface.co/blog/token-pooling" target="_blank" rel="noopener noreferrer">Token Pooling-Aware Training for Multi-Vector Embedding Models</a>
+
+*Hugging Face*
+
+本文针对多向量嵌入模型池化阶段易丢失有效令牌信息的痛点，提出令牌池化感知训练范式：训练阶段即嵌入下游池化的筛选逻辑，引导模型主动优化各令牌嵌入的区分度，让池化保留的信息更匹配稠密检索类任务需求。在公开检索基准上精度较基线最高提升5%，推理无额外开销。
+
+<FeedbackButtons slug="item:hf-blog-token-pooling" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我改进（RSI）的概念演进：1965年学者古德最早提出超智能机器设想，指可超越人类所有智力活动、自主设计更优系统实现迭代升级的智能体；2008年尤德考斯基明确RSI核心是AI依托现有智能优化自身认知架构的反馈回路，当前AI语境下RSI既包括模型直接改写自身权重，也可广义涵盖模型优化自身训练管线的行为。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/11/509224.html" target="_blank" rel="noopener noreferrer">纯代码造《后室》，116秒切20种画风！文心新模型玩嗨了</a>
+
+*量子位*
+
+百度发布文心5.5 Flash Preview大模型，宣布即将开源。该模型主打强编程能力，总参数2800亿、单次推理仅激活140亿，支持百万Token上下文，推理速度超200Token/秒。可纯代码生成116秒20种画风动画，还能在UE5中连续运行11小时生成完整武侠游戏，编程评测表现比肩Claude Opus 5.5。
+
+<FeedbackButtons slug="item:qbitai-509224" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/509214.html" target="_blank" rel="noopener noreferrer">上海造、香港连，中国AI加速走向全球</a>
+
+*量子位*
+
+近期全球头部AI厂商估值回调，资本逻辑从“为参数付费”转向“为回报定价”。当前大模型已达生产可用门槛，技术不再是核心瓶颈，行业核心痛点转向AI企业与落地场景、资本、海内外市场规则的连接适配，中国正以上海为制造核心、联动香港打造对接全球AI市场的制度接口。
+
+<FeedbackButtons slug="item:qbitai-509214" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/509146.html" target="_blank" rel="noopener noreferrer">双11直播间爆改AI秀场，罗永浩上手TRAE，秒变AI Coding的大众嘴替</a>
+
+*量子位*
+
+今年双十一直播间出现AI产品带货潮：李佳琦售卖大模型Token，罗永浩带货全链路AI开发平台TRAE，现场演示零代码生成调研报告、专业PPT甚至可落地的语音输入法。这一现象反映生成式AI已迈过概念膨胀期，正转向面向大众、注重实际落地效果的务实发展阶段。
+
+<FeedbackButtons slug="item:qbitai-509146" client:visible />
