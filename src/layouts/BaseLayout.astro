@@ -3,7 +3,7 @@ import "@/styles/fonts.css";
 import "@/styles/global.css";
 import Navbar from "@/components/Navbar.astro";
 import Footer from "@/components/Footer.astro";
-import AIChatWidget from "@/components/AIChatWidget";
+import ChatLauncher from "@/components/ChatLauncher.astro";
 import SearchModal from "@/components/SearchModal";
 import ArticleImageLightbox from "@/components/ArticleImageLightbox.astro";
 import ReadTracker from "@/components/ReadTracker.astro";
@@ -301,8 +301,8 @@ if (jsonLd) {
       <slot />
     </main>
     <Footer />
-    <!-- 悬浮 AI 助手（react island，仅在浏览器空闲后加载） -->
-    <AIChatWidget client:idle />
+    <!-- 悬浮 AI 助手：静态按钮，点了才动态 import React 挂件（见 ChatLauncher.astro） -->
+    <ChatLauncher />
     <!-- 全站搜索 modal（pagefind，仅在空闲时加载） -->
     <SearchModal client:idle />
     <!-- 文章正文图片 lightbox（点击放大） -->

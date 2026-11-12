@@ -263,6 +263,37 @@ src/data/embeddings.json (2048 维 × N 篇)
 结果：`[描述长度] 1145 页 · 中位 84 · 最短 43 · 最长 193`，`check:seo` 会把这条统计
 打成一行，超过 45 字符以下会点名（当前只剩 1 篇由标题自动生成的日报摘要，43 字符）。
 
+### AI 助手改成「点了才加载」：首屏少一堆 React
+
+首页 Lighthouse 桌面档一直在 0.75–0.90 之间抖，`total-blocking-time` 200–580ms，
+LCP 却只有 0.44s——说明问题不在首屏内容，而在**空闲后才水合的两个 React island**
+（`AIChatWidget` + `SearchModal`）。
+
+对照实验（同一份 dist，逐个删 island 再跑 Lighthouse 桌面档）：
+
+| 版本 | TBT | perf |
+|---|---|---|
+| 原样（两个 island） | 200–580ms | 0.75–0.90 |
+| 只留 SearchModal | 9ms | 0.99 |
+| 只留 AIChatWidget | 111ms | 0.97 |
+| 两个都去掉 | 36ms | 1.00 |
+| 改后（AIChatWidget 点开才加载） | 86–297ms（中位 307，机器负载高时噪声大） | 0.85–0.98 |
+
+奇怪的是两个 island 单独都不贵、合起来却要 500ms，而且模块本身 eval 只要 10–15ms
+（用 `performance.now()` 包 `import()` 实测）。所以成本在**水合过程**：React 运行时
+求值 + 把组件树挂上 DOM + 组件内联 `<style>` 触发整页样式重算。
+
+改法：把聊天挂件拆成「静态按钮 + 按需加载」
+
+- `src/components/ChatLauncher.astro`：纯 HTML 按钮，Zoro 图标在构建期由
+  `ZoroChibiIcon` 渲染成静态 SVG，不加载任何 React。
+- 点击时才 `await import("@/entrypoints/ai-chat")`（Vite 自动切成
+  `_astro/ai-chat.*.js`，约 65KB / 22KB gzip），再 `createRoot` 挂上去，
+  挂载后移除静态按钮。加载失败会恢复按钮，弱网下可以再点一次。
+- `AIChatWidget` 新增 `initialOpen` prop，挂载即展开——用户已经点过一次，
+  不需要再点第二次。
+- 搜索 modal 保留 `client:idle`（单独评估过只有 9ms TBT，不值得为它再拆一套）。
+
 ### 结构化数据：面包屑覆盖 1143/1145 个可索引页
 
 改前只有文章页（1008）有 `BreadcrumbList`，其余 133 个列表页 / 相册页 / 个股页只有一个裸

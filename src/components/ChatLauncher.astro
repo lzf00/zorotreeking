@@ -1,0 +1,56 @@
+---
+/**
+ * AI 助手的静态启动按钮。
+ *
+ * 纯 HTML + SVG（Zoro 图标在构建期渲染成静态标记），不加载 React。点击后才
+ * 动态 import `@/entrypoints/ai-chat` 把真正的挂件挂上来，然后把自己移除。
+ * 这样首屏不需要为「可能永远不打开的聊天」付出 React 水合成本。
+ */
+import { ZoroChibiIcon } from "@/components/AIChatWidget";
+import { getLangFromUrl } from "@/i18n/ui";
+
+const lang = getLangFromUrl(Astro.url);
+const label = lang === "zh" ? "AI 助手" : "AI assistant";
+const loadingText = lang === "zh" ? "正在加载 AI 助手…" : "Loading AI assistant…";
+---
+
+<button
+  type="button"
+  id="ai-chat-launcher"
+  aria-label={label}
+  title={label}
+  data-loading-text={loadingText}
+  style="position:fixed;right:20px;bottom:20px;z-index:9998;width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#2d8a4e,#1e6b39);color:#fff;border:3px solid #fff;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,0.25),0 2px 6px rgba(0,0,0,0.1);display:grid;place-items:center;padding:0;overflow:hidden;transition:transform .15s ease,box-shadow .15s ease;"
+>
+  <ZoroChibiIcon size={56} />
+</button>
+
+<script>
+  const launcher = document.getElementById("ai-chat-launcher") as HTMLButtonElement | null;
+  if (launcher) {
+    launcher.addEventListener(
+      "click",
+      async () => {
+        if (launcher.dataset.loading === "1") return;
+        launcher.dataset.loading = "1";
+        launcher.setAttribute("aria-busy", "true");
+        launcher.title = launcher.dataset.loadingText ?? "Loading…";
+        try {
+          const { mountAiChat } = await import("@/entrypoints/ai-chat");
+          const host = document.createElement("div");
+          host.id = "ai-chat-root";
+          document.body.appendChild(host);
+          mountAiChat(host);
+          launcher.remove();
+        } catch (error) {
+          // 加载失败就恢复按钮，用户可以再点一次（弱网下 chunk 可能拿不到）
+          launcher.dataset.loading = "";
+          launcher.removeAttribute("aria-busy");
+          launcher.style.opacity = "1";
+          console.error("[ai-chat] 加载失败", error);
+        }
+      },
+      { once: true },
+    );
+  }
+</script>

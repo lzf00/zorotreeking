@@ -81,8 +81,8 @@ function toSource(value: unknown): Source | undefined {
   };
 }
 
-export default function AIChatWidget() {
-  const [open, setOpen] = useState(false);
+export default function AIChatWidget({ initialOpen = false }: { initialOpen?: boolean } = {}) {
+  const [open, setOpen] = useState(initialOpen);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
@@ -601,7 +601,7 @@ function Bubble({ msg }: { msg: Message }) {
  *   - 左耳三只金色耳环
  *   - 下巴右侧伸出一把刀的握柄（三刀流暗示）
  */
-function ZoroChibiIcon({ size = 56 }: { size?: number }) {
+export function ZoroChibiIcon({ size = 56 }: { size?: number }) {
   return (
     <svg viewBox="0 0 64 64" width={size} height={size} aria-hidden="true">
       {/* 头颅（脸） */}
