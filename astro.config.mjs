@@ -59,6 +59,13 @@ export default defineConfig({
       wrap: true,
     },
   },
+  // 站内链接在 hover 时预取。站点在跨境线路上 TTFB 45–986ms，用户点到链接才开始
+  // 下载 HTML 的话，这一个 RTT 是能省就省的；hover 预取把这段时间藏起来。
+  // 只预取同源 GET，鼠标不落上去就不会有额外请求。
+  prefetch: {
+    prefetchAll: true,
+    defaultStrategy: "hover",
+  },
   // 开发期把 /api/* 代理到生产 AI Agent。
   // 备案已下来，直接用 HTTPS 域名，不用再 IP + Host header 绕路。
   // 若想用本机的 ai-agent 跑，把 target 换成 http://127.0.0.1:8800 即可。

@@ -244,6 +244,20 @@ src/data/embeddings.json (2048 维 × N 篇)
 拿不到 git（浅克隆/没装 git）就**不写** lastmod，宁缺勿假。`check:seo` 会校验每条
 `<lastmod>` 可解析且不晚于今天。
 
+### hover 预取：把一次跨境 RTT 藏起来
+
+站点在腾讯云上、没有 CDN，跨境 TTFB 45–986ms 是最贵的一项开销。加尾斜杠消掉了
+301 中转之后，剩下能做的是**别等用户点了才开始下载 HTML**：`astro.config.mjs` 打开
+
+```js
+prefetch: { prefetchAll: true, defaultStrategy: "hover" }
+```
+
+鼠标落到站内链接上就开始预取目标页（同源 GET），点击时通常已经在缓存里。只在
+hover 时发生，触摸设备不触发，不会给不点的用户产生额外流量。
+
+实测（本地 dist）：hover 导航里的「AI」后 1.5 秒内出现 `GET /ai/` 一次。
+
 ### 尾斜杠：49,883 处站内链接不再多走一次 301
 
 站点是 `build.format: "directory"`：每个页面是 `<路径>/index.html`，nginx 会把
