@@ -48,7 +48,6 @@ export async function buildTagIndex(lang: Lang) {
   return { tags, articles };
 }
 
-/** 用于 URL 的稳定 slug：保留中英文与数字，空白替换成 - */
-export function tagToSlug(tag: string): string {
-  return encodeURIComponent(tag.trim().replace(/\s+/g, "-"));
-}
+// slug 与标签关系都是纯数据计算，实现放在 tag-relations.ts 里（那边不依赖 astro:content，
+// 可以被 node --test 直接测），这里只做再导出，保持 `@/lib/tags` 的导入路径不变。
+export { relatedTags, tagSections, tagToSlug } from "./tag-relations";

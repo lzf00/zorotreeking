@@ -1,0 +1,65 @@
+---
+/**
+ * 标签页的导语区：说明这个标签收集了什么、横跨哪几个板块，并把「一起出现的标签」
+ * 做成链接。原来标签页正文只有一行计数，正文词数不到 40，对搜索和读者都是空页面。
+ */
+import { pathWithLang, useTranslations, type Lang } from "@/i18n/ui";
+
+interface Props {
+  tag: string;
+  lang: Lang;
+  sections: ("ai" | "invest" | "photo" | "hike")[];
+  related: { tag: string; slug: string; count: number }[];
+  count: number;
+}
+
+const { tag, lang, sections, related, count } = Astro.props;
+const t = useTranslations(lang);
+const sectionLabel: Record<string, string> = {
+  ai: t("section.ai.title"),
+  invest: t("section.invest.title"),
+  photo: t("section.photo.title"),
+  hike: t("section.hike.title"),
+};
+const sectionNames = sections.map((s) => sectionLabel[s]).join(lang === "zh" ? "、" : ", ");
+---
+
+<div class="mt-6 space-y-3 text-sm leading-relaxed text-[var(--text-secondary)]">
+  {lang === "zh" ? (
+    <p>
+      #{tag} 是本站内容的一个关键词索引：目前有 {count} 篇内容带这个标签，分别来自{sectionNames}。
+      同一个标签下的文章往往讨论同一件事的不同侧面，按时间倒序排列，最新的在最上面。
+    </p>
+  ) : (
+    <p>
+      #{tag} works as a keyword index for this site: {count} {count === 1 ? "post carries" : "posts carry"} this tag,
+      drawn from {sectionNames}. Entries are ordered newest first — posts that share a tag usually approach the same
+      subject from different angles.
+    </p>
+  )}
+  {related.length > 0 ? (
+    <p class="flex flex-wrap items-center gap-x-3 gap-y-1">
+      <span class="text-[var(--text-tertiary)]">{lang === "zh" ? "常一起出现：" : "Often paired with:"}</span>
+      {related.map((r) => (
+        <a
+          href={pathWithLang(`/tag/${r.slug}`, lang)}
+          class="text-[var(--text-secondary)] underline decoration-1 underline-offset-2 hover:text-[var(--text)]"
+        >
+          #{r.tag} <span class="text-[var(--text-tertiary)]">{r.count}</span>
+        </a>
+      ))}
+      <a
+        href={pathWithLang("/tag", lang)}
+        class="text-[var(--text-tertiary)] hover:text-[var(--text-secondary)]"
+      >
+        {lang === "zh" ? "全部标签 →" : "all tags →"}
+      </a>
+    </p>
+  ) : (
+    <p>
+      <a href={pathWithLang("/tag", lang)} class="text-[var(--text-tertiary)] hover:text-[var(--text-secondary)]">
+        {lang === "zh" ? "← 回到全部标签" : "← back to all tags"}
+      </a>
+    </p>
+  )}
+</div>

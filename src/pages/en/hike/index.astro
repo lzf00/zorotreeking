@@ -24,6 +24,19 @@ const diffColor = {
   <section class="max-w-3xl mx-auto px-5 pt-12 pb-6">
     <h1 class="font-serif text-5xl sm:text-6xl leading-[0.95] tracking-tight" style="color:rgb(var(--section-hike-rgb))">{t("section.hike.title")}</h1>
     <p class="mt-2 text-[var(--text-secondary)]">{t("section.hike.desc")}</p>
+    <p class="mt-5 text-sm leading-relaxed text-[var(--text-secondary)]">
+      Every route records what can be checked afterwards: distance, total ascent, walking time, the altitude range
+      and the month we went, with the GPX track and an elevation profile. Where permits, resupply or a place to sleep
+      matter, the entry says so explicitly instead of leaving it to guesswork.
+    </p>
+    <p class="mt-3 text-sm leading-relaxed text-[var(--text-secondary)]">
+      Entries are ordered newest first — the next route is written after the next trip. Longer multi-day drives are
+      kept as standalone guide pages, because they need day-by-day itineraries, budget notes and a decision on whether
+      the route is worth it at all. You can also browse by
+      <a href="/en/tag/beijing/" class="underline decoration-1 underline-offset-2 hover:text-[var(--text)]">#beijing</a>
+      or open the
+      <a href="/explore/" class="underline decoration-1 underline-offset-2 hover:text-[var(--text)]">semantic map</a>.
+    </p>
   </section>
   <section class="max-w-3xl mx-auto px-5">
     {hikes.length === 0 ? <p class="py-12 text-center text-[var(--text-tertiary)]">No routes yet</p> : (

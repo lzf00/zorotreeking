@@ -21,6 +21,21 @@ const max = tags[0]?.count ?? 1;
   <section class="max-w-3xl mx-auto px-5 pt-12 pb-6">
     <h1 class="font-serif text-5xl sm:text-6xl leading-[0.95] tracking-tight">{t("tag.allTags")}</h1>
     <p class="mt-2 text-[var(--text-secondary)]">{tags.length} {t("tag.title")}</p>
+    <p class="mt-4 text-sm leading-relaxed text-[var(--text-secondary)]">
+      Every tag is listed here, ordered by how often it appears: a larger label and a bigger number mean more posts
+      under that theme. Tags cut across the site sideways — one tag can span study notes, investing recaps,
+      photography and hiking — so a tag page is often the fastest way to follow a single thread instead of browsing
+      section by section.
+    </p>
+    <p class="mt-2 text-sm leading-relaxed text-[var(--text-tertiary)]">
+      Tags that appear once usually point straight at a specific detail inside a longer post. If you would rather
+      browse by area, start from
+      <a href="/en/ai/" class="underline decoration-1 underline-offset-2 hover:text-[var(--text-secondary)]">AI</a>,
+      <a href="/en/invest/" class="underline decoration-1 underline-offset-2 hover:text-[var(--text-secondary)]">investing</a>,
+      <a href="/en/photo/" class="underline decoration-1 underline-offset-2 hover:text-[var(--text-secondary)]">photography</a>
+      or
+      <a href="/en/hike/" class="underline decoration-1 underline-offset-2 hover:text-[var(--text-secondary)]">hiking</a>.
+    </p>
   </section>
   <section class="max-w-3xl mx-auto px-5 pb-16">
     <div class="flex flex-wrap gap-x-3 gap-y-2 leading-relaxed">

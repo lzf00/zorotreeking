@@ -1,8 +1,9 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { buildTagIndex, tagToSlug } from "@/lib/tags";
+import { buildTagIndex, relatedTags, tagSections, tagToSlug } from "@/lib/tags";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
 import { tagDescription } from "@/lib/descriptions";
+import TagIntro from "@/components/TagIntro.astro";
 
 export async function getStaticPaths() {
   const lang = "en" as const;
@@ -20,6 +21,8 @@ const { tag, posts } = Astro.props as {
 const lang = "en" as const;
 const t = useTranslations(lang);
 const description = tagDescription(tag, posts, lang);
+const related = relatedTags(tag, posts);
+const sections = tagSections(posts);
 
 const sectionColor: Record<string, string> = {
   ai: "text-section-ai",
@@ -40,6 +43,7 @@ const sectionLabel: Record<string, string> = {
     <a href={pathWithLang("/tag", lang)} class="text-sm text-[var(--text-tertiary)] hover:text-[var(--text-secondary)]">← {t("tag.allTags")}</a>
     <h1 class="mt-2 font-serif text-5xl sm:text-6xl leading-[0.95] tracking-tight">#{tag}</h1>
     <p class="mt-2 text-sm text-[var(--text-tertiary)]">{posts.length} {t("tag.count")}</p>
+    <TagIntro tag={tag} lang={lang} sections={sections} related={related} count={posts.length} />
   </section>
   <section class="max-w-3xl mx-auto px-5">
     <ul class="divide-y divide-[var(--border)]">

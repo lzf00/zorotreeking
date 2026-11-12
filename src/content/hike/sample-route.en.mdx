@@ -1,8 +1,8 @@
 ---
 lang: en
 translationKey: sample-route
-title: "Sample Route: Haituo loop"
-description: "A sample route page for the Haituo loop in Yanqing, Beijing: shows how GPX parsing, the Leaflet map and the elevation chart turn a track file into distance, ascent and time."
+title: "Sample route: how a GPX becomes a trip page"
+description: "A synthetic Haituo track used to show how a route page is built: the GPX file yields distance and total ascent, Leaflet draws the track, an elevation profile shows where the climbing happens."
 date: 2026-05-11
 tags: [sample, beijing]
 location: Yanqing, Beijing
@@ -11,6 +11,16 @@ durationHours: 7
 gpx: sample-route.gpx
 ---
 
-A demo entry for the hike section. Distance and elevation gain parsed from the GPX file render in the stats bar; the OpenStreetMap track and elevation profile render below.
+This is not a trip report — it is a demonstration of what a route page looks like here. The track is synthetic
+(25 points, elevation 400–1120 m), so it shows the rendering without claiming to be real hiking data.
 
-Write your trip log here: weather, trail conditions, gear notes, takeaways.
+A real route page has four parts. The stats bar on top carries three numbers computed straight from the GPX file:
+total distance, cumulative ascent and estimated walking time. Below it, the track is drawn on an OpenStreetMap
+basemap and you can pan and zoom it; waypoints mark junctions and resupply points. An elevation profile follows,
+distance on the horizontal axis and altitude on the vertical one, so the steep sections stand out and you can see
+where the day will actually hurt. Last comes the day-by-day itinerary and the pre-trip judgement: permits, season,
+somewhere to sleep, and a plan for turning back — none of which a map can tell you.
+
+To add a route, provide two things: a GPX file in `public/gpx/` and a paragraph or two about weather, trail
+conditions, gear and what you would do differently. Distance, ascent and altitude come from the build step rather
+than from hand-typed numbers, so the page can never disagree with its own track.

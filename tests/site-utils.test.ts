@@ -10,6 +10,7 @@ import { hasAlternateLanguagePath, pathWithLang } from "../src/i18n/ui";
 import { serializeJsonLd } from "../src/lib/json-ld";
 import { selectCanonicalOgEntries } from "../src/lib/og-paths";
 import { projectTo2D } from "../src/lib/pca";
+import { relatedTags, tagSections } from "../src/lib/tag-relations";
 import { estimateReadingTime } from "../src/lib/reading-time";
 import { getRelatedPosts } from "../src/lib/related-posts";
 import { normalizeSameOriginUrl } from "../src/lib/safe-url";
@@ -234,4 +235,47 @@ test("XML escaping protects generated feed and sitemap values", () => {
     escapeXml(`https://example.test/?a=1&b=<tag>"'`),
     "https://example.test/?a=1&amp;b=&lt;tag&gt;&quot;&apos;",
   );
+});
+
+test("relatedTags 按共现次数排序，且排除标签自身", () => {
+  const posts = [
+    { section: "ai" as const, tags: ["astro", "ssg", "meta"] },
+    { section: "ai" as const, tags: ["astro", "ssg"] },
+    { section: "photo" as const, tags: ["astro", "photo"] },
+  ];
+  const related = relatedTags("astro", posts);
+  assert.deepEqual(
+    related.map((r) => `${r.tag}:${r.count}`),
+    ["ssg:2", "meta:1", "photo:1"],
+    "共现 2 次的排前面，同次数按名称排序，且不包含 astro 自己",
+  );
+  assert.equal(related[0].slug, "ssg", "slug 与 URL 用的是同一套规则");
+});
+
+test("relatedTags 对单个标签、空标签列表都不炸", () => {
+  assert.deepEqual(relatedTags("astro", [{ section: "ai", tags: ["astro"] }]), []);
+  assert.deepEqual(relatedTags("astro", []), []);
+  // 空字符串标签不应被当成一个「共现标签」
+  assert.deepEqual(relatedTags("astro", [{ section: "ai", tags: ["astro", ""] }]), []);
+});
+
+test("relatedTags 尊重 limit，并按名称稳定排序", () => {
+  const posts = [{ section: "hike" as const, tags: ["x", "b", "a"] }];
+  assert.deepEqual(relatedTags("x", posts, 1).map((r) => r.tag), ["a"]);
+  assert.deepEqual(relatedTags("x", posts).map((r) => r.tag), ["a", "b"]);
+});
+
+test("tagSections 按固定栏目顺序返回，不重复", () => {
+  const posts = [
+    { section: "hike" as const, tags: [] },
+    { section: "ai" as const, tags: [] },
+    { section: "ai" as const, tags: [] },
+  ];
+  assert.deepEqual(tagSections(posts), ["ai", "hike"], "顺序固定为 ai、invest、photo、hike");
+  assert.deepEqual(tagSections([]), []);
+});
+
+test("中文标签的 slug 与 URL 保持一致（encodeURIComponent）", () => {
+  // 标签页文件名用的是 encodeURIComponent 后的结果，两者必须一直对得上
+  assert.equal(relatedTags("投资", [{ section: "invest", tags: ["投资", "复盘 2026"] }])[0].slug, encodeURIComponent("复盘-2026"));
 });
