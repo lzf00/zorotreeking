@@ -4,7 +4,7 @@ import "@/styles/global.css";
 import Navbar from "@/components/Navbar.astro";
 import Footer from "@/components/Footer.astro";
 import ChatLauncher from "@/components/ChatLauncher.astro";
-import SearchModal from "@/components/SearchModal";
+import SearchLauncher from "@/components/SearchLauncher.astro";
 import ArticleImageLightbox from "@/components/ArticleImageLightbox.astro";
 import ReadTracker from "@/components/ReadTracker.astro";
 import { resolveSocialImage } from "@/lib/social-image";
@@ -303,8 +303,8 @@ if (jsonLd) {
     <Footer />
     <!-- 悬浮 AI 助手：静态按钮，点了才动态 import React 挂件（见 ChatLauncher.astro） -->
     <ChatLauncher />
-    <!-- 全站搜索 modal（pagefind，仅在空闲时加载） -->
-    <SearchModal client:idle />
+    <!-- 全站搜索：定义 window.__openSearch + / 快捷键，点了才加载 modal（见 SearchLauncher.astro） -->
+    <SearchLauncher />
     <!-- 文章正文图片 lightbox（点击放大） -->
     <ArticleImageLightbox />
     <!-- "已读"标记：本地 localStorage，列表里淡化已访过的文章 -->

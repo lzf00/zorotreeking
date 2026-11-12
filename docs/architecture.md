@@ -294,6 +294,27 @@ LCP 却只有 0.44s——说明问题不在首屏内容，而在**空闲后才�
   不需要再点第二次。
 - 搜索 modal 保留 `client:idle`（单独评估过只有 9ms TBT，不值得为它再拆一套）。
 
+### 全站搜索改成「按了才加载」：首屏 JS 从 97KB 降到 7KB
+
+搜索 modal 原本是 `client:idle` 的 React island，挂在 `BaseLayout` 里，于是**每个页面**
+（1145 页）首屏都要为它加载 React 运行时、react-dom、DOMPurify 和组件本身。
+
+实测首页首屏 JS 传输量：
+
+| 阶段 | 首屏 JS |
+|---|---|
+| 两个 island（聊天 + 搜索） | 97.3 KB |
+| 聊天改按需（上一轮） | 97.3 KB（搜索仍在） |
+| 搜索也改按需（本轮） | **7.0 KB** |
+
+现在 `SearchLauncher.astro` 只做三件事：定义 `window.__openSearch()`、挂 `/` 快捷键、
+首次触发时动态 import `@/entrypoints/search`；挂载后 React 组件自己接管
+`window.__openSearch` 和 Esc，启动器把自己注册的 `/` 监听摘掉，避免一次按键触发两次。
+Navbar 放大镜、Footer、404、首页搜索框调的都是同一个 `window.__openSearch`，行为不变。
+
+代价：第一次点搜索要多等一次 chunk 下载（约 30–40KB gzip）。因为搜索本身也要等
+pagefind 索引，这次下载被索引加载的等待吸收了，用户感知不到。
+
 ### 结构化数据：面包屑覆盖 1143/1145 个可索引页
 
 改前只有文章页（1008）有 `BreadcrumbList`，其余 133 个列表页 / 相册页 / 个股页只有一个裸

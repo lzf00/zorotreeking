@@ -24,8 +24,8 @@ declare global {
   }
 }
 
-export default function SearchModal() {
-  const [open, setOpen] = useState(false);
+export default function SearchModal({ initialOpen = false }: { initialOpen?: boolean } = {}) {
+  const [open, setOpen] = useState(initialOpen);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Result[]>([]);
   const [loading, setLoading] = useState(false);

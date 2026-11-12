@@ -1,0 +1,53 @@
+---
+/**
+ * 搜索的按需加载启动器（一个内联模块脚本，不加载 React）。
+ *
+ * 对外约定（页面里已有代码依赖这两个入口）：
+ *   - `window.__openSearch()`：Navbar 放大镜、Footer、404、首页搜索框都会调它；
+ *   - `/` 快捷键：以前由 SearchModal 自己监听，现在改到这里；等 modal 挂上后
+ *     把快捷键让回给它（组件内部会覆盖 window.__openSearch 并自己接管 Esc）。
+ *
+ * 加载失败不阻塞页面：再点一次就会重试。
+ */
+---
+
+<script>
+  (() => {
+    let loading = false;
+    let mounted = false;
+    const errorText = document.documentElement.lang === "en" ? "Search failed to load, please retry" : "搜索加载失败，请重试";
+
+    function loadSearch() {
+      if (mounted || loading) return;
+      loading = true;
+      import("@/entrypoints/search")
+        .then(({ mountSearch }) => {
+          const host = document.createElement("div");
+          host.id = "search-root";
+          document.body.appendChild(host);
+          mountSearch(host);
+          mounted = true;
+          // 组件挂载后会接管 window.__openSearch 和 Esc；这里把 / 让出去，
+          // 避免一次按键触发两次 setOpen。
+          window.removeEventListener("keydown", onSlash);
+        })
+        .catch((error) => {
+          loading = false;
+          console.error("[search] 加载失败", error);
+          document.dispatchEvent(new CustomEvent("search:load-error", { detail: errorText }));
+        });
+    }
+
+    function onSlash(event: KeyboardEvent) {
+      if (event.key !== "/" || event.metaKey || event.ctrlKey || event.altKey) return;
+      const el = document.activeElement as HTMLElement | null;
+      const tag = (el?.tagName || "").toLowerCase();
+      if (tag === "input" || tag === "textarea" || el?.isContentEditable) return;
+      event.preventDefault();
+      loadSearch();
+    }
+
+    (window as any).__openSearch = loadSearch;
+    window.addEventListener("keydown", onSlash);
+  })();
+</script>
