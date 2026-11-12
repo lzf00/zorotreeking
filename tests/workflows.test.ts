@@ -52,6 +52,9 @@ test("Lighthouse workflow checks the deployed revision and keeps hidden reports"
   assert.match(contents, /scripts\/lighthouse-scope\.mjs/);
   assert.match(contents, /LHCI_UPLOAD__GITHUB_TOKEN/);
   assert.match(contents, /include-hidden-files:\s*true/);
+  // 逐 URL 中位分数要能被读出来：日志会截断、产物会过期，脚本本身不能没接上
+  assert.match(contents, /scripts\/lighthouse-summary\.mjs/);
+  assert.match(contents, /lighthouse-summary\.md/);
 });
 
 test("deploy keeps the Giscus stylesheet inside the production CSP", async () => {

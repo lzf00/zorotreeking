@@ -67,11 +67,19 @@ jobs:
         # assert 失败的话 exit code 非 0；assert 设了 warn 不会 fail，error 才 fail
         run: npx --yes @lhci/cli@0.13.x autorun
 
+      # 把逐 URL 中位分数打出来：日志被截断时尾部这段仍然在，同时写进 step summary，
+      # 省得为了"这轮到底多少分"去翻产物或猜。
+      - name: Summarize scores
+        if: always() && steps.scope.outputs.run == 'true'
+        run: node scripts/lighthouse-summary.mjs --summary-out lighthouse-summary.md
+
       - name: Upload reports as artifact
         if: always() && steps.scope.outputs.run == 'true'
         uses: actions/upload-artifact@v7
         with:
           name: lighthouse-reports
-          path: .lighthouseci/
+          path: |
+            .lighthouseci/
+            lighthouse-summary.md
           include-hidden-files: true
           retention-days: 14
