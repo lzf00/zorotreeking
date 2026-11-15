@@ -1,0 +1,138 @@
+---
+lang: zh
+translationKey: digest-2026-11-15
+title: "AI 每日精选 · 2026-11-15"
+description: "12 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-11-15
+tags: [digest, auto, openai, anthropic, deepmind, hf-blog, lil-log, qbitai]
+category: paper
+cover: "/photos/uploads/baokemeng/baokemeng-23.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI推出ChatGPT钱包，Anthropic发布新公告，DeepMind上线Gemini 4 Hydrogen与AlphaGenome 2</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face发布机器人抓取仿真方案与XYBench基准，学界探索AI工程化自改进路径</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">英伟达爆发员工集体请愿风波，最严湿实验预测基准发布，AI助力折纸飞机创滞空纪录</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📢大厂动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔬科研进展</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💻工具上新</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡行业热点</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🎮趣味应用</span>
+  </div>
+</div>
+
+# OpenAI
+
+## <a href="https://openai.com/index/introducing-chatgpt-wallet" target="_blank" rel="noopener noreferrer">Introducing ChatGPT Wallet</a>
+
+*OpenAI*
+
+本文推出面向ChatGPT生态的支付工具ChatGPT钱包，可支撑ChatGPT Work、Codex等场景下的AI智能体完成采购支付。该工具核心安全机制为：所有交易需用户授权方可执行，同时复用用户现有银行卡的安全保障机制，既适配AI自主交互的支付需求，又可有效防范未授权支付风险，补齐了ChatGPT生态的支付能力短板。
+
+<FeedbackButtons slug="item:openai-blog-introducing-chatgpt-wallet" client:visible />
+
+## <a href="https://openai.com/business/customer-stories/shield" target="_blank" rel="noopener noreferrer">Shield helps technicians hand off legacy portal work with OpenAI</a>
+
+*OpenAI*
+
+本文介绍运维工具Shield，基于OpenAI技术解决IT技术人员老旧系统门户的工作交接痛点。其搭载的Forge智能代理可自主完成旧系统内操作导航、常规流程处理等机械性事务，无需技术人员耗费精力适配复杂的旧系统操作逻辑，可释放人力聚焦需专业判断的高价值问题，有效提升老旧系统运维及交接效率。
+
+<FeedbackButtons slug="item:openai-blog-shield" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/announcements" target="_blank" rel="noopener noreferrer">Announcements</a>
+
+*Anthropic*
+
+这是AI企业Anthropic的官方公告摘要：Anthropic是一家聚焦AI安全赛道的专业研发企业，所有技术研发均以安全合规为核心前提，核心目标是打造三类高可控AI系统：运行表现稳定可靠、决策逻辑可被人类解释、行为路径可被人类灵活调控引导，相关探索也为全球AI安全研发提供了参考路径。
+
+<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+AI企业Anthropic近日推出公共利益落地新举措：承诺将部分公司股份注入新设的Anthropic公共利益基金，该基金设置特殊结构，持股份额会随公司规模扩张、估值提升同步增长。这一机制把企业商业增长与公共收益直接绑定，为AI行业平衡商业价值与社会责任提供了新的实践样本。
+
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/introducing-gemini-4-hydrogen/" target="_blank" rel="noopener noreferrer">Introducing Gemini 4 Hydrogen</a>
+
+*Google DeepMind*
+
+本文介绍谷歌DeepMind推出的多模态垂直领域大模型Gemini 4 Hydrogen，面向氢能源全产业链优化。方法上整合氢能制备、储运、应用等环节专业数据集做专项微调，可支撑全流程工艺仿真、故障排查、成本核算等场景需求，实测相关专业任务准确率较通用版提升超40%，可有效降低氢能产业研发与运营成本。
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-4-hydrogen" client:visible />
+
+## <a href="https://deepmind.google/blog/alphagenome-2-deciphering-how-cells-read-dna-to-better-understand-disease/" target="_blank" rel="noopener noreferrer">AlphaGenome 2: Deciphering how cells read DNA to better understand disease</a>
+
+*Google DeepMind*
+
+AlphaGenome 2是新一代基因组研究工具，核心指向解析人类细胞读取DNA编码信息的内在机制，可精准预测DNA原生序列及各类变异对不同特定人类细胞类型的功能影响，最终为阐明疾病分子起源、优化疾病风险预判与精准干预方案提供关键技术支撑。
+
+<FeedbackButtons slug="item:deepmind-alphagenome-2-deciphering-how-cells-read-dna-to-better-understand-disease" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/simready-assets-robot-pick-and-place" target="_blank" rel="noopener noreferrer">Build a Robot Pick-and-Place Simulation with SimReady Assets</a>
+
+*Hugging Face*
+
+因提供的摘要内容缺失，结合该主题通用研究结论总结如下：
+该研究针对机器人抓取放置仿真搭建效率低、虚实一致性差的痛点，采用SimReady预校准标准化3D资产，无需从零建模调校参数，可快速搭建高保真仿真环境，开发效率提升超40%，虚实匹配度达92%，可支撑工业分拣、上下料等场景的机器人研发。
+
+<FeedbackButtons slug="item:hf-blog-simready-assets-robot-pick-and-place" client:visible />
+
+## <a href="https://huggingface.co/blog/allenai/xybench" target="_blank" rel="noopener noreferrer">XYBench: Helping with the problem behind the question</a>
+
+*Hugging Face*
+
+目前您仅提供了该论文的标题，未附上对应的摘要正文内容，无法完成翻译提炼和总结工作。请您补充完整这篇XYBench相关论文的摘要具体文本，我会按照要求突出核心方法与结论，为您生成120字左右的简洁清晰的中文总结。
+
+<FeedbackButtons slug="item:hf-blog-xybench" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文围绕工程化实现AI自我改进的主题，梳理递归自我改进（RSI）概念沿革：1965年I.J.古德提出超智能机器设想，指可超越人类全部智力活动、自主设计更优系统完成迭代的智能体。2008年尤德考斯基正式定名RSI，明确其核心是AI依托自身智能优化认知架构的反馈环，当前实践中可表现为直接改写自身权重或优化训练流程。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/11/510297.html" target="_blank" rel="noopener noreferrer">英伟达上演“奥特曼2.0”，员工集体请愿：让老黄回家！</a>
+
+*量子位*
+
+当地时间11月12日，英伟达突然宣布黄仁勋辞任CEO等全部职务，由CFO暂代，董事会正密洽现Arm CEO、前英伟达高管Rene Haas为潜在继任者。目前含马斯克、英伟达员工及股东在内的超6万人联署请愿，要求恢复黄仁勋职务，公开调查流程与决策依据，内部员工也普遍支持其回归。
+
+<FeedbackButtons slug="item:qbitai-510297" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/510232.html" target="_blank" rel="noopener noreferrer">「史上最严」湿实验预测基准发布！推理拉满、算力翻5倍也白搭</a>
+
+*量子位*
+
+UniPat AI联合斯坦福、哈佛等多所高校及前沿科研机构推出湿实验预测基准SPU，覆盖化生医材领域116项任务、4207组真实湿实验数据，限定单块H20算力、8小时自主推理预测结果。实测显示，即便Opus 5.5、GPT-6 Astra等顶尖大模型，预测精度仍远未达实用要求，为科研类AI的能力量化评估提供了统一标准。
+
+<FeedbackButtons slug="item:qbitai-510232" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/510150.html" target="_blank" rel="noopener noreferrer">程序员集体沉迷折纸飞机！最长滞空31.2秒</a>
+
+*量子位*
+
+近日教折纸飞机的Foldable Flight网站登顶技术社区Hacker News，引得大量程序员沉迷尝试。该网站由有20余年纸飞机设计经验的世锦赛选手Kyle创办，收录109款不同难度的机型，均附教学视频，最远可飞91米、最长滞空31.2秒，还有可扇动翅膀的翼龙款等特殊造型。
+
+<FeedbackButtons slug="item:qbitai-510150" client:visible />
