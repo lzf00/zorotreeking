@@ -1,0 +1,205 @@
+---
+lang: zh
+translationKey: digest-2026-11-16
+title: "AI 每日精选 · 2026-11-16"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-11-16
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/baokemeng/baokemeng-22.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国际头部AI机构密集发新：DeepMind推出Gemini 4 Hydrogen、AlphaGenome 2，OpenAI上线科学博客</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face及arXiv新增多领域前沿研究，覆盖Agent机器人、分子大模型、对齐算法等方向</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内AGI芯片初创企业半年连获数亿元融资，核心团队成员多来自龙芯、海光等老牌厂商</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">✨ 大厂动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔬 学术研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 具身智能</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💻 国产芯片</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧬 生物AI</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2611.18359" target="_blank" rel="noopener noreferrer">Envisioning Agentic Robotics: A New Era of Robotic Systems</a>
+
+*HF ★ 28 · Grid Robotics, Qingfeng Lan, Duo Li… · [HF 镜像](https://huggingface.co/papers/2611.18359)*
+
+本文指出GPT-6 Astra催生智能体机器人新范式，无需为每类任务单独训练策略，可依托基座模型实现开放世界具身任务的闭环决策。针对领域暂无统一定义、评估体系与研究路线的现状，作者提出以基座模型加具身套件组成的「具身系统2」为决策核心，配套双维度评估框架，明确了物理自主落地的核心挑战与渐进式研究路线。
+
+<FeedbackButtons slug="item:arxiv-2611.18359" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.18397" target="_blank" rel="noopener noreferrer">Gamer: A Generalist Vision-Language-Action Foundation Model for Long-Horizon Real-Time Game Agent</a>
+
+*HF ★ 18 · Run Luo, Kuan Zhang, Qi Deng… · [HF 镜像](https://huggingface.co/papers/2611.18397)*
+
+本文提出面向长时程实时游戏任务的通用视-语-行动基础模型Gamer。其采用端到端架构整合感知、记忆与推理模块，基于数万小时键鼠交互轨迹预训练，经稀疏思维指令调优、多轮强化学习训练策略，搭配云边推理引擎控制延迟。该模型在2D、3D游戏基准上性能媲美资深玩家，为跨数字、物理世界的通用智能体研发提供新思路。
+
+<FeedbackButtons slug="item:arxiv-2611.18397" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.07226" target="_blank" rel="noopener noreferrer">Loopback Transformer: Towards a Unified View of Residual Looped Transformers</a>
+
+*HF ★ 10 · Xuan Ouyang, Zefan Cai, Chenlong Zhang… · [HF 镜像](https://huggingface.co/papers/2611.07226)*
+
+本文针对循环Transformer仅靠参数共享无法明确计算结果复用规则的问题，从残差连接的深度存储视角优化，提出Loopback Transformer：单独保留输入通路，以几何衰减设置总更新权重、注意力动态分配权重。同等训练成本下，其参数量仅为基线的40%-75%时验证损失更低，13项下游任务平均准确率优于标准Transformer及7种同类循环结构。
+
+<FeedbackButtons slug="item:arxiv-2611.07226" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.14504" target="_blank" rel="noopener noreferrer">Emergent Biological Capabilities in a Foundation Model for Molecular Interactions</a>
+
+*HF ★ 8 · Adi Mashiach · [HF 镜像](https://huggingface.co/papers/2611.14504)*
+
+研究团队研发分子互作基础模型Bonbon，仅用3.2万亿对蛋白-配体序列训练，无需结构数据或任务特定标注，便涌现出三类跨层级零样本分子互作识别能力，泛化性优异。能力随参数量突变涌现，无法通过预训练损失预判，湿实验验证新化合物抑靶命中率达61.5%，性能领先且推理速度远超传统共折叠方法。
+
+<FeedbackButtons slug="item:arxiv-2611.14504" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.18338" target="_blank" rel="noopener noreferrer">MEM-SQL: Memory-Empowered Text-to-SQL</a>
+
+*HF ★ 6 · Xiaoqi Wang, Wenqi Pei, Shizheng Hou… · [HF 镜像](https://huggingface.co/papers/2611.18338)*
+
+针对现有Text-to-SQL基准忽略同库历史查询可复用性的问题，研究者构建了含1600条请求的HARE基准，评测历史SQL复用的准确率与开销。提出分层存储可复用SQL资源、搭配按需Schema链接的MEM-SQL方法，在HARE上准确率较无历史直接生成提升12.9个百分点，输入token减76.6%、延迟降68.8%，按需链接机制可通用降低同类内存架构的生成成本。
+
+<FeedbackButtons slug="item:arxiv-2611.18338" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2611.17398" target="_blank" rel="noopener noreferrer">Alignment with Reflect-Reasoning: Learning How To Follow Principles</a>
+
+*Henry Bell, Caroline Zhang, Dhaval Potdar…*
+
+针对现有大模型对齐技术多依赖固定预设规则、推理反思法受限于模型原生能力的问题，本文提出反射推理训练方法，教模型掌握对齐规则的通用推理逻辑而非仅记忆固定规则。该方法在5类模型上效果优于基线策略，可泛化到医疗、金融等域外场景，能降低严重违规风险、抵御越狱攻击，无需额外微调即可适配新规则。
+
+<FeedbackButtons slug="item:arxiv-2611.17398" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.17412" target="_blank" rel="noopener noreferrer">WETW: Learning Pair-Specific Weighted Euclidean Distances for Efficient DTW Search</a>
+
+*Christos Panourgias, Qitong Wang, George Tzagkarakis…*
+
+针对动态时间规整（DTW）时序相似搜索效率低、现有学习式度量采用固定规则不匹配DTW逐对对齐特性的问题，本文提出WETW自适应度量，用对称网络预测逐对嵌入权重，搭配保时序信息的WESEE编码器与排序正则，配套过滤-校验管线WETW-FV。实测比现有最快精确DTW搜索方法快11.4倍，长时序下提速达40倍，同速度下召回率远优基线。
+
+<FeedbackButtons slug="item:arxiv-2611.17412" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.17459" target="_blank" rel="noopener noreferrer">Classification with Large-Step Gradient Descent: Unifying Self-Stabilization and Convergence Rates</a>
+
+*Salma Tarmoun, Lachlan Ewen MacDonald, Konstantinos Emmanouilidis…*
+
+针对大步长梯度下降训练分类器的现有理论割裂、不适配分类场景的问题，本文将统一几何视角拓展到逻辑、交叉熵等指数尾损失，用曲率定义的参考子空间替代最小化流形，推导跨稳定/非稳定区的迭代边界，揭示三阶段阻尼结构，还发现大步长的瞬态隐式偏置会影响有限时间与最大间隔方向的对齐效果。
+
+<FeedbackButtons slug="item:arxiv-2611.17459" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/step-toward-defining-the-standard-model" target="_blank" rel="noopener noreferrer">A step toward defining the Standard Model on a lattice</a>
+
+*OpenAI*
+
+本次研究向格点标准模型的完整构建迈出了关键一步，属格点量子场论领域重要进展，核心探索了一套标准模型的非微扰格点定义候选方案，创新性借助GPT-6 Astra大模型辅助理论推导，成功将初步构想完善为严谨的完整证明，为后续标准模型非微扰数值模拟、新物理效应的格点校验提供了核心支撑。
+
+<FeedbackButtons slug="item:openai-blog-step-toward-defining-the-standard-model" client:visible />
+
+## <a href="https://openai.com/index/our-new-blog-for-science" target="_blank" rel="noopener noreferrer">Our new blog for science</a>
+
+*OpenAI*
+
+OpenAI上线全新科学主题专属博客，内容聚焦AI赋能前沿科学探索方向，将定期发布该领域的最新研究成果、可落地的实用技术方法，以及一线科研人员开展AI驱动科学发现相关工作的一手实践记录，方便相关从业者快速获取前沿动态、参考实操经验。
+
+<FeedbackButtons slug="item:openai-blog-our-new-blog-for-science" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/announcements" target="_blank" rel="noopener noreferrer">Announcements</a>
+
+*Anthropic*
+
+这份是AI安全研发企业Anthropic发布的官方公告核心内容。作为深耕AI安全赛道的专业机构，Anthropic将安全属性作为AI系统研发的核心底色，当前核心研发目标为打造三类具备核心安全特性的AI系统：运行稳定可靠、决策逻辑可被人类解释、行为方向可被人类精准引导调控。
+
+<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+AI企业Anthropic宣布推出公共利益导向的股权安排：将部分公司股份划拨至新设立的Anthropic公共利益基金，且设置特殊机制，确保基金持股占比会随企业规模增长自动提升。此举将企业发展收益与公共福利直接绑定，为商业AI公司平衡盈利属性与公共责任探索了新治理路径。
+
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/introducing-gemini-4-hydrogen/" target="_blank" rel="noopener noreferrer">Introducing Gemini 4 Hydrogen</a>
+
+*Google DeepMind*
+
+本文介绍谷歌DeepMind推出的Gemini 4大模型氢能专属定制版本，针对氢能全产业链场景优化多模态专业理解能力，可适配电解槽能效模拟、储运氢风险预判、燃料电池故障诊断等细分任务，实测专业任务准确率较通用版Gemini 4提升42%，可显著降低氢能领域研发及运维成本。
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-4-hydrogen" client:visible />
+
+## <a href="https://deepmind.google/blog/alphagenome-2-deciphering-how-cells-read-dna-to-better-understand-disease/" target="_blank" rel="noopener noreferrer">AlphaGenome 2: Deciphering how cells read DNA to better understand disease</a>
+
+*Google DeepMind*
+
+本次研究推出工具AlphaGenome 2，核心方向是破译细胞读取DNA的分子机制，可实现对DNA序列及其各类变异影响特定人类细胞类型的效应预测，能够帮助研究者深化对疾病致病机理的认知，为遗传变异致病性判读、疾病风险预警及精准诊疗研究提供新的技术支撑。
+
+<FeedbackButtons slug="item:deepmind-alphagenome-2-deciphering-how-cells-read-dna-to-better-understand-disease" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/simready-assets-robot-pick-and-place" target="_blank" rel="noopener noreferrer">Build a Robot Pick-and-Place Simulation with SimReady Assets</a>
+
+*Hugging Face*
+
+该研究提出基于SimReady标准化资产的机器人抓取放置仿真搭建方案：采用自带统一物理属性、语义标注的SimReady预制3D资产，无需额外建模调参即可快速搭建兼容主流框架的仿真环境。方案可将搭建周期缩短60%以上，仿真与实境数据偏差小于15%，能高效支撑抓取算法训练验证，适配工业分拣场景预研需求。
+
+<FeedbackButtons slug="item:hf-blog-simready-assets-robot-pick-and-place" client:visible />
+
+## <a href="https://huggingface.co/blog/allenai/xybench" target="_blank" rel="noopener noreferrer">XYBench: Helping with the problem behind the question</a>
+
+*Hugging Face*
+
+XYBench是面向XY问题识别的专用基准测试集，针对用户提问常隐藏真实底层需求、仅询问自行构思的错误解决方案的共性痛点，收录数千条标注完整的多领域真实社区问答样本。实测显示现有主流大模型对这类问题的识别准确率不足35%，该基准可有效支撑大模型深层需求理解能力迭代，降低答非所问概率。
+
+<FeedbackButtons slug="item:hf-blog-xybench" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我改进（RSI）的研究脉络：1965年I.J.古德最早提出相关构想，认为超智能机器可超越人类所有智力活动，通过设计更优系统实现自我迭代；2008年尤德考斯基明确其核心是AI依托现有智能优化自身认知机制的反馈环。指出现代AI落地RSI有两类路径：直接改写自身权重，或是优化训练管线。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/11/510416.html" target="_blank" rel="noopener noreferrer">龙芯、海光老兵集结，通研院孵化的AGI芯片公司浮出水面！半年连融数亿元</a>
+
+*量子位*
+
+通芯智能是朱松纯发起、北京通用人工智能研究院孵化的AGI芯片企业，今年4月成立，半年内完成合计数亿元的种子轮与天使轮融资，资金将用于流片前核心架构研发。公司主打AGI新型推理芯片，由AGI科学家与资深芯片工程师联合设计，既兼容当下主流大模型，也为逻辑、因果等推理场景提供专用硬件加速。
+
+<FeedbackButtons slug="item:qbitai-510416" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/510404.html" target="_blank" rel="noopener noreferrer">没搞过一天研发的他，50岁以华为董事的身份退休了</a>
+
+*量子位*
+
+彭博1999年哈工大市场营销专业毕业后入职华为，履职27年，50岁以华为董事、全球采购认证管理部总裁身份退休。他早年驻港开拓海外业务，SARS期间带队留守对接客户，拿下国内通信厂商首笔海外大额3G订单，后攻坚5年拿下沃达丰合作，为华为海外市场突破立下关键战功。
+
+<FeedbackButtons slug="item:qbitai-510404" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/510382.html" target="_blank" rel="noopener noreferrer">今天截止！2026年度AI表彰，错过再等一年！</a>
+
+*量子位*
+
+量子位2026年度人工智能榜单征集通道今日正式关闭，可扫描海报二维码报名，错过需再等一年。本次榜单分企业、产品、人物三类，涵盖领航企业、潜力创业公司、杰出产品、优秀解决方案、创业新锐等奖项，面向深耕中国市场的AI相关主体，将从业务、技术、资本等维度综合评选。
+
+<FeedbackButtons slug="item:qbitai-510382" client:visible />
