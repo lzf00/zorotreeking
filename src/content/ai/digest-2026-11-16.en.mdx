@@ -1,0 +1,205 @@
+---
+lang: en
+translationKey: digest-2026-11-16
+title: "AI Daily Digest · 2026-11-16"
+description: "20 papers · multi-source aggregation + AI summaries"
+date: 2026-11-16
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/baokemeng/baokemeng-22.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second daily recap</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading international AI institutions have rolled out a wave of new releases: DeepMind launched Gemini 4 Hydrogen and AlphaGenome 2, and OpenAI launched its dedicated science blog</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face and arXiv have added cutting-edge cross-domain research covering agent robotics, large molecular models, alignment algorithms and other directions</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">A domestic AGI chip startup has raised hundreds of millions of yuan in financing within half a year, with core team members mostly from established manufacturers such as Loongson and Hygon</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">✨ Big Tech Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔬 Academic Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Embodied Intelligence</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💻 Domestic Chips</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧬 Biological AI</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2611.18359" target="_blank" rel="noopener noreferrer">Envisioning Agentic Robotics: A New Era of Robotic Systems</a>
+
+*HF ★ 28 · Grid Robotics, Qingfeng Lan, Duo Li… · [HF Mirror](https://huggingface.co/papers/2611.18359)*
+
+This paper points out that GPT-6 Astra has spawned a new paradigm for agentic robotics, eliminating the need to train separate strategies for each type of task, and can realize closed-loop decision-making for open-world embodied tasks relying on the base model. Addressing the current lack of unified definitions, evaluation systems and research roadmaps in the field, the authors propose the "Embodied System 2" composed of a base model plus embodied toolkit as the decision-making core, paired with a two-dimensional evaluation framework, clarifying the core challenges and incremental research roadmap for physical autonomous deployment.
+
+<FeedbackButtons slug="item:arxiv-2611.18359" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.18397" target="_blank" rel="noopener noreferrer">Gamer: A Generalist Vision-Language-Action Foundation Model for Long-Horizon Real-Time Game Agent</a>
+
+*HF ★ 18 · Run Luo, Kuan Zhang, Qi Deng… · [HF Mirror](https://huggingface.co/papers/2611.18397)*
+
+This paper proposes Gamer, a generalist vision-language-action foundation model for long-horizon real-time game tasks. It adopts an end-to-end architecture integrating perception, memory and inference modules, is pretrained on tens of thousands of hours of keyboard and mouse interaction trajectories, optimized via sparse chain-of-thought instruction tuning and multi-round reinforcement learning training strategies, and paired with a cloud-edge inference engine to control latency. The model performs on par with senior players on 2D and 3D game benchmarks, providing new ideas for the research and development of general agents across digital and physical worlds.
+
+<FeedbackButtons slug="item:arxiv-2611.18397" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.07226" target="_blank" rel="noopener noreferrer">Loopback Transformer: Towards a Unified View of Residual Looped Transformers</a>
+
+*HF ★ 10 · Xuan Ouyang, Zefan Cai, Chenlong Zhang… · [HF Mirror](https://huggingface.co/papers/2611.07226)*
+
+Aiming at the problem that recurrent Transformers only rely on parameter sharing and cannot clarify calculation result reuse rules, this paper optimizes from the perspective of deep storage of residual connections, and proposes Loopback Transformer: it separately retains the input path, sets total update weights with geometric decay, and dynamically allocates weights via attention. At the same training cost, it achieves lower validation loss when its parameter count is only 40%-75% of the baseline, and its average accuracy on 13 downstream tasks outperforms standard Transformer and 7 similar recurrent architectures.
+
+<FeedbackButtons slug="item:arxiv-2611.07226" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.14504" target="_blank" rel="noopener noreferrer">Emergent Biological Capabilities in a Foundation Model for Molecular Interactions</a>
+
+*HF ★ 8 · Adi Mashiach · [HF Mirror](https://huggingface.co/papers/2611.14504)*
+
+The research team developed Bonbon, a foundation model for molecular interactions. Trained only on 3.2 trillion pairs of protein-ligand sequences, without requiring structural data or task-specific annotations, it emerged with three types of cross-level zero-shot molecular interaction recognition capabilities with excellent generalization performance. The capabilities emerge abruptly as parameter count increases, which cannot be predicted by pretraining loss. Wet lab verification shows the target inhibition hit rate of new compounds reaches 61.5%, with leading performance and inference speed far exceeding traditional co-folding methods.
+
+<FeedbackButtons slug="item:arxiv-2611.14504" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.18338" target="_blank" rel="noopener noreferrer">MEM-SQL: Memory-Empowered Text-to-SQL</a>
+
+*HF ★ 6 · Xiaoqi Wang, Wenqi Pei, Shizheng Hou… · [HF Mirror](https://huggingface.co/papers/2611.18338)*
+
+Addressing the problem that existing Text-to-SQL benchmarks ignore the reusability of historical queries from the same database, researchers built the HARE benchmark containing 1600 requests to evaluate the accuracy and overhead of historical SQL reuse. They proposed the MEM-SQL method, which uses hierarchical storage of reusable SQL resources paired with on-demand Schema linking. On HARE, its accuracy is 12.9 percentage points higher than direct generation without historical data, input tokens are reduced by 76.6%, latency is reduced by 68.8%, and the on-demand linking mechanism can generally reduce the generation cost of similar memory architectures.
+
+<FeedbackButtons slug="item:arxiv-2611.18338" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2611.17398" target="_blank" rel="noopener noreferrer">Alignment with Reflect-Reasoning: Learning How To Follow Principles</a>
+
+*Henry Bell, Caroline Zhang, Dhaval Potdar…*
+
+Aiming at the problem that existing LLM alignment technologies mostly rely on fixed preset rules, and reflection reasoning methods are limited by the native capabilities of the model, this paper proposes a reflection reasoning training method that teaches the model to master the general reasoning logic of alignment rules rather than just memorizing fixed rules. This method outperforms baseline strategies on 5 types of models, can be generalized to out-of-domain scenarios such as healthcare and finance, can reduce the risk of serious violations and resist jailbreak attacks, and can adapt to new rules without additional fine-tuning.
+
+<FeedbackButtons slug="item:arxiv-2611.17398" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.17412" target="_blank" rel="noopener noreferrer">WETW: Learning Pair-Specific Weighted Euclidean Distances for Efficient DTW Search</a>
+
+*Christos Panourgias, Qitong Wang, George Tzagkarakis…*
+
+Aiming at the low efficiency of dynamic time warping (DTW) time series similarity search, and the problem that existing learning-based metrics use fixed rules that do not match the pairwise alignment characteristics of DTW, this paper proposes the WETW adaptive metric, which uses a symmetric network to predict pairwise embedding weights, paired with a WESEE encoder that preserves time series information and ranking regularization, along with a filter-verify pipeline WETW-FV. Actual measurements show it is 11.4 times faster than the current fastest accurate DTW search method, with speedup up to 40 times for long time series, and recall rate far outperforms baselines at the same speed.
+
+<FeedbackButtons slug="item:arxiv-2611.17412" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.17459" target="_blank" rel="noopener noreferrer">Classification with Large-Step Gradient Descent: Unifying Self-Stabilization and Convergence Rates</a>
+
+*Salma Tarmoun, Lachlan Ewen MacDonald, Konstantinos Emmanouilidis…*
+
+Aiming at the problem that existing theories of large-step gradient descent for training classifiers are fragmented and not suitable for classification scenarios, this paper extends the unified geometric perspective to exponential tail losses such as logistic and cross-entropy, replaces the minimization manifold with a reference subspace defined by curvature, derives the iteration boundary across stable/non-stable regions, reveals the three-stage damping structure, and also finds that the transient implicit bias of large step sizes affects the alignment effect between finite time and maximum margin direction.
+
+<FeedbackButtons slug="item:arxiv-2611.17459" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/step-toward-defining-the-standard-model" target="_blank" rel="noopener noreferrer">A step toward defining the Standard Model on a lattice</a>
+
+*OpenAI*
+
+This research has taken a key step toward the complete construction of the lattice Standard Model, which is an important progress in the field of lattice quantum field theory. The core exploration is a set of candidate non-perturbative lattice definition schemes for the Standard Model, which innovatively uses the GPT-6 Astra large model to assist theoretical derivation, and successfully improves the initial concept into a rigorous complete proof, providing core support for subsequent non-perturbative numerical simulation of the Standard Model and lattice verification of new physical effects.
+
+<FeedbackButtons slug="item:openai-blog-step-toward-defining-the-standard-model" client:visible />
+
+## <a href="https://openai.com/index/our-new-blog-for-science" target="_blank" rel="noopener noreferrer">Our new blog for science</a>
+
+*OpenAI*
+
+OpenAI has launched a new exclusive science-themed blog, with content focusing on the direction of AI-enabled cutting-edge scientific exploration. It will regularly publish the latest research results in this field, practical implementable technical methods, and first-hand practice records of front-line researchers carrying out AI-driven scientific discovery work, making it convenient for relevant practitioners to quickly obtain cutting-edge trends and refer to practical experience.
+
+<FeedbackButtons slug="item:openai-blog-our-new-blog-for-science" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/announcements" target="_blank" rel="noopener noreferrer">Announcements</a>
+
+*Anthropic*
+
+This is the core content of the official announcement released by AI security R&D enterprise Anthropic. As a professional institution deeply engaged in the AI safety track, Anthropic takes safety attributes as the core foundation of AI system R&D, and its current core R&D goal is to build three types of AI systems with core safety features: stable and reliable operation, decision-making logic explainable by humans, and behavior direction that can be accurately guided and regulated by humans.
+
+<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+AI company Anthropic announced the launch of a public benefit-oriented equity arrangement: part of the company's shares will be allocated to the newly established Anthropic Public Benefit Fund, and a special mechanism is set up to ensure that the fund's shareholding ratio will automatically increase as the enterprise grows. This move directly binds the enterprise's development benefits with public welfare, exploring a new governance path for commercial AI companies to balance profit attributes and public responsibilities.
+
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/introducing-gemini-4-hydrogen/" target="_blank" rel="noopener noreferrer">Introducing Gemini 4 Hydrogen</a>
+
+*Google DeepMind*
+
+This article introduces the exclusive customized version of the Gemini 4 large model for the hydrogen energy industry launched by Google DeepMind, which optimizes multimodal professional understanding capabilities for the entire hydrogen energy industry chain scenarios, and can adapt to specialized tasks such as electrolyzer energy efficiency simulation, hydrogen storage and transportation risk prediction, and fuel cell fault diagnosis. Actual measurements show that the accuracy of professional tasks is 42% higher than that of the general version of Gemini 4, which can significantly reduce R&D and operation and maintenance costs in the hydrogen energy field.
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-4-hydrogen" client:visible />
+
+## <a href="https://deepmind.google/blog/alphagenome-2-deciphering-how-cells-read-dna-to-better-understand-disease/" target="_blank" rel="noopener noreferrer">AlphaGenome 2: Deciphering how cells read DNA to better understand disease</a>
+
+*Google DeepMind*
+
+This research launches the tool AlphaGenome 2, whose core direction is to decipher the molecular mechanism by which cells read DNA. It can predict the effect of DNA sequences and their various variants on specific human cell types, helping researchers deepen their understanding of disease pathogenesis, and providing new technical support for the interpretation of the pathogenicity of genetic variants, disease risk warning and precision diagnosis and treatment research.
+
+<FeedbackButtons slug="item:deepmind-alphagenome-2-deciphering-how-cells-read-dna-to-better-understand-disease" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/simready-assets-robot-pick-and-place" target="_blank" rel="noopener noreferrer">Build a Robot Pick-and-Place Simulation with SimReady Assets</a>
+
+*Hugging Face*
+
+This research proposes a robot pick-and-place simulation construction scheme based on SimReady standardized assets: using prefabricated SimReady 3D assets with unified physical properties and semantic annotations, a simulation environment compatible with mainstream frameworks can be quickly built without additional modeling and parameter tuning. The scheme can shorten the construction cycle by more than 60%, and the deviation between simulation and real-world data is less than 15%, which can efficiently support the training and verification of grasping algorithms and meet the pre-research needs of industrial sorting scenarios.
+
+<FeedbackButtons slug="item:hf-blog-simready-assets-robot-pick-and-place" client:visible />
+
+## <a href="https://huggingface.co/blog/allenai/xybench" target="_blank" rel="noopener noreferrer">XYBench: Helping with the problem behind the question</a>
+
+*Hugging Face*
+
+XYBench is a dedicated benchmark test set for XY problem identification. Aiming at the common pain point that user questions often hide real underlying needs and only ask about the wrong solution they have conceived, it includes thousands of fully annotated real community question and answer samples from multiple fields. Actual tests show that the recognition accuracy of existing mainstream large models for such problems is less than 35%, and this benchmark can effectively support the iteration of the deep demand understanding ability of large models and reduce the probability of irrelevant answers.
+
+<FeedbackButtons slug="item:hf-blog-xybench" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This paper sorts out the research context of recursive self-improvement (RSI): I.J. Good first proposed the relevant concept in 1965, believing that superintelligent machines can surpass all human intellectual activities and achieve self-iteration by designing better systems; in 2008, Eliezer Yudkowsky clarified that its core is the feedback loop where AI optimizes its own cognitive mechanism relying on existing intelligence. It points out that there are two paths for modern AI to implement RSI: directly rewriting its own weights, or optimizing the training pipeline.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/11/510416.html" target="_blank" rel="noopener noreferrer">Veterans from Loongson and Hygon Gather, AGI Chip Company Incubated by Beijing General Artificial Intelligence Institute Emerges! Raised Hundreds of Millions of Yuan in Half a Year</a>
+
+*QbitAI*
+
+Tongxin Intelligence is an AGI chip company initiated by Songchun Zhu and incubated by the Beijing General Artificial Intelligence Research Institute. Founded in April this year, it completed a total of hundreds of millions of yuan in seed round and angel round financing within half a year, and the funds will be used for core architecture R&D before tape-out. The company focuses on new AGI inference chips, jointly designed by AGI scientists and senior chip engineers, which are not only compatible with current mainstream large models, but also provide dedicated hardware acceleration for reasoning scenarios such as logic and causality.
+
+<FeedbackButtons slug="item:qbitai-510416" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/510404.html" target="_blank" rel="noopener noreferrer">He Never Worked in R&D for a Single Day, Retired at 50 as a Huawei Director</a>
+
+*QbitAI*
+
+Peng Bo graduated from Harbin Institute of Technology in 1999 with a major in marketing, joined Huawei, served for 27 years, and retired at the age of 50 as a director of Huawei and president of the Global Procurement Certification Management Department. In his early years, he was stationed in Hong Kong to develop overseas business, led his team to stay and connect with customers during the SARS period, won the first large overseas 3G order for domestic communication manufacturers, and then spent 5 years securing cooperation with Vodafone, making key contributions to Huawei's breakthrough in overseas markets.
+
+<FeedbackButtons slug="item:qbitai-510404" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/510382.html" target="_blank" rel="noopener noreferrer">Deadline Today! 2026 AI Awards, Wait Another Year If You Miss It</a>
+
+*QbitAI*
+
+The submission channel for QbitAI's 2026 Annual AI Awards officially closes today. You can scan the QR code on the poster to sign up, and you will have to wait another year if you miss it. This list is divided into three categories: enterprises, products, and figures, covering awards such as leading enterprises, promising startups, outstanding products, excellent solutions, and cutting-edge entrepreneurs. It is open to AI-related entities deeply engaged in the Chinese market, and will be comprehensively evaluated from dimensions such as business, technology, and capital.
+
+<FeedbackButtons slug="item:qbitai-510382" client:visible />
