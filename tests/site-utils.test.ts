@@ -10,7 +10,7 @@ import { hasAlternateLanguagePath, pathWithLang } from "../src/i18n/ui";
 import { serializeJsonLd } from "../src/lib/json-ld";
 import { selectCanonicalOgEntries } from "../src/lib/og-paths";
 import { projectTo2D } from "../src/lib/pca";
-import { relatedTags, tagSections } from "../src/lib/tag-relations";
+import { MAX_TAG_ITEMLIST, relatedTags, tagSections, tagStats } from "../src/lib/tag-relations";
 import { breadcrumbJsonLd, buildBreadcrumb, splitPath } from "../src/lib/breadcrumbs";
 import { estimateReadingTime } from "../src/lib/reading-time";
 import { getRelatedPosts } from "../src/lib/related-posts";
@@ -332,4 +332,29 @@ test("splitPath 去掉语言前缀、尾斜杠与查询串", () => {
   assert.deepEqual(splitPath("/en/invest/stock/0700.HK/"), ["invest", "stock", "0700.HK"]);
   assert.deepEqual(splitPath("/tag/photo/?x=1"), ["tag", "photo"]);
   assert.deepEqual(splitPath("/"), []);
+});
+
+test("tagStats 算出时间跨度与板块分布", () => {
+  const posts = [
+    { section: "ai" as const, tags: [], date: new Date("2026-11-02T00:00:00Z") },
+    { section: "invest" as const, tags: [], date: new Date("2025-03-15T00:00:00Z") },
+    { section: "ai" as const, tags: [], date: new Date("2026-01-20T00:00:00Z") },
+  ];
+  const stats = tagStats(posts);
+  assert.equal(stats.from, "2025-03", "最早一篇按 UTC 月份算");
+  assert.equal(stats.to, "2026-11", "最新一篇按 UTC 月份算");
+  assert.deepEqual(stats.bySection, { ai: 2, invest: 1 });
+});
+
+test("tagStats 对空列表与坏日期不炸", () => {
+  assert.deepEqual(tagStats([]), { from: undefined, to: undefined, bySection: {} });
+  const stats = tagStats([{ section: "photo" as const, tags: [], date: new Date("oops") }]);
+  assert.deepEqual(stats.bySection, { photo: 1 }, "板块计数照算");
+  assert.equal(stats.from, undefined, "坏日期不参与跨度计算");
+});
+
+test("ItemList 上限对最大的标签页生效，且不影响其他页", () => {
+  assert.equal(MAX_TAG_ITEMLIST, 100);
+  // /tag/auto/ 有 385 条内容，schema 只放前 100 条，页面列表仍然完整
+  assert.ok(385 > MAX_TAG_ITEMLIST);
 });

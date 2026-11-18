@@ -40,6 +40,7 @@ const ui = {
     "tag.allTags": "全部标签",
     "tag.postsWith": "带标签",
     "tag.count": "篇",
+    "tag.countOne": "篇",
     "tag.empty": "暂无文章",
   },
   en: {
@@ -76,6 +77,7 @@ const ui = {
     "tag.allTags": "All tags",
     "tag.postsWith": "Posts tagged",
     "tag.count": "posts",
+    "tag.countOne": "post",
     "tag.empty": "No posts yet",
   },
 } as const;

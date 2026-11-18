@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { buildTagIndex, relatedTags, tagSections, tagToSlug } from "@/lib/tags";
+import { buildTagIndex, recentInSection, relatedTags, tagSections, tagToSlug } from "@/lib/tags";
+import { MAX_TAG_ITEMLIST, tagStats } from "@/lib/tag-relations";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
 import { tagDescription } from "@/lib/descriptions";
 import TagIntro from "@/components/TagIntro.astro";
@@ -23,6 +24,11 @@ const t = useTranslations(lang);
 const description = tagDescription(tag, posts, lang);
 const related = relatedTags(tag, posts);
 const sections = tagSections(posts);
+const stats = tagStats(posts);
+// 只有一两篇内容的标签页正文很短，补一块「同栏目最近文章」，避免成为纯列表空页
+const more = posts.length < 3 && posts[0]
+  ? await recentInSection(lang, posts[0].section, 5, posts.map((p) => p.slug))
+  : [];
 
 const sectionColor: Record<string, string> = {
   ai: "text-section-ai",
@@ -43,7 +49,7 @@ const sectionLabel: Record<string, string> = {
   description={description}
   schemaType="CollectionPage"
   breadcrumbTitle={`#${tag}`}
-  listItems={posts.map((post) => ({
+  listItems={posts.slice(0, MAX_TAG_ITEMLIST).map((post) => ({
     name: post.title,
     url: pathWithLang(`/${post.section}/${post.slug}`, lang),
   }))}
@@ -51,8 +57,10 @@ const sectionLabel: Record<string, string> = {
   <section class="max-w-3xl mx-auto px-5 pt-12 pb-6">
     <a href={pathWithLang("/tag", lang)} class="text-sm text-[var(--text-tertiary)] hover:text-[var(--text-secondary)]">← {t("tag.allTags")}</a>
     <h1 class="mt-2 font-serif text-5xl sm:text-6xl leading-[0.95] tracking-tight">#{tag}</h1>
-    <p class="mt-2 text-sm text-[var(--text-tertiary)]">{posts.length} {t("tag.count")}</p>
-    <TagIntro tag={tag} lang={lang} sections={sections} related={related} count={posts.length} />
+    <p class="mt-2 text-sm text-[var(--text-tertiary)]">
+      {posts.length} {posts.length === 1 ? t("tag.countOne") : t("tag.count")}
+    </p>
+    <TagIntro tag={tag} lang={lang} sections={sections} related={related} count={posts.length} from={stats.from} to={stats.to} bySection={stats.bySection} />
   </section>
   <section class="max-w-3xl mx-auto px-5">
     <ul class="divide-y divide-[var(--border)]">
@@ -75,4 +83,24 @@ const sectionLabel: Record<string, string> = {
       {posts.length === 0 && <li class="py-12 text-center text-[var(--text-tertiary)]">{t("tag.empty")}</li>}
     </ul>
   </section>
+  {more.length > 0 && (
+    <section class="max-w-3xl mx-auto px-5 pb-16">
+      <h2 class="text-base font-semibold tracking-tight mb-3">
+        More from {t(`section.${posts[0].section}.title`)}
+      </h2>
+      <ul class="divide-y divide-[var(--border)] border-t border-[var(--border)]">
+        {more.map((m) => (
+          <li class="py-3">
+            <a href={pathWithLang(`/${m.section}/${m.slug}`, lang)} class="group flex items-baseline justify-between gap-4">
+              <span class="min-w-0 text-sm font-medium group-hover:text-[var(--text-secondary)]">{m.title}</span>
+              <time class="shrink-0 text-xs text-[var(--text-tertiary)] font-mono">{m.date.toISOString().slice(0, 10)}</time>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <a href={pathWithLang(`/${posts[0].section}`, lang)} class="mt-4 inline-block text-xs text-[var(--text-tertiary)] hover:text-[var(--text-secondary)]">
+        All {t(`section.${posts[0].section}.title`)} →
+      </a>
+    </section>
+  )}
 </BaseLayout>

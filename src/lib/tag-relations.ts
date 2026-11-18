@@ -42,3 +42,34 @@ export function tagSections(posts: TaggedPost[]) {
   const seen = new Set(posts.map((p) => p.section));
   return order.filter((section) => seen.has(section));
 }
+
+/**
+ * 标签页的「时间跨度 + 板块分布」统计。
+ *
+ * 目的和 `relatedTags` 一样：让标签页正文有实质信息量而不是一行计数——读者想知道
+ * 这个标签是不是还在更新、主要落在哪个栏目。日期格式化放在页面里做（要按语言），
+ * 这里只负责算。
+ */
+export function tagStats<T extends TaggedPost & { date: Date }>(posts: T[]) {
+  const bySection = {} as Partial<Record<TaggedPost["section"], number>>;
+  let newest: Date | null = null;
+  let oldest: Date | null = null;
+  for (const post of posts) {
+    bySection[post.section] = (bySection[post.section] ?? 0) + 1;
+    const t = post.date instanceof Date ? post.date.getTime() : NaN;
+    if (!Number.isFinite(t)) continue;
+    if (newest === null || t > newest.getTime()) newest = new Date(t);
+    if (oldest === null || t < oldest.getTime()) oldest = new Date(t);
+  }
+  const month = (d: Date | null) => (d ? `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}` : undefined);
+  return { from: month(oldest), to: month(newest), bySection };
+}
+
+/**
+ * 标签页 ItemList 结构化数据的条数上限。
+ *
+ * `/tag/auto/` 一个页面挂着 385 条内容（348 KB），其中 ItemList 的 JSON 占了四十多 KB。
+ * 搜索引擎只读列表开头的一批，没必要把整页都塞进结构化数据；列表本身仍然完整渲染，
+ * 所以对读者没有损失。
+ */
+export const MAX_TAG_ITEMLIST = 100;

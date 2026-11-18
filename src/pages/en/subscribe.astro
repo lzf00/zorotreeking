@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import SubscribeContent from "@/components/SubscribeContent.astro";
 
 const feed = "https://www.zorotreeking.online/rss.xml";
 const buttondownUser = import.meta.env.PUBLIC_BUTTONDOWN_USERNAME || "zifei";
@@ -93,6 +94,8 @@ const appReaders = [
     <p class="mt-12 text-sm text-[var(--text-tertiary)]">
       Or view the <a href="/rss.xml" class="underline hover:text-[var(--text)] transition-colors">raw XML</a>.
     </p>
+
+    <SubscribeContent lang="en" />
   </section>
 </BaseLayout>
 

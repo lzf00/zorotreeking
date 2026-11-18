@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import SubscribeContent from "@/components/SubscribeContent.astro";
 
 const feed = "https://www.zorotreeking.online/rss.xml";
 // Buttondown 邮件订阅。username 是公开 handle（buttondown.com/<username>），
@@ -109,6 +110,8 @@ const appReaders = [
     <p class="mt-12 text-sm text-[var(--text-tertiary)]">
       或直接打开 <a href="/rss.xml" class="underline hover:text-[var(--text)] transition-colors">原始 XML</a>。
     </p>
+
+    <SubscribeContent lang="zh" />
   </section>
 </BaseLayout>
 

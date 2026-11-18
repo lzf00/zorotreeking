@@ -274,14 +274,14 @@ export default function LiveHoldings({ holdings, dataMode = "placeholder", simul
           <table className="w-full text-sm">
             <thead className="bg-[var(--bg-soft)] text-xs text-[var(--text-secondary)]">
               <tr>
-                <th scope="col" className="text-left p-3 font-semibold">{L.colCode}</th>
-                <th scope="col" className="text-left p-3 font-semibold">{L.colFund}</th>
-                {dataMode !== "placeholder" && <th scope="col" className="text-right p-3 font-semibold">{dataMode === "simulation" ? L.colSharesSimulated : L.colShares}</th>}
-                {dataMode !== "placeholder" && <th scope="col" className="text-right p-3 font-semibold">{dataMode === "simulation" ? L.colBaselineNav : L.colCostNav}</th>}
-                <th scope="col" className="text-right p-3 font-semibold">{L.colNav}</th>
-                <th scope="col" className="text-right p-3 font-semibold">{L.colNavChange}</th>
-                {dataMode !== "placeholder" && <th scope="col" className="text-right p-3 font-semibold">{dataMode === "simulation" ? L.colMvSimulated : L.colMv}</th>}
-                {dataMode !== "placeholder" && <th scope="col" className="text-right p-3 font-semibold">{L.colPnl}</th>}
+                <th scope="col" className="text-left p-2 sm:p-3 font-semibold">{L.colCode}</th>
+                <th scope="col" className="text-left p-2 sm:p-3 font-semibold">{L.colFund}</th>
+                {dataMode !== "placeholder" && <th scope="col" className="hidden sm:table-cell text-right p-2 sm:p-3 font-semibold">{dataMode === "simulation" ? L.colSharesSimulated : L.colShares}</th>}
+                {dataMode !== "placeholder" && <th scope="col" className="hidden sm:table-cell text-right p-2 sm:p-3 font-semibold">{dataMode === "simulation" ? L.colBaselineNav : L.colCostNav}</th>}
+                <th scope="col" className="text-right p-2 sm:p-3 font-semibold">{L.colNav}</th>
+                <th scope="col" className="text-right p-2 sm:p-3 font-semibold">{L.colNavChange}</th>
+                {dataMode !== "placeholder" && <th scope="col" className="text-right p-2 sm:p-3 font-semibold">{dataMode === "simulation" ? L.colMvSimulated : L.colMv}</th>}
+                {dataMode !== "placeholder" && <th scope="col" className="text-right p-2 sm:p-3 font-semibold">{L.colPnl}</th>}
               </tr>
             </thead>
             <tbody>
@@ -291,10 +291,10 @@ export default function LiveHoldings({ holdings, dataMode = "placeholder", simul
                 const displayName = lang === "en" ? (r.h.nameEn ?? r.h.name) : r.h.name;
                 return (
                   <tr key={r.h.symbol} className="border-t border-[var(--border)]">
-                    <td className="p-3 font-mono text-xs">{r.h.symbol}</td>
-                    <td className="p-3 max-w-[180px] truncate" title={displayName}>{displayName}</td>
+                    <td className="p-2 sm:p-3 font-mono text-xs">{r.h.symbol}</td>
+                    <td className="p-2 sm:p-3 max-w-[110px] sm:max-w-[180px] truncate" title={displayName}>{displayName}</td>
                     {dataMode !== "placeholder" && (
-                      <td className="p-3 text-right tabular-nums">
+                      <td className="hidden sm:table-cell p-2 sm:p-3 text-right tabular-nums">
                         <div>{r.valuedShares != null ? fmt(r.valuedShares, 2) : L.none}</div>
                         {dataMode === "simulation" && r.h.initialCapital != null && (
                           <div className="mt-0.5 text-[10px] text-[var(--text-tertiary)]">{L.principal(fmt(r.h.initialCapital, 0))}</div>
@@ -302,23 +302,23 @@ export default function LiveHoldings({ holdings, dataMode = "placeholder", simul
                       </td>
                     )}
                     {dataMode !== "placeholder" && (
-                      <td className="p-3 text-right tabular-nums text-[var(--text-secondary)]">
+                      <td className="hidden sm:table-cell p-2 sm:p-3 text-right tabular-nums text-[var(--text-secondary)]">
                         <div>{fmt(r.h.costAvg, 4)}</div>
                         {dataMode === "simulation" && r.h.baselineDate && (
                           <div className="mt-0.5 text-[10px] text-[var(--text-tertiary)]">{r.h.baselineDate}</div>
                         )}
                       </td>
                     )}
-                    <td className="p-3 text-right tabular-nums">
+                    <td className="p-2 sm:p-3 text-right tabular-nums">
                       <div>{r.nav != null ? fmt(r.nav, 4) : L.none}</div>
                       {r.q?.navDate && <div className="mt-0.5 text-[10px] text-[var(--text-tertiary)]">{r.q.navDate}</div>}
                     </td>
-                    <td className="p-3 text-right tabular-nums" style={{ color: pctColor }}>
+                    <td className="p-2 sm:p-3 text-right tabular-nums" style={{ color: pctColor }}>
                       {r.pct != null ? `${r.pct > 0 ? "+" : ""}${fmt(r.pct, 2)}%` : L.none}
                     </td>
-                    {dataMode !== "placeholder" && <td className="p-3 text-right tabular-nums">{r.marketValue != null ? `¥${fmt(r.marketValue, 0)}` : L.none}</td>}
+                    {dataMode !== "placeholder" && <td className="p-2 sm:p-3 text-right tabular-nums">{r.marketValue != null ? `¥${fmt(r.marketValue, 0)}` : L.none}</td>}
                     {dataMode !== "placeholder" && (
-                      <td className="p-3 text-right tabular-nums" style={{ color: pnlColor }}>
+                      <td className="p-2 sm:p-3 text-right tabular-nums" style={{ color: pnlColor }}>
                         {r.pnl != null ? `${formatSignedCurrency(r.pnl, 0)}  (${r.pnlPct! >= 0 ? "+" : ""}${fmt(r.pnlPct!, 2)}%)` : L.none}
                       </td>
                     )}

@@ -11,9 +11,14 @@ interface Props {
   sections: ("ai" | "invest" | "photo" | "hike")[];
   related: { tag: string; slug: string; count: number }[];
   count: number;
+  /** 这个标签下最早 / 最新一篇的日期（YYYY-MM），用来交代时间跨度 */
+  from?: string;
+  to?: string;
+  /** 各板块的篇数，用来回答「这个标签主要落在哪个板块」 */
+  bySection?: Partial<Record<"ai" | "invest" | "photo" | "hike", number>>;
 }
 
-const { tag, lang, sections, related, count } = Astro.props;
+const { tag, lang, sections, related, count, from, to, bySection } = Astro.props;
 const t = useTranslations(lang);
 const sectionLabel: Record<string, string> = {
   ai: t("section.ai.title"),
@@ -22,6 +27,18 @@ const sectionLabel: Record<string, string> = {
   hike: t("section.hike.title"),
 };
 const sectionNames = sections.map((s) => sectionLabel[s]).join(lang === "zh" ? "、" : ", ");
+const sectionHref: Record<string, string> = {
+  ai: pathWithLang("/ai", lang),
+  invest: pathWithLang("/invest", lang),
+  photo: pathWithLang("/photo", lang),
+  hike: pathWithLang("/hike", lang),
+};
+// 只保留有内容的板块，按篇数从多到少
+const breakdown = sections
+  .map((s) => ({ section: s, label: sectionLabel[s], n: bySection?.[s] ?? 0 }))
+  .filter((row) => row.n > 0)
+  .sort((a, b) => b.n - a.n);
+const span = from && to ? (from === to ? from : `${from} → ${to}`) : null;
 ---
 
 <div class="mt-6 space-y-3 text-sm leading-relaxed text-[var(--text-secondary)]">
@@ -35,6 +52,31 @@ const sectionNames = sections.map((s) => sectionLabel[s]).join(lang === "zh" ? "
       #{tag} works as a keyword index for this site: {count} {count === 1 ? "post carries" : "posts carry"} this tag,
       drawn from {sectionNames}. Entries are ordered newest first — posts that share a tag usually approach the same
       subject from different angles.
+    </p>
+  )}
+  {(breakdown.length > 1 || span) && (
+    <p class="text-[var(--text-tertiary)]">
+      {breakdown.length > 1 && (
+        <>
+          {lang === "zh" ? "分布：" : "Breakdown: "}
+          {breakdown.map((row, i) => (
+            <span>
+              {i > 0 && (lang === "zh" ? "、" : ", ")}
+              <a href={sectionHref[row.section]} class="underline decoration-1 underline-offset-2 hover:text-[var(--text)]">
+                {row.label}
+              </a>
+              {" "}{row.n}
+            </span>
+          ))}
+        </>
+      )}
+      {breakdown.length > 1 && span && <span>{lang === "zh" ? " · " : " · "}</span>}
+      {span && (
+        <span>
+          {lang === "zh" ? "时间跨度 " : "Published "}
+          {span}
+        </span>
+      )}
     </p>
   )}
   {related.length > 0 ? (

@@ -1,0 +1,116 @@
+---
+/**
+ * 订阅页的「你会收到什么」区块。
+ *
+ * 之前两个订阅页只有一块表单和几个阅读器链接，正文不到 70 个词——对第一次来的人
+ * 说明不了这个站写什么、多久发一次、邮箱会不会被拿去用。这里把这几件事一次讲清，
+ * 数字全部在构建时从内容集合里数出来，不写死。
+ */
+import { getCollection } from "astro:content";
+
+import { pathWithLang, useTranslations, type Lang } from "@/i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const sections = ["ai", "invest", "photo", "hike"] as const;
+const counts = Object.fromEntries(
+  await Promise.all(
+    sections.map(async (section) => [
+      section,
+      (await getCollection(section, (entry) => entry.data.lang === lang && !entry.data.draft)).length,
+    ]),
+  ),
+) as Record<(typeof sections)[number], number>;
+const total = sections.reduce((n, s) => n + counts[s], 0);
+
+const copy =
+  lang === "zh"
+    ? {
+        heading: "你会收到什么",
+        intro: `站点目前有 ${total} 篇内容，分成四个板块。订阅拿到的是「新写了一篇」这一个信号，不是推荐流：`,
+        frequencyHeading: "多久一封",
+        frequency:
+          "有更新才发，邮件会合并——最多每周两封，没有更新就不发。日报类内容（AI 资讯摘要、行情复盘）也会进来，但不会一天一封。",
+        privacyHeading: "邮箱怎么处理",
+        privacy:
+          "邮件由 Buttondown 托管：提交后需要点确认链接（double opt-in），每封邮件底部都有退订链接，退订即刻生效。没有广告、没有追踪像素、不会把地址给第三方。",
+        browseHeading: "不想订阅？",
+        browse:
+          "那就直接看：归档页按时间列全部内容，标签索引页按关键词找主题。RSS 也是全量输出，不需要注册。",
+        archive: "全部归档",
+        tags: "标签索引",
+      }
+    : {
+        heading: "What lands in your inbox",
+        intro: `${total} posts so far, across four sections. Subscribing gets you one signal — "something new was published" — not a recommendation feed:`,
+        frequencyHeading: "How often",
+        frequency:
+          "Only when something new exists, and emails are batched: at most two a week, nothing in quiet weeks. Daily digests (AI news briefs, market recaps) flow in too, but never one email per day.",
+        privacyHeading: "What happens to your address",
+        privacy:
+          "Email is hosted by Buttondown: you get a confirmation link after signing up (double opt-in), every email carries an unsubscribe link, and unsubscribing takes effect immediately. No ads, no tracking pixels, no handing addresses to third parties.",
+        browseHeading: "Rather not subscribe?",
+        browse:
+          "Then just read: the archive lists everything by date, and the tag index groups it by keyword. RSS carries the full feed and needs no account.",
+        archive: "Full archive",
+        tags: "Tag index",
+      };
+
+const sectionHref: Record<(typeof sections)[number], string> = {
+  ai: pathWithLang("/ai", lang),
+  invest: pathWithLang("/invest", lang),
+  photo: pathWithLang("/photo", lang),
+  hike: pathWithLang("/hike", lang),
+};
+const sectionEmoji: Record<(typeof sections)[number], string> = {
+  ai: "🧠",
+  invest: "📈",
+  photo: "📷",
+  hike: "🥾",
+};
+---
+
+<section class="mt-16 mx-auto max-w-xl text-left">
+  <h2 class="text-base font-semibold tracking-tight">{copy.heading}</h2>
+  <p class="mt-2 text-sm text-[var(--text-secondary)] leading-relaxed">{copy.intro}</p>
+
+  <ul class="mt-4 divide-y divide-[var(--border)] border-y border-[var(--border)]">
+    {sections.map((section) => (
+      <li class="py-3">
+        <a href={sectionHref[section]} class="group flex items-baseline gap-3">
+          <span aria-hidden="true" class="text-sm">{sectionEmoji[section]}</span>
+          <span class="min-w-0 flex-1">
+            <span class="text-sm font-medium group-hover:text-[var(--text)]">{t(`section.${section}.title`)}</span>
+            <span class="ml-2 text-xs text-[var(--text-tertiary)]">{t(`section.${section}.desc`)}</span>
+          </span>
+          <span class="text-xs text-[var(--text-tertiary)] tabular-nums shrink-0">{counts[section]}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+
+  <div class="mt-6 grid gap-4 sm:grid-cols-2">
+    <div>
+      <h3 class="text-xs uppercase tracking-[0.15em] text-[var(--text-tertiary)]">{copy.frequencyHeading}</h3>
+      <p class="mt-1.5 text-sm text-[var(--text-secondary)] leading-relaxed">{copy.frequency}</p>
+    </div>
+    <div>
+      <h3 class="text-xs uppercase tracking-[0.15em] text-[var(--text-tertiary)]">{copy.privacyHeading}</h3>
+      <p class="mt-1.5 text-sm text-[var(--text-secondary)] leading-relaxed">{copy.privacy}</p>
+    </div>
+  </div>
+
+  <div class="mt-6">
+    <h3 class="text-xs uppercase tracking-[0.15em] text-[var(--text-tertiary)]">{copy.browseHeading}</h3>
+    <p class="mt-1.5 text-sm text-[var(--text-secondary)] leading-relaxed">
+      {copy.browse}
+      <a href={pathWithLang("/explore", lang)} class="underline decoration-1 underline-offset-2 hover:text-[var(--text)]">{copy.archive}</a>
+      ·
+      <a href={pathWithLang("/tag", lang)} class="underline decoration-1 underline-offset-2 hover:text-[var(--text)]">{copy.tags}</a>
+    </p>
+  </div>
+</section>

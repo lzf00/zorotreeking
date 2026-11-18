@@ -31,6 +31,34 @@ async function getAllArticles(lang: Lang): Promise<ArticleRef[]> {
   return out.sort((a, b) => b.date.getTime() - a.date.getTime());
 }
 
+/**
+ * 某个板块下最近的文章（排除当前页里已有的 slug）。
+ *
+ * 用在「只有一两篇内容的标签页」上：这类页面正文天然很短，与其硬写文案，不如把同栏目
+ * 最近的几篇列出来——对读者有用，也顺手补了内链。
+ */
+export async function recentInSection(
+  lang: Lang,
+  section: "ai" | "invest" | "photo" | "hike",
+  limit = 5,
+  exclude: string[] = [],
+): Promise<ArticleRef[]> {
+  const items = await getCollection(section, (p) => p.data.lang === lang && !p.data.draft);
+  const skip = new Set(exclude);
+  return items
+    .map((it) => ({
+      section,
+      slug: it.data.translationKey,
+      title: it.data.title,
+      description: it.data.description,
+      date: it.data.date,
+      tags: it.data.tags ?? [],
+    }))
+    .filter((it) => !skip.has(it.slug))
+    .sort((a, b) => b.date.getTime() - a.date.getTime())
+    .slice(0, limit);
+}
+
 /** 标签 → 文章列表，按出现次数倒序的 tag 列表 */
 export async function buildTagIndex(lang: Lang) {
   const articles = await getAllArticles(lang);
