@@ -1019,3 +1019,22 @@ recharts 3 / marked 18），每条单独提交、单独回归，细节见 `docs/
   测量时也要在同一进程里先跑一轮丢弃的结果，别拿第一个页面的数字当基线；
 - Lighthouse CI 每轮跑 5 次取中位数、且每次新开 Chrome，所以它受这个偏差影响较小；
 - 跨页面比较要在**同一条件**下（同进程、同顺序策略）进行，否则 200–900 ms 的差异可能全是测量假象。
+
+### 本机基线里的 TBT 不可信（headless 无 GPU）
+
+`perf:local` 给首页量出过 perf **72**、TBT **964–1054 ms**，而同批 `/ai/` TBT 0、`/photo/` 184。
+看着像首页有 1 秒阻塞，实际是 headless Chrome 没有 GPU 导致的测量假象：
+
+| 证据 | 结果 |
+|---|---|
+| Lighthouse 主线程诊断 | 单个 1287 ms 任务，`bootup-time` 归因 **Unattributable**（不是 JS） |
+| 真实 CDP trace（4× CPU、桌面 1280） | 主线程最长任务 **2 ms**；最长事件是 `GPUTask` 141 / 136 / 80 ms |
+| 同页把视口缩到 390 | 最长任务仍是 2 ms |
+
+也就是说：那些“宇称”时间花在软件光栅上，被 Lighthouse 记进了主线程 `Other`。渐变、
+`backdrop-blur`、合成层多的页面（首页 8 张渐变卡片 + `animate-rise`）在无 GPU 环境里必然虚高。
+
+结论：
+- `perf`/`FCP`/`LCP`/`SI` 可信，**TBT 只看趋势**；
+- 判断真实 TBT 要么开带 GPU 的浏览器手跑 DevTools，要么接受 CI 的 300 ms 只做兜底阈值；
+- 首页不需要为此改样式（用户侧有 GPU，这部分是像素填充，不是脚本阻塞）。

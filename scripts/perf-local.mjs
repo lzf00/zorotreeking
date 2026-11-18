@@ -179,5 +179,6 @@ if (process.argv[1] && import.meta.url === new URL(`file://${process.argv[1]}`).
     const line = (cells) => `| ${cells.map((cell, index) => cell.padEnd(widths[index])).join(" | ")} |`;
     console.log([line(header), `| ${widths.map((width) => "-".repeat(width)).join(" | ")} |`, ...rows.map(line)].join("\n"));
     console.log(`\n本地基线（desktop preset + 4× CPU 节流，${runs} 次取中位数）。CI 上的分数会低一些且抖动更大，只适合和这个基线做相对比较。`);
+    console.log("注意：headless Chrome 没有 GPU，渐变/合成层多的页面会把软件光栅算进主线程，TBT 会虚高（首页实测 964–1054ms，但真实 trace 里没有任何 >2ms 的主线程任务）。TBT 只看趋势，别当回归判据。");
   }
 }
