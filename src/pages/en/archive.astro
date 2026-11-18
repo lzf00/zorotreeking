@@ -1,0 +1,34 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ArchiveByYear from "@/components/ArchiveByYear.astro";
+import { MAX_TAG_ITEMLIST } from "@/lib/tag-relations";
+import { getCollection } from "astro:content";
+import { pathWithLang } from "@/i18n/ui";
+
+const [ai, invest, photo, hike] = await Promise.all([
+  getCollection("ai", (p) => p.data.lang === "en" && !p.data.draft),
+  getCollection("invest", (p) => p.data.lang === "en" && !p.data.draft),
+  getCollection("photo", (p) => p.data.lang === "en" && !p.data.draft),
+  getCollection("hike", (p) => p.data.lang === "en" && !p.data.draft),
+]);
+const listItems = [...ai, ...invest, ...photo, ...hike]
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, MAX_TAG_ITEMLIST)
+  .map((entry) => ({
+    name: entry.data.title,
+    url: pathWithLang(`/${entry.collection}/${entry.data.translationKey}`, "en"),
+  }));
+---
+
+<BaseLayout
+  title="Archive"
+  description="Everything published here, newest first: AI notes, investment reviews, photo albums and hiking routes, each with a date and its section."
+  schemaType="CollectionPage"
+  breadcrumbTitle="Archive"
+  listItems={listItems}
+>
+  <article class="max-w-3xl mx-auto px-5 pt-16 pb-24">
+    <h1 class="font-serif text-5xl sm:text-6xl leading-[0.95] tracking-tight">Archive</h1>
+    <ArchiveByYear lang="en" />
+  </article>
+</BaseLayout>

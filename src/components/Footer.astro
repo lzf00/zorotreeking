@@ -24,6 +24,10 @@ const year = new Date().getFullYear();
         <a href="/rss.xml" class="inline-flex items-center min-h-6 px-1 -mx-1 hover:text-[var(--text)] transition-colors">RSS</a>
         <span>·</span>
         <a href={pathWithLang("/tag", lang)} class="inline-flex items-center min-h-6 px-1 -mx-1 hover:text-[var(--text)] transition-colors">Tags</a>
+        <span aria-hidden="true">·</span>
+        <a href={pathWithLang("/archive", lang)} class="inline-flex items-center min-h-6 px-1 -mx-1 hover:text-[var(--text)] transition-colors">
+          {lang === "zh" ? "归档" : "Archive"}
+        </a>
         <span>·</span>
         <a href="/now/" class="inline-flex items-center min-h-6 px-1 -mx-1 hover:text-[var(--text)] transition-colors">Now</a>
         <span>·</span>

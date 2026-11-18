@@ -1,0 +1,99 @@
+---
+/**
+ * 全站归档：按年份倒序列出某语言下的全部内容（四个板块混排）。
+ *
+ * 之前中文站只有 /explore（按 embedding 投影的二维地图）和 /topics（主题聚合），
+ * 英文站根本没有任何「从头翻一遍」的入口——订阅页只能把人送回首页。归档页补这个缺口：
+ * 一行一篇，日期 + 板块 + 标题，年份分节，最上面给出总数与跨度。
+ */
+import { getCollection } from "astro:content";
+
+import { pathWithLang, useTranslations, type Lang } from "@/i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const sections = ["ai", "invest", "photo", "hike"] as const;
+
+const all = (
+  await Promise.all(
+    sections.map(async (section) =>
+      (await getCollection(section, (entry) => entry.data.lang === lang && !entry.data.draft)).map((entry) => ({
+        section,
+        slug: entry.data.translationKey,
+        title: entry.data.title,
+        date: entry.data.date,
+      })),
+    ),
+  )
+).flat();
+
+const byYear = new Map<number, typeof all>();
+for (const post of all.sort((a, b) => b.date.getTime() - a.date.getTime())) {
+  const year = post.date.getUTCFullYear();
+  const bucket = byYear.get(year) ?? [];
+  bucket.push(post);
+  byYear.set(year, bucket);
+}
+const years = [...byYear.keys()].sort((a, b) => b - a);
+const newest = all[0]?.date;
+const oldest = all[all.length - 1]?.date;
+const month = (d?: Date) => (d ? `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}` : "");
+const span = newest && oldest ? (month(newest) === month(oldest) ? month(newest) : `${month(oldest)} → ${month(newest)}`) : "";
+const sectionColor: Record<(typeof sections)[number], string> = {
+  ai: "text-section-ai",
+  invest: "text-section-invest",
+  photo: "text-section-photo",
+  hike: "text-section-hike",
+};
+---
+
+<div class="mt-6 text-sm text-[var(--text-tertiary)]">
+  {all.length} {lang === "zh" ? "篇" : all.length === 1 ? "post" : "posts"}
+  {span && <span> · {span}</span>}
+</div>
+
+<div class="mt-8 space-y-10">
+  {years.map((year) => (
+    <section>
+      <h2 class="flex items-baseline gap-3 text-xs uppercase tracking-[0.18em] text-[var(--text-tertiary)]">
+        <span>{year}</span>
+        <span class="tabular-nums normal-case tracking-normal">
+          {byYear.get(year)!.length} {lang === "zh" ? "篇" : byYear.get(year)!.length === 1 ? "post" : "posts"}
+        </span>
+      </h2>
+      <ul class="mt-3 divide-y divide-[var(--border)] border-t border-[var(--border)]">
+        {byYear.get(year)!.map((post) => (
+          <li>
+            <a
+              href={pathWithLang(`/${post.section}/${post.slug}`, lang)}
+              class="group flex items-baseline gap-3 py-2.5 hover:text-[var(--text)] transition-colors"
+            >
+              <time class="shrink-0 font-mono text-xs text-[var(--text-tertiary)]" datetime={post.date.toISOString().slice(0, 10)}>
+                {post.date.toISOString().slice(0, 10)}
+              </time>
+              <span class={`shrink-0 text-xs ${sectionColor[post.section]}`}>{t(`section.${post.section}.title`)}</span>
+              <span class="min-w-0 flex-1 text-[var(--text-secondary)] group-hover:text-[var(--text)]">{post.title}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+</div>
+
+<p class="mt-10 text-sm text-[var(--text-tertiary)]">
+  {lang === "zh" ? (
+    <>
+      想按主题找？看 <a href={pathWithLang("/tag", lang)} class="underline decoration-1 underline-offset-2 hover:text-[var(--text)]">标签索引</a>
+      ，或者 <a href={pathWithLang("/explore", lang)} class="underline decoration-1 underline-offset-2 hover:text-[var(--text)]">文章地图</a>。
+    </>
+  ) : (
+    <>
+      Looking for a topic instead? Try the <a href={pathWithLang("/tag", lang)} class="underline decoration-1 underline-offset-2 hover:text-[var(--text)]">tag index</a>.
+    </>
+  )}
+</p>

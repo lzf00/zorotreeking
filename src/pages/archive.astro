@@ -1,0 +1,35 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ArchiveByYear from "@/components/ArchiveByYear.astro";
+import { MAX_TAG_ITEMLIST } from "@/lib/tag-relations";
+import { getCollection } from "astro:content";
+import { pathWithLang } from "@/i18n/ui";
+
+// 归档页的 ItemList 只放前 100 条（和标签页同样的理由：结构化数据不需要穷举整页）
+const [ai, invest, photo, hike] = await Promise.all([
+  getCollection("ai", (p) => p.data.lang === "zh" && !p.data.draft),
+  getCollection("invest", (p) => p.data.lang === "zh" && !p.data.draft),
+  getCollection("photo", (p) => p.data.lang === "zh" && !p.data.draft),
+  getCollection("hike", (p) => p.data.lang === "zh" && !p.data.draft),
+]);
+const listItems = [...ai, ...invest, ...photo, ...hike]
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, MAX_TAG_ITEMLIST)
+  .map((entry) => ({
+    name: entry.data.title,
+    url: pathWithLang(`/${entry.collection}/${entry.data.translationKey}`, "zh"),
+  }));
+---
+
+<BaseLayout
+  title="全部归档"
+  description="按年份倒序列出这个站点的全部内容：AI 笔记、投资复盘、摄影相册与徒步路线，每一条都有日期和所属板块。"
+  schemaType="CollectionPage"
+  breadcrumbTitle="全部归档"
+  listItems={listItems}
+>
+  <article class="max-w-3xl mx-auto px-5 pt-16 pb-24">
+    <h1 class="font-serif text-5xl sm:text-6xl leading-[0.95] tracking-tight">全部归档</h1>
+    <ArchiveByYear lang="zh" />
+  </article>
+</BaseLayout>

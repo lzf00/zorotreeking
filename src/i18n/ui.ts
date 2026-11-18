@@ -132,6 +132,7 @@ const TRANSLATED_STATIC_PATHS = new Set([
   "/photo",
   "/hike",
   "/tag",
+  "/archive",
   "/guestbook",
   "/subscribe",
   "/privacy",
