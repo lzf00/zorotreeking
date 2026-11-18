@@ -23,7 +23,8 @@
     "check:hydration": "node scripts/check-hydration.mjs",
     "check:og": "node scripts/check-og.mjs",
     "check:seo": "node scripts/check-seo.mjs",
-    "gate": "npm run validate:etf && npm run check && npm test && npm run build && npm run check:og && npm run check:seo && npm run check:admin"
+    "gate": "npm run validate:etf && npm run check && npm test && npm run build && npm run check:og && npm run check:seo && npm run check:admin",
+    "hooks:install": "git config core.hooksPath .githooks && chmod +x .githooks/pre-push && echo '已启用 .githooks（pre-push 门禁）'"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.3.6",

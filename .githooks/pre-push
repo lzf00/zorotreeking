@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# 推之前拦住「本地门禁没跑过」的提交。
+#
+# 背景：2026-11-18 一个坏内链进了 main（check:seo exit 1，但当时用 tail 看输出没看退出码），
+# 部署连红 4 次、生产停更 50 分钟。
+#
+# 分档（见 scripts/prepush-scope.mjs）：
+#   fast —— 只动内容：npm test + astro check（约 15 秒）
+#   full —— 动了模板/样式/脚本/配置：npm test + astro check + build + check:og + check:seo（约 2 分钟）
+#
+# 急事要跳过：SKIP_PREPUSH=1 git push ...
+set -uo pipefail
+
+if [ "${SKIP_PREPUSH:-0}" = "1" ]; then
+  echo "pre-push: SKIP_PREPUSH=1，跳过门禁"
+  exit 0
+fi
+
+base=$(git rev-parse --abbrev-ref --symbolic-full-name @{upstream} 2>/dev/null || echo "origin/main")
+changed=$(git diff --name-only "$base"...HEAD 2>/dev/null)
+if [ -z "$changed" ]; then
+  # 新分支 / 上游不存在：按最重的处理
+  changed=$(git diff --name-only HEAD~1 2>/dev/null || true)
+fi
+
+scope=$(printf '%s\n' "$changed" | node scripts/prepush-scope.mjs)
+echo "pre-push: 改动范围判为 ${scope}"
+
+fail() { echo "pre-push ❌ $1（要跳过用 SKIP_PREPUSH=1 git push）"; exit 1; }
+
+npm test >/tmp/prepush-test.log 2>&1 || { tail -20 /tmp/prepush-test.log; fail "单元测试未通过"; }
+npx astro check >/tmp/prepush-check.log 2>&1 || { tail -20 /tmp/prepush-check.log; fail "astro check 未通过"; }
+
+if [ "$scope" = "full" ]; then
+  npm run build >/tmp/prepush-build.log 2>&1 || { tail -20 /tmp/prepush-build.log; fail "构建失败"; }
+  npm run check:og >/tmp/prepush-og.log 2>&1 || { tail -10 /tmp/prepush-og.log; fail "check:og 未通过"; }
+  npm run check:seo >/tmp/prepush-seo.log 2>&1 || { tail -10 /tmp/prepush-seo.log; fail "check:seo 未通过"; }
+fi
+
+echo "pre-push ✅ 门禁通过（${scope}）"

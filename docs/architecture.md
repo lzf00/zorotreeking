@@ -379,6 +379,21 @@ URL 更糟」是同一个判断）。所以分级：
 顺手修正了一处容易漏的配套：sitemap 的静态路径是**手写清单**（`src/lib/sitemap.ts`），新增页面
 不同步加进去，`check:seo` 会立刻报「可索引但不在 sitemap」——这次就是它挡住的。
 
+### pre-push 钩子：把「看漏退出码」变成不可能
+
+`npm run gate` 解决的是「怎么一次跑完」，但靠自觉仍然会漏。仓库现在带一个
+`.githooks/pre-push`，`npm run hooks:install`（`git config core.hooksPath .githooks`）之后每次
+`git push` 自动跑：
+
+| 改动范围 | 跑什么 | 耗时 |
+|---|---|---|
+| 只动内容 / 生成数据（`src/content/**`、`src/data/wind-*` 等） | `npm test` + `astro check` | ~15 秒 |
+| 动了模板 / 样式 / 脚本 / 配置 | 再加 `build` + `check:og` + `check:seo` | ~2 分钟 |
+
+分档逻辑在 `scripts/prepush-scope.mjs`（纯函数，有单测）；急事用 `SKIP_PREPUSH=1 git push` 跳过。
+实测时踩到一个 shell 坑：`"$scope）"` 里全角括号的字节会被 bash 当成变量名的一部分，报
+`scope: unbound variable`——改成 `${scope}` 才对，钩子里所有变量都统一成了花括号写法。
+
 ### 一条命令跑完所有门禁：`npm run gate`
 
 2026-11-18 出了一次本可以避免的故障：订阅页新加的「归档」链接指向 `/en/explore/`，

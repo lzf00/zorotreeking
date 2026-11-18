@@ -119,3 +119,22 @@ test("性能审计只量已切到目标提交的生产，且事后复核没被�
   assert.match(lighthouse, /deploy-meta\.json/);
   assert.match(lighthouse, /production changed during the audit/);
 });
+
+test("pre-push 钩子按改动范围分档，且内容提交不必跑整轮构建", async () => {
+  const { prepushScope } = await import("../scripts/prepush-scope.mjs");
+  assert.equal(prepushScope(["src/content/ai/daily-x.en.mdx"]), "fast");
+  assert.equal(prepushScope(["src/data/wind-market-latest.json"]), "fast");
+  assert.equal(prepushScope(["src/components/Navbar.astro"]), "full");
+  assert.equal(prepushScope([".github/workflows/deploy.yml"]), "full");
+  // 拿不到 diff 时按最重的处理，宁可慢一次
+  assert.equal(prepushScope([]), "full");
+});
+
+test("pre-push 钩子会跑真正会失败的那两道内容门禁", async () => {
+  const fs = await import("node:fs/promises");
+  const hook = await fs.readFile(new URL("../.githooks/pre-push", import.meta.url), "utf8");
+  assert.match(hook, /npm test/);
+  assert.match(hook, /check:og/);
+  assert.match(hook, /check:seo/);
+  assert.match(hook, /SKIP_PREPUSH/);
+});
