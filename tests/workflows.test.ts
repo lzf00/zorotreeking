@@ -40,8 +40,17 @@ test("Lighthouse skips generated market snapshots but audits user-facing changes
     "src/data/etf-three-factor-early-latest.json",
     "src/data/etf-three-factor-status.json",
   ]), "skip");
-  assert.equal(decide(["src/content/ai/digest-2026-08-07.zh.mdx"]), "run");
+  // 纯内容提交跳过：自动化日报每十几分钟提一次，跑满 35–40 分钟会互相取消
+  assert.equal(decide(["src/content/ai/digest-2026-08-07.zh.mdx"]), "skip");
+  assert.equal(decide([
+    "src/content/invest/market-recap-2026-11-18.zh.mdx",
+    "src/data/wind-hk-market-latest.json",
+  ]), "skip");
+  // 内容 + 模板混在一起时必须跑
+  assert.equal(decide(["src/content/ai/digest-2026-08-07.zh.mdx", "src/layouts/BaseLayout.astro"]), "run");
   assert.equal(decide(["src/pages/explore.astro"]), "run");
+  assert.equal(decide(["src/styles/global.css"]), "run");
+  assert.equal(decide([".lighthouserc.json"]), "run");
   assert.equal(decide([]), "run");
 });
 
@@ -55,6 +64,14 @@ test("Lighthouse workflow checks the deployed revision and keeps hidden reports"
   // 逐 URL 中位分数要能被读出来：日志会截断、产物会过期，脚本本身不能没接上
   assert.match(contents, /scripts\/lighthouse-summary\.mjs/);
   assert.match(contents, /lighthouse-summary\.md/);
+  // 每日定时兜底：内容提交跳过 workflow_run 之后，还得有固定的一次完整审计
+  assert.match(contents, /schedule:/);
+  assert.match(contents, /cron:\s*"0 19 \* \* \*"/);
+  // 合并提交的 diff 必须带 --first-parent，否则自动化提交会被判成"没有改动"
+  assert.match(contents, /diff-tree -r -m --first-parent/);
+  // 取消会发生在 scope 判断之前，所以不能开 cancel-in-progress
+  assert.match(contents, /cancel-in-progress:\s*false/);
+  assert.doesNotMatch(contents, /cancel-in-progress:\s*true/);
 });
 
 test("deploy keeps the Giscus stylesheet inside the production CSP", async () => {

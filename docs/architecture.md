@@ -294,6 +294,31 @@ LCP 却只有 0.44s——说明问题不在首屏内容，而在**空闲后才�
   不需要再点第二次。
 - 搜索 modal 保留 `client:idle`（单独评估过只有 9ms TBT，不值得为它再拆一套）。
 
+### 性能预算为什么必须「跳过内容提交 + 每日兜底」
+
+2026-11 观察到一个沉默的失效：**Lighthouse 的 14 URL × 5 次审计几乎从来没跑完过**。
+
+链路是这样断的：
+
+1. 自动化任务（ETF 快照 / 行情日报 / AI 日报）每 13–15 分钟推一次提交；
+2. 每次 deploy 成功都通过 `workflow_run` 触发 Lighthouse，一轮要 35–40 分钟；
+3. 工作流的 `concurrency` 开了 `cancel-in-progress: true`，于是每次新部署都把
+   正在跑的那轮审计取消。结果 GitHub 上只剩一串 `cancelled`，性能断言等于不存在。
+
+修复分两步，缺一不可：
+
+| 改动 | 原因 |
+|---|---|
+| `scripts/lighthouse-scope.mjs` 把 `src/content/**` 也算「只动内容」 | 内容提交不碰模板 / 样式 / 脚本，分数不会变；跳过它才不会天天排长队 |
+| `concurrency.cancel-in-progress: false` | 取消发生在 workflow 级别，早于 scope 判断，「只动内容」的部署照样能掐掉进行中的审计。改成排队后，被跳过的运行在第一步（约 15 秒）退出，队列很快排空 |
+| 新增每日 03:00（北京时间）定时审计 | 内容也可能影响大列表页（标签页、归档页），每天固定跑一次完整 14 URL 兜底 |
+
+判断口径：`src/content/**`、`src/data/wind-*.json`、`src/data/etf-three-factor-*.json`
+都算内容；改 `src/pages`、`src/components`、`src/layouts`、`src/styles`、`scripts/lighthouse-*.mjs`、
+`astro.config.mjs`、`.lighthouserc.json` 一律照跑。合并提交用
+`git diff-tree -r -m --first-parent` 取改动清单（普通 `--no-commit-id -r` 对合并提交返回空，
+会被误判成「没改动」而白跑一轮）。
+
 ### 锚文本纳入构建期检查
 
 站内有 6 万个站内链接，锚文本既是用户导航线索，也是搜索引擎判断目标页主题的依据。

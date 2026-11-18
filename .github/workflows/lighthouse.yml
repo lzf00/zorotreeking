@@ -1,26 +1,41 @@
 name: Lighthouse CI
 
 # Deploy 完成后等待 1 分钟再跑 Lighthouse，对比性能预算。
-# 由 deploy.yml workflow_run 触发；也支持 workflow_dispatch 手动跑。
+#
+# 触发方式：
+#   1. deploy.yml 的 workflow_run —— 只在改了模板 / 样式 / 脚本 / 配置时真跑，
+#      纯内容提交（src/content 下的日报、快照）跳过。自动化任务每十几分钟就提一次，
+#      而一轮审计要 35–40 分钟；不跳过的话 concurrency 会不停取消前一轮，
+#      性能预算实际上永远跑不完。
+#   2. 每日定时 —— 内容改动也可能影响大列表页（标签页、归档页），所以每天固定跑一次
+#      完整的 14 URL 审计兜底。
+#   3. workflow_dispatch —— 手动跑，永远真跑。
 
 on:
   workflow_run:
     workflows: ["Build & Deploy"]
     types: [completed]
+  schedule:
+    # 北京时间 03:00，站点流量最低、runner 也最闲
+    - cron: "0 19 * * *"
   workflow_dispatch: {}
 
 permissions:
   contents: read
   statuses: write
 
+# 不取消前一轮：取消发生在 workflow 级别，早于 scope 判断——只要还开着
+# cancel-in-progress，纯内容提交的部署也会把正在跑的审计掐掉，性能预算就又跑不完了。
+# 改成排队：被判为"只动内容"的运行在第一步（约 15 秒）就跳过并退出，队列很快排空；
+# 真正的审计则能安稳跑完。
 concurrency:
   group: lighthouse-${{ github.event.workflow_run.head_branch || github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   lhci:
-    # 仅在 deploy 成功后跑
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    # 手动 / 定时永远跑；workflow_run 只在 deploy 成功时跑
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     # 15 个 URL × 5 次 = 75 次跑分（覆盖首页/栏目/标签/归档/文章/相册/个股/带地图的徒步页），
     # 实测约 35–40 分钟，留足余量避免排队抖动把任务掐掉
@@ -30,7 +45,8 @@ jobs:
         uses: actions/checkout@v6
         with:
           ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
-          fetch-depth: 2
+          # 要拿部署提交和它的父提交算 diff，浅克隆至少留 3 层，避免合并提交取不到父对象
+          fetch-depth: 3
 
       - name: Setup Node 22
         uses: actions/setup-node@v6
@@ -43,16 +59,17 @@ jobs:
           EVENT_NAME: ${{ github.event_name }}
           DEPLOYED_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
         run: |
-          if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+          if [ "$EVENT_NAME" != "workflow_run" ]; then
             echo "run=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
-          changed_paths=$(git diff-tree --no-commit-id --name-only -r "$DEPLOYED_SHA")
+          # --first-parent + -m：合并提交也能拿到相对于第一父提交的改动清单
+          changed_paths=$(git diff-tree -r -m --first-parent --no-commit-id --name-only "$DEPLOYED_SHA" | sort -u)
           decision=$(printf '%s\n' "$changed_paths" | node scripts/lighthouse-scope.mjs)
           if [ "$decision" = "skip" ]; then
             echo "run=false" >> "$GITHUB_OUTPUT"
-            echo "Generated snapshot-only deployment; Lighthouse skipped." >> "$GITHUB_STEP_SUMMARY"
+            echo "Content-only deployment (no template/style/script change); Lighthouse skipped — the daily scheduled run still covers it." >> "$GITHUB_STEP_SUMMARY"
           else
             echo "run=true" >> "$GITHUB_OUTPUT"
           fi
