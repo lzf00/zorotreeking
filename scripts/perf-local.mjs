@@ -141,6 +141,40 @@ async function runOnce(url, outPath) {
   };
 }
 
+
+/** 极差（max − min），用来判断这页的分数是不是在抖 */
+export function spread(values) {
+  const clean = values.filter((value) => Number.isFinite(value));
+  if (clean.length < 2) return 0;
+  return Math.max(...clean) - Math.min(...clean);
+}
+
+/**
+ * 把同一 URL 的多次运行汇总成一行，并判断结果可信不可信。
+ *
+ * 为什么要这个：`/invest/digest/` 同一份 HTML 三次跑出过 70 / 84 / 99——分数差 29 分，
+ * 比任何一次改动带来的收益都大。不标出来，读表的人会把它当回归/进展。
+ * 判定线：性能极差 ≥ 5 分或 TBT 极差 ≥ 150ms 就算「抖」，单次运行（runs=1）直接算抖。
+ */
+export function summarize(url, samples) {
+  const perfs = samples.map((sample) => sample.perf);
+  const tbts = samples.map((sample) => sample.tbt);
+  const perfSpread = spread(perfs);
+  const tbtSpread = spread(tbts);
+  const noisy = samples.length < 2 || perfSpread >= 5 || tbtSpread >= 150;
+  return {
+    url,
+    samples,
+    perf: median(perfs),
+    fcp: median(samples.map((sample) => sample.fcp)),
+    lcp: median(samples.map((sample) => sample.lcp)),
+    tbt: median(samples.map((sample) => sample.tbt)),
+    perfSpread,
+    tbtSpread,
+    noisy,
+  };
+}
+
 if (process.argv[1] && import.meta.url === new URL(`file://${process.argv[1]}`).href) {
   const { urls, runs, json, warmup } = parseArgs(process.argv.slice(2));
   const { server, port } = await serveDist();
@@ -157,15 +191,7 @@ if (process.argv[1] && import.meta.url === new URL(`file://${process.argv[1]}`).
         process.stderr.write(`…${path} 第 ${index + 1}/${runs} 次\n`);
         samples.push(await runOnce(base + path, join(tmpdir(), `lh-local-${process.pid}.json`)));
       }
-      const summary = {
-        url: path,
-        samples,
-        perf: median(samples.map((sample) => sample.perf)),
-        fcp: median(samples.map((sample) => sample.fcp)),
-        lcp: median(samples.map((sample) => sample.lcp)),
-        tbt: median(samples.map((sample) => sample.tbt)),
-      };
-      results.push(summary);
+      results.push(summarize(path, samples));
     }
   } finally {
     server.close();
@@ -173,12 +199,24 @@ if (process.argv[1] && import.meta.url === new URL(`file://${process.argv[1]}`).
   if (json) {
     console.log(JSON.stringify({ runs, results }, null, 2));
   } else {
-    const header = ["URL", "性能", "FCP", "LCP", "TBT"];
-    const rows = results.map((result) => [`\`${result.url}\``, String(result.perf), `${result.fcp} ms`, `${result.lcp} ms`, `${result.tbt} ms`]);
+    const header = ["URL", "性能", "FCP", "LCP", "TBT", "抖动"];
+    const rows = results.map((result) => [
+      `\`${result.url}\``,
+      String(result.perf),
+      `${result.fcp} ms`,
+      `${result.lcp} ms`,
+      `${result.tbt} ms`,
+      result.noisy ? `⚠ 性能 ±${result.perfSpread} / TBT ±${result.tbtSpread}ms` : "稳定",
+    ]);
     const widths = header.map((cell, index) => Math.max(cell.length, ...rows.map((row) => row[index].length)));
     const line = (cells) => `| ${cells.map((cell, index) => cell.padEnd(widths[index])).join(" | ")} |`;
     console.log([line(header), `| ${widths.map((width) => "-".repeat(width)).join(" | ")} |`, ...rows.map(line)].join("\n"));
     console.log(`\n本地基线（desktop preset + 4× CPU 节流，${runs} 次取中位数）。CI 上的分数会低一些且抖动更大，只适合和这个基线做相对比较。`);
+    const noisyRows = results.filter((result) => result.noisy);
+    if (noisyRows.length) {
+      console.log(`\n⚠ ${noisyRows.length} 个页面的分数在抖（性能极差 ≥5 分或 TBT 极差 ≥150ms）：${noisyRows.map((row) => row.url).join(" ")}`);
+      console.log("  这些行只能看趋势，别拿单轮数字下结论；要判断改动效果就加 `--runs 5`，或用 A/B（两份 HTML 同源对照）。");
+    }
     console.log("注意：headless Chrome 没有 GPU，渐变/合成层多的页面会把软件光栅算进主线程，TBT 会虚高（首页实测 964–1054ms，但真实 trace 里没有任何 >2ms 的主线程任务）。TBT 只看趋势，别当回归判据。");
   }
 }
