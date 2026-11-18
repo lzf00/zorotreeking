@@ -39,3 +39,17 @@ test("每个日报封面都有 640w/960w 变体（构建前 prebuild 会补，�
   }
   assert.deepEqual(missing, []);
 });
+
+test("封面变体不能被当成照片收进相册清单", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const root = new URL("../", import.meta.url).pathname;
+  for (const album of ["baokemeng", "hudieren"]) {
+    const raw = await readFile(`${root}src/data/photo-manifest/${album}.json`, "utf8").catch(() => null);
+    if (!raw) continue;
+    // scripts/cover-variants.mjs 写的 .w640/.w960 是列表页用的派生图，不该出现在相册里
+    assert.ok(!raw.includes(".w640.") && !raw.includes(".w960."), `${album} 清单里混进了封面变体`);
+  }
+  // 生成器本身也要有过滤规则，否则下次 build 又写回去
+  const generator = await readFile(`${root}scripts/build-photo-manifests.ts`, "utf8");
+  assert.match(generator, /\\.w\(\?:640\|960\)\\.jpg/);
+});

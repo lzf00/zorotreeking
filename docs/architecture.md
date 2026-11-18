@@ -652,6 +652,13 @@ npm run perf:history -- --json    # 机器可读
 CLS 仍是 0（加了 `width`/`height` + `aspect-[16/9]`），两种主题、两种宽度的 axe 都是 0 违规；
 Lighthouse 的 LCP 元素也从 `.og.jpg` 换成了 `.w640.jpg`（浏览器挑了够用的那张）。
 
+**踩到的坑（都已修）**：
+
+| 问题 | 现象 | 原因 | 处理 |
+|---|---|---|---|
+| 部署红了 | `Build & Deploy` 在「Unit and guard tests」失败，生产停在上一版 | 两期日报的封面是 `.webp`，变体脚本的扩展名正则只认 jpg/png → 变体路径等于原图、被静默跳过，而用例要求变体齐 | 正则补 `webp/avif`；源图缺失改成 `console.warn` 不再静默；本地「干净 clone 跑测试」复现后修 |
+| 相册里混进 40 张假照片 | `src/data/photo-manifest/*.json` +240 行 | `build-photo-manifests.ts` 会把 `public/photos/uploads/**` 里所有图片收进相册，新生成的 `.w640/.w960` 被当成原图 | 生成器加过滤规则；重跑 manifest 回到上轮内容；用例锁死「变体不能出现在相册清单里」 |
+
 **试过但更慢的**：给首图加 `<link rel="preload" as="image" fetchpriority="high">`，A/B 里
 LCP 反而从 1568 → 1878 ms、图片起跑从 819 → 1126 ms——在那个带宽下 preload 和字体/CSS
 抢连接。已回退。教训：preload 只对「浏览器很晚才发现」的资源有意义，已 eager 的图再加

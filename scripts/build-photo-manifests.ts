@@ -92,6 +92,8 @@ async function main() {
       if (/\.og\.jpg$/i.test(f)) continue;
       // xxx.thumb.webp 一律跳过（网格缩略图，永远是派生）
       if (/\.thumb\.webp$/i.test(f)) continue;
+      // xxx.w640.jpg / xxx.w960.jpg 跳过（日报列表页封面变体，scripts/cover-variants.mjs 生成）
+      if (/\.w(?:640|960)\.jpg$/i.test(f)) continue;
       // xxx.webp：如果同目录有 xxx.jpg/jpeg/png 原图，则跳过（派生）；否则保留（孤立 webp 当原图）
       if (/\.webp$/i.test(f)) {
         const base = f.replace(/\.webp$/i, "");
