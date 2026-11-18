@@ -42,7 +42,8 @@ export function decodeCoverPath(cover) {
 }
 
 export function variantPath(cover, width) {
-  return cover.replace(/\.(jpe?g|png)$/i, `.w${width}.jpg`);
+  // 封面既有 jpg/png，也有照片站新导出的 webp（两期日报就是 .webp）
+  return cover.replace(/\.(jpe?g|png|webp|avif)$/i, `.w${width}.jpg`);
 }
 
 async function collectCovers() {
@@ -79,7 +80,10 @@ export async function main() {
   for (const cover of covers) {
     const sourcePath = path.join(PUBLIC, decodeCoverPath(cover));
     const sourceInfo = await stat(sourcePath).catch(() => null);
-    if (!sourceInfo) continue;
+    if (!sourceInfo) {
+      console.warn(`[cover] 源图不存在，跳过：${cover}`);
+      continue;
+    }
     for (const width of WIDTHS) {
       const outPath = path.join(PUBLIC, decodeCoverPath(variantPath(cover, width)));
       const outInfo = await stat(outPath).catch(() => null);

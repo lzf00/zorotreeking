@@ -18,6 +18,9 @@ test("变体路径是插在扩展名前，而不是覆盖整个文件名", () =>
   assert.equal(variantPath("/photos/a/b.og.jpg", 640), "/photos/a/b.og.w640.jpg");
   assert.equal(variantPath("/photos/a/b.og.jpeg", 960), "/photos/a/b.og.w960.jpeg".replace(".jpeg", ".jpg"));
   assert.equal(variantPath("/photos/a/b.og.png", 640), "/photos/a/b.og.w640.jpg");
+  // 照片站新导出的是 webp，也得生成 jpg 变体
+  assert.equal(variantPath("/photos/a/b.webp", 960), "/photos/a/b.w960.jpg");
+  assert.equal(variantPath("/photos/a/b.avif", 640), "/photos/a/b.w640.jpg");
 });
 
 test("每个日报封面都有 640w/960w 变体（构建前 prebuild 会补，但变体要入库）", async () => {
