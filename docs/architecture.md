@@ -323,6 +323,23 @@ LCP 却只有 0.44s——说明问题不在首屏内容，而在**空闲后才�
 GitHub 表达式里不能用点号取**，会静默变成空字符串再退回默认值，看日志也看不出错。
 正确写法 `steps.prodwait.outputs['audited-sha']`，已加测试锁住。
 
+##### 第三个坑：文件名里写了一整行 GITHUB_OUTPUT（2026-11-19 才发现）
+
+`perf/audited` 这条状态连着两轮都没出现，但 job 步骤本身是 success。原因：
+
+```bash
+echo "audited-sha=$live" >> "$GITHUB_OUTPUT"   # 给 Actions 读，格式是 key=value
+echo "audited-sha=$live" > audited-sha.txt     # ← 文件里不该带 key
+```
+
+下游 `audited=$(cat audited-sha.txt)` 拿到的是 `audited-sha=<sha>`，于是把这个整串当提交号
+POST 到 `/statuses/audited-sha=<sha>` → 404，而脚本后面跟着 `|| true`，把 404 吞了：
+步骤 success、状态没发出去、日志里也看不出。同一串还被拿去和线上 sha 比较，所以
+「审计期间生产变过版本」这条警告也可能是假警报。
+
+修法：文件里只写裸 sha；两处读取都加 `sed 's/^audited-sha=//'` 归一化（兼容旧格式）；
+POST 不再 `|| true`，非 201 就 `::warning::` 留痕。
+
 顺便把「本轮审的是哪一版」做成公开的 commit status（`perf/audited`）：之前这个信息只在日志里，
 没有 token 就查不到，才让「分数挂错提交」这件事瞒了这么久。
 

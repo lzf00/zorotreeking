@@ -127,6 +127,12 @@ test("性能审计只量已切到目标提交的生产，且事后复核没被�
   assert.doesNotMatch(lighthouse, /steps\.prodwait\.outputs\.audited-sha/);
   // 「审了哪一版」发成公开 commit status，别只留在日志里
   assert.match(lighthouse, /perf\/audited/);
+  // audited-sha.txt 里只能是一个裸 sha：曾经写成 `audited-sha=<sha>`，被当成提交号发 status → 404 静默失败
+  assert.match(lighthouse, /echo "\$live" > audited-sha\.txt/);
+  assert.doesNotMatch(lighthouse, /echo "audited-sha=\$live" > audited-sha\.txt/);
+  assert.match(lighthouse, /sed 's\/\^audited-sha=/);
+  // 发不出去要留痕，不能被 || true 吞掉
+  assert.match(lighthouse, /::warning::perf\/audited/);
 });
 
 test("pre-push 钩子按改动范围分档，且内容提交不必跑整轮构建", async () => {
