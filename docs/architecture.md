@@ -340,6 +340,11 @@ POST 到 `/statuses/audited-sha=<sha>` → 404，而脚本后面跟着 `|| true`
 修法：文件里只写裸 sha；两处读取都加 `sed 's/^audited-sha=//'` 归一化（兼容旧格式）；
 POST 不再 `|| true`，非 201 就 `::warning::` 留痕。
 
+**已实锤**（run `44362520358`，提交 `d079cdb`）：`perf/audited` 出现在 `d079cdb4` 上，
+description 写着 `audited d079cdb (run 44362520358)`，和 15 条 `lhci/url/*` 落在同一个 sha，
+也就是「生产当时服务的版本 = 审计声明的版本 = 分数挂载的版本」三者一致。之前两轮这条状态
+一直是空的，就是这个 key 写进文件导致的 404。
+
 顺便把「本轮审的是哪一版」做成公开的 commit status（`perf/audited`）：之前这个信息只在日志里，
 没有 token 就查不到，才让「分数挂错提交」这件事瞒了这么久。
 
