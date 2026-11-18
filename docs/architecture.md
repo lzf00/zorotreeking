@@ -319,6 +319,36 @@ LCP 却只有 0.44s——说明问题不在首屏内容，而在**空闲后才�
 `git diff-tree -r -m --first-parent` 取改动清单（普通 `--no-commit-id -r` 对合并提交返回空，
 会被误判成「没改动」而白跑一轮）。
 
+### 查「这页最近慢了多少」：`npm run perf:history`
+
+审计结果散落在每轮 run 的 artifact 里，取不到 token 就只能看最新一轮。但 LHCI 上传的
+commit status 是**公开可读**的（`lhci/url/<path>` 的 description 就是 "Performance: 92, ..."），
+所以做了 `scripts/lighthouse-history.mjs`：
+
+```bash
+npm run perf:history              # 最近 6 轮，URL × 轮次的分数矩阵
+npm run perf:history -- --rounds 3
+npm run perf:history -- --json    # 机器可读
+```
+
+表格左新右旧，最新一轮后面标 ↑/↓ 变化；`—` 表示那一轮没有这个 URL 的数据（审计中途被取消时
+会只发出部分 URL 的 status），`⚠` 表示断言只报了警告（描述里没有分数），`✗f` 表示该 URL 失败。
+
+实测读出来的东西（2026-11-18 四轮，同一份代码不同轮次）：
+
+| URL | c1f58d6 10:57 | 9e94507 12:14 | 变化 |
+|---|---|---|---|
+| `/photo/baokemeng/` | 90 | 70 | ↓20 |
+| `/invest/digest/` | 93 | 80 | ↓13 |
+| `/ai/` | 98 | 89 | ↓9 |
+| `/explore/` | 97 | 98 | ↑1 |
+
+同一份 HTML 差 20 分，只能说明那 40 分钟里 runner 或跨境链路有抖动——这也是为什么
+`categories:performance` 只做告警。**要看真回归，看的是同一 URL 连续多轮都低，而不是单轮掉分。**
+
+注意：未认证 GitHub API 每小时 60 次，脚本默认 6 轮约 7 次请求；连跑几次会撞 403，
+等一小时自然恢复（或给 token，见「待决定」清单）。
+
 ### 审计只量「已经切过去」的生产
 
 Lighthouse 审的是线上 URL，而部署本身要几分钟（rsync + 原子切换）。以前审计在部署成功后

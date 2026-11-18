@@ -115,8 +115,10 @@ test("deploy uses versioned releases, commit identity smoke, and automatic rollb
 test("性能审计只量已切到目标提交的生产，且事后复核没被换版本", async () => {
   const lighthouse = await workflow("lighthouse.yml");
   // 部署的 rsync + 原子切换要几分钟；早于它开跑会量到新旧混着的页面
-  assert.match(lighthouse, /Wait until production serves the deployed commit/);
+  // 排队中的审计常被更新的部署顶过去，所以等的是「生产有稳定版本」而不是死等目标提交
+  assert.match(lighthouse, /Wait for production to settle/);
   assert.match(lighthouse, /deploy-meta\.json/);
+  assert.match(lighthouse, /audited-sha/);
   assert.match(lighthouse, /production changed during the audit/);
 });
 
