@@ -27,3 +27,13 @@ test("性能预算集包含个股页与标签详情页，且不再包含不稳�
   assert.ok(urls.some((u) => u.endsWith("/hike/sample-route/")), "缺少 Leaflet 地图页");
   assert.equal(urls.length, 15);
 });
+
+test("性能分数只告警、真正的门禁落在指标级", async () => {
+  const assertions = JSON.parse(await readProjectFile(".lighthouserc.json")).ci.assert.assertions;
+  // category 分数会被 runner 负载带偏：同一页面内容未变时实测在 84–99 之间跳。
+  // 拿它当硬门禁会假红，所以只告警；LCP / CLS 这类指标才是硬拦。
+  assert.equal(assertions["categories:performance"][0], "warn");
+  assert.equal(assertions["largest-contentful-paint"][0], "error");
+  assert.equal(assertions["cumulative-layout-shift"][0], "error");
+  assert.ok(assertions["largest-contentful-paint"][1].maxNumericValue <= 4000, "LCP 阈值不能放到看不出回归的程度");
+});

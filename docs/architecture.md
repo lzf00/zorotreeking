@@ -319,6 +319,32 @@ LCP 却只有 0.44s——说明问题不在首屏内容，而在**空闲后才�
 `git diff-tree -r -m --first-parent` 取改动清单（普通 `--no-commit-id -r` 对合并提交返回空，
 会被误判成「没改动」而白跑一轮）。
 
+### 性能门禁分级：分数只告警，指标才硬拦
+
+2026-11-18 同一份代码跑了两轮 15 URL 审计（`f72f6b7` 与 `c1f58d6`，页面内容无差别），
+逐 URL 对比后发现 category 分数会整体漂移 7–14 分：
+
+| URL | 第一轮 | 第二轮 |
+|---|---|---|
+| `/ai/digest-2026-06-05/` | 99 | 84 |
+| `/hike/sample-route/` | 96 | 89 |
+| `/invest/` | 96 | 89 |
+| `/` | 99 | 92 |
+
+共享 runner + devtools 限速 + 真实跨境网络三者叠加，`categories:performance` 不是稳定的
+信号。用 0.80 当 error 门禁，迟早会因为噪声把 main 判红（和之前地图页「红色门禁比少一个
+URL 更糟」是同一个判断）。所以分级：
+
+| 断言 | 级别 | 阈值 |
+|---|---|---|
+| `categories:performance` | warn | ≥ 0.80（看得见，但不拦） |
+| `largest-contentful-paint` | **error** | ≤ 3.5s（真回归才会破） |
+| `cumulative-layout-shift` | **error** | ≤ 0.1 |
+| `first-contentful-paint` / `total-blocking-time` | warn | 2.0s / 300ms |
+| `categories:accessibility` / `categories:seo` | error | 0.90 / 0.95 |
+
+指标级阈值不会因为 runner 空闲或繁忙而跳变——它量的就是这一页的加载行为。
+
 ### 一条命令跑完所有门禁：`npm run gate`
 
 2026-11-18 出了一次本可以避免的故障：订阅页新加的「归档」链接指向 `/en/explore/`，
