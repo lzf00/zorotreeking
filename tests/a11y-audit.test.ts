@@ -65,3 +65,10 @@ test("涨跌色用设计 token，不再写死单主题的 hex/调色板类", asy
   assert.match(topics, /--section-\$\{section\}-rgb/);
   assert.doesNotMatch(topics, /ai: "#1d4ed8"/);
 });
+
+test("视口可配置，默认桌面 1280x900", async () => {
+  const fs = await import("node:fs/promises");
+  const source = await fs.readFile(new URL("../scripts/a11y-audit.mjs", import.meta.url), "utf8");
+  assert.match(source, /--viewport/);
+  assert.match(source, /Number\.isFinite\(vpWidth\)/);
+});

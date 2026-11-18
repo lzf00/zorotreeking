@@ -12,6 +12,7 @@
  *   npm run a11y:audit -- --json
  *   npm run a11y:audit -- --only /photography/,/en/photography/   # 只查指定页面（排查用）
  *   npm run a11y:audit -- --scheme both                           # 浅色 + 深色各跑一遍
+ *   npm run a11y:audit -- --viewport 390x844                      # 手机宽度（默认 1280x900）
  */
 import { createServer } from "node:http";
 import { createReadStream } from "node:fs";
@@ -123,6 +124,14 @@ async function main() {
   const json = args.includes("--json");
   const all = args.includes("--all");
   const onlyArg = args.indexOf("--only");
+  const viewportArg = args.indexOf("--viewport");
+  // 响应式布局会换行/隐藏元素，窄屏下也可能出现对比度与文字重叠问题，所以视口可配
+  const viewportValue = viewportArg >= 0 ? (args[viewportArg + 1] ?? "1280x900") : "1280x900";
+  const [vpWidth, vpHeight] = viewportValue.split("x").map((n) => Number.parseInt(n, 10));
+  const viewport = {
+    width: Number.isFinite(vpWidth) && vpWidth > 0 ? vpWidth : 1280,
+    height: Number.isFinite(vpHeight) && vpHeight > 0 ? vpHeight : 900,
+  };
   const schemeArg = args.indexOf("--scheme");
   // 站点支持浅色/深色两套 token，axe 只测当前渲染出来的那一套，所以两种都要跑
   const schemeValue = schemeArg >= 0 ? (args[schemeArg + 1] ?? "light") : "light";
@@ -159,9 +168,11 @@ async function main() {
     const plan = targets.flatMap((url) => schemes.map((scheme) => ({ url, scheme })));
     for (const [index, { url, scheme }] of plan.entries()) {
       if (index % 50 === 0) console.error(`…${index}/${plan.length}`);
-      const context = await browser.newContext({ colorScheme: scheme, viewport: { width: 1280, height: 900 } });
+      const context = await browser.newContext({ colorScheme: scheme, viewport });
       const page = await context.newPage();
-      const label = scheme === "dark" ? `${url} [dark]` : url;
+      const label = [url, scheme === "dark" ? "[dark]" : "", viewportValue !== "1280x900" ? `[${viewportValue}]` : ""]
+        .filter(Boolean)
+        .join(" ");
       const response = await page.goto(base + url, { waitUntil: "domcontentloaded" });
       // 构建产物里没有这个文件（例如审计跑到一半有人 rebuild）：别把 404 文本当成页面去审
       if (!response || response.status() >= 400) {
