@@ -22,8 +22,9 @@ jobs:
     # 仅在 deploy 成功后跑
     if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
-    # 10 个 URL × 5 次 = 50 次跑分（含最重的徒步路书详情页），实测约 20 分钟
-    timeout-minutes: 45
+    # 15 个 URL × 5 次 = 75 次跑分（覆盖首页/栏目/标签/归档/文章/相册/个股/带地图的徒步页），
+    # 实测约 35–40 分钟，留足余量避免排队抖动把任务掐掉
+    timeout-minutes: 60
     steps:
       - name: Checkout
         uses: actions/checkout@v6

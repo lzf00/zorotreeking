@@ -294,6 +294,30 @@ LCP 却只有 0.44s——说明问题不在首屏内容，而在**空闲后才�
   不需要再点第二次。
 - 搜索 modal 保留 `client:idle`（单独评估过只有 9ms TBT，不值得为它再拆一套）。
 
+### 标题层级纳入构建期检查（对应 Lighthouse heading-order）
+
+Lighthouse 只审 15 个 URL，而「h1 → h3 跳级」这类问题常藏在模板角落：图表卡片的
+标签用了 h3、而那一块没有 h2 承接。单靠线上抽查抓不全，所以做成构建期规则。
+
+`src/lib/heading-order.ts` 提供 `extractHeadings` / `headingIssues`：
+
+- 抽取标题时先剥掉 `<script>` `<style>` `<template>` `<pre>` `<code>`，避免把代码
+  示例或内联字符串里的假标题算进来；
+- 规则只有一条：**从上一级往下降可以任意深，往上只能一级一级加**；
+- 首个标题不是 h1 时给告警（真缺 h1 由原有规则报错）。
+
+`scripts/check-seo.mjs` 每次全量扫 1175 个页面，输出 `标题顺序：h1 → h3 跳级：…`。
+首轮扫出 3 处并修掉：
+
+| 页面 | 问题 | 修法 |
+|---|---|---|
+| `/hike/sample-route/`（中英） | 海拔曲线标签是 h3，页面没有 h2 | h3 → h2 |
+| `/en/photo/` | 相册卡片 h3 上面缺「All albums」h2（中文页有） | 补 `sr-only` 的 h2 |
+| `/en/invest/` | 净值/持仓图表 h3 上面没有 h2 | 补 Portfolio snapshot h2 |
+
+顺带暴露一个更大的问题：**英文投资页缺了中文页的整个实时行情区块**（今日大盘、市场情绪、
+AI 科创、创业板、板块涨跌），那 5 个组件里还有大量硬编码中文，要补齐得先做组件 i18n。
+
 ### 全站搜索改成「按了才加载」：首屏 JS 从 97KB 降到 7KB
 
 搜索 modal 原本是 `client:idle` 的 React island，挂在 `BaseLayout` 里，于是**每个页面**

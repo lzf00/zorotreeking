@@ -64,7 +64,7 @@ const diffLabel = { easy: "Easy", moderate: "Moderate", hard: "Hard", expert: "E
       <>
         <GpxMap points={stats.points} client:only="react" />
         <div class="mt-4 rounded-xl border border-[var(--border)] p-3">
-          <h3 class="text-sm font-semibold mb-2 text-[var(--text-secondary)]">Elevation</h3>
+          <h2 class="text-sm font-semibold mb-2 text-[var(--text-secondary)]">Elevation</h2>
           <ElevationChart points={stats.points} client:visible />
         </div>
       </>

@@ -37,6 +37,7 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { describeHeadingIssue, extractHeadings, headingIssues } from "../src/lib/heading-order.ts";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const ARGS = process.argv.slice(2);
@@ -176,6 +177,17 @@ function checkPage(html, siteOrigin) {
   // h1
   const h1s = (html.match(/<h1[\s>]/gi) ?? []).length;
   if (h1s !== 1) err(`h1 数量 ${h1s}（应为 1）`);
+
+  // 标题层级不能跳级（对应 Lighthouse heading-order，全站扫描）
+  const headingProblems = headingIssues(extractHeadings(html));
+  for (const issue of headingProblems) {
+    if (issue.kind === "first-not-h1" && h1s === 1) {
+      // 有 h1 却第一个标题不是它：多半是布局把 h1 放到了别处，按告警处理
+      warn(`标题顺序：${describeHeadingIssue(issue)}`);
+    } else {
+      err(`标题顺序：${describeHeadingIssue(issue)}`);
+    }
+  }
 
   // html lang
   const htmlTag = html.match(/<html[^>]*>/i);

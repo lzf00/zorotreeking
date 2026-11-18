@@ -80,7 +80,7 @@ const diffLabel = { easy: "轻松", moderate: "中等", hard: "困难", expert: 
       <>
         <GpxMap points={stats.points} client:only="react" />
         <div class="mt-4 rounded-xl border border-[var(--border)] p-3">
-          <h3 class="text-sm font-semibold mb-2 text-[var(--text-secondary)]">海拔曲线</h3>
+          <h2 class="text-sm font-semibold mb-2 text-[var(--text-secondary)]">海拔曲线</h2>
           <ElevationChart points={stats.points} client:visible />
         </div>
       </>
