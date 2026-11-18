@@ -175,3 +175,19 @@ test("周检除了全站浅/深两套，还抽 60 页手机宽度", async () => 
   // 两套 + 手机抽查，45 分钟不够，已提到 60
   assert.match(workflow, /timeout-minutes: 60/);
 });
+
+test("审计状态语义：开跑前是 pending 的 audit-target，跑完才发 audited", async () => {
+  const contents = await workflow("lighthouse.yml");
+  // 开跑前那条只能是 pending + audit-target：以前它在审计开始前就发 perf/audited success，
+  // 分数还没出来状态栏就说「已审计」，属于假绿。
+  assert.match(contents, /context\\":\\"perf\/audit-target\\",\\"state\\":\\"pending/);
+  assert.doesNotMatch(contents, /context\\":\\"perf\/audited\\",\\"state\\":\\"success\\",\\"description\\":\\"audited \$\{target/);
+  // 跑完之后那条要带最低/中位分，并且按 LHCI 的结论决定 success/failure
+  assert.match(contents, /Mark the audited build/);
+  assert.match(contents, /--audited-description/);
+  assert.match(contents, /LHCI_OUTCOME/);
+  // 顺序：Run Lighthouse CI → Summarize → 逐 URL 状态 → audited 标记
+  const runIndex = contents.indexOf("- name: Run Lighthouse CI");
+  const auditedIndex = contents.indexOf("- name: Mark the audited build");
+  assert.ok(runIndex >= 0 && auditedIndex > runIndex, "perf/audited 必须发在审计之后");
+});

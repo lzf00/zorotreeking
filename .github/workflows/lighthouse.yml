@@ -113,9 +113,13 @@ jobs:
 
       # 行情接口冷启动要 3.5 秒（热态 40ms），而它会和首屏资源抢带宽，直接影响 LCP 读数。
       # 审计前先烘一遍，让 15 个 URL 比的是页面本身，不是缓存状态。
-      # 把「本轮到底审了哪一版」发成一条 commit status：公开可读，不用 token 翻日志。
-      # 之前正是因为这个信息只存在于日志里，才没能第一时间发现分数被挂到了别的提交上。
-      - name: Publish which build was audited
+      # 把「本轮到底审的是哪一版」发成一条 commit status：公开可读，不用 token 翻日志。
+      # 之前这个信息只存在于日志里，才没能第一时间发现分数被挂到了别的提交上。
+      #
+      # 注意语义：这里是审计**开始前**，所以 context 是 `perf/audit-target`、state 是 `pending`
+      # （=「预计审这一版」）。`perf/audited` 要等审计真的跑完、由最后那步发，否则状态栏会
+      # 在分数还没出来时就说「已审计」，属于假绿。
+      - name: Mark which build is being audited
         if: steps.scope.outputs.run == 'true'
         run: |
           # 归一化：只取 sha。历史上这里曾写成 `audited-sha=<sha>`（把 GITHUB_OUTPUT 的格式
@@ -125,18 +129,18 @@ jobs:
           if [ "$target" = "unknown" ] || [ -z "$target" ]; then
             target="${{ github.event.workflow_run.head_sha || github.sha }}"
           fi
-          body="{\"context\":\"perf/audited\",\"state\":\"success\",\"description\":\"audited ${target:0:7} (run ${{ github.run_id }})\",\"target_url\":\"https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}\"}"
+          body="{\"context\":\"perf/audit-target\",\"state\":\"pending\",\"description\":\"auditing ${target:0:7} (run ${{ github.run_id }})\",\"target_url\":\"https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}\"}"
           code=$(curl -sS -o /tmp/status-post.json -w '%{http_code}' -X POST \
             -H "Authorization: Bearer ${{ github.token }}" \
             -H "Accept: application/vnd.github+json" \
             "https://api.github.com/repos/${{ github.repository }}/statuses/${target}" \
             -d "$body") || code=000
-          echo "POST /statuses/${target} → HTTP ${code}"
+          echo "POST /statuses/${target} (perf/audit-target) → HTTP ${code}"
           cat /tmp/status-post.json 2>/dev/null || true
           # 发不出去不算失败（审计本身有效），但必须留痕：之前 || true 把 404 吞了，
           # 「审的是哪一版」这条信息悄悄没了整整一轮。
           if [ "${code}" != "201" ]; then
-            echo "::warning::perf/audited 状态没发出去（HTTP ${code}，target=${target}）"
+            echo "::warning::perf/audit-target 状态没发出去（HTTP ${code}，target=${target}）"
           fi
 
       - name: Warm the market endpoints
@@ -149,6 +153,7 @@ jobs:
           done
 
       - name: Run Lighthouse CI
+        id: lhci
         if: steps.scope.outputs.run == 'true'
         env:
           LHCI_UPLOAD__GITHUB_TOKEN: ${{ github.token }}
@@ -177,6 +182,32 @@ jobs:
           TARGET_SHA: ${{ steps.prodwait.outputs['audited-sha'] || github.event.workflow_run.head_sha || github.sha }}
           RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: node scripts/lighthouse-statuses.mjs --post
+
+      # 审计真跑完之后才发 `perf/audited`：描述里带「最低分 / 中位数」，
+      # 看状态栏就知道这轮预算过没过，不用再翻日志。
+      - name: Mark the audited build
+        if: always() && steps.scope.outputs.run == 'true'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          TARGET_SHA: ${{ steps.prodwait.outputs['audited-sha'] || github.event.workflow_run.head_sha || github.sha }}
+          LHCI_OUTCOME: ${{ steps.lhci.outcome }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          summary=$(node scripts/lighthouse-statuses.mjs --audited-description 2>/dev/null || echo "audited ${TARGET_SHA:0:7} · 无报告")
+          # 审计断言失败时 state 记 failure，别让「跑完了」被读成「过了」
+          if [ "${LHCI_OUTCOME}" = "success" ]; then state=success; else state=failure; fi
+          body=$(node -e 'console.log(JSON.stringify({context:"perf/audited",state:process.argv[2],description:process.argv[1].slice(0,140),target_url:process.argv[3]}))' "$summary" "$state" "$RUN_URL")
+          code=$(curl -sS -o /tmp/status-audited.json -w '%{http_code}' -X POST \
+            -H "Authorization: Bearer ${{ github.token }}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/statuses/${TARGET_SHA}" \
+            -d "$body") || code=000
+          echo "POST /statuses/${TARGET_SHA} (perf/audited, ${state}) → HTTP ${code}"
+          cat /tmp/status-audited.json 2>/dev/null || true
+          if [ "${code}" != "201" ]; then
+            echo "::warning::perf/audited 状态没发出去（HTTP ${code}）"
+          fi
 
       - name: Confirm production did not change mid-audit
         if: always() && steps.scope.outputs.run == 'true'

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { buildStatuses, contextFor } from "../scripts/lighthouse-statuses.mjs";
+import { buildStatuses, contextFor, summarizeDescription } from "../scripts/lighthouse-statuses.mjs";
 
 test("context 名带 perf/ 前缀，路径原样保留", () => {
   assert.equal(contextFor("https://www.zorotreeking.online/"), "perf/");
@@ -44,4 +44,21 @@ test("性能低于 0.80 记 failure，缺分数也记 failure（不能假装成�
 test("描述长度不超过 GitHub 的 140 字符上限", () => {
   const [status] = buildStatuses([{ url: "/x/", perf: 0.5, lcp: 123456, tbt: 123456, cls: 0.123456 }]);
   assert.ok(status.description.length <= 140, status.description);
+});
+
+test("perf/audited 的描述写「最低分」而不是「中位数」——预算看的是最差那页", () => {
+  const rows = [
+    { url: "https://x/", perf: 0.97, lcp: 900, tbt: 0, cls: 0 },
+    { url: "https://x/hike/", perf: 0.96, lcp: 840, tbt: 0, cls: 0.02 },
+    { url: "https://x/invest/digest/", perf: 0.93, lcp: 1020, tbt: 4, cls: 0 },
+  ];
+  assert.equal(summarizeDescription(rows, "c2bf9d616cf2ed590285d7246972b2c4a76371cd"), "audited c2bf9d6 · 3 URL · 最低 93 · 中位 96");
+});
+
+test("没有报告时不假装有分数", () => {
+  assert.equal(summarizeDescription([], "abcdef1234567"), "audited abcdef1 · 无报告");
+  assert.equal(
+    summarizeDescription([{ url: "/a/", perf: NaN, lcp: NaN, tbt: NaN }], "abcdef1234567"),
+    "audited abcdef1 · 未拿到性能分",
+  );
 });

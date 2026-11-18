@@ -52,6 +52,22 @@ export function buildStatuses(rows, { runUrl } = {}) {
   });
 }
 
+/**
+ * 审计完成时那条 `perf/audited` 的描述：`audited <sha7> · 15 URL · 最低 96 · 中位 97`。
+ *
+ * 为什么单独抽出来：描述里写「最低分」比「中位分」有用——预算看的就是最差那一页；
+ * 而这两句话以前只存在于日志里，看 commit status 的人只能看到「audited」。
+ */
+export function summarizeDescription(rows, sha) {
+  if (!rows.length) return `audited ${sha.slice(0, 7)} · 无报告`;
+  const scores = rows.map((row) => (Number.isFinite(row.perf) ? Math.round(row.perf * 100) : null)).filter((n) => n !== null);
+  const short = sha.slice(0, 7);
+  if (!scores.length) return `audited ${short} · 未拿到性能分`;
+  const min = Math.min(...scores);
+  const med = [...scores].sort((a, b) => a - b)[Math.floor(scores.length / 2)];
+  return `audited ${short} · ${scores.length} URL · 最低 ${min} · 中位 ${med}`;
+}
+
 /** 同一个 sha 上重复发（重跑审计）不报错，GitHub 会保留最新一条 */
 async function postStatuses(statuses, { token, sha, repo }) {
   const url = `https://api.github.com/repos/${repo}/statuses/${sha}`;
@@ -86,6 +102,12 @@ async function main() {
   const rows = summarize(readLhrs(dir));
   if (rows.length === 0) {
     console.log("[lh-statuses] 没有解析到任何报告，跳过（不发空状态）");
+    return;
+  }
+  if (args.includes("--audited-description")) {
+    // workflow 用它拼 perf/audited 的描述；没给 sha 就用环境里的
+    const sha = process.env.TARGET_SHA ?? "";
+    console.log(summarizeDescription(rows, sha || "unknown"));
     return;
   }
   const statuses = buildStatuses(rows, { runUrl: process.env.RUN_URL });

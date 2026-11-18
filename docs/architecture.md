@@ -349,7 +349,7 @@ description 写着 `audited d079cdb (run 44362520358)`，和 15 条 `lhci/url/*`
 也就是「生产当时服务的版本 = 审计声明的版本 = 分数挂载的版本」三者一致。之前两轮这条状态
 一直是空的，就是这个 key 写进文件导致的 404。
 
-顺便把「本轮审的是哪一版」做成公开的 commit status（`perf/audited`）：之前这个信息只在日志里，
+顺便把「本轮审的是哪一版」做成公开的 commit status：之前这个信息只在日志里，
 没有 token 就查不到，才让「分数挂错提交」这件事瞒了这么久。
 
 #### 一个把分数找错提交的坑（2026-11-18 排查）
@@ -761,6 +761,8 @@ GET https://api.github.com/repos/lzf00/zorotreeking/commits/<sha>/statuses
 | state | 性能 ≥ 0.80 记 `success`，低于或分数缺失记 `failure`（不许假装成功） |
 | description | `分数 分 · LCP x.xxs · TBT xxxms · CLS x.xxx`，截到 140 字符 |
 | 重跑 | 同一个 sha 上重复发不会报错，GitHub 保留最新一条 |
+| 开跑前 | 只发 `perf/audit-target` + `state: pending`（意思是「预计审这一版」） |
+| 跑完 | 才发 `perf/audited`，描述带`最低 xx · 中位 xx`；LHCI 断言挂了就记 `failure` |
 | 发不出去 | 只 `::warning::`，不让审计本身失败 |
 
 2026-11-19 `c2bf9d6` 那次审计的 15 个 URL（全部 ≥ 96，比 `c3f5f6c` 的 93–98 又上一档，
