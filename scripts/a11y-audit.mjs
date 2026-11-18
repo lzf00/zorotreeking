@@ -149,6 +149,11 @@ async function main() {
           .filter(Boolean)
       : null;
   const targets = only ?? sampleEvenly(pages, Math.min(count, pages.length));
+  // dist/ 不存在或正在重建时，listPages() 会返回空数组——不能报「0 页 0 违规」。
+  if (pages.length === 0 || targets.length === 0) {
+    console.error("✗ dist/ 里没有可审计的页面：先 npm run build，并确认审计期间没有别的构建在写 dist/。");
+    process.exit(2);
+  }
 
   const { chromium } = await import("playwright");
   const server = await serve(DIST);
@@ -251,11 +256,25 @@ async function main() {
   }
 
   const grouped = groupViolations(results);
+  // dist/ 正在被重建时，静态服务器会临时返回 404，结果是「一大半页面被跳过、然后报没违规」。
+  // 这个假绿比红了更危险（2026-11-19 撞过一次：866/1189 页 404，报告却是 0 违规），
+  // 所以大面积 404 直接按「环境不可用」退出，而不是当成审计结论。
+  const attempted = results.length + skipped.length;
+  const notFound = skipped.filter((entry) => /HTTP 404/.test(entry.reason ?? "")).length;
+  if (notFound > 0 && notFound / attempted > 0.05) {
+    console.error(`✗ ${notFound}/${attempted} 个页面返回 404——dist/ 多半正在被重建。`);
+    console.error("  审计期间不要跑 npm run gate / astro build，等构建完再跑。");
+    process.exit(2);
+  }
   if (json) {
     console.log(JSON.stringify({ pages: results.length, skipped, grouped }, null, 2));
   } else {
     console.log(`抽查 ${results.length} 个页面（共 ${pages.length} 个），WCAG 2.0/2.1 A+AA`);
-    if (skipped.length) console.log(`跳过 ${skipped.length} 个（会自行跳转的页面）：${skipped.map((s) => s.url).join(" ")}`);
+    if (skipped.length) {
+      const reasons = [...new Set(skipped.map((entry) => entry.reason))].join(" / ");
+      console.log(`跳过 ${skipped.length} 个（会自行跳转或无 JS 也失败）：${skipped.map((s) => s.url).join(" ")}`);
+      console.log(`  原因：${reasons}`);
+    }
     if (!grouped.length) {
       console.log("✅ 没有违规");
     } else {

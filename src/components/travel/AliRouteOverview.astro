@@ -104,7 +104,7 @@ const reservationStatusClass = {
         </div>
         <span>WGS84 → GCJ-02 · 规划级坐标 · 非实时导航</span>
       </div>
-      <div class="ali-route-atlas__roads" aria-label="本线路主要公路">
+      <div class="ali-route-atlas__roads" aria-label="本线路主要公路" tabindex="0" role="group">
         <span>本线公路</span>
         {roadLabels.map((road) => (
           <span class={`ali-route-road-chip ali-route-road-chip--${road.roadClass}`} title={road.description}>

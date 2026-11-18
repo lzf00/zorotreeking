@@ -96,3 +96,30 @@ test("横向滚动的表格容器都能用键盘聚焦（WCAG 2.1.1）", async (
   await walk(root);
   assert.deepEqual(offenders, []);
 });
+
+test("大面积 404 时按环境错误退出，不能报「没违规」", async () => {
+  const fs = await import("node:fs/promises");
+  const source = await fs.readFile(new URL("../scripts/a11y-audit.mjs", import.meta.url), "utf8");
+  // 866/1189 页 404 却报 0 违规的假绿，2026-11-19 真撞到过一次
+  assert.match(source, /notFound \/ attempted > 0\.05/);
+  assert.match(source, /dist\/ 多半正在被重建/);
+});
+
+test("dist/ 为空时报环境错误，而不是「0 页 0 违规」", async () => {
+  const fs = await import("node:fs/promises");
+  const source = await fs.readFile(new URL("../scripts/a11y-audit.mjs", import.meta.url), "utf8");
+  assert.match(source, /dist\/ 里没有可审计的页面/);
+});
+
+test("旅行页手账/公路条这些自定义滚动容器也带 tabindex", async () => {
+  const fs = await import("node:fs/promises");
+  const root = new URL("../src/components/travel/", import.meta.url);
+  for (const name of ["AliLhasaReturnSheet.astro", "ChuanxiLoopSheet.astro", "AliRouteOverview.astro"]) {
+    const source = await fs.readFile(new URL(name, root), "utf8");
+    // 这些 class 在窄屏下是 overflow-x: auto，不给 tabindex 键盘就到不了
+    for (const cls of ["rd-sheet-paper", "ali-route-atlas__roads"]) {
+      const markup = source.split("\n").filter((line) => line.includes(`class="${cls}`) && line.includes("<div"));
+      for (const line of markup) assert.match(line, /tabindex="0"/, `${name} 的 .${cls} 缺 tabindex`);
+    }
+  }
+});
