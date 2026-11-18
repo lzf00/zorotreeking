@@ -319,6 +319,13 @@ LCP 却只有 0.44s——说明问题不在首屏内容，而在**空闲后才�
 `git diff-tree -r -m --first-parent` 取改动清单（普通 `--no-commit-id -r` 对合并提交返回空，
 会被误判成「没改动」而白跑一轮）。
 
+排查时还踩到第二个坑：写成了 `steps.prodwait.outputs.audited-sha`——**带连字符的 output 在
+GitHub 表达式里不能用点号取**，会静默变成空字符串再退回默认值，看日志也看不出错。
+正确写法 `steps.prodwait.outputs['audited-sha']`，已加测试锁住。
+
+顺便把「本轮审的是哪一版」做成公开的 commit status（`perf/audited`）：之前这个信息只在日志里，
+没有 token 就查不到，才让「分数挂错提交」这件事瞒了这么久。
+
 #### 一个把分数找错提交的坑（2026-11-18 排查）
 
 `perf:history` 一开始显示最近几轮「一条审计都没有」，但 Actions 里明明每轮都 success 30 分钟。

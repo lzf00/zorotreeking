@@ -113,6 +113,22 @@ jobs:
 
       # 行情接口冷启动要 3.5 秒（热态 40ms），而它会和首屏资源抢带宽，直接影响 LCP 读数。
       # 审计前先烘一遍，让 15 个 URL 比的是页面本身，不是缓存状态。
+      # 把「本轮到底审了哪一版」发成一条 commit status：公开可读，不用 token 翻日志。
+      # 之前正是因为这个信息只存在于日志里，才没能第一时间发现分数被挂到了别的提交上。
+      - name: Publish which build was audited
+        if: steps.scope.outputs.run == 'true'
+        run: |
+          audited=$(cat audited-sha.txt 2>/dev/null || echo unknown)
+          target="$audited"
+          if [ "$target" = "unknown" ] || [ -z "$target" ]; then
+            target="${{ github.event.workflow_run.head_sha || github.sha }}"
+          fi
+          curl -sS -o /dev/null -w 'status post: %{http_code}\n' -X POST \
+            -H "Authorization: Bearer ${{ github.token }}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/statuses/${target}" \
+            -d "{\"context\":\"perf/audited\",\"state\":\"success\",\"description\":\"audited by run ${{ github.run_id }}\"}" || true
+
       - name: Warm the market endpoints
         if: steps.scope.outputs.run == 'true'
         run: |
@@ -129,7 +145,7 @@ jobs:
           # 不显式指定的话，LHCI 用 GITHUB_SHA 当提交号——而 workflow_run 事件里 GITHUB_SHA
           # 是「创建这一轮时默认分支的头」，排队久一点就和实际被审的那一版错位（实测把
           # 一轮审计挂到了上一个提交上，查分数时找错 commit）。这里钉死成真正被审的 sha。
-          LHCI_BUILD_CONTEXT__CURRENT_HASH: ${{ steps.prodwait.outputs.audited-sha || github.event.workflow_run.head_sha || github.sha }}
+          LHCI_BUILD_CONTEXT__CURRENT_HASH: ${{ steps.prodwait.outputs['audited-sha'] || github.event.workflow_run.head_sha || github.sha }}
         # assert 失败的话 exit code 非 0；assert 设了 warn 不会 fail，error 才 fail
         run: npx --yes @lhci/cli@0.13.x autorun
 
