@@ -740,6 +740,33 @@ preload 可能纯亏，必须 A/B。
 A/B 里布局次数和滚动长任务没有一致差异（189 张卡片、2217 个节点，本身还不算重），
 留着是因为归档每天 +1 期、迟早会重；这一点如实记在这里，不是已证实的收益。
 
+### 逐页分数发成 commit status，不用 token 也能读
+
+历史痛点：LHCI 的逐 URL 分数只在 `.lighthouseci/` 产物里，而产物下载要 token。没有 token
+的时候，想确认「这轮 `/invest/digest/` 到底掉没掉分」只能猜——第 32 轮整整一轮都在猜。
+
+现在审计跑完会多发一轮 commit status（`scripts/lighthouse-statuses.mjs --post`），一条 URL
+一个 context：`perf/`、`perf/invest/`、`perf/invest/digest/`……描述里带分数和关键指标：
+
+```
+GET https://api.github.com/repos/lzf00/zorotreeking/commits/<sha>/statuses
+→ { context: "perf/invest/digest/", state: "success", description: "93 分 · LCP 0.84s · TBT 633ms · CLS 0.000" }
+```
+
+约定：
+
+| 项 | 规则 |
+|---|---|
+| context | `perf` + 路径，根路径就是 `perf/` |
+| state | 性能 ≥ 0.80 记 `success`，低于或分数缺失记 `failure`（不许假装成功） |
+| description | `分数 分 · LCP x.xxs · TBT xxxms · CLS x.xxx`，截到 140 字符 |
+| 重跑 | 同一个 sha 上重复发不会报错，GitHub 保留最新一条 |
+| 发不出去 | 只 `::warning::`，不让审计本身失败 |
+
+干跑：`node scripts/lighthouse-statuses.mjs --dir .lighthouseci`（或用 `--json` 看请求体）。
+本地没有报告时脚本直接退出、不发空状态。这一步在 workflow 里 `if: always()`，所以即使
+LHCI 断言失败、分数难看的轮次也会留痕。
+
 ### 审计只量「已经切过去」的生产
 
 Lighthouse 审的是线上 URL，而部署本身要几分钟（rsync + 原子切换）。以前审计在部署成功后
