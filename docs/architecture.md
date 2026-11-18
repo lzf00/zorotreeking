@@ -763,6 +763,27 @@ GET https://api.github.com/repos/lzf00/zorotreeking/commits/<sha>/statuses
 | 重跑 | 同一个 sha 上重复发不会报错，GitHub 保留最新一条 |
 | 发不出去 | 只 `::warning::`，不让审计本身失败 |
 
+2026-11-19 `c2bf9d6` 那次审计的 15 个 URL（全部 ≥ 96，比 `c3f5f6c` 的 93–98 又上一档，
+其中 `/invest/digest/` 93 → 97、`/invest/` 94 → 98，正好是封面变体和 SI 修复的效果）：
+
+| 页面 | 分数 | LCP | TBT |
+|---|---|---|---|
+| `/` | 97 | 0.91s | 0ms |
+| `/about/` | 98 | 0.86s | 0ms |
+| `/ai/` | 98 | 0.85s | 0ms |
+| `/ai/digest-2026-06-05/` | 98 | 0.94s | 0ms |
+| `/en/` | 98 | 0.83s | 0ms |
+| `/explore/` | 99 | 0.83s | 0ms |
+| `/hike/` | 98 | 0.87s | 0ms |
+| `/hike/sample-route/` | 96 | 0.84s | 0ms |
+| `/hike/travel/ali-grand-loop-lhasa-return-2026/` | 97 | 1.03s | 46ms |
+| `/invest/` | 98 | 0.84s | 0ms |
+| `/invest/digest/` | 97 | 1.02s | 4ms |
+| `/invest/stock/688981.SH/` | 98 | 0.88s | 0ms |
+| `/photo/baokemeng/` | 98 | 0.98s | 0ms |
+| `/tag/` | 98 | 0.86s | 0ms |
+| `/tag/photo/` | 98 | 0.85s | 0ms |
+
 干跑：`node scripts/lighthouse-statuses.mjs --dir .lighthouseci`（或用 `--json` 看请求体）。
 本地没有报告时脚本直接退出、不发空状态。这一步在 workflow 里 `if: always()`，所以即使
 LHCI 断言失败、分数难看的轮次也会留痕。
