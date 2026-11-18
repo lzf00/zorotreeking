@@ -38,6 +38,7 @@ const EN_STATIC_PATHS = [
   "/photo",
   "/hike",
   "/tag",
+  "/topics",
   "/archive",
   "/guestbook",
   "/subscribe",

@@ -1,0 +1,163 @@
+---
+/**
+ * 主题与关键词页（中英共用）。
+ *
+ * 两个视图：
+ *   - 标签云：该语言所有内容的 tags 频次，字号 = 频次（11 → 36 px），点进 /tag/[tag]
+ *   - 体量对比：每个板块的篇数与字数，横向条对比
+ *
+ * 2026-11-18 从 /topics 抽出来：英文站此前没有任何「按主题看」的入口，而 /explore 依赖中文
+ * embedding 无法直接复用，标签云 + 体量对比恰好不需要向量数据，所以两边各渲染一次。
+ */
+import { getCollection } from "astro:content";
+import { pathWithLang, useTranslations, type Lang } from "@/i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const sections = ["ai", "invest", "hike", "photo"] as const;
+const collected = await Promise.all(
+  sections.map(async (section) => ({
+    section,
+    entries: await getCollection(section, (entry) => entry.data.lang === lang && !entry.data.draft),
+  })),
+);
+
+const all = collected.flatMap(({ section, entries }) =>
+  entries.map((entry) => ({ section, title: entry.data.title, tags: entry.data.tags ?? [], body: entry.body ?? "" })),
+);
+
+// ── 标签云 ──
+const tagCount = new Map<string, number>();
+for (const entry of all) {
+  for (const tag of entry.tags) {
+    if (!tag) continue;
+    tagCount.set(tag, (tagCount.get(tag) ?? 0) + 1);
+  }
+}
+const tags = [...tagCount.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+const maxC = tags[0]?.[1] ?? 1;
+const minC = tags[tags.length - 1]?.[1] ?? 1;
+const fontSize = (count: number) =>
+  maxC === minC ? 20 : Math.round(11 + ((count - minC) / (maxC - minC)) * 25);
+
+// ── 体量：中文字符算 1，英文按空格切词 ──
+const wordCount = (text: string) => {
+  let cn = 0;
+  const rest = text.replace(/[\u4e00-\u9fff]/g, () => {
+    cn += 1;
+    return "";
+  });
+  const words = rest.split(/\s+/).filter((chunk) => /[a-zA-Z]/.test(chunk)).length;
+  return cn + words;
+};
+const collectionStats = collected.map(({ section, entries }) => ({
+  section,
+  count: entries.length,
+  words: entries.reduce((sum, entry) => sum + wordCount(entry.body ?? ""), 0),
+}));
+const maxWords = Math.max(...collectionStats.map((stat) => stat.words), 1);
+const sectionColor: Record<(typeof sections)[number], string> = {
+  ai: "#1d4ed8",
+  invest: "#991b1b",
+  hike: "#166534",
+  photo: "#6b21a8",
+};
+
+const copy = {
+  zh: {
+    eyebrow: "TOPICS",
+    title: "主题与关键词",
+    lead: (n: number, m: number) => `共 ${n} 个标签 · ${m} 篇内容。字号大小 = 该标签出现的篇数。`,
+    cloud: "标签云",
+    empty: "还没有 tag 数据。",
+    volume: "每板块体量",
+    countLabel: (c: number, w: number) => `${c} 篇 · ${w.toLocaleString("en-US")} 词`,
+    footer:
+      "Tag 自动维护：digest 定时任务按 source 派生 tag（hf-papers / arxiv / openai 等），原创文章自己在 frontmatter 里写。点任意 tag 进对应索引页。",
+    description: (n: number, m: number) =>
+      `把 ${m} 篇内容拆成 ${n} 个标签，按体量排成一张关键词图：AI、投资、摄影、徒步旅行各自占多少，一眼能看出整站的重心。`,
+  },
+  en: {
+    eyebrow: "TOPICS",
+    title: "Topics & keywords",
+    lead: (n: number, m: number) => `${n} tags across ${m} posts. Font size = how many posts carry that tag.`,
+    cloud: "Tag cloud",
+    empty: "No tags yet.",
+    volume: "Volume by section",
+    countLabel: (c: number, w: number) => `${c} posts · ${w.toLocaleString("en-US")} words`,
+    footer:
+      "Tags are maintained automatically: the digest job derives them from the source (hf-papers, arxiv, openai and so on), and original posts tag themselves in frontmatter. Click any tag to open its index.",
+    description: (n: number, m: number) =>
+      `${m} posts broken down into ${n} tags and sized by volume: how much of this site is AI, investing, photography and hiking, at a glance.`,
+  },
+}[lang];
+---
+
+<article class="max-w-3xl mx-auto px-6 sm:px-8 pt-12 sm:pt-20 pb-24">
+  <header class="mb-12">
+    <div class="text-[11px] uppercase tracking-[0.2em] text-zinc-500 dark:text-zinc-400 font-mono mb-3">{copy.eyebrow}</div>
+    <h1 class="text-3xl sm:text-5xl leading-tight tracking-tight font-semibold">{copy.title}</h1>
+    <p class="mt-4 text-base sm:text-lg leading-relaxed text-[var(--text-secondary)] font-light">
+      {copy.lead(tags.length, all.length)}
+    </p>
+  </header>
+
+  <section class="mb-16">
+    <h2 class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-5 pb-2 border-b border-[var(--border)]">
+      {copy.cloud}
+    </h2>
+    <div class="flex flex-wrap gap-x-3 gap-y-2 items-baseline">
+      {tags.map(([tag, count]) => (
+        <a
+          href={pathWithLang(`/tag/${tag}`, lang)}
+          class="text-[var(--text-secondary)] hover:text-[var(--text)] transition-colors leading-none"
+          style={`font-size:${fontSize(count)}px`}
+          title={lang === "zh" ? `${count} 篇` : `${count} posts`}
+        >
+          {tag}
+          <sup class="ml-0.5 text-[10px] text-[var(--text-tertiary)] font-mono">{count}</sup>
+        </a>
+      ))}
+      {tags.length === 0 && <p class="text-[var(--text-tertiary)]">{copy.empty}</p>}
+    </div>
+  </section>
+
+  <section class="mb-16">
+    <h2 class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-5 pb-2 border-b border-[var(--border)]">
+      {copy.volume}
+    </h2>
+    <ul class="space-y-3">
+      {collectionStats.map((stat) => {
+        const pct = Math.round((stat.words / maxWords) * 100);
+        return (
+          <li>
+            <div class="flex items-baseline justify-between mb-1">
+              <a
+                href={pathWithLang(`/${stat.section}`, lang)}
+                class="text-sm font-medium hover:underline"
+                style={`color:${sectionColor[stat.section]}`}
+              >
+                {t(`section.${stat.section}.title`)}
+              </a>
+              <span class="text-[11px] text-[var(--text-tertiary)] font-mono tabular-nums">
+                {copy.countLabel(stat.count, stat.words)}
+              </span>
+            </div>
+            <div class="h-1.5 bg-[var(--bg-soft)] rounded-full overflow-hidden">
+              <div class="h-full rounded-full transition-all" style={`width:${pct}%;background:${sectionColor[stat.section]}`} />
+            </div>
+          </li>
+        );
+      })}
+    </ul>
+  </section>
+
+  <footer class="mt-16 pt-8 border-t border-[var(--border)] text-sm text-[var(--text-tertiary)] leading-relaxed">
+    <p>{copy.footer}</p>
+  </footer>
+</article>

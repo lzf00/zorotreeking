@@ -379,6 +379,19 @@ URL 更糟」是同一个判断）。所以分级：
 顺手修正了一处容易漏的配套：sitemap 的静态路径是**手写清单**（`src/lib/sitemap.ts`），新增页面
 不同步加进去，`check:seo` 会立刻报「可索引但不在 sitemap」——这次就是它挡住的。
 
+### 英文站的主题入口：`/en/topics/` 做了，`/en/explore/` 没做
+
+中文站有两条「按主题看」的路：`/topics`（标签云 + 板块体量）和 `/explore`（按 embedding 投影的二维地图）。
+英文站此前一条都没有，只能靠 `/en/tag/` 索引一个个点。
+
+| 页面 | 依赖 | 结论 |
+|---|---|---|
+| `/en/topics/` | 只要 frontmatter 里的 tags 和正文 | **做了**。`TopicsCloud.astro` 抽成中英共用组件，标签云 29 个、体量条 4 条，两侧渲染结果一致 |
+| `/en/explore/` | 每篇的 embedding 向量（`src/data/embeddings.json` 里 520 条全是中文内容） | **不做**。要么给 500+ 篇英文内容重新生成向量（外部 API 成本 + 中英向量空间不可混用），要么退化成无意义的散点。英文用户走 `/en/archive/` + `/en/tag/` 已经够 |
+
+配套三处容易漏的地方都补齐了：sitemap 的英文静态路径清单、hreflang 配对表（`TRANSLATED_STATIC_PATHS`）、
+页脚「主题 / Topics」入口。
+
 ### pre-push 钩子：把「看漏退出码」变成不可能
 
 `npm run gate` 解决的是「怎么一次跑完」，但靠自觉仍然会漏。仓库现在带一个
