@@ -76,11 +76,13 @@ async function fetchJson(url) {
   return res.json();
 }
 
-async function collectAudits(rounds) {
+async function collectAudits(rounds, maxProbes = 12) {
   const commits = await fetchJson(`${API}/commits?per_page=30`);
   const audits = [];
+  let probes = 0;
   for (const commit of commits) {
-    if (audits.length >= rounds) break;
+    if (audits.length >= rounds || probes >= maxProbes) break;
+    probes += 1;
     const statuses = await fetchJson(`${API}/commits/${commit.sha}/statuses?per_page=100`);
     const lhci = statuses.filter((status) => status.context.startsWith("lhci/url/"));
     if (lhci.length === 0) continue;
@@ -106,7 +108,8 @@ if (process.argv[1] && import.meta.url === new URL(`file://${process.argv[1]}`).
   const args = process.argv.slice(2);
   const roundsArg = args.indexOf("--rounds");
   const rounds = roundsArg >= 0 ? Number(args[roundsArg + 1]) || 6 : 6;
-  const audits = await collectAudits(rounds);
+  // 未认证 API 每小时 60 次：每次探测一个提交，最多探 12 个，避免一次跑完额度
+  const audits = await collectAudits(rounds, 12);
   if (audits.length === 0) {
     console.error("最近 30 个提交里没有找到 Lighthouse 审计结果（可能都没跑成）");
     process.exit(1);
