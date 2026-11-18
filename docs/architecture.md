@@ -409,6 +409,10 @@ URL 更糟」是同一个判断）。所以分级：
 顺手修正了一处容易漏的配套：sitemap 的静态路径是**手写清单**（`src/lib/sitemap.ts`），新增页面
 不同步加进去，`check:seo` 会立刻报「可索引但不在 sitemap」——这次就是它挡住的。
 
+一页 500+ 行还有个渲染问题：整页参与布局与绘制，移动端滚起来会掉帧。年份分节加了
+`content-visibility:auto` + `contain-intrinsic-size:auto 1200px`，屏幕外的年份直接跳过布局；
+实测滚到底最后一行仍正常显示（`/archive/` 页高 24279px，末行「2026-04-30 · 个人投资 · 2026 年 4 月复盘」可见）。
+
 ### 英文站的主题入口：`/en/topics/` 做了，`/en/explore/` 没做
 
 中文站有两条「按主题看」的路：`/topics`（标签云 + 板块体量）和 `/explore`（按 embedding 投影的二维地图）。

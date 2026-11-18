@@ -58,7 +58,8 @@ const sectionColor: Record<(typeof sections)[number], string> = {
 
 <div class="mt-8 space-y-10">
   {years.map((year) => (
-    <section>
+    // 一页 500+ 行时，屏幕外的年份没必要参与布局与绘制
+    <section style="content-visibility:auto;contain-intrinsic-size:auto 1200px">
       <h2 class="flex items-baseline gap-3 text-xs uppercase tracking-[0.18em] text-[var(--text-tertiary)]">
         <span>{year}</span>{" "}
         <span class="tabular-nums normal-case tracking-normal">
