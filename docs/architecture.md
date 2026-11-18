@@ -561,6 +561,43 @@ npm run perf:history -- --json    # 机器可读
 注意：未认证 GitHub API 每小时 60 次，脚本默认 6 轮约 7 次请求；连跑几次会撞 403，
 等一小时自然恢复（或给 token，见「待决定」清单）。
 
+### 测量本身的两个坑（冷缓存顺序偏差）
+
+同一台机器、同样 4× CPU 节流，两个页面的 FCP 会随「谁先被测」翻转：
+
+| 测量顺序 | 第一页 FCP | 第二页 FCP |
+|---|---|---|
+| 先 `/invest/` 再 `/explore/` | `/invest/` 1184 ms | `/explore/` 280 ms |
+| 先 `/explore/` 再 `/invest/` | `/explore/` 1160 ms | `/invest/` 292 ms |
+
+慢的不是页面，是**冷缓存**（字体、dist 里的静态文件第一次读盘）。所以我一度以为
+`/invest/` 的 LCP 结构性比 `/explore/` 高 280 ms，其实那 280 ms 是「它是第一个被测的」。
+
+结论与对策：
+- `npm run perf:local` 默认先预热（把 HTML 和它引用的 `/_astro/*` 读一遍），逐 URL 交替
+  测量时也要在同一进程里先跑一轮丢弃的结果，别拿第一个页面的数字当基线；
+- Lighthouse CI 每轮跑 5 次取中位数、且每次新开 Chrome，所以它受这个偏差影响较小；
+- 跨页面比较要在**同一条件**下（同进程、同顺序策略）进行，否则 200–900 ms 的差异可能全是测量假象。
+
+### 本机基线里的 TBT 不可信（headless 无 GPU）
+
+`perf:local` 给首页量出过 perf **72**、TBT **964–1054 ms**，而同批 `/ai/` TBT 0、`/photo/` 184。
+看着像首页有 1 秒阻塞，实际是 headless Chrome 没有 GPU 导致的测量假象：
+
+| 证据 | 结果 |
+|---|---|
+| Lighthouse 主线程诊断 | 单个 1287 ms 任务，`bootup-time` 归因 **Unattributable**（不是 JS） |
+| 真实 CDP trace（4× CPU、桌面 1280） | 主线程最长任务 **2 ms**；最长事件是 `GPUTask` 141 / 136 / 80 ms |
+| 同页把视口缩到 390 | 最长任务仍是 2 ms |
+
+也就是说：那些“宇称”时间花在软件光栅上，被 Lighthouse 记进了主线程 `Other`。渐变、
+`backdrop-blur`、合成层多的页面（首页 8 张渐变卡片 + `animate-rise`）在无 GPU 环境里必然虚高。
+
+结论：
+- `perf`/`FCP`/`LCP`/`SI` 可信，**TBT 只看趋势**；
+- 判断真实 TBT 要么开带 GPU 的浏览器手跑 DevTools，要么接受 CI 的 300 ms 只做兜底阈值；
+- 首页不需要为此改样式（用户侧有 GPU，这部分是像素填充，不是脚本阻塞）。
+
 ### 审计只量「已经切过去」的生产
 
 Lighthouse 审的是线上 URL，而部署本身要几分钟（rsync + 原子切换）。以前审计在部署成功后
@@ -1001,40 +1038,3 @@ recharts 3 / marked 18），每条单独提交、单独回归，细节见 `docs/
 | Renovate | astro / `@astrojs/*` 分组为 `astro-stack` 不自动合并；React 允许 `^19`，大版本仍人工审 |
 
 剩下 3 个 moderate advisory 都在构建期、不进浏览器：`satori`（只用于 `/og/*.png`）、`postcss-selector-parser`（被 `@tailwindcss/typography` 钉版本）。
-
-### 测量本身的两个坑（冷缓存顺序偏差）
-
-同一台机器、同样 4× CPU 节流，两个页面的 FCP 会随「谁先被测」翻转：
-
-| 测量顺序 | 第一页 FCP | 第二页 FCP |
-|---|---|---|
-| 先 `/invest/` 再 `/explore/` | `/invest/` 1184 ms | `/explore/` 280 ms |
-| 先 `/explore/` 再 `/invest/` | `/explore/` 1160 ms | `/invest/` 292 ms |
-
-慢的不是页面，是**冷缓存**（字体、dist 里的静态文件第一次读盘）。所以我一度以为
-`/invest/` 的 LCP 结构性比 `/explore/` 高 280 ms，其实那 280 ms 是「它是第一个被测的」。
-
-结论与对策：
-- `npm run perf:local` 默认先预热（把 HTML 和它引用的 `/_astro/*` 读一遍），逐 URL 交替
-  测量时也要在同一进程里先跑一轮丢弃的结果，别拿第一个页面的数字当基线；
-- Lighthouse CI 每轮跑 5 次取中位数、且每次新开 Chrome，所以它受这个偏差影响较小；
-- 跨页面比较要在**同一条件**下（同进程、同顺序策略）进行，否则 200–900 ms 的差异可能全是测量假象。
-
-### 本机基线里的 TBT 不可信（headless 无 GPU）
-
-`perf:local` 给首页量出过 perf **72**、TBT **964–1054 ms**，而同批 `/ai/` TBT 0、`/photo/` 184。
-看着像首页有 1 秒阻塞，实际是 headless Chrome 没有 GPU 导致的测量假象：
-
-| 证据 | 结果 |
-|---|---|
-| Lighthouse 主线程诊断 | 单个 1287 ms 任务，`bootup-time` 归因 **Unattributable**（不是 JS） |
-| 真实 CDP trace（4× CPU、桌面 1280） | 主线程最长任务 **2 ms**；最长事件是 `GPUTask` 141 / 136 / 80 ms |
-| 同页把视口缩到 390 | 最长任务仍是 2 ms |
-
-也就是说：那些“宇称”时间花在软件光栅上，被 Lighthouse 记进了主线程 `Other`。渐变、
-`backdrop-blur`、合成层多的页面（首页 8 张渐变卡片 + `animate-rise`）在无 GPU 环境里必然虚高。
-
-结论：
-- `perf`/`FCP`/`LCP`/`SI` 可信，**TBT 只看趋势**；
-- 判断真实 TBT 要么开带 GPU 的浏览器手跑 DevTools，要么接受 CI 的 300 ms 只做兜底阈值；
-- 首页不需要为此改样式（用户侧有 GPU，这部分是像素填充，不是脚本阻塞）。
