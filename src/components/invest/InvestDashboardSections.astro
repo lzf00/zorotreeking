@@ -1,0 +1,137 @@
+---
+/**
+ * 投资看板的实时区块：今日大盘 / 市场情绪 / 持仓净值 / AI 科创 / 创业板 / 行业板块。
+ *
+ * 中文页和英文页共用这一份结构，只通过 `lang` 切文案。数据由
+ * `src/lib/invest-dashboard.ts` 统一装载（SSR 兜底快照 + 客户端实时覆盖）。
+ */
+import MarketIndicesGrid from "@/components/MarketIndicesGrid";
+import MarketSentiment from "@/components/MarketSentiment";
+import LiveHoldings from "@/components/LiveHoldings";
+import StockSpotlight from "@/components/StockSpotlight";
+import SectorRanking from "@/components/SectorRanking";
+import { marketLabels, type MarketLang } from "@/lib/market-i18n";
+import type { InvestDashboard } from "@/lib/invest-dashboard";
+
+interface Props {
+  dashboard: InvestDashboard;
+  lang?: MarketLang;
+}
+
+const { dashboard, lang = "zh" } = Astro.props;
+const L = marketLabels(lang);
+const {
+  holdings,
+  portfolioMode,
+  simulationStartDate,
+  simulationCapitalPerFund,
+  initialIndices,
+  initialSectors,
+  initialSentiment,
+  initialMarketUpdated,
+  initialWatchQuotes,
+  latestPeriod,
+  seeds,
+} = dashboard;
+
+const holdingsTitle =
+  portfolioMode === "actual"
+    ? L.sectionHoldingsActual
+    : portfolioMode === "simulation"
+      ? L.sectionHoldingsSimulated(simulationCapitalPerFund.toLocaleString("en-US"))
+      : L.sectionHoldingsPlaceholder;
+
+const disclaimerParts = L.disclaimer.split(L.disclaimerStrong);
+---
+
+<!-- A · 今日大盘 -->
+<section class="max-w-5xl mx-auto px-5 pb-8">
+  <div class="flex items-baseline justify-between mb-3">
+    <h2 class="text-base font-semibold tracking-tight">{L.sectionToday}</h2>
+    <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">{L.liveBadge}</span>
+  </div>
+  <MarketIndicesGrid
+    initialIndices={initialIndices}
+    initialUpdated={initialMarketUpdated}
+    initialSource="wind_snapshot"
+    lang={lang}
+    client:load
+  />
+</section>
+
+<!-- D · 市场情绪：成交额 / 涨跌家数 / 涨停跌停 -->
+<section class="max-w-5xl mx-auto px-5 pb-8">
+  <div class="flex items-baseline justify-between mb-3">
+    <h2 class="text-base font-semibold tracking-tight">{L.sectionSentiment}</h2>
+    <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">{L.liveBadge}</span>
+  </div>
+  <MarketSentiment initialData={initialSentiment} lang={lang} client:visible />
+</section>
+
+<!-- B · 我的持仓 / 公开基金净值跟踪 -->
+<section class="max-w-5xl mx-auto px-5 pb-8">
+  <div class="flex items-baseline justify-between mb-3">
+    <h2 class="text-base font-semibold tracking-tight">{holdingsTitle}</h2>
+    <span class="text-[11px] text-[var(--text-tertiary)] font-mono tracking-wide">{L.officialUnitNav}</span>
+  </div>
+  <LiveHoldings
+    holdings={holdings}
+    dataMode={portfolioMode}
+    simulationStartDate={simulationStartDate}
+    lang={lang}
+    client:load
+  />
+</section>
+
+<!-- C1 · AI 科创聚焦 -->
+<section class="max-w-5xl mx-auto px-5 pb-8 mt-8">
+  <div class="flex items-baseline justify-between mb-3">
+    <h2 class="text-base font-semibold tracking-tight">{L.sectionAiFocus}</h2>
+    <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">{L.liveBadge}</span>
+  </div>
+  <StockSpotlight
+    stocks={seeds.aiKechuang}
+    initialQuotes={initialWatchQuotes}
+    initialUpdated={initialMarketUpdated}
+    lang={lang}
+    client:visible
+  />
+</section>
+
+<!-- C2 · 创业板风向 -->
+<section class="max-w-5xl mx-auto px-5 pb-8">
+  <div class="flex items-baseline justify-between mb-3">
+    <h2 class="text-base font-semibold tracking-tight">{L.sectionChiNext}</h2>
+    <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">{L.liveBadge}</span>
+  </div>
+  <StockSpotlight
+    stocks={seeds.chinext}
+    initialQuotes={initialWatchQuotes}
+    initialUpdated={initialMarketUpdated}
+    lang={lang}
+    client:visible
+  />
+</section>
+
+<!-- C3 · 行业板块涨跌榜 -->
+<section class="max-w-5xl mx-auto px-5 pb-8">
+  <div class="flex items-baseline justify-between mb-3">
+    <h2 class="text-base font-semibold tracking-tight">{L.sectionSectors}</h2>
+    <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">{L.liveBadge}</span>
+  </div>
+  <SectorRanking initialData={initialSectors} lang={lang} client:visible />
+</section>
+
+<p class="max-w-5xl mx-auto px-5 mt-4 text-[11px] text-[var(--text-tertiary)] leading-relaxed">
+  {disclaimerParts[0]}<strong>{L.disclaimerStrong}</strong>{disclaimerParts[1] ?? ""}
+</p>
+
+<!-- 历史月度快照（保留作为复盘记录入口） -->
+{latestPeriod && (
+  <section class="max-w-5xl mx-auto px-5 mt-10">
+    <h2 class="text-base font-semibold tracking-tight mb-2">{L.monthlySnapshot}</h2>
+    <p class="text-xs text-[var(--text-tertiary)] mb-3">
+      {L.monthlySnapshotLatest(latestPeriod)}<code>invest-portfolio/{`{YYYY-MM}`}.yaml</code>{L.monthlySnapshotTail}
+    </p>
+  </section>
+)}

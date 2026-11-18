@@ -270,7 +270,7 @@ test("sector ranking does not label positive laggards as decliners", () => {
       { code: "B", name: "乙", change_pct: 0.11 },
     ]),
     {
-      title: "涨幅后十",
+      kind: "relative-bottom",
       direction: "up",
       items: [
         { code: "A", name: "甲", change_pct: 0.06 },
@@ -287,7 +287,7 @@ test("sector decline ranking excludes non-declining entries", () => {
       { code: "B", name: "乙", change_pct: 0.04 },
     ]),
     {
-      title: "跌幅榜",
+      kind: "decliners",
       direction: "down",
       items: [{ code: "A", name: "甲", change_pct: -1.2 }],
     },

@@ -1,98 +1,18 @@
 ---
-import fs from "node:fs";
-import path from "node:path";
 import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import MarketIndicesGrid from "@/components/MarketIndicesGrid";
-import LiveHoldings from "@/components/LiveHoldings";
-import StockSpotlight from "@/components/StockSpotlight";
-import SectorRanking from "@/components/SectorRanking";
-import MarketSentiment from "@/components/MarketSentiment";
+import InvestDashboardSections from "@/components/invest/InvestDashboardSections.astro";
+import { loadInvestDashboard } from "@/lib/invest-dashboard";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
 import { sectionDescription } from "@/lib/descriptions";
 import { extractDigestHighlights } from "@/lib/digest-highlights";
 
-// ── Phase C: AI 科创聚焦 + 创业板风向 ──
-const aiKechuangStocks = [
-  { secid: "1.688981", display_name: "中芯国际",   note: "晶圆代工龙头" },
-  { secid: "1.688256", display_name: "寒武纪",     note: "AI 加速芯片" },
-  { secid: "1.688041", display_name: "海光信息",   note: "国产 CPU / DCU" },
-  { secid: "1.601138", display_name: "工业富联",   note: "AI 服务器代工" },
-  { secid: "0.300308", display_name: "中际旭创",   note: "AI 服务器光模块" },
-  { secid: "0.002371", display_name: "北方华创",   note: "半导体设备" },
-  { secid: "0.300474", display_name: "景嘉微",     note: "国产 GPU" },
-  { secid: "0.002463", display_name: "沪电股份",   note: "AI 服务器 PCB" },
-  { secid: "1.688008", display_name: "澜起科技",   note: "内存接口芯片" },
-  { secid: "0.300782", display_name: "卓胜微",     note: "射频前端" },
-];
-
-const chinextStocks = [
-  { secid: "0.300750", display_name: "宁德时代",   note: "动力电池" },
-  { secid: "0.300760", display_name: "迈瑞医疗",   note: "医疗器械" },
-  { secid: "0.300059", display_name: "东方财富",   note: "互联网券商" },
-  { secid: "0.300124", display_name: "汇川技术",   note: "工业自动化" },
-  { secid: "0.300274", display_name: "阳光电源",   note: "光伏逆变器" },
-  { secid: "0.300033", display_name: "同花顺",     note: "金融科技" },
-  { secid: "0.300999", display_name: "金龙鱼",     note: "粮油食品" },
-  { secid: "0.300015", display_name: "爱尔眼科",   note: "眼科连锁" },
-  { secid: "0.300450", display_name: "先导智能",   note: "锂电设备" },
-  { secid: "0.300866", display_name: "安克创新",   note: "消费电子出海" },
-];
-
 const lang = "zh" as const;
 const t = useTranslations(lang);
 
-// ── 读取持仓底表 _holdings.yaml ──
-// 用本地极简 YAML 解析（与 scripts/invest-snapshot.ts 风格一致，避免引依赖）。
-// 仅支持本文件的固定结构：- key: value
-const holdingsPath = path.resolve("./src/content/invest-portfolio/_holdings.yaml");
-const rawYaml = fs.readFileSync(holdingsPath, "utf-8");
-const rawPortfolioMode = rawYaml.match(/^portfolioMode:\s*(\w+)\s*$/m)?.[1];
-const portfolioMode = rawPortfolioMode === "actual" || rawPortfolioMode === "simulation"
-  ? rawPortfolioMode
-  : "placeholder";
-const simulationStartDate = rawYaml.match(/^simulationStartDate:\s*"?([^"\s]+)"?\s*$/m)?.[1];
-
-type Holding = {
-  symbol: string;
-  name: string;
-  shares: number;
-  costAvg: number;
-  initialCapital?: number;
-  baselineDate?: string;
-  subscriptionFeePct?: number;
-};
-function parseHoldings(text: string): Holding[] {
-  const lines = text.split("\n").map(l => l.replace(/#.*$/, ""));
-  const out: Holding[] = [];
-  let cur: any = null;
-  let inHoldings = false;
-  for (const line of lines) {
-    if (/^holdings:/.test(line)) { inHoldings = true; continue; }
-    if (!inHoldings) continue;
-    if (/^\S/.test(line) && line.trim()) break; // 出到下一个顶级 key（如 notes:）
-    const dash = line.match(/^\s*-\s+symbol:\s*"?([^"]+)"?\s*$/);
-    if (dash) {
-      if (cur) out.push(cur);
-      cur = { symbol: dash[1], name: "", shares: 0, costAvg: 0 };
-      continue;
-    }
-    const kv = line.match(/^\s+(\w+):\s*"?([^"]+)"?\s*$/);
-    if (kv && cur) {
-      const [, k, v] = kv;
-      if (k === "name") cur.name = v;
-      else if (k === "shares") cur.shares = Number(v);
-      else if (k === "costAvg") cur.costAvg = Number(v);
-      else if (k === "initialCapital") cur.initialCapital = Number(v);
-      else if (k === "baselineDate") cur.baselineDate = v;
-      else if (k === "subscriptionFeePct") cur.subscriptionFeePct = Number(v);
-    }
-  }
-  if (cur) out.push(cur);
-  return out;
-}
-const holdings: Holding[] = parseHoldings(rawYaml);
-const simulationCapitalPerFund = holdings[0]?.initialCapital ?? 0;
+// 看板数据（持仓底表 / Wind 快照 / 股票池 / 月度快照）统一由 lib 装载，中英页共用
+const snapshots = await getCollection("invest-portfolio");
+const dashboard = loadInvestDashboard(lang, snapshots);
 
 // ── 复盘文章（原创） + 自动日报分流 ──
 const allInvest = (await getCollection("invest", (p) => p.data.lang === lang && !p.data.draft))
@@ -109,86 +29,7 @@ const marketRecaps = allInvest.filter(isMarketRecap).slice(0, 3);  // 展示最�
 const digests = allInvest.filter(isDigest);
 const latestDigest = digests[0];
 
-// ── 历史月度快照 ──
-const snapshots = (await getCollection("invest-portfolio"))
-  .sort((a, b) => a.data.period.localeCompare(b.data.period));
-const latestPeriod = snapshots[snapshots.length - 1]?.data.period;
 
-// ── 看板 SSR 兜底快照：构建时读 src/data/wind-market-latest.json ──
-// 由服务器 Wind cron (15:30 BJT) 推到 repo。无 JS / 爬虫看到这份；客户端 JS 进来后 fetch /api/market 覆盖。
-let initialIndices: any[] = [];
-let initialSectors: any = undefined;
-let initialSentiment: any = undefined;
-let initialMarketUpdated: number | undefined = undefined;
-let initialWatchQuotes: Record<string, { secid: string; code: string; name: string | null; price: number | null; change: number | null; change_pct: number | null }> = {};
-try {
-  const raw = fs.readFileSync(path.resolve("./src/data/wind-market-latest.json"), "utf-8");
-  const wind = JSON.parse(raw);
-  if (typeof wind.asOf === "string") {
-    const snapshotTime = Date.parse(`${wind.asOf}+08:00`);
-    if (Number.isFinite(snapshotTime)) initialMarketUpdated = snapshotTime / 1000;
-  }
-  initialIndices = (wind.indices || [])
-    .filter((i: any) => i && !i.error && Number(i.price) > 0)
-    .map((i: any) => ({
-    code: i.code,
-    name: i.name,
-    market: i.code?.endsWith?.(".HK") ? "HK" :
-            (i.code?.endsWith?.(".SH") || i.code?.endsWith?.(".SZ")) ? "A" : "US",
-    price: i.price,
-    change: i.change_amount,
-    change_pct: i.change_pct,
-  }));
-
-  // 板块涨跌排行：Wind 的 sectors 是已按 change_pct 排序的，取前 10 / 后 10
-  const sectors = (wind.sectors || [])
-    .filter((s: any) => s && !s.error && s.name && Number.isFinite(Number(s.change_pct)))
-    .map((s: any) => ({
-    code: s.code, name: s.name, price: null, change_pct: s.change_pct,
-  }));
-  const up = [...sectors].filter((s) => (s.change_pct ?? 0) > 0).slice(0, 10);
-  const down = [...sectors].filter((s) => (s.change_pct ?? 0) < 0).sort((a, b) => (a.change_pct ?? 0) - (b.change_pct ?? 0)).slice(0, 10);
-  if (sectors.length > 0) {
-    initialSectors = {
-      ok: true,
-      ts: initialMarketUpdated ?? 0,
-      total: sectors.length,
-      top_up: up,
-      top_down: down,
-      stale: true,
-    };
-  }
-
-  for (const item of wind.watchlist || []) {
-    const raw = String(item?.code || "").toUpperCase();
-    const dotted = raw.match(/^(\d{6})\.(SH|SZ|BJ)$/);
-    const prefixed = raw.match(/^(SH|SZ|BJ)(\d{6})$/);
-    const code = dotted?.[1] || prefixed?.[2];
-    const market = dotted?.[2] || prefixed?.[1];
-    if (!code || !market || !(Number(item.price) > 0)) continue;
-    const secid = `${market === "SH" ? "1" : "0"}.${code}`;
-    const previous = Number(item.yesterday_close);
-    initialWatchQuotes[secid] = {
-      secid,
-      code,
-      name: item.name || null,
-      price: Number(item.price),
-      change: Number.isFinite(previous) && previous > 0 ? Number(item.price) - previous : (item.change_amount ?? null),
-      change_pct: Number.isFinite(Number(item.change_pct)) ? Number(item.change_pct) : null,
-    };
-  }
-
-  // 涨跌停家数
-  if (wind.sentiment && (wind.sentiment.limit_up != null || wind.sentiment.limit_down != null)) {
-    initialSentiment = {
-      ok: true, ts: 0,
-      breadth: {
-        limit_up: wind.sentiment.limit_up ?? 0,
-        limit_down: wind.sentiment.limit_down ?? 0,
-      },
-    };
-  }
-} catch { /* 没快照文件就走纯客户端 */ }
 ---
 
 <BaseLayout
@@ -254,88 +95,8 @@ try {
     </div>
   </section>
 
-  <!-- A · 今日大盘 -->
-  <section class="max-w-5xl mx-auto px-5 pb-8">
-    <div class="flex items-baseline justify-between mb-3">
-      <h2 class="text-base font-semibold tracking-tight">今日大盘</h2>
-      <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">Live</span>
-    </div>
-    <MarketIndicesGrid
-      initialIndices={initialIndices}
-      initialUpdated={initialMarketUpdated}
-      initialSource="wind_snapshot"
-      client:load
-    />
-  </section>
+  <InvestDashboardSections dashboard={dashboard} lang="zh" />
 
-  <!-- D · 市场情绪：成交额 / 涨跌家数 / 涨停跌停 -->
-  <section class="max-w-5xl mx-auto px-5 pb-8">
-    <div class="flex items-baseline justify-between mb-3">
-      <h2 class="text-base font-semibold tracking-tight">市场情绪</h2>
-      <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">Live</span>
-    </div>
-    <MarketSentiment initialData={initialSentiment} client:visible />
-  </section>
-
-  <!-- B · 我的持仓 / 公开基金净值跟踪 -->
-  <section class="max-w-5xl mx-auto px-5 pb-8">
-    <div class="flex items-baseline justify-between mb-3">
-      <h2 class="text-base font-semibold tracking-tight">
-        {portfolioMode === "actual"
-          ? "我的持仓（已公布净值）"
-          : portfolioMode === "simulation"
-            ? `模拟组合（每只本金 ¥${simulationCapitalPerFund.toLocaleString()}）`
-            : "基金净值跟踪（未接入账户）"}
-      </h2>
-      <span class="text-[11px] text-[var(--text-tertiary)] font-mono tracking-wide">官方单位净值</span>
-    </div>
-    <LiveHoldings
-      holdings={holdings}
-      dataMode={portfolioMode}
-      simulationStartDate={simulationStartDate}
-      client:load
-    />
-  </section>
-
-  <!-- C1 · AI 科创聚焦 -->
-  <section class="max-w-5xl mx-auto px-5 pb-8 mt-8">
-    <div class="flex items-baseline justify-between mb-3">
-      <h2 class="text-base font-semibold tracking-tight">🤖 AI · 科创聚焦</h2>
-      <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">Live</span>
-    </div>
-    <StockSpotlight stocks={aiKechuangStocks} initialQuotes={initialWatchQuotes} initialUpdated={initialMarketUpdated} client:visible />
-  </section>
-
-  <!-- C2 · 创业板风向 -->
-  <section class="max-w-5xl mx-auto px-5 pb-8">
-    <div class="flex items-baseline justify-between mb-3">
-      <h2 class="text-base font-semibold tracking-tight">🚀 创业板风向</h2>
-      <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">Live</span>
-    </div>
-    <StockSpotlight stocks={chinextStocks} initialQuotes={initialWatchQuotes} initialUpdated={initialMarketUpdated} client:visible />
-  </section>
-
-  <!-- C3 · 行业板块涨跌榜 -->
-  <section class="max-w-5xl mx-auto px-5 pb-8">
-    <div class="flex items-baseline justify-between mb-3">
-      <h2 class="text-base font-semibold tracking-tight">📊 行业板块涨跌</h2>
-      <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">Live</span>
-    </div>
-    <SectorRanking initialData={initialSectors} client:visible />
-  </section>
-
-  <p class="max-w-5xl mx-auto px-5 mt-4 text-[11px] text-[var(--text-tertiary)] leading-relaxed">
-    本页证券行情由东方财富公开接口提供；基金估值仅使用天天基金公开的已公布单位净值，不提供盘中净值估算。当前持仓份额与成本为占位 / 学习日志，<strong>不构成任何投资建议</strong>。
-    历史业绩不代表未来表现，市场有风险，入市需谨慎。
-  </p>
-
-  <!-- 历史月度快照（保留作为复盘记录入口） -->
-  {latestPeriod && (
-    <section class="max-w-5xl mx-auto px-5 mt-10">
-      <h2 class="text-base font-semibold tracking-tight mb-2">月度快照</h2>
-      <p class="text-xs text-[var(--text-tertiary)] mb-3">最新快照：{latestPeriod}（每月由 cron 写入 <code>invest-portfolio/{`{YYYY-MM}`}.yaml</code>）</p>
-    </section>
-  )}
 
   <!-- ── 区一：月度复盘（原创，慢速） ── -->
   <section class="max-w-5xl mx-auto px-5 mt-12">

@@ -1,6 +1,8 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import InvestDashboardSections from "@/components/invest/InvestDashboardSections.astro";
+import { loadInvestDashboard } from "@/lib/invest-dashboard";
 import NetValueChart from "@/components/NetValueChart";
 import HoldingsPie from "@/components/HoldingsPie";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
@@ -13,6 +15,8 @@ const snapshots = (await getCollection("invest-portfolio")).sort((a, b) => a.dat
 const baseValue = snapshots[0]?.data.totalValue ?? 1;
 const nvSeries = snapshots.map((s) => ({ period: s.data.period, totalValue: s.data.totalValue, netValue: Math.round((s.data.totalValue / baseValue) * 10000) / 10000 }));
 const latest = snapshots[snapshots.length - 1]?.data;
+// 与中文页共用同一份看板数据装载（持仓底表 / Wind 快照 / 股票池），只是语言不同
+const dashboard = loadInvestDashboard(lang, snapshots);
 const totalReturn = latest ? ((latest.totalValue / baseValue - 1) * 100).toFixed(2) : "0.00";
 
 const allInvest = (await getCollection("invest", (p) => p.data.lang === lang && !p.data.draft)).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
@@ -70,6 +74,9 @@ const latestDigest = digests[0];
       </a>
     </div>
   </section>
+
+  <InvestDashboardSections dashboard={dashboard} lang="en" />
+
   {latest && (
     <section class="max-w-5xl mx-auto px-5">
       <h2 class="text-base font-semibold tracking-tight mb-3">Portfolio snapshot</h2>

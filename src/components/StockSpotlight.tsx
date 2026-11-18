@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { formatChinaMarketTime, isChinaATradingHours } from "@/lib/china-market";
+import { marketLabels, type MarketLang, type MarketLabels } from "@/lib/market-i18n";
 
 /**
  * 通用个股聚焦组件。
@@ -33,17 +34,19 @@ interface Props {
   /** SSR 兜底：服务端从 wind-market-latest.json 映射好的 quotes（按 secid 索引） */
   initialQuotes?: Record<string, Quote>;
   initialUpdated?: number;
+  lang?: MarketLang;
 }
 
 const POLL_MS = 60_000;
 
-function sourceLabel(source: string): string {
-  if (source === "tencent") return "腾讯行情";
-  if (source === "snapshot") return "收盘快照";
-  return "东方财富公开行情";
+function sourceLabel(source: string, L: MarketLabels): string {
+  if (source === "tencent") return L.sourceTencent;
+  if (source === "snapshot") return L.sourceSnapshot;
+  return L.sourceEastmoney;
 }
 
-export default function StockSpotlight({ stocks, showNote = true, initialQuotes, initialUpdated }: Props) {
+export default function StockSpotlight({ stocks, showNote = true, initialQuotes, initialUpdated, lang = "zh" }: Props) {
+  const L = marketLabels(lang);
   const [quotes, setQuotes] = useState<Record<string, Quote> | null>(
     initialQuotes && Object.keys(initialQuotes).length > 0 ? initialQuotes : null,
   );
@@ -67,9 +70,9 @@ export default function StockSpotlight({ stocks, showNote = true, initialQuotes,
         setUpdated(d.ts);
         setSource(d.source || "eastmoney");
         setError(null);
-      } else if (!quotes) setError(d.error || "加载失败");
+      } else if (!quotes) setError(d.error || L.loadFailed);
     } catch (e: any) {
-      if (!quotes) setError(e?.message || "网络异常");
+      if (!quotes) setError(e?.message || L.networkError);
     } finally {
       inFlight.current = false;
     }
@@ -94,7 +97,9 @@ export default function StockSpotlight({ stocks, showNote = true, initialQuotes,
   if (!quotes && error) {
     return (
       <div className="rounded-2xl bg-[var(--bg-soft)] p-5 text-sm text-[var(--text-tertiary)]">
-        加载失败：{error}。<button onClick={load} className="underline ml-1">重试</button>
+        {L.loadFailed}{L.sentenceEnd}
+        {error}
+        <button onClick={load} className="underline ml-1 ml-1">{L.retry}</button>
       </div>
     );
   }
@@ -113,24 +118,24 @@ export default function StockSpotlight({ stocks, showNote = true, initialQuotes,
   return (
     <div className="space-y-3">
       <div className="text-xs text-[var(--text-tertiary)] flex items-baseline gap-4">
-        <span>板块平均：
+        <span>{L.sectorAvg}
           <span className="font-semibold tabular-nums ml-1" style={{ color: avgColor }}>
-            {avg == null ? "—" : `${avg > 0 ? "+" : ""}${avg.toFixed(2)}%`}
+            {avg == null ? L.none : `${avg > 0 ? "+" : ""}${avg.toFixed(2)}%`}
           </span>
         </span>
-        <span className="font-mono text-[10.5px]">{updated ? `${sourceLabel(source)} ${formatChinaMarketTime(updated)}` : ""}</span>
+        <span className="font-mono text-[10.5px]">{updated ? `${sourceLabel(source, L)} ${formatChinaMarketTime(updated)}` : ""}</span>
       </div>
       <div className="rounded-2xl border border-[var(--border)] overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="bg-[var(--bg-soft)] text-xs text-[var(--text-secondary)]">
               <tr>
-                <th scope="col" className="text-left p-3 font-semibold">代码</th>
-                <th scope="col" className="text-left p-3 font-semibold">名称</th>
-                <th scope="col" className="text-right p-3 font-semibold">现价</th>
-                <th scope="col" className="text-right p-3 font-semibold">涨跌</th>
-                <th scope="col" className="text-right p-3 font-semibold">涨跌幅</th>
-                {showNote && <th scope="col" className="text-left p-3 font-semibold hidden sm:table-cell">主营</th>}
+                <th scope="col" className="text-left p-3 font-semibold">{L.colCode}</th>
+                <th scope="col" className="text-left p-3 font-semibold">{L.colName}</th>
+                <th scope="col" className="text-right p-3 font-semibold">{L.colPrice}</th>
+                <th scope="col" className="text-right p-3 font-semibold">{L.colChange}</th>
+                <th scope="col" className="text-right p-3 font-semibold">{L.colChangePct}</th>
+                {showNote && <th scope="col" className="text-left p-3 font-semibold hidden sm:table-cell">{L.colBusiness}</th>}
               </tr>
             </thead>
             <tbody>
@@ -139,7 +144,8 @@ export default function StockSpotlight({ stocks, showNote = true, initialQuotes,
                 const pct = q?.change_pct;
                 const color = pct == null ? "var(--text-tertiary)" : pct > 0 ? "var(--market-up)" : pct < 0 ? "var(--market-down)" : "var(--text-tertiary)";
                 const sign = (n: number | null | undefined) => (n != null && n > 0 ? "+" : "");
-                const name = q?.name || s.display_name || s.secid;
+                // 英文页优先用我们自己的英文名（上游接口只返回中文名）
+                const name = lang === "en" ? (s.display_name || q?.name || s.secid) : (q?.name || s.display_name || s.secid);
                 return (
                   <tr key={s.secid} className="border-t border-[var(--border)]">
                     <td className="p-3 font-mono text-xs">{q?.code || s.secid.split(".")[1]}</td>
@@ -152,7 +158,7 @@ export default function StockSpotlight({ stocks, showNote = true, initialQuotes,
                       {pct != null ? `${sign(pct)}${pct.toFixed(2)}%` : "—"}
                     </td>
                     {showNote && (
-                      <td className="p-3 text-xs text-[var(--text-secondary)] hidden sm:table-cell whitespace-nowrap">{s.note || "—"}</td>
+                      <td className="p-3 text-xs text-[var(--text-secondary)] hidden sm:table-cell whitespace-nowrap">{s.note || L.none}</td>
                     )}
                   </tr>
                 );

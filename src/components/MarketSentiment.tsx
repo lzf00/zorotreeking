@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { formatChinaMarketTime, isChinaATradingHours } from "@/lib/china-market";
+import { formatYi, marketLabels, type MarketLang } from "@/lib/market-i18n";
 
 /**
  * 市场情绪：沪深成交额 + 涨跌平家数 + 涨停跌停板。
@@ -18,31 +19,33 @@ type Breadth = {
   limit_down: number;
   limit_down_breakdown?: { "10cm": number; "20cm": number };
 };
+/** SSR 兜底快照可能只带涨跌停家数（Wind 快照里就没有全量宽度），所以这里放宽成部分字段 */
+type BreadthSeed = { limit_up: number; limit_down: number };
 type Resp = {
   ok: boolean;
   ts: number;
   turnover?: Turnover;
-  breadth?: Breadth;
+  breadth?: Partial<Breadth> & BreadthSeed;
   stale?: boolean;
   error?: string;
 };
 
 const POLL_MS = 120_000;
 
-function fmtYi(n: number): string {
-  // 以"亿"为单位显示，1 亿 = 1e8。统一 2 位小数，与个股页 / StockSpotlight 一致。
+function fmtYi(n: number, lang: MarketLang): string {
+  // 以"亿"为单位换算，1 亿 = 1e8。英文按 B/T 显示。
   if (n <= 0) return "—";
-  const yi = n / 1e8;
-  if (yi >= 10000) return `${(yi / 10000).toFixed(2)} 万亿`;
-  return `${yi.toFixed(2)} 亿`;
+  return formatYi(n / 1e8, lang);
 }
 
 interface Props {
   /** SSR 兜底：服务端从 wind-market-latest.json sentiment 映射好 */
   initialData?: Resp;
+  lang?: MarketLang;
 }
 
-export default function MarketSentiment({ initialData }: Props = {}) {
+export default function MarketSentiment({ initialData, lang = "zh" }: Props = {}) {
+  const L = marketLabels(lang);
   const [data, setData] = useState<Resp | null>(initialData ?? null);
   const [error, setError] = useState<string | null>(null);
   const inFlight = useRef(false);
@@ -54,9 +57,9 @@ export default function MarketSentiment({ initialData }: Props = {}) {
       const r = await fetch("/api/market/sentiment", { cache: "no-store" });
       const d: Resp = await r.json();
       if (d.ok) { setData(d); setError(null); }
-      else if (!data) setError(d.error || "加载失败");
+      else if (!data) setError(d.error || L.loadFailed);
     } catch (e: any) {
-      if (!data) setError(e?.message || "网络异常");
+      if (!data) setError(e?.message || L.networkError);
     } finally {
       inFlight.current = false;
     }
@@ -81,7 +84,8 @@ export default function MarketSentiment({ initialData }: Props = {}) {
   if (!data && error) {
     return (
       <div className="rounded-2xl bg-[var(--bg-soft)] p-5 text-sm text-[var(--text-tertiary)]">
-        加载失败：{error}。<button onClick={load} className="underline ml-1">重试</button>
+        {L.loadFailedPrefix(L.sectionSentiment)}{error}{L.sentenceEnd}
+        <button onClick={load} className="underline ml-1">{L.retry}</button>
       </div>
     );
   }
@@ -96,37 +100,41 @@ export default function MarketSentiment({ initialData }: Props = {}) {
 
   const { turnover, breadth } = data;
   const missingBreadth = !breadth;
-  const upRate = breadth && breadth.total > 0 ? (breadth.ups / breadth.total) * 100 : 0;
-  const downRate = breadth && breadth.total > 0 ? (breadth.downs / breadth.total) * 100 : 0;
-  const flatRate = breadth && breadth.total > 0 ? (breadth.flats / breadth.total) * 100 : 0;
+  const breadthTotal = breadth?.total ?? 0;
+  const breadthUps = breadth?.ups ?? 0;
+  const breadthDowns = breadth?.downs ?? 0;
+  const breadthFlats = breadth?.flats ?? 0;
+  const upRate = breadthTotal > 0 ? (breadthUps / breadthTotal) * 100 : 0;
+  const downRate = breadthTotal > 0 ? (breadthDowns / breadthTotal) * 100 : 0;
+  const flatRate = breadthTotal > 0 ? (breadthFlats / breadthTotal) * 100 : 0;
 
   return (
     <div>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {/* 成交额 */}
         <div className="rounded-2xl bg-[var(--bg-soft)] p-5">
-          <div className="text-xs text-[var(--text-tertiary)] mb-3">沪深两市成交额</div>
-          <div className="text-2xl font-semibold tabular-nums mb-3">{fmtYi(turnover.total)}</div>
+          <div className="text-xs text-[var(--text-tertiary)] mb-3">{L.turnoverTitle}</div>
+          <div className="text-2xl font-semibold tabular-nums mb-3">{fmtYi(turnover.total, lang)}</div>
           <div className="text-xs text-[var(--text-secondary)] space-y-1 tabular-nums">
-            <div className="flex justify-between"><span>沪市</span><span>{fmtYi(turnover.sh)}</span></div>
-            <div className="flex justify-between"><span>深市</span><span>{fmtYi(turnover.sz)}</span></div>
+            <div className="flex justify-between"><span>{L.shanghai}</span><span>{fmtYi(turnover.sh, lang)}</span></div>
+            <div className="flex justify-between"><span>{L.shenzhen}</span><span>{fmtYi(turnover.sz, lang)}</span></div>
           </div>
         </div>
 
         {/* 涨跌家数 */}
         <div className="rounded-2xl bg-[var(--bg-soft)] p-5">
           <div className="text-xs text-[var(--text-tertiary)] mb-3">
-            市场宽度 {breadth ? <span className="text-[var(--text-secondary)]">({breadth.total} 只)</span> : null}
+            {L.breadthTitle} {breadth ? <span className="text-[var(--text-secondary)]">{L.breadthCount(breadthTotal)}</span> : null}
           </div>
           {missingBreadth ? (
-            <div className="text-sm text-[var(--text-tertiary)]">涨跌家数暂缺（公开接口未返回）</div>
+            <div className="text-sm text-[var(--text-tertiary)]">{L.breadthMissing}</div>
           ) : (
             <>
               <div className="flex items-baseline gap-3 mb-3 tabular-nums">
-                <span className="text-2xl font-semibold" style={{ color: "var(--market-up)" }}>{breadth.ups}</span>
+                <span className="text-2xl font-semibold" style={{ color: "var(--market-up)" }}>{breadthUps}</span>
                 <span className="text-[var(--text-tertiary)]">/</span>
-                <span className="text-2xl font-semibold" style={{ color: "var(--market-down)" }}>{breadth.downs}</span>
-                <span className="text-xs text-[var(--text-tertiary)] ml-auto">平 {breadth.flats}</span>
+                <span className="text-2xl font-semibold" style={{ color: "var(--market-down)" }}>{breadthDowns}</span>
+                <span className="text-xs text-[var(--text-tertiary)] ml-auto">{L.flatShort(breadthFlats)}</span>
               </div>
               <div className="flex h-2 rounded-full overflow-hidden bg-[var(--border)] mb-2">
                 <div style={{ width: `${upRate}%`, background: "#dc2626" }} />
@@ -134,7 +142,7 @@ export default function MarketSentiment({ initialData }: Props = {}) {
                 <div style={{ width: `${downRate}%`, background: "#16a34a" }} />
               </div>
               <div className="text-[11px] text-[var(--text-tertiary)] tabular-nums">
-                涨 {upRate.toFixed(1)}% · 平 {flatRate.toFixed(1)}% · 跌 {downRate.toFixed(1)}%
+                {L.breadthRates(upRate.toFixed(1), flatRate.toFixed(1), downRate.toFixed(1))}
               </div>
             </>
           )}
@@ -142,9 +150,9 @@ export default function MarketSentiment({ initialData }: Props = {}) {
 
         {/* 涨停 / 跌停 */}
         <div className="rounded-2xl bg-[var(--bg-soft)] p-5">
-          <div className="text-xs text-[var(--text-tertiary)] mb-3">涨停 / 跌停</div>
+          <div className="text-xs text-[var(--text-tertiary)] mb-3">{L.limitTitle}</div>
           {missingBreadth ? (
-            <div className="text-sm text-[var(--text-tertiary)]">涨停统计暂缺</div>
+            <div className="text-sm text-[var(--text-tertiary)]">{L.limitMissing}</div>
           ) : (
             <>
               <div className="flex items-baseline gap-3 mb-3 tabular-nums">
@@ -155,13 +163,13 @@ export default function MarketSentiment({ initialData }: Props = {}) {
               <div className="text-xs text-[var(--text-secondary)] space-y-1 tabular-nums">
                 {breadth.limit_up_breakdown && (
                   <div className="flex justify-between">
-                    <span>涨停 10cm/20cm</span>
+                    <span>{L.limitUp}</span>
                     <span style={{ color: "var(--market-up)" }}>{breadth.limit_up_breakdown["10cm"]} / {breadth.limit_up_breakdown["20cm"]}</span>
                   </div>
                 )}
                 {breadth.limit_down_breakdown && (
                   <div className="flex justify-between">
-                    <span>跌停 10cm/20cm</span>
+                    <span>{L.limitDown}</span>
                     <span style={{ color: "var(--market-down)" }}>{breadth.limit_down_breakdown["10cm"]} / {breadth.limit_down_breakdown["20cm"]}</span>
                   </div>
                 )}
@@ -171,9 +179,9 @@ export default function MarketSentiment({ initialData }: Props = {}) {
         </div>
       </div>
       <p className="mt-3 text-[11px] text-[var(--text-tertiary)] font-mono">
-        数据 腾讯成交额 + 新浪/东财涨跌家数 · 后端缓存 90s
-        {data.ts ? `· 接口响应 ${formatChinaMarketTime(data.ts)}` : ""}
-        {data.stale && <span className="ml-2" style={{ color: "var(--market-up)" }}>· 数据陈旧（上游异常）</span>}
+        {L.sentimentSource}
+        {data.ts ? ` · ${L.apiResponse} ${formatChinaMarketTime(data.ts)}` : ""}
+        {data.stale && <span className="ml-2" style={{ color: "var(--market-up)" }}>{L.staleNote}</span>}
       </p>
     </div>
   );

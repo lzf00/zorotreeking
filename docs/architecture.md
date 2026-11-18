@@ -294,6 +294,36 @@ LCP 却只有 0.44s——说明问题不在首屏内容，而在**空闲后才�
   不需要再点第二次。
 - 搜索 modal 保留 `client:idle`（单独评估过只有 9ms TBT，不值得为它再拆一套）。
 
+### 英文投资页补齐实时行情：组件 i18n + 数据装载收敛
+
+`/en/invest/` 之前只有月度复盘和归档入口，中文页的整块实时行情（今日大盘、市场情绪、
+基金净值、AI 科创、创业板、行业板块）在英文页是**完全缺失**的。补齐时发现两个障碍：
+
+- 5 个 React 岛（`MarketIndicesGrid` / `MarketSentiment` / `LiveHoldings` /
+  `StockSpotlight` / `SectorRanking`）里文案全写死中文；
+- 看板的数据装载（解析 `_holdings.yaml`、读 `data/wind-market-latest.json` 拼 SSR 兜底、
+  算板块前后十名）只写在中文页 frontmatter 里，英文页要用就得复制一份。
+
+处理方式：
+
+| 层 | 做法 |
+|---|---|
+| 文案 | `src/lib/market-i18n.ts` 一份中英词典 + `formatYi`（中文「亿/万亿」↔ 英文「B/T」）；参数化文案写成函数，组件里只拼变量 |
+| 组件 | 5 个岛都加 `lang?: "zh" \| "en"`（默认 zh），中文页行为不变 |
+| 数据 | `src/lib/invest-dashboard.ts` 收敛装载逻辑：`parseHoldings` / `loadPortfolioBoard` / `loadWindSnapshot` / `stockSeeds`，`loadInvestDashboard(lang, snapshots)` 是唯一入口 |
+| 结构 | `src/components/invest/InvestDashboardSections.astro` 一份标记，两个页面共用 |
+| 数据名 | 股票池中英两套名称与说明；10 只基金的 `nameEn` 写进 `_holdings.yaml`（人工翻译，非官方译名）；常见指数名按代码映射（SSE Composite / SZSE Component / ChiNext…） |
+
+顺带修掉两个「文案散落在逻辑里」的历史问题：
+
+- `classifyLaggingSectors` 原本返回中文标题（`"跌幅榜"`），现在返回语义 `kind`，
+  标题由组件按语言取——否则英文页会突然冒出一个「跌幅榜」；
+- `MarketSentiment` 的 SSR 兜底快照只带涨跌停家数，原类型却要求全量 breadth，
+  以前靠 `any` 蒙过去；现在类型放宽为 `Partial<Breadth>` 并给缺字段兜底，快照渲染不再出现空白数字。
+
+**已知局限**：行业板块名（申万细分行业，如「冰洗」「通信工程及服务」）来自上游行情源，
+仍是中文；英文页保留原文，需要的话可以再补一张板块名词表。
+
 ### 标题层级纳入构建期检查（对应 Lighthouse heading-order）
 
 Lighthouse 只审 15 个 URL，而「h1 → h3 跳级」这类问题常藏在模板角落：图表卡片的

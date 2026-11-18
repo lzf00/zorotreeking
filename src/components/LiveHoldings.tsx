@@ -6,6 +6,7 @@ import {
   summarizePortfolioValuation,
   valueFundPosition,
 } from "@/lib/portfolio-valuation";
+import { marketLabels, type MarketLang } from "@/lib/market-i18n";
 
 /**
  * 基金持仓：拿 _holdings.yaml 的份额 + 成本，调 /api/market/funds 获取
@@ -21,6 +22,7 @@ import {
 type Holding = {
   symbol: string;       // 6 位基金代码
   name: string;         // 来自 _holdings.yaml 的本地名（fallback 用）
+  nameEn?: string;      // 英文页显示名；缺省时回落到 name
   shares: number;
   costAvg: number;
   initialCapital?: number;
@@ -63,11 +65,14 @@ interface Props {
   holdings: Holding[];
   dataMode?: "placeholder" | "simulation" | "actual";
   simulationStartDate?: string;
+  /** 文案语言，英文页传 "en" */
+  lang?: MarketLang;
 }
 
 const POLL_MS = 5 * 60_000;
 
-export default function LiveHoldings({ holdings, dataMode = "placeholder", simulationStartDate }: Props) {
+export default function LiveHoldings({ holdings, dataMode = "placeholder", simulationStartDate, lang = "zh" }: Props) {
+  const L = marketLabels(lang);
   const [quotes, setQuotes] = useState<Record<string, FundQuote> | null>(null);
   const [updated, setUpdated] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -83,17 +88,17 @@ export default function LiveHoldings({ holdings, dataMode = "placeholder", simul
     setLoading(true);
     try {
       if (!codes) {
-        throw new Error("持仓列表为空，先补充 src/content/invest-portfolio/_holdings.yaml");
+        throw new Error(L.holdingsEmpty);
       }
       const r = await fetch(`/api/market/funds?codes=${codes}`, { cache: "no-store" });
       if (!r.ok) {
-        throw new Error(`接口响应异常：${r.status} ${r.statusText}`);
+        throw new Error(L.httpError(r.status, r.statusText));
       }
       const raw = await r.json();
       const d: FundResp = raw && typeof raw === "object" ? raw : ({} as FundResp);
       if (d.ok) {
         if (!Array.isArray(d.funds) || d.funds.length === 0) {
-          throw new Error("接口未返回可展示的基金数据");
+          throw new Error(L.holdingsNoData);
         }
         const requestedCodes = new Set(holdings.map((holding) => holding.symbol));
         const map: Record<string, FundQuote> = {};
@@ -108,7 +113,7 @@ export default function LiveHoldings({ holdings, dataMode = "placeholder", simul
           }
         }
         if (Object.keys(map).length === 0) {
-          throw new Error("返回数据格式不符合预期（基金代码缺失）");
+          throw new Error(L.holdingsBadShape);
         }
         setQuotes(map);
         setUpdated(Number.isFinite(d.ts) ? d.ts : null);
@@ -125,10 +130,10 @@ export default function LiveHoldings({ holdings, dataMode = "placeholder", simul
           setPartial(null);
         }
       } else {
-        throw new Error(d.error || "加载失败");
+        throw new Error(d.error || L.loadFailed);
       }
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : "网络异常");
+      setError(e instanceof Error ? e.message : L.networkError);
     } finally {
       inFlight.current = false;
       setLoading(false);
@@ -178,20 +183,21 @@ export default function LiveHoldings({ holdings, dataMode = "placeholder", simul
   const publishedNavCount = rows.filter((row) => row.q !== null).length;
   const hasMV = summary.valuedCount > 0;
   const hasTodayValue = summary.todayCount > 0;
-  const valuationCoverage = `${summary.valuedCount}/${rows.length} 只有正式净值`;
+  const valuationCoverage = L.valuationCoverage(summary.valuedCount, rows.length);
   const navDates = [...new Set(rows.map((row) => row.q?.navDate).filter(Boolean))].sort();
   const baselineDates = [...new Set(rows.map((row) => row.h.baselineDate).filter(Boolean))].sort();
   const qualityIssues = [...new Set(rows.flatMap((row) => row.q?.qualityIssues ?? []))];
   const navDateSummary = navDates.length === 0
-    ? "—"
+    ? L.none
     : navDates.length === 1
-      ? (navDates[0] ?? "—")
-      : `${navDates[0] ?? "—"} 至 ${navDates[navDates.length - 1] ?? "—"}`;
+      ? (navDates[0] ?? L.none)
+      : L.dateRange(navDates[0] ?? L.none, navDates[navDates.length - 1] ?? L.none);
 
   if (!quotes && error) {
     return (
       <div className="rounded-2xl bg-[var(--bg-soft)] p-5 text-sm text-[var(--text-tertiary)]">
-        持仓净值加载失败：{error}。<button onClick={load} className="underline ml-1">重试</button>
+        {L.holdingsLoadFailed}{error}{L.sentenceEnd}
+        <button onClick={load} className="underline ml-1">{L.retry}</button>
       </div>
     );
   }
@@ -204,25 +210,26 @@ export default function LiveHoldings({ holdings, dataMode = "placeholder", simul
     <div className="space-y-4">
       {dataMode === "placeholder" && (
         <div role="note" className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs leading-relaxed text-amber-800 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-300">
-          当前未接入证券账户，只展示可核验的公开基金净值；份额、成本、市值和盈亏已隐藏，避免示例数据被误认为真实持仓。
+          {L.placeholderNote}
         </div>
       )}
       {dataMode === "simulation" && (
         <div role="note" className="rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-xs leading-relaxed text-blue-800 dark:border-blue-900 dark:bg-blue-950/40 dark:text-blue-300">
-          模拟组合，不是证券账户数据：每只基金在 {simulationStartDate ?? "2026-02-01"} 设定投入 ¥10,000；因起始日无净值，按 {baselineDates[0] ?? "首个有效净值日"} 正式单位净值成交，未计申购与赎回费用。
+          {L.simulationNote(simulationStartDate ?? "2026-02-01", baselineDates[0] ?? L.none)}
         </div>
       )}
       {error && (
         <div role="status" className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-300">
-          刷新失败，正在保留上次数据：{error}。<button onClick={load} className="underline ml-1">重试</button>
+          {L.refreshFailedKeep}{error}{L.sentenceEnd}
+          <button onClick={load} className="underline ml-1">{L.retry}</button>
         </div>
       )}
       {qualityIssues.length > 0 && (
         <div role="status" className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs leading-relaxed text-amber-800 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-300">
-          数据质量保护已启用：
-          {qualityIssues.includes("nav_date_regression") && "检测到上游净值日期倒退，当前保留上一份有效数据。"}
-          {qualityIssues.includes("large_nav_move") && "检测到单位净值大幅变化，请结合基金公告核对。"}
-          {qualityIssues.includes("reported_day_pct_mismatch") && "上游涨跌幅与相邻净值不一致，盈亏已按单位净值差计算。"}
+          {L.qualityTitle}
+          {qualityIssues.includes("nav_date_regression") && L.qualityNavRegression}
+          {qualityIssues.includes("large_nav_move") && L.qualityLargeMove}
+          {qualityIssues.includes("reported_day_pct_mismatch") && L.qualityPctMismatch}
         </div>
       )}
 
@@ -230,34 +237,34 @@ export default function LiveHoldings({ holdings, dataMode = "placeholder", simul
       {dataMode !== "placeholder" ? (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <Card
-            label={dataMode === "simulation" ? "模拟市值" : "净值市值"}
-            value={hasMV ? `¥${fmt(summary.totalMarketValue, 0)}` : "—"}
-            sub={hasMV ? valuationCoverage : "等待可用行情"}
+            label={dataMode === "simulation" ? L.mvSimulated : L.mvNav}
+            value={hasMV ? `¥${fmt(summary.totalMarketValue, 0)}` : L.none}
+            sub={hasMV ? valuationCoverage : L.waitingQuotes}
           />
           <Card
-            label="最近净值日盈亏"
-            value={hasTodayValue ? formatSignedCurrency(summary.todayPnl, 2) : "—"}
-            sub={summary.todayPnlPct !== null ? `${summary.todayPnlPct >= 0 ? "+" : ""}${fmt(summary.todayPnlPct, 2)}%` : "—"}
+            label={L.todayPnl}
+            value={hasTodayValue ? formatSignedCurrency(summary.todayPnl, 2) : L.none}
+            sub={summary.todayPnlPct !== null ? `${summary.todayPnlPct >= 0 ? "+" : ""}${fmt(summary.todayPnlPct, 2)}%` : L.none}
             color={summary.todayPnl > 0 ? "var(--market-up)" : summary.todayPnl < 0 ? "var(--market-down)" : undefined}
           />
           <Card
-            label={dataMode === "simulation" ? "累计模拟盈亏" : "累计盈亏"}
-            value={hasMV ? formatSignedCurrency(summary.totalPnl, 0) : "—"}
-            sub={summary.totalPnlPct !== null ? `${summary.totalPnlPct >= 0 ? "+" : ""}${fmt(summary.totalPnlPct, 2)}%` : "—"}
+            label={dataMode === "simulation" ? L.totalPnlSimulated : L.totalPnl}
+            value={hasMV ? formatSignedCurrency(summary.totalPnl, 0) : L.none}
+            sub={summary.totalPnlPct !== null ? `${summary.totalPnlPct >= 0 ? "+" : ""}${fmt(summary.totalPnlPct, 2)}%` : L.none}
             color={summary.totalPnl > 0 ? "var(--market-up)" : summary.totalPnl < 0 ? "var(--market-down)" : undefined}
           />
           <Card
-            label={dataMode === "simulation" ? "模拟本金" : "持仓数"}
+            label={dataMode === "simulation" ? L.capitalSimulated : L.holdingCount}
             value={dataMode === "simulation" ? `¥${fmt(summary.totalCost, 0)}` : String(holdings.length)}
-            sub={dataMode === "simulation" ? `${holdings.length} 只 · 每只 ¥10,000` : `占用成本 ¥${fmt(summary.totalCost, 0)}`}
+            sub={dataMode === "simulation" ? L.perFund(holdings.length) : L.costOccupied(fmt(summary.totalCost, 0))}
           />
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <Card label="数据口径" value="正式净值" sub="不使用盘中估算" />
-          <Card label="净值覆盖" value={`${publishedNavCount}/${rows.length}`} sub="代码严格匹配" />
-          <Card label="最新净值日" value={navDateSummary} sub="以基金公告为准" />
-          <Card label="基金数" value={String(holdings.length)} sub="未接入账户持仓" />
+          <Card label={L.dataMethod} value={L.officialNav} sub={L.noIntradayEstimate} />
+          <Card label={L.navCoverage} value={`${publishedNavCount}/${rows.length}`} sub={L.exactCodeMatch} />
+          <Card label={L.latestNavDate} value={navDateSummary} sub={L.perFundAnnouncement} />
+          <Card label={L.fundCount} value={String(holdings.length)} sub={L.notLinked} />
         </div>
       )}
 
@@ -267,30 +274,30 @@ export default function LiveHoldings({ holdings, dataMode = "placeholder", simul
           <table className="w-full text-sm">
             <thead className="bg-[var(--bg-soft)] text-xs text-[var(--text-secondary)]">
               <tr>
-                <th scope="col" className="text-left p-3 font-semibold">代码</th>
-                <th scope="col" className="text-left p-3 font-semibold">基金</th>
-                {dataMode !== "placeholder" && <th scope="col" className="text-right p-3 font-semibold">{dataMode === "simulation" ? "模拟份额" : "份额"}</th>}
-                {dataMode !== "placeholder" && <th scope="col" className="text-right p-3 font-semibold">{dataMode === "simulation" ? "起始净值" : "成本净值"}</th>}
-                <th scope="col" className="text-right p-3 font-semibold">单位净值</th>
-                <th scope="col" className="text-right p-3 font-semibold">净值日涨跌</th>
-                {dataMode !== "placeholder" && <th scope="col" className="text-right p-3 font-semibold">{dataMode === "simulation" ? "模拟市值" : "净值市值"}</th>}
-                {dataMode !== "placeholder" && <th scope="col" className="text-right p-3 font-semibold">累计盈亏</th>}
+                <th scope="col" className="text-left p-3 font-semibold">{L.colCode}</th>
+                <th scope="col" className="text-left p-3 font-semibold">{L.colFund}</th>
+                {dataMode !== "placeholder" && <th scope="col" className="text-right p-3 font-semibold">{dataMode === "simulation" ? L.colSharesSimulated : L.colShares}</th>}
+                {dataMode !== "placeholder" && <th scope="col" className="text-right p-3 font-semibold">{dataMode === "simulation" ? L.colBaselineNav : L.colCostNav}</th>}
+                <th scope="col" className="text-right p-3 font-semibold">{L.colNav}</th>
+                <th scope="col" className="text-right p-3 font-semibold">{L.colNavChange}</th>
+                {dataMode !== "placeholder" && <th scope="col" className="text-right p-3 font-semibold">{dataMode === "simulation" ? L.colMvSimulated : L.colMv}</th>}
+                {dataMode !== "placeholder" && <th scope="col" className="text-right p-3 font-semibold">{L.colPnl}</th>}
               </tr>
             </thead>
             <tbody>
               {rows.map(r => {
                 const pctColor = r.pct == null ? "var(--text-tertiary)" : r.pct > 0 ? "var(--market-up)" : r.pct < 0 ? "var(--market-down)" : "var(--text-tertiary)";
                 const pnlColor = r.pnl == null ? "var(--text-tertiary)" : r.pnl > 0 ? "var(--market-up)" : r.pnl < 0 ? "var(--market-down)" : "var(--text-tertiary)";
-                const displayName = r.h.name;
+                const displayName = lang === "en" ? (r.h.nameEn ?? r.h.name) : r.h.name;
                 return (
                   <tr key={r.h.symbol} className="border-t border-[var(--border)]">
                     <td className="p-3 font-mono text-xs">{r.h.symbol}</td>
                     <td className="p-3 max-w-[180px] truncate" title={displayName}>{displayName}</td>
                     {dataMode !== "placeholder" && (
                       <td className="p-3 text-right tabular-nums">
-                        <div>{r.valuedShares != null ? fmt(r.valuedShares, 2) : "—"}</div>
+                        <div>{r.valuedShares != null ? fmt(r.valuedShares, 2) : L.none}</div>
                         {dataMode === "simulation" && r.h.initialCapital != null && (
-                          <div className="mt-0.5 text-[10px] text-[var(--text-tertiary)]">本金 ¥{fmt(r.h.initialCapital, 0)}</div>
+                          <div className="mt-0.5 text-[10px] text-[var(--text-tertiary)]">{L.principal(fmt(r.h.initialCapital, 0))}</div>
                         )}
                       </td>
                     )}
@@ -303,16 +310,16 @@ export default function LiveHoldings({ holdings, dataMode = "placeholder", simul
                       </td>
                     )}
                     <td className="p-3 text-right tabular-nums">
-                      <div>{r.nav != null ? fmt(r.nav, 4) : "—"}</div>
+                      <div>{r.nav != null ? fmt(r.nav, 4) : L.none}</div>
                       {r.q?.navDate && <div className="mt-0.5 text-[10px] text-[var(--text-tertiary)]">{r.q.navDate}</div>}
                     </td>
                     <td className="p-3 text-right tabular-nums" style={{ color: pctColor }}>
-                      {r.pct != null ? `${r.pct > 0 ? "+" : ""}${fmt(r.pct, 2)}%` : "—"}
+                      {r.pct != null ? `${r.pct > 0 ? "+" : ""}${fmt(r.pct, 2)}%` : L.none}
                     </td>
-                    {dataMode !== "placeholder" && <td className="p-3 text-right tabular-nums">{r.marketValue != null ? `¥${fmt(r.marketValue, 0)}` : "—"}</td>}
+                    {dataMode !== "placeholder" && <td className="p-3 text-right tabular-nums">{r.marketValue != null ? `¥${fmt(r.marketValue, 0)}` : L.none}</td>}
                     {dataMode !== "placeholder" && (
                       <td className="p-3 text-right tabular-nums" style={{ color: pnlColor }}>
-                        {r.pnl != null ? `${formatSignedCurrency(r.pnl, 0)}  (${r.pnlPct! >= 0 ? "+" : ""}${fmt(r.pnlPct!, 2)}%)` : "—"}
+                        {r.pnl != null ? `${formatSignedCurrency(r.pnl, 0)}  (${r.pnlPct! >= 0 ? "+" : ""}${fmt(r.pnlPct!, 2)}%)` : L.none}
                       </td>
                     )}
                   </tr>
@@ -324,13 +331,14 @@ export default function LiveHoldings({ holdings, dataMode = "placeholder", simul
       </div>
 
       <p className="text-[11px] text-[var(--text-tertiary)] font-mono tracking-wide">
-        数据源 天天基金公开历史净值 · 仅使用已公布单位净值（不使用盘中估算） · 净值日期 {navDateSummary} · 接口响应 {updated ? formatChinaMarketTime(updated) : "—"}
+        {L.holdingsSource} · {L.navDateLabel} {navDateSummary} · {L.apiResponse}{" "}
+        {updated ? formatChinaMarketTime(updated) : L.none}
         {isFundNavRefreshWindow()
-          ? <span className="ml-2">（净值发布窗口，每 5 分钟检查）</span>
-          : <span className="ml-2">（当前不在净值发布窗口）</span>}
-        {dataMode === "simulation" && <span className="ml-2">· 模拟起点 {simulationStartDate ?? "2026-02-01"}</span>}
+          ? <span className="ml-2">{L.inNavWindow}</span>
+          : <span className="ml-2">{L.outNavWindow}</span>}
+        {dataMode === "simulation" && <span className="ml-2">{L.simulationStart(simulationStartDate ?? "2026-02-01")}</span>}
         {partial !== null && (
-          <span className="ml-2 text-amber-700 dark:text-amber-400">· 部分基金缺失（{partial.succeeded}/{partial.requested}）</span>
+          <span className="ml-2 text-amber-700 dark:text-amber-400">{L.partialMissing(partial.succeeded, partial.requested)}</span>
         )}
         {loading && <span className="ml-2">…</span>}
       </p>

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { formatChinaMarketTime, isChinaATradingHours } from "@/lib/china-market";
 import { classifyLaggingSectors } from "@/lib/market-quality";
+import { marketLabels, type MarketLang, type MarketLabels } from "@/lib/market-i18n";
 
 /**
  * 行业板块涨跌排行（细分行业 m:90 t:2）。
@@ -28,19 +29,21 @@ type Resp = {
 
 const POLL_MS = 60_000;
 
-function sectorSourceLabel(data: Resp): string {
-  if (data.source === "sina_hy") return "新浪行业板块";
-  if (data.source === "eastmoney") return "东方财富公开行情";
-  if (data.stale) return "收盘快照";
-  return "东方财富公开行情";
+function sectorSourceLabel(data: Resp, L: MarketLabels): string {
+  if (data.source === "sina_hy") return L.sourceSinaSector;
+  if (data.source === "eastmoney") return L.sourceEastmoney;
+  if (data.stale) return L.sourceSnapshot;
+  return L.sourceEastmoney;
 }
 
 interface Props {
   /** SSR 兜底：服务端从 wind-market-latest.json sectors 映射好 */
   initialData?: Resp;
+  lang?: MarketLang;
 }
 
-export default function SectorRanking({ initialData }: Props = {}) {
+export default function SectorRanking({ initialData, lang = "zh" }: Props = {}) {
+  const L = marketLabels(lang);
   const [data, setData] = useState<Resp | null>(initialData ?? null);
   const [error, setError] = useState<string | null>(null);
   const inFlight = useRef(false);
@@ -56,9 +59,9 @@ export default function SectorRanking({ initialData }: Props = {}) {
       const raw = await r.json();
       const d: Resp = raw && typeof raw === "object" ? raw : ({} as Resp);
       if (d.ok) { setData(d); setError(null); }
-      else if (!data) setError(d.error || "加载失败");
+      else if (!data) setError(d.error || L.loadFailed);
     } catch (e: any) {
-      if (!data) setError(e?.message || "网络异常");
+      if (!data) setError(e?.message || L.networkError);
     } finally {
       inFlight.current = false;
     }
@@ -83,7 +86,8 @@ export default function SectorRanking({ initialData }: Props = {}) {
   if (!data && error) {
     return (
       <div className="rounded-2xl bg-[var(--bg-soft)] p-5 text-sm text-[var(--text-tertiary)]">
-        加载失败：{error}。<button onClick={load} className="underline ml-1">重试</button>
+        {L.loadFailedPrefix(L.sectionSectors)}{error}{L.sentenceEnd}
+        <button onClick={load} className="underline ml-1">{L.retry}</button>
       </div>
     );
   }
@@ -103,23 +107,32 @@ export default function SectorRanking({ initialData }: Props = {}) {
   return (
     <div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <SectorList title="涨幅榜" items={ups} color="var(--market-up)" arrow="▲" />
+        <SectorList title={L.sectorUpTitle} items={ups} color="var(--market-up)" arrow="▲" noData={L.sectorNoData} />
         <SectorList
-          title={lagging.items.length === 0 ? "后十名待实时数据" : lagging.title}
+          title={
+            lagging.items.length === 0
+              ? L.sectorDownPending
+              : lagging.kind === "decliners"
+                ? L.sectorDownTitle
+                : L.sectorRelativeBottomTitle
+          }
+          noData={L.sectorNoData}
           items={lagging.items}
           color={lagging.direction === "down" ? "var(--market-down)" : "var(--market-up)"}
           arrow={lagging.direction === "down" ? "▼" : "▲"}
         />
       </div>
       <p className="mt-3 text-[11px] text-[var(--text-tertiary)] font-mono">
-        数据源 {sectorSourceLabel(data)} · 细分行业板块共 {data.total ?? "?"} 个 · {data.ts ? `${data.stale ? "快照时间" : "接口响应"} ${formatChinaMarketTime(data.ts)}` : "时间未知"}
-        {data.stale && <span className="ml-2 text-amber-700 dark:text-amber-400">· 实时接口尚未成功更新</span>}
+        {L.sourcePrefix}
+        {sectorSourceLabel(data, L)} · {L.sectorCount(String(data.total ?? "?"))} ·{" "}
+        {data.ts ? `${data.stale ? L.snapshotTime : L.apiResponse} ${formatChinaMarketTime(data.ts)}` : L.none}
+        {data.stale && <span className="ml-2 text-amber-700 dark:text-amber-400">{L.liveNotUpdated}</span>}
       </p>
     </div>
   );
 }
 
-function SectorList({ title, items, color, arrow }: { title: string; items: Sector[]; color: string; arrow: string }) {
+function SectorList({ title, items, color, arrow, noData }: { title: string; items: Sector[]; color: string; arrow: string; noData: string }) {
   return (
     <div className="rounded-2xl border border-[var(--border)] overflow-hidden">
       <div className="px-4 py-3 bg-[var(--bg-soft)] flex items-baseline justify-between">
@@ -127,7 +140,7 @@ function SectorList({ title, items, color, arrow }: { title: string; items: Sect
         <span className="text-[10px] font-mono uppercase tracking-wide" style={{ color }}>{arrow} Top 10</span>
       </div>
       <ul>
-        {items.length === 0 && <li className="px-4 py-6 text-sm text-[var(--text-tertiary)] text-center">暂无数据</li>}
+        {items.length === 0 && <li className="px-4 py-6 text-sm text-[var(--text-tertiary)] text-center">{noData}</li>}
         {items.map((s, i) => (
           <li key={s.code} className="px-4 py-2.5 border-t border-[var(--border)] flex items-center justify-between">
             <div className="flex items-center gap-3 min-w-0">

@@ -5,7 +5,8 @@ export type SectorChange = {
 };
 
 export type LaggingSectorClassification<T extends SectorChange> = {
-  title: "跌幅榜" | "涨幅后十";
+  /** 语义而不是文案：列表标题由组件按页面语言决定 */
+  kind: "decliners" | "relative-bottom";
   direction: "down" | "up";
   items: T[];
 };
@@ -18,7 +19,7 @@ export function classifyLaggingSectors<T extends SectorChange>(
     (item) => item.change_pct !== null && item.change_pct < 0,
   );
   if (decliners.length > 0) {
-    return { title: "跌幅榜", direction: "down", items: decliners };
+    return { kind: "decliners", direction: "down", items: decliners };
   }
-  return { title: "涨幅后十", direction: "up", items };
+  return { kind: "relative-bottom", direction: "up", items };
 }

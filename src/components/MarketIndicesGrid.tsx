@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { formatChinaMarketTime, isChinaATradingHours } from "@/lib/china-market";
+import { indexName, marketLabels, type MarketLang } from "@/lib/market-i18n";
 
 /**
  * 实时大盘指数栏：7 大指数（A 股 5 + 港股 1 + 美股 1）。
@@ -32,9 +33,12 @@ interface Props {
   initialIndices?: Index[];
   initialUpdated?: number;
   initialSource?: "wind_snapshot";
+  /** 文案语言，英文页传 "en" */
+  lang?: MarketLang;
 }
 
-export default function MarketIndicesGrid({ initialIndices, initialUpdated, initialSource }: Props = {}) {
+export default function MarketIndicesGrid({ initialIndices, initialUpdated, initialSource, lang = "zh" }: Props = {}) {
+  const L = marketLabels(lang);
   const [data, setData] = useState<Index[] | null>(initialIndices && initialIndices.length > 0 ? initialIndices : null);
   const [updated, setUpdated] = useState<number | null>(initialUpdated ?? null);
   const [source, setSource] = useState<"live" | "wind_snapshot">(
@@ -57,10 +61,10 @@ export default function MarketIndicesGrid({ initialIndices, initialUpdated, init
         setSource("live");
         setError(null);
       } else {
-        if (!data) setError(d.error || "加载失败");
+        if (!data) setError(d.error || L.loadFailed);
       }
     } catch (e: any) {
-      if (!data) setError(e?.message || "网络异常");
+      if (!data) setError(e?.message || L.networkError);
     } finally {
       inFlight.current = false;
       setLoading(false);
@@ -86,7 +90,8 @@ export default function MarketIndicesGrid({ initialIndices, initialUpdated, init
   if (!data && error) {
     return (
       <div className="rounded-2xl bg-[var(--bg-soft)] p-5 text-sm text-[var(--text-tertiary)]">
-        大盘行情加载失败：{error}。<button onClick={load} className="underline ml-1">重试</button>
+        {L.indicesLoadFailed}{error}{L.sentenceEnd}
+        <button onClick={load} className="underline ml-1">{L.retry}</button>
       </div>
     );
   }
@@ -104,19 +109,21 @@ export default function MarketIndicesGrid({ initialIndices, initialUpdated, init
   return (
     <section>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3">
-        {data.map((d) => <IndexCard key={d.code} d={d} />)}
+        {data.map((d) => <IndexCard key={d.code} d={d} lang={lang} />)}
       </div>
       <p className="mt-3 text-[11px] text-[var(--text-tertiary)] font-mono tracking-wide">
-        数据源 {source === "live" ? "东方财富公开行情" : "Wind 静态兜底快照"} · {source === "live" ? "接口响应" : "快照时间"} {updated ? formatChinaMarketTime(updated) : "—"}
-        {source === "wind_snapshot" && <span className="ml-2 text-amber-700 dark:text-amber-400">· 实时接口尚未成功更新</span>}
-        {!isChinaATradingHours() && <span className="ml-2">（非交易时段，已停止自动刷新）</span>}
+        {L.sourcePrefix}
+        {source === "live" ? L.sourceEastmoney : L.sourceWindSnapshot} · {source === "live" ? L.apiResponse : L.snapshotTime}{" "}
+        {updated ? formatChinaMarketTime(updated) : L.none}
+        {source === "wind_snapshot" && <span className="ml-2 text-amber-700 dark:text-amber-400">{L.liveNotUpdated}</span>}
+        {!isChinaATradingHours() && <span className="ml-2">{L.marketClosedNote}</span>}
         {loading && <span className="ml-2">…</span>}
       </p>
     </section>
   );
 }
 
-function IndexCard({ d }: { d: Index }) {
+function IndexCard({ d, lang }: { d: Index; lang: MarketLang }) {
   const pct = d.change_pct;
   const up = (pct ?? 0) > 0;
   const down = (pct ?? 0) < 0;
@@ -130,7 +137,7 @@ function IndexCard({ d }: { d: Index }) {
   return (
     <div className="rounded-2xl bg-[var(--bg-soft)] hover:bg-[var(--bg-soft-2)] transition-colors p-4">
       <div className="flex items-center justify-between mb-2">
-        <span className="text-xs text-[var(--text-tertiary)]">{d.name}</span>
+        <span className="text-xs text-[var(--text-tertiary)]">{indexName(d.code, d.name, lang)}</span>
         <span className="text-[10px] font-mono text-[var(--text-secondary)]">{d.market}</span>
       </div>
       <div className="text-xl font-semibold tabular-nums leading-none mb-2">
