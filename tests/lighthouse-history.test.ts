@@ -3,7 +3,7 @@ import test from "node:test";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error 纯 ESM 脚本没有类型声明，测试里按结构化数据断言
-const { parseScores, pathFromContext, buildTable } = await import("../scripts/lighthouse-history.mjs");
+const { parseScores, pathFromContext, buildTable, median, buildRelativeTable } = await import("../scripts/lighthouse-history.mjs");
 
 test("从 LHCI 的 status 描述里解析四个分数", () => {
   assert.deepEqual(parseScores("Performance: 92, Accessibility: 100, Best Practices: 100, SEO: 100"), {
@@ -57,4 +57,31 @@ test("趋势表：只有一轮时不报错，也不画箭头", () => {
   ]);
   assert.match(table, /`\/`\s+\| 88\s+\|/);
   assert.doesNotMatch(table, /↑|↓/);
+});
+
+test("中位数：奇数取中间、偶数取平均、空数组返回 null", () => {
+  assert.equal(median([98, 94, 96]), 96);
+  assert.equal(median([98, 94, 96, 90]), 95);
+  assert.equal(median([]), null);
+  assert.equal(median([undefined, 92]), 92);
+});
+
+test("相对中位数表：跑者整轮漂移会被减掉，只剩页面自己的结构差距", () => {
+  // 真实数据：c3f5f6c 这一轮 15 个 URL 都在 93–98，`/invest/` 与 `/invest/digest/` 是唯二落后项
+  const audits = [{
+    sha: "c3f5f6c",
+    date: "2026-11-18T19:51:00Z",
+    urls: {
+      "/": { state: "success", Performance: 98 },
+      "/ai/": { state: "success", Performance: 98 },
+      "/invest/": { state: "success", Performance: 94 },
+      "/invest/digest/": { state: "success", Performance: 93 },
+    },
+  }];
+  const table = buildRelativeTable(audits);
+  // 中位数 (98+98+94+93)/2… 四个数取中间两个的平均 = 96
+  assert.match(table, /\| 本轮中位数 \|/);
+  assert.match(table, /`\/invest\/digest\/`\s*\| 93\s*\| 96\s*\| -3/);
+  assert.match(table, /`\/`\s*\| 98\s*\| 96\s*\| \+2/);
+  assert.match(buildRelativeTable([]), /没有可用的分数/);
 });

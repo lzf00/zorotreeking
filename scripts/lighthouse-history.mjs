@@ -74,6 +74,50 @@ export function buildTable(audits) {
   ].join("\n");
 }
 
+
+/** 中位数（偶数取中间两个的平均），空数组返回 null。 */
+export function median(values) {
+  const sorted = [...values].filter((value) => Number.isFinite(value)).sort((a, b) => a - b);
+  if (!sorted.length) return null;
+  const mid = Math.floor(sorted.length / 2);
+  return sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+}
+
+/**
+ * 单轮内「相对本轮中位数」的偏差。
+ *
+ * 为什么需要它：CI 跑者的快慢会整轮一起漂。实测 c3f5f6c 这一轮 15 个 URL 全部比上一轮
+ * 高 2–6 分（首页 94→98、`/hike/` 92→98），而这段时间没有改任何代码路径——所以跨轮的
+ * 绝对分数差值不能当回归判据。用「本轮中位数」当基准，跑者快慢被减掉，剩下的才是页面
+ * 自己的结构性差距。
+ */
+export function buildRelativeTable(audits) {
+  const latest = audits.find((audit) => Object.keys(audit.urls).length > 0);
+  if (!latest) return "（没有可用的分数）";
+  const entries = Object.entries(latest.urls)
+    .filter(([, entry]) => entry.state === "success" && Number.isFinite(entry.Performance))
+    .map(([path, entry]) => ({ path, score: entry.Performance }))
+    .sort((a, b) => a.score - b.score);
+  const baseline = median(entries.map((entry) => entry.score));
+  const header = ["URL", "性能", "本轮中位数", "偏差"];
+  const rows = entries.map((entry) => {
+    const gap = entry.score - baseline;
+    return [
+      `\`${entry.path}\``,
+      String(entry.score),
+      String(baseline),
+      gap === 0 ? "0" : gap > 0 ? `+${gap}` : String(gap),
+    ];
+  });
+  const widths = header.map((cell, index) => Math.max(cell.length, ...rows.map((row) => row[index].length)));
+  const line = (cells) => `| ${cells.map((cell, index) => cell.padEnd(widths[index])).join(" | ")} |`;
+  return [
+    line(header),
+    `| ${widths.map((width) => "-".repeat(width)).join(" | ")} |`,
+    ...rows.map(line),
+  ].join("\n");
+}
+
 /**
  * 轮次表：一轮一行，标出「提交 / 审计声明的版本 / 两者是否一致」。
  * 分数表（buildTable）看趋势，这张表看「分数到底属于谁」。
@@ -158,6 +202,8 @@ if (process.argv[1] && import.meta.url === new URL(`file://${process.argv[1]}`).
   } else {
     console.log(buildTable(audits));
     console.log(`\n${buildRoundTable(audits)}`);
+    console.log(`\n${buildRelativeTable(audits)}`);
+    console.log("\n偏差 = 该 URL 性能分 − 本轮 15 个 URL 的性能中位数。跨轮的绝对分差不可比：跑者一换，整轮会一起漂 2–6 分。");
     console.log(`\n共 ${audits.length} 轮：${audits.map((audit) => audit.sha).join(" → ")}（左新右旧；↑/↓ 是最新有数据的一轮相对上一轮有数据的列）`);
   }
 }
