@@ -65,7 +65,8 @@ const disclaimerParts = L.disclaimer.split(L.disclaimerStrong);
     <h2 class="text-base font-semibold tracking-tight">{L.sectionSentiment}</h2>
     <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">{L.liveBadge}</span>
   </div>
-  <MarketSentiment initialData={initialSentiment} lang={lang} client:visible />
+  <!-- 情绪接口冷启动实测 3.5s、缓存 TTL 只有 ~60s，别让它和首屏抢带宽 -->
+  <MarketSentiment initialData={initialSentiment} lang={lang} client:idle />
 </section>
 
 <!-- B · 我的持仓 / 公开基金净值跟踪 -->
@@ -79,7 +80,7 @@ const disclaimerParts = L.disclaimer.split(L.disclaimerStrong);
     dataMode={portfolioMode}
     simulationStartDate={simulationStartDate}
     lang={lang}
-    client:load
+    client:idle
   />
 </section>
 

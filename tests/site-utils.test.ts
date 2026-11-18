@@ -358,3 +358,14 @@ test("ItemList 上限对最大的标签页生效，且不影响其他页", () =>
   // /tag/auto/ 有 385 条内容，schema 只放前 100 条，页面列表仍然完整
   assert.ok(385 > MAX_TAG_ITEMLIST);
 });
+
+test("行情快页面里慢接口的 island 不在首屏抢带宽", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const component = await readFile(new URL("../src/components/invest/InvestDashboardSections.astro", import.meta.url), "utf8");
+  // /api/market/sentiment 冷启动实测 3.5s、缓存 TTL 约 60s：SSR 快照先显示，交互等空闲
+  assert.match(component, /<MarketSentiment[^>]*client:idle/);
+  assert.doesNotMatch(component, /<MarketSentiment[^>]*client:(load|visible)/);
+  // 持仓表在首屏之外，同样延到空闲；今日大盘在首屏内，保持 load
+  assert.match(component, /<LiveHoldings[\s\S]*?client:idle/);
+  assert.match(component, /<MarketIndicesGrid[\s\S]*?client:load/);
+});

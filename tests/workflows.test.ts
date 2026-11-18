@@ -142,3 +142,14 @@ test("pre-push 钩子会跑真正会失败的那两道内容门禁", async () =>
   assert.match(hook, /check:seo/);
   assert.match(hook, /SKIP_PREPUSH/);
 });
+
+test("审计前先烘一遍行情接口，且不为此额外加定时任务", async () => {
+  const lighthouse = await workflow("lighthouse.yml");
+  assert.match(lighthouse, /Warm the market endpoints/);
+  assert.match(lighthouse, /\/api\/market\/\$\{endpoint\}/);
+  // 实测 /api/market/sentiment 的缓存 TTL 只有约 60 秒：定时烘热没意义（烧 144 个 job/天 也烘不热），
+  // 只在审计前烘一次让 15 个 URL 起点一致
+  const fs = await import("node:fs/promises");
+  const exists = await fs.stat(new URL("../.github/workflows/warm-api.yml", import.meta.url)).then(() => true).catch(() => false);
+  assert.equal(exists, false, "TTL 太短，定时烘热任务已被移除；别再加回来");
+});

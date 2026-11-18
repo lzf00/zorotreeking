@@ -329,6 +329,36 @@ LCP 却只有 0.44s——说明问题不在首屏内容，而在**空闲后才�
 现在显式设置 `LHCI_BUILD_CONTEXT__CURRENT_HASH: ${{ steps.prodwait.outputs.audited-sha }}`，
 让分数挂在「真正被测的那一版」上；`prodwait` 找不到稳定版本时退回触发 sha。
 
+### 行情接口的冷启动：缓存只有约 60 秒
+
+`/invest/` 在性能预算里长期 84 分（同批其他页 90+），逐项量下来不是页面代码的问题：本地用
+4 倍 CPU + 1.6Mbps 限速跑，`/invest/` 的 FCP/LCP/TBT 和 `/explore/` 几乎一样（FCP ~700ms、
+LCP ~710ms、TBT 0ms）。真正的差异在接口：
+
+| 接口 | 冷 | 热 |
+|---|---|---|
+| `/api/market/indices` | 134 ms | 134 ms |
+| `/api/market/funds` | 76 ms | 48 ms |
+| `/api/market/sentiment` | **3476 ms** | 36 ms |
+
+每分钟打一次，结果严格交替——**缓存 TTL 约 60 秒**，也就是说一半的访客会撞上那 3.3 秒的冷计算；
+而这个请求还会和首屏资源抢同一条 HTTP/2 连接，把 LCP 推高。
+
+处理（都在前端，不动服务端）：
+
+| 改动 | 理由 |
+|---|---|
+| `MarketSentiment` 从 `client:visible` 改 `client:idle` | SSR 快照先显示，3.3 秒的请求挪到浏览器空闲之后，不参与 LCP 竞争 |
+| `LiveHoldings` 从 `client:load` 改 `client:idle` | 在首屏之外，SSR 已渲染出 20 行表格，交互没必要抢首帧 |
+| `MarketIndicesGrid` 保持 `client:load` | 在首屏内、接口 134ms，保持即时刷新 |
+| 审计前先烘一遍接口 | 至少让 15 个 URL 起点一致 |
+
+试过但放弃：每 10 分钟定时烘热。TTL 只有 60 秒，烘完一分钟就凉，白白多 144 个 job/天。
+
+**要真正解决，得动服务端**：把 TTL 从 60 秒提到 5 分钟以上，或者在接口里加一层持久化缓存
+（冷计算 3.3 秒多半是在聚合多个上游）。这需要 VPS 上那个 API 服务的改动权限，目前只有静态站
+的 rsync 权限，所以列为待决定事项。
+
 ### 查「这页最近慢了多少」：`npm run perf:history`
 
 审计结果散落在每轮 run 的 artifact 里，取不到 token 就只能看最新一轮。但 LHCI 上传的

@@ -111,6 +111,17 @@ jobs:
           echo "::warning::production never settled within 10 minutes; auditing the live site anyway"
           echo "audited-sha=unknown" > audited-sha.txt
 
+      # 行情接口冷启动要 3.5 秒（热态 40ms），而它会和首屏资源抢带宽，直接影响 LCP 读数。
+      # 审计前先烘一遍，让 15 个 URL 比的是页面本身，不是缓存状态。
+      - name: Warm the market endpoints
+        if: steps.scope.outputs.run == 'true'
+        run: |
+          for endpoint in indices funds sentiment; do
+            first=$(curl -s -o /dev/null -w '%{time_total}' --max-time 30 "https://www.zorotreeking.online/api/market/${endpoint}" || echo "timeout")
+            warm=$(curl -s -o /dev/null -w '%{time_total}' --max-time 30 "https://www.zorotreeking.online/api/market/${endpoint}" || echo "timeout")
+            echo "${endpoint}: 冷 ${first}s → 热 ${warm}s"
+          done
+
       - name: Run Lighthouse CI
         if: steps.scope.outputs.run == 'true'
         env:
