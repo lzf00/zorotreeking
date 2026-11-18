@@ -604,6 +604,36 @@ npm run perf:history -- --json    # 机器可读
 - Lighthouse CI 每轮跑 5 次取中位数、且每次新开 Chrome，所以它受这个偏差影响较小；
 - 跨页面比较要在**同一条件**下（同进程、同顺序策略）进行，否则 200–900 ms 的差异可能全是测量假象。
 
+### 复核 TBT 真假：`npm run tbt:probe`（第 37 轮）
+
+上一节写了「本机 TBT 不可信」，但「不可信」不等于「不用管」——真正要回答的是：这页到底有没有
+阻塞主线程的工作。所以加了一个 30 秒就能跑的复核工具，**不看 Lighthouse，只问浏览器**：
+
+```bash
+npm run build
+npm run tbt:probe -- --urls /,/invest/,/invest/digest/ --runs 2
+npm run tbt:probe -- --self-test     # 用人造 300ms 阻塞页验证检测器本身有效
+```
+
+它用 `PerformanceObserver("longtask")` 统计加载期间的长任务（TBT 的定义就是
+`Σ(duration − 50ms)`），节流档位和 CI 一致（150ms RTT / 1.6Mbps / 4× CPU）。
+
+2026-11-19 实测（每页 2 次取最差）：
+
+| 页面 | 实测 TBT | 长任务数 | 最长任务 | Lighthouse 同页报的 TBT |
+|---|---|---|---|---|
+| `/` | 0 ms | 0 | 0 ms | 0 – 1054 ms（同一天不同轮次） |
+| `/invest/` | 0 ms | 0 | 0 ms | 0 ms |
+| `/invest/digest/` | 0 ms | 0 | 0 ms | 4 – 633 ms |
+| `/hike/sample-route/` | 0 ms | 0 | 0 ms | 0 – 378 ms |
+
+结论：**这四个页面上 Lighthouse 报出来的 TBT 全是假的**，来源是 headless 无 GPU 时软件光栅
+时间被算进「Unattributable」任务。工具自己也做了防呆：`--self-test` 会跑一个人造 300ms
+阻塞页，抓不到 ≥200ms 就以退出码 1 失败——否则「全是 0」可能只是检测器坏了。
+
+判定分档写在 `verdict()` 里（有测试锁住）：< 150 ms「无实质阻塞」、150–299「轻微，先看是什么」、
+≥ 300「真实阻塞，值得修」。以后看到 `perf:local` 的 TBT 报警，先跑这个再决定动不动代码。
+
 ### 本机基线里的 TBT 不可信（headless 无 GPU）
 
 `perf:local` 给首页量出过 perf **72**、TBT **964–1054 ms**，而同批 `/ai/` TBT 0、`/photo/` 184。

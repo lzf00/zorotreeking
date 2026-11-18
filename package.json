@@ -27,7 +27,8 @@
     "hooks:install": "git config core.hooksPath .githooks && chmod +x .githooks/pre-push && echo '已启用 .githooks（pre-push 门禁）'",
     "perf:history": "node scripts/lighthouse-history.mjs",
     "a11y:audit": "node scripts/a11y-audit.mjs",
-    "perf:local": "node scripts/perf-local.mjs"
+    "perf:local": "node scripts/perf-local.mjs",
+    "tbt:probe": "node scripts/tbt-probe.mjs"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.3.6",
