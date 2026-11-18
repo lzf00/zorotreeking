@@ -1,0 +1,47 @@
+name: Accessibility audit
+
+# Lighthouse 的 a11y 断言只覆盖 15 个 URL；归档页、标签页、个股页都不在预算里。
+# 这里每周把全站 1188 个页面用 axe-core 过一遍，违规就红。
+on:
+  schedule:
+    - cron: "30 20 * * 1"   # 北京时间周二 04:30，避开部署与审计高峰
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: a11y
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Build
+        run: npm run build
+      - name: Run axe over every page
+        run: node scripts/a11y-audit.mjs --all --json > a11y-report.json
+      - name: Summarize
+        if: always()
+        run: |
+          node -e '
+            const report = require("./a11y-report.json");
+            console.log(`抽查 ${report.pages} 个页面，跳过 ${report.skipped.length} 个`);
+            for (const v of report.grouped) console.log(`- [${v.impact}] ${v.id} × ${v.pages} 页：${v.selector}`);
+          ' >> "$GITHUB_STEP_SUMMARY" || true
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a11y-report
+          path: a11y-report.json
+          retention-days: 30

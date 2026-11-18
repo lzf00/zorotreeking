@@ -287,6 +287,8 @@ if (jsonLd) {
     {/* 不 preload 字体：Lighthouse 限速 1.6Mbps 时，两字体共 63KB 会和 HTML 抢带宽，
         实测让首屏晚 ~300ms。@font-face 都是 font-display: swap，正文先以系统字体绘制，
         字体到货后自行替换，对 FCP 无影响。 */}
+    {/* 少数页面需要在 head 里加东西（例如跳转桩的 meta refresh） */}
+    <slot name="head" />
   </head>
   <body class="min-h-screen flex flex-col" data-pagefind-ignore={noindex ? true : undefined}>
     <!-- A11y skip-to-content：键盘用户按 Tab 第一个出现这个；视觉默认隐藏，focus 时浮在左上角 -->

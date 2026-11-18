@@ -92,7 +92,7 @@ function MacroCard({
           <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#64748b]">{eyebrow}</p>
           <h3 className="mt-2 text-2xl font-semibold tracking-tight">{title}</h3>
         </div>
-        <span className={`text-3xl font-light ${direction === "down" ? "text-emerald-600" : direction === "up" ? "text-rose-600" : "text-slate-400"}`} aria-label={direction === "down" ? "较前值下降" : direction === "up" ? "较前值上升" : "与前值持平"}>
+        <span className={`text-3xl font-light ${direction === "down" ? "text-emerald-700" : direction === "up" ? "text-rose-600" : "text-[var(--text-tertiary)]"}`} aria-label={direction === "down" ? "较前值下降" : direction === "up" ? "较前值上升" : "与前值持平"}>
           {arrow}
         </span>
       </div>
@@ -180,7 +180,7 @@ function QuoteChange({ value }: { value: number | null }) {
   const positive = finite(value) && value > 0;
   const negative = finite(value) && value < 0;
   const text = finite(value) ? `${value > 0 ? "+" : ""}${value.toFixed(2)}%` : "—";
-  return <span className={`font-mono tabular-nums ${positive ? "text-emerald-600" : negative ? "text-rose-600" : "text-[var(--text-tertiary)]"}`}>{text}</span>;
+  return <span className={`font-mono tabular-nums ${positive ? "text-emerald-700" : negative ? "text-rose-600" : "text-[var(--text-tertiary)]"}`}>{text}</span>;
 }
 
 function IndexCard({ quote }: { quote: UsQuote }) {
@@ -317,7 +317,7 @@ export default function UsMarketDashboard({ initialData = null }: Props) {
                 当前状态：{judgement.employment} <span className="mx-1 text-[#a97824]">/</span> {judgement.inflation} <span className="mx-1 text-[#a97824]">/</span> {judgement.policy}
               </p>
             </div>
-            <div className="flex items-center gap-3 text-xs text-[#64748b] dark:text-[#9fb0bd]">
+            <div className="flex items-center gap-3 text-xs text-[#475569] dark:text-[#9fb0bd]">
               <span className={`h-2 w-2 rounded-full ${loading ? "animate-pulse bg-amber-500" : isUsRegularMarketHours() ? "bg-emerald-500" : "bg-slate-400"}`} />
               {isUsRegularMarketHours() ? "纽约常规交易时段" : "纽约市场休市 / 盘外"}
             </div>

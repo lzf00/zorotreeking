@@ -74,7 +74,7 @@ function colorClass(v: number | null | undefined): string {
   if (v == null || !Number.isFinite(Number(v))) return "text-[var(--text-tertiary)]";
   const n = Number(v);
   if (n > 0) return "text-red-600 dark:text-red-400";
-  if (n < 0) return "text-emerald-600 dark:text-emerald-400";
+  if (n < 0) return "text-emerald-700 dark:text-emerald-400";
   return "text-[var(--text-tertiary)]";
 }
 function fmtAsOf(iso: string | undefined): string {
@@ -157,7 +157,7 @@ function fmtAsOf(iso: string | undefined): string {
           </div>
           <div class="border border-[var(--border)] rounded-lg p-4">
             <div class="text-xs text-[var(--text-tertiary)]">💥 Limit-down count</div>
-            <div class="mt-1 text-2xl font-semibold text-emerald-600 dark:text-emerald-400 font-mono">
+            <div class="mt-1 text-2xl font-semibold text-emerald-700 dark:text-emerald-400 font-mono">
               {snap.sentiment?.limit_down ?? "—"}
             </div>
           </div>

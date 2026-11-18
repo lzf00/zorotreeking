@@ -71,7 +71,7 @@ function colorClass(v: number | null | undefined): string {
   if (v == null || !Number.isFinite(Number(v))) return "text-[var(--text-tertiary)]";
   const n = Number(v);
   if (n > 0) return "text-red-600 dark:text-red-400";
-  if (n < 0) return "text-emerald-600 dark:text-emerald-400";
+  if (n < 0) return "text-emerald-700 dark:text-emerald-400";
   return "text-[var(--text-tertiary)]";
 }
 function fmtYi(v: number | null | undefined): string {
@@ -254,7 +254,7 @@ const backText = stock?.market === "HK" ? "HK market dashboard" : "Market dashbo
               </div>
               <div class="border border-[var(--border)] rounded-lg p-3 text-center">
                 <div class="text-[10px] text-[var(--text-tertiary)]">Main sell today</div>
-                <div class="mt-1 font-mono font-semibold text-emerald-600">-{(stock.details.capital_flow.main_sell_yi ?? 0).toFixed(2)} ¥100M</div>
+                <div class="mt-1 font-mono font-semibold text-emerald-700">-{(stock.details.capital_flow.main_sell_yi ?? 0).toFixed(2)} ¥100M</div>
               </div>
               <div class="border border-[var(--border)] rounded-lg p-3 text-center">
                 {(() => {
@@ -265,7 +265,7 @@ const backText = stock?.market === "HK" ? "HK market dashboard" : "Market dashbo
                   return (
                     <>
                       <div class="text-[10px] text-[var(--text-tertiary)]">Main net</div>
-                      <div class={`mt-1 font-mono font-semibold ${isUp ? "text-red-600" : net < 0 ? "text-emerald-600" : ""}`}>
+                      <div class={`mt-1 font-mono font-semibold ${isUp ? "text-red-600" : net < 0 ? "text-emerald-700" : ""}`}>
                         {isUp ? "+" : ""}{net.toFixed(2)} ¥100M
                       </div>
                     </>

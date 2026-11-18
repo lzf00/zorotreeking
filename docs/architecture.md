@@ -336,6 +336,57 @@ GitHub 表达式里不能用点号取**，会静默变成空字符串再退回�
 现在显式设置 `LHCI_BUILD_CONTEXT__CURRENT_HASH: ${{ steps.prodwait.outputs.audited-sha }}`，
 让分数挂在「真正被测的那一版」上；`prodwait` 找不到稳定版本时退回触发 sha。
 
+### 无障碍：Lighthouse 只看 15 个页面，剩下的用 `npm run a11y:audit`
+
+Lighthouse 的 a11y 断言（error ≥0.90）只覆盖性能预算里的 15 个 URL。归档页、标签页、
+个股页、照片页这些「不在预算里」的页面从来没人审过——它们的正文对比度、可访问名称都在
+盲区里。
+
+所以补了一个全站抽查脚本：Playwright 起一个本地静态服务器，对构建产物逐个页面注入
+axe-core 跑 WCAG 2.0/2.1 A+AA 规则。
+
+```bash
+npm run a11y:audit                    # 默认 24 个页面（等距抽样，结果稳定）
+npm run a11y:audit -- --pages 60      # 加大抽样
+npm run a11y:audit -- --all --json    # 全站（1190 个页面，约 25 分钟）
+```
+
+几个实现上的注意点：
+
+| 坑 | 处理 |
+|---|---|
+| 本机没装 Playwright 自带浏览器 | 回退到系统 Chrome（`CHROME_PATH` 可覆盖），CI 上两者都行 |
+| 抽样不稳定会让「这轮干净」没意义 | 按路径排序后等距抽样，同一份产物每次抽到同一批页面 |
+| 后台入口这类页面会自行跳转，注入脚本时执行上下文已销毁，整轮会崩 | 单页异常记为「跳过」继续跑；`--all` 时每 50 页打一行进度 |
+| 同一条违规散落在几十个页面 | 按「规则 + 选择器」合并，输出命中页数与例页 |
+
+首轮全站跑完（1188 个页面，后来两个跳转桩也补成了正经页面，共 1190）抓出 17 条真问题，都是「抽样 24 页看不见、只在冷门页面里」
+的那种：
+
+| 问题 | 命中面 | 原因 | 修法 |
+|---|---|---|---|
+| 月份标题 `text-zinc-400` 在浅色底上 2.47:1 | `/en/ai/digest/`、`/en/invest/digest/` 共 630 处 | 英文页从中文页复制时把 `zinc-600` 写成了 `zinc-400` | 对齐中文版用 `zinc-600` |
+| 涨跌用的 `text-emerald-600` 3.64:1 | 英文个股/市场页、`/invest/us-market/` | Tailwind 600 档在浅色底不达标 | 浅色改 `emerald-700`，深色保持 `emerald-400` |
+| 照片页说明文字 `text-white/45`、`/35` 4.48:1 | `/photo/` | 半透明白不够亮 | 提到 `/55` |
+| 美股面板 `#64748b` 4.21:1 | `/invest/us-market/` | slate-500 偏浅 | 改 `#475569` |
+| 后台 UTM 表单的 `<label>` 没写 `for` | `/admin/utm/` | 复制模板时漏了关联 | 补 `for` + 预设下拉加 `aria-label` |
+
+修完复跑全站：**0 违规**。仍有一条已知例外：后台入口 `/admin/`（`public/admin/index.html`
+加载的第三方 CMS 外壳），它的 DOM 是 Decap 的 JS 渲染的，无障碍名称改不了，已在脚本里显式
+排除并注明；自家写的 `/admin/utm|etf-ops|feedback|stats|guestbook/` 照常审。
+
+周检：`.github/workflows/a11y.yml` 每周二 04:30（北京）把全站跑一遍，违规就红，报告存 artifact。
+
+顺带修掉的两个跳转桩：`/photography/` 和 `/en/photography/` 原来由 `astro.config` 的
+`redirects` 生成，Astro 给的桩是 `<!doctype html><title>…`，没有 `<html lang>`（axe 报
+`html-has-lang`），而且它立刻 meta refresh 跳走、脚本注不进去，审计只能整页跳过。
+换成 `src/pages/photography/index.astro` 这样的正经页面（BaseLayout + `head` 插槽放
+`meta refresh` + `noindex`）：跳转行为不变（实测 `/photography/` 仍落到 `/photo/`），
+`lang`/`title`/`h1` 齐全，现在能被审到 0 违规。页面数 1188 → 1190，sitemap 仍是 1182
+条——桩页是 `noindex`，不进 sitemap。
+
+排查单页用 `npm run a11y:audit -- --only /photo/,/en/photo/`。
+
 ### 行情接口的冷启动：缓存只有约 60 秒
 
 `/invest/` 在性能预算里长期 84 分（同批其他页 90+），逐项量下来不是页面代码的问题：本地用

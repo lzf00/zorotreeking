@@ -30,10 +30,9 @@ export default defineConfig({
   },
   // 只声明不带尾斜杠的形式：build.format=directory 下 /photography 和 /photography/
   // 是同一个路由，两条都写会触发 Astro 的 duplicate route 警告（未来版本会变硬错误）。
-  redirects: {
-    "/photography": "/photo/",
-    "/en/photography": "/en/photo/",
-  },
+  // 旧地址 /photography/ → /photo/：不用 Astro 的 redirects，改成自己的跳转桩页面
+  // （src/pages/photography/index.astro）。Astro 生成的桩没有 <html lang>，
+  // 无障碍审计会报 html-has-lang，而桩会立刻跳走、脚本注不进去只能跳过。
   markdown: {
     processor: unified({
       rehypePlugins: [

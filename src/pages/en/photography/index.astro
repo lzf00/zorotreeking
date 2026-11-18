@@ -1,0 +1,13 @@
+---
+// 旧地址 /en/photography/ → /en/photo/ 的跳转桩，见中文版注释。
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Redirecting to Photography" description="The old /en/photography/ address now lives at /en/photo/." noindex>
+  <meta http-equiv="refresh" content="0;url=/en/photo/" slot="head" />
+  <section class="mx-auto max-w-3xl px-5 py-24 text-center">
+    <p class="text-sm text-[var(--text-tertiary)]">Redirecting…</p>
+    <h1 class="mt-3 text-2xl font-semibold">This page moved to <a class="underline" href="/en/photo/">/en/photo/</a></h1>
+    <p class="mt-4 text-sm text-[var(--text-secondary)]">If you are not redirected automatically, follow the link above.</p>
+  </section>
+</BaseLayout>

@@ -26,7 +26,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
       <!-- 表单区 -->
       <div class="space-y-4">
         <div>
-          <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-tertiary)] mb-1">
+          <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-tertiary)] mb-1" for="in-url">
             目标页面（相对路径或完整 URL）*
           </label>
           <input id="in-url" type="text" placeholder="/ai/digest-2026-06-05/ 或 https://www.zorotreeking.online/..."
@@ -35,13 +35,13 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-tertiary)] mb-1">
+            <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-tertiary)] mb-1" for="in-source">
               来源 utm_source *
             </label>
             <div class="flex gap-2">
               <input id="in-source" type="text" placeholder="wechat"
                      class="flex-1 px-3 py-2 border border-[var(--border)] rounded-md bg-white dark:bg-zinc-900 text-sm font-mono focus:outline-none focus:ring-1 focus:ring-amber-400" />
-              <select id="preset-source"
+              <select id="preset-source" aria-label="utm_source 预设"
                       class="px-2 py-2 border border-[var(--border)] rounded-md bg-white dark:bg-zinc-900 text-xs">
                 <option value="">选预设…</option>
                 <option value="wechat">wechat 微信</option>
@@ -62,7 +62,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
             <div class="flex gap-2">
               <input id="in-medium" type="text" placeholder="social"
                      class="flex-1 px-3 py-2 border border-[var(--border)] rounded-md bg-white dark:bg-zinc-900 text-sm font-mono focus:outline-none focus:ring-1 focus:ring-amber-400" />
-              <select id="preset-medium"
+              <select id="preset-medium" aria-label="utm_medium 预设"
                       class="px-2 py-2 border border-[var(--border)] rounded-md bg-white dark:bg-zinc-900 text-xs">
                 <option value="">选预设…</option>
                 <option value="social">social</option>
@@ -77,7 +77,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-tertiary)] mb-1">
+            <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-tertiary)] mb-1" for="in-campaign">
               活动 utm_campaign（可选）
             </label>
             <input id="in-campaign" type="text" placeholder="digest-share 或 launch-etf"
@@ -95,7 +95,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 
       <!-- 输出区 -->
       <div class="pt-4 border-t border-[var(--border)]">
-        <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-tertiary)] mb-2">
+        <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--text-tertiary)] mb-2" for="out-url">
           生成的链接（会自动更新）
         </label>
         <div class="flex gap-2">
