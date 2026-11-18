@@ -62,7 +62,10 @@ const diffLabel = { easy: "Easy", moderate: "Moderate", hard: "Hard", expert: "E
     </header>
     {stats && stats.points.length > 1 && (
       <>
-        <GpxMap points={stats.points} client:only="react" />
+        {/* client:visible 而不是 client:only：组件本身不碰 window（Leaflet 只在 useEffect 里动态
+            import），所以能先输出占位 DOM；用户滚到地图附近才下载 React + Leaflet 并挂载。
+            顺带让下方内容的高度在首屏就确定，不会因为地图晚到而跳动。 */}
+        <GpxMap points={stats.points} client:visible />
         <div class="mt-4 rounded-xl border border-[var(--border)] p-3">
           <h2 class="text-sm font-semibold mb-2 text-[var(--text-secondary)]">Elevation</h2>
           <ElevationChart points={stats.points} client:visible />
