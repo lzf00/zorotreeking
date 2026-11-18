@@ -90,7 +90,7 @@ export default function MarketSentiment({ initialData, lang = "zh" }: Props = {}
     );
   }
 
-  if (!data || !data.turnover) {
+  if (!data) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {[1,2,3].map(i => <div key={i} className="rounded-2xl bg-[var(--bg-soft)] h-[180px] animate-pulse" />)}
@@ -98,7 +98,11 @@ export default function MarketSentiment({ initialData, lang = "zh" }: Props = {}
     );
   }
 
-  const { turnover, breadth } = data;
+  // 构建快照里没有成交额，但有涨跌家数/涨跌停。以前这里要求 turnover 存在才渲染，
+  // 于是 SSR 只能吐三块骨架，等实时接口（冷启动 3 秒）回来才整块换掉——首屏视觉进度
+  // 一下掉到 2.8 秒。现在有 seed 就先画能画的，成交额缺就显示「—」。
+  const { breadth } = data;
+  const turnover = data.turnover;
   const missingBreadth = !breadth;
   const breadthTotal = breadth?.total ?? 0;
   const breadthUps = breadth?.ups ?? 0;
@@ -113,11 +117,15 @@ export default function MarketSentiment({ initialData, lang = "zh" }: Props = {}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {/* 成交额 */}
         <div className="rounded-2xl bg-[var(--bg-soft)] p-5">
-          <div className="text-xs text-[var(--text-tertiary)] mb-3">{L.turnoverTitle}</div>
-          <div className="text-2xl font-semibold tabular-nums mb-3">{fmtYi(turnover.total, lang)}</div>
+          <div className="text-xs text-[var(--text-tertiary)] mb-3">
+            {L.turnoverTitle}
+            {/* 快照里没有成交额：先占位，别让整块等接口回来才出现（视觉进度会掉到 2.8 秒） */}
+            {!turnover ? <span className="ml-2 text-[10px]">{lang === "zh" ? "更新中" : "updating"}</span> : null}
+          </div>
+          <div className="text-2xl font-semibold tabular-nums mb-3">{fmtYi(turnover?.total ?? 0, lang)}</div>
           <div className="text-xs text-[var(--text-secondary)] space-y-1 tabular-nums">
-            <div className="flex justify-between"><span>{L.shanghai}</span><span>{fmtYi(turnover.sh, lang)}</span></div>
-            <div className="flex justify-between"><span>{L.shenzhen}</span><span>{fmtYi(turnover.sz, lang)}</span></div>
+            <div className="flex justify-between"><span>{L.shanghai}</span><span>{fmtYi(turnover?.sh ?? 0, lang)}</span></div>
+            <div className="flex justify-between"><span>{L.shenzhen}</span><span>{fmtYi(turnover?.sz ?? 0, lang)}</span></div>
           </div>
         </div>
 

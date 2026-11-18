@@ -72,3 +72,27 @@ test("视口可配置，默认桌面 1280x900", async () => {
   assert.match(source, /--viewport/);
   assert.match(source, /Number\.isFinite\(vpWidth\)/);
 });
+
+test("横向滚动的表格容器都能用键盘聚焦（WCAG 2.1.1）", async () => {
+  const fs = await import("node:fs/promises");
+  const root = new URL("../src/", import.meta.url);
+  const offenders = [];
+  const walk = async (dir) => {
+    for (const entry of await fs.readdir(dir, { withFileTypes: true })) {
+      const full = new URL(`${entry.name}${entry.isDirectory() ? "/" : ""}`, dir);
+      if (entry.isDirectory()) {
+        await walk(full);
+        continue;
+      }
+      if (!/\.(astro|tsx)$/.test(entry.name)) continue;
+      const source = await fs.readFile(full, "utf8");
+      for (const line of source.split("\n")) {
+        if (!line.includes("overflow-x-auto")) continue;
+        if (/tabindex|tabIndex/.test(line)) continue;
+        offenders.push(`${full.pathname}: ${line.trim().slice(0, 80)}`);
+      }
+    }
+  };
+  await walk(root);
+  assert.deepEqual(offenders, []);
+});

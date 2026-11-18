@@ -219,7 +219,7 @@ function lightIcon(l: string): string {
               份额 {shareCoverage}/{rows.length} · 因子 {factorCoverage}/{rows.length}
             </span>
           </div>
-          <div class="overflow-x-auto">
+          <div class="overflow-x-auto" tabindex="0" role="group">
             <table class="w-full text-sm">
               <thead class="text-[var(--text-tertiary)] text-xs">
                 <tr class="border-b border-[var(--border)]">
@@ -285,7 +285,7 @@ function lightIcon(l: string): string {
             </span>
           </div>
           {snap.top_historical && snap.top_historical.length > 0 ? (
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto" tabindex="0" role="group">
               <table class="w-full text-sm">
                 <thead class="text-[var(--text-tertiary)] text-xs">
                   <tr class="border-b border-[var(--border)]">
@@ -345,7 +345,7 @@ function lightIcon(l: string): string {
               <h2 class="text-base font-semibold tracking-tight">📅 30 日重要信号回溯</h2>
               <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">只列有 🔴 或 🟡 的日子</span>
             </div>
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto" tabindex="0" role="group">
               <table class="w-full text-sm">
                 <thead class="text-[var(--text-tertiary)] text-xs">
                   <tr class="border-b border-[var(--border)]">

@@ -126,7 +126,7 @@ export default function StockSpotlight({ stocks, showNote = true, initialQuotes,
         <span className="font-mono text-[10.5px]">{updated ? `${sourceLabel(source, L)} ${formatChinaMarketTime(updated)}` : ""}</span>
       </div>
       <div className="rounded-2xl border border-[var(--border)] overflow-hidden">
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto" tabIndex={0} role="group">
           <table className="w-full text-sm">
             <thead className="bg-[var(--bg-soft)] text-xs text-[var(--text-secondary)]">
               <tr>

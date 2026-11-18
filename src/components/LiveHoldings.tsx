@@ -270,7 +270,7 @@ export default function LiveHoldings({ holdings, dataMode = "placeholder", simul
 
       {/* 持仓明细 */}
       <div className="rounded-2xl border border-[var(--border)] overflow-hidden">
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto" tabIndex={0} role="group">
           <table className="w-full text-sm">
             <thead className="bg-[var(--bg-soft)] text-xs text-[var(--text-secondary)]">
               <tr>

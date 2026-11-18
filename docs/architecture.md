@@ -449,6 +449,21 @@ npm run perf:local -- --urls /invest/,/ai/ --runs 3 --json
 `/explore/` 100 分、FCP 541 ms、LCP 601 ms、TBT 0）。lighthouse 没进 devDependencies
 （一次几十 MB，CI 每个 job 都要 `npm ci`），所以脚本找不到可执行文件时会提示先装。
 
+**一次真优化（`/invest/` 的视觉进度从 2.8 s 降到 1.1 s）**：CI 与本机都显示 `/invest/` 的
+Speed Index 比 `/explore/` 差一倍多（2786 vs 835 ms，同为 perf 92/99）。原因是市场情绪
+组件要求「拿到成交额才渲染」，而构建快照里根本没有成交额（只有涨跌家数、涨跌停），
+于是 SSR 只吐三块骨架，要等实时接口（冷启动 3 秒）回来才整块换掉——首屏视觉进度被拖到
+2.8 秒。改成「有 seed 就先画能画的、成交额显示『—』并标『更新中』」之后：
+
+| 指标（CI 同款限速） | 改前 | 改后 |
+|---|---|---|
+| Performance | 92 | **98** |
+| Speed Index | 2786 / 2780 ms | **1067 / 1161 ms** |
+| LCP | 874 / 945 ms | 882 / 920 ms |
+| TBT | 0 | 0 |
+
+LCP 没动（首屏标题本来就快），涨的是「视觉完整度」——这正是 Speed Index 量化的东西。
+
 **用它破的一次伪回归**：`perf:history` 显示 `/invest/` 在最新一轮从 95 掉到 89（↓6）。
 本机连跑 3 次都是 98 分/TBT 0 —— 页面没变慢，是 runner 网络抽风。`/invest/` 的 LCP 比
 `/explore/` 高约 280 ms 是结构性的（岛更多、DOM 更大），在 CI 的限速网络下会被放大，

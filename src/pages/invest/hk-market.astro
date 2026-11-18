@@ -108,7 +108,7 @@ function fmtAsOf(iso: string | undefined): string {
           <h2 class="text-base font-semibold tracking-tight">📈 港股大盘</h2>
           <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">Wind</span>
         </div>
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto" tabindex="0" role="group">
           <table class="w-full text-sm">
             <thead class="text-[var(--text-tertiary)] text-xs">
               <tr><th scope="col" class="text-left py-2">指数</th><th scope="col" class="text-right">点位</th><th scope="col" class="text-right">涨跌</th></tr>
@@ -139,7 +139,7 @@ function fmtAsOf(iso: string | undefined): string {
             ⚠️ 观察池当前所有代码均未从 Wind 拉到实时数据（大盘指数与涨幅榜不受影响）。可能是 Wind API 侧对港股代码格式的临时限制，下个交易日 15:30 收盘后会自动重试。
           </div>
         )}
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto" tabindex="0" role="group">
           <table class="w-full text-sm">
             <thead class="text-[var(--text-tertiary)] text-xs">
               <tr>
@@ -204,7 +204,7 @@ function fmtAsOf(iso: string | undefined): string {
           <h2 class="text-base font-semibold tracking-tight">🔥 港股涨幅榜 TOP5</h2>
           <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">Wind · 含仙股</span>
         </div>
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto" tabindex="0" role="group">
           <table class="w-full text-sm">
             <thead class="text-[var(--text-tertiary)] text-xs">
               <tr><th scope="col" class="text-left py-2 w-10">#</th><th scope="col" class="text-left">股票</th><th scope="col" class="text-right">现价</th><th scope="col" class="text-right">涨幅</th></tr>

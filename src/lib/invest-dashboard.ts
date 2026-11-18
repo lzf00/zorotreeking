@@ -129,7 +129,19 @@ export type WindSnapshot = {
     top_down: SectorSeed[];
     stale: boolean;
   };
-  initialSentiment?: { ok: boolean; ts: number; breadth: { limit_up: number; limit_down: number } };
+  initialSentiment?: {
+    ok: boolean;
+    ts: number;
+    // 快照里能拿到的都塞进去：涨跌家数 + 涨跌停。成交额快照里没有，前端显示「—」等接口回填。
+    breadth: {
+      limit_up: number;
+      limit_down: number;
+      total?: number;
+      ups?: number;
+      downs?: number;
+      flats?: number;
+    };
+  };
   initialMarketUpdated?: number;
   initialWatchQuotes: Record<string, WatchQuote>;
 };
@@ -215,6 +227,10 @@ export function loadWindSnapshot(root = process.cwd()): WindSnapshot {
       breadth: {
         limit_up: wind.sentiment.limit_up ?? 0,
         limit_down: wind.sentiment.limit_down ?? 0,
+        total: wind.sentiment.total,
+        ups: wind.sentiment.ups,
+        downs: wind.sentiment.downs,
+        flats: wind.sentiment.flats,
       },
     };
   }

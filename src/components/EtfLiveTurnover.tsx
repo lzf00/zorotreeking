@@ -159,7 +159,7 @@ export default function EtfLiveTurnover() {
         </div>
       )}
 
-      <div className="overflow-x-auto rounded-xl border border-[var(--border)]">
+      <div className="overflow-x-auto rounded-xl border border-[var(--border)]" tabIndex={0} role="group">
         <table className="w-full text-sm min-w-[640px]">
           <thead>
             <tr className="text-[11px] uppercase tracking-[0.1em] text-[var(--text-tertiary)] font-mono border-b border-[var(--border)]">
