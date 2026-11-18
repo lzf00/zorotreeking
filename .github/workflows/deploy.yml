@@ -17,6 +17,12 @@ concurrency:
   group: deploy-main
   cancel-in-progress: false
 
+# 默认 token 只有读权限。失败诊断步骤要把「哪一步挂了」写成 commit status
+# （公开仓库读 status 不需要登录），必须显式申请 statuses: write。
+permissions:
+  contents: read
+  statuses: write
+
 env:
   # 服务器信息走 Secrets，避免在公开仓库 / Actions 日志里直接泄露
   # GitHub repo → Settings → Secrets and variables → Actions 配：
