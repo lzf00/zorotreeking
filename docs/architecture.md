@@ -318,6 +318,25 @@ Lighthouse 只审 15 个 URL，而「h1 → h3 跳级」这类问题常藏在模
 顺带暴露一个更大的问题：**英文投资页缺了中文页的整个实时行情区块**（今日大盘、市场情绪、
 AI 科创、创业板、板块涨跌），那 5 个组件里还有大量硬编码中文，要补齐得先做组件 i18n。
 
+### 性能预算覆盖到 14 个 URL，以及 Leaflet 页为什么先不进门禁
+
+`.lighthouserc.json` 原来只审 12 个 URL，缺个股页（图表 JS 重）和标签详情页
+（CollectionPage + ItemList）。这轮补成 14 个：加了 `/invest/stock/688981.SH/`
+和 `/tag/photo/`，实测 0.97 / 1.00，余量充足。
+
+`/hike/sample-route/`（带 Leaflet 地图）也试加了，CI 直接红——状态是
+`lhci/url/hike/sample-route/ failure · Failed 1 assertion(s)`。本地按 CI 同款配置
+（desktop + devtools 限速）跑出来是 0.92–0.99、CLS 0.000，拿不到可复现的差异，
+判断是第三方 OSM 瓦片拖累下的数值抖动。处理方式：
+
+1. 先把两个可能不稳的根因修掉：
+   - Leaflet 默认版权署名是 50% 灰字压在瓦片上，浅色瓦片时对比度不足 4.5:1 →
+     改成实底 + 深色文字（暗色模式另一套），审计数值不再受瓦片内容影响；
+   - 地图是 `client:only`，服务端不输出任何 DOM，地图 JS 晚到会把它下面的内容
+     顶下去 → 外层先占好 `height`，地图挂进来不再改变布局。
+2. 修完后仍先从预算集里撤掉这个页面，等下一轮用 commit status（`lhci/url/...`）
+   单独看它的结果，确认稳定再加回。**红色门禁比少一个 URL 更糟**，宁可先留着观察。
+
 ### 全站搜索改成「按了才加载」：首屏 JS 从 97KB 降到 7KB
 
 搜索 modal 原本是 `client:idle` 的 React island，挂在 `BaseLayout` 里，于是**每个页面**

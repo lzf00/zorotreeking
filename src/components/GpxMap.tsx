@@ -44,6 +44,22 @@ export default function GpxMap({ points, height = 360 }: Props) {
   }, [points]);
 
   return (
-    <div ref={ref} className="w-full rounded-xl overflow-hidden border border-[var(--border)]" style={{ height }} />
+    <div className="relative w-full" style={{ height }}>
+      {/* Leaflet 地图挂到这里；外层先占好高度，地图 JS 晚到也不会把下面的内容顶下去 */}
+      <div ref={ref} className="h-full w-full rounded-xl overflow-hidden border border-[var(--border)]" />
+      {/* Leaflet 默认的版权署名是 50% 灰字压在瓦片上，瓦片浅色时对比度不到 4.5:1。
+          加实底 + 深色文字，既满足 WCAG AA，也不受瓦片内容影响（审计数值更稳）。 */}
+      <style>{`
+        .leaflet-control-attribution {
+          background: rgba(255, 255, 255, 0.92) !important;
+          color: #333 !important;
+          font-size: 11px !important;
+          padding: 1px 6px !important;
+        }
+        .leaflet-control-attribution a { color: #1a5f30 !important; text-decoration: underline; }
+        .dark .leaflet-control-attribution { background: rgba(24, 24, 27, 0.92) !important; color: #e4e4e7 !important; }
+        .dark .leaflet-control-attribution a { color: #86efac !important; }
+      `}</style>
+    </div>
   );
 }
