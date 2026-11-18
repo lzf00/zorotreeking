@@ -40,9 +40,11 @@ const copy =
           "邮件由 Buttondown 托管：提交后需要点确认链接（double opt-in），每封邮件底部都有退订链接，退订即刻生效。没有广告、没有追踪像素、不会把地址给第三方。",
         browseHeading: "不想订阅？",
         browse:
-          "那就直接看：归档页按时间列全部内容，标签索引页按关键词找主题。RSS 也是全量输出，不需要注册。",
-        archive: "全部归档",
+          "那就直接逛：标签索引按关键词分组，主题地图把文章按内容相似度铺成一张图。RSS 也是全量输出，不需要注册。",
+        archive: "主题地图",
         tags: "标签索引",
+        archiveHref: pathWithLang("/explore", lang),
+        tagsHref: pathWithLang("/tag", lang),
       }
     : {
         heading: "What lands in your inbox",
@@ -55,9 +57,11 @@ const copy =
           "Email is hosted by Buttondown: you get a confirmation link after signing up (double opt-in), every email carries an unsubscribe link, and unsubscribing takes effect immediately. No ads, no tracking pixels, no handing addresses to third parties.",
         browseHeading: "Rather not subscribe?",
         browse:
-          "Then just read: the archive lists everything by date, and the tag index groups it by keyword. RSS carries the full feed and needs no account.",
-        archive: "Full archive",
+          "Then just browse: the tag index groups every post by keyword, and the section hubs above list their own posts newest first. RSS carries the full feed and needs no account.",
+        archive: "Latest posts",
         tags: "Tag index",
+        archiveHref: pathWithLang("/", lang),
+        tagsHref: pathWithLang("/tag", lang),
       };
 
 const sectionHref: Record<(typeof sections)[number], string> = {
@@ -108,9 +112,9 @@ const sectionEmoji: Record<(typeof sections)[number], string> = {
     <h3 class="text-xs uppercase tracking-[0.15em] text-[var(--text-tertiary)]">{copy.browseHeading}</h3>
     <p class="mt-1.5 text-sm text-[var(--text-secondary)] leading-relaxed">
       {copy.browse}
-      <a href={pathWithLang("/explore", lang)} class="underline decoration-1 underline-offset-2 hover:text-[var(--text)]">{copy.archive}</a>
+      <a href={copy.archiveHref} class="underline decoration-1 underline-offset-2 hover:text-[var(--text)]">{copy.archive}</a>
       ·
-      <a href={pathWithLang("/tag", lang)} class="underline decoration-1 underline-offset-2 hover:text-[var(--text)]">{copy.tags}</a>
+      <a href={copy.tagsHref} class="underline decoration-1 underline-offset-2 hover:text-[var(--text)]">{copy.tags}</a>
     </p>
   </div>
 </section>

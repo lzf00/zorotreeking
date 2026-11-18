@@ -319,6 +319,22 @@ LCP 却只有 0.44s——说明问题不在首屏内容，而在**空闲后才�
 `git diff-tree -r -m --first-parent` 取改动清单（普通 `--no-commit-id -r` 对合并提交返回空，
 会被误判成「没改动」而白跑一轮）。
 
+### 一条命令跑完所有门禁：`npm run gate`
+
+2026-11-18 出了一次本可以避免的故障：订阅页新加的「归档」链接指向 `/en/explore/`，
+而这个页面只有中文版。`check:seo` 会把它判成「打不开的站内链接」并以退出码 1 结束——
+但本地是用 `... | tail -2` 看输出的，`通过` 两个字的上一行就是退出码 0/1 的信息被我漏掉了。
+结果 commit 推上去，部署连续红了 4 次、每次 ~2 分钟，生产停在旧版本约 50 分钟。
+
+两处修正：
+
+1. `npm run gate` = `validate:etf → check → test → build → check:og → check:seo → check:admin`，
+   和部署流程跑的是同一串，本地一条命令跑完，**看退出码**而不是看日志尾巴；
+2. 部署 workflow 增加失败诊断步骤：把每个关键 step 的 `outcome` 写成 commit status
+   `ci/failed-step`（`permissions: statuses: write`）。公开仓库读 status 不需要 token，
+   所以「到底哪一步红了」不再依赖 Actions 日志——之前因为没有 token，red run 只能盲猜。
+   本次故障就是靠这个新状态定位到 `seo` 这一步的。
+
 ### 薄页与长列表：订阅页、标签页、ItemList 上限、移动端表格
 
 2026-11 这一轮收拾的是「页面有了，但内容太薄 / 太重」的两头：
