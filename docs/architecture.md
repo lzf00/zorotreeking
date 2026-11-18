@@ -644,6 +644,23 @@ npm run perf:history -- --json    # 机器可读
 限速下 perf 92→98）在 CI 分数上只看到 94 ——CI 那轮整体在涨，绝对值没信息量；
 **本地固定条件复测才是判断回归的依据**，CI 只用来守阈值。
 
+### 三个「看起来该优化、量完发现是噪声」的地方（2026-11-19 第 35 轮）
+
+排 `/invest/` 和 `/hike/sample-route/` 的掉分项时做过三组对照实验，都没有收益，记下来省得
+下轮重做：
+
+| 实验 | 做法 | 结果 | 结论 |
+|---|---|---|---|
+| 首屏岛改空闲水合 | `MarketIndicesGrid` 的 `client:load` → `client:idle`（SSR 已经把指数画好） | 两组都走同样的路由拦截（排除拦截本身开销），`loadEventEnd` 1198 vs 1143 ms、LCP 都在 172–196 ms，长任务都是 0 | 无可测差异，**回退**。SSR 已经出内容时，`client:load`/`idle` 的差别只在 React chunk 什么时候执行，而这页 chunk 才 35 KB |
+| 预加载衬线字体 | `<link rel="preload" as="font" ... href=instrument-serif>` | LH 模拟 LCP：不预载 1524 ms（3 次：1524/1643/1523）vs 预载 1658 ms（1675/1485/1658） | 无收益，**没上**。字体 15 KB、`font-display: swap`，模拟器里字体到达时间不是在关键路径上 |
+| `font-display: optional` | 把 4 处 `swap` 换成 `optional`，消掉字体二次重绘 | 模拟 LCP 1404–1727 ms、实测 LCP 985–1080 ms，和不改几乎一样 | 无收益，**没上** |
+
+顺带查清 `/hike/sample-route/` 的 −4 是怎么来的：Lighthouse **实测**（trace 里真实发生的）
+`observedLargestContentfulPaint` = 987–1053 ms，和 `observedFirstContentfulPaint` 一样；
+但**模拟**出来的 LCP 在完全相同的 HTML 上能跑出 1004 / 1404 / 1683 / 1727 ms。也就是说这一项
+是 LH 模拟器在「大标题 + 内联 88 KB CSS + 4× CPU」组合下的预测误差，不是页面问题。CI 分数
+用的是模拟值，所以这种页面的分数天生偏低，**不要**为了它去改代码。
+
 ### `/invest/digest/` 的 LCP：封面用 OG 原图（1200×630）塞进 430px 卡片
 
 相对中位数表里 `/invest/digest/` 是偏差最大的一个（−5）。逐项量下来，一半是测量噪声、
