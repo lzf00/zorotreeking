@@ -47,9 +47,10 @@ const MIME = {
 export function parseArgs(args) {
   const urlsArg = args.indexOf("--urls");
   const runsArg = args.indexOf("--runs");
+  const noWarmup = args.includes("--no-warmup");
   const urls = urlsArg >= 0 ? (args[urlsArg + 1] ?? "").split(",").map((u) => u.trim()).filter(Boolean) : DEFAULT_URLS;
   const runs = runsArg >= 0 ? Math.max(1, Math.min(10, Number(args[runsArg + 1]) || 2)) : 2;
-  return { urls, runs, json: args.includes("--json") };
+  return { urls, runs, json: args.includes("--json"), warmup: !noWarmup };
 }
 
 /** 每次运行的分数取中位数——单次要吗抽到好签、要吗抽到坏签 */
@@ -86,6 +87,27 @@ async function serveDist() {
   return { server, port: server.address().port };
 }
 
+/**
+ * 先把 HTML 和它引用的静态资源读一遍，让操作系统的文件缓存热起来。
+ * 不预热的话「第一个被测页面」会明显偏慢（实测同一台机器、同样 4× CPU：
+ * 先测 /invest/ 是 FCP 1184ms，先测 /explore/ 时它自己 1160ms、/invest/ 只要 292ms）——
+ * 慢的不是页面，是冷缓存。Lighthouse 每次都会开新的 Chrome 实例，但 OS 层缓存是共享的。
+ */
+async function warmFileCache(base, urls) {
+  for (const path of urls) {
+    let html = "";
+    try {
+      html = await (await fetch(base + path)).text();
+    } catch {
+      continue;
+    }
+    const assets = [...html.matchAll(/(?:src|href)="(\/_astro\/[^"]+)"/g)].map((match) => match[1]);
+    await Promise.all(
+      [...new Set(assets)].slice(0, 40).map((asset) => fetch(base + asset).then((response) => response.arrayBuffer()).catch(() => {})),
+    );
+  }
+}
+
 async function runOnce(url, outPath) {
   await execFileAsync(
     lighthouseBin(),
@@ -120,11 +142,15 @@ async function runOnce(url, outPath) {
 }
 
 if (process.argv[1] && import.meta.url === new URL(`file://${process.argv[1]}`).href) {
-  const { urls, runs, json } = parseArgs(process.argv.slice(2));
+  const { urls, runs, json, warmup } = parseArgs(process.argv.slice(2));
   const { server, port } = await serveDist();
   const base = `http://127.0.0.1:${port}`;
   const results = [];
   try {
+    if (warmup) {
+      process.stderr.write("预热文件缓存…\n");
+      await warmFileCache(base, urls);
+    }
     for (const path of urls) {
       const samples = [];
       for (let index = 0; index < runs; index += 1) {

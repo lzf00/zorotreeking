@@ -449,7 +449,7 @@ npm run perf:local                          # 默认 4 个页面 × 2 次取中�
 npm run perf:local -- --urls /invest/,/ai/ --runs 3 --json
 ```
 
-2026-11-19 基线（m4 Mac，`/invest/` 98 分、FCP 686 ms、LCP 887 ms、TBT 0；
+2026-11-19 基线（m4 Mac，`/invest/` 99 分、FCP 684 ms、LCP 885 ms、TBT 0；
 `/explore/` 100 分、FCP 541 ms、LCP 601 ms、TBT 0）。lighthouse 没进 devDependencies
 （一次几十 MB，CI 每个 job 都要 `npm ci`），所以脚本找不到可执行文件时会提示先装。
 
@@ -1001,3 +1001,21 @@ recharts 3 / marked 18），每条单独提交、单独回归，细节见 `docs/
 | Renovate | astro / `@astrojs/*` 分组为 `astro-stack` 不自动合并；React 允许 `^19`，大版本仍人工审 |
 
 剩下 3 个 moderate advisory 都在构建期、不进浏览器：`satori`（只用于 `/og/*.png`）、`postcss-selector-parser`（被 `@tailwindcss/typography` 钉版本）。
+
+### 测量本身的两个坑（冷缓存顺序偏差）
+
+同一台机器、同样 4× CPU 节流，两个页面的 FCP 会随「谁先被测」翻转：
+
+| 测量顺序 | 第一页 FCP | 第二页 FCP |
+|---|---|---|
+| 先 `/invest/` 再 `/explore/` | `/invest/` 1184 ms | `/explore/` 280 ms |
+| 先 `/explore/` 再 `/invest/` | `/explore/` 1160 ms | `/invest/` 292 ms |
+
+慢的不是页面，是**冷缓存**（字体、dist 里的静态文件第一次读盘）。所以我一度以为
+`/invest/` 的 LCP 结构性比 `/explore/` 高 280 ms，其实那 280 ms 是「它是第一个被测的」。
+
+结论与对策：
+- `npm run perf:local` 默认先预热（把 HTML 和它引用的 `/_astro/*` 读一遍），逐 URL 交替
+  测量时也要在同一进程里先跑一轮丢弃的结果，别拿第一个页面的数字当基线；
+- Lighthouse CI 每轮跑 5 次取中位数、且每次新开 Chrome，所以它受这个偏差影响较小；
+- 跨页面比较要在**同一条件**下（同进程、同顺序策略）进行，否则 200–900 ms 的差异可能全是测量假象。

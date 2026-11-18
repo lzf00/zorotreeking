@@ -11,6 +11,11 @@ test("默认 URL 与 --urls/--runs 覆盖", () => {
   assert.equal(parsed.json, true);
 });
 
+test("默认预热文件缓存，--no-warmup 可关", () => {
+  assert.equal(parseArgs([]).warmup, true);
+  assert.equal(parseArgs(["--no-warmup"]).warmup, false);
+});
+
 test("--runs 被夹在 1..10，坏值退回默认 2", () => {
   // 0 是 falsy，按「没填」处理，退回默认 2；负数夹到 1
   assert.equal(parseArgs(["--runs", "0"]).runs, 2);
