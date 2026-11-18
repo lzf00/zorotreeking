@@ -25,6 +25,15 @@ export function parseScores(description) {
   return scores;
 }
 
+/**
+ * 从 `perf/audited` 状态的描述里取「这一轮实际审的是哪一版」。
+ * 描述形如 `audited d079cdb (run 44362520358)`。取不到就返回 null。
+ */
+export function auditedFromDescription(description) {
+  const match = String(description ?? "").match(/audited\s+([0-9a-f]{7,40})/i);
+  return match ? match[1].toLowerCase() : null;
+}
+
 /** 把 URL 从 status context（`lhci/url/invest/`）还原成 `/invest/` */
 export function pathFromContext(context) {
   const rest = context.slice("lhci/url/".length);
@@ -65,6 +74,32 @@ export function buildTable(audits) {
   ].join("\n");
 }
 
+/**
+ * 轮次表：一轮一行，标出「提交 / 审计声明的版本 / 两者是否一致」。
+ * 分数表（buildTable）看趋势，这张表看「分数到底属于谁」。
+ */
+export function buildRoundTable(audits) {
+  const header = ["提交", "时间 (UTC)", "审计声明的版本", "一致?", "主题"];
+  const rows = audits.map((audit) => {
+    const audited = audit.auditedSha ? audit.auditedSha.slice(0, 7) : "（无状态）";
+    const agree = !audit.auditedSha ? "—" : audit.auditedSha.startsWith(audit.sha) ? "✓" : "✗ 错位";
+    return [
+      `\`${audit.sha}\``,
+      audit.date.slice(0, 16).replace("T", " "),
+      audit.auditedSha ? `\`${audited}\`` : audited,
+      agree,
+      (audit.subject || "").replaceAll("|", "\\|"),
+    ];
+  });
+  const widths = header.map((cell, index) => Math.max(cell.length, ...rows.map((row) => row[index].length)));
+  const line = (cells) => `| ${cells.map((cell, index) => cell.padEnd(widths[index])).join(" | ")} |`;
+  return [
+    line(header),
+    `| ${widths.map((width) => "-".repeat(width)).join(" | ")} |`,
+    ...rows.map(line),
+  ].join("\n");
+}
+
 async function fetchJson(url) {
   const res = await fetch(url, {
     headers: { Accept: "application/vnd.github+json", "User-Agent": "zorotreeking-perf-history" },
@@ -85,6 +120,9 @@ async function collectAudits(rounds, maxProbes = 12) {
     probes += 1;
     const statuses = await fetchJson(`${API}/commits/${commit.sha}/statuses?per_page=100`);
     const lhci = statuses.filter((status) => status.context.startsWith("lhci/url/"));
+    // 审计声明的版本。和提交本身不一致，说明这轮分数不是这个提交的（历史踩过两次：
+    // workflow_run 的 GITHUB_SHA 是排队时的默认分支头，队列里被新提交顶掉就会错位）。
+    const auditedStatus = statuses.find((status) => status.context === "perf/audited");
     if (lhci.length === 0) continue;
     const urls = {};
     for (const status of lhci) {
@@ -98,6 +136,7 @@ async function collectAudits(rounds, maxProbes = 12) {
       sha: commit.sha.slice(0, 7),
       date: commit.commit.committer.date,
       subject: commit.commit.message.split("\n")[0].slice(0, 60),
+      auditedSha: auditedStatus ? auditedFromDescription(auditedStatus.description) : null,
       urls,
     });
   }
@@ -118,6 +157,7 @@ if (process.argv[1] && import.meta.url === new URL(`file://${process.argv[1]}`).
     console.log(JSON.stringify({ audits }, null, 2));
   } else {
     console.log(buildTable(audits));
+    console.log(`\n${buildRoundTable(audits)}`);
     console.log(`\n共 ${audits.length} 轮：${audits.map((audit) => audit.sha).join(" → ")}（左新右旧；↑/↓ 是最新有数据的一轮相对上一轮有数据的列）`);
   }
 }

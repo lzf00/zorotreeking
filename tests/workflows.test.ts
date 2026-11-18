@@ -164,3 +164,14 @@ test("审计前先烘一遍行情接口，且不为此额外加定时任务", as
   const exists = await fs.stat(new URL("../.github/workflows/warm-api.yml", import.meta.url)).then(() => true).catch(() => false);
   assert.equal(exists, false, "TTL 太短，定时烘热任务已被移除；别再加回来");
 });
+
+test("周检除了全站浅/深两套，还抽 60 页手机宽度", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const workflow = await readFile(new URL("../.github/workflows/a11y.yml", import.meta.url), "utf8");
+  // 全量：浅 + 深
+  assert.match(workflow, /a11y-audit\.mjs --all --scheme both/);
+  // 手机视口抽查：窄屏换行/折叠后的问题宽屏看不见
+  assert.match(workflow, /--pages 60 --scheme both --viewport 390x844/);
+  // 两套 + 手机抽查，45 分钟不够，已提到 60
+  assert.match(workflow, /timeout-minutes: 60/);
+});

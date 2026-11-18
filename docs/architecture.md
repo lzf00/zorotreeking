@@ -433,6 +433,27 @@ npm run a11y:audit -- --all --json    # 全站（1190 个页面，约 25 分钟�
 | 后台反馈表头 | `/admin/feedback/` | 上一轮同理删了 dark 变体 | 补回 |
 | 引用块深色 4.09:1 | 5 个 `/en/invest/market-recap-*` | typography 插件的 `prose-invert` 没盖住 `blockquote`，退回 `zinc-500` | 主题层加 `.dark .prose :where(blockquote)` 提亮到 `#a1a1a6` |
 
+#### 本机基线：`npm run perf:local`
+
+CI 的分数会被 runner 网络抖动放大（同一份 HTML 两轮差 9–20 分）。要判断「真变慢了」
+还是「runner 抽风」，先跑本机基线：desktop preset + 固定 4× CPU 节流 + localhost，
+分数是稳定的（同一页面多次运行完全一致）。
+
+```bash
+npm i -g lighthouse            # 没装过才需要；也可 LIGHTHOUSE_BIN=/tmp/lh/node_modules/.bin/lighthouse
+npm run perf:local                          # 默认 4 个页面 × 2 次取中位数
+npm run perf:local -- --urls /invest/,/ai/ --runs 3 --json
+```
+
+2026-11-19 基线（m4 Mac，`/invest/` 98 分、FCP 686 ms、LCP 887 ms、TBT 0；
+`/explore/` 100 分、FCP 541 ms、LCP 601 ms、TBT 0）。lighthouse 没进 devDependencies
+（一次几十 MB，CI 每个 job 都要 `npm ci`），所以脚本找不到可执行文件时会提示先装。
+
+**用它破的一次伪回归**：`perf:history` 显示 `/invest/` 在最新一轮从 95 掉到 89（↓6）。
+本机连跑 3 次都是 98 分/TBT 0 —— 页面没变慢，是 runner 网络抽风。`/invest/` 的 LCP 比
+`/explore/` 高约 280 ms 是结构性的（岛更多、DOM 更大），在 CI 的限速网络下会被放大，
+所以它的分数天生比 `/explore/` 低一档，不表示有回归。
+
 **教训**：改「浅色不达标」的颜色时，必须同时确认深色那一半——本轮 3 个问题是上一轮修浅色
 时把 `dark:` 变体删掉造成的。所以审计脚本默认只跑浅色（快），但周检和这段回归用例都跑 `both`。
 

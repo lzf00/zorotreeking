@@ -39,6 +39,11 @@ jobs:
             console.log(`抽查 ${report.pages} 个页面，跳过 ${report.skipped.length} 个`);
             for (const v of report.grouped) console.log(`- [${v.impact}] ${v.id} × ${v.pages} 页：${v.selector}`);
           ' >> "$GITHUB_STEP_SUMMARY" || true
+      - name: Spot-check phone width (60 pages x light/dark)
+        # 响应式布局在窄屏会换行/折叠，宽屏看不见的问题只有手机宽度才暴露。
+        # 只抽 60 页（约 5 分钟），全量手机审太慢；抽到违规照样让 job 红。
+        run: node scripts/a11y-audit.mjs --pages 60 --scheme both --viewport 390x844
+
       - name: Upload report
         if: always()
         uses: actions/upload-artifact@v4
