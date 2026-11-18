@@ -60,7 +60,7 @@ const sectionColor: Record<(typeof sections)[number], string> = {
   {years.map((year) => (
     <section>
       <h2 class="flex items-baseline gap-3 text-xs uppercase tracking-[0.18em] text-[var(--text-tertiary)]">
-        <span>{year}</span>
+        <span>{year}</span>{" "}
         <span class="tabular-nums normal-case tracking-normal">
           {byYear.get(year)!.length} {lang === "zh" ? "篇" : byYear.get(year)!.length === 1 ? "post" : "posts"}
         </span>

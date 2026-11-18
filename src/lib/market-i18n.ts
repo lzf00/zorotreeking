@@ -163,6 +163,7 @@ const ZH = {
 
   // ── 行业板块 ──
   sectorUpTitle: "涨幅榜",
+  sectorTaxonomyNote: "板块名沿用数据源的申万二级行业原始名称，未做翻译。",
   sectorDownTitle: "跌幅榜",
   sectorRelativeBottomTitle: "涨幅后十",
   sectorDownPending: "后十名待实时数据",
@@ -287,6 +288,7 @@ const EN: typeof ZH = {
   colBusiness: "Business",
 
   sectorUpTitle: "Top gainers",
+  sectorTaxonomyNote: "Sector names are shown exactly as the data source publishes them (SW level-2 industries, Chinese only); they are not translated.",
   sectorDownTitle: "Top losers",
   sectorRelativeBottomTitle: "Smallest gainers",
   sectorDownPending: "Bottom 10 pending live data",

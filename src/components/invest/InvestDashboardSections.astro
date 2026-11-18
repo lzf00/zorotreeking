@@ -120,6 +120,9 @@ const disclaimerParts = L.disclaimer.split(L.disclaimerStrong);
     <span class="text-[11px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide">{L.liveBadge}</span>
   </div>
   <SectorRanking initialData={initialSectors} lang={lang} client:visible />
+  {/* 英文页的板块名仍是数据源原始中文（申万二级行业有 200+ 个，硬翻字典会过期），
+      与其半中半英，不如明确交代一次来源。 */}
+  <p class="mt-2 text-[11px] text-[var(--text-tertiary)]">{L.sectorTaxonomyNote}</p>
 </section>
 
 <p class="max-w-5xl mx-auto px-5 mt-4 text-[11px] text-[var(--text-tertiary)] leading-relaxed">

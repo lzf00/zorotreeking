@@ -74,9 +74,24 @@ jobs:
             echo "run=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Wait for deploy propagate
+      # 等生产真的切到目标提交再开跑：部署的 rsync + 原子切换要几分钟，早于它开跑会
+      # 量到「新旧版本混着」的页面（同一个页面两轮分数差 7–14 分，有几次就是这么来的）。
+      - name: Wait until production serves the deployed commit
         if: steps.scope.outputs.run == 'true'
-        run: sleep 60
+        env:
+          DEPLOYED_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+        run: |
+          for attempt in $(seq 1 40); do
+            live=$(curl -fsS --max-time 10 https://www.zorotreeking.online/deploy-meta.json | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{try{console.log(JSON.parse(s).sha||"")}catch{console.log("")}})')
+            if [ "$live" = "$DEPLOYED_SHA" ]; then
+              echo "production is on $DEPLOYED_SHA (attempt $attempt)"
+              echo "production-sha=$live" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            echo "waiting: production=$live target=$DEPLOYED_SHA (attempt $attempt)"
+            sleep 15
+          done
+          echo "::warning::production never reported $DEPLOYED_SHA within 10 minutes; auditing the live site anyway"
 
       - name: Run Lighthouse CI
         if: steps.scope.outputs.run == 'true'
@@ -90,6 +105,18 @@ jobs:
       - name: Summarize scores
         if: always() && steps.scope.outputs.run == 'true'
         run: node scripts/lighthouse-summary.mjs --summary-out lighthouse-summary.md
+
+      - name: Confirm production did not change mid-audit
+        if: always() && steps.scope.outputs.run == 'true'
+        env:
+          DEPLOYED_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+        run: |
+          live=$(curl -fsS --max-time 10 https://www.zorotreeking.online/deploy-meta.json | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{try{console.log(JSON.parse(s).sha||"")}catch{console.log("")}})')
+          echo "audited=$DEPLOYED_SHA live-after=$live"
+          if [ "$live" != "$DEPLOYED_SHA" ]; then
+            echo "::warning::production changed during the audit ($DEPLOYED_SHA → $live); per-URL scores may mix two builds"
+            echo "⚠️ 审计期间生产切换过版本（$DEPLOYED_SHA → $live），分数可能混版本" >> "$GITHUB_STEP_SUMMARY"
+          fi
 
       - name: Upload reports as artifact
         if: always() && steps.scope.outputs.run == 'true'
