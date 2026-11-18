@@ -22,10 +22,8 @@ test("性能预算集包含个股页与标签详情页，且不再包含不稳�
   const urls: string[] = config.ci.collect.url;
   assert.ok(urls.some((u) => u.endsWith("/invest/stock/688981.SH/")), "缺少个股页");
   assert.ok(urls.some((u) => u.endsWith("/tag/photo/")), "缺少标签详情页");
-  assert.equal(
-    urls.some((u) => u.endsWith("/hike/sample-route/")),
-    false,
-    "地图页数值不稳，确认稳定前不应回到门禁里",
-  );
-  assert.equal(urls.length, 14);
+  // Leaflet 地图页 2026-11 回归：占位高度 + client:visible + attribution 对比度修完之后，
+  // 生产实测 a11y 1.00 / CLS 0.000 / 12 块瓦片，重新纳入预算，避免整类页面无人看管
+  assert.ok(urls.some((u) => u.endsWith("/hike/sample-route/")), "缺少 Leaflet 地图页");
+  assert.equal(urls.length, 15);
 });
