@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
 import { extractDigestHighlights, extractTLDR } from "@/lib/digest-highlights";
+import { existsSync } from "node:fs";
 
 const lang = "zh" as const;
 const t = useTranslations(lang);
@@ -20,6 +21,21 @@ for (const d of digests) {
   (groups[ym] ??= []).push(d);
 }
 const months = Object.keys(groups).sort().reverse();
+
+/**
+ * 封面原图是照片站的 OG 图（1200×630、最大 105KB），但卡片只有 430px 宽。
+ * `scripts/cover-variants.mjs` 会在旁边生成 640w/960w 两个小图（几 KB），
+ * 这里按文件是否存在决定要不要出 srcset——没有变体就回退原图，不会 404。
+ */
+const coverVariants = (cover: string | undefined) => {
+  if (!cover?.startsWith("/photos/")) return null;
+  const w640 = cover.replace(/\.(jpe?g|png)$/i, ".w640.jpg");
+  const w960 = cover.replace(/\.(jpe?g|png)$/i, ".w960.jpg");
+  // 文件名里可能有空格/中文，URL 是转义过的（%20），读盘前还原
+  const onDisk = (url: string) => `public${decodeURIComponent(url)}`;
+  if (!existsSync(onDisk(w640)) || !existsSync(onDisk(w960))) return null;
+  return { w640, w960 };
+};
 ---
 
 <BaseLayout
@@ -47,25 +63,33 @@ const months = Object.keys(groups).sort().reverse();
 
   <section class="max-w-4xl mx-auto px-5 pb-24">
     {months.map(ym => (
-      <div class="mt-12">
+      <div class="mt-12 digest-month">
         <h2 class="text-xs uppercase tracking-[0.2em] text-zinc-600 dark:text-zinc-400 font-mono mb-5 pb-2 border-b border-[var(--border)]">
           {ym}
         </h2>
         <div class="grid sm:grid-cols-2 gap-4">
-          {groups[ym].map(d => {
+          {groups[ym].map((d, cardIndex) => {
             const tldr = extractTLDR(d.body ?? "");
             const firstLine = tldr?.summary?.[0] ?? null;
             const tags = tldr?.tags?.slice(0, 3) ?? [];
             const fallbackHighlights = !tldr ? extractDigestHighlights(d.body ?? "", 2) : [];
             const cover = d.data.cover;
+            const variants = cover ? coverVariants(cover) : null;
             return (
               <a href={pathWithLang(`/invest/${d.data.translationKey}`, lang)}
                  class="group block rounded-xl overflow-hidden border border-[var(--border)] hover:border-section-invest transition-colors bg-white dark:bg-zinc-900/40">
                 {cover && (
                   <div class="aspect-[16/9] overflow-hidden bg-zinc-100 dark:bg-zinc-800">
-                    <img src={cover} alt={d.data.title}
-                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                         loading="lazy" />
+                    <img
+                      src={variants ? variants.w960 : cover}
+                      srcset={variants ? `${variants.w640} 640w, ${variants.w960} 960w, ${cover} 1200w` : undefined}
+                      sizes="(min-width: 640px) 430px, 100vw"
+                      alt={d.data.title}
+                      width="1200" height="630"
+                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      loading={ym === months[0] && cardIndex < 2 ? "eager" : "lazy"}
+                      fetchpriority={ym === months[0] && cardIndex < 2 ? "high" : "low"}
+                      decoding="async" />
                   </div>
                 )}
                 <div class="p-4">

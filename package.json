@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "tsx scripts/build-photo-manifests.ts && astro dev",
     "start": "tsx scripts/build-photo-manifests.ts && astro dev",
-    "prebuild": "bash scripts/setup-fonts.sh",
+    "prebuild": "bash scripts/setup-fonts.sh && node scripts/cover-variants.mjs",
     "build": "tsx scripts/build-photo-manifests.ts && tsx scripts/check-content-lang.ts && astro build && pagefind --site dist",
     "photo:manifests": "tsx scripts/build-photo-manifests.ts",
     "preview": "astro preview",

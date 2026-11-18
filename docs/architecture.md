@@ -619,6 +619,48 @@ npm run perf:history -- --json    # 机器可读
 限速下 perf 92→98）在 CI 分数上只看到 94 ——CI 那轮整体在涨，绝对值没信息量；
 **本地固定条件复测才是判断回归的依据**，CI 只用来守阈值。
 
+### `/invest/digest/` 的 LCP：封面用 OG 原图（1200×630）塞进 430px 卡片
+
+相对中位数表里 `/invest/digest/` 是偏差最大的一个（−5）。逐项量下来，一半是测量噪声、
+一半是真问题。
+
+**噪声部分**：这页没有任何 JS 岛，13 张封面（唯一）共 ~0.44 MB。本机 Lighthouse 的
+`total-blocking-time` 在 0–930 ms 之间乱跳，而真实 CDP trace（4× CPU、滚一屏触发懒加载）
+里主线程最长任务只有 **37 ms**，最长事件仍是 `GPUTask`（146/140/84 ms）——又是 headless
+无 GPU 把软件光栅算进主线程那套（见上一节）。
+
+**真问题**：封面直接复用了照片站的 OG 图（1200×630、最大 105 KB），而卡片在桌面上 430px、
+手机上是整行 350px；它还正好是 LCP 元素。等于每个访客为了 430px 的画面下载 2.5 倍像素。
+
+修法（都不改内容资产）：
+
+1. `scripts/cover-variants.mjs` 扫 `src/content/invest/*.mdx` 的 `cover:`，用 sharp 在旁边
+   生成 `.w640.jpg` / `.w960.jpg`（1–9 KB）。已存在且比原图新就跳过，新日报自动补；
+   挂在 `npm run build` 的 `prebuild` 上，没装 sharp 时只告警不回退构建。
+2. 列表页出 `srcset`（640/960/1200 w）+ `sizes="(min-width: 640px) 430px, 100vw"`，
+   文件不存在就退回原图（不会 404）。
+3. 首月前两张封面 `loading="eager"` + `fetchpriority="high"`，其余 186 张保持
+   `lazy` + `fetchpriority="low"`。
+
+限速 A/B（150 ms RTT / 1638 kbps、4× CPU、两份 HTML 同源对照，各 4 轮）：
+
+| 视口 | LCP 改前 | LCP 改后 | 变化 |
+|---|---|---|---|
+| 1280×900 | 1575 ms | 1265 ms | **−310 ms** |
+| 390×844 | 3007 ms | 1354 ms | **−1653 ms（−55%）** |
+
+CLS 仍是 0（加了 `width`/`height` + `aspect-[16/9]`），两种主题、两种宽度的 axe 都是 0 违规；
+Lighthouse 的 LCP 元素也从 `.og.jpg` 换成了 `.w640.jpg`（浏览器挑了够用的那张）。
+
+**试过但更慢的**：给首图加 `<link rel="preload" as="image" fetchpriority="high">`，A/B 里
+LCP 反而从 1568 → 1878 ms、图片起跑从 819 → 1126 ms——在那个带宽下 preload 和字体/CSS
+抢连接。已回退。教训：preload 只对「浏览器很晚才发现」的资源有意义，已 eager 的图再加
+preload 可能纯亏，必须 A/B。
+
+**留着但没测出收益的**：月份分组的 `content-visibility: auto`（配 `contain-intrinsic-size`）。
+A/B 里布局次数和滚动长任务没有一致差异（189 张卡片、2217 个节点，本身还不算重），
+留着是因为归档每天 +1 期、迟早会重；这一点如实记在这里，不是已证实的收益。
+
 ### 审计只量「已经切过去」的生产
 
 Lighthouse 审的是线上 URL，而部署本身要几分钟（rsync + 原子切换）。以前审计在部署成功后
