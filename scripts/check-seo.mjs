@@ -38,6 +38,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { describeHeadingIssue, extractHeadings, headingIssues } from "../src/lib/heading-order.ts";
+import { anchorIssues, describeAnchorIssue, extractAnchors } from "../src/lib/anchor-text.ts";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const ARGS = process.argv.slice(2);
@@ -187,6 +188,13 @@ function checkPage(html, siteOrigin) {
     } else {
       err(`标题顺序：${describeHeadingIssue(issue)}`);
     }
+  }
+
+  // 锚文本：空锚（无文字且无 aria-label）算错误，通用短语算告警
+  const anchors = extractAnchors(html);
+  for (const issue of anchorIssues(anchors)) {
+    if (issue.kind === "empty") err(describeAnchorIssue(issue));
+    else warn(describeAnchorIssue(issue));
   }
 
   // html lang
