@@ -6,7 +6,8 @@
 #
 # 分档（见 scripts/prepush-scope.mjs）：
 #   fast —— 只动内容：npm test + astro check（约 15 秒）
-#   full —— 动了模板/样式/脚本/配置：npm test + astro check + build + check:og + check:seo（约 2 分钟）
+#   full —— 动了模板/样式/脚本/配置：npm test + astro check + build + check:og + check:seo
+#           + 无障碍抽查 16 页（约 3 分钟）
 #
 # 急事要跳过：SKIP_PREPUSH=1 git push ...
 set -uo pipefail
@@ -35,6 +36,19 @@ if [ "$scope" = "full" ]; then
   npm run build >/tmp/prepush-build.log 2>&1 || { tail -20 /tmp/prepush-build.log; fail "构建失败"; }
   npm run check:og >/tmp/prepush-og.log 2>&1 || { tail -10 /tmp/prepush-og.log; fail "check:og 未通过"; }
   npm run check:seo >/tmp/prepush-seo.log 2>&1 || { tail -10 /tmp/prepush-seo.log; fail "check:seo 未通过"; }
+
+  # 无障碍抽查（axe-core，等距抽 16 页，约 30 秒）。约束不变量：页面骨架变了就别把
+  # 对比度/可访问名称的问题推到生产；全站 1190 页的完整版在每周的 a11y.yml 里跑。
+  node scripts/a11y-audit.mjs --pages 16 >/tmp/prepush-a11y.log 2>&1
+  a11y=$?
+  if [ "$a11y" -eq 1 ]; then
+    tail -20 /tmp/prepush-a11y.log
+    fail "无障碍审计发现违规"
+  elif [ "$a11y" -eq 2 ]; then
+    # 跑不起来（本机没装浏览器之类）不该阻塞推送，但必须说出来，别让它悄悄失效
+    echo "pre-push: ⚠ 无障碍审计没跑起来（多为缺浏览器），本次跳过"
+    tail -3 /tmp/prepush-a11y.log
+  fi
 fi
 
 echo "pre-push ✅ 门禁通过（${scope}）"
