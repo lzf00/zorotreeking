@@ -254,7 +254,7 @@ const backText = stock?.market === "HK" ? "HK market dashboard" : "Market dashbo
               </div>
               <div class="border border-[var(--border)] rounded-lg p-3 text-center">
                 <div class="text-[10px] text-[var(--text-tertiary)]">Main sell today</div>
-                <div class="mt-1 font-mono font-semibold text-emerald-700">-{(stock.details.capital_flow.main_sell_yi ?? 0).toFixed(2)} ¥100M</div>
+                <div class="mt-1 font-mono font-semibold text-[var(--market-down)]">-{(stock.details.capital_flow.main_sell_yi ?? 0).toFixed(2)} ¥100M</div>
               </div>
               <div class="border border-[var(--border)] rounded-lg p-3 text-center">
                 {(() => {
@@ -265,7 +265,7 @@ const backText = stock?.market === "HK" ? "HK market dashboard" : "Market dashbo
                   return (
                     <>
                       <div class="text-[10px] text-[var(--text-tertiary)]">Main net</div>
-                      <div class={`mt-1 font-mono font-semibold ${isUp ? "text-red-600" : net < 0 ? "text-emerald-700" : ""}`}>
+                      <div class={`mt-1 font-mono font-semibold ${isUp ? "text-[var(--market-up)]" : net < 0 ? "text-[var(--market-down)]" : ""}`}>
                         {isUp ? "+" : ""}{net.toFixed(2)} ¥100M
                       </div>
                     </>

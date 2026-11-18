@@ -17,6 +17,9 @@ interface Props {
 }
 
 const { lang } = Astro.props;
+
+// 板块色用 CSS 变量（浅色/深色各一套），不要写死 hex——写死的话深色模式对比度只有 2.4:1
+const sectionColorVar = (section: string) => `rgb(var(--section-${section}-rgb))`;
 const t = useTranslations(lang);
 
 const sections = ["ai", "invest", "hike", "photo"] as const;
@@ -61,12 +64,6 @@ const collectionStats = collected.map(({ section, entries }) => ({
   words: entries.reduce((sum, entry) => sum + wordCount(entry.body ?? ""), 0),
 }));
 const maxWords = Math.max(...collectionStats.map((stat) => stat.words), 1);
-const sectionColor: Record<(typeof sections)[number], string> = {
-  ai: "#1d4ed8",
-  invest: "#991b1b",
-  hike: "#166534",
-  photo: "#6b21a8",
-};
 
 const copy = {
   zh: {
@@ -140,7 +137,7 @@ const copy = {
               <a
                 href={pathWithLang(`/${stat.section}`, lang)}
                 class="text-sm font-medium hover:underline"
-                style={`color:${sectionColor[stat.section]}`}
+                style={`color:${sectionColorVar(stat.section)}`}
               >
                 {t(`section.${stat.section}.title`)}
               </a>
@@ -149,7 +146,7 @@ const copy = {
               </span>
             </div>
             <div class="h-1.5 bg-[var(--bg-soft)] rounded-full overflow-hidden">
-              <div class="h-full rounded-full transition-all" style={`width:${pct}%;background:${sectionColor[stat.section]}`} />
+              <div class="h-full rounded-full transition-all" style={`width:${pct}%;background:${sectionColorVar(stat.section)}`} />
             </div>
           </li>
         );

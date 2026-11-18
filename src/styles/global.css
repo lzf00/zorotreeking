@@ -167,6 +167,11 @@
     font-style: italic;
     color: var(--text-secondary);
   }
+  /* 深色模式里引用块会退回 typography 插件的 zinc-500（#71717a 压在 #0a0a0a 上 4.09:1），
+     插件的 prose-invert 没盖住它，这里显式提亮。 */
+  .dark .prose :where(blockquote) {
+    color: #a1a1a6;
+  }
   /* 标题里若包含外链（digest 标题点击跳原文），不要下划线 */
   .prose :where(h1, h2, h3, h4) a {
     text-decoration: none;

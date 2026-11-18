@@ -44,3 +44,24 @@ test("第三方后台外壳被排除，自家 admin 页面照审", async () => {
   assert.equal(EXCLUDED.includes("/admin/utm/"), false);
   assert.equal(EXCLUDED.includes("/admin/etf-ops/"), false);
 });
+
+test("深色模式是单独一轮，结果里带 [dark] 标记", async () => {
+  const fs = await import("node:fs/promises");
+  const source = await fs.readFile(new URL("../scripts/a11y-audit.mjs", import.meta.url), "utf8");
+  assert.match(source, /--scheme/);
+  assert.match(source, /colorScheme: scheme/);
+  assert.match(source, /\[dark\]/);
+});
+
+test("涨跌色用设计 token，不再写死单主题的 hex/调色板类", async () => {
+  const fs = await import("node:fs/promises");
+  const root = new URL("../src/", import.meta.url);
+  const etf = await fs.readFile(new URL("pages/invest/etf.astro", root), "utf8");
+  assert.match(etf, /var\(--market-up\)/);
+  assert.match(etf, /var\(--market-down\)/);
+  assert.doesNotMatch(etf, /text-emerald-700(?![\s\S]*dark:)/);
+  // 主题页的板块色必须走 token，写死 hex 会在深色底上掉到 2.4:1
+  const topics = await fs.readFile(new URL("components/TopicsCloud.astro", root), "utf8");
+  assert.match(topics, /--section-\$\{section\}-rgb/);
+  assert.doesNotMatch(topics, /ai: "#1d4ed8"/);
+});

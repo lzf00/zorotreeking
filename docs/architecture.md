@@ -392,11 +392,31 @@ npm run a11y:audit -- --all --json    # 全站（1190 个页面，约 25 分钟�
 | 位置 | 范围 | 目的 |
 |---|---|---|
 | pre-push 钩子（`full` 档） | 等距 16 页，约 30 秒 | 改过模板/样式就当场拦住对比度、可访问名称这类回归 |
-| `a11y.yml` 每周二 04:30 | 全站 1190 页，约 12 分钟 | 兜住冷门页面（本轮 17 条问题里 630 处就在其中） |
+| `a11y.yml` 每周二 04:30 | 全站 1190 页 × 浅色/深色两套，约 24 分钟 | 兜住冷门页面（本轮 17 条问题里 630 处就在其中） |
 | `npm run a11y:audit -- --only …` | 指定页面 | 排查单页 |
 
 钩子里跑不起来（本机没浏览器）只打警告不阻塞推送——否则门禁会因为环境问题把人挡住，
 但警告是必须打的，免得它悄悄失效。
+
+#### 深色模式审出来的 6 类问题（第二轮）
+
+只审浅色会漏掉一半页面状态。补上 `--scheme both` 之后，全站又跑出 6 类：
+
+| 问题 | 命中面 | 原因 | 修法 |
+|---|---|---|---|
+| 日报月份标题在深色下 2.56:1 | `/en/ai/digest/`、`/en/invest/digest/` 共 195 处 | 上一轮修浅色时把 `dark:text-zinc-400` 一起删了 | 两套都写 |
+| 板块名链接写死 hex（`#1d4ed8` 等） | `/topics/`、`/en/topics/` | 内联 style 写死颜色，深色底上 2.4–2.9:1 | 改用设计 token `rgb(var(--section-*-rgb))`，token 本身有双主题 |
+| 涨跌色 `text-red-600` / `text-emerald-700` / `text-rose-600` | `/invest/etf/`、`/invest/us-market/`、英文个股页 | 只给了浅色值，深色底上 2.5–4.0:1 | 改用 `var(--market-up/--market-down)`，或补 `dark:` 变体 |
+| 美股面板写死 `#b24a3a` / `#64748b` | `/invest/us-market/` | 同上 | 补 `dark:` 变体 |
+| 后台反馈表头 | `/admin/feedback/` | 上一轮同理删了 dark 变体 | 补回 |
+| 引用块深色 4.09:1 | 5 个 `/en/invest/market-recap-*` | typography 插件的 `prose-invert` 没盖住 `blockquote`，退回 `zinc-500` | 主题层加 `.dark .prose :where(blockquote)` 提亮到 `#a1a1a6` |
+
+**教训**：改「浅色不达标」的颜色时，必须同时确认深色那一半——本轮 3 个问题是上一轮修浅色
+时把 `dark:` 变体删掉造成的。所以审计脚本默认只跑浅色（快），但周检和这段回归用例都跑 `both`。
+
+深色模式也得单独跑：`--scheme dark|both`。站点用 `.dark` class 切两套 CSS 变量，
+`prefers-color-scheme` 决定首屏；Playwright 用 `colorScheme` 就能触发同一条路径。
+只看浅色的审计漏不到深色——反过来也一样，所以周检跑 `both`，本地抽查默认浅色节流。
 
 ### 行情接口的冷启动：缓存只有约 60 秒
 

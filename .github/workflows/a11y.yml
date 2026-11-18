@@ -17,7 +17,7 @@ concurrency:
 jobs:
   audit:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -28,8 +28,9 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - name: Build
         run: npm run build
-      - name: Run axe over every page
-        run: node scripts/a11y-audit.mjs --all --json > a11y-report.json
+      - name: Run axe over every page (light + dark)
+        # 站点两套 token（浅色/深色），axe 只审当前渲染的那套，所以两种配色各跑一遍
+        run: node scripts/a11y-audit.mjs --all --scheme both --json > a11y-report.json
       - name: Summarize
         if: always()
         run: |

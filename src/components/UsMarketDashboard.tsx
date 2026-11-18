@@ -89,10 +89,10 @@ function MacroCard({
     <article className="rounded-[1.35rem] border border-slate-900/10 bg-white/75 p-5 shadow-[0_18px_55px_rgba(15,23,42,0.05)] dark:border-white/10 dark:bg-white/[0.035]">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#64748b]">{eyebrow}</p>
+          <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#64748b] dark:text-[#94a3b8]">{eyebrow}</p>
           <h3 className="mt-2 text-2xl font-semibold tracking-tight">{title}</h3>
         </div>
-        <span className={`text-3xl font-light ${direction === "down" ? "text-emerald-700" : direction === "up" ? "text-rose-600" : "text-[var(--text-tertiary)]"}`} aria-label={direction === "down" ? "较前值下降" : direction === "up" ? "较前值上升" : "与前值持平"}>
+        <span className={`text-3xl font-light ${direction === "down" ? "text-emerald-700 dark:text-emerald-400" : direction === "up" ? "text-rose-600 dark:text-rose-400" : "text-[var(--text-tertiary)]"}`} aria-label={direction === "down" ? "较前值下降" : direction === "up" ? "较前值上升" : "与前值持平"}>
           {arrow}
         </span>
       </div>
@@ -180,7 +180,7 @@ function QuoteChange({ value }: { value: number | null }) {
   const positive = finite(value) && value > 0;
   const negative = finite(value) && value < 0;
   const text = finite(value) ? `${value > 0 ? "+" : ""}${value.toFixed(2)}%` : "—";
-  return <span className={`font-mono tabular-nums ${positive ? "text-emerald-700" : negative ? "text-rose-600" : "text-[var(--text-tertiary)]"}`}>{text}</span>;
+  return <span className={`font-mono tabular-nums ${positive ? "text-emerald-700 dark:text-emerald-400" : negative ? "text-rose-600 dark:text-rose-400" : "text-[var(--text-tertiary)]"}`}>{text}</span>;
 }
 
 function IndexCard({ quote }: { quote: UsQuote }) {
@@ -300,7 +300,7 @@ export default function UsMarketDashboard({ initialData = null }: Props) {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           {Array.from({ length: 3 }).map((_, index) => <div key={index} className="h-72 animate-pulse rounded-[1.35rem] bg-[var(--bg-soft)]" />)}
         </div>
-        {error && <p className="text-sm text-rose-600">美股数据加载失败：{error}</p>}
+        {error && <p className="text-sm text-rose-600 dark:text-rose-400">美股数据加载失败：{error}</p>}
       </div>
     );
   }
@@ -311,7 +311,7 @@ export default function UsMarketDashboard({ initialData = null }: Props) {
         <div className="rounded-[1.6rem] border border-[#17324d]/15 bg-[#f4f1e8] px-5 py-7 text-[#13283b] shadow-[0_26px_80px_rgba(23,50,77,0.08)] dark:border-white/10 dark:bg-[#14202b] dark:text-[#edf4f7] sm:px-8 sm:py-9">
           <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-[#b24a3a]">United States · Macro Pulse</p>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-[#b24a3a] dark:text-[#e8a396]">United States · Macro Pulse</p>
               <h2 id="us-thermometer-title" className="mt-3 font-serif text-3xl tracking-tight sm:text-4xl">🇺🇸 美国经济温度计</h2>
               <p className="mt-4 text-base leading-relaxed text-[#405467] dark:text-[#b8c7d2] sm:text-lg">
                 当前状态：{judgement.employment} <span className="mx-1 text-[#a97824]">/</span> {judgement.inflation} <span className="mx-1 text-[#a97824]">/</span> {judgement.policy}
@@ -350,7 +350,7 @@ export default function UsMarketDashboard({ initialData = null }: Props) {
         <section aria-labelledby="us-trends-title">
           <div className="mb-4 flex items-end justify-between gap-4">
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#64748b]">12 Month Tape</p>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#64748b] dark:text-[#94a3b8]">12 Month Tape</p>
               <h2 id="us-trends-title" className="mt-1 text-2xl font-semibold tracking-tight">最近 12 个月趋势</h2>
             </div>
             <span className="text-[10px] text-[var(--text-tertiary)]">不同指标发布日期可能相差一个月</span>
@@ -367,7 +367,7 @@ export default function UsMarketDashboard({ initialData = null }: Props) {
       <section aria-labelledby="us-indices-title">
         <div className="mb-4 flex items-end justify-between gap-4">
           <div>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#64748b]">Market Benchmarks</p>
+            <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#64748b] dark:text-[#94a3b8]">Market Benchmarks</p>
             <h2 id="us-indices-title" className="mt-1 text-2xl font-semibold tracking-tight">美股大盘</h2>
           </div>
           <span className="font-mono text-[10px] text-[var(--text-tertiary)]">延迟行情 · {formatQuoteTime(market?.quote_ts)}</span>
@@ -385,7 +385,7 @@ export default function UsMarketDashboard({ initialData = null }: Props) {
         <section className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]" aria-label="热门板块和大型公司">
           <div>
             <div className="mb-4">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#64748b]">Sector Pulse</p>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#64748b] dark:text-[#94a3b8]">Sector Pulse</p>
               <h2 className="mt-1 text-2xl font-semibold tracking-tight">热门板块</h2>
               <p className="mt-1 text-xs text-[var(--text-tertiary)]">标普行业 ETF 当日涨跌排序</p>
             </div>
@@ -393,7 +393,7 @@ export default function UsMarketDashboard({ initialData = null }: Props) {
           </div>
           <div>
             <div className="mb-4">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#64748b]">Mega Caps</p>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#64748b] dark:text-[#94a3b8]">Mega Caps</p>
               <h2 className="mt-1 text-2xl font-semibold tracking-tight">大型公司</h2>
               <p className="mt-1 text-xs text-[var(--text-tertiary)]">核心科技与平台公司观察池</p>
             </div>

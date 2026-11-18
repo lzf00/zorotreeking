@@ -93,8 +93,8 @@ function fmtPct(v: number): string {
   return `${v >= 0 ? "+" : ""}${v.toFixed(2)}%`;
 }
 function colorClass(v: number): string {
-  if (v > 0) return "text-red-600 dark:text-red-500";
-  if (v < 0) return "text-emerald-700 dark:text-emerald-400";
+  if (v > 0) return "text-[var(--market-up)]";
+  if (v < 0) return "text-[var(--market-down)]";
   return "text-[var(--text-tertiary)]";
 }
 function cpBarColor(cp: number): string {
@@ -122,7 +122,7 @@ function lightIcon(l: string): string {
         宽基 ETF 盘中实时成交 + 国家队三因子信号（量能 50% + 方向 20% + 份额 30%）
       </p>
       <div class="mt-5 flex flex-wrap gap-2">
-        <a href="#live" class="inline-flex items-center gap-1.5 text-xs font-medium border border-[var(--border)] rounded-full px-3.5 py-1.5 hover:border-red-400 hover:text-red-600 dark:hover:text-red-400 transition-colors">
+        <a href="#live" class="inline-flex items-center gap-1.5 text-xs font-medium border border-[var(--border)] rounded-full px-3.5 py-1.5 hover:border-red-400 hover:text-[var(--market-up)] transition-colors">
           ⚡ 盘中实时 <span class="text-[10px] font-mono text-[var(--text-tertiary)]">60s 刷新</span>
         </a>
         <a href="#daily" class="inline-flex items-center gap-1.5 text-xs font-medium border border-[var(--border)] rounded-full px-3.5 py-1.5 hover:border-amber-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors">
@@ -195,7 +195,7 @@ function lightIcon(l: string): string {
           <div class="grid grid-cols-3 gap-3">
             <div class="border border-[var(--border)] rounded-lg p-4">
               <div class="text-[11px] uppercase tracking-[0.15em] text-[var(--text-tertiary)] font-mono">🔴 高确信信号</div>
-              <div class="mt-1 text-3xl font-mono font-semibold text-red-600">{redCount}<span class="text-lg text-[var(--text-tertiary)] ml-1">只</span></div>
+              <div class="mt-1 text-3xl font-mono font-semibold text-[var(--market-up)]">{redCount}<span class="text-lg text-[var(--text-tertiary)] ml-1">只</span></div>
               <div class="mt-0.5 text-[10px] text-[var(--text-tertiary)]">综合概率 ≥ 70%</div>
             </div>
             <div class="border border-[var(--border)] rounded-lg p-4">
@@ -266,7 +266,7 @@ function lightIcon(l: string): string {
                         <div class="w-16 h-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
                           <div class={`h-full ${cpBarColor(r.cp)} transition-all`} style={`width:${Math.min(100, r.cp)}%`}></div>
                         </div>
-                        <span class={`font-mono font-semibold text-sm ${r.light === "red" ? "text-red-600" : r.light === "yellow" ? "text-amber-700 dark:text-amber-400" : "text-[var(--text-secondary)]"}`}>{r.cp.toFixed(0)}%</span>
+                        <span class={`font-mono font-semibold text-sm ${r.light === "red" ? "text-[var(--market-up)]" : r.light === "yellow" ? "text-amber-700 dark:text-amber-400" : "text-[var(--text-secondary)]"}`}>{r.cp.toFixed(0)}%</span>
                       </div>
                     </td>
                   </tr>
@@ -321,7 +321,7 @@ function lightIcon(l: string): string {
                             <div class="w-16 h-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
                               <div class={`h-full ${cpBarColor(h.cp)}`} style={`width:${Math.min(100, h.cp)}%`}></div>
                             </div>
-                            <span class={`font-mono font-semibold text-sm ${l === "red" ? "text-red-600" : l === "yellow" ? "text-amber-700 dark:text-amber-400" : "text-[var(--text-secondary)]"}`}>{h.cp.toFixed(0)}%</span>
+                            <span class={`font-mono font-semibold text-sm ${l === "red" ? "text-[var(--market-up)]" : l === "yellow" ? "text-amber-700 dark:text-amber-400" : "text-[var(--text-secondary)]"}`}>{h.cp.toFixed(0)}%</span>
                           </div>
                         </td>
                       </tr>
@@ -359,7 +359,7 @@ function lightIcon(l: string): string {
                   {snap.signal_dates.map(([date, red, yellow, codes]) => (
                     <tr class="hover:bg-[var(--surface-2)]">
                       <td class="py-2 font-mono">{date}</td>
-                      <td class="text-right font-mono text-red-600">{red}</td>
+                      <td class="text-right font-mono text-[var(--market-up)]">{red}</td>
                       <td class="text-right font-mono text-amber-700 dark:text-amber-400">{yellow}</td>
                       <td class="pl-4 text-xs text-[var(--text-secondary)]">
                         {codes && codes.length > 0 ? codes.join(" · ") : "—"}

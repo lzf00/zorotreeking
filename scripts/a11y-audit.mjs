@@ -11,6 +11,7 @@
  *   npm run a11y:audit -- --all     # 全部页面（约 1190 个），约 12 分钟
  *   npm run a11y:audit -- --json
  *   npm run a11y:audit -- --only /photography/,/en/photography/   # 只查指定页面（排查用）
+ *   npm run a11y:audit -- --scheme both                           # 浅色 + 深色各跑一遍
  */
 import { createServer } from "node:http";
 import { createReadStream } from "node:fs";
@@ -122,6 +123,10 @@ async function main() {
   const json = args.includes("--json");
   const all = args.includes("--all");
   const onlyArg = args.indexOf("--only");
+  const schemeArg = args.indexOf("--scheme");
+  // 站点支持浅色/深色两套 token，axe 只测当前渲染出来的那一套，所以两种都要跑
+  const schemeValue = schemeArg >= 0 ? (args[schemeArg + 1] ?? "light") : "light";
+  const schemes = schemeValue === "both" ? ["light", "dark"] : [schemeValue === "dark" ? "dark" : "light"];
   const pageArg = args.indexOf("--pages");
   const count = all ? Infinity : pageArg >= 0 ? Number(args[pageArg + 1]) || 24 : 24;
 
@@ -151,14 +156,17 @@ async function main() {
   const skipped = [];
 
   try {
-    for (const [index, url] of targets.entries()) {
-      if (index % 50 === 0) console.error(`…${index}/${targets.length}`);
-      const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+    const plan = targets.flatMap((url) => schemes.map((scheme) => ({ url, scheme })));
+    for (const [index, { url, scheme }] of plan.entries()) {
+      if (index % 50 === 0) console.error(`…${index}/${plan.length}`);
+      const context = await browser.newContext({ colorScheme: scheme, viewport: { width: 1280, height: 900 } });
+      const page = await context.newPage();
+      const label = scheme === "dark" ? `${url} [dark]` : url;
       const response = await page.goto(base + url, { waitUntil: "domcontentloaded" });
       // 构建产物里没有这个文件（例如审计跑到一半有人 rebuild）：别把 404 文本当成页面去审
       if (!response || response.status() >= 400) {
-        skipped.push({ url, reason: `HTTP ${response?.status() ?? "无响应"}` });
-        await page.close();
+        skipped.push({ url: label, reason: `HTTP ${response?.status() ?? "无响应"}` });
+        await context.close();
         continue;
       }
       // 个别页面自己会跳转（例如后台入口）：脚本注入时执行上下文已被销毁，跳过而不是整轮失败
@@ -178,12 +186,12 @@ async function main() {
           }));
         });
       } catch (error) {
-        skipped.push({ url, reason: String(error).split("\n")[0].slice(0, 120) });
-        await page.close();
+        skipped.push({ url: label, reason: String(error).split("\n")[0].slice(0, 120) });
+        await context.close();
         continue;
       }
-      results.push({ url, violations });
-      await page.close();
+      results.push({ url: label, violations });
+      await context.close();
     }
     // 有些页面是跳转桩（HTML 里只有 meta refresh），注入脚本时执行上下文已被销毁。
     // 关掉 JS 再跑一次：跳转不会发生，桩自身的 title / lang 仍然值得审。
