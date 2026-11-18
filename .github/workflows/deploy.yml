@@ -38,6 +38,7 @@ jobs:
 
     steps:
       - name: Checkout
+        id: checkout
         uses: actions/checkout@v6
         with:
           ref: main
@@ -51,11 +52,13 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
+        id: install
         run: npm ci
 
       # 守卫测试一直没进部署流程：2026-11-11 发现 tests/ 里有 3 个断言因为前几轮
       # 重构失效，红着也照样部署了 20 多次。整套只跑 ~1s，放在 build 前面。
       - name: Unit and guard tests
+        id: tests
         run: npm test
 
       # NOTE: scripts/invest-snapshot.ts 不再在每次 build 跑。
@@ -71,14 +74,17 @@ jobs:
         run: npx tsx scripts/build-photo-manifests.ts
 
       - name: Astro type-check
+        id: typecheck
         # type error 提前拦，避免红线 build 上线
         run: npx astro check
 
       - name: Validate ETF data quality
+        id: etf
         # HTTP 200 / JSON 存在不等于业务数据正确；发布前独立重算完整度和因子公式。
         run: npm run validate:etf
 
       - name: Verify AMap build configuration
+        id: amap
         env:
           PUBLIC_AMAP_JS_KEY: ${{ secrets.PUBLIC_AMAP_JS_KEY }}
           PUBLIC_AMAP_SECURITY_CODE: ${{ secrets.PUBLIC_AMAP_SECURITY_CODE }}
@@ -89,6 +95,7 @@ jobs:
           echo "✓ 高德地图构建配置已注入"
 
       - name: Build site
+        id: build
         env:
           # Giscus 评论：值来自 GitHub repo Settings → Variables。
           # 未设置时 Giscus.astro 组件自动跳过，不渲染。
@@ -110,6 +117,7 @@ jobs:
       # Decap 认（多一个键就白屏）。这里用无头浏览器真的加载 dist/admin/，
       # 报配置错就挡住这次部署；浏览器装不上时脚本自己降级为警告。
       - name: Verify social share cards
+        id: og
         run: npm run check:og
 
       # canonical / 描述 / 单一 h1 / JSON-LD 结构化数据，逐页校验 1140 个页面。
@@ -117,9 +125,11 @@ jobs:
       # 2026-11 建这个门禁时才发现 718 个日报页有 2~10 个 h1、134 个页面
       # 一条结构化数据都没有。
       - name: Verify SEO and structured data
+        id: seo
         run: npm run check:seo
 
       - name: Validate admin (Decap) config
+        id: admin
         run: |
           npx playwright install chromium || echo "::warning::playwright chromium 安装失败，校验将降级为跳过"
           npm run check:admin
@@ -135,6 +145,7 @@ jobs:
           PY
 
       - name: Verify required secrets
+        id: secrets
         run: |
           # 前置自检：缺哪个 secret 明确报错
           missing=()
@@ -289,6 +300,7 @@ jobs:
           SH
 
       - name: Rsync dist → versioned release
+        id: rsync
         run: |
           release_root="${DEPLOY_PATH%/}"
           release_root="${release_root%/dist}"
@@ -488,6 +500,43 @@ jobs:
         env:
           BAIDU_PUSH_TOKEN: ${{ secrets.BAIDU_PUSH_TOKEN }}
         run: npx tsx scripts/baidu-push.ts
+
+      # 失败诊断：Actions 日志要登录才能看（本仓库维护者长期没有 token），
+      # 所以把关键步骤的 outcome 直接写成 commit status。公开仓库读 status 不需要权限，
+      # `GET /repos/:owner/:repo/commits/:sha/statuses` 就能看到是哪一步红的。
+      - name: Diagnose failed step
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          OUTCOMES: >-
+            checkout=${{ steps.checkout.outcome }}
+            install=${{ steps.install.outcome }}
+            tests=${{ steps.tests.outcome }}
+            typecheck=${{ steps.typecheck.outcome }}
+            etf=${{ steps.etf.outcome }}
+            amap=${{ steps.amap.outcome }}
+            build=${{ steps.build.outcome }}
+            og=${{ steps.og.outcome }}
+            seo=${{ steps.seo.outcome }}
+            admin=${{ steps.admin.outcome }}
+            secrets=${{ steps.secrets.outcome }}
+            rsync=${{ steps.rsync.outcome }}
+        run: |
+          echo "步骤结果: $OUTCOMES"
+          DESC=""
+          for kv in $OUTCOMES; do
+            case "$kv" in
+              *=failure|*=cancelled) DESC="$DESC ${kv%%=*}" ;;
+            esac
+          done
+          if [ -z "$DESC" ]; then DESC="unknown step"; fi
+          echo "失败步骤:$DESC"
+          PAYLOAD=$(printf '{"state":"failure","context":"ci/failed-step","description":"%s"}' "$(printf '%s' "$DESC" | cut -c1-130)")
+          curl -sS -X POST \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -d "$PAYLOAD" \
+            "https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.sha }}" || true
 
       - name: Summary
         run: |
