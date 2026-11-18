@@ -319,6 +319,16 @@ LCP 却只有 0.44s——说明问题不在首屏内容，而在**空闲后才�
 `git diff-tree -r -m --first-parent` 取改动清单（普通 `--no-commit-id -r` 对合并提交返回空，
 会被误判成「没改动」而白跑一轮）。
 
+#### 一个把分数找错提交的坑（2026-11-18 排查）
+
+`perf:history` 一开始显示最近几轮「一条审计都没有」，但 Actions 里明明每轮都 success 30 分钟。
+真相：LHCI 默认用 `GITHUB_SHA` 当提交号，而 `workflow_run` 事件里 `GITHUB_SHA` 是「创建这一轮时
+默认分支的头」，不是触发它的那个提交。自动化提交频繁时，排队 10 分钟以上就会错位——实测
+一轮审计的 15 条 status 全挂到了**上一个提交**上。
+
+现在显式设置 `LHCI_BUILD_CONTEXT__CURRENT_HASH: ${{ steps.prodwait.outputs.audited-sha }}`，
+让分数挂在「真正被测的那一版」上；`prodwait` 找不到稳定版本时退回触发 sha。
+
 ### 查「这页最近慢了多少」：`npm run perf:history`
 
 审计结果散落在每轮 run 的 artifact 里，取不到 token 就只能看最新一轮。但 LHCI 上传的

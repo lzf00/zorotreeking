@@ -115,6 +115,10 @@ jobs:
         if: steps.scope.outputs.run == 'true'
         env:
           LHCI_UPLOAD__GITHUB_TOKEN: ${{ github.token }}
+          # 不显式指定的话，LHCI 用 GITHUB_SHA 当提交号——而 workflow_run 事件里 GITHUB_SHA
+          # 是「创建这一轮时默认分支的头」，排队久一点就和实际被审的那一版错位（实测把
+          # 一轮审计挂到了上一个提交上，查分数时找错 commit）。这里钉死成真正被审的 sha。
+          LHCI_BUILD_CONTEXT__CURRENT_HASH: ${{ steps.prodwait.outputs.audited-sha || github.event.workflow_run.head_sha || github.sha }}
         # assert 失败的话 exit code 非 0；assert 设了 warn 不会 fail，error 才 fail
         run: npx --yes @lhci/cli@0.13.x autorun
 

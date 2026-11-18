@@ -120,6 +120,8 @@ test("性能审计只量已切到目标提交的生产，且事后复核没被�
   assert.match(lighthouse, /deploy-meta\.json/);
   assert.match(lighthouse, /audited-sha/);
   assert.match(lighthouse, /production changed during the audit/);
+  // 审计结果必须挂到「真正被审的那一版」上：workflow_run 的 GITHUB_SHA 会错位
+  assert.match(lighthouse, /LHCI_BUILD_CONTEXT__CURRENT_HASH/);
 });
 
 test("pre-push 钩子按改动范围分档，且内容提交不必跑整轮构建", async () => {
