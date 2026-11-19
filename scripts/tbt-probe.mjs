@@ -15,6 +15,7 @@
  *   node scripts/tbt-probe.mjs --urls /hike/sample-route/ --runs 3
  *   node scripts/tbt-probe.mjs --no-throttle                    # 不模拟慢网/慢 CPU
  *   node scripts/tbt-probe.mjs --self-test                      # 用一个人造 300ms 阻塞页验证检测器有效
+ *   node scripts/tbt-probe.mjs --from-lh .lighthouseci          # 直接和 LHCI 报告里的 TBT 并排比
  *
  * 依赖 dist/（先 npm run build）和本机 Chrome（CHROME_PATH 可覆盖）。
  */
@@ -43,7 +44,9 @@ export function parseArgs(args) {
   const urls = urlsIndex >= 0 ? (args[urlsIndex + 1] ?? "").split(",").map((u) => u.trim()).filter(Boolean) : DEFAULT_URLS;
   const runs = runsIndex >= 0 ? Math.max(1, Math.min(10, Number(args[runsIndex + 1]) || 2)) : 2;
   const selfTest = args.includes("--self-test");
-  return { urls: selfTest ? ["/__blocking__"] : urls, runs: selfTest ? 1 : runs, throttle: !args.includes("--no-throttle"), selfTest };
+  const fromLhIndex = args.indexOf("--from-lh");
+  const fromLh = fromLhIndex >= 0 ? (args[fromLhIndex + 1] ?? ".lighthouseci") : null;
+  return { urls: selfTest ? ["/__blocking__"] : urls, runs: selfTest ? 1 : runs, throttle: !args.includes("--no-throttle"), selfTest, fromLh };
 }
 
 /**
@@ -68,12 +71,63 @@ export function summarizeLongTasks(entries) {
 export function verdict(measuredTbt) {
   if (measuredTbt >= 300) return "真实阻塞，值得修";
   if (measuredTbt >= 150) return "轻微阻塞，先看是什么";
-  return "无实质阻塞（LH 的 TBT 大概率是软件光栅噪声）";
+  return "无实质阻塞";
 }
 
 /** 自检页：主线程忙等 300ms，探针必须报出 ~300ms，否则说明检测器本身坏了 */
 const SELF_TEST_PAGE = `<!doctype html><meta charset="utf-8"><title>tbt-probe self test</title>
 <h1>blocking</h1><script>const t = Date.now(); while (Date.now() - t < 300) {}</script>`;
+
+/**
+ * 把 LHCI 的逐 URL 中位 TBT 和实测 TBT 配到同一行。
+ *
+ * 单独看实测数字只能得出「这页不阻塞」，配上 LH 的数字才能回答「那 LH 报的那个数是哪来的」。
+ * 两边 URL 用 pathname 对齐（LH 报告里可能是完整 URL，也可能是带端口的本地地址）。
+ */
+export function pairWithLighthouse(measured, lhrs) {
+  const lhTbt = new Map();
+  for (const lhr of lhrs) {
+    const url = lhr?.finalUrl ?? lhr?.requestedUrl;
+    const tbt = lhr?.audits?.["total-blocking-time"]?.numericValue;
+    if (!url || typeof tbt !== "number") continue;
+    let path = url;
+    try {
+      path = new URL(url).pathname;
+    } catch {
+      // 已经是路径
+    }
+    if (!lhTbt.has(path)) lhTbt.set(path, []);
+    lhTbt.get(path).push(tbt);
+  }
+  const medianOf = (values) => {
+    const sorted = [...values].sort((a, b) => a - b);
+    const mid = Math.floor(sorted.length / 2);
+    return sorted.length % 2 === 1 ? sorted[mid] : Math.round((sorted[mid - 1] + sorted[mid]) / 2);
+  };
+  return measured.map((row) => {
+    const values = lhTbt.get(row.url);
+    const lhTbtValue = values?.length ? Math.round(medianOf(values)) : null;
+    const gap = lhTbtValue === null ? null : lhTbtValue - row.worst.tbt;
+    return {
+      ...row,
+      lhTbt: lhTbtValue,
+      gap,
+      // LH 报的比实测多 150ms 以上 → 模拟噪声；否则按实测分档判定
+      phantom: gap !== null && gap >= 150,
+      judgement: pairedVerdict(row.worst.tbt, lhTbtValue),
+    };
+  });
+}
+
+/**
+ * 并排判定：只有「LH 明显高于实测」才归为模拟噪声；
+ * 两边一致时不要再说「LH 是噪声」——那是打自己的脸，也会误导下一轮。
+ */
+export function pairedVerdict(measuredTbt, lhTbt) {
+  if (lhTbt === null || lhTbt === undefined) return verdict(measuredTbt);
+  if (lhTbt - measuredTbt >= 150) return "LH 的数字是模拟噪声";
+  return verdict(measuredTbt);
+}
 
 async function serveDist() {
   const server = createServer(async (req, res) => {
@@ -107,7 +161,35 @@ const INIT_SCRIPT = () => {
 };
 
 async function main() {
-  const { urls, runs, throttle, selfTest } = parseArgs(process.argv.slice(2));
+  const { urls: parsedUrls, runs, throttle, selfTest, fromLh } = parseArgs(process.argv.slice(2));
+  let urls = parsedUrls;
+  let lhrs = [];
+  if (fromLh) {
+    // 只探 LHCI 报告里有的页面，省得手抄 URL
+    const { readLhrs } = await import("./lighthouse-summary.mjs");
+    lhrs = readLhrs(fromLh);
+    const seen = new Set();
+    urls = [];
+    for (const lhr of lhrs) {
+      const url = lhr?.finalUrl ?? lhr?.requestedUrl;
+      if (!url) continue;
+      let path = url;
+      try {
+        path = new URL(url).pathname;
+      } catch {
+        // 已经是路径
+      }
+      if (!seen.has(path)) {
+        seen.add(path);
+        urls.push(path);
+      }
+    }
+    if (urls.length === 0) {
+      console.error(`✗ ${fromLh} 里没有可用的 LHCI 报告`);
+      process.exit(2);
+    }
+    console.log(`从 ${fromLh} 读到 ${urls.length} 个页面\n`);
+  }
   if (!existsSync(join(DIST, "index.html"))) {
     console.error("✗ dist/ 里没有 index.html：先 npm run build");
     process.exit(2);
@@ -155,14 +237,22 @@ async function main() {
     server.close();
   }
 
-  const header = ["URL", "实测 TBT", "长任务数", "最长任务", "判定"];
-  const table = rows.map((row) => [
-    `\`${row.url}\``,
-    `${row.worst.tbt} ms`,
-    String(row.worst.count),
-    `${row.worst.longest} ms`,
-    verdict(row.worst.tbt),
-  ]);
+  const paired = fromLh ? pairWithLighthouse(rows, lhrs) : rows;
+  const header = fromLh
+    ? ["URL", "实测 TBT", "LH 报的 TBT", "差", "长任务数", "判定"]
+    : ["URL", "实测 TBT", "长任务数", "最长任务", "判定"];
+  const table = paired.map((row) => {
+    const cells = [`\`${row.url}\``, `${row.worst.tbt} ms`];
+    if (fromLh) {
+      cells.push(row.lhTbt === null ? "—" : `${row.lhTbt} ms`);
+      cells.push(row.lhTbt === null ? "—" : `${row.lhTbt - row.worst.tbt >= 0 ? "+" : ""}${row.lhTbt - row.worst.tbt} ms`);
+      cells.push(String(row.worst.count));
+      cells.push(row.judgement);
+    } else {
+      cells.push(String(row.worst.count), `${row.worst.longest} ms`, verdict(row.worst.tbt));
+    }
+    return cells;
+  });
   const widths = header.map((cell, index) => Math.max(cell.length, ...table.map((row) => row[index].length)));
   const line = (cells) => `| ${cells.map((cell, index) => cell.padEnd(widths[index])).join(" | ")} |`;
   console.log([line(header), `| ${widths.map((width) => "-".repeat(width)).join(" | ")} |`, ...table.map(line)].join("\n"));

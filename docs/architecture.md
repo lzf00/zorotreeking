@@ -631,6 +631,29 @@ npm run tbt:probe -- --self-test     # 用人造 300ms 阻塞页验证检测器�
 时间被算进「Unattributable」任务。工具自己也做了防呆：`--self-test` 会跑一个人造 300ms
 阻塞页，抓不到 ≥200ms 就以退出码 1 失败——否则「全是 0」可能只是检测器坏了。
 
+15 个 CI URL 全量探过一遍（2026-11-19，每页 2 次）：**没有一个页面存在真实长任务**，
+最差是 `/about/` 一个 53ms 任务（TBT 3ms），其余全 0。所以「整站 TBT」这条线到此为止——
+以后不需要再为 TBT 做任何优化。
+
+**和 LHCI 报告并排比**：`npm run tbt:probe -- --from-lh .lighthouseci` 会自己从
+`.lighthouseci/` 读页面清单和 LH 的 TBT，输出「实测 / LH 报的 / 差 / 判定」四列，
+差 ≥150ms 才判「LH 的数字是模拟噪声」，否则按实测分档。省得再手抄 URL 做对照。
+
+### `/hike/sample-route/` 一直是最低分（95–96）：查过了，不值得改
+
+三轮 CI 审计里它稳定 95–96（其他页 97–99），拿 LH 报告逐项对比 `/hike/`（98）和
+`/hike/sample-route/`（96）找到两个真实扣分项：
+
+| 审计项 | `/hike/` | `/hike/sample-route/` | 原因 |
+|---|---|---|---|
+| `unused-javascript` | 1 | **0**（浪费 203 KiB） | 地图在首屏（距顶 387px，视口 900），`client:visible` 正确地立即水合 Leaflet + React |
+| `modern-image-formats` | 1 | **0.5**（浪费 90 KiB） | OpenStreetMap 瓦片是第三方 PNG，格式不由我们决定 |
+| `image-delivery-insight` | 1 | **0.5**（浪费 120 KiB） | 同上，瓦片 PNG |
+
+结论：这两项分别来自「地图在首屏」和「第三方瓦片格式」，不是能一行改掉的浪费。
+真要动就得换地图栈（MapLibre 矢量瓦片，JS 更大）或把地图挤到首屏外（内容顺序倒退），
+都不划算——95/96 本身已经在预算内。**这个页面不再追分。**
+
 判定分档写在 `verdict()` 里（有测试锁住）：< 150 ms「无实质阻塞」、150–299「轻微，先看是什么」、
 ≥ 300「真实阻塞，值得修」。以后看到 `perf:local` 的 TBT 报警，先跑这个再决定动不动代码。
 
