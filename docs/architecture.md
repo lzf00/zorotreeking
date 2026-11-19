@@ -662,6 +662,57 @@ npm run check:images -- --limit 150 --warn
 当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
 原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
 
+### 交互延迟（INP）：从「没人量」到 `npm run perf:inp`（第 45 轮）
+
+Lighthouse 给的是 TBT（首屏主线程阻塞），站点真正被感知的是「点了要等多久」——相册灯箱、
+地图拖动、行情筛选、点赞。这些 CI 里一个指标都没有。这轮补了一个探针：
+
+```bash
+npm run perf:inp                                   # 打生产，桌面 1280×900
+npm run perf:inp -- --mobile                       # 手机 390×844 + DPR2
+npm run perf:inp -- --base http://127.0.0.1:8945   # 打本地 dist
+```
+
+原理是 Event Timing API（`PerformanceObserver({type:"event", durationThreshold:16})`）：
+浏览器只在交互 ≥16 ms 时才上报 `duration`，正好是要看的那部分；探针会依次点菜单、
+点开相册灯箱、拖动地图、点前两个筛选按钮，取每页最慢的一次作为「INP 近似值」。
+
+**基线（生产实测，桌面）**：
+
+| 页面 | 最慢交互 | 明细 |
+|---|---|---|
+| `/photo/baokemeng/` | 64 ms ✅ | 点开图片 16 · 点赞 64 · 点踩 16 |
+| `/hike/sample-route/` | 280 ms ⚠️ | 点开图片 0 · 拖动地图 0 · 点赞 **280** · 点踩 16 |
+| `/chinese-market/` | 16 ms ✅ | 「直接搜索」16 |
+| `/guestbook/` | 0 ms ✅ | 「提交留言」0 |
+
+**280 ms 那次不是点赞本身的问题**。三种证据：
+
+1. 同一按钮在相册页只要 64 ms；
+2. 在样张页连点五次：64/64/64/64 ms，只有第一次 200 ms（且伴随 55 ms 长任务）；
+3. 把「加载后等待 1.2 s → 3 s → 6 s」再点：208 ms → 72 ms → 72 ms。
+
+也就是说这是**加载窗口内的主线程竞争**（Leaflet 瓦片绘制 + recharts 图表 hydration），
+用户正好在这 ~2 秒内点东西才会赶上；不是点击处理函数慢。所以没有「优化点击逻辑」可做，
+按 INP ≤200 ms 的目标算轻微超标，记录在案。
+
+### 顺手的一个真修：反馈按钮推迟到 `client:idle`（第 45 轮）
+
+`/hike/<slug>/`、`/photo/<slug>/`（含 en 镜像共 4 个页面）的 `FeedbackButtons` 从
+`client:visible` 改成 `client:idle`——它在页面底部、没有任何「必须立刻可点」的理由，
+而 `client:visible` 在首屏可见时立刻 hydration，正好挤在 Leaflet + 图表那波主线程工作里。
+
+实测（390×844、4× CPU throttling、页内加载 4 秒窗口）：
+
+| 版本 | 加载期长任务 |
+|---|---|
+| `client:visible`（生产） | 1 个，55 ms |
+| `client:idle`（本地构建） | **0 个** |
+
+55 ms 不算大，但它是「用户点击正好落进去就变成 200+ ms」的那类阻塞。彩蛋：探针本身
+对这次改动没有可测的差别（280 ms 仍在），因为它量的是地图/图表那波竞争——这也说明
+**探针和长任务统计要一起用**，单看一个会得出错误结论。
+
 ### 相册 / 归档这批「预算外的页面」实测下来是满分（第 44 轮）
 
 桌面 15 URL 预算和移动端周检都不覆盖 `/photo/`、`/en/photo/`、`/photo/<album>/`、`/archive/`、

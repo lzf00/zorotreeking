@@ -73,7 +73,7 @@ const diffLabel = { easy: "Easy", moderate: "Moderate", hard: "Hard", expert: "E
       </>
     )}
     {(entry.body ?? "").trim().length > 0 && <div class="prose prose-neutral dark:prose-invert max-w-none mt-8 prose-headings:tracking-tight prose-a:text-section-hike"><Content /></div>}
-    <FeedbackButtons slug={`hike/${entry.data.translationKey}`} client:visible />
+    <FeedbackButtons slug={`hike/${entry.data.translationKey}`} client:idle />
 
     <PostFooter
       prev={prev} next={next} related={related}

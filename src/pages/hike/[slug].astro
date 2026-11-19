@@ -94,7 +94,7 @@ const diffLabel = { easy: "轻松", moderate: "中等", hard: "困难", expert: 
         <Content />
       </div>
     )}
-    <FeedbackButtons slug={`hike/${entry.data.translationKey}`} client:visible />
+    <FeedbackButtons slug={`hike/${entry.data.translationKey}`} client:idle />
 
     <PostFooter
       prev={prev} next={next} related={related}
