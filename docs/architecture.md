@@ -639,6 +639,67 @@ npm run tbt:probe -- --self-test     # 用人造 300ms 阻塞页验证检测器�
 `.lighthouseci/` 读页面清单和 LH 的 TBT，输出「实测 / LH 报的 / 差 / 判定」四列，
 差 ≥150ms 才判「LH 的数字是模拟噪声」，否则按实测分档。省得再手抄 URL 做对照。
 
+### 把「哪张图会被真的下载」变成门禁：`check:images`（第 43 轮）
+
+前三轮的坑有一个共同点：**Lighthouse 的 15 URL 预算量不到**。要么页面不在清单里（`/photo/` 列表页），
+要么图片在首屏之外（卡片 `loading="lazy"`），要么问题被 `<picture>` 的 webp 分支掩盖。
+所以把它做成确定性检查：
+
+```bash
+npm run check:images          # 阈值 300 KB
+npm run check:images -- --limit 150 --warn
+```
+
+规则（`scripts/check-image-budget.mjs`，已接进 `npm run gate`）：
+
+| 情况 | 判定 |
+|---|---|
+| `<picture>` 里已有 `type="image/webp"` 的 source | `img src` 只是老浏览器兜底，**不报**（相册网格 119 处原图兜底属于这种） |
+| `<picture>` 的 `<source srcset>` | 视为会下载，指向 `/photos/uploads/` 且 > 阈值就报 |
+| 裸 `<img src>`（不在 picture 里） | 视为会下载（内容卡片、新闻卡片这类） |
+| `.thumb.webp` / `.hero.webp` / `.og.jpg` / `.w640` / `.w960` | 派生图，永远放行 |
+
+当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
+原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
+
+### 派生文件被当成新照片写进 manifest（第 43 轮：已修，线上曾出现重复图）
+
+第 41 轮加了 `.hero.webp` 派生文件，但 `build-photo-manifests.ts` 的扫描只过滤了
+`.og.jpg` / `.thumb.webp` / `.w640.jpg` / `.w960.jpg`，**漏了 `.hero.webp`**。于是构建时：
+
+1. `xxx.hero.webp` 被当成一张新照片加进 manifest（baokemeng 49 张 → 多出 29 条，hudieren 5 → 6）；
+2. 字典序上 `xxx.hero.webp` 排在 `xxx.jpeg` 前面 → 它成了 `manifest[0]`，**直接顶掉相册封面**。
+
+线上后果：`/photo/hudieren/` 和 `/photo/baokemeng/` 多出重复照片、列表页封面变成 hero 副本。
+修复与防回归：
+
+- 扫描器补 `.hero.webp` 过滤；
+- 新增 `tests/photo-manifest-hygiene.test.ts`：manifest 里任何 `src`/`thumb` 都不许以派生后缀结尾，
+  且每条记录必须有宽高（派生文件往往 width=0）；
+- 重新生成 manifest 后条目数回到 baokemeng 49 / hudieren 5 / mac1 6。
+
+教训：**新增一种派生文件时，必须同时更新「谁扫描它」和「谁过滤它」**——生成器和扫描器在同一个
+文件里，但它们隔了大半屏，很容易只改一处。
+
+### 相册列表页：桌面要清晰、手机要省字节（第 43 轮）
+
+第 40 轮列表页是「单 source + 720px 缩略图」，手机省（239 KB）但桌面 2x 屏偏软。第 41 轮有了
+1600px 的 hero 变体后，改成**两个带 media 的 source**：
+
+```html
+<source type="image/webp" media="(min-width: 1024px)" srcset="…hero.webp" sizes="(min-width: 1024px) 40vw" />
+<source type="image/webp" srcset="…thumb.webp" sizes="100vw" />
+```
+
+| 视口 | 下载的封面 | 页面总字节 | LCP |
+|---|---|---|---|
+| 手机 390×844 | `.thumb.webp`（720px，57 KB） | 239 KB | 1004 ms |
+| 桌面 1280×900 | `.hero.webp`（1600px，188 KB） | 429 KB | 2996 ms |
+
+桌面数字变大是**故意的**：2x 屏的 2 列卡片需要 ~1600px，原先 720px 是糊的。手机分支维持
+第 40 轮的 239 KB。反例记一笔：两个 source **都不带 media** 时，浏览器只认第一个匹配的，
+第二个（大图）是死代码——第 40–42 轮一直是这样，直到这轮才发现。
+
 ### 内容封面统一走「最轻派生图」（第 42 轮）
 
 第 41 轮的扫描清单里，`/en/ai/digest/` 和 `/en/invest/digest/` 各挂着 1 处原图。它们不在首屏
