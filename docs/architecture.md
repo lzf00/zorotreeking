@@ -639,6 +639,24 @@ npm run tbt:probe -- --self-test     # 用人造 300ms 阻塞页验证检测器�
 `.lighthouseci/` 读页面清单和 LH 的 TBT，输出「实测 / LH 报的 / 差 / 判定」四列，
 差 ≥150ms 才判「LH 的数字是模拟噪声」，否则按实测分档。省得再手抄 URL 做对照。
 
+### hero 用的是「原尺寸 webp」：3840×2160 的照片压出 903 KB（第 41 轮：已修，桌面 LCP −6.4 秒）
+
+第 39 轮给手机加了 720px 变体，桌面分支仍是 `srcWebp`——也就是**按原分辨率**转出来的 webp。
+对正常尺寸的照片这没问题（1536px → 85 KB），但 hudieren 的封面是 3840×2160：
+
+| 阶段 | 桌面下载的 hero | `/photo/hudieren/` 桌面 LCP |
+|---|---|---|
+| 改前（生产实测） | `…5440.webp`（903 KB，3840px 宽） | **7164 ms** |
+| 改后 | `…5440.hero.webp`（188 KB，1600px 宽） | **804 ms** |
+
+hero 在 1280 宽屏上最多显示 1280 CSS px（2x 屏 2560），1600px 宽的变体在画质上无损可感。
+生成规则写进 `scripts/build-photo-manifests.ts`：**仅当原图宽 > 1600** 才生成 `.hero.webp`
+（宽 1600、质量 78、增量生成，和 `.thumb.webp`/`.og.jpg` 同一套缓存判断），
+`heroWebpSources()` 的选择顺序因此变成 `heroWebp → srcWebp`。
+
+同一个相册的 5 张照片里只有 2 张需要变体（其余原图本来就 ≤1600 宽），全站新增派生文件 9 个、
+合计约 1.1 MB，构建时间增加不到 1 秒。
+
 ### 相册列表页封面下的是原图：`/en/photo/` 首屏 5.5 MB、LCP 15.6 秒（第 40 轮：已修）
 
 `/photo/` 和 `/en/photo/` 的封面取的是 `manifest[0].src`——manifest 里的 `src` 是**原图**。

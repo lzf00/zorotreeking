@@ -5,7 +5,10 @@
  * 换成 720px 缩略图后 1008ms（−220ms）。两边的宽高比一致（3:2），所以不会引入 CLS。
  * 抽成函数是为了让测试能锁住「手机分支必须存在」这件事，而不是靠读 .astro 文件。
  */
-export type HeroCover = { srcWebp?: string | null; thumbWebp?: string | null } | null | undefined;
+export type HeroCover =
+  | { srcWebp?: string | null; thumbWebp?: string | null; heroWebp?: string | null }
+  | null
+  | undefined;
 
 export function heroWebpSources(cover?: HeroCover): {
   mobile: string | null;
@@ -13,6 +16,8 @@ export function heroWebpSources(cover?: HeroCover): {
 } {
   return {
     mobile: cover?.thumbWebp ?? null,
-    desktop: cover?.srcWebp ?? null,
+    // 优先 1600px 的 hero 变体：原尺寸 webp 在 3840×2160 的照片上有 903 KB，
+    // 而 hero 最多只按 1280 CSS px 显示。
+    desktop: cover?.heroWebp ?? cover?.srcWebp ?? null,
   };
 }

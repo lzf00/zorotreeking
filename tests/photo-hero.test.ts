@@ -10,6 +10,20 @@ test("手机用 720px 缩略图 webp，桌面用原尺寸 webp", () => {
   assert.equal(sources.desktop, "/a/full.webp");
 });
 
+test("有 1600px 的 hero 变体时优先用它，没有才退回原尺寸 webp", () => {
+  // 3840×2160 的原尺寸 webp 是 903 KB，1600px 版本 188 KB；hero 最多按 1280 CSS px 显示
+  const withHero = heroWebpSources({
+    heroWebp: "/a/full.hero.webp",
+    srcWebp: "/a/full.webp",
+    thumbWebp: "/a/full.thumb.webp",
+  });
+  assert.equal(withHero.desktop, "/a/full.hero.webp");
+  assert.equal(withHero.mobile, "/a/full.thumb.webp");
+
+  const withoutHero = heroWebpSources({ srcWebp: "/b/full.webp", thumbWebp: "/b/full.thumb.webp" });
+  assert.equal(withoutHero.desktop, "/b/full.webp");
+});
+
 test("缺变体时返回 null，由页面退化成原图（不能拼出不存在的路径）", () => {
   assert.deepEqual(heroWebpSources({ srcWebp: "/a/full.webp" }), { mobile: null, desktop: "/a/full.webp" });
   assert.deepEqual(heroWebpSources(undefined), { mobile: null, desktop: null });

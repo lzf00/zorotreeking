@@ -34,6 +34,8 @@ type PhotoEntry = {
   srcOg?: string;         // 1200×630 OG 专用尺寸 jpg（社交分享专用，原图 3-4MB 不能直接用作 og:image）
   thumb: string;
   thumbWebp?: string;
+  /** hero 用的 1600px 宽 webp（原图更宽时才生成）；相册封面在 1280 宽屏上显示 */
+  heroWebp?: string;
   width: number;
   height: number;
   alt: string;
@@ -116,6 +118,7 @@ async function main() {
       let webpRelative: string | undefined;
       let ogRelative: string | undefined;
       let thumbRelative: string | undefined;
+      let heroRelative: string | undefined;
       if (sharp) {
         try {
           const meta = await sharp(buf).rotate().metadata();
@@ -174,6 +177,31 @@ async function main() {
             thumbRelative = photoUrl(albumSlug, thumbName);
           }
 
+          // hero 专用：相册封面/详情页顶部那张图，1280 宽屏最多显示 ~1280 CSS px。
+          // 原尺寸 webp（质量 80）会把 3840×2160 的照片压成 903 KB——整页最重的一笔。
+          // 缩到 1600px 宽（2x 屏 800 CSS px 也够），实测 3840×2160 的 903 KB → 约 180 KB。
+          if (width > 1600) {
+            const heroName = path.basename(f, ext) + ".hero.webp";
+            const heroPath = path.join(albumDir, heroName);
+            let needHero = true;
+            try {
+              const srcStat = await fs.stat(inputPath);
+              const heroStat = await fs.stat(heroPath);
+              if (heroStat.mtimeMs >= srcStat.mtimeMs) needHero = false;
+            } catch {
+              /* 不存在 → 生成 */
+            }
+            if (needHero) {
+              try {
+                await sharp(buf).rotate().resize({ width: 1600, withoutEnlargement: true }).webp({ quality: 78 }).toFile(heroPath);
+                console.log(`    + ${heroName} (hero 1600w)`);
+              } catch (e) {
+                console.warn(`    ✗ hero gen failed ${heroName}:`, e);
+              }
+            }
+            heroRelative = photoUrl(albumSlug, heroName);
+          }
+
           // 生成 1200×630 OG 专用尺寸（jpg，cover fit，质量 82，社交分享专用）
           // 原来只给横版（宽 ≥ 高 × 1.2）生成，结果竖版照片当相册封面时只能拿原图
           // 去当分享卡（1080×2400 会被平台横裁成一条）。竖版也生成一份 cover 裁切版本：
@@ -228,6 +256,7 @@ async function main() {
         srcOg: ogRelative,
         thumb: photoUrl(albumSlug, f),
         thumbWebp: thumbRelative ?? webpRelative,
+        heroWebp: heroRelative,
         width,
         height,
         alt: path.basename(f, path.extname(f)),
