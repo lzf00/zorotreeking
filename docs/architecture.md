@@ -639,6 +639,30 @@ npm run tbt:probe -- --self-test     # 用人造 300ms 阻塞页验证检测器�
 `.lighthouseci/` 读页面清单和 LH 的 TBT，输出「实测 / LH 报的 / 差 / 判定」四列，
 差 ≥150ms 才判「LH 的数字是模拟噪声」，否则按实测分档。省得再手抄 URL 做对照。
 
+### 相册 hero 在手机上下的是 1536px 原尺寸 webp（第 39 轮：已修，手机 LCP −220ms）
+
+`/photo/<album>/` 的 hero 是一张满宽大图，之前只有一个 webp 候选：整幅 1536px、85 KB。
+手机上（390 CSS px）这是纯浪费——`.thumb.webp` 早就有 720px / 28 KB 的版本，色差肉眼不可见。
+
+改成 `<picture>` 里按屏幕宽度挑候选：
+
+```html
+<source type="image/webp" media="(max-width: 640px)" srcset={heroSources.mobile} />
+<source type="image/webp" srcset={heroSources.desktop} />
+```
+
+实测（390×844、DPR 2、150ms RTT / 1.6Mbps / 4× CPU，每档 3 次）：
+
+| 指标 | 改前 | 改后 |
+|---|---|---|
+| 实际下载的 hero | 整幅 webp（85 KB） | `.thumb.webp`（28 KB） |
+| LCP（中位） | 1228 ms（3 次全同） | 1008 ms |
+| 桌面 1280 宽 | 整幅 webp，LCP 820 ms | 未变（桌面分支不受影响） |
+
+宽高比一致（3:2），`width`/`height` 仍按原始比例给出，CLS 不回归。
+选择 `media` 而不是 `srcset` 宽度描述符，是因为 hero 在亮/暗两套布局里都是满宽，
+`media` 更直观、也更好在 Playwright 里断言（直接读 `img.currentSrc`）。
+
 ### `/hike/sample-route/` 一直是最低分（95–96）：查过了，不值得改
 
 三轮 CI 审计里它稳定 95–96（其他页 97–99），拿 LH 报告逐项对比 `/hike/`（98）和
