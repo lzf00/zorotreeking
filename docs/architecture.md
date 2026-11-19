@@ -662,6 +662,46 @@ npm run check:images -- --limit 150 --warn
 当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
 原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
 
+### 相册 / 归档这批「预算外的页面」实测下来是满分（第 44 轮）
+
+桌面 15 URL 预算和移动端周检都不覆盖 `/photo/`、`/en/photo/`、`/photo/<album>/`、`/archive/`、
+`/tag/*`。第 40–43 轮改的正是这些页面，所以这轮把它们拉到生产上直接跑 Lighthouse 复核
+（每个页面现跑，prod 实测，非模拟）：
+
+| 页面 | 视口 | 性能 | 无障碍 | 最佳实践 | SEO | LCP | TBT | CLS |
+|---|---|---|---|---|---|---|---|---|
+| `/photo/` | 手机 | 100 | 100 | 100 | 100 | 1.80 s | 0 ms | 0.000 |
+| `/photo/` | 桌面 | 100 | — | 100 | — | 0.36 s | 0 ms | 0.000 |
+| `/photo/hudieren/` | 手机 | 100 | 100 | 100 | 100 | 1.51 s | 0 ms | 0.000 |
+| `/en/photo/` | 手机 | 100 | 100 | 100 | 100 | 1.23 s | 0 ms | 0.004 |
+| `/ai/digest/` | 手机 | 99 | 100 | 100 | 100 | 1.80 s | 0 ms | 0.017 |
+| `/archive/` | 手机 | 100 | 100 | 100 | 100 | 1.50 s | 0 ms | 0.000 |
+| `/tag/photo/` | 手机 | 100 | 100 | 100 | 100 | 0.94 s | 0 ms | 0.000 |
+
+对照改前的量级：`/en/photo/` 首屏 5.5 MB / LCP 15.6 s，`/photo/hudieren/` 桌面 LCP 7.2 s。
+现在这类页面没有一个低于 99。
+
+**测量陷阱**：本地用 `python3 -m http.server` 起 dist 再跑 Lighthouse，8 个页面会统一显示
+「最佳实践 96」，唯一的失败项是 `errors-in-console`：`POST /api/track` 在静态服务器上返回
+501（生产是 FastAPI，正常返回 200）。也就是说**本地静态服务器上的 best-practices 分数不可信**，
+涉及 /api/* 的审计要么打生产，要么在 summary 里忽略这一项。
+
+### 移动端预算：从「别掉到 0.7 以下」收紧到「指标硬门禁」（第 44 轮）
+
+`.lighthouserc.mobile.json`（每周一跑，桌面预算量不到的触摸目标 / 手机布局问题靠它兜底）这轮改了：
+
+| 断言 | 改前 | 改后 | 依据 |
+|---|---|---|---|
+| `categories:performance` | warn 0.70 | warn **0.85** | 实测 98–100，0.7 等于没有告警线 |
+| `largest-contentful-paint` | 无 | **error 3200 ms** | 实测最慢 1.80 s（徒步详情页）；留 runner 抖动余量，但要能抓住 15.6 秒那类回归 |
+| `total-blocking-time` | 无 | **error 200 ms** | 实测 0 ms |
+| 预算 URL | 10 | **13** | 加了 `/photo/`、`/photo/hudieren/`、`/archive/`（正是这几轮的重灾区） |
+
+分数继续只做 warn、指标做 error，理由和桌面端一致：runner 负载会让 category 分数跳 7–14 分，
+拿它当门禁会假红；LCP/TBT/CLS 才是真回归。
+
+这 4 条规则写进 `tests/lighthouse-mobile-budget.test.ts`，改配置时会被测试拦住。
+
 ### 派生文件被当成新照片写进 manifest（第 43 轮：已修，线上曾出现重复图）
 
 第 41 轮加了 `.hero.webp` 派生文件，但 `build-photo-manifests.ts` 的扫描只过滤了

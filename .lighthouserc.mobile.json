@@ -11,7 +11,10 @@
         "https://www.zorotreeking.online/invest/",
         "https://www.zorotreeking.online/en/",
         "https://www.zorotreeking.online/hike/",
-        "https://www.zorotreeking.online/hike/travel/ali-grand-loop-lhasa-return-2026/"
+        "https://www.zorotreeking.online/hike/travel/ali-grand-loop-lhasa-return-2026/",
+        "https://www.zorotreeking.online/photo/",
+        "https://www.zorotreeking.online/photo/hudieren/",
+        "https://www.zorotreeking.online/archive/"
       ],
       "numberOfRuns": 3,
       "settings": {
@@ -24,7 +27,7 @@
         "categories:performance": [
           "warn",
           {
-            "minScore": 0.7,
+            "minScore": 0.85,
             "aggregationMethod": "median"
           }
         ],
@@ -72,6 +75,20 @@
           "error",
           {
             "minScore": 1
+          }
+        ],
+        "largest-contentful-paint": [
+          "error",
+          {
+            "maxNumericValue": 3200,
+            "aggregationMethod": "median"
+          }
+        ],
+        "total-blocking-time": [
+          "error",
+          {
+            "maxNumericValue": 200,
+            "aggregationMethod": "median"
           }
         ]
       }
