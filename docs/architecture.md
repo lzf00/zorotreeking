@@ -639,6 +639,41 @@ npm run tbt:probe -- --self-test     # 用人造 300ms 阻塞页验证检测器�
 `.lighthouseci/` 读页面清单和 LH 的 TBT，输出「实测 / LH 报的 / 差 / 判定」四列，
 差 ≥150ms 才判「LH 的数字是模拟噪声」，否则按实测分档。省得再手抄 URL 做对照。
 
+### 怎么一次性找出「页面上还挂着原图」的地方（第 41 轮的方法）
+
+连续三轮（39/40/41）都在同一个坑里打转，于是写了一个 30 行的扫描：把 `dist/**/*.html` 里所有
+`<img>`/`<source>` 的 `src`/`srcset` 抽出来，过滤掉已派生的后缀（`.thumb.webp`、`.og.jpg`、
+`.w640/.w960`、`.hero.webp`、裸 `.webp`），剩下的就是「引用原图」：
+
+```python
+import glob, re, urllib.parse
+from pathlib import Path
+pat = re.compile(r'<(?:img|source)\b[^>]*\b(?:src|srcset)="([^"]+)"', re.I)
+for f in glob.glob('dist/**/*.html', recursive=True):
+    for m in pat.finditer(Path(f).read_text(errors='ignore')):
+        for url in m.group(1).split(','):
+            url = url.strip().split(' ')[0]
+            if '/photos/uploads/' not in url:
+                continue
+            low = url.split('/')[-1].lower()
+            if low.endswith(('.thumb.webp', '.og.jpg', '.webp')) or '.w640.' in low or '.w960.' in low or '.hero.' in low:
+                continue
+            p = Path('public' + urllib.parse.unquote(url))
+            print(p.stat().st_size // 1024 if p.exists(), 'KB', f, url)
+```
+
+2026-11-19 这一轮跑出来的结果（修完 39–41 三处后仍存在的）：
+
+| 页面 | 原图引用 | 实际影响 | 处理 |
+|---|---|---|---|
+| `/photo/<album>/`（8 个相册页） | 每张照片 1 处（`<img src={p.thumb}>` 兜底） | **低**：`<picture>` 有 webp 源，现代浏览器不会下 `img src` | 保留兜底，不换成 `.og.jpg`（1200×630 裁切会破坏网格比例） |
+| `/en/ai/digest/`、`/en/invest/digest/` | 各 1 处（`<img src={d.data.cover}>`） | **中低**：卡片 `loading="lazy"`，首屏只下 149 KB；往下滚会拉 3.7 MB 原图 | 下一轮统一换「内容封面轻量解析」 |
+| `/photo/hudieren/` | 1 处 `<img src>`（3.7 MB） | **低**：同上，有 webp 源 | 同上 |
+
+注意「引用原图」≠「下载原图」：`<picture>` 里 webp `<source>` 命中时 `<img src>` 不会被请求。
+判断影响要看它是否在首屏、是否 lazy——这一轮 `/photo/hudieren/` 桌面 LCP 7164 ms 是
+**真的下载了 903 KB 的 hero**，不是被 `<img src>` 拖的。
+
 ### hero 用的是「原尺寸 webp」：3840×2160 的照片压出 903 KB（第 41 轮：已修，桌面 LCP −6.4 秒）
 
 第 39 轮给手机加了 720px 变体，桌面分支仍是 `srcWebp`——也就是**按原分辨率**转出来的 webp。
