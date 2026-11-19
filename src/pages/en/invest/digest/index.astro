@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
 import { extractDigestHighlights, extractTLDR } from "@/lib/digest-highlights";
+import { lightCover } from "@/lib/cover-src";
 
 const lang = "en" as const;
 const t = useTranslations(lang);
@@ -57,7 +58,7 @@ const months = Object.keys(groups).sort().reverse();
             const firstLine = tldr?.summary?.[0] ?? null;
             const tags = tldr?.tags?.slice(0, 3) ?? [];
             const fallbackHighlights = !tldr ? extractDigestHighlights(d.body ?? "", 2) : [];
-            const cover = d.data.cover;
+            const cover = lightCover(d.data.cover);
             return (
               <a href={pathWithLang(`/invest/${d.data.translationKey}`, lang)}
                  class="group block rounded-xl overflow-hidden border border-[var(--border)] hover:border-section-invest transition-colors bg-white dark:bg-zinc-900/40">

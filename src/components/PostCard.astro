@@ -1,4 +1,5 @@
 ---
+import { lightCover } from "@/lib/cover-src";
 /**
  * 列表页文章卡（带视觉钩子）。
  *
@@ -17,7 +18,9 @@ interface Props {
   cover?: string;
   tags?: string[];
 }
-const { href, title, description, date, section, cover, tags } = Astro.props;
+const { href, title, description, date, section, cover: rawCover, tags } = Astro.props;
+// 卡片只有 ~120px 宽，原图（几百 KB ~ 3.7 MB）在这里纯属浪费
+const cover = lightCover(rawCover);
 
 const sectionConfig = {
   ai: { bg: "bg-blue-50 dark:bg-blue-950/40", text: "text-section-ai", letter: "AI" },

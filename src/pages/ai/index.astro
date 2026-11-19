@@ -4,6 +4,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import PostCard from "@/components/PostCard.astro";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
 import { sectionDescription } from "@/lib/descriptions";
+import { lightCover } from "@/lib/cover-src";
 
 const lang = "zh" as const;
 const t = useTranslations(lang);
@@ -85,9 +86,9 @@ const recentDigests = digests.slice(0, 3);
         {recentDigests.map(d => (
           <a href={pathWithLang(`/ai/${d.data.translationKey}`, lang)}
              class="group block rounded-lg overflow-hidden border border-[var(--border)] hover:border-section-ai transition-colors">
-            {d.data.cover && (
+            {lightCover(d.data.cover) && (
               <div class="aspect-[16/9] overflow-hidden bg-zinc-100 dark:bg-zinc-800">
-                <img src={d.data.cover} alt={d.data.title}
+                <img src={lightCover(d.data.cover)} alt={d.data.title}
                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                      loading="lazy" />
               </div>

@@ -639,6 +639,30 @@ npm run tbt:probe -- --self-test     # 用人造 300ms 阻塞页验证检测器�
 `.lighthouseci/` 读页面清单和 LH 的 TBT，输出「实测 / LH 报的 / 差 / 判定」四列，
 差 ≥150ms 才判「LH 的数字是模拟噪声」，否则按实测分档。省得再手抄 URL 做对照。
 
+### 内容封面统一走「最轻派生图」（第 42 轮）
+
+第 41 轮的扫描清单里，`/en/ai/digest/` 和 `/en/invest/digest/` 各挂着 1 处原图。它们不在首屏
+（卡片 `loading="lazy"`），所以首屏只下 149 KB——但**往下滚就会拉全尺寸原图**，实测量出来是这样：
+
+| 页面（滚到底后的 `/photos/` 请求） | 改前（生产） | 改后 |
+|---|---|---|
+| `/en/ai/digest/` | 599 KB（含 243 KB 全尺寸 webp） | **294 KB** |
+| `/en/invest/digest/` | **2809 KB**（1139 KB JPEG + 904 KB webp + 243 KB webp） | **244 KB** |
+
+修法：新增 `src/lib/cover-src.ts`，把 content 的 `cover` 解析成最轻的可用派生图：
+
+```
+.thumb.webp (720px) → .w640.jpg → .w960.jpg → .og.jpg (1200×630) → 原图
+```
+
+- 纯函数 `pickLightCover(cover, exists)`，`exists` 由调用方注入 → 可以单测，不需要真文件；
+- 页面里用薄封装 `lightCover()`，读盘前 `decodeURIComponent`（文件名带空格/中文的老坑）；
+- 一个派生图都没有时**退回原图**而不是空串——宁可重，不许 404。
+
+接入点：`/ai/digest/`、`/en/ai/digest/`、`/en/invest/digest/`、`/ai/` 首页预览，以及 `PostCard`
+（它的缩略图只有 ~120px 宽，原图在这里毫无意义）。中文 `/invest/digest/` 上一轮已经有了
+`w640/w960` 的 `srcset`，这次不动它。
+
 ### 怎么一次性找出「页面上还挂着原图」的地方（第 41 轮的方法）
 
 连续三轮（39/40/41）都在同一个坑里打转，于是写了一个 30 行的扫描：把 `dist/**/*.html` 里所有
