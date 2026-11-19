@@ -639,6 +639,38 @@ npm run tbt:probe -- --self-test     # 用人造 300ms 阻塞页验证检测器�
 `.lighthouseci/` 读页面清单和 LH 的 TBT，输出「实测 / LH 报的 / 差 / 判定」四列，
 差 ≥150ms 才判「LH 的数字是模拟噪声」，否则按实测分档。省得再手抄 URL 做对照。
 
+### 相册列表页封面下的是原图：`/en/photo/` 首屏 5.5 MB、LCP 15.6 秒（第 40 轮：已修）
+
+`/photo/` 和 `/en/photo/` 的封面取的是 `manifest[0].src`——manifest 里的 `src` 是**原图**。
+一张相册封面实测 3742 KB，而卡片只有 400–800px 宽。frLem 上量出来的结果：
+
+| 页面 | 改前（生产实测） | 改后 | 变化 |
+|---|---|---|---|
+| `/photo/` | LCP 3124 ms · 4206 KB · 最大图 3742 KB | LCP 936 ms · 239 KB · 最大图 66 KB | −2188 ms · −94% 字节 |
+| `/en/photo/` | LCP **15564 ms** · 5533 KB · 最大图 3742 KB | LCP 1488 ms · 264 KB · 最大图 66 KB | −14076 ms · −95% 字节 |
+
+（390×844、DPR 2、150ms RTT / 1.6Mbps / 4× CPU，每页 3 次取中位。）
+
+修法：在 manifest 里按路径找回同一条记录，用派生图输出 `<picture>`：
+
+```html
+<picture>
+  <source type="image/webp" srcSet={cover.thumbWebp} />   <!-- 720px / 57 KB -->
+  <source type="image/webp" srcSet={cover.srcWebp} />     <!-- 原尺寸 webp / 85 KB -->
+  <img src={cover.srcOg ?? cover.src} width height loading="lazy" decoding="async" />
+</picture>
+```
+
+三个关键点，缺一个就白改：
+
+1. **不能直接 `src={cover}`**：frontmatter 里的 cover 和 manifest 的 `src` 都是原图路径；
+   要用 `decodeURI` 比对（文件名含空格/中文时编码过后不相等，第 34 轮踩过同一个坑）。
+2. **兜底图用 `srcOg`**（1200×630 的 JPEG，~67 KB）而不是原图——否则不支持 webp 的
+   浏览器照样下 3.7 MB。
+3. **中文和英文两个列表页都要改**，它们各自复制了一份取封面的逻辑（第 40 轮之前只有中文页改过）。
+
+顺带把 `/en/photo/<album>/` 的 hero 也补上了手机 720px 变体（中文页第 39 轮已有），两页现在一致。
+
 ### 相册 hero 在手机上下的是 1536px 原尺寸 webp（第 39 轮：已修，手机 LCP −220ms）
 
 `/photo/<album>/` 的 hero 是一张满宽大图，之前只有一个 webp 候选：整幅 1536px、85 KB。

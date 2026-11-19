@@ -4,6 +4,7 @@ import PhotoLayout from "@/layouts/PhotoLayout.astro";
 import FeedbackButtons from "@/components/FeedbackButtons";
 import PhotoGallery from "@/components/PhotoGallery";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
+import { heroWebpSources } from "@/lib/photo-hero";
 import { loadPhotoManifest, resolveAlbumKey } from "@/lib/photo-manifests";
 
 export async function getStaticPaths() {
@@ -17,6 +18,7 @@ const lang = "en" as const;
 const t = useTranslations(lang);
 const photos = loadPhotoManifest(resolveAlbumKey(entry.data));
 const cover = photos[0];
+const heroSources = heroWebpSources(cover);
 const rest = photos.slice(1);
 const dateStr = entry.data.date.toISOString().slice(0, 10);
 // 与中文相册页保持一致：优先 1200×630 派生图，否则用原图 + 真实尺寸。
@@ -41,9 +43,11 @@ const shareDims = cover?.srcOg
       <div class="w-full bg-black overflow-hidden">
         {/* 与中文相册页一致：内在宽高防 CLS，webp 降 LCP 字节 */}
         <picture>
-          {cover.srcWebp && <source type="image/webp" srcset={cover.srcWebp} />}
+          {/* 与中文相册页一致：手机上用 720px 缩略图（28 KB），桌面用原尺寸 webp */}
+          {heroSources.mobile && <source type="image/webp" media="(max-width: 640px)" srcset={heroSources.mobile} />}
+          {heroSources.desktop && <source type="image/webp" srcset={heroSources.desktop} />}
           <img
-            src={cover.src}
+            src={cover.srcOg ?? cover.src}
             alt={cover.alt}
             width={cover.width || undefined}
             height={cover.height || undefined}

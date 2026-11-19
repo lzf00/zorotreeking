@@ -14,8 +14,20 @@ const albums = (await getCollection("photo", (p) => p.data.lang === lang && !p.d
 
 const enriched = albums.map((album) => {
   const manifest = loadPhotoManifest(resolveAlbumKey(album.data));
-  // 封面优先用 frontmatter.cover（后台可点选）；留空则退回第一张
-  return { album, cover: album.data.cover || manifest[0]?.src || manifest[0]?.thumb, count: manifest.length };
+  // 封面优先用 frontmatter.cover（后台可点选）；留空则退回第一张。
+  // 但**不能直接用裸路径**：frontmatter 里的 cover 指向原图（实测有 3.7 MB 的 JPEG），
+  // 卡片只有 400–800px 宽，直接下原图会把列表页干到 4 MB 量级。
+  // 所以在 manifest 里找回同一条记录，拿它的 webp 派生图。
+  const sameFile = (a?: string, b?: string) => !!a && !!b && decodeURI(a) === decodeURI(b);
+  const coverPath = album.data.cover;
+  const hit = coverPath
+    ? manifest.find((photo) => sameFile(photo.src, coverPath) || sameFile(photo.thumb, coverPath))
+    : manifest[0];
+  const cover = coverPath && !hit
+    // manifest 里找不到（比如 cover 指向相册外的图）：退化成裸路径，但仍然给出完整记录结构
+    ? { src: coverPath, thumb: coverPath, width: 0, height: 0, alt: album.data.title }
+    : (hit ?? null);
+  return { album, cover, count: manifest.length };
 });
 
 // 编辑性网格：第 0、3、6… 张占 2 列，其余 1 列（更接近 VCG / Behance）
@@ -79,7 +91,19 @@ function aspect(i: number) {
             <a href={pathWithLang(`/photo/${album.data.translationKey}`, lang)} class="group relative block overflow-hidden bg-neutral-900">
               <div class={`${aspect(i)} overflow-hidden`}>
                 {cover ? (
-                  <img src={cover} alt={album.data.title} loading="lazy" class="w-full h-full object-cover transition-transform duration-[800ms] ease-out group-hover:scale-[1.04]" />
+                  <picture>
+                    {cover.thumbWebp && <source type="image/webp" srcset={cover.thumbWebp} />}
+                    {cover.srcWebp && <source type="image/webp" srcset={cover.srcWebp} />}
+                    <img
+                      src={cover.srcOg ?? cover.src}
+                      alt={album.data.title}
+                      width={cover.width || undefined}
+                      height={cover.height || undefined}
+                      loading="lazy"
+                      decoding="async"
+                      class="w-full h-full object-cover transition-transform duration-[800ms] ease-out group-hover:scale-[1.04]"
+                    />
+                  </picture>
                 ) : (
                   <div class="w-full h-full grid place-items-center text-white/30 text-4xl font-serif">·</div>
                 )}
