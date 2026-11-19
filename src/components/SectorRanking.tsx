@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { formatChinaMarketTime, isChinaATradingHours } from "@/lib/china-market";
 import { classifyLaggingSectors } from "@/lib/market-quality";
-import { marketLabels, type MarketLang, type MarketLabels } from "@/lib/market-i18n";
+import { marketLabels, sectorName, type MarketLang, type MarketLabels } from "@/lib/market-i18n";
 
 /**
  * 行业板块涨跌排行（细分行业 m:90 t:2）。
@@ -107,7 +107,7 @@ export default function SectorRanking({ initialData, lang = "zh" }: Props = {}) 
   return (
     <div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <SectorList title={L.sectorUpTitle} items={ups} color="var(--market-up)" arrow="▲" noData={L.sectorNoData} />
+        <SectorList title={L.sectorUpTitle} items={ups} color="var(--market-up)" arrow="▲" noData={L.sectorNoData} lang={lang} />
         <SectorList
           title={
             lagging.items.length === 0
@@ -120,6 +120,7 @@ export default function SectorRanking({ initialData, lang = "zh" }: Props = {}) 
           items={lagging.items}
           color={lagging.direction === "down" ? "var(--market-down)" : "var(--market-up)"}
           arrow={lagging.direction === "down" ? "▼" : "▲"}
+          lang={lang}
         />
       </div>
       <p className="mt-3 text-[11px] text-[var(--text-tertiary)] font-mono">
@@ -132,7 +133,7 @@ export default function SectorRanking({ initialData, lang = "zh" }: Props = {}) 
   );
 }
 
-function SectorList({ title, items, color, arrow, noData }: { title: string; items: Sector[]; color: string; arrow: string; noData: string }) {
+function SectorList({ title, items, color, arrow, noData, lang }: { title: string; items: Sector[]; color: string; arrow: string; noData: string; lang: MarketLang }) {
   return (
     <div className="rounded-2xl border border-[var(--border)] overflow-hidden">
       <div className="px-4 py-3 bg-[var(--bg-soft)] flex items-baseline justify-between">
@@ -145,7 +146,7 @@ function SectorList({ title, items, color, arrow, noData }: { title: string; ite
           <li key={s.code} className="px-4 py-2.5 border-t border-[var(--border)] flex items-center justify-between">
             <div className="flex items-center gap-3 min-w-0">
               <span className="text-xs font-mono text-[var(--text-tertiary)] w-5 text-right">{i + 1}</span>
-              <span className="text-sm truncate">{s.name}</span>
+              <span className="text-sm truncate">{sectorName(s.name, lang)}</span>
             </div>
             <span className="text-sm font-semibold tabular-nums whitespace-nowrap" style={{ color }}>
               {s.change_pct != null ? `${s.change_pct > 0 ? "+" : ""}${s.change_pct.toFixed(2)}%` : "—"}
