@@ -12,6 +12,7 @@
  *   node scripts/inp-probe.mjs                         # 打生产，默认页面集
  *   node scripts/inp-probe.mjs --base http://127.0.0.1:8912  # 打本地 dist
  *   node scripts/inp-probe.mjs --urls /,/invest/ --mobile
+ *   node scripts/inp-probe.mjs --fail-on-404            # 月度清单用：有 404 直接退出 1
  */
 import { chromium } from "playwright";
 
@@ -24,12 +25,18 @@ const DEFAULT_URLS = [
 ];
 
 const parseArgs = (argv) => {
-  const args = { base: "https://www.zorotreeking.online", urls: DEFAULT_URLS, mobile: false };
+  const args = {
+    base: "https://www.zorotreeking.online",
+    urls: DEFAULT_URLS,
+    mobile: false,
+    failOn404: false,
+  };
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
     if (arg === "--base") args.base = argv[++i];
     else if (arg === "--urls") args.urls = argv[++i].split(",").map((s) => s.trim()).filter(Boolean);
     else if (arg === "--mobile") args.mobile = true;
+    else if (arg === "--fail-on-404") args.failOn404 = true;
   }
   return args;
 };
@@ -184,9 +191,14 @@ const main = async () => {
   }
   const measured = rows.filter((r) => r.status === 200);
   const skipped = rows.length - measured.length;
+  const missing = rows.filter((r) => r.status !== 200);
   const bad = measured.filter((r) => r.worstMs > 200);
   if (skipped) console.log(`\n${skipped} 个页面因 HTTP 状态非 200 被跳过（不计入结论）`);
   console.log(bad.length ? `${bad.length} 个页面交互超过 200 ms 目标线` : "全部可测页面交互 ≤200 ms");
+  if (args.failOn404 && missing.length) {
+    console.error(`\n${missing.length} 个页面不存在（HTTP 非 200）：${missing.map((r) => r.path).join(", ")}`);
+    process.exitCode = 1;
+  }
 };
 
 if (import.meta.url === `file://${process.argv[1]}`) await main();

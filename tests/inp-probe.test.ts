@@ -44,3 +44,9 @@ test("summary 取每页最慢的那次交互，并标出超过 200 ms 的页面"
   assert.equal(rows[1].errors, 1, "页面 JS 错误要计数，不能被吞掉");
   assert.equal(rows[2].worstAction, "—", "没有可点元素时不能崩");
 });
+
+test("--fail-on-404 会被解析并用于月度清单的退出码", () => {
+  const args = parseArgs(["--fail-on-404"]);
+  assert.equal(args.failOn404, true);
+  assert.equal(parseArgs([]).failOn404, false);
+});
