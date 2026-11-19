@@ -662,6 +662,41 @@ npm run check:images -- --limit 150 --warn
 当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
 原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
 
+### 探针自己撒过谎：404 页也会「测出很快」（第 46 轮：已修）
+
+第 45 轮的默认页面集里有 `/chinese-market/`。它**根本不存在**（生产 404），而 404 页上有搜索框
+之类的可点元素，于是探针照点不误，报了个 `16 ms ✅`。于是「不存在的页面」被写进了相位表。
+
+修法：`page.goto` 之后拿 `response.status()`，非 200 的页面在报告里标 `⏭️ HTTP 404 跳过`，
+**不计入**「全部页面交互 ≤200 ms」的结论。这条写进 `tests/inp-probe.test.ts` 之外的验收：
+再跑一次时 `/chinese-market/` 会显示跳过而不是通过。
+
+教训：任何「打线上批量测」的脚本都必须先确认页面真的存在，否则空白页永远是最快的。
+
+### 全站最高频的交互其实是「打开搜索」（第 46 轮：已优化）
+
+搜索面板是「点了才加载」的（第 N 轮为了不让 1145 个页面都背 React：静态 import 会让首屏 JS
+多 87 KB）。代价是第一次点搜索要把 React + DOMPurify + 组件 chunk 全拉下来：
+
+| 场景（本地 dist，1280×900） | 面板出现耗时 |
+|---|---|
+| 冷点击 | 254 → **183 ms** |
+| 先悬停 250 ms 再点 | — → **92 ms** |
+
+改法：把「预取」和「打开」拆成两件事。
+
+- `prefetchSearch()`：`import("@/entrypoints/search")`——模块求值会把静态依赖（React、
+  DOMPurify、组件）一起拉下来，但**不挂载**。绑定在 `pointerover` / `focusin` / `touchstart`
+  （捕获阶段，命中搜索入口才会触发）。
+- `loadSearch(true)`：用户真的点了/按了 `/`，才挂载并展开。
+
+**这里差点翻车**：`mountSearch()` 原本写死 `<SearchModal initialOpen />`，也就是「挂载即展开」。
+如果预取直接复用 `loadSearch()`（第一版就是这么写的），**鼠标划过搜索框面板就会弹出来**。
+现在 `mountSearch(container, { open })` 显式接收，预取走 `open: false` 静默挂载；
+`tests/search-launcher.test.ts` 把「预取 ≠ 打开」钉住了。
+
+另外 Footer 的搜索入口和 404 的「直接搜索」按钮补了 `data-search-trigger`，预取才认得出它们。
+
 ### 交互延迟（INP）：从「没人量」到 `npm run perf:inp`（第 45 轮）
 
 Lighthouse 给的是 TBT（首屏主线程阻塞），站点真正被感知的是「点了要等多久」——相册灯箱、

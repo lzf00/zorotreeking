@@ -15,17 +15,35 @@
   (() => {
     let loading = false;
     let mounted = false;
+    let pendingOpen = false;
+    let modulePromise: Promise<typeof import("@/entrypoints/search")> | null = null;
     const errorText = document.documentElement.lang === "en" ? "Search failed to load, please retry" : "搜索加载失败，请重试";
 
-    function loadSearch() {
-      if (mounted || loading) return;
+    /** 只把 chunk 拉下来（会连带求值静态依赖：React / DOMPurify / 组件），不挂载、不展开 */
+    function prefetchSearch() {
+      if (mounted || modulePromise) return;
+      modulePromise = import("@/entrypoints/search");
+      modulePromise.catch(() => { modulePromise = null; });
+    }
+
+    function loadSearch(shouldOpen = true) {
+      if (shouldOpen) pendingOpen = true;
+      if (mounted) {
+        if (pendingOpen) { pendingOpen = false; (window as any).__openSearch?.(); }
+        return;
+      }
+      if (loading) return;
       loading = true;
-      import("@/entrypoints/search")
+      const promise = modulePromise ?? import("@/entrypoints/search");
+      modulePromise = promise;
+      promise
         .then(({ mountSearch }) => {
           const host = document.createElement("div");
           host.id = "search-root";
           document.body.appendChild(host);
-          mountSearch(host);
+          const openNow = pendingOpen;
+          pendingOpen = false;
+          mountSearch(host, { open: openNow });
           mounted = true;
           // 组件挂载后会接管 window.__openSearch 和 Esc；这里把 / 让出去，
           // 避免一次按键触发两次 setOpen。
@@ -33,6 +51,7 @@
         })
         .catch((error) => {
           loading = false;
+          modulePromise = null;
           console.error("[search] 加载失败", error);
           document.dispatchEvent(new CustomEvent("search:load-error", { detail: errorText }));
         });
@@ -44,10 +63,33 @@
       const tag = (el?.tagName || "").toLowerCase();
       if (tag === "input" || tag === "textarea" || el?.isContentEditable) return;
       event.preventDefault();
-      loadSearch();
+      loadSearch(true);
     }
 
-    (window as any).__openSearch = loadSearch;
+    (window as any).__openSearch = () => loadSearch(true);
     window.addEventListener("keydown", onSlash);
+
+    // 意图预取：搜索面板要动态 import React + DOMPurify + pagefind 胶水（都是独立 chunk），
+    // 冷缓存下「点一下才加载」实测会卡 488 ms —— 这是首页最高频的交互之一。
+    // 鼠标悬停 / 键盘聚焦 / 手指按下时就先把 chunk 拉下来，点到时通常只剩挂载。
+    const TRIGGER_SELECTOR = "[data-search-trigger], #open-search, #home-search-trigger";
+    const isTrigger = (target: EventTarget | null) =>
+      target instanceof Element && !!target.closest?.(TRIGGER_SELECTOR);
+
+    document.addEventListener(
+      "pointerover",
+      (event) => { if (isTrigger(event.target)) prefetchSearch(); },
+      { passive: true, capture: true },
+    );
+    document.addEventListener(
+      "focusin",
+      (event) => { if (isTrigger(event.target)) prefetchSearch(); },
+      { passive: true, capture: true },
+    );
+    document.addEventListener(
+      "touchstart",
+      (event) => { if (isTrigger(event.target)) prefetchSearch(); },
+      { passive: true, capture: true },
+    );
   })();
 </script>

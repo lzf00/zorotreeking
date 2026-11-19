@@ -11,9 +11,14 @@
 import { createRoot } from "react-dom/client";
 import SearchModal from "@/components/SearchModal";
 
-/** 把搜索 modal 挂到 container 上，并立刻展开 */
-export function mountSearch(container: HTMLElement) {
+/**
+ * 把搜索 modal 挂到 container 上。
+ *
+ * `open` 默认 true（用户点了搜索入口）；意图预取时会以 `open: false` 静默挂载，
+ * 避免「鼠标划过搜索框就弹出面板」——第 46 轮把预取和打开拆开时踩过这个坑。
+ */
+export function mountSearch(container: HTMLElement, { open = true }: { open?: boolean } = {}) {
   const root = createRoot(container);
-  root.render(<SearchModal initialOpen />);
+  root.render(<SearchModal initialOpen={open} />);
   return root;
 }

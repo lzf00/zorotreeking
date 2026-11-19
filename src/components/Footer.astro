@@ -13,7 +13,7 @@ const year = new Date().getFullYear();
       <p>© {year} {t("site.title")} · {t("site.tagline")}</p>
       <p class="flex flex-wrap items-center gap-x-3 gap-y-1">
         <button type="button" class="inline-flex items-center min-h-6 px-1 -mx-1 hover:text-[var(--text)] transition-colors cursor-pointer"
-                onclick="window.__openSearch?.()">
+                data-search-trigger onclick="window.__openSearch?.()">
           {lang === "zh" ? "搜索 /" : "Search /"}
         </button>
         <span>·</span>

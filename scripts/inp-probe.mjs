@@ -16,10 +16,11 @@
 import { chromium } from "playwright";
 
 const DEFAULT_URLS = [
-  "/photo/baokemeng/",
-  "/hike/sample-route/",
-  "/invest/",
-  "/chinese-market/",
+  "/photo/baokemeng/",   // React 相册灯箱
+  "/hike/sample-route/", // Leaflet 地图 + recharts 图表
+  "/invest/etf/",        // 实时成交额岛
+  "/invest/us-market/",  // 最大的一个数据看板岛
+  "/guestbook/",         // 表单
 ];
 
 const parseArgs = (argv) => {
@@ -36,6 +37,21 @@ const parseArgs = (argv) => {
 /** 把「页面上的可点元素」点一遍，返回每次点击后的交互耗时 */
 async function clickThrough(page, mobile) {
   const results = [];
+
+  // 0) 全站都有的两种交互：切主题（整页重绘）和搜索弹窗（要加载 pagefind 索引）。
+  //    它们出现在每一页，真实使用频率远高于页面里的具体按钮，所以先测。
+  for (const [selector, action] of [
+    ["#theme-toggle", "切换主题"],
+    ["#open-search", "打开搜索"],
+  ]) {
+    const trigger = page.locator(selector).first();
+    if (await trigger.count()) {
+      await trigger.click({ timeout: 3000 }).catch(() => {});
+      results.push({ action, ms: await drainEvents(page) });
+      await page.keyboard.press("Escape").catch(() => {});
+      await page.waitForTimeout(150);
+    }
+  }
 
   // 1) 移动端/桌面端都可能有的菜单按钮
   const toggles = await page.locator('button[aria-label*="菜单"], button[aria-expanded]').all();
@@ -119,10 +135,17 @@ async function probe({ base, urls, mobile }) {
   for (const path of urls) {
     const errors = [];
     page.on("pageerror", (err) => errors.push(String(err).slice(0, 80)));
-    await page.goto(base + path, { waitUntil: "load", timeout: 45000 });
+    const response = await page.goto(base + path, { waitUntil: "load", timeout: 45000 }).catch(() => null);
+    const status = response?.status() ?? 0;
+    if (status !== 200) {
+      // 404 页面上也有搜索框之类的可点元素，照着点会「测出一个很快的数字」——
+      // 第 45 轮就因为把一个不存在的 /chinese-market/ 当成了满分页。
+      report.push({ path, interactions: [], errors, status });
+      continue;
+    }
     await page.waitForTimeout(1200);
     const interactions = await clickThrough(page, mobile);
-    report.push({ path, interactions, errors });
+    report.push({ path, interactions, errors, status });
   }
   await browser.close();
   return report;
@@ -134,6 +157,7 @@ const summarize = (report) => {
     const worst = page.interactions.reduce((acc, cur) => (cur.ms > (acc?.ms ?? -1) ? cur : acc), null);
     rows.push({
       path: page.path,
+      status: page.status ?? 200,
       worstMs: worst?.ms ?? 0,
       worstAction: worst?.action ?? "—",
       detail: page.interactions.map((i) => `${i.action}:${i.ms}ms`).join(" · ") || "无可点元素",
@@ -149,13 +173,20 @@ const main = async () => {
   const rows = summarize(report);
   console.log(`\n交互延迟探针 · ${args.mobile ? "手机 390×844" : "桌面 1280×900"} · ${args.base}\n`);
   for (const row of rows) {
+    if (row.status !== 200) {
+      console.log(`⏭️  ${row.path.padEnd(24)} HTTP ${row.status} —— 跳过（不存在或不可访问，别拿它当「很快」）`);
+      continue;
+    }
     const verdict = row.worstMs <= 200 ? "✅" : row.worstMs <= 500 ? "⚠️" : "❌";
     console.log(`${verdict} ${row.path.padEnd(24)} 最慢 ${String(row.worstMs).padStart(4)} ms  (${row.worstAction})`);
     console.log(`     ${row.detail}`);
     if (row.errors) console.log(`     页面 JS 错误 ${row.errors} 条`);
   }
-  const bad = rows.filter((r) => r.worstMs > 200);
-  console.log(bad.length ? `\n${bad.length} 个页面交互超过 200 ms 目标线` : "\n全部页面交互 ≤200 ms");
+  const measured = rows.filter((r) => r.status === 200);
+  const skipped = rows.length - measured.length;
+  const bad = measured.filter((r) => r.worstMs > 200);
+  if (skipped) console.log(`\n${skipped} 个页面因 HTTP 状态非 200 被跳过（不计入结论）`);
+  console.log(bad.length ? `${bad.length} 个页面交互超过 200 ms 目标线` : "全部可测页面交互 ≤200 ms");
 };
 
 if (import.meta.url === `file://${process.argv[1]}`) await main();
