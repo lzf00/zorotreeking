@@ -31,6 +31,8 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
+import { isThirdPartyConsoleNoise } from "./lib/console-noise.mjs";
+
 const args = process.argv.slice(2);
 const valueOf = (name, fallback) => {
   const hit = args.find((a) => a.startsWith(`--${name}=`));
@@ -351,6 +353,8 @@ async function main() {
         // 「Failed to load resource」不带 URL，无法判断是不是 /api/*；
         // 失败请求统一由下面的 response 监听器精确判定（能看到状态码 + 路径）。
         if (/Failed to load resource/.test(text)) return;
+        // 第三方评论组件（Giscus）在出口受限时会刷自己的报错，与本仓库无关（第 92 轮）
+        if (isThirdPartyConsoleNoise(text, m.location()?.url ?? "")) return;
         issues.push(`console: ${text}`);
       });
       page.on("response", (r) => {

@@ -24,6 +24,7 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
+import { isThirdPartyConsoleNoise } from "./lib/console-noise.mjs";
 import { chromePath, serveDist } from "./lib/serve-dist.mjs";
 
 const args = process.argv.slice(2);
@@ -427,6 +428,9 @@ async function main() {
         const text = m.text();
         // 「Failed to load resource」不带 URL；/api/* 在静态服务器上必然 404
         if (/Failed to load resource/.test(text)) return;
+        // 第三方（Giscus）自己的报错：CI 出口被限流时它会刷 console.error，
+        // 本机复现不出来 —— 不窄化过滤的话，这条噪音会一直随机挡发布。
+        if (isThirdPartyConsoleNoise(text, m.location()?.url ?? "")) return;
         runtimeIssues.push(`console: ${text.slice(0, 160)}`);
       });
       page.on("response", (r) => {

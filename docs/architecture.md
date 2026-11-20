@@ -662,6 +662,40 @@ npm run check:images -- --limit 150 --warn
 当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
 原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
 
+### 部署烟测的失败诊断全是死代码（第 92 轮）
+
+现象：`Build & Deploy` 连续三挂在「Interaction smoke」，而 GitHub 注解里只有一句
+`Process completed with exit code 1` —— 场景名、报错原因一个字都没有。日志接口对普通
+仓库是 403，注解是唯一能拿到信息的通道，而它什么都没给。
+
+原因不在被测代码，在 workflow 的写法：
+
+```yaml
+run: |
+  npm run check:interactions > /tmp/interactions.log 2>&1
+  code=$?                      # ← 永远执行不到
+  cat /tmp/interactions.log    # ← 永远执行不到
+  echo "::error::…"            # ← 永远执行不到
+```
+
+GitHub Actions 的 `run:` 默认 shell 是 `bash -eo pipefail`。命令一失败，shell 立刻退出，
+后面「存日志 / 打注解 / 写 commit status」的整段都是死代码。第 74 轮只在 perf 那一步
+加了 `set +e`，runtime / mobile / interactions 三步一个都没加。
+
+修法与守卫：
+
+| 项 | 改动 |
+|---|---|
+| deploy.yml | runtime / mobile / interactions 三步各加 `set +e`，失败时额外打印日志尾部 20 行 |
+| site-audit.yml | 新鲜度 / 依赖公告两步同样缺 `set +e`（失败时步骤摘要丢失），一并补上 |
+| 守卫 | `tests/deploy-smoke-diagnostics.test.ts` 扫**所有 workflow**：凡出现 `code=$?` 的步骤必须有 `set +e` |
+
+变异验证（删掉交互那一步的 `set +e`）：测试立刻红 ——
+`这些步骤在失败时不会打印日志/注解`。
+
+顺带确认了另一件事：交互烟测跑的是**本地 dist**（`serveDist`），不是线上，所以它红
+说明新构建本身有问题，而不是「线上还是旧版本」。
+
 ### 搜索探针只打生产，等于门禁里没有搜索（第 91 轮）
 
 第 80 轮修的是线上搜索 403（nginx 权限位），修完之后探针一直只打**生产**：
