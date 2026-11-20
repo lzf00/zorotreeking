@@ -384,7 +384,10 @@ async function main() {
         // 弱网/多轮模式下逐页都打：这时看的是「每页多少 ms」，只打异常页等于没有基线。
         const reportEveryPage = THROTTLE || REPEAT > 1;
         if (run === 0 && (reportEveryPage || vitals.cls > 0 || vitals.lcp > 1500 || vitals.long > 0)) {
-          console.log(`    ↳ ${url} LCP ${vitals.lcp} ms · CLS ${vitals.cls} · 长任务 ${vitals.long} ms${vitals.lcpEl ? ` · LCP 元素 ${vitals.lcpEl}` : ""}`);
+          console.log(
+            `    ↳ ${url} FCP ${vitals.fcp} ms · LCP ${vitals.lcp} ms · CLS ${vitals.cls} · 长任务 ${vitals.long} ms` +
+              `${vitals.lcpEl ? ` · LCP 元素 ${vitals.lcpEl}` : ""}`,
+          );
           for (const shift of vitals.shifts) console.log(`        ${shift}`);
         }
       }
@@ -421,6 +424,7 @@ async function main() {
       medians.push({
         url,
         runs: rows.length,
+        fcp: mid(rows.map((row) => row.fcp)),
         lcp: mid(rows.map((row) => row.lcp)),
         cls: mid(rows.map((row) => row.cls)),
         long: mid(rows.map((row) => row.long)),
@@ -446,8 +450,10 @@ async function main() {
     const worstCls = medians.reduce((a, b) => (b.cls > a.cls ? b : a));
     const worstLcp = medians.reduce((a, b) => (b.lcp > a.lcp ? b : a));
     const longestTask = medians.reduce((a, b) => (b.long > a.long ? b : a));
+    const worstFcp = medians.reduce((a, b) => (b.fcp > a.fcp ? b : a));
     console.log(
-      `\n核心指标：CLS 最差 ${worstCls.cls}（${worstCls.url}）· LCP 最慢 ${worstLcp.lcp} ms（${worstLcp.url}）· 长任务最多 ${longestTask.long} ms（${longestTask.url}）`,
+      `\n核心指标：CLS 最差 ${worstCls.cls}（${worstCls.url}）· FCP 最慢 ${worstFcp.fcp} ms（${worstFcp.url}）` +
+        ` · LCP 最慢 ${worstLcp.lcp} ms（${worstLcp.url}）· 长任务最多 ${longestTask.long} ms（${longestTask.url}）`,
     );
   }
 

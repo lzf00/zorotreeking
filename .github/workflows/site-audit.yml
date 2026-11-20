@@ -1,0 +1,89 @@
+name: Full-site audit
+
+# 每周四 09:00 北京时间，把**线上** sitemap 里的每一页都真的加载一次。
+#
+# 为什么要有这条：发布流程里的 runtime smoke 只抽 21 个代表页（跑得快、能挡发布），
+# 全站 1186 页里那 800+ 相册页、几百篇日报、几十条路线页的模板是各自演化的，
+# 「只有某一种模板坏掉」在抽样里永远看不见——等用户投诉才发现就太晚了。
+#
+# 只报告、不挡发布：全量巡检发现的问题多数是内容层（某张图 404、某页 JS 报错），
+# 该让人看一眼再决定，而不是卡住当晚的部署。
+
+on:
+  schedule:
+    - cron: "0 1 * * 4"   # UTC 01:00 = BJT 09:00 周四
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: "只巡检前 N 页（0 = 全量，抽样按等距分布）"
+        type: string
+        default: "0"
+      concurrency:
+        description: "并发页面数（1-8；>2 时 LCP 会被 CPU 抢占推高，只当趋势看）"
+        type: string
+        default: "3"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: site-audit
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    # 1186 页 × 约 1.5 s / 5 并发 ≈ 8 分钟；给足余量，跨境链路抖动时不至于被砍。
+    timeout-minutes: 40
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - name: Install deps
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install chromium || echo "::warning::playwright chromium 安装失败，巡检将跳过"
+
+      # 用线上 sitemap 而不是本地构建：要查的就是「用户实际拿到的那份」，
+      # 包括 nginx / CDN 层的 404、压缩、缓存问题。
+      - name: Fetch the published sitemap
+        run: |
+          curl -sS --max-time 60 https://www.zorotreeking.online/sitemap.xml -o /tmp/sitemap.xml
+          echo "sitemap 里的 URL 数：$(grep -o '<loc>' /tmp/sitemap.xml | wc -l | tr -d ' ')"
+
+      - name: Audit every page
+        # 巡检有问题时脚本 exit 1，但那是报告不是发布闸门，别把 workflow 标红
+        continue-on-error: true
+        run: |
+          LIMIT="${{ github.event.inputs.limit }}"
+          CONC="${{ github.event.inputs.concurrency }}"
+          if [ -z "$LIMIT" ]; then LIMIT="0"; fi
+          if [ -z "$CONC" ]; then CONC="3"; fi
+          node scripts/audit-site.mjs \
+            --base=https://www.zorotreeking.online \
+            --sitemap=/tmp/sitemap.xml \
+            --vitals \
+            --limit="$LIMIT" \
+            --concurrency="$CONC" \
+            --out=reports/site-audit.jsonl
+
+      - name: Summarize into the run page
+        if: always()
+        run: |
+          if [ ! -f reports/site-audit.jsonl ]; then
+            echo "## 全站巡检：没有产出报告" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          node scripts/summarize-site-audit.mjs reports/site-audit.jsonl >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload report artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-audit-report
+          path: reports/site-audit.jsonl
+          retention-days: 30
