@@ -168,6 +168,20 @@ async function main() {
         hasTouch: true,
       });
       const page = await context.newPage();
+      // 真实下载量：用 CDP 的 encodedDataLength 累加。
+      // 不能从 dist 里「引用了哪些文件」去算——`<picture>` 的 `<img src>` 兜底图、
+      // 灯箱的原始大图都会出现在 HTML 里，但现代浏览器根本不会下载（实测 /photo/hudieren/
+      // 静态引用 5.6 MB，真实下载 ~200 KB）。只有浏览器自己报的传输量才是真的。
+      const cdp = await context.newCDPSession(page);
+      await cdp.send("Network.enable");
+      let bytes = 0;
+      let requests = 0;
+      cdp.on("Network.loadingFinished", ({ encodedDataLength }) => {
+        bytes += encodedDataLength ?? 0;
+      });
+      cdp.on("Network.requestWillBeSent", () => {
+        requests += 1;
+      });
       const issues = [];
       page.on("pageerror", (e) => issues.push(`pageerror: ${e.message.slice(0, 160)}`));
       page.on("console", (m) => {
@@ -228,7 +242,14 @@ async function main() {
       }
 
       await context.close();
-      const row = { url, status, ...(vitals ?? {}), ...(issues.length ? { issues: [...new Set(issues)] } : {}) };
+      const row = {
+        url,
+        status,
+        bytes: Math.round(bytes / 1024), // KB，方便人看
+        requests,
+        ...(vitals ?? {}),
+        ...(issues.length ? { issues: [...new Set(issues)] } : {}),
+      };
       write(row);
       results.push(row);
       if (issues.length) failures.push(row);
@@ -278,6 +299,14 @@ async function main() {
     for (const row of worstLcp) console.log(`  LCP ${String(row.lcp).padStart(5)} ms  ${row.url}  ${row.lcpEl ?? ""}`);
     const worstCls = [...results].filter((row) => row.cls > 0.01).sort((a, b) => b.cls - a.cls).slice(0, 8);
     for (const row of worstCls) console.log(`  CLS ${row.cls.toFixed(3)}  ${row.url}`);
+  }
+  const withBytes = results.filter((row) => row.bytes > 0);
+  if (withBytes.length) {
+    const sorted = [...withBytes].sort((a, b) => b.bytes - a.bytes);
+    const kb = sorted.map((row) => row.bytes).sort((a, b) => a - b);
+    const mid = kb[Math.floor((kb.length - 1) / 2)];
+    console.log(`下载量：中位 ${mid} KB / p95 ${kb[Math.floor(kb.length * 0.95)]} KB / 最重 ${sorted[0].bytes} KB`);
+    for (const row of sorted.slice(0, 8)) console.log(`  ${String(row.bytes).padStart(6)} KB (${row.requests} 请求)  ${row.url}`);
   }
   if (failures.length) {
     console.log(`\n失败页（前 20）：`);

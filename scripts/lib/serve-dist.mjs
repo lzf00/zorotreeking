@@ -1,6 +1,7 @@
 import { createServer } from "node:http";
 import { readFile, stat } from "node:fs/promises";
 import path from "node:path";
+import { gzipSync } from "node:zlib";
 
 /** 静态服务器与 nginx 行为对齐：命中目录就找 index.html，找不到就回 404.html */
 export const MIME = {
@@ -50,7 +51,18 @@ export function serveDist(root) {
         return;
       }
       const body = await readFile(file);
-      res.writeHead(200, { "Content-Type": MIME[path.extname(file)] ?? "application/octet-stream" }).end(body);
+      const contentType = MIME[path.extname(file)] ?? "application/octet-stream";
+      // 和 nginx 一样按需 gzip。不压缩的话，本地量到的「页面下载量」会虚高一倍
+      // （139 KB 的 HTML 在线上是 28 KB），任何按体积比较的结论都会失真。
+      const compressible = /^(text\/|application\/(json|xml|javascript))/.test(contentType) || path.extname(file) === ".svg";
+      const acceptsGzip = /\bgzip\b/.test(req.headers["accept-encoding"] ?? "");
+      if (compressible && acceptsGzip && body.length > 1024) {
+        res
+          .writeHead(200, { "Content-Type": contentType, "Content-Encoding": "gzip", Vary: "Accept-Encoding" })
+          .end(gzipSync(body));
+        return;
+      }
+      res.writeHead(200, { "Content-Type": contentType }).end(body);
     } catch {
       res.writeHead(500).end("error");
     }

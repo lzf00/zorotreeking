@@ -71,6 +71,19 @@ jobs:
             --concurrency="$CONC" \
             --out=reports/site-audit.jsonl
 
+      - name: Server-side config audit (nginx / CDN)
+        continue-on-error: true
+        run: |
+          node scripts/check-server.mjs --base=https://www.zorotreeking.online > /tmp/server-check.log 2>&1 || true
+          cat /tmp/server-check.log
+          {
+            echo '### Server-side config (nginx / CDN)'
+            echo ''
+            echo '```'
+            cat /tmp/server-check.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Summarize into the run page
         if: always()
         run: |

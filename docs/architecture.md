@@ -662,6 +662,37 @@ npm run check:images -- --limit 150 --warn
 当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
 原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
 
+### 服务器配置是唯一没有门禁的地方（第 76 轮）
+
+全站巡检能覆盖 HTML、图片、JS，但覆盖不到 nginx：同一份内容两个 URL、压缩算法、
+缓存头、反代缓存，全在服务器上，仓库里的 325 个测试一个都看不见。于是补了一个
+**从外部探测**的脚本 `npm run check:server`（`scripts/check-server.mjs`），用
+`node:https` 拿 `rawHeaders`，逐项判定并直接给出可抄的 nginx 片段。
+
+线上（`f048b5d6`）第一次跑出来的结果：
+
+| 项 | 现状 | 级别 |
+|---|---|---|
+| `/index.html` | 200，应 301 到 `/` | 必须修 |
+| `/_astro/*.js` 的 `cache-control` | **两行**：`max-age=31536000` + `public, immutable` | 必须修 |
+| `/photos/**` 的 `cache-control` | **两行**：`max-age=2592000` + `public, max-age=2592000` | 必须修 |
+| `/en/index.html` 等子目录 | 200 | 建议 |
+| brotli | 只开 gzip（HTML 28 KB vs 24 KB × 1194 页） | 建议 |
+| `/api/market/*` | 无 `cache-control`，每次回源打后端 | 建议 |
+
+两行 `cache-control` 的成因：nginx 的 `expires 1y` 自己会发一条 `Cache-Control: max-age=…`，
+再叠一条 `add_header Cache-Control "public, immutable"` 就是两行、值还不一样。浏览器多数
+会合并，但 CDN / 审计工具会各取第一行 —— 最坏情况是 `immutable` 被丢掉。
+
+实现上踩了两个坑，都写进注释了：`fetch` 的 `Headers` 会把同名头**合并**成一行（根本数不出
+重复），必须用 `node:https` 的 `rawHeaders`；响应体是压缩过的，不解压就找不到 `/_astro/`
+引用（第一版静默漏掉整条检查）。
+
+改法见 [`docs/nginx-hardening.md`](./nginx-hardening.md)：整段配置 + `add_header` 按层级
+继承的坑（子 location 里写 `add_header` 会顶掉父级的安全头）+ 验证命令。
+**这部分我没法自己应用**（没有主机权限），脚本与文档已就绪，改完跑 `npm run check:server`
+即可确认；每周巡检会把结论写进 run 页面，不进阻塞发布的 gate。
+
 ### CLS 0.053 的真凶：正文粗体是 weight 600，不是 700（第 75 轮）
 
 全站巡检（未节流）把「本地全 0、线上 0.028–0.053」这类差异顶了出来。逐层剥下去：
