@@ -71,6 +71,19 @@ jobs:
             --concurrency="$CONC" \
             --out=reports/site-audit.jsonl
 
+      - name: Content freshness
+        run: |
+          node scripts/check-freshness.mjs > /tmp/freshness.log 2>&1; code=$?
+          cat /tmp/freshness.log
+          {
+            echo '### Content freshness'
+            echo ''
+            echo '```'
+            cat /tmp/freshness.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit $code
+
       - name: Dependency advisories (npm audit + allowlist)
         run: |
           node scripts/check-deps.mjs > /tmp/deps-check.log 2>&1; code=$?

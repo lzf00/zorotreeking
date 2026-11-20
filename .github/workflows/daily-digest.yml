@@ -55,6 +55,23 @@ jobs:
       - name: Install deps
         run: npm ci
 
+      # 预检（第 78 轮）：把「模型调不通」归类成人话再往下走。
+      # 静默停更 3 天的教训是：一次失败如果只说「这步红了」，下次修的时候还得重新猜。
+      - name: LLM preflight (does the summarizer answer?)
+        if: github.event.inputs.skip_fetch != 'true'
+        env:
+          DOUBAO_API_KEY: ${{ secrets.DOUBAO_API_KEY }}
+          ARK_API_KEY: ${{ secrets.ARK_API_KEY }}
+        run: |
+          npx tsx scripts/digest-preflight.ts | tee /tmp/llm-preflight.log
+          {
+            echo '### LLM 预检'
+            echo ''
+            echo '```'
+            cat /tmp/llm-preflight.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Run digest fetcher
         if: github.event.inputs.skip_fetch != 'true'
         env:
@@ -112,6 +129,21 @@ jobs:
 
       # embedding 增量更新（独立 step，失败不影响 digest commit；
       # 即使超时被 cancel，新 digest mdx 已经在 main 上了）
+      # 收尾断言（第 78 轮）：日报流水线最危险的失败不是报错，而是**什么都没产出**。
+      # 2026-11-19 起 AI 日报静默停更 3 天，站点照常构建、门禁全绿、巡检 0 失败 ——
+      # 因为没有「今天到底产出了没」的检查。这条会让停更直接变成红 job。
+      - name: Assert today's digest really landed
+        if: always() && github.event.inputs.skip_fetch != 'true'
+        run: |
+          node scripts/check-freshness.mjs --require-today --max-age=1 | tee /tmp/freshness.log
+          {
+            echo '### 内容新鲜度'
+            echo ''
+            echo '```'
+            cat /tmp/freshness.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Refresh post embeddings (incremental)
         timeout-minutes: 15
         env:
