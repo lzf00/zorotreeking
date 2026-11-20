@@ -7,6 +7,9 @@ const DIR = new URL("../src/data/photo-manifest/", import.meta.url);
 // 派生文件名一旦混进 manifest，就会变成一张「新照片」，而且按字典序
 // `xxx.hero.webp` 排在 `xxx.jpeg` 前面 → 直接顶掉相册封面。第 43 轮踩过一次。
 const DERIVED = [".hero.webp", ".thumb.webp", ".og.jpg", ".w640.jpg", ".w960.jpg"];
+// 派生变体的「派生」：.og.w640.webp / .w960.webp 之类（第 49 轮在本地留下的历史文件里抓到过）。
+// 这类文件后缀不在上面那张表里，但同样是派生，按「文件名中间出现派生段」判定。
+const DERIVED_SEGMENT = /\.(?:og|thumb|hero)\.|(\.og)?\.w(?:640|960)\./i;
 
 test("manifest 里不许出现派生文件（.hero/.thumb/.og/w640/w960）", async () => {
   const files = (await readdir(DIR)).filter((f) => f.endsWith(".json"));
@@ -23,6 +26,10 @@ test("manifest 里不许出现派生文件（.hero/.thumb/.og/w640/w960）", asy
             `${file}: ${key} 是派生文件 ${value}（会被当成一张新照片）`,
           );
         }
+        assert.ok(
+          !DERIVED_SEGMENT.test(decodeURIComponent(value)),
+          `${file}: ${key} 是「派生的派生」 ${value}（同样会被当成一张新照片）`,
+        );
       }
     }
   }

@@ -100,6 +100,10 @@ async function main() {
       if (/\.hero\.webp$/i.test(f)) continue;
       // xxx.w640.jpg / xxx.w960.jpg 跳过（日报列表页封面变体，scripts/cover-variants.mjs 生成）
       if (/\.w(?:640|960)\.jpg$/i.test(f)) continue;
+      // 派生变体的「派生」：本地试验遗留过 .og.w640.webp / .w960.webp 这类文件，
+      // 上面按后缀过滤抓不到它们，于是被当成新照片塞进 manifest——线上页面会为同一张图
+      // 多下 1-2 份（第 49 轮在本地复现）。只要文件名里带这些派生段，一律跳过。
+      if (/\.(?:og|thumb|hero)\./i.test(f) || /\.w(?:640|960)\./i.test(f)) continue;
       // xxx.webp：如果同目录有 xxx.jpg/jpeg/png 原图，则跳过（派生）；否则保留（孤立 webp 当原图）
       if (/\.webp$/i.test(f)) {
         const base = f.replace(/\.webp$/i, "");
@@ -159,6 +163,11 @@ async function main() {
           // （1920px、平均 34KB、最大 604KB），一页 1.7MB。三列布局每格
           // 实际显示宽度 ~400px，2x 屏 800px 足够，缩到 720px 基本无感。
           // 原图宽度本来就 ≤720 的不再生成，直接用全尺寸 webp 充当缩略图。
+          //
+          // 质量 74：第 49 轮把相册网格的第一屏两张缩略图量出来是 66 KB + 57 KB（q78），
+          // 降到 74 后视觉上几乎无差，但首屏能少几十 KB。
+          // ⚠️ 改了质量常量必须跑 `npm run clean:derived` 再 build —— 下面的 mtime 守卫
+          // 会因为「缩略图比原图新」而跳过已经存在的旧质量文件。
           if (width > 720) {
             const thumbName = path.basename(f, ext) + ".thumb.webp";
             const thumbPath = path.join(albumDir, thumbName);
@@ -172,7 +181,7 @@ async function main() {
             }
             if (needThumb) {
               try {
-                await sharp(buf).rotate().resize({ width: 720, withoutEnlargement: true }).webp({ quality: 78 }).toFile(thumbPath);
+                await sharp(buf).rotate().resize({ width: 720, withoutEnlargement: true }).webp({ quality: 74 }).toFile(thumbPath);
                 console.log(`    + ${thumbName}`);
               } catch (e) {
                 console.warn(`    ✗ thumb gen failed ${thumbName}:`, e);
