@@ -23,11 +23,16 @@ test("封面候选：有 hero 时最高一档是 min(1600, 原宽)，没有 hero
   const withHero = coverVariants({
     thumbSm: "/a/sm.webp",
     thumbWebp: "/a/t.webp",
+    midWebp: "/a/mid.webp",
     heroWebp: "/a/hero.webp",
     srcWebp: "/a/full.webp",
     width: 3840,
   });
-  assert.equal(buildSrcSet(withHero), "/a/sm.webp 480w, /a/t.webp 720w, /a/hero.webp 1600w");
+  // 720 与 1600 之间必须有 1200 档：平板 1x、2x 桌面卡片都落在这一段
+  assert.equal(
+    buildSrcSet(withHero),
+    "/a/sm.webp 480w, /a/t.webp 720w, /a/mid.webp 1200w, /a/hero.webp 1600w",
+  );
 
   const noHero = coverVariants({ thumbWebp: "/b/t.webp", srcWebp: "/b/full.webp", width: 1080 });
   assert.equal(buildSrcSet(noHero), "/b/t.webp 720w, /b/full.webp 1080w");
@@ -38,7 +43,7 @@ test("相册索引页：手机档必须限死在 480/720（否则 2x 手机会�
     const src = await readFile(new URL(page, import.meta.url), "utf8");
     // 手机分支：media ≤640 + 把 hero/srcWebp 排除掉
     assert.match(src, /media="\(max-width: 640px\)"/, `${page}: 缺手机档 media`);
-    assert.match(src, /heroWebp: null, srcWebp: null/, `${page}: 手机档没有排除 hero（会拉大图）`);
+    assert.match(src, /heroWebp: null, srcWebp: null, midWebp: null/, `${page}: 手机档没有排除 hero/mid（2x 手机会拉大图）`);
     // 宽屏分支：带描述符的候选，而不是单候选 srcset
     assert.match(src, /srcset=\{buildSrcSet\(coverVariants\(cover\)\)\}/, `${page}: 宽屏档应带宽度描述符`);
   }

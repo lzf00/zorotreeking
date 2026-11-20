@@ -63,6 +63,7 @@ test("够宽的照片必须带齐派生变体（缩略图/480w/og/hero）", asyn
       if (w > 480 && !entry.thumbSm) missing.push(`${file}: ${entry.src} (${w}px) 缺 thumbSm`);
       if (w >= 1000 && !entry.srcOg) missing.push(`${file}: ${entry.src} (${w}px) 缺 srcOg`);
       if (w > 1200 && !entry.heroWebp) missing.push(`${file}: ${entry.src} (${w}px) 缺 heroWebp`);
+      if (w > 1200 && !entry.midWebp) missing.push(`${file}: ${entry.src} (${w}px) 缺 midWebp`);
     }
   }
   assert.deepEqual(missing, []);

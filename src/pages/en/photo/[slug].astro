@@ -5,7 +5,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 import PhotoGallery from "@/components/PhotoGallery";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
 import PhotoMap from "@/components/PhotoMap";
-import { heroWebpSources } from "@/lib/photo-hero";
+import { heroSrcSets } from "@/lib/photo-hero";
 import { loadPhotoManifest, resolveAlbumKey } from "@/lib/photo-manifests";
 import { pickAlbumCover } from "@/lib/photo-cover";
 
@@ -22,7 +22,7 @@ const photos = loadPhotoManifest(resolveAlbumKey(entry.data));
 // 与中文相册页共用一个选封面的函数（英文页原先写死 photos[0]，导致同一本相册
 // 中英文首图不同，且 baokemeng 英文页首图下了 85 KB 原图、中文页只有 9 KB hero）
 const { cover, rest } = pickAlbumCover(entry.data.cover, photos, entry.data.title);
-const heroSources = heroWebpSources(cover);
+const heroSets = heroSrcSets(cover);
 // 有 GPS 的照片提出来给地图用（中文页早就有，英文页一直缺，这次补齐）
 const geoPoints = photos
   .filter((p: any) => Number.isFinite(p.lat) && Number.isFinite(p.lng))
@@ -53,8 +53,8 @@ const shareDims = cover?.srcOg
             webp 时会显示一张被裁过、却按原图宽高占位的图（第 52 轮修）。 */}
         <picture>
           {/* 与中文相册页一致：手机上用 720px 缩略图（28 KB），桌面用原尺寸 webp */}
-          {heroSources.mobile && <source type="image/webp" media="(max-width: 640px)" srcset={heroSources.mobile} />}
-          {heroSources.desktop && <source type="image/webp" srcset={heroSources.desktop} />}
+          {heroSets.mobile && <source type="image/webp" media="(max-width: 640px)" srcset={heroSets.mobile} sizes="100vw" />}
+          {heroSets.wide && <source type="image/webp" srcset={heroSets.wide} sizes="100vw" />}
           <img
             src={cover.src}
             alt={cover.alt}

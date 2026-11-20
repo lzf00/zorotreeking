@@ -36,6 +36,8 @@ type PhotoEntry = {
   thumbWebp?: string;
   /** 480w 缩略图（窄屏/1x 屏用，比 720w 小约 40%） */
   thumbSm?: string;
+  /** 1200w 中间档：平板 1x、2x 桌面卡片、相册首图都卡在 720 与 1600 之间 */
+  midWebp?: string;
   /** hero 用的 1600px 宽 webp（原图更宽时才生成）；相册封面在 1280 宽屏上显示 */
   heroWebp?: string;
   width: number;
@@ -105,7 +107,7 @@ async function main() {
       // 派生变体的「派生」：本地试验遗留过 .og.w640.webp / .w960.webp 这类文件，
       // 上面按后缀过滤抓不到它们，于是被当成新照片塞进 manifest——线上页面会为同一张图
       // 多下 1-2 份（第 49 轮在本地复现）。只要文件名里带这些派生段，一律跳过。
-      if (/\.(?:og|thumb\d*|hero)\./i.test(f) || /\.w(?:640|960)\./i.test(f)) continue;
+      if (/\.(?:og|thumb\d*|hero|mid)\./i.test(f) || /\.w(?:640|960)\./i.test(f)) continue;
       // xxx.webp：如果同目录有 xxx.jpg/jpeg/png 原图，则跳过（派生）；否则保留（孤立 webp 当原图）
       if (/\.webp$/i.test(f)) {
         const base = f.replace(/\.webp$/i, "");
@@ -130,6 +132,7 @@ async function main() {
       let thumbRelative: string | undefined;
       let thumbSmRelative: string | undefined;
       let heroRelative: string | undefined;
+      let midRelative: string | undefined;
       if (sharp) {
         try {
           const meta = await sharp(buf).rotate().metadata();
@@ -226,6 +229,31 @@ async function main() {
             thumbSmRelative = photoUrl(albumSlug, thumbSmName);
           }
 
+          // 1200w 中间档（第 54 轮）：720 和 1600 之间是个大空档——平板 1x（768）
+          // 和 2x 桌面卡片（1152）都只能二选一：要么 720 糊，要么 1600 多传一倍。
+          // 实测 hudieren 首图 188 KB → 约 100 KB，索引页 2x 桌面 317 KB → 约 150 KB。
+          if (width > 1200) {
+            const midName = path.basename(f, ext) + ".mid.webp";
+            const midPath = path.join(albumDir, midName);
+            let needMid = true;
+            try {
+              const srcStat = await fs.stat(inputPath);
+              const midStat = await fs.stat(midPath);
+              if (midStat.mtimeMs >= srcStat.mtimeMs) needMid = false;
+            } catch {
+              /* 不存在 → 生成 */
+            }
+            if (needMid) {
+              try {
+                await sharp(buf).rotate().resize({ width: 1200, withoutEnlargement: true }).webp({ quality: 76 }).toFile(midPath);
+                console.log(`    + ${midName} (mid 1200w)`);
+              } catch (e) {
+                console.warn(`    ✗ mid gen failed ${midName}:`, e);
+              }
+            }
+            midRelative = photoUrl(albumSlug, midName);
+          }
+
           // hero 专用：相册封面/详情页顶部那张图，1280 宽屏最多显示 ~1280 CSS px。
           // 原尺寸 webp（质量 80）会把 3840×2160 的照片压成 903 KB——整页最重的一笔。
           // 缩到 1600px 宽（2x 屏 800 CSS px 也够），实测 3840×2160 的 903 KB → 约 180 KB。
@@ -309,6 +337,7 @@ async function main() {
         thumbWebp: thumbRelative ?? webpRelative,
         thumbSm: thumbSmRelative,
         heroWebp: heroRelative,
+        midWebp: midRelative,
         width,
         height,
         alt: path.basename(f, path.extname(f)),

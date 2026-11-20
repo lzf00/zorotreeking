@@ -5,7 +5,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 import PhotoGallery from "@/components/PhotoGallery";
 import PhotoMap from "@/components/PhotoMap";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
-import { heroWebpSources } from "@/lib/photo-hero";
+import { heroSrcSets } from "@/lib/photo-hero";
 import { loadPhotoManifest, resolveAlbumKey } from "@/lib/photo-manifests";
 import { pickAlbumCover } from "@/lib/photo-cover";
 import { siteDateString } from "@/lib/site-date";
@@ -25,7 +25,7 @@ const t = useTranslations(lang);
 const photos = loadPhotoManifest(resolveAlbumKey(entry.data));
 // hero 优先用 frontmatter.cover；选法与英文页共用，避免两边慢慢漂移
 const { cover, rest } = pickAlbumCover(entry.data.cover, photos, entry.data.title);
-const heroSources = heroWebpSources(cover);
+const heroSets = heroSrcSets(cover);
 // 社交卡片优先用 1200×630 的 .og.jpg 派生图（体积小、比例对）；没有派生图时
 // 退回原图，但必须把真实宽高一并传下去，否则平台按 1200×630 裁切会变形。
 const shareImage = cover?.srcOg ?? entry.data.cover ?? cover?.src;
@@ -62,8 +62,8 @@ const geoPoints = photos
               28 KB，在 390px 宽的屏上肉眼无差别。用 media 而不是 srcset 宽度描述符，
               因为亮/暗两套布局下 hero 都是满宽，media 更直观也更好验证。
               桌面端（>640px）保持原尺寸 webp，LCP 不受影响。 */}
-          {heroSources.mobile && <source type="image/webp" media="(max-width: 640px)" srcset={heroSources.mobile} />}
-          {heroSources.desktop && <source type="image/webp" srcset={heroSources.desktop} />}
+          {heroSets.mobile && <source type="image/webp" media="(max-width: 640px)" srcset={heroSets.mobile} sizes="100vw" />}
+          {heroSets.wide && <source type="image/webp" srcset={heroSets.wide} sizes="100vw" />}
           <img
             src={cover.src}
             alt={cover.alt}

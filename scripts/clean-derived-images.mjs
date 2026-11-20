@@ -14,6 +14,7 @@ import path from "node:path";
 const DERIVED = [
   /\.thumb\d*\.webp$/i,
   /\.hero\.webp$/i,
+  /\.mid\.webp$/i,
   /\.og\.jpg$/i,
   /(\.og)?\.w640\.(?:jpg|webp)$/i,
   /(\.og)?\.w960\.(?:jpg|webp)$/i,

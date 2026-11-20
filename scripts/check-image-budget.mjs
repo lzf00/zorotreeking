@@ -30,7 +30,7 @@ const DIST = fileURLToPath(new URL("../dist/", import.meta.url));
 const PUBLIC = fileURLToPath(new URL("../public/", import.meta.url));
 
 /** 派生图后缀：这些永远是「轻量版」，直接放行 */
-const DERIVED = [/\.thumb\d*\.webp$/i, /\.hero\.webp$/i, /\.og\.jpg$/i, /\.w640\.jpg$/i, /\.w960\.jpg$/i];
+const DERIVED = [/\.thumb\d*\.webp$/i, /\.hero\.webp$/i, /\.mid\.webp$/i, /\.og\.jpg$/i, /\.w640\.jpg$/i, /\.w960\.jpg$/i];
 
 const isDerived = (url) => DERIVED.some((re) => re.test(url));
 

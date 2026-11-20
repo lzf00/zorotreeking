@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-import { heroWebpSources } from "../src/lib/photo-hero.ts";
+import { heroSrcSets, heroWebpSources } from "../src/lib/photo-hero.ts";
 
 test("手机用 720px 缩略图 webp，桌面用原尺寸 webp", () => {
   const sources = heroWebpSources({ srcWebp: "/a/full.webp", thumbWebp: "/a/full.thumb.webp" });
@@ -30,12 +30,25 @@ test("缺变体时返回 null，由页面退化成原图（不能拼出不存在
   assert.deepEqual(heroWebpSources(null), { mobile: null, desktop: null });
 });
 
-test("相册页 hero 真的用上了这两个候选（防止有人把 media 分支删掉）", async () => {
-  const page = await readFile(new URL("../src/pages/photo/[slug].astro", import.meta.url), "utf8");
-  assert.match(page, /heroSources\.mobile/);
-  assert.match(page, /heroSources\.desktop/);
-  // 手机分支必须带 media 条件，否则就变成「所有屏幕都用缩略图」——桌面 hero 会糊
-  assert.match(page, /heroSources\.mobile && <source type="image\/webp" media="\(max-width: 640px\)"/);
+test("相册页 hero 真的用上了两档候选（防止有人把 media 分支删掉）", async () => {
+  for (const file of ["../src/pages/photo/[slug].astro", "../src/pages/en/photo/[slug].astro"]) {
+    const page = await readFile(new URL(file, import.meta.url), "utf8");
+    // 手机档只给 480/720（media 限死），宽屏档带描述符让浏览器按 DPR 挑
+    assert.match(page, /heroSets\.mobile && <source type="image\/webp" media="\(max-width: 640px\)"/, file);
+    assert.match(page, /heroSets\.wide && <source type="image\/webp" srcset=\{heroSets\.wide\}/, file);
+  }
+});
+
+test("hero 宽屏档必须含 1200w 中间档，否则平板/小笔记本只能拉 1600", async () => {
+  const wide = heroSrcSets({
+    thumbWebp: "/a/t.webp",
+    thumbSm: "/a/t480.webp",
+    midWebp: "/a/mid.webp",
+    heroWebp: "/a/hero.webp",
+    width: 3840,
+  }).wide;
+  assert.match(wide, /\/a\/mid\.webp 1200w/);
+  assert.match(wide, /\/a\/hero\.webp 1600w/);
 });
 
 test("相册列表页封面必须走派生图，不许直接下原图", async () => {
@@ -46,7 +59,7 @@ test("相册列表页封面必须走派生图，不许直接下原图", async ()
     //   宽屏档带真实宽度描述符，由浏览器按屏宽 × DPR 挑
     assert.match(page, /type="image\/webp"/, file);
     assert.match(page, /media="\(max-width: 640px\)"/, file);
-    assert.match(page, /heroWebp: null, srcWebp: null/, file);
+    assert.match(page, /heroWebp: null, srcWebp: null, midWebp: null/, file);
     assert.match(page, /srcset=\{buildSrcSet\(coverVariants\(cover\)\)\}/, file);
     // 兜底图用 1200×630 的 og.jpg，而不是原图
     assert.match(page, /src=\{cover\.srcOg \?\? cover\.src\}/, file);

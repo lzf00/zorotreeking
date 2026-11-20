@@ -47,6 +47,7 @@ export function galleryVariants(p: {
 export function coverVariants(cover: {
   thumbSm?: string | null;
   thumbWebp?: string | null;
+  midWebp?: string | null;
   heroWebp?: string | null;
   srcWebp?: string | null;
   width?: number;
@@ -56,6 +57,8 @@ export function coverVariants(cover: {
   return [
     { url: cover.thumbSm, width: Math.min(480, w || 480) },
     { url: cover.thumbWebp, width: Math.min(720, w || 720) },
+    // 1200w 中间档：平板 1x、2x 桌面卡片都在这一段，缺了就只能拉 1600
+    { url: cover.midWebp, width: Math.min(1200, w || 1200) },
     { url: bigUrl, width: cover.heroWebp ? Math.min(1600, w || 1600) : w || 1600 },
   ];
 }
