@@ -662,6 +662,24 @@ npm run check:images -- --limit 150 --warn
 当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
 原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
 
+### Feed 审计：RSS 缺自引用、缺 lastBuildDate、一次吐 526 条（第 57 轮）
+
+| 项 | 改前 | 改后 |
+|---|---|---|
+| RSS 体积 | 260 KB / 526 条 | **23.5 KB / 50 条**（−91%） |
+| `atom:link rel="self"` | 无 | 有 |
+| `lastBuildDate` / `ttl` | 无 | 最新条目的 UTC 时间 / 60 |
+| Atom | 本来合规（50 条、self、updated、author 都有） | 不变 |
+
+RSS 是「每次刷新整份重传」的格式，526 条历史让每个订阅者每天白传 260 KB；和 `atom.xml`
+对齐成 50 条不会丢条目——阅读器按 `guid` 保留已读历史。另外缺 `atom:link self` 时，聚合器
+认不出规范地址，去重和刷新都不稳。
+
+新增 `scripts/check-feeds.mjs`（`npm run check:feeds`，已接进 gate）：解析两份 feed，查
+channel/feed 必填项、`rel=self`、条目必填字段、时间倒序、guid/id 不重复、条数 ≤100。
+反向验证过：手工拆掉 `atom:link`/`lastBuildDate` 并把首条时间改成 2001 年，脚本报出 51 个问题、
+退出码 1。
+
 ### 结构化数据审计：面包屑末级缺 item（第 56 轮）
 
 把 1195 页的 JSON-LD 全量解析了一遍（`breadcrumb@1184 · Article@1046 · CollectionPage@72 ·
