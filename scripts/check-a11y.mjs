@@ -91,7 +91,19 @@ for (const path of PATHS) {
           document.documentElement.style.colorScheme = "dark";
         });
       }
-      // 入场动画（animate-rise 0.8s）跑完再测：半透明中间态会被当成对比度不足
+      // 两个坑叠在一起（第 83 轮定位）：
+      //  1. 入场动画（animate-rise 0.8s）半透明中间态会被当成对比度不足 —— 等它跑完；
+      //  2. 更阴的一个：列表页有 170 张卡在**首屏之外**，而它们带 `transition-colors`。
+      //     Chromium 对「从未被绘制过」的元素不推进 transition，getComputedStyle 会一直
+      //     返回过渡起点（浅色的 #fff），于是 axe 报出 162 条「深色主题下浅灰字压白底」。
+      //     手动滚进视口后同一元素立刻变成 rgba(24,24,27,.4) —— 说明站点是对的、测量是错的。
+      // 关掉过渡/动画让计算值一步到位，不依赖元素有没有被绘制。
+      await page.addStyleTag({
+        content: `*, *::before, *::after {
+          transition: none !important;
+          animation: none !important;
+        }`,
+      });
       await page.waitForTimeout(2500);
       await page.addScriptTag({ content: axe.source });
       const violations = await page.evaluate(async () => {

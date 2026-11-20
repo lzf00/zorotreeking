@@ -47,6 +47,9 @@ const { title, description, ogImage, ogImageWidth, ogImageHeight, schemaType, li
        WCAG AA 要求 4.5:1（相册页 footer 的链接会被 Lighthouse 判失败）。
        提到 #7d7d82 = 4.83:1，仍然明显弱于正文，但过了 AA。 */
     --text-tertiary: #7d7d82;
+    /* 同理：--danger-text 的浅色主题值是 red-700（#b91c1c），在 #0a0a0a 上只有
+       3.05:1。沉浸式页面无视主题永远是深底，所以这里直接钉成暗底用的值。 */
+    --danger-text: #f87171;
   }
   body:has(.photo-immersive) header {
     background: rgba(10,10,10,0.7) !important;

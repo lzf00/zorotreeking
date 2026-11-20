@@ -35,8 +35,11 @@ export default function FeedbackButtons({ slug, align = "right" }: Props) {
       .then(setState)
       .catch((e) => {
         if (e.name === "AbortError") return;
-        setErrCode(e.message || "fetch-error");
-        // fallback：显示 0/0，按钮可见但点击会再试
+        // 初始拉取失败**不**在页面上显示错误码：访客什么都没点，却在每篇文章底部
+        // 看到一条红色 "·HTTP 422"（线上 /api/feedback 的 GET 就是 422），
+        // 既像站点坏了、又把正文的对比度问题带进来（axe 在相册页抓到 3.05:1）。
+        // 静默回退成 0/0，把「用户主动投票失败」的提示留给下面的 vote()。
+        console.warn("[feedback] 初始状态拉取失败，按钮仍可点击重试:", e?.message ?? e);
         setState({ likes: 0, dislikes: 0, my_vote: null });
       });
     return () => ctl.abort();
