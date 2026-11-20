@@ -14,6 +14,7 @@
  *   node scripts/check-runtime.mjs --all-photo     # 三个相册全跑
  *   node scripts/check-runtime.mjs --mobile        # 手机视口（390×844）抽查关键模板
  *   node scripts/check-runtime.mjs --viewport=768x1024
+ *   node scripts/check-runtime.mjs --vitals         # 顺带量 LCP / CLS / 长任务
  *   node scripts/check-runtime.mjs --dist=dist --wait=2500 --limit=10
  *
  * 判定：pageerror / console error / 同源 4xx-5xx 响应 → 失败（exit 1）。
@@ -33,6 +34,11 @@ const valueOf = (name, fallback) => {
 const DIST = path.resolve(valueOf("dist", "dist"));
 const WAIT = Number(valueOf("wait", "1500"));
 const MOBILE = args.includes("--mobile");
+// --vitals：顺带量 LCP / CLS / 长任务。CLS 是硬指标（布局抖动是结构问题，不随机），
+// LCP 只做提示——它受机器冷启动与网络影响，硬卡会造成假红。
+const VITALS = args.includes("--vitals");
+/** 布局稳定性阈值：Core Web Vitals 的 good 线是 0.1 */
+const CLS_BUDGET = Number(valueOf("cls", "0.1"));
 // --mobile 默认用 iPhone 尺寸；显式 --viewport 可覆盖
 const VIEWPORT = valueOf("viewport", MOBILE ? "390x844" : "1280x900");
 const LIMIT = Number(valueOf("limit", "0"));
@@ -190,6 +196,7 @@ async function main() {
       : undefined);
   const browser = await chromium.launch({ executablePath, args: ["--no-sandbox"] });
   const problems = [];
+  const vitalsList = [];
   let checked = 0;
 
   try {
@@ -197,6 +204,33 @@ async function main() {
       const touch = vw < 640;
       const context = await browser.newContext({ viewport: { width: vw, height: vh }, isMobile: touch, hasTouch: touch });
       const page = await context.newPage();
+      if (VITALS) {
+        await page.addInitScript(() => {
+          window.__vitals = { lcp: 0, cls: 0, long: 0, shifts: [] };
+          try {
+            new PerformanceObserver((list) => {
+              for (const entry of list.getEntries()) window.__vitals.lcp = entry.startTime;
+            }).observe({ type: "largest-contentful-paint", buffered: true });
+            new PerformanceObserver((list) => {
+              for (const entry of list.getEntries()) {
+                if (entry.hadRecentInput) continue;
+                window.__vitals.cls += entry.value;
+                if (window.__vitals.shifts.length < 5) {
+                  window.__vitals.shifts.push(
+                    `${entry.value.toFixed(3)}@${Math.round(entry.startTime)}ms ← ` +
+                      (entry.sources || [])
+                        .map((source) => `${source.node?.tagName ?? "?"}.${String(source.node?.className ?? "").slice(0, 40)}`)
+                        .join(" / "),
+                  );
+                }
+              }
+            }).observe({ type: "layout-shift", buffered: true });
+            new PerformanceObserver((list) => {
+              for (const entry of list.getEntries()) window.__vitals.long += entry.duration;
+            }).observe({ type: "longtask", buffered: true });
+          } catch {}
+        });
+      }
       const issues = [];
       page.on("pageerror", (e) => issues.push(`pageerror: ${e.message.slice(0, 200)}`));
       page.on("console", (m) => {
@@ -222,6 +256,25 @@ async function main() {
       if (response && response.status() >= 400) issues.push(`HTTP ${response.status()}: 页面自身`);
       await page.waitForTimeout(WAIT);
       checked += 1;
+      let vitals = null;
+      if (VITALS) {
+        vitals = await page.evaluate(() => ({
+          lcp: Math.round(window.__vitals?.lcp ?? 0),
+          cls: Number((window.__vitals?.cls ?? 0).toFixed(3)),
+          long: Math.round(window.__vitals?.long ?? 0),
+          shifts: window.__vitals?.shifts ?? [],
+          fcp: Math.round(performance.getEntriesByName("first-contentful-paint")[0]?.startTime ?? 0),
+        }));
+        if (vitals.cls > CLS_BUDGET) {
+          issues.push(`CLS ${vitals.cls} 超过预算 ${CLS_BUDGET}（布局抖动，实测值不随机）`);
+        }
+        if (vitals.lcp > 4000) issues.push(`LCP ${vitals.lcp} ms 过慢（本地测应 < 1000 ms，先排查是否卡在字体/大图）`);
+        vitalsList.push({ url, ...vitals });
+        if (vitals.cls > 0 || vitals.lcp > 1500 || vitals.long > 0) {
+          console.log(`    ↳ ${url} LCP ${vitals.lcp} ms · CLS ${vitals.cls} · 长任务 ${vitals.long} ms`);
+          for (const shift of vitals.shifts) console.log(`        ${shift}`);
+        }
+      }
       const unique = [...new Set(issues)];
       if (unique.length) {
         console.log(`✗ ${url}`);
@@ -235,6 +288,15 @@ async function main() {
   } finally {
     await browser.close();
     server.close();
+  }
+
+  if (VITALS && vitalsList.length) {
+    const worstCls = vitalsList.reduce((a, b) => (b.cls > a.cls ? b : a));
+    const worstLcp = vitalsList.reduce((a, b) => (b.lcp > a.lcp ? b : a));
+    const longestTask = vitalsList.reduce((a, b) => (b.long > a.long ? b : a));
+    console.log(
+      `\n核心指标：CLS 最差 ${worstCls.cls}（${worstCls.url}）· LCP 最慢 ${worstLcp.lcp} ms（${worstLcp.url}）· 长任务最多 ${longestTask.long} ms（${longestTask.url}）`,
+    );
   }
 
   if (problems.length) {

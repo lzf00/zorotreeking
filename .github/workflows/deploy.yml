@@ -140,13 +140,13 @@ jobs:
           npx playwright install chromium || echo "::warning::playwright chromium 安装失败，校验将降级为跳过"
           npm run check:admin
 
-      - name: Runtime smoke (JS errors, failed requests)
+      - name: Runtime smoke (JS errors, failed requests, CLS)
         # 静态检查看不见「island 水合抛错」「图表访问 undefined」「懒加载资源 404」。
-        # 这一步用真实 Chromium 打开 19 个代表页面，抓 pageerror / 控制台错误 / 同源 4xx。
-        # exit 2 表示浏览器不可用（环境问题）→ 降级为 warning；exit 1 是页面真的报错 → 卡住发布。
+        # 这一步用真实 Chromium 打开 21 个代表页面，抓 pageerror / 控制台错误 / 同源 4xx，
+        # 顺带量 LCP / CLS / 长任务：CLS > 0.1 直接卡住（布局抖动是结构问题，不随机）。
         id: runtime
         run: |
-          npm run check:runtime
+          npm run check:runtime -- --vitals
           code=$?
           if [ "$code" -eq 2 ]; then
             echo "::warning::运行时自检跳过：Chromium 不可用"

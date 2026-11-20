@@ -46,3 +46,14 @@ test("标签页路径必须动态发现：写死 /tag/ai/ 这种 slug 会静默�
   assert.match(src, /跳过 \$\{missing\.length\} 个不存在的目标页/);
 });
 
+test("核心指标：CLS 卡 0.1、LCP 只拦明显异常", async () => {
+  const src = await readFile(SCRIPT, "utf8");
+  assert.match(src, /const CLS_BUDGET = Number\(valueOf\("cls", "0\.1"\)\)/, "CLS 预算默认 0.1");
+  assert.match(src, /vitals\.cls > CLS_BUDGET/, "CLS 超预算要判失败");
+  assert.match(src, /vitals\.lcp > 4000/, "LCP 阈值要宽松（本地/CI 机器差异大）");
+  // 位移必须能归因，否则报「CLS 0.066」没人知道该改哪里
+  assert.match(src, /entry\.sources/, "要采集 layout-shift 的 source 元素");
+  const wf = await readFile(new URL("../.github/workflows/deploy.yml", import.meta.url), "utf8");
+  assert.ok(wf.includes("npm run check:runtime -- --vitals"), "deploy 要带 --vitals");
+});
+
