@@ -146,11 +146,20 @@ jobs:
         # 顺带量 LCP / CLS / 长任务：CLS > 0.1 直接卡住（布局抖动是结构问题，不随机）。
         id: runtime
         run: |
-          npm run check:runtime -- --vitals
+          # 把输出留住：失败时用 ::error:: 打出来，这样检查结果能从 GitHub API 的
+          # annotations 读到——仓库没开管理员权限，日志接口是 403 的，只看得到注释。
+          npm run check:runtime -- --vitals > /tmp/runtime.log 2>&1
           code=$?
+          cat /tmp/runtime.log
           if [ "$code" -eq 2 ]; then
             echo "::warning::运行时自检跳过：Chromium 不可用"
             exit 0
+          fi
+          if [ "$code" -ne 0 ]; then
+            echo "::error::运行时自检失败（exit $code），以下是被打回的页面："
+            grep -E "^(✗|  ·|    ↳|        )" /tmp/runtime.log | head -40 | while IFS= read -r line; do
+              echo "::error::$line"
+            done
           fi
           exit "$code"
 

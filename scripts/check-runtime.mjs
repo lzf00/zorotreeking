@@ -39,6 +39,9 @@ const MOBILE = args.includes("--mobile");
 const VITALS = args.includes("--vitals");
 /** 布局稳定性阈值：Core Web Vitals 的 good 线是 0.1 */
 const CLS_BUDGET = Number(valueOf("cls", "0.1"));
+// LCP 受 CI 机器冷启动影响很大（本机预热后 64–392 ms，共享 runner 可能 1.5 s+），
+// 默认阈值故意宽，只拦「明显异常」而不是性能达标线。
+const LCP_LIMIT = Number(valueOf("lcp", "6000"));
 // --mobile 默认用 iPhone 尺寸；显式 --viewport 可覆盖
 const VIEWPORT = valueOf("viewport", MOBILE ? "390x844" : "1280x900");
 const LIMIT = Number(valueOf("limit", "0"));
@@ -200,6 +203,15 @@ async function main() {
   let checked = 0;
 
   try {
+    if (VITALS) {
+      // 全新 browser 的第一次导航要付冷启动成本（实测 LCP 1.5–1.9 s，第二次起 64–164 ms）。
+      // 不预热的话，第一个页面的 LCP 数字毫无参考价值。
+      const warmContext = await browser.newContext({ viewport: { width: vw, height: vh } });
+      const warmPage = await warmContext.newPage();
+      await warmPage.goto(`${base}/`, { waitUntil: "load", timeout: 60_000 }).catch(() => {});
+      await warmContext.close();
+    }
+
     for (const url of targets) {
       const touch = vw < 640;
       const context = await browser.newContext({ viewport: { width: vw, height: vh }, isMobile: touch, hasTouch: touch });
@@ -268,7 +280,7 @@ async function main() {
         if (vitals.cls > CLS_BUDGET) {
           issues.push(`CLS ${vitals.cls} 超过预算 ${CLS_BUDGET}（布局抖动，实测值不随机）`);
         }
-        if (vitals.lcp > 4000) issues.push(`LCP ${vitals.lcp} ms 过慢（本地测应 < 1000 ms，先排查是否卡在字体/大图）`);
+        if (vitals.lcp > LCP_LIMIT) issues.push(`LCP ${vitals.lcp} ms 超过 ${LCP_LIMIT} ms（本地预热后应 < 400 ms，先排查字体/大图）`);
         vitalsList.push({ url, ...vitals });
         if (vitals.cls > 0 || vitals.lcp > 1500 || vitals.long > 0) {
           console.log(`    ↳ ${url} LCP ${vitals.lcp} ms · CLS ${vitals.cls} · 长任务 ${vitals.long} ms`);

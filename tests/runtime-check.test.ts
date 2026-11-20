@@ -50,7 +50,12 @@ test("核心指标：CLS 卡 0.1、LCP 只拦明显异常", async () => {
   const src = await readFile(SCRIPT, "utf8");
   assert.match(src, /const CLS_BUDGET = Number\(valueOf\("cls", "0\.1"\)\)/, "CLS 预算默认 0.1");
   assert.match(src, /vitals\.cls > CLS_BUDGET/, "CLS 超预算要判失败");
-  assert.match(src, /vitals\.lcp > 4000/, "LCP 阈值要宽松（本地/CI 机器差异大）");
+  assert.match(src, /const LCP_LIMIT = Number\(valueOf\("lcp", "6000"\)\)/, "LCP 阈值要宽松（本地/CI 机器差异大）");
+  assert.match(src, /vitals\.lcp > LCP_LIMIT/, "LCP 超阈值才判失败");
+  assert.match(src, /全新 browser 的第一次导航要付冷启动成本/, "要先预热再量 LCP");
+  // CI 日志接口 403，只能靠 annotations 读失败原因
+  const wf2 = await readFile(new URL("../.github/workflows/deploy.yml", import.meta.url), "utf8");
+  assert.ok(wf2.includes("::error::运行时自检失败"), "失败时要写进 annotations");
   // 位移必须能归因，否则报「CLS 0.066」没人知道该改哪里
   assert.match(src, /entry\.sources/, "要采集 layout-shift 的 source 元素");
   const wf = await readFile(new URL("../.github/workflows/deploy.yml", import.meta.url), "utf8");
