@@ -662,6 +662,36 @@ npm run check:images -- --limit 150 --warn
 当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
 原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
 
+### 发布卡了 40 分钟：第三方评论组件的 console 噪音（第 92 轮，同一轮发现）
+
+诊断修好之后，注解立刻指认真凶：
+
+```
+✗ 内容页：滚动一遍不预取整页反馈（≤2 次 GET）（/ai/digest-2026-08-27/）
+    console: [giscus] An error occurred. Error message: "Unexpected end of JSON input"
+✗ 评分：GET 422 时点星仍能评分且不显示错误徽标（/ai/digest-2026-08-27/）
+    console: [giscus] … "Failed to execute 'json' on 'Response': Unexpected end of JSON input"
+```
+
+不是本站代码的问题：Giscus 的 `client.js` 在页面上下文里请求自己的
+`https://giscus.app/api/discussions`，GitHub runner 出口被限流/拦截时拿不到 JSON，
+它就 `console.error` 一句。本机网络正常，永远复现不出来 —— 典型的「CI 红、本地绿」，
+而且它挡的是**发布**：从第 89 轮起三次 Build & Deploy 全挂在这一步，线上一直停在旧构建，
+我在本地测的一切都还是新的。
+
+修法要「窄」：
+
+| 项 | 改动 |
+|---|---|
+| `scripts/lib/console-noise.mjs` | 新增 `isThirdPartyConsoleNoise(text, url)`：只认 `[giscus]` 前缀 / `giscus.app` 来源，别的一概不放行 |
+| `check-interactions.mjs` · `check-runtime.mjs` | console 钩子里调用它；自己代码的 `TypeError`、`HTTP 4xx`、水合报错照旧计数 |
+| 单测 | 5 条自家报错必须判 false（防止过滤宽了变成假绿）、别的第三方域名不自动放行 |
+
+结果：CI 里 `smoke/interactions` 从红变绿（19/19），`Build & Deploy` 36 个步骤全绿，
+`db9975b2` 已上线（Production acceptance smoke 校验了 `deploy-meta.json` 的 sha，
+search probe 校验了 pagefind 碎片可读）。唯一红的 commit status 是
+`content/freshness`（AI 日报落后 3 天，等 08:00 定时任务）。
+
 ### 部署烟测的失败诊断全是死代码（第 92 轮）
 
 现象：`Build & Deploy` 连续三挂在「Interaction smoke」，而 GitHub 注解里只有一句
