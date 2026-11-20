@@ -154,7 +154,7 @@ jobs:
           # 不完全一致；CLS 这里放宽到 0.25（"good" 线的 2.5 倍）——
           # 它拦得住 0.232 那种结构性抖动，但不会被环境噪声搞成假红。
           # 本地要严格就用默认值（0.1）。
-          npm run check:runtime -- --vitals --soft-vitals > /tmp/runtime.log 2>&1
+          npm run check:runtime -- --vitals --cls=0.12 --lcp=8000 > /tmp/runtime.log 2>&1
           code=$?
           cat /tmp/runtime.log
           if [ "$code" -eq 2 ]; then
