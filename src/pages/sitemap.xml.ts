@@ -3,6 +3,7 @@ import { execFileSync } from "node:child_process";
 import { getCollection } from "astro:content";
 import type { APIContext } from "astro";
 import stockDetails from "@/data/wind-stock-details.json";
+import { loadPhotoManifest, resolveAlbumKey } from "@/lib/photo-manifests";
 import { travelGuides } from "@/data/travel-guides";
 import { getStaticSitemapPaths } from "@/lib/sitemap";
 import { tagToSlug } from "@/lib/tags";
@@ -99,7 +100,8 @@ export async function GET(context: APIContext) {
     "/tag": latestOf([...aiZh, ...invZh, ...hikeZh, ...photoZh]),
     "/en/tag": latestOf([...aiEn, ...invEn, ...hikeEn, ...photoEn]),
   };
-  const urls: { loc: string; lastmod?: Date }[] = getStaticSitemapPaths().map((path) => {
+  type SitemapImage = { loc: string; title?: string; caption?: string };
+  const urls: { loc: string; lastmod?: Date; images?: SitemapImage[] }[] = getStaticSitemapPaths().map((path) => {
     const contentDate = latestBySection[path];
     const file = contentDate ? null : sourceFileFor(path);
     return {
@@ -118,7 +120,31 @@ export async function GET(context: APIContext) {
   push("ai", "zh", aiZh); push("ai", "en", aiEn);
   push("invest", "zh", invZh); push("invest", "en", invEn);
   push("hike", "zh", hikeZh); push("hike", "en", hikeEn);
-  push("photo", "zh", photoZh); push("photo", "en", photoEn);
+  /**
+   * 相册页额外输出 image sitemap 扩展（第 58 轮）。
+   *
+   * 相册是本站最值得进图片搜索的内容，但图片只能靠爬虫顺着 <img> 发现；
+   * `image:image` 让 Google 直接拿到图片地址 + 标题，不依赖渲染。
+   * 每册最多 20 张：sitemap 上限 50k URL / 50 MB，而这条扩展是纯增量，
+   * 全站 6 个相册页 ×20 = 120 条，体积可以忽略。
+   */
+  const IMAGES_PER_ALBUM = 20;
+  const pushAlbum = (lang: "zh" | "en", entries: any[]) => {
+    for (const e of entries) {
+      const photos = loadPhotoManifest(resolveAlbumKey(e.data));
+      const images: SitemapImage[] = photos.slice(0, IMAGES_PER_ALBUM).map((photo) => ({
+        loc: new URL(photo.srcWebp ?? photo.src, site).toString(),
+        title: photo.alt || e.data.title,
+        caption: e.data.title,
+      }));
+      urls.push({
+        loc: withSlash(`${site}${lang === "en" ? "/en" : ""}/photo/${e.data.translationKey}`),
+        lastmod: e.data.updated ?? e.data.date,
+        ...(images.length ? { images } : {}),
+      });
+    }
+  };
+  pushAlbum("zh", photoZh); pushAlbum("en", photoEn);
   for (const guide of travelGuides) {
     urls.push({ loc: withSlash(`${site}${guide.href}`), lastmod: new Date(`${guide.updated ?? guide.date}T00:00:00+08:00`) });
   }
@@ -156,12 +182,20 @@ export async function GET(context: APIContext) {
 
   const xml =
     `<?xml version="1.0" encoding="UTF-8"?>\n` +
-    `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+    `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n` +
     urls
-      .map(
-        (u) =>
-          `  <url><loc>${escapeXml(u.loc)}</loc>${u.lastmod ? `<lastmod>${u.lastmod.toISOString().slice(0, 10)}</lastmod>` : ""}</url>`,
-      )
+      .map((u) => {
+        const images = (u.images ?? [])
+          .map(
+            (img) =>
+              `<image:image><image:loc>${escapeXml(img.loc)}</image:loc>` +
+              (img.title ? `<image:title>${escapeXml(img.title)}</image:title>` : "") +
+              (img.caption ? `<image:caption>${escapeXml(img.caption)}</image:caption>` : "") +
+              `</image:image>`,
+          )
+          .join("");
+        return `  <url><loc>${escapeXml(u.loc)}</loc>${u.lastmod ? `<lastmod>${u.lastmod.toISOString().slice(0, 10)}</lastmod>` : ""}${images}</url>`;
+      })
       .join("\n") +
     `\n</urlset>\n`;
   return new Response(xml, { headers: { "Content-Type": "application/xml" } });

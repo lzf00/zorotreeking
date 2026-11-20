@@ -488,12 +488,29 @@ async function checkSitemap(siteOrigin, indexable) {
       errors.push(`sitemap 与 canonical 不一致：${loc} ≠ ${canonical}`);
     }
   }
+  // image sitemap 扩展（第 58 轮）：相册页的 <image:loc> 必须是本站绝对地址，
+  // 并且真的能在 dist 里找到——图片搜索拿到的必须是 200 的图，不能是拼错的路径。
+  const imageLocs = [...xml.matchAll(/<image:loc>([^<]+)<\/image:loc>/g)].map((m) => decodeEntities(m[1]));
+  for (const loc of imageLocs) {
+    if (!loc.startsWith(`${siteOrigin}/`)) {
+      errors.push(`image:loc 不是本站绝对地址：${loc}`);
+      continue;
+    }
+    const rel = loc.slice(siteOrigin.length + 1).split("?")[0];
+    const onDisk = path.join(DIST, decodeURIComponent(rel));
+    try {
+      await fs.access(onDisk);
+    } catch {
+      errors.push(`image:loc 指向的文件不存在：${loc}`);
+    }
+  }
+
   // 覆盖率：可索引却没进 sitemap 的页面，搜索引擎只能靠外链自己发现
   const missing = [...indexable].filter((url) => !seen.has(url)).sort();
   for (const url of missing.slice(0, 5)) errors.push(`可索引但不在 sitemap：${url}`);
   if (missing.length > 5) errors.push(`…另有 ${missing.length - 5} 个页面不在 sitemap`);
 
-  return { errors, urls: locs.length, missing: missing.length, missingLastmod };
+  return { errors, urls: locs.length, missing: missing.length, missingLastmod, imageLocs: imageLocs.length };
 }
 
 async function main() {
@@ -628,7 +645,15 @@ async function main() {
 
   console.log(`[seo] 检查 ${checked} 个页面（跳过 ${skipped}）`);
   const warningTotal = samples.reduce((n, s) => n + s.warnings.length, 0) + warningPages;
-  console.log(`[seo] ${errorPages} 页有错误 / ${warningPages} 页只有告警 → 通过\n`);
+  // 汇总行要算上「页面之外」的问题（sitemap / hreflang / 断链），否则会出现
+  // 「0 页有错误 → 通过」却 exit 1 的自相矛盾输出（第 58 轮跑反向测试时撞见）。
+  const globalIssues =
+    sitemap.errors.length + hreflangErrors.length + links.unresolved.size + links.caseOnly + links.nonCanonical.size;
+  const bad = errorPages > 0 || globalIssues > 0;
+  console.log(
+    `[seo] ${errorPages} 页有错误 / ${warningPages} 页只有告警` +
+      `${globalIssues ? ` · 另有 ${globalIssues} 个站点级问题` : ""} → ${bad ? "失败" : "通过"}\n`,
+  );
   if (errorPages > 0) {
     console.log(`[seo] 有错误的页面示例：`);
     for (const s of samples.slice(0, 10)) {
