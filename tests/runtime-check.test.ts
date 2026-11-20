@@ -63,5 +63,6 @@ test("核心指标：CLS 卡 0.1、LCP 只拦明显异常", async () => {
   assert.ok(wf.includes("report-ci-status.mjs --context=smoke/runtime"), "失败原因要发成可匿名读取的 commit status");
   assert.match(src, /valueOf\("cls", "0\.1"\)/, "CLS 预算要可配");
   assert.match(src, /SOFT_VITALS/, "要有 advisory 模式");
+  assert.match(src, /Emulation\.setCPUThrottlingRate/, "--cpu=N 要能把 CPU 降速，模拟慢设备");
 });
 

@@ -662,6 +662,34 @@ npm run check:images -- --limit 150 --warn
 当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
 原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
 
+### 慢设备才暴露的抖动：ETF 成交表（第 69 轮）
+
+CI 报 `/en/hike/` CLS 0.103、本机同页只有 0.005 —— 这个差距不能只当 CI 噪声。加了两样东西：
+
+1. `check:runtime --cpu=N`：用 CDP `Emulation.setCPUThrottlingRate` 把 CPU 降速，模拟
+   中低端手机 / 2 核 runner。**4 倍降速**下本机立刻复现出一批「快机器上看不见」的问题。
+2. 用降速跑核心页面，发现 `/invest/etf/` CLS **0.066**：SSR 先画 360 px 骨架屏，
+   数据到了变表格、失败又缩成一张小卡片 —— 两次高度突变。
+
+修法和第 67 轮的持仓表一样：**SSR 就该把能画的东西画出来**。12 只宽基 ETF 的代码和
+名字本来就在 `src/data/etf-registry.json`（和 `/api/market/etf` 同源），缺的只是价格和
+成交额。现在 `rows = data ?? REGISTRY_ROWS`，缺的格子显示「—」，失败只加一条提示带。
+
+| 指标 | 修前 | 修后 |
+|---|---|---|
+| `/invest/etf/` CLS（4 倍降速） | 0.066 | **0.022**（剩余是数据填充的亚像素变化） |
+| `/invest/etf/` CLS（正常） | 0.066 | **0.015** |
+| 全站最差 CLS（正常） | 0.066 | **0.015** |
+
+守卫：交互自检新增「ETF 页：成交表由 SSR 直出」（断言 SSR HTML 有 ≥10 只 ETF、无 360 px
+骨架屏），`tests/holdings-ssr.test.ts` 同时锁住两个表格组件不许回退。
+
+**`/en/hike/` 的 CI 0.103 仍无定论**：本机把字体延迟 800 ms、CPU 降 10 倍、网络压到
+1.6 Mbps 都只测到 0.005。最可能的原因是 Linux runner 上没有 Inter，`font-display: swap`
+的兜底字体（DejaVu Sans 比 Inter 宽）导致整段文字换行数变化；本机 macOS 兜底字体宽度接近
+Inter，所以复现不出来。metric-matched fallback（给兜底字体加 `size-adjust`）能解，但
+需要按平台分别标定，本轮先记下来，不盲改字体。
+
 ### CI 可观测性：性能指标降为 advisory + commit status 通道（第 68 轮）
 
 第 67 轮连挂两次部署，根因是「新加的性能断言当成了发布闸门」+「日志读不到」。两件事

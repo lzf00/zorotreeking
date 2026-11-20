@@ -19,6 +19,7 @@ test("四个交互场景都要在清单里（搜索/灯箱/点赞/深浅色）",
     "行情岛：指数接口数据覆盖 SSR 兜底",
     "行情岛：接口 500 时保留 SSR 兜底",
     "投资页：持仓表由 SSR 直出（不再靠水合后长高）",
+    "ETF 页：成交表由 SSR 直出（不再先画 360px 骨架屏）",
   ];
   for (const keyword of names) {
     assert.ok(src.includes(keyword), `缺场景：${keyword}`);

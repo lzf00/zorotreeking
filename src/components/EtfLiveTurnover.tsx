@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { chinaMarketPhase, formatChinaMarketTime, isChinaATradingHours } from "@/lib/china-market";
+import registryJson from "@/data/etf-registry.json";
 
 /**
  * 宽基 ETF 盘中实时成交监测（/invest/etf/ 页顶部）。
@@ -25,6 +26,20 @@ type EtfItem = {
   ratio_pct: number | null;
   prev_trade_date?: string | null;
 };
+
+/** 构建时就有的 12 只宽基 ETF（和 /api/market/etf 的清单同源）。 */
+const REGISTRY_ROWS: EtfItem[] = (registryJson as { etfs: { code: string; name: string; priority: number }[] }).etfs
+  .slice()
+  .sort((a, b) => a.priority - b.priority || a.code.localeCompare(b.code))
+  .map((item) => ({
+    code: item.code,
+    name: item.name,
+    price: null,
+    change_pct: null,
+    turnover_yi: null,
+    prev_turnover_yi: null,
+    ratio_pct: null,
+  }));
 
 type EtfResp = {
   ok: boolean;
@@ -109,22 +124,16 @@ export default function EtfLiveTurnover() {
     };
   }, [load]);
 
-  if (!data && error) {
-    return (
-      <div className="rounded-2xl bg-[var(--bg-soft)] p-5 text-sm text-[var(--text-tertiary)]">
-        实时成交加载失败：{error}。<button onClick={load} className="underline ml-1">重试</button>
-      </div>
-    );
-  }
-
-  if (!data) {
-    return <div className="rounded-2xl bg-[var(--bg-soft)] h-[360px] animate-pulse" />;
-  }
-
-  const over100 = data.filter((d) => (d.ratio_pct ?? 0) >= 100).length;
+  // 不要「没拿到行情就交白卷」。12 只宽基 ETF 的代码和名字是构建时就有的
+  // （src/data/etf-registry.json 和 /api/market/etf 同源），缺的只有价格/成交额。
+  // 以前这里先画 360px 骨架屏、失败时缩成一张小卡片，实测 /invest/etf/ 的
+  // CLS 0.066 就是这两次高度变化造成的（第 69 轮 4 倍 CPU 降速下复现）。
+  // 现在 SSR 直接把表格画出来，缺的格子显示「—」，高度从头到尾不变。
+  const rows = data ?? REGISTRY_ROWS;
+  const over100 = rows.filter((d) => (d.ratio_pct ?? 0) >= 100).length;
   // 全部 ETF 今日成交额都是 0（或还没拿到）且接口说不在交易时段 → 今天根本没有成交，
   // 不是基准缺失。开盘后第一笔成交进来，进度条就自己出来了。
-  const noTurnoverYet = data.every((d) => (d.turnover_yi ?? 0) === 0);
+  const noTurnoverYet = rows.every((d) => (d.turnover_yi ?? 0) === 0);
   const premarket = noTurnoverYet && trading !== true;
   const phase = chinaMarketPhase();
   const marketNote =
@@ -155,7 +164,8 @@ export default function EtfLiveTurnover() {
 
       {error && (
         <div role="status" className="mb-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-300">
-          刷新失败，正在保留上次数据：{error}。<button onClick={load} className="underline ml-1">重试</button>
+          {data ? "刷新失败，正在保留上次数据：" : "实时成交暂时加载失败（表格里是构建时的 ETF 清单）："}
+          {error}。<button onClick={load} className="underline ml-1">重试</button>
         </div>
       )}
 
@@ -171,7 +181,7 @@ export default function EtfLiveTurnover() {
             </tr>
           </thead>
           <tbody>
-            {data.map((d) => {
+            {rows.map((d) => {
               const pct = d.change_pct;
               const chgColor = pct == null ? "" : pct > 0 ? "text-red-600 dark:text-red-400" : pct < 0 ? "text-green-700 dark:text-green-400" : "";
               const ratio = d.ratio_pct;

@@ -219,6 +219,20 @@ const SCENARIOS = [
     },
   },
   {
+    name: "ETF 页：成交表由 SSR 直出（不再先画 360px 骨架屏）",
+    url: "/invest/etf/",
+    async run({ page, fail }) {
+      // 同持仓表：以前 SSR 只画 360px 骨架屏、失败时缩成小卡片，实测 CLS 0.066。
+      // 12 只宽基 ETF 的代码/名字构建时就有（etf-registry.json），没理由不渲染。
+      const response = await page.request.get(new URL("/invest/etf/", page.url()).href);
+      if (!response.ok()) return fail(`/invest/etf/ 返回 ${response.status()}`);
+      const html = await response.text();
+      if (html.includes("h-[360px]")) return fail("SSR 里还有 360px 骨架屏");
+      const codes = new Set(html.match(/>[0-9]{6}</g) || []);
+      if (codes.size < 10) return fail(`SSR 里的 ETF 只有 ${codes.size} 只（应该有 12 只）`);
+    },
+  },
+  {
     name: "行情岛：指数接口数据覆盖 SSR 兜底",
     url: "/invest/",
     api: {

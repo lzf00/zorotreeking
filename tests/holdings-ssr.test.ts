@@ -16,3 +16,11 @@ test(" hydrated 与 SSR 用同一份表格结构", async () => {
   // rows 必须无条件由 holdings 推导出来（不是 quotes 有值才算）
   assert.match(src, /const rows = holdings\.map/);
 });
+
+test("ETF 成交表也不能交白卷（曾有 360px 骨架屏，CLS 0.066）", async () => {
+  const src = await readFile(new URL("../src/components/EtfLiveTurnover.tsx", import.meta.url), "utf8");
+  assert.ok(!src.includes("h-[360px]"), "骨架屏会在水合后塌缩");
+  assert.ok(!/if \(!data\) \{\s*return/.test(src), "没数据也要把表格画出来");
+  assert.match(src, /REGISTRY_ROWS/, "SSR 的表格行来自 etf-registry.json");
+  assert.match(src, /const rows = data \?\? REGISTRY_ROWS/);
+});

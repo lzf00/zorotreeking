@@ -16,6 +16,7 @@
  *   node scripts/check-runtime.mjs --viewport=768x1024
  *   node scripts/check-runtime.mjs --vitals         # 顺带量 LCP / CLS / 长任务
  *   node scripts/check-runtime.mjs --vitals --soft-vitals   # 指标超标只警告（CI 用）
+ *   node scripts/check-runtime.mjs --vitals --cpu=4         # 降速 4 倍，模拟慢设备
  *   node scripts/check-runtime.mjs --vitals --base=https://www.zorotreeking.online   # 线上实测
  *   node scripts/check-runtime.mjs --dist=dist --wait=2500 --limit=10
  *
@@ -54,6 +55,14 @@ const LCP_LIMIT = Number(valueOf("lcp", "6000"));
  * 超标仍会打印 `⚠` 并进入 workflow 的 commit status，看得见但不会挡发布。
  */
 const SOFT_VITALS = args.includes("--soft-vitals");
+/**
+ * --cpu=N：用 CDP 把 CPU 降速 N 倍，模拟中低端手机/CI 的慢机器。
+ *
+ * 为什么需要：本机（M 系 Mac + 系统 Chrome）测出来全绿的页面，在 CI 的 2 核 runner
+ * 上会出现 0.1 的 CLS（第 67/69 轮各一次）。降速能把这个差距在本地复现出来，
+ * 例如 `/invest/etf/` 在 4 倍降速下才会暴露 360px 骨架屏塌缩（0.066）。
+ */
+const CPU_THROTTLE = Number(valueOf("cpu", "1"));
 // --mobile 默认用 iPhone 尺寸；显式 --viewport 可覆盖
 const VIEWPORT = valueOf("viewport", MOBILE ? "390x844" : "1280x900");
 // 默认测本地 dist；传 --base=https://www.zorotreeking.online 就直接测线上（含真实网络）。
@@ -231,6 +240,10 @@ async function main() {
       const touch = vw < 640;
       const context = await browser.newContext({ viewport: { width: vw, height: vh }, isMobile: touch, hasTouch: touch });
       const page = await context.newPage();
+    if (CPU_THROTTLE > 1) {
+      const session = await context.newCDPSession(page);
+      await session.send("Emulation.setCPUThrottlingRate", { rate: CPU_THROTTLE });
+    }
       if (VITALS) {
         await page.addInitScript(() => {
           window.__vitals = { lcp: 0, cls: 0, long: 0, shifts: [] };
