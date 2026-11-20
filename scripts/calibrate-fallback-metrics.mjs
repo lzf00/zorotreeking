@@ -7,7 +7,8 @@
  * （本机 macOS 只有 0.005），机制用「兜底换成宽字体」的对照实验验证过：0.005 → 0.233，
  * 加 metric-matched fallback 后回到 0.006。
  *
- * 本脚本只做标定：把数字抄进 src/styles/fonts.css 的 `size-adjust`。
+ * 本脚本只做标定：把数字抄进 src/styles/fonts.css —— `size-adjust` 对齐宽度，
+ * `ascent-override` / `descent-override` 对齐行盒高度（只对宽度的话，大标题换字体仍会跳）。
  * 本机没有的字体（Linux 的 DejaVu、Android 的 Roboto）会明确标注「未安装，需在该平台标定」。
  *
  * 用法：node scripts/calibrate-fallback-metrics.mjs
@@ -38,13 +39,29 @@ const result = await page.evaluate(async ({ sample, targets }) => {
   // 不存在的字体在 canvas 里会落到默认字体；用它当哨兵判断「这个字体装了没」
   const sentinel = width("__definitely-not-installed__");
   const out = [];
+  const boxMetrics = (family) => {
+    ctx.font = `100px ${JSON.stringify(family)}`;
+    const m = ctx.measureText(sample);
+    return { ascent: m.fontBoundingBoxAscent / 100, descent: m.fontBoundingBoxDescent / 100 };
+  };
   for (const { webfont, candidates } of targets) {
     await document.fonts.load(`100px ${JSON.stringify(webfont)}`, sample);
     const webWidth = width(webfont);
+    const webBox = boxMetrics(webfont);
     for (const family of candidates) {
       const width_ = width(family);
       const installed = Math.abs(width_ - sentinel) > 0.5;
-      out.push({ webfont, family, installed, sizeAdjust: +(webWidth / width_).toFixed(4) });
+      const adjust = webWidth / width_;
+      // override 是「网页字体的度量 ÷ size-adjust」，这样乘回 size-adjust 后正好等于网页字体的行盒
+      const box = boxMetrics(family);
+      out.push({
+        webfont,
+        family,
+        installed,
+        sizeAdjust: +adjust.toFixed(4),
+        ascentOverride: +((webBox.ascent / adjust) * 100).toFixed(1),
+        descentOverride: +((webBox.descent / adjust) * 100).toFixed(1),
+      });
     }
   }
   return out;
@@ -57,7 +74,10 @@ for (const target of TARGETS) {
       console.log(`  ${row.family.padEnd(18)} 未安装（需要在对应平台上量）`);
       continue;
     }
-    console.log(`  ${row.family.padEnd(18)} size-adjust: ${(row.sizeAdjust * 100).toFixed(1)}%`);
+    console.log(
+      `  ${row.family.padEnd(18)} size-adjust: ${(row.sizeAdjust * 100).toFixed(1)}%` +
+        `  ascent-override: ${row.ascentOverride}%  descent-override: ${row.descentOverride}%  line-gap-override: 0%`,
+    );
   }
 }
 

@@ -662,6 +662,44 @@ npm run check:images -- --limit 150 --warn
 当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
 原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
 
+### 兜底只对齐宽度还不够：行盒高度（第 72 轮）
+
+第 71 轮把全站最差压到 0.023 后，把抽查从 21 页扩到 49 页（新增 `--urls=<file>`，
+`--explain` 打位移的 `previousRect → currentRect`），立刻抓到两个新目标：
+
+| 页面 | CLS | 位移来源 |
+|---|---|---|
+| `/en/invest/digest-2026-10-14/` | **0.072** | `DIV.not-prose`（TL;DR 卡片）y 597→628、h 304→272 |
+| `/en/invest/digest-2026-05-31/` | 0.034 | 同上 |
+
+看数字就明白了：卡片**整体下移 31px**（上面的正文长高了），同时**自己矮了 32px**
+（里面的标签从两行变成一行）。两处同时发生 = 一次字体替换。
+
+原因：第 70 轮的 `size-adjust` 只对齐了**宽度**，没对齐 **ascent/descent**——
+行盒高度由这两者决定，而 Instrument Serif 是 1.30em、Times 只有 1.11em、再乘 0.843
+只剩 0.97em：大标题换字体的瞬间整块矮 10px 以上，正文换 Inter 时每行再差 1–2px。
+
+修法：给两组兜底补上度量 override（数值 = 网页字体度量 ÷ size-adjust）：
+
+```css
+/* Inter Fallback */
+size-adjust: 107.1%; ascent-override: 90.6%; descent-override: 22.4%; line-gap-override: 0%;
+/* Instrument Serif Fallback */
+size-adjust: 84.3%;  ascent-override: 117.4%; descent-override: 36.8%; line-gap-override: 0%;
+```
+
+`calibrate-fallback-metrics.mjs` 现在直接把这四个数字一起算出来（不再需要手算），
+`check-font-fallback` 也从「只比宽度」升级成「宽度 + 行盒高度都要在 ±2% 内」。
+
+验证：
+
+| 检查 | 结果 |
+|---|---|
+| canvas 度量：Inter 行盒 1.21em ↔ 兜底 1.21em | 100.0% |
+| canvas 度量：Instrument Serif 1.30em ↔ 兜底 1.30em | 100.0% |
+| 负向：删掉衬线的 override | 门禁报「行盒高度 71.5%」并 exit 1 |
+| 本机重测 `/en/invest/digest-2026-05-31/` | 0.034 → 0.021 |
+
 ### 最后一处：行情岛卡片高度跟着指数名走（第 71 轮）
 
 第 70 轮的兜底上线后，全站 CLS 只剩 `/en/invest/` 的 **0.074**。逐帧对比水合前后发现：

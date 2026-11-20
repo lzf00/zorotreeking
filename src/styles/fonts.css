@@ -49,6 +49,12 @@
   font-weight: 100 900;
   src: local("Arial"), local("Helvetica"), local("Liberation Sans"), local("Segoe UI");
   size-adjust: 107.1%;
+  /* 只对齐宽度还不够：行盒高度由 ascent+descent 决定，Inter 是 0.97+0.24=1.21em，
+     而 Arial 是 0.905+0.212≈1.12em，换字体时每行差 1–2px，五行就顶下去 8px。
+     下面三个 override 是「Inter 的度量 ÷ size-adjust」，让兜底的行盒高度与 Inter 一致。 */
+  ascent-override: 90.6%;
+  descent-override: 22.4%;
+  line-gap-override: 0%;
 }
 @font-face {
   font-family: "Instrument Serif Fallback";
@@ -56,4 +62,12 @@
   font-weight: 400;
   src: local("Times New Roman"), local("Georgia"), local("Liberation Serif"), local("DejaVu Serif");
   size-adjust: 84.3%;
+  /* Instrument Serif 行盒 1.30em，Times 只有 0.891+0.216≈1.11em、再乘 0.843 就更矮：
+     大标题换字体时整块高度会跳 10px 以上（第 72 轮线上 digest 页 0.072 的主因）。 */
+  ascent-override: 117.4%;
+  descent-override: 36.8%;
+  line-gap-override: 0%;
+  /* Instrument Serif 行盒 1.30em，Times 只有 0.891+0.216≈1.11em、再乘 0.843 就更矮：
+     大标题换字体时整块高度会跳 10px 以上（第 72 轮线上 digest 页 0.072 的主因）。 */
+
 }

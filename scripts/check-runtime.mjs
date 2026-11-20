@@ -19,6 +19,7 @@
  *   node scripts/check-runtime.mjs --vitals --cpu=4         # 降速 4 倍，模拟慢设备
  *   node scripts/check-runtime.mjs --vitals --base=https://www.zorotreeking.online   # 线上实测
  *   node scripts/check-runtime.mjs --dist=dist --wait=2500 --limit=10
+ *   node scripts/check-runtime.mjs --vitals --base=https://www.zorotreeking.online --urls=/tmp/urls.txt
  *
  * 判定：pageerror / console error / 同源 4xx-5xx 响应 → 失败（exit 1）。
  *       跨域请求的失败只记录不判失败（第三方统计、字体 CDN 波动不该阻塞发布）。
@@ -69,6 +70,10 @@ const VIEWPORT = valueOf("viewport", MOBILE ? "390x844" : "1280x900");
 const BASE = valueOf("base", "");
 const LIMIT = Number(valueOf("limit", "0"));
 const ALL_PHOTO = args.includes("--all-photo");
+/** --urls=<file>：逐行指定要测的 URL（配合线上全站抽查：`npm run check:runtime -- --vitals --base=… --urls=/tmp/urls.txt`） */
+const URLS_FILE = valueOf("urls", "");
+/** --explain：位移明细里带上 previousRect → currentRect，定位 CLS 时不用再猜 */
+const EXPLAIN = args.includes("--explain");
 
 const MIME = {
   ".html": "text/html; charset=utf-8",
@@ -193,7 +198,11 @@ async function main() {
     process.exit(2);
   }
   const [tagZh, tagEn] = await Promise.all([firstTagPath("zh"), firstTagPath("en")]);
-  const pool = MOBILE ? mobileTargets(tagZh, tagEn) : defaultTargets(tagZh, tagEn);
+  let pool = MOBILE ? mobileTargets(tagZh, tagEn) : defaultTargets(tagZh, tagEn);
+  if (URLS_FILE) {
+    const { readFileSync } = await import("node:fs");
+    pool = readFileSync(URLS_FILE, "utf8").split("\n").map((line) => line.trim()).filter((line) => line && !line.startsWith("#"));
+  }
   const wanted = LIMIT ? pool.slice(0, LIMIT) : pool;
   const [vw, vh] = VIEWPORT.split("x").map(Number);
   if (!Number.isFinite(vw) || !Number.isFinite(vh)) {
@@ -245,7 +254,7 @@ async function main() {
       await session.send("Emulation.setCPUThrottlingRate", { rate: CPU_THROTTLE });
     }
       if (VITALS) {
-        await page.addInitScript(() => {
+        await page.addInitScript((explainMode) => {
           window.__vitals = { lcp: 0, cls: 0, long: 0, shifts: [] };
           try {
             new PerformanceObserver((list) => {
@@ -259,7 +268,13 @@ async function main() {
                   window.__vitals.shifts.push(
                     `${entry.value.toFixed(3)}@${Math.round(entry.startTime)}ms ← ` +
                       (entry.sources || [])
-                        .map((source) => `${source.node?.tagName ?? "?"}.${String(source.node?.className ?? "").slice(0, 40)}`)
+                        .map(
+                          (source) =>
+                            `${source.node?.tagName ?? "?"}.${String(source.node?.className ?? "").slice(0, explainMode ? 30 : 40)}` +
+                            (explainMode
+                              ? ` y${Math.round(source.previousRect?.y ?? 0)}→${Math.round(source.currentRect?.y ?? 0)} h${Math.round(source.previousRect?.height ?? 0)}→${Math.round(source.currentRect?.height ?? 0)}`
+                              : ""),
+                        )
                         .join(" / "),
                   );
                 }
@@ -269,7 +284,7 @@ async function main() {
               for (const entry of list.getEntries()) window.__vitals.long += entry.duration;
             }).observe({ type: "longtask", buffered: true });
           } catch {}
-        });
+        }, EXPLAIN);
       }
       const issues = [];
       page.on("pageerror", (e) => issues.push(`pageerror: ${e.message.slice(0, 200)}`));
