@@ -500,6 +500,29 @@ jobs:
           echo "releases: $kept → $(ls -1 "$root/releases" | wc -l)（本次清理 $removed 个）"
           SH
 
+      # 修权限（第 80 轮）：生产上有 pagefind 碎片稳定返回 403 —— 文件在、nginx 读不了。
+      # 成因是 `rsync --no-perms` 写临时文件时留下的 0600 位（新文件不走 chmod），加上
+      # `cp -al` 会把上一次 release 的权限位硬链接继承下来。症状很隐蔽：只有**部分**
+      # 搜索关键词坏掉，页面本身、CSS、字体全部正常，现有烟测都发现不了。
+      # 这里在激活后统一补 o+r，并且把 previous 也修一遍，避免回滚到坏的那份。
+      - name: Repair file readability in the active release
+        continue-on-error: true
+        run: |
+          release_root="${DEPLOY_PATH%/}"
+          release_root="${release_root%/dist}"
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new "$SSH_USER@$SSH_HOST" \
+            sh -s -- "$release_root" <<'SH'
+          set -eu
+          release_root=$1
+          for link in current previous; do
+            [ -L "$release_root/$link" ] || continue
+            dir=$(readlink -f "$release_root/$link")
+            test -d "$dir" || continue
+            fixed=$(find "$dir" -type f ! -perm -o+r -exec chmod o+r {} + -print | wc -l | tr -d ' ')
+            echo "$link: $fixed 个文件补了 o+r（$dir）"
+          done
+          SH
+
       - name: Production acceptance smoke test
         run: |
           python3 - <<'PY'
@@ -555,6 +578,12 @@ jobs:
           else:
               raise SystemExit(f"ETF production smoke failed: {last}")
           PY
+
+      # 搜索可用性验收（第 80 轮）：碎片权限/未发布只有真跑一次查询才照得出来。
+      # 失败会落到下一个 step（回滚），所以这是个真闸门而不是记录。
+      - name: Production search probe (pagefind fragments must be readable)
+        if: steps.activate.outcome == 'success'
+        run: node scripts/check-search.mjs --base=https://www.zorotreeking.online
 
       - name: Roll back failed release
         if: failure() && steps.activate.outcome == 'success'

@@ -71,6 +71,17 @@ jobs:
             --concurrency="$CONC" \
             --out=reports/site-audit.jsonl
 
+      - name: Site search probe
+        run: |
+          node scripts/check-search.mjs --base=https://www.zorotreeking.online | tee /tmp/search.log
+          {
+            echo '### Site search'
+            echo ''
+            echo '```'
+            cat /tmp/search.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Content freshness
         run: |
           node scripts/check-freshness.mjs > /tmp/freshness.log 2>&1; code=$?

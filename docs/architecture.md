@@ -662,6 +662,39 @@ npm run check:images -- --limit 150 --warn
 当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
 原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
 
+### 只有部分搜索关键词坏掉，任何烟测都照不出来（第 80 轮）
+
+第 80 轮用 pagefind 的真实客户端路径跑生产：**20 个常见查询里有 4 个直接报错**。
+
+```
+Error: 403 fetching /pagefind/fragment/zh-cn_2e61058.pf_fragment
+```
+
+真正的线索是状态码的对比：
+
+| 请求 | 状态 | 含义 |
+|---|---|---|
+| 随便编一个不存在的碎片名 | **404** | 文件没发布（Astro 404 页） |
+| 这 4 个固定名字 | **403**（nginx 146 字节错误页） | **文件在，nginx 读不了** |
+
+成因：部署用 `rsync --no-perms` + `cp -al` 硬链接播种。rsync 写新文件时先建 `0600`
+临时文件，`--no-perms` 又不补 chmod，于是偶发几个文件停在 `0600`；`cp -al` 还会把
+上一次 release 的权限位顺着硬链接继承下去。
+
+这个 bug 特别难发现，因为**只有部分搜索关键词坏掉**：页面、字体、CSS、图片全正常，
+`smoke/runtime`、`smoke/interactions`、全站巡检都是绿的 —— 它们谁都没去 fetch 碎片。
+
+补两件事：
+
+| 手段 | 位置 |
+|---|---|
+| `npm run check:search` | 12 个查询走真实前端路径（`search()` 之后必须 `data()`，光 search 不会下载碎片） |
+| 部署里补权限 | 激活后 `find current previous -type f ! -perm -o+r -exec chmod o+r`，current 与 previous 都修，回滚不会退回坏的 |
+| 部署验收闸门 | 搜索探针排在回滚之前：碎片不可读 → 直接回滚这一版 |
+
+`Pagefind` 的失败**不会**出现在 `smoke/interactions` 里，因为那个烟测用的查询恰好落在
+还健康的碎片上 —— 这提醒我们：抽样查询要覆盖多板块，否则「抽查通过」是假象。
+
 ### 停更没有「静默 skip」这条路了（第 79 轮）
 
 顺着第 78 轮的停更往下挖，找到了整条链上**两个**吞掉失败的地方，都在 `digest-fetch.ts`：
