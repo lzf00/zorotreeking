@@ -662,6 +662,31 @@ npm run check:images -- --limit 150 --warn
 当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
 原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
 
+### 社媒元信息审计：补 og:locale（第 55 轮）
+
+把 1194 个页面的 `<head>` 全扫了一遍：
+
+| 检查项 | 结果 |
+|---|---|
+| canonical | 1186 个可索引页齐全，8 个 noindex 页（admin、404、photography 跳转页）没有 —— 符合预期 |
+| canonical 与路径不符 | 0 |
+| hreflang | 1178 页齐；16 页没有是正常的（中文独有游记、`/changelog/` 等单语页，以及对面的 `/en/photography/` 跳转页） |
+| 双向 hreflang | 抽查 `/en/hike/*` 与中文页互指，x-default 指中文，正确 |
+| **`og:locale`** | **0 / 1194 —— 全站缺失** |
+
+`og:locale` 和 hreflang 不是一回事：hreflang 给搜索引擎，`og:locale` 给社媒/IM 抓取
+（微信、Telegram、Slack 都读）。这次在 `BaseLayout` 补上：
+
+- 中文页 `zh_CN`、英文页 `en_US`；
+- 有对应语言版本时再加一条 `og:locale:alternate`（1172 页有，22 页单语页没有，符合预期）；
+- 同时补 `og:site_name`。
+
+本地构建后复核：缺 `og:locale` 的只剩 `/admin/`（Decap 自带的单页后台，不走 BaseLayout、noindex）。
+
+顺带否掉一个想法：把相册画廊从 `client:load` 改成 `client:idle`。实测线上相册页
+**长任务 0 个、TBT≈0ms、JS 401ms 全部就绪**——画廊 hydration 根本没有阻塞主线程，
+改了只是徒增「点了图片但灯箱还没绑定」的窗口，所以不改。
+
 ### 补上 1200w 中间档，填平 720 与 1600 之间的空档（第 54 轮）
 
 第 53 轮把索引封面改成带宽度描述符的 srcset 之后，桌面 1x 已经降到 113 KB，但 2x 桌面

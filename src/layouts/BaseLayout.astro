@@ -230,6 +230,14 @@ if (jsonLd) {
     <meta property="og:description" content={desc} />
     {canonical && <meta property="og:url" content={canonical} />}
     <meta property="og:type" content={ogType} />
+    {/* og:locale：站内所有 1194 个页面此前都没有这一项（第 55 轮审计发现）。
+        hreflang 管的是搜索引擎，og:locale 管的是社媒/IM 抓取时的语言判定；
+        微信、Telegram、Slack 都会读它。英文页要多给一条 alternate。 */}
+    <meta property="og:locale" content={lang === "zh" ? "zh_CN" : "en_US"} />
+    {hasLanguageAlternate && (
+      <meta property="og:locale:alternate" content={lang === "zh" ? "en_US" : "zh_CN"} />
+    )}
+    <meta property="og:site_name" content={siteName} />
     <meta property="og:image" content={new URL(socialImage, Astro.site).toString()} />
     {/* og:image:secure_url 部分国内 IM（微信/QQ）显式要 https URL */}
     <meta property="og:image:secure_url" content={new URL(socialImage, Astro.site).toString()} />
