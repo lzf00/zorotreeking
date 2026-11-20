@@ -59,7 +59,9 @@ test("核心指标：CLS 卡 0.1、LCP 只拦明显异常", async () => {
   // 位移必须能归因，否则报「CLS 0.066」没人知道该改哪里
   assert.match(src, /entry\.sources/, "要采集 layout-shift 的 source 元素");
   const wf = await readFile(new URL("../.github/workflows/deploy.yml", import.meta.url), "utf8");
-  assert.ok(wf.includes("npm run check:runtime -- --vitals --cls=0.25"), "deploy 要带 --vitals，且 CI 的 CLS 预算放宽");
+  assert.ok(wf.includes("npm run check:runtime -- --vitals --soft-vitals"), "CI 里性能指标必须是 advisory（--soft-vitals），否则环境噪声会挡发布");
+  assert.ok(wf.includes("report-ci-status.mjs --context=smoke/runtime"), "失败原因要发成可匿名读取的 commit status");
   assert.match(src, /valueOf\("cls", "0\.1"\)/, "CLS 预算要可配");
+  assert.match(src, /SOFT_VITALS/, "要有 advisory 模式");
 });
 

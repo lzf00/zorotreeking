@@ -662,6 +662,28 @@ npm run check:images -- --limit 150 --warn
 当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
 原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
 
+### CI 可观测性：性能指标降为 advisory + commit status 通道（第 68 轮）
+
+第 67 轮连挂两次部署，根因是「新加的性能断言当成了发布闸门」+「日志读不到」。两件事
+一起改：
+
+| 改动 | 内容 |
+|---|---|
+| `check:runtime --soft-vitals` | LCP/CLS 超标只打印 `⚠ …`，不算失败。CI 用这个模式 |
+| 硬门禁保留 | pageerror / console.error / 同源 4xx-5xx 仍然 exit 1——这些不受环境噪声影响 |
+| `scripts/report-ci-status.mjs` | 三步自检（桌面/手机/交互）跑完各发一条 commit status，description 里带「21 页 · CLS 0.066 · LCP 932 ms」或「失败：/invest/」 |
+
+为什么用 commit status：Actions 日志接口对无管理员权限的账号返回 **403**，
+`::error::` annotations 在 API 里只回一条 `Process completed with exit code 1`，
+artifact 下载 **401**。而 `GET /commits/{sha}/statuses` 可以匿名读——等于给 CI 装了
+一个只读仪表盘，失败原因直接写在 description 里（上限 140 字符，脚本自动截断）。
+
+本地验证：`--cls=0.01` 时 `--soft-vitals` 打印 `⚠` 且 exit 0，不加则 exit 1。
+
+另外装了 Playwright 自带的 Chromium（`PLAYWRIGHT_BROWSERS_PATH=/tmp/pw-browsers`）
+来贴近 CI 环境；本地跑 headless shell 仍然 21 页全绿、CLS/CLS 数值与系统 Chrome 一致，
+说明差异来自 runner 的机器速度而不是浏览器实现。
+
 ### 修掉线上最大的一处布局抖动：持仓表（第 67 轮）
 
 第 66 轮把 CLS 量起来之后，`--base=` 直接对着线上跑，抓到 **`/invest/` 与
