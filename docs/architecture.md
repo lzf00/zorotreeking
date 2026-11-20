@@ -682,11 +682,23 @@ npm run check:images -- --limit 150 --warn
 修法：给两组兜底补上度量 override（数值 = 网页字体度量 ÷ size-adjust）：
 
 ```css
-/* Inter Fallback */
+/* Inter Fallback · 100–499 */
 size-adjust: 107.1%; ascent-override: 90.6%; descent-override: 22.4%; line-gap-override: 0%;
+/* Inter Fallback · 500–549（font-medium 是第二常用档，Inter 比 400 宽 1.4%） */
+size-adjust: 108.6%; ascent-override: 89.3%; descent-override: 22.1%;
+/* Inter Fallback · 550–900（真 Arial Bold，不是合成粗体） */
+size-adjust: 102.3%; ascent-override: 94.8%; descent-override: 23.5%;
 /* Instrument Serif Fallback */
 size-adjust: 84.3%;  ascent-override: 117.4%; descent-override: 36.8%; line-gap-override: 0%;
 ```
+
+**第二个坑（同一天抓到的）**：`/en/invest/digest-2026-10-14/` 修完行盒还是 0.072。用
+`--explain` 看位移几何，发现下移源是 **`BLOCKQUOTE > P > STRONG` 高度 95→126px**——
+一段粗体正文从 2 行变 3 行。原因：兜底字体只声明了一个 `font-weight: 100 900` 的不可变
+字面，浏览器只能给粗体画**合成粗体**，实测比真 Inter Bold 窄 3.8%，行数就变了。
+
+修法：把兜底拆成三个字重面（常规 / 500 / 真 Arial Bold），每面各自的 size-adjust。
+校验也升级成分字重（400/500/600/700 全测）。
 
 `calibrate-fallback-metrics.mjs` 现在直接把这四个数字一起算出来（不再需要手算），
 `check-font-fallback` 也从「只比宽度」升级成「宽度 + 行盒高度都要在 ±2% 内」。

@@ -46,14 +46,40 @@
 @font-face {
   font-family: "Inter Fallback";
   font-style: normal;
-  font-weight: 100 900;
-  src: local("Arial"), local("Helvetica"), local("Liberation Sans"), local("Segoe UI");
-  size-adjust: 107.1%;
-  /* 只对齐宽度还不够：行盒高度由 ascent+descent 决定，Inter 是 0.97+0.24=1.21em，
+  /* 常规字重。只对齐宽度还不够：行盒高度由 ascent+descent 决定，Inter 是 0.97+0.24=1.21em，
      而 Arial 是 0.905+0.212≈1.12em，换字体时每行差 1–2px，五行就顶下去 8px。
      下面三个 override 是「Inter 的度量 ÷ size-adjust」，让兜底的行盒高度与 Inter 一致。 */
+  font-weight: 100 499;
+  src: local("Arial"), local("Helvetica"), local("Liberation Sans"), local("Segoe UI");
+  size-adjust: 107.1%;
   ascent-override: 90.6%;
   descent-override: 22.4%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Inter Fallback";
+  font-style: normal;
+  /* font-medium（500）是站里第二常用的字重，Inter 的 500 比 400 宽 1.4%，
+     而 Arial 没有 medium，只能用常规字面 + 单独一个 size-adjust 补上这个差。 */
+  font-weight: 500 549;
+  src: local("Arial"), local("Helvetica"), local("Liberation Sans"), local("Segoe UI");
+  size-adjust: 108.6%;
+  ascent-override: 89.3%;
+  descent-override: 22.1%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Inter Fallback";
+  font-style: normal;
+  /* 粗体必须单独给：只声明一个 100–900 的不可变字面时，浏览器会用「合成粗体」画 700，
+     实测比真 Inter Bold 窄 3.8%，一段粗体正文就从 2 行变 3 行（第 72 轮
+     /en/invest/digest-2026-10-14/ 的 0.072 就是它：STRONG 高度 95→126）。
+     这里直接挂 Arial Bold 的真粗体，宽度比 102.3%。 */
+  font-weight: 550 900;
+  src: local("Arial Bold"), local("Arial-BoldMT"), local("Helvetica Bold"), local("Liberation Sans Bold");
+  size-adjust: 102.3%;
+  ascent-override: 94.8%;
+  descent-override: 23.5%;
   line-gap-override: 0%;
 }
 @font-face {

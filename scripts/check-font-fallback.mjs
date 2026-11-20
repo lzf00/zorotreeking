@@ -21,8 +21,13 @@ import { serveDist, chromePath } from "./lib/serve-dist.mjs";
 const TOLERANCE = 0.02;
 const SAMPLE = "Entries are ordered newest first — the next route is written after the next trip.";
 const PAIRS = [
-  { label: "Inter", stack: '"Inter"', fallback: '"Inter Fallback"' },
-  { label: "Instrument Serif", stack: '"Instrument Serif"', fallback: '"Instrument Serif Fallback"' },
+  { label: "Inter 400", weight: 400, stack: '"Inter"', fallback: '"Inter Fallback"' },
+  // 字重分开测：兜底是「同字面 + 不同 size-adjust」，粗体走真 Arial Bold，
+  // 只测常规的话，合成粗体悄悄窄 3.8% 也发现不了（第 72 轮这个 bug 就藏在这）
+  { label: "Inter 500", weight: 500, stack: '"Inter"', fallback: '"Inter Fallback"' },
+  { label: "Inter 600", weight: 600, stack: '"Inter"', fallback: '"Inter Fallback"' },
+  { label: "Inter 700", weight: 700, stack: '"Inter"', fallback: '"Inter Fallback"' },
+  { label: "Serif 400", weight: 400, stack: '"Instrument Serif"', fallback: '"Instrument Serif Fallback"' },
 ];
 
 const server = await serveDist("dist");
@@ -34,17 +39,17 @@ await page.goto(`${base}/en/hike/`, { waitUntil: "load" });
 
 const results = await page.evaluate(async ({ sample, pairs }) => {
   const ctx = document.createElement("canvas").getContext("2d");
-  const metrics = (stack) => {
-    ctx.font = `100px ${stack}`;
+  const metrics = (weight, stack) => {
+    ctx.font = `${weight} 100px ${stack}`;
     const m = ctx.measureText(sample);
     return { width: m.width, lineBox: (m.fontBoundingBoxAscent + m.fontBoundingBoxDescent) / 100 };
   };
   const out = [];
   for (const pair of pairs) {
-    await document.fonts.load(`100px ${pair.stack}`, sample);
-    await document.fonts.load(`100px ${pair.fallback}`, sample);
-    const web = metrics(pair.stack);
-    const fallback = metrics(pair.fallback);
+    await document.fonts.load(`${pair.weight} 100px ${pair.stack}`, sample);
+    await document.fonts.load(`${pair.weight} 100px ${pair.fallback}`, sample);
+    const web = metrics(pair.weight, pair.stack);
+    const fallback = metrics(pair.weight, pair.fallback);
     out.push({ label: pair.label, web, fallback, ratio: fallback.width / web.width, lineRatio: fallback.lineBox / web.lineBox });
   }
   return out;
