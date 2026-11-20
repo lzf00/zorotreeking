@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import PhotoSwipeLightbox from "photoswipe/lightbox";
 import "photoswipe/style.css";
+import { buildSrcSet, galleryVariants } from "@/lib/photo-srcset";
 
 type Exif = {
   camera?: string;
@@ -41,14 +42,6 @@ function formatExifLine(exif?: Exif): string {
   if (exif.iso != null) settings.push(`ISO ${exif.iso}`);
   if (settings.length) parts.push(settings.join(" · "));
   return parts.join("  ·  ");
-}
-
-/** 把 720w / 480w 变体拼成 srcset，宽度描述符用真实宽度（原图更窄时不虚标） */
-function srcSetFor(p: Photo) {
-  const parts: string[] = [];
-  if (p.thumbWebp) parts.push(`${p.thumbWebp} ${Math.min(720, p.width || 720)}w`);
-  if (p.thumbSm) parts.push(`${p.thumbSm} ${Math.min(480, p.width || 480)}w`);
-  return parts.join(", ");
 }
 
 export default function PhotoGallery({ photos, galleryId }: Props) {
@@ -149,7 +142,7 @@ export default function PhotoGallery({ photos, galleryId }: Props) {
               {p.thumbWebp && (
                 <source
                   type="image/webp"
-                  srcSet={srcSetFor(p)}
+                  srcSet={buildSrcSet(galleryVariants(p))}
                   sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                 />
               )}

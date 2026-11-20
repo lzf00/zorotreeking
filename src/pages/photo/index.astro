@@ -5,6 +5,7 @@ import { useTranslations, pathWithLang } from "@/i18n/ui";
 import { sectionDescription } from "@/lib/descriptions";
 import { loadPhotoManifest, resolveAlbumKey } from "@/lib/photo-manifests";
 import { siteDateString } from "@/lib/site-date";
+import { buildSrcSet, coverVariants } from "@/lib/photo-srcset";
 
 const lang = "zh" as const;
 const t = useTranslations(lang);
@@ -92,23 +93,27 @@ function aspect(i: number) {
               <div class={`${aspect(i)} overflow-hidden`}>
                 {cover ? (
                   <picture>
-                    {/* 桌面用 1600px 的 hero 变体（2x 屏的 2 列卡片需要 ~1600px），
-                        手机用 720px 缩略图；两个 source 各有 media，弱屏不会下大图。
-                        （反例：两个 source 都不带 media 时，浏览器只认第一个，第二个是死代码。）
-                        没有 hero 变体的（原图 ≤1600 宽）退回原尺寸 webp。 */}
-                    {(cover.heroWebp || cover.srcWebp) && (
+                    {/* 一档 source + 真实宽度描述符，让浏览器按屏宽 × DPR 自己挑：
+                        1x 桌面卡片 ~576 CSS px → 取 720w（28 KB），而不是常驻拉 1600px hero（188 KB）。
+                        之前用的是「带 media 的单候选 srcset」，没有宽度描述符，浏览器只能当 1x
+                        直接下载 —— 桌面端必然拿大图（第 53 轮改）。
+                        sizes 与网格一致：lg 三列时首卡跨 2 列 ≈ 40vw，其余 33vw。 */}
+                    {/* 手机（≤640）只给 480/720 两档：卡片铺满屏宽，2x 屏也够看，
+                        再往上就是 1600px hero（188 KB）——手机端实测多传 290 KB，不值。
+                        宽屏才把 hero 放进候选，由浏览器按屏宽 × DPR 自己挑。 */}
+                    {cover.thumbWebp && (
                       <source
                         type="image/webp"
-                        media="(min-width: 1024px)"
-                        srcset={cover.heroWebp ?? cover.srcWebp}
-                        sizes="(min-width: 1024px) 40vw"
+                        media="(max-width: 640px)"
+                        srcset={buildSrcSet(coverVariants({ ...cover, heroWebp: null, srcWebp: null }))}
+                        sizes="100vw"
                       />
                     )}
                     {(cover.thumbWebp || cover.heroWebp || cover.srcWebp) && (
                       <source
                         type="image/webp"
-                        srcset={cover.thumbWebp ?? cover.heroWebp ?? cover.srcWebp}
-                        sizes="100vw"
+                        srcset={buildSrcSet(coverVariants(cover))}
+                        sizes="(min-width: 1024px) 40vw, 50vw"
                       />
                     )}
                     <img

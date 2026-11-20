@@ -41,11 +41,13 @@ test("相册页 hero 真的用上了这两个候选（防止有人把 media 分�
 test("相册列表页封面必须走派生图，不许直接下原图", async () => {
   for (const file of ["../src/pages/photo/index.astro", "../src/pages/en/photo/index.astro"]) {
     const page = await readFile(new URL(file, import.meta.url), "utf8");
-    // 有 picture + 两个 webp source：桌面那个带 media，手机那个是默认分支
+    // picture + 两档 webp source：
+    //   手机档用 media 限死 480/720（不能把 1600px hero 放进手机候选，2x 手机会拉 317 KB）
+    //   宽屏档带真实宽度描述符，由浏览器按屏宽 × DPR 挑
     assert.match(page, /type="image\/webp"/, file);
-    assert.match(page, /media="\(min-width: 1024px\)"/, file);
-    assert.match(page, /cover\.heroWebp \?\? cover\.srcWebp/, file);
-    assert.match(page, /cover\.thumbWebp \?\? cover\.heroWebp \?\? cover\.srcWebp/, file);
+    assert.match(page, /media="\(max-width: 640px\)"/, file);
+    assert.match(page, /heroWebp: null, srcWebp: null/, file);
+    assert.match(page, /srcset=\{buildSrcSet\(coverVariants\(cover\)\)\}/, file);
     // 兜底图用 1200×630 的 og.jpg，而不是原图
     assert.match(page, /src=\{cover\.srcOg \?\? cover\.src\}/, file);
     // 窄带上必须带内在宽高（不然懒加载图片会把网格顶乱）
