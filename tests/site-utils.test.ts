@@ -325,7 +325,16 @@ test("面包屑 JSON-LD：末级不带 item，position 从 1 开始", () => {
   assert.equal(ld["@type"], "BreadcrumbList");
   assert.deepEqual(ld.itemListElement.map((i) => i.position), [1, 2, 3]);
   assert.equal(ld.itemListElement[0].item, "https://www.zorotreeking.online/");
-  assert.equal("item" in ld.itemListElement[2], false, "末级是当前页，不带 item");
+  // Google 把 item 列为必填，末级也要给当前页 URL（第 56 轮修正）
+  assert.equal(
+    breadcrumbJsonLd(
+      [{ name: "首页", path: "/" }, { name: "相册" }],
+      "https://www.zorotreeking.online",
+      "https://www.zorotreeking.online/photo/",
+    ).itemListElement[1].item,
+    "https://www.zorotreeking.online/photo/",
+  );
+  assert.equal("item" in ld.itemListElement[2], false, "没传 currentUrl 时末级仍然不给 item");
 });
 
 test("splitPath 去掉语言前缀、尾斜杠与查询串", () => {

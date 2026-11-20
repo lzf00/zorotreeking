@@ -78,16 +78,31 @@ export function buildBreadcrumb(opts: {
   return trail;
 }
 
-/** 面包屑 → schema.org BreadcrumbList（末级不带 item，与 Google 的推荐一致） */
-export function breadcrumbJsonLd(trail: Crumb[], sitePrefix: string) {
+/**
+ * 面包屑 → schema.org BreadcrumbList。
+ *
+ * Google 的 Breadcrumb 文档把 `item` 列为**必填**（"Required properties: item ——
+ * URL or a subtype of Thing"），没有「末级可省略」的例外。我们原先末级故意不写 item，
+ * 全站 1184 个页面的面包屑因此都不是合规的富媒体结果候选（第 56 轮审计发现）。
+ * 现在末级用当前页 canonical URL 补齐。
+ */
+export function breadcrumbJsonLd(trail: Crumb[], sitePrefix: string, currentUrl?: string) {
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    itemListElement: trail.map((crumb, i) => ({
-      "@type": "ListItem",
-      position: i + 1,
-      name: crumb.name,
-      ...(crumb.path ? { item: `${sitePrefix}${crumb.path}` } : {}),
-    })),
+    itemListElement: trail.map((crumb, i) => {
+      const isLast = i === trail.length - 1;
+      const url = crumb.path
+        ? `${sitePrefix}${crumb.path}`
+        : isLast
+          ? currentUrl
+          : undefined;
+      return {
+        "@type": "ListItem",
+        position: i + 1,
+        name: crumb.name,
+        ...(url ? { item: url } : {}),
+      };
+    }),
   };
 }

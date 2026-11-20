@@ -73,7 +73,9 @@ const SCHEMA_RULES = {
   // Google 也能据此知道这一页是「一组条目的集合」。字段要求与 WebPage 一致。
   CollectionPage: { required: [], anyOf: [["url", "@id"]], urls: ["url", "@id"] },
   ItemList: { required: ["itemListElement"], urls: [] },
-  ListItem: { required: ["position", "name"], urls: ["item"] },
+  // ListItem 有两种用法：BreadcrumbList 里必须有 item（Google 把 item 列为必填，下面单独强制）；
+  // ItemList 里的条目可能本来就不是链接（例如游记的每日行程 itinerary），所以这里不要求 item/url。
+  ListItem: { required: ["position", "name"], urls: ["item", "url"] },
   SearchAction: { required: ["target", "query-input"], urls: [] },
   EntryPoint: { required: ["urlTemplate"], urls: [] },
 };
@@ -253,6 +255,15 @@ function checkPage(html, siteOrigin) {
         const v = node[field];
         const missing = v === undefined || v === null || v === "" || (Array.isArray(v) && v.length === 0);
         if (missing) err(`${type} 缺必填字段 ${field}（${trail}）`);
+      }
+      // 面包屑的每一项都必须给 URL —— Google 文档里 item 是 Required property，
+      // 没有「末级可以省略」的例外。之前这里只查 position/name，所以全站 1184 个页面的
+      // 末级面包屑都缺 item 也能过门禁（第 56 轮发现）。
+      if (type === "ListItem" && trail.includes("BreadcrumbList")) {
+        const v = node.item;
+        if (v === undefined || v === null || v === "") {
+          err(`ListItem 缺 item（面包屑含末级都必须给 URL）（${trail}）`);
+        }
       }
       for (const field of rule.urls ?? []) {
         const v = node[field];

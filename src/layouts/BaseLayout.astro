@@ -200,7 +200,7 @@ const jsonLdBlocks: object[] = [];
 if (jsonLd) {
   jsonLdBlocks.push(jsonLd);
   if (crumbTrail && crumbTrail.length > 1) {
-    jsonLdBlocks.push(breadcrumbJsonLd(crumbTrail, sitePrefix));
+    jsonLdBlocks.push(breadcrumbJsonLd(crumbTrail, sitePrefix, canonicalUrl));
   }
 }
 ---

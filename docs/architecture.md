@@ -662,6 +662,27 @@ npm run check:images -- --limit 150 --warn
 当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
 原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
 
+### 结构化数据审计：面包屑末级缺 item（第 56 轮）
+
+把 1195 页的 JSON-LD 全量解析了一遍（`breadcrumb@1184 · Article@1046 · CollectionPage@72 ·
+WebPage@64 · TouristTrip@8 · WebSite@2 · AboutPage@2`，9 个页面没有结构化数据全是 noindex 页）。
+
+**发现：1184 个页面的面包屑末级都没有 `item`。** 代码里还写着「末级不带 item，与 Google 的推荐
+一致」——这是错的。Google 的 Breadcrumb 文档把 `item` 列在 **Required properties** 下
+（"URL or a subtype of Thing"），我没有找到任何「末级可省略」的例外条款：
+
+> Required properties: item — The URL to the webpage that represents the breadcrumb.
+
+修法：`breadcrumbJsonLd(trail, sitePrefix, currentUrl)` 多收一个当前页 URL，末级用它补 `item`；
+`BaseLayout` 传 `canonicalUrl`。修完全站 1184 个面包屑块的每一项都有 URL，`/en/*` 页面指向 `/en/*`。
+
+**同时补上了漏检**：`check-seo` 的 `ListItem` 规则原来只查 `position`/`name`，所以这个缺口一路
+过了门禁。现在面包屑里的 ListItem 缺 `item` 直接报错。
+
+一个被这条新规则误伤的案例：游记页的 `itinerary`（每日行程 ItemList）本来就没有 URL，
+第一版把 `item/url` 加成所有 ListItem 的 anyOf 必填，8 个游记页立刻全红。行程条目不是链接，
+所以最终只对 `BreadcrumbList` 内的 ListItem 强制 `item`。
+
 ### 社媒元信息审计：补 og:locale（第 55 轮）
 
 把 1194 个页面的 `<head>` 全扫了一遍：
