@@ -23,6 +23,15 @@ test("必须监听 pageerror 和 console error 两类错误", async () => {
   assert.match(src, /page\.on\("response"/);
 });
 
+test("手机视口必须是独立一档：窄屏的重排问题宽屏看不见", async () => {
+  const src = await readFile(SCRIPT, "utf8");
+  assert.match(src, /--mobile/);
+  assert.match(src, /MOBILE \? "390x844" : "1280x900"/, "--mobile 默认要用手机尺寸");
+  assert.match(src, /function mobileTargets\(/, "移动端只抽查关键模板");
+  const wf = await readFile(new URL("../.github/workflows/deploy.yml", import.meta.url), "utf8");
+  assert.ok(wf.includes("npm run check:runtime -- --mobile"), "deploy 要跑移动端一遍");
+});
+
 test("deploy 工作流里要跑这一步，且 exit 2 时降级而不是卡发布", async () => {
   const wf = await readFile(new URL("../.github/workflows/deploy.yml", import.meta.url), "utf8");
   assert.match(wf, /npm run check:runtime/);

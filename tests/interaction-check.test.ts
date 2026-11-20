@@ -16,6 +16,8 @@ test("四个交互场景都要在清单里（搜索/灯箱/点赞/深浅色）",
     "手机灯箱（390 宽）",
     "手机灯箱关闭按钮",
     "ETF 接口失败 → 重试成功（手机视口）",
+    "行情岛：指数接口数据覆盖 SSR 兜底",
+    "行情岛：接口 500 时保留 SSR 兜底",
   ];
   for (const keyword of names) {
     assert.ok(src.includes(keyword), `缺场景：${keyword}`);

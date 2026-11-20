@@ -203,6 +203,46 @@ const SCENARIOS = [
     },
   },
   {
+    name: "行情岛：指数接口数据覆盖 SSR 兜底",
+    url: "/invest/",
+    api: {
+      "/api/market/indices": () => ({
+        status: 200,
+        body: {
+          ok: true,
+          ts: Date.now(),
+          indices: [
+            { code: "999999", name: "桩指数", market: "A", price: 12345.67, change: 12.34, change_pct: 0.1 },
+          ],
+        },
+      }),
+      "/api/market/sentiment": () => ({ status: 200, body: { ok: true, ts: Date.now() } }),
+    },
+    async run({ page, fail }) {
+      // 组件有 SSR 兜底数据，接口返回后必须**覆盖**掉；用哨兵名才能证明这一点
+      await page.waitForTimeout(WAIT + 800);
+      const body = await page.locator("body").innerText();
+      if (!body.includes("桩指数")) return fail("指数接口返回后没有覆盖 SSR 兜底数据（页面上找不到「桩指数」）");
+      if (!/12,345\.67/.test(body)) return fail("指数价格没有按千分位渲染（期望 12,345.67）");
+    },
+  },
+  {
+    name: "行情岛：接口 500 时保留 SSR 兜底",
+    url: "/invest/",
+    api: {
+      "/api/market/indices": () => ({ status: 500, body: { ok: false, error: "上游不可用" } }),
+      "/api/market/sentiment": () => ({ status: 500, body: { ok: false, error: "上游不可用" } }),
+    },
+    async run({ page, fail }) {
+      await page.waitForTimeout(WAIT + 800);
+      const body = await page.locator("body").innerText();
+      if (body.includes("桩指数")) return fail("接口失败却出现了桩数据，桩没生效");
+      // 不能因为接口挂了就整块消失：兜底数据必须在
+      const cards = await page.locator("section [class*='rounded-2xl']").count();
+      if (cards < 3) return fail(`接口失败后指数卡片消失（只剩 ${cards} 个）`);
+    },
+  },
+  {
     name: "深色模式切换",
     url: "/",
     async run({ page, fail }) {
@@ -327,7 +367,7 @@ async function main() {
     console.error(`\n✗ 交互自检失败：${failures.length}/${scenarios.length} 个场景`);
     process.exit(1);
   }
-  console.log(`\n✓ 交互自检通过：${passed}/${scenarios.length} 个场景（搜索、灯箱、点赞、主题、ETF 重试）`);
+  console.log(`\n✓ 交互自检通过：${passed}/${scenarios.length} 个场景（搜索、灯箱、点赞、主题、ETF、行情岛）`);
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1] ?? "").href) {

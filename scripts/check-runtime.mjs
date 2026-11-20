@@ -12,6 +12,8 @@
  * 用法：
  *   node scripts/check-runtime.mjs                 # 默认模板清单
  *   node scripts/check-runtime.mjs --all-photo     # 三个相册全跑
+ *   node scripts/check-runtime.mjs --mobile        # 手机视口（390×844）抽查关键模板
+ *   node scripts/check-runtime.mjs --viewport=768x1024
  *   node scripts/check-runtime.mjs --dist=dist --wait=2500 --limit=10
  *
  * 判定：pageerror / console error / 同源 4xx-5xx 响应 → 失败（exit 1）。
@@ -30,6 +32,9 @@ const valueOf = (name, fallback) => {
 };
 const DIST = path.resolve(valueOf("dist", "dist"));
 const WAIT = Number(valueOf("wait", "1500"));
+const MOBILE = args.includes("--mobile");
+// --mobile 默认用 iPhone 尺寸；显式 --viewport 可覆盖
+const VIEWPORT = valueOf("viewport", MOBILE ? "390x844" : "1280x900");
 const LIMIT = Number(valueOf("limit", "0"));
 const ALL_PHOTO = args.includes("--all-photo");
 
@@ -101,6 +106,27 @@ async function firstTagPath(lang) {
   return slug ? (lang === "en" ? `/en/tag/${slug}/` : `/tag/${slug}/`) : null;
 }
 
+/**
+ * 手机视口只抽查最关键的一批页面（导航折叠、图表网格重排、灯箱全屏都只在窄屏出现），
+ * 全量 1186 页两遍太慢；这里的子集覆盖每个模板一次即可。
+ */
+function mobileTargets(tagZh, tagEn) {
+  return [
+    "/",
+    "/ai/",
+    "/ai/digest/",
+    "/invest/",
+    "/invest/market/",
+    "/photo/",
+    "/photo/baokemeng/",
+    "/hike/",
+    tagZh,
+    "/en/",
+    "/en/photo/baokemeng/",
+    tagEn,
+  ].filter(Boolean);
+}
+
 /** 每个模板挑代表页：岛（island）、图表、灯箱、地图、搜索、错误页都要覆盖到 */
 function defaultTargets(tagZh, tagEn) {
   const albums = ALL_PHOTO ? ["baokemeng", "hudieren", "123", "mac1"] : ["baokemeng"];
@@ -135,7 +161,13 @@ async function main() {
     process.exit(2);
   }
   const [tagZh, tagEn] = await Promise.all([firstTagPath("zh"), firstTagPath("en")]);
-  const wanted = LIMIT ? defaultTargets(tagZh, tagEn).slice(0, LIMIT) : defaultTargets(tagZh, tagEn);
+  const pool = MOBILE ? mobileTargets(tagZh, tagEn) : defaultTargets(tagZh, tagEn);
+  const wanted = LIMIT ? pool.slice(0, LIMIT) : pool;
+  const [vw, vh] = VIEWPORT.split("x").map(Number);
+  if (!Number.isFinite(vw) || !Number.isFinite(vh)) {
+    console.error(`✗ --viewport 格式应为 宽x高，收到 ${VIEWPORT}`);
+    process.exit(2);
+  }
   const targets = wanted.filter((url) => existsSync(path.join(DIST, url.replace(/^\//, ""), "index.html")));
   // 静默丢目标最危险：板块改名后这一页就永远不被检查，而报告仍然是「通过」。
   const missing = wanted.filter((url) => !targets.includes(url));
@@ -162,7 +194,8 @@ async function main() {
 
   try {
     for (const url of targets) {
-      const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+      const touch = vw < 640;
+      const context = await browser.newContext({ viewport: { width: vw, height: vh }, isMobile: touch, hasTouch: touch });
       const page = await context.newPage();
       const issues = [];
       page.on("pageerror", (e) => issues.push(`pageerror: ${e.message.slice(0, 200)}`));
@@ -208,7 +241,7 @@ async function main() {
     console.error(`\n✗ 运行时自检失败：${checked} 个页面里发现 ${problems.length} 个问题`);
     process.exit(1);
   }
-  console.log(`\n✓ 运行时自检通过：${checked} 个页面，无 JS 报错、无控制台错误、无失败请求`);
+  console.log(`\n✓ 运行时自检通过：${checked} 个页面（${vw}×${vh}），无 JS 报错、无控制台错误、无失败请求`);
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1] ?? "").href) {

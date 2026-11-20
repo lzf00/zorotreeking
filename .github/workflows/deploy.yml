@@ -154,6 +154,19 @@ jobs:
           fi
           exit "$code"
 
+      - name: Runtime smoke (mobile 390x844)
+        # 窄屏会重排/折叠：导航抽屉、图表 2 列网格、灯箱全屏都只在手机上出现。
+        # 只抽查 12 个关键模板，避免把部署时间翻倍。
+        id: runtime-mobile
+        run: |
+          npm run check:runtime -- --mobile
+          code=$?
+          if [ "$code" -eq 2 ]; then
+            echo "::warning::移动端运行时自检跳过：Chromium 不可用"
+            exit 0
+          fi
+          exit "$code"
+
       - name: Interaction smoke (search, lightbox, vote, theme)
         # 加载不报错 ≠ 交互不报错：搜索（pagefind）、灯箱（PhotoSwipe）、点赞（乐观更新 +
         # POST /api/feedback）、深浅色切换都是岛里的代码，只有真的点下去才会执行。
