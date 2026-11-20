@@ -662,6 +662,40 @@ npm run check:images -- --limit 150 --warn
 当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
 原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
 
+### AI 日报停更三天的真正原因：可复用工作流的权限升级（第 82 轮）
+
+第 78 轮发现 AI 日报从 2026-11-18 起停更。本地没有 API key，也没法读 Actions 日志，
+当时只能做「看得见」的补救（新鲜度看门狗 + LLM 预检）。第 82 轮改用公开的 Actions API
+查运行记录，一条就能定性：
+
+```
+Daily digest  2c9e4da4  completed  startup_failure  2026-11-20T06:00:45Z
+Daily digest  778cde71  completed  startup_failure  2026-11-19T06:16:19Z
+Daily digest  d889cb59  completed  success          2026-11-18T06:15:24Z
+```
+
+`startup_failure` 意味着**一个 step 都没跑**——不是抓取失败，不是密钥过期，而是 workflow
+在启动阶段就没被接受。时间线对上了唯一一次相关改动：
+
+| 时间（UTC） | 事件 |
+|---|---|
+| 11-18 06:15 | digest 成功 |
+| 11-18 10:48 | 提交 `69dc2a6b`：给 `deploy.yml` 加 `statuses: write`（让失败步骤能写 commit status） |
+| 11-19 06:16 | digest 变成 `startup_failure` |
+
+`daily-digest.yml`、`weekly-roundup.yml`、`bulk-backfill.yml` 都以
+`uses: ./.github/workflows/deploy.yml` 调用部署。**可复用工作流的权限不能高于调用方**，
+而三个调用方只声明了 `contents: write`。于是调用方连启动都过不去，日历定时任务从此静默
+失败三天 —— 而 `deploy.yml` 自己由 `push` 触发时完全正常（26 次 success），所以从外面看
+不出任何异常。
+
+修法：三个调用方补 `statuses: write`。同时把这个规则做成静态测试
+（`tests/workflow-permissions.test.ts`）：解析所有 workflow，凡 `uses:` 调用本仓库另一个
+workflow 的，就检查「被调用方要的权限 ⊆ 调用方给的权限」，缺一条就红。
+
+这个事故的教训是**诊断顺序**：先问「任务到底跑了没」，再看「跑了之后错在哪」。
+`startup_failure` 与 `failure` 的区别决定了要不要去查代码、密钥、还是配置。
+
 ### 别用 HTTP 去核对全站资产：会把自己打进频控（第 81 轮）
 
 第 80 轮修完碎片权限后，我想顺势做「全量资产清单核对」——把本地 dist 的文件逐个 HTTP
