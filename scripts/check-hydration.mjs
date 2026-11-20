@@ -33,6 +33,8 @@ const SHIFTED_CLOCKS = [
   ["周五 12:00（北京，盘中/净值窗口内）", "2026-11-20T04:00:00Z"],
   ["周六 12:00（北京，休市）", "2026-11-21T04:00:00Z"],
 ];
+import { classifyIslands, describeUnhydrated, fullScrollScript, waitForHydration } from "./lib/hydration-probe.mjs";
+
 const PATHS = (process.env.PATHS ?? [
   "/",
   "/invest/",
@@ -72,14 +74,20 @@ for (const path of PATHS) {
   } catch (e) {
     errors.push(`goto: ${String(e).slice(0, 120)}`);
   }
-  // client:visible 的岛要滚到附近才水合，慢动画也要跑完
-  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight / 2)).catch(() => {});
-  await page.waitForTimeout(2500);
+  // client:visible 的岛要滚到附近才水合。只滚到页面一半是假阴性：
+  // 底部的岛（徒步页的 GPX 地图等）永远不触发，坏了也不会有控制台报错。
+  await page.evaluate(fullScrollScript()).catch(() => {});
+  // 轮询而不是死等：慢机器上 chunk 还没拉完就判失败会变成随机红。
+  const settled = await waitForHydration(page);
+  // 世界时钟探针要在此之后跑，顺便让入场动画收尾
+  await page.waitForTimeout(600);
 
-  const islands = await page.$$eval("astro-island", (els) =>
-    els.map((el) => ({ total: 1, hasChildren: el.children.length > 0, hasShadow: !!el.shadowRoot })),
-  );
+  const islands = settled.islands;
   islandsSeen += islands.length;
+  const islandHealth = classifyIslands(islands);
+  if (!islandHealth.ok) {
+    errors.push(`${describeUnhydrated(islandHealth.unhydrated)}（等了 ${Math.round(settled.waitedMs / 1000)}s）`);
+  }
 
   const real = errors.filter((e) => !EXPECTED.test(e) && !/\b404\b/.test(e));
 
@@ -108,7 +116,7 @@ for (const path of PATHS) {
       } catch (e) {
         shiftedErrors.push(`goto: ${String(e).slice(0, 120)}`);
       }
-      await probe.evaluate(() => window.scrollTo(0, document.body.scrollHeight / 2)).catch(() => {});
+      await probe.evaluate(fullScrollScript()).catch(() => {});
       await probe.waitForTimeout(1500);
       for (const error of shiftedErrors.filter((e) => !EXPECTED.test(e) && !/\b404\b/.test(e))) {
         shifted.push(`${label}：${error}`);
@@ -120,7 +128,9 @@ for (const path of PATHS) {
   const all = [...real, ...shifted];
   if (all.length > 0) failures++;
   const mark = all.length > 0 ? "✗" : "✓";
-  console.log(`${mark} ${path.padEnd(32)} islands=${islands.length}  ${all.slice(0, 2).join(" | ")}`);
+  console.log(
+    `${mark} ${path.padEnd(32)} islands=${islands.length} 水合=${islandHealth.hydrated.length}  ${all.slice(0, 2).join(" | ")}`,
+  );
   await page.close();
 }
 
