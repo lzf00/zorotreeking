@@ -18,7 +18,7 @@
  *       跨域请求的失败只记录不判失败（第三方统计、字体 CDN 波动不该阻塞发布）。
  */
 import { createServer } from "node:http";
-import { readFile, stat } from "node:fs/promises";
+import { readFile, readdir, stat } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
@@ -90,8 +90,19 @@ function serve(root) {
   return new Promise((done) => server.listen(0, "127.0.0.1", () => done(server)));
 }
 
+/** 找 dist 里真实存在的第一个标签页（标签 slug 会随内容变，写死会静默失效） */
+async function firstTagPath(lang) {
+  const dir = path.join(DIST, lang === "en" ? "en/tag" : "tag");
+  const entries = await readdir(dir, { withFileTypes: true }).catch(() => []);
+  const slug = entries
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name)
+    .sort()[0];
+  return slug ? (lang === "en" ? `/en/tag/${slug}/` : `/tag/${slug}/`) : null;
+}
+
 /** 每个模板挑代表页：岛（island）、图表、灯箱、地图、搜索、错误页都要覆盖到 */
-function defaultTargets() {
+function defaultTargets(tagZh, tagEn) {
   const albums = ALL_PHOTO ? ["baokemeng", "hudieren", "123", "mac1"] : ["baokemeng"];
   return [
     "/",
@@ -105,7 +116,7 @@ function defaultTargets() {
     ...albums.map((slug) => `/photo/${slug}/`),
     "/hike/",
     "/hike/travel/ali-grand-loop-2026/",
-    "/tag/ai/",
+    tagZh,
     "/about/",
     "/uses/",
     "/en/",
@@ -114,7 +125,8 @@ function defaultTargets() {
     "/en/photo/",
     ...albums.map((slug) => `/en/photo/${slug}/`),
     "/en/hike/",
-  ];
+    tagEn,
+  ].filter(Boolean);
 }
 
 async function main() {
@@ -122,10 +134,16 @@ async function main() {
     console.error(`✗ ${DIST} 里没有 index.html：先 npm run build`);
     process.exit(2);
   }
-  const targets = (LIMIT ? defaultTargets().slice(0, LIMIT) : defaultTargets()).filter((url) =>
-    existsSync(path.join(DIST, url.replace(/^\//, ""), "index.html")),
-  );
-  if (targets.length === 0) {
+  const [tagZh, tagEn] = await Promise.all([firstTagPath("zh"), firstTagPath("en")]);
+  const wanted = LIMIT ? defaultTargets(tagZh, tagEn).slice(0, LIMIT) : defaultTargets(tagZh, tagEn);
+  const targets = wanted.filter((url) => existsSync(path.join(DIST, url.replace(/^\//, ""), "index.html")));
+  // 静默丢目标最危险：板块改名后这一页就永远不被检查，而报告仍然是「通过」。
+  const missing = wanted.filter((url) => !targets.includes(url));
+  if (missing.length) {
+    console.log(`! 跳过 ${missing.length} 个不存在的目标页（板块改名？清单该更新了）：${missing.join(" ")}`);
+  }
+  if (targets.length === 0 || missing.length / wanted.length > 0.5) {
+    console.error(`✗ ${missing.length}/${wanted.length} 个目标页不存在，清单与站点结构已经对不上`);
     console.error("✗ 目标页面都不存在，dist 可能还没构建完");
     process.exit(2);
   }

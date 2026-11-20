@@ -682,6 +682,10 @@ npm run check:images -- --limit 150 --warn
 接在 `deploy.yml` 里（每 push 都跑，约 60–90s），exit 2 降级为 warning、exit 1 卡住发布；
 **没有**接进 `npm run gate`：本地门禁已经很重，而这一步需要 Chromium。
 
+目标页清单里**不写死标签 slug**（`/tag/ai/` 其实不存在，真实 slug 是 `ai-papers` 这类），
+而是从 `dist/tag` 里挑第一个真实目录；清单里的页面若不存在会打印警告、超过一半不存在直接 exit 2，
+避免「板块改名 → 少查几页 → 报告仍然通过」。
+
 一个坑：首版把「请求失败」也当成页面缺陷，结果 19 页全红——`/api/track`、`/api/feedback`
 是服务器端接口（nginx 反代），静态 dist 里本来就没有。现在同源 `/api/*` 一律忽略，
 且「Failed to load resource」这条不带 URL 的控制台信息不再参与判定，失败请求只由
