@@ -705,10 +705,16 @@ npm run check:images -- --limit 150 --warn
 
 负向验证：把 Inter 的 `size-adjust` 改成 120%，门禁报「兜底/网页宽度 = 112.0%」并 exit 1。
 
-**诚实的边界**：CI 的 Linux runner 上 `local("Arial")` 是否能通过 fontconfig 别名落到
-Liberation Sans，本机无法验证；如果落不到，那 0.103 不会消失，需要按该平台再标定一次
-（脚本已经能直接量，只是得在那台机器上跑）。这轮至少把「机制」和「可回归的标定检查」
-都钉住了。
+**结果（关键证据）**：上线后 CI 的 `smoke/runtime` commit status 直接读出来——
+
+| 提交 | CI 全站最差 CLS |
+|---|---|
+| 修复前（`851bae31`） | **0.103（/en/hike/）** |
+| 修复后（`36629296`，含本轮的兜底） | **0.017（/invest/etf/）** |
+
+`/en/hike/` 从「全站最差」直接掉出榜单，说明 Linux runner 上 `local("Arial")` 确实
+通过 fontconfig 落到了度量兼容的字体，也说明那个 0.103 就是 FOUT 重排，不是别的玄学。
+这条通道（commit status 的 description）是第 68 轮建的，这轮第一次靠它拿到决定性数据。
 
 ### 把「跨时段水合」变成常规门禁（第 70 轮）
 
