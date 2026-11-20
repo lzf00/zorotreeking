@@ -154,6 +154,20 @@ jobs:
           fi
           exit "$code"
 
+      - name: Interaction smoke (search, lightbox, vote, theme)
+        # 加载不报错 ≠ 交互不报错：搜索（pagefind）、灯箱（PhotoSwipe）、点赞（乐观更新 +
+        # POST /api/feedback）、深浅色切换都是岛里的代码，只有真的点下去才会执行。
+        # /api/* 用 stub 提供最小契约，链路在本地也能全量验证。
+        id: interactions
+        run: |
+          npm run check:interactions
+          code=$?
+          if [ "$code" -eq 2 ]; then
+            echo "::warning::交互自检跳过：Chromium 不可用"
+            exit 0
+          fi
+          exit "$code"
+
       - name: Stamp release identity
         run: |
           python3 - <<'PY'

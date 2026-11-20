@@ -662,6 +662,31 @@ npm run check:images -- --limit 150 --warn
 当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
 原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
 
+### 交互自检：加载不报错 ≠ 交互不报错（第 61 轮）
+
+`check-runtime` 只覆盖「打开页面」这条路径。本站真正的交互都在岛里：搜索（pagefind）、
+灯箱（PhotoSwipe）、点赞（乐观更新 + `POST /api/feedback`）、深浅色切换——这些代码
+只有真的点下去才执行，水合失败、事件没绑上、接口结构变化都只能这样发现。
+
+新增 `scripts/check-interactions.mjs`（`npm run check:interactions`），6 个场景中英各半：
+
+| 场景 | 断言 |
+|---|---|
+| 搜索 → 输入关键词 | `[role=dialog]` 里确实出现结果链接；Esc 后弹窗关闭 |
+| 点相册首图 | `.pswp--open` 出现；Esc 后消失 |
+| 点赞 | `aria-pressed` 变 `true`，且真的发出 `POST /api/feedback` |
+| 主题切换 | `<html>` 的 `dark` 类翻转 |
+
+`/api/*` 用 `page.route` stub 一份最小契约（GET 3/1、POST 4/1），这样「乐观更新 → POST →
+用返回值刷新」整条链路在静态产物上也能验证。退出码同 `check-runtime`：0 通过、1 场景失败、
+2 环境不可用；已接入 `deploy.yml`。
+
+两个坑：
+1. 搜索场景最初在 `domcontentloaded` 后立刻点击，岛还没水合，点了没反应 → 改成最多 6 次
+   重试点击（每次间隔 400ms），直到输入框出现；
+2. 最初断言用 `.search-results a`，实际结果就是弹窗里的普通 `<a>`（没有这个 class）
+   → 改为 `[role="dialog"] a[href]`。
+
 ### 运行时自检：把「页面在浏览器里报错」纳入发布门禁（第 60 轮）
 
 已有的三类检查都看不到运行时问题：`check:seo` 读 HTML 文本、`check:og` 读 `<head>`、
