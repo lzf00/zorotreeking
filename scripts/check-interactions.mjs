@@ -110,6 +110,30 @@ const SCENARIOS = [
     },
   },
   {
+    // 第 86 轮：内容页原来有 15–20 个反馈岛，每个挂载即 GET /api/feedback，
+    // 一个 digest 页面开局就发 21 个请求。改成按需加载后应该 ≤2（含鼠标恰好停在按钮上）。
+    // 这条守住「别再退回挂载即请求」。
+    name: "内容页：滚动一遍不预取整页反馈（≤2 次 GET）",
+    url: "/ai/digest-2026-08-27/",
+    async run({ page, fail, apiCalls }) {
+      const buttons = await page.locator('button[aria-label="喜欢"]').count();
+      if (buttons < 5) return fail(`该页面应有多个反馈按钮，实际只有 ${buttons} 个`);
+      // 必须像人一样滚一遍：反馈岛是 client:visible，不滚进视口根本不会挂载，
+      // 那样就测不到「挂载即请求」这个回归点（第 87 轮踩过：不滚的时候这条永远是绿的）。
+      await page.evaluate(async () => {
+        const step = 400;
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        for (let y = 0; y <= document.body.scrollHeight; y += step) {
+          window.scrollTo(0, y);
+          await sleep(60);
+        }
+      });
+      await page.waitForTimeout(1500);
+      const gets = apiCalls.filter((call) => call.method === "GET" && call.url.includes("/api/feedback")).length;
+      if (gets > 2) return fail(`滚动后发了 ${gets} 次 GET /api/feedback（按需加载后应 ≤2）`);
+    },
+  },
+  {
     name: "键盘 / 唤起搜索",
     url: "/",
     async run({ page, fail }) {
@@ -424,7 +448,7 @@ async function main() {
     console.error(`\n✗ 交互自检失败：${failures.length}/${scenarios.length} 个场景`);
     process.exit(1);
   }
-  console.log(`\n✓ 交互自检通过：${passed}/${scenarios.length} 个场景（搜索、灯箱、点赞、主题、ETF、行情岛、SSR 直出）`);
+  console.log(`\n✓ 交互自检通过：${passed}/${scenarios.length} 个场景（搜索、灯箱、点赞、主题、ETF、行情岛、SSR 直出、反馈按需加载）`);
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1] ?? "").href) {

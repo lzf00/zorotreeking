@@ -108,3 +108,20 @@ test("组件挂载时不再拉取 —— 只有交互才触发（防回归）", 
     assert.ok(source.includes(handler), `按钮缺少按需加载入口：${handler}`);
   }
 });
+
+test("部署巡检里那条「不预取整页反馈」必须真的滚一遍再数（否则恒绿）", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const source = await readFile(new URL("../scripts/check-interactions.mjs", import.meta.url), "utf8");
+  const at = source.indexOf("内容页：滚动一遍不预取整页反馈");
+  assert.ok(at > 0, "找不到反馈预取场景");
+
+  const block = source.slice(at, at + 1400);
+  // 反馈岛是 client:visible：不滚进视口就不会挂载，也就测不到「挂载即请求」。
+  assert.match(block, /scrollHeight/, "场景里必须自己滚一遍页面");
+  assert.match(block, /api\/feedback/, "要真的去数 /api/feedback 请求");
+  assert.match(block, /gets > 2/, "阈值是 2（含鼠标恰好停在按钮上）");
+
+  // 变异测试结论：把按需加载改回「挂载即请求」，这条会红并报出 21 次。
+  // 这里锁住阈值与滚动，避免有人为了让它绿而删除滚动。
+  assert.ok(!/gets > 1\d|gets > 5/.test(block), "不许把阈值放宽");
+});
