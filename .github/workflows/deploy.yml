@@ -122,6 +122,15 @@ jobs:
       # config.yml 的 schema 只有在浏览器里跑 Decap 才会校验：YAML 合法不代表
       # Decap 认（多一个键就白屏）。这里用无头浏览器真的加载 dist/admin/，
       # 报配置错就挡住这次部署；浏览器装不上时脚本自己降级为警告。
+      # 内容停更在「站点是否健康」的任何检查里都看不出来（第 82 轮：AI 日报停更三天，
+      # 期间构建/门禁/巡检全绿）。把新鲜度写成 commit status，打开 commit 就能看到
+      # 「AI 日报 落后 3 天」。continue-on-error：内容落后不该挡住代码修复的发布。
+      - name: Publish content freshness status
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/publish-freshness-status.mjs
+
       - name: Verify social share cards
         id: og
         run: npm run check:og
