@@ -676,6 +676,12 @@ npm run check:images -- --limit 150 --warn
 `npm run check:perf` = `--vitals --mobile --throttle`，deploy 工作流里跑 6 页 × 2 次，
 把「真实手机首屏」写进 log 与 `::notice::`，**只记录不挡发布**（弱网 LCP 受 runner 负载影响 ±30%）。
 
+> **踩坑**：这步第一次上线时只写了 `exit 0`，以为就「不挡发布」了，结果 GitHub 默认
+> `bash -e` 在 `npm run` 非 0 时就先退出——默认预算（CLS 0.1 / LCP 6000）在 2 核 runner 的
+> 弱网档下被顶超，整条部署直接变红，而「失败诊断」打印的是 `unknown step`（这步不在
+> OUTCOMES 清单里）。现在：`continue-on-error: true` + `set +e` + 预算放到 0.5 / 30000，
+> 并把 `runtime` / `runtime-mobile` / `perf-mobile` / `interactions` 补进诊断清单。
+
 过程中修掉三个「量出来是假的」问题：
 
 1. **本地静态服务器不压缩**：138 KB 的首页在 1.6 Mbps 档下要多传 600 ms，弱网 LCP 被

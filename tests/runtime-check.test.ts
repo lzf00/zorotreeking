@@ -86,4 +86,8 @@ test("弱网档：--throttle 用 Lighthouse 同档参数，--repeat 取中位数
   assert.match(wf, /npm run check:perf -- --limit=6 --repeat=2/, "deploy 要跑一遍弱网基线");
   assert.match(wf, /::notice::弱网首屏/, "弱网数字要出现在 notice 里");
   assert.match(wf, /仅记录，不影响发布/, "弱网基线不挡发布");
+  // 第 74 轮教训：纯记录步骤没加 continue-on-error / set +e，弱网数字把整条部署顶红
+  assert.match(wf, /id: perf-mobile\n\s+continue-on-error: true/, "记录步骤必须 continue-on-error");
+  assert.match(wf, /set \+e/, "记录步骤要 set +e，否则 bash -e 会先退出");
+  assert.match(wf, /perf-mobile=\$\{\{ steps\['perf-mobile'\]\.outcome \}\}/, "诊断清单要包含新步骤，否则失败时是 unknown step");
 });

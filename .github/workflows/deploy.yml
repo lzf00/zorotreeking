@@ -200,8 +200,16 @@ jobs:
         # 把「真实手机首屏」写进日志与 notice。
         # 只记录、不挡发布：弱网 LCP 受 runner 负载影响大（±30%），硬卡会变成假红；
         # 真正的闸门仍然是无节流 CLS（结构问题，不随机）与 JS/HTTP 报错。
+        #
+        # 第 74 轮第一次加这步时漏了 continue-on-error / set +e：默认预算在 2 核 runner 上
+        # 被弱网数字顶超，bash -e 直接让整条部署变红（诊断还显示 unknown step）。纯记录步骤
+        # 必须自己咽掉失败。
+        id: perf-mobile
+        continue-on-error: true
         run: |
-          npm run check:perf -- --limit=6 --repeat=2 > /tmp/perf-mobile.log 2>&1
+          set +e
+          # 预算放到「只在离谱时才失败」，反正失败也不挡发布
+          npm run check:perf -- --limit=6 --repeat=2 --cls=0.5 --lcp=30000 > /tmp/perf-mobile.log 2>&1
           code=$?
           cat /tmp/perf-mobile.log
           summary=$(grep -E "核心指标" /tmp/perf-mobile.log || true)
@@ -622,6 +630,10 @@ jobs:
             og=${{ steps.og.outcome }}
             seo=${{ steps.seo.outcome }}
             admin=${{ steps.admin.outcome }}
+            runtime=${{ steps.runtime.outcome }}
+            runtime-mobile=${{ steps.runtime-mobile.outcome }}
+            perf-mobile=${{ steps['perf-mobile'].outcome }}
+            interactions=${{ steps.interactions.outcome }}
             secrets=${{ steps.secrets.outcome }}
             rsync=${{ steps.rsync.outcome }}
         run: |
