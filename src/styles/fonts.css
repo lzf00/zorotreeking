@@ -55,6 +55,10 @@
   ascent-override: 90.6%;
   descent-override: 22.4%;
   line-gap-override: 0%;
+  /* 只接管与网页字体相同的字符集：size-adjust 会把 CJK 也算进去，
+     而 CJK 永远由系统字体渲染（Inter 只有拉丁子集）—— 不限制的话，
+     中文段落在兜底期被放大 7%，字体到货后又缩回去，整段上下跳（第 75 轮实测 0.028/0.053）。 */
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
   font-family: "Inter Fallback";
@@ -67,6 +71,10 @@
   ascent-override: 89.3%;
   descent-override: 22.1%;
   line-gap-override: 0%;
+  /* 只接管与网页字体相同的字符集：size-adjust 会把 CJK 也算进去，
+     而 CJK 永远由系统字体渲染（Inter 只有拉丁子集）—— 不限制的话，
+     中文段落在兜底期被放大 7%，字体到货后又缩回去，整段上下跳（第 75 轮实测 0.028/0.053）。 */
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
   font-family: "Inter Fallback";
@@ -74,13 +82,69 @@
   /* 粗体必须单独给：只声明一个 100–900 的不可变字面时，浏览器会用「合成粗体」画 700，
      实测比真 Inter Bold 窄 3.8%，一段粗体正文就从 2 行变 3 行（第 72 轮
      /en/invest/digest-2026-10-14/ 的 0.072 就是它：STRONG 高度 95→126）。
-     这里直接挂 Arial Bold 的真粗体，宽度比 102.3%。 */
+     这里直接挂 Arial Bold 的真粗体。
+     数值按**正文粗体的实际字重 600** 标定（typography 插件的 strong 是 600，不是 700）：
+     在真元素上扫 size-adjust，102% 还是 2 行、103% 就变 3 行 —— 悬崖就在 102.5% 附近。
+     旧值 102.3% 按 700 标定，正好落在悬崖右侧：线上 /en/invest/market-recap-2026-07-06/
+     的 CLS 0.053（BLOCKQUOTE 里 STRONG 高度 80→50，整段上移 30px）就是它。取 101.8% 留余量。 */
   font-weight: 550 900;
   src: local("Arial Bold"), local("Arial-BoldMT"), local("Helvetica Bold"), local("Liberation Sans Bold");
-  size-adjust: 102.3%;
-  ascent-override: 94.8%;
-  descent-override: 23.5%;
+  size-adjust: 101.8%;
+  ascent-override: 95.3%;
+  descent-override: 23.6%;
   line-gap-override: 0%;
+  /* 只接管与网页字体相同的字符集：size-adjust 会把 CJK 也算进去，
+     而 CJK 永远由系统字体渲染（Inter 只有拉丁子集）—— 不限制的话，
+     中文段落在兜底期被放大 7%，字体到货后又缩回去，整段上下跳（第 75 轮实测 0.028/0.053）。 */
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* 斜体：Inter **没有斜体文件**，浏览器是用直立体「合成倾斜」画的 —— 所以斜体的
+ * 前进宽度等于直立宽度。兜底两个字面都是「真斜体」（Arial Italic 每字略窄），
+ * 不单独标定就会出现：斜体段落先用真斜体排、Inter 到货后换成合成倾斜，行数变了，
+ * 整页往下推 —— 线上 `/en/invest/market-recap-2026-07-06/` 的 CLS 0.053 就是它
+ * （P/H2/TABLE 整体上移 30px）。数字来自第 75 轮实测：Inter 合成倾斜 ÷ Arial 斜体
+ * = 107.1%（400）/ 108.2%（500）/ 102.6%（700）。 */
+@font-face {
+  font-family: "Inter Fallback";
+  font-style: italic;
+  font-weight: 100 499;
+  src: local("Arial Italic"), local("Arial-ItalicMT"), local("Helvetica Oblique"), local("Liberation Sans Italic");
+  size-adjust: 107.1%;
+  ascent-override: 90.6%;
+  descent-override: 22.4%;
+  line-gap-override: 0%;
+  /* 只接管与网页字体相同的字符集：size-adjust 会把 CJK 也算进去，
+     而 CJK 永远由系统字体渲染（Inter 只有拉丁子集）—— 不限制的话，
+     中文段落在兜底期被放大 7%，字体到货后又缩回去，整段上下跳（第 75 轮实测 0.028/0.053）。 */
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Inter Fallback";
+  font-style: italic;
+  font-weight: 500 549;
+  src: local("Arial Italic"), local("Arial-ItalicMT"), local("Helvetica Oblique"), local("Liberation Sans Italic");
+  size-adjust: 108.2%;
+  ascent-override: 89.6%;
+  descent-override: 22.2%;
+  line-gap-override: 0%;
+  /* 只接管与网页字体相同的字符集：size-adjust 会把 CJK 也算进去，
+     而 CJK 永远由系统字体渲染（Inter 只有拉丁子集）—— 不限制的话，
+     中文段落在兜底期被放大 7%，字体到货后又缩回去，整段上下跳（第 75 轮实测 0.028/0.053）。 */
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Inter Fallback";
+  font-style: italic;
+  font-weight: 550 900;
+  src: local("Arial Bold Italic"), local("Arial-BoldItalicMT"), local("Helvetica Bold Oblique"), local("Liberation Sans Bold Italic");
+  size-adjust: 102.6%;
+  ascent-override: 94.5%;
+  descent-override: 23.4%;
+  line-gap-override: 0%;
+  /* 只接管与网页字体相同的字符集：size-adjust 会把 CJK 也算进去，
+     而 CJK 永远由系统字体渲染（Inter 只有拉丁子集）—— 不限制的话，
+     中文段落在兜底期被放大 7%，字体到货后又缩回去，整段上下跳（第 75 轮实测 0.028/0.053）。 */
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
   font-family: "Instrument Serif Fallback";
@@ -93,6 +157,10 @@
   ascent-override: 117.4%;
   descent-override: 36.8%;
   line-gap-override: 0%;
+  /* 只接管与网页字体相同的字符集：size-adjust 会把 CJK 也算进去，
+     而 CJK 永远由系统字体渲染（Inter 只有拉丁子集）—— 不限制的话，
+     中文段落在兜底期被放大 7%，字体到货后又缩回去，整段上下跳（第 75 轮实测 0.028/0.053）。 */
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
   /* Instrument Serif 行盒 1.30em，Times 只有 0.891+0.216≈1.11em、再乘 0.843 就更矮：
      大标题换字体时整块高度会跳 10px 以上（第 72 轮线上 digest 页 0.072 的主因）。 */
 

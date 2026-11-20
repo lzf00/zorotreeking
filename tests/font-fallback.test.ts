@@ -19,6 +19,16 @@ test("声明了 metric-matched fallback，并且 size-adjust 是标定出来的�
   assert.match(css, /ascent-override: 90\.6%/, "Inter 兜底要覆盖 ascent");
   assert.match(css, /descent-override: 22\.4%/, "Inter 兜底要覆盖 descent");
   assert.match(css, /font-weight: 550 900/, "粗体要单独一面，否则合成粗体窄 3.8%");
+  // 正文粗体是 weight 600（typography 插件的 strong），不是 700：按 700 标定会在
+  // 真元素上多折一行（第 75 轮线上 CLS 0.053 的 BLOCKQUOTE STRONG 80→50 就是它）。
+  assert.match(css, /size-adjust: 101\.8%/, "粗体兜底按 600 标定，别退回 102.3%");
+  assert.match(css, /ascent-override: 95\.3%/, "粗体兜底行盒要跟着 size-adjust 一起改");
+  assert.match(css, /font-style: italic/, "斜体要单独标定：Inter 没有斜体文件，浏览器是合成倾斜");
+  assert.match(css, /size-adjust: 102\.6%/, "斜体粗体兜底另有一档");
+  // 兜底只接管与网页字体相同的字符集，否则 size-adjust 连 CJK 一起缩放
+  const fallbackFaces = css.match(/font-family: "(?:Inter|Instrument Serif) Fallback";[\s\S]*?\n\}/g) ?? [];
+  assert.ok(fallbackFaces.length >= 7, `兜底 face 应该有 7 个，实际 ${fallbackFaces.length}`);
+  for (const face of fallbackFaces) assert.match(face, /unicode-range: U\+0000-00FF/, "每个兜底 face 都要限定字符集");
   assert.match(css, /font-weight: 500 549/, "font-medium 要单独一面");
   assert.match(css, /ascent-override: 117\.4%/, "衬线兜底要覆盖 ascent");
   assert.match(css, /descent-override: 36\.8%/, "衬线兜底要覆盖 descent");
