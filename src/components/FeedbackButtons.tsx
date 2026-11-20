@@ -1,9 +1,6 @@
-import { useEffect, useState } from "react";
-import {
-  fetchFeedback,
-  postFeedback,
-  type FeedbackState,
-} from "@/lib/feedback-api";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { postFeedback, type FeedbackState } from "@/lib/feedback-api";
+import { getCached, loadFeedback, putCached } from "@/lib/feedback-cache";
 
 /**
  * 文章/digest 底部的点赞/踩按钮。微博风格：
@@ -27,31 +24,42 @@ export default function FeedbackButtons({ slug, align = "right" }: Props) {
   const [pending, setPending] = useState(false);
   const [errCode, setErrCode] = useState<string | null>(null);
 
-  // 初始加载
+  // 不在这里拉取！digest 页面有 15–20 个按钮，挂载即请求会让一个页面开局就发
+  // 21 个 GET（第 86 轮实测）。只在访客真的表现出兴趣时才拉：悬停 / 聚焦 /
+  // 触摸 / 点击（见 ensureLoaded 上的事件），并且同一 slug 只拉一次。
+  const stateRef = useRef<FeedbackState | null>(null);
+  stateRef.current = state;
+
   useEffect(() => {
-    if (!slug) return;
-    const ctl = new AbortController();
-    fetchFeedback(slug, ctl.signal)
-      .then(setState)
-      .catch((e) => {
-        if (e.name === "AbortError") return;
-        // 初始拉取失败**不**在页面上显示错误码：访客什么都没点，却在每篇文章底部
-        // 看到一条红色 "·HTTP 422"（线上 /api/feedback 的 GET 就是 422），
-        // 既像站点坏了、又把正文的对比度问题带进来（axe 在相册页抓到 3.05:1）。
-        // 静默回退成 0/0，把「用户主动投票失败」的提示留给下面的 vote()。
-        console.warn("[feedback] 初始状态拉取失败，按钮仍可点击重试:", e?.message ?? e);
-        setState({ likes: 0, dislikes: 0, my_vote: null });
-      });
-    return () => ctl.abort();
+    // 同一 slug 可能已有别的实例拉过（例如翻页缓存），命中就直接用
+    const cached = slug ? getCached(slug) : null;
+    if (cached) setState(cached);
+  }, [slug]);
+
+  const ensureLoaded = useCallback(async () => {
+    if (!slug || stateRef.current) return stateRef.current;
+    try {
+      const fresh = await loadFeedback(slug);
+      stateRef.current = fresh;
+      setState(fresh);
+      return fresh;
+    } catch (e: any) {
+      // 静默：访客还没投票，不该在每篇文章底部看到红色 "·HTTP 422"
+      // （线上 /api/feedback 的 GET 就是 422）。真正投票失败才提示。
+      console.warn("[feedback] 状态拉取失败，按钮仍可点击重试:", e?.message ?? e);
+      return null;
+    }
   }, [slug]);
 
   async function vote(target: "like" | "dislike") {
-    if (pending || !state) return;
-    const next = state.my_vote === target ? "neutral" : target;
+    if (pending) return;
+    const current = state ?? (await ensureLoaded());
+    if (!current) return;
+    const next = current.my_vote === target ? "neutral" : target;
 
     // 乐观更新
-    const optimistic: FeedbackState = computeOptimistic(state, target);
-    const prev = state;
+    const optimistic: FeedbackState = computeOptimistic(current, target);
+    const prev = current;
     setState(optimistic);
     setPending(true);
     setErrCode(null);
@@ -59,6 +67,7 @@ export default function FeedbackButtons({ slug, align = "right" }: Props) {
     try {
       const fresh = await postFeedback(slug, next);
       setState(fresh);
+      putCached(slug, fresh);
     } catch (e: any) {
       // 回滚
       setState(prev);
@@ -78,6 +87,9 @@ export default function FeedbackButtons({ slug, align = "right" }: Props) {
       <button
         type="button"
         onClick={() => vote("like")}
+        onPointerEnter={ensureLoaded}
+        onFocus={ensureLoaded}
+        onTouchStart={ensureLoaded}
         disabled={pending}
         style={btnStyle(likeActive, "var(--market-up)")}
         aria-pressed={likeActive}
@@ -95,6 +107,9 @@ export default function FeedbackButtons({ slug, align = "right" }: Props) {
       <button
         type="button"
         onClick={() => vote("dislike")}
+        onPointerEnter={ensureLoaded}
+        onFocus={ensureLoaded}
+        onTouchStart={ensureLoaded}
         disabled={pending}
         style={btnStyle(dislikeActive, "#525252")}
         aria-pressed={dislikeActive}
