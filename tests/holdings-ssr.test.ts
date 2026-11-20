@@ -25,3 +25,10 @@ test("ETF 成交表也不能交白卷（曾有 360px 骨架屏，CLS 0.066）", 
   assert.match(src, /const rows = data \?/, "SSR 行来自 registry，水合后仍然是稳定顺序");
   assert.match(src, /registryIndex\(a\.code\) - registryIndex\(b\.code\)/, "行序不能跟接口返回顺序走（否则每 60s 重排一次）");
 });
+
+test("行情岛卡片/说明恒高，名字长度不再影响行高（/en/invest/ 位移 0.074 的修法）", async () => {
+  const src = await readFile(new URL("../src/components/MarketIndicesGrid.tsx", import.meta.url), "utf8");
+  assert.match(src, /truncate" title=\{indexName/, "指数名要截断成一行");
+  assert.match(src, /min-h-\[34px\]/, "说明文字要固定两行高度");
+  assert.match(src, /mounted && !isChinaATradingHours\(\)/, "时段文案要等挂载");
+});

@@ -39,6 +39,11 @@ interface Props {
 
 export default function MarketIndicesGrid({ initialIndices, initialUpdated, initialSource, lang = "zh" }: Props = {}) {
   const L = marketLabels(lang);
+  // 「（非交易时段…）」这类文案依赖「现在几点」：SSR 在构建时刻算、浏览器在访问时刻算，
+  // 跨过交易时段边界就会 hydration mismatch。等挂载后再显示。
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   const [data, setData] = useState<Index[] | null>(initialIndices && initialIndices.length > 0 ? initialIndices : null);
   const [updated, setUpdated] = useState<number | null>(initialUpdated ?? null);
   const [source, setSource] = useState<"live" | "wind_snapshot">(
@@ -111,12 +116,14 @@ export default function MarketIndicesGrid({ initialIndices, initialUpdated, init
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3">
         {data.map((d) => <IndexCard key={d.code} d={d} lang={lang} />)}
       </div>
-      <p className="mt-3 text-[11px] text-[var(--text-tertiary)] font-mono tracking-wide">
+      {/* 说明文字的长短会差一行（兜底快照那句更长），所以给它固定两行的高度：
+          宁可多留 16px 空白，也不要让下面六个板块整体上移 16px。 */}
+      <p className="mt-3 text-[11px] text-[var(--text-tertiary)] font-mono tracking-wide min-h-[34px]">
         {L.sourcePrefix}
         {source === "live" ? L.sourceEastmoney : L.sourceWindSnapshot} · {source === "live" ? L.apiResponse : L.snapshotTime}{" "}
         {updated ? formatChinaMarketTime(updated) : L.none}
         {source === "wind_snapshot" && <span className="ml-2 text-amber-700 dark:text-amber-400">{L.liveNotUpdated}</span>}
-        {!isChinaATradingHours() && <span className="ml-2">{L.marketClosedNote}</span>}
+        {mounted && !isChinaATradingHours() && <span className="ml-2">{L.marketClosedNote}</span>}
         {loading && <span className="ml-2">…</span>}
       </p>
     </section>
@@ -135,12 +142,15 @@ function IndexCard({ d, lang }: { d: Index; lang: MarketLang }) {
   const sign = (n: number | null) => (n != null && n > 0 ? "+" : "");
 
   return (
-    // min-h 固定住卡片高度：SSR 兜底只有 3 个指数、接口会返回 7 个，卡片宽度不同
-    // 会让指数名换行行数不同 —— 高度一变，下面所有板块跟着跳。实测 /en/invest/ 的
-    // CLS 0.073 就是这一处（第 67 轮归因）。定高后宽度变化不再影响行高。
+    // 卡片高度必须与「指数名有多长」无关：SSR 是 Wind 兜底的英文名（SSE Composite），
+    // 接口回来的是中文名（上证指数），换行行数不同 → 卡片高度 132px ↔ 116px → 下面
+    // 六个板块整体位移 16px。实测 /en/invest/ CLS 0.074（第 71 轮归因）。
+    // 所以名字截断成一行（鼠标悬停看全名），卡片高度自然恒定。
     <div className="rounded-2xl bg-[var(--bg-soft)] hover:bg-[var(--bg-soft-2)] transition-colors p-4 min-h-[92px]">
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-xs text-[var(--text-tertiary)]">{indexName(d.code, d.name, lang)}</span>
+      <div className="flex items-center justify-between gap-2 mb-2">
+        <span className="text-xs text-[var(--text-tertiary)] truncate" title={indexName(d.code, d.name, lang)}>
+          {indexName(d.code, d.name, lang)}
+        </span>
         <span className="text-[10px] font-mono text-[var(--text-secondary)]">{d.market}</span>
       </div>
       <div className="text-xl font-semibold tabular-nums leading-none mb-2">
