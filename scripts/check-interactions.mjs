@@ -25,6 +25,7 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 
 import { isThirdPartyConsoleNoise } from "./lib/console-noise.mjs";
+import { makeContextHermetic } from "./lib/hermetic.mjs";
 import { chromePath, serveDist } from "./lib/serve-dist.mjs";
 
 const args = process.argv.slice(2);
@@ -413,6 +414,7 @@ async function main() {
   const base = `http://127.0.0.1:${server.address().port}`;
   const browser = await chromium.launch({ executablePath: chromePath(), args: ["--no-sandbox"] });
   const failures = [];
+  const blockedSummary = new Set();
   let passed = 0;
 
   try {
@@ -420,6 +422,8 @@ async function main() {
       const viewport = scenario.viewport ?? { width: 1280, height: 900 };
       const touch = viewport.width < 640;
       const context = await browser.newContext({ viewport, hasTouch: touch, isMobile: touch });
+      // 只跑本地构建：第三方域名（giscus.app 等）一律拦住，否则发布门禁就依赖外网了（第 93 轮）
+      const hermetic = await makeContextHermetic(context, base);
       const page = await context.newPage();
       const runtimeIssues = [];
       page.on("pageerror", (e) => runtimeIssues.push(`pageerror: ${e.message.slice(0, 160)}`));
@@ -493,6 +497,8 @@ async function main() {
         fail(`动作抛错：${String(error).split("\n")[0].slice(0, 160)}`);
       }
       const all = [...problems, ...runtimeIssues];
+      const blockedHosts = hermetic.blocked();
+      if (blockedHosts.length > 0) blockedSummary.add(`${scenario.name}: ${blockedHosts.join(",")}`);
       if (all.length) {
         console.log(`✗ ${scenario.name}（${scenario.url}）`);
         for (const problem of [...new Set(all)].slice(0, 5)) console.log(`    ${problem}`);
@@ -512,6 +518,7 @@ async function main() {
     console.error(`\n✗ 交互自检失败：${failures.length}/${scenarios.length} 个场景`);
     process.exit(1);
   }
+  if (blockedSummary.size > 0) console.log(`\n· 已拦截第三方请求（只验证本地构建）：${[...blockedSummary].join(" | ")}`);
   console.log(`\n✓ 交互自检通过：${passed}/${scenarios.length} 个场景（搜索、灯箱、点赞、主题、ETF、行情岛、SSR 直出、反馈按需加载）`);
 }
 

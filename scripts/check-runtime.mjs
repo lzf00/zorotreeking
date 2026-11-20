@@ -32,6 +32,7 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 
 import { isThirdPartyConsoleNoise } from "./lib/console-noise.mjs";
+import { makeContextHermetic } from "./lib/hermetic.mjs";
 
 const args = process.argv.slice(2);
 const valueOf = (name, fallback) => {
@@ -291,6 +292,8 @@ async function main() {
     for (const { url, run } of plan) {
       const touch = vw < 640;
       const context = await browser.newContext({ viewport: { width: vw, height: vh }, isMobile: touch, hasTouch: touch });
+      // 与交互自检一致：只验证本地构建，第三方域名全部拦住（第 93 轮）
+      await makeContextHermetic(context, base);
       const page = await context.newPage();
       if (CPU_THROTTLE > 1 || THROTTLE) {
         const session = await context.newCDPSession(page);
