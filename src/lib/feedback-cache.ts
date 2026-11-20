@@ -75,3 +75,28 @@ export async function loadFeedback(
   inflight.set(slug, promise);
   return promise;
 }
+
+/** 拿不到服务端状态时用的空状态（按钮仍可点击投票）。 */
+export const EMPTY_STATE: FeedbackState = { likes: 0, dislikes: 0, my_vote: null };
+
+/**
+ * 带降级的加载：永不抛错。
+ *
+ * 为什么必须这样：`vote()` 需要先知道 `my_vote` 才能算「再点一次是取消」。
+ * 线上 `/api/feedback` 的 GET 一直是 422，如果加载失败就直接 return，
+ * 按钮会**彻底点不动**（点一下什么都不发生，也没有错误提示）。
+ * 所以失败时退化成空状态，让 POST 照常发出去。
+ *
+ * @returns `{ state, degraded }`：degraded 表示这次是退化状态（不要写缓存）。
+ */
+export async function loadFeedbackOrEmpty(
+  slug: string,
+  signal?: AbortSignal,
+  deps: LoadDeps = {},
+): Promise<{ state: FeedbackState; degraded: boolean }> {
+  try {
+    return { state: await loadFeedback(slug, signal, deps), degraded: false };
+  } catch {
+    return { state: EMPTY_STATE, degraded: true };
+  }
+}

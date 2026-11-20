@@ -134,6 +134,30 @@ const SCENARIOS = [
     },
   },
   {
+    // 线上 /api/feedback 的 GET 一直是 422（第 83 轮发现）。第 86 轮改成按需加载后，
+    // 如果「加载失败就不投票」，按钮会彻底点不动 —— 这条守住降级路径。
+    name: "反馈 GET 422 时点击仍能投票（降级不阻塞）",
+    url: "/photo/baokemeng/",
+    api: {
+      "/api/feedback": (call, request) =>
+        request.method() === "GET"
+          ? { status: 422, body: { detail: "unprocessable" } }
+          : { status: 200, body: { likes: 1, dislikes: 0, my_vote: "like" } },
+    },
+    async run({ page, fail, apiCalls }) {
+      const like = page.locator('button[aria-label="喜欢"], button[aria-label="Like"]').first();
+      if ((await like.count()) === 0) return fail("找不到点赞按钮");
+      await like.click();
+      await page.waitForTimeout(WAIT);
+      if ((await like.getAttribute("aria-pressed")) !== "true") {
+        return fail("GET 422 后点击没有进入按下态（推荐的降级路径失效，按钮点不动了）");
+      }
+      if (!apiCalls.some((call) => call.method === "POST" && call.url.includes("/api/feedback"))) {
+        return fail("GET 422 后没有继续发 POST /api/feedback");
+      }
+    },
+  },
+  {
     name: "键盘 / 唤起搜索",
     url: "/",
     async run({ page, fail }) {
@@ -396,7 +420,8 @@ async function main() {
           const [prefix, handler] = custom;
           const call = apiHits.get(prefix) ?? 0;
           apiHits.set(prefix, call + 1);
-          const reply = handler(call);
+          // handler(call, request)：有的场景要按 HTTP 方法返回不同结果
+          const reply = handler(call, request);
           return route.fulfill({ status: reply.status, contentType: "application/json", body: JSON.stringify(reply.body) });
         }
         if (url.includes("/api/feedback")) {

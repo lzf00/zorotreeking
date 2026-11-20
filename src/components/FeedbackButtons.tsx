@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { postFeedback, type FeedbackState } from "@/lib/feedback-api";
-import { getCached, loadFeedback, putCached } from "@/lib/feedback-cache";
+import { EMPTY_STATE, getCached, loadFeedbackOrEmpty, putCached } from "@/lib/feedback-cache";
 
 /**
  * 文章/digest 底部的点赞/踩按钮。微博风格：
@@ -36,24 +36,31 @@ export default function FeedbackButtons({ slug, align = "right" }: Props) {
     if (cached) setState(cached);
   }, [slug]);
 
-  const ensureLoaded = useCallback(async () => {
+  // 加载失败后 30s 内不再重复请求（否则每次悬停都打一下坏接口）
+  const failedAtRef = useRef(0);
+
+  const ensureLoaded = useCallback(async (force = false) => {
     if (!slug || stateRef.current) return stateRef.current;
-    try {
-      const fresh = await loadFeedback(slug);
-      stateRef.current = fresh;
-      setState(fresh);
-      return fresh;
-    } catch (e: any) {
-      // 静默：访客还没投票，不该在每篇文章底部看到红色 "·HTTP 422"
-      // （线上 /api/feedback 的 GET 就是 422）。真正投票失败才提示。
-      console.warn("[feedback] 状态拉取失败，按钮仍可点击重试:", e?.message ?? e);
-      return null;
+    if (!force && Date.now() - failedAtRef.current < 30_000) return EMPTY_STATE;
+
+    // 永不抛错：线上 /api/feedback 的 GET 是 422，如果加载失败就让 vote() 直接
+    // return，按钮会彻底点不动（点一下什么都不发生）。退化状态下 POST 照常发。
+    const { state: fresh, degraded } = await loadFeedbackOrEmpty(slug);
+    if (degraded) {
+      failedAtRef.current = Date.now();
+      console.warn("[feedback] 状态拉取失败，先用空状态（仍可投票）");
+      setState(EMPTY_STATE);
+      return EMPTY_STATE;
     }
+    stateRef.current = fresh;
+    failedAtRef.current = 0;
+    setState(fresh);
+    return fresh;
   }, [slug]);
 
   async function vote(target: "like" | "dislike") {
     if (pending) return;
-    const current = state ?? (await ensureLoaded());
+    const current = state ?? (await ensureLoaded(true));
     if (!current) return;
     const next = current.my_vote === target ? "neutral" : target;
 
@@ -87,9 +94,9 @@ export default function FeedbackButtons({ slug, align = "right" }: Props) {
       <button
         type="button"
         onClick={() => vote("like")}
-        onPointerEnter={ensureLoaded}
-        onFocus={ensureLoaded}
-        onTouchStart={ensureLoaded}
+        onPointerEnter={() => void ensureLoaded()}
+        onFocus={() => void ensureLoaded()}
+        onTouchStart={() => void ensureLoaded()}
         disabled={pending}
         style={btnStyle(likeActive, "var(--market-up)")}
         aria-pressed={likeActive}
@@ -107,9 +114,9 @@ export default function FeedbackButtons({ slug, align = "right" }: Props) {
       <button
         type="button"
         onClick={() => vote("dislike")}
-        onPointerEnter={ensureLoaded}
-        onFocus={ensureLoaded}
-        onTouchStart={ensureLoaded}
+        onPointerEnter={() => void ensureLoaded()}
+        onFocus={() => void ensureLoaded()}
+        onTouchStart={() => void ensureLoaded()}
         disabled={pending}
         style={btnStyle(dislikeActive, "#525252")}
         aria-pressed={dislikeActive}

@@ -103,9 +103,10 @@ test("组件挂载时不再拉取 —— 只有交互才触发（防回归）", 
   assert.ok(effect.length > 0, "找不到挂载 effect");
   assert.ok(!/loadFeedback|fetchFeedback|fetch\(/.test(effect), `挂载 effect 里又发请求了：\n${effect}`);
 
-  // 三个交互入口都要接上
-  for (const handler of ["onPointerEnter={ensureLoaded}", "onFocus={ensureLoaded}", "onTouchStart={ensureLoaded}"]) {
-    assert.ok(source.includes(handler), `按钮缺少按需加载入口：${handler}`);
+  // 三个交互入口都要接上（用 () => void ensureLoaded() 包一层，避免把事件对象当参数传进去）
+  for (const event of ["onPointerEnter", "onFocus", "onTouchStart"]) {
+    const re = new RegExp(`${event}=\\{[^}]*ensureLoaded[^}]*\\}`);
+    assert.match(source, re, `按钮缺少按需加载入口：${event}`);
   }
 });
 
@@ -124,4 +125,23 @@ test("部署巡检里那条「不预取整页反馈」必须真的滚一遍再�
   // 变异测试结论：把按需加载改回「挂载即请求」，这条会红并报出 21 次。
   // 这里锁住阈值与滚动，避免有人为了让它绿而删除滚动。
   assert.ok(!/gets > 1\d|gets > 5/.test(block), "不许把阈值放宽");
+});
+
+test("加载失败要退化成空状态，而不是让 vote() 直接放弃（线上 GET 就是 422）", async () => {
+  const { loadFeedbackOrEmpty, EMPTY_STATE } = await import("../src/lib/feedback-cache");
+  resetCache();
+
+  const ok = await loadFeedbackOrEmpty("item:ok", undefined, { fetch: async () => state(4) });
+  assert.equal(ok.degraded, false);
+  assert.equal(ok.state.likes, 4);
+
+  resetCache();
+  const broken = await loadFeedbackOrEmpty("item:bad", undefined, {
+    fetch: async () => {
+      throw new Error("HTTP 422");
+    },
+  });
+  assert.equal(broken.degraded, true, "失败要标记为降级");
+  assert.deepEqual(broken.state, EMPTY_STATE, "降级要返回空状态，否则按钮无法投票");
+  assert.equal(getCached("item:bad"), null, "降级结果不许写进缓存");
 });
