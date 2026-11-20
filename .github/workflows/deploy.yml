@@ -523,6 +523,32 @@ jobs:
           done
           SH
 
+      # 严格核对（第 81 轮）：修完之后必须**真的**一个不可读文件都不剩。
+      # 这一步只花一次 SSH，不产生任何 HTTP 请求 —— 全量核对 3000+ 文件如果走 HTTP，
+      # 会直接把探针 IP 打进服务器的频控里（第 81 轮实测：连打 1453 个请求后本机被 reset）。
+      - name: Verify every file in the release is world-readable
+        run: |
+          release_root="${DEPLOY_PATH%/}"
+          release_root="${release_root%/dist}"
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new "$SSH_USER@$SSH_HOST" \
+            sh -s -- "$release_root" <<'SH'
+          set -eu
+          release_root=$1
+          status=0
+          for link in current previous; do
+            [ -L "$release_root/$link" ] || continue
+            dir=$(readlink -f "$release_root/$link")
+            test -d "$dir" || continue
+            count=$(find "$dir" -type f ! -perm -o+r | wc -l | tr -d ' ')
+            echo "$link: $count 个不可读文件"
+            if [ "$count" != "0" ]; then
+              find "$dir" -type f ! -perm -o+r | head -20
+              status=1
+            fi
+          done
+          exit $status
+          SH
+
       - name: Production acceptance smoke test
         run: |
           python3 - <<'PY'

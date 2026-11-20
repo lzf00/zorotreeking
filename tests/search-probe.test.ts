@@ -73,3 +73,19 @@ test("每周巡检也会跑搜索探针", async () => {
   const pkg = JSON.parse(await readFile(PKG, "utf8"));
   assert.equal(pkg.scripts["check:search"], "node scripts/check-search.mjs");
 });
+
+test("部署里用服务端 find 核对可读性，而不是用 HTTP 批量抓（会触发频控）", async () => {
+  const deploy = await readFile(DEPLOY_WF, "utf8");
+  const verifyAt = deploy.indexOf("Verify every file in the release is world-readable");
+  assert.ok(verifyAt > 0, "要有服务端只读核对步骤");
+  const probeAt = deploy.indexOf("node scripts/check-search.mjs");
+  assert.ok(verifyAt < probeAt, "先修/核权限，再跑搜索探针");
+
+  const verifyBlock = deploy.slice(verifyAt, verifyAt + 1600);
+  assert.match(verifyBlock, /find "\$dir" -type f ! -perm -o\+r \| wc -l/, "要数出不可读文件数量");
+  assert.match(verifyBlock, /exit \$status/, "还剩不可读文件时这一步必须失败");
+  assert.match(verifyBlock, /for link in current previous/, "current 和 previous 都要核（回滚不能退回坏的那份）");
+
+  // 反面断言：不能出现「HTTP 批量抓全站资产」这种会在生产上触发频控的实现
+  assert.ok(!/check-deployed-assets/.test(deploy), "HTTP 全量抓取方案已废弃，别再接线");
+});
