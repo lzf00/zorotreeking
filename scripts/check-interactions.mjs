@@ -154,6 +154,55 @@ const SCENARIOS = [
     },
   },
   {
+    name: "手机灯箱关闭按钮",
+    url: "/photo/baokemeng/",
+    viewport: { width: 390, height: 844 },
+    async run({ page, fail }) {
+      const first = page.locator('[id^="gallery-"] a').first();
+      if ((await first.count()) === 0) return fail("手机上画廊里没有可点的图片");
+      await first.tap();
+      await page.waitForTimeout(WAIT);
+      if ((await page.locator(".pswp.pswp--open").count()) === 0) return fail("灯箱没打开");
+      // 真机上没人按 Esc：点右上角 × 才是主要关闭路径
+      const close = page.locator(".pswp__button--close").first();
+      if ((await close.count()) === 0) return fail("灯箱里找不到关闭按钮（.pswp__button--close）");
+      await close.tap();
+      await page.waitForTimeout(800);
+      if ((await page.locator(".pswp.pswp--open").count()) > 0) return fail("点 × 没有关闭灯箱");
+    },
+  },
+  {
+    name: "ETF 接口失败 → 重试成功（手机视口）",
+    url: "/invest/etf/",
+    viewport: { width: 390, height: 844 },
+    api: {
+      "/api/market/etf": (call) =>
+        call === 0
+          ? { status: 500, body: { ok: false, error: "上游行情接口不可用" } }
+          : {
+              status: 200,
+              body: {
+                ok: true,
+                ts: Date.now(),
+                items: [
+                  { code: "999999", name: "桩数据ETF", price: 4.321, change_pct: 1.23, turnover_yi: 18.4, prev_turnover_yi: 22.1, ratio_pct: 83.2 },
+                ],
+              },
+            },
+    },
+    async run({ page, fail }) {
+      // 首屏数据先失败：必须给出可点的重试入口，而不是一片空白
+      await page.waitForTimeout(WAIT);
+      const retry = page.locator("button", { hasText: "重试" }).first();
+      if ((await retry.count()) === 0) return fail("接口 500 后没有出现「重试」按钮");
+      await retry.click();
+      await page.waitForTimeout(WAIT);
+      if ((await page.getByText("桩数据ETF").count()) === 0) return fail("点重试后没有渲染出接口返回的 ETF 数据");
+      const body = await page.locator("body").innerText();
+      if (!/18\.4\s*亿/.test(body)) return fail("ETF 成交额没有按「亿」渲染");
+    },
+  },
+  {
     name: "深色模式切换",
     url: "/",
     async run({ page, fail }) {
@@ -217,10 +266,19 @@ async function main() {
       // /api/* 是服务器端接口，静态产物里没有。这里用 stub 提供最小契约，
       // 好处是「乐观更新 → POST → 用返回值刷新」整条链路都能在本地验证。
       const apiCalls = [];
+      const apiHits = new Map();
       await page.route("**/api/**", (route) => {
         const request = route.request();
         const url = request.url();
         apiCalls.push({ method: request.method(), url });
+        const custom = Object.entries(scenario.api ?? {}).find(([prefix]) => url.includes(prefix));
+        if (custom) {
+          const [prefix, handler] = custom;
+          const call = apiHits.get(prefix) ?? 0;
+          apiHits.set(prefix, call + 1);
+          const reply = handler(call);
+          return route.fulfill({ status: reply.status, contentType: "application/json", body: JSON.stringify(reply.body) });
+        }
         if (url.includes("/api/feedback")) {
           const body =
             request.method() === "POST"
@@ -269,7 +327,7 @@ async function main() {
     console.error(`\n✗ 交互自检失败：${failures.length}/${scenarios.length} 个场景`);
     process.exit(1);
   }
-  console.log(`\n✓ 交互自检通过：${passed}/${scenarios.length} 个场景（搜索、灯箱、点赞、深浅色）`);
+  console.log(`\n✓ 交互自检通过：${passed}/${scenarios.length} 个场景（搜索、灯箱、点赞、主题、ETF 重试）`);
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1] ?? "").href) {

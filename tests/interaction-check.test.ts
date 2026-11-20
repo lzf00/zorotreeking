@@ -14,6 +14,8 @@ test("四个交互场景都要在清单里（搜索/灯箱/点赞/深浅色）",
     "键盘 / 唤起搜索",
     "手机搜索（390 宽）",
     "手机灯箱（390 宽）",
+    "手机灯箱关闭按钮",
+    "ETF 接口失败 → 重试成功（手机视口）",
   ];
   for (const keyword of names) {
     assert.ok(src.includes(keyword), `缺场景：${keyword}`);
@@ -45,5 +47,12 @@ test("相册索引页不许落到站点默认分享卡（check-og 里要有这�
   const og = await readFile(new URL("../scripts/check-og.mjs", import.meta.url), "utf8");
   assert.match(og, /const DEFAULT_CARD_PAGES = new Set\(\["\/photo\/", "\/en\/photo\/"\]\)/);
   assert.match(og, /用了站点默认分享卡/);
+});
+
+test("场景可以自定义接口桩（失败 → 重试成功的链路要能验证）", async () => {
+  const src = await readFile(SCRIPT, "utf8");
+  assert.match(src, /const custom = Object\.entries\(scenario\.api \?\? \{\}\)/, "要支持按场景覆盖接口");
+  assert.match(src, /apiHits\.set\(prefix, call \+ 1\)/, "要能按调用次数返回不同结果");
+  assert.match(src, /桩数据ETF/, "断言要用真实数据里不可能出现的哨兵值");
 });
 
