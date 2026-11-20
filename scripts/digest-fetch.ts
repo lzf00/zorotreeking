@@ -18,7 +18,7 @@
  */
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { fetchHFDailyPapers, type Paper } from "./digest-sources/ai.ts";
 import { fetchArxivRSS } from "./digest-sources/ai-arxiv.ts";
@@ -37,6 +37,14 @@ import { fetchEastmoneyNews } from "./digest-sources/invest-eastmoney.ts";
 import { fetchYahooFinance } from "./digest-sources/invest-yahoo.ts";
 import { summarizeToChinese, digestTLDR, type DigestTLDR } from "./lib/llm.ts";
 import { pickCoverFromLibrary } from "./lib/cover-picker.ts";
+import {
+  collectFromSources,
+  diagnosticsReport,
+  starvationReason,
+  summaryHealth,
+  type CollectResult,
+  type SourceSpec,
+} from "./lib/digest-collect.ts";
 import {
   safeExternalUrl,
   sanitizeExternalTextForMdx,
@@ -114,22 +122,37 @@ function escapeJsxText(s: string): string {
   return s.replace(/\\/g, "\\\\").replace(/\{/g, "\\{").replace(/\}/g, "\\}").replace(/</g, "&lt;");
 }
 
+/** 返回 ok 标记：摘要失败率过高时不能出稿（见 lib/digest-collect.ts 的 summaryHealth）。 */
 async function summarizeSafe(
   text: string,
   kind: "paper" | "news",
   fallback: string = "",
-): Promise<string> {
+): Promise<{ text: string; ok: boolean }> {
   try {
     const out = await summarizeToChinese(text, { kind });
-    if (out) return out;
+    if (out) return { text: out, ok: true };
     const excerpt = fallback ? fallback.replace(/\s+/g, " ").slice(0, 300) : "";
-    return excerpt
-      ? `*（自动摘要失败，下面是原文节选，请手动改写）*\n\n${excerpt}${fallback.length > 300 ? "…" : ""}`
-      : "（摘要为空，请手动补充）";
+    return {
+      ok: false,
+      text: excerpt
+        ? `*（自动摘要失败，下面是原文节选，请手动改写）*\n\n${excerpt}${fallback.length > 300 ? "…" : ""}`
+        : "（摘要为空，请手动补充）",
+    };
   } catch (e) {
     console.warn(`  [llm] summarize failed: ${(e as Error).message}`);
-    return "（LLM 摘要失败，请稍后手动补充）";
+    return { ok: false, text: "（LLM 摘要失败，请稍后手动补充）" };
   }
+}
+
+/** 摘要失败率过高就抛错，别把占位符文章发出去。 */
+function assertSummaryHealth(stream: "ai" | "invest", failed: number, total: number): void {
+  const health = summaryHealth(stream, failed, total);
+  if (health.fatal) {
+    const reason = health.reason ?? "摘要失败过多";
+    console.error(`\n[digest] ✗ ${reason}`);
+    throw new Error(reason);
+  }
+  if (failed > 0) console.warn(`  [digest] ${failed}/${total} 条摘要失败（未超阈值，继续）`);
 }
 
 async function writeIfNew(filePath: string, content: string): Promise<boolean> {
@@ -146,36 +169,39 @@ async function writeIfNew(filePath: string, content: string): Promise<boolean> {
   return true;
 }
 
-// 多源并行收集 + URL 去重 + 每源 limit
-async function collectFromSources<T extends { url?: string }>(
-  sources: { name: string; fetch: () => Promise<T[]>; limit: number }[],
+// 多源收集 + 体检都在 lib/digest-collect.ts（可单测）。这里只负责把「源全挂」变成失败：
+// 以前 0 条时只打一行日志就 return、退出码 0，于是停更三天没人知道。
+const MIN_ITEMS = 3;
+
+async function collectOrFail<T extends { url?: string }>(
+  stream: "ai" | "invest",
+  sources: SourceSpec<T>[],
 ): Promise<T[]> {
-  const results = await Promise.allSettled(sources.map((s) => s.fetch()));
-  const seen = new Set<string>();
-  const out: T[] = [];
-  for (let i = 0; i < results.length; i++) {
-    const r = results[i];
-    const src = sources[i];
-    if (r.status === "rejected") {
-      console.warn(`  ✗ source ${src.name} failed: ${(r.reason as Error).message}`);
-      continue;
-    }
-    const got = r.value.slice(0, src.limit);
-    console.log(`  ✓ source ${src.name}: ${got.length} items`);
-    for (const it of got) {
-      const key = (it.url || "").trim();
-      if (key && seen.has(key)) continue;
-      if (key) seen.add(key);
-      out.push(it);
-    }
+  const result = await collectFromSources<T>(sources, (line) => console.log(line));
+  await writeSourceReport(stream, result);
+  const reason = starvationReason(stream, result, MIN_ITEMS);
+  if (reason) {
+    console.error(`\n[digest] ✗ ${reason}`);
+    throw new Error(reason);
   }
-  return out;
+  return result.items;
+}
+
+/** 把逐源体检写到 reports/digest-sources-*.json，失败时 workflow 会把它贴进 run 页面。 */
+async function writeSourceReport<T>(stream: "ai" | "invest", result: CollectResult<T>): Promise<void> {
+  const file = path.join(ROOT, "reports", `digest-sources-${stream}.json`);
+  try {
+    await fs.mkdir(path.dirname(file), { recursive: true });
+    await fs.writeFile(file, `${JSON.stringify({ ...diagnosticsReport(stream, result as CollectResult<unknown>, MIN_ITEMS), at: new Date().toISOString() }, null, 2)}\n`);
+  } catch (error) {
+    console.warn(`  [digest] 写逐源报告失败（不影响出稿）：${(error as Error).message}`);
+  }
 }
 
 // ── AI ───────────────────────────────────────────────────────
 async function buildAIDigest(date: string): Promise<void> {
   console.log("\n── AI digest ──");
-  const papers = await collectFromSources<Paper>([
+  const papers = await collectOrFail<Paper>("ai", [
     { name: "Hugging Face Daily", fetch: () => fetchHFDailyPapers(date).catch(() => fetchHFDailyPapers()), limit: 5 },
     { name: "arxiv cs.LG",        fetch: () => fetchArxivRSS("cs.LG", 3), limit: 3 },
     { name: "OpenAI Blog",        fetch: () => fetchOpenAIBlog(14, 2),    limit: 2 },
@@ -187,24 +213,23 @@ async function buildAIDigest(date: string): Promise<void> {
     { name: "Lil'Log",            fetch: () => fetchLilLog(180, 1),       limit: 1 },
     { name: "量子位",              fetch: () => fetchQbitAI(3),            limit: 3 },
   ]);
-  if (papers.length === 0) {
-    console.log("  no papers; skip.");
-    return;
-  }
   console.log(`  total ${papers.length} papers after dedupe, summarizing...`);
 
   const summaries: (Paper & { zhSummary: string })[] = [];
+  let summaryFailures = 0;
   for (let i = 0; i < papers.length; i++) {
     const p = papers[i];
     console.log(`  [${i + 1}/${papers.length}] (${p.source}) ${p.title.slice(0, 60)}`);
-    const summary = await summarizeSafe(
+    const { text: summary, ok } = await summarizeSafe(
       `Title: ${p.title}\n\nAbstract:\n${p.abstract}`,
       "paper",
       p.abstract,
     );
+    if (!ok) summaryFailures += 1;
     summaries.push({ ...p, zhSummary: summary });
     if (i < papers.length - 1) await new Promise((r) => setTimeout(r, 500));
   }
+  assertSummaryHealth("ai", summaryFailures, summaries.length);
 
   const grouped: Record<string, (Paper & { zhSummary: string })[]> = {};
   for (const s of summaries) {
@@ -296,25 +321,24 @@ async function buildAIDigest(date: string): Promise<void> {
 // ── 投资 ──────────────────────────────────────────────────────
 async function buildInvestDigest(date: string): Promise<void> {
   console.log("\n── Invest digest ──");
-  const news = await collectFromSources<NewsItem>([
+  const news = await collectOrFail<NewsItem>("invest", [
     { name: "同花顺 7×24",    fetch: () => fetchTongHuaShunNews(8), limit: 6 },
     { name: "东方财富 7×24",   fetch: () => fetchEastmoneyNews(8),    limit: 6 },
     { name: "Yahoo Finance", fetch: () => fetchYahooFinance(3),     limit: 3 },
   ]);
-  if (news.length === 0) {
-    console.log("  no news; skip.");
-    return;
-  }
   console.log(`  total ${news.length} news after dedupe, summarizing...`);
 
   const items: (NewsItem & { zhSummary: string })[] = [];
+  let summaryFailures = 0;
   for (let i = 0; i < news.length; i++) {
     const n = news[i];
     console.log(`  [${i + 1}/${news.length}] (${n.source}) ${n.title.slice(0, 50)}`);
-    const summary = await summarizeSafe(`${n.title}\n\n${n.digest}`, "news", n.digest);
+    const { text: summary, ok } = await summarizeSafe(`${n.title}\n\n${n.digest}`, "news", n.digest);
+    if (!ok) summaryFailures += 1;
     items.push({ ...n, zhSummary: summary });
     if (i < news.length - 1) await new Promise((r) => setTimeout(r, 500));
   }
+  assertSummaryHealth("invest", summaryFailures, items.length);
 
   const grouped: Record<string, (NewsItem & { zhSummary: string })[]> = {};
   for (const it of items) {
@@ -403,7 +427,11 @@ async function main() {
   console.log("\n[digest] done.");
 }
 
-main().catch((e) => {
-  console.error("[digest] fatal:", e);
-  process.exit(1);
-});
+// 只有直接执行才跑；被测试 import 时不能自动执行（否则单测会真的去联网抓 13 个源）。
+const invokedDirectly = process.argv[1] ? pathToFileURL(process.argv[1]).href === import.meta.url : false;
+if (invokedDirectly) {
+  main().catch((e) => {
+    console.error("[digest] fatal:", e);
+    process.exit(1);
+  });
+}

@@ -129,6 +129,21 @@ jobs:
 
       # embedding 增量更新（独立 step，失败不影响 digest commit；
       # 即使超时被 cancel，新 digest mdx 已经在 main 上了）
+      # 逐源体检（第 79 轮）：源全挂或摘要全失败时，run 页面要能直接看到「哪个源多少条」。
+      - name: Digest source report
+        if: always()
+        run: |
+          for file in reports/digest-sources-*.json; do
+            [ -f "$file" ] || continue
+            {
+              echo "### $(basename "$file")"
+              echo ''
+              echo '```json'
+              cat "$file"
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+          done
+
       # 收尾断言（第 78 轮）：日报流水线最危险的失败不是报错，而是**什么都没产出**。
       # 2026-11-19 起 AI 日报静默停更 3 天，站点照常构建、门禁全绿、巡检 0 失败 ——
       # 因为没有「今天到底产出了没」的检查。这条会让停更直接变成红 job。
