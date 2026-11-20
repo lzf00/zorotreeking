@@ -31,3 +31,29 @@
   src: url("../assets/fonts/jetbrains-mono-100-800-latin.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
+
+/* ── metric-matched fallback ──────────────────────────────────────────────
+ * 字体没到货前（font-display: swap）浏览器会先用系统字体画。系统字体和 Inter /
+ * Instrument Serif 的宽度差得多时，一段文字会换行变多/变少，整页往下推 —— 这是
+ * FOUT 抖动，CI（Linux 上 Inter 缺省落到更宽的 DejaVu Sans）实测 `/en/hike/` CLS 0.103。
+ *
+ * 下面这两组兜底用 size-adjust 把兜底字体缩放到与网页字体**等宽**，行数不再变化。
+ * 数字来自 `node scripts/calibrate-fallback-metrics.mjs`（本机 macOS 量到的
+ * Inter/Arial=107.1%、Instrument Serif/Times New Roman=84.3%）。
+ * 换了字体文件或改了字号，必须重跑那个脚本重新标定 —— 门禁 `check:font-fallback`
+ * 会在浏览器里验证「兜底渲染宽度 ≈ 网页字体宽度」，差超过 2% 直接报错。
+ * ────────────────────────────────────────────────────────────────────── */
+@font-face {
+  font-family: "Inter Fallback";
+  font-style: normal;
+  font-weight: 100 900;
+  src: local("Arial"), local("Helvetica"), local("Liberation Sans"), local("Segoe UI");
+  size-adjust: 107.1%;
+}
+@font-face {
+  font-family: "Instrument Serif Fallback";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Times New Roman"), local("Georgia"), local("Liberation Serif"), local("DejaVu Serif");
+  size-adjust: 84.3%;
+}

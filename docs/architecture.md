@@ -662,6 +662,54 @@ npm run check:images -- --limit 150 --warn
 当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
 原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
 
+### metric-matched fallback：把 FOUT 抖动按住（第 70 轮）
+
+第 69 轮留下的悬念是「CI 上 `/en/hike/` CLS 0.103，本机 0.005」。这轮先把**机制**验证
+清楚，再决定要不要动字体。
+
+对照实验（`/en/hike/`，字体延迟 700 ms 模拟 FOUT）：
+
+| 情况 | CLS |
+|---|---|
+| A 正常兜底（macOS 系统字体，宽度接近 Inter） | 0.005 |
+| B 兜底换成明显更宽的字体（模拟 Linux 上落到 DejaVu Sans） | **0.233** |
+| C B + metric-matched fallback（`size-adjust: 92.5%`，按该兜底字体标定） | **0.006** |
+
+也就是说这个机制**足以解释** CI 与本机那 10–20 倍的差距：`font-display: swap` 先用宽度
+不同的系统字体画，字体到货后重排，行数一变整页就跳。
+
+落地做法（**不改字体文件本身，只加兜底面**）：
+
+```css
+@font-face {
+  font-family: "Inter Fallback";
+  src: local("Arial"), local("Helvetica"), local("Liberation Sans"), local("Segoe UI");
+  size-adjust: 107.1%;          /* calibrate 脚本量出来的 Inter/Arial 宽度比 */
+}
+@font-face {
+  font-family: "Instrument Serif Fallback";
+  src: local("Times New Roman"), local("Georgia"), local("Liberation Serif");
+  size-adjust: 84.3%;
+}
+```
+
+字体栈改成 `"Inter", "Inter Fallback", ui-sans-serif, …`、`"Instrument Serif", "Instrument Serif Fallback", …`
+（tailwind 的 `fontFamily.serif` 同步）。
+
+配套两个脚本：
+
+| 脚本 | 作用 |
+|---|---|
+| `scripts/calibrate-fallback-metrics.mjs` | 量「网页字体 / 本机兜底字体」宽度比，输出 size-adjust；本机没装的字体（DejaVu、Roboto、Liberation）会明确标注「需在该平台标定」 |
+| `scripts/check-font-fallback.mjs`（进 gate） | 真实浏览器里比较「拦住 woff2 的兜底渲染宽度」与「正常加载后的宽度」，偏离 ±2% 直接红 |
+
+负向验证：把 Inter 的 `size-adjust` 改成 120%，门禁报「兜底/网页宽度 = 112.0%」并 exit 1。
+
+**诚实的边界**：CI 的 Linux runner 上 `local("Arial")` 是否能通过 fontconfig 别名落到
+Liberation Sans，本机无法验证；如果落不到，那 0.103 不会消失，需要按该平台再标定一次
+（脚本已经能直接量，只是得在那台机器上跑）。这轮至少把「机制」和「可回归的标定检查」
+都钉住了。
+
 ### 把「跨时段水合」变成常规门禁（第 70 轮）
 
 第 69 轮那个 #418 是靠手工拨浏览器时钟才抓到的，不能每次都靠运气。这轮做了两件事：

@@ -9,9 +9,9 @@ export default {
     extend: {
       fontFamily: {
         // 正文（无衬线，带中文回退）
-        sans: ['"Inter"', "ui-sans-serif", "system-ui", '"PingFang SC"', '"Hiragino Sans GB"', "sans-serif"],
+        sans: ['"Inter"', '"Inter Fallback"', "ui-sans-serif", "system-ui", '"PingFang SC"', '"Hiragino Sans GB"', "sans-serif"],
         // 大标题 / 装饰用衬线（editorial 风）
-        serif: ['"Instrument Serif"', "ui-serif", "Georgia", '"Songti SC"', '"STSong"', "serif"],
+        serif: ['"Instrument Serif"', '"Instrument Serif Fallback"', "ui-serif", "Georgia", '"Songti SC"', '"STSong"', "serif"],
         // 代码 / 数字
         mono: ['"JetBrains Mono"', "ui-monospace", "SFMono-Regular", '"SF Mono"', "Menlo", "monospace"],
       },
