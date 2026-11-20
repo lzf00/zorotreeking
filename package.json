@@ -27,7 +27,7 @@
     "perf:inp": "node scripts/inp-probe.mjs",
     "check:og": "node scripts/check-og.mjs",
     "check:seo": "node scripts/check-seo.mjs",
-    "gate": "npm run validate:etf && npm run check:dates && npm run check && npm test && npm run build && npm run check:images && npm run check:links && npm run check:sectors && npm run check:og && npm run check:ssr-clock && npm run check:hydration && npm run check:font-fallback && npm run check:feeds && npm run check:seo && npm run check:admin",
+    "gate": "npm run validate:etf && npm run check:dates && npm run check && npm test && npm run build && npm run check:images && npm run check:links && npm run check:sectors && npm run check:og && npm run check:ssr-clock && npm run check:hydration && npm run check:search:dist && npm run check:font-fallback && npm run check:feeds && npm run check:seo && npm run check:admin",
     "hooks:install": "git config core.hooksPath .githooks && chmod +x .githooks/pre-push && echo '已启用 .githooks（pre-push 门禁）'",
     "perf:history": "node scripts/lighthouse-history.mjs",
     "a11y:audit": "node scripts/a11y-audit.mjs",
@@ -45,7 +45,8 @@
     "check:server": "node scripts/check-server.mjs",
     "check:deps": "node scripts/check-deps.mjs",
     "check:freshness": "node scripts/check-freshness.mjs",
-    "check:search": "node scripts/check-search.mjs"
+    "check:search": "node scripts/check-search.mjs",
+    "check:search:dist": "node scripts/check-search.mjs --dist"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.3.6",

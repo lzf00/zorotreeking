@@ -15,12 +15,13 @@
  *
  * 用法：
  *   node scripts/check-search.mjs                                  # 打线上
- *   node scripts/check-search.mjs --base=http://127.0.0.1:4321    # 打本地 build
+ *   node scripts/check-search.mjs --base=http://127.0.0.1:4321    # 打已有的本地服务
+ *   node scripts/check-search.mjs --dist                             # 自己起静态服务打 dist（门禁用）
  *   node scripts/check-search.mjs --json
  */
 import { chromium } from "playwright";
 
-import { chromePath } from "./lib/serve-dist.mjs";
+import { chromePath, serveDist } from "./lib/serve-dist.mjs";
 
 /** 默认查询集：覆盖站内五大板块 + 中英文，全部应当返回结果。 */
 export const DEFAULT_QUERIES = [
@@ -91,7 +92,16 @@ async function probeQuery(page, query) {
 async function main() {
   const args = process.argv.slice(2);
   const json = args.includes("--json");
-  const base = args.find((arg) => arg.startsWith("--base="))?.slice("--base=".length) ?? "https://www.zorotreeking.online";
+  // --dist：不依赖有人先起好服务，自己把 dist 挂起来（门禁里就是这么用的）。
+  // 线上那条路径（默认打生产）保留，因为 nginx 的权限/头问题只有线上才有。
+  const distArg = args.find((arg) => arg === "--dist" || arg.startsWith("--dist="));
+  let server = null;
+  let base = args.find((arg) => arg.startsWith("--base="))?.slice("--base=".length) ?? "https://www.zorotreeking.online";
+  if (distArg) {
+    const root = distArg.includes("=") ? distArg.slice("--dist=".length) : "dist";
+    server = await serveDist(root);
+    base = `http://127.0.0.1:${server.address().port}`;
+  }
   const queriesArg = args.find((arg) => arg.startsWith("--queries="));
   const queries = queriesArg ? queriesArg.slice("--queries=".length).split(",").filter(Boolean) : DEFAULT_QUERIES;
 
@@ -119,6 +129,7 @@ async function main() {
     }
   } finally {
     await browser.close();
+    server?.close();
   }
 
   const summary = summarizeSearchProbe(rows);

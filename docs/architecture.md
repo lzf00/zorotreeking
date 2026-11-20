@@ -662,6 +662,29 @@ npm run check:images -- --limit 150 --warn
 当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
 原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
 
+### 搜索探针只打生产，等于门禁里没有搜索（第 91 轮）
+
+第 80 轮修的是线上搜索 403（nginx 权限位），修完之后探针一直只打**生产**：
+`check-search.mjs` 的默认 base 是 `https://www.zorotreeking.online`，而门禁里没有任何一步会
+加载 pagefind 索引。后果是：索引缺失 / 为空 / 查询全错，本地和 CI 全绿，直到用户搜索才发现。
+
+这一轮把探针拉进门禁：
+
+| 项 | 改动前 | 改动后 |
+|---|---|---|
+| 起服务 | 需要人先跑本地服务器，再 `--base=` | 新增 `--dist`：自己 `serveDist` 起、跑完自己关 |
+| 门禁覆盖 | 无 | `check:search:dist`（build 之后跑，12 个查询全部要返回结果） |
+| 失败表现 | 无 | 索引缺失 → `TypeError: Failed to fetch dynamically imported module` → 门禁红 |
+
+变异验证（把 `dist/pagefind` 整个移走）：
+
+```
+✗ ETF — 报错：TypeError: Failed to fetch dynamically imported module: .../pagefind/pagefind.js
+删掉索引 exit=1
+```
+
+放回去立刻 12/12 全绿。门禁总时长 2m10s（+约 10s），397 个测试通过。
+
 ### 兜底字体的标定对数字不成立（第 90 轮）
 
 第 74/75 轮把 metric-matched fallback 调成了「字母宽度误差 <2%」，门禁也一直是绿的。
