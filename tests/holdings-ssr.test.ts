@@ -22,5 +22,6 @@ test("ETF 成交表也不能交白卷（曾有 360px 骨架屏，CLS 0.066）", 
   assert.ok(!src.includes("h-[360px]"), "骨架屏会在水合后塌缩");
   assert.ok(!/if \(!data\) \{\s*return/.test(src), "没数据也要把表格画出来");
   assert.match(src, /REGISTRY_ROWS/, "SSR 的表格行来自 etf-registry.json");
-  assert.match(src, /const rows = data \?\? REGISTRY_ROWS/);
+  assert.match(src, /const rows = data \?/, "SSR 行来自 registry，水合后仍然是稳定顺序");
+  assert.match(src, /registryIndex\(a\.code\) - registryIndex\(b\.code\)/, "行序不能跟接口返回顺序走（否则每 60s 重排一次）");
 });

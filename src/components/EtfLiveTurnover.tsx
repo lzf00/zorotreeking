@@ -27,10 +27,17 @@ type EtfItem = {
   prev_trade_date?: string | null;
 };
 
+const REGISTRY_ORDER = new Map(
+  [...(registryJson as { etfs: { code: string }[] }).etfs].map((item, i) => [item.code, i]),
+);
+/** 接口返回顺序 ≠ registry 顺序，用这个把行序钉死。 */
+function registryIndex(code: string): number {
+  return REGISTRY_ORDER.get(code) ?? Number.MAX_SAFE_INTEGER;
+}
+
 /** 构建时就有的 12 只宽基 ETF（和 /api/market/etf 的清单同源）。 */
-const REGISTRY_ROWS: EtfItem[] = (registryJson as { etfs: { code: string; name: string; priority: number }[] }).etfs
-  .slice()
-  .sort((a, b) => a.priority - b.priority || a.code.localeCompare(b.code))
+const REGISTRY_ROWS: EtfItem[] = (registryJson as { etfs: { code: string; name: string }[] }).etfs
+  // 保持 registry 文件里的顺序（按跟踪指数分组：沪深300 → 上证50 → 中证500 → …）
   .map((item) => ({
     code: item.code,
     name: item.name,
@@ -129,7 +136,11 @@ export default function EtfLiveTurnover() {
   // 以前这里先画 360px 骨架屏、失败时缩成一张小卡片，实测 /invest/etf/ 的
   // CLS 0.066 就是这两次高度变化造成的（第 69 轮 4 倍 CPU 降速下复现）。
   // 现在 SSR 直接把表格画出来，缺的格子显示「—」，高度从头到尾不变。
-  const rows = data ?? REGISTRY_ROWS;
+  // 行序固定成 registry 顺序，不跟接口返回的顺序走。
+  // 接口是按今日成交额排的（排行会随盘中变化），如果直接照抄，每 60s 轮询一次
+  // 表格就重排一次：既让人正在读的那一行突然跳走，也是实测线上 CLS 0.077 的来源
+  // （水合瞬间 12 行整体换位）。排行信息仍然在「vs 昨日全天」那列的进度条上。
+  const rows = data ? [...data].sort((a, b) => registryIndex(a.code) - registryIndex(b.code)) : REGISTRY_ROWS;
   const over100 = rows.filter((d) => (d.ratio_pct ?? 0) >= 100).length;
   // 全部 ETF 今日成交额都是 0（或还没拿到）且接口说不在交易时段 → 今天根本没有成交，
   // 不是基准缺失。开盘后第一笔成交进来，进度条就自己出来了。
