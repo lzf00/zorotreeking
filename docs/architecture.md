@@ -662,6 +662,31 @@ npm run check:images -- --limit 150 --warn
 当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
 原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
 
+### 运行时自检：把「页面在浏览器里报错」纳入发布门禁（第 60 轮）
+
+已有的三类检查都看不到运行时问题：`check:seo` 读 HTML 文本、`check:og` 读 `<head>`、
+`a11y-audit` 只跑 axe 的 DOM 规则。而 React island 水合抛错、图表组件访问 `undefined`、
+懒加载资源 404，这些只在浏览器里才暴露，表现是「局部空白/点了没反应」。
+
+新增 `scripts/check-runtime.mjs`（`npm run check:runtime`）：
+
+- 起一个与 nginx 行为一致的静态服务器，用真实 Chromium 打开 19 个代表页面
+  （首页、四个板块、日报归档、ETF、个股、相册索引 + 相册、游记、标签页、`/uses`、错误页，
+  中文 + 英文各一套）；
+- 抓三类问题：`pageerror`、`console.error`、同源 4xx/5xx 响应；
+- 退出码分三种：0 通过、1 页面真的报错、2 环境不可用（dist 没构建 / 浏览器缺失）。
+
+线上现状：19 个页面 **0 报错、0 控制台错误、0 失败请求**。反向验证过——往 `/ai/` 里塞一句
+`throw new Error("boom from test")`，脚本报 `pageerror: boom from test` 并 exit 1。
+
+接在 `deploy.yml` 里（每 push 都跑，约 60–90s），exit 2 降级为 warning、exit 1 卡住发布；
+**没有**接进 `npm run gate`：本地门禁已经很重，而这一步需要 Chromium。
+
+一个坑：首版把「请求失败」也当成页面缺陷，结果 19 页全红——`/api/track`、`/api/feedback`
+是服务器端接口（nginx 反代），静态 dist 里本来就没有。现在同源 `/api/*` 一律忽略，
+且「Failed to load resource」这条不带 URL 的控制台信息不再参与判定，失败请求只由
+response 监听器（能拿到状态码和路径）精确判断。
+
 ### 1080px 档照片接上 mid 档 + srcset 同宽度去重（第 59 轮）
 
 mac1 整册是 1080×1440 的图：宽度不到 1200，所以既没有 hero 也没有 mid，首图只能拿
