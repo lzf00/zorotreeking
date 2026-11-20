@@ -1,0 +1,24 @@
+{
+  "$schema": "./dependency-advisories.schema.json",
+  "note": "npm audit 里已知、已评估、暂时不能升的公告。每条必须有 reason（为什么不可利用或不可修）和 revisit（什么时候必须重新评估）。check:deps 会双向校验：未列入的公告一律失败；列入但已经不再出现的条目也算「过期」，必须删掉——否则白名单会变成永久盲区。",
+  "advisories": [
+    {
+      "id": "GHSA-mh32-jxcr-mh9f",
+      "package": "astro",
+      "title": "XSS via attribute injection in dynamic tag names",
+      "severity": "moderate",
+      "reason": "攻击面是「用外部输入当动态标签名」。本站是静态输出，标签名全部写死在 .astro/JSX 源码里，没有任何运行时拼接；构建产物是纯 HTML。",
+      "revisit": "一是引入任何按用户输入渲染动态标签名的组件；二是本地 Node 升到 22.23.4+ 之后（astro 7.4.7+ 要求 Node >= 22.23.4，当前机器是 22.23.2，所以升不了）。",
+      "blockedBy": "node<22.23.4"
+    },
+    {
+      "id": "GHSA-r3h5-4585-7x3w",
+      "package": "astro",
+      "title": "Image endpoint in @astrojs/node can read files from a case-variant sibling of the output directory",
+      "severity": "moderate",
+      "reason": "只影响 @astrojs/node 适配器的图片接口。本站是 output: 'static'，dist 直接由 nginx 托管，没有跑 Astro 服务器，也不存在这个接口。",
+      "revisit": "一旦把站点改成 SSR / 部署到 Node 适配器（届时这条会立刻变成必须修）。",
+      "blockedBy": "node<22.23.4"
+    }
+  ]
+}
