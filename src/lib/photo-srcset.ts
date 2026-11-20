@@ -16,15 +16,24 @@ export type Variant = {
   width: number;
 };
 
-/** 把候选变体拼成 `srcset` 字符串；同一 URL 只保留一次，按宽度升序 */
+/**
+ * 把候选变体拼成 `srcset` 字符串：按宽度升序，同一 URL / 同一宽度只保留第一次出现。
+ *
+ * 按宽度去重是必须的：原图刚好 1080px 时，mid 档（q76，1080w）和原尺寸 webp
+ * （q80，1080w）宽度完全相同。两个 1080w 描述符同时出现会让浏览器行为未定义，
+ * 而调用方总是先传质量更低/更小的候选，所以「先到先得」正好留下省字节的那个。
+ */
 export function buildSrcSet(variants: Variant[]): string {
-  const seen = new Map<string, number>();
+  const byUrl = new Map<string, number>();
+  const widths = new Set<number>();
   for (const v of variants) {
     if (!v.url || !Number.isFinite(v.width) || v.width <= 0) continue;
-    const prev = seen.get(v.url);
-    if (prev === undefined || v.width > prev) seen.set(v.url, Math.round(v.width));
+    const w = Math.round(v.width);
+    if (byUrl.has(v.url) || widths.has(w)) continue;
+    byUrl.set(v.url, w);
+    widths.add(w);
   }
-  return [...seen.entries()]
+  return [...byUrl.entries()]
     .sort((a, b) => a[1] - b[1])
     .map(([url, width]) => `${url} ${width}w`)
     .join(", ");

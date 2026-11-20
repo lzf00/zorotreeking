@@ -232,7 +232,11 @@ async function main() {
           // 1200w 中间档（第 54 轮）：720 和 1600 之间是个大空档——平板 1x（768）
           // 和 2x 桌面卡片（1152）都只能二选一：要么 720 糊，要么 1600 多传一倍。
           // 实测 hudieren 首图 188 KB → 约 100 KB，索引页 2x 桌面 317 KB → 约 150 KB。
-          if (width > 1200) {
+          //
+          // 第 59 轮把门槛从 >1200 放到 >1000：1080px 这一档照片（mac1 全册）之前既没有
+          // hero 也没有 mid，首图只能拿 q80 的 121 KB 原尺寸 webp。mid 用 withoutEnlargement，
+          // 1080 的原图就停在 1080，只降质量（q76），同尺寸下小 30% 左右。
+          if (width > 1000) {
             const midName = path.basename(f, ext) + ".mid.webp";
             const midPath = path.join(albumDir, midName);
             let needMid = true;

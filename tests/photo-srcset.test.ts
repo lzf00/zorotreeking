@@ -48,3 +48,15 @@ test("相册索引页：手机档必须限死在 480/720（否则 2x 手机会�
     assert.match(src, /srcset=\{buildSrcSet\(coverVariants\(cover\)\)\}/, `${page}: 宽屏档应带宽度描述符`);
   }
 });
+
+test("同宽度的候选只留一个（mid 与原尺寸 webp 宽度相同的情况）", () => {
+  // 原图刚好 1080 时：mid 是 q76 的 1080w，srcWebp 是 q80 的 1080w。
+  // 两个 1080w 描述符同时出现，浏览器行为未定义；调用方先传更省字节的 mid。
+  const out = buildSrcSet([
+    { url: "/a/thumb.webp", width: 720 },
+    { url: "/a/mid.webp", width: 1080 },
+    { url: "/a/full.webp", width: 1080 },
+  ]);
+  assert.equal(out, "/a/thumb.webp 720w, /a/mid.webp 1080w");
+});
+
