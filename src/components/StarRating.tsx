@@ -1,9 +1,6 @@
-import { useEffect, useState } from "react";
-import {
-  fetchFeedback,
-  postFeedback,
-  type FeedbackState,
-} from "@/lib/feedback-api";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { postFeedback, type FeedbackState } from "@/lib/feedback-api";
+import { EMPTY_STATE, loadFeedbackOrEmpty, putCached } from "@/lib/feedback-cache";
 
 /**
  * 5 星评分（hover 预览 / click 落地）。
@@ -48,7 +45,30 @@ export default function StarRating({ slug, align = "right", label = "评分" }: 
   const [pending, setPending] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
-  // 初始：localStorage + 后端汇总
+  // 挂载只读本地记忆（不发请求）。汇总数改为「访客真的对星星感兴趣时」再拉：
+  //   - 线上 /api/feedback 的 GET 是 422，挂载即拉会让每篇文章底部出现红色 "· HTTP 422"
+  //     （第 83 轮在 FeedbackButtons 上修过一次，这里是同一个坑的另一半）
+  //   - 评分数只是信任信号，晚几百毫秒出现没关系
+  const failedAtRef = useRef(0);
+  const aggRef = useRef<FeedbackState | null>(null);
+  aggRef.current = agg;
+  const ensureLoaded = useCallback(async () => {
+    if (!slug || aggRef.current) return aggRef.current;
+    if (Date.now() - failedAtRef.current < 30_000) return EMPTY_STATE;
+    const { state: fresh, degraded } = await loadFeedbackOrEmpty(slug);
+    if (degraded) {
+      failedAtRef.current = Date.now();
+      // 静默：访客还没评分，不该看到错误徽标；真正评分失败才提示
+      console.warn("[rating] 汇总数据拉取失败，先用空状态");
+      setAgg(EMPTY_STATE);
+      return EMPTY_STATE;
+    }
+    failedAtRef.current = 0;
+    setAgg(fresh);
+    return fresh;
+  }, [slug]);
+
+
   useEffect(() => {
     if (!slug) return;
     try {
@@ -56,15 +76,6 @@ export default function StarRating({ slug, align = "right", label = "评分" }: 
       const n = cached ? parseInt(cached, 10) : 0;
       if (n >= 1 && n <= 5) setScore(n as Score);
     } catch {}
-    const ctl = new AbortController();
-    fetchFeedback(slug, ctl.signal)
-      .then(setAgg)
-      .catch((e) => {
-        if (e.name === "AbortError") return;
-        setErr(e.message || "fetch-error");
-        setAgg({ likes: 0, dislikes: 0, my_vote: null });
-      });
-    return () => ctl.abort();
   }, [slug]);
 
   async function rate(n: Score) {
@@ -76,6 +87,7 @@ export default function StarRating({ slug, align = "right", label = "评分" }: 
     try {
       const fresh = await postFeedback(slug, scoreToKind(n));
       setAgg(fresh);
+      putCached(slug, fresh);
       try {
         localStorage.setItem(LS_KEY(slug), String(n));
       } catch {}
@@ -119,8 +131,9 @@ export default function StarRating({ slug, align = "right", label = "评分" }: 
               aria-checked={score === n}
               aria-label={`${n} 星 · ${LABELS[n as Score]}`}
               disabled={pending}
-              onMouseEnter={() => setHover(n as Score)}
-              onFocus={() => setHover(n as Score)}
+              onMouseEnter={() => { setHover(n as Score); void ensureLoaded(); }}
+              onFocus={() => { setHover(n as Score); void ensureLoaded(); }}
+              onTouchStart={() => void ensureLoaded()}
               onClick={() => rate(n as Score)}
               style={{
                 background: "transparent",

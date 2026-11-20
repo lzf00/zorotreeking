@@ -158,6 +158,41 @@ const SCENARIOS = [
     },
   },
   {
+    // 与反馈按钮同一个坑的另一半：StarRating 原来挂载即拉汇总，GET 422 时在每篇
+    // 文章底部渲染红色「· HTTP 422」。现在挂载不拉、悬停才拉，且失败静默。
+    name: "评分：GET 422 时点星仍能评分且不显示错误徽标",
+    url: "/ai/digest-2026-08-27/",
+    api: {
+      "/api/feedback": (call, request) =>
+        request.method() === "GET"
+          ? { status: 422, body: { detail: "unprocessable" } }
+          : { status: 200, body: { likes: 2, dislikes: 0, my_vote: "like" } },
+    },
+    async run({ page, fail, apiCalls }) {
+      const group = page.locator('[role="radiogroup"]').first();
+      if ((await group.count()) === 0) return fail("找不到星级评分控件");
+      // 评分岛是 client:visible：不滚进视口就不会水合，点了也不理你
+      await group.scrollIntoViewIfNeeded();
+      await group.evaluate(async (el) => {
+        const island = el.closest("astro-island");
+        for (let i = 0; i < 40; i += 1) {
+          if (!island || !island.hasAttribute("ssr")) return;
+          await new Promise((r) => setTimeout(r, 150));
+        }
+      });
+      const star = group.locator("button").nth(3);
+      await star.click();
+      await page.waitForTimeout(WAIT);
+      if ((await star.getAttribute("aria-checked")) !== "true") return fail("点击第 4 颗星后没进入选中态");
+      if (!apiCalls.some((call) => call.method === "POST" && call.url.includes("/api/feedback"))) {
+        return fail("评分没有发出 POST /api/feedback");
+      }
+      // 关键：GET 失败不许在页面上留下「HTTP 422」字样
+      const text = await page.locator("body").innerText();
+      if (/HTTP 422|HTTP 4\d\d/.test(text)) return fail("页面上出现了错误码徽标（初始加载失败应当静默）");
+    },
+  },
+  {
     name: "键盘 / 唤起搜索",
     url: "/",
     async run({ page, fail }) {

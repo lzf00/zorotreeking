@@ -145,3 +145,27 @@ test("加载失败要退化成空状态，而不是让 vote() 直接放弃（线
   assert.deepEqual(broken.state, EMPTY_STATE, "降级要返回空状态，否则按钮无法投票");
   assert.equal(getCached("item:bad"), null, "降级结果不许写进缓存");
 });
+
+test("评分组件：挂载不发请求、初始失败不显示错误码（与反馈按钮同一类坑）", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const source = await readFile(new URL("../src/components/StarRating.tsx", import.meta.url), "utf8");
+
+  const mountAt = source.indexOf("useEffect(() => {");
+  const ensureAt = source.indexOf("const ensureLoaded");
+  assert.ok(ensureAt > 0, "找不到按需加载函数");
+  const mountBlock = source.slice(mountAt, ensureAt > mountAt ? undefined : undefined);
+  // 挂载 effect 里只允许读写 localStorage，不许发请求
+  const mountEffect = source.slice(mountAt, source.indexOf("}, [slug]);", mountAt) + 12);
+  assert.ok(!/loadFeedback|fetchFeedback|fetch\(/.test(mountEffect), `挂载时又发请求了：\n${mountEffect}`);
+
+  // 失败分支只能静默降级，不许 setErr（线上 GET 422 会在每篇底部渲染红字）
+  const ensureBlock = source.slice(ensureAt, source.indexOf("useEffect(() => {", ensureAt));
+  const degradedAt = ensureBlock.indexOf("if (degraded)");
+  assert.ok(degradedAt > 0, "缺少 degraded 分支");
+  const degradedBlock = ensureBlock.slice(degradedAt, degradedAt + 400);
+  assert.ok(!/setErr\(/.test(degradedBlock), "初始加载失败不许 setErr");
+
+  // rate() 失败仍然要能提示
+  const rateAt = source.indexOf("async function rate(");
+  assert.match(source.slice(rateAt), /setErr\(/, "用户主动评分失败仍要提示");
+});
