@@ -7,8 +7,10 @@ type Photo = {
   alt: string;
   /** sharp 生成的同图 webp（质量 80），用于 hero 降字节 */
   srcWebp?: string;
-  /** 列表缩略图的 webp 版本 */
+  /** 列表缩略图的 webp 版本（720w） */
   thumbWebp?: string;
+  /** 480w 缩略图，1x 屏/窄屏用 */
+  thumbSm?: string;
   /** hero 用的 1600px 宽 webp（原图更宽时才有） */
   heroWebp?: string;
   /** 1200×630 社交分享裁剪图（横构图才有） */

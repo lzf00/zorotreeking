@@ -34,6 +34,8 @@ type PhotoEntry = {
   srcOg?: string;         // 1200×630 OG 专用尺寸 jpg（社交分享专用，原图 3-4MB 不能直接用作 og:image）
   thumb: string;
   thumbWebp?: string;
+  /** 480w 缩略图（窄屏/1x 屏用，比 720w 小约 40%） */
+  thumbSm?: string;
   /** hero 用的 1600px 宽 webp（原图更宽时才生成）；相册封面在 1280 宽屏上显示 */
   heroWebp?: string;
   width: number;
@@ -103,7 +105,7 @@ async function main() {
       // 派生变体的「派生」：本地试验遗留过 .og.w640.webp / .w960.webp 这类文件，
       // 上面按后缀过滤抓不到它们，于是被当成新照片塞进 manifest——线上页面会为同一张图
       // 多下 1-2 份（第 49 轮在本地复现）。只要文件名里带这些派生段，一律跳过。
-      if (/\.(?:og|thumb|hero)\./i.test(f) || /\.w(?:640|960)\./i.test(f)) continue;
+      if (/\.(?:og|thumb\d*|hero)\./i.test(f) || /\.w(?:640|960)\./i.test(f)) continue;
       // xxx.webp：如果同目录有 xxx.jpg/jpeg/png 原图，则跳过（派生）；否则保留（孤立 webp 当原图）
       if (/\.webp$/i.test(f)) {
         const base = f.replace(/\.webp$/i, "");
@@ -126,6 +128,7 @@ async function main() {
       let webpRelative: string | undefined;
       let ogRelative: string | undefined;
       let thumbRelative: string | undefined;
+      let thumbSmRelative: string | undefined;
       let heroRelative: string | undefined;
       if (sharp) {
         try {
@@ -188,6 +191,30 @@ async function main() {
               }
             }
             thumbRelative = photoUrl(albumSlug, thumbName);
+          }
+
+          // 480w 小缩略图：桌面三列每格 ~400 CSS px、手机 1x 屏 ~390 px，
+          // 都用不到 720w。配上 srcset 后这些场景能省四成流量；2x 屏仍按 720 取。
+          if (width > 480) {
+            const thumbSmName = path.basename(f, ext) + ".thumb480.webp";
+            const thumbSmPath = path.join(albumDir, thumbSmName);
+            let needThumbSm = true;
+            try {
+              const srcStat = await fs.stat(inputPath);
+              const thumbSmStat = await fs.stat(thumbSmPath);
+              if (thumbSmStat.mtimeMs >= srcStat.mtimeMs) needThumbSm = false;
+            } catch {
+              /* 不存在 → 生成 */
+            }
+            if (needThumbSm) {
+              try {
+                await sharp(buf).rotate().resize({ width: 480, withoutEnlargement: true }).webp({ quality: 74 }).toFile(thumbSmPath);
+                console.log(`    + ${thumbSmName}`);
+              } catch (e) {
+                console.warn(`    ✗ thumb480 gen failed ${thumbSmName}:`, e);
+              }
+            }
+            thumbSmRelative = photoUrl(albumSlug, thumbSmName);
           }
 
           // hero 专用：相册封面/详情页顶部那张图，1280 宽屏最多显示 ~1280 CSS px。
@@ -269,6 +296,7 @@ async function main() {
         srcOg: ogRelative,
         thumb: photoUrl(albumSlug, f),
         thumbWebp: thumbRelative ?? webpRelative,
+        thumbSm: thumbSmRelative,
         heroWebp: heroRelative,
         width,
         height,

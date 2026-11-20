@@ -17,6 +17,7 @@ type Photo = {
   srcWebp?: string;
   thumb: string;
   thumbWebp?: string;
+  thumbSm?: string;
   width: number;
   height: number;
   alt: string;
@@ -40,6 +41,14 @@ function formatExifLine(exif?: Exif): string {
   if (exif.iso != null) settings.push(`ISO ${exif.iso}`);
   if (settings.length) parts.push(settings.join(" · "));
   return parts.join("  ·  ");
+}
+
+/** 把 720w / 480w 变体拼成 srcset，宽度描述符用真实宽度（原图更窄时不虚标） */
+function srcSetFor(p: Photo) {
+  const parts: string[] = [];
+  if (p.thumbWebp) parts.push(`${p.thumbWebp} ${Math.min(720, p.width || 720)}w`);
+  if (p.thumbSm) parts.push(`${p.thumbSm} ${Math.min(480, p.width || 480)}w`);
+  return parts.join(", ");
 }
 
 export default function PhotoGallery({ photos, galleryId }: Props) {
@@ -132,9 +141,21 @@ export default function PhotoGallery({ photos, galleryId }: Props) {
             className="block group relative overflow-hidden bg-black/40"
           >
             <picture>
-              {p.thumbWebp && <source type="image/webp" srcSet={p.thumbWebp} />}
+              {/*
+                列数是 1 / 2 / 3（见外层 columns-*），所以 sizes 跟着走。
+                720w 给 2x 屏和窄屏，480w 给 1x 桌面三列——两组都是 sharp 预生成的，
+                由浏览器按 DPR 自动挑，省得 1x 屏也硬拉 720w。
+              */}
+              {p.thumbWebp && (
+                <source
+                  type="image/webp"
+                  srcSet={srcSetFor(p)}
+                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                />
+              )}
               <img
                 src={p.thumb}
+                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                 alt={p.alt}
                 width={p.width || undefined}
                 height={p.height || undefined}

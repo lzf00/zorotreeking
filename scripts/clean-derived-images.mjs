@@ -12,7 +12,7 @@ import { readdir, stat, unlink } from "node:fs/promises";
 import path from "node:path";
 
 const DERIVED = [
-  /\.thumb\.webp$/i,
+  /\.thumb\d*\.webp$/i,
   /\.hero\.webp$/i,
   /\.og\.jpg$/i,
   /(\.og)?\.w640\.(?:jpg|webp)$/i,
