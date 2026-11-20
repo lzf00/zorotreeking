@@ -84,6 +84,8 @@ jobs:
 
       - name: Content freshness
         run: |
+          # 同样踩过 bash -e 的坑：命令失败时 shell 直接退出，下面的 cat / 步骤摘要都不会执行
+          set +e
           node scripts/check-freshness.mjs > /tmp/freshness.log 2>&1; code=$?
           cat /tmp/freshness.log
           {
@@ -97,6 +99,8 @@ jobs:
 
       - name: Dependency advisories (npm audit + allowlist)
         run: |
+          # 同样踩过 bash -e 的坑：命令失败时 shell 直接退出，下面的 cat / 步骤摘要都不会执行
+          set +e
           node scripts/check-deps.mjs > /tmp/deps-check.log 2>&1; code=$?
           cat /tmp/deps-check.log
           {

@@ -163,6 +163,11 @@ jobs:
           # 不完全一致；CLS 这里放宽到 0.25（"good" 线的 2.5 倍）——
           # 它拦得住 0.232 那种结构性抖动，但不会被环境噪声搞成假红。
           # 本地要严格就用默认值（0.1）。
+          # GitHub Actions 的 run: 默认是 bash -e：命令一失败 shell 立刻退出，
+          # 下面的 code=$? / cat 日志 / ::error:: 注解全都是死代码（第 92 轮才发现：
+          # 交互自检红了，注解里只有一句「exit code 1」，一条场景名都没有）。
+          # 所以先 set +e 关掉 -e，再自己判断退出码。
+          set +e
           npm run check:runtime -- --vitals --cls=0.12 --lcp=8000 > /tmp/runtime.log 2>&1
           code=$?
           cat /tmp/runtime.log
@@ -186,6 +191,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
+          set +e
           npm run check:runtime -- --mobile > /tmp/runtime-mobile.log 2>&1
           code=$?
           cat /tmp/runtime-mobile.log
@@ -238,6 +244,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
+          # GitHub Actions 的 run: 默认是 bash -e：命令一失败 shell 立刻退出，
+          # 下面的 code=$? / cat 日志 / ::error:: 注解全都是死代码（第 92 轮才发现：
+          # 交互自检红了，注解里只有一句「exit code 1」，一条场景名都没有）。
+          # 所以先 set +e 关掉 -e，再自己判断退出码。
+          set +e
           npm run check:interactions > /tmp/interactions.log 2>&1
           code=$?
           cat /tmp/interactions.log
@@ -248,6 +259,12 @@ jobs:
           if [ "$code" -ne 0 ]; then
             echo "::error::交互自检失败（exit $code）："
             grep -E "^(✗|    )" /tmp/interactions.log | head -30 | while IFS= read -r line; do
+              echo "::error::$line"
+            done
+            # 兜底：脚本可能在打 ✗ 之前就抛错（serveDist / 浏览器启动 / 超时），
+            # 那样 grep 一条也匹配不到，注解里就只剩「Process completed with exit code 1」。
+            echo "::error::交互自检日志尾部（排查用）："
+            tail -20 /tmp/interactions.log | while IFS= read -r line; do
               echo "::error::$line"
             done
           fi
