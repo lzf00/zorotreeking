@@ -4,8 +4,10 @@ import PhotoLayout from "@/layouts/PhotoLayout.astro";
 import FeedbackButtons from "@/components/FeedbackButtons";
 import PhotoGallery from "@/components/PhotoGallery";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
+import PhotoMap from "@/components/PhotoMap";
 import { heroWebpSources } from "@/lib/photo-hero";
 import { loadPhotoManifest, resolveAlbumKey } from "@/lib/photo-manifests";
+import { pickAlbumCover } from "@/lib/photo-cover";
 
 export async function getStaticPaths() {
   const all = await getCollection("photo", (p) => p.data.lang === "en" && !p.data.draft);
@@ -17,9 +19,14 @@ const { Content } = await render(entry);
 const lang = "en" as const;
 const t = useTranslations(lang);
 const photos = loadPhotoManifest(resolveAlbumKey(entry.data));
-const cover = photos[0];
+// 与中文相册页共用一个选封面的函数（英文页原先写死 photos[0]，导致同一本相册
+// 中英文首图不同，且 baokemeng 英文页首图下了 85 KB 原图、中文页只有 9 KB hero）
+const { cover, rest } = pickAlbumCover(entry.data.cover, photos, entry.data.title);
 const heroSources = heroWebpSources(cover);
-const rest = photos.slice(1);
+// 有 GPS 的照片提出来给地图用（中文页早就有，英文页一直缺，这次补齐）
+const geoPoints = photos
+  .filter((p: any) => Number.isFinite(p.lat) && Number.isFinite(p.lng))
+  .map((p: any) => ({ lat: p.lat, lng: p.lng, thumb: p.thumb, alt: p.alt, src: p.src }));
 const dateStr = entry.data.date.toISOString().slice(0, 10);
 // 与中文相册页保持一致：优先 1200×630 派生图，否则用原图 + 真实尺寸。
 const shareImage = cover?.srcOg ?? cover?.src;
@@ -41,13 +48,15 @@ const shareDims = cover?.srcOg
   {cover && (
     <section class="mt-6 mb-10">
       <div class="w-full bg-black overflow-hidden">
-        {/* 与中文相册页一致：内在宽高防 CLS，webp 降 LCP 字节 */}
+        {/* 与中文相册页一致：内在宽高防 CLS，webp 降 LCP 字节。
+            原图绝不能写成 srcOg —— 那是 1200×630 的社交卡片裁切图，浏览器不支持
+            webp 时会显示一张被裁过、却按原图宽高占位的图（第 52 轮修）。 */}
         <picture>
           {/* 与中文相册页一致：手机上用 720px 缩略图（28 KB），桌面用原尺寸 webp */}
           {heroSources.mobile && <source type="image/webp" media="(max-width: 640px)" srcset={heroSources.mobile} />}
           {heroSources.desktop && <source type="image/webp" srcset={heroSources.desktop} />}
           <img
-            src={cover.srcOg ?? cover.src}
+            src={cover.src}
             alt={cover.alt}
             width={cover.width || undefined}
             height={cover.height || undefined}
@@ -82,6 +91,13 @@ const shareDims = cover?.srcOg
     <section class="max-w-7xl mx-auto px-2 sm:px-3 mt-12">
       <PhotoGallery photos={rest} galleryId={`gallery-${entry.data.translationKey}`} client:load />
     </section>
+  ) : null}
+
+  {/* GPS 地图（与中文页对齐） */}
+  {geoPoints.length > 0 ? (
+    <section class="max-w-5xl mx-auto px-5 mt-12">
+      <PhotoMap points={geoPoints} client:visible />
+    </section>
   ) : photos.length === 0 ? (
     <section class="max-w-2xl mx-auto px-5 mt-16 mb-24 text-center text-white/55">
       <p class="font-mono text-sm">No photos uploaded yet.</p>
@@ -103,3 +119,13 @@ const shareDims = cover?.srcOg
     </div>
   </section>
 </PhotoLayout>
+
+<style is:global>
+  /* 深底相册页里让 feedback 图标跟随底色（中文页有、英文页漏了） */
+  body:has(.photo-immersive) .photo-immersive [aria-label="喜欢"],
+  body:has(.photo-immersive) .photo-immersive [aria-label="不喜欢"],
+  body:has(.photo-immersive) .photo-immersive [aria-label="Like"],
+  body:has(.photo-immersive) .photo-immersive [aria-label="Dislike"] {
+    color: rgba(255,255,255,0.7);
+  }
+</style>

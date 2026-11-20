@@ -48,3 +48,22 @@ test("manifest 条目数不超过目录里的原始照片数", async () => {
     }
   }
 });
+
+test("够宽的照片必须带齐派生变体（缩略图/480w/og/hero）", async () => {
+  // 第 52 轮的真实 bug：所有派生图生成都写在「jpg/png 源」分支里，
+  // 于是直接上传的 .webp 原图一张派生图都没有 —— 相册网格用 123 KB 全图填 413px 的格子。
+  // 这条断言把这个不变量钉住：宽度够了就必须有对应变体。
+  const files = (await readdir(DIR)).filter((f) => f.endsWith(".json"));
+  const missing: string[] = [];
+  for (const file of files) {
+    const entries = JSON.parse(await readFile(new URL(file, DIR), "utf8"));
+    for (const entry of entries) {
+      const w: number = entry.width ?? 0;
+      if (w > 720 && !entry.thumbWebp) missing.push(`${file}: ${entry.src} (${w}px) 缺 thumbWebp`);
+      if (w > 480 && !entry.thumbSm) missing.push(`${file}: ${entry.src} (${w}px) 缺 thumbSm`);
+      if (w >= 1000 && !entry.srcOg) missing.push(`${file}: ${entry.src} (${w}px) 缺 srcOg`);
+      if (w > 1200 && !entry.heroWebp) missing.push(`${file}: ${entry.src} (${w}px) 缺 heroWebp`);
+    }
+  }
+  assert.deepEqual(missing, []);
+});

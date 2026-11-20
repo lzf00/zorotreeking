@@ -662,6 +662,34 @@ npm run check:images -- --limit 150 --warn
 当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
 原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
 
+### 相册页中英对齐 + 两个真 bug（第 52 轮）
+
+**bug 1：直接上传的 `.webp` 原图拿不到任何派生图。**
+生成器里「转 webp / 缩略图 / 480w / hero / og」全都写在 `if (ext 是 jpg|jpeg|png)` 分支里，
+`.webp` 上传的文件走不到这些分支，manifest 里只有 `src`/`thumb` 两个字段。
+后果：hudieren 里那张 1024×1536 的 webp 在网格里以 **123 KB 全图填 413px 的格子**。
+修法：分支只负责「要不要转 webp」，派生图统一对所有来源生成。修完那张图 → 21 KB（−102 KB），
+hudieren 相册页 416 → **274 KB**（−34%）。
+
+**bug 2：英文相册页和中文页漂移。**
+英文页写死 `cover = photos[0]`、忽略 `frontmatter.cover`，而且 `<img src={cover.srcOg ?? cover.src}>`
+——`srcOg` 是 1200×630 的社交卡片裁切图，浏览器不支持 webp 时显示的是被裁过的图却按原图宽高占位。
+表现：baokemeng 中文页首图 9 KB hero、英文页 85 KB 原图。
+修法：抽 `src/lib/photo-cover.ts` 的 `pickAlbumCover()` 给两个页面共用；英文页改用 `cover.src`；
+顺手补齐英文页缺的 GPS 地图和深底 feedback 图标配色。现在三本相册中英文首图与字节数完全一致。
+
+| 相册页（桌面 1440@1x，滚到底） | 改前 | 改后 |
+|---|---|---|
+| hudieren 中/英 | 416 KB | **274 KB** |
+| baokemeng 英 | 401 KB | **244 KB**（与中文页一致） |
+| mac1 中/英 | 242 KB | 242 KB |
+
+另外把 hero 变体的生成阈值从 `width > 1600` 降到 `width > 1200`：1200–1600px 的照片原先
+详情页首图只能拉 q80 全尺寸 webp。核对过 35 个有 hero 的条目，**没有一个 hero 比全尺寸 webp 大**。
+
+新增断言：`width > 720 必须有 thumbWebp / > 480 必须有 thumbSm / ≥ 1000 必须有 srcOg /
+> 1200 必须有 heroWebp`。这条不变量正好能挡住 bug 1 —— 它当初不报错，只是悄悄少传了字段。
+
 ### 相册网格按屏幕给不同宽度的缩略图（第 51 轮）
 
 之前相册网格只有一档 720w 缩略图：**1x 桌面三列每格只有 ~400 CSS px、1x 手机单列 ~390 CSS px，

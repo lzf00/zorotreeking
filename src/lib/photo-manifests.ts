@@ -1,5 +1,5 @@
 // 把 src/data/photo-manifest/*.json 一次性静态导入，Vite build 期能识别
-type Photo = {
+export type Photo = {
   src: string;
   thumb: string;
   width: number;

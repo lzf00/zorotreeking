@@ -141,8 +141,13 @@ async function main() {
 
         // 生成 .webp（增量：已存在且 mtime 比原图新就跳过）
         const ext = path.extname(f);
-        if (ext.toLowerCase() === ".jpg" || ext.toLowerCase() === ".jpeg" || ext.toLowerCase() === ".png") {
-          const webpName = path.basename(f, ext) + ".webp";
+        // .webp 上传（Decap 直接拖 webp、或外部工具导出）本身就是最终格式，不用再转一次。
+        // 但派生图（缩略图 / hero / og）原先全写在这个 jpg/png 分支里，导致 webp 原图
+        // 一张派生图都拿不到：相册网格用 123 KB 全图填 413px 的格子（第 52 轮发现）。
+        const isRasterSource = /\.(?:jpe?g|png)$/i.test(f);
+        let webpName: string;
+        if (isRasterSource) {
+          webpName = path.basename(f, ext) + ".webp";
           const webpPath = path.join(albumDir, webpName);
           let needGen = true;
           try {
@@ -160,8 +165,12 @@ async function main() {
               console.warn(`    ✗ webp gen failed ${webpName}:`, e);
             }
           }
-          webpRelative = photoUrl(albumSlug, webpName);
-
+        } else {
+          // 原图就是 webp：直接拿它当 srcWebp
+          webpName = f;
+        }
+        webpRelative = photoUrl(albumSlug, webpName);
+        {
           // 网格缩略图：相册页一次滚到底要拉全部图，原先用的是全尺寸 webp
           // （1920px、平均 34KB、最大 604KB），一页 1.7MB。三列布局每格
           // 实际显示宽度 ~400px，2x 屏 800px 足够，缩到 720px 基本无感。
@@ -220,7 +229,9 @@ async function main() {
           // hero 专用：相册封面/详情页顶部那张图，1280 宽屏最多显示 ~1280 CSS px。
           // 原尺寸 webp（质量 80）会把 3840×2160 的照片压成 903 KB——整页最重的一笔。
           // 缩到 1600px 宽（2x 屏 800 CSS px 也够），实测 3840×2160 的 903 KB → 约 180 KB。
-          if (width > 1600) {
+          // 阈值从 1600 降到 1200（第 52 轮）：1200–1600px 的照片原本没有 hero 变体，
+          // 详情页首图只能拉 q80 全尺寸 webp（mac1 那张 119 KB），重编码到 q78 约 90 KB。
+          if (width > 1200) {
             const heroName = path.basename(f, ext) + ".hero.webp";
             const heroPath = path.join(albumDir, heroName);
             let needHero = true;
