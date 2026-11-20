@@ -53,6 +53,10 @@ const assets = new Set();
 
 const pages = dirs.filter((d) => assets.has(nfc("/" + path.relative(DIST, d).split(path.sep).join("/") + "/index.html")));
 
+/** 必须有自己封面的页面（不该落到站点默认卡） */
+const DEFAULT_CARD_PAGES = new Set(["/photo/", "/en/photo/"]);
+const DEFAULT_CARD = "/og-default.png";
+
 const errors = [];
 const warnings = [];
 const sizeCache = new Map();
@@ -117,6 +121,12 @@ for (const pageDir of pages) {
   const ratio = info.width && info.height ? info.width / info.height : 0;
   if (ratio && (ratio < 1.2 || ratio > 3.4)) {
     warnings.push(`${pageUrl} 分享图比例 ${ratio.toFixed(2)}（${relPath}）`);
+  }
+
+  // 相册索引页有现成的封面可用，落到站点默认卡是浪费：分享出去是一张通用图，
+  // 点击率明显不如真实作品。这两页必须带自己的相册封面。
+  if (DEFAULT_CARD_PAGES.has(pageUrl) && relPath === DEFAULT_CARD) {
+    errors.push(`${pageUrl} 用了站点默认分享卡（应改用首个相册封面）`);
   }
 }
 

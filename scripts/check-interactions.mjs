@@ -110,6 +110,50 @@ const SCENARIOS = [
     },
   },
   {
+    name: "键盘 / 唤起搜索",
+    url: "/",
+    async run({ page, fail }) {
+      // 桌面用户最常用的入口之一：不在输入框里按 / 直接开搜索。
+      // 第一次按下要先把 modal 的 chunk 拉下来，所以给足等待时间。
+      await page.keyboard.press("/");
+      let input = null;
+      for (let attempt = 0; attempt < 10; attempt += 1) {
+        await page.waitForTimeout(300);
+        const candidate = page.locator("input[type=text]").first();
+        if ((await candidate.count()) > 0) { input = candidate; break; }
+      }
+      if (!input) return fail("按 / 没有唤起搜索弹窗");
+      const focused = await page.evaluate(() => document.activeElement?.tagName === "INPUT");
+      if (!focused) return fail("按 / 后输入框没有自动聚焦（用户还得再点一下）");
+      await page.keyboard.press("Escape");
+    },
+  },
+  {
+    name: "手机搜索（390 宽）",
+    url: "/",
+    viewport: { width: 390, height: 844 },
+    async run({ page, fail, openSearch }) {
+      const input = await openSearch('button[aria-label="搜索"]');
+      if (!input) return fail("手机上点搜索按钮没有出现输入框");
+      await input.fill(KEYWORD);
+      await page.waitForTimeout(WAIT);
+      if ((await page.locator('[role="dialog"] a[href]').count()) === 0) return fail("手机上搜索没有结果");
+    },
+  },
+  {
+    name: "手机灯箱（390 宽）",
+    url: "/photo/baokemeng/",
+    viewport: { width: 390, height: 844 },
+    async run({ page, fail }) {
+      const first = page.locator('[id^="gallery-"] a').first();
+      if ((await first.count()) === 0) return fail("手机上画廊里没有可点的图片");
+      await first.tap();
+      await page.waitForTimeout(WAIT);
+      if ((await page.locator(".pswp.pswp--open").count()) === 0) return fail("手机上点图没出灯箱");
+      await page.keyboard.press("Escape");
+    },
+  },
+  {
     name: "深色模式切换",
     url: "/",
     async run({ page, fail }) {
@@ -144,7 +188,9 @@ async function main() {
 
   try {
     for (const scenario of scenarios) {
-      const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+      const viewport = scenario.viewport ?? { width: 1280, height: 900 };
+      const touch = viewport.width < 640;
+      const context = await browser.newContext({ viewport, hasTouch: touch, isMobile: touch });
       const page = await context.newPage();
       const runtimeIssues = [];
       page.on("pageerror", (e) => runtimeIssues.push(`pageerror: ${e.message.slice(0, 160)}`));

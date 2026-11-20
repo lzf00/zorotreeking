@@ -52,6 +52,7 @@ function aspect(i: number) {
     lang,
   )}
   schemaType="CollectionPage"
+  ogImage={enriched[0]?.cover?.srcOg ?? enriched[0]?.cover?.srcWebp ?? enriched[0]?.cover?.src}
 >
   <!-- Hero -->
   <section class="max-w-6xl mx-auto px-5 pt-16 sm:pt-24 pb-12 text-center">
