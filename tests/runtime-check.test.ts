@@ -49,9 +49,9 @@ test("标签页路径必须动态发现：写死 /tag/ai/ 这种 slug 会静默�
 test("核心指标：CLS 卡 0.1、LCP 只拦明显异常", async () => {
   const src = await readFile(SCRIPT, "utf8");
   assert.match(src, /const CLS_BUDGET = Number\(valueOf\("cls", "0\.1"\)\)/, "CLS 预算默认 0.1");
-  assert.match(src, /vitals\.cls > CLS_BUDGET/, "CLS 超预算要判失败");
+  assert.match(src, /row\.cls > CLS_BUDGET/, "CLS 超预算要判失败（按每页中位数判）");
   assert.match(src, /const LCP_LIMIT = Number\(valueOf\("lcp", "6000"\)\)/, "LCP 阈值要宽松（本地/CI 机器差异大）");
-  assert.match(src, /vitals\.lcp > LCP_LIMIT/, "LCP 超阈值才判失败");
+  assert.match(src, /row\.lcp > LCP_LIMIT/, "LCP 超阈值才判失败（按每页中位数判）");
   assert.match(src, /全新 browser 的第一次导航要付冷启动成本/, "要先预热再量 LCP");
   // CI 日志接口 403，只能靠 annotations 读失败原因
   const wf2 = await readFile(new URL("../.github/workflows/deploy.yml", import.meta.url), "utf8");
@@ -69,3 +69,21 @@ test("核心指标：CLS 卡 0.1、LCP 只拦明显异常", async () => {
   assert.match(src, /Emulation\.setCPUThrottlingRate/, "--cpu=N 要能把 CPU 降速，模拟慢设备");
 });
 
+
+test("弱网档：--throttle 用 Lighthouse 同档参数，--repeat 取中位数", async () => {
+  const src = await readFile(SCRIPT, "utf8");
+  // 无节流时首屏指标是「局域网速度」，量不出真实手机体验（第 73 轮 LCP 问题的根因）
+  assert.match(src, /Network\.emulateNetworkConditions/, "要用 CDP 模拟弱网");
+  assert.match(src, /1\.6 \* 1024 \* 1024/, "下行按 Lighthouse 默认 1.6 Mbps");
+  assert.match(src, /latency: 150/, "RTT 按 Lighthouse 默认 150 ms");
+  assert.match(src, /--repeat=/, "要支持多次取中位");
+  // 预算判定必须用中位数：单次测量在弱网下会抖，硬卡预算会假红
+  assert.match(src, /const mid = \(values\)/, "要按中位数聚合再判预算");
+  assert.match(src, /每页取中位数再判预算/);
+  const pkg = JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8"));
+  assert.equal(pkg.scripts["check:perf"], "node scripts/check-runtime.mjs --vitals --mobile --throttle");
+  const wf = await readFile(new URL("../.github/workflows/deploy.yml", import.meta.url), "utf8");
+  assert.match(wf, /npm run check:perf -- --limit=6 --repeat=2/, "deploy 要跑一遍弱网基线");
+  assert.match(wf, /::notice::弱网首屏/, "弱网数字要出现在 notice 里");
+  assert.match(wf, /仅记录，不影响发布/, "弱网基线不挡发布");
+});

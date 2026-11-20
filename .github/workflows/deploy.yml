@@ -193,6 +193,26 @@ jobs:
           node scripts/report-ci-status.mjs --context=smoke/runtime-mobile --state=$([ "$code" -eq 0 ] && echo success || echo failure) --log=/tmp/runtime-mobile.log
           exit "$code"
 
+      - name: Mobile perf baseline (throttled, only for the record)
+        # 无节流时首屏指标永远是「局域网速度」：第 73 轮那个「LCP 被 15KB 衬线字体排队
+        # 卡到 1.6 s」的问题，在 21 页无节流自检里只表现为「/ LCP 1220 ms」，看着不严重。
+        # 这里按 Lighthouse 默认档（1.6 Mbps / 150 ms / CPU 4×）跑 6 个代表页 × 2 次取中位，
+        # 把「真实手机首屏」写进日志与 notice。
+        # 只记录、不挡发布：弱网 LCP 受 runner 负载影响大（±30%），硬卡会变成假红；
+        # 真正的闸门仍然是无节流 CLS（结构问题，不随机）与 JS/HTTP 报错。
+        run: |
+          npm run check:perf -- --limit=6 --repeat=2 > /tmp/perf-mobile.log 2>&1
+          code=$?
+          cat /tmp/perf-mobile.log
+          summary=$(grep -E "核心指标" /tmp/perf-mobile.log || true)
+          if [ -n "$summary" ]; then
+            echo "::notice::弱网首屏（1.6 Mbps / CPU 4×，中位）：${summary}"
+          fi
+          if [ "$code" -ne 0 ]; then
+            echo "::warning::弱网首屏自检未通过（exit $code），仅记录，不影响发布"
+          fi
+          exit 0
+
       - name: Interaction smoke (search, lightbox, vote, theme)
         # 加载不报错 ≠ 交互不报错：搜索（pagefind）、灯箱（PhotoSwipe）、点赞（乐观更新 +
         # POST /api/feedback）、深浅色切换都是岛里的代码，只有真的点下去才会执行。

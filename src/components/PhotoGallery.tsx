@@ -152,7 +152,9 @@ export default function PhotoGallery({ photos, galleryId }: Props) {
                 alt={p.alt}
                 width={p.width || undefined}
                 height={p.height || undefined}
-                loading="lazy"
+                // 第一张就是首屏最大元素（LCP）：lazy 会让它在弱网下晚 300–500 ms 才开始下载
+                loading={i === 0 ? "eager" : "lazy"}
+                fetchPriority={i === 0 ? "high" : "auto"}
                 decoding="async"
                 className="w-full h-auto block transition-transform duration-[600ms] group-hover:scale-[1.03]"
               />

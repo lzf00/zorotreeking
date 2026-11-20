@@ -14,11 +14,23 @@ export type CoverExists = (url: string) => boolean;
 
 const DERIVED_SUFFIXES = [".thumb.webp", ".w640.jpg", ".w960.jpg", ".og.jpg"] as const;
 
-/** 去掉扩展名：`/photos/x/foo.webp` → `/photos/x/foo`；不是照片路径则返回 null */
+/**
+ * 已经是派生图的文件名（`.thumb.webp` / `.w640.jpg` / `.w960.jpg` / `.og.jpg` …）。
+ *
+ * 为什么需要：有 666 篇内容的 `cover:` 直接写成了派生图（多半是分享图 `.og.jpg`，
+ * 1200×630、9.8 KB 起），以前 `coverStem` 只会剥掉最后的扩展名，于是候选变成
+ * `xxx.og.thumb.webp` 这种不存在的路径，最终原样返回 `.og.jpg`——卡片用着最大的那张。
+ * 正确做法是先剥派生后缀回到 stem，再按体积从轻到重挑。
+ */
+const DERIVED_RE = /\.(?:thumb480|thumb|mid|hero|w640|w960|og)\.(?:webp|jpe?g|png|avif)$/i;
+
+/** 去掉扩展名：`/photos/x/foo.webp` → `/photos/x/foo`；`x/foo.og.jpg` 也归到 `x/foo` */
 export function coverStem(cover: string | undefined | null): string | null {
   if (!cover || !cover.startsWith("/photos/")) return null;
-  const match = cover.match(/^(.*)\.(jpe?g|png|webp|avif)$/i);
-  return match ? match[1] : null;
+  // 先剥派生后缀（`.og.jpg`），再剥普通扩展名，否则 `foo.og.jpg` 会变成 `foo.og`
+  const stripped = cover.replace(DERIVED_RE, "");
+  const match = stripped.match(/^(.*)\.(jpe?g|png|webp|avif)$/i);
+  return match ? match[1] : stripped;
 }
 
 /** 候选派生图（不含原图），按优先级排列 */

@@ -26,6 +26,7 @@
  */
 import { createServer } from "node:http";
 import { readFile, readdir, stat } from "node:fs/promises";
+import { gzipSync } from "node:zlib";
 import { existsSync } from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
@@ -35,6 +36,17 @@ const valueOf = (name, fallback) => {
   const hit = args.find((a) => a.startsWith(`--${name}=`));
   return hit ? hit.split("=").slice(1).join("=") : fallback;
 };
+/**
+ * --throttle：用 CDP 模拟移动端弱网（Lighthouse 默认档：下行 1.6 Mbps / 上行 750 kbps /
+ * RTT 150 ms），并默认把 CPU 降 4 倍（可用 --cpu= 覆盖）。
+ *
+ * 为什么需要：不加节流时首屏指标全是「本机局域网速度」，第 73 轮那个
+ * 「LCP 被 15KB 字体排队卡到 1.6 s」的问题在无节流本地跑是看不出来的。
+ * 线上真实首屏要用这个模式量：`--mobile --throttle`。
+ */
+const THROTTLE = args.includes("--throttle");
+/** --repeat=N：每页测 N 次、取中位数。弱网下 LCP 抖动 100–300 ms，单次跑出来的数字不能当门禁。 */
+const REPEAT = Math.max(1, Number(valueOf("repeat", "1")) || 1);
 const DIST = path.resolve(valueOf("dist", "dist"));
 const WAIT = Number(valueOf("wait", "1500"));
 const MOBILE = args.includes("--mobile");
@@ -63,7 +75,7 @@ const SOFT_VITALS = args.includes("--soft-vitals");
  * 上会出现 0.1 的 CLS（第 67/69 轮各一次）。降速能把这个差距在本地复现出来，
  * 例如 `/invest/etf/` 在 4 倍降速下才会暴露 360px 骨架屏塌缩（0.066）。
  */
-const CPU_THROTTLE = Number(valueOf("cpu", "1"));
+const CPU_THROTTLE = Number(valueOf("cpu", THROTTLE ? "4" : "1"));
 // --mobile 默认用 iPhone 尺寸；显式 --viewport 可覆盖
 const VIEWPORT = valueOf("viewport", MOBILE ? "390x844" : "1280x900");
 // 默认测本地 dist；传 --base=https://www.zorotreeking.online 就直接测线上（含真实网络）。
@@ -124,7 +136,17 @@ function serve(root) {
         return;
       }
       const body = await readFile(file);
-      res.writeHead(200, { "Content-Type": MIME[path.extname(file)] ?? "application/octet-stream" }).end(body);
+      const contentType = MIME[path.extname(file)] ?? "application/octet-stream";
+      // 和 nginx 一样按需 gzip：不压缩的话，138 KB 的首页在 1.6 Mbps 弱网档下要
+      // 多传 600 ms，弱网 LCP 会被本地服务器「没有压缩」这件事本身拉高（实测 1228 vs 500 ms）。
+      const compressible = /^(text\/|application\/(json|xml|javascript))/.test(contentType) || path.extname(file) === ".svg";
+      const acceptsGzip = /\bgzip\b/.test(req.headers["accept-encoding"] ?? "");
+      if (compressible && acceptsGzip && body.length > 1024) {
+        const gz = gzipSync(body);
+        res.writeHead(200, { "Content-Type": contentType, "Content-Encoding": "gzip", Vary: "Accept-Encoding" }).end(gz);
+        return;
+      }
+      res.writeHead(200, { "Content-Type": contentType }).end(body);
     } catch {
       res.writeHead(500).end("error");
     }
@@ -241,24 +263,59 @@ async function main() {
       // 不预热的话，第一个页面的 LCP 数字毫无参考价值。
       const warmContext = await browser.newContext({ viewport: { width: vw, height: vh } });
       const warmPage = await warmContext.newPage();
+      // 预热也要用同样的节流：否则「暖机」和「测量」两个条件不一致，
+      // 实测第一页仍会比后面慢 1 s（第 74 轮：冷机身 1572 ms vs 热身后 500 ms）。
+      if (CPU_THROTTLE > 1 || THROTTLE) {
+        const warmSession = await warmContext.newCDPSession(warmPage);
+        if (CPU_THROTTLE > 1) await warmSession.send("Emulation.setCPUThrottlingRate", { rate: CPU_THROTTLE });
+        if (THROTTLE) {
+          await warmSession.send("Network.enable");
+          await warmSession.send("Network.emulateNetworkConditions", {
+            offline: false,
+            latency: 150,
+            downloadThroughput: (1.6 * 1024 * 1024) / 8,
+            uploadThroughput: (750 * 1024) / 8,
+          });
+        }
+      }
       await warmPage.goto(`${base}/`, { waitUntil: "load", timeout: 60_000 }).catch(() => {});
+      await warmPage.waitForTimeout(WAIT);
       await warmContext.close();
     }
 
-    for (const url of targets) {
+    if (REPEAT > 1) console.log(`· 每页测 ${REPEAT} 次取中位数`);
+    const plan = [];
+    for (let run = 0; run < REPEAT; run += 1) for (const url of targets) plan.push({ url, run });
+    for (const { url, run } of plan) {
       const touch = vw < 640;
       const context = await browser.newContext({ viewport: { width: vw, height: vh }, isMobile: touch, hasTouch: touch });
       const page = await context.newPage();
-    if (CPU_THROTTLE > 1) {
-      const session = await context.newCDPSession(page);
-      await session.send("Emulation.setCPUThrottlingRate", { rate: CPU_THROTTLE });
-    }
+      if (CPU_THROTTLE > 1 || THROTTLE) {
+        const session = await context.newCDPSession(page);
+        if (CPU_THROTTLE > 1) await session.send("Emulation.setCPUThrottlingRate", { rate: CPU_THROTTLE });
+        if (THROTTLE) {
+          await session.send("Network.enable");
+          await session.send("Network.emulateNetworkConditions", {
+            offline: false,
+            latency: 150,
+            downloadThroughput: (1.6 * 1024 * 1024) / 8,
+            uploadThroughput: (750 * 1024) / 8,
+          });
+        }
+      }
       if (VITALS) {
         await page.addInitScript((explainMode) => {
           window.__vitals = { lcp: 0, cls: 0, long: 0, shifts: [] };
           try {
             new PerformanceObserver((list) => {
-              for (const entry of list.getEntries()) window.__vitals.lcp = entry.startTime;
+              for (const entry of list.getEntries()) {
+                window.__vitals.lcp = entry.startTime;
+                // 记下 LCP 元素：「LCP 900 ms」本身没有行动价值，知道是 H1 还是 IMG 才能改
+                const el = entry.element;
+                window.__vitals.lcpEl = el
+                  ? `${el.tagName}.${String(el.className ?? "").slice(0, 40)}${el.currentSrc ? ` ${el.currentSrc.split("/").pop()?.slice(0, 40)}` : ""}`
+                  : "";
+              }
             }).observe({ type: "largest-contentful-paint", buffered: true });
             new PerformanceObserver((list) => {
               for (const entry of list.getEntries()) {
@@ -315,33 +372,30 @@ async function main() {
       if (VITALS) {
         vitals = await page.evaluate(() => ({
           lcp: Math.round(window.__vitals?.lcp ?? 0),
+          lcpEl: window.__vitals?.lcpEl ?? "",
           cls: Number((window.__vitals?.cls ?? 0).toFixed(3)),
           long: Math.round(window.__vitals?.long ?? 0),
           shifts: window.__vitals?.shifts ?? [],
           fcp: Math.round(performance.getEntriesByName("first-contentful-paint")[0]?.startTime ?? 0),
         }));
-        if (vitals.cls > CLS_BUDGET) {
-          const message = `CLS ${vitals.cls} 超过预算 ${CLS_BUDGET}（布局抖动，实测值不随机）`;
-          if (SOFT_VITALS) softVitals.push(`${url} → ${message}`);
-          else issues.push(message);
-        }
-        const lcpMessage = `LCP ${vitals.lcp} ms 超过 ${LCP_LIMIT} ms（本地预热后应 < 400 ms，先排查字体/大图）`;
-        if (vitals.lcp > LCP_LIMIT) {
-          if (SOFT_VITALS) softVitals.push(`${url} → ${lcpMessage}`);
-          else issues.push(lcpMessage);
-        }
-        vitalsList.push({ url, ...vitals });
-        if (vitals.cls > 0 || vitals.lcp > 1500 || vitals.long > 0) {
-          console.log(`    ↳ ${url} LCP ${vitals.lcp} ms · CLS ${vitals.cls} · 长任务 ${vitals.long} ms`);
+        vitalsList.push({ url, run, ...vitals });
+        // 多轮模式把每轮的数字也打出来：只看中位数看不出「第一轮冷启动」还是「后面真的慢」。
+        if (REPEAT > 1) console.log(`        第 ${run + 1}/${REPEAT} 次：LCP ${vitals.lcp} ms · CLS ${vitals.cls}`);
+        // 弱网/多轮模式下逐页都打：这时看的是「每页多少 ms」，只打异常页等于没有基线。
+        const reportEveryPage = THROTTLE || REPEAT > 1;
+        if (run === 0 && (reportEveryPage || vitals.cls > 0 || vitals.lcp > 1500 || vitals.long > 0)) {
+          console.log(`    ↳ ${url} LCP ${vitals.lcp} ms · CLS ${vitals.cls} · 长任务 ${vitals.long} ms${vitals.lcpEl ? ` · LCP 元素 ${vitals.lcpEl}` : ""}`);
           for (const shift of vitals.shifts) console.log(`        ${shift}`);
         }
       }
       const unique = [...new Set(issues)];
       if (unique.length) {
-        console.log(`✗ ${url}`);
-        for (const issue of unique.slice(0, 5)) console.log(`    ${issue}`);
+        if (run === 0) {
+          console.log(`✗ ${url}`);
+          for (const issue of unique.slice(0, 5)) console.log(`    ${issue}`);
+        }
         problems.push(...unique.map((issue) => `${url} → ${issue}`));
-      } else {
+      } else if (run === 0) {
         console.log(`✓ ${url}`);
       }
       await context.close();
@@ -351,12 +405,47 @@ async function main() {
     server?.close();
   }
 
+  // 每页取中位数再判预算：弱网下单次 LCP 会抖 100–300 ms，用单次当门禁会假红。
+  const medians = [];
+  if (VITALS && vitalsList.length) {
+    const byUrl = new Map();
+    for (const row of vitalsList) {
+      if (!byUrl.has(row.url)) byUrl.set(row.url, []);
+      byUrl.get(row.url).push(row);
+    }
+    const mid = (values) => {
+      const sorted = [...values].sort((a, b) => a - b);
+      return sorted[Math.floor(sorted.length / 2)];
+    };
+    for (const [url, rows] of byUrl) {
+      medians.push({
+        url,
+        runs: rows.length,
+        lcp: mid(rows.map((row) => row.lcp)),
+        cls: mid(rows.map((row) => row.cls)),
+        long: mid(rows.map((row) => row.long)),
+      });
+    }
+    for (const row of medians) {
+      const clsMessage = `CLS ${row.cls} 超过预算 ${CLS_BUDGET}（布局抖动，实测值不随机）`;
+      if (row.cls > CLS_BUDGET) {
+        if (SOFT_VITALS) softVitals.push(`${row.url} → ${clsMessage}`);
+        else problems.push(`${row.url} → ${clsMessage}`);
+      }
+      const lcpMessage = `LCP ${row.lcp} ms 超过 ${LCP_LIMIT} ms（先排查字体/大图，用 --explain 看位移）`;
+      if (row.lcp > LCP_LIMIT) {
+        if (SOFT_VITALS) softVitals.push(`${row.url} → ${lcpMessage}`);
+        else problems.push(`${row.url} → ${lcpMessage}`);
+      }
+    }
+  }
+
   for (const warning of softVitals) console.log(`⚠ ${warning}（--soft-vitals：只提示，不挡发布）`);
 
-  if (VITALS && vitalsList.length) {
-    const worstCls = vitalsList.reduce((a, b) => (b.cls > a.cls ? b : a));
-    const worstLcp = vitalsList.reduce((a, b) => (b.lcp > a.lcp ? b : a));
-    const longestTask = vitalsList.reduce((a, b) => (b.long > a.long ? b : a));
+  if (VITALS && medians.length) {
+    const worstCls = medians.reduce((a, b) => (b.cls > a.cls ? b : a));
+    const worstLcp = medians.reduce((a, b) => (b.lcp > a.lcp ? b : a));
+    const longestTask = medians.reduce((a, b) => (b.long > a.long ? b : a));
     console.log(
       `\n核心指标：CLS 最差 ${worstCls.cls}（${worstCls.url}）· LCP 最慢 ${worstLcp.lcp} ms（${worstLcp.url}）· 长任务最多 ${longestTask.long} ms（${longestTask.url}）`,
     );
