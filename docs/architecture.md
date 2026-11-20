@@ -662,6 +662,26 @@ npm run check:images -- --limit 150 --warn
 当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
 原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
 
+### 内容日期卫生：`updated` 跟不跟得上真实编辑（第 63 轮）
+
+sitemap 的 `lastmod` 取 frontmatter 的 `updated ?? date`，而这个字段只能靠作者手工改。
+忘了改的后果：正文更新了，sitemap 还说没变，搜索引擎按旧时间调度重抓。
+
+新增 `scripts/check-content-dates.mjs`（`npm run check:dates`，已接入 `npm run gate`，
+只报告不阻断；`--strict` 才当硬门禁）。判定条件三个同时满足才报：
+
+1. 文件最后一次提交比 `updated ?? date` 晚 14 天以上；
+2. 那次提交动的内容文件 ≤ 5 个（一次改上百个文件的是批量重构，不算内容更新）；
+3. **正文指纹变了**（`scripts/lib/prose-fingerprint.mjs`：去掉链接、HTML/JSX 标签、
+   裸 URL、markdown 符号和空白后取 sha256）。
+
+第 3 条是这轮最关键的设计。最初的版本只按 1+2 判定，报出 2 篇，但人工看 diff 发现
+两篇都是**机械修复**——一篇把失效外链 <a> 去掉、一篇把写坏的 `<FeedbackButtons
+client:visiblevisible}}` 补成自闭合。正文一个字没变。如果按提醒去补 `updated:`，
+等于系统性对搜索引擎说谎，所以加了指纹比对。
+
+最终结果：**1052 篇内容全部干净**，两个真实误报被指纹正确排除。
+
 ### 搜索性能实测：不需要重写（第 62 轮）
 
 上一轮把「pagefind 索引 15 MB，考虑裁剪」列成了待办。本轮先量，结论是**不用动**：
