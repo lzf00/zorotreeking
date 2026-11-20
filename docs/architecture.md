@@ -681,8 +681,19 @@ artifact 下载 **401**。而 `GET /commits/{sha}/statuses` 可以匿名读—�
 本地验证：`--cls=0.01` 时 `--soft-vitals` 打印 `⚠` 且 exit 0，不加则 exit 1。
 
 另外装了 Playwright 自带的 Chromium（`PLAYWRIGHT_BROWSERS_PATH=/tmp/pw-browsers`）
-来贴近 CI 环境；本地跑 headless shell 仍然 21 页全绿、CLS/CLS 数值与系统 Chrome 一致，
-说明差异来自 runner 的机器速度而不是浏览器实现。
+来贴近 CI 环境；本地跑 headless shell 仍然 21 页全绿，数值与系统 Chrome 一致。
+
+**通道一开就把盲区照亮了**：`386481c5` 的三条 status 读出来是
+
+| context | 内容 |
+|---|---|
+| `smoke/runtime` | CLS 最差 **0.103（/en/hike/）** · LCP 最慢 248 ms · 长任务最多 **110 ms（/hike/travel/ali-grand-loop-2026/）** |
+| `smoke/runtime-mobile` | 12 页全绿 |
+| `smoke/interactions` | 14/14 场景通过 |
+
+也就是说第 67 轮两次打回的直接原因就是 **CI 上 `/en/hike/` 的 CLS 0.103**（本地同一页只有
+0.005）——地图页在慢机器上初始化更晚，抖动被算进首屏。这条线索留给下一轮：
+要么让地图片段预留高度，要么继续把它当 advisory。
 
 ### 修掉线上最大的一处布局抖动：持仓表（第 67 轮）
 
