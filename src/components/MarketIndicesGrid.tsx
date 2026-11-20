@@ -135,7 +135,10 @@ function IndexCard({ d, lang }: { d: Index; lang: MarketLang }) {
   const sign = (n: number | null) => (n != null && n > 0 ? "+" : "");
 
   return (
-    <div className="rounded-2xl bg-[var(--bg-soft)] hover:bg-[var(--bg-soft-2)] transition-colors p-4">
+    // min-h 固定住卡片高度：SSR 兜底只有 3 个指数、接口会返回 7 个，卡片宽度不同
+    // 会让指数名换行行数不同 —— 高度一变，下面所有板块跟着跳。实测 /en/invest/ 的
+    // CLS 0.073 就是这一处（第 67 轮归因）。定高后宽度变化不再影响行高。
+    <div className="rounded-2xl bg-[var(--bg-soft)] hover:bg-[var(--bg-soft-2)] transition-colors p-4 min-h-[92px]">
       <div className="flex items-center justify-between mb-2">
         <span className="text-xs text-[var(--text-tertiary)]">{indexName(d.code, d.name, lang)}</span>
         <span className="text-[10px] font-mono text-[var(--text-secondary)]">{d.market}</span>
