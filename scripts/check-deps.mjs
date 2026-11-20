@@ -58,6 +58,10 @@ export function evaluateAudit(auditJson, allowlist) {
   const found = new Map();
   for (const [name, vuln] of Object.entries(auditJson.vulnerabilities ?? {})) {
     for (const via of vuln.via ?? []) {
+      // `via: ["astro"]` 这种字符串是「因为依赖了 astro 才受影响」的**反向引用**，
+      // 不是一条独立公告（astro 自己的公告已经在它自己的条目里算过了）。当成公告会让
+      // 「@astrojs/mdx 受 astro 影响」被误判成一条没评估过的漏洞——线上第一次接线就撞上了。
+      if (typeof via !== "object" || via === null) continue;
       const key = advisoryKey(via);
       if (!found.has(key)) {
         found.set(key, {

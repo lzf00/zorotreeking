@@ -74,6 +74,19 @@ test("冒出一条没评估过的公告：必须失败", () => {
   assert.equal(result.unlisted[0].id, "GHSA-AAAA-BBBB-CCCC");
 });
 
+test("`via: [\"astro\"]` 是反向引用，不能当成一条新公告", () => {
+  // npm audit 对「依赖了有漏洞的包」的下游包会给这种字符串 via，
+  // 线上第一次接线就把它误判成未评估漏洞，让检查直接红。
+  const withReverseRef = auditWith({
+    ...astroVuln,
+    "@astrojs/mdx": { severity: "low", via: ["astro"] },
+  });
+  const result = evaluateAudit(withReverseRef, allowlist);
+  assert.equal(result.unlisted.length, 0, "字符串型 via 不是独立公告");
+  assert.equal(result.ok, true);
+  assert.deepEqual(result.accepted.map((item) => item.id).sort(), ["GHSA-MH32-JXCR-MH9F", "GHSA-R3H5-4585-7X3W"]);
+});
+
 test("白名单条目过期（audit 不报了）也要失败，否则白名单变盲区", () => {
   const clean = evaluateAudit(auditWith({}), allowlist);
   assert.equal(clean.ok, false);
