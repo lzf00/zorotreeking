@@ -73,6 +73,12 @@ const POLL_MS = 5 * 60_000;
 
 export default function LiveHoldings({ holdings, dataMode = "placeholder", simulationStartDate, lang = "zh" }: Props) {
   const L = marketLabels(lang);
+  // 时钟相关的文案必须等挂载后再渲染：SSR 在构建时刻算一次、浏览器在访问时刻再算一次，
+  // 跨过「净值更新时段」的边界就会不一致 —— React 会报 hydration mismatch（#418）。
+  // 第 69 轮线上抓到的就是这个：/invest/ 每次访问都有一条 pageerror。
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   const [quotes, setQuotes] = useState<Record<string, FundQuote> | null>(null);
   const [updated, setUpdated] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -331,9 +337,11 @@ export default function LiveHoldings({ holdings, dataMode = "placeholder", simul
       <p className="text-[11px] text-[var(--text-tertiary)] font-mono tracking-wide">
         {L.holdingsSource} · {L.navDateLabel} {navDateSummary} · {L.apiResponse}{" "}
         {updated ? formatChinaMarketTime(updated) : L.none}
-        {isFundNavRefreshWindow()
-          ? <span className="ml-2">{L.inNavWindow}</span>
-          : <span className="ml-2">{L.outNavWindow}</span>}
+        {mounted && (
+          isFundNavRefreshWindow()
+            ? <span className="ml-2">{L.inNavWindow}</span>
+            : <span className="ml-2">{L.outNavWindow}</span>
+        )}
         {dataMode === "simulation" && <span className="ml-2">{L.simulationStart(simulationStartDate ?? "2026-02-01")}</span>}
         {partial !== null && (
           <span className="ml-2 text-amber-700 dark:text-amber-400">{L.partialMissing(partial.succeeded, partial.requested)}</span>

@@ -64,6 +64,11 @@ type EtfResp = {
 const POLL_MS = 60_000;
 
 export default function EtfLiveTurnover() {
+    // 同 LiveHoldings：交易时段/盘前这些判断依赖「现在几点」，SSR 与客户端跨边界会
+  // hydration mismatch，所以等挂载后再显示。
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   const [data, setData] = useState<EtfItem[] | null>(null);
   const [updated, setUpdated] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -168,7 +173,7 @@ export default function EtfLiveTurnover() {
         <p className="text-[11px] text-[var(--text-tertiary)] font-mono">
           实时：东方财富 · 昨日基准：腾讯财经{baselineDate ? ` ${baselineDate}` : ""} · {updated ? formatChinaMarketTime(updated) : "—"}
           {stale && <span className="ml-2">（回退缓存）</span>}
-          {!isChinaATradingHours() && marketNote}
+          {mounted && !isChinaATradingHours() && marketNote}
           {loading && <span className="ml-2">刷新中…</span>}
         </p>
       </div>

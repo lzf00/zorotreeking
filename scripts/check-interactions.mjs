@@ -219,6 +219,32 @@ const SCENARIOS = [
     },
   },
   {
+    name: "投资页：跨时段访问不报 hydration 错误",
+    url: "/invest/",
+    // 把浏览器时钟拨到周六（构建时刻是周五），SSR 与客户端算出的「是否在净值更新时段」
+    // 会不一致。修法是时钟文案等挂载后再渲染 —— 这条场景就是锁住它。
+    initScript: `{
+      // 周五 12:00（北京）= 净值发布窗口内；若构建时刻在窗口外，两者算出的文案不同
+      const fixed = new Date("2026-11-20T04:00:00Z").getTime();
+      const RealDate = Date;
+      class FakeDate extends RealDate {
+        constructor(...a) { super(...(a.length ? a : [fixed])); }
+        static now() { return fixed; }
+      }
+      window.Date = FakeDate;
+    }`,
+    async run({ page, fail }) {
+      // 结构性断言（与构建时刻无关）：这段文案依赖「现在几点」，SSR 里不能出现，
+      // 否则构建时刻和访问时刻跨过窗口边界就会 hydration mismatch（线上 /invest/ 每次访问一条 pageerror）。
+      const response = await page.request.get(new URL("/invest/", page.url()).href);
+      const html = await response.text();
+      if (html.includes("净值发布窗口")) return fail("SSR 里就渲染了时段文案，跨时段访问必然 hydration mismatch");
+      await page.waitForTimeout(1200);
+      const hint = await page.getByText("净值发布窗口", { exact: false }).first();
+      if ((await hint.count()) === 0) return fail("挂载完成后没有显示净值更新时段提示");
+    },
+  },
+  {
     name: "ETF 页：成交表由 SSR 直出（不再先画 360px 骨架屏）",
     url: "/invest/etf/",
     async run({ page, fail }) {
@@ -369,6 +395,7 @@ async function main() {
         }
         return null;
       };
+      if (scenario.initScript) await page.addInitScript(scenario.initScript);
       const response = await page.goto(base + scenario.url, { waitUntil: "load", timeout: 60_000 });
       if (response && response.status() >= 400) fail(`页面自身 HTTP ${response.status()}`);
       await page.waitForTimeout(300);
