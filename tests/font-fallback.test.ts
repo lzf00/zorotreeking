@@ -43,3 +43,13 @@ test("有个门禁在浏览器里验证兜底宽度 ≈ 网页字体宽度，且
   const pkg = JSON.parse(await readFile(PKG, "utf8")) as { scripts: Record<string, string> };
   assert.ok(pkg.scripts.gate.includes("check:font-fallback"), "gate 要跑它");
 });
+
+test("只预载衬线体（首屏 LCP 是它），不预载正文 Inter", async () => {
+  const layout = await readFile(new URL("../src/layouts/BaseLayout.astro", import.meta.url), "utf8");
+  // 首屏 LCP 元素几乎都是衬线大标题；预载它把移动端 LCP 从 1.6s 拉到 0.3s。
+  assert.match(layout, /rel="preload" href=\{serifFontUrl\} as="font"/, "要预载衬线体");
+  assert.match(layout, /import serifFontUrl from "\.\.\/assets\/fonts\/instrument-serif-400-latin\.woff2\?url"/, "预载地址要走 Vite ?url，和 @font-face 同一哈希");
+  assert.match(layout, /crossorigin="anonymous"/, "字体 preload 必须带 crossorigin，否则会重复下载");
+  // 预载 Inter(48KB) 会让 HTML 抢不到带宽，实测反而更慢
+  assert.ok(!/preload[^>]*inter-100-900/.test(layout), "不要预载正文 Inter");
+});

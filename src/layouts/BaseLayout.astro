@@ -17,6 +17,7 @@ import {
 import { serializeJsonLd } from "@/lib/json-ld";
 import { normalizeVerificationToken } from "@/lib/site-verification";
 import { breadcrumbJsonLd, buildBreadcrumb } from "@/lib/breadcrumbs";
+import serifFontUrl from "../assets/fonts/instrument-serif-400-latin.woff2?url";
 
 interface Props {
   title?: string;
@@ -277,6 +278,7 @@ if (jsonLd) {
     )}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/favicon.svg" />
+    <link rel="preload" href={serifFontUrl} as="font" type="font/woff2" crossorigin="anonymous" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <meta name="theme-color" content="#1d1d1f" />
     <link rel="alternate" type="application/rss+xml" title="ZoroTreeking · RSS" href="/rss.xml" />
@@ -292,9 +294,14 @@ if (jsonLd) {
     <!-- editorial 字体组合：Instrument Serif（display）+ Inter（body）+ JetBrains Mono（code）
          全部自托管（public/fonts/ + src/styles/fonts.css，由 scripts/fetch-fonts.ts 生成）：
          fonts.googleapis.com 在大陆经常超时或被墙，第三方 CSS 实测要 550ms+ 才到。 -->
-    {/* 不 preload 字体：Lighthouse 限速 1.6Mbps 时，两字体共 63KB 会和 HTML 抢带宽，
-        实测让首屏晚 ~300ms。@font-face 都是 font-display: swap，正文先以系统字体绘制，
-        字体到货后自行替换，对 FCP 无影响。 */}
+    {/* 只 preload 衬线体（15KB）：首屏 LCP 元素在绝大多数页面是衬线大标题，字体不到货
+        它就一直用兜底字面画，LCP 被拖到 1.6 s。第 73 轮实测（移动端 1.6Mbps/150ms/CPU4x，
+        各 4 次取中位）：不预载 1600ms → 只预载衬线 308ms；同时预载 Inter(48KB) 会让 HTML
+        抢不到带宽、反而更慢——所以这里只放衬线体，正文 Inter 仍走 swap。
+
+        路径走 Vite 的 `?url` 导入：和 fonts.css 里的 @font-face 指向同一个产物哈希，
+        不会变成第二个文件。crossorigin 必须写，否则 preload 与 @font-face 的请求
+        destination 不匹配，浏览器会重复下载一次。 */}
     {/* 少数页面需要在 head 里加东西（例如跳转桩的 meta refresh） */}
     <slot name="head" />
   </head>
