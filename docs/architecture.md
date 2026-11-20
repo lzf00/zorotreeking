@@ -662,6 +662,26 @@ npm run check:images -- --limit 150 --warn
 当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
 原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
 
+### 把「跨时段水合」变成常规门禁（第 70 轮）
+
+第 69 轮那个 #418 是靠手工拨浏览器时钟才抓到的，不能每次都靠运气。这轮做了两件事：
+
+1. `scripts/check-hydration.mjs` 自己起静态服务器（不用再手动 `serve-dist` + `BASE_URL`），
+   可以直接进 gate；
+2. 新增 `--cross-time`：每个带岛的页面在正常时钟之外，再用**周五 12:00（北京，净值窗口
+   内）**和**周六 12:00（休市）**两个假时钟各水合一次，任何 hydration mismatch 立刻红。
+
+gate 里现在有两个互补的检查：
+
+| 检查 | 层次 | 抓什么 |
+|---|---|---|
+| `check:ssr-clock` | 静态，扫 1195 个 HTML | 时钟文案有没有漏进 SSR（不跑浏览器，秒级） |
+| `check:hydration --cross-time` | 浏览器，7 页 9 个岛 × 3 个时钟 | 岛崩没崩、水合对不对（48 s） |
+
+负向验证：把 `LiveHoldings` 的 `mounted` 守卫去掉再 build，`check:hydration --cross-time`
+立刻在 `/invest/` 报 `周五 12:00（北京…）：pageerror: React error #418` 并 exit 1；
+加回守卫后恢复全绿。gate 总时长从 ~1m25s 变成 ~2m14s。
+
 ### 最难发现的一类 bug：SSR 里塞了「现在几点」（第 69 轮）
 
 第 69 轮收尾复测线上时，`/invest/` 报 **pageerror: Minified React error #418**
