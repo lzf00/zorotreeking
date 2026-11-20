@@ -662,6 +662,33 @@ npm run check:images -- --limit 150 --warn
 当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
 原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
 
+### 站内链接自检进 gate（第 50 轮）
+
+线上把 1190 个内链全扫了一遍（10 线程 GET，约 2 分钟）：**1190/1190 全部 200**，无死链。
+顺带确认了两件事：
+
+| 检查项 | 结果 |
+|---|---|
+| `/photo/baokemeng` → `/photo/baokemeng/` | 301，符合预期 |
+| `/about` → `/about/` | 301，符合预期 |
+| `/index.html`、`/photo/x/index.html` | 200（nginx 不重定向），但页面 canonical 指向无 `index.html` 的正式地址 → Google 会合并，风险低 |
+| 不存在的路径 | 404（错误页 118 KB，偏大但少见） |
+| `_astro/*.js` | `max-age=31536000, immutable` ✅ |
+| HTML | `max-age=300, must-revalidate` ✅ |
+| 图片 | `image/webp` + `max-age=300`（曾误以为 MIME 错了，实际是探了个不存在的路径拿到 404 HTML，记一次假警报） |
+
+线上爬虫不适合进 CI（要打上千请求、依赖部署状态）。真正能防回归的是**产物级**检查：
+新增 `npm run check:links`，扫 `dist/**/*.html` 的 `href`/`src`/`srcset`（含 `imagesrcset`），
+把站内路径映射到磁盘文件确认存在，1.8 秒跑完 1195 个页面 / 1362 个目标：
+
+```bash
+npm run check:links            # 有断链退出 1（已在 gate 里）
+npm run check:links -- --warn   # 只报告
+```
+
+第 49 轮那次「派生图被当照片」的乌龙，如果当时已有这个检查，本地 manifest 里的
+`.og.w640.webp` 会立刻被报出来（文件不存在），不用等页面重量异常才发现。
+
 ### 相册缩略图降到 q74，以及一次「本地垃圾被当成照片」的乌龙（第 49 轮）
 
 按你选的保守方案，`.thumb.webp` 的质量从 78 降到 **74**：
