@@ -193,18 +193,14 @@ export default function LiveHoldings({ holdings, dataMode = "placeholder", simul
       ? (navDates[0] ?? L.none)
       : L.dateRange(navDates[0] ?? L.none, navDates[navDates.length - 1] ?? L.none);
 
-  if (!quotes && error) {
-    return (
-      <div className="rounded-2xl bg-[var(--bg-soft)] p-5 text-sm text-[var(--text-tertiary)]">
-        {L.holdingsLoadFailed}{error}{L.sentenceEnd}
-        <button onClick={load} className="underline ml-1">{L.retry}</button>
-      </div>
-    );
-  }
-
-  if (!quotes) {
-    return <div className="rounded-2xl bg-[var(--bg-soft)] p-5 h-[420px] animate-pulse" />;
-  }
+  // 不要因为「行情还没到」就整块不渲染。持仓的代码/名称/份额是构建时就有的，
+  // 缺的只是净值那几列——SSR 先把表格画出来、缺的格子显示破折号，水合后只是把
+  // 数字填进去，高度基本不变。
+  //
+  // 以前这里 `if (!quotes) return <420px 骨架屏>`，实测水合后整块从 420px 长到
+  // ~1000px，把下面所有板块往下推：`/invest/`、`/en/invest/` 线上 CLS 0.069–0.073
+  // 全来自这一处（第 67 轮用 layout-shift 归因定位）。
+  const holdingsFailure = !quotes && error !== null;
 
   return (
     <div className="space-y-4">
@@ -220,7 +216,9 @@ export default function LiveHoldings({ holdings, dataMode = "placeholder", simul
       )}
       {error && (
         <div role="status" className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-300">
-          {L.refreshFailedKeep}{error}{L.sentenceEnd}
+          {holdingsFailure ? L.holdingsLoadFailed : L.refreshFailedKeep}
+          {error}
+          {L.sentenceEnd}
           <button onClick={load} className="underline ml-1">{L.retry}</button>
         </div>
       )}

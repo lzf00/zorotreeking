@@ -203,6 +203,22 @@ const SCENARIOS = [
     },
   },
   {
+    name: "投资页：持仓表由 SSR 直出（不再靠水合后长高）",
+    url: "/invest/",
+    async run({ page, fail }) {
+      // 这一处曾经在线上造成 CLS 0.073：SSR 只画 420 px 骨架屏，水合后整块长到
+      // ~1000 px，把下面所有板块推下去。修法不是「量 CLS」而是「别让 SSR 交白卷」：
+      // 持仓的代码/名称/份额构建时就有，缺的只是净值列。
+      // 断言直接看服务端吐出来的 HTML，跟水合时机无关，因此稳定可复现。
+      const response = await page.request.get(new URL("/invest/", page.url()).href);
+      if (!response.ok()) return fail(`/invest/ 返回 ${response.status()}`);
+      const html = await response.text();
+      if (html.includes("h-[420px]")) return fail("SSR 里还有 420px 的骨架屏（水合后会明显长高）");
+      const rows = (html.match(/font-mono text-xs">[0-9]{6}<\/td>/g) || []).length;
+      if (rows < 8) return fail(`SSR 里的持仓表只有 ${rows} 行（应该直接把持仓都渲染出来）`);
+    },
+  },
+  {
     name: "行情岛：指数接口数据覆盖 SSR 兜底",
     url: "/invest/",
     api: {
@@ -367,7 +383,7 @@ async function main() {
     console.error(`\n✗ 交互自检失败：${failures.length}/${scenarios.length} 个场景`);
     process.exit(1);
   }
-  console.log(`\n✓ 交互自检通过：${passed}/${scenarios.length} 个场景（搜索、灯箱、点赞、主题、ETF、行情岛）`);
+  console.log(`\n✓ 交互自检通过：${passed}/${scenarios.length} 个场景（搜索、灯箱、点赞、主题、ETF、行情岛、SSR 直出）`);
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1] ?? "").href) {

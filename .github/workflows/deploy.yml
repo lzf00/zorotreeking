@@ -168,11 +168,18 @@ jobs:
         # 只抽查 12 个关键模板，避免把部署时间翻倍。
         id: runtime-mobile
         run: |
-          npm run check:runtime -- --mobile
+          npm run check:runtime -- --mobile > /tmp/runtime-mobile.log 2>&1
           code=$?
+          cat /tmp/runtime-mobile.log
           if [ "$code" -eq 2 ]; then
             echo "::warning::移动端运行时自检跳过：Chromium 不可用"
             exit 0
+          fi
+          if [ "$code" -ne 0 ]; then
+            echo "::error::移动端运行时自检失败（exit $code）："
+            grep -E "^(✗|  ·)" /tmp/runtime-mobile.log | head -30 | while IFS= read -r line; do
+              echo "::error::$line"
+            done
           fi
           exit "$code"
 
@@ -182,11 +189,18 @@ jobs:
         # /api/* 用 stub 提供最小契约，链路在本地也能全量验证。
         id: interactions
         run: |
-          npm run check:interactions
+          npm run check:interactions > /tmp/interactions.log 2>&1
           code=$?
+          cat /tmp/interactions.log
           if [ "$code" -eq 2 ]; then
             echo "::warning::交互自检跳过：Chromium 不可用"
             exit 0
+          fi
+          if [ "$code" -ne 0 ]; then
+            echo "::error::交互自检失败（exit $code）："
+            grep -E "^(✗|    )" /tmp/interactions.log | head -30 | while IFS= read -r line; do
+              echo "::error::$line"
+            done
           fi
           exit "$code"
 

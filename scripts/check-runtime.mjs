@@ -15,6 +15,7 @@
  *   node scripts/check-runtime.mjs --mobile        # 手机视口（390×844）抽查关键模板
  *   node scripts/check-runtime.mjs --viewport=768x1024
  *   node scripts/check-runtime.mjs --vitals         # 顺带量 LCP / CLS / 长任务
+ *   node scripts/check-runtime.mjs --vitals --base=https://www.zorotreeking.online   # 线上实测
  *   node scripts/check-runtime.mjs --dist=dist --wait=2500 --limit=10
  *
  * 判定：pageerror / console error / 同源 4xx-5xx 响应 → 失败（exit 1）。
@@ -44,6 +45,8 @@ const CLS_BUDGET = Number(valueOf("cls", "0.1"));
 const LCP_LIMIT = Number(valueOf("lcp", "6000"));
 // --mobile 默认用 iPhone 尺寸；显式 --viewport 可覆盖
 const VIEWPORT = valueOf("viewport", MOBILE ? "390x844" : "1280x900");
+// 默认测本地 dist；传 --base=https://www.zorotreeking.online 就直接测线上（含真实网络）。
+const BASE = valueOf("base", "");
 const LIMIT = Number(valueOf("limit", "0"));
 const ALL_PHOTO = args.includes("--all-photo");
 
@@ -190,8 +193,8 @@ async function main() {
   }
 
   const { chromium } = await import("playwright");
-  const server = await serve(DIST);
-  const base = `http://127.0.0.1:${server.address().port}`;
+  const server = BASE ? null : await serve(DIST);
+  const base = BASE ? BASE.replace(/\/$/, "") : `http://127.0.0.1:${server.address().port}`;
   const executablePath =
     process.env.CHROME_PATH ??
     (existsSync("/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")
@@ -299,7 +302,7 @@ async function main() {
     }
   } finally {
     await browser.close();
-    server.close();
+    server?.close();
   }
 
   if (VITALS && vitalsList.length) {
