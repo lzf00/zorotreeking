@@ -61,11 +61,26 @@ export default function PhotoGallery({ photos, galleryId }: Props) {
     if (!containerRef.current) return;
 
     // 预热：空闲时（或 1.2 s 后）拉一次 PhotoSwipe，之后点开图片只需本地解析。
+    // 顺便把第一张图的灯箱尺寸版本拉下来并解码 —— 第 129 轮实测「首次打开」576 ms、
+    // 之后 16 ms，差的正是"模块下载 + 第一张大图解码"，提前做掉就把冷启动摊平了。
+    const warmFirstImage = () => {
+      const first = photos[0];
+      if (!first) return;
+      const img = new Image();
+      img.srcset = buildSrcSet(lightboxVariants(first));
+      img.sizes = "100vw";
+      img.src = first.srcWebp || first.src;
+      void img.decode?.().catch(() => {});
+    };
+    const warm = () => {
+      warmPhotoSwipe();
+      warmFirstImage();
+    };
     const idle = (window as any).requestIdleCallback as
       | ((cb: () => void, opts?: { timeout: number }) => number)
       | undefined;
-    const idleHandle = idle ? idle(warmPhotoSwipe, { timeout: 2000 }) : window.setTimeout(warmPhotoSwipe, 1200);
-    const warmOnIntent = () => warmPhotoSwipe();
+    const idleHandle = idle ? idle(warm, { timeout: 2000 }) : window.setTimeout(warm, 1200);
+    const warmOnIntent = () => warm();
     const containerEl = containerRef.current;
     containerEl.addEventListener("pointerenter", warmOnIntent, { passive: true, once: true });
     containerEl.addEventListener("touchstart", warmOnIntent, { passive: true, once: true });
@@ -142,7 +157,7 @@ export default function PhotoGallery({ photos, galleryId }: Props) {
       containerEl.removeEventListener("pointerenter", warmOnIntent);
       containerEl.removeEventListener("touchstart", warmOnIntent);
     };
-  }, [galleryId]);
+  }, [galleryId, photos]);
 
   return (
     <div

@@ -15,6 +15,7 @@
  *   node scripts/inp-probe.mjs --fail-on-404            # 月度清单用：有 404 直接退出 1
  */
 import { chromium } from "playwright";
+import { aggregateRounds, worstOf } from "./lib/inp-aggregate.mjs";
 
 const DEFAULT_URLS = [
   "/photo/baokemeng/",   // React 相册灯箱
@@ -30,6 +31,7 @@ const parseArgs = (argv) => {
     urls: DEFAULT_URLS,
     mobile: false,
     failOn404: false,
+    repeat: 3,
   };
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
@@ -37,6 +39,7 @@ const parseArgs = (argv) => {
     else if (arg === "--urls") args.urls = argv[++i].split(",").map((s) => s.trim()).filter(Boolean);
     else if (arg === "--mobile") args.mobile = true;
     else if (arg === "--fail-on-404") args.failOn404 = true;
+    else if (arg === "--repeat") args.repeat = Math.max(1, Number(argv[++i]) || 1);
   }
   return args;
 };
@@ -53,6 +56,7 @@ async function clickThrough(page, mobile) {
   ]) {
     const trigger = page.locator(selector).first();
     if (await trigger.count()) {
+      await settle(page);
       await trigger.click({ timeout: 3000 }).catch(() => {});
       results.push({ action, ms: await drainEvents(page) });
       await page.keyboard.press("Escape").catch(() => {});
@@ -63,6 +67,7 @@ async function clickThrough(page, mobile) {
   // 1) 移动端/桌面端都可能有的菜单按钮
   const toggles = await page.locator('button[aria-label*="菜单"], button[aria-expanded]').all();
   for (const toggle of toggles.slice(0, 1)) {
+    await settle(page);
     await toggle.click({ timeout: 3000 }).catch(() => {});
     results.push({ action: "打开菜单", ms: await drainEvents(page) });
     await page.keyboard.press("Escape").catch(() => {});
@@ -75,6 +80,7 @@ async function clickThrough(page, mobile) {
   // 只点真正的灯箱链接（PhotoSwipe 的 <a data-pswp-width>），并确认灯箱真的开了。
   const galleryLink = page.locator("a[data-pswp-width], [data-lightbox], .gallery a").first();
   if (await galleryLink.count()) {
+    await settle(page);
     await galleryLink.click({ timeout: 5000 }).catch(() => {});
     // PhotoSwipe 的核心包是动态 import 的，点完不会立刻有 DOM —— 要等它挂上再判定，
     // 否则「没打开」是假阴性（我第一版就踩了：判定太早，误以为灯箱坏了）。
@@ -88,6 +94,8 @@ async function clickThrough(page, mobile) {
       results.push({ action: "点开灯箱（没打开，跳过）", ms: 0, skipped: true });
     }
     await page.keyboard.press("Escape").catch(() => {});
+    // 灯箱关掉要等 DOM 撤干净，否则下一轮点的是"被浮层挡住"的链接
+    await page.waitForSelector(".pswp", { state: "detached", timeout: 3000 }).catch(() => {});
     await page.waitForTimeout(150);
   }
 
@@ -115,6 +123,7 @@ async function clickThrough(page, mobile) {
   // 4) 第一组筛选按钮（行情页的板块/日期切换）
   const buttons = await page.locator("main button").all();
   for (const button of buttons.slice(0, 2)) {
+    await settle(page);
     const label = (await button.getAttribute("aria-label").catch(() => null))
       || (await button.textContent().catch(() => ""))?.trim().slice(0, 12)
       || "无标签";
@@ -124,6 +133,7 @@ async function clickThrough(page, mobile) {
   }
 
   if (mobile) {
+    await settle(page);
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight / 2));
     results.push({ action: "滚动半屏", ms: await drainEvents(page) });
   }
@@ -141,6 +151,55 @@ async function clickThrough(page, mobile) {
  */
 const INTERACTION_EVENTS = new Set(["pointerdown", "pointerup", "click", "keydown", "keyup", "touchstart", "touchend"]);
 
+/**
+ * 这个页面的"空转帧间隔"（第 129 轮）。
+ *
+ * 为什么需要：本地 headless + 2x DPR 跑相册页（48 张大图）时实测帧间隔 ~150 ms，
+ * 也就是**环境下限**——任何交互的 Event Timing duration 都不可能低于这个数。
+ * 之前把 576 ms 直接判成「用户点开灯箱要等半秒」，其实是把机器慢算到了页面上。
+ * 现在每页先量 10 帧中位数，判定时扣掉超出 16 ms 的部分，并把两个数都打出来。
+ */
+async function baselineFrameMs(page) {
+  const intervals = await page.evaluate(
+    () =>
+      new Promise((resolve) => {
+        const out = [];
+        let last = performance.now();
+        let n = 0;
+        const tick = () => {
+          const now = performance.now();
+          out.push(now - last);
+          last = now;
+          n += 1;
+          if (n < 10) requestAnimationFrame(tick);
+          else resolve(out);
+        };
+        requestAnimationFrame(tick);
+      }),
+  );
+  const sorted = intervals.slice(1).sort((a, b) => a - b);
+  return Math.round(sorted[Math.floor(sorted.length / 2)] ?? 0);
+}
+
+/**
+ * 测一次动作之前，先把页面"静下来"（第 129 轮）。
+ *
+ * 之前每一步之间只 `waitForTimeout(150)`，上一步的关闭动画（搜索弹窗淡出、抽屉收起）
+ * 还没跑完，下一次点击的"下一帧"就被这段动画顶住：桌面端点「喜欢」因此报出 352 ms，
+ * 而连点三次实测是 48 / 16 / 88 ms —— 差的全是残留动画的账。
+ * 现在：等 260 ms + 连续两帧 + 清空缓冲，确保带内只有这一次动作。
+ */
+async function settle(page) {
+  await page.waitForTimeout(260);
+  await page.evaluate(
+    () =>
+      new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve(null)))),
+  );
+  await page.evaluate(() => {
+    window.__inpBuffer.length = 0;
+  });
+}
+
 /** 取本轮累积的 event-timing 条目并清空 */
 async function drainEvents(page) {
   return page.evaluate(async (names) => {
@@ -155,7 +214,7 @@ async function drainEvents(page) {
   }, [...INTERACTION_EVENTS]);
 }
 
-async function probe({ base, urls, mobile }) {
+async function probe({ base, urls, mobile, repeat = 1 }) {
   const browser = await chromium.launch({
     executablePath: process.env.CHROME_PATH || "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
     args: ["--no-sandbox"],
@@ -186,8 +245,16 @@ async function probe({ base, urls, mobile }) {
       continue;
     }
     await page.waitForTimeout(1200);
-    const interactions = await clickThrough(page, mobile);
-    report.push({ path, interactions, errors, status });
+    const frameMs = await baselineFrameMs(page);
+    // 第 129 轮：同一构建、同一台机器上，点开灯箱实测会在 16 / 184 / 576 ms 之间跳
+    // （冷启动的图片解码 + 采集时的帧调度）。单次采样不能下结论，跑 N 轮后按中位数判定，
+    // 同时保留首轮（冷启动）与最快值——公司详见 scripts/lib/inp-aggregate.mjs。
+    const rounds = [];
+    for (let round = 0; round < Math.max(1, repeat); round += 1) {
+      rounds.push(await clickThrough(page, mobile));
+    }
+    const aggregated = [...aggregateRounds(rounds).values()];
+    report.push({ path, interactions: aggregated, errors, status, frameMs });
   }
   await browser.close();
   return report;
@@ -197,14 +264,22 @@ const summarize = (report) => {
   const rows = [];
   for (const page of report) {
     // 标了 skipped 的动作（比如灯箱压根没打开）不参与「最慢」评选：0 ms 会冒充成优等生
-    const measured = page.interactions.filter((i) => !i.skipped);
-    const worst = measured.reduce((acc, cur) => (cur.ms > (acc?.ms ?? -1) ? cur : acc), null);
+    const worst = worstOf(page.interactions);
+    const rawMs = Number.isFinite(worst?.median) ? worst.median : (worst?.ms ?? 0);
+    // 扣掉环境底噪：本地 headless 上这个页面本来就 ~150 ms 一帧
+    const frameMs = page.frameMs ?? 0;
+    const worstMs = Math.max(0, Math.round(rawMs - Math.max(0, frameMs - 16)));
     rows.push({
       path: page.path,
       status: page.status ?? 200,
-      worstMs: worst?.ms ?? 0,
+      worstMs,
+      rawMs,
+      frameMs,
       worstAction: worst?.action ?? "—",
-      detail: page.interactions.map((i) => `${i.action}:${i.ms}ms`).join(" · ") || "无可点元素",
+      detail:
+        page.interactions
+          .map((i) => `${i.action}:${i.skipped ? "跳过" : `${i.median}ms（首轮 ${i.first} / 最快 ${i.min}）`}`)
+          .join(" · ") || "无可点元素",
       errors: page.errors.length,
     });
   }
@@ -222,7 +297,8 @@ const main = async () => {
       continue;
     }
     const verdict = row.worstMs <= 200 ? "✅" : row.worstMs <= 500 ? "⚠️" : "❌";
-    console.log(`${verdict} ${row.path.padEnd(24)} 最慢 ${String(row.worstMs).padStart(4)} ms  (${row.worstAction})`);
+    const baseline = row.frameMs > 32 ? `  [本机基线 ${row.frameMs} ms/帧 → 原始 ${row.rawMs} ms]` : "";
+    console.log(`${verdict} ${row.path.padEnd(24)} 最慢 ${String(row.worstMs).padStart(4)} ms  (${row.worstAction})${baseline}`);
     console.log(`     ${row.detail}`);
     if (row.errors) console.log(`     页面 JS 错误 ${row.errors} 条`);
   }

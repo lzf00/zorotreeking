@@ -22,14 +22,14 @@ test("summary 取每页最慢的那次交互，并标出超过 200 ms 的页面"
     {
       path: "/slow/",
       interactions: [
-        { action: "点开图片", ms: 16 },
-        { action: "点按钮「喜欢」", ms: 280 },
+        { action: "点开灯箱", ms: 16, median: 16 },
+        { action: "点按钮「喜欢」", ms: 280, median: 280 },
       ],
       errors: [],
     },
     {
       path: "/fast/",
-      interactions: [{ action: "拖动地图", ms: 0 }],
+      interactions: [{ action: "拖动地图", ms: 0, median: 0 }],
       errors: ["boom"],
     },
     { path: "/empty/", interactions: [], errors: [] },

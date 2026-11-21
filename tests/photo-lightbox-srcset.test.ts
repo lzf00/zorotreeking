@@ -48,7 +48,7 @@ test("探针点的是灯箱链接，不是 hero 图；跳过项不参与最慢�
   const probe = await readFile(new URL("../scripts/inp-probe.mjs", import.meta.url), "utf8");
   assert.match(probe, /a\[data-pswp-width\]/, "探针应优先点 PhotoSwipe 的灯箱链接");
   assert.match(probe, /waitForSelector\("\.pswp"/, "判灯箱开没开要等它挂载");
-  assert.match(probe, /filter\(\(i\) => !i\.skipped\)/, "跳过项不能被算成 0 ms 的最快项");
+  assert.match(probe, /worstOf/, "最慢项要经过 worstOf（它会跳过 skipped 的条目）");
 });
 
 test("探针只统计交互类事件（pointerout 不算用户动作）", async () => {
