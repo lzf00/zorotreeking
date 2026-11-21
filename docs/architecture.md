@@ -665,6 +665,36 @@ npm run check:images -- --limit 150 --warn
 当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
 原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
 
+### 公开的更新日志曾是一份内部提交流水账（第 109 轮）
+
+`/changelog` 的设计意图写在页头：「站点功能、性能、SEO 与无障碍改动的完整记录」。线上实测
+却发现里面混着 `test catch workflows that die before job 1`、`ops probe the whole /api surface`
+这类只有维护者在乎、而且是英文的条目，徽章上还挂着没翻译的 `test` / `ops`。
+
+根因一行就够：
+
+```ts
+const cfg = TYPE_LABEL[c.type] ?? { label: c.type, color: "#71717a", show: true };
+//                                          ^^^^^^^^^ 没登记的 type 默认显示
+```
+
+于是**每新增一种提交前缀就自动泄漏一次**（`test`、`ci`、`ops`、`build`…），而没人会去翻这页。
+
+修法是把默认反过来 —— 白名单比黑名单安全：
+
+| | 旧 | 新 |
+|---|---|---|
+| 展示判定 | `TYPE_LABEL[type]?.show ?? true` | `TYPE_STYLES[type]?.show ?? **false**` |
+| 展示类型 | 除 chore/auto 外全部 | feat/fix/perf/style/a11y/seo/i18n/content/docs |
+| 未登记前缀 | 显示（且徽章是原文） | 隐藏 |
+| 隐藏条数说明 | "隐藏了 N 条 cron 自动提交" | "只保留读者会在意的改动；另外隐藏了 N 条自动化产出与内部工程提交" |
+
+规则抽到 `src/lib/changelog.ts`（`isVisible` / `buildChangelog` / `parseGitLog`，5 条单测）。
+重建后可见条目 315 条、覆盖 7 个月，页面上再没有任何 `test`/`ops` 原始徽章。
+
+顺带确认了一件之前没验过的事：部署时 `git log` 能拿到**完整历史**（页面显示 7 个月、隐藏 2147 条），
+说明 checkout 不是浅克隆 —— 否则这页只会剩一条。
+
 ### 让"启动阶段就死"和"步骤永远被跳过"都能静态查出来（第 108 轮）
 
 第 107 轮证明了 `startup_failure` 的可怕：整条运行 1 秒钟结束、没有日志、内容静默停更三天。

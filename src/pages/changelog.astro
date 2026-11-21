@@ -6,63 +6,24 @@
  */
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { execSync } from "node:child_process";
+import { TYPE_STYLES, buildChangelog, parseGitLog, type Commit } from "@/lib/changelog";
 
-type Commit = { hash: string; date: string; subject: string; type: string };
-
-// 拿 git log；失败（CI 没装 git / 浅克隆）静默兜底
+// 拿 git log；失败（CI 浅克隆）静默兜底
 let commits: Commit[] = [];
 try {
-  const raw = execSync(
-    'git log --pretty=format:"%h|%ad|%s" --date=short --no-merges',
-    { encoding: "utf-8", maxBuffer: 4 * 1024 * 1024 },
-  );
-  commits = raw.trim().split("\n").map((line) => {
-    const [hash, date, ...rest] = line.split("|");
-    const subject = rest.join("|");
-    // 抽 conventional commits 前缀作 type
-    const m = subject.match(/^(\w+)(?:\([^)]+\))?:\s*(.+)/);
-    return {
-      hash,
-      date,
-      subject: m ? m[2] : subject,
-      type: m ? m[1] : "other",
-    };
+  const raw = execSync('git log --pretty=format:"%h|%ad|%s" --date=short --no-merges', {
+    encoding: "utf-8",
+    maxBuffer: 4 * 1024 * 1024,
   });
+  commits = parseGitLog(raw);
 } catch (e) {
   console.warn("[changelog] git log unavailable:", (e as Error).message);
 }
 
-// 过滤掉太琐碎的 type（chore: 自动 commit、auto: 等）但保留有意义的
-const TYPE_LABEL: Record<string, { label: string; color: string; show: boolean }> = {
-  feat: { label: "新功能", color: "#1d4ed8", show: true },
-  fix: { label: "修复", color: "#dc2626", show: true },
-  refactor: { label: "重构", color: "#7c3aed", show: true },
-  style: { label: "样式", color: "#0891b2", show: true },
-  perf: { label: "性能", color: "#ea580c", show: true },
-  docs: { label: "文档", color: "#65a30d", show: true },
-  chore: { label: "杂项", color: "#71717a", show: false },
-  auto: { label: "自动", color: "#a1a1aa", show: false },
-};
-
-const meaningful = commits.filter((c) => {
-  const cfg = TYPE_LABEL[c.type];
-  // 默认显示有 type 标记的；纯自动提交（auto: ... / chore(digest): ...）默认折叠
-  if (c.subject.includes("daily auto digest")) return false;
-  if (c.subject.includes("market recap")) return false;
-  if (c.subject.includes("refresh embeddings")) return false;
-  if (c.subject.includes("refresh post vectors")) return false;
-  return cfg ? cfg.show : true;
-});
-
-// 按月分组
-const byMonth: Record<string, Commit[]> = {};
-for (const c of meaningful) {
-  const ym = c.date.slice(0, 7); // "2026-06"
-  (byMonth[ym] ??= []).push(c);
-}
-const months = Object.keys(byMonth).sort().reverse();
-
-const autoCount = commits.length - meaningful.length;
+// 筛选与分组规则在 @/lib/changelog（有单测）：
+// 只展示读者在意的 type（功能/修复/性能/样式/无障碍/SEO/多语言/内容/文档），
+// 内部工程提交（test/ci/ops/chore…）与自动化产出默认隐藏 —— 见第 109 轮。
+const { sections, hiddenCount } = buildChangelog(commits);
 ---
 
 <BaseLayout title="更新日志" description="ZoroTreeking 的更新日志：站点功能、性能、SEO 与无障碍改动的完整记录，每条都能追到对应的提交。">
@@ -74,22 +35,23 @@ const autoCount = commits.length - meaningful.length;
         站点更新日志
       </h1>
       <p class="mt-5 text-base sm:text-lg leading-relaxed text-[var(--text-secondary)] font-light">
-        从 git log 自动生成，按月归档。隐藏了 {autoCount} 条 cron 自动提交（digest / 市场快照 / embeddings 等）。
+        从 git log 自动生成，按月归档。只保留读者会在意的改动（功能 / 修复 / 性能 / 样式 / 无障碍 / SEO / 多语言 / 内容）；
+        另外隐藏了 {hiddenCount} 条自动化产出与内部工程提交。
       </p>
     </header>
 
-    {months.length === 0 && (
+    {sections.length === 0 && (
       <p class="text-[var(--text-tertiary)]">还没有 commit 记录 · build 环境可能没拿到 git 历史。</p>
     )}
 
-    {months.map((ym) => (
+    {sections.map(({ month, commits: list }) => (
       <section class="mb-12">
         <h2 class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4 pb-2 border-b border-[var(--border)]">
-          {ym}
+          {month}
         </h2>
         <ul class="space-y-3">
-          {byMonth[ym].map((c) => {
-            const cfg = TYPE_LABEL[c.type] ?? { label: c.type, color: "#71717a", show: true };
+          {list.map((c) => {
+            const cfg = TYPE_STYLES[c.type] ?? { label: c.type, color: "#71717a", show: false };
             return (
               <li class="flex items-start gap-3">
                 <span class="type-badge shrink-0 mt-0.5 inline-flex items-center px-2 py-0.5 rounded text-[10px] uppercase tracking-wider font-mono font-medium"
