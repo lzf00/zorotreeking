@@ -16,7 +16,7 @@
 | 持仓数据栏目 | `src/content/invest-portfolio/{YYYY-MM}.yaml` + `_holdings.yaml` | 月度持仓快照 + 持仓清单 |
 | 行情拉取脚本 | `scripts/invest-snapshot.ts` | **当前用新浪 API** |
 | 投资页面 | `src/pages/invest/index.astro` + `[slug].astro` | 列表 + 详情 |
-| 部署 CI | `.github/workflows/daily-digest.yml` | 每天 08:00 + 工作日 15:30 rebuild |
+| 部署 CI | `.github/workflows/daily-digest.yml` | cron 02:17（实测延迟 5–7.5h）+ 工作日 15:30 rebuild |
 | 图表库 | `recharts` ^2.13.3（已在 deps） | 现成可用 |
 | FastAPI 后端 | VPS 上跑 `AI_Agent/deepseek_chat_app.py` | 已有 SQLite + 可加 endpoint |
 | Content schema | `src/content/config.ts` 已定义 `invest-portfolio` Zod | 字段已规范 |

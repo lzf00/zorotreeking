@@ -163,7 +163,8 @@ git push origin main
 ### 触发方式
 
 - **push 到 main**：每次推送自动 build + deploy
-- **每日 08:00 北京时间**：`daily-digest.yml` 抓最新内容，commit 触发再次 deploy
+- **每日 02:17 北京时间**：`daily-digest.yml` 抓最新内容，commit 触发再次 deploy
+  （GitHub 的 `schedule` 在本仓库实测延迟 5–7.5 小时，实际落地常在 07:00–09:00）
 - **每个工作日 15:30 北京时间**：定时 rebuild（拉一次实时行情）
 - **手动触发**：GitHub repo → Actions → Build & Deploy → Run workflow
 

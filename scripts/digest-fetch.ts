@@ -14,7 +14,8 @@
  *     4) 按源分组写入 MDX（默认 draft: false 直接发布）
  *
  *   本地：npx tsx scripts/digest-fetch.ts [ai|invest|both]
- *   CI：每天 08:00 北京（00:00 UTC）由 .github/workflows/daily-digest.yml 触发
+ *   CI：由 .github/workflows/daily-digest.yml 触发（cron 以该文件为准；GitHub 的 schedule
+ *       在本仓库实测会延迟 5–7.5 小时，所以正文里不写死「几点更新」）
  */
 import { promises as fs } from "node:fs";
 import path from "node:path";
@@ -377,7 +378,8 @@ async function buildInvestDigest(date: string): Promise<void> {
   lines.push("");
   lines.push('import FeedbackButtons from "@/components/FeedbackButtons";');
   lines.push("");
-  lines.push("> 由 cron 每日 08:00 北京自动从同花顺 + 东方财富抓取，豆包改写摘要。**仅作信息整理，不构成投资建议。**");
+  // 不写具体钟点：cron 改过两次，写死的时间会随时间烂掉（第 103 轮）。
+  lines.push("> 由 cron 每日自动从同花顺 + 东方财富抓取，豆包改写摘要。**仅作信息整理，不构成投资建议。**");
   lines.push("");
   // TL;DR
   for (const l of renderTLDR(tldr)) lines.push(l);

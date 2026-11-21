@@ -15,8 +15,8 @@ const DRY = process.argv.includes("--dry-run");
 async function main() {
   const dir = path.join(PROJECT_ROOT, "src", "content", "ai");
   const files = (await fs.readdir(dir)).filter((f) => f.startsWith("digest-") && f.endsWith(".mdx"));
-  // 匹配：> 由 cron 每日 08:00 北京自动从 ...（可能跨语言变体）。后跟一行空
-  const re = /^> 由 cron 每日 08:00[^\n]*\n\n?/m;
+  // 匹配：> 由 cron 每日 …（老版本开头带死钟点「08:00 北京」，第 103 轮起不带钟点）。后跟一行空
+  const re = /^> 由 cron 每日[^\n]*\n\n?/m;
   let touched = 0;
   for (const f of files) {
     const full = path.join(dir, f);
