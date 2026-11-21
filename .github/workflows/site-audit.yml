@@ -97,6 +97,22 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
           exit $code
 
+      - name: Market snapshot age
+        # 第 117 轮：数据"旧"不是错误，构建会成功、页面会打开，只是数字过期。
+        # 用看门狗把关，而不是靠人偶然发现（us-market 的宏观块曾经 101 天没更新）。
+        run: |
+          set +e
+          node scripts/check-market-data-age.mjs > /tmp/market-age.log 2>&1; code=$?
+          cat /tmp/market-age.log
+          {
+            echo '### Market snapshot age'
+            echo ''
+            echo '```'
+            cat /tmp/market-age.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit $code
+
       - name: Dependency advisories (npm audit + allowlist)
         run: |
           # 同样踩过 bash -e 的坑：命令失败时 shell 直接退出，下面的 cat / 步骤摘要都不会执行

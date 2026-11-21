@@ -10,6 +10,7 @@ import path from "node:path";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Sparkline from "@/components/Sparkline.astro";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
+import { describeIsoSnapshot, humanAge } from "@/lib/snapshot-age";
 
 const lang = "zh" as const;
 const t = useTranslations(lang);
@@ -64,6 +65,8 @@ function colorClass(v: number | null | undefined): string {
   if (n < 0) return "text-emerald-700 dark:text-emerald-400";
   return "text-[var(--text-tertiary)]";
 }
+const asOfAge = describeIsoSnapshot(snap?.asOf);
+
 function fmtAsOf(iso: string | undefined): string {
   if (!iso) return "—";
   try {
@@ -87,8 +90,13 @@ function fmtAsOf(iso: string | undefined): string {
     </p>
     <p class="mt-2 text-xs text-[var(--text-tertiary)]">
       数据来源 <strong>Wind 万得</strong> · 每个交易日 15:30 收盘后自动更新
-      {snap && (<> · 最新 <time>{fmtAsOf(snap.asOf)}</time></>)}
+      {snap && (<> · 最新 <time>{fmtAsOf(snap.asOf)}</time>（{humanAge(asOfAge.days)}）</>)}
     </p>
+    {snap && asOfAge.severe && (
+      <p class="mt-2 rounded-md border border-amber-400/50 bg-amber-50/70 px-3 py-2 text-xs leading-relaxed text-amber-800 dark:border-amber-500/40 dark:bg-amber-500/10 dark:text-amber-300">
+        快照已经 {asOfAge.days} 天没更新了（自动更新可能断了）—— 下面的行情不是最新数据。
+      </p>
+    )}
   </section>
 
   {!snap && (

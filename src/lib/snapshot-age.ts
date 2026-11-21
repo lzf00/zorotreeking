@@ -61,3 +61,18 @@ export function describeSnapshot(
   const text = p.year === nowYear ? `${stamp}（${humanAge(days)}）` : `${p.year}-${p.month}-${p.day} ${p.hour}:${p.minute}（${humanAge(days)}）`;
   return { text, days, severe: days >= severeAfterDays };
 }
+
+/**
+ * 同一套判定的 ISO 版本（服务端快照文件里存的是 `2026-11-20T16:30:09.758465` 这种字符串）。
+ * 第 117 轮：`/invest/market/`、`/invest/hk-market/` 也接进来，让"多久以前"全站一个口径。
+ */
+export function describeIsoSnapshot(
+  iso: string | null | undefined,
+  now: number | Date = Date.now(),
+  { severeAfterDays = 7 }: { severeAfterDays?: number } = {},
+): SnapshotAge {
+  if (!iso) return { text: "时间未知", days: null, severe: false };
+  const ms = Date.parse(iso);
+  if (Number.isNaN(ms)) return { text: "时间未知", days: null, severe: false };
+  return describeSnapshot(Math.floor(ms / 1000), now, { severeAfterDays });
+}
