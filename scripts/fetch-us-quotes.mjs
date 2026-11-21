@@ -117,4 +117,9 @@ async function main() {
   console.log(`✓ 行情块已刷新：${summary}${blocks.problems.length > 0 ? `（缺失：${blocks.problems.join(",")}）` : ""}`);
 }
 
-await main();
+try {
+  await main();
+} catch (error) {
+  console.error(`✗ 行情抓取失败：${error?.message ?? error}`);
+  process.exit(1);
+}

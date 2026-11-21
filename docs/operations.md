@@ -57,6 +57,10 @@
 | `check:seo` | canonical / 单一 h1 / JSON-LD |
 | `check:admin` | Decap 后台的 `config.yml` schema（无头浏览器实测） |
 
+**部署时的自愈步骤**（`catch-up-digest` 任务）：日报缺失 → 补跑；行情快照 > 2 天 → 重抓。
+两者都会产出 commit 并 dispatch 一次部署，且都有"验不过就回滚"的闸门。判断内容/数据是否新鲜
+**不要看 cron 有没有跑**（GitHub schedule 会延迟 5–7 小时甚至整天不触发），要看仓库里有没有当天内容。
+
 **不在门禁里**（故意的）：`check:deps`、`check:server`、`check:freshness`、`check:search`
 （默认打线上）、`check:a11y`（全站，2.5 分钟）、`check:a11y:sample`（每周）、
 `check:perf`（弱网首屏，只记录不挡发布）、`check:market-age`（数据时效，另有定时任务看）、

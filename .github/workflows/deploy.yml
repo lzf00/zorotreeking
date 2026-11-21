@@ -874,3 +874,51 @@ jobs:
           else
             echo "::warning::内容已提交，但触发部署失败 —— 需要下一次 push 或 15:30 的定时部署才会生效"
           fi
+
+      - name: Refresh stale market data (self-healing)
+        # 为什么在这里（第 146 轮）：行情/宏观快照由 refresh-us-macro.yml 的 cron 刷新，
+        # 但第 145 轮实测 schedule 会延迟甚至整天不触发（日报就是这样停更两天的）。
+        # 行情接口是公开的、不需要任何密钥，所以让"每次部署"顺手补一次 —— 判旧才抓。
+        # 抓完必须过完整性闸门（verify-us-market-snapshot.mjs）：宁可留旧数据，
+        # 也不发一份"一半新一半旧"的快照。
+        run: |
+          set +e
+          note() { echo "$1"; echo "$1" >> "$GITHUB_STEP_SUMMARY"; }
+          node scripts/check-market-data-age.mjs --json --max-age=2 > /tmp/age.json 2>&1
+          AGE=$?
+          if [ "$AGE" -eq 0 ]; then
+            note "✓ 行情快照新鲜（≤2 天），无需刷新。"
+            exit 0
+          fi
+          note "::warning::行情快照超过 2 天，尝试刷新（公开接口，无需密钥）"
+          node scripts/fetch-us-quotes.mjs > /tmp/us-quotes.log 2>&1
+          Q=$?
+          node scripts/fetch-us-macro.mjs > /tmp/us-macro.log 2>&1
+          M=$?
+          note "抓取退出码：quotes=$Q macro=$M"
+          tail -3 /tmp/us-quotes.log >> "$GITHUB_STEP_SUMMARY" 2>/dev/null
+          tail -3 /tmp/us-macro.log >> "$GITHUB_STEP_SUMMARY" 2>/dev/null
+          if git diff --quiet -- src/data/us-market-latest.json; then
+            note "抓取没有产生变化，不提交（保持原样）"
+            exit 0
+          fi
+          if ! node scripts/verify-us-market-snapshot.mjs; then
+            echo "::warning::刷新后的快照不完整，回滚，发布旧但完整的那份"
+            git checkout -- src/data
+            exit 0
+          fi
+          git config user.name "zorotreeking-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add src/data/us-market-latest.json
+          git commit -m "data: refresh us market snapshot"
+          git pull --rebase --autostash origin main || true
+          if ! git push origin main; then
+            echo "::warning::行情快照推送失败，下次部署会再试"
+            exit 0
+          fi
+          if gh api -X POST "repos/${GITHUB_REPOSITORY}/actions/workflows/deploy.yml/dispatches" \
+               -f ref=main --silent; then
+            note "✓ 已刷新行情快照并触发一次部署"
+          else
+            echo "::warning::快照已提交，但触发部署失败 —— 需要下一次 push 才会生效"
+          fi

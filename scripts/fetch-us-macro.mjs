@@ -19,7 +19,8 @@ const DATA_FILE = path.join(ROOT, "src/data/us-market-latest.json");
 const BLS_ENDPOINT = "https://api.bls.gov/publicAPI/v1/timeseries/data/";
 const UA = "ZoroTreekingMacroRefresh/1.0 (+https://www.zorotreeking.online/invest/us-market/)";
 
-async function fetchBls() {
+/** BLS 偶尔回 429/503（实测 2026-11-22 05:5x 就是 503）。这种是瞬时的，重试一次就够。 */
+async function fetchBlsOnce() {
   const now = new Date();
   const body = {
     seriesid: Object.values(BLS_SERIES),
@@ -44,6 +45,21 @@ async function fetchBls() {
     unemployment: byId.get(BLS_SERIES.unemployment),
     payroll: byId.get(BLS_SERIES.payroll),
   };
+}
+
+const RETRYABLE = new Set([429, 500, 502, 503, 504]);
+
+/** 对外入口：可重试的状态码再试一次，其余直接抛。 */
+async function fetchBls() {
+  try {
+    return await fetchBlsOnce();
+  } catch (error) {
+    const status = Number(/(\d{3})/.exec(error?.message ?? "")?.[1]);
+    if (!RETRYABLE.has(status)) throw error;
+    console.error(`· BLS 返回 ${status}，1.5 秒后重试一次`);
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    return fetchBlsOnce();
+  }
 }
 
 function sameMacro(a, b) {
@@ -95,4 +111,11 @@ async function main() {
     + `失业率 ${result.macro.unemployment.actual}%`);
 }
 
-await main();
+// 抓不到就明确说一句，别把堆栈甩给 CI 日志（第 146 轮：BLS 503 时日志里只有一段 stack。
+// 部署注解里看不出"是宏观接口挂了"）。
+try {
+  await main();
+} catch (error) {
+  console.error(`✗ 宏观抓取失败：${error?.message ?? error}`);
+  process.exit(1);
+}
