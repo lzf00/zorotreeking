@@ -29,7 +29,7 @@ test("时间窗：只看最近 N 天，历史遗留不算（否则一上来就�
 
 test("部署补跑链路有质量闸，过不了就回滚不发布", async () => {
   const wf = parse(await readFile(new URL("../.github/workflows/deploy.yml", import.meta.url), "utf8"));
-  const step = wf.jobs["build-and-deploy"].steps.find(
+  const step = wf.jobs["catch-up-digest"].steps.find(
     (s: { name?: string }) => s.name === "Catch up a missed digest (self-healing)",
   );
   assert.ok(step, "找不到补跑步骤");

@@ -13,28 +13,37 @@ import { test } from "node:test";
 import { parse } from "yaml";
 
 const wf = parse(await readFile(new URL("../.github/workflows/deploy.yml", import.meta.url), "utf8"));
-const job = wf.jobs["build-and-deploy"];
+const job = wf.jobs["catch-up-digest"];
 const steps: { name?: string; run?: string; if?: string; env?: Record<string, string>; "continue-on-error"?: boolean }[] =
   job.steps;
 const byName = new Map(steps.map((s) => [s.name, s]));
 
-test("补跑步骤存在，且不会把部署判成失败", () => {
+test("补跑是独立 job，且不会把整条 run 判成失败", () => {
+  assert.ok(job, "没有 catch-up-digest job：停更又只能靠人肉发现了");
+  assert.equal(job["continue-on-error"], true, "补跑失败不该让整条 run 变红");
+  assert.equal(job.needs, "build-and-deploy", "必须等部署结束再补跑");
   const step = byName.get("Catch up a missed digest (self-healing)");
-  assert.ok(step, "部署里没有自愈补跑步骤，停更又只能靠人肉发现了");
-  assert.equal(step!["continue-on-error"], true, "补跑失败不该让一次成功的部署变红");
+  assert.ok(step, "job 里没有补跑步骤");
+});
+
+test("单独成 job 的理由：部署 job 只有 30 分钟预算，补跑要抓源十几分钟", () => {
+  const deployJob = wf.jobs["build-and-deploy"];
+  assert.ok(deployJob["timeout-minutes"] <= 30, "部署预算变了，重新评估补跑是否还能塞在里面");
+  assert.ok(job["timeout-minutes"] >= 20, "补跑要抓源 + 翻译，预算太小会天天超时");
+  const deployStepNames = deployJob.steps.map((s: { name?: string }) => s.name);
+  assert.ok(!deployStepNames.includes("Catch up a missed digest (self-healing)"), "补跑不该再塞在部署 job 里");
 });
 
 test("补跑排在验收之后（内容问题不能影响本次部署结论）", () => {
-  const names = steps.map((s) => s.name);
-  const accept = names.indexOf("Production acceptance smoke test");
-  const heal = names.indexOf("Catch up a missed digest (self-healing)");
-  assert.ok(accept > 0 && heal > accept, `顺序不对：验收 ${accept}，补跑 ${heal}`);
+  const jobs = Object.keys(wf.jobs);
+  assert.ok(jobs.indexOf("catch-up-digest") > jobs.indexOf("build-and-deploy"), "补跑 job 要排在部署 job 之后");
+  const deploySteps = wf.jobs["build-and-deploy"].steps.map((s: { name?: string }) => s.name);
+  assert.ok(deploySteps.includes("Production acceptance smoke test"), "部署 job 里找不到验收步骤");
 });
 
 test("只在 push / schedule 触发，避免被调用时递归补跑", () => {
-  const step = byName.get("Catch up a missed digest (self-healing)")!;
-  assert.match(step.if ?? "", /github\.event_name == 'push'/);
-  assert.doesNotMatch(step.if ?? "", /workflow_call/);
+  assert.match(job.if ?? "", /github\.event_name == 'push'/);
+  assert.doesNotMatch(job.if ?? "", /workflow_call/);
 });
 
 test("步骤逻辑：先查新鲜度、只提交内容目录、空产出不提交", () => {
@@ -54,7 +63,8 @@ test("补跑必须同时翻译，并且中英不成对就回滚（第一次补�
 });
 
 test("权限足够 push，且不超出调用方（reusable workflow 的老坑）", () => {
-  assert.equal(wf.permissions.contents, "write", "补跑要 commit，deploy 本身就得有 contents: write");
+  assert.equal(job.permissions?.contents, "write", "补跑要 commit，job 本身就得有 contents: write");
+  assert.equal(wf.permissions.contents, "write", "可复用 workflow 顶层也得声明，否则调用方限制会盖掉");
   const step = byName.get("Catch up a missed digest (self-healing)")!;
   assert.ok(step.env?.DOUBAO_API_KEY, "没给 LLM key，补跑必然空跑");
 });

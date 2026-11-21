@@ -765,16 +765,39 @@ jobs:
             -d "$PAYLOAD" \
             "https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.sha }}" || true
 
+      - name: Summary
+        run: |
+          # 不打印 SSH_HOST / DEPLOY_PATH，防止公开 Actions 日志泄露
+          echo "Deployed ✓"
+          echo "Triggered by: ${{ github.event_name }}"
+          echo "Commit: ${{ github.sha }}"
+
+  # 为什么单独一个 job（第 114 轮）：补跑要抓源 ~17 分钟再翻译，塞进部署 job 会把**已经完成**
+  # 的部署拖过 30 分钟上限，变成"站点更新了、run 却是红的"。拆开后两条命互不影响：部署照旧
+  # 12 分钟内结束，补跑有自己的预算；补跑失败只是这个 job 黄，continue-on-error 保证整条 run 不变红。
+  catch-up-digest:
+    needs: build-and-deploy
+    if: success() && (github.event_name == 'push' || github.event_name == 'schedule')
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      statuses: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
       - name: Catch up a missed digest (self-healing)
-        # 为什么放在最后一步：内容补跑失败不该把一次成功的部署判成失败。
-        # 它只在「内容真的停更」时才动，产出会 commit 回仓库，并顺带触发下一次部署
-        # （那一次构建才会带上新内容）。
-        #
-        # 为什么要做这件事：本仓库的 schedule 实测延迟 5–7.5 小时，还出现过整天不触发；
-        # 2026-11-19 起 AI 日报连续三天没有产出，而站点照常构建、门禁全绿 —— 只有人肉看
-        # 才会发现。把「发现 + 补一次」放进每天都会跑的部署里，就不再依赖定时器的人品。
-        if: github.event_name == 'push' || github.event_name == 'schedule'
-        continue-on-error: true
+        # 只在「内容真的停更」时才动：判定复用 check-freshness，产出 commit 回仓库，
+        # 并顺带触发下一次部署（那一次构建才会带上新内容）。
+        # 本仓库的 schedule 实测延迟 5–7.5 小时，还出现过整天不触发；2026-11-19 起 AI 日报
+        # 连续三天没产出，而站点照常构建、门禁全绿 —— 只有人肉看才会发现。
         env:
           DOUBAO_API_KEY: ${{ secrets.DOUBAO_API_KEY }}
           ARK_API_KEY: ${{ secrets.ARK_API_KEY }}
@@ -790,17 +813,16 @@ jobs:
           cat /tmp/freshness.log
           npx tsx scripts/digest-fetch.ts both || echo "::warning::补跑没产出（LLM 不可用或摘要质量不达标），下次再试"
           # 只生成中文是不够的：全站模板按"中英成对"处理（语言切换、hreflang、站内链接检查都
-          # 假设 en 版存在），缺 en 会立刻产生 2 条死链 —— 第 113 轮第一次补跑就撞上了。
+          # 假设 en 版存在），缺 en 会立刻产生死链 —— 第 113 轮第一次补跑就撞上了。
           npx tsx scripts/translate-digest.ts --limit=4 || echo "::warning::英文版翻译失败，宁可回滚也不发单语内容"
-          # 质量闸：摘要失败的那几条会被写成 "（LLM 摘要失败，请稍后手动补充）" —— 阈值允许
-          # 30% 以内失败，于是个别占位符会混进正文发出去（第 113 轮实测线上已有 40 篇）。
-          # 补跑这条链路不能往里添新的：有占位符就整体回滚，宁可不发。
+          # 质量闸 1：摘要失败的那几条会写成"（LLM 摘要失败…）"，阈值允许 30% 以内失败，
+          # 于是个别占位符会混进正文发出去（线上已有 40 篇历史）。补跑不能往里添新的。
           if ! node scripts/check-digest-placeholders.mjs --days=0; then
             echo "::warning::生成的内容里有占位符，回滚，不发布半成品"
             git checkout -- src/content
             exit 0
           fi
-          # 中英必须成对，否则站内立刻出现 /en/... 死链（check:links 会红）
+          # 质量闸 2：中英必须成对，否则站内立刻出现 /en/... 死链（check:links 会红）
           MISSING=0
           for f in $(git status --porcelain src/content | awk '{print $2}' | grep '\.zh\.mdx$'); do
             en="${f%.zh.mdx}.en.mdx"
@@ -822,10 +844,3 @@ jobs:
           git commit -m "content: catch up a missed digest run"
           git pull --rebase --autostash origin main || true
           git push origin main || echo "::warning::补跑内容推送失败，下次部署会再试"
-
-      - name: Summary
-        run: |
-          # 不打印 SSH_HOST / DEPLOY_PATH，防止公开 Actions 日志泄露
-          echo "Deployed ✓"
-          echo "Triggered by: ${{ github.event_name }}"
-          echo "Commit: ${{ github.sha }}"

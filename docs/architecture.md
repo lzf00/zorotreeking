@@ -665,6 +665,30 @@ npm run check:images -- --limit 150 --warn
 当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
 原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
 
+### 补跑差点把部署拖成超时（第 114 轮）
+
+第 113 轮把补跑塞在部署 job 的最后一步，当时只想到"失败别影响部署结论"，漏算了一件事：
+**部署 job 有 30 分钟硬上限**（第 46 行，为跨境 rsync 215MB 定的），而补跑要抓源 ~17 分钟
+再翻译 —— 一旦内容真的停更，这次 run 就会在"站点已经更新完"之后被 cancel，跑成一条红叉。
+更糟的是它会触发"Diagnose failed step"，把失败归因到某个无辜的步骤上。
+
+所以拆成独立 job：
+
+| 项 | 部署 job | 补跑 job |
+|---|---|---|
+| `timeout-minutes` | 30（不变） | 30（自己的预算） |
+| 触发条件 | push / schedule / workflow_call | `needs: build-and-deploy` + `success()` + push/schedule |
+| 失败影响 | 整条 run 红 | 只有这个 job 黄，`continue-on-error: true` |
+| 权限 | contents: write + statuses: write | 同（要 commit/push） |
+
+两条命互不影响：部署照旧 12 分钟内结束，补跑慢就慢在它自己那条上。
+
+拆 job 时踩到的坑也记一下：手工改 YAML 缩进，把 `- name:` 后面的注释和键错位了一格，
+`yaml.parse` 直接 `BAD_INDENT` 报错 —— 这正好说明为什么 `tests/deploy-self-heal.test.ts`
+里要用 `parse()` 真解析一遍工作流，而不是 grep 文本。测试也跟着从"在 build-and-deploy
+里找步骤"改成"找 catch-up-digest job"，并补了一条断言：**部署 job 的 30 分钟预算不许悄悄变大**，
+否则"补跑能不能塞回去"这个判断就失效了。
+
 ### 自愈第一次跑就翻车：单语内容 + 占位符（第 113 轮续）
 
 补跑上线后的**第一次部署**就生效了：远端出现 `12ffcd64 content: catch up a missed digest run`，
