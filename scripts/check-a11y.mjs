@@ -67,6 +67,8 @@ let PATHS = [
   "/now/",
   "/guestbook/",
   "/en/invest/market-recap-2026-11-13/",
+  // 第 126 轮：地图从"自动加载 Leaflet"改成年"点一下才加载"，这条路径守着新按钮与预览态
+  "/hike/sample-route/",
 ];
 
 const args = process.argv.slice(2);

@@ -689,6 +689,31 @@ npm run check:images -- --limit 150 --warn
 
 这条和 `check:ssr-clock`（第 82 轮）是同一类问题的两个面：**渲染里任何"现在"都必须是显式的**。
 
+### LCP 3.82 s 的那张图，是第三方瓦片（第 126 轮）
+
+Lighthouse CI 近十次里挂了五次。逐 URL 分数（commit status 里能直接读）指出唯一硬失败：
+
+    perf/hike/sample-route/   68 分 · LCP 3.82 s   ← 预算 3.5 s
+    lhci/url/hike/sample-route/  Failed 1 assertion(s)
+
+LCP 元素是 **Leaflet 的瓦片图**：地图一进视口就水合、拉 12 块 openstreetmap 瓦片，
+首屏最大的那块图象变成第三方图片。为一张"可以点开"的地图让首屏等跨境瓦片，
+既不划算，也每开一次页面就给 OSM 发一串请求。
+
+改法：**默认画内联 SVG 轨迹，点「加载交互地图」才水合 Leaflet。**
+
+| 文件 | 作用 |
+|---|---|
+| `src/lib/gpx-preview.ts`（新） | 纯函数：经纬度 → 等距圆柱投影 → SVG `path`（等比缩放，短边居中） |
+| `src/components/GpxMap.tsx` | 未激活时渲染 SVG + 按钮；`active` 为真才 `import("leaflet")` 与 `tileLayer` |
+| `scripts/inp-probe.mjs` | 先点按钮再找 `.leaflet-container`（否则探针永远看不到地图） |
+
+本地实测（4× CPU 降速、412×823 视口）：首屏 **0 个瓦片请求、0 个 leaflet chunk**，
+点击后 6 个瓦片 + `.leaflet-container` 挂载成功；LCP 从 `<IMG>`（瓦片）变成 `<H1>` 文本。
+
+顺带修了按钮副文案在深色下 4.17:1 的对比度不达标（改成 `opacity-70` 跟随主色）。
+`/hike/sample-route/` 也进了 a11y 抽查路径集（守住新的预览态 + 按钮）。
+
 ### 我加的巡检步骤，第一次运行就会挂（第 125 轮）
 
 翻 Actions 历史时发现 `Full-site audit` **一次都没跑过**（今天 03:03 才加，等周四），

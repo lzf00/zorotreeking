@@ -20,7 +20,7 @@ async function script(): Promise<string> {
 
 test("曾经漏掉的三类页面必须在抽查集里", async () => {
   const src = await script();
-  for (const path of ["/now/", "/guestbook/", "/en/invest/market-recap-2026-11-13/"]) {
+  for (const path of ["/now/", "/guestbook/", "/en/invest/market-recap-2026-11-13/", "/hike/sample-route/"]) {
     assert.ok(src.includes(`"${path}"`), `${path} 不在 a11y 抽查集里了`);
   }
 });

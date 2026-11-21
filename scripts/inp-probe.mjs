@@ -79,6 +79,14 @@ async function clickThrough(page, mobile) {
   }
 
   // 3) 地图：拖一下 / 点一下
+  // 第 126 轮起地图默认是静态 SVG 预览（点「加载交互地图」才水合 Leaflet，为了 LCP），
+  // 所以这里要先点一下预览上的按钮，否则探针会永远看不到 .leaflet-container。
+  const mapButton = page.getByRole("button", { name: /加载交互地图/ }).first();
+  if (await mapButton.count()) {
+    await mapButton.click({ timeout: 5000 }).catch(() => {});
+    await page.waitForSelector(".leaflet-container", { timeout: 8000 }).catch(() => {});
+    await page.waitForTimeout(600);
+  }
   const map = page.locator(".leaflet-container").first();
   if (await map.count()) {
     const box = await map.boundingBox();
