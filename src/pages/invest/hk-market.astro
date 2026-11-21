@@ -10,7 +10,7 @@ import path from "node:path";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Sparkline from "@/components/Sparkline.astro";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
-import { describeIsoSnapshot, humanAge } from "@/lib/snapshot-age";
+import { describeIsoSnapshot, humanAge, parseSnapshotIso } from "@/lib/snapshot-age";
 
 const lang = "zh" as const;
 const t = useTranslations(lang);
@@ -70,8 +70,10 @@ const asOfAge = describeIsoSnapshot(snap?.asOf);
 function fmtAsOf(iso: string | undefined): string {
   if (!iso) return "—";
   try {
-    const d = new Date(iso);
-    return d.toLocaleString("zh-CN", { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false });
+    const d = new Date(parseSnapshotIso(iso));
+    // 第 117 轮：快照字符串没有时区，渲染时必须钉死北京时间 —— 否则在 UTC 的 CI 上
+    // 会把「北京 11-20 16:30」显示成「11-20 16:30」，而读者看到的时间含义就变了。
+    return d.toLocaleString("zh-CN", { timeZone: "Asia/Shanghai", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false });
   } catch { return iso; }
 }
 ---

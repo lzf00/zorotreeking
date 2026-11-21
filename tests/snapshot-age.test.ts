@@ -8,7 +8,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
-import { describeSnapshot, humanAge } from "../src/lib/snapshot-age";
+import { describeIsoSnapshot, describeSnapshot, humanAge, parseSnapshotIso } from "../src/lib/snapshot-age";
 
 const NOW = new Date("2026-11-21T08:00:00Z"); // 北京 16:00
 
@@ -59,4 +59,34 @@ test("阈值可调：3 天就算严重时 2 天不算", () => {
   const ts = Math.floor(NOW.getTime() / 1000) - 2 * 86400;
   assert.equal(describeSnapshot(ts, NOW, { severeAfterDays: 3 }).severe, false);
   assert.equal(describeSnapshot(ts, NOW, { severeAfterDays: 1 }).severe, true);
+});
+
+test("无时区的 ISO 字符串按北京时间解释，不随运行环境变化（CI 是 UTC）", () => {
+  // 这条是第 117 轮线上翻车后补的：同一份快照 `2026-11-20T16:30:09`，
+  // 本地构建显示"昨天"，UTC 的 CI 构建显示"今天" —— 差一天。
+  const now = Date.parse("2026-11-21T08:52:00Z"); // = 北京 16:52
+  const snap = describeIsoSnapshot("2026-11-20T16:30:09.758465", now);
+  assert.equal(snap.days, 1);
+  assert.match(snap.text, /昨天/);
+  assert.match(snap.text, /11-20 16:30/);
+});
+
+test("带时区的字符串照它自己的偏移解释", () => {
+  const now = Date.parse("2026-11-21T08:52:00Z");
+  const utcSnap = describeIsoSnapshot("2026-11-20T16:30:09Z", now); // 北京 11-21 00:30 → 今天
+  assert.equal(utcSnap.days, 0);
+  const isoSnap = describeIsoSnapshot("2026-11-20T16:30:09+08:00", now); // 北京 11-20 16:30 → 昨天
+  assert.equal(isoSnap.days, 1);
+});
+
+test("坏时间/空值不崩", () => {
+  for (const bad of [null, undefined, "", "not-a-date"]) {
+    assert.equal(describeIsoSnapshot(bad, Date.parse("2026-11-21T08:52:00Z")).text, "时间未知");
+  }
+});
+
+test("parseSnapshotIso：缺时区按北京时间，带时区照原样", () => {
+  assert.equal(parseSnapshotIso("2026-11-20T16:30:09"), Date.parse("2026-11-20T16:30:09+08:00"));
+  assert.equal(parseSnapshotIso("2026-11-20T16:30:09Z"), Date.parse("2026-11-20T16:30:09Z"));
+  assert.equal(parseSnapshotIso("2026-11-20T16:30:09+09:00"), Date.parse("2026-11-20T16:30:09+09:00"));
 });

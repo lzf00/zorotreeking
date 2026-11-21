@@ -66,13 +66,26 @@ export function describeSnapshot(
  * 同一套判定的 ISO 版本（服务端快照文件里存的是 `2026-11-20T16:30:09.758465` 这种字符串）。
  * 第 117 轮：`/invest/market/`、`/invest/hk-market/` 也接进来，让"多久以前"全站一个口径。
  */
+/**
+ * 解析快照时间字符串，**缺时区就按北京时间**。
+ *
+ * 第 117 轮实测坑：快照里的 `2026-11-20T16:30:09` 没有时区，而 ES 规范把
+ * "date-time 无偏移" 解释成**运行环境的本地时间**。同一条数据在本地（Asia/Shanghai）
+ * 算出「昨天」，在 UTC 的 CI runner 上算成「今天」——差 8 小时还可能差一整天。
+ * 数据源约定是北京时间，所以这里必须显式补 `+08:00`，不能交给运行环境。
+ */
+export function parseSnapshotIso(iso: string): number {
+  const normalized = /(?:Z|[+-]\d{2}:?\d{2})$/.test(iso) ? iso : `${iso}+08:00`;
+  return Date.parse(normalized);
+}
+
 export function describeIsoSnapshot(
   iso: string | null | undefined,
   now: number | Date = Date.now(),
   { severeAfterDays = 7 }: { severeAfterDays?: number } = {},
 ): SnapshotAge {
   if (!iso) return { text: "时间未知", days: null, severe: false };
-  const ms = Date.parse(iso);
+  const ms = parseSnapshotIso(iso);
   if (Number.isNaN(ms)) return { text: "时间未知", days: null, severe: false };
   return describeSnapshot(Math.floor(ms / 1000), now, { severeAfterDays });
 }
