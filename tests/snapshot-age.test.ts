@@ -90,3 +90,26 @@ test("parseSnapshotIso：缺时区按北京时间，带时区照原样", () => {
   assert.equal(parseSnapshotIso("2026-11-20T16:30:09Z"), Date.parse("2026-11-20T16:30:09Z"));
   assert.equal(parseSnapshotIso("2026-11-20T16:30:09+09:00"), Date.parse("2026-11-20T16:30:09+09:00"));
 });
+
+// 第 135 轮：首屏那句「宏观数据停在 2026-08-11」必须与当前时间无关，
+// 否则 SSR 和客户端水合会算出不同字符串（时间一到就水合告警）。
+test("absoluteStamp：只给绝对日期，永远不带“N 天前”", async () => {
+  const { absoluteStamp } = await import("../src/lib/snapshot-age.ts");
+  assert.equal(absoluteStamp(Date.parse("2026-08-11T14:00:00Z") / 1000), "2026-08-11");
+  assert.equal(absoluteStamp(Date.parse("2026-08-11T17:30:00Z") / 1000), "2026-08-12"); // 北京时间跨日
+  for (const bad of [null, undefined, 0, -1, Number.NaN]) assert.equal(absoluteStamp(bad), "未知时间");
+});
+
+test("美股首屏必须自曝宏观数据陈旧（不能只在页脚写小字）", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const component = await readFile(new URL("../src/components/UsMarketDashboard.tsx", import.meta.url), "utf8");
+  assert.match(component, /macro\?\.stale && \(/, "必须有 macro?.stale 分支");
+  // 首屏 = 温度计标题之后、第一张 MacroCard 之前（注意 `<MacroCard` 的首次出现是函数定义）
+  const titleAt = component.indexOf('id="us-thermometer-title"');
+  const firstCardAt = component.indexOf("<MacroCard", titleAt);
+  assert.ok(titleAt > 0 && firstCardAt > titleAt, "组件结构变了，测试要同步");
+  const hero = component.slice(titleAt, firstCardAt);
+  assert.match(hero, /宏观数据停在/, "提示要在首屏卡片里");
+  assert.match(hero, /absoluteStamp\(macro\.fetched_at\)/, "用绝对日期，避免水合不一致");
+  assert.doesNotMatch(hero, /describeSnapshot\(macro\.fetched_at\)/, "首屏不要用相对时间");
+});

@@ -9,7 +9,7 @@ import {
   type UsQuote,
   type UsTrendPoint,
 } from "@/lib/us-market";
-import { describeSnapshot } from "@/lib/snapshot-age";
+import { absoluteStamp, describeSnapshot } from "@/lib/snapshot-age";
 
 const POLL_MS = 60_000;
 
@@ -312,6 +312,15 @@ export default function UsMarketDashboard({ initialData = null }: Props) {
               <p className="mt-4 text-base leading-relaxed text-[#405467] dark:text-[#b8c7d2] sm:text-lg">
                 当前状态：{judgement.employment} <span className="mx-1 text-[#a97824]">/</span> {judgement.inflation} <span className="mx-1 text-[#a97824]">/</span> {judgement.policy}
               </p>
+              {/* 第 135 轮：这三行字是从数据推断出来的结论，数据停了它就成了"旧结论冒充当前"。
+                  用绝对日期（不写"N 天前"），SSR 与客户端水合结果一致，也不会触发 SSR 时钟检查。 */}
+              {macro?.stale && (
+                <p className="mt-4 rounded-xl border border-[#b24a3a]/25 bg-[#b24a3a]/8 px-3.5 py-2.5 text-sm leading-relaxed text-[#8c3a2d] dark:border-[#e8a396]/30 dark:bg-[#e8a396]/10 dark:text-[#f0b8ab]">
+                  ⚠️ 宏观数据停在 <span className="font-mono">{absoluteStamp(macro.fetched_at)}</span>：上面这个「当前状态」和下面的 CPI / 非农
+                  都是那一刻之前的数字（CPI 参考期 {macro.cpi?.reference ?? "—"}、非农 {macro.payroll?.reference ?? "—"}），
+                  <strong className="font-semibold">不代表最新月份</strong>。
+                </p>
+              )}
             </div>
             <div className="flex items-center gap-3 text-xs text-[#475569] dark:text-[#9fb0bd]">
               <span className={`h-2 w-2 rounded-full ${loading ? "animate-pulse bg-amber-500" : isUsRegularMarketHours() ? "bg-emerald-500" : "bg-slate-400"}`} />

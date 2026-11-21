@@ -30,6 +30,17 @@ function beijingParts(date: Date) {
   };
 }
 
+/**
+ * 绝对日期（第 135 轮）：不带"多久以前"，因此**与当前时间无关**，
+ * SSR 与客户端水合出来的字符串一致，可以放进首屏。
+ */
+export function absoluteStamp(seconds: number | null | undefined): string {
+  if (typeof seconds !== "number" || !Number.isFinite(seconds) || seconds <= 0) return "未知时间";
+  const shifted = new Date(seconds * 1000 + 8 * 3600 * 1000);
+  const pad = (value: number) => String(value).padStart(2, "0");
+  return `${shifted.getUTCFullYear()}-${pad(shifted.getUTCMonth() + 1)}-${pad(shifted.getUTCDate())}`;
+}
+
 /** 人类可读的相对时间：今天/昨天/N 天前。 */
 export function humanAge(days: number | null): string {
   if (days === null) return "时间未知";
