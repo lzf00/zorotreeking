@@ -4,12 +4,14 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import SectionCard from "@/components/SectionCard.astro";
 import { getTravelGuides } from "@/data/travel-guides";
 import { useTranslations, pathWithLang, defaultLang } from "@/i18n/ui";
+import { isDailyDigest, pickFeatured, pickRecent } from "@/lib/home-selection";
 
 const lang = defaultLang;
 const t = useTranslations(lang);
 
-// digest 类自动日报不进首页"最近更新"——首页只展示原创笔记。
-// 判断标准：tags 含 "digest" 或 translationKey 以 "digest-" 开头。
+// digest 日报不进首页"最近更新"（它有自己的入口）；每日复盘保留 —— 那是站点每天的真实
+// 产出。挑选规则都在 @/lib/home-selection 里，有单测覆盖：第 101 轮修的是「精选第一张卡
+// 只看长度不看日期」，结果 5 个月前的复盘一直霸占首屏。
 const isDigest = (p: { data: { tags?: string[]; translationKey: string } }) =>
   (p.data.tags ?? []).includes("digest") || p.data.translationKey.startsWith("digest-");
 
@@ -21,8 +23,8 @@ const [aiPosts, investPosts, photoAlbums, hikes] = await Promise.all([
 ]);
 
 // 栏目卡片展示的"原创数"也用过滤后的，避免"AI 23 篇"骗访客
-const aiOriginal = aiPosts.filter(p => !isDigest(p));
-const investOriginal = investPosts.filter(p => !isDigest(p));
+const aiOriginal = aiPosts.filter(p => !isDailyDigest(p));
+const investOriginal = investPosts.filter(p => !isDailyDigest(p));
 const travelPosts = getTravelGuides(lang).map((guide) => ({
   id: `travel-${guide.slug}`,
   body: guide.description,
@@ -44,40 +46,34 @@ const investRecapCount = investPosts.filter(p =>
   (p.data.tags ?? []).includes("market-recap") || p.data.translationKey.startsWith("market-recap-")
 ).length;
 
-const latest = [
-  ...aiOriginal.map(p => ({ ...p, section: "ai" as const })),
-  ...investOriginal.map(p => ({ ...p, section: "invest" as const })),
-  ...photoAlbums.map(p => ({ ...p, section: "photo" as const })),
-  ...hikes.map(p => ({ ...p, section: "hike" as const })),
-  ...travelPosts.map(p => ({ ...p, section: "hike" as const })),
-]
-  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-  .slice(0, 6);
+const latest = pickRecent([
+  ...aiOriginal.map(p => ({ post: p, section: "ai" as const })),
+  ...investOriginal.map(p => ({ post: p, section: "invest" as const })),
+  ...photoAlbums.map(p => ({ post: p, section: "photo" as const })),
+  ...hikes.map(p => ({ post: p, section: "hike" as const })),
+  ...travelPosts.map(p => ({ post: p, section: "hike" as const })),
+], 6).map(item => ({ ...item.post, section: item.section }));
 
 // ── 首页"精选阅读" 3 张大卡（首屏内容钩子）──
-// 选 1: 最近的原创长文（按 body 长度 + 原创优先）
-// 选 2: 本周最新 digest（让访客感知"今天就有新内容"）
+// 选 1: 最长的原创长文（自动生成的日报/复盘不参与 —— 否则最长的那篇每日复盘永远霸占首屏）
+// 选 2: 最新一期 digest（让访客感知"今天就有新内容"）
 // 选 3: 一篇摄影 / 徒步（让访客看到非文字内容）
-function pickHero() {
-  const originals = [
-    ...aiOriginal.map(p => ({ ...p, section: "ai" as const })),
-    ...investOriginal.map(p => ({ ...p, section: "invest" as const })),
-  ].sort((a, b) => (b.body?.length ?? 0) - (a.body?.length ?? 0));
-
-  const latestDigest = [
-    ...aiPosts.filter(isDigest).map(p => ({ ...p, section: "ai" as const })),
-    ...investPosts.filter(isDigest).map(p => ({ ...p, section: "invest" as const })),
-  ].sort((a, b) => b.data.date.getTime() - a.data.date.getTime())[0];
-
-  const latestVisual = [
-    ...photoAlbums.map(p => ({ ...p, section: "photo" as const })),
-    ...hikes.map(p => ({ ...p, section: "hike" as const })),
-    ...travelPosts.map(p => ({ ...p, section: "hike" as const })),
-  ].sort((a, b) => b.data.date.getTime() - a.data.date.getTime())[0];
-
-  return [originals[0], latestDigest, latestVisual].filter(Boolean).slice(0, 3);
-}
-const featured = pickHero();
+// 规则都在 @/lib/home-selection，这里只负责把集合喂进去。
+const featured = pickFeatured({
+  originals: [
+    ...aiOriginal.map(p => ({ post: p, section: "ai" as const })),
+    ...investOriginal.map(p => ({ post: p, section: "invest" as const })),
+  ],
+  digests: [
+    ...aiPosts.filter(isDigest).map(p => ({ post: p, section: "ai" as const })),
+    ...investPosts.filter(isDigest).map(p => ({ post: p, section: "invest" as const })),
+  ],
+  visuals: [
+    ...photoAlbums.map(p => ({ post: p, section: "photo" as const })),
+    ...hikes.map(p => ({ post: p, section: "hike" as const })),
+    ...travelPosts.map(p => ({ post: p, section: "hike" as const })),
+  ],
+}).map(item => ({ ...item.post, section: item.section }));
 
 const sectionGradient: Record<string, string> = {
   ai: "from-blue-50 to-blue-100/40 dark:from-blue-950/40 dark:to-blue-900/20",
@@ -86,7 +82,8 @@ const sectionGradient: Record<string, string> = {
   hike: "from-green-50 to-green-100/40 dark:from-green-950/40 dark:to-green-900/20",
 };
 
-const sectionLabel = {
+type SectionKey = "ai" | "invest" | "photo" | "hike";
+const sectionLabel: Record<SectionKey, string> = {
   ai: t("nav.ai"),
   invest: t("nav.invest"),
   photo: t("nav.photo"),
@@ -201,7 +198,7 @@ const sectionLabel = {
                 <div class="flex items-center gap-2 mb-3">
                   <span class="w-1.5 h-1.5 rounded-full" style={`background:rgb(var(--section-${sec}-rgb))`}></span>
                   <span class="text-[10px] uppercase tracking-[0.18em] font-mono text-[var(--text-tertiary)]">
-                    {sectionLabel[sec]}{isDg ? " · DAILY" : ""}
+                    {sectionLabel[sec as SectionKey]}{isDg ? " · DAILY" : ""}
                   </span>
                 </div>
                 <h3 class="text-lg sm:text-xl font-semibold leading-snug tracking-tight line-clamp-3"
@@ -284,7 +281,7 @@ const sectionLabel = {
           <li class="py-4 animate-rise" style={`animation-delay: ${100 + i * 50}ms`}>
             <a href={pathWithLang(`/${p.section}/${p.data.translationKey}`, lang)} class="flex items-center gap-4 group">
               <span class="w-1.5 h-1.5 rounded-full shrink-0" style={`background:rgb(var(--section-${p.section}-rgb))`}></span>
-              <span class="text-xs text-[var(--text-tertiary)] uppercase tracking-wide shrink-0 w-16">{sectionLabel[p.section]}</span>
+              <span class="text-xs text-[var(--text-tertiary)] uppercase tracking-wide shrink-0 w-16">{sectionLabel[p.section as SectionKey]}</span>
               <span class="flex-1 truncate text-[15px] group-hover:text-[var(--text)] text-[var(--text-secondary)] transition-colors">{p.data.title}</span>
               <time class="text-xs text-[var(--text-tertiary)] shrink-0 tabular-nums">{p.data.date.toISOString().slice(0, 10)}</time>
             </a>
