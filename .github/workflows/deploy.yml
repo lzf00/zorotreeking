@@ -789,6 +789,28 @@ jobs:
           echo "::warning::检测到内容停更，尝试补跑一次日报"
           cat /tmp/freshness.log
           npx tsx scripts/digest-fetch.ts both || echo "::warning::补跑没产出（LLM 不可用或摘要质量不达标），下次再试"
+          # 只生成中文是不够的：全站模板按"中英成对"处理（语言切换、hreflang、站内链接检查都
+          # 假设 en 版存在），缺 en 会立刻产生 2 条死链 —— 第 113 轮第一次补跑就撞上了。
+          npx tsx scripts/translate-digest.ts --limit=4 || echo "::warning::英文版翻译失败，宁可回滚也不发单语内容"
+          # 质量闸：摘要失败的那几条会被写成 "（LLM 摘要失败，请稍后手动补充）" —— 阈值允许
+          # 30% 以内失败，于是个别占位符会混进正文发出去（第 113 轮实测线上已有 40 篇）。
+          # 补跑这条链路不能往里添新的：有占位符就整体回滚，宁可不发。
+          if ! node scripts/check-digest-placeholders.mjs --days=0; then
+            echo "::warning::生成的内容里有占位符，回滚，不发布半成品"
+            git checkout -- src/content
+            exit 0
+          fi
+          # 中英必须成对，否则站内立刻出现 /en/... 死链（check:links 会红）
+          MISSING=0
+          for f in $(git status --porcelain src/content | awk '{print $2}' | grep '\.zh\.mdx$'); do
+            en="${f%.zh.mdx}.en.mdx"
+            [ -f "$en" ] || { echo "::warning::$f 没有对应的 en 版"; MISSING=1; }
+          done
+          if [ "$MISSING" -eq 1 ]; then
+            echo "::warning::补跑产出不完整（缺英文版），回滚，不发布半成品"
+            git checkout -- src/content
+            exit 0
+          fi
           # 只提交内容目录，避免把其它工作区改动带进来
           git config user.name "zorotreeking-bot"
           git config user.email "bot@users.noreply.github.com"

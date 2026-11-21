@@ -46,6 +46,13 @@ test("步骤逻辑：先查新鲜度、只提交内容目录、空产出不提�
   assert.doesNotMatch(run, /git add -A|git add \./, "别用 git add -A");
 });
 
+test("补跑必须同时翻译，并且中英不成对就回滚（第一次补跑就撞到的坑）", () => {
+  const run = byName.get("Catch up a missed digest (self-healing)")!.run ?? "";
+  assert.match(run, /translate-digest\.ts/, "只生成中文会让 /en/... 变成死链 —— 第 113 轮第一次补跑就红在 check:links");
+  assert.match(run, /\.en\.mdx/, "要检查 en 版是否存在");
+  assert.match(run, /git checkout -- src\/content/, "不成对时要回滚");
+});
+
 test("权限足够 push，且不超出调用方（reusable workflow 的老坑）", () => {
   assert.equal(wf.permissions.contents, "write", "补跑要 commit，deploy 本身就得有 contents: write");
   const step = byName.get("Catch up a missed digest (self-healing)")!;
