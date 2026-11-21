@@ -665,6 +665,26 @@ npm run check:images -- --limit 150 --warn
 当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
 原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
 
+### 让"启动阶段就死"和"步骤永远被跳过"都能静态查出来（第 108 轮）
+
+第 107 轮证明了 `startup_failure` 的可怕：整条运行 1 秒钟结束、没有日志、内容静默停更三天。
+顺着这条线把**同一类错误**一次查完 —— 它们的共同点是"不报错，只是不工作"：
+
+| 错误类型 | 后果 | 症状 |
+|---|---|---|
+| `needs:` 指向不存在的 job | 工作流非法，**整条不启动** | `startup_failure`，无日志 |
+| `steps.<id>.outputs` 引用了不存在的 id | 表达式永远为空字符串 | 下游步骤拿到空值，行为诡异 |
+| `github.event.inputs.X` 未声明 | 永远为 `null` | `if: … == 'true'` 的步骤**静默跳过** |
+| `npm run <script>` 但脚本不存在 | 步骤失败 | 至少会红，但也算低级错 |
+
+`tests/workflow-reference-integrity.test.ts` 四条断言覆盖这四类，全仓库 11 个工作流当前全部干净。
+
+变异验证：把 `site-audit.yml` 的 `needs` 改成 `ghost-job`，测试立刻红
+（`site-audit.yml::audit needs 不存在的 job "ghost-job"`）；把 `deadlink-check.yml` 的
+`concurrency` 拼错成 `concurency`，第三类断言也立刻红。
+
+这类检查的价值不在"现在有没有错"，而在**改错了推不上去**：当年那三天就是没人拦得住。
+
 ### 三天停更的根因，这轮才拿到铁证（第 107 轮）
 
 第 82 轮猜"reusable workflow 的权限超过调用方"是 11-18～11-20 日报停更三天的原因，但一直没有
