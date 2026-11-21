@@ -72,6 +72,9 @@ let PATHS = [
   //   /en/invest/market-recap-*  —— 机翻页 + 顶部机器翻译声明（新加的横幅会不会破坏可读性）
   "/now/",
   "/guestbook/",
+  // 第 145 轮：英文留言板此前没进规则集 —— 表单控件的可读名检查抓到中文页有 3 个未关联 label，
+  // 英文模板是同一段组件，必须一起验
+  "/en/guestbook/",
   "/en/invest/market-recap-2026-11-13/",
   // 第 126 轮：地图从"自动加载 Leaflet"改成年"点一下才加载"，这条路径守着新按钮与预览态
   "/hike/sample-route/",

@@ -689,6 +689,52 @@ npm run check:images -- --limit 150 --warn
 
 这条和 `check:ssr-clock`（第 82 轮）是同一类问题的两个面：**渲染里任何"现在"都必须是显式的**。
 
+### 全站巡检抓到我自己的巡检有盲区（第 145 轮）
+
+跑了一次全站 a11y 巡检（31 个模板 × 2 主题 = 64 次检查，不在门禁里、每周一次），
+结果红了一条 —— 正是第 143 轮加的那条「表单控件必须有可读名称」抓到的：
+
+```
+✗ light /guestbook/  form-field-no-name×3
+    input[placeholder=留空则显示「访客」] — 表单控件没有可读名称
+    input[placeholder=留了我可以回你，不留也 OK] — …
+    textarea[placeholder=读了哪篇 · 觉得咋样 …] — …
+```
+
+留言板的三个字段**都写了可见 label**，但只是视觉上排在一起，没有 `htmlFor`/`id` 关联 ——
+程序上是断的，读屏听到的是"输入框"。补上关联，并给提交结果加 `role="status"`
+（成功/失败是唯一反馈，之前不播报）。
+
+顺带发现**巡检自己的盲区**：规则集里有 `/guestbook/`，却没有 `/en/guestbook/` ——
+英文模板用的是同一个组件，等于从来没验过。已补，并把留言板加进门禁快检（现在 5 个模板）。
+
+### 纠正一条我写错的因果：11-19/11-20 的日报是"被我们自己搞丢的"
+
+之前欠账表写的是"这两天补不回来，因为源只暴露最新列表"。**补不回来是对的，但根因写错了。**
+查 Actions 历史：
+
+| 时间（UTC） | daily-digest 结果 |
+|---|---|
+| 11-18 06:15 | success |
+| 11-19 06:16 | **startup_failure** |
+| 11-20 06:00 | **startup_failure** |
+| 11-21 起 | 没有新的 schedule 运行 |
+
+`startup_failure` 不是内容抓取失败，是**工作流根本没启动**：reusable workflow 向调用方
+要了它给不了的权限（`10716d1e fix(ci): a reusable workflow cannot ask for more permissions
+than its caller — that is what silenced the digest`）。也就是说，那两天不是"源没有历史"，
+而是**我们的 CI 配置把流水线自己关掉了**，而站点照常构建、门禁全绿。
+
+还有一个更值得警惕的现象：11-21 00:30 UTC 之后再没有出现过任何 scheduled 运行。
+今天的日报其实是由 `deploy.yml` 里的「Catch up a missed digest」步骤补出来的
+（`eca3d7d6`，作者 `zorotreeking-bot`，11-21 18:48 UTC）。所以现在的真实链路是：
+
+**内容产出 = 部署时的自愈步骤在兜底，cron 只是名义上的触发器。**
+
+这条不改代码（GitHub 的 schedule 延迟不是我们能修的），但要写进运维文档：
+判断"日报有没有产出"不能看 cron 有没有跑，要看仓库里有没有当天内容；
+`check:freshness` 与部署自愈步骤是唯一的保障。
+
 ### 把「只可能在 CI 暴露」的检查搬回本地（第 144 轮）
 
 第 143 轮的部署回滚暴露了一个模式：**CI 里跑、本地门禁里没有的检查**，就是"推送后才会发现"的坑。

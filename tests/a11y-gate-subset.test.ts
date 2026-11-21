@@ -22,10 +22,15 @@ test("门禁里有双主题快检，且排在 build 之后", () => {
 
 test("快检只挑少数模板（别把门禁变成 2.5 分钟的巡检）", () => {
   const paths = /--paths=(\S+)/.exec(pkg.scripts["check:a11y:fast"])[1].split(",").filter(Boolean);
-  assert.ok(paths.length >= 2 && paths.length <= 4, `快检路径数应在 2-4 之间，收到 ${paths.length}`);
+  // 上限 6：每个路径 ≈ 1.6 s × 2 主题。超过就该拆分了，而不是继续堆。
+  assert.ok(paths.length >= 2 && paths.length <= 6, `快检路径数应在 2-6 之间，收到 ${paths.length}`);
   // 至少覆盖「列表/仪表盘」与「正文」两类模板，否则回归照不到
   assert.ok(paths.some((p) => p === "/"), "缺少首页");
   assert.ok(paths.some((p) => /digest-20/.test(p)), "缺少正文页（prose 模板）");
+  // 第 140–145 轮：三条「行为契约」检查各自绑定在具体页面上，路径被删就等于检查失效
+  assert.ok(paths.includes("/"), "首页丢了 = 搜索弹窗与 AI 助手的键盘契约没人验");
+  assert.ok(paths.includes("/photo/baokemeng/"), "相册页丢了 = 灯箱的焦点陷阱没人验");
+  assert.ok(paths.includes("/guestbook/"), "留言板丢了 = 表单控件的可读名称没人验");
 });
 
 test("脚本支持 --dist 与 --paths，且路径必须来自规则集", async () => {

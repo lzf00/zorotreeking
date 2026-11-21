@@ -180,8 +180,11 @@ export default function GuestbookBoard({ lang = "zh" }: Props) {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
           <div>
-            <label className="block text-xs text-[var(--text-secondary)] mb-1">{t.nickname}</label>
+            {/* 第 145 轮：label 必须用 htmlFor 连到控件上 —— 之前只是视觉上写在一起，
+                读屏用户听到的是"输入框"，没有名字（全站 a11y 巡检抓到的） */}
+            <label htmlFor="guestbook-nickname" className="block text-xs text-[var(--text-secondary)] mb-1">{t.nickname}</label>
             <input
+              id="guestbook-nickname"
               type="text"
               maxLength={32}
               value={nickname}
@@ -191,8 +194,9 @@ export default function GuestbookBoard({ lang = "zh" }: Props) {
             />
           </div>
           <div>
-            <label className="block text-xs text-[var(--text-secondary)] mb-1">{t.email}</label>
+            <label htmlFor="guestbook-email" className="block text-xs text-[var(--text-secondary)] mb-1">{t.email}</label>
             <input
+              id="guestbook-email"
               type="email"
               maxLength={128}
               value={email}
@@ -204,11 +208,12 @@ export default function GuestbookBoard({ lang = "zh" }: Props) {
         </div>
 
         <div className="mb-3">
-          <label className="block text-xs text-[var(--text-secondary)] mb-1">
+          <label htmlFor="guestbook-content" className="block text-xs text-[var(--text-secondary)] mb-1">
             {t.content}
             <span className="ml-2 text-[10px] text-[var(--text-tertiary)] font-mono">{content.length} / 2000 {t.charCount}</span>
           </label>
           <textarea
+            id="guestbook-content"
             rows={5}
             maxLength={2000}
             value={content}
@@ -238,7 +243,7 @@ export default function GuestbookBoard({ lang = "zh" }: Props) {
         </div>
 
         {notice && (
-          <div className={`mt-4 rounded p-3 text-sm ${
+          <div role="status" aria-live="polite" className={`mt-4 rounded p-3 text-sm ${
             notice.kind === "ok"
               ? "bg-green-50 dark:bg-green-950/30 text-green-800 dark:text-green-300 border border-green-200 dark:border-green-800"
               : "bg-red-50 dark:bg-red-950/30 text-red-800 dark:text-red-300 border border-red-200 dark:border-red-800"
