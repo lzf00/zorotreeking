@@ -665,6 +665,29 @@ npm run check:images -- --limit 150 --warn
 当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
 原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
 
+### 「部署成功」不等于「用户看到的是新页面」（第 102 轮）
+
+第 101 轮验证线上修复时撞见一件事：`deploy-meta.json` 已经是新 sha，但首页 HTML 还是旧的
+（那次是第三方代理缓存）。如果把同样的事搬到生产 nginx 上，后果是：
+
+> 部署全绿 → 人打开站点看到的还是旧页面 → 「我改了怎么没生效？」
+
+因为 `deploy-meta.json` 和首页 HTML 是**两个响应**，前者换新不证明后者换新。
+
+补一条端到端断言：
+
+| 环节 | 改动 |
+|---|---|
+| 构建 | `PUBLIC_BUILD_SHA=${{ github.sha }}` 注入 `<meta name="build" content="…">`（本地无该 env 时写 `local`） |
+| 验收 | 部署激活后，用**禁用缓存**的请求打首页，断言 meta 等于本次 sha |
+| 失败文案 | `stale HTML at the edge: build=… expected=…` —— 直接指向"边缘拿到旧 HTML" |
+
+校验逻辑独立成 `scripts/check-build-stamp.mjs`（`extractBuildSha` 纯函数 + `--file` 本地模式），
+所以能单测：匹配放行、不匹配 exit 1、没有标记也 exit 1（老产物不会被误判成"匹配"）。
+
+顺带确认了一件事：本站 `inlineStylesheets: "always"`，CSS 全内联，HTML 里没有 `/_astro/*.css`
+这类天然指纹 —— 所以必须自己塞一个构建标记，否则"HTML 是否最新"根本无法验证。
+
 ### 首页精选第一张卡曾经是五个月前的旧闻（第 101 轮）
 
 拿到一条**从站外读线上**的通道（`r.jina.ai` 代理，本机 IP 被站点频控挡着）之后，

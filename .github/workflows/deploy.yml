@@ -117,6 +117,8 @@ jobs:
           # 未配置或运行时加载失败时，路线图会自动使用 OpenStreetMap 备用底图。
           PUBLIC_AMAP_JS_KEY: ${{ secrets.PUBLIC_AMAP_JS_KEY }}
           PUBLIC_AMAP_SECURITY_CODE: ${{ secrets.PUBLIC_AMAP_SECURITY_CODE }}
+          # 写进 <meta name="build">：部署验收据此确认「用户收到的 HTML」就是这一版（第 102 轮）
+          PUBLIC_BUILD_SHA: ${{ github.sha }}
         run: npm run build
 
       # config.yml 的 schema 只有在浏览器里跑 Decap 才会校验：YAML 合法不代表
@@ -581,6 +583,17 @@ jobs:
                       meta = json.load(resp)
                   if meta.get("sha") != os.environ["GITHUB_SHA"]:
                       raise ValueError(f"static release mismatch: {meta.get('sha')}")
+                  # 「用户收到的 HTML」必须就是这一版：deploy-meta.json 只能证明那个文件换新了，
+                  # nginx 缓存 / CDN 让人拿到旧 HTML 时它照样是绿的（第 102 轮）。
+                  with urllib.request.urlopen("https://www.zorotreeking.online/", timeout=20) as resp:
+                      html = resp.read().decode("utf-8", "replace")
+                  stamp = re.search(r'<meta name="build" content="([^"]*)"', html)
+                  if not stamp:
+                      raise ValueError("homepage has no <meta name=\"build\"> stamp")
+                  if stamp.group(1) != os.environ["GITHUB_SHA"]:
+                      raise ValueError(
+                          f"stale HTML at the edge: build={stamp.group(1)} expected={os.environ['GITHUB_SHA']}"
+                      )
                   with urllib.request.urlopen("https://www.zorotreeking.online/hike/", timeout=20) as resp:
                       csp = resp.headers.get("Content-Security-Policy", "")
                   required_amap_origins = (

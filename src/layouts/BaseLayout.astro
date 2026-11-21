@@ -214,6 +214,9 @@ if (jsonLd) {
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
     <meta name="format-detection" content="telephone=no,date=no,address=no,email=no" />
+    {/* 构建标记（第 102 轮）：部署验收时用它判断「用户收到的 HTML」是不是这一次发布的产物。
+        nginx 缓存或 CDN 让人拿到旧 HTML 时，deploy-meta.json 依然是新的，只有这个标记能戳破。 */}
+    <meta name="build" content={import.meta.env.PUBLIC_BUILD_SHA ?? "local"} />
     <title>{fullTitle}</title>
     <meta name="description" content={desc} />
     {canonical && <link rel="canonical" href={canonical} />}
