@@ -50,3 +50,14 @@ test("探针点的是灯箱链接，不是 hero 图；跳过项不参与最慢�
   assert.match(probe, /waitForSelector\("\.pswp"/, "判灯箱开没开要等它挂载");
   assert.match(probe, /filter\(\(i\) => !i\.skipped\)/, "跳过项不能被算成 0 ms 的最快项");
 });
+
+test("探针只统计交互类事件（pointerout 不算用户动作）", async () => {
+  const probe = await readFile(new URL("../scripts/inp-probe.mjs", import.meta.url), "utf8");
+  const block = probe.slice(probe.indexOf("INTERACTION_EVENTS"), probe.indexOf("async function probe"));
+  for (const name of ["click", "keydown", "touchstart", "pointerdown"]) {
+    assert.ok(block.includes(`"${name}"`), `缺少交互事件类型 ${name}`);
+  }
+  // 灯箱打开时浏览器补发的 pointerout/pointerleave 会把「最慢」放大到 700 ms 以上，
+  // 而用户那一下 click 只有 184 ms —— 它们不能进统计。
+  assert.doesNotMatch(block, /"pointer(out|leave|enter|over)"/, "pointer 边界事件不该算作交互延迟");
+});

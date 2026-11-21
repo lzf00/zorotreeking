@@ -131,14 +131,28 @@ async function clickThrough(page, mobile) {
   return results;
 }
 
+/**
+ * 只保留**用户真的做了动作**的事件类型（第 128 轮）。
+ *
+ * 原来取窗口内所有 event-timing 条目的最大值，于是灯箱打开时浏览器补发的
+ * `pointerout` / `pointerleave`（页面内容变了，指针被"赶走"）也被算进去 ——
+ * 实测 720 ms 的最慢项就是这两个，而用户那一下 click 只有 184 ms。
+ * INP 规范统计的同样只是交互类事件，不是所有事件。
+ */
+const INTERACTION_EVENTS = new Set(["pointerdown", "pointerup", "click", "keydown", "keyup", "touchstart", "touchend"]);
+
 /** 取本轮累积的 event-timing 条目并清空 */
 async function drainEvents(page) {
-  return page.evaluate(async () => {
+  return page.evaluate(async (names) => {
     await new Promise((resolve) => setTimeout(resolve, 260));
+    const allowed = new Set(names);
     const entries = window.__inpBuffer.splice(0, window.__inpBuffer.length);
-    const durations = entries.map((e) => Math.round(e.duration)).filter((d) => Number.isFinite(d));
+    const durations = entries
+      .filter((e) => allowed.has(e.name))
+      .map((e) => Math.round(e.duration))
+      .filter((d) => Number.isFinite(d));
     return durations.length ? Math.max(...durations) : 0;
-  });
+  }, [...INTERACTION_EVENTS]);
 }
 
 async function probe({ base, urls, mobile }) {
