@@ -1,0 +1,79 @@
+/**
+ * 页面重量闸门（第 131 轮）。
+ *
+ * 起因：`/hike/travel/ali-grand-loop-lhasa-return-2026/` 的 LCP 在 CI 里 1.19 s ↔ 2.66 s 来回跳。
+ * 查下去是这页 HTML **309 KB**（中位页面 182 KB），慢网下光传输就 1.5 s。
+ * 全站 1198 页里 242 页超过 200 KB，最重 429 KB —— 这类问题不报错、不全红，只会悄悄变重。
+ */
+import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+import { test } from "node:test";
+
+import { BUDGETS, evaluatePages, parseStyleBytes } from "../scripts/lib/page-weight.mjs";
+
+const KB = 1024;
+
+test("多块 style 的内联 CSS 要加起来算", () => {
+  const html = `<html><head><style>a{color:red}</style><style>b{color:blue}</style></head></html>`;
+  assert.equal(parseStyleBytes(html), "a{color:red}".length + "b{color:blue}".length);
+});
+
+test("新页面超过 HTML / CSS 预算都要红", () => {
+  const { failures } = evaluatePages(
+    [
+      { path: "/ok/", htmlBytes: 150 * KB, cssBytes: 90 * KB },
+      { path: "/heavy/", htmlBytes: 300 * KB, cssBytes: 90 * KB },
+      { path: "/css-heavy/", htmlBytes: 150 * KB, cssBytes: 140 * KB },
+    ],
+    {},
+  );
+  assert.deepEqual(failures.map((f) => f.path), ["/heavy/", "/css-heavy/"]);
+  assert.equal(failures[0].kind, "html");
+  assert.equal(failures[1].kind, "css");
+});
+
+test("基线页面按自己的尺寸放行，但再长 10% 就要重新审", () => {
+  const baseline = { "/invest/digest/": { htmlBytes: 429 * KB, cssBytes: 92 * KB, reason: "列表页" } };
+  const atBaseline = evaluatePages([{ path: "/invest/digest/", htmlBytes: 429 * KB, cssBytes: 92 * KB }], baseline);
+  assert.equal(atBaseline.failures.length, 0, "基线原值必须放行，否则闸门一上线就是红的");
+  assert.equal(atBaseline.warnings.length, 0);
+
+  const slight = evaluatePages([{ path: "/invest/digest/", htmlBytes: 445 * KB, cssBytes: 92 * KB }], baseline);
+  assert.equal(slight.failures.length, 0, "10% 以内只告警");
+  assert.match(slight.warnings[0], /比基线重了/);
+
+  const drift = evaluatePages([{ path: "/invest/digest/", htmlBytes: 480 * KB, cssBytes: 92 * KB }], baseline);
+  assert.equal(drift.failures.length, 1);
+  assert.equal(drift.failures[0].kind, "html-drift");
+  assert.match(drift.failures[0].message, /列表页/, "报错要说清为什么这页原本就大");
+});
+
+test("路线页内联 CSS 超 120 KB 也能进基线（地图样式是既有设计）", () => {
+  const baseline = { "/hike/travel/x/": { htmlBytes: 200 * KB, cssBytes: 140 * KB, reason: "路线页" } };
+  const rows = evaluatePages([{ path: "/hike/travel/x/", htmlBytes: 200 * KB, cssBytes: 140 * KB }], baseline);
+  assert.equal(rows.failures.length, 0);
+});
+
+test("基线里已经不存在的页面会提示清理", () => {
+  const { warnings } = evaluatePages([{ path: "/a/", htmlBytes: 10 * KB, cssBytes: 1 * KB }], { "/gone/": { htmlBytes: 300 * KB, cssBytes: 90 * KB, reason: "x" } });
+  assert.match(warnings.join(), /\/gone\/ 已不存在/);
+});
+
+test("真实基线：每条都有理由，且确实超预算（没有白名单滥用）", async () => {
+  const baseline = JSON.parse(await readFile(new URL("../scripts/page-weight-baseline.json", import.meta.url), "utf8"));
+  const entries = Object.entries(baseline) as Array<[string, { htmlBytes: number; cssBytes: number; reason: string }]>;
+  assert.ok(entries.length > 0 && entries.length < 60, `基线条目数异常：${entries.length}`);
+  for (const [path, item] of entries) {
+    assert.ok(item.reason && item.reason.length > 6, `${path} 缺少理由`);
+    assert.match(path, /^\/.*\/$/, `${path} 路径格式不对`);
+    assert.ok(item.htmlBytes > BUDGETS.htmlBytes || item.cssBytes > BUDGETS.cssBytes, `${path} 没超预算却被登记进基线`);
+  }
+});
+
+test("门禁在 build 之后跑 check:weight", async () => {
+  const pkg = JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8"));
+  const gate: string = pkg.scripts.gate;
+  assert.match(gate, /check:weight/, "gate 里没有页面重量检查");
+  assert.ok(gate.indexOf("check:weight") > gate.indexOf(" build "), "check:weight 必须在 build 之后（要读 dist）");
+  assert.match(pkg.scripts["check:weight"], /check-page-weight\.mjs/);
+});

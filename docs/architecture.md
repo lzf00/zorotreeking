@@ -689,6 +689,36 @@ npm run check:images -- --limit 150 --warn
 
 这条和 `check:ssr-clock`（第 82 轮）是同一类问题的两个面：**渲染里任何"现在"都必须是显式的**。
 
+### 309 KB 的页面，LCP 当然会抖（第 131 轮）
+
+第 130 轮看到 `/hike/travel/ali-grand-loop-lhasa-return-2026/` 的 LCP 在 1.19 s ↔ 2.66 s 之间跳。
+这轮先量它为什么：
+
+| 观测 | 数字 |
+|---|---|
+| 该页 HTML | **309 KB**（内联 CSS 140 KB） |
+| 全站中位页面 | **182 KB**（内联 CSS 92 KB 是常数） |
+| 1.6 Mbps / 150 ms RTT / 4× CPU 下 HTML 传输 | **485 ms**，Inter 字体 1317 ms 才到 |
+| LCP 元素 | `<p class="rd-lead">`——**纯文本**，不是图 |
+| 全站 >200 KB 的页面 | **242 / 1198**，最重 `/invest/digest/` **429 KB** |
+
+第一次归因猜错了：我以为多出来的 47.5 KB 是 Leaflet 的 vendor CSS，把它改成动态 import
+后发现页面 CSS 一点没变——那 238 条 `.leaflet-*` 规则是**我们自己**写的控件样式。
+已回退（同时保留了原来的静态 import 与那条测试）。
+
+真正的问题是这类"变重"没有任何反馈：不报错、不 404、门禁照绿。所以这轮加的是一条闸门，
+而不是继续抠这一页：
+
+- `scripts/lib/page-weight.mjs` — 预算 HTML 220 KB / 内联 CSS 120 KB；已有超标页进
+  `scripts/page-weight-baseline.json`（22 条，每条带理由），**基线页面再长 10% 也要重新审**。
+- `scripts/check-page-weight.mjs` — `--update-baseline` / `--json`；接进 `npm run gate`
+  （在 build 之后）。
+- `tests/page-weight.test.ts` — 7 条，包括"基线原值必须放行（否则闸门一上线就是红的）"
+  "真实基线每条都有理由且确实超预算（没有白名单滥用）"。
+
+下一步（待办，不是这轮）：把 92 KB 的全局内联 CSS 抽成外部文件能一次削掉所有页面的 90 KB，
+但这与"关键 CSS 内联、避免多一次往返"的既有决策冲突，要单独评估。
+
 ### 那个红叉是我自己发的假警报（第 130 轮）
 
 第 126 轮的修法在真实 CI 里得到确认：
