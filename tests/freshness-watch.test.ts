@@ -28,20 +28,21 @@ test("主通道挂在日报跑完之后（workflow_run），定时只是兜底",
   assert.ok(workflow.on.workflow_dispatch !== undefined, "缺少手动触发，排障时跑不了");
 });
 
-test("状态挂在读者会点开的那次提交上（workflow_run 用上游 SHA）", () => {
-  const step = workflow.jobs.watch.steps.find((s) => s.env?.GITHUB_SHA);
-  assert.ok(step, "没有设置 GITHUB_SHA");
-  assert.match(String(step.env.GITHUB_SHA), /github\.event\.workflow_run\.head_sha/, "workflow_run 触发时要用上游 head_sha");
-  assert.match(String(step.env.GITHUB_SHA), /\|\|\s*github\.sha/, "定时/手动触发要回落到当前 HEAD");
+test("workflow_run 触发时报告要覆盖到上游那次运行（不再依赖 SHA 挂状态）", async () => {
+  const src = await readFile(new URL("../scripts/publish-freshness-issue.mjs", import.meta.url), "utf8");
+  // 改为 issue 之后不需要 SHA；但必须能从 workflow_run / 定时两种触发下都跑起来
+  assert.match(src, /process\.env\.GITHUB_REPOSITORY/);
+  const watch = workflow.jobs.watch.steps.map((step) => step.run ?? "").join("\n");
+  assert.doesNotMatch(watch, /statuses\//, "watchdog 不再写 commit status");
 });
 
-test("权限最小化：只需要写 commit status", () => {
-  assert.deepEqual(workflow.permissions, { contents: "read", statuses: "write" });
+test("权限最小化：只需要写 issue（不再往提交上挂状态）", () => {
+  assert.deepEqual(workflow.permissions, { contents: "read", issues: "write" });
 });
 
-test("停更时必须让 job 红（commit status 不会触发通知，job 失败才会）", () => {
+test("停更时必须让 job 红（issue 不会触发即时通知，job 失败会发邮件）", () => {
   const runs = workflow.jobs.watch.steps.map((step) => step.run ?? "").join("\n");
-  assert.match(runs, /publish-freshness-status\.mjs/, "没写 commit status");
+  assert.match(runs, /publish-freshness-issue\.mjs/, "没有维护 issue");
   assert.match(runs, /check-freshness\.mjs/, "没做停更判定");
   assert.match(runs, /exit "\$code"/, "把真实退出码传出去，停更要红");
   assert.match(runs, /::error::/, "失败时没打注解，注解是唯一能跨仓库看到的信息");
@@ -49,9 +50,10 @@ test("停更时必须让 job 红（commit status 不会触发通知，job 失败
   assert.match(runs, /set \+e/);
 });
 
-test("与部署用的是同一个 context，最新一条状态生效", async () => {
-  const publisher = await readFile(new URL("../scripts/publish-freshness-status.mjs", import.meta.url), "utf8");
-  assert.match(publisher, /export const CONTEXT = "content\/freshness"/);
+test("部署链路不再往提交上挂红叉（第 97 轮把上报移到 issue）", async () => {
   const deploy = await readFile(new URL("../.github/workflows/deploy.yml", import.meta.url), "utf8");
-  assert.match(deploy, /publish-freshness-status\.mjs/, "部署时也要写同一个状态，否则两处会打架");
+  assert.doesNotMatch(deploy, /publish-freshness-status\.mjs/);
+  const publisher = await readFile(new URL("../scripts/publish-freshness-issue.mjs", import.meta.url), "utf8");
+  assert.match(publisher, /buildIssue/);
+  assert.match(publisher, /--dry-run/, "缺 dry-run 就没法在不建 issue 的情况下验证");
 });

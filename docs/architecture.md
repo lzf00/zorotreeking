@@ -662,6 +662,33 @@ npm run check:images -- --limit 150 --warn
 当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
 原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
 
+### 让每个提交挂红叉的「新鲜度状态」退休了（第 97 轮）
+
+第 85 轮把内容新鲜度写进 `content/freshness` commit status，目的是让静默停更可见。
+效果确实达到了 —— 但同时把**每一个提交的合并状态都变成 failure**：日报停更那几天，
+仓库里所有 commit 都是红叉。真正的部署失败、烟测失败被淹在这片红里，久了就没人看红叉了。
+这叫警报疲劳，比没有信号更糟。
+
+所以改成 Issue：
+
+| 项 | 旧（第 85 轮） | 新（第 97 轮） |
+|---|---|---|
+| 通道 | `content/freshness` commit status | GitHub Issue（`content/freshness` 标签） |
+| 停更时 | 每个提交挂红叉 | 打开/更新一条 issue，正文点名板块 + 给处理步骤 |
+| 恢复时 | 状态变绿 | **自动关闭** issue（`state_reason=completed`） |
+| 通知 | 无（status 不发邮件） | issue 会发通知；看门狗 job 同时红 → 失败邮件 |
+| 代码状态 | 被内容问题污染 | 只反映代码/部署/性能 |
+
+`scripts/lib/freshness-issue.mjs` 是纯逻辑（正文生成、标题认领、幂等决策），
+`scripts/publish-freshness-issue.mjs` 负责调 API，支持 `--dry-run` 与 `--json`。
+判决阈值完全复用 `check-freshness.mjs`，没有第二套标准。
+
+幂等是刻意设计的：已经是目标状态（该关的已关、该开的已开且已开着的）就**不发请求**，
+否则每天改一次 body，等于把「停更了三天」刷成「刚刚更新」。
+
+顺带清掉两处污染：`deploy.yml` 里那步删了（不再往提交上挂状态），
+看门狗权限从 `statuses: write` 收窄成 `issues: write`。
+
 ### 所谓「每天 08:00 出日报」其实是下午两点（第 96 轮）
 
 一直以来的假设是「daily-digest 的 cron 是 00:00 UTC = 北京 08:00，所以早上就有新日报」。
