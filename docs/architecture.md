@@ -689,6 +689,35 @@ npm run check:images -- --limit 150 --warn
 
 这条和 `check:ssr-clock`（第 82 轮）是同一类问题的两个面：**渲染里任何"现在"都必须是显式的**。
 
+### 那个红叉是我自己发的假警报（第 130 轮）
+
+第 126 轮的修法在真实 CI 里得到确认：
+
+| 页面 | 修前 | 修后 |
+|---|---|---|
+| `/hike/sample-route/` | 68 分 · **LCP 3.82 s** | 94 分 · **LCP 1.19 s** |
+| `/about/` | 78 分 · LCP 2.11 s | 94 分 · LCP 1.23 s |
+
+但翻 commit status 时又看到一个红叉：`perf/hike/travel/ali-grand-loop-lhasa-return-2026/`
+= **failure**（71 分 · LCP 2.66 s）。同一份报告里 `lhci/url/...` 写的是
+「Passed with 2 warning(s)」，`perf/audited` 是 success —— 三条状态互相矛盾。
+
+查 `scripts/lighthouse-statuses.mjs`，原因很直白：
+
+    const PERF_FAIL_BELOW = 0.8;
+    state: perf >= PERF_FAIL_BELOW ? "success" : "failure"
+
+而 `.lighthouserc.json` 里 `categories:performance` 是 **warn**（第 24 轮定的：分数会被
+runner 负载带偏，84–99 之间跳，只该告警）。于是 71 分的页面在 commit 列表上挂红叉，
+把后来的人（包括我）引去查一个不存在的失败。
+
+改法：新增 `scripts/lighthouse-policy.mjs`，直接读 `.lighthouserc.json` 的断言，
+**只有 error 级断言被违反才 failure**，warn 级写进描述（`· 告警 1`）。
+完全拿不到分数仍记 failure —— 那不是"没超标"，是"没测到"。
+
+`tests/lighthouse-policy.test.ts` 五条把策略绑到配置文件上：性能 warn 不挂红叉、
+LCP > 3.5 s / CLS > 0.1 / a11y < 0.9 是硬拦、配置改了断言跟着变。
+
 ### 576 ms 是这台机器画不出来，不是用户等那么久（第 129 轮）
 
 修掉「指针边界事件」后，相册页仍然是手机 576 ms。这轮把它拆干净：

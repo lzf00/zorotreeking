@@ -24,17 +24,22 @@ test("每条 URL 一个状态，描述里带分数/LCP/TBT/CLS", () => {
   assert.equal(statuses[0].state, "success");
   assert.equal(statuses[0].description, "98 分 · LCP 0.52s · TBT 10ms · CLS 0.000");
   assert.equal(statuses[1].context, "perf/invest/digest/");
-  assert.equal(statuses[1].description, "93 分 · LCP 0.84s · TBT 633ms · CLS 0.000");
+  // TBT 633 ms 超过 warn 线（300 ms），所以描述尾部带「告警 1」——但状态仍是 success
+  assert.equal(statuses[1].description, "93 分 · LCP 0.84s · TBT 633ms · CLS 0.000 · 告警 1");
+  assert.equal(statuses[1].state, "success");
   assert.equal(statuses[1].target_url, "https://github.com/o/r/actions/runs/1");
 });
 
-test("性能低于 0.80 记 failure，缺分数也记 failure（不能假装成功）", () => {
+test("性能分只告警，缺分数才记 failure（没测到 ≠ 没超标）", () => {
   const [low, missing, ok] = buildStatuses([
-    { url: "/a/", perf: 0.79, lcp: 2000, tbt: 900 },
+    { url: "/a/", perf: 0.79, lcp: 2000, tbt: 200, a11y: 1, seo: 1 },
     { url: "/b/", perf: NaN, lcp: NaN, tbt: NaN },
-    { url: "/c/", perf: 0.8, lcp: 1000, tbt: 0 },
+    { url: "/c/", perf: 0.8, lcp: 1000, tbt: 0, a11y: 1, seo: 1 },
   ]);
-  assert.equal(low.state, "failure");
+  // 0.79 分但 LCP 2.0 s：`.lighthouserc.json` 里性能是 warn，所以不挂红叉
+  assert.equal(low.state, "success");
+  assert.match(low.description, /告警 1/);
+  // 完全没分数：要么报告缺页、要么审计没跑成，不能变绿
   assert.equal(missing.state, "failure");
   assert.equal(missing.description.startsWith("— 分"), true);
   // 正好 0.80 算过（和 assert 的 warn 阈值一致）

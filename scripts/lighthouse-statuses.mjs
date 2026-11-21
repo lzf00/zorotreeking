@@ -16,9 +16,7 @@
  *                        RUN_URL（可选，挂到 target_url 上）
  */
 import { readLhrs, summarize } from "./lighthouse-summary.mjs";
-
-/** 阈值和 lighthouse.yml 的 assert 保持一致：性能 < 0.80 记 failure，其余 success */
-const PERF_FAIL_BELOW = 0.8;
+import { evaluateRow, loadPolicy } from "./lighthouse-policy.mjs";
 
 /** URL 路径 → context 名，`/invest/digest/` → `perf/invest/digest/`，根路径 → `perf/` */
 export function contextFor(url) {
@@ -37,15 +35,20 @@ const round = (value, digits = 0) => (Number.isFinite(value) ? (digits ? value.t
  * 把 summarize() 的行转成 commit status 请求体。
  * description 上限 140 字符，这里最多 ~60，留足余量。
  */
-export function buildStatuses(rows, { runUrl } = {}) {
+export function buildStatuses(rows, { runUrl, policy = loadPolicy() } = {}) {
   return rows.map((row) => {
     const perf = Number.isFinite(row.perf) ? row.perf : null;
-    const description =
+    const verdict = evaluateRow(row, policy);
+    const base =
       `${perf === null ? "—" : round(perf * 100)} 分 · LCP ${round(row.lcp / 1000, 2)}s · TBT ${round(row.tbt)}ms` +
       (Number.isFinite(row.cls) ? ` · CLS ${round(row.cls, 3)}` : "");
+    // 只有 error 级断言被违反才挂红叉；warn 级的写进描述（否则 commit 列表会被分数波动染红）
+    const description = verdict.warnings.length ? `${base} · 告警 ${verdict.warnings.length}` : base;
     return {
       context: contextFor(row.url),
-      state: perf !== null && perf >= PERF_FAIL_BELOW ? "success" : "failure",
+      // 完全没跑到分数（报告缺这一页）仍记 failure：那不是"没超标"，是"没测到"，
+      // 让它变绿会掩盖审计本身出问题。
+      state: perf === null ? "failure" : verdict.state,
       description: description.slice(0, 140),
       target_url: runUrl ?? null,
     };
