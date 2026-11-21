@@ -665,6 +665,36 @@ npm run check:images -- --limit 150 --warn
 当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
 原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
 
+### 把"页面正常"和"接口正常"分开验（第 105 轮）
+
+承接第 104 轮（点赞接口坏了很久没人发现），这轮把**整片 `/api/*` 扫了一遍**，
+凡是前端有静默降级的都补上主动探针。
+
+先盘清家底 —— `src/` 里一共用到 19 个接口路径：
+
+| 类别 | 接口 | 处理 |
+|---|---|---|
+| 公开读（探） | `market/{etf,indices,sentiment,sectors,us,funds,stocks}`、`models`、`feedback(GET)` | 探针表校验 `ok:true` + 关键字段 |
+| 后台读（守卫） | `admin/{stats,guestbook,etf-ops}` | 断言**不带 token 必须被拒** |
+| POST 写（豁免） | `chat`、`chat/clear`、`track`、`rating`、`data/delete`、`admin/guestbook/mod`、`admin/etf-ops/repair/cache`、`feedback(POST)` | 登记在 `UNPROBED` 里写明理由（探测会改数据/花钱） |
+| 用户自读（豁免） | `data/me` | 按指纹返回本人数据，是页面功能本身 |
+
+落地成 `scripts/verify-api-surface.mjs`：12 条探针（9 条健康 + 3 条鉴权守卫），
+`--base/--only/--json` 三个开关，部署验收里跑一次。
+
+**这轮的教训来自我自己踩的坑**：探 `/api/market/stocks` 时按 `600519.SH` 传参，接口回
+`ok:false, "tencent stock quotes empty"`，看着像后端挂了；其实它要 secid（`1.600519`），
+传对立刻正常。所以参数格式也写进探针表，并有测试断言"不许写回 `600519.SH`"。
+
+另一次误判：`r.jina.ai` 读 `/invest/` 看到「等待可用行情」，一度以为实时行情坏了 ——
+其实那是水合前的 SSR 占位，reader 不执行 JS。**代理能证明"服务端吐了什么"，不能证明"浏览器里是什么"。**
+
+鉴权守卫这条是白捡的安全网：如果哪天 `admin/*` 的鉴权被删，接口会返回 200 + 数据，
+探针立刻红 —— 这比任何 code review 都可靠。
+
+用本地桩服务把探针脚本自己也测了（`tests/api-surface-live.test.ts`）：桩件全绿 → 退出码 0；
+任一条 `ok:false` → 退出码 1 且打印原因；后台接口返回数据 → 红并提示"可能在裸奔"。
+
 ### 一个坏了很久、但页面看起来正常的接口（第 104 轮）
 
 排查待办清单时顺手复查了 `/api/feedback`（文章底部「N 人觉得有用」背后的接口）。

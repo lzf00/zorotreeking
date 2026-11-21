@@ -572,6 +572,16 @@ jobs:
           exit $status
           SH
 
+      - name: API surface probe (does every /api still answer?)
+        # 这些接口都藏在"前端静默降级"后面：挂了页面照样打开，只是那块悄悄空了。
+        # 探针同时验证鉴权守卫（后台接口不带 token 必须被拒），见 scripts/verify-api-surface.mjs。
+        run: |
+          set +e
+          node scripts/verify-api-surface.mjs --base=https://www.zorotreeking.online
+          code=$?
+          [ "$code" -eq 0 ] || echo "::error::/api 接口面有接口不可用（见上方 ✗ 行）"
+          exit "$code"
+
       - name: Production acceptance smoke test
         run: |
           python3 - <<'PY'
