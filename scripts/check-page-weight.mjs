@@ -39,7 +39,8 @@ if (process.argv.includes("--update-baseline")) {
   const next = {};
   for (const page of pages) {
     const known = baseline[page.path];
-    if (!known && page.htmlBytes <= BUDGETS.htmlBytes && page.cssBytes <= BUDGETS.cssBytes) continue;
+    // 已经瘦回预算内的页面要移出基线（否则白名单只增不减，闸门逐渐失效）
+    if (page.htmlBytes <= BUDGETS.htmlBytes && page.cssBytes <= BUDGETS.cssBytes) continue;
     next[page.path] = {
       htmlBytes: page.htmlBytes,
       cssBytes: page.cssBytes,

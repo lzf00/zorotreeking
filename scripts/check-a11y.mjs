@@ -42,6 +42,9 @@ let PATHS = [
   "/ai/digest-2026-06-05/",
   "/invest/",
   "/invest/digest/",
+  // 第 133 轮改过四个归档页的结构（最新 6 期大卡片 + 更早紧凑行），英文两页也纳入
+  "/en/invest/digest/",
+  "/en/ai/digest/",
   "/invest/market/",
   "/hike/",
   "/hike/travel/ali-grand-loop-lhasa-return-2026/",

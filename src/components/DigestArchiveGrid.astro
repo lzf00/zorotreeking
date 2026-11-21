@@ -1,0 +1,127 @@
+---
+/**
+ * 日报归档网格（第 133 轮）。
+ *
+ * 四页归档（zh/en × invest/ai）原本各抄一份"按月分组 + 全部大卡片"的实现，结果四页
+ * 各 350–430 KB：`/invest/digest/` 一页渲染 **189 期**，封面图 + 摘要 + 标签全上，
+ * 是全站最重的一页，也是投资板块最常被点进来的入口。
+ *
+ * 现在：最新 `featuredCount` 期出大卡片（封面/摘要/标签，看得出最近在写什么），
+ * 更早的按月走紧凑行（日期 + 标题）。**每一期的链接都还在**，只是不再配图。
+ * 实测 `/invest/digest/` 429 KB → 213 KB（-50%），189 条链接一条不少。
+ */
+interface ArchiveCard {
+  href: string;
+  title: string;
+  iso: string;
+  cover?: string;
+  coverSrcset?: string;
+  coverSizes?: string;
+  summary?: string;
+  highlights?: string[];
+  tags?: string[];
+}
+
+interface Props {
+  cards: ArchiveCard[];
+  accent: "invest" | "ai";
+  labels: { featured: string; older: (count: number) => string; empty: string };
+  featuredCount?: number;
+}
+
+const { cards, accent, labels, featuredCount = 6 } = Astro.props;
+const featured = cards.slice(0, featuredCount);
+const featuredHrefs = new Set(featured.map((card) => card.href));
+
+const olderGroups: Record<string, ArchiveCard[]> = {};
+for (const card of cards) {
+  if (featuredHrefs.has(card.href)) continue;
+  const ym = card.iso.slice(0, 7);
+  (olderGroups[ym] ??= []).push(card);
+}
+const olderMonths = Object.keys(olderGroups).sort().reverse();
+const olderCount = cards.length - featured.length;
+const hover = accent === "invest" ? "hover:border-section-invest" : "hover:border-section-ai";
+const hoverText = accent === "invest" ? "group-hover:text-section-invest" : "group-hover:text-section-ai";
+---
+
+<section class="max-w-4xl mx-auto px-5 pb-24">
+  {featured.length > 0 && (
+    <div class="mt-12">
+      <h2 class="text-xs uppercase tracking-[0.2em] text-zinc-600 dark:text-zinc-400 font-mono mb-5 pb-2 border-b border-[var(--border)]">
+        {labels.featured}
+      </h2>
+      <div class="grid sm:grid-cols-2 gap-4">
+        {featured.map((card, index) => (
+          <a href={card.href}
+             class:list={["group block rounded-xl overflow-hidden border border-[var(--border)] transition-colors bg-white dark:bg-zinc-900/40", hover]}>
+            {card.cover && (
+              <div class="aspect-[16/9] overflow-hidden bg-zinc-100 dark:bg-zinc-800">
+                <img src={card.cover}
+                     srcset={card.coverSrcset}
+                     sizes={card.coverSizes ?? "(min-width: 640px) 430px, 100vw"}
+                     alt={card.title}
+                     width="1200" height="630"
+                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                     loading={index < 2 ? "eager" : "lazy"}
+                     fetchpriority={index < 2 ? "high" : "low"}
+                     decoding="async" />
+              </div>
+            )}
+            <div class="p-4">
+              <time class="text-[10px] uppercase tracking-[0.15em] text-zinc-600 dark:text-zinc-400 font-mono" datetime={card.iso}>
+                {card.iso}
+              </time>
+              <h3 class:list={["mt-1 text-base font-semibold leading-snug transition-colors line-clamp-2", hoverText]}>
+                {card.title}
+              </h3>
+              {card.summary && (
+                <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed line-clamp-2">{card.summary}</p>
+              )}
+              {!card.summary && card.highlights && card.highlights.length > 0 && (
+                <ul class="mt-2 space-y-0.5">
+                  {card.highlights.map((highlight) => (
+                    <li class="text-xs text-zinc-500 dark:text-zinc-400 line-clamp-1">· {highlight}</li>
+                  ))}
+                </ul>
+              )}
+              {card.tags && card.tags.length > 0 && (
+                <div class="mt-3 flex flex-wrap gap-1.5">
+                  {card.tags.map((tag) => (
+                    <span class="text-[10.5px] px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">{tag}</span>
+                  ))}
+                </div>
+              )}
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  )}
+
+  {olderMonths.length > 0 && (
+    <div class="mt-14">
+      <h2 class="text-xs uppercase tracking-[0.2em] text-zinc-600 dark:text-zinc-400 font-mono mb-4 pb-2 border-b border-[var(--border)]">
+        {labels.older(olderCount)}
+      </h2>
+      {olderMonths.map((ym) => (
+        <div class="mt-6">
+          <div class="text-[10px] uppercase tracking-[0.15em] text-zinc-600 dark:text-zinc-400 font-mono mb-2">{ym}</div>
+          <ul class="divide-y divide-[var(--border)]">
+            {olderGroups[ym].map((card) => (
+              <li>
+                <a href={card.href}
+                   class:list={["group flex items-baseline gap-3 py-2 text-sm text-zinc-700 dark:text-zinc-300 transition-colors", hoverText]}>
+                  <time class="shrink-0 font-mono text-[11px] text-zinc-600 dark:text-zinc-400" datetime={card.iso}>{card.iso.slice(5)}</time>
+                  <span class="truncate group-hover:underline">{card.title}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  )}
+
+  {cards.length === 0 && <p class="py-12 text-center text-zinc-500 dark:text-zinc-400">{labels.empty}</p>}
+</section>

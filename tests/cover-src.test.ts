@@ -59,8 +59,10 @@ test("首屏第一张图要 eager + high，其余仍 lazy（LCP 元素就是它�
   const gallery = await readFile(new URL("../src/components/PhotoGallery.tsx", import.meta.url), "utf8");
   assert.match(gallery, /loading=\{i === 0 \? "eager" : "lazy"\}/, "相册首图必须 eager");
   assert.match(gallery, /fetchPriority=\{i === 0 \? "high" : "auto"\}/, "相册首图要高优先级");
+  // 第 133 轮：日报归档页改用共享组件，eager/high 规则搬到了 DigestArchiveGrid
+  const archive = await readFile(new URL("../src/components/DigestArchiveGrid.astro", import.meta.url), "utf8");
+  assert.match(archive, /index < 2 \? "eager" : "lazy"/, "归档页前两张卡片要 eager");
+  assert.match(archive, /index < 2 \? "high" : "low"/, "归档页前两张卡片要高优先级");
   const digest = await readFile(new URL("../src/pages/ai/digest/index.astro", import.meta.url), "utf8");
-  assert.match(digest, /const firstCardId = digests\[0\]\?\.id/, "第一张卡片按 id 判定，不用可变计数器");
-  assert.match(digest, /loading=\{d\.id === firstCardId \? "eager" : "lazy"\}/);
-  assert.match(digest, /fetchpriority=\{d\.id === firstCardId \? "high" : undefined\}/);
+  assert.match(digest, /DigestArchiveGrid/, "归档页必须走共享组件（不要退回自己写 img）");
 });

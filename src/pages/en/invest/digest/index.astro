@@ -4,6 +4,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
 import { extractDigestHighlights, extractTLDR } from "@/lib/digest-highlights";
 import { lightCover } from "@/lib/cover-src";
+import DigestArchiveGrid from "@/components/DigestArchiveGrid.astro";
 
 const lang = "en" as const;
 const t = useTranslations(lang);
@@ -15,12 +16,8 @@ const digests = (await getCollection("invest", (p) => p.data.lang === lang && !p
   .filter(isDigest)
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
-const groups: Record<string, typeof digests> = {};
-for (const d of digests) {
-  const ym = d.data.date.toISOString().slice(0, 7);
-  (groups[ym] ??= []).push(d);
-}
-const months = Object.keys(groups).sort().reverse();
+// 分组与「最新 N 期大卡片 / 更早紧凑行」的渲染在 DigestArchiveGrid 里（第 133 轮）
+const FEATURED_COUNT = 6;
 ---
 
 <BaseLayout
@@ -46,64 +43,22 @@ const months = Object.keys(groups).sort().reverse();
     </p>
   </section>
 
-  <section class="max-w-4xl mx-auto px-5 pb-24">
-    {months.map(ym => (
-      <div class="mt-12">
-        <h2 class="text-xs uppercase tracking-[0.2em] text-zinc-600 dark:text-zinc-400 font-mono mb-5 pb-2 border-b border-[var(--border)]">
-          {ym}
-        </h2>
-        <div class="grid sm:grid-cols-2 gap-4">
-          {groups[ym].map(d => {
-            const tldr = extractTLDR(d.body ?? "");
-            const firstLine = tldr?.summary?.[0] ?? null;
-            const tags = tldr?.tags?.slice(0, 3) ?? [];
-            const fallbackHighlights = !tldr ? extractDigestHighlights(d.body ?? "", 2) : [];
-            const cover = lightCover(d.data.cover);
-            return (
-              <a href={pathWithLang(`/invest/${d.data.translationKey}`, lang)}
-                 class="group block rounded-xl overflow-hidden border border-[var(--border)] hover:border-section-invest transition-colors bg-white dark:bg-zinc-900/40">
-                {cover && (
-                  <div class="aspect-[16/9] overflow-hidden bg-zinc-100 dark:bg-zinc-800">
-                    <img src={cover} alt={d.data.title}
-                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                         loading="lazy" />
-                  </div>
-                )}
-                <div class="p-4">
-                  <time class="text-[10px] uppercase tracking-[0.15em] text-zinc-600 dark:text-zinc-400 font-mono">
-                    {d.data.date.toISOString().slice(0, 10)}
-                  </time>
-                  <h3 class="mt-1 text-base font-semibold leading-snug group-hover:text-section-invest transition-colors line-clamp-2">
-                    {d.data.title}
-                  </h3>
-                  {firstLine && (
-                    <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed line-clamp-2">
-                      {firstLine}
-                    </p>
-                  )}
-                  {!firstLine && fallbackHighlights.length > 0 && (
-                    <ul class="mt-2 space-y-0.5">
-                      {fallbackHighlights.map(h => (
-                        <li class="text-xs text-zinc-500 dark:text-zinc-400 line-clamp-1">· {h}</li>
-                      ))}
-                    </ul>
-                  )}
-                  {tags.length > 0 && (
-                    <div class="mt-3 flex flex-wrap gap-1.5">
-                      {tags.map(tag => (
-                        <span class="text-[10.5px] px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </a>
-            );
-          })}
-        </div>
-      </div>
-    ))}
-    {digests.length === 0 && <p class="py-12 text-center text-zinc-500 dark:text-zinc-400">No digests yet</p>}
-  </section>
+  <DigestArchiveGrid
+    accent="invest"
+    cards={digests.map((d, cardIndex) => {
+      const rich = cardIndex < FEATURED_COUNT;
+      const tldr = rich ? extractTLDR(d.body ?? "") : null;
+      const cover = rich ? lightCover(d.data.cover) : undefined;
+      return {
+        href: pathWithLang(`/invest/${d.data.translationKey}`, lang),
+        title: d.data.title,
+        iso: d.data.date.toISOString().slice(0, 10),
+        cover,
+        summary: tldr?.summary?.[0] ?? undefined,
+        highlights: rich && !tldr ? extractDigestHighlights(d.body ?? "", 2) : undefined,
+        tags: tldr?.tags?.slice(0, 3),
+      };
+    })}
+    labels={{ featured: "Latest 6", older: (count) => `Older digests · ${count}`, empty: "No digests yet" }}
+  />
 </BaseLayout>
