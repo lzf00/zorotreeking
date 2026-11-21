@@ -1,7 +1,15 @@
-name: Accessibility audit
+name: Accessibility & hydration audit
 
-# Lighthouse 的 a11y 断言只覆盖 15 个 URL；归档页、标签页、个股页都不在预算里。
-# 这里每周把全站 1188 个页面用 axe-core 过一遍，违规就红。
+# 每周一次的双主题可访问性 + 水合巡检（第 99 轮把原来两条 a11y 流水线合成了一条）。
+#
+# 合并前有两条：`a11y.yml`（本地 dist，全站 1188 页 × 浅/深两套）和
+# `a11y-audit.yml`（**打线上**，24 个模板 × 两主题 × 桌面/手机 + 水合）。
+# 名字几乎一样、artifact 同名，真正跑起来还互相重叠；线上那条依赖生产可用，
+# 出问题时分不清是代码坏了还是站点连不上。现在只留这一条：
+#   · 全站 1188 页 × 浅/深（模板回归都会照到）
+#   · 60 页手机宽度抽查（窄屏换行/折叠只有这里能看见）
+#   · 岛水合（Lighthouse 和 axe 都不会因为 React 组件崩而变红）
+# 目标全部是本地 dist —— 同一份提交的确定性产物，不依赖生产可用性。
 on:
   schedule:
     - cron: "30 20 * * 1"   # 北京时间周二 04:30，避开部署与审计高峰
@@ -43,6 +51,11 @@ jobs:
         # 响应式布局在窄屏会换行/折叠，宽屏看不见的问题只有手机宽度才暴露。
         # 只抽 60 页（约 5 分钟），全量手机审太慢；抽到违规照样让 job 红。
         run: node scripts/a11y-audit.mjs --pages 60 --scheme both --viewport 390x844
+
+      # 岛在浏览器里到底有没有水合：Lighthouse 分数和 axe 都不会因为 React 组件崩掉变红。
+      # 2026-11-11 升 React 19 / recharts 3 时补的网；这里不带 BASE_URL，直接测 dist。
+      - name: Island hydration smoke test
+        run: node scripts/check-hydration.mjs
 
       - name: Upload report
         if: always()

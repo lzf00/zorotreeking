@@ -24,7 +24,7 @@ const parsed = parse(deploy);
 const steps = parsed.jobs["build-and-deploy"].steps;
 
 /** 把所有 workflow 里「跑命令 → 看 $?」的步骤都收进来：它们在 bash -e 下都必须自己 set +e。 */
-const allWorkflows = ["a11y.yml", "a11y-audit.yml", "daily-digest.yml", "deadlink-check.yml", "deploy.yml", "lighthouse.yml", "lighthouse-mobile.yml", "site-audit.yml"];
+const allWorkflows = ["a11y.yml", "daily-digest.yml", "deadlink-check.yml", "deploy.yml", "lighthouse.yml", "lighthouse-mobile.yml", "site-audit.yml"];
 const captureSteps = [];
 for (const name of allWorkflows) {
   const source = await readFile(new URL(`../.github/workflows/${name}`, import.meta.url), "utf8");

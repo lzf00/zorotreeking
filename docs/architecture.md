@@ -662,6 +662,33 @@ npm run check:images -- --limit 150 --warn
 当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
 原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
 
+### 两条 a11y 流水线合成一条（第 99 轮）
+
+仓库里长期有两条几乎同名的可访问性巡检：
+
+| | `a11y.yml`「Accessibility audit」 | `a11y-audit.yml`「A11y (both themes)」 |
+|---|---|---|
+| 时间 | 周二 04:30 BJT | 周一 11:00 BJT |
+| 被测对象 | **本地 dist** | **线上站点** |
+| 覆盖 | 全站 1188 页 × 浅/深 | 24 个模板 × 浅/深 × 桌面/手机 + 水合 |
+| artifact | `a11y-report` | `a11y-report`（同名） |
+
+问题不是"多跑一遍"，而是：名字几乎一样（在 Actions 列表里靠日期猜）、artifact 同名、
+覆盖面重叠，而线上那条把**生产可用性**混进了代码质量信号 —— 红了分不清是代码坏了
+还是站点连不上。
+
+合并成一条 `a11y.yml`「Accessibility & hydration audit」：
+
+1. 全站 1188 页 × 浅/深（模板级回归都会照到）
+2. 60 页手机宽度抽查（窄屏换行/折叠只有这里看得见）
+3. 岛水合（Lighthouse 和 axe 都不会因为 React 组件崩掉变红）
+
+全部目标都是本地 `dist` —— 同一份提交的确定性产物。线上是否正常由部署的
+acceptance smoke 负责，两件事不再混在一个红点里。
+
+守卫 `tests/a11y-single-workflow.test.ts`：只允许一个 `a11y*.yml`、
+不许出现线上域名/远端 `BASE_URL`、三类覆盖面缺一不可、artifact 名字在仓库内唯一。
+
 ### 工作流的结构错误现在在本地就能挡（第 98 轮）
 
 第 82 轮那次 `startup_failure` 的教训是：GitHub 只在**触发那一刻**校验 YAML，
