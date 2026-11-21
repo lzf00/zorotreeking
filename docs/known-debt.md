@@ -38,3 +38,4 @@
 | 10 | 1043 条外链体检不到 | 反爬域名（x.com/知乎/小红书/arxiv/eastmoney 等）对任何非浏览器请求回 403/429 | 体检只能覆盖 4454/5508，其余靠人工或浏览器实测 | 已知限制（第 132 轮） | `npm run check:external-links` |
 | 11 | 列表页 HTML 偏大但 gzip 正常 | `/archive/` 347 KB raw / 32 KB gzip、`#auto` 301 KB / 31 KB | 传输成本正常，raw 只影响解析（毫秒级）；已按 gzip 预算单独把关 | 已知取舍（第 134 轮） | `npm run check:weight` 看 gzip 一列 |
 | 12 | 2026-11-19、11-20 两天的 AI/投资日报缺失 | 2 天内容 | 站上这两天没有日报（复盘正常）；抓的是"最新列表"，历史条目已滚掉，补不回来 | 记录在案；内部断档检测（第 138 轮）让下一次漏天立刻可见 | `node scripts/check-freshness.mjs` |
+| 13 | 线上 `/api/market/us` 仍返回 2026-08-11 的宏观数据 | 102 天 | 页面已按时间戳取新数据，不会被带坏；但接口本身仍是旧的 | 服务端刷新它自己的存储（不在本仓库） | `curl https://www.zorotreeking.online/api/market/us` |

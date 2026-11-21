@@ -89,19 +89,39 @@ export type UsMarketDashboardData = {
   market: UsMarketData | null;
 };
 
+/**
+ * 「哪个更新就用哪个」（第 139 轮）。
+ *
+ * 真实事故：仓库里的静态快照已经被 `Refresh US market data` 刷成 2026-10 的宏观数据，
+ * 但线上 `/api/market/us` 后端还在返回 2026-08-11 的那一份。页面 SSR 渲染的是新数据，
+ * 一挂载就 fetch 接口，`incoming.macro` 直接覆盖了 `initialData` ——
+ * **读者看到页面先显示新数字，然后眨眼间退回到三个月前**，还会重新弹出"数据陈旧"提示。
+ *
+ * 所以合并不能"接口优先"，只能"新数据优先"：比较宏观块的 `fetched_at`、行情块的 `quote_ts`，
+ * 谁新用谁；接口比页面旧时，保留页面数据。
+ */
+function fresherByKey<T>(current: T | null | undefined, incoming: T | null | undefined, stamp: (value: T) => number): T | null {
+  if (!incoming) return current ?? null;
+  if (!current) return incoming;
+  return stamp(incoming) >= stamp(current) ? incoming : current;
+}
+
 export function mergeUsMarketDashboardData(
   current: UsMarketDashboardData | null,
   incoming: UsMarketDashboardData,
 ): UsMarketDashboardData {
-  const macro = incoming.macro ?? current?.macro ?? null;
-  const market = incoming.market ?? current?.market ?? null;
+  const macro = fresherByKey(current?.macro ?? null, incoming.macro ?? null, (value) => value?.fetched_at ?? 0);
+  const market = fresherByKey(current?.market ?? null, incoming.market ?? null, (value) => value?.quote_ts ?? 0);
   const retainedSnapshot = (!incoming.macro && Boolean(macro)) || (!incoming.market && Boolean(market));
   return {
     ...incoming,
+    ts: Math.max(incoming.ts ?? 0, current?.ts ?? 0),
     macro,
     market,
-    partial: incoming.partial || incoming.macro == null || incoming.market == null,
-    stale: incoming.stale || retainedSnapshot,
+    partial: incoming.partial || macro == null || market == null,
+    // 陈旧标记只看**最终采用**的那两块，别让接口里旧数据的 stale 污染页面上新数据的结论；
+    // 也不因为"接口这次没带某一块"就标陈旧——保留下来的那块自己带 stale 字段
+    stale: (macro?.stale ?? true) || (market?.stale ?? true),
   };
 }
 
