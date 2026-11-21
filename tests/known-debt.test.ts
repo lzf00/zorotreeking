@@ -49,7 +49,7 @@ test("日报缺摘要的期数/条数与实际内容一致", async () => {
   assert.match(text, new RegExp(`\\*\\*${periods} 期 / ${items} 条\\*\\*`), `文档写的是别的数字，实测 ${periods} 期 / ${items} 条`);
 });
 
-test("快照过旧的行数与文档描述一致（BLS + 美股兜底）", async () => {
+test("快照过旧的行数与文档描述一致（第 136 轮修好 BLS，只剩美股行情兜底）", async () => {
   const { SNAPSHOTS } = await import("../scripts/check-market-data-age.mjs");
   const cache = new Map<string, any>();
   const withAt = [];
@@ -60,7 +60,9 @@ test("快照过旧的行数与文档描述一致（BLS + 美股兜底）", async
     withAt.push({ file: snap.file, label: snap.label, maxAgeDays: snap.maxAgeDays, at: () => snap.at(cache.get(snap.file)) });
   }
   const stale = ageRows(withAt).filter((row: any) => row.stale).map((row: any) => row.label);
-  assert.deepEqual(stale.sort(), ["美股行情兜底快照", "美国宏观（BLS）"].sort(), "过旧的快照清单变了，记得同步文档");
+  // 2026-11-22：BLS 宏观块已由 refresh-us-macro 工作流每天刷新（第 136 轮），
+  // 现在唯一还过旧的是东方财富行情兜底（外部写入，不在本仓库采集范围）。
+  assert.deepEqual(stale, ["美股行情兜底快照"], "过旧的快照清单变了，记得同步文档");
 });
 
 test("已修复的欠账不该还留在表里", async () => {

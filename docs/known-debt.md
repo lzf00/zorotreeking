@@ -11,7 +11,7 @@
 | 1 | 英文页里有未翻译的中文正文 | **20 个文件 / 115 处** | `/en/` 下 20 个 `market-recap-*` 页面（页面顶部已声明机翻） | 服务端生成器（stock_pusher） | `npm run check:i18n-leaks` |
 | 2 | 日报缺摘要 | **38 期 / 299 条**（20 期整期全空，18 期部分缺） | 读者看到标题+链接，页面已如实提示"本期没有摘要" | 需 LLM key（`digest-fetch --force`） | `node scripts/check-digest-placeholders.mjs --all` |
 | 3 | BLS 宏观数据停更 | **101 天**（2026-08-11 起） | `/invest/us-market/` 的 CPI/非农参考期停在 2026-06，页面已标注 | 服务端抓取器 | `npm run check:market-age` |
-| 4 | 美股兜底快照陈旧 | **101 天** | 仅接口失败时才显示；页面已标注"不是当前行情" | 服务端同步 | `npm run check:market-age` |
+| 4 | 美股兜底快照陈旧 | **102 天** | 仅接口失败时才显示；页面已标注"不是当前行情" | 服务端同步（**BLS 宏观块已在第 136 轮修好**，每天自动刷新） | `npm run check:market-age` |
 | 5 | Node 版本低于要求 | 本机 **22.23.2**，要求 ≥22.23.4 | 本地构建/测试环境 | 你 | `node -v` |
 | 6 | nginx 三项加固未做 | 3 条 | 权限位/缓存头/错误页 | 你（见 `docs/nginx-hardening.md`） | 手工 |
 | 7 | `/api/market/*` 冷启动 3.5s | 无 TTL | 首次访问行情慢 | 服务端 | 手工 |

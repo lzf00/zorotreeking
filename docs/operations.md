@@ -21,6 +21,7 @@
 | `Weekly roundup` | 周日 09:00 | 下午 | 周报 + 翻译 | 周报没产出 |
 | `Full-site audit` | 周四 09:00 | 下午 | 站点整体巡检（SEO/内容/结构） | 有整体性退化 |
 | `Bulk backfill (history meta + bulk translate)` | 手动 | — | 历史 meta + 批量翻译补跑 | 只在手动触发时相关 |
+| `Refresh US macro` | 每天 22:20 | — | 从 BLS 公开 API 刷新美股宏观块（CPI/核心/非农/失业率），数字没变不提交 | BLS 接口或解析坏了，页面会退回“陈旧”提示 |
 
 `Build & Deploy` 也可以被 `Daily digest` / `Weekly roundup` / `Bulk backfill` 以
 `workflow_call` 调用 —— 所以「内容提交也能发布」靠的是这条链，链上任何一环的权限缺口都会让
