@@ -374,6 +374,49 @@ for (const path of PATHS) {
         }
       }
 
+      // 表单控件的可读名称（第 143 轮）。axe 的 label 规则对"只有 placeholder"的
+      // 输入框实测**不报**（在 /subscribe/ 上抹掉 aria-label 复跑，violations 与 incomplete 都是空），
+      // 但读屏用户听到的是一个没有名字的输入框 —— 所以自己断言。
+      // placeholder 不算名字（它会在输入时消失，而且不是 label）。
+      if (theme === "light") {
+        const unlabeled = await page.evaluate(() => {
+          const nameOf = (el) => {
+            const aria = el.getAttribute("aria-label");
+            if (aria && aria.trim()) return aria.trim();
+            const byId = el.getAttribute("aria-labelledby");
+            if (byId) {
+              const text = byId.split(/\s+/).map((id) => document.getElementById(id)?.textContent?.trim()).filter(Boolean).join(" ");
+              if (text) return text;
+            }
+            if (el.id) {
+              const label = document.querySelector(`label[for="${CSS.escape(el.id)}"]`);
+              if (label?.textContent?.trim()) return label.textContent.trim();
+            }
+            const wrap = el.closest("label");
+            if (wrap?.textContent?.trim()) return wrap.textContent.trim();
+            if (el.getAttribute("title")?.trim()) return el.getAttribute("title").trim();
+            return "";
+          };
+          const visible = (el) => {
+            const rect = el.getBoundingClientRect();
+            const cs = getComputedStyle(el);
+            return rect.width > 0 && rect.height > 0 && cs.display !== "none" && cs.visibility !== "hidden";
+          };
+          return [...document.querySelectorAll("input:not([type=hidden]), textarea, select")]
+            .filter((el) => visible(el) && !nameOf(el))
+            .map((el) => `${el.tagName.toLowerCase()}#${el.id || el.getAttribute("name") || "?"}[placeholder=${el.getAttribute("placeholder") ?? "-"}]`);
+        });
+        if (unlabeled.length) {
+          violations.push({
+            id: "form-field-no-name",
+            impact: "serious",
+            count: unlabeled.length,
+            nodes: unlabeled.slice(0, 5).map((target) => ({ target, reason: "表单控件没有可读名称（只有 placeholder 不算）" })),
+          });
+        }
+        entry.formFieldsChecked = true;
+      }
+
       entry.violations = violations;
       if (entry.violations.length) {
         entry.ok = false;

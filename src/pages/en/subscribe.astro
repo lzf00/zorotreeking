@@ -34,7 +34,7 @@ const appReaders = [
           method="post"
           target="buttondown-sink"
           class="flex items-stretch rounded-xl border border-[var(--border)] overflow-hidden">
-          <input id="buttondown-email" type="email" name="email" required placeholder="your@email.com"
+          <input id="buttondown-email" type="email" name="email" required aria-label="Email address" placeholder="you@example.com"
             class="flex-1 bg-transparent text-sm px-4 py-3 outline-none placeholder:text-[var(--text-tertiary)]" />
           <input type="hidden" name="embed" value="1" />
           <button type="submit"
@@ -42,7 +42,7 @@ const appReaders = [
             Subscribe
           </button>
         </form>
-        <iframe name="buttondown-sink" title="buttondown response sink"
+        <iframe name="buttondown-sink" title="Subscription response"
                 class="hidden" aria-hidden="true" tabindex="-1"></iframe>
         <p id="buttondown-hint" class="mt-2 text-xs text-[var(--text-tertiary)]">≤ 2 emails / week. Unsubscribe anytime. Hosted by Buttondown.</p>
         <div id="buttondown-ok" class="mt-3 text-sm text-green-600 hidden items-start gap-2">

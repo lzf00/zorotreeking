@@ -48,7 +48,8 @@ const sinkName = `cta-buttondown-sink-${section}`;
           target={sinkName}
           class="mt-3 flex items-stretch rounded-lg border border-[var(--border)] overflow-hidden bg-[var(--bg)] max-w-md">
       <input id={emailId} type="email" name="email" required
-             placeholder={t("your@email.com", "your@email.com")}
+             aria-label={t("邮箱地址", "Email address")}
+             placeholder={t("你的邮箱", "you@example.com")}
              class="flex-1 bg-transparent text-sm px-3 py-2 outline-none placeholder:text-[var(--text-tertiary)]" />
       <input type="hidden" name="embed" value="1" />
       <button type="submit"
@@ -56,9 +57,9 @@ const sinkName = `cta-buttondown-sink-${section}`;
         {t("订阅", "Subscribe")}
       </button>
     </form>
-    <iframe name={sinkName} title="buttondown response sink" class="hidden" aria-hidden="true" tabindex="-1"></iframe>
+    <iframe name={sinkName} title={t("订阅结果", "Subscription response")} class="hidden" aria-hidden="true" tabindex="-1"></iframe>
 
-    <div id={okId} class="mt-3 text-xs text-green-600 hidden items-center gap-1.5">
+    <div id={okId} role="status" aria-live="polite" class="mt-3 text-xs text-green-600 hidden items-center gap-1.5">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0"><polyline points="20 6 9 17 4 12"></polyline></svg>
       <span>{t("已提交，请去邮箱点击确认链接", "Submitted — check your inbox for the confirmation link")}</span>
     </div>

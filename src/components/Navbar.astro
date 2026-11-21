@@ -117,7 +117,12 @@ const nav = [
           <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
         </svg>
       </a>
-      <button id="theme-toggle" type="button" aria-label="toggle theme" class="w-8 h-8 grid place-items-center rounded-full border border-[var(--border)] hover:bg-[var(--bg-soft)] transition-colors">
+      <button
+        id="theme-toggle"
+        type="button"
+        aria-label={lang === "zh" ? "切换深浅色主题" : "Toggle dark mode"}
+        title={lang === "zh" ? "切换深浅色主题" : "Toggle dark mode"}
+        class="w-8 h-8 grid place-items-center rounded-full border border-[var(--border)] hover:bg-[var(--bg-soft)] transition-colors">
         <svg class="hidden dark:block" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
         <svg class="block dark:hidden" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       </button>
@@ -140,8 +145,26 @@ const nav = [
       });
       const mobileNav = document.getElementById("mobile-nav");
       const mobileNavSummary = mobileNav?.querySelector("summary");
-      mobileNav?.addEventListener("toggle", () => {
+      const syncMobileNav = () => {
         mobileNavSummary?.setAttribute("aria-expanded", mobileNav.hasAttribute("open") ? "true" : "false");
+      };
+      mobileNav?.addEventListener("toggle", syncMobileNav);
+
+      // 第 143 轮：实测 Esc 按下去菜单不动、点空白处也不关 —— 手机外接键盘和宽屏触控都会遇到。
+      // <details> 原生只认 Enter/Space 展开，关闭只能再点一次 summary。
+      const closeMobileNav = (returnFocus) => {
+        if (!mobileNav?.hasAttribute("open")) return;
+        mobileNav.removeAttribute("open");
+        syncMobileNav();
+        if (returnFocus) mobileNavSummary?.focus();
+      };
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") closeMobileNav(true);
+      });
+      document.addEventListener("pointerdown", (event) => {
+        if (!mobileNav?.hasAttribute("open")) return;
+        if (event.target instanceof Node && mobileNav.contains(event.target)) return;
+        closeMobileNav(false);
       });
     });
   })();

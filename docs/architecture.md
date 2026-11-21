@@ -689,6 +689,35 @@ npm run check:images -- --limit 150 --warn
 
 这条和 `check:ssr-clock`（第 82 轮）是同一类问题的两个面：**渲染里任何"现在"都必须是显式的**。
 
+### 订阅框没有名字，移动端菜单关不掉（第 143 轮）
+
+三个浮层修完，改去查"表单与导航"这两类最普通的控件。
+
+**一、订阅邮箱框只有 placeholder，没有名字。** 全站 527 个 zh 页面挂着这个 CTA
+（`<input type=email required placeholder="your@email.com">`）。
+placeholder 不是 label：读屏念出来是"输入框"，而且一打字它就消失。
+
+有意思的是**axe 不报这条**。我做了反向实验：把 `/subscribe/` 上的 `aria-label` 抹掉重跑
+axe（只跑 `label` / `label-title-only` / `form-field-multiple-labels` 三条规则），
+`violations` 和 `incomplete` **都是空的**。所以这不是"配置漏了"，是规则本身够不着。
+
+那就自己断言：门禁里加一条 —— 所有可见的 `input/textarea/select` 必须有可读名称，
+来源只认 `aria-label`、`aria-labelledby`、`<label for>`、包裹 `<label>`、`title`；
+**placeholder 不算**。反向验证：stash 掉修复重建，`/ai/digest-2026-06-05/` 报
+`form-field-no-name×1`；恢复后 0。
+
+**二、移动端菜单按 Esc 不关、点空白也不关。** 这是 `<details>` 的原生限制：只能用
+Enter/Space 展开，关闭只能再点一次 summary。手机接外接键盘、或者宽屏触控都会遇到。
+现在 Esc 关闭并把焦点还给按钮，点面板外也关。
+
+**三、顺手清了一个英文残留。** 全站搜索页面里的 `aria-label="toggle theme"` 是唯一
+残留在中文页面的英文可读标签（`check:i18n-leaks` 只看可见文本，看不到 aria 属性）。
+现在按页面语言输出「切换深浅色主题 / Toggle dark mode」。
+
+这三个都是从**渲染后的 HTML 属性**里扫出来的，不是靠肉眼翻代码：
+扫 612 个 zh 页面，把"纯 ASCII 且含字母"的 `aria-label`/`title`/`placeholder` 全列出来，
+剩下的英文就只有照片 alt 里的文件名（如 `baokemeng-01`）—— 那是内容问题，记在欠账表里。
+
 ### AI 助手：面板开着，键盘却在页面里（第 142 轮）
 
 同样方法量第三个浮层（AI 助手）。它比前两个特殊：**非模态**，用户可以一边聊一边读页面。

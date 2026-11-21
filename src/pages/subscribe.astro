@@ -45,7 +45,8 @@ const appReaders = [
             type="email"
             name="email"
             required
-            placeholder="your@email.com"
+            aria-label="邮箱地址"
+            placeholder="你的邮箱"
             class="flex-1 bg-transparent text-sm px-4 py-3 outline-none placeholder:text-[var(--text-tertiary)]"
           />
           <input type="hidden" name="embed" value="1" />
@@ -54,10 +55,11 @@ const appReaders = [
             订阅邮件
           </button>
         </form>
-        <iframe name="buttondown-sink" title="buttondown response sink"
+        <iframe name="buttondown-sink" title="订阅结果"
                 class="hidden" aria-hidden="true" tabindex="-1"></iframe>
         <p id="buttondown-hint" class="mt-2 text-xs text-[var(--text-tertiary)]">每周不超过 2 封，可一键退订。由 Buttondown 托管。</p>
-        <div id="buttondown-ok" class="mt-3 text-sm text-green-600 hidden items-start gap-2">
+        <!-- role=status：提交后这句是唯一的反馈，读屏必须能听到（第 143 轮） -->
+        <div id="buttondown-ok" role="status" aria-live="polite" class="mt-3 text-sm text-green-600 hidden items-start gap-2">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
           <span>已提交！请去邮箱点击 Buttondown 发来的<strong>确认链接</strong>完成订阅（可能在垃圾邮件箱）</span>
         </div>

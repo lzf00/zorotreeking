@@ -39,3 +39,4 @@
 | 11 | 列表页 HTML 偏大但 gzip 正常 | `/archive/` 347 KB raw / 32 KB gzip、`#auto` 301 KB / 31 KB | 传输成本正常，raw 只影响解析（毫秒级）；已按 gzip 预算单独把关 | 已知取舍（第 134 轮） | `npm run check:weight` 看 gzip 一列 |
 | 12 | 2026-11-19、11-20 两天的 AI/投资日报缺失 | 2 天内容 | 站上这两天没有日报（复盘正常）；抓的是"最新列表"，历史条目已滚掉，补不回来 | 记录在案；内部断档检测（第 138 轮）让下一次漏天立刻可见 | `node scripts/check-freshness.mjs` |
 | 13 | 线上 `/api/market/us` 仍返回 2026-08-11 的宏观数据 | 102 天 | 页面已按时间戳取新数据，不会被带坏；但接口本身仍是旧的 | 服务端刷新它自己的存储（不在本仓库） | `curl https://www.zorotreeking.online/api/market/us` |
+| 14 | 相册照片的 `alt` 是文件名（如 `baokemeng-01`） | 全站相册 | 读屏用户听到的是编号，不是画面内容 | 需要人工为每张照片写一句描述（内容工作，非代码） | 扫 `dist/photo/*/index.html` 的 `aria-label` |
