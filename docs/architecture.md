@@ -662,6 +662,34 @@ npm run check:images -- --limit 150 --warn
 当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
 原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
 
+### 工作流的结构错误现在在本地就能挡（第 98 轮）
+
+第 82 轮那次 `startup_failure` 的教训是：GitHub 只在**触发那一刻**校验 YAML，
+校验失败时没有日志、没有注解，只有「产出没了」，而且能静默三天。
+
+能静态检查的部分不该留给 GitHub 去发现。新增 `tests/workflow-shape.test.ts`，
+对全部 11 个工作流做结构校验：
+
+| 检查 | 能抓到什么 |
+|---|---|
+| name / on / jobs / runs-on / steps 骨架 | 手写 YAML 时少一层缩进 |
+| 权限 scope 与取值白名单 | `status: write`（少个 s）、`issues: true` |
+| `uses: ./…` 指向的文件存在 | 复用工作流改名后忘了同步 |
+| `workflow_run.workflows` 的名字真实存在 | **打错不会报错，只会永远不触发** |
+| cron 五段 + 范围 | `17 18 * *`、`0 25 * * *` |
+
+最后一条是最阴的：第 96 轮新加的看门狗监听 `["Daily digest"]`，如果名字写成
+`Daily Digest`，GitHub 不会报任何错，那条链路会永远静默 —— 和它要防的故障一模一样。
+
+变异验证（改完立刻还原）：
+
+| 变异 | 结果 |
+|---|---|
+| `Daily digest` → `Daily Digest` | 红：`监听的 workflow「Daily Digest」不存在` |
+| `issues: write` → `issue: write` | 红：`权限 scope 不存在：issue` |
+| `uses: ./…/deploy.yml` → `deploy-main.yml` | 红：文件不存在 |
+| `17 18 * * *` → `17 18 * *` | 红：cron 不是 5 段 |
+
 ### 让每个提交挂红叉的「新鲜度状态」退休了（第 97 轮）
 
 第 85 轮把内容新鲜度写进 `content/freshness` commit status，目的是让静默停更可见。
