@@ -1,0 +1,179 @@
+---
+lang: en
+translationKey: digest-2026-11-22
+title: "Daily AI Digest · 2026-11-22"
+description: "17 papers · Multi-source aggregation + AI summaries"
+date: 2026-11-22
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, lil-log]
+category: paper
+cover: "/photos/uploads/baokemeng/baokemeng-41.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's content in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Top global AI vendors roll out frequent updates: DeepMind launches Gemini 4 Neon and Genie 4, OpenAI reveals new progress on adversarial distillation and GPT-6 Astra</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face launches the high-performance local model Inkling 2 Mini and harness adapter tools, alongside cutting-edge papers across multiple fields</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">New advances made across multiple domains in China's AI sector: Tencent releases a group chat Agent memory benchmark, with breakthroughs in AI creativity and computing infrastructure</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Large Model Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📑 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💬 Agent Benchmarks</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚙️ New Tools</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🎨 Creative Applications</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2611.26232" target="_blank" rel="noopener noreferrer">Time Series Structure Learning with Local Causal Parent Discovery</a>
+
+*HF ★ 2 · Jacqueline Maasch, Shu Wan, Hank Zhu… · [HF Mirror](https://huggingface.co/papers/2611.26232)*
+
+To address the high algorithm complexity pain points of time series causal discovery caused by autocorrelation, distribution shift, and curse of dimensionality, this paper proposes ITPD (Iterative Temporal Parent Discovery): it adopts a local-to-global approach, leveraging temporal priors, graph partitioning and other methods to implement reduced-order conditional independence tests. Experiments show it requires the fewest test runs, takes far less time than baselines on large graphs with over 1000 nodes, and is up to 40.9x faster than benchmarks for 2000-node graphs, achieving Pareto optimality in both F1 score and time consumption.
+
+<FeedbackButtons slug="item:arxiv-2611.26232" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.26239" target="_blank" rel="noopener noreferrer">Teaching Vision-Language-Action Models to Stop Safely</a>
+
+*HF ★ 5 · Zheyuan Liu, Chuhan Wang, Jinduo Guo… · [HF Mirror](https://huggingface.co/papers/2611.26239)*
+
+To solve the problem that existing vision-language-action (VLA) robot models cannot safely stop prohibited tasks mid-execution, leading to safety risks such as falling objects, this paper proposes SAFI, a two-stage state-aware fallback imitation method that sets safe stop responses for prohibited tasks while retaining the model's original task capabilities. Experiments show this method reduces the completion rate of prohibited tasks after mid-execution intervention to 1.3%, with zero safety incidents, and the original task performance remains fully intact.
+
+<FeedbackButtons slug="item:arxiv-2611.26239" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.25604" target="_blank" rel="noopener noreferrer">PAD: Policy-Aware Data Valuation for Autonomous Driving</a>
+
+*HF ★ 4 · Chengkai Xu, Yicheng Guo, Jiaqi Liu… · [HF Mirror](https://huggingface.co/papers/2611.25604)*
+
+To address the issues that data scaling for end-to-end autonomous driving does not deliver proportional gains and existing data filtering does not match the utility of downstream policies, this paper proposes PAD, a policy-aware data valuation framework that combines scene calibration feedback, policy gradients, and geometric regularization approximation of local training to generate customized data utility scores for target driving policies. This method adapts to multiple planner architectures, improves the EPDMS metric by up to 5.0 compared to full dataset/pure real-vehicle training, reduces scene degradation, and greatly improves training efficiency.
+
+<FeedbackButtons slug="item:arxiv-2611.25604" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.15941" target="_blank" rel="noopener noreferrer">Lang-SVG: Hierarchical Image Vectorization with Language Priors</a>
+
+*HF ★ 1 · Xi Liu, Chaoyi Zhou, Run Wang… · [HF Mirror](https://huggingface.co/papers/2611.15941)*
+
+To solve the problem that existing image vectorization methods only pursue pixel restoration accuracy, resulting in SVGs that do not conform to human-perceived component hierarchies and have poor editability, this paper proposes Lang-SVG: it organizes SVG primitives with semantic trees, integrates open-vocabulary segmentation priors and semantics annotated by multimodal LLMs, and is paired with optimizations including adaptive simplification, tree-guided pruning and merging, and SAM prompt completion. Under the self-developed evaluation system that balances structure and semantic alignment, it achieves SOTA in both rendering accuracy and structural quality.
+
+<FeedbackButtons slug="item:arxiv-2611.15941" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.25200" target="_blank" rel="noopener noreferrer">Squoosh Bench: Evaluating UX-1 on 318 Historical Website A/B Tests</a>
+
+*HF ★ 3 · Rohith Pasula, Johari Dramiga, Viraj Shah… · [HF Mirror](https://huggingface.co/papers/2611.25200)*
+
+This study evaluates the pre-selection effect of simulated browsing prediction models for test solutions based on 318 historical web A/B test datasets with durations of over 21 days. The Squoosh UX-1 model fine-tuned on human browsing data reaches 84% prediction accuracy, far outperforming the 61.6% of general LLM Qwen3 Next 80B; the test variants it predicts to win have a real-world win rate of 93.7% after launch, effectively supporting pre-selection of A/B test plans.
+
+<FeedbackButtons slug="item:arxiv-2611.25200" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/combatting-adversarial-distillation" target="_blank" rel="noopener noreferrer">Combatting adversarial distillation</a>
+
+*OpenAI*
+
+This paper focuses on adversarial distillation, an attack scenario that steals core capabilities of large models, and introduces the layered defense solution proposed by OpenAI: it covers four linked modules including model training optimization, front-end security protection, real-time attack detection, and mandatory violation handling, which can systematically resist the risk of malicious capability extraction, and provides an implementable technical framework reference for the security protection of LLM intellectual property and core capabilities.
+
+<FeedbackButtons slug="item:openai-blog-combatting-adversarial-distillation" client:visible />
+
+## <a href="https://openai.com/business/customer-stories/hebbia" target="_blank" rel="noopener noreferrer">Hebbia sees improvements in financial research with GPT-6 Astra</a>
+
+*OpenAI*
+
+AI company Hebbia conducted specialized tests for the pre-release GPT-6 Astra large model in financial research scenarios. Evaluation results show the model has significant improvements in three core metrics: wider coverage of information sources, higher relevance of citation matching, and better presentation quality of output content, verifying the deployment value of the new-generation large model in the professional financial research field.
+
+<FeedbackButtons slug="item:openai-blog-hebbia" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/announcements" target="_blank" rel="noopener noreferrer">Announcements</a>
+
+*Anthropic*
+
+This is the core content of the official announcement from AI company Anthropic: the company positions itself as a professional research enterprise in the field of AI safety, with the core goal of building AI systems that are reliable, interpretable, and controllable. Its R&D targets the core safety pain points of the current AI industry, attempts to solve problems such as AI black boxes and uncontrollability through technical paths, and explores feasible solutions for the safe deployment of artificial general intelligence.
+
+<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+AI company Anthropic announced the establishment of a dedicated public benefit fund, transferring part of the company's shares to be held by this independent entity. The fund adopts a special structural design: the proportion of Anthropic shares it holds will increase synchronously with the expansion of the company's operating scale and valuation growth, with the core of deeply binding corporate development dividends with public interests, ensuring that the company's growth results can feed back to society, and implementing its development positioning of public benefit.
+
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/introducing-gemini-4-neon/" target="_blank" rel="noopener noreferrer">Introducing Gemini 4 Neon</a>
+
+*Google DeepMind*
+
+Only the paper title *Introducing Gemini 4 Neon* has been provided so far, without the corresponding full abstract content, so translation, extraction and summarization cannot be performed. Please supplement the full abstract of this article introducing Gemini 4 Neon, and I will organize it into a concise 120-word Chinese summary highlighting core methods and conclusions as required.
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-4-neon" client:visible />
+
+## <a href="https://deepmind.google/blog/genie-4-is-now-available/" target="_blank" rel="noopener noreferrer">Genie 4 is now available</a>
+
+*Google DeepMind*
+
+Only the paper title *Genie 4 is now available* has been provided so far, without the specific content of the abstract, so targeted extraction of core methods and research conclusions cannot be performed. Please supplement the relevant information of this paper's abstract, and I will generate a focused 120-word concise Chinese summary as required.
+
+<FeedbackButtons slug="item:deepmind-genie-4-is-now-available" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/inkling2mini" target="_blank" rel="noopener noreferrer">Welcome Inkling 2 Mini, Cutting-edge Performance for your Local Setup</a>
+
+*Hugging Face*
+
+The newly launched lightweight edge AI model Inkling 2 Mini is built specifically for local deployment scenarios: while compressing parameter count and lowering computing power thresholds, its performance reaches the cutting-edge level of models of the same scale. It can complete inference without cloud interaction, balancing privacy security and operating efficiency, and fits the needs of building low-resource local AI applications on personal devices and for small teams.
+
+<FeedbackButtons slug="item:hf-blog-inkling2mini" client:visible />
+
+## <a href="https://huggingface.co/blog/harness-adapters-at-scale" target="_blank" rel="noopener noreferrer">Introducing harness adapters: adapt your favorite model to your harness to improve performance and cost</a>
+
+*Hugging Face*
+
+This paper proposes an innovative harness adapter solution that solves the pain points of high adaptation costs and performance loss when adapting mainstream pretrained models to users' own training and inference frameworks. Compatibility can be completed quickly without extensive rewriting of core code of the model or framework. Compared with traditional adaptation solutions, it reduces the labor and time costs of adaptation, and also improves the actual runtime performance of the model.
+
+<FeedbackButtons slug="item:hf-blog-harness-adapters-at-scale" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+Recursive Self-Improvement (RSI) was first proposed by I.J. Good in 1965, referring to the operating logic of superintelligence that can surpass all human intellectual activities and independently design better systems to achieve iteration. In 2008, Eliezer Yudkowsky clarified its core as the feedback loop where AI uses existing intelligence to optimize its own cognitive architecture. Currently, RSI implementation in the AI field is divided into two categories: one is models directly rewriting their own weights, the other is models optimizing training pipelines.
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/11/511855.html" target="_blank" rel="noopener noreferrer">AI generates live MVs for bands, is this a hackathon or a music festival?</a>
+
+*QbitAI*
+
+CapCut recently held an AI × Music Visual cross-border hackathon, integrating real bands, AIGC creation and hackathon models. Relying on CapCut Hub tools, creators can complete band MVs and stage VJ visual works, which originally had high thresholds and long production cycles, in only 3 hours. Outstanding works were directly played on the main stage screen of the performance on the same day, greatly lowering the production threshold for visual content at live music events.
+
+<FeedbackButtons slug="item:qbitai-511855" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/511849.html" target="_blank" rel="noopener noreferrer">China's computing industry forges a new path to the peak</a>
+
+*QbitAI*
+
+At the 2026 International Supercomputing Conference, the quantum chemistry calculation project for iron-molybdenum cofactor by the joint team of the University of Science and Technology of China won the Gordon Bell Prize, the highest award in the supercomputing field, for China again after 5 years. The Zhongke Tianji meteorological system also became the first Chinese enterprise entry to reach the climate modeling final of the award. Both achievements rely on the fully domestic 100,000-card AI supercluster Dawning 8000, which produced top-tier results only half a year after launch, thanks to the technical route of early industry-research collaborative adaptation.
+
+<FeedbackButtons slug="item:qbitai-511849" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/511841.html" target="_blank" rel="noopener noreferrer">80,000 group chat messages made into test papers: Tencent Yuanbao × KCL releases first Agent memory benchmark built on group chats</a>
+
+*QbitAI*
+
+Tencent Yuanbao, in collaboration with King's College London, has released GroupAssistBench, the first Agent memory benchmark built on group chat scenarios. It constructs 2395 evaluation questions based on more than 80,000 messages from 50 real groups, and tests at two levels: memory recall and open service. After testing 14 technical configurations, the team found that strong Agent memory recall capability does not equal good actual service performance. The relevant datasets and code are now open source.
+
+<FeedbackButtons slug="item:qbitai-511841" client:visible />
