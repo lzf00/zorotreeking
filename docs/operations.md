@@ -45,6 +45,7 @@
 | `check:ssr-clock` | SSR 时间戳不漂移（避免水合不一致） |
 | `check:hydration` | 每个岛在浏览器里真的水合 |
 | `check:search:dist` | 本地起服务跑 Pagefind 搜索探针；断言索引是最新的（最新日报排进前 3）、命中不是死链 |
+| `check:i18n-leaks` | 英文内容里不许新增未翻译的中文正文（存量在 `scripts/i18n-leaks-baseline.json`） |
 | `check:a11y:fast` | 双主题 axe 快检（3 个模板 × 浅/深，约 22 秒） |
 | `check:font-fallback` | 字体回退的度量匹配（数字/日期/混排） |
 | `check:feeds` | RSS/JSON Feed 结构与条数 |

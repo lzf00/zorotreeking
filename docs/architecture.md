@@ -689,6 +689,32 @@ npm run check:images -- --limit 150 --warn
 
 这条和 `check:ssr-clock`（第 82 轮）是同一类问题的两个面：**渲染里任何"现在"都必须是显式的**。
 
+### 英文页里整段整段的中文（第 121 轮）
+
+扫描 `dist/en/**/*.html` 里"连续 20 个以上汉字"的片段，发现 **30 个英文页**里夹着中文正文：
+
+    /en/invest/market-recap-2026-11-13/
+    > 微软正加紧修复故障、恢复各项服务。此次全球性宕机事件扰乱了众多企业与政府机构的运转…
+
+按内容文件统计是 **20 个 `.en.mdx`、115 处**（60 段中文引用 + 55 条中文链接标题，集中在 10 月的
+`market-recap-*`）。翻译链路只翻了标题、表格和首页摘要，引用段落和部分链接标题原样留中文。
+
+处理方式分两层：
+
+| 层 | 做法 |
+|---|---|
+| 读者可见 | `/en/{ai,invest}/*` 顶部出现说明：「This page is machine-translated. N quoted source excerpts and N headlines below remain in the original Chinese — the Chinese version has the full text.」 |
+| 防止变多 | 新增 `scripts/check-i18n-leaks.mjs`，把**现存欠账**写进 `scripts/i18n-leaks-baseline.json`（20 文件 / 115 处），之后新增残留直接失败；进 gate，同时进每周巡检 |
+
+阈值取 **15 个汉字/行**：低于这个数多是专名或"见中文版"这类引用，不算读者读不懂的整段。
+中文**标题**单独归类为 `headings`（原始标题通常该保留），不触发提示。
+
+变异验证：往 `ai/digest-2026-11-21.en.mdx` 正文末尾加一段中文引用 → 脚本退出码 1，
+报 `ai/digest-2026-11-21.en.mdx：1 处（baseline 允许 0）`；删掉后退出码 0。
+
+**真正的修法在服务端**：`market-recap` 的英文版是 stock_pusher 生成的，得让它把引用段落也翻了，
+或者干脆不产出英文版。这里的 baseline 只是把欠账冻住、不再恶化。
+
 ### 英文页一直在公开道歉，而门禁是绿的（第 120 轮续）
 
 第 115 轮清理中文日报里的「（LLM 摘要失败，请稍后手动补充）」时，检查器只认**中文句式**。

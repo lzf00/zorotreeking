@@ -97,6 +97,22 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
           exit $code
 
+      - name: English pages without untranslated Chinese
+        # 第 121 轮：/en/ 下有整段中文（机翻只翻了标题和表格）。存量写进 baseline，
+        # 这里只负责"不再变多"；清理干净后再 --update-baseline。
+        run: |
+          set +e
+          node scripts/check-i18n-leaks.mjs > /tmp/i18n-leaks.log 2>&1; code=$?
+          cat /tmp/i18n-leaks.log
+          {
+            echo '### i18n leaks'
+            echo ''
+            echo '```'
+            cat /tmp/i18n-leaks.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit $code
+
       - name: Market snapshot age
         # 第 117 轮：数据"旧"不是错误，构建会成功、页面会打开，只是数字过期。
         # 用看门狗把关，而不是靠人偶然发现（us-market 的宏观块曾经 101 天没更新）。

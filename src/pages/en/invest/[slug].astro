@@ -15,6 +15,7 @@ import { coverByTranslationKey } from "@/lib/social-image";
 import { DIGEST_INVEST_HEADINGS, CONTENT_INVEST_HEADINGS } from "@/lib/prose-headings";
 import { digestDescription, recapDescription } from "@/lib/descriptions";
 import { coverageNotice, digestCoverage } from "@/lib/digest-coverage";
+import { cjkLeaks, untranslatedNotice } from "@/lib/i18n-leaks";
 
 // 日报正文的标题降过一级（h2 分组 / h3 条目），普通文章保持 h1/h2
 
@@ -49,6 +50,8 @@ const description =
 // 页面里如实说明一次，比让读者以为是自己的阅读器没渲染出来要好。
 const digestCoverageInfo = isDigest ? digestCoverage(entry.body ?? "") : null;
 const coverageText = digestCoverageInfo ? coverageNotice(digestCoverageInfo, lang) : null;
+// 第 121 轮：英文页里有整段没翻的中文（引用段落 / 链接标题），说清楚它是机翻的
+const untranslated = untranslatedNotice(cjkLeaks(entry.body ?? ""));
 ---
 
 <BaseLayout
@@ -108,6 +111,11 @@ const coverageText = digestCoverageInfo ? coverageNotice(digestCoverageInfo, lan
                 prose-blockquote:pl-6 prose-blockquote:py-0
                 prose-hr:hidden
                 prose-pre:bg-[#0d1117] prose-pre:rounded-xl`}>
+      {untranslated && (
+        <p class="not-prose mb-6 rounded-xl border border-sky-400/50 bg-sky-50/70 px-4 py-3 text-[13px] leading-relaxed text-sky-900 dark:border-sky-500/40 dark:bg-sky-500/10 dark:text-sky-200">
+          {untranslated}
+        </p>
+      )}
       {coverageText && (
         <p class="not-prose mb-8 rounded-xl border border-amber-400/50 bg-amber-50/70 px-4 py-3 text-[13px] leading-relaxed text-amber-800 dark:border-amber-500/40 dark:bg-amber-500/10 dark:text-amber-300">
           {coverageText}
