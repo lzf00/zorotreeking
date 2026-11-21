@@ -50,8 +50,9 @@ async function loadAllHorizontalPhotos(): Promise<PhotoEntry[]> {
       for (const e of entries) {
         // 跳过没尺寸的
         if (!e.width || !e.height) continue;
-        // 横版优先（≥ 1.2 宽高比）
-        if (e.width / e.height < 1.2) continue;
+        // 横版优先（第 111 轮从 ≥1.2 放宽到 ≥1.0）：池子只有 40 张而 digest 有 680 篇，
+        // 卡片的 object-cover 本来就会裁切，方形图完全能用，多一张就少几十次重复。
+        if (e.width / e.height < 1.0) continue;
         // 去重：同一张图 jpeg + webp 是两条记录，按文件名（去扩展）去重
         const base = (e.src || "").replace(/\.(jpe?g|png|webp)$/i, "");
         if (all.some((p) => (p.src || "").replace(/\.(jpe?g|png|webp)$/i, "") === base)) continue;
@@ -72,6 +73,33 @@ function hashSeed(s: string): number {
 }
 
 /**
+ * 选图索引（第 111 轮）。
+ *
+ * 旧实现是 `hashSeed(date) % pool.length` —— 看似随机，实际有两个毛病：
+ *  1. 池子会随时间变大（先只有 2 张，后来补到 40 张），于是**早期生成的 630 篇 digest
+ *     永远锁在 2 张封面上**，归档页翻两屏就是同一张图来回出现；
+ *  2. 哈希分布不均，相邻日期可能连续撞同一张。
+ *
+ * 新规则：日期 → 距 1970 的天数 → 对池子取模。这样在池子大小不变时是**等距铺开**的，
+ * 相邻两天必然不同（池子 > 1），同一天重跑仍然稳定，也不需要额外状态。
+ */
+export function pickIndex(seed: string, poolSize: number): number {
+  if (poolSize <= 0) return -1;
+  const iso = /^(\d{4})-(\d{2})-(\d{2})/.exec(seed);
+  if (iso) {
+    const days = Math.floor(Date.UTC(Number(iso[1]), Number(iso[2]) - 1, Number(iso[3])) / 86_400_000);
+    // 乘一个与池子大小互质的步长再取模：既铺满整个池子（池子 40 张时 40 天走完一圈），
+    // 又让相邻两天的封面看起来毫不相干 —— 直接取 days % 池子会让归档页按文件名顺序
+    // 一张张往下排（baokemeng-19、-18、-17…），像系统生成而不是选的。
+    let stride = 17;
+    const gcd = (a: number, b: number): number => (b === 0 ? a : gcd(b, a % b));
+    while (gcd(stride, poolSize) !== 1 && stride > 1) stride--;
+    return (((days * stride) % poolSize) + poolSize) % poolSize;
+  }
+  return hashSeed(seed) % poolSize;
+}
+
+/**
  * 给一篇 digest 选一张相册图作 cover。
  *
  * @param seed 通常传 digest 日期（YYYY-MM-DD），同一篇 digest 多次重跑会选到同一张
@@ -86,7 +114,7 @@ export async function pickCoverFromLibrary(seed: string): Promise<string | null>
     console.warn("[cover-picker] photo library 是空的，跳过 cover");
     return null;
   }
-  const idx = hashSeed(seed) % pool.length;
+  const idx = pickIndex(seed, pool.length);
   const pick = pool[idx];
   // 优先 1200×630 og 专用尺寸（jpg ~80KB，社交分享最稳）
   // 回退原图 jpg（3-4MB，慢但保底）→ webp（webp 在微信/QQ 部分版本不预览）
