@@ -13,14 +13,26 @@ import { parse } from "yaml";
 const source = await readFile(new URL("../.github/workflows/freshness-watch.yml", import.meta.url), "utf8");
 const workflow = parse(source);
 
-test("每天定时跑，且排在日报开跑之后", () => {
-  assert.ok(workflow.on?.schedule?.length, "没有 schedule 触发");
+test("主通道挂在日报跑完之后（workflow_run），定时只是兜底", () => {
+  // 实测这个仓库的 schedule 会延迟 5–7 小时，靠 cron 卡不准「日报到底出了没有」，
+  // 所以必须有一条「日报一完成就检查」的通道。
+  assert.deepEqual(workflow.on.workflow_run, { workflows: ["Daily digest"], types: ["completed"] });
+  assert.ok(workflow.on?.schedule?.length, "没有兜底 schedule：日报连跑都没跑时也要能发现");
+
   const cron = workflow.on.schedule[0].cron;
   assert.match(cron, /^\d+ \d+ \* \* \*$/, `cron 应该是每天一次，收到 ${cron}`);
   const [minute, hour] = cron.split(" ").map(Number);
-  // 08:00 BJT = 00:00 UTC 日报开跑；UTC 00:30 之后才算「等它有产出」
-  assert.ok(hour * 60 + minute >= 30, `要在 UTC 00:30 之后跑（避免和日报抢跑），收到 ${cron}`);
+  assert.notEqual(minute, 0, "错开整点：整点是 GitHub 全球 cron 的最高峰，实际会延迟好几个小时");
+  // 日报 UTC 18:17 开跑、约 70 分钟跑完 → 兜底检查必须晚于 19:30 UTC
+  assert.ok(hour * 60 + minute >= 19 * 60 + 30, `兜底 cron 要在日报窗口之后，收到 ${cron}`);
   assert.ok(workflow.on.workflow_dispatch !== undefined, "缺少手动触发，排障时跑不了");
+});
+
+test("状态挂在读者会点开的那次提交上（workflow_run 用上游 SHA）", () => {
+  const step = workflow.jobs.watch.steps.find((s) => s.env?.GITHUB_SHA);
+  assert.ok(step, "没有设置 GITHUB_SHA");
+  assert.match(String(step.env.GITHUB_SHA), /github\.event\.workflow_run\.head_sha/, "workflow_run 触发时要用上游 head_sha");
+  assert.match(String(step.env.GITHUB_SHA), /\|\|\s*github\.sha/, "定时/手动触发要回落到当前 HEAD");
 });
 
 test("权限最小化：只需要写 commit status", () => {

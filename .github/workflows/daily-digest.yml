@@ -1,12 +1,18 @@
 name: Daily digest
 
-# 每天 00:00 UTC = 08:00 北京：拉外部源 → 豆包摘要 → commit + push 回 main
+# 每天 UTC 18:17 = 北京 02:17：拉外部源 → 豆包摘要 → commit + push 回 main
+#
+# 为什么不是 00:00 UTC：这个仓库的 schedule 触发被 GitHub 排队，实测稳定延迟 5–7 小时
+# （daily-digest 连续 5 次落在 05:00–06:00 UTC，deadlink/a11y/lighthouse-mobile 也各延迟
+# 6–7 小时）。00:00 UTC 是全球 cron 最高峰的整点，排在队伍最前面的是海量仓库。
+# 换成 18:17 UTC（错开整点、避开高峰）后，即使再延迟 5–6 小时也仍在早上 08:00 前后落地；
+# 不延迟则北京凌晨就已生成，读者早上一开就有。
 # GitHub 安全规则：用 GITHUB_TOKEN 推的 commit 不触发 push event，所以
 # 我们这里跑完 fetch-and-commit 后显式调 deploy.yml（workflow_call）。
 
 on:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "17 18 * * *"
   workflow_dispatch:
     inputs:
       mode:
