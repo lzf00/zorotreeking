@@ -9,7 +9,7 @@ import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 import { parse } from "yaml";
 
-import { ageRows } from "../scripts/check-market-data-age.mjs";
+import { ageRows, beijingDateMs } from "../scripts/check-market-data-age.mjs";
 
 const NOW = Date.parse("2026-11-21T08:00:00Z");
 const at = (iso: string) => () => Date.parse(iso);
@@ -64,4 +64,42 @@ test("接线：npm 脚本 + 每周巡检都跑它，但不进阻塞门禁", asyn
   const audit = parse(await readFile(new URL("../.github/workflows/site-audit.yml", import.meta.url), "utf8"));
   const steps = JSON.stringify(audit.jobs);
   assert.match(steps, /check-market-data-age/);
+});
+
+test("ETF 分析：只在交易日跑，5 天内不算旧（周末不断更误报）", () => {
+  // 2026-11-20 是周五；周日晚上看，差 2 天，不该报旧
+  const rows = ageRows(
+    [{ file: "etf.json", label: "ETF 三因子分析", at: beijingDateMs("2026-11-20"), maxAgeDays: 5 }],
+    { now: Date.parse("2026-11-22T20:00:00+08:00") },
+  );
+  assert.equal(rows[0].ageDays, 2);
+  assert.equal(rows[0].stale, false);
+  assert.equal(rows[0].maxAgeDays, 5, "每行阈值要能覆盖全局默认值");
+});
+
+test("ETF 分析连续 6 天没跑：判旧", () => {
+  const rows = ageRows(
+    [{ file: "etf.json", label: "ETF 三因子分析", at: beijingDateMs("2026-11-15"), maxAgeDays: 5 }],
+    { now: Date.parse("2026-11-21T08:00:00Z") },
+  );
+  assert.equal(rows[0].stale, true);
+});
+
+test("没有时区的日期按北京时间零点解释，不随运行环境漂", () => {
+  assert.equal(beijingDateMs("2026-11-20"), Date.parse("2026-11-20T00:00:00+08:00"));
+  assert.ok(Number.isNaN(beijingDateMs(undefined)));
+});
+
+test("ETF 页面真的把「几天前」显示出来了（不是只算不用）", async () => {
+  const page = await readFile(new URL("../src/pages/invest/etf.astro", import.meta.url), "utf8");
+  assert.match(page, /analysisAge/, "页面没算分析日年龄");
+  assert.match(page, /humanAge\(analysisAge\.days\)/, "算了却没显示");
+  assert.match(page, /analysisAge\.severe/, "超过阈值要出横幅");
+});
+
+test("看门狗覆盖 ETF 分析，且给了它自己的阈值", async () => {
+  const { SNAPSHOTS } = await import("../scripts/check-market-data-age.mjs");
+  const etf = SNAPSHOTS.find((snap: any) => snap.file === "etf-three-factor-latest.json");
+  assert.ok(etf, "ETF 分析没进看门狗");
+  assert.equal(etf.maxAgeDays, 5);
 });

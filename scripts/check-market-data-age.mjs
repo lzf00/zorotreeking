@@ -24,20 +24,38 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DATA = path.join(ROOT, "src", "data");
 const DAY = 86_400;
 
-/** 要盯的快照：文件名 + 怎么从里面取出时间（返回毫秒）。 */
+/** 只有日期、没有时刻的字段（如 target_date: "2026-11-20"）按北京时间零点解释。 */
+export function beijingDateMs(date) {
+  if (!date) return Number.NaN;
+  return Date.parse(`${date}T00:00:00+08:00`);
+}
+
+/**
+ * 要盯的快照：文件名 + 怎么从里面取出时间（返回毫秒）+ 可选的自定义阈值。
+ * maxAgeDays 单独给是因为"每日"和"每交易日"的合理间隔不同：ETF 分析只在交易日跑，
+ * 周末/假期断两三天是正常的，不能拿 7 天以外的统一阈值去误报。
+ */
 export const SNAPSHOTS = [
   { file: "wind-market-latest.json", label: "A 股快照", at: (d) => Date.parse(d?.asOf ?? "") },
   { file: "wind-hk-market-latest.json", label: "港股快照", at: (d) => Date.parse(d?.asOf ?? "") },
   { file: "us-market-latest.json", label: "美股行情兜底快照", at: (d) => (d?.market?.quote_ts ?? NaN) * 1000 },
   { file: "us-market-latest.json", label: "美国宏观（BLS）", at: (d) => (d?.macro?.fetched_at ?? NaN) * 1000 },
+  {
+    file: "etf-three-factor-latest.json",
+    label: "ETF 三因子分析",
+    at: (d) => beijingDateMs(d?.target_date),
+    maxAgeDays: 5,
+  },
 ];
 
 /** 纯函数：把「文件内容 + 现在」变成一行行结论。 */
 export function ageRows(snapshots, { now = Date.now(), maxAgeDays = 7 } = {}) {
-  return snapshots.map(({ file, label, at }) => {
-    const ms = at(file);
+  return snapshots.map(({ file, label, at, maxAgeDays: ownLimit }) => {
+    // at 既可以是 (file) => ms 的函数（真实用法，要读文件），也可以直接给毫秒数（测试里更省事）
+    const ms = typeof at === "function" ? at(file) : at;
     const ageDays = Number.isNaN(ms) ? null : Math.max(0, Math.floor((now - ms) / (DAY * 1000)));
-    return { file, label, ageDays, stale: ageDays === null || ageDays > maxAgeDays };
+    const limit = ownLimit ?? maxAgeDays;
+    return { file, label, ageDays, maxAgeDays: limit, stale: ageDays === null || ageDays > limit };
   });
 }
 
@@ -52,7 +70,12 @@ async function load() {
         cache.set(snap.file, null);
       }
     }
-    withAt.push({ file: snap.file, label: snap.label, at: () => snap.at(cache.get(snap.file)) });
+    withAt.push({
+      file: snap.file,
+      label: snap.label,
+      maxAgeDays: snap.maxAgeDays,
+      at: () => snap.at(cache.get(snap.file)),
+    });
   }
   return withAt;
 }

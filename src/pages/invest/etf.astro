@@ -15,6 +15,7 @@ import path from "node:path";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import EtfLiveTurnover from "@/components/EtfLiveTurnover";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
+import { describeIsoSnapshot, humanAge } from "@/lib/snapshot-age";
 
 const lang = "zh" as const;
 const t = useTranslations(lang);
@@ -86,6 +87,11 @@ const asOfLabel = snap?.published_at
 // 逻辑：如果分析日就是"上一个工作日"，下次刷新是"下一个工作日 19:30"
 // 两段式刷新：15:15 早盘版（量能+方向二因子）→ 19:30 份额补全（全量三因子）
 const nextRefresh = "交易日 15:15 早盘版 → 19:30 份额补全";
+// 第 119 轮：分析日必须带"多久以前"。ETF 分析只在交易日跑，周末断两三天是正常的，
+// 但超过 5 天就说明夜间流水线断了 —— 那时页面上的"信号"其实是上周的。
+const analysisAge = describeIsoSnapshot(snap?.target_date ? `${snap.target_date}T00:00:00+08:00` : null, Date.now(), {
+  severeAfterDays: 5,
+});
 // 早盘二因子版检测：latest 里任一 sp 为 null 说明份额还没披露
 const isEarlyRun = !completeSnap && snap ? Object.values(snap.latest).some((s) => s.sp == null) : false;
 
@@ -159,7 +165,7 @@ function lightIcon(l: string): string {
         </p>
         <p class="mt-2 text-xs text-[var(--text-tertiary)] font-mono">
           数据源 akshare + 腾讯财经
-          {snap && <span> · 分析日 <strong>{snap.target_date}</strong> · 归档 {asOfLabel}</span>}
+          {snap && <span> · 分析日 <strong>{snap.target_date}</strong>（{humanAge(analysisAge.days)}）· 归档 {asOfLabel}</span>}
         </p>
         <p class="mt-1 text-[11px] text-[var(--text-tertiary)] font-mono">
           <span class="inline-flex items-center gap-1">
@@ -167,6 +173,11 @@ function lightIcon(l: string): string {
             {nextRefresh}
           </span>
         </p>
+        {snap && analysisAge.severe && (
+          <p class="mt-2 rounded-md border border-amber-400/50 bg-amber-50/70 px-3 py-2 text-xs leading-relaxed text-amber-800 dark:border-amber-500/40 dark:bg-amber-500/10 dark:text-amber-300">
+            三因子分析已经 {analysisAge.days} 天没有更新（夜间流水线可能断了）—— 下面的信号不是最新交易日的结果。
+          </p>
+        )}
         {isEarlyRun && (
           <p class="mt-3 inline-flex items-center gap-1.5 text-xs rounded-lg px-3 py-1.5 bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-900">
             ⏳ 当前为早盘二因子版（量能 70% + 方向 30%）· 份额因子 19:30 披露后自动补全
