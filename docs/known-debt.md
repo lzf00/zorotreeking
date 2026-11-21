@@ -36,3 +36,4 @@
 | 内容停更会被发现 | `check-freshness.mjs`（三条流水线 + 单语日） | 日报收尾 + 每周巡检 |
 | 搜索索引不新/命中死链 | `check-search.mjs` | 门禁（`--dist`） |
 | 10 | 1043 条外链体检不到 | 反爬域名（x.com/知乎/小红书/arxiv/eastmoney 等）对任何非浏览器请求回 403/429 | 体检只能覆盖 4454/5508，其余靠人工或浏览器实测 | 已知限制（第 132 轮） | `npm run check:external-links` |
+| 11 | 列表页 HTML 偏大但 gzip 正常 | `/archive/` 347 KB raw / 32 KB gzip、`#auto` 301 KB / 31 KB | 传输成本正常，raw 只影响解析（毫秒级）；已按 gzip 预算单独把关 | 已知取舍（第 134 轮） | `npm run check:weight` 看 gzip 一列 |

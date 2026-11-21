@@ -42,6 +42,9 @@ const sectionLabel: Record<string, string> = {
   photo: t("section.photo.title"),
   hike: t("section.hike.title"),
 };
+
+/** 最新多少篇带摘要；更早的走紧凑行（第 134 轮） */
+const DETAILED_COUNT = 20;
 ---
 
 <BaseLayout
@@ -63,13 +66,16 @@ const sectionLabel: Record<string, string> = {
     <TagIntro tag={tag} lang={lang} sections={sections} related={related} count={posts.length} from={stats.from} to={stats.to} bySection={stats.bySection} />
   </section>
   <section class="max-w-3xl mx-auto px-5">
+    {/* 第 134 轮：一个标签下可能有 300+ 篇（#auto 3400 个标签、31 KB gzip），
+        全部带摘要渲染既费 DOM 也费字节。最新 20 篇保留板块/日期/摘要，
+        更早的只留日期 + 标题 —— 链接一条不少，只是不再带摘要。 */}
     <ul class="divide-y divide-[var(--border)]">
-      {posts.map((p) => (
+      {posts.slice(0, DETAILED_COUNT).map((p) => (
         <li class="py-5">
           <div class="flex items-center gap-2 text-xs text-[var(--text-tertiary)] mb-1">
             <span class={sectionColor[p.section]}>{sectionLabel[p.section]}</span>
             <span>·</span>
-            <time>{p.date.toISOString().slice(0, 10)}</time>
+            <time datetime={p.date.toISOString().slice(0, 10)}>{p.date.toISOString().slice(0, 10)}</time>
           </div>
           <h2 class="text-lg font-semibold">
             <a href={pathWithLang(`/${p.section}/${p.slug}`, lang)}
@@ -78,6 +84,18 @@ const sectionLabel: Record<string, string> = {
             </a>
           </h2>
           {p.description && <p class="mt-1 text-sm text-[var(--text-secondary)] line-clamp-2">{p.description}</p>}
+        </li>
+      ))}
+      {posts.slice(DETAILED_COUNT).map((p) => (
+        <li>
+          <a href={pathWithLang(`/${p.section}/${p.slug}`, lang)}
+             class="group flex items-baseline gap-3 py-2 text-sm transition-colors hover:text-[var(--text-secondary)]">
+            <time class="shrink-0 font-mono text-xs text-[var(--text-tertiary)]" datetime={p.date.toISOString().slice(0, 10)}>
+              {p.date.toISOString().slice(0, 10)}
+            </time>
+            <span class={`shrink-0 text-xs ${sectionColor[p.section]}`}>{sectionLabel[p.section]}</span>
+            <span class="min-w-0 flex-1 truncate group-hover:underline">{p.title}</span>
+          </a>
         </li>
       ))}
       {posts.length === 0 && <li class="py-12 text-center text-[var(--text-tertiary)]">{t("tag.empty")}</li>}

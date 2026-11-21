@@ -59,6 +59,31 @@ test("基线里已经不存在的页面会提示清理", () => {
   assert.match(warnings.join(), /\/gone\/ 已不存在/);
 });
 
+test("gzip 超预算要红：传输成本和原始字节是两件事", () => {
+  // /archive/ 347 KB raw 但只有 32 KB gzip；路线页反过来：raw 309 KB、gzip 79 KB
+  const { failures } = evaluatePages([
+    { path: "/list/", htmlBytes: 340 * KB, cssBytes: 92 * KB, gzipBytes: 32 * KB, tags: 2600 },
+    // 只看 gzip：raw/CSS/标签都在预算内（真实世界里这三样容易一起超，测试要能单独验 gzip）
+    { path: "/route/", htmlBytes: 200 * KB, cssBytes: 100 * KB, gzipBytes: 79 * KB, tags: 900 },
+  ], { "/list/": { htmlBytes: 347 * KB, cssBytes: 92 * KB, gzipBytes: 32 * KB, tags: 2600, reason: "列表页" } });
+  assert.deepEqual(failures.map((f) => f.kind), ["gzip"], "只有 gzip 超标的那页该红");
+  assert.match(failures[0].message, /gzip/);
+});
+
+test("标签数超预算要红：DOM 节点也是成本", () => {
+  const { failures } = evaluatePages([{ path: "/x/", htmlBytes: 100 * KB, cssBytes: 10 * KB, gzipBytes: 20 * KB, tags: 3600 }], {});
+  assert.equal(failures.length, 1);
+  assert.equal(failures[0].kind, "tags");
+});
+
+test("基线页面的 gzip 再长 10% 也要重新审", () => {
+  const baseline = { "/route/": { htmlBytes: 309 * KB, cssBytes: 140 * KB, gzipBytes: 70 * KB, tags: 2000, reason: "路线页地图样式" } };
+  assert.equal(evaluatePages([{ path: "/route/", htmlBytes: 309 * KB, cssBytes: 140 * KB, gzipBytes: 74 * KB, tags: 2000 }], baseline).failures.length, 0);
+  const drift = evaluatePages([{ path: "/route/", htmlBytes: 309 * KB, cssBytes: 140 * KB, gzipBytes: 82 * KB, tags: 2000 }], baseline);
+  assert.equal(drift.failures[0].kind, "gzip-drift");
+  assert.match(drift.failures[0].message, /路线页地图样式/, "报错要带基线理由");
+});
+
 test("真实基线：每条都有理由，且确实超预算（没有白名单滥用）", async () => {
   const baseline = JSON.parse(await readFile(new URL("../scripts/page-weight-baseline.json", import.meta.url), "utf8"));
   const entries = Object.entries(baseline) as Array<[string, { htmlBytes: number; cssBytes: number; reason: string }]>;
@@ -66,7 +91,12 @@ test("真实基线：每条都有理由，且确实超预算（没有白名单�
   for (const [path, item] of entries) {
     assert.ok(item.reason && item.reason.length > 6, `${path} 缺少理由`);
     assert.match(path, /^\/.*\/$/, `${path} 路径格式不对`);
-    assert.ok(item.htmlBytes > BUDGETS.htmlBytes || item.cssBytes > BUDGETS.cssBytes, `${path} 没超预算却被登记进基线`);
+    const over =
+      item.htmlBytes > BUDGETS.htmlBytes ||
+      item.cssBytes > BUDGETS.cssBytes ||
+      item.gzipBytes > BUDGETS.gzipBytes ||
+      item.tags > BUDGETS.tags;
+    assert.ok(over, `${path} 没超任何预算却被登记进基线`);
   }
 });
 

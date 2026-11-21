@@ -38,7 +38,7 @@
 | `check` | `astro check`（TS 类型 + 模板） |
 | `npm test` | 单元/集成测试（node:test + tsx） |
 | `build` | 静态构建（1194 个页面） |
-| `check:weight` | 页面重量闸门：HTML > 220 KB / 内联 CSS > 120 KB 就红；已有超标页在 `scripts/page-weight-baseline.json`，比基线再长 10% 要重新登记理由 |
+| `check:weight` | 页面重量闸门：HTML > 220 KB / 内联 CSS > 120 KB 就红；已有超标页在 `scripts/page-weight-baseline.json`，比基线再长 10% 要重新登记理由 · 同时看 gzip 60 KB / 3000 标签 |
 | `check:images` | 图片体积与格式预算 |
 | `check:links` | 站内链接与锚点 |
 | `check:sectors` | 板块名映射（中英一致） |

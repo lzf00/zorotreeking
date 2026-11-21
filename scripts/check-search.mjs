@@ -56,7 +56,7 @@ export function summarizeSearchProbe(rows) {
   // 第 118 轮：索引不是新的、命中是死链，都算"搜索坏了"——用户感知和 403 一样
   const staleIndex = rows
     .filter((row) => row.freshness)
-    .map((row) => ({ url: row.freshness.url, ...assertFreshHit(row.freshness.rank === null ? null : { rank: row.freshness.rank }) }))
+    .map((row) => ({ url: row.freshness.url, ...assertFreshHit(row.freshness.rank === null ? null : row.freshness) }))
     .filter((item) => !item.ok);
   const deadLinks = rows.flatMap((row) => row.deadLinks ?? []);
   return {
@@ -72,12 +72,42 @@ export function summarizeSearchProbe(rows) {
 }
 
 /**
- * 纯逻辑：最新一篇日报是否出现在自己的标题查询里。
- * @param {{ rank: number } | null} hit 命中位置（1 开始），没出现在前 N 名就是 null
+ * 纯逻辑：最新一篇日报是否"新鲜到能被搜到"。
+ *
+ * 第 134 轮修正：原来硬性要求排进前 3，实测会**误报**——用最新一期的完整标题
+ * （`投资资讯日报 · 2026-11-21`）查询时，排在前面的全是**聚合页**
+ * （`/tag/tonghuashun/`、`/invest/digest/`、`/archive/`），因为这些页面把 189 期标题
+ * 全列了出来，词频天然更高。这不是"索引没更新"，是列表页本来就该排在前面。
+ *
+ * 真正要保证的性质是：**最新一期的排名必须高于所有旧期**（新内容压过旧内容）。
+ * 所以：前 3 名直接过；否则只要它排在同类旧页面之前就过。
+ *
+ * @param {{ rank: number, top?: string[], url?: string } | null} hit
  */
 export function assertFreshHit(hit, { expectedRank = 3 } = {}) {
-  if (!hit) return { ok: false, reason: `最新日报没有出现在搜索结果（期望前 ${expectedRank} 名）` };
-  if (hit.rank > expectedRank) return { ok: false, reason: `最新日报排在第 ${hit.rank} 名（期望前 ${expectedRank} 名）` };
+  if (!hit || hit.rank == null) return { ok: false, reason: `最新日报没有出现在搜索结果（期望前 ${expectedRank} 名）` };
+  const top = hit.top ?? [];
+  const url = hit.url ?? "";
+  // 「同类旧期」的判据：URL 里日期之前的部分（`/invest/digest-`、`/ai/digest-`）
+  const siblingPattern = url.replace(/\d{4}-\d{2}-\d{2}[\s\S]*$/, "");
+  if (siblingPattern && top.length > 0 && hit.rank > 1) {
+    const olderAbove = top
+      .slice(0, hit.rank - 1)
+      .filter((candidate) => candidate.startsWith(siblingPattern) && candidate !== url);
+    if (olderAbove.length > 0) {
+      return {
+        ok: false,
+        reason: `最新日报排在第 ${hit.rank} 名，还落在旧期 ${olderAbove[0]} 后面（索引可能没更新）`,
+      };
+    }
+  }
+  if (top.length === 0) {
+    // 老调用方（只有 rank 没有榜单）沿用严格规则
+    return hit.rank > expectedRank
+      ? { ok: false, reason: `最新日报排在第 ${hit.rank} 名（期望前 ${expectedRank} 名）` }
+      : { ok: true, reason: null };
+  }
+  // 有榜单且没有旧期压在前面 = 索引是新的；聚合页排前面是正常现象（列表页列了全部标题）
   return { ok: true, reason: null };
 }
 
@@ -232,7 +262,7 @@ async function main() {
           total: probe.total,
           top: probe.top,
           meta: true,
-          freshness: { url: item.url, rank: idx === -1 ? null : idx + 1 },
+          freshness: { url: item.url, rank: idx === -1 ? null : idx + 1, top: probe.top },
         });
       } catch (error) {
         rows.push({ query, error: String(error?.message ?? error).split("\n")[0], meta: true, freshness: { url: item.url, rank: null } });

@@ -63,3 +63,35 @@ test("索引旧 / 命中死链都算「搜索坏了」（原来只看报错）",
   assert.equal(dead.ok, false);
   assert.deepEqual(dead.deadLinks, ["/gone/"]);
 });
+
+// 第 134 轮：聚合页（标签页/归档页）把 189 期标题全列出来，词频天然高于单篇，
+// 用完整标题查询时单篇排到第 9 名是**正常的**，不能当成"索引没更新"。
+test("排在聚合页后面但压过所有旧期，算新鲜", () => {
+  const top = [
+    "/tag/tonghuashun/",
+    "/invest/digest/",
+    "/tag/digest/",
+    "/tag/auto/",
+    "/invest/digest-2026-11-21/",
+    "/invest/digest-2026-10-21/",
+  ];
+  const hit = assertFreshHit({ rank: 5, url: "/invest/digest-2026-11-21/", top });
+  assert.equal(hit.ok, true, hit.reason ?? "");
+});
+
+test("最新一期反而排在旧期后面，仍然要红（这才是索引没更新）", () => {
+  const top = ["/invest/digest/", "/invest/digest-2026-11-20/", "/invest/digest-2026-11-21/"];
+  const hit = assertFreshHit({ rank: 3, url: "/invest/digest-2026-11-21/", top });
+  assert.equal(hit.ok, false);
+  assert.match(hit.reason, /旧期 \/invest\/digest-2026-11-20\//);
+});
+
+test("没有旧期压在前面就算新鲜（聚合页排前面是正常的）", () => {
+  const hit = assertFreshHit({ rank: 9, url: "/invest/digest-2026-11-21/", top: ["/tag/auto/", "/invest/digest/"] });
+  assert.equal(hit.ok, true, hit.reason ?? "");
+});
+
+test("完全没有命中仍然要红", () => {
+  const hit = assertFreshHit({ rank: null, url: "/invest/digest-2026-11-21/", top: [] });
+  assert.equal(hit.ok, false);
+});
