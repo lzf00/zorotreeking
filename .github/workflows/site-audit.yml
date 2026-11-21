@@ -97,6 +97,24 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
           exit $code
 
+      - name: a11y sample from sitemap
+        # 第 124 轮：手写的 26 条路径只覆盖"我记得的页面"。这里每周从 sitemap 分节抽样 12 页
+        # （seed 取 ISO 周，一周内结果稳定、失败可复现；下周自动换一批）。
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: /tmp/pw-browsers
+        run: |
+          set +e
+          npm run check:a11y:sample > /tmp/a11y-sample.log 2>&1; code=$?
+          tail -40 /tmp/a11y-sample.log
+          {
+            echo '### a11y sample (sitemap)'
+            echo ''
+            echo '```'
+            grep -E "✗|次检查|抽样" /tmp/a11y-sample.log | head -40
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit $code
+
       - name: English pages without untranslated Chinese
         # 第 121 轮：/en/ 下有整段中文（机翻只翻了标题和表格）。存量写进 baseline，
         # 这里只负责"不再变多"；清理干净后再 --update-baseline。

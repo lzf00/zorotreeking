@@ -13,6 +13,11 @@
  *   node scripts/check-a11y.mjs --mobile                # 追加 iPhone 13 视口（窄屏才会溢出的问题）
  *   node scripts/check-a11y.mjs --dist                  # 自己起静态服务打本地 dist（门禁用）
  *   node scripts/check-a11y.mjs --dist --paths=/,/ai/    # 只测这几页（门的快检）
+ *   node scripts/check-a11y.mjs --dist --sample=12       # 从 sitemap 分节抽样 12 页（每周巡检用）
+ *
+ * 为什么要有 `--sample`：手写路径表只能覆盖"我记得的页面"。第 123 轮往 23 条里加了三类，
+ * 立刻抓到 `/now/` 嵌套 `<main>` 和留言板焦点环被抹。1188 个 URL 靠人挑 26 个，剩下的
+ * 809 个模板实例没人看过 —— 所以按周从 sitemap 确定性抽样补盲。
  *
  * 输出：控制台汇总 + a11y-report.json（CI 里作为 artifact 上传）
  *
@@ -78,6 +83,29 @@ if (distArg) {
 }
 
 // --paths：只测指定页面。门禁里用它跑一个「模板级」快检（全站 46 次检查要 2.5 分钟）
+// --sample=N：从 sitemap 分节抽样（门禁外的每周巡检用；seed 默认取 ISO 周，保证一周内稳定）
+const sampleArg = args.find((arg) => arg.startsWith("--sample="));
+if (sampleArg) {
+  const count = Number(sampleArg.slice("--sample=".length));
+  if (!Number.isFinite(count) || count < 1) {
+    console.error("✗ --sample= 需要一个正整数");
+    process.exit(2);
+  }
+  const seedArg = args.find((arg) => arg.startsWith("--seed="));
+  const seed = seedArg ? seedArg.slice("--seed=".length) : new Date().toISOString().slice(0, 10);
+  const sitemapPath = args.find((arg) => arg.startsWith("--sitemap="))?.slice("--sitemap=".length) ?? "dist/sitemap.xml";
+  const { urlsFromSitemap, samplePaths } = await import("./lib/a11y-sample.mjs");
+  let xml;
+  try {
+    xml = fs.readFileSync(sitemapPath, "utf8");
+  } catch {
+    console.error(`✗ 读不到 sitemap：${sitemapPath}（先 npm run build）`);
+    process.exit(2);
+  }
+  PATHS = samplePaths(urlsFromSitemap(xml), { count, seed });
+  console.log(`抽样：seed=${seed}，从 sitemap 选 ${PATHS.length} 页（分节轮转）`);
+}
+
 const pathsArg = args.find((arg) => arg.startsWith("--paths="));
 if (pathsArg) {
   const picked = pathsArg.slice("--paths=".length).split(",").map((p) => p.trim()).filter(Boolean);
