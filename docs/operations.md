@@ -79,12 +79,19 @@ curl -s "https://api.github.com/repos/lzf00/zorotreeking/check-runs/<id>/annotat
 | Node 升到 ≥22.23.4 | 本机 22.23.2 被审计拦住；Astro 7.4.13 能清掉两条 advisory | 依赖审计告警常驻 | 用户（改本机/CI 版本） |
 | nginx 三条配置 | 文档已写好（`docs/nginx-hardening.md`） | `index.html` 301、`cache-control` 重复、brotli 未开 | 用户（服务器权限） |
 | `/api/market/*` 缓存 TTL | 服务端没设 TTL | 冷启动 3.5 秒会拖 LCP | 用户（服务端） |
-| `/api/feedback` GET 返回 422 | 前端已静默降级，计数永远不显示 | 「N 人觉得有用」形同虚设 | 用户（服务端） |
 | `gh` token 失效 | 本机无法用高额度 API、无法 dispatch | 排障只能靠匿名额度 | 用户（`gh auth login`） |
 | 生产直连被站点频控 | 本机 IP 拿 `000` | 无法直接 curl 验证线上 | 等冷却 |
 | 缺 11-19 ~ 11-21 的日报 | 内容流水线静默停更三天 | 读者看到旧内容 | 已修权限，等下一次定时运行验证 |
 
-## 5. 变更这一页的规矩
+## 5. 已修复的历史问题（别重复排查）
+
+| 问题 | 结论 |
+|---|---|
+| `/api/feedback` GET 长期 422 | 第 104 轮复查已正常（合法 slug 返回 `{"likes":0,"dislikes":0,"my_vote":null}`）；`slug` 缺失时仍会 422，那是 FastAPI 的参数校验，正常。现在部署验收会打一次探针，再坏就会在部署阶段红 |
+| 首页精选是 5 个月前的旧闻 | 第 101 轮改成「最近 20 篇里挑最长」，已上线 |
+| 边缘可能缓存旧 HTML | 第 102 轮加了 `<meta name="build">` + 验收断言 |
+
+## 6. 变更这一页的规矩
 
 - 改工作流 → 同步第 1 节（`tests/operations-doc.test.ts` 会检查每个工作流都被提到）
 - 改 `gate` → 同步第 2 节（测试会检查每个 gate 步骤都出现在表里）

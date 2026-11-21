@@ -45,10 +45,14 @@ test("时间表与实际 cron 对不上就红（防止改完 cron 忘了改文�
   assert.match(doc, /延迟\s*\*?\*?5–7/, "文档必须写明 schedule 会延迟 5–7.5 小时这个事实");
 });
 
-test("要人决定的事项清单不是空壳", () => {
+test("要人决定的事项清单不是空壳，且已修复的问题单独成节", () => {
   assert.match(doc, /需要人决定的事/);
-  for (const topic of ["Node", "nginx", "api/market", "gh", "feedback"]) {
+  for (const topic of ["Node", "nginx", "api/market", "gh", "日报"]) {
     assert.ok(doc.toLowerCase().includes(topic.toLowerCase()), `待办清单漏了「${topic}」`);
   }
+  // 修好的问题不能继续挂在"要人决定"里，否则读者会去修一个已经不存在的问题
+  const pending = doc.slice(doc.indexOf("需要人决定的事"), doc.indexOf("已修复的历史问题"));
+  assert.doesNotMatch(pending, /\/api\/feedback/, "feedback 422 已修复，不该还挂在待办里");
+  assert.match(doc, /已修复的历史问题/, "没有「已修复」小节，读者分不清哪些还在等你");
   assert.match(doc, /architecture\.md/, "速查页要能跳回历史记录");
 });

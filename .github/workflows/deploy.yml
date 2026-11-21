@@ -608,6 +608,15 @@ jobs:
                       raise ValueError("AMap CSP allowlist missing from production response")
                   if not re.search(r"style-src [^;]*https://giscus\.app(?: |;)", csp):
                       raise ValueError("Giscus stylesheet origin missing from style-src")
+                  # 点赞接口：线上 GET 曾经长期 422（每篇文章底部的计数永远为空，没人发现）。
+                  # 这条断言只验证「接口还能正常回 JSON」，不写任何投票数据（用探针 slug）。
+                  with urllib.request.urlopen(
+                      "https://www.zorotreeking.online/api/feedback?slug=item%3Adeploy-probe", timeout=20
+                  ) as resp:
+                      feedback = json.load(resp)
+                  for key in ("likes", "dislikes", "my_vote"):
+                      if key not in feedback:
+                          raise ValueError(f"/api/feedback response is missing {key}: {feedback}")
                   with urllib.request.urlopen("https://www.zorotreeking.online/api/market/etf", timeout=20) as resp:
                       data = json.load(resp)
                   items = data.get("items") or []
