@@ -92,6 +92,9 @@ export default function AIChatWidget({ initialOpen = false }: { initialOpen?: bo
   const [currentModel, setCurrentModel] = useState<string>("Kimi-K2.5");
   const sessionId = useRef<string>("");
   const scrollRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const launcherRef = useRef<HTMLButtonElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   // 加载历史 + 模型列表
   useEffect(() => {
@@ -154,6 +157,25 @@ export default function AIChatWidget({ initialOpen = false }: { initialOpen?: bo
     };
     document.addEventListener("keydown", closeOnEscape);
     return () => document.removeEventListener("keydown", closeOnEscape);
+  }, [open]);
+
+  /**
+   * 面板的键盘契约（第 142 轮）。
+   *
+   * 实测修复前：面板打开后焦点**还在 <body> 上**，按 Tab 直接走到背后的页面链接，
+   * 键盘用户根本上不进这个浮层；Esc 关闭后焦点又落到随机的页面元素上。
+   * （挂件是懒加载的：静态按钮点完换成 React 按钮，原来那个按钮被移除，焦点就掉了。）
+   *
+   * 这里刻意**不做焦点陷阱**：聊天面板是非模态浮层，用户需要能一边聊一边读页面。
+   * 只保证"进得去、出得来"：打开时聚焦输入框，关闭时回到悬浮按钮。
+   */
+  useEffect(() => {
+    if (!open) return;
+    const timer = window.setTimeout(() => inputRef.current?.focus(), 60);
+    return () => {
+      window.clearTimeout(timer);
+      launcherRef.current?.focus();
+    };
   }, [open]);
 
   async function send(text: string) {
@@ -294,6 +316,7 @@ export default function AIChatWidget({ initialOpen = false }: { initialOpen?: bo
       {/* 浮动按钮：Q 版索隆 */}
       <button
         type="button"
+        ref={launcherRef}
         onClick={() => setOpen((v) => !v)}
         aria-label="AI 助手"
         aria-controls="ai-chat-panel"
@@ -343,6 +366,7 @@ export default function AIChatWidget({ initialOpen = false }: { initialOpen?: bo
       {open && (
         <div
           id="ai-chat-panel"
+          ref={panelRef}
           role="dialog"
           aria-label="AI 助手对话框"
           style={{
@@ -421,7 +445,7 @@ export default function AIChatWidget({ initialOpen = false }: { initialOpen?: bo
           </header>
 
           {/* 消息区 */}
-          <div ref={scrollRef} style={{
+          <div ref={scrollRef} role="log" aria-live="polite" aria-label="对话记录" style={{
             flex: 1, overflowY: "auto", padding: "16px 14px",
             display: "flex", flexDirection: "column", gap: "14px",
           }}>
@@ -467,7 +491,7 @@ export default function AIChatWidget({ initialOpen = false }: { initialOpen?: bo
                   style={{ accentColor: "#2563eb" }} />
                 🌐 联网搜索
               </label>
-              <span style={{ marginLeft: "auto", color: "var(--text-tertiary, #9ca3af)" }}>
+              <span role="status" aria-live="polite" style={{ marginLeft: "auto", color: "var(--text-tertiary, #9ca3af)" }}>
                 {sending ? "回复中…" : ""}
               </span>
             </div>
@@ -476,6 +500,8 @@ export default function AIChatWidget({ initialOpen = false }: { initialOpen?: bo
               style={{ display: "flex", gap: "6px" }}
             >
               <textarea
+                ref={inputRef}
+                aria-label="输入消息"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => {

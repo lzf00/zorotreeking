@@ -280,6 +280,45 @@ for (const path of PATHS) {
             });
           }
           entry.dialogChecked = true;
+
+          // AI 助手浮层的键盘契约（第 142 轮）。它和前两个不同：**非模态**，
+          // 不设 aria-modal、也不做焦点陷阱（要能一边聊一边读页面），
+          // 只需保证"进得去、出得来"。修复前实测：打开后焦点还在 <body>，Tab 直接走到页面链接。
+          const chatIssues = [];
+          const chatLauncher = page.locator("#ai-chat-launcher, [aria-controls=\"ai-chat-panel\"]").first();
+          if ((await chatLauncher.count()) === 0) {
+            chatIssues.push({ target: "#ai-chat-launcher", reason: "首页找不到 AI 助手入口" });
+          } else {
+            await chatLauncher.click();
+            await page.waitForSelector("#ai-chat-panel", { timeout: 20_000 });
+            await page.waitForTimeout(900);
+            const chat = await page.evaluate(() => {
+              const panel = document.querySelector("#ai-chat-panel");
+              return {
+                focusInPanel: Boolean(document.activeElement?.closest("#ai-chat-panel")),
+                hasLog: Boolean(panel?.querySelector('[role="log"]')),
+                inputLabel: panel?.querySelector("textarea")?.getAttribute("aria-label") ?? "",
+              };
+            });
+            if (!chat.focusInPanel) chatIssues.push({ target: "#ai-chat-panel", reason: "打开后焦点没有进入面板" });
+            if (!chat.hasLog) chatIssues.push({ target: "#ai-chat-panel", reason: "对话记录没有 role=log，读屏不播报新消息" });
+            if (!chat.inputLabel) chatIssues.push({ target: "#ai-chat-panel textarea", reason: "输入框没有可读标签" });
+            await page.keyboard.press("Escape");
+            await page.waitForTimeout(400);
+            const back = await page.evaluate(() =>
+              Boolean(document.activeElement?.closest("[aria-controls=\"ai-chat-panel\"]")),
+            );
+            if (!back) chatIssues.push({ target: "#ai-chat-panel", reason: "关闭后焦点没有回到悬浮按钮" });
+          }
+          if (chatIssues.length) {
+            violations.push({
+              id: "chat-panel-keyboard",
+              impact: "serious",
+              count: chatIssues.length,
+              nodes: chatIssues.map((issue) => ({ target: issue.target, reason: issue.reason })),
+            });
+          }
+          entry.chatChecked = true;
         }
 
         // 照片灯箱的键盘契约（第 141 轮）：同样是 axe 测不出的行为问题。
