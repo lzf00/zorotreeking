@@ -689,6 +689,31 @@ npm run check:images -- --limit 150 --warn
 
 这条和 `check:ssr-clock`（第 82 轮）是同一类问题的两个面：**渲染里任何"现在"都必须是显式的**。
 
+### 我加的巡检步骤，第一次运行就会挂（第 125 轮）
+
+翻 Actions 历史时发现 `Full-site audit` **一次都没跑过**（今天 03:03 才加，等周四），
+于是逐条本地复跑它的步骤 —— 发现自己昨天埋的雷：
+
+    第 124 轮加的步骤：npm run check:a11y:sample
+    这个脚本：node scripts/check-a11y.mjs --dist --sitemap=dist/sitemap.xml --sample=12
+    但 site-audit 从不构建 dist（它查的就是线上那份）→ 缺 dist/sitemap.xml → exit 2
+
+也就是说这条巡检第一次运行（下周四 09:00）会直接失败，而且**要等一周才发现**。
+
+修法：步骤改成打线上 + 用上面 `curl` 下来的线上 sitemap：
+
+    node scripts/check-a11y.mjs --sitemap=/tmp/sitemap.xml --sample=12 --seed=$(date -u +%G-W%V)
+
+顺带给 `check-a11y.mjs` 加 `--dry-run`：只抽样不加载页面，秒验抽样是否正常
+（原来验一次要跑 24 次页面加载 ≈ 2 分钟）。
+
+`tests/site-audit-a11y.test.ts` 四条盯住这件事：步骤不许出现 `--dist`、必须用线上 sitemap、
+seed 必须按 ISO 周变化、以及"巡检确实没构建 dist"这个前提本身（将来若开始构建，测试该重写）。
+变异验证：把 `--dist` 加回步骤 → 测试立刻红；删掉 → 绿。
+
+顺手复核了其余步骤的退出码：`check-freshness` 0、`check-i18n-leaks` 0、`check-deps` 0、
+`check-market-data-age` 1（预期，BLS 与美股兜底仍是 101 天）。
+
 ### 手工清单挑不完 1188 个页面，那就从 sitemap 抽样（第 124 轮）
 
 第 123 轮往 23 条手写路径里加了三条，立刻抓到两个真 bug。这说明问题不在"有没有 bug"，

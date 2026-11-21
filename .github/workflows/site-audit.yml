@@ -104,7 +104,10 @@ jobs:
           PLAYWRIGHT_BROWSERS_PATH: /tmp/pw-browsers
         run: |
           set +e
-          npm run check:a11y:sample > /tmp/a11y-sample.log 2>&1; code=$?
+          # 这条巡检**不构建 dist**（查的就是线上那份），所以 sitemap 用上面抓下来的线上文件，
+          # 页面也打线上 —— 与 audit-site.mjs 同一口径。
+          node scripts/check-a11y.mjs --sitemap=/tmp/sitemap.xml --sample=12 \
+            --seed="$(date -u +%G-W%V)" > /tmp/a11y-sample.log 2>&1; code=$?
           tail -40 /tmp/a11y-sample.log
           {
             echo '### a11y sample (sitemap)'

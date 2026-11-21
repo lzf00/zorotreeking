@@ -104,6 +104,9 @@ if (sampleArg) {
   }
   PATHS = samplePaths(urlsFromSitemap(xml), { count, seed });
   console.log(`抽样：seed=${seed}，从 sitemap 选 ${PATHS.length} 页（分节轮转）`);
+  for (const path of PATHS) console.log(`  · ${path}`);
+  // --dry-run：只抽样不加载页面（本地/CI 都能秒验抽样是否正常，不用等两分钟跑完）
+  if (args.includes("--dry-run")) process.exit(0);
 }
 
 const pathsArg = args.find((arg) => arg.startsWith("--paths="));
