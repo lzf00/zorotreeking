@@ -13,6 +13,8 @@
  * 保持"隐藏了什么"是透明的。
  */
 
+import { execSync } from "node:child_process";
+
 export interface Commit {
   hash: string;
   /** ISO 日期（YYYY-MM-DD） */
@@ -98,6 +100,21 @@ export function buildChangelog(commits: Commit[]): ChangelogResult {
     .sort((a, b) => b[0].localeCompare(a[0]))
     .map(([month, list]) => ({ month, commits: list }));
   return { sections, visibleCount: visible.length, hiddenCount: commits.length - visible.length };
+}
+
+/** 读仓库的 git 历史（构建期用）。浅克隆/没装 git 时返回空数组，页面自己兜底。 */
+export function readGitLog(root = process.cwd()): Commit[] {
+  try {
+    const raw = execSync('git log --pretty=format:"%h|%ad|%s" --date=short --no-merges', {
+      cwd: root,
+      encoding: "utf-8",
+      maxBuffer: 4 * 1024 * 1024,
+    });
+    return parseGitLog(raw);
+  } catch (e) {
+    console.warn("[git-log] unavailable:", (e as Error).message);
+    return [];
+  }
 }
 
 /** 解析 `git log --pretty=format:"%h|%ad|%s"` 的输出。 */
