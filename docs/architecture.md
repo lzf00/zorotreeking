@@ -665,6 +665,27 @@ npm run check:images -- --limit 150 --warn
 当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
 原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
 
+### 补跑成功了，但站点没变：GITHUB_TOKEN 推的 commit 不触发 workflow（第 114 轮续）
+
+第二次补跑终于产出干净内容 —— 中英成对的 `digest-2026-11-21.{zh,en}.mdx` 共 4 个文件，
+占位符 0，封面中英一致，门禁 491 项全绿。但 `deploy-meta.json` 里的 sha 一直停在旧的，
+翻了 runs 列表才发现：**根本没有 `6def5676` 这个 commit 的 Build & Deploy 运行**。
+
+原因是个老坑：**用 `GITHUB_TOKEN` 推的 commit 不会触发任何 workflow**（GitHub 防递归规则）。
+于是补跑把内容写进了仓库，站点却永远不会自己更新 —— 除非恰好有人（或定时任务）再推一次。
+`workflow_dispatch` / `repository_dispatch` 是这个规则的例外，可以显式发起。
+
+| 改动 | 内容 |
+|---|---|
+| 补跑 job | push 成功后调用 `gh api .../actions/workflows/deploy.yml/dispatches -f ref=main` |
+| 权限 | 该 job 加 `actions: write`（dispatch 需要） |
+| 失败兜底 | dispatch 失败时打 `::warning::`：内容已进仓库，但要等下次 push 或 15:30 定时部署才生效 |
+| 测试 | 断言 run 脚本里有 `dispatches`、job 有 `actions: write` |
+
+这条值得记住的不是"补跑又能用了"，而是 **一条自动化链路里最隐蔽的失败模式：每一步都报成功**。
+commit 成功、gate 绿色、job 绿勾，唯独"部署"这一环因为权限模型的隐式规则跳过了。
+所以现在的成功判据不是"job 是绿的"，而是"`deploy-meta.json` 的 sha 变成新 commit"。
+
 ### 补跑差点把部署拖成超时（第 114 轮）
 
 第 113 轮把补跑塞在部署 job 的最后一步，当时只想到"失败别影响部署结论"，漏算了一件事：

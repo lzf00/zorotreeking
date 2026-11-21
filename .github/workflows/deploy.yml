@@ -784,6 +784,7 @@ jobs:
     permissions:
       contents: write
       statuses: write
+      actions: write   # 下面要用 dispatch 把新内容部署出去
     steps:
       - uses: actions/checkout@v4
         with:
@@ -860,4 +861,16 @@ jobs:
           fi
           git commit -m "content: catch up a missed digest run"
           git pull --rebase --autostash origin main || true
-          git push origin main || echo "::warning::补跑内容推送失败，下次部署会再试"
+          if ! git push origin main; then
+            echo "::warning::补跑内容推送失败，下次部署会再试"
+            exit 0
+          fi
+          # 关键（第 114 轮实测）：用 GITHUB_TOKEN 推的 commit **不会触发任何 workflow**
+          # （GitHub 防递归规则），所以这次 push 不会自动部署 —— 内容躺在仓库里但站点不变。
+          # workflow_dispatch / repository_dispatch 是例外，可以手动发起一次部署。
+          if gh api -X POST "repos/${GITHUB_REPOSITORY}/actions/workflows/deploy.yml/dispatches" \
+               -f ref=main --silent; then
+            note "✓ 已提交补跑内容并触发一次部署"
+          else
+            echo "::warning::内容已提交，但触发部署失败 —— 需要下一次 push 或 15:30 的定时部署才会生效"
+          fi

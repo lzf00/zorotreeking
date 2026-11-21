@@ -69,6 +69,13 @@ test("失败原因要能从 API 读出来（这个仓库的 Actions 日志是 40
   assert.match(run, /没有 LLM key/, "缺 key 要明说，别静默空跑");
 });
 
+test("GITHUB_TOKEN 推的 commit 不会触发 workflow —— 必须显式 dispatch 部署", () => {
+  const run = byName.get("Catch up a missed digest (self-healing)")!.run ?? "";
+  assert.match(run, /dispatches/, "提交完要 workflow_dispatch 一次部署，否则内容进仓库但站点不变");
+  assert.match(run, /actions\/workflows\/deploy\.yml\/dispatches/);
+  assert.equal(job.permissions?.actions, "write", "dispatch 需要 actions: write");
+});
+
 test("权限足够 push，且不超出调用方（reusable workflow 的老坑）", () => {
   assert.equal(job.permissions?.contents, "write", "补跑要 commit，job 本身就得有 contents: write");
   assert.equal(wf.permissions.contents, "write", "可复用 workflow 顶层也得声明，否则调用方限制会盖掉");
