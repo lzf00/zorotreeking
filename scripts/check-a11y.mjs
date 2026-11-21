@@ -172,7 +172,7 @@ for (const path of PATHS) {
       //     返回过渡起点（浅色的 #fff），于是 axe 报出 162 条「深色主题下浅灰字压白底」。
       //     手动滚进视口后同一元素立刻变成 rgba(24,24,27,.4) —— 说明站点是对的、测量是错的。
       // 关掉过渡/动画让计算值一步到位，不依赖元素有没有被绘制。
-      await page.addStyleTag({
+      const noMotionStyle = await page.addStyleTag({
         content: `*, *::before, *::after {
           transition: none !important;
           animation: none !important;
@@ -280,6 +280,58 @@ for (const path of PATHS) {
             });
           }
           entry.dialogChecked = true;
+        }
+
+        // 照片灯箱的键盘契约（第 141 轮）：同样是 axe 测不出的行为问题。
+        // 修复前实测：点开后焦点还留在背后的照片链接上、没有 aria-modal、
+        // Tab 走完 4 个按钮后跑到 BODY。Esc 关闭与方向键是 PhotoSwipe 本来就对的，只验前三条。
+        if (path === "/photo/baokemeng/") {
+          const issues = [];
+          const photo = page.locator("a[data-pswp-width]").first();
+          if ((await photo.count()) === 0) {
+            issues.push({ target: "a[data-pswp-width]", reason: "相册里找不到可点开的照片" });
+          } else {
+            // 先把"禁用过渡"的样式摘掉：它是为了量对比度注入的，但会让 PhotoSwipe 的
+            // 关闭动画永远等不到 transitionend，于是"关闭"根本不完成 —— 这是测量手段
+            // 造成的假故障（真实用户走的是站点自己的 prefers-reduced-motion：0.01ms，
+            // 事件照样会触发）。
+            await noMotionStyle.evaluate((element) => element.remove());
+            await photo.click();
+            await page.waitForSelector(".pswp", { timeout: 15_000 });
+            await page.waitForTimeout(800);
+            const state = await page.evaluate(() => {
+              const root = document.querySelector(".pswp");
+              return {
+                ariaModal: root?.getAttribute("aria-modal"),
+                focusIn: Boolean(document.activeElement?.closest(".pswp")),
+              };
+            });
+            if (state.ariaModal !== "true") issues.push({ target: ".pswp", reason: '灯箱缺少 aria-modal="true"' });
+            if (!state.focusIn) issues.push({ target: ".pswp", reason: "打开后焦点没有移进灯箱" });
+            for (let i = 0; i < 6; i += 1) {
+              await page.keyboard.press("Tab");
+              const inside = await page.evaluate(() => Boolean(document.activeElement?.closest(".pswp")));
+              if (!inside) {
+                issues.push({ target: ".pswp", reason: `按 ${i + 1} 次 Tab 后焦点跑出灯箱（缺焦点陷阱）` });
+                break;
+              }
+            }
+            await page.keyboard.press("Escape");
+            await page.waitForTimeout(600);
+            const restored = await page.evaluate(() =>
+              Boolean(document.activeElement?.closest("a[data-pswp-width], figure a, .grid a")),
+            );
+            if (!restored) issues.push({ target: "a[data-pswp-width]", reason: "关闭后焦点没有回到照片" });
+          }
+          if (issues.length) {
+            violations.push({
+              id: "lightbox-keyboard",
+              impact: "serious",
+              count: issues.length,
+              nodes: issues.map((issue) => ({ target: issue.target, reason: issue.reason })),
+            });
+          }
+          entry.lightboxChecked = true;
         }
       }
 

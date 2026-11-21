@@ -146,6 +146,78 @@ export default function PhotoGallery({ photos, galleryId }: Props) {
       });
     });
 
+    /**
+     * 灯箱的键盘契约（第 141 轮）。
+     *
+     * 实测修复前的行为：点开图片后焦点**还留在背后的照片链接上**，`aria-modal` 也没有；
+     * Tab 走完 4 个灯箱按钮后跑到 BODY，再 Tab 才回到灯箱 —— 键盘/读屏用户会"掉出去"。
+     * PhotoSwipe 自己有 trapFocus 选项，但在这套自定义 UI（EXIF 条、自定义按钮）里实测没兜住，
+     * 所以显式补三件事：aria-modal、打开后把焦点移进来、Tab 到边界时绕回。
+     * Esc 关闭、焦点归还给原照片、方向键切换是 PhotoSwipe 本来就正确的，不动。
+     */
+    let releaseTrap: (() => void) | null = null;
+    // 打开前焦点在哪（照片链接）。PhotoSwipe 自己也会记，但它的归还在
+    // prefers-reduced-motion 下失效：实测关闭后焦点落在 <body> —— 恰恰是最需要键盘的
+    // 用户拿不到焦点。所以自己也记一份，关闭时按需兜底（不影响它原本正确的路径）。
+    let triggerElement: HTMLElement | null = null;
+    lightbox.on("beforeOpen", () => {
+      triggerElement = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    });
+    lightbox.on("afterInit", () => {
+      const pswp = lightbox.pswp;
+      const root = pswp?.element as HTMLElement | undefined;
+      if (!root) return;
+      root.setAttribute("aria-modal", "true");
+      root.setAttribute("aria-label", "图片查看器，Esc 关闭，左右方向键切换");
+      const focusables = () =>
+        Array.from(
+          root.querySelectorAll<HTMLElement>('button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'),
+        ).filter((node) => node.offsetParent !== null);
+      const onKeyDown = (event: KeyboardEvent) => {
+        if (event.key !== "Tab") return;
+        const list = focusables();
+        if (list.length === 0) return;
+        const first = list[0];
+        const last = list[list.length - 1];
+        const active = document.activeElement;
+        if (event.shiftKey && (active === first || !root.contains(active))) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && (active === last || !root.contains(active))) {
+          event.preventDefault();
+          first.focus();
+        }
+      };
+      root.addEventListener("keydown", onKeyDown);
+      releaseTrap = () => root.removeEventListener("keydown", onKeyDown);
+      // 等淡入开始再移焦点，避免被 animation 抢走
+      window.setTimeout(() => {
+        const target = root.querySelector<HTMLElement>(".pswp__button--close") ?? focusables()[0];
+        target?.focus();
+      }, 120);
+    });
+    // 焦点归还的兜底：**只在焦点真的丢了时**介入。
+    // 两个坑都实测过：
+    //  - 80ms 太早 —— 那时焦点还在灯箱按钮上，PhotoSwipe 随后拆 DOM 才掉到 <body>；
+    //  - 我们主动把焦点移进灯箱（为了 trap），PhotoSwipe 记的「原焦点」就变成了灯箱里的按钮，
+    //    拆掉后它无处可还。
+    // 所以等 destroy（DOM 拆完）再检查，并且用 setTimeout(0) 让浏览器先完成移除。
+    const restoreTriggerFocus = () => {
+      const active = document.activeElement;
+      if (active && active !== document.body && active.isConnected) return;
+      const target = triggerElement;
+      triggerElement = null;
+      if (target?.isConnected) target.focus();
+    };
+    lightbox.on("close", () => {
+      releaseTrap?.();
+      releaseTrap = null;
+      window.setTimeout(restoreTriggerFocus, 700); // destroy 不触发的路径兜底
+    });
+    lightbox.on("destroy", () => {
+      window.setTimeout(restoreTriggerFocus, 0);
+    });
+
     lightbox.init();
     return () => {
       lightbox.destroy();
