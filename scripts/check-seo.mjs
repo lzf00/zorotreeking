@@ -482,6 +482,13 @@ async function checkSitemap(siteOrigin, indexable) {
       errors.push(`sitemap 列出的页面不存在：${loc}`);
       continue;
     }
+    // 第 112 轮：noindex 的页面不该出现在 sitemap 里。
+    // 这类错两边各自看都没毛病 —— 页面正确 noindex 了、sitemap 也生成成功了 ——
+    // 只有对起来才会发现：搜索引擎被叫来爬一个明确写着"别索引我"的地址，白烧爬取预算。
+    const robotsMeta = html.match(/<meta[^>]+name=["']robots["'][^>]*>/i);
+    if (robotsMeta && /noindex/i.test(attr(robotsMeta[0], "content") ?? "")) {
+      errors.push(`sitemap 列了 noindex 页面：${loc}（应从 sitemap 移除）`);
+    }
     const canonical = [...html.matchAll(/<link[^>]+rel=["']canonical["'][^>]*>/gi)]
       .map((m) => attr(m[0], "href"))[0];
     if (canonical && canonical !== loc) {

@@ -1,7 +1,9 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 ---
-<BaseLayout title="我的数据" description="本站记录的访问数据（浏览记录、留言、订阅）都在这里：可以查看、导出或一键删除，不需要发邮件申请。">
+{/* noindex：这一页展示的是"你自己的"匿名记录，对搜索引擎和别的访客都没有意义。
+    留在索引里只会变成一条空页面，而且它属于个人数据工具，不该被爬。 */}
+<BaseLayout title="我的数据" description="本站记录的访问数据（浏览记录、留言、订阅）都在这里：可以查看、导出或一键删除，不需要发邮件申请。" noindex>
   <article class="max-w-prose mx-auto px-5 pt-16 pb-24">
     <h1 class="font-serif text-5xl sm:text-6xl leading-[0.95] tracking-tight mb-6">我的数据</h1>
     <p class="text-[var(--text-secondary)] mb-8">

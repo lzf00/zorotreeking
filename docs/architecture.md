@@ -665,6 +665,33 @@ npm run check:images -- --limit 150 --warn
 当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
 原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
 
+### 「我的数据」页在 sitemap 里，却没 noindex（第 112 轮）
+
+顺手核了一遍爬虫视角：`robots.txt` 挡了 `/admin/`、`/api/`，`/search/` 也不在 sitemap 里，
+但 `/data/`（"我的数据"：按 IP+UA 指纹展示**你自己**的浏览记录、留言、订阅，并支持一键删除）
+两样都漏了 —— 它既在 `sitemap.xml` 里（中英各一条），又没有任何 `robots` meta。
+
+后果不大但确实不对：搜索引擎被叫来爬一个"只对当前访客有意义"的工具页，拿到的永远是空壳，
+白烧爬取预算；而且它属于个人数据页，不该进索引。
+
+| 改动 | 内容 |
+|---|---|
+| `data.astro` / `en/data.astro` | 加 `noindex`（`BaseLayout` 已有该 prop，后台页在用） |
+| `src/lib/sitemap.ts` | 中英静态路径表里移除 `/data`，并写清原因 |
+| `scripts/check-seo.mjs` | **新增站点级规则**：sitemap 里列出的页面不允许是 noindex |
+
+最后那条才是重点。这类错两边各自看都没毛病（页面 noindex 正确、sitemap 生成成功），
+只有对起来才暴露，所以做成自动检查比记住它可靠。变异验证：把 `/data` 塞回 sitemap，
+`check:seo` 立刻失败并指名：
+
+```
+· sitemap 列了 noindex 页面：https://www.zorotreeking.online/data/（应从 sitemap 移除）
+[seo] 0 页有错误 / 0 页只有告警 · 另有 1 个站点级问题 → 失败
+```
+
+顺带确认：sitemap 从 1186 条降到 1184 条，其余页面可见文字都在 600–1900 字符以上，
+没有其他"薄页面"混在索引里。
+
 ### 680 篇日报只用了 13 张封面，其中 630 篇是同一张图（第 111 轮）
 
 看归档页源码时发现一件荒唐事：`/invest/digest/` 的卡片封面写着
