@@ -230,6 +230,57 @@ for (const path of PATHS) {
           });
         }
         entry.focusChecked = 30;
+
+        // 搜索对话框的键盘契约（第 140 轮）。
+        // axe 查不出这类问题：焦点陷阱、焦点归还是**行为**，不是标记。
+        // 实测修复前：按两次 Tab 焦点就跑到背后的页面链接上，Esc 关闭后焦点掉到 <body>。
+        if (path === "/") {
+          const issues = [];
+          const trigger = page.locator("[data-search-trigger]").first();
+          if ((await trigger.count()) === 0) {
+            issues.push({ target: "[data-search-trigger]", reason: "首页找不到搜索入口，无法验证对话框" });
+          } else {
+            await trigger.click();
+            await page.waitForSelector('[role="dialog"]', { timeout: 15_000 });
+            await page.waitForTimeout(400);
+            const modal = await page.evaluate(() => {
+              const dialog = document.querySelector('[role="dialog"]');
+              return {
+                ariaModal: dialog?.getAttribute("aria-modal"),
+                inputLabel: dialog?.querySelector("input")?.getAttribute("aria-label") ?? "",
+                hasStatus: Boolean(dialog?.querySelector('[role="status"]')),
+              };
+            });
+            if (modal.ariaModal !== "true") issues.push({ target: '[role="dialog"]', reason: '缺少 aria-modal="true"' });
+            if (!modal.inputLabel) issues.push({ target: '[role="dialog"] input', reason: "搜索输入框没有可读标签" });
+            if (!modal.hasStatus) issues.push({ target: '[role="dialog"]', reason: "结果变化没有 aria-live 播报" });
+            for (let i = 0; i < 6; i += 1) {
+              await page.keyboard.press("Tab");
+              const inside = await page.evaluate(() => Boolean(document.activeElement?.closest('[role="dialog"]')));
+              if (!inside) {
+                issues.push({ target: '[role="dialog"]', reason: `按 ${i + 1} 次 Tab 后焦点跑出对话框（缺焦点陷阱）` });
+                break;
+              }
+            }
+            await page.keyboard.press("Escape");
+            await page.waitForTimeout(300);
+            // 注意要用 activeElement 的祖先判断：页面上有多个搜索入口（顶栏/页脚/首页），
+            // querySelector 取到的是 DOM 里第一个，未必是刚点的那个（第 140 轮踩过）
+            const restored = await page.evaluate(() =>
+              Boolean(document.activeElement?.closest("[data-search-trigger], #open-search, #home-search-trigger")),
+            );
+            if (!restored) issues.push({ target: "[data-search-trigger]", reason: "关闭后焦点没有回到触发按钮" });
+          }
+          if (issues.length) {
+            violations.push({
+              id: "search-dialog-keyboard",
+              impact: "serious",
+              count: issues.length,
+              nodes: issues.map((issue) => ({ target: issue.target, reason: issue.reason })),
+            });
+          }
+          entry.dialogChecked = true;
+        }
       }
 
       entry.violations = violations;

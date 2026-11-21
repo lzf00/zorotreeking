@@ -30,6 +30,10 @@ export default function SearchModal({ initialOpen = false }: { initialOpen?: boo
   const [results, setResults] = useState<Result[]>([]);
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  // 打开前焦点在哪（放大镜 / 首页搜索框 / 404 页的"直接搜索"），关闭时要还回去。
+  // 第 140 轮之前没有这一步：关掉弹窗后焦点掉到 <body>，键盘用户得从头 Tab 一遍。
+  const restoreFocusRef = useRef<HTMLElement | null>(null);
 
   // 全局快捷键：/ 打开，Esc 关闭
   useEffect(() => {
@@ -53,11 +57,43 @@ export default function SearchModal({ initialOpen = false }: { initialOpen?: boo
     (window as any).__openSearch = () => setOpen(true);
   }, []);
 
+  // 打开时记住来源焦点并聚焦输入框；关闭时把焦点还回原处
   useEffect(() => {
-    if (open) {
-      setTimeout(() => inputRef.current?.focus(), 50);
-    }
+    if (!open) return;
+    restoreFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const timer = window.setTimeout(() => inputRef.current?.focus(), 50);
+    return () => {
+      window.clearTimeout(timer);
+      const target = restoreFocusRef.current;
+      if (target && document.contains(target)) target.focus();
+    };
   }, [open]);
+
+  /**
+   * 焦点陷阱（第 140 轮）。
+   *
+   * 实测：弹窗打开后按两次 Tab，焦点就跑到背后的页面链接上了 —— 屏幕阅读器和纯键盘
+   * 用户会"掉出"对话框，而 `aria-modal` 又不在，辅助技术也不会把背景当作不可交互。
+   * 这里在 Tab / Shift+Tab 到边界时把焦点绕回另一端。
+   */
+  function handleKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
+    if (event.key !== "Tab") return;
+    const nodes = dialogRef.current?.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), input:not([disabled]), textarea, select, [tabindex]:not([tabindex="-1"])',
+    );
+    const focusable = Array.from(nodes ?? []).filter((node) => node.offsetParent !== null || node === document.activeElement);
+    if (focusable.length === 0) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    const active = document.activeElement;
+    if (event.shiftKey && (active === first || !dialogRef.current?.contains(active))) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && (active === last || !dialogRef.current?.contains(active))) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
 
   // 搜索
   useEffect(() => {
@@ -94,8 +130,16 @@ export default function SearchModal({ initialOpen = false }: { initialOpen?: boo
   if (!open) return null;
 
   return (
-    <div role="dialog" aria-label="搜索" style={overlayStyle} onClick={() => setOpen(false)}>
-      <div style={modalStyle} onClick={(e) => e.stopPropagation()}>
+    <div style={overlayStyle} onClick={() => setOpen(false)}>
+      <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="站内搜索"
+        style={modalStyle}
+        onClick={(e) => e.stopPropagation()}
+        onKeyDown={handleKeyDown}
+      >
         <div style={inputWrapStyle}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, color: "var(--text-tertiary, #9ca3af)" }}>
             <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
@@ -106,11 +150,16 @@ export default function SearchModal({ initialOpen = false }: { initialOpen?: boo
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="搜索文章、digest、笔记…"
+            aria-label="输入搜索关键词"
             style={inputStyle}
           />
           <button onClick={() => setOpen(false)} aria-label="关闭" style={closeStyle}>Esc</button>
         </div>
         <div style={listStyle}>
+          {/* 结果变化要让屏幕阅读器知道；视觉上不占位（下面还有可见状态文案） */}
+          <div role="status" aria-live="polite" style={srOnlyStyle}>
+            {loading ? "搜索中" : query ? `${results.length} 条结果` : ""}
+          </div>
           {loading && <div style={emptyStyle}>搜索中…</div>}
           {!loading && query && results.length === 0 && <div style={emptyStyle}>没有匹配结果</div>}
           {!loading && !query && <div style={emptyStyle}>输入关键词开始搜索 · 按 / 唤起 · Esc 关闭</div>}
@@ -178,6 +227,10 @@ const resultTitleStyle: React.CSSProperties = {
 const resultExcerptStyle: React.CSSProperties = {
   fontSize: 12.5, color: "var(--text-secondary, #6b7280)",
   lineHeight: 1.55,
+};
+const srOnlyStyle: React.CSSProperties = {
+  position: "absolute", width: 1, height: 1, padding: 0, margin: -1,
+  overflow: "hidden", clip: "rect(0 0 0 0)", whiteSpace: "nowrap", border: 0,
 };
 const emptyStyle: React.CSSProperties = {
   padding: "32px 16px", textAlign: "center",
