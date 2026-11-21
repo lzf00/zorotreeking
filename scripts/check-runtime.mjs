@@ -428,6 +428,8 @@ async function main() {
       return sorted[Math.floor(sorted.length / 2)];
     };
     for (const [url, rows] of byUrl) {
+      // 位移来源取「CLS 最大的那一轮」：中位数丢掉了详情，排障时正需要它（第 148 轮）
+      const worstRun = [...rows].sort((a, b) => b.cls - a.cls)[0];
       medians.push({
         url,
         runs: rows.length,
@@ -435,6 +437,7 @@ async function main() {
         lcp: mid(rows.map((row) => row.lcp)),
         cls: mid(rows.map((row) => row.cls)),
         long: mid(rows.map((row) => row.long)),
+        shifts: worstRun?.shifts ?? [],
       });
     }
     for (const row of medians) {
@@ -442,6 +445,12 @@ async function main() {
       if (row.cls > CLS_BUDGET) {
         if (SOFT_VITALS) softVitals.push(`${row.url} → ${clsMessage}`);
         else problems.push(`${row.url} → ${clsMessage}`);
+      }
+      // 只记录不挡发布时（--cls 放宽），也把"谁在抖"发出来：否则注解里只有一个数字，
+      // 而 Actions 日志接口是 403，看不到逐页明细。
+      if (row.cls > 0.1 && row.cls <= CLS_BUDGET) {
+        const detail = (row.shifts ?? []).slice(0, 3).join(" / ") || "（没有 source 信息）";
+        console.log(`::notice title=CLS ${row.cls}（超过 good 线 0.1）::${row.url} ← ${detail}`);
       }
       const lcpMessage = `LCP ${row.lcp} ms 超过 ${LCP_LIMIT} ms（先排查字体/大图，用 --explain 看位移）`;
       if (row.lcp > LCP_LIMIT) {
