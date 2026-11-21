@@ -40,6 +40,13 @@ test("英文版提示（/en/ 读者也看得懂）", () => {
   assert.match(coverageNotice(c, "en")!, /No summaries were generated/);
 });
 
+test("括号说明（漏出来的道歉句）不算摘要正文", () => {
+  const body = `## <a href="/x">标题</a>\n\n*HF ★ 3*\n\n(LLM summarization failed, please manually add it later)\n\n<FeedbackButtons slug="item:x" client:visible />\n`;
+  const c = digestCoverage(body);
+  assert.equal(c.withSummary, 0, "道歉句被当成摘要，英文页就不会出提示（第 120 轮的真实 bug）");
+  assert.equal(c.allMissing, true);
+});
+
 test("meta 斜体、组件、图片都不算摘要正文", () => {
   const body = `## <a href="/x">标题</a>\n\n*HF ★ 3*\n\n<FeedbackButtons slug="item:x" client:visible />\n\n![图](a.jpg)\n`;
   assert.equal(digestCoverage(body).withSummary, 0);

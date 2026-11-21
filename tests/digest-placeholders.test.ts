@@ -56,3 +56,18 @@ test("门禁里有这个检查", async () => {
   assert.ok(pkg.scripts["check:digest-quality"], "缺少 check:digest-quality 脚本");
   assert.match(pkg.scripts.gate, /check:digest-quality/, "门禁没跑占位符检查");
 });
+
+test("英文版道歉句也要被认出来（第 120 轮：38 个 .en.mdx 带着它而门禁是绿的）", async () => {
+  const { placeholdersIn } = await import("../scripts/check-digest-placeholders.mjs");
+  const cases = [
+    "(LLM summarization failed, please manually add it later)",
+    "(LLM summary failed, please supplement manually later)",
+    "(LLM summary generation failed, please add the summary manually later)",
+    "(LLM summarization failed, please supplement it manually later)",
+  ];
+  for (const text of cases) {
+    assert.ok(placeholdersIn(text).length > 0, `没认出英文占位符：${text}`);
+  }
+  // 正常的英文摘要不该误伤
+  assert.deepEqual(placeholdersIn("A paper about training environments for agents."), []);
+});

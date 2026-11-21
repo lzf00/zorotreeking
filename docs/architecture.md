@@ -689,6 +689,31 @@ npm run check:images -- --limit 150 --warn
 
 这条和 `check:ssr-clock`（第 82 轮）是同一类问题的两个面：**渲染里任何"现在"都必须是显式的**。
 
+### 英文页一直在公开道歉，而门禁是绿的（第 120 轮续）
+
+第 115 轮清理中文日报里的「（LLM 摘要失败，请稍后手动补充）」时，检查器只认**中文句式**。
+上线后核对 `/en/ai/digest-2026-10-12/` 才发现：英文版还在正文里写着
+
+    (LLM summarization failed, please manually add it later)
+
+翻译链路把这句直译过去了，而且拼法有十几种（`LLM summary failed` / `LLM summarization failed` /
+`please supplement manually later` / `please add the summary manually later` …）。共 **38 个
+`.en.mdx`、299 行**，`/en/` 每个受影响的日报页都能看到。
+
+三处修：
+
+| 位置 | 改法 |
+|---|---|
+| `check-digest-placeholders.mjs` | 加 `PLACEHOLDER_REGEXES`，覆盖英文的十几种拼法；`--all` 盘点立刻报 38 个文件 |
+| `scripts/strip-digest-apologies.mjs` | 中英通用的清理脚本（`APOLOGY_LINE` 一行正则、`--dry-run`、幂等），清掉 38 文件 299 行 |
+| `digest-coverage.ts` | `NOT_PROSE` 加上 `(` / `（` —— 道歉句是括号说明，之前被算成"有摘要"，这正是英文页没出提示的原因 |
+
+验证：`/en/ai/digest-2026-10-12/` 里道歉句 **0 处**，并且出现
+"No summaries were generated for these 20 items"。
+
+**教训写进规则**：清洗类脚本的"要删什么"必须中英都覆盖 —— 只修一半比不修更糟，
+因为门禁会绿，人就不会再去看。
+
 ### 20 期日报说"AI 摘要"，其实一条摘要都没有（第 120 轮）
 
 第 115 轮删掉了正文里的道歉句「（LLM 摘要失败，请稍后手动补充）」，但那批文章的**摘要本身还是空的**。
