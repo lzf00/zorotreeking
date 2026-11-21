@@ -812,7 +812,10 @@ jobs:
             echo "::warning::没有 LLM key（DOUBAO_API_KEY / ARK_API_KEY），跳过敏捷补跑"
             exit 0
           fi
-          npx tsx scripts/check-freshness.mjs --max-age=2 > /tmp/freshness.log 2>&1
+          # --ignore-gaps：11-19/11-20 是抓取窗口已过的历史断档，永远补不回来。
+          # 不带它的话每次部署都会误判"停更"并白跑一遍 LLM 抓取（第 147 轮实测：
+          # 每次部署都打「检测到内容停更，尝试补跑一次日报」，其实内容是最新的）。
+          npx tsx scripts/check-freshness.mjs --max-age=2 --ignore-gaps > /tmp/freshness.log 2>&1
           STALE=$?
           if [ "$STALE" -eq 0 ]; then
             note "✓ 内容新鲜，无需补跑。"

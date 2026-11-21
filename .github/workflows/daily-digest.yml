@@ -165,7 +165,7 @@ jobs:
       - name: Assert today's digest really landed
         if: always() && github.event.inputs.skip_fetch != 'true'
         run: |
-          node scripts/check-freshness.mjs --require-today --max-age=1 | tee /tmp/freshness.log
+          node scripts/check-freshness.mjs --require-today --max-age=1 --ignore-gaps | tee /tmp/freshness.log
           {
             echo '### 内容新鲜度'
             echo ''

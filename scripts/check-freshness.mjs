@@ -12,7 +12,8 @@
  *
  * 用法：
  *   node scripts/check-freshness.mjs                     # 表格 + 退出码
- *   node scripts/check-freshness.mjs --max-age=2         # 允许落后几天（默认 2）
+ *   node scripts/check-freshness.mjs --max-age=2
+ *   node scripts/check-freshness.mjs --max-age=2 --ignore-gaps   # 只按年龄/单语判定（部署自愈用）         # 允许落后几天（默认 2）
  *   node scripts/check-freshness.mjs --require-today     # 今天必须有产出（日报流水线收尾用）
  *   node scripts/check-freshness.mjs --json              # 机器可读
  */
@@ -111,8 +112,12 @@ export function bilingualGaps(filesByStream, { today = beijingToday(), days = 3 
  *
  * 这里在最近 `days` 天里逐日检查"该有的那天有没有"，把漏掉的具体日期列出来。
  *
- * 分级：漏的日期离今天很近（≤ `recentDays`）算 fail —— 还来得及补；
- * 更早的算 warn —— 补不回来了，但要留下记录，不要假装没发生。
+ * 分级：漏的日期离今天很近（≤ `recentDays`）算 fail —— 值得人工看一眼；
+ * 更早的算 warn —— 只留记录。
+ * 注意（第 147 轮查清）：抓取接口只暴露"最新列表"，**任何历史日期都补不回来**，
+ * 所以 fail 的含义只是"这事儿新鲜，别错过"，不是"还能自动补"。
+ * 也正因为如此，判断"要不要现在去抓一次"的地方（部署自愈、日更 workflow）要用
+ * `--ignore-gaps`，否则会天天误判停更、白跑 LLM。
  */
 export function internalGaps(filesByStream, { today = beijingToday(), days = 7, recentDays = 2 } = {}) {
   const gaps = [];
@@ -161,7 +166,7 @@ export function internalGaps(filesByStream, { today = beijingToday(), days = 7, 
  * @param {Record<string, string[]>} filesByStream 流 id → 文件名数组
  * @param {{ today?: string, maxAgeDays?: number, requireToday?: boolean }} options
  */
-export function summarizeFreshness(filesByStream, { today = beijingToday(), maxAgeDays = 2, requireToday = false } = {}) {
+export function summarizeFreshness(filesByStream, { today = beijingToday(), maxAgeDays = 2, requireToday = false, ignoreGaps = false } = {}) {
   const rows = [];
   for (const stream of STREAMS) {
     const files = filesByStream[stream.id] ?? [];
@@ -211,7 +216,11 @@ export function summarizeFreshness(filesByStream, { today = beijingToday(), maxA
     gaps,
     missingDays,
     failingGaps,
-    ok: failing.length === 0 && gaps.length === 0 && failingGaps.length === 0,
+    // ignoreGaps：内部断档只报告不判定（第 147 轮）。
+    // 为什么需要：部署的自愈步骤用 `--max-age=2` 决定"要不要补跑"，
+    // 而 11-19/11-20 这种**抓取窗口已过的历史断档**永远补不回来 ——
+    // 带上它判定，等于每次部署都误判"停更"，白跑一遍 LLM 抓取（实测 wasteful）。
+    ok: failing.length === 0 && gaps.length === 0 && (ignoreGaps || failingGaps.length === 0),
   };
 }
 
@@ -232,7 +241,8 @@ export function formatFreshness({ today, rows, ok, gaps, missingDays }) {
     lines.push("");
     lines.push("内部断档（这些日期该有产出但没有）：");
     for (const gap of missingDays) {
-      lines.push(`- ${gap.label} ${gap.date}${gap.level === "fail" ? "（还来得及补）" : "（已经错过，仅记录）"}`);
+      // 抓取接口只暴露"最新列表"，历史日期抓不回来 —— 别写成"还能补"骗人
+      lines.push(`- ${gap.label} ${gap.date}${gap.level === "fail" ? "（窗口已过，补不回来，仅记录）" : "（已错过良久，仅记录）"}`);
     }
   }
   lines.push("");
@@ -254,11 +264,12 @@ async function loadFiles() {
 
 async function main() {
   const json = process.argv.includes("--json");
+  const ignoreGaps = process.argv.includes("--ignore-gaps");
   const requireToday = process.argv.includes("--require-today");
   const maxAgeArg = process.argv.find((value) => value.startsWith("--max-age="));
   const maxAgeDays = maxAgeArg ? Number(maxAgeArg.slice("--max-age=".length)) : 2;
 
-  const result = summarizeFreshness(await loadFiles(), { requireToday, maxAgeDays });
+  const result = summarizeFreshness(await loadFiles(), { requireToday, maxAgeDays, ignoreGaps });
   if (json) process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
   else process.stdout.write(`${formatFreshness(result)}\n`);
 
