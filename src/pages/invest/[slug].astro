@@ -14,6 +14,7 @@ import { useTranslations, pathWithLang } from "@/i18n/ui";
 import { coverByTranslationKey } from "@/lib/social-image";
 import { DIGEST_INVEST_HEADINGS, CONTENT_INVEST_HEADINGS } from "@/lib/prose-headings";
 import { digestDescription, recapDescription } from "@/lib/descriptions";
+import { coverageNotice, digestCoverage } from "@/lib/digest-coverage";
 
 // 日报正文的标题降过一级（h2 分组 / h3 条目），普通文章保持 h1/h2
 
@@ -43,6 +44,11 @@ const description =
   (isDigest && digestDescription(entry.body ?? "", "zh", "invest", entry.data.date)) ||
   recapDescription(entry.data.description, entry.data.date, "zh") ||
   entry.data.description;
+
+// 第 120 轮：有 20 期日报整条没有摘要正文，但 feed/描述还在说"AI 摘要"。
+// 页面里如实说明一次，比让读者以为是自己的阅读器没渲染出来要好。
+const digestCoverageInfo = isDigest ? digestCoverage(entry.body ?? "") : null;
+const coverageText = digestCoverageInfo ? coverageNotice(digestCoverageInfo, lang) : null;
 ---
 
 <BaseLayout
@@ -102,6 +108,11 @@ const description =
                 prose-blockquote:pl-6 prose-blockquote:py-0
                 prose-hr:hidden
                 prose-pre:bg-[#0d1117] prose-pre:rounded-xl`}>
+      {coverageText && (
+        <p class="not-prose mb-8 rounded-xl border border-amber-400/50 bg-amber-50/70 px-4 py-3 text-[13px] leading-relaxed text-amber-800 dark:border-amber-500/40 dark:bg-amber-500/10 dark:text-amber-300">
+          {coverageText}
+        </p>
+      )}
       <Content />
     </div>
 

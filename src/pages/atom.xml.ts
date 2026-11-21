@@ -6,6 +6,7 @@
 import { getCollection } from "astro:content";
 import type { APIContext } from "astro";
 import { escapeXml } from "@/lib/xml";
+import { digestDescription } from "@/lib/descriptions";
 
 const SITE_NAME = "ZoroTreeking";
 const SITE_DESC = "AI · 投资 · 摄影 · 徒步旅行";
@@ -28,6 +29,18 @@ export async function GET(context: APIContext): Promise<Response> {
 
   const updated = all[0]?.data.date.toISOString() ?? new Date().toISOString();
   const feedId = `${site}/`;
+  /**
+   * 第 120 轮：日报的 <summary> 原来直接复述 frontmatter 那句「多源聚合 + AI 摘要」——
+   * 有 20 期日报整条没有摘要正文，读者从阅读器点进来只有一串标题。改成用当天真实条目标题拼，
+   * 与页面 meta description 同一份口径。
+   */
+  const summaryFor = (p: (typeof all)[number]) =>
+    (p.data.tags ?? []).includes("digest") || String(p.data.translationKey).startsWith("digest-")
+      ? digestDescription(p.body ?? "", "zh", p.section === "ai" ? "ai" : "invest", p.data.date) ??
+        p.data.description ??
+        ""
+      : p.data.description ?? "";
+
   const entries = all.slice(0, 50).map((p) => {
     const link = `${site}/${p.section}/${p.data.translationKey}/`;
     const pub = p.data.date.toISOString();
@@ -42,7 +55,7 @@ export async function GET(context: APIContext): Promise<Response> {
     <published>${pub}</published>
     <updated>${upd}</updated>
 ${tags}
-    <summary type="text">${escapeXml(p.data.description ?? "")}</summary>
+    <summary type="text">${escapeXml(summaryFor(p))}</summary>
   </entry>`;
   }).join("\n");
 

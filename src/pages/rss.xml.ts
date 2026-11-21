@@ -1,6 +1,7 @@
 import rss from "@astrojs/rss";
 import { getCollection } from "astro:content";
 import type { APIContext } from "astro";
+import { digestDescription } from "@/lib/descriptions";
 
 /**
  * RSS 2.0 feed。
@@ -27,6 +28,12 @@ export async function GET(context: APIContext) {
     ...photo.map((p) => ({ ...p, section: "photo" as const })),
   ].sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
+  // 第 120 轮：日报摘要用真实条目标题拼，别再复述 frontmatter 的「AI 摘要」（有些期根本没摘要）
+  const summaryFor = (p: (typeof all)[number]) =>
+    (p.data.tags ?? []).includes("digest") || String(p.data.translationKey).startsWith("digest-")
+      ? digestDescription(p.body ?? "", "zh", p.section === "ai" ? "ai" : "invest", p.data.date) ?? p.data.description ?? ""
+      : p.data.description ?? "";
+
   const latest = all[0]?.data.date ?? new Date();
   const selfUrl = new URL("/rss.xml", context.site).toString();
 
@@ -37,7 +44,7 @@ export async function GET(context: APIContext) {
     items: all.slice(0, MF_MAX_ITEMS).map((p) => ({
       title: p.data.title,
       pubDate: p.data.date,
-      description: p.data.description ?? "",
+      description: summaryFor(p),
       link: `/${p.section}/${p.data.translationKey}`,
       categories: p.data.tags,
     })),

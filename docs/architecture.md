@@ -689,6 +689,36 @@ npm run check:images -- --limit 150 --warn
 
 这条和 `check:ssr-clock`（第 82 轮）是同一类问题的两个面：**渲染里任何"现在"都必须是显式的**。
 
+### 20 期日报说"AI 摘要"，其实一条摘要都没有（第 120 轮）
+
+第 115 轮删掉了正文里的道歉句「（LLM 摘要失败，请稍后手动补充）」，但那批文章的**摘要本身还是空的**。
+按条目数了一遍：
+
+| 形态 | 期数（中文） |
+|---|---|
+| 全部条目无摘要正文 | **20** |
+| 部分条目无摘要 | 18 |
+| 完整 | 340 |
+
+问题是这些文件的 frontmatter 都写着 `description: "20 篇论文 · 多源聚合 + AI 摘要"`，而 RSS/Atom 的
+`<summary>` 直接复述这个字段。读者从阅读器点进来，看到一串论文标题 —— 描述却保证有摘要。
+
+三处一起改：
+
+1. **`src/lib/digest-coverage.ts`**：`digestCoverage(body)` 数出"条目数 / 有正文的条目数"；
+   `coverageNotice()` 生成一句实话（"本期 20 条都没有生成摘要（自动摘要当时失败了），下面只列出
+   标题、来源与原文链接"），完整时不返回任何东西（别给 358 页都加噪音）。
+2. **四个日报模板**（zh/en × ai/invest）在正文顶部渲染这句提示。
+3. **`atom.xml.ts` / `rss.xml.ts`**：日报的 `<summary>` 改用 `digestDescription()` 从**真实条目标题**拼，
+   与页面 meta description 同一份口径；普通文章仍用 frontmatter。
+
+验证：`dist/atom.xml` 与 `dist/rss.xml` 里「AI 摘要」出现次数 **0**；日报 summary 变成
+「12 篇论文：Combatting adversarial distillati…；Hebbia sees improvements…」。
+`/ai/digest-2026-10-12/` 有提示，`/ai/digest-2026-11-21/` 没有。
+
+**剩下的真问题是内容本身**：这 20 期摘要需要重新生成，而生成要 LLM key（本机没有），
+只能在 Actions 里 `--force` 重跑。页面现在不会骗人，但也不会凭空长出摘要。
+
 ### ETF 的"信号"可能是上周的（第 119 轮）
 
 `/invest/etf/` 页头写着「分析日 2026-11-20」，但不写**距今几天**。ETF 三因子分析只在交易日跑
