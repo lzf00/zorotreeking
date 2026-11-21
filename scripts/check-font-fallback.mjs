@@ -44,6 +44,10 @@ const PAIRS = [
   { label: "Inter 600", weight: 600, stack: '"Inter"', fallback: '"Inter Fallback"' },
   { label: "Inter 700", weight: 700, stack: '"Inter"', fallback: '"Inter Fallback"' },
   { label: "Serif 400", weight: 400, stack: '"Instrument Serif"', fallback: '"Instrument Serif Fallback"' },
+  // 等宽（第 148 轮）：/invest/market/ 的数字表格在 Linux 上换字体时长高 13%，
+  // 整个页面往下推（CLS 0.223）。这里同时验宽度和行盒。
+  { label: "Mono 400", weight: 400, stack: '"JetBrains Mono"', fallback: '"JetBrains Mono Fallback"' },
+  { label: "Mono 600", weight: 600, stack: '"JetBrains Mono"', fallback: '"JetBrains Mono Fallback"' },
 ];
 
 const server = await serveDist("dist");

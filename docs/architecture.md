@@ -728,6 +728,44 @@ CLS 最差 0.223（/invest/market/）
 
 下一次跑完，注解里会直接写清"谁在抖"。**在那之前不做优化**：没有归因的优化等于赌。
 
+#### 注解回来的当晚就破了案
+
+部署完成后注解里多了三行（新加的 notice 生效了）：
+
+```
+/invest/market/ ← 0.001@1299ms ← TD.text-right font-mono / … / 0.223@1369ms ← SECTION.max-w-5xl … / P.mt-2 text-xs …
+/photo/         ← 0.105@1588ms ← SPAN… / SECTION.max-w-7xl …
+```
+
+位移源是 **`TD.text-right font-mono`** + 整块 `SECTION`。这指向等宽字体的行盒：
+
+| 字体 | ascent | descent | 行盒 |
+|---|---|---|---|
+| JetBrains Mono（本站用的） | 1.02 | 0.30 | **1.32 em** |
+| DejaVu Sans Mono（Linux runner 上 `font-mono` 实际落到的） | 0.928 | 0.236 | **1.164 em** |
+| Menlo（macOS 落到的） | — | — | 1.32 em |
+
+**字体到货后行盒长高 13%** → 表格行长高 → 下面所有内容整体位移。macOS 上兜底是 Menlo
+（行盒正好 1.32），所以本机怎么测都是 0 —— 这就是"我复现不了"的全部原因。
+
+修法与 Inter/Serif 完全一致（那一套是第 72–75 轮做的）：新增
+`@font-face JetBrains Mono Fallback`，`src: local("DejaVu Sans Mono"), …`，
+`size-adjust: 99.7%`（DejaVu 的 0.6021 em ÷ JetBrains 的 0.6 em），
+`ascent-override: 102.4%` / `descent-override: 30.1%`（把行盒钉死在 1.32 em）。
+并挂到所有等宽栈上：tailwind 的 `mono`、三个 travel 组件的 `--mono` / `--rd-mono`。
+
+`check:font-fallback`（门禁里跑）现在也覆盖等宽：
+
+```
+✓ Mono 400  宽度 99.7% · 行盒高度 100.0%
+✓ Mono 600  宽度 99.7% · 行盒高度 100.0%
+```
+
+**诚实说明**：这三个数值是按字体公开度量**算出来的**（本机没有 DejaVu，量不了），
+本机也没能把 0.223 复现出来（改坏兜底再测仍是 0：本机字体到货太快，构不成 swap 时序）。
+所以"CI 上降到多少"只能等下一次部署的注解来回答 —— 这也正是这轮先做
+"让数字能自我解释"的价值：下一次不用再猜。
+
 顺带跑了一次从没跑过的检查：站外链接体检 **5529 条，0 死链**（缓存命中 5504，新抓 25）。
 它本来由周巡检负责，而周巡检的 cron 从 11-21 起就没触发过（第 145 轮现象），
 所以这类检查现在是"名义上有、实际没跑"。

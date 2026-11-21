@@ -98,6 +98,34 @@
      中文段落在兜底期被放大 7%，字体到货后又缩回去，整段上下跳（第 75 轮实测 0.028/0.053）。 */
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
+/* ── 等宽字体的兜底（第 148 轮）───────────────────────────────────────────
+ * CI 的弱网基线连续报 `/invest/market/` CLS 0.223，本机同参数量出来是 0。
+ * 把"谁在抖"发到注解之后才看清：位移源是 `TD.text-right font-mono` 与整块
+ * `SECTION` —— 数字表格换字体时行高变了，下面的内容整体位移。
+ *
+ * 机制：JetBrains Mono 的行盒是 ascent 1.02 + descent 0.30 = **1.32 em**；
+ * 而 Linux runner 上 `font-mono` 落到 DejaVu Sans Mono，行盒只有 0.928+0.236 =
+ * **1.164 em**。字体到货后行盒长高 13%，表格行跟着长高 → 整页往下推。
+ * （macOS 上落到 Menlo，行盒也是 1.32，所以本机量不出来 —— 这就是"看不见"的原因。）
+ *
+ * 数字：宽度比按 DejaVu Sans Mono 的 advance 1233/2048 = 0.6021 em ÷ JetBrains 的 0.6 em
+ * = 99.7%；override 是「JetBrains 的度量 ÷ size-adjust」，因此 ascent 102.4%、descent 30.1%。
+ * 这三个值是**算出来的**（字体公开度量），不是量出来的：本机没有 DejaVu。
+ * 只要 override 生效，行盒就固定成 1.32 em，与本地落到的 Menlo 也吻合（同 1.32）。
+ * ────────────────────────────────────────────────────────────────────── */
+@font-face {
+  font-family: "JetBrains Mono Fallback";
+  font-style: normal;
+  font-weight: 100 800;
+  src: local("DejaVu Sans Mono"), local("Liberation Mono"), local("Menlo"), local("Consolas"), local("Courier New"), local("Courier");
+  size-adjust: 99.7%;
+  ascent-override: 102.4%;
+  descent-override: 30.1%;
+  line-gap-override: 0%;
+  /* 同 Inter 的理由：size-adjust 会把 CJK 也算进去，而 CJK 永远由系统字体渲染 */
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 /* 斜体：Inter **没有斜体文件**，浏览器是用直立体「合成倾斜」画的 —— 所以斜体的
  * 前进宽度等于直立宽度。兜底两个字面都是「真斜体」（Arial Italic 每字略窄），
  * 不单独标定就会出现：斜体段落先用真斜体排、Inter 到货后换成合成倾斜，行数变了，

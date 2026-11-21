@@ -13,7 +13,13 @@ export default {
         // 大标题 / 装饰用衬线（editorial 风）
         serif: ['"Instrument Serif"', '"Instrument Serif Fallback"', "ui-serif", "Georgia", '"Songti SC"', '"STSong"', "serif"],
         // 代码 / 数字
-        mono: ['"JetBrains Mono"', "ui-monospace", "SFMono-Regular", '"SF Mono"', "Menlo", "monospace"],
+        mono: [
+          '"JetBrains Mono"',
+          // 兜底也要挂上：Linux 上没有任何 local() 命中时，行盒会从 1.32em 掉到 1.164em，
+          // 字体到货后整张表长高 13%（第 148 轮 /invest/market/ CLS 0.223 的成因）
+          '"JetBrains Mono Fallback"',
+          "ui-monospace", "SFMono-Regular", '"SF Mono"', "Menlo", "monospace",
+        ],
       },
       colors: {
         // 染料色：比原来更沉一档，更"墨色"
