@@ -19,8 +19,12 @@ concurrency:
 
 # 默认 token 只有读权限。失败诊断步骤要把「哪一步挂了」写成 commit status
 # （公开仓库读 status 不需要登录），必须显式申请 statuses: write。
+# contents: write 是给末尾的「补跑停更的日报」用的（第 113 轮）：它要把生成的内容
+# commit 回仓库，否则这次部署出去了、下次又被旧内容覆盖回来。
+# 注意：被 daily-digest / weekly-roundup / bulk-backfill 调用时，调用方也必须有
+# contents: write —— reusable workflow 不能申请比调用方更大的权限（第 107 轮踩过）。
 permissions:
-  contents: read
+  contents: write
   statuses: write
 
 env:
@@ -760,6 +764,42 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             -d "$PAYLOAD" \
             "https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.sha }}" || true
+
+      - name: Catch up a missed digest (self-healing)
+        # 为什么放在最后一步：内容补跑失败不该把一次成功的部署判成失败。
+        # 它只在「内容真的停更」时才动，产出会 commit 回仓库，并顺带触发下一次部署
+        # （那一次构建才会带上新内容）。
+        #
+        # 为什么要做这件事：本仓库的 schedule 实测延迟 5–7.5 小时，还出现过整天不触发；
+        # 2026-11-19 起 AI 日报连续三天没有产出，而站点照常构建、门禁全绿 —— 只有人肉看
+        # 才会发现。把「发现 + 补一次」放进每天都会跑的部署里，就不再依赖定时器的人品。
+        if: github.event_name == 'push' || github.event_name == 'schedule'
+        continue-on-error: true
+        env:
+          DOUBAO_API_KEY: ${{ secrets.DOUBAO_API_KEY }}
+          ARK_API_KEY: ${{ secrets.ARK_API_KEY }}
+        run: |
+          set +e
+          npx tsx scripts/check-freshness.mjs --max-age=2 > /tmp/freshness.log 2>&1
+          STALE=$?
+          if [ "$STALE" -eq 0 ]; then
+            echo "内容新鲜，无需补跑。"
+            exit 0
+          fi
+          echo "::warning::检测到内容停更，尝试补跑一次日报"
+          cat /tmp/freshness.log
+          npx tsx scripts/digest-fetch.ts both || echo "::warning::补跑没产出（LLM 不可用或摘要质量不达标），下次再试"
+          # 只提交内容目录，避免把其它工作区改动带进来
+          git config user.name "zorotreeking-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add src/content
+          if git diff --cached --quiet; then
+            echo "没有新增内容，放弃提交（不制造空提交）。"
+            exit 0
+          fi
+          git commit -m "content: catch up a missed digest run"
+          git pull --rebase --autostash origin main || true
+          git push origin main || echo "::warning::补跑内容推送失败，下次部署会再试"
 
       - name: Summary
         run: |

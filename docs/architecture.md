@@ -665,6 +665,32 @@ npm run check:images -- --limit 150 --warn
 当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
 原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
 
+### 部署自己会补上停更的内容了（第 113 轮）
+
+事实先摆着：本仓库 `schedule` 实测延迟 5–7.5 小时，**还出现过整天不触发**；2026-11-19 起
+AI 日报连续三天没产出，而站点照常构建、门禁全绿、巡检 0 失败 —— 因为"少一篇文章"不是错误。
+第 78 轮加了 `check-freshness` 看门狗，第 106 轮加了备用 cron，但看门狗只会**喊**，
+喊了没人看等于没有。
+
+所以这轮把「发现 + 补一次」挂进**每次部署的末尾**：
+
+| 设计点 | 做法 | 为什么 |
+|---|---|---|
+| 位置 | 验收之后的最后一步 | 补跑失败不能把一次成功的部署判成红 |
+| 触发 | 只在 `push` / `schedule` | 被 `daily-digest` 调用时不递归补跑 |
+| 判定 | 复用 `check-freshness.mjs --max-age=2` | 不另写一套"什么算停更" |
+| 产出 | `digest-fetch.ts both`（第 106 轮已幂等） | 重复触发不烧 LLM |
+| 提交 | 只 `git add src/content`，`diff --cached --quiet` 判定空产出 | 不制造空提交、不带入工作区其它改动 |
+| 失败 | 整步 `continue-on-error: true`，`::warning::` 留痕 | 缺 LLM key 时安静跳过 |
+
+配套：`deploy.yml` 的 `permissions` 从 `contents: read` 提到 `write`（要 push 内容）。
+这正好落在第 107 轮那条规则上 —— **reusable workflow 不能申请比调用方更大的权限** ——
+所以三个调用方（`daily-digest` / `weekly-roundup` / `bulk-backfill`）本来就有 `contents: write`，
+测试里也顺带断言了这一点，免得以后改出"启动阶段就死"。
+
+`tests/deploy-self-heal.test.ts` 六条断言：步骤存在且 `continue-on-error`、排在验收之后、
+只在 push/schedule 触发、只用 `git add src/content`、权限够、以及三个调用方权限覆盖。
+
 ### 「我的数据」页在 sitemap 里，却没 noindex（第 112 轮）
 
 顺手核了一遍爬虫视角：`robots.txt` 挡了 `/admin/`、`/api/`，`/search/` 也不在 sitemap 里，
