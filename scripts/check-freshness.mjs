@@ -48,6 +48,9 @@ export const STREAMS = [
     dir: "invest",
     pattern: /^market-recap-(\d{4}-\d{2}-\d{2})\.(zh|en)\.mdx$/,
     cadenceDays: 1,
+    // 复盘只跟交易日走：实测 122 篇全部落在周一至周五（周末不写）。
+    // 不写这一条，断档检测会把每个周末都报成"漏了一天"—— 那是纯噪声。
+    weekdaysOnly: true,
   },
 ];
 
@@ -59,6 +62,16 @@ export function beijingToday(now = new Date()) {
 
 const dayNumber = (isoDate) => Math.floor(Date.parse(`${isoDate}T00:00:00Z`) / 86_400_000);
 const daysBetween = (from, to) => dayNumber(to) - dayNumber(from);
+
+/** (from, to] 之间的交易日数（周一至周五）。只给"只跟交易日走"的流水线用。 */
+export function weekdaysBetween(from, to) {
+  let count = 0;
+  for (let day = dayNumber(from) + 1; day <= dayNumber(to); day += 1) {
+    const weekday = new Date(day * 86_400_000).getUTCDay();
+    if (weekday !== 0 && weekday !== 6) count += 1;
+  }
+  return count;
+}
 
 /**
  * 纯函数：找出"单语日"。
@@ -90,6 +103,59 @@ export function bilingualGaps(filesByStream, { today = beijingToday(), days = 3 
 }
 
 /**
+ * 纯函数：找出**内部断档**（第 138 轮）。
+ *
+ * 上面那只"停更"看门狗只看**最新一篇的日期**，所以 2026-11-19、11-20 两份投资日报
+ * 直接消失、11-21 又恢复的情况会被判成 ✅ —— 因为最新一篇是"昨天"，落后 1 天，没问题。
+ * 也就是说：流水线可以连续漏几天，只要最后一天成功，看门狗就一直闭嘴。
+ *
+ * 这里在最近 `days` 天里逐日检查"该有的那天有没有"，把漏掉的具体日期列出来。
+ *
+ * 分级：漏的日期离今天很近（≤ `recentDays`）算 fail —— 还来得及补；
+ * 更早的算 warn —— 补不回来了，但要留下记录，不要假装没发生。
+ */
+export function internalGaps(filesByStream, { today = beijingToday(), days = 7, recentDays = 2 } = {}) {
+  const gaps = [];
+  const todayNumber = dayNumber(today);
+  for (const stream of STREAMS) {
+    if (stream.cadenceDays > 1) continue; // 周报之类不按日检查
+    const files = filesByStream[stream.id] ?? [];
+    const have = new Set();
+    for (const name of files) {
+      const date = stream.pattern.exec(name)?.[1];
+      if (date) have.add(date);
+    }
+    let newest = null;
+    let oldest = null;
+    for (const date of have) {
+      if (!newest || date > newest) newest = date;
+      if (!oldest || date < oldest) oldest = date;
+    }
+    if (!newest) continue; // 一篇都没有由 summarizeFreshness 报"停更"，不在这里重复
+    // 从 newest 往前看 days 天：今天还没有产物是正常的（流水线早上才跑），所以不含今天
+    // 只看"有历史记录之后"的窗口：流水线还没上线的那段不算断档
+    const earliest = Math.max(todayNumber - days, dayNumber(oldest));
+    for (let day = todayNumber - 1; day >= earliest; day -= 1) {
+      const back = todayNumber - day;
+      const iso = new Date(day * 86_400_000).toISOString().slice(0, 10);
+      if (iso > newest) continue; // 比最新一篇还新：还没到该有的日子
+      if (have.has(iso)) continue;
+      if (stream.weekdaysOnly) {
+        const weekday = new Date(`${iso}T00:00:00Z`).getUTCDay();
+        if (weekday === 0 || weekday === 6) continue; // 周末本来就不产
+      }
+      gaps.push({
+        stream: stream.id,
+        label: stream.label,
+        date: iso,
+        level: back <= recentDays ? "fail" : "warn",
+      });
+    }
+  }
+  return gaps.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+}
+
+/**
  * 纯函数：把「文件名列表」变成新鲜度结论。可单测，不碰磁盘。
  *
  * @param {Record<string, string[]>} filesByStream 流 id → 文件名数组
@@ -105,7 +171,8 @@ export function summarizeFreshness(filesByStream, { today = beijingToday(), maxA
       if (!date) continue;
       if (!newest || date > newest) newest = date;
     }
-    const age = newest ? daysBetween(newest, today) : null;
+    // 只在交易日产出的流水线，周末不该算"落后"：周六看最新一篇（周五）是正常的
+    const age = newest ? (stream.weekdaysOnly ? weekdaysBetween(newest, today) : daysBetween(newest, today)) : null;
     let level = "ok";
     let reason = "";
     if (!newest) {
@@ -133,11 +200,22 @@ export function summarizeFreshness(filesByStream, { today = beijingToday(), maxA
       row.reason = `${gap.date} 缺 ${gap.missing.join("/")} 版（单语内容会让站内出现死链）`;
     }
   }
+  // 内部断档：连续漏几天、最后一天又成功的情况，只看"最新一篇"是发现不了的
+  const missingDays = internalGaps(filesByStream, { today, days: Math.max(maxAgeDays, 1) + 5 });
+  const failingGaps = missingDays.filter((gap) => gap.level === "fail");
   const failing = rows.filter((row) => row.level === "fail");
-  return { today, rows, failing, gaps, ok: failing.length === 0 && gaps.length === 0 };
+  return {
+    today,
+    rows,
+    failing,
+    gaps,
+    missingDays,
+    failingGaps,
+    ok: failing.length === 0 && gaps.length === 0 && failingGaps.length === 0,
+  };
 }
 
-export function formatFreshness({ today, rows, ok, gaps }) {
+export function formatFreshness({ today, rows, ok, gaps, missingDays }) {
   const lines = [`内容新鲜度（北京时间 ${today}）`, "", "| 流水线 | 最新一篇 | 落后 | 篇数 | 结论 |", "| --- | --- | --- | --- | --- |"];
   for (const row of rows) {
     const icon = row.level === "ok" ? "✅" : row.level === "warn" ? "⚠️" : "❌";
@@ -149,6 +227,13 @@ export function formatFreshness({ today, rows, ok, gaps }) {
     lines.push("");
     lines.push("单语日（有中文没英文，或反过来）：");
     for (const gap of gaps) lines.push(`- ${gap.label} ${gap.date} 缺 ${gap.missing.join(" / ")}`);
+  }
+  if (missingDays?.length) {
+    lines.push("");
+    lines.push("内部断档（这些日期该有产出但没有）：");
+    for (const gap of missingDays) {
+      lines.push(`- ${gap.label} ${gap.date}${gap.level === "fail" ? "（还来得及补）" : "（已经错过，仅记录）"}`);
+    }
   }
   lines.push("");
   lines.push(ok ? "内容流水线正常" : "有流水线已经停更或产出不完整，请查对应 workflow 的运行日志");
