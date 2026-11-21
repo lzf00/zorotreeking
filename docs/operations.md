@@ -49,15 +49,23 @@
 | `check:search:dist` | 本地起服务跑 Pagefind 搜索探针；断言索引是最新的（最新日报排进前 3）、命中不是死链 |
 | `check:i18n-leaks` | 英文内容里不许新增未翻译的中文正文（存量在 `scripts/i18n-leaks-baseline.json`） |
 | `check:a11y:sample` | 从 sitemap 分节抽样 12 页测 a11y（每周巡检，seed=ISO 周，补手写清单的盲区） |
-| `check:a11y:fast` | 双主题 axe 快检（3 个模板 × 浅/深，约 22 秒） |
+| `check:a11y:fast` | 双主题 axe 快检（4 个模板 × 浅/深，约 32 秒）+ 三个浮层的键盘契约：搜索面板/照片灯箱/AI 助手（真按键，验焦点陷阱与焦点归还）；所有可见表单控件必须有可读名称（placeholder 不算） |
+| `check:interactions` | 交互自检：搜索、灯箱、点赞、评分、主题切换、ETF/行情岛降级、SSR 直出，19 个场景（约 40 秒） |
+| `check:runtime -- --vitals --cls=0.12 --lcp=8000` | 运行时自检：21 个代表页真实 Chromium，抓 pageerror / 控制台错误 / 同源 4xx；CLS > 0.12 或 LCP > 8 s 卡住（约 38 秒，参数与 `deploy.yml` 一致） |
 | `check:font-fallback` | 字体回退的度量匹配（数字/日期/混排） |
 | `check:feeds` | RSS/JSON Feed 结构与条数 |
 | `check:seo` | canonical / 单一 h1 / JSON-LD |
 | `check:admin` | Decap 后台的 `config.yml` schema（无头浏览器实测） |
 
 **不在门禁里**（故意的）：`check:deps`、`check:server`、`check:freshness`、`check:search`
-（默认打线上）、`check:interactions`、`check:a11y`（全站，2.5 分钟）、`check:external-links`
-（5508 条外链，全量 10–15 分钟，且依赖外部站点）。它们由 CI 或周巡检负责。
+（默认打线上）、`check:a11y`（全站，2.5 分钟）、`check:a11y:sample`（每周）、
+`check:perf`（弱网首屏，只记录不挡发布）、`check:market-age`（数据时效，另有定时任务看）、
+`check:external-links`（5508 条外链，全量 10–15 分钟，且依赖外部站点）。
+它们由 CI 或周巡检负责。
+
+**运行时自检与交互自检必须留在门禁里**（第 143–144 轮的教训）：它们曾经只在 CI 跑，
+结果本地全绿、推送后部署红并回滚。`tests/gate-covers-ci.test.ts` 钉住了这条，
+并检查 `deploy.yml` 里出现的每个 `npm run` 脚本都真实存在。
 
 ```bash
 # 外链体检（每周巡检自动跑；想手动看某几个站）

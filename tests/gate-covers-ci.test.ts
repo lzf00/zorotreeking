@@ -23,6 +23,28 @@ test("本地门禁包含交互自检与双主题可访问性快检", async () =>
   assert.ok(gate.indexOf("npm run build") < gate.indexOf("check:interactions"), "必须先 build 再跑交互自检");
 });
 
+test("本地门禁包含运行时自检，且参数与 CI 一致", async () => {
+  const pkg = JSON.parse(await read("package.json"));
+  const gate: string = pkg.scripts.gate;
+  assert.match(gate, /check:runtime/, "运行时自检（JS 报错/控制台错误/CLS）不在门禁里");
+  // CI 用 --cls=0.12 --lcp=8000（runner 环境噪声大）；本地必须同一口径，
+  // 否则本地 0.1 绿、CI 0.12 红的情况又会出现
+  assert.match(gate, /--cls=0\.12/);
+  assert.match(gate, /--lcp=8000/);
+});
+
+test("deploy.yml 的运行命令都能在 package.json 里找到", async () => {
+  const pkg = JSON.parse(await read("package.json"));
+  const workflow = await read(".github/workflows/deploy.yml");
+  const commands = [...workflow.matchAll(/npm run ([a-z0-9:.-]+)([^\n>]*)/g)]
+    .map((m) => `${m[1]}${m[2]}`)
+    .filter((cmd) => !cmd.includes("--context")); // report-ci-status 不是检查项
+  const names = commands.map((cmd) => cmd.split(/\s+/)[0]);
+  for (const name of new Set(names)) {
+    assert.ok(pkg.scripts[name], `deploy.yml 用到了 package.json 里不存在的脚本：npm run ${name}`);
+  }
+});
+
 test("deploy.yml 里的交互烟测步骤确实存在（两边对得上）", async () => {
   const workflow = await read(".github/workflows/deploy.yml");
   assert.match(workflow, /Interaction smoke/);
