@@ -132,16 +132,17 @@ async function summarizeSafe(
   try {
     const out = await summarizeToChinese(text, { kind });
     if (out) return { text: out, ok: true };
+    // 摘要失败时**不再往正文里写"请手动补充"这种道歉**（第 115 轮改）。
+    // 读者点开一篇日报，看到「（LLM 摘要失败，请稍后手动补充）」只会觉得这站坏了；
+    // 而"We didn't summarize this"对读者没有任何用。宁可这一条只给标题+来源+链接。
     const excerpt = fallback ? fallback.replace(/\s+/g, " ").slice(0, 300) : "";
-    return {
-      ok: false,
-      text: excerpt
-        ? `*（自动摘要失败，下面是原文节选，请手动改写）*\n\n${excerpt}${fallback.length > 300 ? "…" : ""}`
-        : "（摘要为空，请手动补充）",
-    };
+    if (excerpt) {
+      return { ok: false, text: `${excerpt}${fallback.length > 300 ? "…" : ""}` };
+    }
+    return { ok: false, text: "" };
   } catch (e) {
     console.warn(`  [llm] summarize failed: ${(e as Error).message}`);
-    return { ok: false, text: "（LLM 摘要失败，请稍后手动补充）" };
+    return { ok: false, text: "" };
   }
 }
 
@@ -308,8 +309,11 @@ async function buildAIDigest(date: string): Promise<void> {
         lines.push(`*${metaParts.join(" · ")}*`);
         lines.push("");
       }
-      lines.push(sanitizeExternalTextForMdx(p.zhSummary));
-      lines.push("");
+      // 摘要为空（LLM 失败）时不留空段落 —— 空段落会渲染成一段空白，比没有更难看
+      if (p.zhSummary.trim()) {
+        lines.push(sanitizeExternalTextForMdx(p.zhSummary));
+        lines.push("");
+      }
       lines.push(`<FeedbackButtons slug="item:${itemSlug(p.source, p.url)}" client:visible />`);
       lines.push("");
     }
@@ -405,8 +409,10 @@ async function buildInvestDigest(date: string): Promise<void> {
       }
       lines.push(`*${metaParts.join(" · ")}*`);
       lines.push("");
-      lines.push(sanitizeExternalTextForMdx(n.zhSummary));
-      lines.push("");
+      if (n.zhSummary.trim()) {
+        lines.push(sanitizeExternalTextForMdx(n.zhSummary));
+        lines.push("");
+      }
       lines.push(`<FeedbackButtons slug="item:${itemSlug(n.source, n.url)}" client:visible />`);
       lines.push("");
     }

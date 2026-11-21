@@ -29,14 +29,24 @@ export const STREAMS = [
     id: "ai-digest",
     label: "AI 日报",
     dir: "ai",
-    pattern: /^digest-(\d{4}-\d{2}-\d{2})\.(?:zh|en)\.mdx$/,
+    pattern: /^digest-(\d{4}-\d{2}-\d{2})\.(zh|en)\.mdx$/,
     cadenceDays: 1,
   },
   {
+    // 第 115 轮补：投资日报是 `digest-YYYY-MM-DD`，以前没被任何一条流水线盯住 ——
+    // 盯的是周报 `market-recap-*`，所以"投资日报停更"这件事从来没被发现过。
+    id: "invest-digest",
+    label: "投资日报",
+    dir: "invest",
+    pattern: /^digest-(\d{4}-\d{2}-\d{2})\.(zh|en)\.mdx$/,
+    cadenceDays: 1,
+  },
+  {
+    // 复盘同样是每日一篇（market-recap 每天都有），所以节奏也是 1 天。
     id: "invest-recap",
     label: "投资复盘",
     dir: "invest",
-    pattern: /^market-recap-(\d{4}-\d{2}-\d{2})\.(?:zh|en)\.mdx$/,
+    pattern: /^market-recap-(\d{4}-\d{2}-\d{2})\.(zh|en)\.mdx$/,
     cadenceDays: 1,
   },
 ];
@@ -49,6 +59,35 @@ export function beijingToday(now = new Date()) {
 
 const dayNumber = (isoDate) => Math.floor(Date.parse(`${isoDate}T00:00:00Z`) / 86_400_000);
 const daysBetween = (from, to) => dayNumber(to) - dayNumber(from);
+
+/**
+ * 纯函数：找出"单语日"。
+ *
+ * 第 115 轮加这条的真实原因：全站模板按中英成对处理（语言切换、hreflang、站内链接检查
+ * 都假设 en 存在）。上面那只"停更"看门狗只看**最新一篇的日期**，所以"今天有中文日报、
+ * 但英文没翻出来"会被判成 ✅ —— 而站点上这是两条 `/en/...` 死链，部署门禁会红。
+ * 也就是说：内容看着新鲜，站点却发不出去。所以把"成对"也纳入健康度。
+ */
+export function bilingualGaps(filesByStream, { today = beijingToday(), days = 3 } = {}) {
+  const gaps = [];
+  for (const stream of STREAMS) {
+    const files = filesByStream[stream.id] ?? [];
+    const byDate = new Map();
+    for (const name of files) {
+      const match = stream.pattern.exec(name);
+      if (!match) continue;
+      const [, date, lang] = match;
+      if (daysBetween(date, today) > days || daysBetween(date, today) < 0) continue;
+      if (!byDate.has(date)) byDate.set(date, new Set());
+      byDate.get(date).add(lang);
+    }
+    for (const [date, langs] of [...byDate].sort()) {
+      const missing = ["zh", "en"].filter((lang) => !langs.has(lang));
+      if (missing.length) gaps.push({ stream: stream.id, label: stream.label, date, missing });
+    }
+  }
+  return gaps;
+}
 
 /**
  * 纯函数：把「文件名列表」变成新鲜度结论。可单测，不碰磁盘。
@@ -84,11 +123,21 @@ export function summarizeFreshness(filesByStream, { today = beijingToday(), maxA
     }
     rows.push({ ...stream, newest, age, level, reason, count: files.filter((name) => stream.pattern.test(name)).length });
   }
+  // 单语日也算"发不出去"：站内链接检查会红，部署被拦。所以并入失败判定。
+  const gaps = bilingualGaps(filesByStream, { today, days: Math.max(maxAgeDays, 1) });
+  for (const gap of gaps) {
+    const row = rows.find((r) => r.id === gap.stream);
+    if (!row) continue;
+    if (row.level !== "fail") {
+      row.level = "fail";
+      row.reason = `${gap.date} 缺 ${gap.missing.join("/")} 版（单语内容会让站内出现死链）`;
+    }
+  }
   const failing = rows.filter((row) => row.level === "fail");
-  return { today, rows, failing, ok: failing.length === 0 };
+  return { today, rows, failing, gaps, ok: failing.length === 0 && gaps.length === 0 };
 }
 
-export function formatFreshness({ today, rows, ok }) {
+export function formatFreshness({ today, rows, ok, gaps }) {
   const lines = [`内容新鲜度（北京时间 ${today}）`, "", "| 流水线 | 最新一篇 | 落后 | 篇数 | 结论 |", "| --- | --- | --- | --- | --- |"];
   for (const row of rows) {
     const icon = row.level === "ok" ? "✅" : row.level === "warn" ? "⚠️" : "❌";
@@ -96,8 +145,13 @@ export function formatFreshness({ today, rows, ok }) {
       `| ${row.label} | ${row.newest ?? "—"} | ${row.age === null ? "—" : `${row.age} 天`} | ${row.count} | ${icon}${row.reason ? ` ${row.reason}` : ""} |`,
     );
   }
+  if (gaps?.length) {
+    lines.push("");
+    lines.push("单语日（有中文没英文，或反过来）：");
+    for (const gap of gaps) lines.push(`- ${gap.label} ${gap.date} 缺 ${gap.missing.join(" / ")}`);
+  }
   lines.push("");
-  lines.push(ok ? "内容流水线正常" : "有流水线已经停更，请查对应 workflow 的运行日志");
+  lines.push(ok ? "内容流水线正常" : "有流水线已经停更或产出不完整，请查对应 workflow 的运行日志");
   return lines.join("\n");
 }
 
@@ -124,7 +178,11 @@ async function main() {
   else process.stdout.write(`${formatFreshness(result)}\n`);
 
   if (!result.ok) {
-    process.stderr.write(`::error title=内容流水线停更::${result.failing.map((row) => `${row.label}：${row.reason}`).join("；")}\n`);
+    const parts = [
+      ...result.failing.map((row) => `${row.label}：${row.reason}`),
+      ...result.gaps.map((gap) => `${gap.label} ${gap.date} 缺 ${gap.missing.join("/")}`),
+    ];
+    process.stderr.write(`::error title=内容流水线停更::${parts.join("；")}\n`);
     process.exit(1);
   }
 }

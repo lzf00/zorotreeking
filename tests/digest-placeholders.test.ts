@@ -38,6 +38,19 @@ test("部署补跑链路有质量闸，过不了就回滚不发布", async () =>
   assert.match(run, /git checkout -- src\/content/, "有占位符时要回滚，不能把半成品提交出去");
 });
 
+test("生成器本身不再往正文写道歉句（治本，而不是只靠事后检查）", async () => {
+  const src = await readFile(new URL("../scripts/digest-fetch.ts", import.meta.url), "utf8");
+  // 只允许在注释里提到这句话（解释历史），不允许出现在返回值里
+  const code = src
+    .split("\n")
+    .filter((line) => !/^\s*(\/\/|\*|\/\*)/.test(line))
+    .join("\n");
+  assert.doesNotMatch(code, /LLM 摘要失败/, "占位符文案又回到生成器的返回值里了");
+  assert.doesNotMatch(code, /请手动补充/);
+  assert.doesNotMatch(code, /自动摘要失败，下面是原文节选/);
+  assert.match(src, /return \{ ok: false, text: "" \}/, "摘要失败应该返回空字符串，正文里就不出现这段");
+});
+
 test("门禁里有这个检查", async () => {
   const pkg = JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8"));
   assert.ok(pkg.scripts["check:digest-quality"], "缺少 check:digest-quality 脚本");
