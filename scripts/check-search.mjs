@@ -58,12 +58,25 @@ export function summarizeSearchProbe(rows) {
     .filter((row) => row.freshness)
     .map((row) => ({ url: row.freshness.url, ...assertFreshHit(row.freshness.rank === null ? null : row.freshness) }))
     .filter((item) => !item.ok);
+  // 标题探针只报警告：它受分词和聚合页影响，不构成"搜索坏了"的证据
+  const titleWarnings = rows
+    .filter((row) => row.freshness?.titleRank !== undefined)
+    .map((row) => ({
+      url: row.freshness.url,
+      ...assertTitleRank(row.freshness.titleRank === null ? null : {
+        rank: row.freshness.titleRank,
+        url: row.freshness.url,
+        top: row.freshness.titleTop,
+      }),
+    }))
+    .filter((item) => !item.ok || item.warning);
   const deadLinks = rows.flatMap((row) => row.deadLinks ?? []);
   return {
     rows,
     failures,
     empties,
     staleIndex,
+    titleWarnings,
     deadLinks,
     ok: failures.length === 0 && staleIndex.length === 0 && deadLinks.length === 0,
     /** 失败信息里最有用的是资源路径 + 状态码，提取出来直接给人看 */
@@ -112,6 +125,27 @@ export function assertFreshHit(hit, { expectedRank = 3 } = {}) {
 }
 
 /**
+ * 纯逻辑：**标题探针**的判定（第 139 轮）。
+ *
+ * 第 118 轮起用"最新一期的完整标题"当查询词来验证索引新鲜度。实测这个探针不稳：
+ *   `投资资讯日报 · 2026-11-22` 零命中，但同一页面查询 `2026-11-22` 排第 1。
+ * 原因不是索引没更新，而是 `·` 与日期被切成多个 token，标题里高频词被 `/tag/digest/`、
+ * `/archive/` 这类列出全部期号的聚合页抢走。
+ *
+ * 所以拆成两条断言：
+ *  - **日期探针**（硬）：用 `2026-11-22` 查，必须在前 3 —— 这才是"进没进索引"。
+ *  - **标题探针**（软）：能查到就沿用第 134 轮"不能排在旧期后面"的规则；
+ *    零命中只记为警告，因为那是分词/排序噪声，不是索引坏了。
+ */
+export function assertTitleRank(hit, { expectedRank = 10 } = {}) {
+  if (!hit || hit.rank == null) {
+    return { ok: true, warning: "标题整句搜不到（分词噪声，日期探针已证明页面在索引里）" };
+  }
+  const verdict = assertFreshHit(hit, { expectedRank });
+  return { ok: verdict.ok, warning: verdict.ok ? null : verdict.reason };
+}
+
+/**
  * 纯逻辑：搜索结果里的 URL 有哪些打不开（索引残留 / 页面被删）。
  * @param {string[]} urls
  * @param {(url: string) => boolean} alive 由调用方注入（能做 I/O，便于测试）
@@ -138,7 +172,7 @@ export function extractResource(message = "") {
   return match ? { status: Number(match[1]), path: match[2] } : { status: null, path: null };
 }
 
-export function formatSearchProbe({ rows, failures, empties, staleIndex = [], deadLinks = [], ok }, base) {
+export function formatSearchProbe({ rows, failures, empties, staleIndex = [], titleWarnings = [], deadLinks = [], ok }, base) {
   const lines = [`站内搜索探针（${base}）`, ""];
   for (const row of rows.filter((item) => !item.meta)) {
     const icon = row.error ? "✗" : row.total === 0 ? "⚠" : "✓";
@@ -158,6 +192,11 @@ export function formatSearchProbe({ rows, failures, empties, staleIndex = [], de
     lines.push("");
     lines.push("索引不是最新的（新内容进了页面但没进索引）：");
     for (const item of staleIndex) lines.push(`  ✗ ${item.url} — ${item.reason}`);
+  }
+  if (titleWarnings.length) {
+    lines.push("");
+    lines.push("标题整句搜不到（警告级，页面本身已在索引里）：");
+    for (const item of titleWarnings) lines.push(`  ⚠ ${item.url} — ${item.warning ?? ""}`);
   }
   if (deadLinks.length) {
     lines.push("");
@@ -251,21 +290,30 @@ async function main() {
       rows.push(row);
     }
 
-    // 第 118 轮：索引是不是新的 —— 用最新日报的标题当查询词，要求它自己排进前 3。
+    // 索引是不是新的：**日期探针是硬的**（用 `2026-11-22` 查，必须进前 3），
+    // 标题探针是软的（第 139 轮：`投资资讯日报 · 2026-11-22` 会零命中，但同一页面
+    // 查日期排第 1 —— 那是分词和聚合页造成的噪声，不能当成"索引没更新"报红）。
     for (const item of freshness) {
-      const query = item.title;
       try {
-        const probe = await probeQuery(page, query);
-        const idx = probe.top.findIndex((u) => u.startsWith(item.url));
+        const dateProbe = await probeQuery(page, item.date);
+        const dateRank = dateProbe.top.findIndex((u) => u.startsWith(item.url));
+        const titleProbe = await probeQuery(page, item.title);
+        const titleRank = titleProbe.top.findIndex((u) => u.startsWith(item.url));
         rows.push({
-          query: `${query}（索引新鲜度）`,
-          total: probe.total,
-          top: probe.top,
+          query: `${item.date}（索引新鲜度）`,
+          total: dateProbe.total,
+          top: dateProbe.top,
           meta: true,
-          freshness: { url: item.url, rank: idx === -1 ? null : idx + 1, top: probe.top },
+          freshness: {
+            url: item.url,
+            rank: dateRank === -1 ? null : dateRank + 1,
+            top: dateProbe.top,
+            titleRank: titleRank === -1 ? null : titleRank + 1,
+            titleTop: titleProbe.top,
+          },
         });
       } catch (error) {
-        rows.push({ query, error: String(error?.message ?? error).split("\n")[0], meta: true, freshness: { url: item.url, rank: null } });
+        rows.push({ query: item.date, error: String(error?.message ?? error).split("\n")[0], meta: true, freshness: { url: item.url, rank: null, titleRank: null } });
       }
     }
 

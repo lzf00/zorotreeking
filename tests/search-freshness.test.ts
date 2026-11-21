@@ -10,6 +10,7 @@ import { test } from "node:test";
 
 import {
   assertFreshHit,
+  assertTitleRank,
   deadResultLinks,
   newestDigestDate,
   summarizeSearchProbe,
@@ -94,4 +95,32 @@ test("没有旧期压在前面就算新鲜（聚合页排前面是正常的）",
 test("完全没有命中仍然要红", () => {
   const hit = assertFreshHit({ rank: null, url: "/invest/digest-2026-11-21/", top: [] });
   assert.equal(hit.ok, false);
+});
+
+// 第 139 轮：标题探针降级为警告。真实事故：`投资资讯日报 · 2026-11-22` 零命中，
+// 但同一页面查询 `2026-11-22` 排第 1 —— 索引是新的，红的是探针不是索引。
+test("标题整句搜不到：只算警告，不算搜索坏了", () => {
+  const verdict = assertTitleRank(null);
+  assert.equal(verdict.ok, true);
+  assert.match(verdict.warning ?? "", /分词噪声/);
+});
+
+test("标题能搜到但排在旧期后面：仍然要报出来", () => {
+  const verdict = assertTitleRank({
+    rank: 3,
+    url: "/invest/digest-2026-11-22/",
+    // 榜单第 3 位才是最新一期，前面压着一期 05-22：这才是"索引没更新"的形状
+    top: ["/tag/digest/", "/invest/digest-2026-05-22/", "/invest/digest-2026-11-22/"],
+  });
+  assert.equal(verdict.ok, false);
+  assert.match(verdict.warning ?? "", /旧期/);
+});
+
+test("标题警告不参与 ok 判定（日期探针才是硬指标）", () => {
+  const summary = summarizeSearchProbe([
+    { query: "2026-11-22（索引新鲜度）", total: 287, freshness: { url: "/invest/digest-2026-11-22/", rank: 1, top: ["/invest/digest-2026-11-22/"], titleRank: null } },
+  ]);
+  assert.equal(summary.ok, true);
+  assert.equal(summary.staleIndex.length, 0);
+  assert.equal(summary.titleWarnings.length, 1);
 });

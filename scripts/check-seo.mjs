@@ -451,7 +451,12 @@ async function checkSitemap(siteOrigin, indexable) {
   }));
   const locs = entries.map((e) => e.loc);
   const errors = [];
-  const today = new Date().toISOString().slice(0, 10);
+  // 用**北京时间**的"今天"（第 139 轮）。
+  // 站点的编辑时区是北京时间，内容日期也按北京时间生成。这里原来用 UTC 日期，
+  // 结果每天 00:00–08:00（北京）之间——正好是夜间日报流水线和定时部署的时段——
+  // 当天新内容的 lastmod（北京时间今天）会比 UTC 的"今天"晚一天，被误判成错误，
+  // 整条发布链在夜里被自己的检查拦住。
+  const today = new Date(Date.now() + 8 * 3600 * 1000).toISOString().slice(0, 10);
   let missingLastmod = 0;
   for (const entry of entries) {
     if (!entry.lastmod) {
