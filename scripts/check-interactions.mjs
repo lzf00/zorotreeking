@@ -387,7 +387,9 @@ const SCENARIOS = [
     name: "深色模式切换",
     url: "/",
     async run({ page, fail }) {
-      const toggle = page.locator('button[aria-label="toggle theme"]').first();
+      // 用稳定的 id，别绑在 aria-label 文案上（第 143 轮把标签本地化后这条就红了 ——
+      // 交互自检不该因为一句翻译而失效）
+      const toggle = page.locator("#theme-toggle, button[aria-label*=\"主题\"], button[aria-label*=\"theme\"]").first();
       if ((await toggle.count()) === 0) return fail("找不到主题切换按钮");
       const before = await page.evaluate(() => document.documentElement.classList.contains("dark"));
       await toggle.click();
