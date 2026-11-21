@@ -13,12 +13,19 @@
  * 这个探针按真实前端路径跑：加载页面 → import("/pagefind/pagefind.js") → 逐个查询。
  * 只把**报错**算失败；某词恰好 0 结果只是警告（那是内容问题，不是交付问题）。
  *
+ * 第 118 轮补了两件它测不出来的事：
+ *   a) **索引是不是新的** —— 只测"有结果"测不出"昨天写的文章没进索引"；
+ *   b) **命中是不是活链接** —— 索引里残留已删页面的 URL 时，搜索结果点进去是 404。
+ *
  * 用法：
  *   node scripts/check-search.mjs                                  # 打线上
  *   node scripts/check-search.mjs --base=http://127.0.0.1:4321    # 打已有的本地服务
  *   node scripts/check-search.mjs --dist                             # 自己起静态服务打 dist（门禁用）
  *   node scripts/check-search.mjs --json
  */
+import { readFile, readdir } from "node:fs/promises";
+import path from "node:path";
+
 import { chromium } from "playwright";
 
 import { chromePath, serveDist } from "./lib/serve-dist.mjs";
@@ -46,14 +53,53 @@ export const DEFAULT_QUERIES = [
 export function summarizeSearchProbe(rows) {
   const failures = rows.filter((row) => row.error);
   const empties = rows.filter((row) => !row.error && row.total === 0);
+  // 第 118 轮：索引不是新的、命中是死链，都算"搜索坏了"——用户感知和 403 一样
+  const staleIndex = rows
+    .filter((row) => row.freshness)
+    .map((row) => ({ url: row.freshness.url, ...assertFreshHit(row.freshness.rank === null ? null : { rank: row.freshness.rank }) }))
+    .filter((item) => !item.ok);
+  const deadLinks = rows.flatMap((row) => row.deadLinks ?? []);
   return {
     rows,
     failures,
     empties,
-    ok: failures.length === 0,
+    staleIndex,
+    deadLinks,
+    ok: failures.length === 0 && staleIndex.length === 0 && deadLinks.length === 0,
     /** 失败信息里最有用的是资源路径 + 状态码，提取出来直接给人看 */
     brokenResources: failures.map((row) => extractResource(row.error)),
   };
+}
+
+/**
+ * 纯逻辑：最新一篇日报是否出现在自己的标题查询里。
+ * @param {{ rank: number } | null} hit 命中位置（1 开始），没出现在前 N 名就是 null
+ */
+export function assertFreshHit(hit, { expectedRank = 3 } = {}) {
+  if (!hit) return { ok: false, reason: `最新日报没有出现在搜索结果（期望前 ${expectedRank} 名）` };
+  if (hit.rank > expectedRank) return { ok: false, reason: `最新日报排在第 ${hit.rank} 名（期望前 ${expectedRank} 名）` };
+  return { ok: true, reason: null };
+}
+
+/**
+ * 纯逻辑：搜索结果里的 URL 有哪些打不开（索引残留 / 页面被删）。
+ * @param {string[]} urls
+ * @param {(url: string) => boolean} alive 由调用方注入（能做 I/O，便于测试）
+ */
+export function deadResultLinks(urls, alive) {
+  return urls.filter((url) => !alive(url));
+}
+
+/**
+ * 纯逻辑：从文件列表里找出最新的日报日期。
+ * @param {string[]} files 形如 digest-2026-11-21.zh.mdx
+ */
+export function newestDigestDate(files) {
+  const dates = files
+    .map((file) => file.match(/^digest-(\d{4}-\d{2}-\d{2})\.(?:zh|en)\.mdx$/)?.[1])
+    .filter(Boolean)
+    .sort();
+  return dates.at(-1) ?? null;
 }
 
 /** 从 pagefind 的报错文本里抽出「状态码 + 资源路径」。 */
@@ -62,19 +108,32 @@ export function extractResource(message = "") {
   return match ? { status: Number(match[1]), path: match[2] } : { status: null, path: null };
 }
 
-export function formatSearchProbe({ rows, failures, empties, ok }, base) {
+export function formatSearchProbe({ rows, failures, empties, staleIndex = [], deadLinks = [], ok }, base) {
   const lines = [`站内搜索探针（${base}）`, ""];
-  for (const row of rows) {
+  for (const row of rows.filter((item) => !item.meta)) {
     const icon = row.error ? "✗" : row.total === 0 ? "⚠" : "✓";
     const detail = row.error ? `报错：${extractResource(row.error).status ?? "?"} ${extractResource(row.error).path ?? row.error}` : `${row.total} 条`;
     lines.push(`  ${icon} ${row.query} — ${detail}${row.retried ? "（重试后）" : ""}`);
   }
   lines.push("");
+  const realQueries = rows.filter((row) => !row.meta);
   lines.push(
     ok
-      ? `搜索可用：${rows.length} 个查询全部返回结果${empties.length ? `（其中 ${empties.length} 个 0 结果，属内容覆盖问题）` : ""}`
-      : `搜索坏了：${failures.length}/${rows.length} 个查询报错。碎片 404 = 文件没发布；碎片 403 = 文件在但 nginx 读不了（权限位）`,
+      ? `搜索可用：${realQueries.length} 个查询全部返回结果${empties.length ? `（其中 ${empties.length} 个 0 结果，属内容覆盖问题）` : ""}`
+      : failures.length
+        ? `搜索坏了：${failures.length}/${realQueries.length} 个查询报错。碎片 404 = 文件没发布；碎片 403 = 文件在但 nginx 读不了（权限位）`
+        : "搜索坏了：查询本身能跑，但索引或命中不对（明细见下）",
   );
+  if (staleIndex.length) {
+    lines.push("");
+    lines.push("索引不是最新的（新内容进了页面但没进索引）：");
+    for (const item of staleIndex) lines.push(`  ✗ ${item.url} — ${item.reason}`);
+  }
+  if (deadLinks.length) {
+    lines.push("");
+    lines.push("搜索命中是死链（索引残留已删页面）：");
+    for (const url of deadLinks) lines.push(`  ✗ ${url}`);
+  }
   return lines.join("\n");
 }
 
@@ -84,9 +143,39 @@ async function probeQuery(page, query) {
     await pagefind.init();
     const search = await pagefind.search(q);
     // 真正触发碎片下载的是 data()：只 search() 不 data() 测不出 403
-    await Promise.all(search.results.slice(0, 3).map((result) => result.data()));
-    return search.results.length;
+    const top = await Promise.all(search.results.slice(0, 10).map(async (result) => (await result.data()).url));
+    return { total: search.results.length, top };
   }, query);
+}
+
+/** 从内容目录里找最新日报，用它来断言"索引是新的"。 */
+async function newestDigests(root) {
+  const out = [];
+  for (const kind of ["ai", "invest"]) {
+    const dir = path.join(root, "src", "content", kind);
+    try {
+      const files = await readdir(dir);
+      const date = newestDigestDate(files);
+      if (!date) continue;
+      // 标题要从 frontmatter 读：页面 <title> 带站名后缀，切出来往往只剩通用词
+      const raw = await readFile(path.join(dir, `digest-${date}.zh.mdx`), "utf8");
+      const title = /^title:\s*"?(.+?)"?\s*$/m.exec(raw)?.[1] ?? date;
+      out.push({ kind, date, title, url: `/${kind}/digest-${date}/` });
+    } catch {
+      // 没有内容目录（比如只跑 dist 的 CI）就跳过这条断言
+    }
+  }
+  return out;
+}
+
+/** 结果 URL 是否真的能打开（HEAD 走一遍，跟随静态服务的 404 页）。 */
+async function urlAlive(page, base, url) {
+  try {
+    const res = await page.request.get(`${base}${url}`, { timeout: 15_000 });
+    return res.status() === 200;
+  } catch {
+    return false;
+  }
 }
 
 async function main() {
@@ -102,6 +191,7 @@ async function main() {
     server = await serveDist(root);
     base = `http://127.0.0.1:${server.address().port}`;
   }
+  const freshness = await newestDigests(process.cwd());
   const queriesArg = args.find((arg) => arg.startsWith("--queries="));
   const queries = queriesArg ? queriesArg.slice("--queries=".length).split(",").filter(Boolean) : DEFAULT_QUERIES;
 
@@ -115,18 +205,51 @@ async function main() {
     for (const query of queries) {
       let row = { query };
       try {
-        row.total = await probeQuery(page, query);
+        const probe = await probeQuery(page, query);
+        row.total = probe.total;
+        row.top = probe.top;
       } catch (error) {
         // 一次报错可能只是某个碎片请求偶发失败，重试一次再定性
         await page.waitForTimeout(800);
         try {
-          row = { query, total: await probeQuery(page, query), retried: true };
+          const retry = await probeQuery(page, query);
+          row = { query, total: retry.total, top: retry.top, retried: true };
         } catch (retryError) {
           row.error = String(retryError?.message ?? retryError).split("\n")[0];
         }
       }
       rows.push(row);
     }
+
+    // 第 118 轮：索引是不是新的 —— 用最新日报的标题当查询词，要求它自己排进前 3。
+    for (const item of freshness) {
+      const query = item.title;
+      try {
+        const probe = await probeQuery(page, query);
+        const idx = probe.top.findIndex((u) => u.startsWith(item.url));
+        rows.push({
+          query: `${query}（索引新鲜度）`,
+          total: probe.total,
+          top: probe.top,
+          meta: true,
+          freshness: { url: item.url, rank: idx === -1 ? null : idx + 1 },
+        });
+      } catch (error) {
+        rows.push({ query, error: String(error?.message ?? error).split("\n")[0], meta: true, freshness: { url: item.url, rank: null } });
+      }
+    }
+
+    // 第 118 轮：命中必须是活链接 —— 索引里残留已删页面的 URL 时点进去就是 404。
+    // 采样要"各查询的前 3 名 + 最新日报本身"：只取扁平前 12 条会全落在前几个查询上，
+    // 恰好漏掉最新内容（第 118 轮实测：删掉最新日报页，检查居然还是绿的）。
+    const sample = [
+      ...new Set([...freshness.map((item) => item.url), ...rows.flatMap((row) => (row.top ?? []).slice(0, 3))]),
+    ].slice(0, 24);
+    const dead = [];
+    for (const url of sample) {
+      if (!(await urlAlive(page, base, url))) dead.push(url);
+    }
+    rows.push({ query: `搜索结果活链接（抽查 ${sample.length} 条）`, deadLinks: dead, total: sample.length, meta: true });
   } finally {
     await browser.close();
     server?.close();
@@ -137,7 +260,12 @@ async function main() {
   else process.stdout.write(`${formatSearchProbe(summary, base)}\n`);
 
   if (!summary.ok) {
-    process.stderr.write(`::error title=站内搜索不可用::${summary.failures.length}/${rows.length} 个查询报错\n`);
+    const why = [
+      summary.failures.length ? `${summary.failures.length}/${rows.length} 个查询报错` : "",
+      summary.staleIndex.length ? `${summary.staleIndex.length} 个新页面没进索引` : "",
+      summary.deadLinks.length ? `${summary.deadLinks.length} 个命中是死链` : "",
+    ].filter(Boolean).join("；");
+    process.stderr.write(`::error title=站内搜索不可用::${why}\n`);
     process.exit(1);
   }
 }

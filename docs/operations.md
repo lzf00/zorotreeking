@@ -44,7 +44,7 @@
 | `check:og` | 分享卡（OG 图存在且尺寸正确） |
 | `check:ssr-clock` | SSR 时间戳不漂移（避免水合不一致） |
 | `check:hydration` | 每个岛在浏览器里真的水合 |
-| `check:search:dist` | 本地起服务跑 Pagefind 搜索探针 |
+| `check:search:dist` | 本地起服务跑 Pagefind 搜索探针；断言索引是最新的（最新日报排进前 3）、命中不是死链 |
 | `check:a11y:fast` | 双主题 axe 快检（3 个模板 × 浅/深，约 22 秒） |
 | `check:font-fallback` | 字体回退的度量匹配（数字/日期/混排） |
 | `check:feeds` | RSS/JSON Feed 结构与条数 |
