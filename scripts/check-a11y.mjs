@@ -11,6 +11,8 @@
  *   BASE_URL=http://127.0.0.1:4321 node scripts/...     # 测本地 dist
  *   node scripts/check-a11y.mjs --fail-on=warning       # 警告也当失败
  *   node scripts/check-a11y.mjs --mobile                # 追加 iPhone 13 视口（窄屏才会溢出的问题）
+ *   node scripts/check-a11y.mjs --dist                  # 自己起静态服务打本地 dist（门禁用）
+ *   node scripts/check-a11y.mjs --dist --paths=/,/ai/    # 只测这几页（门的快检）
  *
  * 输出：控制台汇总 + a11y-report.json（CI 里作为 artifact 上传）
  *
@@ -23,10 +25,10 @@ import fs from "node:fs";
 import { chromium, devices } from "playwright";
 import axe from "axe-core";
 
-const BASE_URL = process.env.BASE_URL ?? "https://www.zorotreeking.online";
+let BASE_URL = process.env.BASE_URL ?? "https://www.zorotreeking.online";
 
 /** 覆盖所有页面模板，而不是只测首页。 */
-const PATHS = [
+let PATHS = [
   "/",
   "/en/",
   "/about/",
@@ -57,6 +59,32 @@ const PATHS = [
 
 const args = process.argv.slice(2);
 const MOBILE = args.includes("--mobile");
+
+// --dist：不依赖有人先起服务，自己把 dist 挂起来（门禁里这么用，和 check-search 一致）
+const distArg = args.find((arg) => arg === "--dist" || arg.startsWith("--dist="));
+if (distArg) {
+  const { serveDist } = await import("./lib/serve-dist.mjs");
+  const root = distArg.includes("=") ? distArg.slice("--dist=".length) : "dist";
+  const server = await serveDist(root);
+  BASE_URL = `http://127.0.0.1:${server.address().port}`;
+  process.on("exit", () => server.close());
+}
+
+// --paths：只测指定页面。门禁里用它跑一个「模板级」快检（全站 46 次检查要 2.5 分钟）
+const pathsArg = args.find((arg) => arg.startsWith("--paths="));
+if (pathsArg) {
+  const picked = pathsArg.slice("--paths=".length).split(",").map((p) => p.trim()).filter(Boolean);
+  if (picked.length === 0) {
+    console.error("✗ --paths= 至少要给一个路径");
+    process.exit(2);
+  }
+  const unknown = picked.filter((p) => !PATHS.includes(p));
+  if (unknown.length > 0) {
+    console.error(`✗ --paths 里有不在规则集里的路径：${unknown.join(" ")}（可选：${PATHS.join(" ")}）`);
+    process.exit(2);
+  }
+  PATHS = picked;
+}
 /** 桌面 1280×900 一定有；--mobile 追加 iPhone 13（390×844，带触摸）。 */
 const VIEWPORTS = [
   { id: "desktop", options: { viewport: { width: 1280, height: 900 } } },
