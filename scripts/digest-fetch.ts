@@ -417,11 +417,51 @@ async function buildInvestDigest(date: string): Promise<void> {
 }
 
 // ── 入口 ──────────────────────────────────────────────────────
+/** 某一天、某个模式的产物流水线（AI 日报 / 投资复盘各一个文件）。 */
+export function digestTargets(mode: string, date: string): { stream: "ai" | "invest"; file: string }[] {
+  const wanted = mode === "ai" || mode === "invest" ? [mode] : ["ai", "invest"];
+  return wanted.map((stream) => ({ stream: stream as "ai" | "invest", file: `digest-${date}.zh.mdx` }));
+}
+
+/** 已存在的产物（按流判断，避免"AI 有了投资还没有"时把整轮都跳过）。 */
+export async function existingTargets(
+  mode: string,
+  date: string,
+  contentDir: string = CONTENT_DIR,
+): Promise<{ stream: "ai" | "invest"; file: string }[]> {
+  const found: { stream: "ai" | "invest"; file: string }[] = [];
+  for (const target of digestTargets(mode, date)) {
+    try {
+      await fs.access(path.join(contentDir, target.stream, target.file));
+      found.push(target);
+    } catch {
+      // 不存在，需要生成
+    }
+  }
+  return found;
+}
+
 async function main() {
   const arg = (process.argv[2] || "both").toLowerCase();
+  const force = process.argv.includes("--force");
   const date = todayInBeijing();
   console.log(`[digest] target date: ${date} (Asia/Shanghai)`);
   console.log(`[digest] mode: ${arg}`);
+
+  // 幂等早退（第 106 轮）：定时触发可能一天来两次（备用 cron），
+  // 已有当天产物就别再抓源、更别重复调 LLM —— 摘要很贵，而且重复跑只会产生噪声。
+  // `writeIfNew` 只挡住了"写"，挡不住前面的抓取和摘要。
+  if (!force) {
+    const done = await existingTargets(arg, date);
+    const wanted = digestTargets(arg, date);
+    if (done.length === wanted.length) {
+      console.log(`  → 当天产物已存在（${done.map((d) => d.stream).join(", ")}），跳过；要重跑加 --force`);
+      return;
+    }
+    if (done.length > 0) {
+      console.log(`  → 已有 ${done.map((d) => d.stream).join(", ")}，只补缺失的那一路`);
+    }
+  }
 
   if (arg === "ai" || arg === "both") await buildAIDigest(date);
   if (arg === "invest" || arg === "both") await buildInvestDigest(date);

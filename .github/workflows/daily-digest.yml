@@ -12,7 +12,11 @@ name: Daily digest
 
 on:
   schedule:
-    - cron: "17 18 * * *"
+    # 两个备份时刻（第 106 轮）：本仓库的 schedule 实测延迟 5–7.5 小时，而且**已经发生过
+    # 一次整天不触发**（11-21 就没跑，内容直接缺了三天）。第二条 cron 是保险：
+    # 第一条跑成了，第二条会因为 `digest-fetch.ts` 的幂等早退直接退出，不抓源、不调 LLM。
+    - cron: "17 18 * * *"   # 北京 02:17
+    - cron: "47 21 * * *"   # 北京 05:47（备用）
   workflow_dispatch:
     inputs:
       mode:
