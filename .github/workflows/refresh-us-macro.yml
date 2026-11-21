@@ -1,11 +1,13 @@
-name: Refresh US macro
+name: Refresh US market data
 
-# 宏观块（CPI / 核心 CPI / 非农 / 失业率）来自 BLS 公开 API，不需要 key。
-# 第 136 轮之前这半边靠服务端手工跑，2026-08-11 之后就停了 —— 页面首屏的
-# 「当前状态」因此变成了三个月前数据的结论（第 135 轮只能在首屏自曝陈旧）。
+# 美股页的两块数据都来自公开接口，不需要 key：
+#   宏观（CPI / 核心 CPI / 非农 / 失业率）→ BLS
+#   行情（指数 / 板块 ETF / 个股）        → 东方财富延迟行情
+# 第 136 轮之前这两块都靠服务端手工跑，2026-08-11 之后就停了 —— 页面首屏的「当前状态」
+# 因此变成三个月前数据的结论（第 135–137 轮：先自曝、再修宏观、最后修行情）。
 on:
   schedule:
-    # BLS 通常 08:30 ET 发布，22:20 UTC 抓当天数据足够稳
+    # 美股收盘 16:00 ET = 20:00/21:00 UTC；22:20 UTC 抓当天收盘价足够稳
     - cron: "20 22 * * *"
   workflow_dispatch:
 
@@ -13,7 +15,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: refresh-us-macro
+  group: refresh-us-market
   cancel-in-progress: false
 
 jobs:
@@ -29,18 +31,23 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Refresh macro block from BLS
+      - name: Refresh quotes (Eastmoney delayed)
+        run: node scripts/fetch-us-quotes.mjs
+        continue-on-error: true
+
+      - name: Refresh macro block (BLS)
         run: node scripts/fetch-us-macro.mjs
+        continue-on-error: true
 
       - name: Commit if the numbers moved
         run: |
           if git diff --quiet -- src/data/us-market-latest.json; then
-            echo "宏观数据没有变化，不提交" >> "$GITHUB_STEP_SUMMARY"
+            echo "数据没有变化，不提交" >> "$GITHUB_STEP_SUMMARY"
             exit 0
           fi
-          node -e "const d=require('./src/data/us-market-latest.json');console.log('CPI',d.macro.cpi.reference,d.macro.cpi.actual+'%','非农',d.macro.payroll.reference,d.macro.payroll.actual+'k')" >> "$GITHUB_STEP_SUMMARY"
+          node -e "const d=require('./src/data/us-market-latest.json');console.log('行情',d.market.succeeded+'/'+d.market.requested,'SPX',d.market.indices[0]?.price,'CPI',d.macro.cpi.reference,d.macro.cpi.actual+'%','非农',d.macro.payroll.reference,d.macro.payroll.actual+'k')" >> "$GITHUB_STEP_SUMMARY"
           git config user.name "zoro-bot"
           git config user.email "bot@zorotreeking.online"
           git add src/data/us-market-latest.json
-          git commit -m "chore(macro): refresh US macro block from BLS"
+          git commit -m "chore(us-market): refresh quotes and macro from public APIs"
           git push

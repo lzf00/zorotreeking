@@ -10,11 +10,14 @@ import { test } from "node:test";
 
 const read = (path: string) => readFile(new URL(`../${path}`, import.meta.url), "utf8");
 
-test("宏观刷新工作流：每天定时 + 手动触发 + 只在有变化时提交", async () => {
+test("美股数据刷新工作流：每天定时 + 手动触发 + 只在有变化时提交", async () => {
   const workflow = await read(".github/workflows/refresh-us-macro.yml");
   assert.match(workflow, /cron: "20 22 \* \* \*"/, "要有每日常规刷新");
   assert.match(workflow, /workflow_dispatch:/, "要能手动补跑");
-  assert.match(workflow, /node scripts\/fetch-us-macro\.mjs/, "调用抓取脚本");
+  assert.match(workflow, /node scripts\/fetch-us-macro\.mjs/, "调用宏观抓取脚本");
+  assert.match(workflow, /node scripts\/fetch-us-quotes\.mjs/, "调用行情抓取脚本（第 137 轮）");
+  // 两个脚本各自 try：宏观挂了不该让行情也刷不了（反之亦然）
+  assert.equal((workflow.match(/continue-on-error: true/g) ?? []).length, 2);
   assert.match(workflow, /git diff --quiet -- src\/data\/us-market-latest\.json/, "没变化就不提交");
   assert.match(workflow, /contents: write/, "需要写权限才能提交");
 });
