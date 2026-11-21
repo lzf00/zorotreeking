@@ -9,6 +9,7 @@ import {
   type UsQuote,
   type UsTrendPoint,
 } from "@/lib/us-market";
+import { describeSnapshot } from "@/lib/snapshot-age";
 
 const POLL_MS = 60_000;
 
@@ -46,14 +47,9 @@ function formatPrice(value: number | null): string {
 
 function formatQuoteTime(value: number | null | undefined): string {
   if (!finite(value)) return "—";
-  return new Date(value * 1000).toLocaleString("zh-CN", {
-    timeZone: "Asia/Shanghai",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  });
+  // 只写"08/11 22:00"看不出是今年还是去年，更看不出是 101 天前（第 116 轮）。
+  // 金融页面上把旧行情当前行情展示，比没有行情更糟。
+  return describeSnapshot(value).text;
 }
 
 function metricDirection(metric: MacroComparison): "down" | "up" | "flat" {
@@ -410,7 +406,24 @@ export default function UsMarketDashboard({ initialData = null }: Props) {
         </p>
         <p>
           {market?.partial && <span className="mr-2 text-amber-700 dark:text-amber-400">行情覆盖 {market.succeeded}/{market.requested}，缺失项保留为“—”。</span>}
-          {(data.stale || macro?.stale || market?.stale) && <span className="mr-2 text-amber-700 dark:text-amber-400">当前使用最近一次成功缓存。</span>}
+          {/* 第 116 轮：以前只写"当前使用最近一次成功缓存"，读者会当成几分钟前的缓存。
+              实际这份兜底数据和 BLS 宏观块停在 2026-08-11（101 天前）。时间要写出来。 */}
+          {market?.stale && (() => {
+            const snap = describeSnapshot(market?.quote_ts ?? data.ts);
+            return (
+              <span className="mr-2 text-amber-700 dark:text-amber-400">
+                行情为 {snap.text} 的缓存快照{snap.severe ? "，不是当前行情" : ""}。
+              </span>
+            );
+          })()}
+          {macro?.stale && (() => {
+            const snap = describeSnapshot(macro.fetched_at);
+            return (
+              <span className="mr-2 text-amber-700 dark:text-amber-400">
+                宏观数据自 {snap.text} 起未更新{snap.severe ? "，CPI/非农的参考期可能已过时" : ""}。
+              </span>
+            );
+          })()}
           {error && <span className="mr-2 text-amber-700 dark:text-amber-400">实时刷新失败：{error}。</span>}
           数据仅供研究记录，不构成投资建议。
         </p>
