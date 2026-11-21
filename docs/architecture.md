@@ -689,6 +689,32 @@ npm run check:images -- --limit 150 --warn
 
 这条和 `check:ssr-clock`（第 82 轮）是同一类问题的两个面：**渲染里任何"现在"都必须是显式的**。
 
+### 探针量的那个"慢图片"，其实根本没开灯箱（第 127 轮）
+
+用 `npm run perf:inp` 打本地 dist，相册页报 `❌ 点开图片 792 ms`。查下去是两层问题叠在一起：
+
+**第一层：探针点错了元素。** 选择器是 `[data-lightbox], .gallery img, #gallery-\* img, main img`，
+相册页第一个命中的是**首图 hero**（不在 `<a>` 里），点它不会开灯箱 —— 那 792 ms
+量的是一个不可点图片的绘制。上轮我说"预解码能把它从 184 降到 56 ms"，
+其实那组数字来自我自己另写的脚本（点的是真灯箱），跟探针的 792 根本不是同一件事。
+
+**第二层：判"没打开"判得太早。** 改点 `a[data-pswp-width]` 后先判 `.pswp` 是否存在，
+但 PhotoSwipe 核心是动态 import，点完不立刻有 DOM → 误判成"没打开，跳过"，
+而跳过项的 0 ms 又会被算成"最快动作"。现在 `waitForSelector(".pswp")` 最多等 5 s，
+且 `skipped` 不参与最慢评选。
+
+修完才是真数字：**手机视口下点开灯箱 760–832 ms**（预算 200 ms）。
+
+## 顺带做的两件事
+
+| 改动 | 效果 |
+|---|---|
+| `lightboxVariants()` + `data-pswp-srcset` | 灯箱按显示尺寸挑图：DPR 1 的手机取 720w（24 KB），DPR 3 取 1200w（130 KB），原来一律 1600w（603 KB）→ 字节降 4.6 倍 |
+| `warmPhotoSwipe()` | 空闲（`requestIdleCallback`，2 s 上限）或指针/手指悬停时预热 PhotoSwipe 模块，首次点击不再等模块下载 |
+
+INP 探针也接进了每周巡检（`site-audit.yml`，报告不挡发布）—— 此前这条链路只有本地手跑，
+CI 里没有任何交互延迟指标。本地实测 `拖动地图 160 ms`、其余动作 16–96 ms。
+
 ### LCP 3.82 s 的那张图，是第三方瓦片（第 126 轮）
 
 Lighthouse CI 近十次里挂了五次。逐 URL 分数（commit status 里能直接读）指出唯一硬失败：

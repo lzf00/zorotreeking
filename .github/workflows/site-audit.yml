@@ -82,6 +82,25 @@ jobs:
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
+      # 第 127 轮：交互延迟（INP 思路）此前只有本地手跑，CI 里没有任何指标。
+      # 探针本身的测量错误也是这一轮才修掉（它原来点的是首图 hero，灯箱压根没开）。
+      - name: Interaction latency (INP, mobile)
+        continue-on-error: true
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: /tmp/pw-browsers
+        run: |
+          set +e
+          node scripts/inp-probe.mjs --base=https://www.zorotreeking.online --mobile > /tmp/inp.log 2>&1; code=$?
+          tail -30 /tmp/inp.log
+          {
+            echo '### Interaction latency (INP, mobile)'
+            echo ''
+            echo '```'
+            grep -E "^(✅|⚠️|❌|⏭️)|最慢|超过" /tmp/inp.log | head -30
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit $code
+
       - name: Content freshness
         run: |
           # 同样踩过 bash -e 的坑：命令失败时 shell 直接退出，下面的 cat / 步骤摘要都不会执行

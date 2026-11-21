@@ -41,3 +41,9 @@ test("--dry-run 能只抽样不加载页面（本地/CI 秒验）", async () => 
   const script = await readFile(new URL("../scripts/check-a11y.mjs", import.meta.url), "utf8");
   assert.match(script, /--dry-run/);
 });
+
+test("每周巡检会跑交互延迟探针（不然 INP 依然没有任何 CI 指标）", async () => {
+  const yml = await readFile(WORKFLOW, "utf8");
+  assert.match(yml, /inp-probe\.mjs/, "巡检缺少 INP 探针");
+  assert.match(yml, /--mobile/, "探针应以手机视口跑（慢设备才是瓶颈）");
+});

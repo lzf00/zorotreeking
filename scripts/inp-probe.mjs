@@ -70,10 +70,23 @@ async function clickThrough(page, mobile) {
   }
 
   // 2) 相册灯箱
-  const galleryImage = page.locator("[data-lightbox], .gallery img, #gallery-\\* img, main img").first();
-  if (await galleryImage.count()) {
-    await galleryImage.click({ timeout: 3000 }).catch(() => {});
-    results.push({ action: "点开图片", ms: await drainEvents(page) });
+  // 第 127 轮修正：原来这里选的是 `…, main img`，相册页第一个匹配到的是**首图 hero**（不在 <a> 里），
+  // 点它根本不会开灯箱 —— 于是「点开图片 792 ms」量的是一个不可点图片的绘制，纯噪声。
+  // 只点真正的灯箱链接（PhotoSwipe 的 <a data-pswp-width>），并确认灯箱真的开了。
+  const galleryLink = page.locator("a[data-pswp-width], [data-lightbox], .gallery a").first();
+  if (await galleryLink.count()) {
+    await galleryLink.click({ timeout: 5000 }).catch(() => {});
+    // PhotoSwipe 的核心包是动态 import 的，点完不会立刻有 DOM —— 要等它挂上再判定，
+    // 否则「没打开」是假阴性（我第一版就踩了：判定太早，误以为灯箱坏了）。
+    const opened = await page
+      .waitForSelector(".pswp", { state: "attached", timeout: 5000 })
+      .then(() => true)
+      .catch(() => false);
+    if (opened) {
+      results.push({ action: "点开灯箱", ms: await drainEvents(page) });
+    } else {
+      results.push({ action: "点开灯箱（没打开，跳过）", ms: 0, skipped: true });
+    }
     await page.keyboard.press("Escape").catch(() => {});
     await page.waitForTimeout(150);
   }
@@ -169,7 +182,9 @@ async function probe({ base, urls, mobile }) {
 const summarize = (report) => {
   const rows = [];
   for (const page of report) {
-    const worst = page.interactions.reduce((acc, cur) => (cur.ms > (acc?.ms ?? -1) ? cur : acc), null);
+    // 标了 skipped 的动作（比如灯箱压根没打开）不参与「最慢」评选：0 ms 会冒充成优等生
+    const measured = page.interactions.filter((i) => !i.skipped);
+    const worst = measured.reduce((acc, cur) => (cur.ms > (acc?.ms ?? -1) ? cur : acc), null);
     rows.push({
       path: page.path,
       status: page.status ?? 200,

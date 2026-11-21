@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import PhotoSwipeLightbox from "photoswipe/lightbox";
 import "photoswipe/style.css";
-import { buildSrcSet, galleryVariants } from "@/lib/photo-srcset";
+import { buildSrcSet, galleryVariants, lightboxVariants } from "@/lib/photo-srcset";
 
 type Exif = {
   camera?: string;
@@ -19,6 +19,8 @@ type Photo = {
   thumb: string;
   thumbWebp?: string;
   thumbSm?: string;
+  midWebp?: string;
+  heroWebp?: string;
   width: number;
   height: number;
   alt: string;
@@ -44,11 +46,29 @@ function formatExifLine(exif?: Exif): string {
   return parts.join("  ·  ");
 }
 
+/** PhotoSwipe 的核心包是动态 import 的（首屏不带 40 KB JS），代价是第一次点击要等下载。
+ *  第 127 轮实测：手机上「点开图片」792 ms。所以在空闲时预热一次，并在指针/手指悬停时提前拉。 */
+function warmPhotoSwipe(): void {
+  void import("photoswipe").catch(() => {
+    // 预热失败不重要：点击时还会再试一次（此时是用户主动触发的真实需求）
+  });
+}
+
 export default function PhotoGallery({ photos, galleryId }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!containerRef.current) return;
+
+    // 预热：空闲时（或 1.2 s 后）拉一次 PhotoSwipe，之后点开图片只需本地解析。
+    const idle = (window as any).requestIdleCallback as
+      | ((cb: () => void, opts?: { timeout: number }) => number)
+      | undefined;
+    const idleHandle = idle ? idle(warmPhotoSwipe, { timeout: 2000 }) : window.setTimeout(warmPhotoSwipe, 1200);
+    const warmOnIntent = () => warmPhotoSwipe();
+    const containerEl = containerRef.current;
+    containerEl.addEventListener("pointerenter", warmOnIntent, { passive: true, once: true });
+    containerEl.addEventListener("touchstart", warmOnIntent, { passive: true, once: true });
     const lightbox = new PhotoSwipeLightbox({
       gallery: `#${galleryId}`,
       children: "a",
@@ -112,7 +132,16 @@ export default function PhotoGallery({ photos, galleryId }: Props) {
     });
 
     lightbox.init();
-    return () => lightbox.destroy();
+    return () => {
+      lightbox.destroy();
+      if (idle && typeof (window as any).cancelIdleCallback === "function") {
+        (window as any).cancelIdleCallback(idleHandle);
+      } else {
+        clearTimeout(idleHandle as number);
+      }
+      containerEl.removeEventListener("pointerenter", warmOnIntent);
+      containerEl.removeEventListener("touchstart", warmOnIntent);
+    };
   }, [galleryId]);
 
   return (
@@ -129,6 +158,9 @@ export default function PhotoGallery({ photos, galleryId }: Props) {
             href={p.srcWebp || p.src}
             data-pswp-width={p.width}
             data-pswp-height={p.height}
+            // 灯箱按显示尺寸挑候选图：手机先拿 720w（解码快），放大才升级到全尺寸。
+            // 不加这行时，点开图片要等全尺寸图解码 —— 实测 792 ms 里 handler 只占 3 ms。
+            data-pswp-srcset={buildSrcSet(lightboxVariants(p))}
             data-exif={p.exif ? JSON.stringify(p.exif) : undefined}
             aria-label={p.alt}
             className="block group relative overflow-hidden bg-black/40"

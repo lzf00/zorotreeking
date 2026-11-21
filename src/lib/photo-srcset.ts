@@ -71,3 +71,27 @@ export function coverVariants(cover: {
     { url: bigUrl, width: cover.heroWebp ? Math.min(1600, w || 1600) : w || 1600 },
   ];
 }
+
+/**
+ * 灯箱大图的 srcset（第 127 轮）。
+ *
+ * 起因：手机上「点开图片」实测 792 ms。剖面看下去 handler 只占 3 ms，
+ * 时间全花在**画下一帧时要解码全尺寸图**（原图 600 KB 级）。
+ * 给 PhotoSwipe 一份 720w / 1200w / 全尺寸的 srcset，手机先拿 720w（几十 KB）→ 解码快，
+ * 放大或高分屏才升级。PhotoSwipe 5.4 支持 `data-pswp-srcset`，会自己算 sizes。
+ */
+export function lightboxVariants(p: {
+  thumbWebp?: string | null;
+  midWebp?: string | null;
+  heroWebp?: string | null;
+  srcWebp?: string | null;
+  width?: number;
+}): Variant[] {
+  const w = p.width ?? 0;
+  const bigUrl = p.heroWebp ?? p.srcWebp;
+  return [
+    { url: p.thumbWebp, width: Math.min(720, w || 720) },
+    { url: p.midWebp, width: Math.min(1200, w || 1200) },
+    { url: bigUrl, width: p.heroWebp ? Math.min(1600, w || 1600) : w || 1600 },
+  ];
+}
