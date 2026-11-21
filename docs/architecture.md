@@ -662,6 +662,29 @@ npm run check:images -- --limit 150 --warn
 当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
 原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
 
+### 内容停更的看门狗不该依赖「有人 push」（第 94 轮）
+
+第 85 轮把内容新鲜度写成了 `content/freshness` commit status，但那一步在 **deploy.yml 里**。
+部署只在「有人 push」或「工作日 15:30 定时」时才跑。于是还剩一个结构性缺口：
+
+> 内容流水线自己坏了（2026-11-19 的 `startup_failure` 就是），当天又没人 push
+> —— 没有任何东西会红。
+
+新增 `.github/workflows/freshness-watch.yml`：每天 BJT 08:30（日报 08:00 开跑之后）自己跑，
+不依赖任何提交。
+
+| 项 | 设计 |
+|---|---|
+| 触发 | 每天 UTC 00:30（BJT 08:30）+ 手动；排在日报开跑之后，避免抢跑 |
+| 权限 | `contents: read` + `statuses: write`（最小集） |
+| 信号一 | 写 `content/freshness` commit status（与部署同一个 context，最新一条生效） |
+| 信号二 | 停更时 job 直接红 —— commit status 不会发通知，**job 失败才会给管理员发邮件** |
+| 判定阈值 | 复用 `check-freshness.mjs`，不另立标准 |
+
+守卫 `tests/freshness-watch.test.ts`（4 条）把设计固定住：cron 必须在 UTC 00:30 之后、
+权限必须是最小集、必须 `set +e` + `exit "$code"` + `::error::`、context 必须与部署一致。
+变异验证：加 `contents: write` → 权限测试红；把 cron 改成 `0 0 * * *` → 「避免抢跑」测试红。
+
 ### 浏览器自检改成「与外界断联」（第 93 轮）
 
 第 92 轮把 Giscus 的报错过滤掉了，但那只是把症状按下去：**本地构建的自检仍然依赖第三方网络**。

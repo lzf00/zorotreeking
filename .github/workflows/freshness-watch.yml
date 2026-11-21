@@ -1,0 +1,67 @@
+name: Content freshness watch
+
+# 每早看一眼内容流水线有没有真的产出（第 94 轮）。
+#
+# 为什么不能只靠 deploy.yml 里那一步：`content/freshness` 状态是**部署时**写的，
+# 而部署只在有人 push 或定时部署（工作日 15:30）时才跑。如果内容流水线自己坏了
+# （2026-11-19 那次 startup_failure 就是这样）而且当天没有别的人 push，
+# 就没有任何东西会红 —— 这正是那三天「站点全绿、日报却停了」的结构性缺口。
+#
+# 这条 workflow 不依赖任何人的提交：每天 08:30 BJT（日报 08:00 开跑之后）自己跑一次，
+#  · 把新鲜度写成 default 分支 HEAD 的 commit status（和部署时同一个 context，最新一条生效）；
+#  · 若有板块停更，job 直接红 → GitHub 会给仓库管理员发失败邮件。
+#
+# 停更判定用的是仓库里的阈值（check-freshness.mjs），与部署时完全一致，不另立标准。
+
+on:
+  schedule:
+    - cron: "30 0 * * *"   # UTC 00:30 = BJT 08:30
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  statuses: write
+
+concurrency:
+  group: freshness-watch
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      # 只读 src/content 与脚本，不装依赖（这两个脚本没有第三方 import）
+      - name: Publish freshness commit status
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          # 定时触发的 SHA 就是 default 分支 HEAD；把状态挂在那儿，谁看仓库都能看到
+          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: node scripts/publish-freshness-status.mjs
+
+      - name: Fail the run when a stream is stale
+        run: |
+          set +e
+          node scripts/check-freshness.mjs > /tmp/freshness.log 2>&1
+          code=$?
+          cat /tmp/freshness.log
+          {
+            echo '### 内容新鲜度'
+            echo ''
+            echo '```'
+            cat /tmp/freshness.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          if [ "$code" -ne 0 ]; then
+            echo "::error::有内容流水线停更 —— commit status 已写成 failure，本条 job 也红（会发失败邮件）"
+          fi
+          exit "$code"
