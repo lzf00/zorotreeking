@@ -55,6 +55,13 @@ let PATHS = [
   "/invest/digest-2026-11-10/",
   "/invest/market-recap-2026-11-10/",
   "/hike/travel/chuanxi-loop-chengdu-2026/",
+  // 第 123 轮补的长期缺口：这三类页面一直没被抽查过，而它们各有各的坑
+  //   /now/          —— 只有一页、以长列表 + 状态标签为主（颜色承载信息）
+  //   /guestbook/    —— 只有一个外链组件（无 JS 时是什么样）
+  //   /en/invest/market-recap-*  —— 机翻页 + 顶部机器翻译声明（新加的横幅会不会破坏可读性）
+  "/now/",
+  "/guestbook/",
+  "/en/invest/market-recap-2026-11-13/",
 ];
 
 const args = process.argv.slice(2);
@@ -166,7 +173,9 @@ for (const path of PATHS) {
             if (!el || el === document.body) return null;
             const cs = getComputedStyle(el);
             const transparent = /rgba\(0, 0, 0, 0\)|transparent/.test(cs.outlineColor);
-            const invisible = cs.outlineStyle === "none" || parseFloat(cs.outlineWidth) === 0 || transparent;
+            // Tailwind 的 ring-* 用 box-shadow 实现，也是合法的焦点指示（WCAG 2.4.7 只看"看得见"）
+            const ring = cs.boxShadow && !/^none$/.test(cs.boxShadow) && !/rgba\(0, 0, 0, 0\)/.test(cs.boxShadow);
+            const invisible = !ring && (cs.outlineStyle === "none" || parseFloat(cs.outlineWidth) === 0 || transparent);
             const label = el.getAttribute("aria-label") || (el.textContent || "").trim().slice(0, 18) || el.getAttribute("placeholder") || "";
             return { invisible, label: `${el.tagName.toLowerCase()}${label ? `:${label}` : ""}` };
           });

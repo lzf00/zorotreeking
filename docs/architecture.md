@@ -689,6 +689,27 @@ npm run check:images -- --limit 150 --warn
 
 这条和 `check:ssr-clock`（第 82 轮）是同一类问题的两个面：**渲染里任何"现在"都必须是显式的**。
 
+### 抽查范围之外的三类页面，各有一个真 bug（第 123 轮）
+
+a11y 抽查一直只有 23 条路径，`/now/`、`/guestbook/`、机翻英文页从没进去过。
+把它们加进路径集后，第一次跑就抓到两个真问题：
+
+| 页面 | 问题 | 原因 |
+|---|---|---|
+| `/now/` | `Document has more than one main landmark`（light/dark 都报） | 页面自己又写了一个 `<main>`，嵌在 BaseLayout 的 `<main id="main-content">` 里 |
+| `/guestbook/` | 三个输入框「键盘焦点没有可见指示」 | 用 `focus:outline-none` 抹掉焦点环，只留 `focus:border-blue-500` 的边框变色 |
+
+修法：`/now/` 的内层 `<main>` 改成 `<div>`（地标由布局提供）；
+留言板的三个控件换成 `focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2`。
+
+顺带修了**检查器自己的盲区**：判定"焦点环隐形"时只看 `outline-*`，而 Tailwind 的 `ring-*` 是
+`box-shadow` —— 用它做焦点环的控件会被误判。现在两者都认。
+
+`tests/a11y-paths.test.ts` 盯住四件事：三条路径不许被移出抽查集、`/now/` 不许再有 `<main>`、
+留言板不许再出现 `focus:outline-none`、检查器必须认 box-shadow。
+
+抽查集从 23 条 → **26 条**（52 次检查，light+dark），全绿。
+
 ### 欠账清单自己会长歪，所以让测试盯着它的数字（第 122 轮）
 
 到这一轮，仓库里已经积累了七项"确认过、但修不掉/轮不到修"的欠账：英文页的中文残留、

@@ -187,7 +187,7 @@ export default function GuestbookBoard({ lang = "zh" }: Props) {
               value={nickname}
               onChange={(e) => setNickname((e.target as HTMLInputElement).value)}
               placeholder={t.nicknamePh}
-              className="w-full rounded border border-[var(--border)] bg-[var(--surface-0,transparent)] px-3 py-2 text-sm focus:outline-none focus:border-blue-500"
+              className="w-full rounded border border-[var(--border)] bg-[var(--surface-0,transparent)] px-3 py-2 text-sm focus:border-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
             />
           </div>
           <div>
@@ -198,7 +198,7 @@ export default function GuestbookBoard({ lang = "zh" }: Props) {
               value={email}
               onChange={(e) => setEmail((e.target as HTMLInputElement).value)}
               placeholder={t.emailPh}
-              className="w-full rounded border border-[var(--border)] bg-[var(--surface-0,transparent)] px-3 py-2 text-sm focus:outline-none focus:border-blue-500"
+              className="w-full rounded border border-[var(--border)] bg-[var(--surface-0,transparent)] px-3 py-2 text-sm focus:border-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
             />
           </div>
         </div>
@@ -214,7 +214,7 @@ export default function GuestbookBoard({ lang = "zh" }: Props) {
             value={content}
             onChange={(e) => setContent((e.target as HTMLTextAreaElement).value)}
             placeholder={t.contentPh}
-            className="w-full rounded border border-[var(--border)] bg-[var(--surface-0,transparent)] px-3 py-2 text-sm leading-relaxed focus:outline-none focus:border-blue-500"
+            className="w-full rounded border border-[var(--border)] bg-[var(--surface-0,transparent)] px-3 py-2 text-sm leading-relaxed focus:border-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
           />
         </div>
 

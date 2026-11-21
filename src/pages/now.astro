@@ -60,7 +60,7 @@ const recent = recentChanges(readGitLog(), { todayIso, days: 30, limit: 5 });
 ---
 
 <BaseLayout title="Now" description="一份会过期的近况清单：最近在做的项目、在读的书与论文、在用的工具，以及这段时间在想的问题。">
-  <main class="max-w-2xl mx-auto px-6 pt-12 sm:pt-20 pb-24">
+  <div class="max-w-2xl mx-auto px-6 pt-12 sm:pt-20 pb-24">
 
     <header class="mb-14">
       <p class="text-[11px] uppercase tracking-[0.18em] text-zinc-500 dark:text-zinc-400 font-mono">/now</p>
@@ -127,5 +127,5 @@ const recent = recentChanges(readGitLog(), { todayIso, days: 30, limit: 5 });
       </p>
     </footer>
 
-  </main>
+  </div>
 </BaseLayout>
