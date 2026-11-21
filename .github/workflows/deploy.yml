@@ -803,18 +803,35 @@ jobs:
           ARK_API_KEY: ${{ secrets.ARK_API_KEY }}
         run: |
           set +e
+          # 日志排障：这个仓库的 Actions 日志接口是 403，只能看 annotations。
+          # 所以每个关键结论都打成 ::warning:: / ::notice::，再抄一份进 step summary，
+          # 出问题时能从 API 读出原因，而不是只看到一个绿勾（第 114 轮踩过）。
+          note() { echo "$1"; echo "$1" >> "$GITHUB_STEP_SUMMARY"; }
+          if [ -z "${DOUBAO_API_KEY:-}${ARK_API_KEY:-}" ]; then
+            echo "::warning::没有 LLM key（DOUBAO_API_KEY / ARK_API_KEY），跳过敏捷补跑"
+            exit 0
+          fi
           npx tsx scripts/check-freshness.mjs --max-age=2 > /tmp/freshness.log 2>&1
           STALE=$?
           if [ "$STALE" -eq 0 ]; then
-            echo "内容新鲜，无需补跑。"
+            note "✓ 内容新鲜，无需补跑。"
             exit 0
           fi
-          echo "::warning::检测到内容停更，尝试补跑一次日报"
-          cat /tmp/freshness.log
-          npx tsx scripts/digest-fetch.ts both || echo "::warning::补跑没产出（LLM 不可用或摘要质量不达标），下次再试"
+          note "::warning::检测到内容停更，尝试补跑一次日报"
+          cat /tmp/freshness.log | tail -5 >> "$GITHUB_STEP_SUMMARY"
+          npx tsx scripts/digest-fetch.ts both > /tmp/fetch.log 2>&1
+          FETCH=$?
+          if [ "$FETCH" -ne 0 ]; then
+            REASON=$(grep -viE "^(npm |\$ |> )" /tmp/fetch.log | tail -4 | tr '\n' ' ' | cut -c1-300)
+            echo "::warning::补跑没产出（exit $FETCH）：$REASON"
+            echo "补跑失败原因（exit $FETCH）：$REASON" >> "$GITHUB_STEP_SUMMARY"
+          fi
           # 只生成中文是不够的：全站模板按"中英成对"处理（语言切换、hreflang、站内链接检查都
           # 假设 en 版存在），缺 en 会立刻产生死链 —— 第 113 轮第一次补跑就撞上了。
-          npx tsx scripts/translate-digest.ts --limit=4 || echo "::warning::英文版翻译失败，宁可回滚也不发单语内容"
+          npx tsx scripts/translate-digest.ts --limit=4 > /tmp/translate.log 2>&1 || {
+            REASON=$(tail -3 /tmp/translate.log | tr '\n' ' ' | cut -c1-240)
+            echo "::warning::英文版翻译失败，宁可回滚也不发单语内容：$REASON"
+          }
           # 质量闸 1：摘要失败的那几条会写成"（LLM 摘要失败…）"，阈值允许 30% 以内失败，
           # 于是个别占位符会混进正文发出去（线上已有 40 篇历史）。补跑不能往里添新的。
           if ! node scripts/check-digest-placeholders.mjs --days=0; then

@@ -97,3 +97,17 @@ curl -s "https://api.github.com/repos/lzf00/zorotreeking/check-runs/<id>/annotat
 - 改工作流 → 同步第 1 节（`tests/operations-doc.test.ts` 会检查每个工作流都被提到）
 - 改 `gate` → 同步第 2 节（测试会检查每个 gate 步骤都出现在表里）
 - 已解决的决策从第 4 节删掉，不要留成"历史包袱"
+
+## 8. 内容停更的自愈（第 113–114 轮）
+
+`deploy.yml` 末尾有独立 job `catch-up-digest`：部署验收通过后，用
+`check-freshness --max-age=2` 判断内容是否停更，停更就自动跑
+`digest-fetch` + `translate-digest`，过两道质量闸（无占位符 / 中英成对）才 commit 并 push。
+
+- **为什么要有**：本仓库 `schedule` 实测延迟 5–7.5 小时，还出现过整天不触发。
+- **怎么判断它工作**：`git log origin/main` 里看有没有 `content: catch up a missed digest run`。
+- **怎么读失败原因**：本仓库 Actions 日志接口 403，只能看 annotations 与 step summary ——
+  所以每一步结论都打了 `::warning::` / `::notice::`。查 `try { gh api ... }`：
+  `curl -s "https://api.github.com/repos/lzf00/zorotreeking/actions/runs/<id>/jobs"` 拿 steps，
+  再看 run 页面的 annotations。
+- **不需要人做的事**：正常情况下不用点 "Run workflow"；手动跑仍然可用（`Daily digest`）。

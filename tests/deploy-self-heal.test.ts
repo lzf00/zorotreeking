@@ -62,6 +62,13 @@ test("补跑必须同时翻译，并且中英不成对就回滚（第一次补�
   assert.match(run, /git checkout -- src\/content/, "不成对时要回滚");
 });
 
+test("失败原因要能从 API 读出来（这个仓库的 Actions 日志是 403）", () => {
+  const run = byName.get("Catch up a missed digest (self-healing)")!.run ?? "";
+  assert.match(run, /GITHUB_STEP_SUMMARY/, "结论要写进 step summary");
+  assert.match(run, /::warning::/, "停更/失败要打 annotation，否则只能看到一个绿勾");
+  assert.match(run, /没有 LLM key/, "缺 key 要明说，别静默空跑");
+});
+
 test("权限足够 push，且不超出调用方（reusable workflow 的老坑）", () => {
   assert.equal(job.permissions?.contents, "write", "补跑要 commit，job 本身就得有 contents: write");
   assert.equal(wf.permissions.contents, "write", "可复用 workflow 顶层也得声明，否则调用方限制会盖掉");
