@@ -225,7 +225,9 @@ jobs:
         run: |
           set +e
           # 预算放到「只在离谱时才失败」，反正失败也不挡发布
-          npm run check:perf -- --limit=6 --repeat=2 --cls=0.5 --lcp=30000 > /tmp/perf-mobile.log 2>&1
+          # --explain：位移详情带上 y/h 变化（"被顶下去多少像素、哪一块长高了"），
+          # 配合 check-runtime 新加的 ::notice:: 才能从注解里定位（第 148 轮）
+          npm run check:perf -- --explain --limit=6 --repeat=2 --cls=0.5 --lcp=30000 > /tmp/perf-mobile.log 2>&1
           code=$?
           cat /tmp/perf-mobile.log
           summary=$(grep -E "核心指标" /tmp/perf-mobile.log || true)

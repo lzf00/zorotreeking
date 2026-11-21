@@ -83,7 +83,8 @@ test("弱网档：--throttle 用 Lighthouse 同档参数，--repeat 取中位数
   const pkg = JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8"));
   assert.equal(pkg.scripts["check:perf"], "node scripts/check-runtime.mjs --vitals --mobile --throttle");
   const wf = await readFile(new URL("../.github/workflows/deploy.yml", import.meta.url), "utf8");
-  assert.match(wf, /npm run check:perf -- --limit=6 --repeat=2/, "deploy 要跑一遍弱网基线");
+  // 第 148 轮起带 --explain：位移条目要写出 y/h 变化，否则注解里只有"谁在抖"没有"抖多少"
+  assert.match(wf, /npm run check:perf -- --explain --limit=6 --repeat=2/, "deploy 要跑一遍弱网基线（带位移详情）");
   assert.match(wf, /::notice::弱网首屏/, "弱网数字要出现在 notice 里");
   assert.match(wf, /仅记录，不影响发布/, "弱网基线不挡发布");
   // 第 74 轮教训：纯记录步骤没加 continue-on-error / set +e，弱网数字把整条部署顶红
