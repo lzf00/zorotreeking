@@ -665,6 +665,32 @@ npm run check:images -- --limit 150 --warn
 当前状态：1193 页通过。阈值调到 60 KB 时会列出 8 处 60–120 KB 的 `.webp`（都是 1080px 级别的
 原尺寸 webp，属于正常内容图），说明规则是活的、不是在空转。
 
+### 三天停更的根因，这轮才拿到铁证（第 107 轮）
+
+第 82 轮猜"reusable workflow 的权限超过调用方"是 11-18～11-20 日报停更三天的原因，但一直没有
+直接证据。这轮把当时那次失败运行的 `head_sha`（`2c9e4da4`）取出来，读它里面的两份工作流：
+
+| 位置 | 当时的声明 |
+|---|---|
+| `deploy.yml`（被调用方） | `permissions: { contents: read, statuses: write }` |
+| `daily-digest.yml`（调用方） | `permissions: { contents: write }` ← **没有 `statuses`** |
+
+GitHub 的规则是：reusable workflow 的权限不得超过调用方。于是整条运行在**解析阶段**被拒，
+一个 job 都不启动。证据链也对得上：那次 run 的 `created_at = 06:00:45Z`、`updated_at = 06:00:46Z`
+—— 只差 1 秒，日志是空的，正是 `startup_failure` 的形态。
+
+修法在第 82 轮已经上线（调用方补了 `statuses: write`）。这一轮补的是**让它不会再发生**：
+`tests/reusable-workflow-permissions.test.ts` 静态校验全仓库每一处
+`uses: ./.github/workflows/*.yml`，要求调用方权限逐项覆盖被调用方（`none < read < write`）。
+
+变异验证：把 `daily-digest.yml` 的 `statuses: write` 删掉，测试立刻红并原文复述当年的事故：
+
+```
+daily-digest.yml::deploy → deploy.yml: statuses: 调用方是 none，被调用方要 write —— 运行会在启动阶段就失败
+```
+
+当前三处调用（`daily-digest` / `weekly-roundup` / `bulk-backfill`）全部满足。
+
 ### 日报流水线加了备用触发，且"跑两次等于跑一次"（第 106 轮）
 
 已经发生过的事实：11-21 那天 `Daily digest` **整天没有触发**（GitHub 的 schedule 在本仓库
