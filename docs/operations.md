@@ -55,7 +55,19 @@
 | `check:admin` | Decap 后台的 `config.yml` schema（无头浏览器实测） |
 
 **不在门禁里**（故意的）：`check:deps`、`check:server`、`check:freshness`、`check:search`
-（默认打线上）、`check:interactions`、`check:a11y`（全站，2.5 分钟）。它们由 CI 或周巡检负责。
+（默认打线上）、`check:interactions`、`check:a11y`（全站，2.5 分钟）、`check:external-links`
+（5508 条外链，全量 10–15 分钟，且依赖外部站点）。它们由 CI 或周巡检负责。
+
+```bash
+# 外链体检（每周巡检自动跑；想手动看某几个站）
+node scripts/check-external-links.mjs --hosts arxiv.org,openai.com
+node scripts/check-external-links.mjs --limit 300          # 抽样
+node scripts/check-external-links.mjs --json | jq '.byHost' # 死链按域名聚合
+
+# 确认一条死链后，登记进基线（附理由），下次不再报
+#   编辑 scripts/external-links-baseline.json：
+#   { "https://example.com/gone": { "reason": "已下线，正文已换存档链接", "at": "2026-11-21" } }
+```
 
 ## 3. 哪里看结果（没有 GitHub token 也能看）
 

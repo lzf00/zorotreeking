@@ -35,3 +35,4 @@
 | 快照过旧会被发现 | `check-market-data-age.mjs` | 每周巡检（故意不进阻塞门禁） |
 | 内容停更会被发现 | `check-freshness.mjs`（三条流水线 + 单语日） | 日报收尾 + 每周巡检 |
 | 搜索索引不新/命中死链 | `check-search.mjs` | 门禁（`--dist`） |
+| 10 | 1043 条外链体检不到 | 反爬域名（x.com/知乎/小红书/arxiv/eastmoney 等）对任何非浏览器请求回 403/429 | 体检只能覆盖 4454/5508，其余靠人工或浏览器实测 | 已知限制（第 132 轮） | `npm run check:external-links` |

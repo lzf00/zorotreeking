@@ -689,6 +689,36 @@ npm run check:images -- --limit 150 --warn
 
 这条和 `check:ssr-clock`（第 82 轮）是同一类问题的两个面：**渲染里任何"现在"都必须是显式的**。
 
+### 5508 条外链，第一次体检（第 132 轮）
+
+`check:links` 只查站内。站外链接从建站到现在**一条都没验过**——而日报、路线页引的
+新闻稿和政府公告会下线、会改版。这轮把它补上：
+
+| 观测 | 数字 |
+|---|---|
+| 站外链接（`<a href>`） | **5504 条 / 74 个域名** |
+| 最多的域名 | news.10jqka.com.cn 1031 · arxiv.org 946 · finance.eastmoney.com 871 · huggingface.co 774 |
+| 全量体检结果 | 正常 4454 · **死链 5** · 反爬 1043 · 服务器/超时 6 |
+| 耗时 | 约 20 分钟（并发 12），有 7 天缓存 |
+
+5 条死链里有 **2 条是我自己的误报**：收集器把
+`<link rel="preconnect" href="https://fonts.googleapis.com">` 也算成外链，而 CDN 源站根路径
+本来就 404。改成只认 `<a href>` 后误报消失，另外加了测试锁住这个行为。
+
+真正要改的 2 条：
+
+| 链接 | 状态 | 处理 |
+|---|---|---|
+| `s.nia.gov.cn/.../t20260414_1001.html`（电子边境通行证） | 404 | 换成 `https://s.nia.gov.cn/` 政务服务平台入口（实测 200），文案改成"办理入口" |
+| `wlt.xizang.gov.cn/.../t20240327_409224.html`（纳木措资料） | 404 | 换成该站「旅游通告」栏目页（实测 200），标签注明栏目 |
+
+第 5 条是 2026-09-01 AI 日报引的 qbitai 原文，改版后 404。历史日报不改正文，
+登记进 `scripts/external-links-baseline.json`（带理由），下次不再报。
+
+交付：`scripts/lib/external-links.mjs`（判定：404/410 才是死链，403/429 算反爬）、
+`scripts/check-external-links.mjs`（`--hosts` / `--limit` / `--json` / 7 天缓存）、
+周巡检里的 report-only 步骤（**不进 gate**：20 分钟 + 依赖外部站点，进了只会养成忽略红叉的习惯）。
+
 ### 309 KB 的页面，LCP 当然会抖（第 131 轮）
 
 第 130 轮看到 `/hike/travel/ali-grand-loop-lhasa-return-2026/` 的 LCP 在 1.19 s ↔ 2.66 s 之间跳。

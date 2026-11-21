@@ -278,7 +278,7 @@ day7.reservations = [
     documents: "二代身份证、阿里地区电子边境通行证及打印件；前往地含日土或阿里整区",
     note: "狮泉河往返约 300 公里。只使用中国一侧正规观景点，不驶向未开放边境湖段。电子证若未覆盖日土，当天取消，不要赌检查站。高反、风雪或前一日过晚到店，整日留在狮泉河修车睡觉。",
     sourceLabel: "国家移民管理局 · 电子边境通行证办理",
-    sourceUrl: "https://s.nia.gov.cn/mps/bszy/dzbjtxz/blzy/202604/t20260414_1001.html",
+    sourceUrl: "https://s.nia.gov.cn/",
   },
 ];
 day7.stay = {

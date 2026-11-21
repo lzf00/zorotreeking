@@ -259,7 +259,7 @@ export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
         documents: "二代身份证；16 岁以下同行儿童需到现场作为随行人添加",
         note: "2026 年 4 月 15 日起启用电子边境通行证，证件有效期最长 3 个月且免费办理。本行程按可办日喀则证、可进入定日和珠峰执行；前往地需含日喀则市定日县，并继续持有阿里证（普兰、札达、噶尔、日土等）。获批后下载并打印纸质备份，出发前再核 12367 与检查站口径。",
         sourceLabel: "国家移民管理局 · 电子边境通行证问答",
-        sourceUrl: "https://s.nia.gov.cn/mps/bszy/dzbjtxz/blzy/202604/t20260414_1001.html",
+        sourceUrl: "https://s.nia.gov.cn/",
       },
       {
         subject: "拉萨租车与国庆还车",
@@ -596,8 +596,8 @@ export const aliLhasaReturnDailyPlanning: AliRouteDailyPlanning[] = [
         channel: "当地交警、12345、纳木措景区正规渠道、班戈酒店前台和租车门店",
         documents: "身份证、驾驶证、车辆订单或行驶证、拉萨酒店订单",
         note: "10 月 5 日从班戈出发，上午在纳木措开放道路停留，下午经当雄回拉萨。不安排圣象天门、扎西半岛深度游。10.05–06 拉萨连住尚未出订单，优先续订柏丽艾尚。",
-        sourceLabel: "西藏文旅厅 · 班戈与纳木措北部旅游资料",
-        sourceUrl: "https://wlt.xizang.gov.cn/xccx/lytg/202403/t20240327_409224.html",
+        sourceLabel: "西藏文旅厅 · 旅游通告栏目（班戈与纳木措资料）",
+        sourceUrl: "https://wlt.xizang.gov.cn/xccx/lytg/",
       },
     ],
     stay: {

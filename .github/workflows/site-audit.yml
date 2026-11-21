@@ -101,6 +101,28 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
           exit $code
 
+      # 第 132 轮：站外链接此前从没验过（5508 条 / 74 个域名）。反爬域名会回 403，
+      # 所以这一步只当体检报告（continue-on-error），死链进基线后下次不再报。
+      - name: External links
+        continue-on-error: true
+        env:
+          SITE_AUDIT_REPORT: /tmp/external-links.json
+        run: |
+          set +e
+          node scripts/check-external-links.mjs --json > "$SITE_AUDIT_REPORT" 2>/tmp/external-links.err; code=$?
+          tail -4 /tmp/external-links.err
+          {
+            echo '### External links'
+            echo ''
+            node -e '
+              const r = require(process.env.SITE_AUDIT_REPORT);
+              console.log(`检查 ${r.checked} 条 · 死链 ${r.counts.dead} · 反爬 ${r.counts.blocked} · 可疑 ${r.counts.suspect} · 服务器/超时 ${r.counts.error}`);
+              for (const [host, n] of (r.byHost || []).slice(0, 5)) console.log(`- ${host}: ${n} 条死链`);
+              for (const row of (r.dead || []).slice(0, 10)) console.log(`- ${row.status} ${row.url}`);
+            ' >> "$GITHUB_STEP_SUMMARY"
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit $code
+
       - name: Content freshness
         run: |
           # 同样踩过 bash -e 的坑：命令失败时 shell 直接退出，下面的 cat / 步骤摘要都不会执行
