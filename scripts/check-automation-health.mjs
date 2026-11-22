@@ -72,9 +72,27 @@ const daysBetween = (a, b) => (b.getTime() - a.getTime()) / 86_400_000;
  */
 export function auditAutomation(workflows, runs, now = new Date(), opts = {}) {
   const maxAgeDays = opts.maxAgeDays ?? 0;
+  /** 读不到运行记录的 workflow：不能当成"没跑过"，否则限流一次就全员报"从来没有运行记录"。 */
+  const unfetched = new Set(opts.unfetched ?? []);
   const rows = [];
   const problems = [];
+  const inconclusive = [];
   for (const wf of workflows) {
+    if (unfetched.has(wf.file)) {
+      rows.push({
+        file: wf.file,
+        kind: wf.expectation.kind,
+        cadenceDays: wf.expectation.days,
+        lastRun: null,
+        lastConclusion: null,
+        lastSuccess: null,
+        ageDays: null,
+        verdict: "unknown",
+        why: "读不到运行记录（API 限流/网络），无法判断",
+      });
+      inconclusive.push(wf.file);
+      continue;
+    }
     const list = (runs[wf.file] ?? []).filter((r) => r.created_at).sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at));
     const lastSuccess = list.find((r) => r.conclusion === "success") ?? null;
     const recent = list.slice(0, 3);
@@ -116,7 +134,7 @@ export function auditAutomation(workflows, runs, now = new Date(), opts = {}) {
       why,
     });
   }
-  return { rows, problems };
+  return { rows, problems, inconclusive };
 }
 
 export function loadWorkflows(dir = WORKFLOW_DIR) {
@@ -150,6 +168,7 @@ function main() {
   const offline = valueOf("runs");
   const workflows = loadWorkflows();
   let runs = {};
+  const unfetched = new Set();
   if (offline) {
     runs = JSON.parse(readFileSync(path.resolve(ROOT, offline), "utf8"));
   } else {
@@ -157,26 +176,35 @@ function main() {
       try {
         runs[wf.file] = fetchRuns(wf.file);
       } catch (error) {
-        console.log(`::warning title=自动化体检::读取 ${wf.file} 的运行记录失败：${error instanceof Error ? error.message : error}`);
-        runs[wf.file] = [];
+        // --json 时所有噪音都走 stderr，否则管道里拿到的就不是纯 JSON 了
+        console.error(`::warning title=自动化体检::读取 ${wf.file} 的运行记录失败：${error instanceof Error ? error.message : error}`);
+        unfetched.add(wf.file);
       }
     }
   }
-  const { rows, problems } = auditAutomation(workflows, runs, new Date(), { maxAgeDays });
+  const { rows, problems, inconclusive } = auditAutomation(workflows, runs, new Date(), { maxAgeDays, unfetched });
 
   if (JSON_OUT) {
-    console.log(JSON.stringify({ generatedAt: new Date().toISOString(), repo: REPO, authenticated: Boolean(TOKEN), rows, problems }, null, 2));
+    console.log(JSON.stringify({ generatedAt: new Date().toISOString(), repo: REPO, authenticated: Boolean(TOKEN), rows, problems, inconclusive }, null, 2));
   } else {
     console.log(`| workflow | 触发 | 期望 | 上次成功 | 逾期 | 结论 |`);
     console.log(`| --- | --- | --- | --- | --- | --- |`);
     for (const row of rows) {
-      const mark = row.verdict === "ok" ? "✅" : row.verdict === "warn" ? "⚠️" : "❌";
+      const mark = row.verdict === "ok" ? "✅" : row.verdict === "warn" ? "⚠️" : row.verdict === "unknown" ? "❔" : "❌";
       const expect = row.cadenceDays ? `每 ${row.cadenceDays} 天` : "事件驱动";
       console.log(`| ${row.file} | ${row.kind} | ${expect} | ${row.lastSuccess ?? "—"} | ${row.ageDays ?? "—"} 天 | ${mark} ${row.why} |`);
     }
   }
 
+  if (inconclusive.length) {
+    // 第 172 轮的教训：检查不可信时必须说自己不可信，不能把"读不到"当成"没跑过"。
+    console.error(
+      `\n::error title=自动化体检::体检不完整：${inconclusive.length} 个 workflow 的运行记录读不到（未登录 API 只有 60 次/小时，容易被限流）。` +
+        ` 这些条目本轮**不做判断**：${inconclusive.join("、")}`,
+    );
+  }
   if (!problems.length) {
+    if (inconclusive.length) return 2;
     console.log("\n✓ 自动化体检通过：每个 workflow 的最近成功都在自己的周期内");
     return 0;
   }

@@ -10,13 +10,30 @@ name: Accessibility & hydration audit
 #   · 60 页手机宽度抽查（窄屏换行/折叠只有这里能看见）
 #   · 岛水合（Lighthouse 和 axe 都不会因为 React 组件崩而变红）
 # 目标全部是本地 dist —— 同一份提交的确定性产物，不依赖生产可用性。
+#
+# 第 180 轮：这条 workflow 之前**从来没跑过**（第 179 轮的自动化体检报的就是它）——
+# 只有 cron，而本仓库的 cron 会延迟 5–7 小时甚至整周不触发。于是一整套"全站 1190 页
+# × 浅/深两套"的 axe 审计形同不存在，无障碍只剩门禁里抽样 22 页的 check:a11y:fast。
+#
+# 修法和 157 轮把 site-audit 挂进 weekly-audit 一样：**换一个可靠的上游**。
+#   · workflow_run：每次 Build & Deploy 结束就醒一次（部署本身是可靠的，push 天天有）
+#   · 但只有"上次成功审计超过 7 天"才真的跑（scripts/a11y-due.mjs 判旧，10 秒内退出）
+#   · cron 保留为兜底；workflow_dispatch 可强制
 on:
   schedule:
     - cron: "30 20 * * 1"   # 北京时间周二 04:30，避开部署与审计高峰
-  workflow_dispatch: {}
+  workflow_run:
+    workflows: ["Build & Deploy"]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "忽略 7 天宽限期，立刻跑一遍"
+        type: boolean
+        default: false
 
 permissions:
-  contents: read
+  contents: write   # 审计完要把戳记（src/data/a11y-audit.json）提交回去
 
 concurrency:
   group: a11y
@@ -32,11 +49,32 @@ jobs:
         with:
           node-version: 22
           cache: npm
+      - name: Decide whether this run is due
+        id: due
+        # 部署天天有，但全站审计要 20 分钟 —— 只有「距上次成功超过 7 天」才真跑。
+        # 部署失败时也没必要审（dist 会是自己 build 的，但内容没上线，结果容易误导）。
+        run: |
+          set -e
+          if [ "${{ github.event_name }}" = "workflow_run" ] && [ "${{ github.event.workflow_run.conclusion }}" != "success" ]; then
+            echo "due=false" >> "$GITHUB_OUTPUT"
+            echo "⏭️ 上游部署不是 success（${{ github.event.workflow_run.conclusion }}），跳过"
+            exit 0
+          fi
+          if [ "${{ inputs.force }}" = "true" ]; then
+            node scripts/a11y-due.mjs --force
+          else
+            node scripts/a11y-due.mjs --max-age-days=7
+          fi
+
       - run: npm ci
+        if: steps.due.outputs.due == 'true'
       - run: npx playwright install --with-deps chromium
+        if: steps.due.outputs.due == 'true
       - name: Build
+        if: steps.due.outputs.due == 'true'
         run: npm run build
       - name: Run axe over every page (light + dark)
+        if: steps.due.outputs.due == 'true'
         # 站点两套 token（浅色/深色），axe 只审当前渲染的那套，所以两种配色各跑一遍
         run: node scripts/a11y-audit.mjs --all --scheme both --json > a11y-report.json
       - name: Summarize
@@ -48,6 +86,7 @@ jobs:
             for (const v of report.grouped) console.log(`- [${v.impact}] ${v.id} × ${v.pages} 页：${v.selector}`);
           ' >> "$GITHUB_STEP_SUMMARY" || true
       - name: Spot-check phone width (60 pages x light/dark)
+        if: steps.due.outputs.due == 'true' 
         # 响应式布局在窄屏会换行/折叠，宽屏看不见的问题只有手机宽度才暴露。
         # 只抽 60 页（约 5 分钟），全量手机审太慢；抽到违规照样让 job 红。
         run: node scripts/a11y-audit.mjs --pages 60 --scheme both --viewport 390x844
@@ -55,10 +94,40 @@ jobs:
       # 岛在浏览器里到底有没有水合：Lighthouse 分数和 axe 都不会因为 React 组件崩掉变红。
       # 2026-11-11 升 React 19 / recharts 3 时补的网；这里不带 BASE_URL，直接测 dist。
       - name: Island hydration smoke test
+        if: steps.due.outputs.due == 'true'
         run: node scripts/check-hydration.mjs
 
+      - name: Record the audit stamp
+        if: steps.due.outputs.due == 'true' && success()
+        # 戳记必须进仓库，否则下一次部署又会判旧、天天跑 20 分钟。
+        run: |
+          set +e
+          node -e '
+            const fs = require("node:fs");
+            const report = JSON.parse(fs.readFileSync("a11y-report.json", "utf8"));
+            const stamp = {
+              ranAt: new Date().toISOString(),
+              pages: report.pages,
+              violations: (report.grouped ?? []).reduce((n, g) => n + (g.pages ?? 0), 0),
+              sha: process.env.GITHUB_SHA?.slice(0, 8) ?? null,
+            };
+            fs.writeFileSync("src/data/a11y-audit.json", JSON.stringify(stamp, null, 2) + "\n");
+            console.log("戳记:", JSON.stringify(stamp));
+          '
+          if ! git diff --quiet src/data/a11y-audit.json; then
+            git config user.name "zorotreeking-bot"
+            git config user.email "bot@users.noreply.github.com"
+            git add src/data/a11y-audit.json
+            git commit -m "audit: a11y full sweep stamp"
+            git pull --rebase --autostash origin main || true
+            git push origin main || echo "::warning::戳记推送失败，下次部署会再跑一遍（浪费 20 分钟，但不会漏审）"
+          else
+            echo "戳记没变（同一天重复跑），不制造空提交"
+          fi
+
+
       - name: Upload report
-        if: always()
+        if: always() && steps.due.outputs.due == 'true' 
         uses: actions/upload-artifact@v4
         with:
           name: a11y-report
