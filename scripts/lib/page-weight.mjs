@@ -24,6 +24,27 @@ export const BUDGETS = { htmlBytes: 220 * 1024, cssBytes: 120 * 1024, gzipBytes:
 /** 基线页面允许的漂移：超过原值 10% 就要求重新登记理由 */
 export const DRIFT_RATIO = 0.1;
 
+/**
+ * 体量随内容线性增长、但"每一条"的成本应当稳定的页面（第 181 轮）。
+ *
+ * `/changelog/` 是从 git 历史生成的：每多一个提交，页面就长 ~0.8 KB。用「总字节数 + 10% 漂移」
+ * 判它，等于**每几轮就要重新登记一次基线** —— 而每重新登记一次，那道闸门就松一档，
+ * 最后变成"反正它总会变重"的装饰品（第 151 轮 /changelog/ 336→353 KB 就是这么混过去的）。
+ * 真正该盯的是**每条提交的渲染成本**：那才是代码/模板回退的信号；总量增长只是历史变长。
+ */
+export const PER_ENTRY_PAGES = {
+  "/changelog/": { unit: /<li\b/g, label: "条目" },
+};
+
+/** 按声明的单位数算「每条多少字节」。单位数为 0 时退回总字节判断。 */
+export function perEntryOf(page) {
+  const spec = PER_ENTRY_PAGES[page.path];
+  if (!spec) return null;
+  const units = (String(page.html ?? "").match(spec.unit) ?? []).length;
+  if (!units) return null;
+  return { label: spec.label, units, bytesPerEntry: page.htmlBytes / units };
+}
+
 export function parseStyleBytes(html) {
   let total = 0;
   for (const match of html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)) total += match[1].length;
@@ -59,6 +80,24 @@ export function evaluatePages(pages, baseline = {}, budgets = BUDGETS) {
       }
       if (tags !== null && tags > budgets.tags) {
         failures.push({ path: page.path, kind: "tags", actual: tags, limit: budgets.tags, message: `新页面 ${tags} 个标签超过预算 ${budgets.tags}` });
+      }
+      continue;
+    }
+    // 线性增长的日志页：只判「每条多少字节」。总量增长是历史变长，不是回退 —— 判总量等于
+    // 每几轮逼着重新登记基线，而每登记一次这道闸就松一档（第 181 轮）。
+    const spec = PER_ENTRY_PAGES[page.path];
+    const units = spec && page.html ? (page.html.match(spec.unit) ?? []).length : 0;
+    if (units && allowed.bytesPerEntry) {
+      const current = page.htmlBytes / units;
+      const limit = allowed.bytesPerEntry * (1 + DRIFT_RATIO);
+      if (current > limit) {
+        failures.push({
+          path: page.path,
+          kind: "per-entry-drift",
+          actual: Math.round(current),
+          limit: Math.round(limit),
+          message: `单条成本 ${Math.round(allowed.bytesPerEntry)} B → ${Math.round(current)} B（${units} ${spec.label}），涨了 ${(((current / allowed.bytesPerEntry) - 1) * 100).toFixed(1)}%；总量 ${kb(page.htmlBytes)} 只是历史变长`,
+        });
       }
       continue;
     }

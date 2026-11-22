@@ -107,3 +107,49 @@ test("门禁在 build 之后跑 check:weight", async () => {
   assert.ok(gate.indexOf("check:weight") > gate.indexOf(" build "), "check:weight 必须在 build 之后（要读 dist）");
   assert.match(pkg.scripts["check:weight"], /check-page-weight\.mjs/);
 });
+
+// ── 第 181 轮：线性增长的日志页要判「每条成本」，不判总量 ────────────────
+//
+// /changelog/ 由 git 历史生成：每多一个提交就长 ~0.8 KB。用「总量 + 10% 漂移」判它，
+// 等于每几轮就要重新登记一次基线 —— 而每登记一次，闸门就松一档（第 151 轮就是这么混过去的）。
+// 真正该盯的是单条渲染成本。
+
+const { PER_ENTRY_PAGES } = await import("../scripts/lib/page-weight.mjs");
+
+const changelogHtml = (entries: number, perEntryBytes: number) =>
+  "<ul>" + Array.from({ length: entries }, () => `<li>${"x".repeat(perEntryBytes)}</li>`).join("") + "</ul>";
+
+test("历史变长、单条成本不变 → 不算回退", () => {
+  const html = changelogHtml(500, 900);
+  const { failures } = evaluatePages(
+    [{ path: "/changelog/", html, htmlBytes: html.length, cssBytes: 0 }],
+    { "/changelog/": { htmlBytes: 100 * KB, cssBytes: 0, bytesPerEntry: 900, units: 100, reason: "日志页：判单条成本" } },
+  );
+  assert.deepEqual(failures, [], "总量从 100 KB 长到 450 KB 也不该红，单条没变");
+});
+
+test("单条渲染变贵（模板回退）→ 红", () => {
+  const html = changelogHtml(120, 1100);
+  const { failures } = evaluatePages(
+    [{ path: "/changelog/", html, htmlBytes: html.length, cssBytes: 0 }],
+    { "/changelog/": { htmlBytes: 100 * KB, cssBytes: 0, bytesPerEntry: 900, units: 100, reason: "日志页：判单条成本" } },
+  );
+  assert.equal(failures.length, 1);
+  assert.match(failures[0].message, /单条成本 900 B → 1\d{3} B/);
+});
+
+test("没有单条基线时退回总量判定（兼容旧基线）", () => {
+  const html = changelogHtml(10, 900);
+  const { failures } = evaluatePages(
+    [{ path: "/changelog/", html, htmlBytes: 500 * KB, cssBytes: 0 }],
+    { "/changelog/": { htmlBytes: 100 * KB, cssBytes: 0, reason: "旧基线" } },
+  );
+  assert.equal(failures.length, 1, "没有单条基线时必须还能用总量兜住");
+});
+
+test("/changelog/ 已按单条成本登记（回归）", async () => {
+  assert.ok(PER_ENTRY_PAGES["/changelog/"], "changelog 应当声明为「按条判定」的页面");
+  const { readFile } = await import("node:fs/promises");
+  const baseline = JSON.parse(await readFile(new URL("../scripts/page-weight-baseline.json", import.meta.url), "utf8"));
+  assert.ok(baseline["/changelog/"].bytesPerEntry > 0, "基线里必须有单条字节数，否则判回总量");
+});

@@ -50,3 +50,18 @@ test("构建环境里真的能读到 git 历史（否则自动生成那部分会
   assert.ok(log.length > 100, `只读到 ${log.length} 条提交，浅克隆会让 /now 和 /changelog 都变空`);
   assert.ok(log.every((c) => /^\d{4}-\d{2}-\d{2}$/.test(c.date)), "日期格式应为 YYYY-MM-DD");
 });
+
+// ── 第 181 轮：过期提示不能是死路 ────────────────────────────────────────
+//
+// /now 已经 138 天没更新，页面老老实实说了「这一页已经 N 天没更新」—— 但说完就完了，
+// 读者看到"过期"却没有下一站。诚实不等于有用：过期提示里必须给能看的地方。
+
+test("过期提示把读者送到能看的地方（构建产物里验证）", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const html = await readFile(new URL("../dist/now/index.html", import.meta.url), "utf8");
+  assert.match(html, /能看的地方/, "过期提示里要有出口");
+  assert.match(html, /<a href="\/changelog\/"/, "更新日志要能点");
+  assert.match(html, /<a href="#recent"/, "本页的自动改动要能点（锚点）");
+  assert.match(html, /id="recent"/, "锚点目标必须真的存在");
+  assert.doesNotMatch(html, /href="\/now\/"[^>]*>再过一阵再来/, "不许自指链接");
+});

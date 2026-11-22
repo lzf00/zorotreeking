@@ -13,7 +13,7 @@ import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { gzipSync } from "node:zlib";
 import { join, relative } from "node:path";
 
-import { BUDGETS, countTags, evaluatePages, kb, parseStyleBytes } from "./lib/page-weight.mjs";
+import { BUDGETS, PER_ENTRY_PAGES, countTags, evaluatePages, kb, parseStyleBytes } from "./lib/page-weight.mjs";
 
 /** 判断一条基线理由是不是我们自动生成的（自动理由每轮重算，人工理由保留）。 */
 const AUTO_REASON_PREFIXES = [
@@ -40,9 +40,13 @@ const files = walk(ROOT);
 const pages = files.map((file) => {
   const html = readFileSync(file, "utf8");
   const rel = relative(ROOT, file).replace(/index\.html$/, "");
+  const path = `/${rel}`;
   return {
-    path: `/${rel}`,
+    path,
     file,
+    // 只有需要数「每条多少字节」的页面才留着全文：全站 1204 页的 HTML 一起抱在内存里
+    // 是几百 MB，闸门不需要那么贵。
+    html: PER_ENTRY_PAGES[path] ? html : "",
     htmlBytes: html.length,
     cssBytes: parseStyleBytes(html),
     gzipBytes: gzipSync(html, { level: 9 }).length,
@@ -77,11 +81,16 @@ if (process.argv.includes("--update-baseline")) {
       next[page.path] = known;
       continue;
     }
+    // 线性增长的日志页（/changelog/）登记「每条多少字节」而不是总量：
+    // 总量只会随提交数变大，拿它当基线等于每轮都要重新登记（第 181 轮）。
+    const spec = PER_ENTRY_PAGES[page.path];
+    const units = spec ? (page.html.match(spec.unit) ?? []).length : 0;
     next[page.path] = {
       htmlBytes: page.htmlBytes,
       cssBytes: page.cssBytes,
       gzipBytes: page.gzipBytes,
       tags: page.tags,
+      ...(units ? { bytesPerEntry: Math.round(page.htmlBytes / units), units } : {}),
       // 旧的**自动**理由不能覆盖新算出来的具体理由（否则路线页会一直写着"列表页"、
       // 瘦身后的标签页还写着"标签数超过 3000"）。人工写的理由仍然优先保留。
       reason:
