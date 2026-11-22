@@ -632,6 +632,20 @@ jobs:
           [ "$code" -eq 0 ] || echo "::error::/api 接口面有接口不可用（见上方 ✗ 行）"
           exit "$code"
 
+      - name: API data freshness (warn only)
+        # 第 165 轮：接口活着 ≠ 数据是新的。`/api/market/us` 的 BLS 宏观块曾经停在
+        # 2026-08-11（102 天）没人发现 —— 页面有静态快照兜底，肉眼完全看不出来。
+        # 只发 warning、永不失败：陈旧是服务端/上游问题，挡发布只会让内容一起停更。
+        continue-on-error: true
+        run: |
+          set +e
+          node scripts/check-api-freshness.mjs --base=https://www.zorotreeking.online
+          {
+            echo '### 线上接口数据年龄'
+            echo ''
+            node scripts/check-api-freshness.mjs --base=https://www.zorotreeking.online 2>&1 | head -12
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Production acceptance smoke test
         run: |
           python3 - <<'PY'

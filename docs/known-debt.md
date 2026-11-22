@@ -76,3 +76,11 @@
   会给生产打 13 页 × 3 次）需要决策：我们自己的 CLS/LCP/FCP + 全站巡检已覆盖同类信号。
 - **`daily-digest.yml` 是纯 cron**（没有 workflow_run/push），11-19 起停更三天的根因。
   现在靠部署流程的 `catch-up-digest` 兜底，声明见 `scripts/workflow-coverage.json`。
+
+## 第 165 轮补记
+
+- **线上 `/api/market/us` 的 BLS 宏观块停在 2026-08-11（102 天）**：`macro.fetched_at=1786456831`。
+  页面用仓库快照兜底 + 合并取新（第 139 轮），读者无感；但服务端抓取链路需要修（需登录）。
+  现在每次部署都会打 `::warning title=线上行情接口过旧::`，不再是"没有任何仪表能说出来"。
+- `/api/market/cn`、`/api/market/hk` 返回 404：全站没有任何调用点，属于历史残留路径，
+  无害；若以后要用需先在服务端实现。
