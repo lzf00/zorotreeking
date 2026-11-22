@@ -17,11 +17,14 @@
  *   - 报告进 `reports/weekly-audit-<date>.md`，和已有的 deadlinks-*.json 同类归档。
  */
 import { execFile } from "node:child_process";
-import { appendFileSync, existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { appendFileSync, existsSync, readFileSync, writeFileSync, mkdirSync, rmSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { compare, parseJsonl, summarize } from "./lib/audit-summary.mjs";
+
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const AUDIT_BASELINE = path.join(ROOT, "src", "data", "audit-site-baseline.json");
 const STAMP = path.join(ROOT, "src", "data", "weekly-audit.json");
 const REPORT_DIR = path.join(ROOT, "reports");
 const SITE = "https://www.zorotreeking.online";
@@ -114,13 +117,55 @@ async function main() {
   // 全量巡检（site-audit.yml 本体）：把 sitemap 里每一页都真的加载一次，找"某一类页面集体坏掉"。
   // 抽样 21 页的 check-runtime 永远覆盖不到长尾（800+ 相册页、几十条路线页、几百篇日报）。
   // 实测 1192 页 ~200 秒，只在每周跑一次。
+  let siteAuditNote = "";
   if (hasDist) {
+    const auditOut = path.join(REPORT_DIR, `audit-site-${isoDay(now)}.jsonl`);
+    // audit-site 是 --resume 友好的**追加**写：同一天跑两次就会变成 2384 页、
+    // 中位数被两次结果混在一起（第 158 轮实测）。每周巡检要的是"这一次全站的样子"，
+    // 先删掉当天的旧文件。
+    rmSync(auditOut, { force: true });
     results.push(await run(
       "全量巡检（每页都真加载）",
       process.execPath,
-      ["scripts/audit-site.mjs", "--concurrency=4", `--out=reports/audit-site-${isoDay(now)}.jsonl`],
+      ["scripts/audit-site.mjs", "--concurrency=4", `--out=${path.relative(ROOT, auditOut)}`],
       900_000,
     ));
+    // 体积趋势：单看一周没意义，三个月涨 40% 才要命。所以记基线、只报明显变重。
+    try {
+      const stats = summarize(parseJsonl(readFileSync(auditOut, "utf8")));
+      const baseline = existsSync(AUDIT_BASELINE)
+        ? JSON.parse(readFileSync(AUDIT_BASELINE, "utf8"))
+        : null;
+      const verdict = compare(stats, baseline);
+      siteAuditNote =
+        `全量巡检 ${stats.pages} 页：中位 ${stats.medianKB} KB · p95 ${stats.p95KB} KB` +
+        (baseline?.p95KB ? `（基线 p95 ${baseline.p95KB} KB）` : "（首次记录基线）") +
+        (verdict.ok ? " ✅ 无异常" : ` ⚠️ ${verdict.problems.join("；")}`);
+      console.log(siteAuditNote);
+      if (!verdict.ok) {
+        console.log(`::warning title=每周巡检·体积趋势::${verdict.problems.join("；")}`);
+      }
+      if (!DRY_RUN) {
+        writeFileSync(
+          AUDIT_BASELINE,
+          `${JSON.stringify(
+            {
+              updatedAt: isoDay(now),
+              pages: stats.pages,
+              failed: stats.failed,
+              medianKB: stats.medianKB,
+              p95KB: stats.p95KB,
+              heaviest: stats.heaviest,
+            },
+            null,
+            2,
+          )}\n`,
+        );
+      }
+    } catch (error) {
+      siteAuditNote = `体积趋势统计失败：${error?.message ?? error}`;
+      console.log(`::warning title=每周巡检·体积趋势::${siteAuditNote}`);
+    }
   } else {
     console.log("⏭️  没有 dist，跳过全量巡检（它要逐页加载构建产物）");
   }
@@ -151,6 +196,7 @@ async function main() {
       "|---|---|---|",
       ...results.map((r) => `| ${r.label} | ${r.ok ? "通过" : "有告警"} | ${(r.ms / 1000).toFixed(1)}s |`),
       "",
+      ...(siteAuditNote ? ["## 体积趋势", "", siteAuditNote, ""] : []),
       ...results.flatMap((r) => [
         `## ${r.label}`,
         "",
