@@ -706,9 +706,32 @@ deploy 里跑一次并发成 notice。本机结果（对照用）：
 body 实际命中：Inter
 ```
 
-CI 跑完这一行就知道 runner 上到底有没有 Liberation Sans / DejaVu。
 **先量再改**，是因为第 148 轮已经证明过一次：只有"谁在抖"、没有"环境是什么"，
 推断就会错——我修了等宽的兜底，`TD.font-mono` 的位移确实消失了，可 0.223 一点没动。
+
+部署后 runner 自己报了：
+
+```
+字体环境（runner 实测）：{
+  "sans": ["Arial@1.073", "Helvetica@1.073", "Liberation Sans@1.073", "DejaVu Sans@0.929"],
+  "mono": ["DejaVu Sans Mono@0.997", "Liberation Mono@1", "Courier New@1"],
+  "body": "Inter"
+}
+```
+
+（数字是"网页字体宽度 ÷ 该字体宽度"，也就是该兜底需要的 size-adjust。）
+
+结论：**runner 上 Arial / Liberation Sans 都在，无衬线兜底一直是生效的**（1.073 与 CSS 里的
+107.1% 一致），等宽兜底也生效（0.997 与 99.7% 一致）。所以"兜底缺字体"这条假说被证伪了。
+
+那 24px 只能来自另一套字体：页面标题用的是 **Instrument Serif**，
+它的兜底 `Instrument Serif Fallback` 是按 Times New Roman 标定的（84.3%），
+而这次没有测衬线候选 —— 如果 runner 上没有 Times/Georgia/Liberation Serif，
+兜底就会落到 DejaVu Serif（宽得多），标题换行数在字体到货前后变化，正好是"上方那块变矮"。
+下一轮第一件事：把衬线候选加进这个报告，同样先量再改。
+
+**这轮的收获不是修好了 CLS，而是把"猜"换成了"量"**：一次部署换取一个确定事实
+（runner 装了什么字体），比再猜三次都便宜。
 
 ### 一个我看不见、也复现不了的 0.223（第 148 轮）
 
