@@ -110,7 +110,7 @@ const shareDims = cover?.srcOg
 
   <section class="max-w-3xl mx-auto px-5 mt-20 pb-24 text-center">
     <div class="inline-block">
-      <FeedbackButtons slug={`photo/${entry.data.translationKey}`} client:idle />
+      <FeedbackButtons lang="en" slug={`photo/${entry.data.translationKey}`} client:idle />
     </div>
     <div class="mt-10">
       <a href={pathWithLang("/photo", lang)} class="text-xs uppercase tracking-[0.18em] text-white/55 hover:text-white transition-colors">
@@ -122,8 +122,8 @@ const shareDims = cover?.srcOg
 
 <style is:global>
   /* 深底相册页里让 feedback 图标跟随底色（中文页有、英文页漏了） */
-  body:has(.photo-immersive) .photo-immersive [aria-label="喜欢"],
-  body:has(.photo-immersive) .photo-immersive [aria-label="不喜欢"],
+  body:has(.photo-immersive) .photo-immersive [data-feedback="like"],
+  body:has(.photo-immersive) .photo-immersive [data-feedback="dislike"],
   body:has(.photo-immersive) .photo-immersive [aria-label="Like"],
   body:has(.photo-immersive) .photo-immersive [aria-label="Dislike"] {
     color: rgba(255,255,255,0.7);

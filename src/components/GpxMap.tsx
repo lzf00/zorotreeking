@@ -6,7 +6,13 @@ type Point = { lat: number; lng: number; ele?: number };
 interface Props {
   points: Point[];
   height?: number;
+  lang?: "zh" | "en";  // 第 168 轮：英文页的 aria-label 不能是中文
 }
+
+const PREVIEW_LABEL = {
+  zh: "GPX 轨迹形状预览（静态），点击下方按钮加载可交互地图",
+  en: "Static preview of the GPX track shape; use the button below to load the interactive map",
+} as const;
 
 /**
  * GPX 轨迹地图。
@@ -18,7 +24,7 @@ interface Props {
  *
  * 现在：先用轨迹点画内联 SVG（不联网、无 JS 依赖），点「加载交互地图」才水合 Leaflet。
  */
-export default function GpxMap({ points, height = 360 }: Props) {
+export default function GpxMap({ points, height = 360, lang = "zh" }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(false);
   const preview = trackPreview(points, { width: 640, height, padding: 24 });
@@ -68,7 +74,7 @@ export default function GpxMap({ points, height = 360 }: Props) {
               preserveAspectRatio="xMidYMid meet"
               className="h-full w-full"
               role="img"
-              aria-label="GPX 轨迹形状预览（静态），点击下方按钮加载可交互地图"
+              aria-label={PREVIEW_LABEL[lang]}
             >
               <path d={preview.path} fill="none" stroke="#16a34a" strokeWidth={4} strokeLinecap="round" strokeLinejoin="round" opacity={0.85} />
               <circle cx={preview.start.x} cy={preview.start.y} r={6} fill="#fff" stroke="#16a34a" strokeWidth={3} />

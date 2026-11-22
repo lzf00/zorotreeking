@@ -17,9 +17,16 @@ import { EMPTY_STATE, getCached, loadFeedbackOrEmpty, putCached } from "@/lib/fe
 interface Props {
   slug: string;
   align?: "right" | "center";
+  lang?: "zh" | "en";  // 第 168 轮：英文页按钮的 aria-label/title 不能是中文
 }
 
-export default function FeedbackButtons({ slug, align = "right" }: Props) {
+const COPY = {
+  zh: { like: "喜欢", dislike: "不喜欢" },
+  en: { like: "Like", dislike: "Dislike" },
+} as const;
+
+export default function FeedbackButtons({ slug, align = "right", lang = "zh" }: Props) {
+  const copy = COPY[lang];
   const [state, setState] = useState<FeedbackState | null>(null);
   const [pending, setPending] = useState(false);
   const [errCode, setErrCode] = useState<string | null>(null);
@@ -90,7 +97,7 @@ export default function FeedbackButtons({ slug, align = "right" }: Props) {
   const dislikes = state?.dislikes ?? 0;
 
   return (
-    <div style={{ ...rowStyle, justifyContent: align === "right" ? "flex-end" : "center" }}>
+    <div className="fb-row" style={{ justifyContent: align === "right" ? "flex-end" : "center" }}>
       <button
         type="button"
         onClick={() => vote("like")}
@@ -98,10 +105,13 @@ export default function FeedbackButtons({ slug, align = "right" }: Props) {
         onFocus={() => void ensureLoaded()}
         onTouchStart={() => void ensureLoaded()}
         disabled={pending}
-        style={btnStyle(likeActive, "var(--market-up)")}
+        className="fb-btn"
+        // 选中态才输出内联样式：未选中时完全由 .fb-btn 决定（每个岛省 ~700B）
+        style={likeActive ? activeStyle("var(--market-up)") : undefined}
         aria-pressed={likeActive}
-        aria-label="喜欢"
-        title="喜欢"
+        data-feedback="like"
+        aria-label={copy.like}
+        title={copy.like}
       >
         <svg width="13" height="13" viewBox="0 0 24 24"
           fill={likeActive ? "#dc2626" : "none"}
@@ -109,7 +119,7 @@ export default function FeedbackButtons({ slug, align = "right" }: Props) {
           strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
         </svg>
-        {likes > 0 && <span style={numStyle}>{likes}</span>}
+        {likes > 0 && <span className="fb-num">{likes}</span>}
       </button>
       <button
         type="button"
@@ -118,10 +128,12 @@ export default function FeedbackButtons({ slug, align = "right" }: Props) {
         onFocus={() => void ensureLoaded()}
         onTouchStart={() => void ensureLoaded()}
         disabled={pending}
-        style={btnStyle(dislikeActive, "#525252")}
+        className="fb-btn"
+        style={dislikeActive ? activeStyle("#525252") : undefined}
         aria-pressed={dislikeActive}
-        aria-label="不喜欢"
-        title="不喜欢"
+        data-feedback="dislike"
+        aria-label={copy.dislike}
+        title={copy.dislike}
       >
         <svg width="13" height="13" viewBox="0 0 24 24"
           fill={dislikeActive ? "#525252" : "none"}
@@ -129,9 +141,9 @@ export default function FeedbackButtons({ slug, align = "right" }: Props) {
           strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17" />
         </svg>
-        {dislikes > 0 && <span style={numStyle}>{dislikes}</span>}
+        {dislikes > 0 && <span className="fb-num">{dislikes}</span>}
       </button>
-      {errCode && <span style={errStyle} title={errCode}>·{shortErr(errCode)}</span>}
+      {errCode && <span className="fb-err" title={errCode}>·{shortErr(errCode)}</span>}
     </div>
   );
 }
@@ -163,43 +175,9 @@ function shortErr(code: string): string {
   return code.slice(0, 20);
 }
 
-// ── 紧凑内联样式（微博风：右对齐、灰色低存在感、hover 变亮）──
-const rowStyle: React.CSSProperties = {
-  display: "flex",
-  alignItems: "center",
-  gap: 6,
-  margin: "8px 0 4px",
-  fontSize: 12,
-  color: "var(--text-tertiary, #9ca3af)",
-  width: "100%",
-};
-
-const btnStyle = (active: boolean, color: string): React.CSSProperties => ({
-  display: "inline-flex",
-  alignItems: "center",
-  gap: 4,
-  padding: "3px 8px",
-  borderRadius: 999,
-  border: "1px solid transparent",
-  background: active ? `${color}14` : "transparent",
-  color: active ? color : "var(--text-tertiary, #9ca3af)",
-  cursor: "pointer",
-  fontSize: 12,
-  fontFamily: "inherit",
-  fontWeight: active ? 600 : 400,
-  transition: "background 0.15s, color 0.15s",
-  lineHeight: 1,
+// ── 选中态内联样式（静态部分见 global.css 的 .fb-btn；这里只输出"被点中"的差异）──
+const activeStyle = (color: string): React.CSSProperties => ({
+  background: `${color}14`,
+  color,
+  fontWeight: 600,
 });
-
-const numStyle: React.CSSProperties = {
-  fontVariantNumeric: "tabular-nums",
-  minWidth: 8,
-};
-
-const errStyle: React.CSSProperties = {
-  // 主题变量而不是写死 #dc2626：暗底上 #dc2626 只有约 3:1，
-  // 投票失败时那条 "·HTTP 404" 根本看不清（2026-11 axe 抓到）
-  color: "var(--danger-text, #b91c1c)",
-  fontSize: 11,
-  cursor: "help",
-};

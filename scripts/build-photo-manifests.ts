@@ -402,7 +402,9 @@ async function main() {
         width,
         height,
         alt: buildAlt(metaZh, index + 1, total, "zh"),
-        altEn: metaEn ? buildAlt(metaEn, index + 1, total, "en") : undefined,
+        // 没有英文 meta 时也要给一句英文 alt：退回中文会让英文页的 alt 变成
+        // "第 1 张，共 6 张"（第 168 轮在 /en/photo/mac1/ 实测到）
+        altEn: buildAlt(metaEn, index + 1, total, "en"),
         lat: gpsData?.latitude,
         lng: gpsData?.longitude,
         exif: {

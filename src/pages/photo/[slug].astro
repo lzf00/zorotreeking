@@ -143,8 +143,8 @@ const geoPoints = photos
 
 <style is:global>
   /* 在 photo 详情页里，让 FeedbackButtons 的图标也跟随深底变色 */
-  body:has(.photo-immersive) .photo-immersive [aria-label="喜欢"],
-  body:has(.photo-immersive) .photo-immersive [aria-label="不喜欢"] {
+  body:has(.photo-immersive) .photo-immersive [data-feedback="like"],
+  body:has(.photo-immersive) .photo-immersive [data-feedback="dislike"] {
     color: rgba(255,255,255,0.7);
   }
 </style>

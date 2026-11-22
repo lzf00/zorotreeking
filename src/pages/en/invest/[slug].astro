@@ -68,7 +68,7 @@ const untranslated = untranslatedNotice(cjkLeaks(entry.body ?? ""));
     prevHref={prev ? pathWithLang(`/invest/${prev.translationKey}`, lang) : undefined}
     nextHref={next ? pathWithLang(`/invest/${next.translationKey}`, lang) : undefined}
     sectionHref={pathWithLang("/invest", lang)} />
-  <ShareSidebar title={entry.data.title}
+  <ShareSidebar lang="en" title={entry.data.title}
     url={new URL(Astro.url.pathname, Astro.site).toString()} client:idle />
   <article class="max-w-2xl mx-auto px-6 sm:px-8 pt-12 sm:pt-20 pb-24 sm:pb-32">
 
@@ -130,7 +130,7 @@ const untranslated = untranslatedNotice(cjkLeaks(entry.body ?? ""));
           <strong>Was this useful?</strong> A rating helps me pick the next topic.
         </p>
         <div class="text-lg">
-          <StarRating slug={`invest/${entry.data.translationKey}`} align="center" label="" client:visible />
+          <StarRating lang="en" slug={`invest/${entry.data.translationKey}`} align="center" label="" client:visible />
         </div>
         <p class="mt-3 text-[11px] text-[var(--text-tertiary)] font-mono">
           Click a star to rate · Only anonymous fingerprint + timestamp stored

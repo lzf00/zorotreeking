@@ -12,9 +12,36 @@ import { useEffect, useState } from "react";
 interface Props {
   title: string;
   url: string;     // 当前页 canonical URL
+  lang?: "zh" | "en";  // 第 168 轮：英文页的按钮不能对着读屏器说中文
 }
 
-export default function ShareSidebar({ title, url }: Props) {
+const COPY = {
+  zh: {
+    share: "分享文章",
+    copied: "已复制",
+    copy: "复制链接",
+    twitter: "分享到 Twitter",
+    wechat: "微信扫码分享",
+    wechatShort: "微信分享",
+    top: "回到顶部",
+    close: "关闭",
+    prompt: "复制链接",
+  },
+  en: {
+    share: "Share this article",
+    copied: "Copied",
+    copy: "Copy link",
+    twitter: "Share on Twitter",
+    wechat: "Scan the QR code to share on WeChat",
+    wechatShort: "Share on WeChat",
+    top: "Back to top",
+    close: "Close",
+    prompt: "Copy link",
+  },
+} as const;
+
+export default function ShareSidebar({ title, url, lang = "zh" }: Props) {
+  const copy = COPY[lang];
   const [copied, setCopied] = useState(false);
   const [qrOpen, setQrOpen] = useState(false);
   const [scrollTop, setScrollTop] = useState(0);
@@ -36,7 +63,7 @@ export default function ShareSidebar({ title, url }: Props) {
       setTimeout(() => setCopied(false), 1800);
     } catch {
       // 降级：选中文本提示用户手动复制
-      window.prompt("复制链接", url);
+      window.prompt(copy.prompt, url);
     }
   }
 
@@ -54,7 +81,7 @@ export default function ShareSidebar({ title, url }: Props) {
   return (
     <>
       <aside
-        aria-label="分享文章"
+        aria-label={copy.share}
         style={{
           position: "fixed",
           right: 24,
@@ -69,7 +96,7 @@ export default function ShareSidebar({ title, url }: Props) {
           pointerEvents: visible ? "auto" : "none",
         }}
         className="hidden xl:flex">
-        <button onClick={copyLink} style={btnBase} aria-label="复制链接" title={copied ? "已复制" : "复制链接"}>
+        <button onClick={copyLink} style={btnBase} aria-label={copy.copy} title={copied ? copy.copied : copy.copy}>
           {copied ? (
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
           ) : (
@@ -77,16 +104,16 @@ export default function ShareSidebar({ title, url }: Props) {
           )}
         </button>
 
-        <a href={twitterUrl} target="_blank" rel="noopener noreferrer" style={btnBase} aria-label="分享到 Twitter" title="分享到 Twitter">
+        <a href={twitterUrl} target="_blank" rel="noopener noreferrer" style={btnBase} aria-label={copy.twitter} title={copy.twitter}>
           <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
         </a>
 
-        <button onClick={() => setQrOpen(true)} style={btnBase} aria-label="微信扫码分享" title="微信分享">
+        <button onClick={() => setQrOpen(true)} style={btnBase} aria-label={copy.wechat} title={copy.wechatShort}>
           <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M8.5 13.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm7 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2zM12 2C6.48 2 2 5.84 2 10.5c0 2.65 1.46 5.02 3.77 6.58l-.49 2.27c-.06.27.23.5.48.36L8.4 18.5c1.13.27 2.34.42 3.6.42 5.52 0 10-3.84 10-8.5S17.52 2 12 2z"/></svg>
         </button>
 
         <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                style={btnBase} aria-label="回到顶部" title="回到顶部">
+                style={btnBase} aria-label={copy.top} title={copy.top}>
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
         </button>
       </aside>
@@ -110,7 +137,7 @@ export default function ShareSidebar({ title, url }: Props) {
                  textAlign: "center",
                  boxShadow: "0 20px 60px rgba(0,0,0,0.3)",
                }}>
-            <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 4 }}>微信扫码分享</div>
+            <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 4 }}>{copy.wechatShort}</div>
             <div style={{ fontSize: 12, color: "var(--text-tertiary)", marginBottom: 16 }}>
               手机微信【发现】→【扫一扫】
             </div>

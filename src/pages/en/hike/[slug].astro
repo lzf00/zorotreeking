@@ -65,7 +65,7 @@ const diffLabel = { easy: "Easy", moderate: "Moderate", hard: "Hard", expert: "E
         {/* client:visible 而不是 client:only：组件本身不碰 window（Leaflet 只在 useEffect 里动态
             import），所以能先输出占位 DOM；用户滚到地图附近才下载 React + Leaflet 并挂载。
             顺带让下方内容的高度在首屏就确定，不会因为地图晚到而跳动。 */}
-        <GpxMap points={stats.points} client:visible />
+        <GpxMap lang="en" points={stats.points} client:visible />
         <div class="mt-4 rounded-xl border border-[var(--border)] p-3">
           <h2 class="text-sm font-semibold mb-2 text-[var(--text-secondary)]">Elevation</h2>
           <ElevationChart points={stats.points} client:visible />
@@ -73,7 +73,7 @@ const diffLabel = { easy: "Easy", moderate: "Moderate", hard: "Hard", expert: "E
       </>
     )}
     {(entry.body ?? "").trim().length > 0 && <div class="prose prose-neutral dark:prose-invert max-w-none mt-8 prose-headings:tracking-tight prose-a:text-section-hike"><Content /></div>}
-    <FeedbackButtons slug={`hike/${entry.data.translationKey}`} client:idle />
+    <FeedbackButtons lang="en" slug={`hike/${entry.data.translationKey}`} client:idle />
 
     <PostFooter
       prev={prev} next={next} related={related}

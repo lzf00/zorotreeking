@@ -110,6 +110,49 @@
     text-underline-offset: 3px;
   }
 
+
+  /* ─── 反馈按钮（第 168 轮：从内联样式搬进类）───
+     一个 digest 页有 15–20 个 FeedbackButtons 岛，每个按钮各带 ~700B 内联样式，
+     光样式就让每页多出 10 KB 以上（页面体积预算因此被顶破）。
+     动态部分（选中态）仍留在内联，未选中时不再输出任何 style 属性。 */
+  .fb-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 8px 0 4px;
+    font-size: 12px;
+    color: var(--text-tertiary, #9ca3af);
+    width: 100%;
+  }
+
+  .fb-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text-tertiary, #9ca3af);
+    cursor: pointer;
+    font-size: 12px;
+    font-family: inherit;
+    font-weight: 400;
+    transition: background 0.15s, color 0.15s;
+    line-height: 1;
+  }
+
+  .fb-num {
+    font-variant-numeric: tabular-nums;
+    min-width: 8px;
+  }
+
+  .fb-err {
+    color: var(--danger-text, #b91c1c);
+    font-size: 11px;
+    cursor: help;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;

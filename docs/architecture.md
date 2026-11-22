@@ -757,6 +757,54 @@ if git diff --cached --quiet; then echo "没有新结果"; exit 0; fi
 `pathspec did not match` → 整条 add 失败。改成先 `ls` 判断存在再 add，
 报告才真的归档进 `reports/`（`reports/` 里其它历史产物仍然 gitignore，只有巡检报告 `-f`）。
 
+### 英文页的按钮，对着读屏器说中文（第 168 轮）
+
+这轮换个方向：不看"坏掉时怎样"，而是看**英文版到底有多像英文**。扫 dist/en 的属性
+（`aria-label` / `title` / `placeholder` / `alt`）后，问题一下就出来了 —— 正文有
+baseline 管着，**界面控件没人管**：
+
+| 控件 | 英文页上的实际文字 | 出现次数 |
+|---|---|---|
+| 分享栏 | 分享到 Twitter / 复制链接 / 微信扫码分享 / 回到顶部 / 已复制 | 1054 页 |
+| 评分星 | `3 星 · 还行` | 527 页 |
+| 点赞 | 喜欢 / 不喜欢 | 3306 个按钮 |
+| 相册 alt | `Pokémon · 上海 · 11/2026 · photo 1 of 49` | 49 张 |
+| GPX 预览 | `GPX 轨迹形状预览（静态）…` | 1 页 |
+
+改法（全部走显式 `lang` prop，SSR 就是对的，不靠客户端猜）：
+
+- `ShareSidebar` / `StarRating` / `FeedbackButtons` / `GpxMap` 各加 `lang?: "zh" | "en"`，
+  EN 页面传 `lang="en"`；`StarRating` 的标签从"常量"改成按语言的映射
+- `Footer` 的备案图标 alt 按语言给（EN 页 "ICP filing icon"）
+- 两本 EN 相册的 `location` 还是中文（`上海`），改成 `Shanghai`；
+  `build-photo-manifests.ts` 的 `altEn` 原来"没有英文 meta 就不给"，于是退回中文 alt ——
+  改成永远生成英文 alt（没 meta 时是 `photo 1 of 6`）
+- 翻译脚本 `translate-digest.ts` 以后产出的 EN 内容自动补 `lang="en"`，并回填了 378 个历史文件
+
+**一个被这轮挖出来的耦合**：相册沉浸模式的 CSS 选择器写的是
+`[aria-label="喜欢"]` —— 一旦按语言翻译 aria-label，选择器立刻失配，按钮会重新露出来。
+所以给按钮加了稳定的 `data-feedback="like|dislike"`，选择器改用它。
+**可翻译的文本不能当选择器**，这是通用教训。
+
+**一个顺带暴露的性能问题**：给 3306 个按钮加上 `lang="en"` 后，几个 EN digest 页
+从 219.7 KB 涨到 220–222 KB，直接顶破页面体积预算（220 KB）。查下去发现真正的大头
+不是 `lang`，而是每个 FeedbackButtons 岛各自带 ~700 B 内联样式 ——
+一个 digest 页 15–20 个岛，光样式就 10 KB+。把这些静态样式搬进 `global.css` 的
+`.fb-row / .fb-btn / .fb-num / .fb-err`，只有**选中态**才输出内联：
+
+| 指标 | 改前 | 改后 |
+|---|---|---|
+| `/ai/digest-2026-11-22/` HTML | 208 156 B | **197 228 B**（-11 KB） |
+| 未选中按钮的内联 style | ~700 B/个 | **0 B** |
+| 页面体积预算 | ❌ 破 | ✅ 通过 |
+
+视觉没问题（用 Playwright 读 computed style 逐项核对：padding `3px 8px`、
+圆角 `999px`、gap `4px`、字号 12px、行高 12px —— 与改前完全一致）。
+
+守卫：`check:i18n-leaks` 增加了属性扫描（先剥掉 `<script>`/`<style>`，否则 CSS 选择器和
+内联 JS 里的中文字符串会误报 —— 这正是本轮开头踩过的坑）。现在英文页
+**界面属性 0 处中文**（正文的 115 处仍按 baseline 管理，属翻译工作量问题）。
+
 ### 存储被禁时，连翻页都跟着死（第 167 轮）
 
 顺着第 166 轮的思路找"另一半"，这次挑存储：Chrome 全禁 cookie、隐私插件、Safari 严格模式

@@ -185,6 +185,11 @@ async function main() {
           // 打印前 200 字符方便诊断
           throw new Error(`缺 frontmatter，前 200B: ${out.slice(0, 200).replace(/\n/g, " ")}`);
         }
+        // 英文页的按钮 aria-label 不能是中文（第 168 轮）：翻译产物统一补 lang="en"。
+        // 放在 JSX 守门之前，保证豆包不管怎么改写属性都不会把语言弄丢。
+        const withLang = out
+          .replace(/<FeedbackButtons\s+(?!lang=)/g, '<FeedbackButtons lang="en" ')
+          .replace(/<StarRating\s+(?!lang=)/g, '<StarRating lang="en" ');
         // 损坏 JSX 守门：豆包偶尔产出 <FeedbackButtons ... client:visiblevisible}}
         // 这种垃圾，MDX 编译期才报错；这里提前 reject 让重试或跳过
         const damagedMatch = out.match(/<\w[^>]*(?:visiblevisible|client:visible[^/>][^>]{0,40}[}{]{2}|<\w[^>]*\}\})/);
@@ -200,7 +205,7 @@ async function main() {
         //   - 只在段落中间（非 <a>/<FeedbackButtons> 白名单）出现的 `<Capitalized...>` 转成 &lt;&gt;
         //   - 白名单：a/FeedbackButtons/div/span/ul/li/img/code/strong/em/br/hr
         const JSX_WHITELIST = /^(a|div|span|ul|li|img|code|strong|em|br|hr|p|Fragment|FeedbackButtons)(\s|>|\/)/;
-        const sanitized = out.replace(/<([A-Z][a-zA-Z0-9]*)(\s[^>\n]{0,200})?(>|\/>)/g, (m, tag, attrs, close) => {
+        const sanitized = withLang.replace(/<([A-Z][a-zA-Z0-9]*)(\s[^>\n]{0,200})?(>|\/>)/g, (m, tag, attrs, close) => {
           if (JSX_WHITELIST.test(tag + (close === ">" ? ">" : "/"))) return m;
           // 未闭合且是段落中间的（引号包着的书名/剧名之类），转 &lt;
           return `&lt;${tag}${attrs || ""}&gt;`;

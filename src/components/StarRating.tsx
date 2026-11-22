@@ -18,6 +18,7 @@ interface Props {
   slug: string;
   align?: "right" | "center";
   label?: string;
+  lang?: "zh" | "en";  // 第 168 轮：英文页的 aria-label 不能是"3 星 · 还行"
 }
 
 type Score = 1 | 2 | 3 | 4 | 5;
@@ -30,15 +31,14 @@ function scoreToKind(score: Score): "like" | "dislike" | "neutral" {
   return "neutral";
 }
 
-const LABELS: Record<Score, string> = {
-  1: "差强人意",
-  2: "一般",
-  3: "还行",
-  4: "不错",
-  5: "极好",
+const LABELS: Record<"zh" | "en", Record<Score, string>> = {
+  zh: { 1: "差强人意", 2: "一般", 3: "还行", 4: "不错", 5: "极好" },
+  en: { 1: "Poor", 2: "Fair", 3: "Okay", 4: "Good", 5: "Excellent" },
 };
 
-export default function StarRating({ slug, align = "right", label = "评分" }: Props) {
+export default function StarRating({ slug, align = "right", label, lang = "zh" }: Props) {
+  const labels = LABELS[lang];
+  const groupLabel = label ?? (lang === "zh" ? "评分" : "Rating");
   const [agg, setAgg] = useState<FeedbackState | null>(null);
   const [hover, setHover] = useState<Score | 0>(0);
   const [score, setScore] = useState<Score | 0>(0);
@@ -113,10 +113,10 @@ export default function StarRating({ slug, align = "right", label = "评分" }: 
       fontSize: 12,
       color: "var(--text-tertiary, #9ca3af)",
     }}>
-      <span style={{ fontFamily: "inherit", letterSpacing: "0.04em" }}>{label}</span>
+      {label !== "" && <span style={{ fontFamily: "inherit", letterSpacing: "0.04em" }}>{groupLabel}</span>}
       <div
         role="radiogroup"
-        aria-label={label}
+        aria-label={groupLabel}
         onMouseLeave={() => setHover(0)}
         style={{ display: "inline-flex" }}
       >
@@ -129,7 +129,7 @@ export default function StarRating({ slug, align = "right", label = "评分" }: 
               type="button"
               role="radio"
               aria-checked={score === n}
-              aria-label={`${n} 星 · ${LABELS[n as Score]}`}
+              aria-label={lang === "zh" ? `${n} 星 · ${labels[n as Score]}` : `${n} star${n === 1 ? "" : "s"} · ${labels[n as Score]}`}
               disabled={pending}
               onMouseEnter={() => { setHover(n as Score); void ensureLoaded(); }}
               onFocus={() => { setHover(n as Score); void ensureLoaded(); }}
@@ -152,7 +152,7 @@ export default function StarRating({ slug, align = "right", label = "评分" }: 
                 transition: "color 0.15s, opacity 0.15s, transform 0.1s",
                 transform: hover === n ? "scale(1.18)" : "scale(1)",
               }}
-              title={LABELS[n as Score]}
+              title={labels[n as Score]}
             >
               <svg width="16" height="16" viewBox="0 0 24 24"
                 fill={filled ? "currentColor" : "none"}
@@ -166,7 +166,7 @@ export default function StarRating({ slug, align = "right", label = "评分" }: 
       </div>
       {display > 0 && (
         <span style={{ fontVariantNumeric: "tabular-nums", minWidth: 28 }}>
-          {LABELS[display as Score]}
+          {labels[display as Score]}
         </span>
       )}
       {totalVotes > 0 && (

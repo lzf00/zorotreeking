@@ -60,6 +60,53 @@ async function scan() {
   return out;
 }
 
+
+/**
+ * 英文页的 HTML 属性里不许有中文（第 168 轮）。
+ *
+ * 正文泄漏是一类问题（上面按 baseline 管），**交互控件对读屏器说中文**是另一类：
+ * 分享栏的 "分享到 Twitter"、评分星的 "3 星 · 还行"、点赞的 "喜欢" —— 英文读者
+ * 用读屏器听到的是中文，而所有既有检查都只看正文。
+ *
+ * 只扫 `<标签 属性="值">` 里的 aria-label / title / placeholder / alt，
+ * 并且先把 `<script>`、`<style>` 剥掉：内联 JS/CSS 里的中文字符串是代码，不是界面。
+ */
+const ATTR_CJK = /[\u4e00-\u9fff]/;
+const TAG = /<([a-zA-Z][a-zA-Z0-9-]*)((?:\s+[^<>]*?)?)>/g;
+const ATTR = /([a-zA-Z-:]+)="([^"]*)"/g;
+export const SCANNED_ATTRS = ["aria-label", "title", "placeholder", "alt"];
+
+export function chineseAttrsIn(html) {
+  const stripped = html.replace(/<script[\s\S]*?<\/script>/gi, "").replace(/<style[\s\S]*?<\/style>/gi, "");
+  const found = new Map();
+  for (const tag of stripped.matchAll(TAG)) {
+    for (const attr of (tag[2] ?? "").matchAll(ATTR)) {
+      const [name, value] = [attr[1].toLowerCase(), attr[2]];
+      if (!SCANNED_ATTRS.includes(name) || !ATTR_CJK.test(value)) continue;
+      found.set(`${name}="${value.trim().slice(0, 60)}"`, (found.get(`${name}="${value.trim().slice(0, 60)}"`) ?? 0) + 1);
+    }
+  }
+  return found;
+}
+
+async function scanAttrs() {
+  const DIST = path.join(ROOT, "dist", "en");
+  let pages = [];
+  try {
+    pages = await readdir(DIST, { recursive: true });
+  } catch {
+    return null; // 还没 build，交给调用方跳过
+  }
+  const offenders = [];
+  for (const rel of pages) {
+    if (!rel.endsWith(".html")) continue;
+    const html = await readFile(path.join(DIST, rel), "utf8");
+    const found = chineseAttrsIn(html);
+    if (found.size) offenders.push({ page: `/en/${rel.replace(/index\.html$/, "").replace(/\\/g, "/")}`, found: [...found.keys()] });
+  }
+  return offenders;
+}
+
 async function main() {
   const args = process.argv.slice(2);
   const current = await scan();
@@ -101,6 +148,21 @@ async function main() {
     `英文中文残留：${entries.length} 个文件在 baseline 内（共 ${entries.reduce((sum, [, n]) => sum + n, 0)} 处）` +
       (fixed.length ? `；另有 ${fixed.length} 个文件已清理干净` : ""),
   );
+
+  // 第二类泄漏：界面属性（第 168 轮）
+  const attrOffenders = await scanAttrs();
+  if (attrOffenders === null) {
+    console.log("dist/en 还不存在，跳过界面属性检查（先 npm run build）");
+    return;
+  }
+  if (attrOffenders.length) {
+    console.error(`::error title=英文页的界面属性里还有中文::${attrOffenders.length} 个页面`);
+    for (const offender of attrOffenders.slice(0, 10)) {
+      console.error(`  ✗ ${offender.page}：${offender.found.slice(0, 4).join(" / ")}`);
+    }
+    process.exit(1);
+  }
+  console.log("界面属性（aria-label/title/placeholder/alt）：英文页 0 处中文");
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {

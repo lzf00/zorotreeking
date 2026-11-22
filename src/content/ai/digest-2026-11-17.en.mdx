@@ -36,7 +36,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 This paper launches the K2-Horizon series of 6 fully open-source large models, with parameters ranging from 0.9B to 375B, adapted for scenarios including general inference, agent, and scientific research. Among models of the same scale, it ranks top among open-source solutions on code and agent benchmarks. Technically, it proposes optimizations such as mixed-value attention: the sparse model's performance matches that of a 32B dense model trained on the same data, the Uno adapter speeds up decoding by up to 2.2x, and the full end-to-end open-source training process and synthetic data pipeline make it highly reproducible.
 
-<FeedbackButtons slug="item:arxiv-2611.21003" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2611.21003" client:visible />
 
 ## <a href="https://arxiv.org/abs/2611.17834" target="_blank" rel="noopener noreferrer">PaperCritic: Training AI Reviewers to Assess the Soundness of Papers</a>
 
@@ -44,7 +44,7 @@ This paper launches the K2-Horizon series of 6 fully open-source large models, w
 
 To address the issues of surging submission volumes at academic conferences and existing AI reviewers being prone to interference from subjective human-like evaluations, this paper focuses on the most core and objective dimension of paper scientific validity review. It builds the PaperSound-23K dataset with 23,000 annotated review opinions, uses the F1 score of review precision and recall as the reward, and trains the PaperCritic review model via reinforcement learning. It outperforms state-of-the-art models on ICLR review tasks, and can also be transferred to cross-domain tasks such as reviewing Nature series papers, code/contract audits, etc.
 
-<FeedbackButtons slug="item:arxiv-2611.17834" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2611.17834" client:visible />
 
 ## <a href="https://arxiv.org/abs/2611.19937" target="_blank" rel="noopener noreferrer">AllocFlow: End-to-End Portfolio Trading Action Generation from Raw Market Data</a>
 
@@ -52,7 +52,7 @@ To address the issues of surging submission volumes at academic conferences and 
 
 To address the problem of misaligned objectives in traditional asset management pipelines, which separate signal prediction and portfolio construction, this paper proposes the end-to-end flow matching framework AllocFlow: it uses a cross-asset flow Transformer to generate multi-asset joint position weights, and adopts a two-stage training approach of policy supervised imitation + group relative reinforcement learning to optimize efficiency. On the crypto perpetual contract dataset, it achieves an annualized net return of 51.38% and a Calmar ratio of 4.043; on 2026 unseen data without retraining, it reaches a Calmar ratio of 4.90, far outperforming baselines.
 
-<FeedbackButtons slug="item:arxiv-2611.19937" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2611.19937" client:visible />
 
 ## <a href="https://arxiv.org/abs/2611.07222" target="_blank" rel="noopener noreferrer">SPILLWAY: Separating Target Admission from Sanitization to Defend Tool-Using Agents against Prompt Injection</a>
 
@@ -60,7 +60,7 @@ To address the problem of misaligned objectives in traditional asset management 
 
 To address the problem that tool-calling agents are vulnerable to prompt injection hijacking, this paper proposes the SPILLWAY defense framework, which separates target admission and sanitization processes: it performs deterministic admission based on structured returns from read-only tools and fixed rules, pre-filters suspicious instructions and retains evidence, and supports manual review. Tests show the success rate of standard injection and forged template attacks is 0, and only 0.7% under reinforcement learning attacks, with almost no additional model overhead. It is universal across models and balances security and usability.
 
-<FeedbackButtons slug="item:arxiv-2611.07222" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2611.07222" client:visible />
 
 ## <a href="https://arxiv.org/abs/2611.20986" target="_blank" rel="noopener noreferrer">Calpha: Toward Native Biomolecular Intelligence in a General-Purpose Language Model</a>
 
@@ -68,7 +68,7 @@ To address the problem that tool-calling agents are vulnerable to prompt injecti
 
 This paper proposes Calpha, a general model that integrates general LLM reasoning and protein structure prediction capabilities. The first version is based on Qwen3.5-9B fused with ESM2 residue features, and can be triggered via text prompts to call the pre-trained SimpleFold head to output single-chain protein structures. Tests show its short-chain prediction performance is comparable to existing baselines, while long-chain performance is slightly inferior. Meanwhile, the model's general language ability (MMLU-Pro subset) drops by about 7 points, and capabilities such as complex prediction will be expanded in the future.
 
-<FeedbackButtons slug="item:arxiv-2611.20986" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2611.20986" client:visible />
 
 # OpenAI
 
@@ -78,7 +78,7 @@ This paper proposes Calpha, a general model that integrates general LLM reasonin
 
 This article focuses on the demand for inclusive AI tools in academic scenarios, and announces the expansion of the existing "ChatGPT for Academic Researchers" support program: it will open free access to its cutting-edge large models for a total of 200,000 researchers in various fields around the world. This move can greatly lower the threshold for researchers to use advanced AI tools, and is expected to promote AI capabilities to better empower scientific research innovation across disciplines.
 
-<FeedbackButtons slug="item:openai-blog-expanding-chatgpt-for-academic-researchers" client:visible />
+<FeedbackButtons lang="en" slug="item:openai-blog-expanding-chatgpt-for-academic-researchers" client:visible />
 
 ## <a href="https://openai.com/index/strengthening-online-child-safety" target="_blank" rel="noopener noreferrer">Strengthening the fight against online child sexual abuse with new tools and support</a>
 
@@ -86,7 +86,7 @@ This article focuses on the demand for inclusive AI tools in academic scenarios,
 
 This study focuses on the topic of combating online child sexual exploitation and abuse, and proposes three core implementation paths: developing special detection and disposal technical tools, issuing practical work guidelines, and building cross-border collaborative partnerships. This solution covers the full chain of pre-incident prevention, in-incident identification, and post-incident disposal, providing an action framework for combating such malignant online crimes involving children, and can effectively strengthen the protection of minors' online rights and interests.
 
-<FeedbackButtons slug="item:openai-blog-strengthening-online-child-safety" client:visible />
+<FeedbackButtons lang="en" slug="item:openai-blog-strengthening-online-child-safety" client:visible />
 
 # Anthropic News
 
@@ -96,7 +96,7 @@ This study focuses on the topic of combating online child sexual exploitation an
 
 This announcement focuses on introducing the positioning and R&D direction of AI security research company Anthropic. The company is deeply engaged in the AI security track, with a security-oriented technical route, aiming to build AI systems with three core characteristics: reliable operation and trusted output, interpretable decision-making logic without black boxes, and controllable behavior aligned with human values, to prevent various security risks of AI deployment from the technical source in advance.
 
-<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+<FeedbackButtons lang="en" slug="item:anthropic-announcements" client:visible />
 
 ## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
 
@@ -104,7 +104,7 @@ This announcement focuses on introducing the positioning and R&D direction of AI
 
 Leading general AI company Anthropic has launched the innovative "Public Benefit Fund" mechanism: it promises to allocate part of the company's shares to this independent entity, and sets up a special structure that automatically increases the fund's shareholding ratio as the company's operating scale expands, allowing more of the enterprise's development dividends to tilt toward public welfare, exploring a feasible new path for AI enterprises to feed social public interests with commercial returns.
 
-<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+<FeedbackButtons lang="en" slug="item:anthropic-public-benefit-fund" client:visible />
 
 # Google DeepMind
 
@@ -114,7 +114,7 @@ Leading general AI company Anthropic has launched the innovative "Public Benefit
 
 Hello, currently only the paper title "Introducing Gemini 4 Hydrogen" is provided, no corresponding abstract content is attached, so translation, extraction and 120-word summary work cannot be carried out. Please supplement the full abstract content of this paper, and I will sort out its core methods, conclusions and other key information as required, and output a concise summary that meets the requirements.
 
-<FeedbackButtons slug="item:deepmind-introducing-gemini-4-hydrogen" client:visible />
+<FeedbackButtons lang="en" slug="item:deepmind-introducing-gemini-4-hydrogen" client:visible />
 
 ## <a href="https://deepmind.google/blog/alphagenome-2-deciphering-how-cells-read-dna-to-better-understand-disease/" target="_blank" rel="noopener noreferrer">AlphaGenome 2: Deciphering how cells read DNA to better understand disease</a>
 
@@ -122,7 +122,7 @@ Hello, currently only the paper title "Introducing Gemini 4 Hydrogen" is provide
 
 The AI tool AlphaGenome 2 launched by DeepMind focuses on DNA regulatory mechanism research. Its core method is to model and predict the functional impact of DNA sequences and their various variants on different specific human cell types, aiming to clarify the inherent rules of how cells read DNA, deepen the understanding of disease pathogenesis, and provide new technical support for genetic disease tracing and precision diagnosis and treatment development.
 
-<FeedbackButtons slug="item:deepmind-alphagenome-2-deciphering-how-cells-read-dna-to-better-understand-disease" client:visible />
+<FeedbackButtons lang="en" slug="item:deepmind-alphagenome-2-deciphering-how-cells-read-dna-to-better-understand-disease" client:visible />
 
 # Hugging Face Blog
 
@@ -132,7 +132,7 @@ The AI tool AlphaGenome 2 launched by DeepMind focuses on DNA regulatory mechani
 
 Open-source large model ecosystem platform Hugging Face and multi-model API service provider OpenRouter have recently reached a cooperation. The two parties have opened up their ecological links, connecting Hugging Face's open-weight model library with OpenRouter's mature inference scheduling framework. Developers do not need to complete complex operations such as computing power adaptation and inference optimization by themselves, and can run various open-source large models quickly at low cost, greatly lowering the threshold for open-source model deployment.
 
-<FeedbackButtons slug="item:hf-blog-openrouter" client:visible />
+<FeedbackButtons lang="en" slug="item:hf-blog-openrouter" client:visible />
 
 ## <a href="https://huggingface.co/blog/nvidia/simready-assets-robot-pick-and-place" target="_blank" rel="noopener noreferrer">Build a Robot Pick-and-Place Simulation with SimReady Assets</a>
 
@@ -140,7 +140,7 @@ Open-source large model ecosystem platform Hugging Face and multi-model API serv
 
 To address the pain points of traditional robot pick-and-place simulation construction requiring manual modeling and calibration of physical parameters, low efficiency, and poor sim-to-real transfer effect, this solution uses standardized SimReady assets with built-in accurate physical properties, geometric information, and compatibility with mainstream engines to build high-fidelity simulation scenarios without additional calibration. Tests show it can shorten the scene construction cycle by nearly 70%, increase the real machine transfer success rate of grasping strategies by 37%, and greatly reduce the verification cost of pick-and-place applications.
 
-<FeedbackButtons slug="item:hf-blog-simready-assets-robot-pick-and-place" client:visible />
+<FeedbackButtons lang="en" slug="item:hf-blog-simready-assets-robot-pick-and-place" client:visible />
 
 # Lil'Log
 
@@ -150,7 +150,7 @@ To address the pain points of traditional robot pick-and-place simulation constr
 
 This paper sorts out research related to recursive self-improvement (RSI): the concept was first proposed by scholar I.J. Good in 1965, who believed that superintelligent systems can surpass humans in all intellectual activities, and can design better machines to achieve self-iteration; in 2008, Eliezer Yudkowsky clarified that its core is the feedback loop where AI optimizes its own cognitive mechanism relying on existing intelligence. The study proposes that the RSI path for modern AI includes both directly rewriting its own weights and optimizing the training pipeline.
 
-<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+<FeedbackButtons lang="en" slug="item:lillog-2026-07-04-harness" client:visible />
 
 # QbitAI
 
@@ -160,7 +160,7 @@ This paper sorts out research related to recursive self-improvement (RSI): the c
 
 To address the pain point that existing large model agents cannot independently complete the full process of materials R&D, the Zhongguancun Two Academies in Beijing released and open-sourced the materials research agent MatOS in September this year. It uniformly manages various scientific research assets, supports continuous capability iteration, has built-in massive datasets, tools and predefined workflows. Tests show its task success rate far exceeds similar agents, and it can efficiently complete R&D tasks such as large-scale material screening.
 
-<FeedbackButtons slug="item:qbitai-510652" client:visible />
+<FeedbackButtons lang="en" slug="item:qbitai-510652" client:visible />
 
 ## <a href="https://www.qbitai.com/2026/11/510610.html" target="_blank" rel="noopener noreferrer">How daring! A post-2000s team participated in an embodied intelligence competition, dared to collect data from scratch in only 48 hours, and won the championship!</a>
 
@@ -168,7 +168,7 @@ To address the pain point that existing large model agents cannot independently 
 
 In the 48-hour real machine final of the first Ant Lingbo Embodied Large Model Challenge, the TARS team led by post-2000s members with an average age of 25 optimized the effect of the first two tasks using Qwen to filter interfering objects. Aiming at the defect that the official sweeping task data causes the dustpan handle to slip easily when grasped, they decisively abandoned the corresponding official dataset, temporarily collected new data of grasping the back edge, and finally overtook their opponents to win the championship and an 80,000 RMB prize.
 
-<FeedbackButtons slug="item:qbitai-510610" client:visible />
+<FeedbackButtons lang="en" slug="item:qbitai-510610" client:visible />
 
 ## <a href="https://www.qbitai.com/2026/11/510592.html" target="_blank" rel="noopener noreferrer">Sam Altman empathizes with Jensen Huang: "Heroes also have flaws", but does he support him returning as NVIDIA CEO…</a>
 
@@ -176,4 +176,4 @@ In the 48-hour real machine final of the first Ant Lingbo Embodied Large Model C
 
 At the Semafor Summit in Silicon Valley on November 16, OpenAI CEO Sam Altman publicly talked about the turmoil of Jensen Huang resigning as NVIDIA CEO for the first time. He said Huang is a hero in his mind, and he highly empathizes with his situation because he was once removed from office by the board of directors. He admitted that heroes also have flaws, and believes that the AI industry will not stagnate due to Huang's departure, but said he does not have enough information to judge whether Huang should return to NVIDIA.
 
-<FeedbackButtons slug="item:qbitai-510592" client:visible />
+<FeedbackButtons lang="en" slug="item:qbitai-510592" client:visible />
