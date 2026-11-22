@@ -796,6 +796,7 @@ jobs:
       # 不需要新依赖，和 catch-up-digest / refresh-us-macro 是同一套自愈模式。
       # 判旧才跑（7 天），报告进 reports/，戳记进 src/data/weekly-audit.json。
       - name: Weekly audit (piggyback on deploy, 七天一次)
+        id: weekly-audit
         run: |
           # 巡检永远不挡发布：发现问题的表达方式是报告 + 注解，不是红叉。
           set +e
@@ -807,6 +808,7 @@ jobs:
           exit 0
 
       - name: Commit weekly audit report (if it ran)
+        if: steps.weekly-audit.outputs.skipped != 'true'
         run: |
           set +e
           # reports/ 是 gitignore 的（历史产物不进仓库），所以这里必须 -f，否则

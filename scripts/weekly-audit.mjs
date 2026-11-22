@@ -33,6 +33,17 @@ const FORCE = argv.includes("--force");
 const DRY_RUN = argv.includes("--dry-run");
 
 const now = new Date();
+
+/** 给后续步骤一个明确信号：这次是"跳过"还是"真跑了"。 */
+function emitOutput(name, value) {
+  const outputPath = process.env.GITHUB_OUTPUT;
+  if (!outputPath) return;
+  try {
+    appendFileSync(outputPath, `${name}=${value}\n`);
+  } catch {
+    /* 本地跑没有这个文件，忽略 */
+  }
+}
 const isoDay = (date) => date.toISOString().slice(0, 10);
 
 function readStamp() {
@@ -71,6 +82,7 @@ async function main() {
     console.log(
       `⏭️  每周巡检还在有效期内：上次 ${isoDay(lastRun)}（${ageDays.toFixed(1)} 天前），下次 ${isoDay(nextDue)} 之后。`,
     );
+    emitOutput("skipped", "true");
     return 0;
   }
 
@@ -163,6 +175,7 @@ async function main() {
     console.log("\n（--dry-run：不写报告和戳记）");
   }
 
+  emitOutput("skipped", "false");
   console.log(`::notice title=每周巡检完成::${results.filter((r) => !r.ok).length}/${results.length} 项有告警，已写入 reports/`);
   return 0;
 }

@@ -37,13 +37,16 @@ test("没有 dist 时明确跳过外链，不许假绿", async () => {
 
 test("巡检产物必须真的进仓库（reports/ 是 gitignore 的）", async () => {
   const deploy = await read(".github/workflows/deploy.yml");
+  const script = await read("scripts/weekly-audit.mjs");
   // 事故（第 153 轮）：`git add reports/` 因为路径被忽略整体失败 → 什么都没暂存 →
   // 下一步静默输出"没有新结果"。巡检跑了、戳记没进仓库，于是每次部署都会重跑。
   assert.match(deploy, /git add -f src\/data\/weekly-audit\.json/, "戳记必须 -f 提交");
   // 通配符没匹配到文件时 `git add` 整条失败（sh 不展开），所以必须先 ls 判断
   assert.match(deploy, /if ls reports\/weekly-audit-\*\.md/, "报告要先判断存在再 add");
   assert.match(deploy, /没有可提交的产物/, "没有产物时要报警，不能当成正常");
-  const script = await read("scripts/weekly-audit.mjs");
+  // 跳过和"没产物"是两回事：第 154 轮实测，跳过的那个星期每次部署都会报一次假警
+  assert.match(deploy, /if: steps\.weekly-audit\.outputs\.skipped != 'true'/, "跳过时不该跑提交步骤");
+  assert.match(script, /emitOutput\("skipped", "true"\)/, "跳过要显式告诉 GitHub");
   assert.match(script, /GITHUB_STEP_SUMMARY/, "报告要写进 step summary，提交失败也看得见结果");
 });
 
