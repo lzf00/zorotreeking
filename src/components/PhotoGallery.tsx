@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import PhotoSwipeLightbox from "photoswipe/lightbox";
 import "photoswipe/style.css";
 import { buildSrcSet, galleryVariants, lightboxVariants } from "@/lib/photo-srcset";
+import { photoAlt } from "@/lib/photo-manifests";
 
 type Exif = {
   camera?: string;
@@ -24,12 +25,15 @@ type Photo = {
   width: number;
   height: number;
   alt: string;
+  altEn?: string;
   exif?: Exif;
 };
 
 interface Props {
   photos: Photo[];
   galleryId: string;
+  /** 英文页传 "en"，alt / 灯箱 aria-label 才会用英文文案 */
+  lang?: "zh" | "en";
 }
 
 function formatExifLine(exif?: Exif): string {
@@ -54,7 +58,7 @@ function warmPhotoSwipe(): void {
   });
 }
 
-export default function PhotoGallery({ photos, galleryId }: Props) {
+export default function PhotoGallery({ photos, galleryId, lang = "zh" }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -239,6 +243,7 @@ export default function PhotoGallery({ photos, galleryId }: Props) {
     >
       {photos.map((p, i) => {
         const exifLine = formatExifLine(p.exif);
+        const alt = photoAlt(p, lang);
         return (
           <a
             key={i}
@@ -249,7 +254,7 @@ export default function PhotoGallery({ photos, galleryId }: Props) {
             // 不加这行时，点开图片要等全尺寸图解码 —— 实测 792 ms 里 handler 只占 3 ms。
             data-pswp-srcset={buildSrcSet(lightboxVariants(p))}
             data-exif={p.exif ? JSON.stringify(p.exif) : undefined}
-            aria-label={p.alt}
+            aria-label={alt}
             className="block group relative overflow-hidden bg-black/40"
           >
             <picture>
@@ -268,7 +273,7 @@ export default function PhotoGallery({ photos, galleryId }: Props) {
               <img
                 src={p.thumb}
                 sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                alt={p.alt}
+                alt={alt}
                 width={p.width || undefined}
                 height={p.height || undefined}
                 // 第一张就是首屏最大元素（LCP）：lazy 会让它在弱网下晚 300–500 ms 才开始下载

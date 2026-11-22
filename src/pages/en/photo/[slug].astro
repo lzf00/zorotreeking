@@ -6,7 +6,7 @@ import PhotoGallery from "@/components/PhotoGallery";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
 import PhotoMap from "@/components/PhotoMap";
 import { heroSrcSets } from "@/lib/photo-hero";
-import { loadPhotoManifest, resolveAlbumKey } from "@/lib/photo-manifests";
+import { loadPhotoManifest, photoAlt, resolveAlbumKey } from "@/lib/photo-manifests";
 import { pickAlbumCover } from "@/lib/photo-cover";
 
 export async function getStaticPaths() {
@@ -57,7 +57,7 @@ const shareDims = cover?.srcOg
           {heroSets.wide && <source type="image/webp" srcset={heroSets.wide} sizes="100vw" />}
           <img
             src={cover.src}
-            alt={cover.alt}
+            alt={photoAlt(cover, "en")}
             width={cover.width || undefined}
             height={cover.height || undefined}
             class="w-full h-auto max-h-[88vh] object-contain mx-auto block"
@@ -89,7 +89,7 @@ const shareDims = cover?.srcOg
 
   {rest.length > 0 ? (
     <section class="max-w-7xl mx-auto px-2 sm:px-3 mt-12">
-      <PhotoGallery photos={rest} galleryId={`gallery-${entry.data.translationKey}`} client:load />
+      <PhotoGallery photos={rest} galleryId={`gallery-${entry.data.translationKey}`} lang="en" client:load />
     </section>
   ) : null}
 

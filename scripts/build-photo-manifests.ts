@@ -42,7 +42,10 @@ type PhotoEntry = {
   heroWebp?: string;
   width: number;
   height: number;
+  /** 中文 alt：相册名 + 地点 + 月份 + 序号（原来是文件名，读屏会念出 "13408098752635440"） */
   alt: string;
+  /** 英文 alt：同结构，给 /en/photo/ 用 */
+  altEn?: string;
   /** GPS 坐标（WGS84）；从 EXIF GPSLatitude/Longitude 取，无则 undefined */
   lat?: number;
   lng?: number;
@@ -56,6 +59,56 @@ type PhotoEntry = {
     takenAt?: string;
   };
 };
+
+const CONTENT_DIR = path.join(ROOT, "src", "content", "photo");
+
+type AlbumMeta = {
+  title?: string;
+  location?: string;
+  date?: string;
+};
+
+/** 读 `src/content/photo/<slug>.<lang>.mdx` 的 frontmatter（只取 alt 需要的三个字段）。 */
+async function readAlbumMeta(albumSlug: string, lang: "zh" | "en"): Promise<AlbumMeta | null> {
+  const file = path.join(CONTENT_DIR, `${albumSlug}.${lang}.mdx`);
+  let raw: string;
+  try {
+    raw = await fs.readFile(file, "utf8");
+  } catch {
+    return null;
+  }
+  const match = /^---\r?\n([\s\S]*?)\r?\n---/.exec(raw);
+  if (!match) return null;
+  try {
+    const { parse } = await import("yaml");
+    const data = parse(match[1]) as Record<string, unknown>;
+    return {
+      title: typeof data.title === "string" ? data.title : undefined,
+      location: typeof data.location === "string" ? data.location : undefined,
+      date: data.date instanceof Date ? data.date.toISOString().slice(0, 10) : typeof data.date === "string" ? data.date : undefined,
+    };
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * 组装 alt。原则：读屏用户听到的应该是「哪一本相册的第几张、在哪、什么时候」，
+ * 而不是 `13408098752635440` 这种相机文件名。
+ * 有相册元信息就用，没有就退化成「第 N 张照片」——绝不退回文件名。
+ */
+function buildAlt(meta: AlbumMeta | null, index: number, total: number, lang: "zh" | "en"): string {
+  const parts: string[] = [];
+  if (meta?.title) parts.push(meta.title);
+  if (meta?.location) parts.push(meta.location);
+  if (meta?.date) {
+    const [year, month] = meta.date.split("-");
+    parts.push(lang === "en" ? `${month}/${year}` : `${year} 年 ${Number(month)} 月`);
+  }
+  const counter = lang === "en" ? `photo ${index} of ${total}` : `第 ${index} 张，共 ${total} 张`;
+  const head = parts.filter(Boolean).join(" · ");
+  return head ? `${head} · ${counter}` : counter;
+}
 
 function formatShutter(t: number): string {
   if (!Number.isFinite(t) || t <= 0) return "";
@@ -120,8 +173,12 @@ async function main() {
     }
     if (files.length === 0) continue;
 
+    const metaZh = await readAlbumMeta(albumSlug, "zh");
+    const metaEn = await readAlbumMeta(albumSlug, "en");
+    const total = files.length;
+
     const entries: PhotoEntry[] = [];
-    for (const f of files) {
+    for (const [index, f] of files.entries()) {
       const inputPath = path.join(albumDir, f);
       const buf = await fs.readFile(inputPath);
 
@@ -344,7 +401,8 @@ async function main() {
         midWebp: midRelative,
         width,
         height,
-        alt: path.basename(f, path.extname(f)),
+        alt: buildAlt(metaZh, index + 1, total, "zh"),
+        altEn: metaEn ? buildAlt(metaEn, index + 1, total, "en") : undefined,
         lat: gpsData?.latitude,
         lng: gpsData?.longitude,
         exif: {

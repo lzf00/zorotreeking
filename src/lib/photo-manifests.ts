@@ -5,6 +5,8 @@ export type Photo = {
   width: number;
   height: number;
   alt: string;
+  /** 英文 alt（/en/photo/ 用）；缺省时退回 alt */
+  altEn?: string;
   /** sharp 生成的同图 webp（质量 80），用于 hero 降字节 */
   srcWebp?: string;
   /** 列表缩略图的 webp 版本（720w） */
@@ -29,6 +31,11 @@ const manifests: Record<string, Photo[]> = {};
 for (const [path, mod] of Object.entries(modules)) {
   const name = path.split("/").pop()!.replace(/\.json$/, "");
   manifests[name] = mod.default;
+}
+
+/** 按语言取 alt：英文页优先用 altEn，没有就退回中文 alt（总比文件名强）。 */
+export function photoAlt(photo: { alt: string; altEn?: string }, lang: "zh" | "en" = "zh"): string {
+  return lang === "en" && photo.altEn ? photo.altEn : photo.alt;
 }
 
 export function loadPhotoManifest(name: string | undefined | null): Photo[] {
