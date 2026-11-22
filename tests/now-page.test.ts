@@ -7,6 +7,8 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
+import { readFile } from "node:fs/promises";
+
 import { STALE_AFTER_DAYS, nowStaleness, recentChanges } from "../src/lib/now";
 import { readGitLog, type Commit } from "../src/lib/changelog";
 
@@ -56,12 +58,25 @@ test("构建环境里真的能读到 git 历史（否则自动生成那部分会
 // /now 已经 138 天没更新，页面老老实实说了「这一页已经 N 天没更新」—— 但说完就完了，
 // 读者看到"过期"却没有下一站。诚实不等于有用：过期提示里必须给能看的地方。
 
-test("过期提示把读者送到能看的地方（构建产物里验证）", async () => {
+// 注意：**CI 里 `npm test` 跑在 `npm run build` 之前**（deploy.yml 步骤 5 在 11），
+// 所以这里不能用 dist 当唯一依据 —— 第 181 轮我写的第一版直接读 dist，两次部署都挂在
+// "Unit and guard tests"（第 5 步），而本地因为 dist 早就在，门禁一直是绿的。
+// 现在：源码必须写对（任何环境都查），构建产物存在时再验一遍真实 HTML。
+const read = (path: string) => readFile(new URL(`../${path}`, import.meta.url), "utf8");
+
+test("过期提示把读者送到能看的地方（源码层面）", async () => {
+  const astro = await read("src/pages/now.astro");
+  assert.match(astro, /能看的地方/, "过期提示里要有出口");
+  assert.match(astro, /<a href="\/changelog\/"/, "更新日志要能点");
+  assert.match(astro, /<a href="#recent"/, "本页的自动改动要能点（锚点）");
+  assert.match(astro, /id="recent"/, "锚点目标必须真的存在");
+});
+
+test("过期提示的出口在构建产物里真的渲染出来了（有 dist 时才验）", async () => {
   const { readFile } = await import("node:fs/promises");
-  const html = await readFile(new URL("../dist/now/index.html", import.meta.url), "utf8");
+  const html = await readFile(new URL("../dist/now/index.html", import.meta.url), "utf8").catch(() => null);
+  if (!html) return; // CI 的测试阶段还没有 dist，交给 check:degraded 这类构建后检查
+
   assert.match(html, /能看的地方/, "过期提示里要有出口");
-  assert.match(html, /<a href="\/changelog\/"/, "更新日志要能点");
-  assert.match(html, /<a href="#recent"/, "本页的自动改动要能点（锚点）");
-  assert.match(html, /id="recent"/, "锚点目标必须真的存在");
   assert.doesNotMatch(html, /href="\/now\/"[^>]*>再过一阵再来/, "不许自指链接");
 });
