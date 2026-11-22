@@ -757,6 +757,36 @@ if git diff --cached --quiet; then echo "没有新结果"; exit 0; fi
 `pathspec did not match` → 整条 add 失败。改成先 `ls` 判断存在再 add，
 报告才真的归档进 `reports/`（`reports/` 里其它历史产物仍然 gitignore，只有巡检报告 `-f`）。
 
+### 英文访客走丢了，看到的是中文 404（第 175 轮）
+
+nginx 的 `error_page 404 /404.html` 是**全局**的：`/en/whatever` 和 `/whatever` 拿到的是
+同一个文件。而站里只有一个 `src/pages/404.astro`，写死 `lang = "zh"` —— 所以英文访客
+输入错地址，看到的是 `lang="zh-CN"`、中文导航、「这页走丢了」。
+
+实测确认：
+
+```
+$ curl -s -o /dev/null -w "%{http_code}" https://www.zorotreeking.online/en/definitely-not-a-page/
+404
+$ # 正文是「404 这页走丢了 / 链接可能已失效…」，导航全是中文
+```
+
+修法受静态站约束，选了个不依赖服务器配置的方案：
+
+| 做法 | 说明 |
+|---|---|
+| 两套文案都构建出来 | 中文块 `data-404-block="zh"`、英文块 `data-404-block="en" hidden` |
+| 英文建议也是英文内容 | 链到 `/en/ai/...`、`/en/invest/...`，不是中文文章 |
+| 内联脚本按路径前缀切换 | `error_page` 会保留访客原本的 URL，所以 `location.pathname` 仍是 `/en/...` |
+| 同时改 `html lang` / `title` / description | 读屏器与社交卡片都跟着变 |
+| JS 关闭时保持中文 | 默认可见的就是中文块，不出现两套文案叠在一起 |
+
+代价：`404.html` 从 ~70 KB 变成 132 KB（两套文案 + 内联 CSS）。404 是错误页，
+不是常用路径，这个代价可以接受。
+
+新增守卫（挂在 `check:degraded` 末尾）：`/en/...` 必须 404 + `lang=en` + 只显示英文块 +
+可见块里有 h1；`/...` 必须 404 + `lang=zh-CN` + 只显示中文块。
+
 ### 200% 文字：剩下两个模板，一个断词一个折行（第 174 轮）
 
 第 173 轮把 12 个模板里的 10 个修到「200% 文字零溢出」，剩下 `/en/` 145px 与

@@ -73,3 +73,22 @@ test("关闭 JS 也要有正文：整站是 SSG，别把内容搬进客户端岛
   // 反空转：关 JS 后页面里必须真的测出"JS 不可用"
   assert.match(script, /if \(storageBlocked\) problems\.push\("JS 没被关掉/, "要确认 JS 真的关了");
 });
+
+test("英文访客不该拿到中文 404：两套文案 + 按路径切换（第 175 轮）", async () => {
+  const page = await read("src/pages/404.astro");
+  assert.match(page, /data-404-block="zh"/);
+  assert.match(page, /data-404-block="en"/);
+  // 英文块默认 hidden，由内联脚本按 /en 前缀显示
+  assert.match(page, /data-404-block="en" hidden/);
+  assert.match(page, /const isEn = path === "\/en" \|\| path\.startsWith\("\/en\/"\)/);
+  assert.match(page, /document\.documentElement\.lang = "en"/);
+  // 英文建议条目必须链到 /en/ 页面，否则英文访客点进中文内容
+  assert.match(page, /suggestedEn\.map/);
+  assert.match(page, /pathWithLang\(`\/\$\{p\.section\}\/\$\{p\.data\.translationKey\}`, "en"\)/);
+
+  // 守卫必须真的在跑
+  const script = await read("scripts/check-degraded.mjs");
+  assert.match(script, /\[404 语言\]/);
+  assert.match(script, /document\.querySelectorAll\("\[data-404-block\]"\)/);
+  assert.match(script, /应只显示一套文案/);
+});

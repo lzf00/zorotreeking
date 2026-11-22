@@ -190,6 +190,45 @@ if (scenarios.includes("storage")) {
   }
 }
 
+// ── 404 的语言（第 175 轮）───────────────────────────────────────────────
+// nginx 的 error_page 是全局的：`/en/whatever` 也会拿到同一个 404.html。
+// 以前英文访客看到的是整页中文（lang="zh-CN"、中文导航、中文文案）。现在同一份
+// HTML 里两套文案都在，由一段内联脚本按路径前缀切换 —— 这段检查就是防止它退化。
+{
+  const cases = [
+    { path: "/en/definitely-missing-175/", expectLang: "en", expectBlock: "en" },
+    { path: "/definitely-missing-175/", expectLang: "zh-CN", expectBlock: "zh" },
+  ];
+  for (const c of cases) {
+    const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+    const page = await context.newPage();
+    try {
+      const response = await page.goto(base + c.path, { waitUntil: "load", timeout: 60_000 });
+      const info = await page.evaluate(() => ({
+        lang: document.documentElement.lang,
+        visible: [...document.querySelectorAll("[data-404-block]")].filter((el) => !el.hidden).map((el) => el.getAttribute("data-404-block")),
+        heading: [...document.querySelectorAll("[data-404-block]")].filter((el) => !el.hidden).map((el) => el.querySelector("h1")?.textContent?.trim() ?? "").join(""),
+        title: document.title,
+      }));
+      const problems = [];
+      if (response?.status() !== 404) problems.push(`状态码应是 404，实际 ${response?.status()}`);
+      if (info.lang !== c.expectLang) problems.push(`html lang 应是 ${c.expectLang}，实际 ${info.lang}`);
+      if (!info.visible.includes(c.expectBlock)) problems.push(`可见块应包含 ${c.expectBlock}，实际 ${info.visible.join(",") || "无"}`);
+      if (info.visible.length !== 1) problems.push(`应只显示一套文案，实际 ${info.visible.length} 套`);
+      if (!info.heading) problems.push("可见的 404 块里没有 h1");
+      if (problems.length === 0) {
+        console.log(`✓ [404 语言] ${c.path} → ${info.lang}「${info.heading}」`);
+      } else {
+        console.log(`✗ [404 语言] ${c.path}`);
+        for (const problem of problems) console.log(`    ${problem}`);
+        failures.push(`404 语言 ${c.path}`);
+      }
+    } finally {
+      await context.close();
+    }
+  }
+}
+
 await browser.close();
 await server.close();
 

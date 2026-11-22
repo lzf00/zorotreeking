@@ -5,6 +5,7 @@ import { useTranslations, pathWithLang } from "@/i18n/ui";
 
 const lang = "zh" as const;
 const t = useTranslations(lang);
+const tEn = useTranslations("en");
 
 // 取最近 4 篇文章（原创优先 + 最新 digest），让走丢的访客有出路
 const isDigest = (p: { data: { tags?: string[]; translationKey: string } }) =>
@@ -13,6 +14,12 @@ const isDigest = (p: { data: { tags?: string[]; translationKey: string } }) =>
 const [ai, invest] = await Promise.all([
   getCollection("ai", (p) => p.data.lang === lang && !p.data.draft),
   getCollection("invest", (p) => p.data.lang === lang && !p.data.draft),
+]);
+// 英文建议：同一个 404.html 会被 nginx 服务给所有 404（包括 /en/...），
+// 所以英文那半边也在构建期生成好，由一段内联脚本按路径前缀显示（第 175 轮）。
+const [aiEn, investEn] = await Promise.all([
+  getCollection("ai", (p) => p.data.lang === "en" && !p.data.draft),
+  getCollection("invest", (p) => p.data.lang === "en" && !p.data.draft),
 ]);
 const all = [
   ...ai.map((p) => ({ ...p, section: "ai" as const })),
@@ -24,6 +31,12 @@ const originals = all.filter((p) => !isDigest(p)).slice(0, 2);
 const digests = all.filter((p) => isDigest(p)).slice(0, 2);
 const suggested = [...originals, ...digests].slice(0, 4);
 
+const enAll = [
+  ...aiEn.map((p) => ({ ...p, section: "ai" as const })),
+  ...investEn.map((p) => ({ ...p, section: "invest" as const })),
+].sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const suggestedEn = [...enAll.filter((p) => !isDigest(p)).slice(0, 2), ...enAll.filter((p) => isDigest(p)).slice(0, 2)].slice(0, 4);
+
 const sectionAccent: Record<string, string> = {
   ai: "#1d4ed8",
   invest: "#991b1b",
@@ -32,6 +45,10 @@ const sectionLabel: Record<string, string> = {
   ai: t("nav.ai"),
   invest: t("nav.invest"),
 };
+const sectionLabelEn: Record<string, string> = {
+  ai: tEn("nav.ai"),
+  invest: tEn("nav.invest"),
+};
 ---
 
 <BaseLayout
@@ -39,7 +56,7 @@ const sectionLabel: Record<string, string> = {
   description="这个地址没有对应的页面。下面是最近更新的文章，或者从首页、AI 与投资两个板块重新找找。"
   noindex
 >
-  <section class="max-w-3xl mx-auto px-6 pt-20 sm:pt-28 pb-12">
+  <section data-404-block="zh" class="max-w-3xl mx-auto px-6 pt-20 sm:pt-28 pb-12">
 
     {/* 极简大字 404，serif + 渐变 */}
     <div class="text-center">
@@ -109,4 +126,91 @@ const sectionLabel: Record<string, string> = {
     </div>
 
   </section>
+
+  {/* 英文访客拿到的是同一份 404.html（nginx 的 error_page 是全局的），
+      所以英文版也在构建期生成好，由下面这段内联脚本按路径前缀显示。 */}
+  <section data-404-block="en" hidden class="max-w-3xl mx-auto px-6 pt-20 sm:pt-28 pb-12">
+    <div class="text-center">
+      <div class="font-serif text-[140px] sm:text-[200px] leading-[0.85] tracking-tighter
+                  bg-gradient-to-br from-section-ai via-section-photo to-section-hike
+                  bg-clip-text text-transparent select-none">
+        404
+      </div>
+      <h1 class="mt-6 text-2xl sm:text-3xl font-semibold tracking-tight">This page is lost</h1>
+      <p class="mt-3 text-base text-[var(--text-secondary)] leading-relaxed max-w-md mx-auto">
+        The link may be broken, or the post moved. Try one of the sections below, or
+        <button type="button" data-search-trigger onclick="window.__openSearch?.()" class="underline hover:text-[var(--text)] transition-colors">search directly</button>.
+      </p>
+    </div>
+
+    {suggestedEn.length > 0 && (
+      <section class="mt-14">
+        <div class="text-[11px] uppercase tracking-[0.2em] text-[var(--text-tertiary)] font-mono mb-4 pb-2 border-b border-[var(--border)]">
+          Suggested reading
+        </div>
+        <ul class="divide-y divide-[var(--border)]">
+          {suggestedEn.map((p) => (
+            <li class="py-3">
+              <a href={pathWithLang(`/${p.section}/${p.data.translationKey}`, "en")}
+                 class="group flex items-center gap-4">
+                <span class="w-1.5 h-1.5 rounded-full shrink-0" style={`background:${sectionAccent[p.section]}`}></span>
+                <span class="text-xs text-[var(--text-tertiary)] uppercase tracking-wide shrink-0 w-16">{sectionLabelEn[p.section]}</span>
+                <span class="flex-1 truncate text-[15px] text-[var(--text-secondary)] group-hover:text-[var(--text)] transition-colors">
+                  {p.data.title}
+                </span>
+                <time class="text-xs text-[var(--text-tertiary)] font-mono tabular-nums shrink-0">
+                  {p.data.date.toISOString().slice(0, 10)}
+                </time>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    <section class="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <a href={pathWithLang("/ai", "en")} class="rounded-xl border border-[var(--border)] p-4 text-center hover:border-section-ai/50 hover:bg-[var(--bg-soft)] transition-all group">
+        <div class="text-2xl mb-1">🧠</div>
+        <div class="text-sm font-medium group-hover:text-section-ai transition-colors">{tEn("nav.ai")}</div>
+      </a>
+      <a href={pathWithLang("/invest", "en")} class="rounded-xl border border-[var(--border)] p-4 text-center hover:border-section-invest/50 hover:bg-[var(--bg-soft)] transition-all group">
+        <div class="text-2xl mb-1">📊</div>
+        <div class="text-sm font-medium group-hover:text-section-invest transition-colors">{tEn("nav.invest")}</div>
+      </a>
+      <a href={pathWithLang("/photo", "en")} class="rounded-xl border border-[var(--border)] p-4 text-center hover:border-section-photo/50 hover:bg-[var(--bg-soft)] transition-all group">
+        <div class="text-2xl mb-1">📷</div>
+        <div class="text-sm font-medium group-hover:text-section-photo transition-colors">{tEn("nav.photo")}</div>
+      </a>
+      <a href={pathWithLang("/hike", "en")} class="rounded-xl border border-[var(--border)] p-4 text-center hover:border-section-hike/50 hover:bg-[var(--bg-soft)] transition-all group">
+        <div class="text-2xl mb-1">🥾</div>
+        <div class="text-sm font-medium group-hover:text-section-hike transition-colors">{tEn("nav.hike")}</div>
+      </a>
+    </section>
+
+    <div class="mt-10 text-center text-sm">
+      <a href={pathWithLang("/", "en")}
+         class="text-[var(--text-tertiary)] hover:text-[var(--text)] transition-colors">
+        ← Back to home
+      </a>
+    </div>
+  </section>
+
+  {/* 语言判定：nginx 的 error_page 会把所有 404 都指到 /404.html，URL 仍是访客原本请求的地址，
+      所以这里能读到 `/en/...` 前缀。JS 关闭时保持中文（默认可见的那块）。 */}
+  <script is:inline>
+    (() => {
+      const path = location.pathname.replace(/\/+$/, "");
+      const isEn = path === "/en" || path.startsWith("/en/");
+      if (!isEn) return;
+      const zh = document.querySelector('[data-404-block="zh"]');
+      const en = document.querySelector('[data-404-block="en"]');
+      if (!zh || !en) return;
+      zh.hidden = true;
+      en.hidden = false;
+      document.documentElement.lang = "en";
+      document.title = "404 · Page not found";
+      const meta = document.querySelector('meta[name="description"]');
+      if (meta) meta.setAttribute("content", "This address has no page. Here are recent posts, or browse the AI and Investment sections.");
+    })();
+  </script>
 </BaseLayout>
