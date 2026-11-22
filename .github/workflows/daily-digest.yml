@@ -41,6 +41,9 @@ permissions:
   # （症状是 conclusion=startup_failure、没有任何 step 日志 —— 这就是 2026-11-19
   #  起 AI 日报静默停更三天、而 workflow 文件本身完全没问题的原因）。
   statuses: write
+  # 被调用的 deploy.yml 的 catch-up-digest 任务要 dispatch 部署（actions: write）。
+  # 被调用方声明的权限大于调用方 → 运行在启动阶段就失败（startup_failure，无任何日志）。
+  actions: write
 
 concurrency:
   group: daily-digest
