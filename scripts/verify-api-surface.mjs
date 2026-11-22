@@ -174,8 +174,16 @@ async function main() {
   const results = [];
   for (const endpoint of targets) {
     try {
-      const result = await hit(base, endpoint);
-      results.push({ name: endpoint.name, ...result, powers: endpoint.powers });
+      let result = await hit(base, endpoint);
+      // 第 150 轮：上游数据源偶尔抽一下（东方财富/公告接口），一次失败就把整条部署顶红。
+      // 重试一次再判死刑 —— 真挂了重试也过不去，抖一下就能过。
+      let retried = false;
+      if (result.problems.length > 0) {
+        retried = true;
+        await new Promise((resolve) => setTimeout(resolve, 2_000));
+        result = await hit(base, endpoint);
+      }
+      results.push({ name: endpoint.name, ...result, powers: endpoint.powers, retried });
     } catch (error) {
       results.push({
         name: endpoint.name,
@@ -215,12 +223,16 @@ async function main() {
   } else {
     for (const r of results) {
       if (r.problems.length === 0) {
-        console.log(`✓ ${r.name.padEnd(17)} ${r.status}  ${r.powers}`);
+        // 重试才通过的接口要标出来：那是上游在抖，不是我们的胜利
+        const note = r.retried ? "  （第一次失败，重试通过 —— 上游抖动）" : "";
+        console.log(`✓ ${r.name.padEnd(17)} ${r.status}  ${r.powers}${note}`);
       } else {
         console.error(`✗ ${r.name.padEnd(17)} ${r.problems.join("；")}  ← ${r.powers}`);
       }
     }
-    console.log(`\n${results.length - failed.length}/${results.length} 个接口正常（base=${base}）`);
+    const retriedCount = results.filter((r) => r.retried).length;
+    const retryNote = retriedCount > 0 ? `（其中 ${retriedCount} 个是重试后通过）` : "";
+    console.log(`\n${results.length - failed.length}/${results.length} 个接口正常${retryNote}（base=${base}）`);
   }
   process.exit(failed.length > 0 ? 1 : 0);
 }

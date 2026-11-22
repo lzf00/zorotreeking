@@ -75,3 +75,11 @@ test("后台接口必须被鉴权拦下（谁手滑删了鉴权，探针立刻�
   assert.match(validateAuthGuard(guard, 500, null).join(), /HTTP 500/);
   assert.ok(AUTH_GUARDS.length >= 3, "守卫探针太少：至少要有统计/留言板/ETF 运维三条");
 });
+
+test("上游抖动不该顶红整条部署：失败接口重试一次（第 150 轮）", async () => {
+  const source = await readFile(new URL("../scripts/verify-api-surface.mjs", import.meta.url), "utf8");
+  // 第 150 轮真实事故：API 探针一次 502 就把部署顶红，prod 停在上一个版本
+  assert.match(source, /retried = true/, "没有重试标记");
+  assert.match(source, /setTimeout\(resolve, 2_000\)/, "重试前要等一拍，别立刻打同一个上游");
+  assert.match(source, /重试通过 —— 上游抖动/, "重试通过必须写在输出里，否则等于悄悄吞掉异常");
+});
