@@ -98,6 +98,11 @@ async function main() {
   // --ignore-gaps：11-19/11-20 那两天的历史断档抓不回来（欠账 #12），
   // 不带这个参数等于每周都报一次同一个不可能修的错。断档本身仍会打在报告里。
   results.push(await run("内容更新节奏", process.execPath, ["scripts/check-freshness.mjs", "--ignore-gaps"], 120_000));
+  // 自动化体检（第 179 轮）：前两轮的故障都不是"站点坏了"，而是 workflow 悄悄死了 ——
+  // 日报 cron 四天 startup_failure、停更报警器自己红在第一步。站点全绿、只有产出没了。
+  // 这条检查反过来问：每个 workflow 上次成功是什么时候？跟它自己的 cron 频率比是否逾期？
+  // 读的是 Actions API（有 GITHUB_TOKEN 就不受限流影响），失败只算"一项有告警"，不挡部署。
+  results.push(await run("自动化体检（workflow 是否还在跑）", process.execPath, ["scripts/check-automation-health.mjs"], 120_000));
   // 站外链接：5535 条全抓要十几分钟，装不进部署。缓存提交在仓库里（reports/ 是 gitignore 的，
   // 所以放 src/data/）、每次最多刷 900 条，
   // 六周左右轮完一遍；缓存过期（7 天）的条目才会真的重新抓。

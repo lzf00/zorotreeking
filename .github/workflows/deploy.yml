@@ -842,6 +842,10 @@ jobs:
       # 判旧才跑（7 天），报告进 reports/，戳记进 src/data/weekly-audit.json。
       - name: Weekly audit (piggyback on deploy, 七天一次)
         id: weekly-audit
+        env:
+          # 自动化体检要读 Actions API：带上 token 才有 5000 次/小时，
+          # 未登录只有 60 次/小时，一次体检 13 个 workflow 就会被限流。
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           # 巡检永远不挡发布：发现问题的表达方式是报告 + 注解，不是红叉。
           set +e

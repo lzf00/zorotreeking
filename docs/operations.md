@@ -61,6 +61,7 @@
 | `check:admin` | Decap 后台的 `config.yml` schema（无头浏览器实测） |
 | `check:focus` | 键盘焦点可见性（真按 Tab，明暗两主题；axe 测不到这一项） |
 | `check:text-zoom` | 200% 文字缩放下不得横向溢出（预算只许降不许升） |
+| `node scripts/check-automation-health.mjs` | 每个 workflow 上次成功 vs 自己的 cron 频率（每周巡检里跑，不进门禁） |
 | `check:lang-switch` | 语言切换链接必须指向存在且互链的对端；`<html lang>` 必须与路径一致 |
 
 **部署时的自愈步骤**（`catch-up-digest` 任务）：日报缺失 → 补跑；行情快照 > 2 天 → 重抓。

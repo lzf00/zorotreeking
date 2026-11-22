@@ -757,6 +757,42 @@ if git diff --cached --quiet; then echo "没有新结果"; exit 0; fi
 `pathspec did not match` → 整条 add 失败。改成先 `ls` 判断存在再 add，
 报告才真的归档进 `reports/`（`reports/` 里其它历史产物仍然 gitignore，只有巡检报告 `-f`）。
 
+### 换一个问题问：还有哪些自动化真的在跑（第 179 轮）
+
+177/178 两轮的故障有个共同点：**站点、门禁、巡检全绿，只有"产出"和"告警"没了**。
+前两轮是靠人肉抽查 Actions 才发现。于是这轮把「抽查」本身做成检查，换一个问题问：
+
+> 每个 workflow **上次成功**是什么时候？跟它自己的 cron 频率比，是否已经逾期？
+
+`scripts/check-automation-health.mjs` 上线第一次运行就列出四条真问题：
+
+| workflow | 判定 |
+|---|---|
+| `a11y.yml` | ❌ **从来没有运行记录**（只有 cron → 在这仓库等于不存在） |
+| `site-audit.yml` | ❌ **从来没有运行记录**（全量巡检实际靠 weekly-audit 里的 `audit-site.mjs` 兜着） |
+| `daily-digest.yml` | ❌ 连续 3 次 `startup_failure`（177/178 轮的那件事，修复待下一次 cron 验证） |
+| `lighthouse-mobile.yml` | ❌ 连续 2 次 `failure`（欠账 #8） |
+
+判据写得很克制，避免变成"每周必红"的噪音：
+
+| 触发类型 | 判逾期 | 判连续失败 |
+|---|---|---|
+| 只有 cron | ✅ 超过「周期 × 2 + 1 天」没有成功 | ✅ 最近 ≥2 次全失败 |
+| cron + workflow_run（混合） | ✅ 同上 | ✅ 同上 |
+| 纯事件驱动（push） | ❌ 不判（没有"应该多久跑一次"） | ✅ |
+
+细节：
+
+- **cron 频率从 yml 里推**：`dow` 被限定 → 每周，否则按每天（宁可多要求它跑）。
+- **没有成功记录**：只有 cron → problem；混合触发 → warn（多半是**上游坏了**：
+  `freshness-watch` 挂在 Daily digest 的 `workflow_run` 上，日报不跑它也跑不了）。
+- **挂进每周巡检**（`weekly-audit.mjs`）而不是门禁：它要联网、读 Actions API，
+  而且"有一项逾期"是**运维待办**，不该挡发布。`deploy.yml` 的巡检步骤因此补了
+  `GITHUB_TOKEN`（未登录 60 次/小时，13 个 workflow 一次就会被限流）。
+
+这就是「守卫的守卫」：177 轮补的是权限图，178 轮补的是报警器不被自己吞掉，
+179 轮补的是**发现"没人看"这件事没人看**。三层都缺一不可。
+
 ### 报警器坏掉的时候，警报一起没了（第 178 轮）
 
 177 轮修完权限，回头核对「为什么没人被通知」。答案是 `freshness-watch` 自己也在红：
