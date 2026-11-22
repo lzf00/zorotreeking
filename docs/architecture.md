@@ -757,6 +757,26 @@ if git diff --cached --quiet; then echo "没有新结果"; exit 0; fi
 `pathspec did not match` → 整条 add 失败。改成先 `ls` 判断存在再 add，
 报告才真的归档进 `reports/`（`reports/` 里其它历史产物仍然 gitignore，只有巡检报告 `-f`）。
 
+### 让"cron 等于不会跑"这件事没法再重复（第 162 轮）
+
+第 161 轮把所有 workflow 的触发方式列成表，发现 7 个只有 cron 的 —— 而在这个仓库
+`schedule` 实测会延迟 5–7.5 小时、甚至整天不触发（日报停更三天、本周看点缺一期）。
+这类问题**每次都是人肉考古才发现的**，所以这轮把它变成门禁：
+
+- `scripts/check-workflows.mjs`：静态读 `.github/workflows/*.yml`
+  - 没有 schedule → ✅ 事件驱动
+  - 有 schedule 且有 `workflow_run`/`push` → ✅（cron 只是兜底）
+  - 只有 schedule → 必须在 `scripts/workflow-coverage.json` 里**声明靠什么跑到**
+  - 声明里有不存在的 workflow → ❌（防止声明腐烂）
+- `npm run check:workflows` 放在 gate 最前面（~50ms），门禁当场变红，而不是三个月后考古。
+- 已知缺口用 `accepted:` 前缀登记，打印 ⚠️ 但不挡发布 —— 恒红等于没有守卫（第 159 轮那条经验）。
+
+当前体检结果：**10 个 ✅ / 1 个 ⚠️**（`lighthouse-mobile.yml` 移动端 Lighthouse 仍未接管）。
+
+顺带确认了一个之前只是怀疑的事实：**`daily-digest.yml` 也是纯 cron**，
+它没有任何事件触发 —— 这就是 11-19 起停更三天的根因，也解释了为什么"部署流程的补跑"
+必须存在。这条现在写进了声明表，不再是口口相传。
+
 ### 自愈跑了，但翻译悄悄失败（第 161 轮续）
 
 第一版自愈上线后，部署真的去生成了 W47 —— 然后回滚了。annotations 里只有一句：

@@ -68,3 +68,11 @@
   （移动端 Lighthouse）与 `refresh-us-macro.yml`（后者已由部署流程的行情自愈覆盖）。
   移动端 Lighthouse 仍未接管 —— 我们自己的 vitals 测量（CLS/LCP/FCP）覆盖了同类信号，
   是否值得为它引入 `@lhci/cli` 运行开销需要决策。
+
+## 第 162 轮补记
+
+- **`lighthouse-mobile.yml` 仍是唯一没有任何非 cron 触发的活体检查**（`check:workflows`
+  会以 ⚠️ 打印）。是否接进每周巡检（`npx --yes @lhci/cli@0.13.x autorun --config=.lighthouserc.mobile.json`，
+  会给生产打 13 页 × 3 次）需要决策：我们自己的 CLS/LCP/FCP + 全站巡检已覆盖同类信号。
+- **`daily-digest.yml` 是纯 cron**（没有 workflow_run/push），11-19 起停更三天的根因。
+  现在靠部署流程的 `catch-up-digest` 兜底，声明见 `scripts/workflow-coverage.json`。

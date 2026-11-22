@@ -1,0 +1,10 @@
+{
+  "_doc": "只有 cron 触发的 workflow 在这个仓库等于不可靠（schedule 实测延迟 5–7.5 小时，还出现过整天不触发）。这份清单声明每个 scheduled workflow 靠什么真正被跑到；值以 accepted: 开头的表示已知缺口（会打印 ⚠️ 并记在 docs/known-debt.md）。加新 workflow 时必须在这里登记，否则 check:workflows 失败。",
+  "a11y.yml": "每周巡检（deploy.yml → scripts/weekly-audit.mjs，第 154 轮）",
+  "site-audit.yml": "每周巡检（第 157 轮把 audit-site.mjs 接进 weekly-audit）",
+  "deadlink-check.yml": "每周巡检的站外链接体检（900 条/次，带缓存）",
+  "weekly-roundup.yml": "部署流程自愈（catch-up-digest 的 Weekly roundup 步骤，第 161 轮）",
+  "refresh-us-macro.yml": "部署流程的行情自愈（Refresh stale market data，第 146 轮；第 160 轮起过期一致预期会被作废）",
+  "daily-digest.yml": "部署流程的日报补跑（catch-up-digest）；cron 仍是主通道，所以停更时靠补跑兜底",
+  "lighthouse-mobile.yml": "accepted: 移动端 Lighthouse 仍未接管；自己的 vitals（CLS/LCP/FCP）+ 全站巡检已覆盖同类信号，是否引入 @lhci/cli 需决策"
+}
