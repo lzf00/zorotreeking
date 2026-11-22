@@ -757,6 +757,25 @@ if git diff --cached --quiet; then echo "没有新结果"; exit 0; fi
 `pathspec did not match` → 整条 add 失败。改成先 `ls` 判断存在再 add，
 报告才真的归档进 `reports/`（`reports/` 里其它历史产物仍然 gitignore，只有巡检报告 `-f`）。
 
+### 106 天前的一致预期，和今天的 BLS 实际值并排站着（第 159 轮）
+
+`/invest/us-market/` 底部写着"宏观实际值与历史序列：BLS · 一致预期：Trading Economics"。
+BLS 那块每周在更新（`macro.fetched_at` 是当天），但**一致预期停在 2026-08-07 —— 106 天**。
+界面只写了个来源链接，读者自然会以为两块的"新鲜度"一样。第 116 轮给 `market.stale`、
+`macro.stale` 都加了"这是多久前的快照"，唯独漏了 `consensus.updated_at`。
+
+两处改动：
+
+- **界面**：`describeIsoSnapshot(consensus.updated_at, severeAfterDays: 60)`，超 60 天就在
+  来源链接后面补一句灰色的真实时间 —— 实际渲染：
+  `Trading Economics 市场一致预期（数据为 08-07 21:00（106 天前））`
+- **看门狗**：`check-market-data-age.mjs` 增加一行"美国宏观一致预期"，并把结论分级成
+  `fail` / `warn`。修它要动上游数据源（Trading Economics 抓取），短期内修不了，
+  所以标 `warn`：**每周巡检报告里一直看得见，但不会把巡检变成恒红**。
+
+为什么不是直接 fail：恒红的闸门等于没有闸门。第 153 轮那条经验的反面 ——
+假绿要治，恒红也要治，两者都会让人不再看告警。
+
 ### 逐页数字只有留下来才会说话（第 158 轮）
 
 第 157 轮的全量巡检现在每周跑，但它只**打印**一行汇总 —— 逐页看没变化，

@@ -103,3 +103,51 @@ test("看门狗覆盖 ETF 分析，且给了它自己的阈值", async () => {
   assert.ok(etf, "ETF 分析没进看门狗");
   assert.equal(etf.maxAgeDays, 5);
 });
+
+// ── 第 159 轮：一致预期单独盯，且只警告不挡发布 ─────────────────────────────
+
+test("一致预期进看门狗：停在 2026-08-07 的那块数据不再隐形", async () => {
+  const source = await readFile(new URL("../scripts/check-market-data-age.mjs", import.meta.url), "utf8");
+  assert.match(source, /macro\?\.consensus\?\.updated_at/, "要读一致预期自己的时间戳");
+  assert.match(source, /label: "美国宏观一致预期"/, "报告里要单独一行");
+});
+
+test("warn 级条目不会挡住发布（否则每周巡检变成恒红）", async () => {
+  const source = await readFile(new URL("../scripts/check-market-data-age.mjs", import.meta.url), "utf8");
+  // 失败判定必须排除 warn
+  assert.match(source, /row\.stale && row\.severity !== "warn"/, "fail 判定要跳过 warn");
+  assert.match(source, /severity: "warn"/, "一致预期要标成 warn");
+});
+
+test("ageRows 把 severity 透传出来，默认是 fail", () => {
+  const rows = ageRows(
+    [
+      { file: "a.json", label: "普通", at: at("2026-09-01T00:00:00+08:00") },
+      { file: "b.json", label: "警告级", at: at("2026-09-01T00:00:00+08:00"), severity: "warn" },
+    ],
+    { now: NOW },
+  );
+  assert.equal(rows[0].severity, "fail");
+  assert.equal(rows[1].severity, "warn");
+  assert.equal(rows[0].stale, true);
+  assert.equal(rows[1].stale, true);
+});
+
+test("界面上必须写出一致预期的时间（106 天的数据不能和 BLS 实际值并排装新）", async () => {
+  const dashboard = await readFile(
+    new URL("../src/components/UsMarketDashboard.tsx", import.meta.url),
+    "utf8",
+  );
+  assert.match(dashboard, /describeIsoSnapshot\(macro\?\.consensus\?\.updated_at/, "要算一致预期的年龄");
+  assert.match(dashboard, /consensusAge\.severe/, "陈旧时要在界面上提示");
+  const { describeIsoSnapshot } = await import("../src/lib/snapshot-age.ts");
+  const stale = describeIsoSnapshot("2026-08-07T13:00:00Z", new Date("2026-11-21T08:00:00Z"), {
+    severeAfterDays: 60,
+  });
+  assert.equal(stale.severe, true);
+  assert.ok((stale.days ?? 0) > 100);
+  const fresh = describeIsoSnapshot("2026-11-20T13:00:00Z", new Date("2026-11-21T08:00:00Z"), {
+    severeAfterDays: 60,
+  });
+  assert.equal(fresh.severe, false);
+});

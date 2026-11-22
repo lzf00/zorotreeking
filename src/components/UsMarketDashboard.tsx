@@ -9,7 +9,7 @@ import {
   type UsQuote,
   type UsTrendPoint,
 } from "@/lib/us-market";
-import { absoluteStamp, describeSnapshot } from "@/lib/snapshot-age";
+import { absoluteStamp, describeIsoSnapshot, describeSnapshot } from "@/lib/snapshot-age";
 
 const POLL_MS = 60_000;
 
@@ -277,6 +277,11 @@ export default function UsMarketDashboard({ initialData = null }: Props) {
   }, [load]);
 
   const macro = data?.macro;
+  // 一致预期（Trading Economics）是独立于 BLS 的一块：它停在 2026-08-07，
+  // 而 BLS 实际值每周都在更新 —— 不写出来，读者会把三个月前的预期当成当前的。
+  const consensusAge = describeIsoSnapshot(macro?.consensus?.updated_at ?? null, Date.now(), {
+    severeAfterDays: 60,
+  });
   const market = data?.market;
   const judgement = useMemo(() => deriveUsMacroJudgement({
     cpi: macro?.cpi ?? emptyMetric,
@@ -410,7 +415,11 @@ export default function UsMarketDashboard({ initialData = null }: Props) {
       <section className="border-t border-slate-900/10 pt-4 text-[11px] leading-6 text-[var(--text-tertiary)] dark:border-white/10" aria-label="数据来源和质量说明">
         <p>
           宏观实际值与历史序列：<a className="underline decoration-current/30 underline-offset-2 hover:text-[var(--text)]" href={macro?.source_url ?? "https://www.bls.gov/developers/api_signature_v2.htm"} target="_blank" rel="noreferrer">美国劳工统计局 BLS</a>
-          {macro?.consensus?.source && <> · 一致预期：<a className="underline decoration-current/30 underline-offset-2 hover:text-[var(--text)]" href={macro.consensus.source_url ?? "https://tradingeconomics.com/united-states/calendar"} target="_blank" rel="noreferrer">{macro.consensus.source}</a></>}
+          {macro?.consensus?.source && <> · 一致预期：<a className="underline decoration-current/30 underline-offset-2 hover:text-[var(--text)]" href={macro.consensus.source_url ?? "https://tradingeconomics.com/united-states/calendar"} target="_blank" rel="noreferrer">{macro.consensus.source}</a>
+            {/* 第 159 轮：一致预期停在 2026-08-07（106 天），但界面只写了个来源链接，
+                读者会以为它和旁边的 BLS 实际值一样新。陈旧要写在数字旁边。 */}
+            {consensusAge.severe && <span className="ml-1 text-amber-700 dark:text-amber-400">（数据为 {consensusAge.text}）</span>}
+          </>}
           {market && <> · 行情：<a className="underline decoration-current/30 underline-offset-2 hover:text-[var(--text)]" href={market.source_url} target="_blank" rel="noreferrer">东方财富公开延迟行情</a></>}。
         </p>
         <p>

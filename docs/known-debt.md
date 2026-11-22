@@ -49,3 +49,10 @@
   中英混排"（157 个单元格），`fetcher.py` 之后的新日报不会再混。
   真要清掉这 115 处，需要把每日新闻也过一遍翻译，属于 `market-recap` 英文版要不要
   机翻每日新闻的决策项。
+
+## 第 159 轮补记
+
+- **美国宏观"一致预期"停在 2026-08-07（106 天）**：`src/data/us-market-latest.json` 的
+  `macro.consensus.updated_at`。页面现在会写出真实时间，`check-market-data-age` 每周报
+  `warn`（不挡发布）。要真的修，得让 `fetch-us-macro.mjs` 重新抓 Trading Economics
+  （或换一个能稳定拿到的预期源）—— 属于数据源决策。

@@ -57,9 +57,23 @@ test("快照过旧的行数与文档描述一致（第 137 轮起美股两块都
     if (!cache.has(snap.file)) {
       cache.set(snap.file, JSON.parse(await readFile(new URL(`../src/data/${snap.file}`, import.meta.url), "utf8")));
     }
-    withAt.push({ file: snap.file, label: snap.label, maxAgeDays: snap.maxAgeDays, at: () => snap.at(cache.get(snap.file)) });
+    withAt.push({
+      file: snap.file,
+      label: snap.label,
+      maxAgeDays: snap.maxAgeDays,
+      severity: (snap as any).severity,
+      at: () => snap.at(cache.get(snap.file)),
+    });
   }
-  const stale = ageRows(withAt).filter((row: any) => row.stale).map((row: any) => row.label);
+  const stale = ageRows(withAt)
+    .filter((row: any) => row.stale && row.severity !== "warn")
+    .map((row: any) => row.label);
+  // 第 159 轮：一致预期（Trading Economics）单独盯，且是 warn 级 —— 修它要动数据源。
+  // 这里把"已知的警告级过旧"钉成清单：一旦它被修好，这条断言会失败，提醒更新文档。
+  const warned = ageRows(withAt)
+    .filter((row: any) => row.stale && row.severity === "warn")
+    .map((row: any) => row.label);
+  assert.deepEqual(warned, ["美国宏观一致预期"], "警告级过旧清单变了：更新 known-debt 与这里");
   // 2026-11-22：宏观（BLS，第 136 轮）与行情（东方财富，第 137 轮）都由
   // `Refresh US market data` 工作流每天刷新，不再有过旧快照。
   // 这里保持"清单为空"的断言：一旦哪块又停了，测试会先把人叫醒。

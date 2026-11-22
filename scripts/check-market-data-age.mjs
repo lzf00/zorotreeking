@@ -7,9 +7,13 @@
  * 这和内容停更是同一类静默故障，所以也给它一个可断言的阈值。
  *
  * 判据只看文件自己的时间字段（不联网）：
- *   us-market-latest.json   → market.quote_ts / macro.fetched_at（秒）
+ *   us-market-latest.json   → market.quote_ts / macro.fetched_at（秒）/ macro.consensus.updated_at（ISO）
  *   wind-market-latest.json → asOf（ISO）
  *   wind-hk-market-latest.json → asOf（ISO）
+ *
+ * 分级（第 159 轮）：`severity: "warn"` 的条目只打印、不失败。用于"确实旧、但修它要
+ * 动上游数据源"的那种 —— 一致预期（Trading Economics）就是：它停在 2026-08-07，
+ * 页面却和 BLS 实际值并排展示。让它在报告里一直可见，但不把每周巡检变成恒红。
  *
  * 用法：
  *   node scripts/check-market-data-age.mjs               # 默认阈值 7 天
@@ -41,6 +45,13 @@ export const SNAPSHOTS = [
   { file: "us-market-latest.json", label: "美股行情兜底快照", at: (d) => (d?.market?.quote_ts ?? NaN) * 1000 },
   { file: "us-market-latest.json", label: "美国宏观（BLS）", at: (d) => (d?.macro?.fetched_at ?? NaN) * 1000 },
   {
+    file: "us-market-latest.json",
+    label: "美国宏观一致预期",
+    at: (d) => Date.parse(d?.macro?.consensus?.updated_at ?? ""),
+    maxAgeDays: 60,
+    severity: "warn",
+  },
+  {
     file: "etf-three-factor-latest.json",
     label: "ETF 三因子分析",
     at: (d) => beijingDateMs(d?.target_date),
@@ -50,12 +61,19 @@ export const SNAPSHOTS = [
 
 /** 纯函数：把「文件内容 + 现在」变成一行行结论。 */
 export function ageRows(snapshots, { now = Date.now(), maxAgeDays = 7 } = {}) {
-  return snapshots.map(({ file, label, at, maxAgeDays: ownLimit }) => {
+  return snapshots.map(({ file, label, at, maxAgeDays: ownLimit, severity }) => {
     // at 既可以是 (file) => ms 的函数（真实用法，要读文件），也可以直接给毫秒数（测试里更省事）
     const ms = typeof at === "function" ? at(file) : at;
     const ageDays = Number.isNaN(ms) ? null : Math.max(0, Math.floor((now - ms) / (DAY * 1000)));
     const limit = ownLimit ?? maxAgeDays;
-    return { file, label, ageDays, maxAgeDays: limit, stale: ageDays === null || ageDays > limit };
+    return {
+      file,
+      label,
+      ageDays,
+      maxAgeDays: limit,
+      stale: ageDays === null || ageDays > limit,
+      severity: severity ?? "fail",
+    };
   });
 }
 
@@ -74,6 +92,7 @@ async function load() {
       file: snap.file,
       label: snap.label,
       maxAgeDays: snap.maxAgeDays,
+      severity: snap.severity,
       at: () => snap.at(cache.get(snap.file)),
     });
   }
@@ -87,7 +106,8 @@ async function main() {
   const maxAgeDays = maxAgeArg ? Number(maxAgeArg.slice("--max-age=".length)) : 7;
 
   const rows = ageRows(await load(), { maxAgeDays });
-  const stale = rows.filter((row) => row.stale);
+  const stale = rows.filter((row) => row.stale && row.severity !== "warn");
+  const warn = rows.filter((row) => row.stale && row.severity === "warn");
 
   if (json) {
     console.log(JSON.stringify({ maxAgeDays, rows, stale }, null, 2));
@@ -97,8 +117,14 @@ async function main() {
     console.log("| --- | --- | --- |");
     for (const row of rows) {
       const age = row.ageDays === null ? "时间未知" : `${row.ageDays} 天`;
-      console.log(`| ${row.label} | ${age} | ${row.stale ? "❌ 太旧" : "✅"} |`);
+      const mark = !row.stale ? "✅" : row.severity === "warn" ? "⚠️ 偏旧（不挡发布）" : "❌ 太旧";
+      console.log(`| ${row.label} | ${age} | ${mark} |`);
     }
+  }
+  if (warn.length) {
+    console.log(
+      `\n⚠️  ${warn.map((row) => `${row.label}（${row.ageDays === null ? "时间未知" : `${row.ageDays} 天`}）`).join("；")} —— 不挡发布，但要有人跟进`,
+    );
   }
   if (stale.length) {
     console.error(
