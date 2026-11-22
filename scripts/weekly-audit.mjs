@@ -99,6 +99,14 @@ async function main() {
     ),
   );
 
+  // 完整 a11y 巡检（64 项，明暗两套）：这是 a11y.yml 的唯一内容，cron 从没触发过。
+  // 只在这一步有 dist 的前提下跑；chromium 由 build-and-deploy 前面的步骤装好。
+  if (hasDist) {
+    results.push(await run("无障碍（完整 64 项）", process.execPath, ["scripts/check-a11y.mjs", "--dist"], 900_000));
+  } else {
+    console.log("⏭️  没有 dist，跳过完整 a11y 巡检（它查的是构建产物）");
+  }
+
   for (const result of results) {
     const mark = result.ok ? "✅" : "⚠️";
     console.log(`${mark} ${result.label}（${(result.ms / 1000).toFixed(1)}s，exit ${result.code}）`);

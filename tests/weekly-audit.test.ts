@@ -57,6 +57,16 @@ test("外链体检分批跑，缓存进仓库（否则每次全量重抓十几�
   assert.ok(Object.keys(cache).length > 1000, `缓存条目太少（${Object.keys(cache).length}），分批刷新会退化成全量`);
 });
 
+test("完整 a11y 巡检在每周里跑，且没有 dist 时明说跳过", async () => {
+  const script = await read("scripts/weekly-audit.mjs");
+  assert.match(script, /scripts\/check-a11y\.mjs", "--dist"/, "a11y.yml 的唯一内容要接进来");
+  assert.match(script, /跳过完整 a11y 巡检/, "跳过必须说出来");
+  // 顺序坑（第 154 轮）：a11y 曾经在打印和写报告之后才 push，于是"跑了但报告里没有"
+  const printIndex = script.indexOf("const mark = result.ok");
+  const a11yIndex = script.indexOf('"无障碍（完整 64 项）"');
+  assert.ok(printIndex > 0 && a11yIndex > 0 && a11yIndex < printIndex, "a11y 必须在打印/写报告之前进 results");
+});
+
 test("历史断档不该每周报同一个错", async () => {
   const script = await read("scripts/weekly-audit.mjs");
   assert.match(script, /check-freshness\.mjs", "--ignore-gaps"/, "要带 --ignore-gaps（11-19/11-20 抓不回来）");

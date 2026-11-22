@@ -788,6 +788,19 @@ node scripts/weekly-audit.mjs --max-age-days=7
 顺带说明：`check-freshness` 带 `--ignore-gaps` —— 11-19/11-20 那两天断档抓不回来
 （欠账 #12），不带这个参数等于每周报一次不可能修的错。
 
+**第二次踩坑（顺序）**：加完整 a11y 巡检时，我把 `results.push(await run(...))` 放在了
+"打印结果 + 写报告"之后，于是出现最迷惑的一种状态 —— 注解说 `0/4 项有告警`（4 项里含 a11y），
+报告里只有 3 行。测试现在钉住顺序：`a11y` 的 push 必须在打印之前。
+
+**覆盖情况**（一次完整巡检 ~4 分钟）：
+
+| 检查 | 来源 workflow | 耗时 |
+|---|---|---|
+| 行情/宏观快照年龄 | freshness-watch | 0.1s |
+| 内容更新节奏 | freshness-watch | 0.1s |
+| 站外链接体检（900 条/次，带缓存） | site-audit | 0.8s（命中缓存时） |
+| 无障碍完整 64 项（明暗两套） | a11y.yml | 221.7s |
+
 ### 相册的 alt 终于不是文件名了（第 152 轮）
 
 `build-photo-manifests.ts` 里原来是一行：
