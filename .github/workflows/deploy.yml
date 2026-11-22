@@ -790,6 +790,38 @@ jobs:
   # 为什么单独一个 job（第 114 轮）：补跑要抓源 ~17 分钟再翻译，塞进部署 job 会把**已经完成**
   # 的部署拖过 30 分钟上限，变成"站点更新了、run 却是红的"。拆开后两条命互不影响：部署照旧
   # 12 分钟内结束，补跑有自己的预算；补跑失败只是这个 job 黄，continue-on-error 保证整条 run 不变红。
+      # 第 153 轮：site-audit.yml / a11y.yml / freshness-watch.yml 三个 workflow 全靠 cron，
+      # 而实测 cron **会整周不触发**（第 145 轮，日报停更两天同因）—— 于是这些巡检从没跑过，
+      # 只让人误以为"有人在看"。独立调度器要改运行环境、得人来定；但"部署时顺手补一次"
+      # 不需要新依赖，和 catch-up-digest / refresh-us-macro 是同一套自愈模式。
+      # 判旧才跑（7 天），报告进 reports/，戳记进 src/data/weekly-audit.json。
+      - name: Weekly audit (piggyback on deploy, 七天一次)
+        run: |
+          # 巡检永远不挡发布：发现问题的表达方式是报告 + 注解，不是红叉。
+          set +e
+          node scripts/weekly-audit.mjs --max-age-days=7
+          code=$?
+          if [ "$code" -ne 0 ]; then
+            echo "::warning::每周巡检脚本自身出错（exit $code），本轮跳过"
+          fi
+          exit 0
+
+      - name: Commit weekly audit report (if it ran)
+        run: |
+          set +e
+          git add src/data/weekly-audit.json reports/
+          if git diff --cached --quiet; then
+            echo "本周没有新的巡检结果，不提交。"
+            exit 0
+          fi
+          git config user.name "zorotreeking-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git commit -m "audit: weekly check $(date -u +%F)"
+          git pull --rebase --autostash origin main || true
+          if ! git push origin main; then
+            echo "::warning::巡检报告推送失败，下次部署会重跑（戳记没进仓库，下一次仍会判旧）"
+          fi
+
   catch-up-digest:
     needs: build-and-deploy
     if: success() && (github.event_name == 'push' || github.event_name == 'schedule')

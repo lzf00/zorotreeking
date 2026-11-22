@@ -16,7 +16,9 @@ import { dirname, join } from "node:path";
 
 import { classify, hostOf, isBotBlockingHost, summarize, BOT_BLOCKING_HOSTS } from "./lib/external-links.mjs";
 
-const CACHE = ".cache/external-links.json";
+// 缓存文件路径可用 --cache= 覆盖：CI 的每周巡检把缓存提交进仓库（.cache/ 是 gitignore 的），
+// 这样跨次运行能复用，"每次都要重抓 5500 条"才不会把巡检拖成十几分钟。
+let CACHE = ".cache/external-links.json";
 const BASELINE = "scripts/external-links-baseline.json";
 const CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 const TIMEOUT_MS = 9000;
@@ -30,6 +32,7 @@ function parseArgs(argv) {
     else if (arg === "--concurrency") args.concurrency = Math.max(1, Number(argv[++i]) || 12);
     else if (arg === "--json") args.json = true;
     else if (arg === "--report-only") args.reportOnly = true;
+    else if (arg.startsWith("--cache=")) CACHE = arg.slice("--cache=".length);
   }
   return args;
 }

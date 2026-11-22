@@ -732,6 +732,37 @@ X /api 接口面有接口不可用（见上方 ✗ 行）
 `/invest/digest/` 这次是单独登记的，理由写的是结构原因（每交易日一行、按日增长）
 和结构方案（分页 / 只渲染最近 N 期），不是"它超了所以放过它"。
 
+### 三个"每周巡检"从建立起就没跑过（第 153 轮）
+
+`site-audit.yml`、`a11y.yml`、`freshness-watch.yml` 都只靠 `schedule: cron`。
+第 145 轮已经实测过：**cron 会整周不触发**（日报停更两天就是它）。也就是说这三个
+巡检一直处在"配好了、以为有人在看、其实一次没跑"的状态 —— 比没有更糟。
+
+独立调度器（launchd / 外部 cron）要改运行环境，得人来定。但"部署时顺手补一次"
+不需要任何新依赖，和 `catch-up-digest`、`refresh-us-macro` 是同一套自愈模式：
+
+```
+node scripts/weekly-audit.mjs --max-age-days=7
+```
+
+- 戳记 `src/data/weekly-audit.json`，7 天内直接跳过（不重复劳动）
+- 报告 `reports/weekly-audit-<date>.md`，由 bot 提交回仓库
+- **永不挡发布**：检查失败只发 `::warning::` 注解；只有脚本自己崩了才算问题（exit 2）
+
+写这个脚本踩到两个坑，都记在这里：
+
+**坑一：放错作业 = 沉默的假绿。** 第一版把它放进 `catch-up-digest` 作业，那个作业
+**不构建 dist**，而 `check-external-links.mjs` 是从 `dist` 里收集 URL 的 ——
+没有 dist 就"0 条链接、顺利通过"。所以挪到了 `build-and-deploy` 作业末尾，
+并且在脚本里加了一道明说：没有 dist 就打印"跳过站外链接体检"，不许悄悄算通过。
+
+**坑二：全量外链体检装不进部署。** 5535 条链接全抓要十几分钟。改成把缓存
+（`reports/external-links-cache.json`，5535 条历史结果）提交进仓库，每次最多刷 900 条，
+6 周左右轮完一遍；缓存 7 天过期，过期的才真抓。
+
+顺带说明：`check-freshness` 带 `--ignore-gaps` —— 11-19/11-20 那两天断档抓不回来
+（欠账 #12），不带这个参数等于每周报一次不可能修的错。
+
 ### 相册的 alt 终于不是文件名了（第 152 轮）
 
 `build-photo-manifests.ts` 里原来是一行：
