@@ -216,7 +216,9 @@ jobs:
         continue-on-error: true
         run: |
           set +e
-          out=$(node scripts/report-font-env.mjs --json 2>&1 | tail -1)
+          # --layout-diff：同一页「拦字体 vs 正常」两趟，比首屏元素的高度 —— 不依赖时序，
+          # 谁的排版在换字体时变了、变多少，直接给出来（第 150 轮）
+          out=$(node scripts/report-font-env.mjs --json --layout-diff 2>&1 | tail -1)
           echo "字体环境：$out"
           if [ -n "$out" ]; then echo "::notice::字体环境（runner 实测）：$out"; fi
 

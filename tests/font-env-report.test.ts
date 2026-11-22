@@ -27,9 +27,24 @@ test("没装的字体不给假比例（canvas 会落到默认字体）", async (
   assert.match(script, /installed\(family\)/, "要有安装判定");
 });
 
+test("能比较「拦字体 vs 正常」的布局差异（不依赖时序）", async () => {
+  const script = await read("scripts/report-font-env.mjs");
+  assert.match(script, /--layout-diff/);
+  assert.match(script, /abort\(\)/, "拦字体那一趟要 abort woff2");
+  // 阈值不能太细：亚像素级差异不是问题，只报 ≥4px 的
+  assert.match(script, /Math\.abs\(dh\) >= 4/);
+});
+
+test("衬线也在测量范围（第 149 轮漏掉的一组）", async () => {
+  const script = await read("scripts/report-font-env.mjs");
+  assert.match(script, /Instrument Serif/);
+  assert.match(script, /DejaVu Serif/);
+  assert.match(script, /Times New Roman/);
+});
+
 test("deploy 会跑这个报告，并把它发成 notice", async () => {
   const wf = await read(".github/workflows/deploy.yml");
-  assert.match(wf, /node scripts\/report-font-env\.mjs --json/, "deploy 要量一次字体环境");
+  assert.match(wf, /node scripts\/report-font-env\.mjs --json --layout-diff/, "deploy 要量字体环境 + 布局差异");
   assert.match(wf, /::notice::字体环境/, "结果要进注解（日志接口读不到）");
   // 纯诊断步骤不许把部署顶红
   const block = wf.slice(wf.indexOf("id: font-env"), wf.indexOf("id: perf-mobile"));
