@@ -710,6 +710,66 @@ X /api 接口面有接口不可用（见上方 ✗ 行）
 
 不留痕迹的重试等于偷偷吞掉异常，所以通过也要标注出来。
 
+#### 同轮事故：`--update-baseline` 差点把重量闸门悄悄关掉
+
+`/invest/digest/` 越过 220 KB 预算（227 KB：内联 CSS 94 KB + 206 行日报列表）。
+我按文档跑了 `npm run check:weight -- --update-baseline`，它输出「基线已更新：20 个页面」——
+**20 个**。diff 一看：
+
+```
+/changelog/  336268 → 353605   （+17 KB）
+/archive/    355517 → 358486   （+3 KB）
+…
+```
+
+也就是说这条命令把**所有**漂移页面一起重新登记了。我本来只想登记一个新页面，
+顺手就把半个闸门关掉了 —— 而且它是"成功"退出、没有任何提示。
+
+已回滚，改成：`--update-baseline` **只登记新页面**；既有页面必须
+`--rebless=/path/a,/path/b` 显式点名。点名清单本身就是"我知道它变重了"的记录，
+写不出来就说明还没想清楚。
+
+`/invest/digest/` 这次是单独登记的，理由写的是结构原因（每交易日一行、按日增长）
+和结构方案（分页 / 只渲染最近 N 期），不是"它超了所以放过它"。
+
+### 衬线兜底挂错了标定值（第 151 轮）
+
+第 150 轮从 runner 量到一个事实：**只有 DejaVu Serif，没有 Times / Georgia / Liberation Serif**。
+这轮回头看 `fonts.css`，发现问题比"没覆盖"更糟：
+
+```css
+@font-face {
+  font-family: "Instrument Serif Fallback";
+  src: local("Times New Roman"), local("Georgia"), local("Liberation Serif"), local("DejaVu Serif");
+  size-adjust: 84.3%;   /* ← 按 Times 标定的 */
+}
+```
+
+DejaVu Serif 需要的是 **65.1%**。也就是说在 CI 上这条 face 一直**命中**着，
+只是用错了 29% 的缩放 —— 比彻底不命中还隐蔽（不命中时至少会因为宽度离谱而被发现）。
+
+修法：一个 `@font-face` 只能有一组度量参数，所以拆两条 family：
+
+```css
+font-family: "Instrument Serif", "Instrument Serif Fallback", "DejaVu Serif Fallback", ui-serif, …;
+```
+
+`local()` 全部解析失败的 face 会被浏览器**跳过**，于是 macOS 命中第一条（Times，84.3%）、
+CI 命中第二条（DejaVu，65.1%）—— 一条栈同时服务两个平台。
+
+数字全部来自 CI 实测而不是估的：
+
+```
+serif: ["DejaVu Serif:65.1/152.1/47.6"]   ← size-adjust / ascent-override / descent-override
+```
+
+**教训**：兜底字体的 `local()` 列表里塞一个"度量完全不同的字体"，比不塞更危险 ——
+它会悄悄命中，然后用错的缩放继续工作。`check:font-fallback` 之所以在本机一直绿，
+是因为本机第一个 `local()`（Times）就命中了，永远轮不到 DejaVu 那一段。
+
+另外给正文 preload 加了 `fetchpriority="high"`：`/photo/` 这类大页面里，Inter 预载后
+仍会被图片挤到 1006ms 才到（首绘约 700ms），晚了 300ms 就仍有一次换字体位移（0.105）。
+
 ### 24 像素破了案：一个 10px 角标在换行（第 150 轮）
 
 第 149 轮的"让环境说话"这轮结了两颗果。

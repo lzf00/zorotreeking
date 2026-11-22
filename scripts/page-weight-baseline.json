@@ -111,6 +111,13 @@
     "tags": 1572,
     "reason": "路线页：内联 CSS 超过 120 KB（地图控件与路线详情的既有样式），gzip 也超 60 KB"
   },
+  "/invest/digest/": {
+    "htmlBytes": 225381,
+    "cssBytes": 95799,
+    "gzipBytes": 31973,
+    "tags": 1009,
+    "reason": "日报索引页：每个交易日的日报一行，内容按日增长。2026-11-22 起 HTML 越过 220 KB 预算（227 KB，其中内联 CSS 94 KB、列表 206 项）。结构方案是分页或只渲染最近 N 期（见 docs/known-debt.md），在那之前按基线登记"
+  },
   "/photo/baokemeng/": {
     "htmlBytes": 230263,
     "cssBytes": 114667,

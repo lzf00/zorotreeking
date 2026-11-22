@@ -65,6 +65,8 @@ test("预载衬线和正文两套字体，但只这两套（第 150 轮改了第
   assert.match(layout, /import serifFontUrl from "\.\.\/assets\/fonts\/instrument-serif-400-latin\.woff2\?url"/);
   assert.match(layout, /import bodyFontUrl from "\.\.\/assets\/fonts\/inter-100-900-latin\.woff2\?url"/);
   assert.match(layout, /crossorigin="anonymous"/, "字体 preload 必须带 crossorigin，否则会重复下载");
+  // 大首页面上正文 Inter 仍会被图片挤到后面（/photo/ 实测 1006ms 才到）→ 提到最高优先级
+  assert.match(layout, /href=\{bodyFontUrl\}[^>]*fetchpriority="high"/, "正文 preload 要 fetchpriority=high");
   // 预载越多越挤带宽：只允许这两套（等宽在首屏基本不出现，不预载）
   const preloads = layout.match(/rel="preload"[^>]*as="font"/g) ?? [];
   assert.equal(preloads.length, 2, `字体 preload 应只有 2 个，现在是 ${preloads.length}`);

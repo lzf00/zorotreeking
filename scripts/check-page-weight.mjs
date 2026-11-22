@@ -3,7 +3,8 @@
  * 页面重量闸门（第 131 轮）。
  *
  * `node scripts/check-page-weight.mjs`           # 检查 dist/
- * `node scripts/check-page-weight.mjs --update-baseline`  # 把当前超标页面写进基线
+ * `node scripts/check-page-weight.mjs --update-baseline`  # 只登记**新**超标页面
+ * `node scripts/check-page-weight.mjs --update-baseline --rebless=/a/,/b/`  # 显式重登记既有页面
  * `node scripts/check-page-weight.mjs --json`    # 机器可读
  *
  * 阈值与理由见 scripts/lib/page-weight.mjs。
@@ -63,6 +64,19 @@ if (process.argv.includes("--update-baseline")) {
       page.gzipBytes <= BUDGETS.gzipBytes &&
       page.tags <= BUDGETS.tags
     ) continue;
+    // 第 151 轮：`--update-baseline` 曾经会把**所有**漂移的页面一起重新登记 ——
+    // 一次手滑就把 /changelog/ 从 336 KB 涨到 353 KB 写成"基线"，闸门悄悄失效。
+    // 现在只允许两种情况进基线：
+    //   1. 不在基线里的新页面（首次登记）；
+    //   2. 显式点名 `--rebless=/path/a,/path/b`（等于在报告里写"我知道它变重了"）。
+    const rebless = (process.argv.find((a) => a.startsWith("--rebless="))?.slice("--rebless=".length) ?? "")
+      .split(",")
+      .map((item) => item.trim())
+      .filter(Boolean);
+    if (known && !rebless.includes(page.path)) {
+      next[page.path] = known;
+      continue;
+    }
     next[page.path] = {
       htmlBytes: page.htmlBytes,
       cssBytes: page.cssBytes,

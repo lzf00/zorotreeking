@@ -282,7 +282,7 @@ if (jsonLd) {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/favicon.svg" />
     <link rel="preload" href={serifFontUrl} as="font" type="font/woff2" crossorigin="anonymous" />
-    <link rel="preload" href={bodyFontUrl} as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href={bodyFontUrl} as="font" type="font/woff2" crossorigin="anonymous" fetchpriority="high" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <meta name="theme-color" content="#1d1d1f" />
     <link rel="alternate" type="application/rss+xml" title="ZoroTreeking · RSS" href="/rss.xml" />
@@ -306,6 +306,10 @@ if (jsonLd) {
         整页上移 24px（Inter 与兜底 Arial 只差 1%，但 1% 足以让某段少一行）。
         LCP 现在稳定在 700–800ms（远低于 2.5s 的好线），有足够余量用几百毫秒换 CLS 归零：
         正文 Inter 不预载就必然有一次 swap，位移就必然存在。
+
+        `fetchpriority="high"`：/photo/ 这类大页面，Inter 预载后仍在 1006ms 才到（首绘 700ms 左右），
+        晚了 300ms 还是有 0.105 的换字体位移。把正文排队优先级提到最高，
+        让它和首屏图片抢位置时不被挤到后面。
 
         路径走 Vite 的 `?url` 导入：和 fonts.css 里的 @font-face 指向同一个产物哈希，
         不会变成第二个文件。crossorigin 必须写，否则 preload 与 @font-face 的请求

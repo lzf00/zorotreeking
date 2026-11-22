@@ -11,7 +11,14 @@ export default {
         // 正文（无衬线，带中文回退）
         sans: ['"Inter"', '"Inter Fallback"', "ui-sans-serif", "system-ui", '"PingFang SC"', '"Hiragino Sans GB"', "sans-serif"],
         // 大标题 / 装饰用衬线（editorial 风）
-        serif: ['"Instrument Serif"', '"Instrument Serif Fallback"', "ui-serif", "Georgia", '"Songti SC"', '"STSong"', "serif"],
+        serif: [
+          '"Instrument Serif"',
+          // Times/Georgia 标定（84.3%）：macOS / 有 Times 的环境命中这条
+          '"Instrument Serif Fallback"',
+          // 只有 DejaVu Serif 的环境（Linux runner）命中这条：65.1% 是 CI 实测值
+          '"DejaVu Serif Fallback"',
+          "ui-serif", "Georgia", '"Songti SC"', '"STSong"', "serif",
+        ],
         // 代码 / 数字
         mono: [
           '"JetBrains Mono"',
