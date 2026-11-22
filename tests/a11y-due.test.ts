@@ -117,3 +117,21 @@ test("审计脚本在 CI 里为每类违规打注解（不登录也能看出原�
   assert.match(script, /::error title=a11y/, "要输出 GitHub 注解");
   assert.match(script, /pages_list/, "注解里要带例页");
 });
+
+// ── 第 181 轮：CI 假红的真正原因 ────────────────────────────────────────
+//
+// CI 反复报 color-contrast（4 页，选择器 .mt-6，例页 /），本地同一提交 2404 页 0 违规。
+// 复现出来了：把首页的淡入动画停在中途再跑 axe，报的正是 "insufficient color contrast
+// of 1.24 (foreground #e3e3e5, background #fbfbfd)" —— 元素 opacity 还没到 1，
+// axe 按合成后的颜色算。CI 慢，审计时动画还在跑；本地快，跑完了。
+// 修法：审计前把所有动画快进到终态（无限循环的取消），并在 context 里要求减少动效。
+
+test("审计前必须把动画快进到终态（否则 CI 慢机器会报假的对比度违规）", async () => {
+  const script = await read("scripts/a11y-audit.mjs");
+  assert.match(script, /document\.getAnimations\(\)/, "要遍历动画");
+  assert.match(script, /animation\.finish\(\)/, "要快进到终态");
+  assert.match(script, /reducedMotion: "reduce"/, "context 里要声明减少动效");
+  const finishAt = script.indexOf("animation.finish()");
+  const axeRunAt = script.indexOf("window.axe.run");
+  assert.ok(finishAt > 0 && axeRunAt > 0 && finishAt < axeRunAt, "快进必须发生在 axe 之前");
+});

@@ -757,6 +757,38 @@ if git diff --cached --quiet; then echo "没有新结果"; exit 0; fi
 `pathspec did not match` → 整条 add 失败。改成先 `ls` 判断存在再 add，
 报告才真的归档进 `reports/`（`reports/` 里其它历史产物仍然 gitignore，只有巡检报告 `-f`）。
 
+### 假红：CI 慢一点，审计就报错（第 181 轮）
+
+修完真实违规之后，CI 仍然红，而**同一提交本地全量复跑 0 违规**。注解（这轮新加的）给出线索：
+
+```
+::error title=a11y color-contrast（serious，4 页）::…｜选择器 .mt-6｜例页 /
+```
+
+本地把首页翻了个遍：`.mt-6` 就是首屏副标题，对比度 7.65，怎么查都没问题。最后用
+「把动画停在中途再跑 axe」复现了它：
+
+```
+Element has insufficient color contrast of 1.24
+(foreground color: #e3e3e5, background color: #fbfbfd, font size: 9.0pt (12px))
+```
+
+`#e3e3e5` 根本不在色板里 —— 它是 `#515154` 的正文叠在 `#fbfbfd` 背景上、**opacity 只有 0.2**
+时的合成色。首屏元素带淡入动画，CI 机器慢，`load` 之后动画还没跑完就审了。
+
+| | 本地 | CI |
+|---|---|---|
+| 单页审计耗时 | ~250 ms | ~500 ms |
+| 审计时动画状态 | 已结束 | 淡入进行中 |
+| 结论 | 0 违规 | 4 页对比度违规 |
+
+结论：**这不是页面的问题，是审计的不确定性**。修法是把审计前把动画快进到终态
+（`getAnimations()` → `finish()`，无限动画 `cancel()`），并在 context 里声明
+`reducedMotion: "reduce"`。这样审计的是"用户最终看到的样子"，且与机器速度无关。
+
+教训归类：第 179 轮是"仪器坏了报假警"，这轮是"仪器不稳报假警"。同一个模式 ——
+**在对测量结果下结论之前，先证明测量本身可复现**。
+
 ### 四个月没跑过的审计，第一次跑就红了（第 181 轮）
 
 换上游之后 a11y 立刻真跑了一次（`workflow_run`，19:25Z），结果：

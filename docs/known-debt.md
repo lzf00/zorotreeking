@@ -237,3 +237,13 @@
 - **第一次加注解没生效**：workflow 里写的是 `--json > a11y-report.json`，stdout 整个被
   重定向进了文件，注解也跟着进了文件。已给脚本加 `--out=<file>`，workflow 改用 `--out=`，
   stdout 留给注解和人类可读的结论。
+
+## 第 181 轮补记（续 4）：假红已修，等 CI 验证
+
+- **CI 反复报的 `color-contrast`（4 页、`.mt-6`、例页 `/`）是假红**：首屏淡入动画没跑完时
+  axe 按 opacity 0.2 的合成色（`#e3e3e5` 压在 `#fbfbfd` 上 = 1.24:1）判定。本地快、CI 慢，
+  所以只有 CI 红。修法：审计前 `getAnimations().forEach(a => a.finish())` + `reducedMotion: "reduce"`。
+- 修完本地 `/`、`/invest/`、`/invest/us-market/` 两套主题复跑 0 违规。**CI 侧要等下一次
+  部署触发的新一轮审计**（约 25 分钟）才能确认变绿、并写下第一个戳记
+  `src/data/a11y-audit.json`。
+- 如果 CI 仍然红，注解这次会直接给出规则/页数/选择器/例页 —— 不用再靠猜。

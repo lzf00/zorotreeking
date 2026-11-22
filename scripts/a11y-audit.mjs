@@ -177,7 +177,8 @@ async function main() {
     const plan = targets.flatMap((url) => schemes.map((scheme) => ({ url, scheme })));
     for (const [index, { url, scheme }] of plan.entries()) {
       if (index % 50 === 0) console.error(`…${index}/${plan.length}`);
-      const context = await browser.newContext({ colorScheme: scheme, viewport });
+      // reducedMotion：既尊重系统偏好，也让审计结果可复现（第 181 轮定位到的 CI 假红）
+      const context = await browser.newContext({ colorScheme: scheme, viewport, reducedMotion: "reduce" });
       const page = await context.newPage();
       const label = [url, scheme === "dark" ? "[dark]" : "", viewportValue !== "1280x900" ? `[${viewportValue}]` : ""]
         .filter(Boolean)
@@ -192,6 +193,20 @@ async function main() {
         await context.close();
         continue;
       }
+      // 第 181 轮：CI 机器慢，`load` 之后淡入动画还在跑 —— axe 把「正在淡入、opacity<1 的字」
+      // 按当前合成后的颜色判定，于是报出一堆假的 color-contrast（本地因为跑得快，从没复现过）。
+      // 把动画直接快进到终态再审计：这才是用户最终看到的样子，结果也和机器速度无关。
+      await page
+        .evaluate(() => {
+          for (const animation of document.getAnimations()) {
+            try {
+              animation.finish();
+            } catch {
+              try { animation.cancel(); } catch { /* 无限循环的动画（如 animate-pulse）直接取消 */ }
+            }
+          }
+        })
+        .catch(() => { /* 页面正在跳转时没有执行上下文，下面的注入会把它记成跳过 */ });
       // 个别页面自己会跳转（例如后台入口）：脚本注入时执行上下文已被销毁，跳过而不是整轮失败
       let violations;
       try {
