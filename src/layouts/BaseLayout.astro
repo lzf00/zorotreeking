@@ -17,6 +17,7 @@ import { serializeJsonLd } from "@/lib/json-ld";
 import { normalizeVerificationToken } from "@/lib/site-verification";
 import { breadcrumbJsonLd, buildBreadcrumb } from "@/lib/breadcrumbs";
 import serifFontUrl from "../assets/fonts/instrument-serif-400-latin.woff2?url";
+import bodyFontUrl from "../assets/fonts/inter-100-900-latin.woff2?url";
 
 interface Props {
   title?: string;
@@ -281,6 +282,7 @@ if (jsonLd) {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/favicon.svg" />
     <link rel="preload" href={serifFontUrl} as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href={bodyFontUrl} as="font" type="font/woff2" crossorigin="anonymous" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <meta name="theme-color" content="#1d1d1f" />
     <link rel="alternate" type="application/rss+xml" title="ZoroTreeking · RSS" href="/rss.xml" />
@@ -296,10 +298,14 @@ if (jsonLd) {
     <!-- editorial 字体组合：Instrument Serif（display）+ Inter（body）+ JetBrains Mono（code）
          全部自托管（public/fonts/ + src/styles/fonts.css，由 scripts/fetch-fonts.ts 生成）：
          fonts.googleapis.com 在大陆经常超时或被墙，第三方 CSS 实测要 550ms+ 才到。 -->
-    {/* 只 preload 衬线体（15KB）：首屏 LCP 元素在绝大多数页面是衬线大标题，字体不到货
-        它就一直用兜底字面画，LCP 被拖到 1.6 s。第 73 轮实测（移动端 1.6Mbps/150ms/CPU4x，
-        各 4 次取中位）：不预载 1600ms → 只预载衬线 308ms；同时预载 Inter(48KB) 会让 HTML
-        抢不到带宽、反而更慢——所以这里只放衬线体，正文 Inter 仍走 swap。
+    {/* preload 衬线体（15KB）+ 正文 Inter（48KB）。
+        第 73 轮只预载衬线：那时首屏 LCP 是衬线大标题，而 LCP 被拖到 1.6 s，
+        同时预载 Inter 会让 HTML 抢不到带宽、LCP 反而更慢。
+        第 150 轮改了结论 —— 现在的瓶颈不是 LCP 而是 **CLS**：
+        注解实测 `/invest/market/` 在 Inter 到货（1512ms）后 147ms 发生 0.223 位移，
+        整页上移 24px（Inter 与兜底 Arial 只差 1%，但 1% 足以让某段少一行）。
+        LCP 现在稳定在 700–800ms（远低于 2.5s 的好线），有足够余量用几百毫秒换 CLS 归零：
+        正文 Inter 不预载就必然有一次 swap，位移就必然存在。
 
         路径走 Vite 的 `?url` 导入：和 fonts.css 里的 @font-face 指向同一个产物哈希，
         不会变成第二个文件。crossorigin 必须写，否则 preload 与 @font-face 的请求

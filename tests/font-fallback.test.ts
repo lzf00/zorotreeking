@@ -54,12 +54,19 @@ test("有个门禁在浏览器里验证兜底宽度 ≈ 网页字体宽度，且
   assert.ok(pkg.scripts.gate.includes("check:font-fallback"), "gate 要跑它");
 });
 
-test("只预载衬线体（首屏 LCP 是它），不预载正文 Inter", async () => {
+test("预载衬线和正文两套字体，但只这两套（第 150 轮改了第 73 轮的结论）", async () => {
   const layout = await readFile(new URL("../src/layouts/BaseLayout.astro", import.meta.url), "utf8");
-  // 首屏 LCP 元素几乎都是衬线大标题；预载它把移动端 LCP 从 1.6s 拉到 0.3s。
+  // 第 73 轮：只预载衬线（15KB），因为那时 LCP 被拖到 1.6s，再抢 48KB 给 Inter 会更慢。
+  // 第 150 轮：CI 注解实测 `/invest/market/` 的 CLS 0.223 发生在 Inter 到货（1512ms）后 147ms，
+  // 整页上移 24px —— 正文不预载就必然有一次 swap，位移必然存在。
+  // 而 LCP 现在稳定在 700–800ms（好线 2.5s），有几百毫秒余量，用它换 CLS 归零是划算的。
   assert.match(layout, /rel="preload" href=\{serifFontUrl\} as="font"/, "要预载衬线体");
-  assert.match(layout, /import serifFontUrl from "\.\.\/assets\/fonts\/instrument-serif-400-latin\.woff2\?url"/, "预载地址要走 Vite ?url，和 @font-face 同一哈希");
+  assert.match(layout, /rel="preload" href=\{bodyFontUrl\} as="font"/, "正文 Inter 也要预载，否则 swap 位移无法消除");
+  assert.match(layout, /import serifFontUrl from "\.\.\/assets\/fonts\/instrument-serif-400-latin\.woff2\?url"/);
+  assert.match(layout, /import bodyFontUrl from "\.\.\/assets\/fonts\/inter-100-900-latin\.woff2\?url"/);
   assert.match(layout, /crossorigin="anonymous"/, "字体 preload 必须带 crossorigin，否则会重复下载");
-  // 预载 Inter(48KB) 会让 HTML 抢不到带宽，实测反而更慢
-  assert.ok(!/preload[^>]*inter-100-900/.test(layout), "不要预载正文 Inter");
+  // 预载越多越挤带宽：只允许这两套（等宽在首屏基本不出现，不预载）
+  const preloads = layout.match(/rel="preload"[^>]*as="font"/g) ?? [];
+  assert.equal(preloads.length, 2, `字体 preload 应只有 2 个，现在是 ${preloads.length}`);
+  assert.ok(!/preload[^>]*jetbrains-mono/.test(layout), "等宽体不预载");
 });
