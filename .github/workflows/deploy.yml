@@ -104,6 +104,37 @@ jobs:
           [ -n "$PUBLIC_AMAP_SECURITY_CODE" ] || { echo "❌ 缺少 PUBLIC_AMAP_SECURITY_CODE"; exit 1; }
           echo "✓ 高德地图构建配置已注入"
 
+      - name: Market data freshness (warn only)
+        # 为什么放在每次部署（第 163 轮）：行情/宏观快照停在三个月前时，构建成功、门禁全绿、
+        # 页面照常打开 —— 只有每周巡检那一行 warning 会说话，而一周太慢（BLS 那次停了 101 天）。
+        # 这里每次部署都打一次 annotation：够醒目，又完全不挡发布（陈旧是上游问题，
+        # 挡住部署只会让内容也一起停更）。
+        continue-on-error: true
+        run: |
+          set +e
+          node scripts/check-market-data-age.mjs --json > /tmp/market-age.json 2>&1
+          AGE=$?
+          SUMMARY=$(node -e '
+            const fs = require("fs");
+            let d;
+            try { d = JSON.parse(fs.readFileSync("/tmp/market-age.json", "utf8")); } catch { process.exit(0); }
+            const stale = (d.stale || []).map((r) => `${r.label} ${r.ageDays === null ? "时间未知" : r.ageDays + " 天"}`);
+            const warn = (d.rows || []).filter((r) => r.severity === "warn" && r.stale);
+            if (!stale.length) process.stdout.write("全部新鲜");
+            else process.stdout.write(stale.join("；"));
+            if (warn.length) process.stdout.write("（另有 warn 级：" + warn.map((r) => r.label).join("、") + "）");
+          ' 2>/dev/null)
+          if [ "$AGE" -eq 0 ]; then
+            echo "✓ 行情/宏观快照新鲜"
+          else
+            echo "::warning title=行情快照过旧::这次部署发布的数据可能是旧的：${SUMMARY:-详见 check-market-data-age 输出}"
+          fi
+          {
+            echo '### 行情快照年龄'
+            echo ''
+            node scripts/check-market-data-age.mjs 2>&1 | tail -12
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Build site
         id: build
         env:
