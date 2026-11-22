@@ -757,6 +757,48 @@ if git diff --cached --quiet; then echo "没有新结果"; exit 0; fi
 `pathspec did not match` → 整条 add 失败。改成先 `ls` 判断存在再 add，
 报告才真的归档进 `reports/`（`reports/` 里其它历史产物仍然 gitignore，只有巡检报告 `-f`）。
 
+### 本地测量服务器偷偷多传了 124 KB（第 155 轮）
+
+追 `/photo/` 那个 0.105 的时候，我先把网络时间线拉了出来：
+
+```
+track             start 322  end 2205  124 KB   ← 这是什么？
+inter-100-900     start 180  end 1257   48 KB
+13410867…thumb480 start 467  end 1706   35 KB
+```
+
+`track` 是页面里的访问统计 `fetch("/api/track")`。线上这个接口返回 **11 字节**
+（`{"ok":true}`），但本地测量用的是 `scripts/lib/serve-dist.mjs` 起的静态服务器 ——
+`/api/track` 找不到文件，于是它回了 **`404.html`：124 KB**（整页内联 CSS 的壳）。
+
+也就是说：**每一个用本地服务测量的页面，都白扛了 124 KB**，而且这 124 KB 和字体、
+首图抢同一条 1.6 Mbps 的模拟链路。实测把 `/api/*` 换成极小 JSON 之后：
+
+| 指标（/photo/，1.6Mbps + CPU4×） | 改前 | 改后 |
+|---|---|---|
+| Inter 字体到达 | 1257 ms | **1123 ms** |
+| JetBrains Mono 到达 | 1670 ms | **1417 ms** |
+
+**影响面比这个大得多**：`check:runtime`、`check:a11y`、`check:interactions`、
+`check:hydration` 全都用这个服务器。也就是说过去所有"弱网 LCP/CLS"的数字，
+都掺了一个线上并不存在的大文件。CLS 0.105 的结论方向没变（Inter 仍晚于首绘），
+但"慢"的绝对值里有水分。
+
+**修法走过一次弯路**：第一版改的是静态服务器（`serveDist` 对 `/api/*` 回小 JSON）。
+带宽确实省了（Inter 1257→1123ms），但 `check:hydration` **全站 7 页全部 `page.goto` 超时**。
+逐个排除过：404/200 都试、text/plain 与 JSON 都试、`Connection: close` 试过、
+等请求体收完再回包也试过 —— 只要是在服务器侧提前结束响应，
+页面里 `fetch("/api/track", { keepalive: true })` 这个请求在 Chrome 里**永远停在 pending**，
+`networkidle` 等不到。
+
+最终改成在 Playwright 层拦：`scripts/lib/stub-api.mjs` 用 `page.route("**/api/**")`
+`fulfill` 一个 24 字节的 `{"ok":true}`。浏览器自己的响应路径没有这个坑 ——
+`networkidle` 立刻满足、没有 pending 请求。
+
+**顺手记两个写测试时踩的坑**：`serveDist()` 返回的是 Promise，漏了 `await` 拿到的是
+promise 而不是监听中的 server —— 测试会**挂住不退出**（我挂了两轮才反应过来）；
+另外 keep-alive 连接会让 `server.close()` 一直等，得先 `closeAllConnections()`。
+
 ### 三个"每周巡检"从建立起就没跑过（第 153 轮）
 
 `site-audit.yml`、`a11y.yml`、`freshness-watch.yml` 都只靠 `schedule: cron`。

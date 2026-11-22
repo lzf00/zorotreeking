@@ -33,6 +33,7 @@ import { pathToFileURL } from "node:url";
 
 import { isThirdPartyConsoleNoise } from "./lib/console-noise.mjs";
 import { makeContextHermetic } from "./lib/hermetic.mjs";
+import { stubApi } from "./lib/stub-api.mjs";
 
 const args = process.argv.slice(2);
 const valueOf = (name, fallback) => {
@@ -295,6 +296,9 @@ async function main() {
       // 与交互自检一致：只验证本地构建，第三方域名全部拦住（第 93 轮）
       await makeContextHermetic(context, base);
       const page = await context.newPage();
+      // 静态产物里没有 /api：不拦的话本地服务器会回 124 KB 的 404 页面，
+      // 和字体抢带宽，量出来的 LCP/CLS 全是假象（第 155 轮）
+      await stubApi(page);
       if (CPU_THROTTLE > 1 || THROTTLE) {
         const session = await context.newCDPSession(page);
         if (CPU_THROTTLE > 1) await session.send("Emulation.setCPUThrottlingRate", { rate: CPU_THROTTLE });
