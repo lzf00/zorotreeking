@@ -122,6 +122,10 @@ export function groupViolations(results) {
 async function main() {
   const args = process.argv.slice(2);
   const json = args.includes("--json");
+  // 第 181 轮：CI 里原来写的是 `--json > a11y-report.json`，把 stdout 全重定向走了，
+  // 于是 `::error` 注解根本到不了 GitHub —— 红了也没人知道为什么。改成 `--out=<file>`
+  // 写报告、stdout 留给注解和人类可读的结论文本。
+  const outArg = args.find((arg) => arg.startsWith("--out="));
   const all = args.includes("--all");
   const onlyArg = args.indexOf("--only");
   const viewportArg = args.indexOf("--viewport");
@@ -278,6 +282,14 @@ async function main() {
     }
     if (grouped.length > 20) console.log(`::warning title=a11y::还有 ${grouped.length - 20} 类违规没写进注解，见 artifact a11y-report.json`);
     if (skipped.length) console.log(`::warning title=a11y::跳过了 ${skipped.length} 个页面（自行跳转/无 JS 也失败），见报告`);
+  }
+  if (outArg) {
+    const target = outArg.slice("--out=".length);
+    if (target) {
+      const { writeFile } = await import("node:fs/promises");
+      await writeFile(target, JSON.stringify({ pages: results.length, skipped, grouped }, null, 2) + "\n");
+      console.log(`报告已写入 ${target}（${results.length} 页、${grouped.length} 类违规）`);
+    }
   }
   if (json) {
     console.log(JSON.stringify({ pages: results.length, skipped, grouped }, null, 2));

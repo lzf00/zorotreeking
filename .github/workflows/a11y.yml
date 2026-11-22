@@ -77,7 +77,9 @@ jobs:
         id: audit
         if: steps.due.outputs.due == 'true'
         # 站点两套 token（浅色/深色），axe 只审当前渲染的那套，所以两种配色各跑一遍
-        run: node scripts/a11y-audit.mjs --all --scheme both --json > a11y-report.json
+        # `--out=` 而不是 `> file`：stdout 要留给 ::error 注解，否则 CI 红了之后
+        # 公开的 Actions 页面上只剩"Process completed with exit code 1"（第 181 轮实测）
+        run: node scripts/a11y-audit.mjs --all --scheme both --out=a11y-report.json
       - name: Summarize
         if: always()
         run: |

@@ -104,3 +104,16 @@ test("着色卡片里的次要文字不能再用 tertiary（薄色底上对比�
   assert.match(combinedRead, /text-\[var\(--text-secondary\)\]/, "眼睛文案要用 secondary");
   assert.doesNotMatch(combinedRead, /text-\[var\(--text-tertiary\)\]/);
 });
+
+test("审计报告写文件不许重定向 stdout（否则 ::error 注解到不了 Actions 页）", async () => {
+  const yml = await read(".github/workflows/a11y.yml");
+  assert.doesNotMatch(yml, /a11y-audit\.mjs[^\n]*>\s*a11y-report\.json/, "stdout 被重定向时，违规注解会一起进文件");
+  assert.match(yml, /--out=a11y-report\.json/);
+});
+
+test("审计脚本在 CI 里为每类违规打注解（不登录也能看出原因）", async () => {
+  const script = await read("scripts/a11y-audit.mjs");
+  assert.match(script, /GITHUB_ACTIONS/, "要判断是不是跑在 Actions 里");
+  assert.match(script, /::error title=a11y/, "要输出 GitHub 注解");
+  assert.match(script, /pages_list/, "注解里要带例页");
+});

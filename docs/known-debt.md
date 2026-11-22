@@ -234,3 +234,6 @@
   现在审计脚本在 `GITHUB_ACTIONS=true` 时会为每类违规打 `::error title=a11y …::` 注解
   （规则、影响、页数、选择器、例页）—— 公开的 Actions 页就能看到原因。
   这条第一次的应用就是下一次运行：注解会直接告诉我们 CI 到底看到了哪条违规。
+- **第一次加注解没生效**：workflow 里写的是 `--json > a11y-report.json`，stdout 整个被
+  重定向进了文件，注解也跟着进了文件。已给脚本加 `--out=<file>`，workflow 改用 `--out=`，
+  stdout 留给注解和人类可读的结论。
