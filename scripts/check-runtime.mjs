@@ -34,6 +34,7 @@ import { pathToFileURL } from "node:url";
 import { isThirdPartyConsoleNoise } from "./lib/console-noise.mjs";
 import { makeContextHermetic } from "./lib/hermetic.mjs";
 import { stubApi } from "./lib/stub-api.mjs";
+import { describeOverflow, overflowOf } from "./lib/overflow.mjs";
 
 const args = process.argv.slice(2);
 const valueOf = (name, fallback) => {
@@ -182,6 +183,10 @@ function mobileTargets(tagZh, tagEn) {
     "/invest/market/",
     "/photo/",
     "/photo/baokemeng/",
+    // 第 164 轮：这几个模板最容易横向溢出 —— 美国宏观有宽表格、相册是网格、
+    // 徒步详情有地图/长图，手机上任何一处把布局顶开都会被下面的断言抓住
+    "/invest/us-market/",
+    "/photo/hudieren/",
     "/hike/",
     tagZh,
     "/en/",
@@ -392,6 +397,30 @@ async function main() {
       if (response && response.status() >= 400) issues.push(`HTTP ${response.status()}: 页面自身`);
       await page.waitForTimeout(WAIT);
       checked += 1;
+      // 横向溢出（第 164 轮）：CLS/LCP/axe 都看不见"页面比屏幕宽"。手机多出几像素
+      // 就意味着整页能左右晃，或长 URL / 宽表格把布局顶开。
+      const layout = await page.evaluate(() => {
+        const doc = document.documentElement;
+        const overflow = Math.max(0, Math.round(doc.scrollWidth - doc.clientWidth));
+        let worst = null;
+        if (overflow > 1) {
+          for (const el of document.querySelectorAll("body *")) {
+            const rect = el.getBoundingClientRect();
+            if (rect.right <= doc.clientWidth + 1) continue;
+            const over = Math.round(rect.right - doc.clientWidth);
+            if (!worst || over > worst.over) {
+              worst = { over, tag: el.tagName.toLowerCase(), cls: String(el.className ?? "").slice(0, 40) };
+            }
+          }
+        }
+        return { scrollWidth: doc.scrollWidth, clientWidth: doc.clientWidth, overflow, worst };
+      });
+      const overflowVerdict = overflowOf(layout);
+      if (!overflowVerdict.ok) {
+        const message = describeOverflow({ overflow: layout.overflow, worst: layout.worst });
+        issues.push(message ?? `横向溢出 +${layout.overflow}px`);
+        console.log(`    ↳ ${url} ${message}`);
+      }
       let vitals = null;
       if (VITALS) {
         vitals = await page.evaluate(() => ({
