@@ -24,13 +24,19 @@ test("预算只许降不许升（有 BASELINE 表）", async () => {
   assert.match(script, /已有债务/);
 });
 
-test("已清零的模板预算必须是 0（防止有人把预算悄悄调高）", async () => {
+test("全部模板预算都是 0（第 174 轮已清零；有人调高就会红）", async () => {
   const script = await read("scripts/check-text-zoom.mjs");
-  for (const path of ["/", "/ai/", "/photo/", "/photo/baokemeng/", "/hike/", "/guestbook/", "/en/ai/digest-2026-11-22/"]) {
+  for (const path of ["/", "/ai/", "/ai/digest-2026-11-22/", "/invest/", "/invest/us-market/", "/invest/etf/", "/photo/", "/photo/baokemeng/", "/hike/", "/guestbook/", "/en/", "/en/ai/digest-2026-11-22/"]) {
     const line = script.split("\n").find((l) => l.includes(`["${path}",`));
     assert.ok(line, `BASELINE 里应有 ${path}`);
     assert.match(line, /, 0\],/, `${path} 的预算应为 0`);
   }
+});
+
+test("英文大标题与数字都允许断行（第 174 轮的两个实际修复）", async () => {
+  const css = await read("src/styles/global.css");
+  assert.match(css, /:where\(h1, h2, h3\) \{\s*overflow-wrap: break-word;/, "标题要能断长英文词");
+  assert.match(css, /\.tabular-nums \{\s*overflow-wrap: break-word;/, "大数字要能断行");
 });
 
 test("200% 文字下导航栏不能再溢出（第 173 轮的实际修复）", async () => {

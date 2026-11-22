@@ -138,7 +138,7 @@ export default function MarketSentiment({ initialData, lang = "zh" }: Props = {}
             <div className="text-sm text-[var(--text-tertiary)]">{L.breadthMissing}</div>
           ) : (
             <>
-              <div className="flex items-baseline gap-3 mb-3 tabular-nums">
+              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-3 tabular-nums">
                 <span className="text-2xl font-semibold" style={{ color: "var(--market-up)" }}>{breadthUps}</span>
                 <span className="text-[var(--text-tertiary)]">/</span>
                 <span className="text-2xl font-semibold" style={{ color: "var(--market-down)" }}>{breadthDowns}</span>
@@ -163,7 +163,7 @@ export default function MarketSentiment({ initialData, lang = "zh" }: Props = {}
             <div className="text-sm text-[var(--text-tertiary)]">{L.limitMissing}</div>
           ) : (
             <>
-              <div className="flex items-baseline gap-3 mb-3 tabular-nums">
+              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-3 tabular-nums">
                 <span className="text-2xl font-semibold" style={{ color: "var(--market-up)" }}>{breadth.limit_up}</span>
                 <span className="text-[var(--text-tertiary)]">/</span>
                 <span className="text-2xl font-semibold" style={{ color: "var(--market-down)" }}>{breadth.limit_down}</span>

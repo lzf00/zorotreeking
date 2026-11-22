@@ -757,6 +757,29 @@ if git diff --cached --quiet; then echo "没有新结果"; exit 0; fi
 `pathspec did not match` → 整条 add 失败。改成先 `ls` 判断存在再 add，
 报告才真的归档进 `reports/`（`reports/` 里其它历史产物仍然 gitignore，只有巡检报告 `-f`）。
 
+### 200% 文字：剩下两个模板，一个断词一个折行（第 174 轮）
+
+第 173 轮把 12 个模板里的 10 个修到「200% 文字零溢出」，剩下 `/en/` 145px 与
+`/invest/` 52px，这轮清零。
+
+排查方法：逐个把候选元素 `display:none`，看 `scrollWidth - clientWidth` 掉多少 ——
+一次只改一个，谁掉得多就是谁。
+
+| 页面 | 溢出 | 真凶 | 修法 |
+|---|---|---|---|
+| `/en/` | 145px | 首屏大标题 `Slow notes between code and …` 里的 **Photography / Investment** 在 200% 下比视口还宽，而 h1 不会断词 | `:where(h1,h2,h3) { overflow-wrap: break-word }` |
+| `/invest/` | 52px | 指数卡 `10,256.39`、模拟本金 `¥100,000` 比卡片还宽（`text-xl` → 40px），卡片是 `minmax(0,1fr)` 网格项、宽度锁死 | `.tabular-nums { overflow-wrap: break-word }`，一条规则覆盖全站所有大数字 |
+
+为什么用**全局规则**而不是逐个组件加 `break-words`：全站有 8 处这种大数字（指数卡、
+模拟组合、情绪面板、`/data`、`/admin/stats`…），逐个加必然漏。`overflow-wrap: break-word`
+只在「一行放不下」时才断，正常字号下零影响 —— 这是那种「改了也没有副作用」的规则，
+适合放在全局。
+
+顺带把两处「涨跌家数」横排（`313 / 5235 平 31`）改成可换行：`flex-wrap gap-x-3 gap-y-1`。
+
+结果：`check:text-zoom` 的 12 条预算**全部改成 0**，测试里也钉住了这一点
+（谁把某条预算调高，测试就红）。
+
 ### 字号调大之后，导航把旁边的东西挤出屏幕（第 173 轮）
 
 这是 WCAG 1.4.4（Resize text）：文字放大到 200% 时，内容不能丢。之前的响应式测试只改
