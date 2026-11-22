@@ -795,6 +795,18 @@ inter-100-900     start 180  end 1257   48 KB
 `fulfill` 一个 24 字节的 `{"ok":true}`。浏览器自己的响应路径没有这个坑 ——
 `networkidle` 立刻满足、没有 pending 请求。
 
+**结果：CLS 0.105 → 0.016。**
+
+```
+修前：CLS 最差 0.105（/photo/）· FCP 556 ms · LCP 708 ms
+修后：CLS 最差 0.016（/ai/digest/）· FCP 588 ms · LCP 696 ms
+```
+
+`/photo/` 直接从榜单上消失。这里必须说清一件事：**这个 0.105 大半是我们自己的测量假象**，
+不是用户的真实体验 —— 线上 `/api/track` 只有 11 字节，根本没有 124 KB 抢带宽。
+换句话说，第 148–151 轮追的那条 CLS，方向是对的（换字体确实会抖），
+但**量级是被测量工具放大的**。教训：先怀疑尺子，再怀疑被测物。
+
 **顺手记两个写测试时踩的坑**：`serveDist()` 返回的是 Promise，漏了 `await` 拿到的是
 promise 而不是监听中的 server —— 测试会**挂住不退出**（我挂了两轮才反应过来）；
 另外 keep-alive 连接会让 `server.close()` 一直等，得先 `closeAllConnections()`。
