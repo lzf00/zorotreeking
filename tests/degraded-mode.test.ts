@@ -64,3 +64,12 @@ test("存储被禁时键盘翻页不能跟着死（第 167 轮的真 bug）", as
   assert.match(script, /按 k 没有跳/, "翻页失效必须算失败");
   assert.match(script, /prevHref/, "而且要挑一篇真有上一篇的日报来验，否则是空转");
 });
+
+test("关闭 JS 也要有正文：整站是 SSG，别把内容搬进客户端岛（第 171 轮）", async () => {
+  const script = await read("scripts/check-degraded.mjs");
+  assert.match(script, /javaScriptEnabled: scenario !== "nojs"/, "要真的把 JS 关掉");
+  assert.match(script, /NOJS_MIN_TEXT/, "要有每模板的正文长度下限");
+  assert.match(script, /内容多半被搬进客户端渲染了/, "跌破下限必须报出原因");
+  // 反空转：关 JS 后页面里必须真的测出"JS 不可用"
+  assert.match(script, /if \(storageBlocked\) problems\.push\("JS 没被关掉/, "要确认 JS 真的关了");
+});
