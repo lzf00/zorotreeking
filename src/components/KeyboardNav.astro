@@ -25,9 +25,18 @@ const { prevHref, nextHref, sectionHref } = Astro.props;
   (() => {
     let hintShown = false;
     function showHint() {
-      if (hintShown || localStorage.getItem("zoro:kbd-hint-shown")) return;
+      // 存储可能直接抛 SecurityError（Chrome 全禁 cookie / 隐私插件）。
+      // 踩过的坑（第 167 轮）：这里没兜住时，showHint 在 `location.href = …` 之前抛，
+      // 于是「按 k 翻上一篇」整体失效 —— 用户只是按了键，没反应，也没人看得见。
+      let seen = false;
+      try {
+        seen = Boolean(localStorage.getItem("zoro:kbd-hint-shown"));
+      } catch {}
+      if (hintShown || seen) return;
       hintShown = true;
-      localStorage.setItem("zoro:kbd-hint-shown", "1");
+      try {
+        localStorage.setItem("zoro:kbd-hint-shown", "1");
+      } catch {}
       const t = document.createElement("div");
       t.textContent = "💡 j 下一篇 · k 上一篇 · g h 回栏目 · / 搜索";
       t.style.cssText = "position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(29,29,31,0.95);color:white;padding:10px 16px;border-radius:999px;font-size:12px;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,0.25);font-family:Inter,sans-serif";

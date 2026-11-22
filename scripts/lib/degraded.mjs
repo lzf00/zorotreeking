@@ -13,6 +13,14 @@
  *   · 可见文字里没有 undefined / NaN / [object Object] 这类渲染事故痕迹
  */
 export function evaluatePage({ status, pageErrors = [], text = "", heading = "", apiFailures = [] }) {
+  const problems = evaluateRendered({ status, pageErrors, text, heading });
+  // 接口失败本身不是问题（这正是被测场景），但必须真的失败过，否则这条检查是空转
+  if (apiFailures.length === 0) problems.push("没有观察到任何接口失败 —— 桩没生效，检查不可信");
+  return { ok: problems.length === 0, problems };
+}
+
+/** 只看"渲染出来没有"，不含任何场景要求 —— 场景断言由调用方加。 */
+export function evaluateRendered({ status, pageErrors = [], text = "", heading = "" }) {
   const problems = [];
   if (status !== 200) problems.push(`页面自身 HTTP ${status}`);
   for (const error of pageErrors.slice(0, 3)) problems.push(`未捕获 JS 异常：${error}`);
@@ -23,7 +31,5 @@ export function evaluatePage({ status, pageErrors = [], text = "", heading = "",
   for (const token of ["undefined", "NaN", "[object Object]"]) {
     if (text.includes(token)) problems.push(`可见文字里出现渲染事故痕迹「${token}」`);
   }
-  // 接口失败本身不是问题（这正是被测场景），但必须真的失败过，否则这条检查是空转
-  if (apiFailures.length === 0) problems.push("没有观察到任何接口失败 —— 桩没生效，检查不可信");
-  return { ok: problems.length === 0, problems };
+  return problems;
 }

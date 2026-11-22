@@ -49,3 +49,18 @@ test("门禁里跑它，且真的把接口拦成 500", async () => {
   assert.match(script, /"\*\*\/api\/\*\*"/, "要拦全部接口");
   assert.match(script, /pageerror/, "要抓未捕获异常");
 });
+
+test("存储被禁时键盘翻页不能跟着死（第 167 轮的真 bug）", async () => {
+  const nav = await read("src/components/KeyboardNav.astro");
+  // showHint 里读/写 localStorage 都要兜住：它在 `location.href = …` **之前**执行，
+  // 抛 SecurityError 会让「按 k 翻上一篇」整体失效，而且没人看得见
+  assert.match(nav, /try \{\s*seen = Boolean\(localStorage\.getItem/, "读要兜住");
+  assert.match(nav, /try \{\s*localStorage\.setItem\("zoro:kbd-hint-shown"/, "写要兜住");
+  const hintButMe = nav.indexOf("showHint");
+  assert.ok(hintButMe > 0);
+
+  const script = await read("scripts/check-degraded.mjs");
+  assert.match(script, /Storage\.prototype\.getItem = boom/, "存储场景要真的把 API 弄成会抛");
+  assert.match(script, /按 k 没有跳/, "翻页失效必须算失败");
+  assert.match(script, /prevHref/, "而且要挑一篇真有上一篇的日报来验，否则是空转");
+});

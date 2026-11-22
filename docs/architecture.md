@@ -757,6 +757,39 @@ if git diff --cached --quiet; then echo "没有新结果"; exit 0; fi
 `pathspec did not match` → 整条 add 失败。改成先 `ls` 判断存在再 add，
 报告才真的归档进 `reports/`（`reports/` 里其它历史产物仍然 gitignore，只有巡检报告 `-f`）。
 
+### 存储被禁时，连翻页都跟着死（第 167 轮）
+
+顺着第 166 轮的思路找"另一半"，这次挑存储：Chrome 全禁 cookie、隐私插件、Safari 严格模式
+下，访问 `localStorage` 会抛 `SecurityError`。
+
+先按最朴素的方式探了一遍（6 个页面 + 存储 API 全抛）→ **零异常**，因为主题、评分、
+聊天历史早就用 try/catch 兜住了。但读到 `KeyboardNav.astro` 时发现写法和别人不一样：
+
+```js
+case "k":
+  if (prevHref) { showHint(); location.href = prevHref; e.preventDefault(); }
+```
+
+`showHint()` 里直接 `localStorage.getItem(...)`，**没有兜住**，而它在 `location.href` **之前**
+执行。实测复现（把 `Storage.prototype.getItem/setItem` 改成抛错，按 k）：
+
+| 存储 | 按 k 后 | 异常 |
+|---|---|---|
+| 正常 | 跳到上一篇 ✅ | 无 |
+| 被禁 | **原地不动** ❌ | `SecurityError: The operation is insecure.` |
+
+也就是说：这类浏览器里键盘导航整体静默失效 —— 用户只是按了键，没反应。
+
+修法：`showHint` 里读、写各自 try/catch（提示条只是锦上添花，**绝不该连累翻页**）。
+然后把这条验进 `check:degraded`：
+
+- 新增 `storage` 场景（把 `Storage.prototype` 三个方法改成抛 SecurityError）
+- 反空转：页面里必须真的测出"存储会抛"，否则判失败
+- **行为断言**：自动挑最新一篇日报（脚本里有 `prevHref`），按 k 必须真的跳走
+- 验证顺序证明了这条守卫不是空转：改代码前跑 → 红（`按 k 没有跳到 …`）；`npm run build` 后跑 → 绿
+
+现在 `check:degraded` 覆盖 **6 模板 × 2 种降级**（接口全挂 / 存储被禁）+ 1 个键盘翻页回归点。
+
 ### 只测了接口通的那一半（第 166 轮）
 
 这一轮开头干了三件"验证"的事，前两件都扑空了 —— 记下来，因为它们本身就是教训：
