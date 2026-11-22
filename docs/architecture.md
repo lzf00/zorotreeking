@@ -689,6 +689,56 @@ npm run check:images -- --limit 150 --warn
 
 这条和 `check:ssr-clock`（第 82 轮）是同一类问题的两个面：**渲染里任何"现在"都必须是显式的**。
 
+### 24 像素破了案：一个 10px 角标在换行（第 150 轮）
+
+第 149 轮的"让环境说话"这轮结了两颗果。
+
+**果实一：runner 根本没有任何衬线字体。**
+
+```
+serif: ["DejaVu Serif@0.651"]
+```
+
+只有 DejaVu Serif，**没有 Times / Georgia / Liberation Serif** —— 也就是说
+`Instrument Serif Fallback`（src 里全是这几个）在 CI 上**一次都没生效过**，
+标题一直落到 DejaVu Serif，宽度比是 0.651（比 Instrument Serif 宽 54%）。
+macOS 上 Times 装了、量出来 83.8%，本机永远看不出这个缺口。
+
+**果实二：不靠时序也能定位。** 新加的布局对比（同一页「拦掉所有 woff2」vs「正常」）
+直接把差异列出来：
+
+```
+布局对比：文档高度变化 -639px，变动元素 3 个
+  -592px  section.max-w-5xl.mx-auto
+  -592px  ul.divide-y.divide-[var(--border)]
+  +24px   span.ml-1.5.text-[10px]   ← 就是它
+```
+
+`+24px` 和 CLS 注解里"整页上移 24px"是同一个数字。这个 span 是新闻标题后面的
+「↗ 搜索」角标：兜底期字体宽一点，它就掉到下一行，把整个 `<li>` 顶高 24px；
+字体到货后又缩回去 —— 一次 0.223 的布局位移。
+
+修法：这类 10px 角标（搜索角标、股票代码、日期）加上 `whitespace-nowrap`
+（中文 5 处、英文 4 处，外加个股页两份）。它们本来就不该断行。
+
+**还没修的部分（下一轮）**：衬线兜底。既然 runner 只有 DejaVu Serif，
+正确做法不是继续指望 Times，而是给它单独一条链：
+
+```css
+font-family: "Instrument Serif", "Instrument Serif Fallback", "DejaVu Serif Fallback", ui-serif, …;
+```
+
+第一个 family 有 Times 就用（macOS），没有就落到第二个（CI）—— `local()` 全部
+解析失败的 `@font-face` 会被跳过，所以同一条栈能同时服务两个平台。
+数字这轮已经量好了（报告脚本直接输出可抄进 CSS 的三个数）：
+
+```
+✓ DejaVu Serif  size-adjust: ?%  ascent-override: ?%  descent-override: ?%
+```
+
+放问号是因为**本机没有 DejaVu Serif，量不了**；CI 下一次会把它填上。
+这轮先不猜着写 —— 第 148 轮已经因为"没有数据就推断"白干过一轮。
+
 ### 先量环境，再改代码（第 149 轮）
 
 第 148 轮留下的问题是：`/invest/market/` 的 0.223 位移形态是「整页内容上移 24px」，

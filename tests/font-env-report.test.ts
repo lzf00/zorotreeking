@@ -42,6 +42,13 @@ test("衬线也在测量范围（第 149 轮漏掉的一组）", async () => {
   assert.match(script, /Times New Roman/);
 });
 
+test("报告直接给出能抄进 CSS 的三个数（宽度 + 行盒）", async () => {
+  const script = await read("scripts/report-font-env.mjs");
+  assert.match(script, /cssNumbers/);
+  assert.match(script, /ascent-override: \$\{row\.css\.ascent\}%/, "只给 size-adjust 不够，行盒也要给");
+  assert.match(script, /descent-override: \$\{row\.css\.descent\}%/);
+});
+
 test("deploy 会跑这个报告，并把它发成 notice", async () => {
   const wf = await read(".github/workflows/deploy.yml");
   assert.match(wf, /node scripts\/report-font-env\.mjs --json --layout-diff/, "deploy 要量字体环境 + 布局差异");

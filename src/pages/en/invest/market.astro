@@ -200,7 +200,7 @@ function fmtAsOf(iso: string | undefined): string {
                   <td class="py-2.5">
                     <span>{s.emoji}</span>
                     <span class="ml-1 font-medium">{s.name}</span>
-                    <span class="ml-2 text-[10px] font-mono text-[var(--text-tertiary)]">{s.code}</span>
+                    <span class="ml-2 text-[10px] font-mono text-[var(--text-tertiary)] whitespace-nowrap">{s.code}</span>
                   </td>
                   <td class="text-right font-mono">{fmtPrice(s.price)}</td>
                   <td class={`text-right font-mono font-semibold ${colorClass(s.change_pct)}`}>{fmtPct(s.change_pct)}</td>
@@ -244,7 +244,7 @@ function fmtAsOf(iso: string | undefined): string {
                   <td class="py-2.5 text-[var(--text-tertiary)] font-mono">{i + 1}</td>
                   <td>
                     <span class="font-medium">{h.name}</span>
-                    <span class="ml-2 text-[10px] font-mono text-[var(--text-tertiary)]">{h.code}</span>
+                    <span class="ml-2 text-[10px] font-mono text-[var(--text-tertiary)] whitespace-nowrap">{h.code}</span>
                   </td>
                   <td class="text-right font-mono">{fmtPrice(h.price)}</td>
                   <td class={`text-right font-mono font-semibold ${colorClass(h.change_pct)}`}>
@@ -298,9 +298,9 @@ function fmtAsOf(iso: string | undefined): string {
                  class="font-medium text-section-invest hover:underline">
                 {n.title}
               </a>
-              <span class="ml-1.5 text-[10px] font-mono uppercase tracking-wider text-[var(--text-tertiary)] align-middle"
+              <span class="ml-1.5 text-[10px] font-mono uppercase tracking-wider text-[var(--text-tertiary)] align-middle whitespace-nowrap"
                     title="Wind doesn't return source URL; title links to Baidu search">↗ Search</span>
-              {n.date && <span class="ml-2 text-[10px] font-mono text-[var(--text-tertiary)]">{n.date}</span>}
+              {n.date && <span class="ml-2 text-[10px] font-mono text-[var(--text-tertiary)] whitespace-nowrap">{n.date}</span>}
               {n.snippet && (
                 <p class="mt-2 text-sm text-[var(--text-secondary)] leading-relaxed">
                   {n.snippet}…

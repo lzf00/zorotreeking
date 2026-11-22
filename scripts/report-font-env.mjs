@@ -44,6 +44,27 @@ const report = await page.evaluate(
     };
     const sentinel = measure("__definitely-not-installed__", sansSample);
     const installed = (family) => Math.abs(measure(family, sansSample) - sentinel) > 0.5;
+    const box = (family, text) => {
+      ctx.font = `100px ${JSON.stringify(family)}`;
+      const m = ctx.measureText(text);
+      return { ascent: m.fontBoundingBoxAscent / 100, descent: m.fontBoundingBoxDescent / 100 };
+    };
+    /**
+     * 兜底字面要抄进 CSS 的三个数：size-adjust 对齐宽度，
+     * ascent/descent-override 对齐行盒（= 网页字体度量 ÷ size-adjust）。
+     * 只报 size-adjust 不够：第 72 轮那个「粗体多一行」就是行盒没对齐。
+     */
+    const cssNumbers = (webFamily, family, text) => {
+      const web = box(webFamily, text);
+      const adjust = webWidthOf(webFamily, text) / webWidthOf(family, text);
+      const fb = box(family, text);
+      return {
+        sizeAdjust: +(adjust * 100).toFixed(1),
+        ascent: +((web.ascent / adjust) * 100).toFixed(1),
+        descent: +((web.descent / adjust) * 100).toFixed(1),
+      };
+    };
+    const webWidthOf = (family, text) => measure(family, text);
 
     await document.fonts.ready;
     const webSans = measure("Inter", sansSample);
@@ -51,12 +72,12 @@ const report = await page.evaluate(
     const webSerif = measure("Instrument Serif", serifSample);
 
     // body 实际命中的字体：拿它的宽度去和候选字体比对，谁最接近就是谁
-    const box = document.createElement("span");
-    box.textContent = sansSample;
-    box.style.cssText = "position:absolute;visibility:hidden;white-space:nowrap;font-size:100px";
-    document.body.appendChild(box);
-    const bodyWidth = box.getBoundingClientRect().width;
-    box.remove();
+    const probe = document.createElement("span");
+    probe.textContent = sansSample;
+    probe.style.cssText = "position:absolute;visibility:hidden;white-space:nowrap;font-size:100px";
+    document.body.appendChild(probe);
+    const bodyWidth = probe.getBoundingClientRect().width;
+    probe.remove();
     const closest = (width, candidates, text) =>
       ["Inter", ...candidates]
         .map((family) => ({ family, width: measure(family, text) }))
@@ -78,7 +99,9 @@ const report = await page.evaluate(
         webWidth: Math.round(webSerif),
         candidates: serifCandidates.map((family) => {
           const ok = installed(family);
-          return { family, installed: ok, ratio: ok ? +(webSerif / measure(family, serifSample)).toFixed(3) : null };
+          if (!ok) return { family, installed: false, ratio: null, css: null };
+          const ratio = +(webSerif / measure(family, serifSample)).toFixed(3);
+          return { family, installed: true, ratio, css: cssNumbers("Instrument Serif", family, serifSample) };
         }),
       },
       mono: {
@@ -170,7 +193,9 @@ if (JSON_MODE) {
     sans: report.sans.candidates.filter((row) => row.installed).map((row) => `${row.family}@${row.ratio}`),
     mono: report.mono.candidates.filter((row) => row.installed).map((row) => `${row.family}@${row.ratio}`),
     body: report.sans.resolvedLike,
-    serif: report.serif.candidates.filter((row) => row.installed).map((row) => `${row.family}@${row.ratio}`),
+    serif: report.serif.candidates
+      .filter((row) => row.installed)
+      .map((row) => `${row.family}:${row.css.sizeAdjust}/${row.css.ascent}/${row.css.descent}`),
   };
   if (layoutDiff) brief.layout = { doc: layoutDiff.docHeightDelta, top: layoutDiff.changed.slice(0, 3).map((c) => `${c.tag} ${c.dh}px`) };
   console.log(JSON.stringify(brief));
@@ -191,9 +216,13 @@ if (JSON_MODE) {
   }
   console.log(`\n衬线（Instrument Serif 宽 ${report.serif.webWidth}px）`);
   for (const row of report.serif.candidates) {
+    if (!row.installed) {
+      console.log(`  ✗ ${row.family.padEnd(18)} 未安装`);
+      continue;
+    }
     console.log(
-      `  ${row.installed ? "✓" : "✗"} ${row.family.padEnd(18)} ` +
-        (row.installed ? `需要 size-adjust ${(row.ratio * 100).toFixed(1)}%` : "未安装"),
+      `  ✓ ${row.family.padEnd(18)} size-adjust: ${row.css.sizeAdjust}%  ` +
+        `ascent-override: ${row.css.ascent}%  descent-override: ${row.css.descent}%`,
     );
   }
   if (layoutDiff) {

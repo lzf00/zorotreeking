@@ -387,9 +387,9 @@ const backText = stock?.market === "HK" ? "HK market dashboard" : "Market dashbo
               <li class="border border-[var(--border)] rounded-lg p-3">
                 <a href={baiduSearch(a.title)} target="_blank" rel="noopener noreferrer"
                    class="font-medium text-section-invest hover:underline">{a.title}</a>
-                <span class="ml-1.5 text-[10px] font-mono uppercase tracking-wider text-[var(--text-tertiary)] align-middle"
+                <span class="ml-1.5 text-[10px] font-mono uppercase tracking-wider text-[var(--text-tertiary)] align-middle whitespace-nowrap"
                       title="Wind doesn't return source URL; title links to Baidu search">↗ Search</span>
-                {a.date && <span class="ml-2 text-[10px] font-mono text-[var(--text-tertiary)]">{a.date}</span>}
+                {a.date && <span class="ml-2 text-[10px] font-mono text-[var(--text-tertiary)] whitespace-nowrap">{a.date}</span>}
                 {a.snippet && <p class="mt-2 text-sm text-[var(--text-secondary)] leading-relaxed">{a.snippet}…</p>}
               </li>
             ))}
@@ -407,9 +407,9 @@ const backText = stock?.market === "HK" ? "HK market dashboard" : "Market dashbo
               <li class="border border-[var(--border)] rounded-lg p-3">
                 <a href={baiduSearch(n.title)} target="_blank" rel="noopener noreferrer"
                    class="font-medium text-section-invest hover:underline">{n.title}</a>
-                <span class="ml-1.5 text-[10px] font-mono uppercase tracking-wider text-[var(--text-tertiary)] align-middle"
+                <span class="ml-1.5 text-[10px] font-mono uppercase tracking-wider text-[var(--text-tertiary)] align-middle whitespace-nowrap"
                       title="Wind doesn't return source URL; title links to Baidu search">↗ Search</span>
-                {n.date && <span class="ml-2 text-[10px] font-mono text-[var(--text-tertiary)]">{n.date}</span>}
+                {n.date && <span class="ml-2 text-[10px] font-mono text-[var(--text-tertiary)] whitespace-nowrap">{n.date}</span>}
                 {n.snippet && <p class="mt-2 text-sm text-[var(--text-secondary)] leading-relaxed">{n.snippet}…</p>}
               </li>
             ))}
