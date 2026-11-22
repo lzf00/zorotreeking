@@ -1012,11 +1012,14 @@ jobs:
             exit 0
           fi
           # 用 GITHUB_TOKEN 推的 commit 不会触发 workflow，要手动 dispatch 一次
-          if gh api -X POST "repos/${GITHUB_REPOSITORY}/actions/workflows/deploy.yml/dispatches" \
-               -f ref=main --silent; then
+          # 这一步曾经静默失败过（第 161 轮）：--silent 把 403 的原因吞了，只留下一句
+          # "触发部署失败"。annotation 里要能看到 HTTP 状态，否则下次还是只能猜。
+          if DISPATCH_ERR=$(gh api -X POST "repos/${GITHUB_REPOSITORY}/actions/workflows/deploy.yml/dispatches" \
+               -f ref=main 2>&1); then
             note "✓ 已补上本周看点 $WEEK 并触发一次部署"
           else
-            echo "::warning::周报已提交，但触发部署失败 —— 需要下一次 push 才会生效"
+            echo "::warning::周报已提交，但触发部署失败：$(echo "$DISPATCH_ERR" | head -2 | tr '\n' ' ' | cut -c1-200)"
+            note "周报已提交，但触发部署失败（原因见上）—— 需要下一次 push 才会生效"
           fi
 
       - name: Refresh stale market data (self-healing)
