@@ -1059,7 +1059,7 @@ def build_report(stock_codes: list, prefetched: dict = None, as_of: datetime.dat
             continue
         tag = " 🚀" if h.get("is_limit_up") else ""
         lines.append(
-            f"| {i} | {h['name']} `{h['code']}` "
+            f"| {i} | {_en_name(h['name'])} `{h['code']}` "
             f"| {h['price']:.2f} "
             f"| **{h['change_pct']:+.2f}%**{tag} |"
         )
@@ -1147,6 +1147,13 @@ def build_report(stock_codes: list, prefetched: dict = None, as_of: datetime.dat
     return title, "\n".join(lines)
 
 
+try:  # 服务器上单独跑 fetcher.py 时也要求能 import 到
+    from finance_names import en_name
+except ImportError:  # pragma: no cover - 兜底：老环境没有这个模块就退化成原表
+    def en_name(name: str) -> str:
+        return name
+
+
 _EN_NAMES = {
     "上证指数": "Shanghai Composite Index",
     "深证成指": "Shenzhen Component Index",
@@ -1168,7 +1175,14 @@ _EN_NAMES = {
 
 
 def _en_name(name: str) -> str:
-    return _EN_NAMES.get(name, name)
+    """中英对照：先查 fetcher 自己的表，再查 scripts/wind/finance_names.py。
+
+    finance_names 里是板块名（分类，可以安全意译）和有公开英文名的个股。
+    小盘股查不到就保留中文 —— 编一个像官方译名的名字比留着中文更糟。
+    """
+    if name in _EN_NAMES:
+        return _EN_NAMES[name]
+    return en_name(name)
 
 
 def build_report_en(stock_codes: list, prefetched: dict = None, as_of: datetime.datetime = None) -> tuple:
@@ -1270,9 +1284,9 @@ def build_report_en(stock_codes: list, prefetched: dict = None, as_of: datetime.
         if not isinstance(s, dict) or "error" in s:
             continue
         lines.append(
-            f"| {s['emoji']} {s['name']} "
+            f"| {s['emoji']} {_en_name(s['name'])} "
             f"| **{s['change_pct']:+.2f}%** "
-            f"| {s.get('lead_stock') or '—'} |"
+            f"| {_en_name(s.get('lead_stock')) if s.get('lead_stock') else '—'} |"
         )
     hk_indices_valid = [x for x in _rows("hk_indices") if isinstance(x, dict) and "error" not in x]
     hk_watchlist_valid = [x for x in _rows("hk_watchlist") if isinstance(x, dict) and "error" not in x]
