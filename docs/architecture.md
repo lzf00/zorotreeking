@@ -752,6 +752,11 @@ if git diff --cached --quiet; then echo "没有新结果"; exit 0; fi
 "正常结束"；报告内容同时写进 `$GITHUB_STEP_SUMMARY`，这样提交失败也能在 CI 页面上
 看到巡检结论，不必依赖那次 commit 成功。
 
+**第二次踩坑**：改完第一次，戳记进了仓库、报告还是没进。因为 `sh` 不会把未匹配的
+通配符展开成空，`git add -f reports/weekly-audit-*.md` 拿到的是字面量路径 →
+`pathspec did not match` → 整条 add 失败。改成先 `ls` 判断存在再 add，
+报告才真的归档进 `reports/`（`reports/` 里其它历史产物仍然 gitignore，只有巡检报告 `-f`）。
+
 ### 三个"每周巡检"从建立起就没跑过（第 153 轮）
 
 `site-audit.yml`、`a11y.yml`、`freshness-watch.yml` 都只靠 `schedule: cron`。

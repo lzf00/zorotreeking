@@ -812,7 +812,14 @@ jobs:
           # reports/ 是 gitignore 的（历史产物不进仓库），所以这里必须 -f，否则
           # `git add` 会因为"路径被忽略"整体失败、什么都没暂存，然后下面静默输出
           # "没有新结果" —— 第 153 轮实测踩过：巡检跑了，戳记和报告却没进仓库。
-          git add -f src/data/weekly-audit.json reports/weekly-audit-*.md
+          git add -f src/data/weekly-audit.json
+          # 通配符没匹配到文件时 `git add` 会整条失败（sh 不做 nullglob 展开），
+          # 所以先判断再添加 —— 第 153 轮第二次踩坑：戳记进了仓库、报告没进。
+          if ls reports/weekly-audit-*.md >/dev/null 2>&1; then
+            git add -f reports/weekly-audit-*.md
+          else
+            echo "::warning::没有找到巡检报告文件（reports/weekly-audit-*.md）"
+          fi
           if git diff --cached --quiet; then
             echo "::warning::巡检跑完了但没有可提交的产物（戳记/报告没生成？）"
             exit 0
