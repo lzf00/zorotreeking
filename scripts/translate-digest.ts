@@ -25,6 +25,15 @@ const CONCURRENCY = (() => {
   return Number.isFinite(n) && n >= 1 && n <= 5 ? n : 1;
 })();
 // 一次最多翻多少篇（防止首次回填触发 Actions 90 分钟超时）
+// --expect=<文件名片段>：跑完断言"这个名字的 zh 一定产出了 en"。
+// 为什么需要（第 161 轮）：单篇翻译失败只打一行 ✗ 就 exit 0，而 Actions 日志接口
+// 在这个仓库是 403 —— 调用方只能看到 exit 0，完全不知道失败原因。有了 --expect，
+// 调用方就能拿到非零退出码并把原因写进 annotation。
+const EXPECT = (() => {
+  const m = process.argv.find((a) => a.startsWith("--expect="));
+  return m ? m.split("=")[1] : null;
+})();
+
 const LIMIT = (() => {
   const m = process.argv.find((a) => a.startsWith("--limit="));
   if (!m) return Infinity;
@@ -84,6 +93,30 @@ async function translateOne(srcText: string): Promise<string> {
   );
 }
 
+/** --expect 的断言：返回 true 表示期望的文件确实有 en 版。 */
+async function expectSatisfied(): Promise<boolean> {
+  if (!EXPECT) return true;
+  for (const col of COLLECTIONS) {
+    let files: string[] = [];
+    try {
+      files = await fs.readdir(path.join(ROOT, "src", "content", col));
+    } catch {
+      continue;
+    }
+    for (const f of files) {
+      if (!f.endsWith(".zh.mdx") || !f.includes(EXPECT)) continue;
+      try {
+        await fs.access(path.join(ROOT, "src", "content", col, f.replace(/\.zh\.mdx$/, ".en.mdx")));
+        return true;
+      } catch {
+        return false;
+      }
+    }
+  }
+  console.log(`[translate] --expect=${EXPECT}：没找到匹配的 zh 文件`);
+  return false;
+}
+
 async function findZhToTranslate(): Promise<Array<{ srcPath: string; dstPath: string; rel: string }>> {
   const targets: Array<{ srcPath: string; dstPath: string; rel: string }> = [];
   for (const col of COLLECTIONS) {
@@ -129,7 +162,10 @@ async function main() {
 
   const todo = await findZhToTranslate();
   console.log(`[translate] 待翻译 ${todo.length} 篇${FORCE_ALL ? "（强制全量）" : "（增量：仅缺 en 镜像）"} · 并发 ${CONCURRENCY}`);
-  if (todo.length === 0) return;
+  if (todo.length === 0) {
+    if (!(await expectSatisfied())) process.exit(2);
+    return;
+  }
 
   let ok = 0, failed = 0, done = 0;
   // 简易并发池
@@ -195,6 +231,7 @@ async function main() {
   }
   await Promise.all(Array.from({ length: CONCURRENCY }, () => spawn()));
   console.log(`\n[translate] 成功 ${ok} · 失败 ${failed}`);
+  if (!(await expectSatisfied())) process.exit(2);
 }
 
 main().catch((e) => { console.error(e); process.exit(1); });

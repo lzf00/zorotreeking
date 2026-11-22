@@ -970,10 +970,19 @@ jobs:
               exit 0
             fi
           fi
-          # zh 有了还是缺 en：站点模板按"中英成对"处理，缺 en 会立刻产生死链
-          if ! npx tsx scripts/translate-digest.ts --limit=2 > /tmp/roundup-tr.log 2>&1; then
-            REASON=$(tail -3 /tmp/roundup-tr.log | tr '\n' ' ' | cut -c1-240)
-            echo "::warning::周报英文版翻译失败，回滚，不发单语内容：$REASON"
+          # zh 有了还是缺 en：站点模板按"中英成对"处理，缺 en 会立刻产生死链。
+          # 翻译会偶发失败（LLM 抖动/输出校验），所以试两次；仍然失败就把**原因**写进
+          # annotation —— 这个仓库的 Actions 日志接口是 403，只打日志等于没打（第 161 轮实测：
+          # 上一版只看到"缺英文版"，完全不知道翻译为什么失败）。
+          TR_OK=0
+          for ATTEMPT in 1 2; do
+            npx tsx scripts/translate-digest.ts --limit=2 --expect="weekly-${WEEK}" > /tmp/roundup-tr.log 2>&1
+            if [ $? -eq 0 ]; then TR_OK=1; break; fi
+            note "::warning::周报英文版第 $ATTEMPT 次翻译失败：$(grep -E '^\s*✗|期望|没找到' /tmp/roundup-tr.log | head -2 | tr '\n' ' ' | cut -c1-240)"
+            sleep 10
+          done
+          if [ "$TR_OK" != "1" ]; then
+            echo "::warning::周报英文版两次都没产出，回滚，不发单语内容"
             git checkout -- src/content
             exit 0
           fi

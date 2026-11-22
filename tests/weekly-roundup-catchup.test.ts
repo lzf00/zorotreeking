@@ -61,3 +61,22 @@ test("周报脚本自己仍然只写中文（英文由翻译补齐，别指望�
   assert.match(script, /\.zh\.mdx/);
   assert.doesNotMatch(script, /\.en\.mdx/, "en 版是 translate-digest 产出的");
 });
+
+test("翻译失败必须留下原因（日志接口 403，只打日志等于没打）", async () => {
+  const workflow = parse(await read(".github/workflows/deploy.yml"));
+  const steps = workflow.jobs["catch-up-digest"].steps as { name?: string; run?: string }[];
+  const step = steps.find((x) => (x.name ?? "").includes("Weekly roundup"));
+  assert.match(step?.run ?? "", /--expect="weekly-\$\{WEEK\}"/, "要用 --expect 断言目标文件真产出了");
+  assert.match(step?.run ?? "", /for ATTEMPT in 1 2/, "LLM 抖动要重试");
+  // ✗ 行必须被摘出来写进 annotation，否则下次还是只看到"缺英文版"
+  assert.match(step?.run ?? "", /note "::warning::周报英文版第 \$ATTEMPT 次翻译失败/);
+});
+
+test("translate-digest 支持 --expect：期望文件没产出就非零退出", async () => {
+  const script = await read("scripts/translate-digest.ts");
+  assert.match(script, /--expect=/, "参数要存在");
+  assert.match(script, /expectSatisfied\(\)\)*\)* process\.exit\(2\)/, "不满足要 exit 2");
+  // 早退分支（todo 为空）也要断言，否则"没东西要翻"会被当成成功
+  const early = script.slice(script.indexOf("if (todo.length === 0)"), script.indexOf("let ok = 0"));
+  assert.match(early, /expectSatisfied/, "todo 为空时也要检查期望");
+});
