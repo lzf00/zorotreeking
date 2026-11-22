@@ -757,6 +757,62 @@ if git diff --cached --quiet; then echo "没有新结果"; exit 0; fi
 `pathspec did not match` → 整条 add 失败。改成先 `ls` 判断存在再 add，
 报告才真的归档进 `reports/`（`reports/` 里其它历史产物仍然 gitignore，只有巡检报告 `-f`）。
 
+### 一个权限字段让日报静默停更四天（第 177 轮）
+
+查内容断档时顺手看了 Actions 的运行记录（公开仓库的 Events API 免登录可读），
+发现：
+
+```
+daily-digest.yml  2026-11-18 06:15Z  success
+daily-digest.yml  2026-11-19 06:16Z  startup_failure
+daily-digest.yml  2026-11-20 06:00Z  startup_failure
+daily-digest.yml  2026-11-21 23:23Z  startup_failure
+daily-digest.yml  2026-11-22 01:38Z  startup_failure
+weekly-roundup.yml 2026-11-22 07:45Z startup_failure
+```
+
+`startup_failure` 的意思是**连 job 都没创建**（没有任何 step 日志），最常见的原因
+只有一个：可复用工作流的权限比调用方大。
+
+时间线严丝合缝地对上了两次：
+
+| 时间 | 改了什么 | 后果 |
+|---|---|---|
+| 11-18 18:48 | deploy.yml 加 `statuses: write`（失败步骤诊断要发 commit status） | 11-19 起 daily-digest 立刻 startup_failure |
+| 11-21 05:23 | 给三个调用方补 `statuses: write` | —— 但两次 cron 之间没有运行窗口，从未被验证 |
+| 11-21 15:29 | deploy.yml 的 `catch-up-digest` 任务加 `actions: write`（要 dispatch 部署） | 11-21 23:23 起又立刻 startup_failure |
+
+第二次是**我们自己引入的**：给 catch-up-digest 加了权限，却没同步三个调用方。
+
+修法：`daily-digest.yml` / `weekly-roundup.yml` / `bulk-backfill.yml` 各加
+`actions: write`，并写清为什么。
+
+更值得记的是：**这个规则本来就有两个测试**（第 82 轮一个、第 107 轮一个），却都没抓住
+这次。原因很具体 —— 两个测试比的都是被调用方的**顶层** `permissions:`：
+
+```js
+const calleePerms = callee.permissions;   // 只看顶层
+```
+
+而 11-21 那次把 `actions: write` 加在 `catch-up-digest` 任务上（job 级），顶层没动，
+于是检查照旧全绿。**守卫只看了一半的输入，比没有守卫更危险**，因为没人会再去手工复查。
+
+修法分两层：
+
+1. `tests/reusable-workflow-permissions.test.ts` 里被调用方的权限改成
+   `mergePermissions(顶层, 每个 job 的 permissions)`；
+2. `check:workflows` 也走一遍同样的图（顶层 ∪ job 级），缺一个就红，报错文案直接点明
+   `startup_failure` 这个症状。把 `actions: write` 摘掉再跑，守卫立刻报：
+
+```
+daily-digest.yml 调用 deploy.yml，但没给 actions:write —— 运行会在启动阶段就失败
+（startup_failure，没有任何 step 日志）
+```
+
+顺带记一个观察：`catch-up-digest` 只在 push/schedule 下跑（`if:` 限定），但 GitHub
+的权限校验发生在**任何 `if` 求值之前**，所以「这个任务反正不会在调用场景里跑」
+不是理由 —— 只要写在被调用方里，调用方就得给得起。
+
 ### 切换按钮指向哪儿？（第 176 轮）
 
 第 175 轮补完 404 之后，顺手把「语言切换」这条线也钉住。切换链接是唯一一个

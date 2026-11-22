@@ -33,7 +33,8 @@
 
 | 步骤 | 查什么 |
 |---|---|
-| `check:workflows` | 每个 scheduled workflow 都必须有非 cron 的触发方式，或在 `scripts/workflow-coverage.json` 里声明靠什么跑到（这个仓库的 cron 会延迟甚至整天不触发，第 162 轮） |
+| `check:workflows` | 触发方式 + **可复用工作流权限图**（被调用方声明的权限必须是调用方给得起的，否则 GitHub 在启动阶段就失败） |
+| `check:workflows`（同上，第二条） | 每个 scheduled workflow 都必须有非 cron 的触发方式，或在 `scripts/workflow-coverage.json` 里声明靠什么跑到（这个仓库的 cron 会延迟甚至整天不触发，第 162 轮） |
 | `validate:etf` | ETF 三因子数据自洽（份额/量能/方向） |
 | `check:dates` | 内容日期与文件名/前置字段一致 |
 | `check:digest-quality` | 最近 7 天的日报正文里不许有"摘要失败"占位符（历史遗留用 `--all` 盘点） |

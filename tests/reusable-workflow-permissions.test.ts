@@ -27,6 +27,19 @@ const FILES = (await readdir(DIR)).filter((f) => f.endsWith(".yml"));
 type Level = "none" | "read" | "write";
 const RANK: Record<string, number> = { none: 0, read: 1, write: 2 };
 
+/** 把若干处 permissions 声明合并成 { scope: 最高等级 }。未声明的 scope 不出现（视为 none）。 */
+export function mergePermissions(...blocks: any[]): Record<string, Level> {
+  const out: Record<string, Level> = {};
+  for (const block of blocks) {
+    if (!block || typeof block !== "object") continue;
+    for (const [scope, level] of Object.entries<any>(block)) {
+      const next = String(level) as Level;
+      if (!(scope in out) || (RANK[next] ?? 0) > (RANK[out[scope]] ?? 0)) out[scope] = next;
+    }
+  }
+  return out;
+}
+
 /** 收集所有「调用本仓库 reusable workflow」的 job，并校验权限包含关系。 */
 async function audit(): Promise<{ caller: string; callee: string; problems: string[] }[]> {
   const parsed = new Map<string, any>();
@@ -41,8 +54,12 @@ async function audit(): Promise<{ caller: string; callee: string; problems: stri
       const calleeName = path.basename(uses);
       const callee = parsed.get(calleeName);
       assert.ok(callee, `${file} 的 job ${jobName} 调用了不存在的 ${uses}`);
-      const callerPerms = (job.permissions ?? wf.permissions ?? {}) as Record<string, Level>;
-      const calleePerms = (callee.permissions ?? {}) as Record<string, Level>;
+      const callerPerms = mergePermissions(wf.permissions, job.permissions) as Record<string, Level>;
+      // 第 177 轮：原来只取被调用方的**顶层**权限，于是 deploy.yml 的
+      // `catch-up-digest` 任务在 job 级加了 `actions: write` 时，这里什么也没看见 ——
+      // 11-21 加完、11-21 晚间的 cron 立刻又 startup_failure。
+      // GitHub 的规则是「被调用方声明的权限」（顶层 + job 级）都不能超过调用方。
+      const calleePerms = mergePermissions(callee.permissions, ...Object.values<any>(callee?.jobs ?? {}).map((j) => j?.permissions)) as Record<string, Level>;
       const problems: string[] = [];
       for (const [scope, level] of Object.entries(calleePerms)) {
         const callerLevel = callerPerms[scope] ?? "none";
@@ -77,4 +94,27 @@ test("回归守卫本身能抓住 11-20 那版配置", async () => {
     ([scope, level]) => (RANK[caller[scope] ?? "none"] ?? 0) < (RANK[level] ?? 0),
   );
   assert.deepEqual(missing.map(([scope]) => scope), ["statuses"], "检查逻辑没能识别出缺失的 statuses");
+});
+
+test("被调用方 job 级的权限也算数（第 177 轮补的盲点）", () => {
+  const callee = { permissions: { contents: "write", statuses: "write" }, jobs: { g: { permissions: { actions: "write" } } } };
+  const merged = mergePermissions(
+    callee.permissions,
+    ...Object.values<any>(callee.jobs).map((job) => job?.permissions),
+  );
+  assert.deepEqual(merged, { contents: "write", statuses: "write", actions: "write" });
+
+  const caller = { contents: "write", statuses: "write" } as Record<string, Level>;
+  const missing = Object.entries(merged).filter(
+    ([scope, level]) => (RANK[caller[scope] ?? "none"] ?? 0) < (RANK[level] ?? 0),
+  );
+  assert.deepEqual(missing.map(([scope]) => scope), ["actions"], "job 级的 actions: write 必须被抓出来");
+});
+
+test("三个调用方都显式给了 actions: write 并说明了原因", async () => {
+  for (const file of ["daily-digest.yml", "weekly-roundup.yml", "bulk-backfill.yml"]) {
+    const text = await readFile(new URL(`../.github/workflows/${file}`, import.meta.url), "utf8");
+    assert.match(text, /^  actions: write$/m, `${file} 缺 actions: write，下一次 cron 还会 startup_failure`);
+    assert.match(text, /被调用的 deploy\.yml/, `${file} 没写清为什么要这个权限`);
+  }
 });
