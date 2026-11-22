@@ -27,7 +27,9 @@ const nav = [
 ---
 
 <header class="sticky top-0 z-40 backdrop-blur-md bg-[var(--bg)]/85 border-b border-[var(--border)]">
-  <nav aria-label={t("nav.primary")} class="max-w-6xl mx-auto px-5 h-14 flex items-center justify-between gap-4">
+    {/* 第 173 轮：200% 文字缩放下这一行放不下 —— 让它可以换行，而不是把右侧按钮挤出屏幕。
+      正常字号下所有内容仍在同一行（flex-wrap 只在溢出时才生效），视觉不变。 */}
+  <nav aria-label={t("nav.primary")} class="max-w-6xl mx-auto px-5 min-h-14 py-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
     <a href={pathWithLang("/", lang)} class="flex items-center gap-2.5 tracking-tight">
       <span class="w-7 h-7 rounded-lg bg-black text-white dark:bg-white dark:text-black grid place-items-center text-sm font-bold leading-none">Z</span>
       <span class="hidden sm:inline text-[15px] font-semibold leading-none tracking-tight">{t("site.title")}</span>
@@ -45,7 +47,7 @@ const nav = [
         <a href={pathWithLang("/guestbook", lang)} class="hover:opacity-60 transition-opacity text-[var(--text-secondary)]">{t("nav.guestbook")}</a>
       </li>
     </ul>
-    <div class="flex items-center gap-2">
+    <div class="flex flex-wrap items-center justify-end gap-2">
       <button id="open-search" type="button" aria-label={lang === "zh" ? "搜索" : "Search"} title={lang === "zh" ? "搜索 (/)": "Search (/)"} class="w-8 h-8 grid place-items-center rounded-full border border-[var(--border)] hover:bg-[var(--bg-soft)] transition-colors">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       </button>

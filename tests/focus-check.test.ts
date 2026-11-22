@@ -39,7 +39,7 @@ test("焦点判据是环或阴影，且要检查宽度不为 0", async () => {
 test("check:focus 在门禁里，且速查页有它", async () => {
   const pkg = await read("package.json");
   assert.match(pkg, /"check:focus": "node scripts\/check-focus\.mjs"/);
-  assert.match(pkg, /npm run check:interactions && npm run check:focus && npm run check:runtime/);
+  assert.match(pkg, /npm run check:focus && npm run check:text-zoom/);
   const docs = await read("docs/operations.md");
   assert.match(docs, /check:focus/);
 });

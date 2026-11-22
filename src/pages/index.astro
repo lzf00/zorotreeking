@@ -279,7 +279,7 @@ const sectionLabel: Record<SectionKey, string> = {
       <ul class="divide-y divide-[var(--border)]">
         {latest.map((p, i) => (
           <li class="py-4 animate-rise" style={`animation-delay: ${100 + i * 50}ms`}>
-            <a href={pathWithLang(`/${p.section}/${p.data.translationKey}`, lang)} class="flex items-center gap-4 group">
+            <a href={pathWithLang(`/${p.section}/${p.data.translationKey}`, lang)} class="flex flex-wrap items-center gap-x-4 gap-y-1 group">
               <span class="w-1.5 h-1.5 rounded-full shrink-0" style={`background:rgb(var(--section-${p.section}-rgb))`}></span>
               <span class="text-xs text-[var(--text-tertiary)] uppercase tracking-wide shrink-0 w-16">{sectionLabel[p.section as SectionKey]}</span>
               <span class="flex-1 truncate text-[15px] group-hover:text-[var(--text)] text-[var(--text-secondary)] transition-colors">{p.data.title}</span>

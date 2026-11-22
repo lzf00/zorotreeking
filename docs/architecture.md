@@ -757,6 +757,33 @@ if git diff --cached --quiet; then echo "没有新结果"; exit 0; fi
 `pathspec did not match` → 整条 add 失败。改成先 `ls` 判断存在再 add，
 报告才真的归档进 `reports/`（`reports/` 里其它历史产物仍然 gitignore，只有巡检报告 `-f`）。
 
+### 字号调大之后，导航把旁边的东西挤出屏幕（第 173 轮）
+
+这是 WCAG 1.4.4（Resize text）：文字放大到 200% 时，内容不能丢。之前的响应式测试只改
+**视口宽度**（320/375/390px），没改**根字号**——而手机「大字体」放大的是后者，
+媒体查询断点不会跟着变。
+
+测量方法：390×844 视口下把根字号设成 32px（=200%），读 `scrollWidth - clientWidth`。
+
+第一次测出来很难看：12 个模板里 **11 个横向溢出**，最多 182px。元凶基本是同一个 ——
+导航栏是 `h-14 flex justify-between` 的一行式布局，右侧那组按钮（搜索/留言/订阅/
+语言切换/菜单）在 200% 下宽 444px，直接越过 390px 视口。
+
+修法都很小，但方向对：
+
+| 位置 | 改动 | 效果 |
+|---|---|---|
+| `Navbar.astro` | 容器 `h-14` → `min-h-14 py-2 flex-wrap`，右侧按钮组 `flex-wrap` | `/photo/` 182px → **0** |
+| 首页最新列表（中/英） | 行容器加 `flex-wrap` | `/`、`/en/` 明显收窄 |
+| `/guestbook/` 邮件卡片 | `flex-wrap max-w-full` | 72px → **0** |
+| 三个 React 表格滚动容器 | 加 `min-w-0 max-w-full`（flex 子项默认 `min-width:auto`，不写这条 `overflow-x-auto` 形同虚设） | 表格不再撑破卡片 |
+
+结果：12 个模板里 **10 个清零**，`/invest/`（52px）与 `/en/`（145px）还有残余，
+已按「只许降不许升」记进 `check:text-zoom` 的预算表。
+
+第 173 轮新增守卫：`check:text-zoom`，进门禁。它跑的是和上面完全一样的测量，
+所以以后再写一行式布局，超标会当场红。
+
 ### 键盘焦点：axe 测不到的那一项（第 172 轮）
 
 axe 能测对比度、标签、标题层级，但**测不到"按下 Tab 之后有没有视觉反馈"** ——

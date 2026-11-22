@@ -40,7 +40,7 @@ const sectionAccent: Record<string, string> = {
     <p class="mt-6 text-lg sm:text-xl text-[var(--text-secondary)] max-w-2xl mx-auto leading-relaxed animate-rise delay-100">
       A personal log on AI, investment, photography, hiking and travel.
     </p>
-    <div class="mt-10 flex items-center justify-center gap-4 animate-rise delay-200">
+    <div class="mt-10 flex flex-wrap items-center justify-center gap-4 animate-rise delay-200">
       <a href={pathWithLang("/ai", lang)} class="inline-flex items-center gap-1.5 rounded-full bg-black dark:bg-white text-white dark:text-black px-5 py-2.5 text-sm font-medium hover:opacity-90 transition-opacity">
         Start reading
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
@@ -73,7 +73,7 @@ const sectionAccent: Record<string, string> = {
       <ul class="divide-y divide-[var(--border)]">
         {latest.map((p, i) => (
           <li class="py-4 animate-rise" style={`animation-delay: ${100 + i * 50}ms`}>
-            <a href={pathWithLang(`/${p.section}/${p.data.translationKey}`, lang)} class="flex items-center gap-4 group">
+            <a href={pathWithLang(`/${p.section}/${p.data.translationKey}`, lang)} class="flex flex-wrap items-center gap-x-4 gap-y-1 group">
               <span class="w-1.5 h-1.5 rounded-full shrink-0" style={`background:${sectionAccent[p.section]}`}></span>
               <span class="text-xs text-[var(--text-tertiary)] uppercase tracking-wide shrink-0 w-20">{sectionLabel[p.section]}</span>
               <span class="flex-1 truncate text-[15px] group-hover:text-[var(--text)] text-[var(--text-secondary)] transition-colors">{p.data.title}</span>

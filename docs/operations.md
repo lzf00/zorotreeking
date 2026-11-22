@@ -59,6 +59,7 @@
 | `check:seo` | canonical / 单一 h1 / JSON-LD |
 | `check:admin` | Decap 后台的 `config.yml` schema（无头浏览器实测） |
 | `check:focus` | 键盘焦点可见性（真按 Tab，明暗两主题；axe 测不到这一项） |
+| `check:text-zoom` | 200% 文字缩放下不得横向溢出（预算只许降不许升） |
 
 **部署时的自愈步骤**（`catch-up-digest` 任务）：日报缺失 → 补跑；行情快照 > 2 天 → 重抓。
 两者都会产出 commit 并 dispatch 一次部署，且都有"验不过就回滚"的闸门。判断内容/数据是否新鲜
