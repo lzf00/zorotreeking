@@ -68,9 +68,44 @@ type AlbumMeta = {
   date?: string;
 };
 
+/**
+ * 相册文件夹名 → 内容文件。两者不总是一致：`photos/uploads/mac1/` 对的是
+ * `src/content/photo/123.<lang>.mdx`（`translationKey: mac1`）。
+ *
+ * 只按文件夹名找文件时，这类相册的 alt 会退化成「第 1 张，共 6 张」——标题、地点、
+ * 时间全都丢了（第 170 轮实测 /photo/mac1/ 与 /en/photo/mac1/ 共 12 张）。
+ * 找不到同名文件时，再按 frontmatter 的 `translationKey` 反查一次。
+ */
+async function resolveAlbumFile(albumSlug: string, lang: "zh" | "en"): Promise<string | null> {
+  const direct = path.join(CONTENT_DIR, `${albumSlug}.${lang}.mdx`);
+  try {
+    await fs.access(direct);
+    return direct;
+  } catch {
+    // 继续按 translationKey 找
+  }
+  let files: string[] = [];
+  try {
+    files = await fs.readdir(CONTENT_DIR);
+  } catch {
+    return null;
+  }
+  for (const file of files) {
+    if (!file.endsWith(`.${lang}.mdx`)) continue;
+    const full = path.join(CONTENT_DIR, file);
+    const raw = await fs.readFile(full, "utf8");
+    const match = /^---\r?\n([\s\S]*?)\r?\n---/.exec(raw);
+    if (!match) continue;
+    const key = /^translationKey:\s*(.+)$/m.exec(match[1])?.[1]?.trim().replace(/^["']|["']$/g, "");
+    if (key === albumSlug) return full;
+  }
+  return null;
+}
+
 /** 读 `src/content/photo/<slug>.<lang>.mdx` 的 frontmatter（只取 alt 需要的三个字段）。 */
 async function readAlbumMeta(albumSlug: string, lang: "zh" | "en"): Promise<AlbumMeta | null> {
-  const file = path.join(CONTENT_DIR, `${albumSlug}.${lang}.mdx`);
+  const file = await resolveAlbumFile(albumSlug, lang);
+  if (!file) return null;
   let raw: string;
   try {
     raw = await fs.readFile(file, "utf8");

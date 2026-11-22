@@ -757,6 +757,33 @@ if git diff --cached --quiet; then echo "没有新结果"; exit 0; fi
 `pathspec did not match` → 整条 add 失败。改成先 `ls` 判断存在再 add，
 报告才真的归档进 `reports/`（`reports/` 里其它历史产物仍然 gitignore，只有巡检报告 `-f`）。
 
+### 照片 alt 少了标题，因为文件夹名和文件名不一样（第 170 轮）
+
+这轮先做了一次**线上全量体检**（新脚本 `scripts/check-prod-urls.mjs`）：
+
+| 指标 | 结果 |
+|---|---|
+| sitemap URL | 1194 条 |
+| 状态码 | **1194/1194 全部 2xx**，无重定向 |
+| 耗时 | p50 18ms · p95 262ms · max 1323ms |
+
+顺手发现之前的一个盲点：`/sitemap-index.xml` 是 404（本站只有单 `sitemap.xml`），
+任何按"索引 + 子图"惯例探测的工具都会在这里失败。
+
+体检全绿之后去看**内容质量**，撞见一个更小的具体问题：`/photo/mac1/` 的 12 张照片
+（中英各 6 张）alt 只有「第 1 张，共 6 张」，标题、地点、时间全丢了。
+
+原因很典型：照片文件夹叫 `photos/uploads/mac1/`，内容文件却叫
+`src/content/photo/123.zh.mdx`，靠 frontmatter 的 `translationKey: mac1` 关联。
+生成器只按**文件夹名**找 `${albumSlug}.${lang}.mdx`，找不到就当"没有元信息"。
+
+修法：`resolveAlbumFile()` 先按同名找，找不到再扫一遍同语言文件、按 `translationKey` 反查。
+
+| | 修前 | 修后 |
+|---|---|---|
+| 中文 alt | `第 1 张，共 6 张` | `海贼王 · 上海 · 2026 年 5 月 · 第 1 张，共 6 张` |
+| 英文 alt | `photo 1 of 6` | `One Piece · Shanghai · 05/2026 · photo 1 of 6` |
+
 ### 英文页里的中文，读屏器不会换语言（第 169 轮）
 
 第 168 轮把**界面控件**的语言补齐了。顺着同一条线看**正文**：英文日报会引用中文报道

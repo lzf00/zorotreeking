@@ -63,6 +63,11 @@
 两者都会产出 commit 并 dispatch 一次部署，且都有"验不过就回滚"的闸门。判断内容/数据是否新鲜
 **不要看 cron 有没有跑**（GitHub schedule 会延迟 5–7 小时甚至整天不触发），要看仓库里有没有当天内容。
 
+**线上体检**（手动/周巡检，不在门禁里）：`node scripts/check-prod-urls.mjs`
+——抓线上 sitemap 里的每条 URL 真去打一遍，4xx/5xx 判失败，3xx 报警（sitemap 里不该出现重定向）。
+构建期检查看的是 `dist/`，nginx、缓存、证书都不在其中，这一层只有它覆盖。
+2026-11-22 首跑：1194 条全部 2xx，p50 18ms / p95 262ms。
+
 **不在门禁里**（故意的）：`check:deps`、`check:server`、`check:freshness`、`check:search`
 （默认打线上）、`check:a11y`（全站，2.5 分钟）、`check:a11y:sample`（每周）、
 `check:perf`（弱网首屏，只记录不挡发布）、`check:market-age`（数据时效，另有定时任务看）、
