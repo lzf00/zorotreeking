@@ -339,15 +339,18 @@ export default function UsMarketDashboard({ initialData = null }: Props) {
             <MacroCard eyebrow="Inflation" title="CPI" metric={macro.cpi} formatter={(value) => formatPercent(value)} note="同比，未经季调" />
             <MacroCard eyebrow="Employment" title="非农" metric={macro.payroll} formatter={formatPayroll} note="就业人数月增量，季调" />
             <article className={`rounded-[1.35rem] border p-5 ${badge.ring}`}>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[var(--text-tertiary)]">Combined Read</p>
+              {/* 第 181 轮：卡片底色带 rose 着色（hawkish 时 bg-rose-500/[0.07]），
+                  --text-tertiary 压在这层薄色上只剩 ~3:1，10px 小字过不了 WCAG AA。
+                  着色卡片里的眼睛文案统一改用 secondary，比一级正文浅、比 tertiary 深。 */}
+              <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[var(--text-secondary)]">Combined Read</p>
               <div className="mt-4 flex items-center gap-3">
                 <span className={`h-3 w-3 rounded-full ${badge.dot}`} />
                 <h3 className={`text-3xl font-semibold tracking-tight ${badge.text}`}>{judgement.label}</h3>
               </div>
               <p className="mt-5 text-sm leading-7 text-[var(--text-secondary)]">{judgement.summary}</p>
-              <div className="mt-5 border-t border-current/10 pt-3 text-[11px] leading-relaxed text-[var(--text-tertiary)]">
+              <div className="mt-5 border-t border-current/10 pt-3 text-[11px] leading-relaxed text-[var(--text-secondary)]">
                 失业率 {formatPercent(macro.unemployment.actual)} · 核心 CPI {formatPercent(macro.core_cpi.actual)}
-                {judgement.confidence === "limited" && <span className="ml-1 text-amber-700 dark:text-amber-400">· 低置信度</span>}
+                {judgement.confidence === "limited" && <span className="ml-1 font-medium text-amber-800 dark:text-amber-300">· 低置信度</span>}
               </div>
             </article>
           </div>

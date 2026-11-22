@@ -757,6 +757,44 @@ if git diff --cached --quiet; then echo "没有新结果"; exit 0; fi
 `pathspec did not match` → 整条 add 失败。改成先 `ls` 判断存在再 add，
 报告才真的归档进 `reports/`（`reports/` 里其它历史产物仍然 gitignore，只有巡检报告 `-f`）。
 
+### 四个月没跑过的审计，第一次跑就红了（第 181 轮）
+
+换上游之后 a11y 立刻真跑了一次（`workflow_run`，19:25Z），结果：
+
+```
+8  Run axe over every page (light + dark)   failure
+10 Spot-check phone width                   skipped
+11 Island hydration smoke test              skipped
+12 Record the audit stamp                   skipped
+```
+
+也就是说：**1190 页 × 浅/深两套的无障碍审计，历史上第一次执行就发现违规**。这正是它四个月
+没跑过的代价 —— 期间所有页面改动都没被这一层看过。
+
+本地全量复跑拿到完整清单（2404 页、2 跳过）：
+
+| 规则 | 影响 | 页数 | 位置 |
+|---|---|---|---|
+| `color-contrast` | serious | 1 | `/invest/us-market/` 的「Combined Read」卡片 |
+
+三个节点，全是同一个原因：**hawkish 时这张卡片带 `bg-rose-500/[0.07]` 着色**，
+而上面压着的是 `--text-tertiary` 灰（10px 小字）和 `text-amber-700`（低置信度标记）。
+灰色本来是为「纯底色」调过的；压一层薄玫瑰色后对比度掉到 3:1 左右，过不了 AA。
+
+修法不是调全局 token（那会牵动所有页面），而是**着色卡片内部降级用色**：
+
+| 元素 | 之前 | 之后 |
+|---|---|---|
+| `Combined Read` 眼睛文案（10px） | `--text-tertiary` | `--text-secondary` |
+| 卡片页脚「失业率 · 核心 CPI」（11px） | `--text-tertiary` | `--text-secondary` |
+| 「低置信度」标记 | `amber-700 / amber-400` | `amber-800 / amber-300` + `font-medium` |
+
+修完 `--only /invest/us-market/ --scheme both` 复跑：**0 违规**。
+
+更重要的发现是**为什么门禁没红**：`check:a11y:fast` 的规则集是 25 个固定页面，
+`/invest/us-market/` **不在里面**。全站审计（每页都跑）四个月没执行过，于是这个页面从上线
+起就没被检查过。所以这轮顺手把它加进规则集 —— 门禁从此覆盖这次踩到的坑。
+
 ### 判总量还是判单条：/changelog/ 的闸门该怎么量（第 181 轮）
 
 180 轮那几个提交之后，`check:weight` 红了：

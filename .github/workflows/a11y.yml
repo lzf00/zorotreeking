@@ -74,6 +74,7 @@ jobs:
         if: steps.due.outputs.due == 'true'
         run: npm run build
       - name: Run axe over every page (light + dark)
+        id: audit
         if: steps.due.outputs.due == 'true'
         # 站点两套 token（浅色/深色），axe 只审当前渲染的那套，所以两种配色各跑一遍
         run: node scripts/a11y-audit.mjs --all --scheme both --json > a11y-report.json
@@ -98,7 +99,13 @@ jobs:
         run: node scripts/check-hydration.mjs
 
       - name: Record the audit stamp
-        if: steps.due.outputs.due == 'true' && success()
+        # 无论审计结果如何都要记：记的是"这周已经跑过"，不是"这周没问题"。
+        # 只在审计**没被执行**（前置步骤失败）时才跳过 —— 那种情况本来就没产生结论。
+        # 第 181 轮修了两个坑：
+        #   1) `git diff --quiet` 看不见**未跟踪**的新文件 → 第一次跑永远不提交戳记，
+        #      于是每次部署都判「该跑」，20 分钟的审计被反复触发；
+        #   2) 原来写 `&& success()`，审计发现违规就跳过记戳记 —— 越是有问题越会天天重跑。
+        if: steps.due.outputs.due == 'true' && steps.audit.outcome != 'skipped' 
         # 戳记必须进仓库，否则下一次部署又会判旧、天天跑 20 分钟。
         run: |
           set +e
@@ -114,7 +121,8 @@ jobs:
             fs.writeFileSync("src/data/a11y-audit.json", JSON.stringify(stamp, null, 2) + "\n");
             console.log("戳记:", JSON.stringify(stamp));
           '
-          if ! git diff --quiet src/data/a11y-audit.json; then
+          # 注意：不能只看 `git diff`，未跟踪的新文件它看不见（第一次跑就是这种情况）
+          if [ -n "$(git status --porcelain -- src/data/a11y-audit.json)" ]; then
             git config user.name "zorotreeking-bot"
             git config user.email "bot@users.noreply.github.com"
             git add src/data/a11y-audit.json

@@ -60,3 +60,47 @@ test("戳记必须在所有检查之后才记（失败不能算「跑过了」�
     assert.ok(yml.indexOf(later) > 0 && yml.indexOf(later) < stampAt, `${later} 必须在记戳记之前`);
   }
 });
+
+// ── 第 181 轮：戳记的两个坑 ──────────────────────────────────────────────
+//
+// 实测：第一次真跑（45060632868）axe 发现违规 → 步骤失败 → 戳记步骤被 `&& success()`
+// 跳过 → 下次部署又判「该跑」。越是有问题越是天天重跑 20 分钟。
+// 另一个坑：`git diff --quiet` 看不见**未跟踪**的新文件，第一次跑永远不提交。
+
+test("戳记不看审计结果成败，只看审计有没有真的跑", async () => {
+  const yml = await read(".github/workflows/a11y.yml");
+  assert.match(yml, /- name: Record the audit stamp\n(?:.*\n)*?\s+if: steps\.due\.outputs\.due == 'true' && steps\.audit\.outcome != 'skipped'/);
+  assert.doesNotMatch(yml, /name: Record the audit stamp\n(?:.*\n)*?\s+if: [^\n]*success\(\)/, "不许再用 success() 挡住戳记");
+});
+
+test("戳记用 git status 而不是 git diff（未跟踪文件 git diff 看不见）", async () => {
+  const yml = await read(".github/workflows/a11y.yml");
+  assert.match(yml, /git status --porcelain -- src\/data\/a11y-audit\.json/);
+  assert.doesNotMatch(yml, /git diff --quiet src\/data\/a11y-audit\.json/);
+});
+
+test("axe 步骤有 id，戳记才能判断它跑没跑", async () => {
+  const yml = await read(".github/workflows/a11y.yml");
+  assert.match(yml, /name: Run axe over every page \(light \+ dark\)\n\s+id: audit/);
+});
+
+// ── 第 181 轮：全站审计的首个真实结论 ──────────────────────────────────
+//
+// 1190 页 × 浅/深 第一次真跑，唯一违规在 /invest/us-market/：hawkish 时卡片带
+// bg-rose-500/[0.07] 着色，压在它上面的 --text-tertiary 灰只剩 ~3:1。
+// 该页此前**不在** check:a11y:fast 的规则集里，所以门禁一直是绿的。
+
+test("凡是被全站审计点名的页面，都必须进 check:a11y:fast 的规则集", async () => {
+  const pkg = JSON.parse(await read("package.json"));
+  const fast = pkg.scripts["check:a11y:fast"] as string;
+  const ruleset = await read("scripts/check-a11y.mjs");
+  assert.match(fast, /\/invest\/us-market\//, "被审计抓到的页面必须留在快速抽查里");
+  assert.match(ruleset, /"\/invest\/us-market\/"/, "规则集本身也要有它，否则 --paths 会报未知路径");
+});
+
+test("着色卡片里的次要文字不能再用 tertiary（薄色底上对比度不够）", async () => {
+  const tsx = await read("src/components/UsMarketDashboard.tsx");
+  const combinedRead = tsx.slice(tsx.indexOf("Combined Read") - 400, tsx.indexOf("Combined Read") + 120);
+  assert.match(combinedRead, /text-\[var\(--text-secondary\)\]/, "眼睛文案要用 secondary");
+  assert.doesNotMatch(combinedRead, /text-\[var\(--text-tertiary\)\]/);
+});

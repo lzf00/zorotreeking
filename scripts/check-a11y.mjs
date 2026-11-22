@@ -49,6 +49,9 @@ let PATHS = [
   "/tag/auto/",
   "/en/tag/auto/",
   "/invest/market/",
+  // 第 181 轮：全站审计（1190 页 × 浅/深）唯一的违规就在这一页 —— 而它此前不在抽查规则集里，
+  // 所以门禁一直是绿的。「hawkish 时卡片带 rose 着色」让 tertiary 灰压在上面只有 ~3:1。
+  "/invest/us-market/",
   "/hike/",
   "/hike/travel/ali-grand-loop-lhasa-return-2026/",
   "/photo/",
