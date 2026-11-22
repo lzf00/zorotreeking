@@ -757,6 +757,32 @@ if git diff --cached --quiet; then echo "没有新结果"; exit 0; fi
 `pathspec did not match` → 整条 add 失败。改成先 `ls` 判断存在再 add，
 报告才真的归档进 `reports/`（`reports/` 里其它历史产物仍然 gitignore，只有巡检报告 `-f`）。
 
+### 一致预期根本没有刷新任务（第 160 轮）
+
+第 159 轮只是把"106 天前"写在了界面上。这轮往下挖了一层，发现更本质的问题：
+
+**它压根没有刷新链路。** `fetch-us-macro.mjs` 只抓 BLS，一致预期是从旧文件里
+`carryExpected` 继承过来的 —— 而 `computeUsMacro` 的"能不能沿用"判据只有一条：
+`updated_at >= 当前年份`。2026-08-07 属于 2026 年，于是**永远成立**，这个种子被
+无限期沿用。
+
+更要紧的是它**参与了计算**：`deriveUsMacroJudgement` 用 `actual` 和 `expected` 比大小
+得出"偏鹰/偏鸽"。也就是说页面上那句政策判断，是拿三个月前的预期当基准算出来的。
+
+改法（不需要新的数据源）：
+
+- `computeUsMacro(..., { maxConsensusAgeDays = 45 })`：**过了保质期的一致预期整体作废** ——
+  各指标的 `expected` 变 `null`，`consensus` 变 `null`。
+- 页面自己就有诚实的降级文案，现在会显示：
+  `市场一致预期暂缺，按最新值与前值比较，整体偏鹰；判断置信度有限。`
+- 看门狗里那一行加 `optional`：**"数据不存在"不等于"数据过期"**，否则每周都报一次警。
+
+顺手把过期数据从快照里清掉（`node scripts/fetch-us-macro.mjs` 重跑一次），
+`src/data/us-market-latest.json` 里 `consensus: null`、`cpi.expected: null`。
+
+教训：第 159 轮那种"把陈旧写在界面上"是补丁，**要先问"谁负责刷新它"**。
+如果没有刷新链路，正确的做法是把它标成不可用，而不是展示一个会一直变旧的值。
+
 ### 106 天前的一致预期，和今天的 BLS 实际值并排站着（第 159 轮）
 
 `/invest/us-market/` 底部写着"宏观实际值与历史序列：BLS · 一致预期：Trading Economics"。

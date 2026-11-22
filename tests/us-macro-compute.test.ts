@@ -95,3 +95,69 @@ test("computeUsMacro：任一序列不足两期就整体失败（不写半截数
   assert.equal(result.ok, false);
   assert.match(result.error, /unemployment/);
 });
+
+// ── 第 160 轮：一致预期过了保质期就作废，不能拿三个月前的预期算"偏鹰/偏鸽" ──────────
+
+const FIXTURE = (() => {
+  const cpi = series(2025, 1, [100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113]);
+  const cpiPrevYear = series(2024, 1, [95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106]);
+  const core = series(2025, 1, Array(14).fill(100));
+  const corePrev = series(2024, 1, Array(12).fill(96));
+  const payroll = series(2025, 1, [159_000, 159_100, 159_200, 159_300, 159_400, 159_500, 159_600, 159_700, 159_800, 159_900, 160_000, 160_100, 160_200, 160_400]);
+  const unemployment = series(2025, 1, [4.1, 4.1, 4.2, 4.2, 4.3, 4.2, 4.1, 4.1, 4.0, 4.1, 4.1, 4.2, 4.2, 4.1]);
+  return { cpi: [...cpiPrevYear, ...cpi], core_cpi: [...corePrev, ...core], payroll, unemployment };
+})();
+
+test("一致预期新鲜就把 expected 带进各指标", () => {
+  const fetchedAt = Date.parse("2026-11-21T00:00:00Z") / 1000;
+  const result = computeUsMacro(FIXTURE, {
+    fetchedAt,
+    carryExpected: {
+      cpi: { reference: "2026-02", actual: 3.7, expected: 3.9 },
+      consensus: { source: "TE", updated_at: "2026-11-10T00:00:00Z" },
+      consensusMatches: true,
+    },
+  });
+  assert.equal(result.ok, true);
+  assert.equal(result.macro.cpi.expected, 3.9);
+  assert.ok(result.macro.consensus, "新鲜的一致预期要保留");
+});
+
+test("一致预期过期（106 天）就整体作废，判断退回前值", () => {
+  const fetchedAt = Date.parse("2026-11-21T00:00:00Z") / 1000;
+  const result = computeUsMacro(FIXTURE, {
+    fetchedAt,
+    carryExpected: {
+      cpi: { reference: "2026-02", actual: 3.7, expected: 3.9 },
+      consensus: { source: "TE", updated_at: "2026-08-07T13:00:00Z" },
+      consensusMatches: true,
+    },
+  });
+  assert.equal(result.macro.cpi.expected, null, "过期预期不能继续参与计算");
+  assert.equal(result.macro.consensus, null, "也不该再挂在页面上");
+});
+
+test("保质期可覆盖：45 天是默认，可显式放宽", () => {
+  const fetchedAt = Date.parse("2026-11-21T00:00:00Z") / 1000;
+  const carryExpected = {
+    cpi: { reference: "2026-02", actual: 3.7, expected: 3.9 },
+    consensus: { source: "TE", updated_at: "2026-10-20T00:00:00Z" }, // 32 天
+    consensusMatches: true,
+  };
+  assert.equal(computeUsMacro(FIXTURE, { fetchedAt, carryExpected }).macro.cpi.expected, 3.9);
+  assert.equal(
+    computeUsMacro(FIXTURE, { fetchedAt, carryExpected, maxConsensusAgeDays: 20 }).macro.cpi.expected,
+    null,
+    "阈值收紧后同样过期",
+  );
+});
+
+test("没有 updated_at 的一致预期不可信，直接作废", () => {
+  const fetchedAt = Date.parse("2026-11-21T00:00:00Z") / 1000;
+  const result = computeUsMacro(FIXTURE, {
+    fetchedAt,
+    carryExpected: { cpi: { reference: "2026-02", expected: 3.9 }, consensus: { source: "TE" }, consensusMatches: true },
+  });
+  assert.equal(result.macro.cpi.expected, null);
+  assert.equal(result.macro.consensus, null);
+});

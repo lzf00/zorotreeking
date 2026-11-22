@@ -52,7 +52,10 @@
 
 ## 第 159 轮补记
 
-- **美国宏观"一致预期"停在 2026-08-07（106 天）**：`src/data/us-market-latest.json` 的
+- **~~美国宏观"一致预期"停在 2026-08-07（106 天）~~ → 第 160 轮已作废**：
+  没有任何任务刷新它（`fetch-us-macro.mjs` 只抓 BLS，预期靠 `carryExpected` 继承，
+  而判据只有"同一年"）。现在超过 45 天就整体作废，页面显示"市场一致预期暂缺…置信度有限"。
+  **若要恢复预期功能，需要接一个真的会刷新的预期源。** 原描述：：`src/data/us-market-latest.json` 的
   `macro.consensus.updated_at`。页面现在会写出真实时间，`check-market-data-age` 每周报
   `warn`（不挡发布）。要真的修，得让 `fetch-us-macro.mjs` 重新抓 Trading Economics
   （或换一个能稳定拿到的预期源）—— 属于数据源决策。

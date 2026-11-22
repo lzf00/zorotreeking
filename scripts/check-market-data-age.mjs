@@ -50,6 +50,9 @@ export const SNAPSHOTS = [
     at: (d) => Date.parse(d?.macro?.consensus?.updated_at ?? ""),
     maxAgeDays: 60,
     severity: "warn",
+    // 一致预期"不存在"不等于"过期"：第 160 轮起过期的会被自动作废（预期 → null），
+    // 这时它的时间戳本来就没有，不该每周报一次"时间未知"。
+    optional: true,
   },
   {
     file: "etf-three-factor-latest.json",
@@ -61,7 +64,7 @@ export const SNAPSHOTS = [
 
 /** 纯函数：把「文件内容 + 现在」变成一行行结论。 */
 export function ageRows(snapshots, { now = Date.now(), maxAgeDays = 7 } = {}) {
-  return snapshots.map(({ file, label, at, maxAgeDays: ownLimit, severity }) => {
+  return snapshots.map(({ file, label, at, maxAgeDays: ownLimit, severity, optional }) => {
     // at 既可以是 (file) => ms 的函数（真实用法，要读文件），也可以直接给毫秒数（测试里更省事）
     const ms = typeof at === "function" ? at(file) : at;
     const ageDays = Number.isNaN(ms) ? null : Math.max(0, Math.floor((now - ms) / (DAY * 1000)));
@@ -71,7 +74,8 @@ export function ageRows(snapshots, { now = Date.now(), maxAgeDays = 7 } = {}) {
       label,
       ageDays,
       maxAgeDays: limit,
-      stale: ageDays === null || ageDays > limit,
+      // optional：字段缺失时不算过旧（缺失已在 compute 阶段显式处理）
+      stale: ageDays === null ? optional !== true : ageDays > limit,
       severity: severity ?? "fail",
     };
   });
@@ -93,6 +97,7 @@ async function load() {
       label: snap.label,
       maxAgeDays: snap.maxAgeDays,
       severity: snap.severity,
+      optional: snap.optional,
       at: () => snap.at(cache.get(snap.file)),
     });
   }
@@ -116,8 +121,12 @@ async function main() {
     console.log("| 快照 | 距今 | 结论 |");
     console.log("| --- | --- | --- |");
     for (const row of rows) {
-      const age = row.ageDays === null ? "时间未知" : `${row.ageDays} 天`;
-      const mark = !row.stale ? "✅" : row.severity === "warn" ? "⚠️ 偏旧（不挡发布）" : "❌ 太旧";
+      const age = row.ageDays === null ? (row.stale ? "时间未知" : "无（已作废）") : `${row.ageDays} 天`;
+      const mark = !row.stale
+        ? "✅"
+        : row.severity === "warn"
+          ? "⚠️ 偏旧（不挡发布）"
+          : "❌ 太旧";
       console.log(`| ${row.label} | ${age} | ${mark} |`);
     }
   }

@@ -85,9 +85,17 @@ export function latestPair(points) {
 
 /**
  * @param {{ cpi?: any[], core_cpi?: any[], unemployment?: any[], payroll?: any[] }} raw BLS 四个序列的 data 数组
- * @param {{ fetchedAt: number, carryExpected?: object|null }} options
+ * `maxConsensusAgeDays`（第 160 轮）：一致预期也会过期。
+ * 这份"市场一致预期"只有一个 2026-08-07 的种子，没有任何任务在刷新它 ——
+ * 于是 106 天前的预期一直参与"偏鹰/偏鸽"判断。过期就该当成没有（预期 → null，
+ * 判断退回"按前值比较 + 置信度有限"），而不是拿三个月前的预期当真。
+ *
+ * @param {{ fetchedAt: number, carryExpected?: object|null, now?: number, maxConsensusAgeDays?: number }} options
  */
-export function computeUsMacro(raw, { fetchedAt, carryExpected = null } = {}) {
+export function computeUsMacro(
+  raw,
+  { fetchedAt, carryExpected = null, now = fetchedAt * 1000, maxConsensusAgeDays = 45 } = {},
+) {
   const cpiSeries = normalizeSeries(raw?.cpi);
   const coreSeries = normalizeSeries(raw?.core_cpi);
   const unemploymentSeries = normalizeSeries(raw?.unemployment);
@@ -115,7 +123,16 @@ export function computeUsMacro(raw, { fetchedAt, carryExpected = null } = {}) {
 
   // Trading Economics 的市场一致预期这轮没有可靠来源，只在参考期完全一致时才沿用旧值，
   // 否则留空（界面会显示"置信度有限"，比拿旧月份的预期冒充本月强）。
+  // 一致预期能不能用：既要"参考期对得上"，也要"没过期"。
+  const consensusMs = carryExpected?.consensus?.updated_at ? Date.parse(carryExpected.consensus.updated_at) : Number.NaN;
+  const consensusAgeDays = Number.isNaN(consensusMs) ? null : Math.floor((now - consensusMs) / 86_400_000);
+  const consensusUsable =
+    carryExpected?.consensusMatches === true &&
+    consensusAgeDays !== null &&
+    consensusAgeDays <= maxConsensusAgeDays;
+
   const expectedFor = (key, reference) => {
+    if (!consensusUsable) return null;
     const carried = carryExpected?.[key];
     if (!carried || carried.reference !== reference) return null;
     return carried.expected ?? null;
@@ -164,7 +181,7 @@ export function computeUsMacro(raw, { fetchedAt, carryExpected = null } = {}) {
         ...(point.preliminary ? { preliminary: true } : {}),
       })),
     },
-    consensus: carryExpected?.consensusMatches === true ? carryExpected.consensus ?? null : null,
+    consensus: consensusUsable ? carryExpected.consensus ?? null : null,
   };
   return { ok: true, macro };
 }

@@ -52,6 +52,9 @@ test("真实的四个快照都能读出时间（防止字段改名后静默失�
       cache.set(snap.file, JSON.parse(await readFile(new URL(`../src/data/${snap.file}`, import.meta.url), "utf8")));
     }
     const ms = snap.at(cache.get(snap.file));
+    // optional 的快照允许"现在没有数据"（第 160 轮：过期的一致预期会被作废），
+    // 但不能出现"字段读不出来"—— 那是字段改名。
+    if (snap.optional && Number.isNaN(ms)) continue;
     assert.ok(Number.isFinite(ms), `${snap.label} 的时间字段读不出来（字段名是不是改了？）`);
   }
 });
@@ -150,4 +153,17 @@ test("界面上必须写出一致预期的时间（106 天的数据不能和 BLS
     severeAfterDays: 60,
   });
   assert.equal(fresh.severe, false);
+});
+
+test("optional 行：数据不存在不等于过旧（第 160 轮起过期预期会被作废）", () => {
+  const rows = ageRows(
+    [
+      { file: "a.json", label: "必需但缺失", at: () => Number.NaN },
+      { file: "b.json", label: "可选且缺失", at: () => Number.NaN, optional: true },
+    ],
+    { now: NOW },
+  );
+  assert.equal(rows[0].stale, true, "必需字段缺失要报");
+  assert.equal(rows[1].stale, false, "可选字段缺失不报，否则每周都红");
+  assert.equal(rows[1].ageDays, null);
 });

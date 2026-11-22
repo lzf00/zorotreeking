@@ -62,6 +62,7 @@ test("快照过旧的行数与文档描述一致（第 137 轮起美股两块都
       label: snap.label,
       maxAgeDays: snap.maxAgeDays,
       severity: (snap as any).severity,
+      optional: (snap as any).optional,
       at: () => snap.at(cache.get(snap.file)),
     });
   }
@@ -73,7 +74,9 @@ test("快照过旧的行数与文档描述一致（第 137 轮起美股两块都
   const warned = ageRows(withAt)
     .filter((row: any) => row.stale && row.severity === "warn")
     .map((row: any) => row.label);
-  assert.deepEqual(warned, ["美国宏观一致预期"], "警告级过旧清单变了：更新 known-debt 与这里");
+  // 第 160 轮起过期预期会被 computeUsMacro 直接作废（预期 → null），所以这里应为空；
+  // 若哪天又出现"还在用的旧预期"，这条会红。
+  assert.deepEqual(warned, [], "又有警告级过旧快照了：更新 known-debt 与这里");
   // 2026-11-22：宏观（BLS，第 136 轮）与行情（东方财富，第 137 轮）都由
   // `Refresh US market data` 工作流每天刷新，不再有过旧快照。
   // 这里保持"清单为空"的断言：一旦哪块又停了，测试会先把人叫醒。
