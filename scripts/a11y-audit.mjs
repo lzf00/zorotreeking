@@ -178,7 +178,10 @@ async function main() {
       const label = [url, scheme === "dark" ? "[dark]" : "", viewportValue !== "1280x900" ? `[${viewportValue}]` : ""]
         .filter(Boolean)
         .join(" ");
-      const response = await page.goto(base + url, { waitUntil: "domcontentloaded" });
+      // waitUntil: "load" 而不是 domcontentloaded（第 181 轮）：CI 的机器比本地慢，
+      // domcontentloaded 时刻 React 岛还没 hydrate，审到的是骨架屏 —— 于是"本地 0 违规、
+      // CI 有违规"这种两边看不同世界的结果。load 之后图片/字体也都到位，结论可复现。
+      const response = await page.goto(base + url, { waitUntil: "load" });
       // 构建产物里没有这个文件（例如审计跑到一半有人 rebuild）：别把 404 文本当成页面去审
       if (!response || response.status() >= 400) {
         skipped.push({ url: label, reason: `HTTP ${response?.status() ?? "无响应"}` });
@@ -265,6 +268,16 @@ async function main() {
     console.error(`✗ ${notFound}/${attempted} 个页面返回 404——dist/ 多半正在被重建。`);
     console.error("  审计期间不要跑 npm run gate / astro build，等构建完再跑。");
     process.exit(2);
+  }
+  // 第 181 轮：CI 红了，但日志要登录才能读 —— 于是"哪条规则、哪一页"只存在于 artifact 里。
+  // 把结论本身写成 annotation，任何人在公开的 Actions 页都能看到原因。
+  if (process.env.GITHUB_ACTIONS === "true") {
+    for (const v of grouped.slice(0, 20)) {
+      const example = v.pages_list?.[0] ?? v.selector;
+      console.log(`::error title=a11y ${v.id}（${v.impact}，${v.pages} 页）::${v.help}｜选择器 ${v.selector}｜例页 ${example}`);
+    }
+    if (grouped.length > 20) console.log(`::warning title=a11y::还有 ${grouped.length - 20} 类违规没写进注解，见 artifact a11y-report.json`);
+    if (skipped.length) console.log(`::warning title=a11y::跳过了 ${skipped.length} 个页面（自行跳转/无 JS 也失败），见报告`);
   }
   if (json) {
     console.log(JSON.stringify({ pages: results.length, skipped, grouped }, null, 2));
