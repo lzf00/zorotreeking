@@ -125,6 +125,39 @@ export function auditWorkflows(workflows, coverage) {
   return { rows, problems };
 }
 
+/**
+ * GitHub 的 workflow 解析器比 YAML 1.2 更严（第 180 轮实测）。
+ *
+ * 事故：`if: steps.due.outputs.due == 'true`（少一个右引号）在我们本地是**合法 YAML** ——
+ * `'` 出现在标量中间只是普通字符，`yaml.parse` 照收。但 GitHub 判：
+ *
+ *   Invalid workflow file: .github/workflows/a11y.yml#L1
+ *   (Line: 72, Col: 13): Unexpected symbol: ''true'
+ *
+ * 后果不是"这一步报错"，而是**整条 workflow 在启动阶段就挂**：event=push、耗时 <1 秒、
+ * 一个 job 都没有、check-runs 里查不到任何痕迹，Actions 页只留一行注释。
+ * 更隐蔽的是：这个 workflow 的注册名会变成文件路径（`.github/workflows/a11y.yml`），
+ * 而不是 `name:` 里写的人类可读名字 —— 那本身就是"从没成功解析过"的指纹。
+ *
+ * 这里只查能确定的一类：`if:` 值里单引号不配对（`if:` 是表达式，合法写法一定成对）。
+ */
+export function auditQuotePairs(sources) {
+  const problems = [];
+  for (const { file, text } of sources) {
+    text.split("\n").forEach((line, index) => {
+      const match = line.match(/^(\s*)(if|when):\s*(.+)$/);
+      if (!match) return;
+      const value = match[3].trim();
+      if (value.startsWith("|") || value.startsWith(">")) return; // 块标量，内容由 shell 解释
+      const quotes = (value.match(/'/g) ?? []).length;
+      if (quotes % 2 === 1) {
+        problems.push(`${file}:${index + 1} 的 ${match[2]}: 单引号不配对 —— GitHub 会判 Invalid workflow file，整条 workflow 启动即失败（本地 YAML 解析器不报）`);
+      }
+    });
+  }
+  return problems;
+}
+
 export function loadWorkflows(dir = DIR) {
   const files = readdirSync(dir).filter((f) => f.endsWith(".yml") || f.endsWith(".yaml"));
   return files.sort().map((file) => {
@@ -146,8 +179,13 @@ function main() {
   const workflows = loadWorkflows();
   const triggerAudit = auditWorkflows(workflows, coverage);
   const permissionAudit = auditReusablePermissions(workflows);
+  const quoteProblems = auditQuotePairs(
+    readdirSync(DIR)
+      .filter((f) => f.endsWith(".yml") || f.endsWith(".yaml"))
+      .map((file) => ({ file, text: readFileSync(path.join(DIR, file), "utf8") })),
+  );
   const rows = [...triggerAudit.rows];
-  const problems = [...triggerAudit.problems, ...permissionAudit.problems];
+  const problems = [...triggerAudit.problems, ...permissionAudit.problems, ...quoteProblems];
   if (json) {
     console.log(JSON.stringify({ rows, problems }, null, 2));
   } else {

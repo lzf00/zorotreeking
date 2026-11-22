@@ -757,6 +757,44 @@ if git diff --cached --quiet; then echo "没有新结果"; exit 0; fi
 `pathspec did not match` → 整条 add 失败。改成先 `ls` 判断存在再 add，
 报告才真的归档进 `reports/`（`reports/` 里其它历史产物仍然 gitignore，只有巡检报告 `-f`）。
 
+### 一个引号让整条 workflow 启动即死（第 180 轮，同轮修复）
+
+改完 a11y.yml 推上去，原来「从来没有运行记录」的 workflow **立刻跑了一次**，而且：
+
+```
+event: push   status: completed   conclusion: failure
+created_at == updated_at  (0 秒)   零 job   check-runs 里查不到任何东西
+```
+
+零 job + 零秒 + 事件是 `push`（文件里根本没有 push 触发器）= **GitHub 根本没解析这个文件**。
+两处线索互相印证：这个 workflow 在 API 里的 `name` 一直是**文件路径**而不是 `name:` 里写的人类
+可读名字；Actions 页的报错是：
+
+```
+Invalid workflow file: .github/workflows/a11y.yml#L1
+(Line: 72, Col: 13): Unexpected symbol: ''true'
+```
+
+原因是**我自己**在替换 `if:` 那一行时把结尾的单引号吃掉了：
+
+```yaml
+        if: steps.due.outputs.due == 'true      # ← 少一个右引号
+```
+
+这里最该记住的不是"我手滑了"，而是**为什么门禁没抓住**：`if: ... == 'true` 是**合法 YAML**
+（`'` 在标量中间只是普通字符），`yaml.parse` 照单全收，`check:workflows` 当时只校验权限图与
+触发方式。GitHub 的解析器更严 —— 它把这句判成语法错误，然后整条 workflow 启动即失败。
+
+于是补两道网，各管一头：
+
+| 网 | 位置 | 管什么 |
+|---|---|---|
+| `auditQuotePairs` | `check:workflows`（门禁） | `if:` / `when:` 值里单引号不配对 → 报错。块标量（`if: \|`）跳过，避免误报 |
+| `auditWorkflowRegistration` | 自动化体检（每周巡检） | 直接问 **GitHub 自己**：API 里 `name === path` 就是"我解析不了这个文件"。这条不依赖我们对"什么语法算坏"的猜测 |
+
+第二道网是这轮真正的收获：**与其猜 GitHub 讨厌什么语法，不如问它愿不愿意解析**。同一招还能
+覆盖所有我们想不到的语法坑 —— 名字退化成路径是它唯一会写在 API 里的"我读不懂"信号。
+
 ### 给「从没跑过」的审计换一个可靠上游（第 180 轮）
 
 179 轮的体检报出 `a11y.yml` **从来没有运行记录**。这不是"上周忘了跑"，是**从来没过**：

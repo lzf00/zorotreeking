@@ -137,6 +137,24 @@ export function auditAutomation(workflows, runs, now = new Date(), opts = {}) {
   return { rows, problems, inconclusive };
 }
 
+/**
+ * GitHub 解析不了的 workflow：注册名会变成文件路径（第 180 轮实测）。
+ *
+ * 这是唯一一个**由 GitHub 自己给出**的语法判定 —— 我们的 YAML 为了"合法"而合法，
+ * 但 GitHub 的解析器更严（`if:` 少一个引号就整条 workflow 启动即失败）。
+ * 判据很干脆：API 里 `name` 等于 `path`，说明 `name:` 从来没被读出来过。
+ */
+export function auditWorkflowRegistration(apiWorkflows) {
+  const problems = [];
+  for (const wf of apiWorkflows ?? []) {
+    if (!wf?.path || !wf?.name) continue;
+    if (wf.name === wf.path) {
+      problems.push(`${wf.path} GitHub 解析不了（workflow 名字显示成文件路径）—— 语法错误，整条 workflow 一启动就失败`);
+    }
+  }
+  return problems;
+}
+
 export function loadWorkflows(dir = WORKFLOW_DIR) {
   return readdirSync(dir)
     .filter((f) => f.endsWith(".yml") || f.endsWith(".yaml"))
@@ -163,12 +181,35 @@ function fetchRuns(file) {
   return parsed.workflow_runs.map((r) => ({ created_at: r.created_at, conclusion: r.conclusion, status: r.status }));
 }
 
+/** 读 GitHub 侧登记的 workflow 列表（用来看哪些文件 GitHub 根本解析不了）。 */
+function fetchWorkflowList() {
+  const args = [
+    "-sS",
+    "-H",
+    "Accept: application/vnd.github+json",
+    ...(TOKEN ? ["-H", `Authorization: Bearer ${TOKEN}`] : []),
+    `https://api.github.com/repos/${REPO}/actions/workflows?per_page=100`,
+  ];
+  const parsed = JSON.parse(execFileSync("curl", args, { encoding: "utf8" }));
+  if (!Array.isArray(parsed.workflows)) throw new Error(parsed.message ?? "API 返回里没有 workflows");
+  return parsed.workflows.map((w) => ({ name: w.name, path: w.path }));
+}
+
 function main() {
   const maxAgeDays = Number(valueOf("max-age-days") ?? 0);
   const offline = valueOf("runs");
   const workflows = loadWorkflows();
   let runs = {};
   const unfetched = new Set();
+  /** GitHub 自己说"这个文件我解析不了"的 workflow（名字退化成路径）。 */
+  const registrationProblems = [];
+  if (!offline) {
+    try {
+      for (const problem of auditWorkflowRegistration(fetchWorkflowList())) registrationProblems.push(problem);
+    } catch (error) {
+      console.error(`::warning title=自动化体检::读取 workflow 列表失败：${error instanceof Error ? error.message : error}`);
+    }
+  }
   if (offline) {
     runs = JSON.parse(readFileSync(path.resolve(ROOT, offline), "utf8"));
   } else {
@@ -182,10 +223,18 @@ function main() {
       }
     }
   }
-  const { rows, problems, inconclusive } = auditAutomation(workflows, runs, new Date(), { maxAgeDays, unfetched });
+  const { rows, problems: ageProblems, inconclusive } = auditAutomation(workflows, runs, new Date(), { maxAgeDays, unfetched });
+  // 解析错误和"逾期"是两类问题：前者连跑都跑不起来，最该第一时间看到。
+  const problems = [...registrationProblems, ...ageProblems];
 
   if (JSON_OUT) {
-    console.log(JSON.stringify({ generatedAt: new Date().toISOString(), repo: REPO, authenticated: Boolean(TOKEN), rows, problems, inconclusive }, null, 2));
+    console.log(
+      JSON.stringify(
+        { generatedAt: new Date().toISOString(), repo: REPO, authenticated: Boolean(TOKEN), rows, problems, registrationProblems, inconclusive },
+        null,
+        2,
+      ),
+    );
   } else {
     console.log(`| workflow | 触发 | 期望 | 上次成功 | 逾期 | 结论 |`);
     console.log(`| --- | --- | --- | --- | --- | --- |`);

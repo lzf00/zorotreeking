@@ -69,7 +69,7 @@ jobs:
       - run: npm ci
         if: steps.due.outputs.due == 'true'
       - run: npx playwright install --with-deps chromium
-        if: steps.due.outputs.due == 'true
+        if: steps.due.outputs.due == 'true'
       - name: Build
         if: steps.due.outputs.due == 'true'
         run: npm run build
