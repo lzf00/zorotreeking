@@ -757,6 +757,35 @@ if git diff --cached --quiet; then echo "没有新结果"; exit 0; fi
 `pathspec did not match` → 整条 add 失败。改成先 `ls` 判断存在再 add，
 报告才真的归档进 `reports/`（`reports/` 里其它历史产物仍然 gitignore，只有巡检报告 `-f`）。
 
+### 周日没跑，就永远缺一期（第 161 轮）
+
+顺着第 160 轮那条"先问谁负责刷新它"，把所有 workflow 的触发方式过了一遍：
+
+| workflow | 触发方式 | 还活着吗 |
+|---|---|---|
+| `deploy.yml` | push + cron | ✓ |
+| `daily-digest.yml` | cron ×2 | 不可靠（会整天不触发，靠部署补跑兜底） |
+| `freshness-watch.yml` | cron + **workflow_run** | ✓（第 96 轮就改对了） |
+| `lighthouse.yml` | **workflow_run** + cron | ✓ |
+| `a11y.yml` / `site-audit.yml` | 只有 cron | ✗（已由每周巡检接管） |
+| `deadlink-check.yml` | 只有 cron | ✗（每周巡检覆盖 900 条） |
+| **`weekly-roundup.yml`** | **只有 cron（周日）** | **✗ —— 这轮发现「本周看点」缺 W47** |
+
+`/ai/weekly-*` 是"本周看点"栏目，周日生成。今天就是周日，而 W47 不存在 ——
+说明这周的 cron 又没跑（和第 96 轮日报停更同款）。**缺一期之后没有任何机制会补。**
+
+修法沿用 `catch-up-digest` 那条路：在部署流程的同一个 job 里加一步自愈。
+
+- `scripts/check-weekly-roundup.mjs`：目标周 = **最近一个周日的 ISO 周**
+  （周日当天就是本周，周一到周六就是刚结束的那周）。这样既不会提前生成半周内容，
+  又能补上错过的周日。退出码 10=缺中文、11=缺英文、0=齐了。
+- `deploy.yml` 新步骤：缺才生成 → 补英文（`translate-digest.ts`，缺 en 会立刻死链）
+  → 占位符闸 → 中英成对闸 → 提交 → dispatch 一次部署。
+- 没有 LLM key 时只打 warning 不失败（CI 里有 key，本地没有）。
+
+顺手把 ISO 周的跨年边界写进测试（`2027-01-01` 属于 **2026-W53**、
+`2024-12-30` 属于 **2025-W01**）—— 这类边界错一天就会生成错周号的文件。
+
 ### 一致预期根本没有刷新任务（第 160 轮）
 
 第 159 轮只是把"106 天前"写在了界面上。这轮往下挖了一层，发现更本质的问题：

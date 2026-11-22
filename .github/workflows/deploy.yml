@@ -937,6 +937,79 @@ jobs:
             echo "::warning::内容已提交，但触发部署失败 —— 需要下一次 push 或 15:30 的定时部署才会生效"
           fi
 
+      - name: Weekly roundup (self-healing, 只在缺的时候生成)
+        # 为什么在这里（第 161 轮）：`weekly-roundup.yml` 只有 cron（周日 09:00 北京），
+        # 而这个仓库的 schedule 实测延迟 5–7.5 小时、甚至整天不触发。周日没跑 →
+        # 「本周看点」永久缺一期，站点照常构建、门禁全绿、没人发现。
+        # 这里跟着每次部署顺手检查：目标周 = 最近一个周日的 ISO 周（周日当天就是本周，
+        # 周一到周六就是刚结束的那周），缺才生成/missing_en 才翻译，已有就一句话跳过。
+        env:
+          DOUBAO_API_KEY: ${{ secrets.DOUBAO_API_KEY }}
+          ARK_API_KEY: ${{ secrets.ARK_API_KEY }}
+        run: |
+          set +e
+          note() { echo "$1"; echo "$1" >> "$GITHUB_STEP_SUMMARY"; }
+          node scripts/check-weekly-roundup.mjs --json > /tmp/roundup.json 2>&1
+          STATE=$?
+          WEEK=$(node -e 'console.log(require("/tmp/roundup.json").week||"")' 2>/dev/null)
+          note "本周看点检查（exit $STATE）：$(cat /tmp/roundup.json | tr '\n' ' ' | cut -c1-200)"
+          if [ "$STATE" -eq 0 ]; then
+            note "✓ 本周看点 $WEEK 中英都在，无需动作。"
+            exit 0
+          fi
+          if [ -z "${DOUBAO_API_KEY:-}${ARK_API_KEY:-}" ]; then
+            echo "::warning::本周看点缺 $WEEK，但没有 LLM key，跳过生成"
+            exit 0
+          fi
+          if [ "$STATE" -eq 10 ]; then
+            note "::warning::缺 $WEEK 的周报，尝试生成"
+            if ! npx tsx scripts/weekly-roundup.ts > /tmp/roundup.log 2>&1; then
+              REASON=$(grep -viE "^(npm |\$ |> )" /tmp/roundup.log | tail -4 | tr '\n' ' ' | cut -c1-300)
+              echo "::warning::周报生成失败：$REASON"
+              echo "生成失败原因：$REASON" >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+          fi
+          # zh 有了还是缺 en：站点模板按"中英成对"处理，缺 en 会立刻产生死链
+          if ! npx tsx scripts/translate-digest.ts --limit=2 > /tmp/roundup-tr.log 2>&1; then
+            REASON=$(tail -3 /tmp/roundup-tr.log | tr '\n' ' ' | cut -c1-240)
+            echo "::warning::周报英文版翻译失败，回滚，不发单语内容：$REASON"
+            git checkout -- src/content
+            exit 0
+          fi
+          # 质量闸：占位符（"摘要失败"）与中英成对
+          if ! node scripts/check-digest-placeholders.mjs --days=0; then
+            echo "::warning::周报里有占位符，回滚，不发布半成品"
+            git checkout -- src/content
+            exit 0
+          fi
+          node scripts/check-weekly-roundup.mjs > /tmp/roundup-after.log 2>&1
+          if [ $? -ne 0 ]; then
+            echo "::warning::周报产出不完整：$(tail -2 /tmp/roundup-after.log | tr '\n' ' ')"
+            git checkout -- src/content
+            exit 0
+          fi
+          git config user.name "zorotreeking-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add src/content/ai/weekly-*.mdx
+          if git diff --cached --quiet; then
+            note "周报没有新增文件，放弃提交（不制造空提交）。"
+            exit 0
+          fi
+          git commit -m "content: weekly roundup $WEEK"
+          git pull --rebase --autostash origin main || true
+          if ! git push origin main; then
+            echo "::warning::周报推送失败，下次部署会再试"
+            exit 0
+          fi
+          # 用 GITHUB_TOKEN 推的 commit 不会触发 workflow，要手动 dispatch 一次
+          if gh api -X POST "repos/${GITHUB_REPOSITORY}/actions/workflows/deploy.yml/dispatches" \
+               -f ref=main --silent; then
+            note "✓ 已补上本周看点 $WEEK 并触发一次部署"
+          else
+            echo "::warning::周报已提交，但触发部署失败 —— 需要下一次 push 才会生效"
+          fi
+
       - name: Refresh stale market data (self-healing)
         # 为什么在这里（第 146 轮）：行情/宏观快照由 refresh-us-macro.yml 的 cron 刷新，
         # 但第 145 轮实测 schedule 会延迟甚至整天不触发（日报就是这样停更两天的）。

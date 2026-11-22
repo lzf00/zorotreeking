@@ -59,3 +59,12 @@
   `macro.consensus.updated_at`。页面现在会写出真实时间，`check-market-data-age` 每周报
   `warn`（不挡发布）。要真的修，得让 `fetch-us-macro.mjs` 重新抓 Trading Economics
   （或换一个能稳定拿到的预期源）—— 属于数据源决策。
+
+## 第 161 轮补记
+
+- **只有 cron 触发的 workflow 在这个仓库等于不可靠**：`schedule` 实测延迟 5–7.5 小时，
+  也出现过整天不触发。现在已接管的：a11y / site-audit / deadlink（→ 每周巡检）、
+  weekly-roundup（→ 部署流程自愈）。仍只有 cron 的：`lighthouse-mobile.yml`
+  （移动端 Lighthouse）与 `refresh-us-macro.yml`（后者已由部署流程的行情自愈覆盖）。
+  移动端 Lighthouse 仍未接管 —— 我们自己的 vitals 测量（CLS/LCP/FCP）覆盖了同类信号，
+  是否值得为它引入 `@lhci/cli` 运行开销需要决策。
