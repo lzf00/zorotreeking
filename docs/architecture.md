@@ -689,6 +689,27 @@ npm run check:images -- --limit 150 --warn
 
 这条和 `check:ssr-clock`（第 82 轮）是同一类问题的两个面：**渲染里任何"现在"都必须是显式的**。
 
+### 先量环境，再改代码（第 149 轮）
+
+第 148 轮留下的问题是：`/invest/market/` 的 0.223 位移形态是「整页内容上移 24px」，
+说明首屏上方某块**变矮了** —— 最可能是兜底字体比网页字体宽，先用它排版时多一行，
+字体到货后少一行。但本机（macOS）兜底永远是 Arial / Menlo，量不出来；
+我也不可能把 DejaVu 装进 `~/Library/Fonts`（沙箱只允许写工作区，`Operation not permitted`）。
+
+所以这轮不做修复，先**让环境自己说话**：`scripts/report-font-env.mjs` 在真浏览器里
+把「本机装了哪些候选字体、各自需要多少 size-adjust、body 实际命中谁」打出来，
+deploy 里跑一次并发成 notice。本机结果（对照用）：
+
+```
+无衬线  ✓ Arial 107.1%   ✓ Helvetica 107.1%   ✗ DejaVu Sans（未安装）
+等宽    ✓ Menlo 99.7%    ✓ Courier New 100.0%  ✗ DejaVu Sans Mono（未安装）
+body 实际命中：Inter
+```
+
+CI 跑完这一行就知道 runner 上到底有没有 Liberation Sans / DejaVu。
+**先量再改**，是因为第 148 轮已经证明过一次：只有"谁在抖"、没有"环境是什么"，
+推断就会错——我修了等宽的兜底，`TD.font-mono` 的位移确实消失了，可 0.223 一点没动。
+
 ### 一个我看不见、也复现不了的 0.223（第 148 轮）
 
 CI 的弱网基线（只记录、不挡发布）连续几次都报同一句：

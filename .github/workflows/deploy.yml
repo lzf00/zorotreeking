@@ -209,6 +209,17 @@ jobs:
           node scripts/report-ci-status.mjs --context=smoke/runtime-mobile --state=$([ "$code" -eq 0 ] && echo success || echo failure) --log=/tmp/runtime-mobile.log
           exit "$code"
 
+      - name: Font environment (which fallback does the runner actually have)
+        # 第 149 轮：弱网 CLS 的归因卡在"runner 上兜底字体到底是谁"。这一行不做判断，
+        # 只让环境自己说话 —— 装了哪些字体、各自需要多少 size-adjust。
+        id: font-env
+        continue-on-error: true
+        run: |
+          set +e
+          out=$(node scripts/report-font-env.mjs --json 2>&1 | tail -1)
+          echo "字体环境：$out"
+          if [ -n "$out" ]; then echo "::notice::字体环境（runner 实测）：$out"; fi
+
       - name: Mobile perf baseline (throttled, only for the record)
         # 无节流时首屏指标永远是「局域网速度」：第 73 轮那个「LCP 被 15KB 衬线字体排队
         # 卡到 1.6 s」的问题，在 21 页无节流自检里只表现为「/ LCP 1220 ms」，看着不严重。
