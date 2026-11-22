@@ -143,3 +143,18 @@
   会在启动阶段放行」这一点需要下一轮拿到一次真实 success 才能盖棺。
 - `check-workflows` 的权限校验是**保守近似**：不解析 `write-all` / `read-all` 之外
   的古怪写法，也不跟踪 `secrets` 是否配全（那是另一类启动失败，只能靠运行结果发现）。
+
+## 第 178 轮补记
+
+- **`freshness-watch` 11-22 那次失败的精确原因仍是推断**：Actions 日志接口未登录读不到
+  （需要 `gh auth login`）。目前证据链是：仓库 issue 数为 0、`content/freshness` label 不存在、
+  失败步骤正是「Sync freshness issue」、后续判定被 skipped。修复按「缺 label → 422」这条
+  最可能路径做，同时把状态码解析、非 JSON 响应、任何异常都兜住 —— 无论当时是哪种错，
+  现在都不会再吞掉判定。
+- 修复后**尚未观测到一次真实运行**：下一次 `freshness-watch` 由 `Daily digest` 完成时触发
+  （`workflow_run`），而日报 cron 自己也才刚修好，所以两者都要等下一轮。
+
+- **本轮流程事故（自查）：** 我用 `cat >` 覆盖了 `tests/freshness-issue.test.ts`，把第 97 轮
+  原有的 6 条测试整个覆盖掉了（第 177 轮同样覆盖过 `tests/workflow-permissions.test.ts`）。
+  两次都是「新建测试文件」时没先 `git status` 看一眼它已存在。已恢复并在原文件上追加；
+  今后写测试前先确认路径是否已被跟踪。

@@ -47,12 +47,16 @@ jobs:
 
       # 只读 src/content 与脚本，不装依赖（这两个脚本没有第三方 import）
       - name: Sync freshness issue
+        # 第 178 轮：这一步只是"报告"。让它红的话，后面「到底有没有停更」的判定会被
+        # 直接跳过（GitHub 在一步失败后默认不再跑后续步骤），报警器坏掉反而吞掉警报。
+        continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: node scripts/publish-freshness-issue.mjs
 
       - name: Fail the run when a stream is stale
+        if: always()
         run: |
           set +e
           node scripts/check-freshness.mjs > /tmp/freshness.log 2>&1

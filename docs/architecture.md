@@ -757,6 +757,37 @@ if git diff --cached --quiet; then echo "没有新结果"; exit 0; fi
 `pathspec did not match` → 整条 add 失败。改成先 `ls` 判断存在再 add，
 报告才真的归档进 `reports/`（`reports/` 里其它历史产物仍然 gitignore，只有巡检报告 `-f`）。
 
+### 报警器坏掉的时候，警报一起没了（第 178 轮）
+
+177 轮修完权限，回头核对「为什么没人被通知」。答案是 `freshness-watch` 自己也在红：
+
+```
+2026-11-22T00:29Z  freshness-watch  schedule  failure
+  JOB watch → failure
+    1 Set up job                success
+    2 Checkout                  success
+    3 Setup Node 22             success
+    4 Sync freshness issue      failure   ← 挂在这里
+    5 Fail the run when a stream is stale   skipped
+```
+
+第 5 步才是「内容停没停更」的判定，而它被 **skipped**：GitHub 默认一步失败后不再跑后续
+步骤。于是报警器自身出错 → 真判定不执行 → 谁也不知道日报停了。**报警路径自己成了单点。**
+
+真正的触发条件也很朴素：仓库里当时 **issue 数为 0**，`content/freshness` 这个 label
+也**不存在**。第一次真要报警时，`POST /issues` 带着一个不存在的 label 会被 422 拒掉。
+
+修法三层：
+
+| 层 | 改法 |
+|---|---|
+| 解析 | `api()` 改成显式读 HTTP 状态码（`-w "\n%{http_code}"`），非 JSON 响应不再让 `JSON.parse` 抛异常，而是当作错误体处理 |
+| 补偿 | 422 且提到 label（`isMissingLabel`）时，先 `POST /labels` 建这个 label，再重试建 issue；建 label 失败就退化成不带 label 建 issue |
+| 不挡判定 | 报告步骤 `continue-on-error: true`，判定步骤 `if: always()`；脚本整体 try/catch，出错只打 `::warning::` 并 exit 0 |
+
+和 177 轮是同一个教训的两次显形：**守卫/报警器本身必须被同等对待** —— 守卫只看一半输入
+等于没有守卫（177），报警器自己能用 bad 路径挂掉等于没有报警（178）。
+
 ### 一个权限字段让日报静默停更四天（第 177 轮）
 
 查内容断档时顺手看了 Actions 的运行记录（公开仓库的 Events API 免登录可读），
