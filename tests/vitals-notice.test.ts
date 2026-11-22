@@ -34,6 +34,13 @@ test("CLS 超过 0.1 但没超预算时发 notice（带元素）", async () => {
   assert.match(block.slice(0, 400), /row\.shifts/);
 });
 
+test("notice 里带字体到货时间线（判断是不是换字体害的）", async () => {
+  const script = await read("scripts/check-runtime.mjs");
+  assert.match(script, /endsWith\("\.woff2"\)/, "要采集 woff2 的到货时间");
+  assert.match(script, /字体到货：/, "notice 里要写出时间线，否则下一轮还得猜");
+  assert.match(script, /fonts: worstRun\?\.fonts/, "中位数行要保留字体信息");
+});
+
 test("notice 只在「不挡发布」的区间发，超预算仍然照常判失败", async () => {
   const script = await read("scripts/check-runtime.mjs");
   const notice = script.indexOf("if (row.cls > 0.1 && row.cls <= CLS_BUDGET)");

@@ -310,7 +310,7 @@ async function main() {
       }
       if (VITALS) {
         await page.addInitScript((explainMode) => {
-          window.__vitals = { lcp: 0, cls: 0, long: 0, shifts: [] };
+          window.__vitals = { lcp: 0, cls: 0, long: 0, shifts: [], fonts: [], fontStatus: "" };
           try {
             new PerformanceObserver((list) => {
               for (const entry of list.getEntries()) {
@@ -345,6 +345,19 @@ async function main() {
             new PerformanceObserver((list) => {
               for (const entry of list.getEntries()) window.__vitals.long += entry.duration;
             }).observe({ type: "longtask", buffered: true });
+            // 字体到货时间：CLS 的时刻若紧跟某个 woff2，就是换字体害的（第 150 轮）
+            const recordFonts = () => {
+              window.__vitals.fonts = performance
+                .getEntriesByType("resource")
+                .filter((entry) => entry.name.endsWith(".woff2"))
+                .map((entry) => ({ name: entry.name.split("/").pop().slice(0, 28), at: Math.round(entry.responseEnd) }))
+                .sort((a, b) => a.at - b.at);
+            };
+            new PerformanceObserver(recordFonts).observe({ type: "resource", buffered: true });
+            document.fonts?.addEventListener?.("loadingdone", () => {
+              window.__vitals.fontStatus = "done";
+              recordFonts();
+            });
           } catch {}
         }, EXPLAIN);
       }
@@ -381,6 +394,9 @@ async function main() {
           lcp: Math.round(window.__vitals?.lcp ?? 0),
           lcpEl: window.__vitals?.lcpEl ?? "",
           cls: Number((window.__vitals?.cls ?? 0).toFixed(3)),
+          // 字体到货时间：CLS 的位移时刻如果紧跟在某个 woff2 的 responseEnd 之后，
+          // 那就是换字体造成的；否则要去别处找（第 150 轮：三个假说都因此被证伪）
+          fonts: (window.__vitals?.fonts ?? []).slice(-6),
           long: Math.round(window.__vitals?.long ?? 0),
           shifts: window.__vitals?.shifts ?? [],
           fcp: Math.round(performance.getEntriesByName("first-contentful-paint")[0]?.startTime ?? 0),
@@ -438,6 +454,7 @@ async function main() {
         cls: mid(rows.map((row) => row.cls)),
         long: mid(rows.map((row) => row.long)),
         shifts: worstRun?.shifts ?? [],
+        fonts: worstRun?.fonts ?? [],
       });
     }
     for (const row of medians) {
@@ -450,7 +467,12 @@ async function main() {
       // 而 Actions 日志接口是 403，看不到逐页明细。
       if (row.cls > 0.1 && row.cls <= CLS_BUDGET) {
         const detail = (row.shifts ?? []).slice(0, 3).join(" / ") || "（没有 source 信息）";
-        console.log(`::notice title=CLS ${row.cls}（超过 good 线 0.1）::${row.url} ← ${detail}`);
+        // 字体时间线：用来判断位移是不是"换字体"造成的 —— 别再把三种假说轮流猜一遍
+        const fonts = (row.fonts ?? []).map((font) => `${font.name}@${font.at}ms`).join(", ");
+        console.log(
+          `::notice title=CLS ${row.cls}（超过 good 线 0.1）::${row.url} ← ${detail}` +
+            (fonts ? `｜字体到货：${fonts}` : ""),
+        );
       }
       const lcpMessage = `LCP ${row.lcp} ms 超过 ${LCP_LIMIT} ms（先排查字体/大图，用 --explain 看位移）`;
       if (row.lcp > LCP_LIMIT) {
