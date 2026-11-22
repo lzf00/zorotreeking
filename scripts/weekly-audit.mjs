@@ -17,7 +17,7 @@
  *   - 报告进 `reports/weekly-audit-<date>.md`，和已有的 deadlinks-*.json 同类归档。
  */
 import { execFile } from "node:child_process";
-import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { appendFileSync, existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -141,6 +141,16 @@ async function main() {
       )}\n`,
     );
     console.log(`\n报告：${path.relative(ROOT, reportPath)}`);
+    // 提交步骤可能失败（reports/ 是 gitignore 的），所以报告内容同时写进 step summary：
+    // 这样"巡检跑过没有、结果怎样"永远能从 CI 页面上看到，不只依赖那次 commit。
+    const summaryPath = process.env.GITHUB_STEP_SUMMARY;
+    if (summaryPath) {
+      try {
+        appendFileSync(summaryPath, `${lines.join("\n")}\n`);
+      } catch (error) {
+        console.log(`（step summary 写入失败：${error?.message ?? error}）`);
+      }
+    }
   } else {
     console.log("\n（--dry-run：不写报告和戳记）");
   }

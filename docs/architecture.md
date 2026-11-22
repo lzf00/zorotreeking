@@ -732,6 +732,26 @@ X /api 接口面有接口不可用（见上方 ✗ 行）
 `/invest/digest/` 这次是单独登记的，理由写的是结构原因（每交易日一行、按日增长）
 和结构方案（分页 / 只渲染最近 N 期），不是"它超了所以放过它"。
 
+#### 附带事故：巡检跑完了，产物没进仓库
+
+第一次上线后看 CI：注解里明明有 `0/3 项有告警，已写入 reports/`，但仓库里**没有**那个
+bot commit，`src/data/weekly-audit.json` 也不在 git 里。
+
+原因很典型：`reports/` 是 gitignore 的，而提交步骤写的是
+
+```bash
+git add src/data/weekly-audit.json reports/     # ← 整条命令因为"路径被忽略"失败
+if git diff --cached --quiet; then echo "没有新结果"; exit 0; fi
+```
+
+`git add` 一口气失败、**什么都没暂存**，于是下一句"没有新结果"照常执行 —— 静默假绿。
+后果不是灾难，但性质是坏的：戳记进不了仓库 → 每次部署都会重跑巡检（本该 7 天一次），
+报告也永远不归档。
+
+修法三条：`git add -f` 且只挑 `weekly-audit-*` 产物；没有产物时发 `::warning::` 而不是
+"正常结束"；报告内容同时写进 `$GITHUB_STEP_SUMMARY`，这样提交失败也能在 CI 页面上
+看到巡检结论，不必依赖那次 commit 成功。
+
 ### 三个"每周巡检"从建立起就没跑过（第 153 轮）
 
 `site-audit.yml`、`a11y.yml`、`freshness-watch.yml` 都只靠 `schedule: cron`。

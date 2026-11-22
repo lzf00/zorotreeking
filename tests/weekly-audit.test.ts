@@ -35,6 +35,16 @@ test("没有 dist 时明确跳过外链，不许假绿", async () => {
   assert.match(script, /跳过站外链接体检/, "跳过必须说出来");
 });
 
+test("巡检产物必须真的进仓库（reports/ 是 gitignore 的）", async () => {
+  const deploy = await read(".github/workflows/deploy.yml");
+  // 事故（第 153 轮）：`git add reports/` 因为路径被忽略整体失败 → 什么都没暂存 →
+  // 下一步静默输出"没有新结果"。巡检跑了、戳记没进仓库，于是每次部署都会重跑。
+  assert.match(deploy, /git add -f src\/data\/weekly-audit\.json reports\/weekly-audit-\*\.md/, "提交要用 -f 且只挑巡检产物");
+  assert.match(deploy, /没有可提交的产物/, "没有产物时要报警，不能当成正常");
+  const script = await read("scripts/weekly-audit.mjs");
+  assert.match(script, /GITHUB_STEP_SUMMARY/, "报告要写进 step summary，提交失败也看得见结果");
+});
+
 test("外链体检分批跑，缓存进仓库（否则每次全量重抓十几分钟）", async () => {
   const script = await read("scripts/weekly-audit.mjs");
   assert.match(script, /--limit/, "要限量");
