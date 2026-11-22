@@ -13,8 +13,8 @@
  * 等 body 收完再回包，全都不行），`networkidle` 等不到 → `check:hydration` 全站超时。
  * Playwright 的 `route.fulfill` 走的是浏览器自己的响应路径，没有这个坑。
  */
-export async function stubApi(page, { body = '{"ok":true}' } = {}) {
+export async function stubApi(page, { body = '{"ok":true}', status = 200 } = {}) {
   await page.route("**/api/**", (route) =>
-    route.fulfill({ status: 200, contentType: "application/json", body }),
+    route.fulfill({ status, contentType: "application/json", body }),
   );
 }

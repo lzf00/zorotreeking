@@ -47,6 +47,7 @@
 | `check:og` | 分享卡（OG 图存在且尺寸正确） |
 | `check:ssr-clock` | SSR 时间戳不漂移（避免水合不一致） |
 | `check:hydration` | 每个岛在浏览器里真的水合 |
+| `check:degraded` | 把 `/api/**` 全拦成 500，6 个关键模板仍须可读（不许白屏 / undefined / 未捕获异常，第 166 轮） |
 | `check:search:dist` | 本地起服务跑 Pagefind 搜索探针；断言索引是最新的（最新日报排进前 3）、命中不是死链 |
 | `check:i18n-leaks` | 英文内容里不许新增未翻译的中文正文（存量在 `scripts/i18n-leaks-baseline.json`） |
 | `check:a11y:sample` | 从 sitemap 分节抽样 12 页测 a11y（每周巡检，seed=ISO 周，补手写清单的盲区） |

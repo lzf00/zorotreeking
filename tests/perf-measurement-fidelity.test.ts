@@ -20,7 +20,9 @@ const read = (path: string) => readFile(new URL(`../${path}`, import.meta.url), 
 test("测量用的浏览器会把 /api/** 拦成极小响应", async () => {
   const stub = await read("scripts/lib/stub-api.mjs");
   assert.match(stub, /page\.route\("\*\*\/api\/\*\*"/, "要拦 /api/**");
-  assert.match(stub, /route\.fulfill\(\{ status: 200/, "要 fulfill 而不是 abort：abort 会让前端进重试分支");
+  assert.match(stub, /route\.fulfill\(\{ status, contentType: "application\/json", body \}/, "要 fulfill 而不是 abort：abort 会让前端进重试分支");
+  // 第 166 轮起 status 可覆盖（降级巡检要 500），但性能测量的默认值必须是 200 + 极小体
+  assert.match(stub, /status = 200/, "默认必须是 200：性能巡检量的就是「接口通畅」那一半");
   const body = /\{"ok":true\}/.test(stub);
   assert.ok(body, "响应体要极小");
 });
