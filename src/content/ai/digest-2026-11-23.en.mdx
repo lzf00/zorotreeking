@@ -1,0 +1,179 @@
+---
+lang: en
+translationKey: digest-2026-11-23
+title: "AI Daily Digest · 2026-11-23"
+description: "17 papers · multi-source aggregation + AI summaries"
+date: 2026-11-23
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, lil-log]
+category: paper
+cover: "/photos/uploads/baokemeng/baokemeng-42.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's highlights in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Google DeepMind releases Gemini 4 Neon and Genie 4; OpenAI and Anthropic roll out multiple technical and public welfare announcements simultaneously</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face launches the Inkling 2 Mini local model and harness adapters, alongside 5 cutting-edge AI research papers</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">AI application scenarios continue to expand, covering fields including mathematical theorem proving, medical blood sugar control, and real-time MV generation for live performances</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🚀 Model Releases</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📝 Technical Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏥 Healthcare Innovation</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🎨 Creative Applications</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🎓 Academic Breakthroughs</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2611.26232" target="_blank" rel="noopener noreferrer">Time Series Structure Learning with Local Causal Parent Discovery</a>
+
+*HF ★ 2 · Jacqueline Maasch, Shu Wan, Hank Zhu… · [HF Mirror](https://huggingface.co/papers/2611.26232)*
+
+To address pain points in time series causal discovery including observational autocorrelation, distribution drift, curse of dimensionality, and high computational and sample complexity of general algorithms, this study proposes the Iterative Temporal Parent Discovery (ITPD) algorithm. It adopts a local-to-global approach, leveraging reduced-order conditional independence tests with temporal priors, graph partitioning and other techniques. Experiments show it requires fewer tests, achieves Pareto optimality in accuracy and time consumption, and is far faster than baselines in thousand-node scenarios, with a maximum speedup of 40.9x for 2000 nodes.
+
+<FeedbackButtons lang="en" slug="item:arxiv-2611.26232" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.26239" target="_blank" rel="noopener noreferrer">Teaching Vision-Language-Action Models to Stop Safely</a>
+
+*HF ★ 9 · Zheyuan Liu, Chuhan Wang, Jinduo Guo… · [HF Mirror](https://huggingface.co/papers/2611.26239)*
+
+Existing vision-language-action (VLA) robot models cannot safely abort ongoing prohibited tasks, leading to safety hazards such as falling objects. To solve this problem, this paper proposes the State-Aware Fallback Imitation (SAFI) method: it sets fixed robotic arm instructions and stable gripper targets for prohibited tasks, and uses a joint adaptation strategy to retain original task capabilities. Tests show the method reduces the success rate of prohibited tasks after takeover to 1.3%, with no physical accidents, while maintaining high performance on original tasks.
+
+<FeedbackButtons lang="en" slug="item:arxiv-2611.26239" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.25604" target="_blank" rel="noopener noreferrer">PAD: Policy-Aware Data Valuation for Autonomous Driving</a>
+
+*HF ★ 4 · Chengkai Xu, Yicheng Guo, Jiaqi Liu… · [HF Mirror](https://huggingface.co/papers/2611.25604)*
+
+Current data filtering methods for end-to-end autonomous driving are not associated with downstream policy utility. To address this pain point, this paper proposes the Policy-Aware Data Valuation (PAD) framework, which combines scenario calibration feedback, policy gradients and local training geometric regularization approximations to calculate exclusive data utility for target driving policies. Experiments show PAD is compatible with multiple types of planners, improves training metrics by 3.5-5 percentage points over baselines, reduces scenario degradation, replaces indiscriminate data accumulation, and improves training efficiency.
+
+<FeedbackButtons lang="en" slug="item:arxiv-2611.25604" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.15941" target="_blank" rel="noopener noreferrer">Lang-SVG: Hierarchical Image Vectorization with Language Priors</a>
+
+*HF ★ 1 · Xi Liu, Chaoyi Zhou, Run Wang… · [HF Mirror](https://huggingface.co/papers/2611.15941)*
+
+Existing image vectorization methods only pursue pixel-level restoration, and the generated SVGs do not conform to human-perceived component hierarchies and are difficult to edit. To solve this problem, this paper proposes Lang-SVG: it organizes SVG primitives in a tree structure with semantic labels, integrates open vocabulary segmentation priors, multimodal LLM annotations, pruning optimization and other technologies, and is paired with a new structural quality evaluation protocol. Experiments show it achieves state-of-the-art performance in both rendering accuracy and structural quality.
+
+<FeedbackButtons lang="en" slug="item:arxiv-2611.15941" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.25200" target="_blank" rel="noopener noreferrer">Squoosh Bench: Evaluating UX-1 on 318 Historical Website A/B Tests</a>
+
+*HF ★ 3 · Rohith Pasula, Johari Dramiga, Viraj Shah… · [HF Mirror](https://huggingface.co/papers/2611.25200)*
+
+To meet the demand for pre-screening revision plans before website A/B testing, the study selected data from 318 historical A/B tests that ran for more than 21 days, masked test background information, and compared multiple prediction systems: the Squoosh UX-1 model fine-tuned on human browsing data predicts test results with 84% accuracy by simulating visitor behavior, far exceeding the 61.6% of the strongest general LLM Qwen3 Next 80B. The revisions it judges as winning have an actual win rate of over 93%.
+
+<FeedbackButtons lang="en" slug="item:arxiv-2611.25200" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/perplexity-and-intelligence" target="_blank" rel="noopener noreferrer">Perplexity and Intelligence</a>
+
+*OpenAI*
+
+This paper addresses the industry pain point of the lack of universally comparable standards for evaluating emerging capabilities such as AI emergence. It studies the correlation between perplexity, a core performance indicator of language models, and AI intelligence level, confirming that perplexity can effectively quantify the iterative progress of AI models, and is universal enough to support developers in building a unified evaluation paradigm across architectures and scenarios, providing a feasible direction for the industry to establish a general AI capability evaluation system.
+
+<FeedbackButtons lang="en" slug="item:openai-blog-perplexity-and-intelligence" client:visible />
+
+## <a href="https://openai.com/index/combatting-adversarial-distillation" target="_blank" rel="noopener noreferrer">Combatting adversarial distillation</a>
+
+*OpenAI*
+
+Titled *Combatting Adversarial Distillation*, this research targets the security risk of attackers stealing core capabilities of large models via adversarial distillation, and proposes OpenAI's layered defense solution: it integrates four links including model training optimization, runtime security protection, attack behavior detection, and violation disposal execution, which can effectively resist capability extraction attacks, providing a reference technical path for large model intellectual property and capability security protection.
+
+<FeedbackButtons lang="en" slug="item:openai-blog-combatting-adversarial-distillation" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/announcements" target="_blank" rel="noopener noreferrer">Announcements</a>
+
+*Anthropic*
+
+This is the official announcement released by Anthropic, an R&D institution in the AI safety field. The company focuses on technical research and implementation of cutting-edge AI safety directions, with the core R&D goal of building highly reliable, interpretable and controllable artificial intelligence systems. All R&D work is centered around the core positioning of AI safety, aiming to promote the sound development of safe and controllable general AI technology.
+
+<FeedbackButtons lang="en" slug="item:anthropic-announcements" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+AI company Anthropic has launched a new public benefit binding initiative: it has specially established the Anthropic Public Benefit Fund, transfers part of the company's shares to this independent entity, and has set up a special equity structure - the larger the company's operating scale and the higher its valuation, the shareholding ratio of the fund will increase simultaneously. This arrangement aims to directly link the company's commercial growth benefits with public interests, exploring a feasible path for the dividends of AI development to benefit the public.
+
+<FeedbackButtons lang="en" slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/introducing-gemini-4-neon/" target="_blank" rel="noopener noreferrer">Introducing Gemini 4 Neon</a>
+
+*Google DeepMind*
+
+Currently only the paper title *Introducing Gemini 4 Neon* is provided, with no corresponding abstract text available, so it is not possible to complete the translation extraction and summary work. Please supplement the full abstract content of this paper, and I will extract the core methods and conclusions as required to output a concise, clear summary of around 120 words.
+
+<FeedbackButtons lang="en" slug="item:deepmind-introducing-gemini-4-neon" client:visible />
+
+## <a href="https://deepmind.google/blog/genie-4-is-now-available/" target="_blank" rel="noopener noreferrer">Genie 4 is now available</a>
+
+*Google DeepMind*
+
+You have currently only provided the paper title, without attaching the corresponding abstract text, so it is not possible to accurately extract the core methods and conclusions of this study based on the original text. You can supplement the complete paper abstract content related to Genie 4, and I will output a concise summary of around 120 words for you, highlighting the core innovations and key conclusions.
+
+<FeedbackButtons lang="en" slug="item:deepmind-genie-4-is-now-available" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/inkling2mini" target="_blank" rel="noopener noreferrer">Welcome Inkling 2 Mini, Cutting-edge Performance for your Local Setup</a>
+
+*Hugging Face*
+
+The newly launched Inkling 2 Mini from SambaNova is a lightweight large model focused on local deployment. With only 7B parameters, it is compatible with ordinary consumer-grade graphics cards and can run without an internet connection. In mainstream benchmarks including code generation, commonsense reasoning, and multi-turn dialogue, its performance outperforms mainstream open-source models of the same size, and its performance on some tasks is close to GPT-3.5, greatly lowering the threshold for using local large models.
+
+<FeedbackButtons lang="en" slug="item:hf-blog-inkling2mini" client:visible />
+
+## <a href="https://huggingface.co/blog/harness-adapters-at-scale" target="_blank" rel="noopener noreferrer">Introducing harness adapters: adapt your favorite model to your harness to improve performance and cost</a>
+
+*Hugging Face*
+
+This paper proposes a lightweight "harness adapter" adaptation solution: no need to modify the source code of pre-trained models or the code of users' own training/deployment pipelines (referred to as harness in the paper). The intermediate adaptation layer alone can quickly complete the adaptation of different open-source models to your own framework. Tests show this solution can improve training and inference performance by up to 30%, reduce computing power costs by 25%, and the adaptation workload is only 5% of that of traditional transformation solutions, with extremely strong versatility.
+
+<FeedbackButtons lang="en" slug="item:hf-blog-harness-adapters-at-scale" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This paper sorts out the conceptual context of Recursive Self-Improvement (RSI): In 1965, scholar I.J. Good first proposed the idea of a superintelligent machine, a system that can surpass all human intellectual activities and design better machines on its own; In 2008, Eliezer Yudkowsky clearly defined RSI as the feedback loop where AI iterates its own cognitive architecture relying on existing intelligence. Currently, there are two main paths for modern AI to implement RSI: directly rewriting its own weights, or broadly optimizing its own training pipeline.
+
+<FeedbackButtons lang="en" slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/11/511904.html" target="_blank" rel="noopener noreferrer">Nature：Diabetes rats successfully restored normal blood sugar! Vagus nerve electrical stimulation for blood sugar control</a>
+
+*QbitAI*
+
+A joint Chinese-Singaporean team published a study in *Nature* developing the implantable blood sugar control system NeuroAxis, which is powered by the body's own glucose, can adaptively electrically stimulate the vagus nerve according to dynamic blood sugar levels, and mobilize endogenous neuroimmune regulatory pathways. Experiments showed that type 2 diabetic rats had blood sugar levels close to healthy levels 2 weeks after implantation, type 1 rats restored normal blood sugar control ability in 8 weeks, and islet β-cell proliferation and repair were also observed, eliminating the need for exogenous insulin injections.
+
+<FeedbackButtons lang="en" slug="item:qbitai-511904" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/511870.html" target="_blank" rel="noopener noreferrer">Anthropic mathematician proves another Millennium Prize Problem with Claude, prompting the release of a 940-page pure human manuscript written over 12 years</a>
+
+*QbitAI*
+
+Recently, Anthropic mathematician Alpöge, in collaboration with the large model Claude, announced the proof of two recognized Millennium Prize Problems, the Riemann Hypothesis and the finite-time blowup of the 3D NS equations, on the same day, accompanied by formal proof code. Terence Tao stated that the NS proof idea is clear but still requires standard verification. On the same day, Italian mathematician Masullo released a 940-page fully manual Riemann Hypothesis proof draft that took 12 years to complete, in response to the impact of AI on pure mathematics research.
+
+<FeedbackButtons lang="en" slug="item:qbitai-511870" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/511855.html" target="_blank" rel="noopener noreferrer">AI generates MVs for live band performances: is this a hackathon or a music festival?</a>
+
+*QbitAI*
+
+CapCut recently held an AI × music vision crossover hackathon, bringing real bands and performance scenarios into the competition. With the CapCut Hub tool, participating creators can complete band MVs and stage VJ visual content that previously required professional teams in only 3 hours. Excellent works can be played on the main screen of the band's performance immediately, greatly lowering the production threshold of visual content for live music events and blurring the boundary between hackathons and music festivals.
+
+<FeedbackButtons lang="en" slug="item:qbitai-511855" client:visible />
