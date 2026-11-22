@@ -83,7 +83,8 @@ async function main() {
   // --ignore-gaps：11-19/11-20 那两天的历史断档抓不回来（欠账 #12），
   // 不带这个参数等于每周都报一次同一个不可能修的错。断档本身仍会打在报告里。
   results.push(await run("内容更新节奏", process.execPath, ["scripts/check-freshness.mjs", "--ignore-gaps"], 120_000));
-  // 站外链接：5535 条全抓要十几分钟，装不进部署。缓存提交在仓库里、每次最多刷 900 条，
+  // 站外链接：5535 条全抓要十几分钟，装不进部署。缓存提交在仓库里（reports/ 是 gitignore 的，
+  // 所以放 src/data/）、每次最多刷 900 条，
   // 六周左右轮完一遍；缓存过期（7 天）的条目才会真的重新抓。
   // 外链体检是从 dist 里收集 URL 的：没有 dist 就会「0 条链接、顺利通过」—— 沉默的假绿。
   const hasDist = existsSync(path.join(ROOT, "dist"));
@@ -93,7 +94,7 @@ async function main() {
     await run(
       "站外链接体检（分批）",
       process.execPath,
-      ["scripts/check-external-links.mjs", "--json", "--limit", "900", "--cache=reports/external-links-cache.json"],
+      ["scripts/check-external-links.mjs", "--json", "--limit", "900", "--cache=src/data/external-links-cache.json"],
       600_000,
     ),
   );

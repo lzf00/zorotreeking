@@ -38,10 +38,10 @@ test("没有 dist 时明确跳过外链，不许假绿", async () => {
 test("外链体检分批跑，缓存进仓库（否则每次全量重抓十几分钟）", async () => {
   const script = await read("scripts/weekly-audit.mjs");
   assert.match(script, /--limit/, "要限量");
-  assert.match(script, /--cache=reports\/external-links-cache\.json/, "缓存路径要提交进仓库");
+  assert.match(script, /--cache=src\/data\/external-links-cache\.json/, "缓存路径要提交进仓库");
   const links = await read("scripts/check-external-links.mjs");
   assert.match(links, /--cache=/, "脚本要支持自定义缓存路径");
-  const cache = JSON.parse(await read("reports/external-links-cache.json")) as Record<string, { at: number }>;
+  const cache = JSON.parse(await read("src/data/external-links-cache.json")) as Record<string, { at: number }>;
   assert.ok(Object.keys(cache).length > 1000, `缓存条目太少（${Object.keys(cache).length}），分批刷新会退化成全量`);
 });
 

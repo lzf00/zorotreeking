@@ -757,7 +757,7 @@ node scripts/weekly-audit.mjs --max-age-days=7
 并且在脚本里加了一道明说：没有 dist 就打印"跳过站外链接体检"，不许悄悄算通过。
 
 **坑二：全量外链体检装不进部署。** 5535 条链接全抓要十几分钟。改成把缓存
-（`reports/external-links-cache.json`，5535 条历史结果）提交进仓库，每次最多刷 900 条，
+（`src/data/external-links-cache.json`（`reports/` 是 gitignore 的），5535 条历史结果）提交进仓库，每次最多刷 900 条，
 6 周左右轮完一遍；缓存 7 天过期，过期的才真抓。
 
 顺带说明：`check-freshness` 带 `--ignore-gaps` —— 11-19/11-20 那两天断档抓不回来
