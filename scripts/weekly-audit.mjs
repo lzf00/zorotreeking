@@ -111,6 +111,20 @@ async function main() {
     ),
   );
 
+  // 全量巡检（site-audit.yml 本体）：把 sitemap 里每一页都真的加载一次，找"某一类页面集体坏掉"。
+  // 抽样 21 页的 check-runtime 永远覆盖不到长尾（800+ 相册页、几十条路线页、几百篇日报）。
+  // 实测 1192 页 ~200 秒，只在每周跑一次。
+  if (hasDist) {
+    results.push(await run(
+      "全量巡检（每页都真加载）",
+      process.execPath,
+      ["scripts/audit-site.mjs", "--concurrency=4", `--out=reports/audit-site-${isoDay(now)}.jsonl`],
+      900_000,
+    ));
+  } else {
+    console.log("⏭️  没有 dist，跳过全量巡检（它要逐页加载构建产物）");
+  }
+
   // 完整 a11y 巡检（64 项，明暗两套）：这是 a11y.yml 的唯一内容，cron 从没触发过。
   // 只在这一步有 dist 的前提下跑；chromium 由 build-and-deploy 前面的步骤装好。
   if (hasDist) {

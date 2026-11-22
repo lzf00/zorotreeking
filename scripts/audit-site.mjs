@@ -25,6 +25,7 @@ import path from "node:path";
 import { chromium } from "playwright";
 
 import { serveDist, chromePath } from "./lib/serve-dist.mjs";
+import { stubApi } from "./lib/stub-api.mjs";
 
 /** 简单命令行解析：--k=v / --k v / --flag */
 function parseArgs(argv) {
@@ -168,6 +169,9 @@ async function main() {
         hasTouch: true,
       });
       const page = await context.newPage();
+      // 静态产物里没有 /api：不拦的话每页要白扛一个 124 KB 的 404 页面（实测把
+      // "中位下载量"从 ~200 KB 抬到 343 KB，第 155 轮）。这里和 check-runtime 用同一套桩。
+      await stubApi(page);
       // 真实下载量：用 CDP 的 encodedDataLength 累加。
       // 不能从 dist 里「引用了哪些文件」去算——`<picture>` 的 `<img src>` 兜底图、
       // 灯箱的原始大图都会出现在 HTML 里，但现代浏览器根本不会下载（实测 /photo/hudieren/

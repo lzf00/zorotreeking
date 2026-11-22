@@ -757,6 +757,36 @@ if git diff --cached --quiet; then echo "没有新结果"; exit 0; fi
 `pathspec did not match` → 整条 add 失败。改成先 `ls` 判断存在再 add，
 报告才真的归档进 `reports/`（`reports/` 里其它历史产物仍然 gitignore，只有巡检报告 `-f`）。
 
+### 全站 1192 页第一次真的被逐页加载（第 157 轮）
+
+`site-audit.yml` 的正体 `audit-site.mjs` 从建立起没跑过（cron 不触发，第 153 轮只补了
+它里面的外链体检）。这轮把它接进每周巡检，并拿本地 `dist` 全量跑了一遍：
+
+```
+巡检完成：1192 页 / 205s · 失败 0 页
+状态码分布：200×1192
+下载量：中位 219 KB / p95 223 KB / 最重 340 KB
+     340 KB (26 请求)  /photo/hudieren/
+```
+
+**第一次跑出来是"中位 343 KB / 最重 724 KB（/invest/）"**，我差点当成真问题去查大页面。
+原因是同一个坑：`audit-site` 也用 `serveDist` 起的静态服务，页面里的 `/api/*` 拿不到文件
+→ 回 124 KB 的 `404.html`。`/invest/` 有 3 个 API 请求，于是凭空多出 ~370 KB。
+接上和 `check-runtime` 同一个 `stubApi` 之后，数字变成中位 219 KB、最重 340 KB。
+
+结论：**中位 219 KB、最重的 340 KB 是相册页（图片），都在合理范围**。
+真正踩过的教训是第 155 轮那条：先怀疑尺子。
+
+现在一次完整每周巡检（0/5 有告警）：
+
+| 检查 | 来源 workflow | 耗时 |
+|---|---|---|
+| 行情/宏观快照年龄 | freshness-watch | 0.1s |
+| 内容更新节奏 | freshness-watch | 0.1s |
+| 站外链接（900 条/次，带缓存） | site-audit | 1.0s |
+| 全量巡检（1192 页逐页加载） | site-audit | 205.6s |
+| 无障碍完整 64 项（明暗两套） | a11y.yml | 223.6s |
+
 ### 英文日报里一半 "Banking"、一半 "酿酒行业"（第 156 轮）
 
 翻 `/en/invest/market-recap-*/` 时一眼看出问题：同一张 Hot Sectors 表，

@@ -70,6 +70,21 @@ test("完整 a11y 巡检在每周里跑，且没有 dist 时明说跳过", async
   assert.ok(printIndex > 0 && a11yIndex > 0 && a11yIndex < printIndex, "a11y 必须在打印/写报告之前进 results");
 });
 
+test("全量巡检（每页都加载）也在每周里跑，没有 dist 时明说跳过", async () => {
+  const script = await read("scripts/weekly-audit.mjs");
+  assert.match(script, /scripts\/audit-site\.mjs/, "site-audit.yml 本体要接进来：抽样 21 页覆盖不到长尾");
+  assert.match(script, /跳过全量巡检/, "跳过必须说出来");
+  assert.match(script, /--concurrency=4/, "全站 1192 页要并发，串行跑不完");
+});
+
+test("全量巡检的下载量数字要干净（先拦 /api）", async () => {
+  const audit = await read("scripts/audit-site.mjs");
+  const stubIndex = audit.indexOf("await stubApi(page)");
+  const gotoIndex = audit.indexOf("await page.goto(");
+  assert.ok(stubIndex > 0, "audit-site 要装 /api 桩");
+  assert.ok(gotoIndex > 0 && stubIndex < gotoIndex, "必须在 goto 之前装好，否则第一页就多传 124 KB");
+});
+
 test("历史断档不该每周报同一个错", async () => {
   const script = await read("scripts/weekly-audit.mjs");
   assert.match(script, /check-freshness\.mjs", "--ignore-gaps"/, "要带 --ignore-gaps（11-19/11-20 抓不回来）");
