@@ -81,7 +81,8 @@ const year = new Date().getFullYear();
       <p class="flex flex-wrap items-center gap-x-3 gap-y-1">
         <a href="https://beian.mps.gov.cn/#/query/webSearch?code=31011502406842" target="_blank" rel="noopener noreferrer" class="hover:text-[var(--text)] transition-colors flex items-center gap-1.5">
           <img src="/备案图标.png" alt={lang === "zh" ? "备案图标" : "ICP filing icon"} class="w-4 h-4"/>
-          沪公网安备31011502406842号
+          {/* 备案号本身是中文，英文页也要标出来：读屏器才知道用中文读（WCAG 3.1.2） */}
+          <span lang="zh-CN">沪公网安备31011502406842号</span>
         </a>
       </p>
     </div>

@@ -6,6 +6,7 @@ import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeNormalizeContentHeadings from "./src/lib/rehype-normalize-headings.mjs";
 import rehypeTrailingSlash from "./src/lib/rehype-trailing-slash.mjs";
+import rehypeCjkLang from "./src/lib/rehype-cjk-lang.mjs";
 
 const SITE = "https://www.zorotreeking.online";
 
@@ -42,6 +43,9 @@ export default defineConfig({
         // 正文里的站内链接补尾斜杠，避免每次点击都吃一次 301
         // （站点是 directory 格式，canonical 一律带斜杠）
         rehypeTrailingSlash,
+        // 英文正文里引用的中文原文要标 lang="zh-CN"：读屏器才会换中文语音，
+        // 否则整段中文用英语音素读出来是乱码（WCAG 3.1.2）
+        rehypeCjkLang,
         rehypeSlug,
         [rehypeAutolinkHeadings, {
           behavior: "append",
