@@ -108,3 +108,10 @@ test("Lighthouse 断言失败要能被公开看见（注解），且注解排在
   assert.ok(lhci > 0 && annotate > lhci, "注解步骤必须在跑分之后");
   assert.match(source, /if: always\(\)/, "跑分失败时也要执行注解步骤");
 });
+
+test("入场动画不动透明度（否则审计把半透明的字判成对比度违规）", () => {
+  const config = read("tailwind.config.mjs");
+  const rise = /rise: \{([\s\S]*?)\}/.exec(config)?.[1] ?? "";
+  assert.ok(rise.length > 0, "找不到 rise keyframes");
+  assert.doesNotMatch(rise, /opacity/, "rise 动画里出现 opacity：首屏文字会短暂半透明，自动化审计必然误判");
+});

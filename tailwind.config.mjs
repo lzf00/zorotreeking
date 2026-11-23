@@ -43,9 +43,14 @@ export default {
         prose: "68ch",
       },
       keyframes: {
+        // 第 182 轮：入场动画只动位移，**不动透明度**。
+        // 原来是 opacity 0 → 1，意味着首屏文字在最长 ~1.6 s 内是半透明的 ——
+        // 自动化审计（Lighthouse 移动端周检）正好跑在这个窗口里，于是把"正在淡入的字"
+        // 判成 color-contrast 违规（a11y 得分 0.93，一直红）。慢手机上这也不是好事：
+        // 字要么看得见，要么就别渲染。位移一样有"浮上来"的手感，而且在任何一帧都是可读的。
         rise: {
-          "0%": { opacity: "0", transform: "translateY(10px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
+          "0%": { transform: "translateY(10px)" },
+          "100%": { transform: "translateY(0)" },
         },
         fade: {
           "0%": { opacity: "0" },

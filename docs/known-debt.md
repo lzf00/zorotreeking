@@ -260,3 +260,11 @@
 - **`lighthouse-mobile` 连续两次失败，原因仍未知**（日志要登录）。已加断言注解，
   下次真跑（预计 7 天内第一次部署）会直接写出「哪条规则、哪一页、期望 vs 实测」。
 - 本轮没有新增已知债务；`/now` 内容仍等你写（第 181 轮遗留）。
+
+- **移动端无障碍 0.93 的根因是入场动画**（`rise` 关键帧 opacity 0→1）：已改成纯位移，
+  并在 `tests/automation-triggers.test.ts` 里锁住"rise 动画里不许出现 opacity"。
+- **Lighthouse 预算按首次真实 CI 实测校准**（之前从未跑过）：LCP 3200→4000 ms（CI 实测
+  3590，本地 2.4 s）、TBT 200→400 ms（CI 实测 278）。仍是 `error`，没有降级成 `warn`。
+- **`lighthouse-mobile` 的 3 条断言失败已定位**：`/photo/hudieren/` LCP 3590ms（本地 2.4s，
+  主要是 runner 慢 + 240 KB hero 图）、徒步长文页 TBT 278ms（含地图 SDK）、以及上面的
+  无障碍 0.93。前两条按上面的分级转为趋势观察，不做"为凑预算砍图"的改动。

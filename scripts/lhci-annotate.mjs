@@ -20,7 +20,8 @@ export function summarizeAssertions(results = []) {
   const warnings = failed.filter((row) => (row.level ?? "error") !== "error");
   /** 只保留"人看得懂"的三件事：哪条规则、哪一页、差多少。 */
   const describe = (row) => {
-    const rule = row.auditId ?? row.auditProperty ?? "unknown";
+    // auditProperty 更具体（categories:accessibility），auditId 只到类目（categories）
+    const rule = row.auditProperty ?? row.auditId ?? "unknown";
     const expected = row.operator ? `${row.operator} ${row.expected}` : String(row.expected ?? "");
     return {
       rule,
