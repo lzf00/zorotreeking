@@ -10,7 +10,8 @@
  * 要么有可靠触发源，要么在 allowlist 里写清备份路径。
  */
 import assert from "node:assert/strict";
-import { readFileSync, readdirSync, existsSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
+import os from "node:os";
 import { execFileSync } from "node:child_process";
 import { test } from "node:test";
 import path from "node:path";
@@ -81,14 +82,29 @@ test("三个周审计都是「部署后醒一次 + 戳记判到期」", () => {
 });
 
 test("到期判定能按 --stamp= 指向不同戳记", () => {
-  const out = execFileSync(
-    process.execPath,
-    [path.join(ROOT, "scripts", "audit-due.mjs"), "--stamp=src/data/site-audit.json", "--json"],
-    { encoding: "utf8" },
-  );
-  const parsed = JSON.parse(out) as { due: boolean; stamp: string };
-  assert.equal(parsed.stamp, "src/data/site-audit.json");
-  assert.equal(parsed.due, true, "这个戳记文件还不存在，判定必须是「该跑」");
+  // 注意：不能拿真实戳记文件当输入 —— 它会被 bot 提交，测试会随 CI 运行时间时绿时红
+  // （第 182 轮踩过：本地断言"还不存在所以该跑"，bot 提交后变成"存在所以不该跑"）。
+  const tmp = path.join(os.tmpdir(), `audit-due-${process.pid}.json`);
+  const run = (ranAt: string | null) => {
+    if (ranAt === null) rmSync(tmp, { force: true });
+    else writeFileSync(tmp, JSON.stringify({ ranAt }));
+    return JSON.parse(
+      execFileSync(process.execPath, [path.join(ROOT, "scripts", "audit-due.mjs"), `--stamp=${tmp}`, "--json"], { encoding: "utf8" }),
+    ) as { due: boolean; stamp: string; ageDays: number | null };
+  };
+
+  const missing = run(null);
+  assert.equal(missing.due, true, "没有戳记时必须跑");
+  // 输出里的 stamp 是相对仓库根的路径（绝对路径会被写成 ../../..），只校验文件名
+  assert.equal(path.basename(missing.stamp), path.basename(tmp), "--stamp= 要生效");
+
+  const old = run(new Date(Date.now() - 30 * 86_400_000).toISOString());
+  assert.equal(old.due, true, "30 天前的戳记必须重跑");
+  assert.ok(old.ageDays !== null && old.ageDays > 29);
+
+  const fresh = run(new Date().toISOString());
+  assert.equal(fresh.due, false, "刚跑过就不该再跑");
+  rmSync(tmp, { force: true });
 });
 
 test("戳记脚本 --dry-run 不写盘（181 轮被它覆盖过真实戳记）", () => {
