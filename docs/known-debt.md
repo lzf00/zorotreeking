@@ -243,7 +243,8 @@
 - **CI 反复报的 `color-contrast`（4 页、`.mt-6`、例页 `/`）是假红**：首屏淡入动画没跑完时
   axe 按 opacity 0.2 的合成色（`#e3e3e5` 压在 `#fbfbfd` 上 = 1.24:1）判定。本地快、CI 慢，
   所以只有 CI 红。修法：审计前 `getAnimations().forEach(a => a.finish())` + `reducedMotion: "reduce"`。
-- 修完本地 `/`、`/invest/`、`/invest/us-market/` 两套主题复跑 0 违规。**CI 侧要等下一次
-  部署触发的新一轮审计**（约 25 分钟）才能确认变绿、并写下第一个戳记
-  `src/data/a11y-audit.json`。
-- 如果 CI 仍然红，注解这次会直接给出规则/页数/选择器/例页 —— 不用再靠猜。
+- 修完本地 `/`、`/invest/`、`/invest/us-market/` 两套主题复跑 0 违规。
+- **CI 已验证全绿**（run `45083341446`，13 步全部 success）：2406 页 × 浅/深两套、
+  **0 违规**，手机宽度抽查、水合检查、记戳记全部真正执行；戳记
+  `src/data/a11y-audit.json = {"pages": 2406, "violations": 0, "sha": "1550162f"}` 已由 bot
+  提交（`4258d290`）。这是这个项目**第一次完整、且通过**的全站无障碍审计。
