@@ -11,12 +11,18 @@ name: Lighthouse Mobile
 # WCAG 2.2「目标尺寸（最小）」要 24×24，桌面端永远测不出来。
 
 on:
+  # 第 182 轮：和 a11y 一样，「每周一 10:00」在这个仓库实测会延迟甚至整周不触发 ——
+  # 这条 workflow 连续两次失败、且没有任何成功记录（第 179 轮自动化体检发现）。
+  # 可靠触发源换成部署后醒一次 + 戳记判到期；cron 留在原地当备份。
   schedule:
     - cron: "0 2 * * 1"   # UTC 02:00 = BJT 10:00 周一
+  workflow_run:
+    workflows: ["Build & Deploy"]
+    types: [completed]
   workflow_dispatch: {}
 
 permissions:
-  contents: read
+  contents: write   # 记戳记要提交
   statuses: write
 
 concurrency:
@@ -37,10 +43,39 @@ jobs:
         with:
           node-version: "22"
 
+      - name: Decide whether this run is due
+        id: due
+        run: |
+          set +e
+          FORCE=""
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then FORCE="--force"; fi
+          # 上游部署失败时线上还是旧版本，没必要跑分
+          if [ "${{ github.event_name }}" = "workflow_run" ] && [ "${{ github.event.workflow_run.conclusion }}" != "success" ]; then
+            echo "⏭️ 上游部署没有成功，跳过本次移动端跑分"
+            echo "due=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          node scripts/audit-due.mjs --stamp=src/data/lighthouse-mobile.json --max-age-days=7 $FORCE
+
       - name: Run Lighthouse CI (mobile preset)
+        id: lhci
+        if: steps.due.outputs.due == 'true'
         env:
           LHCI_UPLOAD__GITHUB_TOKEN: ${{ github.token }}
         run: npx --yes @lhci/cli@0.13.x autorun --config=.lighthouserc.mobile.json
+
+      # 断言失败的原因只存在于需要登录才能读的日志里（第 181 轮在 a11y 上踩过），
+      # 这里把「哪条规则、哪一页、期望 vs 实测」写成注解，公开页面就能看见。
+      - name: Explain assertion failures as annotations
+        if: always() && steps.due.outputs.due == 'true'
+        run: node scripts/lhci-annotate.mjs --file=.lighthouseci/assertion-results.json
+
+      - name: Record the audit stamp
+        if: always() && steps.lhci.outcome != 'skipped' && steps.due.outputs.due == 'true'
+        run: |
+          node scripts/record-audit-stamp.mjs \
+            --stamp=src/data/lighthouse-mobile.json \
+            --violations="$(node -e 'const r=require("./.lighthouseci/assertion-results.json");console.log(r.filter((x)=>x.passed===false).length)' 2>/dev/null || echo '')"
 
       - name: Upload reports as artifact
         if: always()

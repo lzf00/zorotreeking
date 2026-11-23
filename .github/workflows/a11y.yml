@@ -17,7 +17,7 @@ name: Accessibility & hydration audit
 #
 # 修法和 157 轮把 site-audit 挂进 weekly-audit 一样：**换一个可靠的上游**。
 #   · workflow_run：每次 Build & Deploy 结束就醒一次（部署本身是可靠的，push 天天有）
-#   · 但只有"上次成功审计超过 7 天"才真的跑（scripts/a11y-due.mjs 判旧，10 秒内退出）
+#   · 但只有"上次成功审计超过 7 天"才真的跑（scripts/audit-due.mjs 判旧，10 秒内退出）
 #   · cron 保留为兜底；workflow_dispatch 可强制
 on:
   schedule:
@@ -61,9 +61,9 @@ jobs:
             exit 0
           fi
           if [ "${{ inputs.force }}" = "true" ]; then
-            node scripts/a11y-due.mjs --force
+            node scripts/audit-due.mjs --stamp=src/data/a11y-audit.json --force
           else
-            node scripts/a11y-due.mjs --max-age-days=7
+            node scripts/audit-due.mjs --stamp=src/data/a11y-audit.json --max-age-days=7
           fi
 
       - run: npm ci
@@ -103,38 +103,12 @@ jobs:
       - name: Record the audit stamp
         # 无论审计结果如何都要记：记的是"这周已经跑过"，不是"这周没问题"。
         # 只在审计**没被执行**（前置步骤失败）时才跳过 —— 那种情况本来就没产生结论。
-        # 第 181 轮修了两个坑：
-        #   1) `git diff --quiet` 看不见**未跟踪**的新文件 → 第一次跑永远不提交戳记，
-        #      于是每次部署都判「该跑」，20 分钟的审计被反复触发；
-        #   2) 原来写 `&& success()`，审计发现违规就跳过记戳记 —— 越是有问题越会天天重跑。
-        if: steps.due.outputs.due == 'true' && steps.audit.outcome != 'skipped' 
-        # 戳记必须进仓库，否则下一次部署又会判旧、天天跑 20 分钟。
+        if: steps.due.outputs.due == 'true' && steps.audit.outcome != 'skipped'
         run: |
-          set +e
-          node -e '
-            const fs = require("node:fs");
-            const report = JSON.parse(fs.readFileSync("a11y-report.json", "utf8"));
-            const stamp = {
-              ranAt: new Date().toISOString(),
-              pages: report.pages,
-              violations: (report.grouped ?? []).reduce((n, g) => n + (g.pages ?? 0), 0),
-              sha: process.env.GITHUB_SHA?.slice(0, 8) ?? null,
-            };
-            fs.writeFileSync("src/data/a11y-audit.json", JSON.stringify(stamp, null, 2) + "\n");
-            console.log("戳记:", JSON.stringify(stamp));
-          '
-          # 注意：不能只看 `git diff`，未跟踪的新文件它看不见（第一次跑就是这种情况）
-          if [ -n "$(git status --porcelain -- src/data/a11y-audit.json)" ]; then
-            git config user.name "zorotreeking-bot"
-            git config user.email "bot@users.noreply.github.com"
-            git add src/data/a11y-audit.json
-            git commit -m "audit: a11y full sweep stamp"
-            git pull --rebase --autostash origin main || true
-            git push origin main || echo "::warning::戳记推送失败，下次部署会再跑一遍（浪费 20 分钟，但不会漏审）"
-          else
-            echo "戳记没变（同一天重复跑），不制造空提交"
-          fi
-
+          node scripts/record-audit-stamp.mjs \
+            --stamp=src/data/a11y-audit.json \
+            --pages="$(node -e 'const r=require("./a11y-report.json");console.log(r.pages)' 2>/dev/null || echo '')" \
+            --violations="$(node -e 'const r=require("./a11y-report.json");console.log((r.grouped||[]).length)' 2>/dev/null || echo '')"
 
       - name: Upload report
         if: always() && steps.due.outputs.due == 'true' 

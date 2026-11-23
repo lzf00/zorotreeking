@@ -757,6 +757,35 @@ if git diff --cached --quiet; then echo "没有新结果"; exit 0; fi
 `pathspec did not match` → 整条 add 失败。改成先 `ls` 判断存在再 add，
 报告才真的归档进 `reports/`（`reports/` 里其它历史产物仍然 gitignore，只有巡检报告 `-f`）。
 
+### 「每周巡检」写了四个月，一行都没跑过（第 182 轮）
+
+第 179 轮的自动化体检第一次跑就报出两条 workflow **没有任何运行记录**：`a11y.yml` 和
+`site-audit.yml`。a11y 在 180 轮换掉触发源之后立刻真跑起来了（还抓到真实违规），
+182 轮把 `site-audit`（全站 1186 页巡检）和 `lighthouse-mobile`（移动端跑分）也换掉。
+
+根因不在 workflow 写错，而在**这个仓库的 cron 本身不可靠**：实测延迟 5–7.5 小时，
+偶尔整周不触发。只写 `schedule` 的 workflow 等于"写了但不存在"。
+
+统一改成「部署后醒一次 + 戳记判到期」：
+
+| 组件 | 作用 |
+|---|---|
+| `workflow_run: ["Build & Deploy"]` | 可靠触发源（部署刚成功，线上就是新版本） |
+| `scripts/audit-due.mjs --stamp=<文件>` | 上次成功距今 ≥ 7 天才跑，否则 10 秒退出 |
+| `scripts/record-audit-stamp.mjs` | 跑完记账：写 JSON → bot 提交 → 推送 |
+
+`cron` 原地保留当备份。三个周审计共用同一份判定和记账脚本 —— 181 轮这段逻辑是写在
+a11y.yml 里的内联 shell，两个坑（`git diff` 看不见未跟踪文件、`&& success()` 挡住记账）
+都踩过，抄三份等于埋三个坑。
+
+**还留了四条 cron-only**（`daily-digest`、`deadlink-check`、`refresh-us-macro`、
+`weekly-roundup`）。它们各自有兜底路径（例如日报漏了由 deploy 的 `catch-up-digest`
+自愈），所以不强行改造 —— 但**新增 cron-only 必须登记理由**，
+`scripts/cron-only-allowlist.json` + `tests/automation-triggers.test.ts` 守着这条线。
+
+顺带给 `lighthouse-mobile` 加了断言注解（`scripts/lhci-annotate.mjs`）：它已经连续两次
+失败，而失败原因只存在于需要登录才能读的日志里 —— 和第 181 轮 a11y 的教训是同一条。
+
 ### 假红：CI 慢一点，审计就报错（第 181 轮）
 
 修完真实违规之后，CI 仍然红，而**同一提交本地全量复跑 0 违规**。注解（这轮新加的）给出线索：
@@ -905,7 +934,7 @@ Invalid workflow file: .github/workflows/a11y.yml#L1
 | 机制 | 作用 |
 |---|---|
 | `workflow_run: ["Build & Deploy"]` | 部署是可靠的（push 天天有），每次部署结束都醒一次 |
-| `scripts/a11y-due.mjs` 判旧 | 只有「上次成功审计超过 7 天」才真跑，否则 10 秒退出 |
+| `scripts/audit-due.mjs` 判旧 | 只有「上次成功审计超过 7 天」才真跑，否则 10 秒退出 |
 | 戳记 `src/data/a11y-audit.json` | 记「跑过/页数/违规数/sha」，回写仓库；不回写就等于天天跑 20 分钟 |
 | cron 保留 | 兜底；`workflow_dispatch` 带 `force` 可强制 |
 | 上游失败则跳过 | `workflow_run.conclusion != success` 时直接退出（内容没上线，审了容易误导） |

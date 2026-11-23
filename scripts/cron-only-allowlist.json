@@ -1,0 +1,7 @@
+{
+  "_doc": "只靠 cron 的 workflow 在这里登记并写明「cron 不响时谁来兜底」。这个仓库的 schedule 实测会延迟 5–7.5 小时甚至整周不触发（第 179 轮体检发现两条 workflow 四个月没跑过），所以新增 cron-only 必须说清备份路径。",
+  "daily-digest.yml": "日报主时钟：cron 每天跑；漏了由 deploy.yml 的 catch-up-digest 任务自愈（判旧 → 补抓 → 翻译 → 质量闸 → 再触发部署）",
+  "deadlink-check.yml": "死链周检：cron 是唯一入口，漏跑只影响「多久发现一次死链」，不影响站点正确性；门禁里的 check:links 每次发布都会挡死链",
+  "refresh-us-macro.yml": "美股宏观数据刷新：cron 每天跑；deploy.yml 的 build 步骤会读缓存，数据旧了页面自己会显示「数据停在 X」（第 135 轮加的），不会假装新鲜",
+  "weekly-roundup.yml": "每周回顾：cron 是主时钟；weekly-audit 会在部署时顺手检查内容新鲜度并在 reports/ 里记录"
+}

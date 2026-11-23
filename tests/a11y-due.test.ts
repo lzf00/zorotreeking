@@ -9,7 +9,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
-import { decideDue } from "../scripts/a11y-due.mjs";
+import { decideDue } from "../scripts/audit-due.mjs";
 import { auditAutomation } from "../scripts/check-automation-health.mjs";
 
 const read = (p: string) => readFile(new URL(`../${p}`, import.meta.url), "utf8");
@@ -47,7 +47,7 @@ test("自动化体检：真的没跑过才是 problem", () => {
 test("a11y.yml 不再只有 cron：有 workflow_run 触发 + 判旧闸 + 戳记回写", async () => {
   const yml = await read(".github/workflows/a11y.yml");
   assert.match(yml, /workflow_run:\n\s+workflows: \["Build & Deploy"\]/);
-  assert.match(yml, /node scripts\/a11y-due\.mjs --max-age-days=7/);
+  assert.match(yml, /node scripts\/audit-due\.mjs --stamp=src\/data\/a11y-audit\.json --max-age-days=7/);
   assert.match(yml, /steps\.due\.outputs\.due == 'true'/, "贵步骤必须挂在判旧结果上");
   assert.match(yml, /src\/data\/a11y-audit\.json/, "戳记必须回写仓库，否则每次部署都重跑 20 分钟");
   assert.match(yml, /contents: write/);
@@ -74,9 +74,14 @@ test("戳记不看审计结果成败，只看审计有没有真的跑", async ()
 });
 
 test("戳记用 git status 而不是 git diff（未跟踪文件 git diff 看不见）", async () => {
+  // 第 182 轮：写戳记/提交/推送的逻辑从 a11y.yml 的内联 shell 抽到了共享脚本，
+  // 三个周审计共用一份 —— 所以这条规则改为在脚本里检查。
+  const script = await read("scripts/record-audit-stamp.mjs");
+  assert.match(script, /"status",\s*"--porcelain"/, "必须用 status：git diff 看不见未跟踪文件");
+  // 注释里提到 git diff 是可以的（说明为什么不用它），代码里不许真去调
+  assert.doesNotMatch(script, /git\(\["diff"/, "代码里不许再调 git diff");
   const yml = await read(".github/workflows/a11y.yml");
-  assert.match(yml, /git status --porcelain -- src\/data\/a11y-audit\.json/);
-  assert.doesNotMatch(yml, /git diff --quiet src\/data\/a11y-audit\.json/);
+  assert.match(yml, /record-audit-stamp\.mjs/, "workflow 要调用共享脚本，而不是再抄一份 shell");
 });
 
 test("axe 步骤有 id，戳记才能判断它跑没跑", async () => {

@@ -10,8 +10,14 @@ name: Full-site audit
 # 该让人看一眼再决定，而不是卡住当晚的部署。
 
 on:
+  # 第 182 轮：cron 在这个仓库实测会延迟 5–7.5 小时、甚至整周不触发 —— 这条"每周四巡检
+  # 全站 1186 页"的 workflow 因此**从来没有运行记录**（第 179 轮自动化体检发现）。
+  # 可靠触发源换成"部署成功后醒一次"，再用戳记判断是否真的到期；cron 留在原地当备份。
   schedule:
     - cron: "0 1 * * 4"   # UTC 01:00 = BJT 09:00 周四
+  workflow_run:
+    workflows: ["Build & Deploy"]
+    types: [completed]
   workflow_dispatch:
     inputs:
       limit:
@@ -24,7 +30,7 @@ on:
         default: "3"
 
 permissions:
-  contents: read
+  contents: write   # 记戳记要提交
 
 concurrency:
   group: site-audit
@@ -42,20 +48,39 @@ jobs:
         with:
           node-version: '22'
           cache: 'npm'
+      - name: Decide whether this run is due
+        id: due
+        run: |
+          set +e
+          FORCE=""
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then FORCE="--force"; fi
+          # 上游部署失败时没必要巡检线上（那份还是旧版本）
+          if [ "${{ github.event_name }}" = "workflow_run" ] && [ "${{ github.event.workflow_run.conclusion }}" != "success" ]; then
+            echo "⏭️ 上游部署没有成功，跳过本次巡检"
+            echo "due=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          node scripts/audit-due.mjs --stamp=src/data/site-audit.json --max-age-days=7 $FORCE
+
       - name: Install deps
+        if: steps.due.outputs.due == 'true'
         run: npm ci
 
       - name: Install Chromium
+        if: steps.due.outputs.due == 'true' 
         run: npx playwright install chromium || echo "::warning::playwright chromium 安装失败，巡检将跳过"
 
       # 用线上 sitemap 而不是本地构建：要查的就是「用户实际拿到的那份」，
       # 包括 nginx / CDN 层的 404、压缩、缓存问题。
       - name: Fetch the published sitemap
+        if: steps.due.outputs.due == 'true'
         run: |
           curl -sS --max-time 60 https://www.zorotreeking.online/sitemap.xml -o /tmp/sitemap.xml
           echo "sitemap 里的 URL 数：$(grep -o '<loc>' /tmp/sitemap.xml | wc -l | tr -d ' ')"
 
       - name: Audit every page
+        id: audit
+        if: steps.due.outputs.due == 'true'
         # 巡检有问题时脚本 exit 1，但那是报告不是发布闸门，别把 workflow 标红
         continue-on-error: true
         run: |
@@ -72,6 +97,7 @@ jobs:
             --out=reports/site-audit.jsonl
 
       - name: Site search probe
+        if: steps.due.outputs.due == 'true'
         run: |
           node scripts/check-search.mjs --base=https://www.zorotreeking.online | tee /tmp/search.log
           {
@@ -85,6 +111,7 @@ jobs:
       # 第 127 轮：交互延迟（INP 思路）此前只有本地手跑，CI 里没有任何指标。
       # 探针本身的测量错误也是这一轮才修掉（它原来点的是首图 hero，灯箱压根没开）。
       - name: Interaction latency (INP, mobile)
+        if: steps.due.outputs.due == 'true'
         continue-on-error: true
         env:
           PLAYWRIGHT_BROWSERS_PATH: /tmp/pw-browsers
@@ -104,6 +131,7 @@ jobs:
       # 第 132 轮：站外链接此前从没验过（5508 条 / 74 个域名）。反爬域名会回 403，
       # 所以这一步只当体检报告（continue-on-error），死链进基线后下次不再报。
       - name: External links
+        if: steps.due.outputs.due == 'true'
         continue-on-error: true
         env:
           SITE_AUDIT_REPORT: /tmp/external-links.json
@@ -124,6 +152,7 @@ jobs:
           exit $code
 
       - name: Content freshness
+        if: steps.due.outputs.due == 'true'
         run: |
           # 同样踩过 bash -e 的坑：命令失败时 shell 直接退出，下面的 cat / 步骤摘要都不会执行
           set +e
@@ -139,6 +168,7 @@ jobs:
           exit $code
 
       - name: a11y sample from sitemap
+        if: steps.due.outputs.due == 'true'
         # 第 124 轮：手写的 26 条路径只覆盖"我记得的页面"。这里每周从 sitemap 分节抽样 12 页
         # （seed 取 ISO 周，一周内结果稳定、失败可复现；下周自动换一批）。
         env:
@@ -160,6 +190,7 @@ jobs:
           exit $code
 
       - name: English pages without untranslated Chinese
+        if: steps.due.outputs.due == 'true'
         # 第 121 轮：/en/ 下有整段中文（机翻只翻了标题和表格）。存量写进 baseline，
         # 这里只负责"不再变多"；清理干净后再 --update-baseline。
         run: |
@@ -176,6 +207,7 @@ jobs:
           exit $code
 
       - name: Market snapshot age
+        if: steps.due.outputs.due == 'true'
         # 第 117 轮：数据"旧"不是错误，构建会成功、页面会打开，只是数字过期。
         # 用看门狗把关，而不是靠人偶然发现（us-market 的宏观块曾经 101 天没更新）。
         run: |
@@ -192,6 +224,7 @@ jobs:
           exit $code
 
       - name: Dependency advisories (npm audit + allowlist)
+        if: steps.due.outputs.due == 'true'
         run: |
           # 同样踩过 bash -e 的坑：命令失败时 shell 直接退出，下面的 cat / 步骤摘要都不会执行
           set +e
@@ -208,6 +241,7 @@ jobs:
           exit $code
 
       - name: Server-side config audit (nginx / CDN)
+        if: steps.due.outputs.due == 'true'
         continue-on-error: true
         run: |
           node scripts/check-server.mjs --base=https://www.zorotreeking.online > /tmp/server-check.log 2>&1 || true
@@ -221,7 +255,7 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Summarize into the run page
-        if: always()
+        if: always() && steps.due.outputs.due == 'true'
         run: |
           if [ ! -f reports/site-audit.jsonl ]; then
             echo "## 全站巡检：没有产出报告" >> "$GITHUB_STEP_SUMMARY"
@@ -230,9 +264,19 @@ jobs:
           node scripts/summarize-site-audit.mjs reports/site-audit.jsonl >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload report artifact
-        if: always()
+        if: always() && steps.due.outputs.due == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: site-audit-report
           path: reports/site-audit.jsonl
           retention-days: 30
+
+      # 记「这周巡检过了」。放最后、只要巡检真的跑过就记 —— 巡检发现问题（continue-on-error）
+      # 也要记账，否则下一小时又会重跑一遍 1186 页。
+      - name: Record the audit stamp
+        if: always() && steps.audit.outcome != 'skipped' && steps.due.outputs.due == 'true'
+        run: |
+          node scripts/record-audit-stamp.mjs \
+            --stamp=src/data/site-audit.json \
+            --pages="$(grep -c . reports/site-audit.jsonl 2>/dev/null || echo '')" \
+            --violations="$(node -e 'const fs=require("node:fs");const lines=fs.readFileSync("reports/site-audit.jsonl","utf8").trim().split("\n").filter(Boolean);console.log(lines.filter((l)=>{try{const r=JSON.parse(l);return r.errors||r.status>=400}catch{return false}}).length)' 2>/dev/null || echo '')"

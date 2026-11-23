@@ -248,3 +248,15 @@
   **0 违规**，手机宽度抽查、水合检查、记戳记全部真正执行；戳记
   `src/data/a11y-audit.json = {"pages": 2406, "violations": 0, "sha": "1550162f"}` 已由 bot
   提交（`4258d290`）。这是这个项目**第一次完整、且通过**的全站无障碍审计。
+
+## 第 182 轮
+
+- **两条「每周巡检」从没跑过 → 已换成部署后按戳记判定**：`site-audit.yml`（全站 1186 页）
+  和 `lighthouse-mobile.yml`（移动端跑分）。cron 保留当备份，阈值 7 天。
+- **判定/记账脚本通用化**：`scripts/audit-due.mjs`（原 `a11y-due.mjs`，已删）+ 
+  `scripts/record-audit-stamp.mjs`，三个周审计共用。
+- **新增守卫**：`scripts/cron-only-allowlist.json` + `tests/automation-triggers.test.ts`
+  —— 只靠 cron 的 workflow 必须登记兜底路径，否则门禁红；entries 过期也会红。
+- **`lighthouse-mobile` 连续两次失败，原因仍未知**（日志要登录）。已加断言注解，
+  下次真跑（预计 7 天内第一次部署）会直接写出「哪条规则、哪一页、期望 vs 实测」。
+- 本轮没有新增已知债务；`/now` 内容仍等你写（第 181 轮遗留）。
