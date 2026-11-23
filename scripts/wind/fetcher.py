@@ -1317,19 +1317,15 @@ def build_report_en(stock_codes: list, prefetched: dict = None, as_of: datetime.
                     f"| {_fmt_pct(s.get('chg_20d'))} |"
                 )
             lines.append("")
+    # 第 183 轮：英文版不再照搬中文要闻。
+    # 原来这里直接输出中文标题 + 中文摘要，英文读者一个字也看不懂，还会触发
+    # `check:i18n-leaks`（英文页正文里成段中文）。这些标题来自中文财经源，没有公开
+    # 英文版；与其编造译文，不如明确指向中文版 —— 读者知道去哪儿看。
     lines += ["", "## 📰 Today's Headlines", ""]
-    news = _rows("news")
-    if not news:
-        lines.append("No headlines from the public feed.")
-    for i, n in enumerate(news, 1):
-        if not isinstance(n, dict) or "error" in n or not n.get("title"):
-            continue
-        search_url = n.get("url") or f"https://www.baidu.com/s?wd={quote(n['title'])}"
-        date_tag = f" `{n['date']}`" if n.get("date") else ""
-        lines.append(f"{i}. [**{n['title']}**]({search_url}){date_tag}")
-        if n.get("snippet"):
-            lines.append(f"   > {n['snippet']}")
-        lines.append("")
+    lines.append(
+        f"Headlines come from Chinese financial feeds and are published in the "
+        f"[Chinese edition](/invest/market-recap-{now.strftime('%Y-%m-%d')}/)."
+    )
     if lines and lines[-1] == "":
         lines.pop()
     lines.append("---")

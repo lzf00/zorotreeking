@@ -31,9 +31,14 @@ def fix_cell(cell: str) -> str:
     if not bare or not CJK.search(bare):
         return cell
     en = NAMES.get(bare)
-    if not en:
-        return cell
-    return f"{head}{en} " + " ".join(code) if code else f"{head}{en}"
+    if en:
+        return f"{head}{en} " + " ".join(code) if code else f"{head}{en}"
+    # 查不到公开英文名时，宁可只留股票代码也不留中文 —— 第 183 轮：
+    # 英文版表格里出现「菱电电控 `688667.SH`」既让英文读者读不懂，也会触发
+    # `check:i18n-leaks`。代码是全球通用的标识，不含歧义，也不编造"官方译名"。
+    if code:
+        return f"{head}" + " ".join(code)
+    return cell
 
 
 def fix_line(line: str) -> tuple[str, int]:
