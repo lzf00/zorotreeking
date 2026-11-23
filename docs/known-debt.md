@@ -8,7 +8,7 @@
 
 | # | 欠账 | 当前数字 | 影响面 | 归属 | 检查命令 |
 |---|---|---|---|---|---|
-| 1 | 英文页里有未翻译的中文正文 | **20 个文件 / 115 处** | `/en/` 下 20 个 `market-recap-*` 页面（页面顶部已声明机翻） | 服务端生成器（stock_pusher） | `npm run check:i18n-leaks` |
+| 1 | 英文页里有未翻译的中文正文 | **0 个文件 / 0 处**（第 185 轮清零，此前 20 / 115） | 无：`/en/` 下日报的「今日要闻」已换成指向中文版的一句话 | 服务端生成器（stock_pusher） | `npm run check:i18n-leaks` |
 | 2 | 日报缺摘要 | **38 期 / 299 条**（20 期整期全空，18 期部分缺） | 读者看到标题+链接，页面已如实提示"本期没有摘要" | 需 LLM key（`digest-fetch --force`） | `node scripts/check-digest-placeholders.mjs --all` |
 | 3 | BLS 宏观数据停更 | **101 天**（2026-08-11 起） | `/invest/us-market/` 的 CPI/非农参考期停在 2026-06，页面已标注 | 服务端抓取器 | `npm run check:market-age` |
 | 4 | ~~美股兜底快照陈旧~~ **已修** | 0 天 | 第 137 轮起宏观（BLS）与行情（东方财富）都由 Actions 每天自动刷新 | — | `npm run check:market-age` |
@@ -296,3 +296,14 @@
   都在底线上，但低于站点平均；要不要一起抬，取决于是否接受列表页更"松"的排版。
 - **Lighthouse 版本差异**：`font-size` 在 Lighthouse 12 已不在 SEO 类目里，
   所以本地用 `lighthouse@11.4.0`（= lhci 0.13 的内置版本）复现才有意义。
+
+## 第 185 轮
+
+- **生成端在 `/opt/wind-recap`，仓库修它不生效**：第 183 轮的 `publisher.py` 修复对服务器副本
+  无效，05:00 的自动日报又把中文名带回来，部署再次全红。`deploy.yml` 现在在跑测试前就地
+  回填（表格名字 + 要闻段），并打 `::warning::` 提示生成端落后。
+  **仍待处理**：需要有人把 `/opt/wind-recap` 的脚本同步成仓库版本，否则每次交付都会多一条警告。
+- **英文日报中文残留清零**：21 个文件、115 处成段中文被替换为指向中文版的一句话，
+  `scripts/i18n-leaks-baseline.json` 变成 `{}`（以后任何新增残留都是硬失败）。
+- **部署端可读性护栏**：`deploy.yml` 新增 `Mobile legibility` 步骤（第 184 轮的脚本），
+  CI 侧 Lighthouse 已验证 13 个 URL 全部 SEO 100。

@@ -75,21 +75,70 @@ def fix_markdown(text: str) -> tuple[str, int]:
     return "\n".join(lines) + ("\n" if text.endswith("\n") else ""), total
 
 
+HEADLINES_POINTER = (
+    "Headlines come from Chinese financial feeds and are published in the "
+    "[Chinese edition](/invest/market-recap-{date}/)."
+)
+
+HEADLINE_HEAD = re.compile(r"^##\s*\U0001F4F0\s*Today's Headlines\s*$", re.M)
+
+
+def fix_headlines(text: str, date: str) -> tuple[str, bool]:
+    """把英文版「今日要闻」整段换成一句指向中文版的话。
+
+    第 183 轮在生成端（`fetcher.build_report_en`）改过，但生成端是服务器上
+    `/opt/wind-recap` 的独立副本，不会跟着仓库更新 —— 第 185 轮它又照搬了中文标题 +
+    中文摘要，`check:i18n-leaks` 因此把门禁打红。这里在接收端兜住同一件事。
+    只动这一个段落，其他内容一个字不碰。
+    """
+    match = HEADLINE_HEAD.search(text)
+    if not match:
+        return text, False
+    start = match.start()
+    # 段落结束：下一个二级标题，或者分隔线
+    rest = text[match.end():]
+    end_rel = None
+    cut = re.search(r"(?m)^(##\s|<!--\s*more\s*-->|---$)", rest)
+    if cut:
+        end_rel = match.end() + cut.start()
+    else:
+        end_rel = len(text)
+    section = text[start:end_rel]
+    # 只处理"读者真读不懂"的段落：至少有一行汉字 ≥15 个（与 `check-i18n-leaks` 同口径）。
+    # 少于这个量的是链接标题里的专名，替换掉反而丢信息。
+    if not any(len(CJK.findall(line)) >= 15 for line in section.splitlines()):
+        return text, False
+    if CJK.search(section) is None:
+        return text, False
+    fixed = f"## \U0001F4F0 Today's Headlines\n\n{HEADLINES_POINTER.format(date=date)}\n\n"
+    return text[:start] + fixed + text[end_rel:], True
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument(
+        "--headlines",
+        action="store_true",
+        help="同时把英文版「今日要闻」整段换成指向中文版的一句话（生成端副本未同步时兜底）",
+    )
     args = ap.parse_args()
 
     files = sorted(pathlib.Path("src/content/invest").glob("market-recap-*.en.mdx"))
     total_files = total_cells = 0
     for path in files:
         raw = path.read_text(encoding="utf-8")
+        headlines = False
+        if args.headlines:
+            raw, headlines = fix_headlines(raw, path.name.replace("market-recap-", "").replace(".en.mdx", ""))
         out_lines, cells = [], 0
         for line in raw.splitlines(keepends=False):
             fixed, n = fix_line(line)
             out_lines.append(fixed)
             cells += n
-        if cells:
+        if headlines:
+            print(f"{path.name}: 今日要闻改为指向中文版")
+        if cells or headlines:
             total_files += 1
             total_cells += cells
             print(f"{path.name}: {cells} 格")

@@ -104,6 +104,17 @@ print(json.dumps({"cells": n, "text": text}))
   assert.match(fixed.text, /CATL/, "已经是英文的不动");
 });
 
+test("部署流程在跑测试前就地回填（生成端是服务器上的独立副本）", async () => {
+  // 事故复现两次：修复先进了仓库，但 `/opt/wind-recap` 上的生成端副本没更新，
+  // 下一条自动日报又把中文名带回来 → `npm test` 红 → 整站部署失败。
+  const deploy = await read(".github/workflows/deploy.yml");
+  assert.match(deploy, /python3 scripts\/wind\/backfill_en_names\.py --headlines/, "部署里要自动回填表格名字和要闻段");
+  const repair = deploy.indexOf("Repair English recap names");
+  const tests = deploy.indexOf("name: Unit and guard tests");
+  assert.ok(repair > 0 && tests > 0 && repair < tests, "回填必须排在单元测试之前，否则测试照样红");
+  assert.match(deploy, /已在构建前回填/, "回填过要留注解，否则没人知道生成端落后了");
+});
+
 test("回填不会误伤正文和代码列", () => {
   const got = python<{ cells: number; text: string }>(`
 import sys, json

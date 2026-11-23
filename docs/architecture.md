@@ -784,6 +784,39 @@ Lighthouse 不吃这一套 —— 同样的假红会从别的审计工具反复�
 没有降级成 `warn`：这两条是真实用户指标，改成"只看趋势"就等于把回归检查关掉了。
 把阈值定在 CI 实测之下、粗大回归之上，比"永远红"和"永远绿"都更有用。
 
+### 生成端在服务器上，修在仓库里够不着（第 185 轮）
+
+第 183 轮把"英文日报表格里的中文名回填"接进了 `publisher.py`，以为修好了。**没有**：
+`scripts/wind/systemd/wind-recap-intraday.service` 写得很清楚 ——
+
+```
+WorkingDirectory=/opt/wind-recap
+ExecStart=/usr/bin/python3 /opt/wind-recap/run_now.py --mode close --no-push --no-detail
+```
+
+生成端跑的是服务器上 `/opt/wind-recap` 这个**独立副本**，它不会因为仓库更新而更新。
+于是 05:00 的那条自动日报又把中文名带回来了，`npm test` 立刻红，部署再次全红
+（第 183 轮停摆 1.5 小时，第 185 轮又来一次 —— 同样的坑连着踩两次）。
+
+结论：**接收端必须能自己兜住**。`deploy.yml` 在"Unit and guard tests"之前加了一步
+`Repair English recap names`：
+
+```yaml
+python3 scripts/wind/backfill_en_names.py --headlines
+git diff --quiet -- src/content/invest || echo "::warning::已在构建前回填"
+```
+
+两个细节值得记：
+
+1. 它修的是**内容**，不是放宽守卫 —— `tests/finance-names.test.ts` 和
+   `check:i18n-leaks` 照旧跑，对照表里没有的名字、成段中文仍会被抓住。
+2. 回填过就打 `::warning::`，这样"生成端副本落后于仓库"这件事会在 Actions 注解里
+   持续可见，而不是被静默抹平。
+
+同一轮还把 `--headlines` 的判定口径和 `check-i18n-leaks` 对齐（一行 ≥15 个汉字才动），
+顺手把历史欠账清零：**21 个英文日报、115 处成段中文 → 0**，`i18n-leaks-baseline.json`
+从 20 条记录变成空文件。
+
 ### 手机上一半的字读不清：Lighthouse 的 `font-size` 判的是「低于 12px 的文字占比」（第 184 轮）
 
 `lighthouse-mobile` 的 `categories:seo` 长期 0.93，第 183 轮的下钻注解终于说出了原因：

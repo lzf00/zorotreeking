@@ -65,6 +65,20 @@ jobs:
         id: install
         run: npm ci
 
+      # 第 185 轮：Wind 日报由服务器上 `/opt/wind-recap` 的独立副本生成，它不会跟着仓库
+      # 更新。生成端漏翻的中文名会直接进仓库，然后让 `npm test` 红掉、**整站部署失败**
+      # （第 183 轮为此停摆 1.5 小时，第 185 轮又发生一次）。这里在跑测试前就地回填：
+      # 修的是内容，不是放宽守卫 —— 对照表里没有的名字、以及英文页成段中文仍会被抓住。
+      - name: Repair English recap names (the generator is a separate copy)
+        id: repair-en-names
+        run: |
+          set +e
+          python3 scripts/wind/backfill_en_names.py --headlines
+          if ! git diff --quiet -- src/content/invest; then
+            echo "::warning::英文日报表格里有未翻译的中文名，已在构建前回填（/opt/wind-recap 上的生成端副本还没同步这层修复）"
+          fi
+          exit 0
+
       # 守卫测试一直没进部署流程：2026-11-11 发现 tests/ 里有 3 个断言因为前几轮
       # 重构失效，红着也照样部署了 20 多次。整套只跑 ~1s，放在 build 前面。
       - name: Unit and guard tests
