@@ -54,6 +54,22 @@ def fix_line(line: str) -> tuple[str, int]:
     return "|".join(parts), changed
 
 
+def fix_markdown(text: str) -> tuple[str, int]:
+    """就地修一段 markdown 文本里的表格单元格，返回 (新文本, 改了几格)。
+
+    第 183 轮把它接进生成流程：回填脚本原来只是"一次性补历史"，
+    新生成的英文日报照样能把中文名写进表格 → 撞上 `tests/finance-names.test.ts`
+    的守卫 → 每次部署都失败（2026-11-23 实测卡住 40 分钟，线上停在旧版本）。
+    现在发布前就修，守卫只会拦真正的回归。
+    """
+    lines, total = [], 0
+    for line in text.splitlines():
+        fixed, n = fix_line(line)
+        lines.append(fixed)
+        total += n
+    return "\n".join(lines) + ("\n" if text.endswith("\n") else ""), total
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true")

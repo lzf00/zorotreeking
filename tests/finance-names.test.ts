@@ -81,3 +81,43 @@ test("已发布的英文日报里，表格单元格不再留着能翻的中文�
   }
   assert.deepEqual(leftovers.slice(0, 5), [], "这些名字对照表里有，说明回填没跑干净");
 });
+
+test("生成端在发布前自己回填，不靠「事后一次性脚本」（第 183 轮）", async () => {
+  // 事故：回填脚本只跑过一次，新生成的英文日报照样把中文名写进表格 ——
+  // 撞上本文件的守卫后**每次部署都失败**，线上停在 02:00 的旧版本（2026-11-23）。
+  const publisher = await read("scripts/wind/publisher.py");
+  assert.match(publisher, /from backfill_en_names import fix_markdown/, "发布前必须调用回填");
+  assert.match(publisher, /fix_markdown\(en_mdx\)/, "要作用在英文正文上");
+
+  // 用 chr(10) 拼换行，避免测试里三层转义（TS 模板 → Python 字符串 → markdown）
+  const fixed = python<{ cells: number; text: string }>(`
+import sys, json
+sys.path.insert(0, 'scripts/wind')
+from backfill_en_names import fix_markdown
+nl = chr(10)
+table = nl.join(["| Stock | Price |", "|---|---|", "| 🔴 新易盛 | 170 |", "| 🟢 CATL | 225 |", ""])
+text, n = fix_markdown(table)
+print(json.dumps({"cells": n, "text": text}))
+`);
+  assert.equal(fixed.cells, 1, "只改表格单元格里的已知名字");
+  assert.match(fixed.text, /Eoptolink Technology/);
+  assert.match(fixed.text, /CATL/, "已经是英文的不动");
+});
+
+test("回填不会误伤正文和代码列", () => {
+  const got = python<{ cells: number; text: string }>(`
+import sys, json
+sys.path.insert(0, 'scripts/wind')
+from backfill_en_names import fix_markdown
+nl = chr(10)
+bt = chr(96)
+body = nl.join(["正文里提到新易盛也不能动。", "", "| Stock | Code |", "|---|---|",
+                "| 新易盛 | " + bt + "300502.SZ" + bt + " |", ""])
+text, n = fix_markdown(body)
+print(json.dumps({"cells": n, "text": text}))
+`);
+  assert.equal(got.cells, 1);
+  assert.match(got.text, /正文里提到新易盛也不能动/, "正文一个字不碰");
+  // 代码本来就在自己的单元格里，回填只换名字那一格
+  assert.match(got.text, /\| Eoptolink Technology \| `300502\.SZ` \|/, "股票代码要留在表里");
+});

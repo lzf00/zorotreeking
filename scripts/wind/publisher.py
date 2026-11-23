@@ -283,6 +283,17 @@ def publish_to_zorotreeking(title: str, content: str, data: dict,
         en_title, en_content, data, _build_sentiment_summary(data, lang="en"),
         as_of=now, lang="en",
     )
+    # 第 183 轮：发布前就把表格里的中文名刷成英文。
+    # `fetcher._en_name` 只覆盖生成时走到的字段；实测仍有名字漏进表格（2026-11-23：
+    # 新易盛/紫金矿业/北方华创/次新股/农林牧渔），撞上 `tests/finance-names.test.ts`
+    # 的守卫后**每次部署都红**，线上停在旧版本 —— 生成端漏一个，发布端要兜住。
+    try:
+        from backfill_en_names import fix_markdown
+        en_mdx, _fixed = fix_markdown(en_mdx)
+        if _fixed:
+            log.warning(f"发布前修正了 {_fixed} 个英文名表单元格")
+    except Exception as exc:  # noqa: BLE001 - 名字表出问题不该挡住发布
+        log.warning(f"英文名回填跳过：{exc}")
 
     # 准备所有要写的文件（仓库相对路径 + 内容文本）
     payloads: list[tuple[str, str]] = [

@@ -268,3 +268,14 @@
 - **`lighthouse-mobile` 的 3 条断言失败已定位**：`/photo/hudieren/` LCP 3590ms（本地 2.4s，
   主要是 runner 慢 + 240 KB hero 图）、徒步长文页 TBT 278ms（含地图 SDK）、以及上面的
   无障碍 0.93。前两条按上面的分级转为趋势观察，不做"为凑预算砍图"的改动。
+
+## 第 183 轮
+
+- **部署被内容卡死 40 分钟**：英文日报表格里的中文名（7 格）撞 `finance-names` 守卫 →
+  所有部署在 `npm test` 失败，线上停在 02:00 版本。已回填数据解封，生成端 `publisher.py`
+  改为发布前自动回填（`fix_markdown`），并加两条测试防止回退。
+- **诊断通路**：`ci/failed-step` commit status 无需登录即可读出失败步骤名（Actions 日志要
+  登录、REST 又容易被限流）。下次部署红了先看它。
+- **仍未解决**：`lighthouse-mobile` 的 `categories:seo` 0.93（本地同页 1.00）—— 第 182 轮
+  的类目下钻注解刚修好，等下一次真实跑分确认是哪条 SEO 审计扣分。
+- **production 与仓库可能短暂分叉**：卡住期间 `97e9817d` 等提交没上线，解封后会自动补上。
