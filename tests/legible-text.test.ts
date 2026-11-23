@@ -44,6 +44,10 @@ test("部署流程也会量一遍（不能只在本地门禁里）", async () =>
   assert.match(deploy, /name: Mobile legibility/, "部署里要有这一步");
   assert.match(deploy, /npm run check:legible/);
   assert.match(deploy, /smoke\/legible/, "失败要能用 commit status 看见（日志接口 403）");
+  // status 只认 GITHUB_TOKEN：第 184 轮上线时这一步漏了 token，结果状态压根没发出去
+  const legible = deploy.slice(deploy.indexOf("id: legible"));
+  const stepEnv = legible.slice(0, legible.indexOf("run: |"));
+  assert.match(stepEnv, /GITHUB_TOKEN: \$\{\{ github\.token \}\}/, "要带 token，否则状态静默丢失");
 });
 
 test("路线卡片的移动断点字号修复还在", async () => {

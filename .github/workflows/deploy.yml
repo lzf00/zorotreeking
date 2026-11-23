@@ -258,6 +258,10 @@ jobs:
         # 第 184 轮：Lighthouse 的 font-size 审计一周才跑一次，等它报警已经过去七天。
         # 这里用同一个口径（412×823、按字符加权、12px 门槛、60% 底线）每次部署都量一遍。
         id: legible
+        env:
+          # 没有 token 时 report-ci-status 会静默不发状态 —— 第 184 轮上线时就漏了这行，
+          # 结果 `smoke/legible` 压根没出现在 commit status 里（其它 smoke 步骤都带着）。
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           set +e
           npm run check:legible > /tmp/legible.log 2>&1
