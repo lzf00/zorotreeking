@@ -44,6 +44,16 @@ export function explainCategoryFailure(lhrs = [], categoryId) {
     .map((entry) => ({ ...entry, runs, always: entry.failed === runs }));
 }
 
+/** 一行断言是否代表"整个类目的汇总分"，是的话返回类目名。 */
+export function categoryOf(row = {}) {
+  const property = row.auditProperty ?? "";
+  const id = row.auditId ?? "";
+  if (property.startsWith("categories:")) return property.split(":")[1];
+  if (id === "categories" && property) return property;
+  if (id.startsWith("categories:")) return id.split(":")[1];
+  return null;
+}
+
 /** 纯逻辑：断言结果 → 失败清单 + 注解文本。 */
 export function summarizeAssertions(results = []) {
   const failed = results.filter((row) => row && row.passed === false);
@@ -56,6 +66,9 @@ export function summarizeAssertions(results = []) {
     const expected = row.operator ? `${row.operator} ${row.expected}` : String(row.expected ?? "");
     return {
       rule,
+      // 原始字段要留着：类目级失败要靠 auditId="categories" + auditProperty="seo" 才能下钻
+      auditId: row.auditId,
+      auditProperty: row.auditProperty,
       url: row.url ?? "",
       text: `${rule}：期望 ${expected || "达标"}，实测 ${row.actual ?? "?"}`,
     };
@@ -101,11 +114,29 @@ export function main(argv = process.argv.slice(2)) {
     : [];
 
   for (const row of summary.errors) {
-    if (!row.rule.startsWith("categories:")) continue;
-    const categoryId = row.rule.split(":")[1];
-    const urlMatches = lhrs.filter((lhr) => !row.url || lhr.finalUrl === row.url);
+    // lhci 的类目断言有两种形状：auditProperty="categories:seo" 或
+    // auditId="categories" + auditProperty="seo"（第 182 轮实测是后者，
+    // 于是第一版下钻判断 startsWith("categories:") 永远不成立，注解里只剩一个分数）
+    const categoryId = categoryOf(row);
+    if (!categoryId) continue;
+    const pathOf = (value) => {
+      try {
+        return new URL(value).pathname;
+      } catch {
+        return value;
+      }
+    };
+    let urlMatches = lhrs.filter((lhr) => !row.url || lhr.finalUrl === row.url);
+    if (urlMatches.length === 0 && row.url) urlMatches = lhrs.filter((lhr) => pathOf(lhr.finalUrl) === pathOf(row.url));
+    if (urlMatches.length === 0 && new Set(lhrs.map((lhr) => lhr.finalUrl)).size === 1) urlMatches = lhrs;
     const causes = explainCategoryFailure(urlMatches, categoryId);
-    if (causes.length === 0) continue;
+    if (causes.length === 0) {
+      // 静默跳过正是上一轮"注解只有分数"的原因，这里把线索打出来
+      console.log(
+        `::warning title=lighthouse-mobile::类目 ${categoryId} 失败但没能下钻：LHR ${lhrs.length} 份，断言 URL ${row.url || "(空)"}，示例 finalUrl ${lhrs[0]?.finalUrl ?? "(无)"}`,
+      );
+      continue;
+    }
     const detail = causes
       .slice(0, 3)
       .map((cause) => `${cause.id}（权重 ${cause.weight}，${cause.failed}/${cause.runs} 次不达标${cause.always ? "，稳定失败" : "，抖动"}${cause.sample ? `，例：${String(cause.sample).slice(0, 80)}` : ""}）`)

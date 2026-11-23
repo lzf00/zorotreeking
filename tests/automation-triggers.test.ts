@@ -13,7 +13,7 @@ import assert from "node:assert/strict";
 import { existsSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import { execFileSync } from "node:child_process";
-import { explainCategoryFailure } from "../scripts/lhci-annotate.mjs";
+import { categoryOf, explainCategoryFailure } from "../scripts/lhci-annotate.mjs";
 import { test } from "node:test";
 import path from "node:path";
 
@@ -158,4 +158,17 @@ test("注解脚本会读同目录的 LHR 文件做下钻", () => {
   const source = read("scripts/lhci-annotate.mjs");
   assert.match(source, /lhr-.*\.json|\^lhr-/, "要扫描 .lighthouseci/lhr-*.json");
   assert.match(source, /categories:/, "要区分类目级断言");
+});
+
+test("能认出 lhci 两种类目断言的形状", () => {
+  // 实测形状（第 182 轮 CI）：auditId="categories" + auditProperty="seo"
+  assert.equal(categoryOf({ auditId: "categories", auditProperty: "seo" }), "seo");
+  assert.equal(categoryOf({ auditProperty: "categories:accessibility" }), "accessibility");
+  assert.equal(categoryOf({ auditId: "target-size" }), null, "具体审计不是类目");
+});
+
+test("下钻的端到端约定：注解里必须出现扣分项", () => {
+  const source = read("scripts/lhci-annotate.mjs");
+  assert.match(source, /扣分项/, "类目失败必须写出具体扣分审计");
+  assert.match(source, /auditId: row\.auditId/, "describe 不能丢掉 auditId/auditProperty，否则下钻判断失效");
 });
