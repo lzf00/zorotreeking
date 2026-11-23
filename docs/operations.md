@@ -61,6 +61,7 @@
 | `check:admin` | Decap 后台的 `config.yml` schema（无头浏览器实测） |
 | `check:focus` | 键盘焦点可见性（真按 Tab，明暗两主题；axe 测不到这一项） |
 | `check:text-zoom` | 200% 文字缩放下不得横向溢出（预算只许降不许升） |
+| `check:legible` | 移动端（412×823）≥12px 的文字要占全页 60% 以上 —— Lighthouse `font-size` 的同口径本地版；基线只许升不许降 |
 | `node scripts/check-workflows.mjs` 的 `if:` 引号配对 | 同一份门禁里跑（GitHub 判 Invalid workflow file 的那类语法） |
 | `node scripts/check-automation-health.mjs` | 每个 workflow 上次成功 vs 自己的 cron 频率（每周巡检里跑，不进门禁） |
 | `check:lang-switch` | 语言切换链接必须指向存在且互链的对端；`<html lang>` 必须与路径一致 |

@@ -1013,4 +1013,48 @@ const reservationStatusClass = {
     .ali-route-map-help { display: none; }
     .ali-route-day { break-inside: avoid; }
   }
+
+  /* 第 184 轮：移动端可读性底线。
+     这张路线表在 412px 视口下有约 50% 的文字小于 12px，Lighthouse `font-size` 审计
+     判为不可读（需双指放大），SEO 分因此从 1.0 掉到 0.93。桌面端的排版密度是有意的，
+     所以只在移动断点把最小字号抬到 12px，不动字号体系本身。 */
+  @media (max-width: 640px) {
+    .ali-route-atlas__map-topline,
+    .ali-route-atlas__roads > span:first-child,
+    .ali-route-map-help,
+    .ali-amap-layer-control summary,
+    .ali-amap-place-label,
+    .ali-route-popup__eyebrow,
+    .ali-route-atlas__legend,
+    .ali-route-atlas__legend-note,
+    .ali-route-atlas__notice strong,
+    .ali-route-atlas__sources,
+    .ali-route-atlas__summary,
+    .ali-route-day__index span,
+    .ali-route-day__body header p,
+    .ali-route-day__body header > span,
+    .ali-route-day__grid b,
+    .ali-route-day__decision span,
+    .ali-route-day__planning-head span,
+    .ali-route-day__planning-head small,
+    .ali-route-day__stay-advice,
+    .ali-route-day__no-hotel,
+    .ali-route-day__no-hotel strong,
+    .ali-route-day__nodes li,
+    .ali-route-reservation__status,
+    .ali-route-reservation dt,
+    .ali-route-reservation dd,
+    .ali-route-reservation > p,
+    .ali-route-reservation > a,
+    .ali-route-hotel > span,
+    .ali-route-hotel > p,
+    .ali-route-hotel > small,
+    .ali-route-road-chip,
+    .ali-route-road-chip strong,
+    .ali-road-shield strong,
+    .ali-road-shield > span {
+      font-size: 12px;
+      line-height: 1.55;
+    }
+  }
 </style>

@@ -328,4 +328,22 @@ const diffColor = {
     .route-filter-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .route-card__action small { display: none; }
   }
+
+  /* 第 184 轮：移动端可读性底线。
+     `/hike/` 在 412px 视口下只有 48% 的文字 ≥12px：路线卡片的路由串（占全页 26%
+     的字符）是 11.5px、元信息 10.4px。Lighthouse `font-size` 审计据此扣 SEO 分。
+     桌面端保持原有密度，只在移动断点抬到 12px。 */
+  @media (max-width: 640px) {
+    .route-card__path,
+    .route-card__meta,
+    .route-card__meta .route-card__destination,
+    .route-card__action small,
+    .route-card__top,
+    .route-filter-bar p,
+    .route-filter-list button,
+    .route-filter-list button b {
+      font-size: 12px;
+      line-height: 1.55;
+    }
+  }
 </style>

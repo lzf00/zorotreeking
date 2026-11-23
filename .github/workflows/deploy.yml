@@ -240,6 +240,24 @@ jobs:
           node scripts/report-ci-status.mjs --context=smoke/runtime-mobile --state=$([ "$code" -eq 0 ] && echo success || echo failure) --log=/tmp/runtime-mobile.log
           exit "$code"
 
+      - name: Mobile legibility (>=12px text share)
+        # 第 184 轮：Lighthouse 的 font-size 审计一周才跑一次，等它报警已经过去七天。
+        # 这里用同一个口径（412×823、按字符加权、12px 门槛、60% 底线）每次部署都量一遍。
+        id: legible
+        run: |
+          set +e
+          npm run check:legible > /tmp/legible.log 2>&1
+          code=$?
+          cat /tmp/legible.log
+          if [ "$code" -ne 0 ]; then
+            echo "::error::移动端可读文字不足（Lighthouse font-size 同口径）"
+            grep -E "^(✗|  ✗)" /tmp/legible.log | head -20 | while IFS= read -r line; do
+              echo "::error::$line"
+            done
+          fi
+          node scripts/report-ci-status.mjs --context=smoke/legible --state=$([ "$code" -eq 0 ] && echo success || echo failure) --log=/tmp/legible.log
+          exit "$code"
+
       - name: Font environment (which fallback does the runner actually have)
         # 第 149 轮：弱网 CLS 的归因卡在"runner 上兜底字体到底是谁"。这一行不做判断，
         # 只让环境自己说话 —— 装了哪些字体、各自需要多少 size-adjust。
