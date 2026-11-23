@@ -10,8 +10,39 @@
  * 用法：node scripts/lhci-annotate.mjs --file=.lighthouseci/assertion-results.json
  * 退出码恒 0：注解是"把结论说清楚"，不改变 CI 的成败（成败由 lhci 自己决定）。
  */
-import { appendFileSync, existsSync, readFileSync } from "node:fs";
+import { appendFileSync, existsSync, readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
+
+/**
+ * 纯逻辑：类目断言失败（例如 seo 0.93）时，从 LHR 里找出**到底是哪条审计扣的分**。
+ *
+ * 为什么必须下钻：`categories:seo` 只给一个汇总分，第一次跑红时注解只写了"seo 期望 0.95、
+ * 实测 0.93"，本地同页却是 1.00 —— 定位不到具体规则，等于没说（第 182 轮的真实教训）。
+ */
+export function explainCategoryFailure(lhrs = [], categoryId) {
+  const counts = new Map();
+  let runs = 0;
+  for (const lhr of lhrs) {
+    const category = lhr?.categories?.[categoryId];
+    if (!category) continue;
+    runs += 1;
+    for (const ref of category.auditRefs ?? []) {
+      const audit = lhr.audits?.[ref.id];
+      if (!audit || audit.score === null || audit.score === undefined) continue;
+      if (audit.score >= 1) continue;
+      const entry = counts.get(ref.id) ?? { id: ref.id, failed: 0, weight: ref.weight ?? 1, title: audit.title, sample: null };
+      entry.failed += 1;
+      if (!entry.sample) {
+        const item = (audit.details?.items ?? [])[0];
+        entry.sample = item?.node?.snippet ?? item?.url ?? (audit.displayValue ?? null);
+      }
+      counts.set(ref.id, entry);
+    }
+  }
+  return [...counts.values()]
+    .sort((a, b) => b.weight * b.failed - a.weight * a.failed)
+    .map((entry) => ({ ...entry, runs, always: entry.failed === runs }));
+}
 
 /** 纯逻辑：断言结果 → 失败清单 + 注解文本。 */
 export function summarizeAssertions(results = []) {
@@ -53,6 +84,34 @@ export function main(argv = process.argv.slice(2)) {
     return 0;
   }
   const summary = summarizeAssertions(Array.isArray(results) ? results : []);
+
+  // 同一个 URL 的所有 LHR（默认每次 collect 写 3 份）—— 用来给类目失败下钻
+  const dir = path.dirname(file);
+  const lhrs = existsSync(dir)
+    ? readdirSync(dir)
+        .filter((name) => /^lhr-.*\.json$/.test(name))
+        .map((name) => {
+          try {
+            return JSON.parse(readFileSync(path.join(dir, name), "utf8"));
+          } catch {
+            return null;
+          }
+        })
+        .filter(Boolean)
+    : [];
+
+  for (const row of summary.errors) {
+    if (!row.rule.startsWith("categories:")) continue;
+    const categoryId = row.rule.split(":")[1];
+    const urlMatches = lhrs.filter((lhr) => !row.url || lhr.finalUrl === row.url);
+    const causes = explainCategoryFailure(urlMatches, categoryId);
+    if (causes.length === 0) continue;
+    const detail = causes
+      .slice(0, 3)
+      .map((cause) => `${cause.id}（权重 ${cause.weight}，${cause.failed}/${cause.runs} 次不达标${cause.always ? "，稳定失败" : "，抖动"}${cause.sample ? `，例：${String(cause.sample).slice(0, 80)}` : ""}）`)
+      .join("；");
+    row.text += ` → 扣分项：${detail}`;
+  }
   console.log(`断言 ${summary.total} 条：通过 ${summary.passed}、失败 ${summary.failed}（error ${summary.errors.length} / warn ${summary.warnings.length}）`);
 
   for (const row of [...summary.errors, ...summary.warnings]) {

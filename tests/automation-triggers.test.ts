@@ -13,6 +13,7 @@ import assert from "node:assert/strict";
 import { existsSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import { execFileSync } from "node:child_process";
+import { explainCategoryFailure } from "../scripts/lhci-annotate.mjs";
 import { test } from "node:test";
 import path from "node:path";
 
@@ -130,4 +131,31 @@ test("入场动画不动透明度（否则审计把半透明的字判成对比�
   const rise = /rise: \{([\s\S]*?)\}/.exec(config)?.[1] ?? "";
   assert.ok(rise.length > 0, "找不到 rise keyframes");
   assert.doesNotMatch(rise, /opacity/, "rise 动画里出现 opacity：首屏文字会短暂半透明，自动化审计必然误判");
+});
+
+test("类目断言失败能下钻到具体审计（否则只有一句「seo 0.93」等于没说）", () => {
+  const url = "https://www.zorotreeking.online/x/";
+  const makeLhr = (failing: string[]) => ({
+    finalUrl: url,
+    categories: { seo: { auditRefs: ["document-title", "robots-txt", "hreflang"].map((id) => ({ id, weight: 1 })) } },
+    audits: {
+      "document-title": { score: 1, title: "title" },
+      "robots-txt": { score: failing.includes("robots-txt") ? 0 : 1, title: "robots" },
+      hreflang: { score: failing.includes("hreflang") ? 0 : 1, title: "hreflang", details: { items: [{ node: { snippet: "<link hreflang=x>" } }] } },
+    },
+  });
+  const causes = explainCategoryFailure([makeLhr(["robots-txt"]), makeLhr(["robots-txt"]), makeLhr(["hreflang"])], "seo");
+  assert.equal(causes.length, 2);
+  assert.equal(causes[0].id, "robots-txt", "失败次数多的排前面");
+  assert.equal(causes[0].failed, 2);
+  assert.equal(causes[0].runs, 3);
+  assert.equal(causes[0].always, false, "2/3 次是抖动，不是稳定失败");
+  assert.equal(causes[1].id, "hreflang");
+  assert.equal(causes[1].sample, "<link hreflang=x>");
+});
+
+test("注解脚本会读同目录的 LHR 文件做下钻", () => {
+  const source = read("scripts/lhci-annotate.mjs");
+  assert.match(source, /lhr-.*\.json|\^lhr-/, "要扫描 .lighthouseci/lhr-*.json");
+  assert.match(source, /categories:/, "要区分类目级断言");
 });
