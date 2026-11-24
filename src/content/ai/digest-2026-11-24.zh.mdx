@@ -1,0 +1,203 @@
+---
+lang: zh
+translationKey: digest-2026-11-24
+title: "AI 每日精选 · 2026-11-24"
+description: "20 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-11-24
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/baokemeng/baokemeng-32.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">头部AI厂商动作频出，OpenAI联思科推新、DeepMind发布Gemini 4 Neon及量子算法研究成果</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">海外学界及Hugging Face推出4D生成、VLM机器人、大模型自改进等多项前沿研究</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内AI产业落地加速，蚂蚁开源湖库一体AI平台，多场产业AI大会近期举办</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔬前沿研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤝厂商动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖具身智能</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏭产业落地</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡模型发布</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2611.26516" target="_blank" rel="noopener noreferrer">Plan4D: Generative Plannable 4D Worlds</a>
+
+*HF ★ 23 · Hangwei Zhang, Rujing Dang, Ruimin Lin… · [HF 镜像](https://huggingface.co/papers/2611.26516)*
+
+<FeedbackButtons slug="item:arxiv-2611.26516" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.28202" target="_blank" rel="noopener noreferrer">AutoPILOT: A Visual Agent Harness for Real-Time Gameplay</a>
+
+*HF ★ 13 · Mark Zhao, Pengcheng Wang, Rui Yang… · [HF 镜像](https://huggingface.co/papers/2611.28202)*
+
+针对多模态大模型玩实时游戏表现差的问题，研究发现核心瓶颈在代理框架的动作输出环节，提出AutoPILOT框架，支持单次模型调用输出基础动作、开环宏或无需后续调用的闭环控制器，还构建了AFK-Bench实时游戏测试集。同成本下其实时成功率较基准VISTA高30个百分点，API成本仅为后者1/5，验证了动作转换模块的核心研究价值。
+
+<FeedbackButtons slug="item:arxiv-2611.28202" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.29338" target="_blank" rel="noopener noreferrer">A Glimpse of Training VLMs as Foundation Models for Robotic Manipulation</a>
+
+*HF ★ 10 · Meng-Hao Guo, Yi Zhang, Zhe-Han Mo… · [HF 镜像](https://huggingface.co/papers/2611.29338)*
+
+针对GPT-6 Astra的强泛化机器人控制能力训练细节未公开、难以复现的问题，研究提出nanoAstra训练方案，结合语义动作建模、保能力监督微调技术，用5000余小时机器人数据加通用VQA数据训练。其在RoboTwin2.0基准零样本成功率达17.8%，远超同类基线，且推理速度快，可将机器人闲置率从35.0%降至6.9%。
+
+<FeedbackButtons slug="item:arxiv-2611.29338" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.28833" target="_blank" rel="noopener noreferrer">Self-WSP: Can Language Models Improve Themselves Through Weight-Space Programming?</a>
+
+*HF ★ 7 · Guoming Ling, Shanshan Zhong, Kaixuan Zhang… · [HF 镜像](https://huggingface.co/papers/2611.28833)*
+
+本文提出Self-WSP自优化框架，让Qwen3.5-0.8B模型读取自身权重、自行编辑优化，迭代中同时承担问题求解和权重编辑角色。实验显示其可大幅提升数学推理精度，最少仅改16个参数、支持持续迭代优化，但提升可解释性差，模型不理解编辑逻辑，表现与随机搜索驱动的WSP相当，目前仅具递归自优化潜力，仍需深入研究。
+
+<FeedbackButtons slug="item:arxiv-2611.28833" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.25476" target="_blank" rel="noopener noreferrer">WeightCode: Installing New Capabilities into Neural Networks via Weight-Space Programming</a>
+
+*HF ★ 6 · Bo Li, Taoyong Cui, Bob Zhang… · [HF 镜像](https://huggingface.co/papers/2611.25476)*
+
+针对神经网络扩展能力需重训、难保留原有能力的痛点，本文提出权空间编程框架WeightCode：调用冻结大模型生成可执行权值修改程序，无需梯度训练即可为已训模型植入新能力，植入后独立于大模型。实验显示其在指令泛化、图像分类鲁棒性上优于同条件微调方案，能力可叠加、程序可复用，为模型能力扩展提供新路径。
+
+<FeedbackButtons slug="item:arxiv-2611.25476" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2611.26671" target="_blank" rel="noopener noreferrer">On the loss landscape of the linear neural network: beyond critical points</a>
+
+*Antoine Lejay (PASTA, IECL), Lionel Lenotre (Universit\{\'e\} de Haute-Alsace)…*
+
+针对线性神经网络损失地貌现有研究多聚焦临界点、缺乏中观全局刻画的问题，本文提出覆盖所有临界点的“临界深泓线”中间结构，既以更宽松假设从几何角度复证了相关经典结论，还可实现损失地貌的二维可视化，实证显示梯度下降会被该结构吸引，沿其下降至全局损失最小值。
+
+<FeedbackButtons slug="item:arxiv-2611.26671" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.26711" target="_blank" rel="noopener noreferrer">Parasite Features: Causal Abstraction Through Spurious Pathways</a>
+
+*Denis Sutter, Qing Yao, Sasha Boguraev…*
+
+本文聚焦神经网络机制可解释性核心框架因果抽象，发现存在一类“寄生特征”，可借虚假路径通过因果抽象的等价性测试，误导分布式对齐搜索等方法，误判模型实际采用的特征。实验验证在句法一致、两位数加法任务中，使用线性对齐映射的分布式对齐搜索确实会检出此类寄生特征，为可解释性方法的可靠性校验提供了关键警示。
+
+<FeedbackButtons slug="item:arxiv-2611.26711" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.26731" target="_blank" rel="noopener noreferrer">Cross-Attack Robust Aggregation for Federated Learning</a>
+
+*Eyhab Al-Masri*
+
+联邦学习存在恶意客户端投毒风险，现有聚合方法要么抗攻击能力弱，要么非IID数据下精度损失大、难防隐蔽攻击。本文提出FedTether聚合方法，服务端基于客户端更新与逐坐标中位数的偏差，通过鲁棒死区评分重加权更新。实验显示，40%以内拜占庭节点、多攻击、部分参与场景下，其精度最高超基线42个点，无额外精度损耗，无需共享数据或验证集。
+
+<FeedbackButtons slug="item:arxiv-2611.26731" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/introducing-shirudo" target="_blank" rel="noopener noreferrer">OpenAI and Cisco introduce Shirudo</a>
+
+*OpenAI*
+
+OpenAI与思科联合推出名为Shirudo的开源运行时工具，适配Linux操作系统，核心作用是填补系统补丁部署窗口期的防护空白：可在运维团队推送、安装系统补丁的全流程中，为正在运行的业务系统提供安全防护，解决了补丁落地前空窗期的运行态系统防护需求，目前已开源开放使用。
+
+<FeedbackButtons slug="item:openai-blog-introducing-shirudo" client:visible />
+
+## <a href="https://openai.com/business/learn/connected-intelligence-for-in-house-legal" target="_blank" rel="noopener noreferrer">Connected intelligence for in-house legal</a>
+
+*OpenAI*
+
+本研讨由OpenAI技术专家斯泰西·王、克雷格·布鲁尼，联合LECG的玛丽·奥卡罗尔、国际律所Cooley的法务专家理查德·西格尔共同开展，聚焦面向企业内部法务的互联智能技术，重点探讨AI助力内部法务团队打通业务上下文、搭建可复用工作流、充分挖掘外聘法律顾问价值的可行路径。
+
+<FeedbackButtons slug="item:openai-blog-connected-intelligence-for-in-house-legal" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/announcements" target="_blank" rel="noopener noreferrer">Announcements</a>
+
+*Anthropic*
+
+这份官方公告明确了AI企业Anthropic的核心定位与发展方向。该公司聚焦AI安全赛道开展前沿技术研究，核心目标是打造三类高安全属性AI系统：运行稳定可靠、决策逻辑可被人类解释、行为可被人类精准操控，其研发路线也代表了当前AI安全领域的主流探索方向。
+
+<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+AI企业Anthropic推出公共利益导向持股安排：设立专门实体「Anthropic公共利益基金」，将公司部分股份划归该基金持有，设计了随公司发展规模扩大自动提升基金持股比例的特殊机制。此举绑定企业商业成长收益与公共权益，确保AI发展红利持续反哺公共领域，落实公共利益优先的发展定位。
+
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/finding-faster-quantum-algorithms-with-agents-and-formal-verification/" target="_blank" rel="noopener noreferrer">Finding faster quantum algorithms with agents and formal verification</a>
+
+*Google DeepMind*
+
+这篇论文聚焦高效量子算法研发需求，提出以多智能体团队协作加形式化验证的创新方案，针对性优化核聚变模拟、量子化学两大高算力场景的量子算法。该路径既依托智能体的搜索能力突破人工设计的思路局限，又通过形式化验证保障算法可靠性，可大幅加快高性能量子算法的研发落地效率。
+
+<FeedbackButtons slug="item:deepmind-finding-faster-quantum-algorithms-with-agents-and-formal-verification" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-gemini-4-neon/" target="_blank" rel="noopener noreferrer">Introducing Gemini 4 Neon</a>
+
+*Google DeepMind*
+
+当前仅获取到论文标题《Gemini 4 Neon介绍》，缺少对应的摘要正文内容，请您补充完整摘要的文本信息，我会按照要求为您输出120字左右、重点突出核心方法与研究结论的简洁中文提炼总结。
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-4-neon" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/robotrack" target="_blank" rel="noopener noreferrer">RoboTrack: Point tracking for real-world robotic manipulation</a>
+
+*Hugging Face*
+
+针对现有点跟踪算法在真实机器人操纵场景中易受遮挡、物体形变、人机交互干扰导致跟踪失效的问题，论文提出专用算法RoboTrack，融合视觉时序特征与机器人本体运动先验优化跟踪逻辑，可实现低延迟高精度点跟踪，有效支撑抓取、动态物体跟随、柔顺操作等各类真实操纵任务。
+
+<FeedbackButtons slug="item:hf-blog-robotrack" client:visible />
+
+## <a href="https://huggingface.co/blog/agentic-evals" target="_blank" rel="noopener noreferrer">How to build and maintain an agentic evaluation</a>
+
+*Hugging Face*
+
+你目前仅提供了论文的标题，没有粘贴摘要的具体正文内容，请补充完整这篇论文的摘要原文，我会按照要求为你翻译提炼核心信息，突出核心方法和研究结论，把篇幅控制在120字左右。
+
+<FeedbackButtons slug="item:hf-blog-agentic-evals" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我提升（RSI）概念的演进脉络：1965年I.J.古德最早提出相关构想，将可超越人类所有智力活动、自主设计更优机器实现迭代的系统定义为超智能机器；2008年尤德考斯基明确RSI核心是AI依托现有智能优化自身认知机制的反馈环，当前AI领域的RSI可分为直接改写自身权重、优化训练管线两类。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/11/512329.html" target="_blank" rel="noopener noreferrer">报名从速｜来MEET2027！听AI前沿实践者交出“判断”</a>
+
+*量子位*
+
+量子位将于12月9日在北京举办MEET2027智能未来大会，主题为“智行合一·驭见未来”。大会邀请16位以上AI一线实践者，围绕智能体、具身智能、产业落地等前沿议题，探讨AI从技术能力到可交付产业系统的落地逻辑、可控性要求，共话行业长期发展方向。
+
+<FeedbackButtons slug="item:qbitai-512329" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/512330.html" target="_blank" rel="noopener noreferrer">蚂蚁OceanBase发布湖库一体AI数据平台OceanLake，核心引擎向全球开源</a>
+
+*量子位*
+
+11月24日蚂蚁OceanBase于北京召开AI数据大会，指出当前企业智能化转型不及预期，数据端存在三座瓶颈冰山，提出AI时代数据基建需遵循湖库一体、开源开放等四大原则，据此发布战略产品湖库一体AI数据平台OceanLake，并宣布开源核心AI数据库引擎，邀各方共建AI数据基础设施。
+
+<FeedbackButtons slug="item:qbitai-512330" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/512305.html" target="_blank" rel="noopener noreferrer">释放AI与出海强预期，近1500人参与亿邦产业互联网年会暨首届产业智能体大会</a>
+
+*量子位*
+
+2026年11月，近1500人参与在北京举办的第八届亿邦产业互联网年会暨首届产业智能体大会。会上明确AI与出海是产业互联网核心增长路径：李稻葵提出中国AI发展更具可持续性，需嵌入产业升级与抱团出海进程，大会还拆解了产业智能体落地实操方向。
+
+<FeedbackButtons slug="item:qbitai-512305" client:visible />
