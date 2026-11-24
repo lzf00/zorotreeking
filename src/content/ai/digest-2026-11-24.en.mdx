@@ -1,0 +1,203 @@
+---
+lang: en
+translationKey: digest-2026-11-24
+title: "Daily AI Digest · 2026-11-24"
+description: "20 papers · multi-source aggregation + AI summaries"
+date: 2026-11-24
+tags: [digest, auto, hf-papers, arxiv, openai, anthropic, deepmind, hf-blog]
+category: paper
+cover: "/photos/uploads/baokemeng/baokemeng-32.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's news in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Leading AI vendors have rolled out multiple new moves: OpenAI partnered with Cisco for new releases, while DeepMind launched Gemini 4 Neon and published quantum algorithm research results</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">International academic communities and Hugging Face have released multiple cutting-edge studies covering 4D generation, VLM-powered robots, LLM self-improvement and more</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Domestic AI industry implementation is accelerating: Ant Group open-sourced a lakehouse-integrated AI platform, and multiple industrial AI conferences are scheduled to be held soon</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔬 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤝 Vendor Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Embodied Intelligence</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🏭 Industry Implementation</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Model Releases</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2611.26516" target="_blank" rel="noopener noreferrer">Plan4D: Generative Plannable 4D Worlds</a>
+
+*HF ★ 23 · Hangwei Zhang, Rujing Dang, Ruimin Lin… · [HF Mirror](https://huggingface.co/papers/2611.26516)*
+
+<FeedbackButtons lang="en" slug="item:arxiv-2611.26516" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.28202" target="_blank" rel="noopener noreferrer">AutoPILOT: A Visual Agent Harness for Real-Time Gameplay</a>
+
+*HF ★ 13 · Mark Zhao, Pengcheng Wang, Rui Yang… · [HF Mirror](https://huggingface.co/papers/2611.28202)*
+
+To address the poor performance of multimodal LLMs in real-time gameplay, the research identified that the core bottleneck lies in the action output link of the agent framework. The proposed AutoPILOT framework supports outputting basic actions, open-loop macros, or closed-loop controllers requiring no subsequent calls with a single model invocation, and also built the AFK-Bench real-time game test set. At the same cost, its real-time success rate is 30 percentage points higher than the baseline VISTA, with API cost only 1/5 of the latter, verifying the core research value of the action conversion module.
+
+<FeedbackButtons lang="en" slug="item:arxiv-2611.28202" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.29338" target="_blank" rel="noopener noreferrer">A Glimpse of Training VLMs as Foundation Models for Robotic Manipulation</a>
+
+*HF ★ 10 · Meng-Hao Guo, Yi Zhang, Zhe-Han Mo… · [HF Mirror](https://huggingface.co/papers/2611.29338)*
+
+To address the issue that training details of GPT-6 Astra's strong generalizable robot control capabilities are undisclosed and hard to reproduce, the research proposed the nanoAstra training scheme, combining semantic action modeling and capability-preserving supervised fine-tuning techniques, trained on over 5000 hours of robot data plus general VQA data. Its zero-shot success rate on the RoboTwin2.0 benchmark reaches 17.8%, far exceeding similar baselines, and it has fast inference speed, reducing robot idle rate from 35.0% to 6.9%.
+
+<FeedbackButtons lang="en" slug="item:arxiv-2611.29338" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.28833" target="_blank" rel="noopener noreferrer">Self-WSP: Can Language Models Improve Themselves Through Weight-Space Programming?</a>
+
+*HF ★ 7 · Guoming Ling, Shanshan Zhong, Kaixuan Zhang… · [HF Mirror](https://huggingface.co/papers/2611.28833)*
+
+This paper proposes the Self-WSP self-optimization framework, which allows the Qwen3.5-0.8B model to read its own weights, edit and optimize them independently, and act as both problem solver and weight editor during iterations. Experiments show it can greatly improve mathematical reasoning accuracy, modifying as few as 16 parameters at minimum and supporting continuous iterative optimization, but the improvement has poor interpretability: the model does not understand the editing logic, and its performance is comparable to random search-driven WSP. It currently only has recursive self-optimization potential and requires further in-depth research.
+
+<FeedbackButtons lang="en" slug="item:arxiv-2611.28833" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.25476" target="_blank" rel="noopener noreferrer">WeightCode: Installing New Capabilities into Neural Networks via Weight-Space Programming</a>
+
+*HF ★ 6 · Bo Li, Taoyong Cui, Bob Zhang… · [HF Mirror](https://huggingface.co/papers/2611.25476)*
+
+To address the pain point that expanding neural network capabilities requires retraining and makes it difficult to retain original capabilities, this paper proposes the WeightCode weight-space programming framework: it calls a frozen LLM to generate executable weight modification programs, and can implant new capabilities into trained models without gradient training, with implanted capabilities independent of the LLM after installation. Experiments show it outperforms fine-tuning schemes under the same conditions in instruction generalization and image classification robustness, with stackable capabilities and reusable programs, providing a new path for model capability expansion.
+
+<FeedbackButtons lang="en" slug="item:arxiv-2611.25476" client:visible />
+
+# arXiv cs.LG
+
+## <a href="https://arxiv.org/abs/2611.26671" target="_blank" rel="noopener noreferrer">On the loss landscape of the linear neural network: beyond critical points</a>
+
+*Antoine Lejay (PASTA, IECL), Lionel Lenotre (Université de Haute-Alsace)…*
+
+To address the issue that existing research on the loss landscape of linear neural networks mostly focuses on critical points and lacks mesoscopic global characterization, this paper proposes the "critical thalweg" intermediate structure covering all critical points. It not only re-proves relevant classic conclusions from a geometric perspective with looser assumptions, but also enables 2D visualization of the loss landscape. Empirical results show that gradient descent will be attracted by this structure and descend along it to the global minimum of loss.
+
+<FeedbackButtons lang="en" slug="item:arxiv-2611.26671" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.26711" target="_blank" rel="noopener noreferrer">Parasite Features: Causal Abstraction Through Spurious Pathways</a>
+
+*Denis Sutter, Qing Yao, Sasha Boguraev…*
+
+This paper focuses on causal abstraction, the core framework for neural network mechanism interpretability, and discovers a class of "parasite features" that can pass equivalence tests of causal abstraction via spurious pathways, misleading methods such as distributed alignment search to misjudge features actually used by the model. Experiments verify that in syntactic agreement and two-digit addition tasks, distributed alignment search using linear alignment mappings does detect such parasite features, providing a key warning for reliability verification of interpretability methods.
+
+<FeedbackButtons lang="en" slug="item:arxiv-2611.26711" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.26731" target="_blank" rel="noopener noreferrer">Cross-Attack Robust Aggregation for Federated Learning</a>
+
+*Eyhab Al-Masri*
+
+Federated learning faces poisoning risks from malicious clients. Existing aggregation methods either have weak attack resistance, or suffer large accuracy loss under non-IID data and struggle to defend against covert attacks. This paper proposes the FedTether aggregation method, where the server reweights updates based on the deviation of client updates from the coordinate-wise median via robust dead-zone scoring. Experiments show that in scenarios with up to 40% Byzantine nodes, multiple attacks, and partial participation, its accuracy is up to 42 percentage points higher than baselines, with no additional accuracy loss and no need for shared data or validation sets.
+
+<FeedbackButtons lang="en" slug="item:arxiv-2611.26731" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/introducing-shirudo" target="_blank" rel="noopener noreferrer">OpenAI and Cisco introduce Shirudo</a>
+
+*OpenAI*
+
+OpenAI and Cisco jointly launched an open-source runtime tool named Shirudo, adapted for Linux operating systems. Its core function is to fill the protection gap during the system patch deployment window: it can provide security protection for running business systems throughout the entire process of O&M teams pushing and installing system patches, addressing the demand for runtime system protection during the window period before patches are applied. It is now open-source and available for use.
+
+<FeedbackButtons lang="en" slug="item:openai-blog-introducing-shirudo" client:visible />
+
+## <a href="https://openai.com/business/learn/connected-intelligence-for-in-house-legal" target="_blank" rel="noopener noreferrer">Connected intelligence for in-house legal</a>
+
+*OpenAI*
+
+This seminar is co-hosted by OpenAI technical experts Stacey Wang and Craig Bruni, together with Mary O'Carroll from LECG and legal expert Richard Siegel from international law firm Cooley. It focuses on connected intelligence technology for in-house legal teams, and mainly explores feasible paths for AI to help in-house legal teams connect business context, build reusable workflows, and fully unlock the value of external legal counsel.
+
+<FeedbackButtons lang="en" slug="item:openai-blog-connected-intelligence-for-in-house-legal" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/announcements" target="_blank" rel="noopener noreferrer">Announcements</a>
+
+*Anthropic*
+
+This official announcement clarifies the core positioning and development direction of AI company Anthropic. The company focuses on cutting-edge technology research in the AI safety track, with the core goal of building three types of AI systems with high security attributes: stable and reliable operation, human-interpretable decision-making logic, and human-precisely controllable behavior. Its R&D roadmap also represents the mainstream exploration direction in the current AI safety field.
+
+<FeedbackButtons lang="en" slug="item:anthropic-announcements" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+AI company Anthropic has launched a public benefit-oriented shareholding arrangement: it has established a special entity "Anthropic Public Benefit Fund", transferred part of the company's shares to the fund, and designed a special mechanism that automatically increases the fund's shareholding ratio as the company's development scale expands. This move ties the company's commercial growth benefits to public interests, ensures that the dividends of AI development continue to feed back into the public sector, and implements the development positioning of prioritizing public benefits.
+
+<FeedbackButtons lang="en" slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/finding-faster-quantum-algorithms-with-agents-and-formal-verification/" target="_blank" rel="noopener noreferrer">Finding faster quantum algorithms with agents and formal verification</a>
+
+*Google DeepMind*
+
+This paper focuses on the demand for efficient quantum algorithm R&D, proposes an innovative solution combining multi-agent team collaboration and formal verification, and optimizes quantum algorithms for two high-computing scenarios: nuclear fusion simulation and quantum chemistry. This approach not only relies on the search capability of agents to break through the limitations of manual design ideas, but also ensures algorithm reliability through formal verification, which can greatly accelerate the R&D and implementation efficiency of high-performance quantum algorithms.
+
+<FeedbackButtons lang="en" slug="item:deepmind-finding-faster-quantum-algorithms-with-agents-and-formal-verification" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-gemini-4-neon/" target="_blank" rel="noopener noreferrer">Introducing Gemini 4 Neon</a>
+
+*Google DeepMind*
+
+Currently only the paper title "Introducing Gemini 4 Neon" is available, and the corresponding abstract content is missing. Please supplement the full text of the abstract, and I will output a concise English summary of about 120 words as required, highlighting the core methods and research conclusions.
+
+<FeedbackButtons lang="en" slug="item:deepmind-introducing-gemini-4-neon" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/robotrack" target="_blank" rel="noopener noreferrer">RoboTrack: Point tracking for real-world robotic manipulation</a>
+
+*Hugging Face*
+
+To address the problem that existing point tracking algorithms are prone to tracking failure in real robotic manipulation scenarios due to occlusion, object deformation, and human-computer interaction interference, the paper proposes the dedicated algorithm RoboTrack, which integrates visual temporal features and robot body motion priors to optimize tracking logic. It can achieve low-latency high-precision point tracking, effectively supporting various real manipulation tasks such as grasping, dynamic object following, and compliant operation.
+
+<FeedbackButtons lang="en" slug="item:hf-blog-robotrack" client:visible />
+
+## <a href="https://huggingface.co/blog/agentic-evals" target="_blank" rel="noopener noreferrer">How to build and maintain an agentic evaluation</a>
+
+*Hugging Face*
+
+You have only provided the paper title so far, and have not pasted the specific content of the abstract. Please supplement the full original abstract of this paper, and I will translate and extract the core information as required, highlighting the core methods and research conclusions, and controlling the length to about 120 words.
+
+<FeedbackButtons lang="en" slug="item:hf-blog-agentic-evals" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This paper sorts out the evolution of the concept of Recursive Self-Improvement (RSI): I.J. Good first proposed the relevant concept in 1965, defining a system that can surpass all human intellectual activities and independently design better machines for iteration as an ultra-intelligent machine; in 2008, Eliezer Yudkowsky clarified that the core of RSI is the feedback loop where AI optimizes its own cognitive mechanism based on existing intelligence. Current RSI in the AI field can be divided into two categories: directly rewriting its own weights, and optimizing training pipelines.
+
+<FeedbackButtons lang="en" slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/11/512329.html" target="_blank" rel="noopener noreferrer">Sign up soon | Come to MEET2027! Listen to frontline AI practitioners share their judgments</a>
+
+*QbitAI*
+
+QbitAI will hold the MEET2027 Intelligent Future Conference in Beijing on December 9, with the theme of "Unity of Intelligence and Practice · Foreseeing the Future". The conference has invited more than 16 frontline AI practitioners to focus on cutting-edge topics such as agents, embodied intelligence, and industry implementation, discuss the implementation logic and controllability requirements of AI from technical capabilities to deliverable industrial systems, and talk about the long-term development direction of the industry.
+
+<FeedbackButtons lang="en" slug="item:qbitai-512329" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/512330.html" target="_blank" rel="noopener noreferrer">Ant OceanBase releases lakehouse-integrated AI data platform OceanLake, core engine is open-sourced globally</a>
+
+*QbitAI*
+
+On November 24, Ant Group's OceanBase held an AI data conference in Beijing, pointing out that current enterprise intelligent transformation is falling short of expectations, with three bottleneck icebergs on the data side. It proposed that data infrastructure in the AI era should follow four principles including lakehouse integration and open-source openness, accordingly released the strategic product OceanLake, a lakehouse-integrated AI data platform, and announced the open-sourcing of its core AI database engine, inviting all parties to jointly build AI data infrastructure.
+
+<FeedbackButtons lang="en" slug="item:qbitai-512330" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/512305.html" target="_blank" rel="noopener noreferrer">Strong expectations for AI and going global are released, nearly 1,500 people participated in the Yibang Industrial Internet Annual Conference and the 1st Industrial Agent Conference</a>
+
+*QbitAI*
+
+In November 2026, nearly 1,500 people participated in the 8th Yibang Industrial Internet Annual Conference and the 1st Industrial Agent Conference held in Beijing. The conference clarified that AI and going global are the core growth paths for the industrial internet: Li Daokui proposed that China's AI development is more sustainable and needs to be embedded in the process of industrial upgrading and collective overseas expansion. The conference also broke down the practical implementation directions for industrial agents.
+
+<FeedbackButtons lang="en" slug="item:qbitai-512305" client:visible />
