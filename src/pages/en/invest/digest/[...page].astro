@@ -53,8 +53,8 @@ const otherBase = counterpartBase("/en/invest/digest");
 ---
 
 <BaseLayout pagefindIgnore={pageNumber > 1}
-  title="Market news digest · archive"
-  description={`${digests.length} issues auto-generated from 10jqka / Eastmoney / Yahoo Finance.`}
+  title={pageNumber > 1 ? `Market news digest · archive · page ${pageNumber}` : "Market news digest · archive"}
+  description={`${digests.length} issues auto-generated from 10jqka / Eastmoney / Yahoo Finance.${pageNumber > 1 ? ` Page ${pageNumber}.` : ""}`}
   schemaType="CollectionPage"
   listItems={pageDigests.map((d) => ({
     name: d.data.title,

@@ -75,8 +75,8 @@ const listItems = page.data.slice(0, MAX_TAG_ITEMLIST).map((entry) => ({
 ---
 
 <BaseLayout pagefindIgnore={pageNumber > 1}
-  title="全部归档"
-  description="按年份倒序列出这个站点的全部内容：AI 笔记、投资复盘、摄影相册与徒步路线，每一条都有日期和所属板块。"
+  title={pageNumber > 1 ? `全部归档 · 第 ${pageNumber} 页` : "全部归档"}
+  description={`按年份倒序列出这个站点的全部内容：AI 笔记、投资复盘、摄影相册与徒步路线，每一条都有日期和所属板块。${pageNumber > 1 ? `（第 ${pageNumber} 页）` : ""}`}
   schemaType="CollectionPage"
   breadcrumbTitle="全部归档"
   listItems={listItems}

@@ -53,8 +53,8 @@ const otherBase = counterpartBase("/en/ai/digest");
 ---
 
 <BaseLayout pagefindIgnore={pageNumber > 1}
-  title="Daily AI digest · archive"
-  description={`${digests.length} issues auto-generated daily from HF Daily Papers / arxiv / qbitai / Anthropic etc.`}
+  title={pageNumber > 1 ? `Daily AI digest · archive · page ${pageNumber}` : "Daily AI digest · archive"}
+  description={`${digests.length} issues auto-generated daily from HF Daily Papers / arxiv / qbitai / Anthropic etc.${pageNumber > 1 ? ` Page ${pageNumber}.` : ""}`}
   schemaType="CollectionPage"
   listItems={pageDigests.map((d) => ({
     name: d.data.title,

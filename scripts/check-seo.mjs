@@ -333,7 +333,7 @@ function checkPage(html, siteOrigin) {
     warn("非首页缺少 BreadcrumbList 结构化数据");
   }
 
-  return { errors, warnings, skipped: null };
+  return { errors, warnings, skipped: null, title };
 }
 
 /**
@@ -545,6 +545,7 @@ async function main() {
   const hreflangs = new Map();
   /** rel → description，用来查「多个页面共用一句描述」 */
   const descriptions = new Map();
+  const titles = new Map();
   let errorPages = 0;
   let warningPages = 0;
   const samples = [];
@@ -570,6 +571,9 @@ async function main() {
     if (Object.keys(alts).length) hreflangs.set(pageUrl, alts);
     const desc = extractDescription(html);
     if (desc) descriptions.set(path.relative(DIST, abs), desc);
+    // 第 195 轮：分页页曾经整族共用同一个 <title>（/archive/ 与 /archive/4/ 一字不差）。
+    // 对搜索引擎是"五页重复标题"，对读者是浏览器标签页分不出第几页 —— 两件事都该修。
+    if (!result.skipped && result.title) titles.set(path.relative(DIST, abs), result.title);
     if (result.errors.length) {
       errorPages += 1;
       samples.push({ rel, errors: result.errors, warnings: result.warnings });
@@ -588,6 +592,20 @@ async function main() {
   }
 
   const hreflangErrors = checkHreflangs(hreflangs, siteOrigin);
+  // 标题去重：这是硬错误（搜索引擎会把它当重复内容信号），描述重复只报告不判死。
+  const titleGroups = new Map();
+  for (const [rel, title] of titles) {
+    if (!titleGroups.has(title)) titleGroups.set(title, []);
+    titleGroups.get(title).push(rel);
+  }
+  const dupTitles = [...titleGroups.entries()]
+    .filter(([, rels]) => rels.length > 1)
+    .sort((a, b) => b[1].length - a[1].length);
+  for (const [title, rels] of dupTitles) {
+    console.log(`✗ 标题重复（${rels.length} 页）：「${title.slice(0, 48)}」→ ${rels.slice(0, 4).join(", ")}`);
+    errorPages += 1;
+  }
+
   const descGroups = new Map();
   for (const [rel, desc] of descriptions) {
     if (!desc) continue;
@@ -608,6 +626,12 @@ async function main() {
   );
   for (const e of sitemap.errors.slice(0, 6)) console.log(`    · ${e}`);
   if (sitemap.errors.length > 6) console.log(`    … 还有 ${sitemap.errors.length - 6} 条`);
+
+  console.log(
+    dupTitles.length
+      ? `[标题去重] ${dupTitles.length} 组重复（共 ${dupTitles.reduce((n, [, r]) => n + r.length, 0)} 页）→ 判失败`
+      : `[标题去重] 全部唯一（${titles.size} 页）`,
+  );
 
   if (dupDescriptions.length) {
     const pages = dupDescriptions.reduce((n, [, rels]) => n + rels.length, 0);

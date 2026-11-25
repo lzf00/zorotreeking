@@ -82,8 +82,8 @@ const DETAILED_COUNT = 20;
 ---
 
 <BaseLayout pagefindIgnore={pageNumber > 1}
-  title={`${t("tag.title")}: #${tag}`}
-  description={description}
+  title={pageNumber > 1 ? `${t("tag.title")}: #${tag} · page ${pageNumber}` : `${t("tag.title")}: #${tag}`}
+  description={pageNumber > 1 ? `${description} (page ${pageNumber})` : description}
   schemaType="CollectionPage"
   breadcrumbTitle={`#${tag}`}
   listItems={posts.slice(0, MAX_TAG_ITEMLIST).map((post) => ({

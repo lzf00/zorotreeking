@@ -62,8 +62,8 @@ const otherBase = counterpartBase("/ai/digest");
 ---
 
 <BaseLayout pagefindIgnore={pageNumber > 1}
-  title={`AI 每日精选 · 归档`}
-  description={`${digests.length} 期自动日报，cron 每日 08:00 抓 HF Daily Papers / arxiv / 量子位 / Anthropic 等`}
+  title={pageNumber > 1 ? `AI 每日精选 · 归档 · 第 ${pageNumber} 页` : `AI 每日精选 · 归档`}
+  description={`${digests.length} 期自动日报${pageNumber > 1 ? `，当前第 ${pageNumber} 页` : ""}，cron 每日 08:00 抓 HF Daily Papers / arxiv / 量子位 / Anthropic 等`}
   schemaType="CollectionPage"
   listItems={pageDigests.map((d) => ({
     name: d.data.title,
