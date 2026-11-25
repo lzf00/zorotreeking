@@ -1,6 +1,8 @@
 import DOMPurify from "dompurify";
 import { useEffect, useRef, useState } from "react";
 
+import { searchEmptyState, type SearchLang } from "@/lib/search-empty";
+
 /**
  * 全站搜索 modal（pagefind 客户端全文检索）。
  * - pagefind 索引在 build 期生成到 dist/pagefind/
@@ -38,7 +40,6 @@ const COPY = {
     ariaInput: "输入搜索关键词",
     close: "关闭",
     searching: "搜索中…",
-    noResults: "没有匹配结果",
     idle: "输入关键词开始搜索（也可以按 / 唤起浮层）",
     idleModal: "输入关键词开始搜索 · 按 / 唤起 · Esc 关闭",
     results: (n: number) => `${n} 条结果`,
@@ -50,7 +51,6 @@ const COPY = {
     ariaInput: "Enter search keywords",
     close: "Close",
     searching: "Searching…",
-    noResults: "No matching results",
     idle: "Type to search (press / anywhere to open the overlay)",
     idleModal: "Type to search · press / to open · Esc to close",
     results: (n: number) => `${n} result${n === 1 ? "" : "s"}`,
@@ -233,7 +233,7 @@ export default function SearchModal({ initialOpen = false, initialQuery = "", va
             {loading ? copy.searching : query ? copy.results(results.length) : ""}
           </div>
           {loading && <div style={emptyStyle}>{copy.searching}</div>}
-          {!loading && query && results.length === 0 && <div style={emptyStyle}>{copy.noResults}</div>}
+          {!loading && query && results.length === 0 && emptyBlock(query, lang, "page")}
           {!loading && !query && <div style={emptyStyle}>{copy.idle}</div>}
           {results.map((r, i) => (
             <a key={i} href={r.url} style={resultStyle}>
@@ -286,7 +286,7 @@ export default function SearchModal({ initialOpen = false, initialQuery = "", va
             {loading ? copy.searching : query ? copy.results(results.length) : ""}
           </div>
           {loading && <div style={emptyStyle}>{copy.searching}</div>}
-          {!loading && query && results.length === 0 && <div style={emptyStyle}>{copy.noResults}</div>}
+          {!loading && query && results.length === 0 && emptyBlock(query, lang, "modal")}
           {!loading && !query && <div style={emptyStyle}>{copy.idleModal}</div>}
           {/* 浮层只给前 10 条；把"全部结果"这条路接上真实页面（第 187 轮）：
               之前搜到一半想细看只能自己改地址栏，`/search/` 上线后可以一键跳过去。 */}
@@ -381,4 +381,62 @@ const srOnlyStyle: React.CSSProperties = {
 const emptyStyle: React.CSSProperties = {
   padding: "32px 16px", textAlign: "center",
   fontSize: 13, color: "var(--text-tertiary, #9ca3af)",
+};
+
+/**
+ * 搜不到时的内容（第 203 轮）。
+ *
+ * 旧版只有一行「没有匹配结果」——读者既不知道是关键词太细、太长，还是站里确实没写过，
+ * 也没有下一站可去。现在给一句按关键词形态判断的原因 + 两三条可操作建议 + 真实存在的
+ * 站内入口。判定逻辑在 `@/lib/search-empty`（纯函数，有单测），这里只管渲染。
+ */
+function emptyBlock(query: string, lang: SearchLang, mode: "page" | "modal") {
+  const state = searchEmptyState(query, lang);
+  return (
+    <div style={mode === "page" ? emptyBlockStyle : emptyBlockCompactStyle} data-search-empty="">
+      <p style={emptyHeadlineStyle}>{state.headline}</p>
+      <ul style={emptyTipsStyle}>
+        {state.tips.map((tip) => (
+          <li key={tip}>{tip}</li>
+        ))}
+      </ul>
+      <nav aria-label={lang === "en" ? "Places to browse" : "可以去看看"} style={emptyStopsStyle}>
+        {state.stops.map((stop) => (
+          <a key={stop.href} href={stop.href} style={emptyStopStyle}>
+            {stop.label}
+          </a>
+        ))}
+      </nav>
+    </div>
+  );
+}
+
+const emptyBlockStyle: React.CSSProperties = {
+  padding: "28px 16px",
+  textAlign: "left",
+  fontSize: 13,
+  lineHeight: 1.7,
+  color: "var(--text-secondary, #6b7280)",
+};
+const emptyBlockCompactStyle: React.CSSProperties = { ...emptyBlockStyle, padding: "20px 16px" };
+const emptyHeadlineStyle: React.CSSProperties = {
+  margin: 0,
+  fontWeight: 500,
+  color: "var(--text-primary, #111827)",
+};
+const emptyTipsStyle: React.CSSProperties = {
+  margin: "8px 0 0",
+  paddingLeft: 18,
+  listStyle: "disc",
+};
+const emptyStopsStyle: React.CSSProperties = {
+  marginTop: 12,
+  display: "flex",
+  flexWrap: "wrap",
+  gap: 10,
+};
+const emptyStopStyle: React.CSSProperties = {
+  textDecoration: "underline",
+  textUnderlineOffset: 3,
+  color: "var(--text-primary, #111827)",
 };
