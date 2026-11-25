@@ -24,9 +24,22 @@ declare global {
   }
 }
 
-export default function SearchModal({ initialOpen = false }: { initialOpen?: boolean } = {}) {
-  const [open, setOpen] = useState(initialOpen);
-  const [query, setQuery] = useState("");
+type SearchModalProps = {
+  /** 弹窗模式默认关着；`/search/` 页面模式直接展开。 */
+  initialOpen?: boolean;
+  /** 深链 `/search/?q=…` 带进来的关键词。 */
+  initialQuery?: string;
+  /**
+   * `modal`（默认）：全站浮层；`page`：`/search/` 专用，铺在页面里而不是盖在页面上，
+   * 并且把关键词同步回地址栏，这样"搜到了什么"可以分享、刷新、后退。
+   */
+  variant?: "modal" | "page";
+};
+
+export default function SearchModal({ initialOpen = false, initialQuery = "", variant = "modal" }: SearchModalProps = {}) {
+  const isPage = variant === "page";
+  const [open, setOpen] = useState(initialOpen || isPage);
+  const [query, setQuery] = useState(initialQuery);
   const [results, setResults] = useState<Result[]>([]);
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -57,6 +70,29 @@ export default function SearchModal({ initialOpen = false }: { initialOpen?: boo
     (window as any).__openSearch = () => setOpen(true);
   }, []);
 
+  /**
+   * `/search/` 的深链（第 187 轮）。
+   *
+   * 之前站内只有浮层搜索：`/search/` 直接 404，搜到的词也没法分享或后退回去
+   * （结果全在 React state 里）。页面模式把 `?q=` 当唯一事实来源：
+   * 进来先读一次，之后每次输入 `replaceState` 写回 —— 不产生历史垃圾，但可以复制链接。
+   */
+  useEffect(() => {
+    if (!isPage) return;
+    const params = new URLSearchParams(window.location.search);
+    const fromUrl = params.get("q");
+    if (fromUrl && !initialQuery) setQuery(fromUrl);
+  }, [isPage, initialQuery]);
+
+  useEffect(() => {
+    if (!isPage) return;
+    const params = new URLSearchParams(window.location.search);
+    if (query.trim()) params.set("q", query);
+    else params.delete("q");
+    const next = `${window.location.pathname}${params.toString() ? `?${params}` : ""}`;
+    window.history.replaceState(null, "", next);
+  }, [isPage, query]);
+
   // 打开时记住来源焦点并聚焦输入框；关闭时把焦点还回原处
   useEffect(() => {
     if (!open) return;
@@ -82,7 +118,9 @@ export default function SearchModal({ initialOpen = false }: { initialOpen?: boo
       'a[href], button:not([disabled]), input:not([disabled]), textarea, select, [tabindex]:not([tabindex="-1"])',
     );
     const focusable = Array.from(nodes ?? []).filter((node) => node.offsetParent !== null || node === document.activeElement);
-    if (focusable.length === 0) return;
+    // 只有一个可聚焦元素时**不能**做焦点陷阱：Tab 会被"绕回自己"，焦点永远出不去。
+    // （第 187 轮实测：`/search/` 空结果时唯一可聚焦的就是输入框，Tab 完全卡死。）
+    if (focusable.length < 2) return;
     const first = focusable[0];
     const last = focusable[focusable.length - 1];
     const active = document.activeElement;
@@ -129,6 +167,54 @@ export default function SearchModal({ initialOpen = false }: { initialOpen?: boo
 
   if (!open) return null;
 
+  if (isPage) {
+    return (
+      <div
+        ref={dialogRef}
+        role="search"
+        aria-label="站内搜索"
+        style={pageShellStyle}
+      >
+        <div style={inputWrapStyle}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, color: "var(--text-tertiary, #9ca3af)" }}>
+            <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          <input
+            ref={inputRef}
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="搜索文章、digest、笔记…"
+            aria-label="输入搜索关键词"
+            style={inputStyle}
+          />
+        </div>
+        <div style={listStyle}>
+          <div role="status" aria-live="polite" style={srOnlyStyle}>
+            {loading ? "搜索中" : query ? `${results.length} 条结果` : ""}
+          </div>
+          {loading && <div style={emptyStyle}>搜索中…</div>}
+          {!loading && query && results.length === 0 && <div style={emptyStyle}>没有匹配结果</div>}
+          {!loading && !query && <div style={emptyStyle}>输入关键词开始搜索（也可以按 / 唤起浮层）</div>}
+          {results.map((r, i) => (
+            <a key={i} href={r.url} style={resultStyle}>
+              <div style={resultTitleStyle}>{r.meta?.title || r.url}</div>
+              <div
+                style={resultExcerptStyle}
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(r.excerpt, {
+                    ALLOWED_TAGS: ["mark", "strong", "em", "code", "span"],
+                    ALLOWED_ATTR: [],
+                  }),
+                }}
+              />
+            </a>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div style={overlayStyle} onClick={() => setOpen(false)}>
       <div
@@ -163,6 +249,17 @@ export default function SearchModal({ initialOpen = false }: { initialOpen?: boo
           {loading && <div style={emptyStyle}>搜索中…</div>}
           {!loading && query && results.length === 0 && <div style={emptyStyle}>没有匹配结果</div>}
           {!loading && !query && <div style={emptyStyle}>输入关键词开始搜索 · 按 / 唤起 · Esc 关闭</div>}
+          {/* 浮层只给前 10 条；把"全部结果"这条路接上真实页面（第 187 轮）：
+              之前搜到一半想细看只能自己改地址栏，`/search/` 上线后可以一键跳过去。 */}
+          {!loading && query.trim() && (
+            <a
+              href={`/search/?q=${encodeURIComponent(query.trim())}`}
+              style={moreStyle}
+              onClick={() => setOpen(false)}
+            >
+              在搜索页查看全部结果 →
+            </a>
+          )}
           {results.map((r, i) => (
             <a key={i} href={r.url} style={resultStyle} onClick={() => setOpen(false)}>
               <div style={resultTitleStyle}>{r.meta?.title || r.url}</div>
@@ -189,6 +286,16 @@ const overlayStyle: React.CSSProperties = {
   background: "rgba(0,0,0,0.4)", backdropFilter: "blur(4px)",
   display: "flex", alignItems: "flex-start", justifyContent: "center",
   paddingTop: "10vh", paddingLeft: 16, paddingRight: 16,
+};
+const moreStyle: React.CSSProperties = {
+  display: "block", padding: "10px 14px", marginTop: 4,
+  borderRadius: 8, fontSize: 13, color: "var(--text-secondary, #52525b)",
+  textDecoration: "none", borderTop: "1px solid var(--border, #e5e7eb)",
+};
+const pageShellStyle: React.CSSProperties = {
+  width: "100%", background: "var(--bg, #fff)",
+  border: "1px solid var(--border, #e5e7eb)", borderRadius: 14,
+  display: "flex", flexDirection: "column", overflow: "hidden",
 };
 const modalStyle: React.CSSProperties = {
   width: "min(640px, 100%)", background: "var(--bg, #fff)",

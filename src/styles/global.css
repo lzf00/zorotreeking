@@ -303,3 +303,15 @@
     line-height: 1.5;
   }
 }
+
+/* ─────────────────────────────────────────────────────
+   搜索输入框的焦点环
+   第 187 轮。`/search/` 是唯一一个"进来就把焦点放进输入框"的页面，而程序化聚焦
+   不触发 `:focus-visible` —— 键盘用户按 Tab 前根本看不出焦点在哪（WCAG 2.4.7）。
+   这里对输入框用 `:focus`（而不是 `:focus-visible`），鼠标点进来也显示环，代价可忽略。
+   ───────────────────────────────────────────────────── */
+input[type="search"]:focus,
+input[inputmode]:focus {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}

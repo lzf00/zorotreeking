@@ -81,6 +81,9 @@ let PATHS = [
   "/en/invest/market-recap-2026-11-13/",
   // 第 126 轮：地图从"自动加载 Leaflet"改成年"点一下才加载"，这条路径守着新按钮与预览态
   "/hike/sample-route/",
+  // 第 187 轮：`/search/` 从 404 变成真页面 —— 输入框 + 结果链接 + 空状态文案，
+  // 而且它是**唯一**一个把搜索岛当页面主体渲染的模板（浮层那套的语义不适用）
+  "/search/",
 ];
 
 const args = process.argv.slice(2);

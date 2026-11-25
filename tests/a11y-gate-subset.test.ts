@@ -22,8 +22,10 @@ test("门禁里有双主题快检，且排在 build 之后", () => {
 
 test("快检只挑少数模板（别把门禁变成 2.5 分钟的巡检）", () => {
   const paths = /--paths=(\S+)/.exec(pkg.scripts["check:a11y:fast"])[1].split(",").filter(Boolean);
-  // 上限 6：每个路径 ≈ 1.6 s × 2 主题。超过就该拆分了，而不是继续堆。
-  assert.ok(paths.length >= 2 && paths.length <= 6, `快检路径数应在 2-6 之间，收到 ${paths.length}`);
+  // 每个路径 ≈ 1.6 s × 2 主题；上限 8 对应"每个**独立模板**一页"（第 187 轮加 /search/ 时
+  // 从 6 提到 8：搜索页是唯一一个把搜索岛当页面主体渲染的模板，不抽到就等于没验）。
+  // 再多就该按模板分组、而不是继续往一条命令里堆。
+  assert.ok(paths.length >= 2 && paths.length <= 8, `快检路径数应在 2-8 之间，收到 ${paths.length}`);
   // 至少覆盖「列表/仪表盘」与「正文」两类模板，否则回归照不到
   assert.ok(paths.some((p) => p === "/"), "缺少首页");
   assert.ok(paths.some((p) => /digest-20/.test(p)), "缺少正文页（prose 模板）");
