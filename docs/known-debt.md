@@ -333,3 +333,17 @@
 - **`/search/` 进了 a11y 规则集与快检**：快检路径上限从 6 提到 8（每个独立模板一页）。
 - **仍未处理**：生产侧 nginx 的 `/index.html` 未 301、gzip-only、`/api/market/cn|hk` 404
   都在服务器配置里，本仓库改不到（需要服务器权限）。
+
+## 第 188 轮
+
+- **英文搜索页**：`/en/search/` 上线，搜索岛文案按 `lang` 拆分；浮层也按 `<html lang>`
+  切文案（此前英文页面弹出来是中文）。
+- **a11y 快检 8 条路径**：`/search/` 与 `/en/search/` 都进了规则集，双主题 0 违规。
+- **仍未处理（需要服务器权限）**：`/index.html` 未 301、gzip-only、`/api/market/cn|hk` 404。
+
+## 第 188 轮补记
+
+- **`/en/search/` 上线后的一串连锁**：`check:i18n-leaks` 抓到英文页 `aria-label` 里还有中文；
+  `check:lang-switch` 抓到两版搜索页没有互链。都已修（文案全走 `COPY` 表、两页互加
+  `English` / `中文` 链接），并各补了一条测试。
+- **a11y 快检 8 条路径**（上限）：`/search/`、`/en/search/` 都在内，双主题 0 违规。

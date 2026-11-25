@@ -1,0 +1,41 @@
+---
+/**
+ * `/en/search/` —— 英文版搜索页（第 188 轮）。
+ *
+ * 第 187 轮把 `/search/` 从 404 变成真页面，但界面文案是写死的中文：英文读者点进来
+ * 会看到"输入关键词开始搜索"。这一轮把搜索岛的文案按 `lang` 拆成两份，这里传 `en`。
+ *
+ * 和中文页一样：noindex（结果页是薄内容）、不进 sitemap、也不该被 pagefind 索引。
+ */
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import SearchModal from "@/components/SearchModal";
+---
+<BaseLayout
+  title="Search"
+  description="Full-text search across posts, AI digests, market recaps and hiking routes."
+  noindex
+>
+  <section class="max-w-3xl mx-auto px-5 pt-16 pb-24">
+    <h1 class="font-serif text-4xl sm:text-5xl leading-[0.95] tracking-tight mb-3">Search</h1>
+    <p class="text-sm mb-4">
+      <a href="/search/" class="underline decoration-[var(--border)] hover:decoration-current" hreflang="zh-CN" lang="zh-CN">中文</a>
+    </p>
+    <p class="text-sm text-[var(--text-tertiary)] mb-8">
+      Full-text search across posts, AI digests, market recaps and hiking routes. The query is written into
+      the address bar, so you can share or bookmark it. Press
+      <kbd class="px-1.5 py-0.5 rounded border border-[var(--border)] text-[12px]">/</kbd> on any page to open
+      the search overlay.
+    </p>
+
+    <SearchModal client:load variant="page" lang="en" initialOpen />
+
+    <noscript>
+      <p class="mt-6 text-sm text-[var(--text-secondary)]">
+        Search needs JavaScript. Without it, browse the
+        <a class="underline" href="/en/archive/">archive</a>,
+        <a class="underline" href="/en/ai/digest/">AI digest index</a>, or
+        <a class="underline" href="/en/invest/">investing</a> sections instead.
+      </p>
+    </noscript>
+  </section>
+</BaseLayout>

@@ -24,7 +24,45 @@ declare global {
   }
 }
 
+/**
+ * 搜索岛的界面文案（第 188 轮）。
+ *
+ * 之前这些字符串全是写死的中文：`/en/` 那半边一旦有搜索页，英文读者会看到
+ * "输入关键词开始搜索"。这里按 `lang` 取一份 —— 搜索本身（pagefind）是语言无关的，
+ * 索引里中英文页面都有，只有界面文案需要分。
+ */
+const COPY = {
+  zh: {
+    dialog: "站内搜索",
+    placeholder: "搜索文章、digest、笔记…",
+    ariaInput: "输入搜索关键词",
+    close: "关闭",
+    searching: "搜索中…",
+    noResults: "没有匹配结果",
+    idle: "输入关键词开始搜索（也可以按 / 唤起浮层）",
+    idleModal: "输入关键词开始搜索 · 按 / 唤起 · Esc 关闭",
+    results: (n: number) => `${n} 条结果`,
+    more: "{copy.more}",
+  },
+  en: {
+    dialog: "Search this site",
+    placeholder: "Search posts, digests, notes…",
+    ariaInput: "Enter search keywords",
+    close: "Close",
+    searching: "Searching…",
+    noResults: "No matching results",
+    idle: "Type to search (press / anywhere to open the overlay)",
+    idleModal: "Type to search · press / to open · Esc to close",
+    results: (n: number) => `${n} result${n === 1 ? "" : "s"}`,
+    more: "See all results on the search page →",
+  },
+} as const;
+
+type Lang = keyof typeof COPY;
+
 type SearchModalProps = {
+  /** 界面语言；`/en/search/` 传 `"en"`。搜索索引本身是语言无关的。 */
+  lang?: Lang;
   /** 弹窗模式默认关着；`/search/` 页面模式直接展开。 */
   initialOpen?: boolean;
   /** 深链 `/search/?q=…` 带进来的关键词。 */
@@ -36,7 +74,8 @@ type SearchModalProps = {
   variant?: "modal" | "page";
 };
 
-export default function SearchModal({ initialOpen = false, initialQuery = "", variant = "modal" }: SearchModalProps = {}) {
+export default function SearchModal({ initialOpen = false, initialQuery = "", variant = "modal", lang = "zh" }: SearchModalProps = {}) {
+  const copy = COPY[lang];
   const isPage = variant === "page";
   const [open, setOpen] = useState(initialOpen || isPage);
   const [query, setQuery] = useState(initialQuery);
@@ -172,7 +211,7 @@ export default function SearchModal({ initialOpen = false, initialQuery = "", va
       <div
         ref={dialogRef}
         role="search"
-        aria-label="站内搜索"
+        aria-label={copy.dialog}
         style={pageShellStyle}
       >
         <div style={inputWrapStyle}>
@@ -184,18 +223,18 @@ export default function SearchModal({ initialOpen = false, initialQuery = "", va
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="搜索文章、digest、笔记…"
-            aria-label="输入搜索关键词"
+            placeholder={copy.placeholder}
+            aria-label={copy.ariaInput}
             style={inputStyle}
           />
         </div>
         <div style={listStyle}>
           <div role="status" aria-live="polite" style={srOnlyStyle}>
-            {loading ? "搜索中" : query ? `${results.length} 条结果` : ""}
+            {loading ? copy.searching : query ? copy.results(results.length) : ""}
           </div>
-          {loading && <div style={emptyStyle}>搜索中…</div>}
-          {!loading && query && results.length === 0 && <div style={emptyStyle}>没有匹配结果</div>}
-          {!loading && !query && <div style={emptyStyle}>输入关键词开始搜索（也可以按 / 唤起浮层）</div>}
+          {loading && <div style={emptyStyle}>{copy.searching}</div>}
+          {!loading && query && results.length === 0 && <div style={emptyStyle}>{copy.noResults}</div>}
+          {!loading && !query && <div style={emptyStyle}>{copy.idle}</div>}
           {results.map((r, i) => (
             <a key={i} href={r.url} style={resultStyle}>
               <div style={resultTitleStyle}>{r.meta?.title || r.url}</div>
@@ -221,7 +260,7 @@ export default function SearchModal({ initialOpen = false, initialQuery = "", va
         ref={dialogRef}
         role="dialog"
         aria-modal="true"
-        aria-label="站内搜索"
+        aria-label={copy.dialog}
         style={modalStyle}
         onClick={(e) => e.stopPropagation()}
         onKeyDown={handleKeyDown}
@@ -235,20 +274,20 @@ export default function SearchModal({ initialOpen = false, initialQuery = "", va
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="搜索文章、digest、笔记…"
-            aria-label="输入搜索关键词"
+            placeholder={copy.placeholder}
+            aria-label={copy.ariaInput}
             style={inputStyle}
           />
-          <button onClick={() => setOpen(false)} aria-label="关闭" style={closeStyle}>Esc</button>
+          <button onClick={() => setOpen(false)} aria-label={copy.close} style={closeStyle}>Esc</button>
         </div>
         <div style={listStyle}>
           {/* 结果变化要让屏幕阅读器知道；视觉上不占位（下面还有可见状态文案） */}
           <div role="status" aria-live="polite" style={srOnlyStyle}>
-            {loading ? "搜索中" : query ? `${results.length} 条结果` : ""}
+            {loading ? copy.searching : query ? copy.results(results.length) : ""}
           </div>
-          {loading && <div style={emptyStyle}>搜索中…</div>}
-          {!loading && query && results.length === 0 && <div style={emptyStyle}>没有匹配结果</div>}
-          {!loading && !query && <div style={emptyStyle}>输入关键词开始搜索 · 按 / 唤起 · Esc 关闭</div>}
+          {loading && <div style={emptyStyle}>{copy.searching}</div>}
+          {!loading && query && results.length === 0 && <div style={emptyStyle}>{copy.noResults}</div>}
+          {!loading && !query && <div style={emptyStyle}>{copy.idleModal}</div>}
           {/* 浮层只给前 10 条；把"全部结果"这条路接上真实页面（第 187 轮）：
               之前搜到一半想细看只能自己改地址栏，`/search/` 上线后可以一键跳过去。 */}
           {!loading && query.trim() && (

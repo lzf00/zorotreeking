@@ -44,3 +44,31 @@ test("搜索岛支持页面模式和 ?q= 深链", async () => {
     "页面模式不是模态对话框，不该声明 aria-modal",
   );
 });
+
+test("/en/search/ 存在、是英文界面、同样 noindex", async () => {
+  const page = await read("src/pages/en/search.astro");
+  assert.match(page, /<BaseLayout[\s\S]{0,160}noindex/);
+  assert.match(page, /lang="en"/, "英文页要把 lang 传给搜索岛");
+
+  const modal = await read("src/components/SearchModal.tsx");
+  assert.match(modal, /const COPY = \{/, "文案要按语言拆表");
+  assert.match(modal, /en: \{[\s\S]{0,400}Search posts, digests, notes/, "英文文案要有");
+  // 只截到 en 对象结束（后面的类型定义里有中文注释，不算文案）
+  const start = modal.indexOf("  en: {");
+  const end = modal.indexOf("} as const;", start);
+  const enBlock = modal.slice(start, end);
+  assert.doesNotMatch(enBlock, /[\u4e00-\u9fff]/, "英文文案里不许混中文");
+});
+
+test("浮层的语言跟页面走（英文页面不该弹中文浮层）", async () => {
+  const entry = await read("src/entrypoints/search.tsx");
+  assert.match(entry, /document\.documentElement\.lang === "en"/, "按 <html lang> 判断");
+  assert.match(entry, /lang=\{lang\}/, "把语言传给 SearchModal");
+});
+
+test("中英两版搜索页互链（check:lang-switch 要求成对）", async () => {
+  const zh = await read("src/pages/search.astro");
+  const en = await read("src/pages/en/search.astro");
+  assert.match(zh, /href="\/en\/search\/"[^>]*>English</, "中文页要有 English 切换");
+  assert.match(en, /href="\/search\/"[^>]*>中文</, "英文页要有 中文 切换");
+});

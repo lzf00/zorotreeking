@@ -15,8 +15,12 @@ test("对话框标记：aria-modal + 可读标签 + 输入框标签 + 结果播�
   const modal = await read("src/components/SearchModal.tsx");
   assert.match(modal, /aria-modal="true"/, "缺 aria-modal，辅助技术不会把背景当不可交互");
   assert.match(modal, /role="dialog"/);
-  assert.match(modal, /aria-label="站内搜索"/);
-  assert.match(modal, /aria-label="输入搜索关键词"/, "只有 placeholder 不算标签");
+  // 第 188 轮起 label 走文案表（英文页用英文），但读屏用户听到的中文名不能变
+  assert.match(modal, /aria-label=\{copy\.dialog\}/, "对话框可读名要来自文案表");
+  assert.match(modal, /aria-label=\{copy\.ariaInput\}/, "只有 placeholder 不算标签");
+  assert.match(modal, /dialog: "站内搜索"/, "中文可读名还是「站内搜索」");
+  assert.match(modal, /ariaInput: "输入搜索关键词"/, "中文输入框可读名不能丢");
+  assert.match(modal, /ariaInput: "Enter search keywords"/, "英文也要有可读名");
   assert.match(modal, /role="status"/);
   assert.match(modal, /aria-live="polite"/);
 });

@@ -19,6 +19,9 @@ import SearchModal from "@/components/SearchModal";
  */
 export function mountSearch(container: HTMLElement, { open = true }: { open?: boolean } = {}) {
   const root = createRoot(container);
-  root.render(<SearchModal initialOpen={open} />);
+  // 浮层的文案要跟着页面语言走（第 188 轮）：`/en/` 那半边此前弹出来是中文
+  // "输入关键词开始搜索"。这里读 <html lang>，和 SearchLauncher 判断错误文案的方式一致。
+  const lang = document.documentElement.lang === "en" ? "en" : "zh";
+  root.render(<SearchModal initialOpen={open} lang={lang} />);
   return root;
 }
