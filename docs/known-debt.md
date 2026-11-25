@@ -397,3 +397,16 @@
 - **新增测试**：`tests/a11y-templates.test.ts`（归并规则 + 窗口互不重叠/并集为全集）、
   `tests/landmark-names.test.ts`（aside 必须有名、同组件内不重复）。
 - **仍未做**：`inlineStylesheets: "always"` 的 ~97 KB/页内联 CSS（等用户决定）。
+
+## 第 194 轮
+
+- **分页页退出站内搜索索引**：`BaseLayout` 新增 `pagefindIgnore`，九类分页页在
+  `pageNumber > 1` 时传它（`data-pagefind-body` 不输出）。索引 1285 → 1212 页；
+  搜索 "归档" 从「前五名全是分页页」变成 `/archive/` 第 3 位。
+- **顺带验证过、确认没问题的**：throttled 移动端 13 个代表页 LCP 最慢 1360 ms、
+  CLS 最差 0.073（预算 0.12）、长任务 ≤148 ms；图片真实传输 0.13–0.33 MB/页
+  （srcset 派生图生效，之前按 HTML 里引用的原图算出的 5.5 MB 是假象）；
+  **构建是确定性的**（同树连建两次只有 `site-knowledge.json` 的 `generated_at` 不同），
+  所以部署慢不是"每次全量重传"，而是网络与步骤本身。
+- **仍未做**：`site-knowledge.json` 的 `generated_at` 用构建时间（无害但不诚实，可选改成 git 时间）；
+  `inlineStylesheets: "always"` 的 ~97 KB/页内联 CSS（等用户决定）。

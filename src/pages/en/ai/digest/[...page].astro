@@ -52,7 +52,7 @@ const otherBase = counterpartBase("/en/ai/digest");
 
 ---
 
-<BaseLayout
+<BaseLayout pagefindIgnore={pageNumber > 1}
   title="Daily AI digest · archive"
   description={`${digests.length} issues auto-generated daily from HF Daily Papers / arxiv / qbitai / Anthropic etc.`}
   schemaType="CollectionPage"

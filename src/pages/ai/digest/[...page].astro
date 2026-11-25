@@ -61,7 +61,7 @@ const otherBase = counterpartBase("/ai/digest");
 
 ---
 
-<BaseLayout
+<BaseLayout pagefindIgnore={pageNumber > 1}
   title={`AI 每日精选 · 归档`}
   description={`${digests.length} 期自动日报，cron 每日 08:00 抓 HF Daily Papers / arxiv / 量子位 / Anthropic 等`}
   schemaType="CollectionPage"

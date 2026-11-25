@@ -32,6 +32,10 @@ interface Props {
   modifiedTime?: Date;
   tags?: string[];          // article:tag
   noindex?: boolean;        // 后台/管理页用
+  // 不进站内搜索索引（第 194 轮）。和 noindex 不同：页面照样让 Google 抓，
+  // 只是不让 Pagefind 收 —— 分页页（/ai/digest/2/、/tag/x/3/…）就是这种：
+  // 它们列的文章本身都有独立页面，收进来只会让搜索结果里冒出「第 3 页」这类重复项。
+  pagefindIgnore?: boolean;
   // 列表型页面（标签页、板块首页、归档页）用 CollectionPage，比裸 WebPage 更准确
   schemaType?: "WebPage" | "CollectionPage";
   // 列表型页面把条目交给 Google：ItemList 让搜索引擎知道这一页列了哪些文章
@@ -51,6 +55,7 @@ const {
   modifiedTime,
   tags,
   noindex,
+  pagefindIgnore = false,
   schemaType = "WebPage",
   listItems,
   breadcrumbTitle,
@@ -326,7 +331,7 @@ if (jsonLd) {
       {lang === "zh" ? "跳到正文" : "Skip to content"}
     </a>
     <Navbar />
-    <main id="main-content" class="flex-1" tabindex="-1" data-pagefind-body={!noindex ? true : undefined}>
+    <main id="main-content" class="flex-1" tabindex="-1" data-pagefind-body={!noindex && !pagefindIgnore ? true : undefined}>
       <slot />
     </main>
     <Footer />

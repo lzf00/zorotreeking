@@ -75,7 +75,7 @@ const listItems = page.data.slice(0, MAX_TAG_ITEMLIST).map((entry) => ({
 }));
 ---
 
-<BaseLayout
+<BaseLayout pagefindIgnore={pageNumber > 1}
   title="Archive"
   description="Everything published here, newest first: AI notes, investment reviews, photo albums and hiking routes, each with a date and its section."
   schemaType="CollectionPage"

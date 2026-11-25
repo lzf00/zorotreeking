@@ -81,7 +81,7 @@ const sectionLabel: Record<string, string> = {
 const DETAILED_COUNT = 20;
 ---
 
-<BaseLayout
+<BaseLayout pagefindIgnore={pageNumber > 1}
   title={`${t("tag.title")}: #${tag}`}
   description={description}
   schemaType="CollectionPage"

@@ -70,7 +70,7 @@ const coverVariants = (cover: string | undefined) => {
 };
 ---
 
-<BaseLayout
+<BaseLayout pagefindIgnore={pageNumber > 1}
   title={`投资资讯日报 · 归档`}
   description={`${digests.length} 期自动日报，cron 每日 08:00 抓同花顺 / 东方财富 / Yahoo Finance，AI 改写`}
   schemaType="CollectionPage"
