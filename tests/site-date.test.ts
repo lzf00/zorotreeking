@@ -56,3 +56,19 @@ test("siteDateString 按站点时区（+08）输出，不受构建机时区影�
   // 当天早些时候（UTC 与 +08 同日）
   assert.equal(siteDateString(new Date("2026-11-26T02:00:00.000Z")), "2026-11-26");
 });
+
+test("日历日算术与构建机时区无关（热力图靠它铺格子）", async () => {
+  const { addIsoDays, isoWeekday } = await import("../src/lib/site-date.ts");
+  assert.equal(addIsoDays("2026-11-26", 1), "2026-11-27");
+  assert.equal(addIsoDays("2026-12-31", 1), "2027-01-01");
+  assert.equal(addIsoDays("2026-03-01", -1), "2026-02-28");
+  assert.equal(addIsoDays("2026-11-26", -364), "2025-11-27");
+  assert.equal(isoWeekday("2026-11-26"), 4, "2026-11-26 是周四");
+  assert.equal(isoWeekday("2026-11-22"), 0, "2026-11-22 是周日");
+});
+
+test("site-knowledge 的 generated_at 取内容日期，不用构建时间", async () => {
+  const src = await read("src/pages/site-knowledge.json.ts");
+  assert.doesNotMatch(src, /generated_at:\s*new Date\(\)\.toISOString\(\)/, "构建时间会让产物每次都变");
+  assert.match(src, /generated_at:\s*newestDay/, "应取最新内容日期");
+});

@@ -41,8 +41,16 @@ export async function GET(context: APIContext) {
         tags: p.data.tags ?? [],
       }));
 
+  // 第 197 轮：这行原来写 `new Date().toISOString()`，于是**每次构建**产物都不同 ——
+  // 它让「构建产物只由内容决定」这个性质永远不成立（也让消费方永远无法缓存）。
+  // 现在取「最新一条内容的日期」（站点时区零点），内容没变就不变。
+  const newestDay = [...ai, ...invest, ...photo, ...hike]
+    .map((entry) => siteDateString(entry.data.date))
+    .sort()
+    .at(-1);
+
   const payload = {
-    generated_at: new Date().toISOString(),
+    generated_at: newestDay ? `${newestDay}T00:00:00+08:00` : null,
     site: {
       title: "ZoroTreeking",
       tagline: "在代码与山林之间，留一份缓慢的笔记。",

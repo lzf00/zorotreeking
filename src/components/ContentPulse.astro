@@ -15,7 +15,7 @@
  * 算出过去 365 天每天的 {ai, invest, photo, hike, digest} 分布，
  * 渲染纯 SVG（无 JS，hover 用 title）。
  */
-import { siteDateString } from "@/lib/site-date";
+import { addIsoDays, isoWeekday, siteDateString } from "@/lib/site-date";
 import { getCollection } from "astro:content";
 import ContentPulseCells from "@/components/ContentPulseCells.astro";
 import { getLangFromUrl } from "@/i18n/ui";
@@ -82,23 +82,19 @@ for (const it of items) {
 
 // 构造过去 N 周的方格列表（N = 53 周覆盖一年）
 const WEEKS = 53;
-const today = new Date();
-today.setHours(0, 0, 0, 0);
-// 把"今天"对齐到本周末（星期六），让最右一列是当前周
-const startOfThisWeek = new Date(today);
-startOfThisWeek.setDate(today.getDate() - today.getDay()); // 周日
-const start = new Date(startOfThisWeek);
-start.setDate(start.getDate() - (WEEKS - 1) * 7);
+// 第 197 轮：整张图按「站点日历日」铺格子，不再用构建机的 Date 加减。
+// 之前 CI（UTC）与本地（+08）构建出来的 /about/ 会差一天，最后一格也停在"UTC 的今天"。
+const todayIso = siteDateString(new Date());
+// 行首对齐到本周日，最后一列是当前周
+const startIso = addIsoDays(todayIso, -isoWeekday(todayIso) - (WEEKS - 1) * 7);
 
 interface Cell { date: string; items: Item[] }
 const weeks: Cell[][] = [];
 for (let w = 0; w < WEEKS; w++) {
   const week: Cell[] = [];
   for (let d = 0; d < 7; d++) {
-    const cur = new Date(start);
-    cur.setDate(start.getDate() + w * 7 + d);
-    if (cur > today) break;
-    const key = siteDateString(cur);
+    const key = addIsoDays(startIso, w * 7 + d);
+    if (key > todayIso) break;
     week.push({ date: key, items: byDay[key] ?? [] });
   }
   weeks.push(week);

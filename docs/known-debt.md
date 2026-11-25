@@ -433,3 +433,13 @@
   `toISOString().slice(0, 10)` 直接失败。
 - **仍未做**：`site-knowledge.json` 的 `generated_at` 仍用构建时间（无害但不诚实，下轮可选改 git 时间）；
   `inlineStylesheets` 内联 CSS（等用户决定）。
+
+## 第 197 轮
+
+- **热力图改为日历串算术**：`addIsoDays` / `isoWeekday`（`src/lib/site-date.ts`），
+  1939 天级别的加减都按 ISO 串算，构建机时区不再影响格子。实测两种时区产物完全一致。
+- **`site-knowledge.json` 的 `generated_at`** 从构建时间改为「最新内容日期」
+  （`2026-11-25T00:00:00+08:00`），消费方终于能缓存。
+- **构建确定性达成**：`TZ=UTC` 连建两次 3683 个文件字节相同；UTC 与 +08 产物也相同。
+  部署 rsync 只需传真正变化的文件。
+- **仍未做**：`inlineStylesheets` 内联 CSS 97 KB/页（等用户决定）。
