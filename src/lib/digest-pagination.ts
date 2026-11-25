@@ -11,11 +11,15 @@
  * 这个常量必须被**分页页**和 **sitemap 生成器**同时引用：第 56 轮踩过一次
  * "sitemap 漏收录可索引页面"的坑，分页页如果忘了进 sitemap，`check:seo` 直接判红。
  */
+import { counterpartBase as sharedCounterpart, pageCount, pagePaths, type PaginatedPage } from "./pagination";
+
+export type { PaginatedPage };
+
 export const DIGEST_PAGE_SIZE = 48;
 
 /** 给定总数算出页数（至少 1 页）。 */
 export function digestPageCount(total: number, pageSize = DIGEST_PAGE_SIZE): number {
-  return Math.max(1, Math.ceil(total / pageSize));
+  return pageCount(total, pageSize);
 }
 
 /**
@@ -23,29 +27,10 @@ export function digestPageCount(total: number, pageSize = DIGEST_PAGE_SIZE): num
  * `basePath` 带语言前缀（`/en/ai/digest`），尾斜杠由调用方统一处理。
  */
 export function digestPagePaths(basePath: string, total: number, pageSize = DIGEST_PAGE_SIZE): string[] {
-  const pages = digestPageCount(total, pageSize);
-  return Array.from({ length: Math.max(0, pages - 1) }, (_, i) => `${basePath}/${i + 2}`);
-}
-
-/**
- * `paginate()` 返回的 page 对象（Astro 的 `PaginateResult`）。
- *
- * 为什么要自己写：`getStaticPaths({ paginate }: { paginate: any })` 的返回类型退化成 any，
- * Astro 于是把 `Astro.props` 推成 `never`，`page.url.prev` 这类访问全是 ts(2339)。
- * 显式声明一次，四个页面共用。
- */
-export interface PaginatedPage<T> {
-  data: T[];
-  start: number;
-  end: number;
-  total: number;
-  currentPage: number;
-  size: number;
-  lastPage: number;
-  url: { current: string; prev?: string; next?: string; first?: string; last?: string };
+  return pagePaths(basePath, total, pageSize);
 }
 
 /** 语言前缀互换：`/ai/digest` ↔ `/en/ai/digest`（分页页要按同一页码互链）。 */
 export function counterpartBase(base: string): string {
-  return base.startsWith("/en/") ? base.slice(3) : `/en${base}`;
+  return sharedCounterpart(base);
 }

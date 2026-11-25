@@ -8,6 +8,8 @@ import { travelGuides } from "@/data/travel-guides";
 import { getStaticSitemapPaths } from "@/lib/sitemap";
 import { tagToSlug } from "@/lib/tags";
 import { DIGEST_PAGE_SIZE, digestPagePaths } from "@/lib/digest-pagination";
+import { ARCHIVE_PAGE_SIZE } from "@/lib/archive-pagination";
+import { pagePaths } from "@/lib/pagination";
 import { escapeXml } from "@/lib/xml";
 
 type Section = "ai" | "invest" | "hike" | "photo";
@@ -141,6 +143,24 @@ export async function GET(context: APIContext) {
       });
     }
   };
+  /**
+   * 归档页的第 2..N 页（第 190 轮）。理由同上：可索引就得分页进 sitemap。
+   * lastmod 取该页最新一篇（新文章进来会把条目往后挤，页内容确实会变）。
+   */
+  const pushArchivePages = (base: string, entries: any[]) => {
+    const posts = entries.slice().sort((a, b) => (b.data.date as Date).getTime() - (a.data.date as Date).getTime());
+    for (const path of pagePaths(base, posts.length, ARCHIVE_PAGE_SIZE)) {
+      const pageNo = Number(path.slice(path.lastIndexOf("/") + 1));
+      const newestOnPage = posts[(pageNo - 1) * ARCHIVE_PAGE_SIZE];
+      urls.push({
+        loc: withSlash(`${site}${path}`),
+        lastmod: newestOnPage?.data.updated ?? newestOnPage?.data.date,
+      });
+    }
+  };
+  pushArchivePages("/archive", [...aiZh, ...invZh, ...photoZh, ...hikeZh]);
+  pushArchivePages("/en/archive", [...aiEn, ...invEn, ...photoEn, ...hikeEn]);
+
   pushDigestPages("/ai/digest", aiZh);
   pushDigestPages("/en/ai/digest", aiEn);
   pushDigestPages("/invest/digest", invZh);

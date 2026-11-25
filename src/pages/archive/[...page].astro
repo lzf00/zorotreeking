@@ -1,0 +1,120 @@
+---
+/**
+ * 全部归档 · 第 一页（第一页）（第 190 轮分页）。
+ *
+ * 这一页曾经一次渲染 1100 多行（368 KB，全站最重）。按 150 条一页切成 8 页，
+ * 年份分节仍留在页内。分页页必须：① 进 sitemap（可索引页漏收录是 check:seo 硬错）；
+ * ② 带 rel=prev/next；③ 和中英对端互链（对端页数不够时不链）。
+ */
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ArchiveByYear, { type ArchivePost } from "@/components/ArchiveByYear.astro";
+import { MAX_TAG_ITEMLIST } from "@/lib/tag-relations";
+import { getCollection } from "astro:content";
+import { pathWithLang } from "@/i18n/ui";
+import { ARCHIVE_PAGE_SIZE } from "@/lib/archive-pagination";
+import { counterpartBase, pageCount, type PaginatedPage } from "@/lib/pagination";
+
+const LANG = "zh" as const;
+const SECTIONS = ["ai", "invest", "photo", "hike"] as const;
+
+/** 取某语言的全部条目（四个板块混排、按日期倒序）。 */
+async function loadPosts(): Promise<ArchivePost[]> {
+  const groups = await Promise.all(
+    SECTIONS.map(async (section) =>
+      (
+        await getCollection(section, (entry) => entry.data.lang === LANG && !entry.data.draft)
+      ).map((entry) => ({
+        section,
+        slug: entry.data.translationKey,
+        title: entry.data.title,
+        date: entry.data.date,
+      })),
+    ),
+  );
+  return groups.flat().sort((a, b) => b.date.getTime() - a.date.getTime());
+}
+
+// getStaticPaths 会被提到模块顶部、页面主体被包进函数 —— 所以取数只能在这里内联一份
+export async function getStaticPaths({ paginate }: { paginate: any }) {
+  const groups = await Promise.all(
+    ["ai", "invest", "photo", "hike"].map(async (section) =>
+      (
+        await getCollection(section as "ai", (entry) => entry.data.lang === "zh" && !entry.data.draft)
+      ).map((entry) => ({
+        section,
+        slug: entry.data.translationKey,
+        title: entry.data.title,
+        date: entry.data.date,
+      })),
+    ),
+  );
+  const posts = groups.flat().sort((a, b) => b.date.getTime() - a.date.getTime());
+  return paginate(posts, { pageSize: ARCHIVE_PAGE_SIZE });
+}
+
+const posts = await loadPosts();
+const { page } = Astro.props as { page: PaginatedPage<ArchivePost> };
+const pageNumber = page.currentPage;
+const totalPages = page.lastPage;
+
+/** 中英对端：页数不同，够不着就不链（链到不存在的页同样违反 check:lang-switch）。 */
+const otherLang = LANG === "zh" ? "en" : "zh";
+const otherGroups = await Promise.all(
+  SECTIONS.map(async (section) =>
+    (await getCollection(section, (entry) => entry.data.lang === otherLang && !entry.data.draft)).length,
+  ),
+);
+const otherTotal = otherGroups.reduce((sum, n) => sum + n, 0);
+const hasCounterpart = pageCount(otherTotal, ARCHIVE_PAGE_SIZE) >= pageNumber;
+const otherBase = counterpartBase("/archive"); // /en/archive
+
+const listItems = page.data.slice(0, MAX_TAG_ITEMLIST).map((entry) => ({
+  name: entry.title,
+  url: pathWithLang(`/${entry.section}/${entry.slug}`, LANG),
+}));
+---
+
+<BaseLayout
+  title="全部归档"
+  description="按年份倒序列出这个站点的全部内容：AI 笔记、投资复盘、摄影相册与徒步路线，每一条都有日期和所属板块。"
+  schemaType="CollectionPage"
+  breadcrumbTitle="全部归档"
+  listItems={listItems}
+>
+  <article class="max-w-3xl mx-auto px-5 pt-16 pb-24">
+    <h1 class="font-serif text-5xl sm:text-6xl leading-[0.95] tracking-tight">全部归档</h1>
+    {hasCounterpart && (
+      <p class="mt-4 text-sm">
+        <a
+          href={`${otherBase}/${pageNumber === 1 ? "" : `${pageNumber}/`}`}
+          class="underline decoration-[var(--border)] hover:decoration-current"
+          hreflang="en"
+          lang="en"
+        >English</a>
+      </p>
+    )}
+    <ArchiveByYear
+      lang={LANG}
+      posts={page.data}
+      total={posts.length}
+      newest={posts[0]?.date}
+      oldest={posts[posts.length - 1]?.date}
+    />
+
+    {totalPages > 1 && (
+      <nav class="mt-10 flex items-center justify-between text-sm" aria-label="归档分页">
+        {page.url.prev ? (
+          <a class="underline text-[var(--text-secondary)]" rel="prev" href={`${page.url.prev}/`}>← 更新的 150 篇</a>
+        ) : (
+          <span />
+        )}
+        <span class="text-[var(--text-tertiary)]">{`第 ${pageNumber} / ${totalPages} 页`}</span>
+        {page.url.next ? (
+          <a class="underline text-[var(--text-secondary)]" rel="next" href={`${page.url.next}/`}>更早的 150 篇 →</a>
+        ) : (
+          <span />
+        )}
+      </nav>
+    )}
+  </article>
+</BaseLayout>

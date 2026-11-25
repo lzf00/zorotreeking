@@ -357,3 +357,13 @@
 - **重量基线自动瘦身**：四个归档页从 `page-weight-baseline.json` 移除（22 → 18 条）。
 - **仍未动**：`/archive/` 368 KB（全站最重，需要类似的历史索引分页）、
   `/en/tag/market-news/` 222 KB（标签页条目多）；两者都还在基线里。
+
+## 第 190 轮
+
+- **`/archive/` 与 `/en/archive/` 分页**：各 368 KB（全站最重）→ 5 页，首页 187.8/188.7 KB、
+  末页 156 KB；页大小 120（内联 CSS 就占 97 KB，行本身约 690 B，再大就贴预算）。
+- **通用分页算术语义收口**：`src/lib/pagination.ts`（`pageCount` / `pagePaths` /
+  `counterpartBase` / `PaginatedPage<T>`）被日报与归档共用，`digest-pagination.ts` 改为薄封装；
+  `ArchiveByYear` 不再自己查 collection，改由页面传入当页数据（否则页数与条数两处各算一遍）。
+- **sitemap**：`/archive/2..5`、`/en/archive/2..5` 已收录；基线随之自动瘦身 **18 → 16 条**。
+- **仍未动**：`/en/tag/market-news/` 222 KB 等标签页（条目多，需要按标签分页）。

@@ -1,37 +1,41 @@
 ---
 /**
- * 全站归档：按年份倒序列出某语言下的全部内容（四个板块混排）。
+ * 全站归档：按年份倒序列出某语言下的内容（四个板块混排）。
  *
  * 之前中文站只有 /explore（按 embedding 投影的二维地图）和 /topics（主题聚合），
  * 英文站根本没有任何「从头翻一遍」的入口——订阅页只能把人送回首页。归档页补这个缺口：
  * 一行一篇，日期 + 板块 + 标题，年份分节，最上面给出总数与跨度。
+ *
+ * 第 190 轮改成**分页渲染**：这一页曾经一次吐出 1100 多行（368 KB，全站最重）。
+ * 现在由页面负责切页并把当页的 `posts` 传进来 —— 组件自己不再取数，
+ * 否则页面和组件各查一遍 collection，还容易在"这一页到底有几条"上对不上。
  */
-import { getCollection } from "astro:content";
-
 import { pathWithLang, useTranslations, type Lang } from "@/i18n/ui";
+
+export interface ArchivePost {
+  section: "ai" | "invest" | "photo" | "hike";
+  slug: string;
+  title: string;
+  date: Date;
+}
 
 interface Props {
   lang: Lang;
+  /** 当前页的条目（由页面的 getStaticPaths/paginate 切好）。 */
+  posts: ArchivePost[];
+  /** 全部条目数（跨页显示"共 N 篇"）。 */
+  total: number;
+  /** 全站最新/最早一篇的日期：页头那行"共 N 篇 · 起止"讲的是整站，不是当页。 */
+  newest?: Date;
+  oldest?: Date;
 }
 
-const { lang } = Astro.props;
+const { lang, posts, total, newest, oldest } = Astro.props;
 const t = useTranslations(lang);
 const sections = ["ai", "invest", "photo", "hike"] as const;
+const all = posts;
 
-const all = (
-  await Promise.all(
-    sections.map(async (section) =>
-      (await getCollection(section, (entry) => entry.data.lang === lang && !entry.data.draft)).map((entry) => ({
-        section,
-        slug: entry.data.translationKey,
-        title: entry.data.title,
-        date: entry.data.date,
-      })),
-    ),
-  )
-).flat();
-
-const byYear = new Map<number, typeof all>();
+const byYear = new Map<number, ArchivePost[]>();
 for (const post of all.sort((a, b) => b.date.getTime() - a.date.getTime())) {
   const year = post.date.getUTCFullYear();
   const bucket = byYear.get(year) ?? [];
@@ -39,8 +43,7 @@ for (const post of all.sort((a, b) => b.date.getTime() - a.date.getTime())) {
   byYear.set(year, bucket);
 }
 const years = [...byYear.keys()].sort((a, b) => b - a);
-const newest = all[0]?.date;
-const oldest = all[all.length - 1]?.date;
+
 const month = (d?: Date) => (d ? `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}` : "");
 const span = newest && oldest ? (month(newest) === month(oldest) ? month(newest) : `${month(oldest)} → ${month(newest)}`) : "";
 const sectionColor: Record<(typeof sections)[number], string> = {
@@ -52,7 +55,7 @@ const sectionColor: Record<(typeof sections)[number], string> = {
 ---
 
 <div class="mt-6 text-sm text-[var(--text-tertiary)]">
-  {all.length} {lang === "zh" ? "篇" : all.length === 1 ? "post" : "posts"}
+  {total} {lang === "zh" ? "篇" : total === 1 ? "post" : "posts"}
   {span && <span> · {span}</span>}
 </div>
 

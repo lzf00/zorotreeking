@@ -1,0 +1,121 @@
+---
+/**
+ * 全部归档 · 第 one（第 190 轮分页）。
+ *
+ * 这一页曾经一次渲染 1100 多行（368 KB，全站最重）。按 150 条一页切成 8 pages，
+ * 年份分节仍留在页内。分页页必须：① 进 sitemap（可索引页漏收录是 check:seo 硬错）；
+ * ② 带 rel=prev/next；③ 和中英对端互链（对端页数不够时不链）。
+ */
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ArchiveByYear, { type ArchivePost } from "@/components/ArchiveByYear.astro";
+import { MAX_TAG_ITEMLIST } from "@/lib/tag-relations";
+import { getCollection } from "astro:content";
+import { pathWithLang } from "@/i18n/ui";
+import { ARCHIVE_PAGE_SIZE } from "@/lib/archive-pagination";
+import { counterpartBase, pageCount, type PaginatedPage } from "@/lib/pagination";
+
+const LANG = "en" as const;
+const SECTIONS = ["ai", "invest", "photo", "hike"] as const;
+
+/** 取某语言的全部条目（四个板块混排、按日期倒序）。 */
+async function loadPosts(): Promise<ArchivePost[]> {
+  const groups = await Promise.all(
+    SECTIONS.map(async (section) =>
+      (
+        await getCollection(section, (entry) => entry.data.lang === LANG && !entry.data.draft)
+      ).map((entry) => ({
+        section,
+        slug: entry.data.translationKey,
+        title: entry.data.title,
+        date: entry.data.date,
+      })),
+    ),
+  );
+  return groups.flat().sort((a, b) => b.date.getTime() - a.date.getTime());
+}
+
+// getStaticPaths 会被提到模块顶部、页面主体被包进函数 —— 所以取数只能在这里内联一份
+export async function getStaticPaths({ paginate }: { paginate: any }) {
+  const groups = await Promise.all(
+    ["ai", "invest", "photo", "hike"].map(async (section) =>
+      (
+        await getCollection(section as "ai", (entry) => entry.data.lang === "en" && !entry.data.draft)
+      ).map((entry) => ({
+        section,
+        slug: entry.data.translationKey,
+        title: entry.data.title,
+        date: entry.data.date,
+      })),
+    ),
+  );
+  const posts = groups.flat().sort((a, b) => b.date.getTime() - a.date.getTime());
+  return paginate(posts, { pageSize: ARCHIVE_PAGE_SIZE });
+}
+
+const posts = await loadPosts();
+const { page } = Astro.props as { page: PaginatedPage<ArchivePost> };
+const pageNumber = page.currentPage;
+const totalPages = page.lastPage;
+
+/** 中英对端：页数不同，够不着就不链（链到不存在的页同样违反 check:lang-switch）。 */
+// LANG 是 "en" as const：这里的对端固定是中文（照抄中文页的三元会被 TS 判为永假比较）
+const otherLang = "zh";
+const otherGroups = await Promise.all(
+  SECTIONS.map(async (section) =>
+    (await getCollection(section, (entry) => entry.data.lang === otherLang && !entry.data.draft)).length,
+  ),
+);
+const otherTotal = otherGroups.reduce((sum, n) => sum + n, 0);
+const hasCounterpart = pageCount(otherTotal, ARCHIVE_PAGE_SIZE) >= pageNumber;
+const otherBase = counterpartBase("/en/archive"); // /archive
+
+const listItems = page.data.slice(0, MAX_TAG_ITEMLIST).map((entry) => ({
+  name: entry.title,
+  url: pathWithLang(`/${entry.section}/${entry.slug}`, LANG),
+}));
+---
+
+<BaseLayout
+  title="Archive"
+  description="Everything published here, newest first: AI notes, investment reviews, photo albums and hiking routes, each with a date and its section."
+  schemaType="CollectionPage"
+  breadcrumbTitle="Archive"
+  listItems={listItems}
+>
+  <article class="max-w-3xl mx-auto px-5 pt-16 pb-24">
+    <h1 class="font-serif text-5xl sm:text-6xl leading-[0.95] tracking-tight">Archive</h1>
+    {hasCounterpart && (
+      <p class="mt-4 text-sm">
+        <a
+          href={`${otherBase}/${pageNumber === 1 ? "" : `${pageNumber}/`}`}
+          class="underline decoration-[var(--border)] hover:decoration-current"
+          hreflang="zh-CN"
+          lang="zh-CN"
+        >中文</a>
+      </p>
+    )}
+    <ArchiveByYear
+      lang={LANG}
+      posts={page.data}
+      total={posts.length}
+      newest={posts[0]?.date}
+      oldest={posts[posts.length - 1]?.date}
+    />
+
+    {totalPages > 1 && (
+      <nav class="mt-10 flex items-center justify-between text-sm" aria-label="Archive pagination">
+        {page.url.prev ? (
+          <a class="underline text-[var(--text-secondary)]" rel="prev" href={`${page.url.prev}/`}>← Newer 150</a>
+        ) : (
+          <span />
+        )}
+        <span class="text-[var(--text-tertiary)]">{`Page ${pageNumber} / ${totalPages}`}</span>
+        {page.url.next ? (
+          <a class="underline text-[var(--text-secondary)]" rel="next" href={`${page.url.next}/`}>Older 150 →</a>
+        ) : (
+          <span />
+        )}
+      </nav>
+    )}
+  </article>
+</BaseLayout>
