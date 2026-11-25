@@ -34,19 +34,21 @@ const TOLERANCE = 0.03;
 
 /** 移动端 412×823 下，≥12px 文字占全部字符的比例。 */
 const BASELINE = new Map([
-  ["/", 0.83],
-  ["/ai/", 0.71],
-  ["/ai/digest-2026-06-05/", 0.85],
-  ["/about/", 0.8],
-  ["/explore/", 0.86],
-  ["/photo/", 0.76],
-  ["/photo/baokemeng/", 0.9],
-  ["/photo/hudieren/", 0.88],
-  ["/invest/", 0.8],
-  ["/en/", 0.97],
-  ["/hike/", 0.95],
+  // 第 186 轮：全局把 `text-[10px]` / `text-[10.5px]` / `text-[11px]` 在移动断点抬到
+  // 12px 之后，列表页从 71–86% 直接到 100%，这里把基线一并抬上去锁住收益。
+  ["/", 1],
+  ["/ai/", 1],
+  ["/ai/digest-2026-06-05/", 0.88],
+  ["/about/", 1],
+  ["/explore/", 1],
+  ["/photo/", 1],
+  ["/photo/baokemeng/", 1],
+  ["/photo/hudieren/", 1],
+  ["/invest/", 1],
+  ["/en/", 1],
+  ["/hike/", 1],
   ["/hike/travel/ali-grand-loop-lhasa-return-2026/", 0.93],
-  ["/archive/", 0.99],
+  ["/archive/", 1],
 ]);
 
 const PATHS = valueOf("paths", [...BASELINE.keys()].join(",")).split(",").filter(Boolean);

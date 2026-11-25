@@ -94,3 +94,23 @@ test("抓取脚本失败时给一行原因，不甩堆栈", async () => {
   const macro = await read("scripts/fetch-us-macro.mjs");
   assert.match(macro, /RETRYABLE/, "BLS 503/429 是瞬时错误，应该重试一次");
 });
+
+// ── 第 186 轮：坏快照不许进仓库，也不许卡死部署 ──────────────────────────
+test("刷新工作流先过闸门再提交（抓了一半的数据不许进仓库）", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const wf = await readFile(new URL("../.github/workflows/refresh-us-macro.yml", import.meta.url), "utf8");
+  const verify = wf.indexOf("verify-us-market-snapshot.mjs");
+  const commit = wf.indexOf('git commit -m "chore(us-market)');
+  assert.ok(verify > 0, "提交前必须校验快照完整性");
+  assert.ok(commit > 0 && verify < commit, "校验要排在提交之前");
+  assert.match(wf, /git checkout -- src\/data\/us-market-latest\.json/, "不合格要丢弃本次结果，保留原来那份");
+});
+
+test("部署流程在跑测试前修复仓库里的坏快照", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const wf = await readFile(new URL("../.github/workflows/deploy.yml", import.meta.url), "utf8");
+  const repair = wf.indexOf("node scripts/repair-us-snapshot.mjs");
+  const tests = wf.indexOf("name: Unit and guard tests");
+  assert.ok(repair > 0, "部署里要有快照修复步骤");
+  assert.ok(tests > 0 && repair < tests, "修复必须排在单元测试之前，否则测试照样红");
+});

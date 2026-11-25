@@ -45,6 +45,15 @@ jobs:
             echo "数据没有变化，不提交" >> "$GITHUB_STEP_SUMMARY"
             exit 0
           fi
+          # 第 186 轮：抓了一半（stale / 缺指数 / 宏观缺失）的快照不许提交 ——
+          # 它会让 `tests/market-snapshot-verify.test.ts` 红，进而卡住整条部署链。
+          # 合格才提交；不合格就丢弃这次结果，保留仓库里原来那份（旧但完整）。
+          if ! node scripts/verify-us-market-snapshot.mjs; then
+            echo "::warning::这次抓取的快照不完整，已丢弃（保留仓库里原来那份）" >> "$GITHUB_STEP_SUMMARY"
+            echo "::warning::美股快照抓取不完整，本次不提交"
+            git checkout -- src/data/us-market-latest.json
+            exit 0
+          fi
           node -e "const d=require('./src/data/us-market-latest.json');console.log('行情',d.market.succeeded+'/'+d.market.requested,'SPX',d.market.indices[0]?.price,'CPI',d.macro.cpi.reference,d.macro.cpi.actual+'%','非农',d.macro.payroll.reference,d.macro.payroll.actual+'k')" >> "$GITHUB_STEP_SUMMARY"
           git config user.name "zoro-bot"
           git config user.email "bot@zorotreeking.online"

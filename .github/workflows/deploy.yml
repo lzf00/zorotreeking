@@ -69,6 +69,21 @@ jobs:
       # 更新。生成端漏翻的中文名会直接进仓库，然后让 `npm test` 红掉、**整站部署失败**
       # （第 183 轮为此停摆 1.5 小时，第 185 轮又发生一次）。这里在跑测试前就地回填：
       # 修的是内容，不是放宽守卫 —— 对照表里没有的名字、以及英文页成段中文仍会被抓住。
+      # 第 186 轮：`refresh-us-macro.yml` 会提交"抓了一半"的快照（两个抓取步骤都是
+      # continue-on-error），而 `tests/market-snapshot-verify.test.ts` 会把这种文件判红 →
+      # 部署在跑测试那一步整条停摆（2026-11-25 停了 41 小时）。这里在测试前把它换回
+      # 历史里最近一份合格的：旧但完整 > 新但一半 > 整站停更。
+      - name: Repair the committed US market snapshot
+        id: repair-us-snapshot
+        run: |
+          set +e
+          node scripts/repair-us-snapshot.mjs
+          code=$?
+          if [ "$code" -ne 0 ]; then
+            echo "::warning::美股快照无法自动修复（历史里也没有合格版本），下面的测试会红"
+          fi
+          exit 0
+
       - name: Repair English recap names (the generator is a separate copy)
         id: repair-en-names
         run: |

@@ -9,7 +9,7 @@
 | # | 欠账 | 当前数字 | 影响面 | 归属 | 检查命令 |
 |---|---|---|---|---|---|
 | 1 | 英文页里有未翻译的中文正文 | **0 个文件 / 0 处**（第 185 轮清零，此前 20 / 115） | 无：`/en/` 下日报的「今日要闻」已换成指向中文版的一句话 | 服务端生成器（stock_pusher） | `npm run check:i18n-leaks` |
-| 2 | 日报缺摘要 | **38 期 / 299 条**（20 期整期全空，18 期部分缺） | 读者看到标题+链接，页面已如实提示"本期没有摘要" | 需 LLM key（`digest-fetch --force`） | `node scripts/check-digest-placeholders.mjs --all` |
+| 2 | 日报缺摘要 | **39 期 / 300 条**（20 期整期全空，19 期部分缺） | 读者看到标题+链接，页面已如实提示"本期没有摘要" | 需 LLM key（`digest-fetch --force`） | `node scripts/check-digest-placeholders.mjs --all` |
 | 3 | BLS 宏观数据停更 | **101 天**（2026-08-11 起） | `/invest/us-market/` 的 CPI/非农参考期停在 2026-06，页面已标注 | 服务端抓取器 | `npm run check:market-age` |
 | 4 | ~~美股兜底快照陈旧~~ **已修** | 0 天 | 第 137 轮起宏观（BLS）与行情（东方财富）都由 Actions 每天自动刷新 | — | `npm run check:market-age` |
 | 5 | Node 版本低于要求 | 本机 **22.23.2**，要求 ≥22.23.4 | 本地构建/测试环境 | 你 | `node -v` |

@@ -50,6 +50,15 @@ test("部署流程也会量一遍（不能只在本地门禁里）", async () =>
   assert.match(stepEnv, /GITHUB_TOKEN: \$\{\{ github\.token \}\}/, "要带 token，否则状态静默丢失");
 });
 
+test("全局移动端字号底线还在（列表页 100% 靠它）", async () => {
+  // 列表页的差距全来自 Tailwind 任意值工具类：text-[10px] / text-[10.5px] / text-[11px]。
+  // 只在移动断点抬到 12px —— 桌面端紧凑排版不动。
+  const css = await read("src/styles/global.css");
+  assert.match(css, /@media \(max-width: 640px\)[\s\S]{0,400}text-\\\[10px\\\]/, "要有移动断点的字号底线");
+  assert.match(css, /text-\\\[11px\\\]/);
+  assert.match(css, /font-size: 12px/);
+});
+
 test("路线卡片的移动断点字号修复还在", async () => {
   const hike = await read("src/pages/hike/index.astro");
   assert.match(hike, /@media \(max-width: 640px\)/, "要有移动断点");
