@@ -46,6 +46,7 @@
 | `check:images` | 图片体积与格式预算 |
 | `check:links` | 站内链接与锚点 |
 | `check:orphans` | 零入链页面检查：读完 dist 的站内链接图，任何可索引页面若无人指向就报出来（错误页/后台页/跳转桩除外）。**本地硬失败、CI 只告警**（第 204 轮） |
+| `check:home-featured` | 首页首屏第一张精选卡必须是人写的内容（digest / market-recap 不许占头条），读 dist 验证（第 206 轮） |
 | `check:script-index` | 每个脚本要么接线、要么在 `docs/operations.md` 登记（手动工具与服务端副本），否则红（第 205 轮） |
 | `check:sectors` | 板块名映射（中英一致） |
 | `check:og` | 分享卡（OG 图存在且尺寸正确） |

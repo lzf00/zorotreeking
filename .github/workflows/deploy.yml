@@ -94,6 +94,25 @@ jobs:
           fi
           exit 0
 
+      # 首页精选头条（第 206 轮）：内容相关 → 同样不拦发布，只发 annotation。
+      - name: Homepage featured (warn only)
+        continue-on-error: true
+        run: |
+          set +e
+          node scripts/check-home-featured.mjs | tee /tmp/featured.log
+          code=$?
+          {
+            echo '### 首页精选头条（不拦发布）'
+            echo ''
+            echo '```'
+            cat /tmp/featured.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          if [ "$code" -ne 0 ]; then
+            echo "::warning title=首页精选::首屏第一张精选卡不是人写的内容，或卡片数量不足"
+          fi
+          exit 0
+
       # 零入链页面（第 204 轮）：同样**不拦发布**。孤儿页是"内容接错索引"这类结构问题，
       # 站点本身能正常跑；本地门禁里它是硬失败（该先修再推），CI 里只发 annotation。
       - name: Orphan pages (warn only)

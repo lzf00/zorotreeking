@@ -7,11 +7,15 @@
  *
  * 修法不是隐藏自动内容（这个站 522 篇里 510 篇都是自动产出，隐藏了首页就空了），
  * 而是**先把候选池按日期截到最近 N 篇，再比长度**。
+ *
+ * 第 206 轮又抓到同一族的第二个洞：只按日期截池还不够 —— market-recap 复盘不是 digest，
+ * 一路混进"原创长文"池，靠涨跌停表格天然最长，把首屏占了一周（11-18 的复盘活在 11-25 的首页）。
+ * 现在头条位置要求「人写」，用 isAutoReport 把 digest 与 market-recap 一起排掉。
  */
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
-import { FEATURED_POOL_SIZE, isDailyDigest, pickFeatured, pickRecent } from "../src/lib/home-selection";
+import { FEATURED_POOL_SIZE, isAutoReport, isDailyDigest, pickFeatured, pickRecent } from "../src/lib/home-selection";
 
 const post = (translationKey: string, date: string, tags: string[], body = "") => ({
   data: { translationKey, tags, date: new Date(`${date}T00:00:00+08:00`) },
@@ -30,14 +34,15 @@ test("只有 digest 算「日报」，每日复盘不算（它是站点每天的
 });
 
 test("五个月前的超长旧文不再霸占首屏（先截池子，再比长度）", () => {
-  const ancient = { post: post("market-recap-2026-06-29", "2026-06-29", ["market-recap"], "x".repeat(9000)), section: "invest" };
+  // 用「人写」内容做样本：自动复盘现在根本不进头条池（第 206 轮），别把两件事混在一起测
+  const ancient = { post: post("ancient-note", "2026-06-29", ["ai"], "x".repeat(9000)), section: "ai" };
   const recent = Array.from({ length: FEATURED_POOL_SIZE }, (_, i) => ({
-    post: post(`market-recap-${day(i)}`, day(i), ["market-recap"], "y".repeat(1000 + i)),
-    section: "invest",
+    post: post(`note-${day(i)}`, day(i), ["ai"], "y".repeat(1000 + i)),
+    section: "ai",
   }));
   const featured = pickFeatured({ originals: [ancient, ...recent], digests: [], visuals: [] });
   assert.equal(featured.length, 1);
-  assert.notEqual(featured[0].post.data.translationKey, "market-recap-2026-06-29", "旧闻又霸屏了");
+  assert.notEqual(featured[0].post.data.translationKey, "ancient-note", "旧闻又霸屏了");
   assert.ok(recent.some((item) => item.post.data.translationKey === featured[0].post.data.translationKey));
 });
 
@@ -77,4 +82,30 @@ test("最近更新按日期倒序、排除 digest、保留每日复盘", () => {
     "market-recap-2026-11-19",
     "weekly-2026-W46",
   ]);
+});
+
+test("自动生成的复盘也算「自动内容」，不许进精选头条（第 206 轮的线上 bug）", () => {
+  assert.equal(isAutoReport(post("market-recap-2026-11-18", "2026-11-18", ["market-recap", "wind", "daily"])), true);
+  assert.equal(isAutoReport(post("x", "2026-11-18", ["market-recap"])), true, "只看 tag 也要认出来");
+  assert.equal(isAutoReport(post("digest-2026-11-18", "2026-11-18", ["digest"])), true);
+  assert.equal(isAutoReport(post("hello-world", "2026-11-18", ["ai"])), false);
+
+  // 复现：一篇文章 + 一堆复盘，复盘表格最长、日期最新 —— 头条必须还是人写的那篇
+  const handwritten = post("ali-grand-loop", day(3), ["travel-guide"], "x".repeat(500));
+  const recap = post("market-recap-2026-11-18", day(0), ["market-recap"], "y".repeat(20000));
+  const featured = pickFeatured({
+    originals: [
+      { post: recap, section: "invest" },
+      { post: handwritten, section: "hike" },
+    ],
+    digests: [],
+    visuals: [],
+  });
+  assert.equal(featured[0]?.post.data.translationKey, "ali-grand-loop");
+});
+
+test("复盘仍然留在「最近更新」里（它是站点每天的真实产出，不能藏）", () => {
+  const recap = post("market-recap-2026-11-25", day(0), ["market-recap"]);
+  const recent = pickRecent([{ post: recap, section: "invest" }], 6);
+  assert.equal(recent.length, 1);
 });

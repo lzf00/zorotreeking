@@ -33,6 +33,24 @@ export function isDailyDigest(post: SelectablePost): boolean {
 }
 
 /**
+ * 「自动生成」的内容：digest 日报 **和** market-recap 每日复盘。
+ *
+ * 第 206 轮线上实测：首页首屏第一张精选卡是 **2026-11-18 的股票日报**，而当天已经有
+ * 11-25 的内容 —— 注释写着"自动生成的日报/复盘不参与"，代码却只排掉了 digest：
+ * market-recap 的 tag 是 `market-recap`/`wind`/`daily`，没有 `digest`，
+ * translationKey 也不是 `digest-` 开头，于是它一路混进"原创长文"池，
+ * 靠几十行涨跌停表格天然最长，把首屏占了一周。
+ *
+ * 所以判"自动生成"必须把两类都算上；「最近更新」那条规则不变（复盘是站点每天的真实产出，
+ * 该出现在信息流里），只有"精选头条"这个位置要求是人写的。
+ */
+export function isAutoReport(post: SelectablePost): boolean {
+  if (isDailyDigest(post)) return true;
+  const tags = post.data.tags ?? [];
+  return tags.includes("market-recap") || post.data.translationKey.startsWith("market-recap-");
+}
+
+/**
  * 精选头条的候选池：只在**最近这么多篇**非日报内容里挑最长的。
  * 用"篇数"而不是"天数"当窗口，是因为这个站的产出是每个交易日一篇复盘 ——
  * 20 篇大概覆盖最近一个月，既保证新鲜，又不会因为节假日断更而把池子清空。
@@ -57,7 +75,7 @@ const byDateDesc = (a: Sectioned, b: Sectioned) =>
 
 /**
  * 精选阅读三张卡：
- *  1. 最近 FEATURED_POOL_SIZE 篇非日报内容里最长的一篇（先按日期截池子，再比长度 ——
+ *  1. 最近 FEATURED_POOL_SIZE 篇**人写**内容里最长的一篇（先按日期截池子，再比长度 ——
  *     这样既不会像原来那样让五个月前的旧闻霸屏，也不会只剩占位文可选）
  *  2. 最新一期 digest
  *  3. 最新的摄影 / 徒步
@@ -68,8 +86,10 @@ export function pickFeatured(input: { originals: Sectioned[]; digests: Sectioned
       (a, b) => ((b.post as SelectablePost).body?.length ?? 0) - ((a.post as SelectablePost).body?.length ?? 0),
     );
 
-  const pool = [...input.originals].sort(byDateDesc).slice(0, FEATURED_POOL_SIZE);
-  const longest = (pool.length > 0 ? byLength(pool) : byLength(input.originals))[0];
+  // 只让人写的内容竞争头条位置：自动生成的 digest / market-recap 都不算（第 206 轮）
+  const handwritten = input.originals.filter((item) => !isAutoReport(item.post as SelectablePost));
+  const pool = [...handwritten].sort(byDateDesc).slice(0, FEATURED_POOL_SIZE);
+  const longest = (pool.length > 0 ? byLength(pool) : byLength(handwritten))[0];
   const latestDigest = [...input.digests].sort(byDateDesc)[0];
   const latestVisual = [...input.visuals].sort(byDateDesc)[0];
 

@@ -544,3 +544,19 @@
 - **未修（需用户/服务器）**：nginx 体检仍是 3 必须修（`/index.html` 200、两行 cache-control ×2）
   + 3 建议（brotli、`/api/market/*` 无缓存、子目录 index.html）；39 期 / 300 条摘要缺 LLM key；
   内联 CSS 外链化；`weekly-roundup` 待 11-29 验证；`/opt/wind-recap` 副本同步。
+
+## 第 206 轮
+
+- **修**：首页首屏第一张精选卡被自动生成的 market-recap 复盘占据（当天线上是 11-18 的股票日报，
+  而站点已有 11-25 内容）。根因是"自动内容"判据只认 digest tag。新增 `isAutoReport`
+  （digest + market-recap），精选头条只接受人写内容；「最近更新」不变。
+- **新增闸门**：`scripts/check-home-featured.mjs` 读构建产物验证首屏第一张卡（本地硬失败、
+  CI warn-only）+ `tests/home-featured.test.ts`（7 条）。修后首屏第一张是 `本周看点 · 2026-W46`。
+- **顺带核实**：每周巡检重跑后全量 1280 页全部 200（中位 219 KB / p95 224 KB / 最重 340 KB
+  `/photo/hudieren/`），无障碍 300 秒零失败 —— 之前报告里的"0 页巡检 / 1 条 a11y 失败"是
+  第 199 轮那个零页 bug 的残留产物，不是真问题。
+- **顺带核实**：线上 1280 条 URL 全部 2xx（p50 18ms / p95 259ms）；1080 个内容文件扫
+  重复虚词/连续标点/未配对括号，命中的全是引用外部标题（"？？？"、"。。。"）与
+  "投资标的"这类词，无真错字。
+- **降级口径**：每周巡检的"自动化体检"在本地跑会被 GitHub 匿名 API 限流（60 次/小时），
+  9 个 workflow 读不到 → 报告里明确写"本轮不做判断"（不会假装通过）。CI 里有 `GITHUB_TOKEN`。
