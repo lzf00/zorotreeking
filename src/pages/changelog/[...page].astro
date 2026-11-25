@@ -1,16 +1,40 @@
 ---
 /**
- * /changelog 站点更新日志。
+ * /changelog 站点更新日志（第 192 轮分页）。
  * Build 时读 git log 自动生成（按月分组，过滤 trivial commits）。
  * 让访客一眼看到"这站还活着 + 我在改什么"。
+ *
+ * 这一页会**永远线性增长**（每个提交 +~0.8 KB），所以按 `CHANGELOG_PAGE_SIZE` 分页：
+ * 第 1 页仍是 `/changelog/`，其余是 `/changelog/2/`…… 月份分节保留在页内。
  */
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { execSync } from "node:child_process";
 import { TYPE_STYLES, buildChangelog, parseGitLog, type Commit } from "@/lib/changelog";
+import { CHANGELOG_PAGE_SIZE } from "@/lib/changelog-pagination";
+import { type PaginatedPage } from "@/lib/pagination";
 
-// 拿 git log；失败（CI 浅克隆）静默兜底
+// getStaticPaths 会被提到模块顶部、页面主体被包进函数 —— 取数只能在这里内联（第 189 轮踩过两次）
+export async function getStaticPaths({ paginate }: { paginate: any }) {
+  let commits: Commit[] = [];
+  try {
+    // 拿 git log；失败（CI 浅克隆 / 无 git）静默兜底为空
+    const { execSync } = await import("node:child_process");
+    const raw = execSync('git log --pretty=format:"%h|%ad|%s" --date=short --no-merges', {
+      encoding: "utf-8",
+      maxBuffer: 4 * 1024 * 1024,
+    });
+    commits = parseGitLog(raw);
+  } catch (e) {
+    console.warn("[changelog] git log unavailable:", (e as Error).message);
+  }
+  // 按 buildChangelog 的白名单/分组顺序摊平，再切页（分页页也保持"最新在前"）
+  const visible = buildChangelog(commits).sections.flatMap((section) => section.commits);
+  return paginate(visible, { pageSize: CHANGELOG_PAGE_SIZE });
+}
+
+// 页面主体再读一次同一个来源：getStaticPaths 的闭包不跨过来
 let commits: Commit[] = [];
 try {
+  const { execSync } = await import("node:child_process");
   const raw = execSync('git log --pretty=format:"%h|%ad|%s" --date=short --no-merges', {
     encoding: "utf-8",
     maxBuffer: 4 * 1024 * 1024,
@@ -23,7 +47,22 @@ try {
 // 筛选与分组规则在 @/lib/changelog（有单测）：
 // 只展示读者在意的 type（功能/修复/性能/样式/无障碍/SEO/多语言/内容/文档），
 // 内部工程提交（test/ci/ops/chore…）与自动化产出默认隐藏 —— 见第 109 轮。
-const { sections, hiddenCount } = buildChangelog(commits);
+const { hiddenCount, visibleCount } = buildChangelog(commits);
+
+const { page } = Astro.props as { page: PaginatedPage<Commit> };
+const pageNumber = page.currentPage;
+const totalPages = page.lastPage;
+
+/** 当页条目按月份重新分节（跨页的月份会在两页各出现一次，这是分页的正常代价） */
+const byMonth = new Map<string, Commit[]>();
+for (const commit of page.data) {
+  const month = commit.date.slice(0, 7);
+  const bucket = byMonth.get(month);
+  if (bucket) bucket.push(commit);
+  else byMonth.set(month, [commit]);
+}
+const sections = [...byMonth.entries()].map(([month, list]) => ({ month, commits: list }));
+---
 ---
 
 <BaseLayout title="更新日志" description="ZoroTreeking 的更新日志：站点功能、性能、SEO 与无障碍改动的完整记录，每条都能追到对应的提交。">
@@ -36,8 +75,24 @@ const { sections, hiddenCount } = buildChangelog(commits);
       </h1>
       <p class="mt-5 text-base sm:text-lg leading-relaxed text-[var(--text-secondary)] font-light">
         从 git log 自动生成，按月归档。只保留读者会在意的改动（功能 / 修复 / 性能 / 样式 / 无障碍 / SEO / 多语言 / 内容）；
-        另外隐藏了 {hiddenCount} 条自动化产出与内部工程提交。
+        另外隐藏了 {hiddenCount} 条自动化产出与内部工程提交。共 {visibleCount} 条，分 {totalPages} 页（每页 {CHANGELOG_PAGE_SIZE} 条），当前第 {pageNumber} 页。
       </p>
+
+    {totalPages > 1 && (
+      <nav class="mt-4 flex items-center justify-between text-sm" aria-label="更新日志分页">
+        {page.url.prev ? (
+          <a class="underline text-[var(--text-secondary)]" rel="prev" href={`${page.url.prev}/`}>← 更新的 {CHANGELOG_PAGE_SIZE} 条</a>
+        ) : (
+          <span />
+        )}
+        <span class="font-mono text-[var(--text-tertiary)]">{`${pageNumber} / ${totalPages}`}</span>
+        {page.url.next ? (
+          <a class="underline text-[var(--text-secondary)]" rel="next" href={`${page.url.next}/`}>更早的 {CHANGELOG_PAGE_SIZE} 条 →</a>
+        ) : (
+          <span />
+        )}
+      </nav>
+    )}
     </header>
 
     {sections.length === 0 && (
@@ -70,6 +125,22 @@ const { sections, hiddenCount } = buildChangelog(commits);
         </ul>
       </section>
     ))}
+
+
+    {totalPages > 1 && (
+      <nav class="mt-12 flex items-center justify-between text-sm" aria-label="更新日志分页">
+        {page.url.prev ? (
+          <a class="underline text-[var(--text-secondary)]" rel="prev" href={`${page.url.prev}/`}>← 更新的 {CHANGELOG_PAGE_SIZE} 条</a>
+        ) : (
+          <span />
+        )}
+        {page.url.next ? (
+          <a class="underline text-[var(--text-secondary)]" rel="next" href={`${page.url.next}/`}>更早的 {CHANGELOG_PAGE_SIZE} 条 →</a>
+        ) : (
+          <span />
+        )}
+      </nav>
+    )}
 
     <footer class="mt-16 pt-8 border-t border-[var(--border)]">
       <p class="text-sm text-[var(--text-tertiary)] leading-relaxed">

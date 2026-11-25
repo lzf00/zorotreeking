@@ -7,10 +7,12 @@ import { loadPhotoManifest, resolveAlbumKey } from "@/lib/photo-manifests";
 import { travelGuides } from "@/data/travel-guides";
 import { getStaticSitemapPaths } from "@/lib/sitemap";
 import { tagToSlug } from "@/lib/tags";
+import { buildChangelog, readGitLog } from "@/lib/changelog";
 import { DIGEST_PAGE_SIZE, digestPagePaths } from "@/lib/digest-pagination";
 import { ARCHIVE_PAGE_SIZE } from "@/lib/archive-pagination";
 import { pagePaths } from "@/lib/pagination";
 import { TAG_PAGE_SIZE } from "@/lib/tag-pagination";
+import { CHANGELOG_PAGE_SIZE } from "@/lib/changelog-pagination";
 import { escapeXml } from "@/lib/xml";
 
 type Section = "ai" | "invest" | "hike" | "photo";
@@ -159,6 +161,15 @@ export async function GET(context: APIContext) {
       });
     }
   };
+  /**
+   * 更新日志的第 2..N 页（第 192 轮）。这一页随 git 历史增长，页数也一直涨，
+   * 所以页数必须和页面用同一个 `CHANGELOG_PAGE_SIZE` 现算 —— 不能写死。
+   */
+  const changelogVisible = buildChangelog(readGitLog()).visibleCount;
+  for (const path of pagePaths("/changelog", changelogVisible, CHANGELOG_PAGE_SIZE)) {
+    urls.push({ loc: withSlash(`${site}${path}`), lastmod: lastCommitDate("src/pages/changelog/[...page].astro") ?? undefined });
+  }
+
   pushArchivePages("/archive", [...aiZh, ...invZh, ...photoZh, ...hikeZh]);
   pushArchivePages("/en/archive", [...aiEn, ...invEn, ...photoEn, ...hikeEn]);
 
