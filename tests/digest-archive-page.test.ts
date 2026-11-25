@@ -13,10 +13,10 @@ import { test } from "node:test";
 const read = (path: string) => readFile(new URL(`../${path}`, import.meta.url), "utf8");
 
 const PAGES = [
-  ["src/pages/invest/digest/index.astro", "invest"],
-  ["src/pages/en/invest/digest/index.astro", "invest"],
-  ["src/pages/ai/digest/index.astro", "ai"],
-  ["src/pages/en/ai/digest/index.astro", "ai"],
+  ["src/pages/invest/digest/[...page].astro", "invest"],
+  ["src/pages/en/invest/digest/[...page].astro", "invest"],
+  ["src/pages/ai/digest/[...page].astro", "ai"],
+  ["src/pages/en/ai/digest/[...page].astro", "ai"],
 ] as const;
 
 test("四个归档页都用同一个组件，不再各写一份按月分组", async () => {

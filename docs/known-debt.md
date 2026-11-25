@@ -347,3 +347,13 @@
   `check:lang-switch` 抓到两版搜索页没有互链。都已修（文案全走 `COPY` 表、两页互加
   `English` / `中文` 链接），并各补了一条测试。
 - **a11y 快检 8 条路径**（上限）：`/search/`、`/en/search/` 都在内，双主题 0 违规。
+
+## 第 189 轮
+
+- **四个日报归档页分页**：`/ai/digest/`、`/en/ai/digest/`、`/invest/digest/`、
+  `/en/invest/digest/` 各 5 页（48 期/页），首页 226–232 KB → 153–155 KB，
+  末页 122 KB；"最新 6 期大卡片"只在第一页，其余页全走紧凑行。
+- **sitemap 收录分页页**（可索引页漏收录 = `check:seo` 硬错），lastmod 取该页最新一期。
+- **重量基线自动瘦身**：四个归档页从 `page-weight-baseline.json` 移除（22 → 18 条）。
+- **仍未动**：`/archive/` 368 KB（全站最重，需要类似的历史索引分页）、
+  `/en/tag/market-news/` 222 KB（标签页条目多）；两者都还在基线里。

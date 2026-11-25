@@ -6,12 +6,27 @@ import { extractDigestHighlights, extractTLDR } from "@/lib/digest-highlights";
 import { existsSync } from "node:fs";
 
 import DigestArchiveGrid from "@/components/DigestArchiveGrid.astro";
+import { DIGEST_PAGE_SIZE, digestPageCount, counterpartBase, type PaginatedPage } from "@/lib/digest-pagination";
 
 const lang = "zh" as const;
 const t = useTranslations(lang);
 
 const isDigest = (p: { data: { tags?: string[]; translationKey: string } }) =>
   (p.data.tags ?? []).includes("digest") || p.data.translationKey.startsWith("digest-");
+
+/**
+ * 分页路由（第 189 轮）。`getStaticPaths` 会被提到模块顶部执行，且页面主体被包进一个函数，
+ * 所以它**不能**引用 `lang` / `isDigest` 这些局部名字 —— 谓词和语言都得内联。
+ */
+export async function getStaticPaths({ paginate }: { paginate: any }) {
+  const items = (await getCollection("invest", (p) => p.data.lang === "zh" && !p.data.draft))
+    .filter(
+      (p) =>
+        (p.data.tags ?? []).includes("digest") || p.data.translationKey.startsWith("digest-"),
+    )
+    .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+  return paginate(items, { pageSize: DIGEST_PAGE_SIZE });
+}
 
 const digests = (await getCollection("invest", (p) => p.data.lang === lang && !p.data.draft))
   .filter(isDigest)
@@ -20,6 +35,23 @@ const digests = (await getCollection("invest", (p) => p.data.lang === lang && !p
 // 这页曾经把 189 期日报全部渲染成大卡片（封面 + 摘要 + 标签），HTML 429 KB。
 // 分组与"最新 N 期大卡 / 更早紧凑行"的渲染都在 DigestArchiveGrid 里（第 133 轮）。
 const FEATURED_COUNT = 6;
+
+// 第 189 轮：把全部期数塞进一页（220 KB / DOM 几百行）改成分页，首页保留"最新 6 期大卡片"
+const { page } = Astro.props as { page: PaginatedPage<(typeof digests)[number]> };
+const pageDigests = page.data;
+const pageNumber = page.currentPage;
+const totalPages = page.lastPage;
+/**
+ * 语言切换（第 189 轮）。分页页必须和**对端同一页码**互链：
+ * `check:lang-switch` 会把"对端存在但没有切换链接"判红，而链到对端不存在的页同样判红
+ * （两个语言期数可能不同，所以先算对端页数，够不着就不链）。
+ */
+const otherCount = (await getCollection("invest", (p) => p.data.lang === "en" && !p.data.draft))
+  .filter(isDigest).length;
+const otherPages = digestPageCount(otherCount);
+const hasCounterpart = otherPages >= pageNumber;
+const otherBase = counterpartBase("/invest/digest");
+
 const featured = digests.slice(0, FEATURED_COUNT);
 
 /**
@@ -42,7 +74,7 @@ const coverVariants = (cover: string | undefined) => {
   title={`投资资讯日报 · 归档`}
   description={`${digests.length} 期自动日报，cron 每日 08:00 抓同花顺 / 东方财富 / Yahoo Finance，AI 改写`}
   schemaType="CollectionPage"
-  listItems={digests.map((d) => ({
+  listItems={pageDigests.map((d) => ({
     name: d.data.title,
     url: pathWithLang(`/invest/${d.data.translationKey}`, lang),
   }))}
@@ -63,9 +95,10 @@ const coverVariants = (cover: string | undefined) => {
 
   <DigestArchiveGrid
     accent="invest"
-    cards={digests.map((d, cardIndex) => {
+    cards={pageDigests.map((d, cardIndex) => {
       // 只有前 FEATURED_COUNT 期需要封面/摘要，更早的只出链接行 —— 但这些字段算起来不便宜
-      const rich = cardIndex < FEATURED_COUNT;
+      // 大卡片只给第一页的最新 6 期
+      const rich = pageNumber === 1 && cardIndex < FEATURED_COUNT;
       const tldr = rich ? extractTLDR(d.body ?? "") : null;
       const cover = rich ? d.data.cover : undefined;
       const variants = cover ? coverVariants(cover) : null;
@@ -82,4 +115,31 @@ const coverVariants = (cover: string | undefined) => {
     })}
     labels={{ featured: "最新 6 期", older: (count) => `更早的日报 · ${count} 期`, empty: "还没有日报" }}
   />
+  {hasCounterpart && (
+    <p class="max-w-3xl mx-auto px-5 pb-4 text-sm">
+      <a
+        href={`${otherBase}/${pageNumber === 1 ? "" : `${pageNumber}/`}`}
+        class="underline decoration-[var(--border)] hover:decoration-current"
+        hreflang={lang === "zh" ? "en" : "zh-CN"}
+        lang={lang === "zh" ? "en" : "zh-CN"}
+      >{lang === "zh" ? "English" : "中文"}</a>
+    </p>
+  )}
+
+  {/* 分页导航（第 189 轮）：rel=prev/next 让爬虫按顺序抓，别把这些页当孤立页 */}
+  {totalPages > 1 && (
+    <nav class="max-w-3xl mx-auto px-5 pb-16 flex items-center justify-between text-sm" aria-label="归档分页">
+      {page.url.prev ? (
+        <a class="underline text-[var(--text-secondary)]" rel="prev" href={`${page.url.prev}/`}>← 更新的 48 期</a>
+      ) : (
+        <span />
+      )}
+      <span class="text-[var(--text-tertiary)]">{`第 ${pageNumber} / ${totalPages} 页`}</span>
+      {page.url.next ? (
+        <a class="underline text-[var(--text-secondary)]" rel="next" href={`${page.url.next}/`}>更早的 48 期 →</a>
+      ) : (
+        <span />
+      )}
+    </nav>
+  )}
 </BaseLayout>

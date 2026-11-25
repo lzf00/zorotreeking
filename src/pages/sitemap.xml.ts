@@ -7,6 +7,7 @@ import { loadPhotoManifest, resolveAlbumKey } from "@/lib/photo-manifests";
 import { travelGuides } from "@/data/travel-guides";
 import { getStaticSitemapPaths } from "@/lib/sitemap";
 import { tagToSlug } from "@/lib/tags";
+import { DIGEST_PAGE_SIZE, digestPagePaths } from "@/lib/digest-pagination";
 import { escapeXml } from "@/lib/xml";
 
 type Section = "ai" | "invest" | "hike" | "photo";
@@ -120,6 +121,30 @@ export async function GET(context: APIContext) {
   push("ai", "zh", aiZh); push("ai", "en", aiEn);
   push("invest", "zh", invZh); push("invest", "en", invEn);
   push("hike", "zh", hikeZh); push("hike", "en", hikeEn);
+  /**
+   * 日报归档的第 2..N 页（第 189 轮）。
+   *
+   * 这些页是**可索引**的（分页导航带 rel=prev/next），所以必须进 sitemap ——
+   * `check:seo` 有一条「可索引但不在 sitemap」的硬规则，漏了直接判红。
+   * lastmod 取该页最新一期（新日报进来会把条目往后挤，页内容确实会变）。
+   */
+  const pushDigestPages = (base: string, entries: any[]) => {
+    const digests = entries
+      .filter((e) => (e.data.tags ?? []).includes("digest") || e.data.translationKey.startsWith("digest-"))
+      .sort((a, b) => (b.data.date as Date).getTime() - (a.data.date as Date).getTime());
+    for (const path of digestPagePaths(base, digests.length, DIGEST_PAGE_SIZE)) {
+      const pageNo = Number(path.slice(path.lastIndexOf("/") + 1));
+      const newestOnPage = digests[(pageNo - 1) * DIGEST_PAGE_SIZE];
+      urls.push({
+        loc: withSlash(`${site}${path}`),
+        lastmod: newestOnPage?.data.updated ?? newestOnPage?.data.date,
+      });
+    }
+  };
+  pushDigestPages("/ai/digest", aiZh);
+  pushDigestPages("/en/ai/digest", aiEn);
+  pushDigestPages("/invest/digest", invZh);
+  pushDigestPages("/en/invest/digest", invEn);
   /**
    * 相册页额外输出 image sitemap 扩展（第 58 轮）。
    *

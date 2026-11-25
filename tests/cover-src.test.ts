@@ -63,6 +63,6 @@ test("首屏第一张图要 eager + high，其余仍 lazy（LCP 元素就是它�
   const archive = await readFile(new URL("../src/components/DigestArchiveGrid.astro", import.meta.url), "utf8");
   assert.match(archive, /index < 2 \? "eager" : "lazy"/, "归档页前两张卡片要 eager");
   assert.match(archive, /index < 2 \? "high" : "low"/, "归档页前两张卡片要高优先级");
-  const digest = await readFile(new URL("../src/pages/ai/digest/index.astro", import.meta.url), "utf8");
+  const digest = await readFile(new URL("../src/pages/ai/digest/[...page].astro", import.meta.url), "utf8");
   assert.match(digest, /DigestArchiveGrid/, "归档页必须走共享组件（不要退回自己写 img）");
 });

@@ -1,0 +1,124 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { useTranslations, pathWithLang } from "@/i18n/ui";
+import { extractDigestHighlights, extractTLDR } from "@/lib/digest-highlights";
+import { lightCover } from "@/lib/cover-src";
+import DigestArchiveGrid from "@/components/DigestArchiveGrid.astro";
+import { DIGEST_PAGE_SIZE, digestPageCount, counterpartBase, type PaginatedPage } from "@/lib/digest-pagination";
+
+const lang = "en" as const;
+const t = useTranslations(lang);
+
+const isDigest = (p: { data: { tags?: string[]; translationKey: string } }) =>
+  (p.data.tags ?? []).includes("digest") || p.data.translationKey.startsWith("digest-");
+
+/**
+ * 分页路由（第 189 轮）。`getStaticPaths` 会被提到模块顶部执行，且页面主体被包进一个函数，
+ * 所以它**不能**引用 `lang` / `isDigest` 这些局部名字 —— 谓词和语言都得内联。
+ */
+export async function getStaticPaths({ paginate }: { paginate: any }) {
+  const items = (await getCollection("ai", (p) => p.data.lang === "en" && !p.data.draft))
+    .filter(
+      (p) =>
+        (p.data.tags ?? []).includes("digest") || p.data.translationKey.startsWith("digest-"),
+    )
+    .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+  return paginate(items, { pageSize: DIGEST_PAGE_SIZE });
+}
+
+const digests = (await getCollection("ai", (p) => p.data.lang === lang && !p.data.draft))
+  .filter(isDigest)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+// 分组与「最新 6 期大卡片 / 更早紧凑行」的渲染在 DigestArchiveGrid 里（第 133 轮）
+const FEATURED_COUNT = 6;
+
+// 第 189 轮：把全部期数塞进一页（220 KB / DOM 几百行）改成分页，首页保留"最新 6 期大卡片"
+const { page } = Astro.props as { page: PaginatedPage<(typeof digests)[number]> };
+const pageDigests = page.data;
+const pageNumber = page.currentPage;
+const totalPages = page.lastPage;
+/**
+ * 语言切换（第 189 轮）。分页页必须和**对端同一页码**互链：
+ * `check:lang-switch` 会把"对端存在但没有切换链接"判红，而链到对端不存在的页同样判红
+ * （两个语言期数可能不同，所以先算对端页数，够不着就不链）。
+ */
+const otherCount = (await getCollection("ai", (p) => p.data.lang === "zh" && !p.data.draft))
+  .filter(isDigest).length;
+const otherPages = digestPageCount(otherCount);
+const hasCounterpart = otherPages >= pageNumber;
+const otherBase = counterpartBase("/en/ai/digest");
+
+---
+
+<BaseLayout
+  title="Daily AI digest · archive"
+  description={`${digests.length} issues auto-generated daily from HF Daily Papers / arxiv / qbitai / Anthropic etc.`}
+  schemaType="CollectionPage"
+  listItems={pageDigests.map((d) => ({
+    name: d.data.title,
+    url: pathWithLang(`/ai/${d.data.translationKey}`, lang),
+  }))}
+>
+  <section class="max-w-3xl mx-auto px-5 pt-12 pb-8">
+    <a href={pathWithLang("/ai", lang)}
+       class="inline-block text-[11px] uppercase tracking-[0.2em] text-zinc-500 dark:text-zinc-400 hover:text-section-ai transition-colors mb-6">
+      ← {t("section.ai.title")}
+    </a>
+    <div class="text-[11px] uppercase tracking-[0.2em] text-zinc-500 dark:text-zinc-400 font-mono mb-3">Auto Digest</div>
+    <h1 class="text-3xl sm:text-5xl leading-tight tracking-tight font-semibold text-section-ai">
+      Daily AI digest · archive
+    </h1>
+    <p class="mt-4 text-base sm:text-lg leading-relaxed text-zinc-500 dark:text-zinc-400 font-light">
+      {digests.length} issues auto-generated at 08:00 Beijing daily, pulling from HF Daily Papers / arxiv cs.LG / qbitai / Anthropic / OpenAI / Google Research.
+    </p>
+  </section>
+
+  <DigestArchiveGrid
+    accent="ai"
+    cards={pageDigests.map((d, cardIndex) => {
+      // 大卡片只给第一页的最新 6 期
+      const rich = pageNumber === 1 && cardIndex < FEATURED_COUNT;
+      const tldr = rich ? extractTLDR(d.body ?? "") : null;
+      const cover = rich ? lightCover(d.data.cover) : undefined;
+      return {
+        href: pathWithLang(`/ai/${d.data.translationKey}`, lang),
+        title: d.data.title,
+        iso: d.data.date.toISOString().slice(0, 10),
+        cover,
+        summary: tldr?.summary?.[0] ?? undefined,
+        highlights: rich && !tldr ? extractDigestHighlights(d.body ?? "", 2) : undefined,
+        tags: tldr?.tags?.slice(0, 3),
+      };
+    })}
+    labels={{ featured: "Latest 6", older: (count) => `Older digests · ${count}`, empty: "No digests yet" }}
+  />
+  {hasCounterpart && (
+    <p class="max-w-3xl mx-auto px-5 pb-4 text-sm">
+      <a
+        href={`${otherBase}/${pageNumber === 1 ? "" : `${pageNumber}/`}`}
+        class="underline decoration-[var(--border)] hover:decoration-current"
+        hreflang="zh-CN"
+        lang="zh-CN"
+      >中文</a>
+    </p>
+  )}
+
+  {/* 分页导航（第 189 轮）：rel=prev/next 让爬虫按顺序抓，别把这些页当孤立页 */}
+  {totalPages > 1 && (
+    <nav class="max-w-3xl mx-auto px-5 pb-16 flex items-center justify-between text-sm" aria-label="Archive pagination">
+      {page.url.prev ? (
+        <a class="underline text-[var(--text-secondary)]" rel="prev" href={`${page.url.prev}/`}>← Newer 48</a>
+      ) : (
+        <span />
+      )}
+      <span class="text-[var(--text-tertiary)]">{`Page ${pageNumber} / ${totalPages}`}</span>
+      {page.url.next ? (
+        <a class="underline text-[var(--text-secondary)]" rel="next" href={`${page.url.next}/`}>Older 48 →</a>
+      ) : (
+        <span />
+      )}
+    </nav>
+  )}
+</BaseLayout>

@@ -29,9 +29,15 @@ test("基线文件里每一项都写明了理由", async () => {
   assert.deepEqual(missing, [], `这些基线没有说明为什么超标：${missing.join(", ")}`);
 });
 
-test("日报索引页的重登记理由写清了「结构性方案」而不只是「它超了」", async () => {
+test("日报索引页是靠分页瘦下来的，不是靠再挂一条基线", async () => {
   const raw = await read("scripts/page-weight-baseline.json");
-  const entry = (JSON.parse(raw) as Record<string, { reason: string }>)["/invest/digest/"];
-  assert.ok(entry, "该页应当已登记");
-  assert.match(entry.reason, /按日增长|分页|最近 N 期/, "理由要指向结构原因和方案，否则下一个人只会再加一条基线");
+  const baseline = JSON.parse(raw) as Record<string, { reason: string }>;
+  // 第 189 轮：四个归档页按 48 期分页，首页 226–232 KB → 153–155 KB，已跌回预算内，
+  // `--update-baseline` 会自动把它们移出基线（白名单只增不减等于闸门失效）。
+  for (const path of ["/ai/digest/", "/en/ai/digest/", "/invest/digest/", "/en/invest/digest/"]) {
+    assert.equal(baseline[path], undefined, `${path} 已分页瘦身，不该还挂在基线里`);
+  }
+  // 而且这个改造要留下记录，下一个人才知道"为什么它不在基线里"
+  const debt = await read("docs/known-debt.md");
+  assert.match(debt, /第 189 轮[\s\S]{0,400}分页/, "分页这件事要写进 known-debt");
 });
