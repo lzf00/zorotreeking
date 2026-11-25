@@ -485,3 +485,16 @@
   （可复用工作流权限不足），11-23 的 `a0273ba0` 给调用方补了 `actions: write`，
   `check:workflows` 的权限图判定为 ✅；下一次 cron 是 2026-11-29（周日）。
 - **11-15 那次 weekly-roundup 失败**（2m22s，非 startup_failure）原因未知，日志需管理员权限。
+
+## 第 201 轮
+
+- **发布被文档数字卡死（已修）**：`docs/known-debt.md` 的「期 / 条」是手写数字，日报流水线
+  一变就过期，`tests/known-debt.test.ts` 红 → `npm test` 红 → 部署被拦，线上停了两天。
+  现在 `scripts/sync-known-debt.mjs` 从内容算数字并写回，`npm test` 的 `pretest` 自动执行；
+  测试改为验证"算出来的 == 写下来的"。新增 `tests/known-debt-sync.test.ts`（7 条）。
+- **同类降级**：`快照过旧` 从硬失败改为 `console.warn`（CI 里本来就是 warn-only）。
+  数据新鲜度由 `check:market-age` 与每周巡检负责，不该连累发布。
+- **仍未定位**：`finance-names` 那条守卫在 CI 里是绿的（回填步骤覆盖了），
+  但 `/opt/wind-recap` 的生成端副本仍未同步，每次部署都会 `::warning::`。
+- **未修（需用户/服务器）**：nginx 三项；39 期 / 300 条摘要缺 LLM key；内联 CSS 97 KB/页；
+  `weekly-roundup` 待 11-29 验证。
