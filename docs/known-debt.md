@@ -307,3 +307,19 @@
   `scripts/i18n-leaks-baseline.json` 变成 `{}`（以后任何新增残留都是硬失败）。
 - **部署端可读性护栏**：`deploy.yml` 新增 `Mobile legibility` 步骤（第 184 轮的脚本），
   CI 侧 Lighthouse 已验证 13 个 URL 全部 SEO 100。
+
+## 第 186 轮
+
+- **美股价快照卡死部署 41 小时**：`refresh-us-macro.yml` 提交了 `stale: true` 的半成品快照 →
+  `market-snapshot-verify` 测试红 → 部署链停摆（生产停在 11-24 03:05）。
+  已两侧修好：源头先校验再提交，部署端在跑测试前用 `scripts/repair-us-snapshot.mjs`
+  恢复历史里最近一份合格快照。仓库里这份已回到 `41e06e46`。
+- **两个列表页越过 220 KB 预算**：`/ai/digest/` 220.1 KB、`/en/tag/market-news/` 220.2 KB，
+  原因是"一次渲染全部条目"，与本轮可读性改动无关（那 80 字节不背这个锅）。
+  已登记进 `scripts/page-weight-baseline.json`；**真修法是分页**，仍等决定。
+- **移动端字号底线全线生效**：全局把 `text-[10px]` / `text-[10.5px]` / `text-[11px]` 在
+  `max-width: 640px` 抬到 12px，13 个模板的可读文字占比从 71–100% 变成 **100%**
+  （除 `/ai/digest-2026-06-05/` 89.1%、路线表 93.7%），基线同步抬到 1.0。
+- **英文日报再次出现生成端滞后**：11-24/11-25 的自动日报又带回中文名与中文要闻段，
+  本地 `npm run gate` 因此红；已回填（41 个单元格、3 个文件）并把 digest 缺摘要的数字
+  更新为 39 期 / 300 条。根因仍是 `/opt/wind-recap` 没同步。
