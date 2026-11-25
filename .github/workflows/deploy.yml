@@ -94,6 +94,25 @@ jobs:
           fi
           exit 0
 
+      # giscus 评论连通性（第 208 轮）：线上实测 /guestbook/ 的评论 iframe 稳定 404 ——
+      # giscus App 没装到仓库上。跨域 iframe 父页面拿不到状态，所以在 CI 里直接打 giscus API 判定。
+      - name: Comment service (warn only)
+        continue-on-error: true
+        env:
+          PUBLIC_GISCUS_REPO: ${{ vars.PUBLIC_GISCUS_REPO }}
+          PUBLIC_GISCUS_CATEGORY: ${{ vars.PUBLIC_GISCUS_CATEGORY }}
+        run: |
+          set +e
+          node scripts/check-giscus.mjs | tee /tmp/giscus.log
+          {
+            echo '### 评论服务连通性（不拦发布）'
+            echo ''
+            echo '```'
+            cat /tmp/giscus.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit 0
+
       # 首页精选头条（第 206 轮）：内容相关 → 同样不拦发布，只发 annotation。
       - name: Homepage featured (warn only)
         continue-on-error: true

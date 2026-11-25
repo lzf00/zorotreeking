@@ -576,3 +576,21 @@
   待查方向：服务器出网是否被东财/腾讯限流或阻断、是否改走 Wind、或接受静态快照。
 - **纠正**：`/api/market/cn`、`/api/market/hk` 的 404 从 nginx 待修清单里移除 ——
   全站没有调用点，也不在 API 面清单里，属于误判。
+
+## 第 208 轮
+
+- **发现（未修，需要你操作）**：`/guestbook/` 的 giscus 评论区一直不可用 ——
+  `https://giscus.app/api/discussions?repo=lzf00/zorotreeking&term=guestbook&category=General`
+  稳定返回 **404**（GitHub Discussions 已开启，所以不是仓库设置问题）。
+  最可能是 **giscus GitHub App 没装到 `lzf00/zorotreeking`**。
+  修法：https://github.com/apps/giscus 安装到该仓库 → 确认 Discussions 分类存在 →
+  https://giscus.app 用同一仓库重新生成 `data-repo-id`/`data-category-id` →
+  更新仓库 Variables `PUBLIC_GISCUS_REPO_ID` / `PUBLIC_GISCUS_CATEGORY_ID`。
+  本站留言板本身可用（访客留言 + 邮件），坏的只是「方式二 · GitHub 登录留言」。
+- **新增**：`scripts/check-giscus.mjs`（用 client.js 同参数探测，404 时给出可执行修法；
+  CI warn-only，永不拦发布）+ `tests/giscus-health.test.ts`（6 条）；两页留言板补了
+  「评论区空白就用访客留言或邮件」的兜底说明（中英各一句）。
+- **顺带**：线上 24 页控制台扫描只发现这一个真问题；`/tag/etf/` 的 404 是我自己编的 URL
+  （本地也没有这个 tag 页），不算缺陷；`/404.html` 直接访问返回 404 是刻意的。
+- **写作约定**：中文强调短语一律用「」而不是 ASCII 双引号 —— 这个坑第 203/207/208 轮各踩一次
+  （esbuild 报 `Expected ")" but found "…"`），已写进 `docs/operations.md`。
