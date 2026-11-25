@@ -45,6 +45,7 @@
 | `check:weight` | 页面重量闸门：HTML > 220 KB / 内联 CSS > 120 KB 就红；已有超标页在 `scripts/page-weight-baseline.json`，比基线再长 10% 要重新登记理由 · 同时看 gzip 60 KB / 3000 标签 |
 | `check:images` | 图片体积与格式预算 |
 | `check:links` | 站内链接与锚点 |
+| `check:orphans` | 零入链页面检查：读完 dist 的站内链接图，任何可索引页面若无人指向就报出来（错误页/后台页/跳转桩除外）。**本地硬失败、CI 只告警**（第 204 轮） |
 | `check:sectors` | 板块名映射（中英一致） |
 | `check:og` | 分享卡（OG 图存在且尺寸正确） |
 | `check:ssr-clock` | SSR 时间戳不漂移（避免水合不一致） |

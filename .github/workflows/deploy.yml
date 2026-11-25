@@ -94,6 +94,26 @@ jobs:
           fi
           exit 0
 
+      # 零入链页面（第 204 轮）：同样**不拦发布**。孤儿页是"内容接错索引"这类结构问题，
+      # 站点本身能正常跑；本地门禁里它是硬失败（该先修再推），CI 里只发 annotation。
+      - name: Orphan pages (warn only)
+        continue-on-error: true
+        run: |
+          set +e
+          node scripts/check-orphans.mjs | tee /tmp/orphans.log
+          code=$?
+          {
+            echo '### 零入链页面（不拦发布）'
+            echo ''
+            echo '```'
+            cat /tmp/orphans.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          if [ "$code" -ne 0 ]; then
+            echo "::warning title=零入链页面::有页面没有任何站内链接指向它，详见 step summary"
+          fi
+          exit 0
+
       # 内容质量体检（第 202 轮）：**故意不拦发布**。
       # 第 201 轮查明线上停更两天是被"每天会变的业务指标"卡住了闸门；这里两条同类检查
       # （英文日报里的中文名、封面复用比例）依赖外部生成端的产出，生成端一抖就冻住整站

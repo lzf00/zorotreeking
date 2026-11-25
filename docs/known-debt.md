@@ -519,3 +519,16 @@
 - **实测**：四种场景（中文页 / 中文手机宽 / 英文页 / 首页浮层）都渲染出空结果块与入口链接。
 - **未修（需用户/服务器）**：nginx 三项；39 期 / 300 条摘要缺 LLM key；内联 CSS 97 KB/页
   （实测 gzip 15.8 KB/页，属构建/传输量问题，不是用户体感问题）；`weekly-roundup` 待 11-29 验证。
+
+## 第 204 轮
+
+- **零入链页面闸门**：新增 `scripts/check-orphans.mjs`（读 dist 链接图，排除错误页/后台页/
+  noindex/跳转桩），`tests/orphan-gate.test.ts`（7 条）。当前实测 1293 页 / 47224 条站内链接 /
+  中位入链 14 / 零入链 0（真正孤儿）。
+- **实测口径**：`/404.html`、`/admin/*`、`/photography/`、`/en/photography/` 是设计上无入链的；
+  闸门把它们排除，避免"改了 404 页就红"的噪音。
+- **顺带量到的体积事实**：JS 全部 40 个 chunk 共 345 KB gzip；单页唯一大块是共享 React 运行时
+  `client.js` 62.8 KB gzip，图表页另加 91 KB（CategoricalChart）。字体 3 个 woff2 共 102 KB。
+  HTML gzip 首页 28 KB / 日报 37 KB / 相册 41 KB。**没有发现新的体积异常**。
+- **未修（需用户/服务器）**：nginx 三项；39 期 / 300 条摘要缺 LLM key；内联 CSS 外链化；
+  `weekly-roundup` 待 11-29 验证；`/opt/wind-recap` 生成端副本。
