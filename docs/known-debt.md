@@ -471,3 +471,17 @@
   拦下来是对的（单语内容会带来死链），但**连续两天没发出内容**这件事需要重试策略。
 - **未修（需用户/服务器）**：`weekly-roundup.yml` 逾期 17 天；nginx 三项；`/opt/wind-recap`
   生成端副本；内联 CSS 97 KB/页。
+
+## 第 200 轮
+
+- **`yaml` 补声明**：构建期真在用（`build-photo-manifests.ts`），此前只靠传递依赖被提升到顶层；
+  现写进 devDependencies，锁文件 +1 行。
+- **依赖声明守卫** `tests/declared-deps.test.ts`（3 条）：裸 import 必须在 package.json 里；
+  白名单只有 `@aws-sdk/client-s3`（手动脚本的可选依赖）；构建/门禁路径不许依赖白名单包。
+- **CI 失败仍未知**：`daily-digest` 2026-11-24/25 四次挂在 `Unit and guard tests`。已排除
+  UTC / 浅克隆 / 无 dist / 未声明依赖四种差异（本地全绿，913+ 条）。下一次失败会带注解
+  （第 199 轮加的 step summary + `::error`）与失败测试名，可据此定位。
+- **`weekly-roundup.yml` 逾期 17 天——已定位为已修**：11-22 那次是 `startup_failure`
+  （可复用工作流权限不足），11-23 的 `a0273ba0` 给调用方补了 `actions: write`，
+  `check:workflows` 的权限图判定为 ✅；下一次 cron 是 2026-11-29（周日）。
+- **11-15 那次 weekly-roundup 失败**（2m22s，非 startup_failure）原因未知，日志需管理员权限。

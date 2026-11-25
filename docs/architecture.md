@@ -796,6 +796,26 @@ Lighthouse 不吃这一套 —— 同样的假红会从别的审计工具反复�
 "看起来像既有页面"的新模板，就必须把它录入对应的规则集（这一轮把两个搜索页都加进了
 `check:a11y` 的规则集与门禁快检，快检路径 8 条正好到上限）。
 
+### 依赖必须声明，别靠"恰好被提升"（第 200 轮）
+
+`yaml` 从来没写进 `package.json`，却有 10 多个文件在用，其中
+`scripts/build-photo-manifests.ts` 是**构建期**依赖 —— build 的第一步就是它。
+它能 import 成功，纯粹因为 `@astrojs/check → yaml-language-server → yaml` 这条链
+恰好把 `yaml@2.9.1` 提升到了顶层 `node_modules/yaml`（package-lock 里也正好是顶层条目）。
+
+这类"本地绿、CI 红"的故障最难查：本地老 `node_modules` 还在，什么都复现不出来。
+`daily-digest` 在 2026-11-24/25 连续挂在 `Unit and guard tests`，我把能想到的三种差异
+（UTC / 浅克隆 / 无 dist）都试了一遍仍然全绿 —— 依赖没声明正是剩下的那个常见原因。
+（顺带排除了：lockfile 里 `node_modules/yaml` 确实是顶层条目，所以这一次的 CI 失败不是它。）
+
+改法：
+- `yaml@2.9.1` 写进 devDependencies（锁文件只多一行）；
+- 新增 `tests/declared-deps.test.ts`：扫 `tests/`、`scripts/`、`src/` 里的裸 import，
+  逐个核对 `dependencies ∪ devDependencies`。扫描器逐行过滤（测试文件里会**引用**源码片段，
+  断言里的 `from "@/lib/x"` 不能被当成依赖），唯一白名单是 `@aws-sdk/client-s3`
+  （`scripts/photo-add.ts` 里按需 import 的可选依赖，带 `@ts-expect-error`），
+  并且有一条断言禁止构建/门禁路径依赖白名单里的包。
+
 ### 巡检不许"什么都没查还报绿"（第 199 轮）
 
 强制跑一次每周巡检（`--force`）暴露了两条，都是**测量工具在没测到东西时报告成功**：
