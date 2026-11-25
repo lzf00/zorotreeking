@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { formatChinaMarketTime, isChinaATradingHours } from "@/lib/china-market";
 import { indexName, marketLabels, type MarketLang } from "@/lib/market-i18n";
+import { humanizeMarketError } from "@/lib/api-error";
 
 /**
  * 实时大盘指数栏：7 大指数（A 股 5 + 港股 1 + 美股 1）。
@@ -66,7 +67,7 @@ export default function MarketIndicesGrid({ initialIndices, initialUpdated, init
         setSource("live");
         setError(null);
       } else {
-        if (!data) setError(d.error || L.loadFailed);
+        if (!data) setError(humanizeMarketError(d.error, lang));
       }
     } catch (e: any) {
       if (!data) setError(e?.message || L.networkError);

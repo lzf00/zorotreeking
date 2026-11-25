@@ -331,7 +331,7 @@
 - **焦点陷阱的单元素 bug**：页面模式空结果时唯一可聚焦的是输入框，`Tab` 会绕回自己，
   键盘用户出不去。已加 `focusable.length < 2` 放行 + 页面模式不挂陷阱，并被 a11y 快检覆盖。
 - **`/search/` 进了 a11y 规则集与快检**：快检路径上限从 6 提到 8（每个独立模板一页）。
-- **仍未处理**：生产侧 nginx 的 `/index.html` 未 301、gzip-only、`/api/market/cn|hk` 404
+- **仍未处理**：生产侧 nginx 的 `/index.html` 未 301、gzip-only（`/api/market/cn|hk` 404 不算问题，无调用点）
   都在服务器配置里，本仓库改不到（需要服务器权限）。
 
 ## 第 188 轮
@@ -339,7 +339,7 @@
 - **英文搜索页**：`/en/search/` 上线，搜索岛文案按 `lang` 拆分；浮层也按 `<html lang>`
   切文案（此前英文页面弹出来是中文）。
 - **a11y 快检 8 条路径**：`/search/` 与 `/en/search/` 都进了规则集，双主题 0 违规。
-- **仍未处理（需要服务器权限）**：`/index.html` 未 301、gzip-only、`/api/market/cn|hk` 404。
+- **仍未处理（需要服务器权限）**：`/index.html` 未 301、gzip-only。
 
 ## 第 188 轮补记
 
@@ -560,3 +560,19 @@
   "投资标的"这类词，无真错字。
 - **降级口径**：每周巡检的"自动化体检"在本地跑会被 GitHub 匿名 API 限流（60 次/小时），
   9 个 workflow 读不到 → 报告里明确写"本轮不做判断"（不会假装通过）。CI 里有 `GITHUB_TOKEN`。
+
+## 第 207 轮
+
+- **修**：后端异常被原样显示给读者。线上 `/api/market/stocks` 上游挂掉时，接口返回
+  `('Connection aborted.', RemoteDisconnected(...)); tencent: tencent stock quotes empty`，
+  六个行情组件 `setError(d.error || L.loadFailed)` 把它直接印在页面上（英文 Python 异常 +
+  暴露上游数据源）。新增 `src/lib/api-error.ts`（限流/连不上/兜底三档，**兜底也不回显原文**），
+  六个组件统一改用它；`tests/api-error.test.ts` 8 条（含线上真实异常字符串、英文页零中文、
+  源码里禁止再出现 `setError(d.error`）。
+- **仍未解决（服务端，需要你）**：`/api/market/stocks` 的上游连不上 —— 东财
+  `RemoteDisconnected`、腾讯兜底返回空，连续三次探测结果一致（2026-11-26 06:5x BJT）。
+  影响 `/invest/` 持仓净值与个股聚焦、`/invest/etf/` 实时成交、`/invest/us-market/` 的刷新；
+  指数/板块/情绪/ETF/基金/美股快照接口正常。页面现在会诚实显示"行情源暂时连不上"。
+  待查方向：服务器出网是否被东财/腾讯限流或阻断、是否改走 Wind、或接受静态快照。
+- **纠正**：`/api/market/cn`、`/api/market/hk` 的 404 从 nginx 待修清单里移除 ——
+  全站没有调用点，也不在 API 面清单里，属于误判。

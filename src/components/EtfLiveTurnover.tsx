@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { chinaMarketPhase, formatChinaMarketTime, isChinaATradingHours } from "@/lib/china-market";
 import registryJson from "@/data/etf-registry.json";
+import { humanizeMarketError } from "@/lib/api-error";
 
 /**
  * 宽基 ETF 盘中实时成交监测（/invest/etf/ 页顶部）。
@@ -111,7 +112,7 @@ export default function EtfLiveTurnover() {
         setTrading(typeof d.trading === "boolean" ? d.trading : null);
         setBaselineDate(typeof d.baseline_date === "string" ? d.baseline_date : null);
       } else {
-        throw new Error(d.error || "加载失败");
+        throw new Error(humanizeMarketError(d.error, "zh"));
       }
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "网络异常");

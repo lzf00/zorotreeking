@@ -10,6 +10,7 @@ import {
   type UsTrendPoint,
 } from "@/lib/us-market";
 import { absoluteStamp, describeIsoSnapshot, describeSnapshot } from "@/lib/snapshot-age";
+import { humanizeMarketError } from "@/lib/api-error";
 
 const POLL_MS = 60_000;
 
@@ -252,11 +253,15 @@ export default function UsMarketDashboard({ initialData = null }: Props) {
     try {
       const response = await fetch("/api/market/us", { cache: "no-store" });
       const payload = await response.json() as UsMarketDashboardData;
-      if (!response.ok || !payload?.ok) throw new Error(payload?.error || `接口响应异常：${response.status}`);
+      if (!response.ok || !payload?.ok) {
+        // 原始 error 可能是上游 Python 异常，只进 console；页面显示人话（第 207 轮）
+        if (payload?.error) console.warn("[us-market] 接口报错：", payload.error);
+        throw new Error(humanizeMarketError(payload?.error ?? null, "zh"));
+      }
       setData((current) => mergeUsMarketDashboardData(current, payload));
       setError(null);
     } catch (reason) {
-      setError(reason instanceof Error ? reason.message : "网络异常");
+      setError(reason instanceof Error ? reason.message : humanizeMarketError(null, "zh"));
     } finally {
       inFlight.current = false;
       setLoading(false);
@@ -301,7 +306,7 @@ export default function UsMarketDashboard({ initialData = null }: Props) {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           {Array.from({ length: 3 }).map((_, index) => <div key={index} className="h-72 animate-pulse rounded-[1.35rem] bg-[var(--bg-soft)]" />)}
         </div>
-        {error && <p className="text-sm text-rose-600 dark:text-rose-400">美股数据加载失败：{error}</p>}
+        {error && <p className="text-sm text-rose-600 dark:text-rose-400">美股数据暂时拉不到：{error}，稍后再试即可。</p>}
       </div>
     );
   }
@@ -445,7 +450,7 @@ export default function UsMarketDashboard({ initialData = null }: Props) {
               </span>
             );
           })()}
-          {error && <span className="mr-2 text-amber-700 dark:text-amber-400">实时刷新失败：{error}。</span>}
+          {error && <span className="mr-2 text-amber-700 dark:text-amber-400">实时刷新暂时失败：{error}。</span>}
           数据仅供研究记录，不构成投资建议。
         </p>
       </section>

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { formatChinaMarketTime, isChinaATradingHours } from "@/lib/china-market";
 import { marketLabels, type MarketLang, type MarketLabels } from "@/lib/market-i18n";
+import { humanizeMarketError } from "@/lib/api-error";
 
 /**
  * 通用个股聚焦组件。
@@ -70,7 +71,7 @@ export default function StockSpotlight({ stocks, showNote = true, initialQuotes,
         setUpdated(d.ts);
         setSource(d.source || "eastmoney");
         setError(null);
-      } else if (!quotes) setError(d.error || L.loadFailed);
+      } else if (!quotes) setError(humanizeMarketError(d.error, lang));
     } catch (e: any) {
       if (!quotes) setError(e?.message || L.networkError);
     } finally {

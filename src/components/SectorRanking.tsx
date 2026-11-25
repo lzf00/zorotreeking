@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { formatChinaMarketTime, isChinaATradingHours } from "@/lib/china-market";
 import { classifyLaggingSectors } from "@/lib/market-quality";
 import { marketLabels, sectorName, type MarketLang, type MarketLabels } from "@/lib/market-i18n";
+import { humanizeMarketError } from "@/lib/api-error";
 
 /**
  * 行业板块涨跌排行（细分行业 m:90 t:2）。
@@ -59,7 +60,7 @@ export default function SectorRanking({ initialData, lang = "zh" }: Props = {}) 
       const raw = await r.json();
       const d: Resp = raw && typeof raw === "object" ? raw : ({} as Resp);
       if (d.ok) { setData(d); setError(null); }
-      else if (!data) setError(d.error || L.loadFailed);
+      else if (!data) setError(humanizeMarketError(d.error, lang));
     } catch (e: any) {
       if (!data) setError(e?.message || L.networkError);
     } finally {

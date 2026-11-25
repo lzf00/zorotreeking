@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { formatChinaMarketTime, isChinaATradingHours } from "@/lib/china-market";
 import { formatYi, marketLabels, type MarketLang } from "@/lib/market-i18n";
+import { humanizeMarketError } from "@/lib/api-error";
 
 /**
  * 市场情绪：沪深成交额 + 涨跌平家数 + 涨停跌停板。
@@ -57,7 +58,7 @@ export default function MarketSentiment({ initialData, lang = "zh" }: Props = {}
       const r = await fetch("/api/market/sentiment", { cache: "no-store" });
       const d: Resp = await r.json();
       if (d.ok) { setData(d); setError(null); }
-      else if (!data) setError(d.error || L.loadFailed);
+      else if (!data) setError(humanizeMarketError(d.error, lang));
     } catch (e: any) {
       if (!data) setError(e?.message || L.networkError);
     } finally {

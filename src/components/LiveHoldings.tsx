@@ -7,6 +7,7 @@ import {
   valueFundPosition,
 } from "@/lib/portfolio-valuation";
 import { marketLabels, type MarketLang } from "@/lib/market-i18n";
+import { humanizeMarketError } from "@/lib/api-error";
 
 /**
  * 基金持仓：拿 _holdings.yaml 的份额 + 成本，调 /api/market/funds 获取
@@ -136,7 +137,7 @@ export default function LiveHoldings({ holdings, dataMode = "placeholder", simul
           setPartial(null);
         }
       } else {
-        throw new Error(d.error || L.loadFailed);
+        throw new Error(humanizeMarketError(d.error, lang));
       }
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : L.networkError);
