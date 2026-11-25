@@ -1,4 +1,9 @@
 /**
+ * 注意：扫描"已发布内容"的那条断言已搬到 `scripts/check-content-quality.mjs`（第 202 轮）——
+ * 它依赖外部生成端的产出，放在 `npm test` 里会让生成端一抖就冻住整站发布。
+ * 这里只留纯逻辑与生成端接线的断言。
+ */
+/**
  * 英文日报的名字对照表（第 156 轮）。
  *
  * 事故：`build_report_en` 只有 16 个名字的对照表，`## 🔥 Top Gainers` 和
@@ -58,28 +63,6 @@ test("英文日报的热股、板块、领涨股都走对照表", async () => {
   assert.match(fetcher, /_en_name\(s\['name'\]\)/, "Hot Sectors 要走对照表");
   assert.match(fetcher, /_en_name\(s\.get\('lead_stock'\)\)/, "领涨股要走对照表");
   assert.match(fetcher, /from finance_names import en_name/, "要真的用上那个模块");
-});
-
-test("已发布的英文日报里，表格单元格不再留着能翻的中文名", async () => {
-  const keys = python<string[]>(
-    "import sys, json; sys.path.insert(0, 'scripts/wind'); import finance_names as f; print(json.dumps(list({**f.SECTOR_EN, **f.STOCK_EN}.keys())))",
-  );
-  const known = new Set(keys);
-  const dir = new URL("../src/content/invest/", import.meta.url);
-  const files = (await readdir(dir)).filter((f) => /^market-recap-.*\.en\.mdx$/.test(f));
-  assert.ok(files.length > 10, "应当能扫到日报文件");
-  const leftovers: string[] = [];
-  for (const file of files) {
-    const raw = await readFile(new URL(file, dir), "utf8");
-    for (const line of raw.split("\n")) {
-      if (!line.trimStart().startsWith("|")) continue;
-      for (const cell of line.split("|")) {
-        const bare = cell.replace(/`[^`]*`/g, "").replace(/[🟢🔴⚪🚀💥💰]/gu, "").trim();
-        if (known.has(bare)) leftovers.push(`${file}: ${bare}`);
-      }
-    }
-  }
-  assert.deepEqual(leftovers.slice(0, 5), [], "这些名字对照表里有，说明回填没跑干净");
 });
 
 test("生成端在发布前自己回填，不靠「事后一次性脚本」（第 183 轮）", async () => {

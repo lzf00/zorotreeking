@@ -94,6 +94,28 @@ jobs:
           fi
           exit 0
 
+      # 内容质量体检（第 202 轮）：**故意不拦发布**。
+      # 第 201 轮查明线上停更两天是被"每天会变的业务指标"卡住了闸门；这里两条同类检查
+      # （英文日报里的中文名、封面复用比例）依赖外部生成端的产出，生成端一抖就冻住整站
+      # 显然不划算。本地整轮门禁里它是硬失败（该先修再推），CI 里只发 annotation。
+      - name: Content quality (warn only)
+        continue-on-error: true
+        run: |
+          set +e
+          node scripts/check-content-quality.mjs | tee /tmp/content-quality.log
+          code=$?
+          {
+            echo '### 内容质量（不拦发布）'
+            echo ''
+            echo '```'
+            cat /tmp/content-quality.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          if [ "$code" -ne 0 ]; then
+            echo "::warning title=内容质量::有内容不合格，已在 step summary 列出；不影响本次发布"
+          fi
+          exit 0
+
       # 守卫测试一直没进部署流程：2026-11-11 发现 tests/ 里有 3 个断言因为前几轮
       # 重构失效，红着也照样部署了 20 多次。整套只跑 ~1s，放在 build 前面。
       - name: Unit and guard tests

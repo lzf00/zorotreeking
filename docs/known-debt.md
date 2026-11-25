@@ -499,3 +499,14 @@
   但 `/opt/wind-recap` 的生成端副本仍未同步，每次部署都会 `::warning::`。
 - **未修（需用户/服务器）**：nginx 三项；39 期 / 300 条摘要缺 LLM key；内联 CSS 97 KB/页；
   `weekly-roundup` 待 11-29 验证。
+
+## 第 202 轮
+
+- **闸门分级落地**：`scripts/check-content-quality.mjs` 收纳两条依赖外部生成端的内容检查
+  （英文日报中文名、封面复用比例）；本地 `npm run gate` 硬失败，CI `deploy.yml` 里
+  `continue-on-error: true` + 注解 + step summary。知识：同一检查在不同场景可以用不同严格度。
+- **`tests/finance-names.test.ts` / `tests/digest-covers.test.ts` 只剩纯逻辑与接线断言**，
+  内容状态扫描搬进脚本；`tests/content-quality-gate.test.ts`（6 条）锁住这个分工。
+- **当前实测**：125 个英文日报无中文残留；386 篇日报 / 40 张封面，最挤 2.8%（阈值 8%）。
+- **未修（需用户/服务器）**：nginx 三项；39 期 / 300 条摘要缺 LLM key；内联 CSS 97 KB/页；
+  `weekly-roundup` 待 11-29 验证；`/opt/wind-recap` 生成端副本。

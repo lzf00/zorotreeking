@@ -56,26 +56,3 @@ test("日期优先取 frontmatter，缺失时回退文件名", () => {
   assert.equal(digestDate("tags: [digest]\n", "digest-2026-11-20.zh.mdx"), "2026-11-20");
   assert.equal(digestDate("tags: [digest]\n", "nope.zh.mdx"), null);
 });
-
-test("归档里任何一张封面都不能被超过 8% 的 digest 复用", async () => {
-  const root = new URL("../src/content/", import.meta.url);
-  const counts = new Map<string, number>();
-  let total = 0;
-  for (const stream of ["ai", "invest"]) {
-    const files = (await readdir(new URL(`${stream}/`, root))).filter((f) => /^digest-\d{4}-\d{2}-\d{2}\.zh\.mdx$/.test(f));
-    for (const file of files) {
-      const text = await readFile(new URL(`${stream}/${file}`, root), "utf8");
-      const cover = /^cover:\s*"([^"]+)"/m.exec(text)?.[1];
-      total++;
-      if (cover) counts.set(cover, (counts.get(cover) ?? 0) + 1);
-    }
-  }
-  assert.ok(total > 300, `只扫到 ${total} 篇 digest，检查逻辑可能失效`);
-  const [worstCover, worstCount] = [...counts.entries()].sort((a, b) => b[1] - a[1])[0];
-  const share = worstCount / total;
-  assert.ok(
-    share <= 0.08,
-    `${path.basename(worstCover)} 被 ${worstCount}/${total} 篇（${(share * 100).toFixed(1)}%）复用，封面又挤在一起了`,
-  );
-  assert.ok(counts.size >= 30, `只有 ${counts.size} 张不同封面，池子太小`);
-});

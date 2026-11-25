@@ -38,6 +38,7 @@
 | `validate:etf` | ETF 三因子数据自洽（份额/量能/方向） |
 | `check:dates` | 内容日期与文件名/前置字段一致 |
 | `check:digest-quality` | 最近 7 天的日报正文里不许有"摘要失败"占位符（历史遗留用 `--all` 盘点） |
+| `check:content-quality` | 内容质量体检：英文日报中文残留、封面复用比例、缺摘要明细。**本地硬失败、CI 只告警**（第 202 轮） |
 | `check` | `astro check`（TS 类型 + 模板） |
 | `npm test` | 单元/集成测试（node:test + tsx） |
 | `build` | 静态构建（1194 个页面） |
