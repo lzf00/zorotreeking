@@ -532,3 +532,15 @@
   HTML gzip 首页 28 KB / 日报 37 KB / 相册 41 KB。**没有发现新的体积异常**。
 - **未修（需用户/服务器）**：nginx 三项；39 期 / 300 条摘要缺 LLM key；内联 CSS 外链化；
   `weekly-roundup` 待 11-29 验证；`/opt/wind-recap` 生成端副本。
+
+## 第 205 轮
+
+- **脚本索引闸门**：新增 `scripts/check-script-index.mjs`（101 个脚本：接线 92 / 手动工具 8 /
+  无名 0）+ `tests/script-index.test.ts`（8 条）。门禁里硬失败。
+- **速查页补「手动工具与服务端副本」表**：`measure-font-metrics.mjs`、`render-ali-loop-film.py`、
+  `check-prod-urls.mjs`，以及 `/opt/wind-recap` 上的四个生成端入口。
+- **顺带量到**：部署耗时 7 分钟（build 76s、rsync 到版本目录仅 14s、浏览器烟测约 2.5 分钟），
+  没有可优化的异常；本轮新增的两个 warn-only 步骤在 CI 里都已跑过（0s success）。
+- **未修（需用户/服务器）**：nginx 体检仍是 3 必须修（`/index.html` 200、两行 cache-control ×2）
+  + 3 建议（brotli、`/api/market/*` 无缓存、子目录 index.html）；39 期 / 300 条摘要缺 LLM key；
+  内联 CSS 外链化；`weekly-roundup` 待 11-29 验证；`/opt/wind-recap` 副本同步。

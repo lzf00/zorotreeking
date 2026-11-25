@@ -46,6 +46,7 @@
 | `check:images` | 图片体积与格式预算 |
 | `check:links` | 站内链接与锚点 |
 | `check:orphans` | 零入链页面检查：读完 dist 的站内链接图，任何可索引页面若无人指向就报出来（错误页/后台页/跳转桩除外）。**本地硬失败、CI 只告警**（第 204 轮） |
+| `check:script-index` | 每个脚本要么接线、要么在 `docs/operations.md` 登记（手动工具与服务端副本），否则红（第 205 轮） |
 | `check:sectors` | 板块名映射（中英一致） |
 | `check:og` | 分享卡（OG 图存在且尺寸正确） |
 | `check:ssr-clock` | SSR 时间戳不漂移（避免水合不一致） |
@@ -76,6 +77,31 @@
 ——抓线上 sitemap 里的每条 URL 真去打一遍，4xx/5xx 判失败，3xx 报警（sitemap 里不该出现重定向）。
 构建期检查看的是 `dist/`，nginx、缓存、证书都不在其中，这一层只有它覆盖。
 2026-11-22 首跑：1194 条全部 2xx，p50 18ms / p95 262ms。
+
+### 手动工具与服务端副本（不在门禁里，但必须有索引）
+
+`scripts/` 下有 100 多个文件，分两类：**接线脚本**（`package.json` / workflow / 测试引用，
+跑得起来也红得起来）和**手动工具**（需要时人跑一次）。手动工具的危险不是跑不起来，而是
+**没人知道它存在**——写它的那一轮记得，几个月后就没人知道了。所以 `check:script-index`
+要求每个脚本要么被接线，要么在本页登记（第 205 轮起，门禁会红）。
+
+| 脚本 | 什么时候用 |
+|---|---|
+| `scripts/measure-font-metrics.mjs` | 量网页字体与兜底字体的宽度差，结果手写进 `src/styles/fonts.css` 的 metric-matched fallback。只在换字体/改 `size-adjust` 时需要重跑 |
+| `scripts/render-ali-loop-film.py` | 给阿里大环线那篇生成配图/胶片效果，手工跑一次 |
+| `scripts/check-script-index.mjs` | 本页这张表自己的守卫：有脚本没登记就红 |
+
+**服务端生成端副本**（在 `/opt/wind-recap` 上运行，本仓库只是副本，CI 不跑）：
+
+| 脚本 | 用途 |
+|---|---|
+| `scripts/wind/run_now.py` | 手动触发收盘流程（调试用，`--dry-run` 最常用） |
+| `scripts/wind/run_open.py` | 开盘版（10:30 BJT）：只抓数 + 微信推送，不归档 |
+| `scripts/wind/test_fetcher.py` / `test_quality.py` | 纯函数单元测试（无 Wind / 无网络） |
+| `scripts/wind/rebuild_broken_recaps.py` | 重建有问题的旧日报 |
+
+**注意**：这些副本和服务器上的实际版本**可能不同步**（已知欠账）。部署时那一步
+`Repair English recap names` 就是为了兜住"服务器副本还没有回填逻辑"的情况。
 
 **不在门禁里**（故意的）：`check:deps`、`check:server`、`check:freshness`、`check:search`
 （默认打线上）、`check:a11y`（全站，2.5 分钟）、`check:a11y:sample`（每周）、
