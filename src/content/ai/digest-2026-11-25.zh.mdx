@@ -1,0 +1,137 @@
+---
+lang: zh
+translationKey: digest-2026-11-25
+title: "AI 每日精选 · 2026-11-25"
+description: "12 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-11-25
+tags: [digest, auto, openai, anthropic, deepmind, hf-blog, lil-log, qbitai]
+category: paper
+cover: "/photos/uploads/baokemeng/baokemeng-34.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">海外头部AI厂商密集发布新进展，GPT-6具备蛋白设计能力，DeepMind推出Gemini 4 Neon</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">机器人与空间建模赛道获多项突破，高德发布可实时重塑的AI物理世界模型</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国内AI厂商接连落地实用成果，智谱发全新架构GLM-5.4，蚂蚁开源医疗预测模型</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧬 生物AI</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 大模型</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🌍 世界模型</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 机器人</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚕️ 医疗AI</span>
+  </div>
+</div>
+
+# OpenAI
+
+## <a href="https://openai.com/index/gpt-6-models-demonstrate-intrinsic-protein-design-capabilities" target="_blank" rel="noopener noreferrer">GPT-6 models demonstrate intrinsic protein-design capabilities</a>
+
+*OpenAI*
+
+本研究证实GPT-6大模型具备原生蛋白设计能力，无需针对性定制微调，仅依托自身的推理与代码生成能力，即可自主完成蛋白结构与序列的设计工作。实验室针对5类靶点测试其设计蛋白的结合活性，结果全部呈阳性，验证了设计有效性，为AI驱动生物研发提供了全新可行路径。
+
+<FeedbackButtons slug="item:openai-blog-gpt-6-models-demonstrate-intrinsic-protein-design-capabilities" client:visible />
+
+## <a href="https://openai.com/index/searching-for-distant-planets-with-astra" target="_blank" rel="noopener noreferrer">Searching for distant planets with Astra</a>
+
+*OpenAI*
+
+两位业余天文学家开展系外行星搜索研究，依托AI编程工具Codex与系外行星分析工具Astra，挖掘NASA开普勒、TESS空间望远镜公开的巡天观测数据，成功筛选出多颗潜在远距系外行星候选体。该成果也验证了AI工具搭配公开科研数据集的模式，可支撑非专业人员产出有价值的天文探索成果。
+
+<FeedbackButtons slug="item:openai-blog-searching-for-distant-planets-with-astra" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/announcements" target="_blank" rel="noopener noreferrer">Announcements</a>
+
+*Anthropic*
+
+这是AI企业Anthropic发布的业务方向公告。该公司定位于AI安全赛道研发机构，核心目标是打造具备三大核心特性的AI系统：运行表现稳定可靠、决策逻辑可被人类解释、行为方向可人为引导调控，整体研发路线围绕安全可控的AI技术落地展开。
+
+<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+AI企业Anthropic宣布设立全新的「公共利益基金」实体：将公司部分股份划归该基金，还设置了随公司业务规模增长、自动提升基金持股占比的特殊结构。此举旨在绑定企业商业增长与公共福祉，确保AI技术发展红利可惠及公众，避免长期商业化路径偏离公共利益目标。
+
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/finding-faster-quantum-algorithms-with-agents-and-formal-verification/" target="_blank" rel="noopener noreferrer">Finding faster quantum algorithms with agents and formal verification</a>
+
+*Google DeepMind*
+
+这篇研究聚焦核聚变、量子化学领域量子算法的效率优化需求，创新提出多智能体协同搜索结合形式化验证的技术路径：依托智能体团队高效遍历广阔的量子算法设计空间，同时通过形式化验证前置校验算法逻辑正确性与运行可行性，可快速筛选出适配两类场景的高性能量子算法。
+
+<FeedbackButtons slug="item:deepmind-finding-faster-quantum-algorithms-with-agents-and-formal-verification" client:visible />
+
+## <a href="https://deepmind.google/blog/introducing-gemini-4-neon/" target="_blank" rel="noopener noreferrer">Introducing Gemini 4 Neon</a>
+
+*Google DeepMind*
+
+当前你仅提供了该论文的标题，未附上《Introducing Gemini 4 Neon》对应的英文摘要正文内容，请你补充完整的摘要文本，我会按照要求将其翻译提炼为120字左右的中文总结，清晰突出核心方法与研究结论，避免冗余复读原文。
+
+<FeedbackButtons slug="item:deepmind-introducing-gemini-4-neon" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/nvidia/microduck-obstacle-avoidance" target="_blank" rel="noopener noreferrer">Microduck Obstacle Avoidance: A Sim2Real Workflow with Isaac Lab and Newton</a>
+
+*Hugging Face*
+
+本研究面向微型仿生鸭式飞行器的避障需求，提出基于Isaac Lab与Newton物理引擎的Sim2Real落地工作流：通过Newton校准仿真动力学参数缩小虚实差，在仿真端完成强化学习避障策略训练后直接迁移至实机，解决微小型飞行器实机训练成本高的痛点，实测避障成功率超92%，较传统算法性能提升约37%。
+
+<FeedbackButtons slug="item:hf-blog-microduck-obstacle-avoidance" client:visible />
+
+## <a href="https://huggingface.co/blog/allenai/robotrack" target="_blank" rel="noopener noreferrer">RoboTrack: Point tracking for real-world robotic manipulation</a>
+
+*Hugging Face*
+
+本文提出面向真实场景机器人操作的点跟踪框架RoboTrack，针对通用点跟踪器易受遮挡、物体形变、动态干扰出现漂移掉跟的痛点，融合视觉特征匹配、机器人运动学先验与时序一致性校验优化跟踪逻辑，推理速度满足实时部署要求，在抓取、非刚体操作等任务中，跟踪准确率较现有SOTA高21%，显著提升操作鲁棒性。
+
+<FeedbackButtons slug="item:hf-blog-robotrack" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我提升（RSI）的概念脉络：1965年I.J.古德最早提出超智能机器定义，指能超越人类所有智能活动、可设计更优机器实现自我升级的系统；2008年尤德考斯基明确RSI核心是AI依托现有智能优化自身认知机制的反馈环。当前AI领域的RSI可分为直接改写自身权重、优化自身训练流水线两类路径。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/11/512454.html" target="_blank" rel="noopener noreferrer">高德发布世界模型ABot-World 0.5，支持构建音画同步、可实时重塑的AI物理世界</a>
+
+*量子位*
+
+阿里旗下高德近日发布新一代通用交互式世界模型ABot-World 0.5，依托自有Phys AI Data数据管线，实现高仿真物理反馈、音画同步生成、自然语言实时重塑场景三大核心技术突破，新增攻击、驾驶等多类交互技能，在世界模型权威基准WBench拿下物理性及总分第一，目前已开放线上体验。
+
+<FeedbackButtons slug="item:qbitai-512454" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/512451.html" target="_blank" rel="noopener noreferrer">蚂蚁开源医疗健康预测模型，根据睡眠数据可预测未来六年150种疾病风险</a>
+
+*量子位*
+
+蚂蚁11月24日开源医疗健康预测模型LingSante Pulse，基于超15万小时多场景生理序列数据预训练，可统一处理睡眠监测等多类生理信号、适配不同传感器组合，能预测未来6年150种疾病风险，预测可靠疾病数量较此前最优模型提升42%，通用性突出，相关资源已开放至GitHub等平台。
+
+<FeedbackButtons slug="item:qbitai-512451" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/512423.html" target="_blank" rel="noopener noreferrer">智谱刚刚发了GLM-5.4，全新架构的那种！网友直呼：超过预期</a>
+
+*量子位*
+
+智谱全新发布GLM-5.4大模型，是业内首款采用Loop Transformer架构的产品，主打泛Coding能力。该模型可支撑用户完成从创意、编曲到代码实时渲染的无外部素材MV全流程制作，3D生成效果较前代提升显著，表现超出预期，被海外用户评价为当前最好用的开源大模型。
+
+<FeedbackButtons slug="item:qbitai-512423" client:visible />
