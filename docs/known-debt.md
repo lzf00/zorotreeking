@@ -478,9 +478,10 @@
   现写进 devDependencies，锁文件 +1 行。
 - **依赖声明守卫** `tests/declared-deps.test.ts`（3 条）：裸 import 必须在 package.json 里；
   白名单只有 `@aws-sdk/client-s3`（手动脚本的可选依赖）；构建/门禁路径不许依赖白名单包。
-- **CI 失败仍未知**：`daily-digest` 2026-11-24/25 四次挂在 `Unit and guard tests`。已排除
-  UTC / 浅克隆 / 无 dist / 未声明依赖四种差异（本地全绿，913+ 条）。下一次失败会带注解
-  （第 199 轮加的 step summary + `::error`）与失败测试名，可据此定位。
+- **CI 失败（已在第 201 轮定位）**：`daily-digest` 2026-11-24/25 四次挂在 `Unit and guard tests`，
+  原因是 `tests/known-debt.test.ts` 盯的文档数字随内容变化而过期 —— 详见下一节。
+  第 199/200 轮排除的 UTC / 浅克隆 / 无 dist / 未声明依赖四种差异都是对的，
+  真正的差异是"失败的那两个 commit 的文档数字和内容对不上"。
 - **`weekly-roundup.yml` 逾期 17 天——已定位为已修**：11-22 那次是 `startup_failure`
   （可复用工作流权限不足），11-23 的 `a0273ba0` 给调用方补了 `actions: write`，
   `check:workflows` 的权限图判定为 ✅；下一次 cron 是 2026-11-29（周日）。
