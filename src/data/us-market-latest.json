@@ -1,8 +1,8 @@
 {
   "ok": true,
-  "ts": 1795467600,
-  "partial": false,
-  "stale": false,
+  "ts": 1795554000,
+  "partial": true,
+  "stale": true,
   "macro": {
     "source": "bls",
     "source_url": "https://www.bls.gov/developers/api_signature_v2.htm",
@@ -298,53 +298,53 @@
   "market": {
     "source": "eastmoney_delayed",
     "source_url": "https://quote.eastmoney.com/usstocklist.html",
-    "fetched_at": 1795489884,
-    "quote_ts": 1795467600,
+    "fetched_at": 1795582611,
+    "quote_ts": 1795554000,
     "requested": 23,
-    "succeeded": 23,
-    "partial": false,
+    "succeeded": 8,
+    "partial": true,
     "stale": false,
     "indices": [
       {
         "symbol": "SPX",
-        "price": 7237.17,
-        "change": 326.78,
-        "change_pct": 4.73,
-        "quote_ts": 1795467586,
+        "price": 7201.09,
+        "change": -36.08,
+        "change_pct": -0.5,
+        "quote_ts": 1795553986,
         "name": "标普 500"
       },
       {
         "symbol": "NDX",
-        "price": 24089.56,
-        "change": 1471.83,
-        "change_pct": 6.51,
-        "quote_ts": 1795467600,
+        "price": 23733.54,
+        "change": -356.02,
+        "change_pct": -1.48,
+        "quote_ts": 1795554000,
         "name": "纳斯达克 100"
       },
       {
         "symbol": "DJIA",
-        "price": 49595.31,
-        "change": 1447.98,
-        "change_pct": 3.01,
-        "quote_ts": 1795467586,
+        "price": 50018.7,
+        "change": 423.39,
+        "change_pct": 0.85,
+        "quote_ts": 1795553986,
         "name": "道琼斯工业"
       },
       {
         "symbol": "IWM",
-        "price": 265.74,
-        "change": 9.13,
-        "change_pct": 3.56,
-        "quote_ts": 1795467600,
+        "price": 267.14,
+        "change": 1.4,
+        "change_pct": 0.53,
+        "quote_ts": 1795554000,
         "name": "罗素 2000 ETF"
       }
     ],
     "sectors": [
       {
         "symbol": "XLK",
-        "price": 162.38,
-        "change": 13.37,
-        "change_pct": 8.97,
-        "quote_ts": 1795467600,
+        "price": 157.09,
+        "change": -5.29,
+        "change_pct": -3.26,
+        "quote_ts": 1795554000,
         "name": "信息技术"
       },
       {
@@ -357,10 +357,10 @@
       },
       {
         "symbol": "XLY",
-        "price": 116.93,
-        "change": 4.47,
-        "change_pct": 3.97,
-        "quote_ts": 1795467600,
+        "price": 117.72,
+        "change": 0.79,
+        "change_pct": 0.68,
+        "quote_ts": 1795554000,
         "name": "可选消费"
       },
       {
@@ -381,10 +381,10 @@
       },
       {
         "symbol": "XLE",
-        "price": 59.87,
-        "change": -0.64,
-        "change_pct": -1.06,
-        "quote_ts": 1795467600,
+        "price": 60.45,
+        "change": 0.58,
+        "change_pct": 0.97,
+        "quote_ts": 1795554000,
         "name": "能源"
       },
       {
@@ -479,10 +479,10 @@
       },
       {
         "symbol": "TSLA",
-        "price": 385.46,
-        "change": 39.64,
-        "change_pct": 11.46,
-        "quote_ts": 1795467600,
+        "price": 384.68,
+        "change": -0.78,
+        "change_pct": -0.2,
+        "quote_ts": 1795554000,
         "name": "特斯拉"
       },
       {
@@ -494,7 +494,23 @@
         "name": "博通"
       }
     ],
-    "problems": []
+    "problems": [
+      "etf:XLC",
+      "etf:XLF",
+      "etf:XLI",
+      "etf:XLV",
+      "etf:XLP",
+      "etf:XLU",
+      "etf:XLRE",
+      "etf:XLB",
+      "stock:AAPL",
+      "stock:MSFT",
+      "stock:NVDA",
+      "stock:AMZN",
+      "stock:GOOGL",
+      "stock:META",
+      "stock:AVGO"
+    ]
   },
   "issues": []
 }
