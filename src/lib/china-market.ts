@@ -6,6 +6,24 @@ const CHINA_MARKET_CLOCK = new Intl.DateTimeFormat("en-GB", {
   hourCycle: "h23",
 });
 
+const CHINA_MARKET_STAMP = new Intl.DateTimeFormat("zh-CN", {
+  timeZone: "Asia/Shanghai",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  hour: "2-digit",
+  minute: "2-digit",
+  second: "2-digit",
+  hourCycle: "h23",
+});
+
+const CHINA_MARKET_DAY = new Intl.DateTimeFormat("en-CA", {
+  timeZone: "Asia/Shanghai",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
+
 const CHINA_MARKET_TIME = new Intl.DateTimeFormat("zh-CN", {
   timeZone: "Asia/Shanghai",
   hour: "2-digit",
@@ -63,4 +81,35 @@ export function isFundNavRefreshWindow(date: Date = new Date()): boolean {
 export function formatChinaMarketTime(timestampSeconds: number): string {
   if (!Number.isFinite(timestampSeconds)) return "—";
   return CHINA_MARKET_TIME.format(new Date(timestampSeconds * 1000));
+}
+
+/**
+ * 兜底快照的时间戳必须带日期（第 209 轮）。
+ *
+ * 线上看到的写法是「Wind 静态兜底快照 · 快照时间 16:30:23」—— 只有时分秒。
+ * 读者没法判断这是刚才的 16:30 还是昨天、上周的 16:30；而兜底快照最容易变旧
+ * （API 挂了就一直挂着）。所以快照一律显示「2026-11-25 16:30:23」，
+ * 并且**不是今天就要说出来**，用「（非今日）」标出来。
+ */
+export function formatChinaMarketStamp(timestampSeconds: number): string {
+  if (!Number.isFinite(timestampSeconds)) return "—";
+  const d = new Date(timestampSeconds * 1000);
+  return CHINA_MARKET_STAMP.format(d).replace(/\//g, "-").replace(",", "");
+}
+
+/** 快照日期是否为北京时间"今天" */
+export function isChinaToday(timestampSeconds: number, now: Date = new Date()): boolean {
+  if (!Number.isFinite(timestampSeconds)) return false;
+  const d = new Date(timestampSeconds * 1000);
+  return CHINA_MARKET_DAY.format(d) === CHINA_MARKET_DAY.format(now);
+}
+
+/**
+ * 快照时间 + 新鲜度提示：今天的只给日期时间，不是今天的额外标「非今日」。
+ * 用后缀而不是隐藏，是因为读者要知道"这份行情是旧的那一天"。
+ */
+export function formatSnapshotWithFreshness(timestampSeconds: number, now: Date = new Date()): string {
+  if (!Number.isFinite(timestampSeconds)) return "—";
+  const stamp = formatChinaMarketStamp(timestampSeconds);
+  return isChinaToday(timestampSeconds, now) ? stamp : `${stamp}（非今日）`;
 }

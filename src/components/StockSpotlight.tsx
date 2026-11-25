@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { formatChinaMarketTime, isChinaATradingHours } from "@/lib/china-market";
+import { formatChinaMarketTime, formatSnapshotWithFreshness, isChinaATradingHours } from "@/lib/china-market";
 import { marketLabels, type MarketLang, type MarketLabels } from "@/lib/market-i18n";
 import { humanizeMarketError } from "@/lib/api-error";
 
@@ -124,7 +124,7 @@ export default function StockSpotlight({ stocks, showNote = true, initialQuotes,
             {avg == null ? L.none : `${avg > 0 ? "+" : ""}${avg.toFixed(2)}%`}
           </span>
         </span>
-        <span className="font-mono text-[10.5px]">{updated ? `${sourceLabel(source, L)} ${formatChinaMarketTime(updated)}` : ""}</span>
+        <span className="font-mono text-[10.5px]">{updated ? `${sourceLabel(source, L)} ${source === "snapshot" ? formatSnapshotWithFreshness(updated) : formatChinaMarketTime(updated)}` : ""}</span>
       </div>
       <div className="rounded-2xl border border-[var(--border)] overflow-hidden">
         <div className="overflow-x-auto min-w-0 max-w-full" tabIndex={0} role="group">

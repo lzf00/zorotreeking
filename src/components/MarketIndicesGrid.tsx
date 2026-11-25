@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { formatChinaMarketTime, isChinaATradingHours } from "@/lib/china-market";
+import { formatChinaMarketTime, formatSnapshotWithFreshness, isChinaATradingHours } from "@/lib/china-market";
 import { indexName, marketLabels, type MarketLang } from "@/lib/market-i18n";
 import { humanizeMarketError } from "@/lib/api-error";
 
@@ -122,7 +122,11 @@ export default function MarketIndicesGrid({ initialIndices, initialUpdated, init
       <p className="mt-3 text-[11px] text-[var(--text-tertiary)] font-mono tracking-wide min-h-[34px]">
         {L.sourcePrefix}
         {source === "live" ? L.sourceEastmoney : L.sourceWindSnapshot} · {source === "live" ? L.apiResponse : L.snapshotTime}{" "}
-        {updated ? formatChinaMarketTime(updated) : L.none}
+        {updated
+          ? source === "live"
+            ? formatChinaMarketTime(updated)
+            : formatSnapshotWithFreshness(updated)
+          : L.none}
         {source === "wind_snapshot" && <span className="ml-2 text-amber-700 dark:text-amber-400">{L.liveNotUpdated}</span>}
         {mounted && !isChinaATradingHours() && <span className="ml-2">{L.marketClosedNote}</span>}
         {loading && <span className="ml-2">…</span>}
