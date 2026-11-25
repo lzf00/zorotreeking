@@ -385,3 +385,15 @@
   由 `tests/changelog-pagination.test.ts` 钉住）。
 - **重量基线** 11 → 10 条；`/changelog/` 已回到预算内。
 - **仍未做**：`inlineStylesheets: "always"` 的 ~97 KB/页内联 CSS（等用户决定）。
+
+## 第 193 轮
+
+- **无障碍巡检按模板反推**（`--templates`）：1285 页 → 72 个模板实例（首页 + 末页），
+  不再依赖手写路径表。第一次全量跑 164 次检查，抓到 10 处真违规。
+- **修**：`/changelog/` 上下分页 nav 同名 → 分别命名；8 个行程攻略页的 3–6 个无名
+  `<aside>` → 各自 `aria-label`；`/invest/etf/` 嵌套 `<main>` → 改 `<div>`（与 `/now/` 同类）。
+- **每周巡检**改为 `--template-window=K/7` 轮转：每周 ~1.5 分钟，7 周覆盖全部模板
+  （全量要 9 分半，吃掉部署 job 30 分钟预算的一半）。
+- **新增测试**：`tests/a11y-templates.test.ts`（归并规则 + 窗口互不重叠/并集为全集）、
+  `tests/landmark-names.test.ts`（aside 必须有名、同组件内不重复）。
+- **仍未做**：`inlineStylesheets: "always"` 的 ~97 KB/页内联 CSS（等用户决定）。

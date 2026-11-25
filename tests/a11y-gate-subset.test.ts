@@ -35,10 +35,12 @@ test("快检只挑少数模板（别把门禁变成 2.5 分钟的巡检）", () 
   assert.ok(paths.includes("/guestbook/"), "留言板丢了 = 表单控件的可读名称没人验");
 });
 
-test("脚本支持 --dist 与 --paths，且路径必须来自规则集", async () => {
+test("脚本支持 --dist 与 --paths，且路径必须在构建产物里真实存在", async () => {
   const src = await readFile(new URL("../scripts/check-a11y.mjs", import.meta.url), "utf8");
   assert.match(src, /let PATHS = \[/, "PATHS 必须可被 --paths 覆盖");
-  assert.match(src, /不在规则集里的路径/, "拼错路径要直接报错，不能静默跑 0 页");
+  // 第 193 轮：从"必须来自手写表"放宽成"必须真实存在"。手写表那个限制让临时补测一个
+  // 分页页都得改代码；而拼错路径照样会报错（不再静默跑 0 页）。
+  assert.match(src, /构建产物里不存在的路径/, "拼错路径要直接报错，不能静默跑 0 页");
   assert.match(src, /serveDist/, "--dist 必须复用 serveDist");
   assert.match(src, /server\.close\(\)/, "起完服务没关，门禁会挂住进程");
 });

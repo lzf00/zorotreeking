@@ -49,6 +49,16 @@ function emitOutput(name, value) {
 }
 const isoDay = (date) => date.toISOString().slice(0, 10);
 
+/** ISO 周序号（1..53）→ 0..6，用来决定本周轮到哪一份 a11y 模板窗口 */
+const isoWeekIndex = (date) => {
+  const target = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+  const dayNum = target.getUTCDay() || 7;
+  target.setUTCDate(target.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(target.getUTCFullYear(), 0, 1));
+  const week = Math.ceil(((target - yearStart) / 86_400_000 + 1) / 7);
+  return week % 7;
+};
+
 function readStamp() {
   try {
     return JSON.parse(readFileSync(STAMP, "utf8"));
@@ -178,7 +188,19 @@ async function main() {
   // 完整 a11y 巡检（64 项，明暗两套）：这是 a11y.yml 的唯一内容，cron 从没触发过。
   // 只在这一步有 dist 的前提下跑；chromium 由 build-and-deploy 前面的步骤装好。
   if (hasDist) {
-    results.push(await run("无障碍（完整 64 项）", process.execPath, ["scripts/check-a11y.mjs", "--dist"], 900_000));
+    // 第 193 轮：改成「按模板轮转」而不是手写 64 条路径表。
+    // 手写表每新增一族页面都跟不上（第 123/133/134/181/187 轮 + 第 189–192 轮的 4 族分页页），
+    // 而全量模板（72 个实例 × 明暗）要 9 分半，超不起部署 job 的 30 分钟预算。
+    // 所以按 ISO 周轮转 1/7：每周约 1.5 分钟，7 周覆盖全部模板。
+    const week = isoWeekIndex(now);
+    results.push(
+      await run(
+        `无障碍（模板轮转第 ${week + 1}/7 份 · 明暗两套）`,
+        process.execPath,
+        ["scripts/check-a11y.mjs", "--dist", "--templates", `--template-window=${week}/7`],
+        900_000,
+      ),
+    );
   } else {
     console.log("⏭️  没有 dist，跳过完整 a11y 巡检（它查的是构建产物）");
   }

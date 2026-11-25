@@ -30,7 +30,7 @@ const sinkName = `cta-buttondown-sink-${section}`;
 ---
 
 {buttondownUser && (
-  <aside class="mt-16 sm:mt-20 rounded-2xl border border-[var(--border)] p-6 sm:p-7
+  <aside aria-label={t("订阅", "Subscribe")} class="mt-16 sm:mt-20 rounded-2xl border border-[var(--border)] p-6 sm:p-7
                 bg-[var(--bg-soft)] dark:bg-zinc-900/40">
     <div class="flex items-start gap-2 mb-1">
       <span class="w-1.5 h-1.5 rounded-full mt-2 shrink-0" style={`background:${accent}`}></span>

@@ -14,6 +14,8 @@
  *   node scripts/check-a11y.mjs --dist                  # 自己起静态服务打本地 dist（门禁用）
  *   node scripts/check-a11y.mjs --dist --paths=/,/ai/    # 只测这几页（门的快检）
  *   node scripts/check-a11y.mjs --dist --sample=12       # 从 sitemap 分节抽样 12 页（每周巡检用）
+ *   node scripts/check-a11y.mjs --dist --templates       # 构建产物里每个路由模板各测首末页（第 193 轮）
+ *   node scripts/check-a11y.mjs --dist --templates --template-window=3/7   # 只测第 3/7 份（每周巡检轮转）
  *
  * 为什么要有 `--sample`：手写路径表只能覆盖"我记得的页面"。第 123 轮往 23 条里加了三类，
  * 立刻抓到 `/now/` 嵌套 `<main>` 和留言板焦点环被抹。1188 个 URL 靠人挑 26 个，剩下的
@@ -129,6 +131,62 @@ if (sampleArg) {
   if (args.includes("--dry-run")) process.exit(0);
 }
 
+/**
+ * --templates（第 193 轮）：从构建产物反推**路由模板**，每个模板测第一页 + 最后一页。
+ *
+ * 手写 PATHS 表跟不上的问题在这站反复发生（第 123/133/134/181/187 轮，以及第 189–192 轮
+ * 新增的 4 族分页页）。改成从 dist 反推后，新模板**自动**进入审计范围；
+ * 手写表继续作为"额外定点页"叠加。
+ */
+if (args.includes("--templates")) {
+  const { readdirSync, statSync } = await import("node:fs");
+  const { join } = await import("node:path");
+  const { pickTemplateSamples, templateWindow } = await import("./lib/a11y-templates.mjs");
+  const walk = (dir, base = "") => {
+    const out = [];
+    for (const name of readdirSync(dir)) {
+      const full = join(dir, name);
+      const rel = `${base}/${name}`;
+      if (statSync(full).isDirectory()) out.push(...walk(full, rel));
+      else if (name === "index.html") out.push(`${base}/`);
+    }
+    return out;
+  };
+  let all;
+  try {
+    all = walk("dist");
+  } catch {
+    console.error("✗ 读不到 dist（先 npm run build）");
+    process.exit(2);
+  }
+  // 跳转桩（/photography/ → /photo/）没有内容；/admin/ 是 Decap CMS 的客户端壳（noindex、
+  // 只有站长自己用），它的第三方 UI 违规不是本站的模板问题 —— 两类都不参与审计。
+  all = all.filter((p) => !p.startsWith("/admin/"));
+  all = all.filter((p) => {
+    try {
+      return !/<title>Redirecting to /.test(fs.readFileSync(`dist${p}index.html`, "utf8"));
+    } catch {
+      return false;
+    }
+  });
+  let picked = pickTemplateSamples(all);
+  // --template-window=K/N：只测其中一份（每周巡检轮转，N 周覆盖全部模板）
+  const windowArg = args.find((a) => a.startsWith("--template-window="));
+  if (windowArg) {
+    const raw = windowArg.slice("--template-window=".length);
+    const [k, n] = raw.split("/").map(Number);
+    // 巡检脚本默认取本周（ISO 周）那一份；给了 K/N 就用给的
+    picked = templateWindow(picked, { index: Number.isFinite(k) ? k : 0, of: Number.isFinite(n) && n > 0 ? n : 7 });
+    console.log(`模板窗口：${raw} → ${picked.length} 个实例`);
+  }
+  PATHS = [...new Set([...PATHS, ...picked])];
+  console.log(`模板抽样：${all.length} 个页面 → ${picked.length} 个模板实例（首末页）`);
+  if (args.includes("--dry-run")) {
+    for (const path of picked) console.log(`  · ${path}`);
+    process.exit(0);
+  }
+}
+
 const pathsArg = args.find((arg) => arg.startsWith("--paths="));
 if (pathsArg) {
   const picked = pathsArg.slice("--paths=".length).split(",").map((p) => p.trim()).filter(Boolean);
@@ -136,9 +194,11 @@ if (pathsArg) {
     console.error("✗ --paths= 至少要给一个路径");
     process.exit(2);
   }
-  const unknown = picked.filter((p) => !PATHS.includes(p));
-  if (unknown.length > 0) {
-    console.error(`✗ --paths 里有不在规则集里的路径：${unknown.join(" ")}（可选：${PATHS.join(" ")}）`);
+  // 第 193 轮：不再要求路径出现在手写表里 —— 那个限制让"临时补测一个分页页"变成改代码。
+  // 现在只校验它确实构建出来了（拼错路径会静默变成 404 页面，测了个寂寞）。
+  const missing = picked.filter((p) => !fs.existsSync(`dist${p}index.html`) && !fs.existsSync(`dist${p}`));
+  if (missing.length > 0) {
+    console.error(`✗ --paths 里有构建产物里不存在的路径：${missing.join(" ")}（先 npm run build，或检查拼写）`);
     process.exit(2);
   }
   PATHS = picked;

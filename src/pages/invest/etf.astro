@@ -117,7 +117,10 @@ function lightIcon(l: string): string {
   title="ETF 三因子监测"
   description="用三因子模型跟踪国家队 ETF 资金：量能占 50%、方向占 20%、份额占 30%，每天更新信号与历史回溯，数据源和算法全部公开。"
 >
-  <main class="pt-12 pb-16">
+  {/* 第 193 轮：这里原本是第二个 <main> —— BaseLayout 已经提供了 <main id="main-content">，
+    嵌套 main 让 axe 报 landmark-no-duplicate-main / landmark-main-is-top-level。
+    全站唯一另一处同类问题是 /now/（第 123 轮）。 */}
+  <div class="pt-12 pb-16">
 
     <section class="max-w-5xl mx-auto px-5 pb-8">
       <a href={pathWithLang("/invest", lang)} class="text-xs uppercase tracking-[0.18em] text-zinc-500 dark:text-zinc-400 hover:text-section-invest transition-colors">
@@ -404,5 +407,5 @@ function lightIcon(l: string): string {
       </>
     )}
 
-  </main>
+  </div>
 </BaseLayout>

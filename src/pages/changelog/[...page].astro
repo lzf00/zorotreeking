@@ -79,7 +79,7 @@ const sections = [...byMonth.entries()].map(([month, list]) => ({ month, commits
       </p>
 
     {totalPages > 1 && (
-      <nav class="mt-4 flex items-center justify-between text-sm" aria-label="更新日志分页">
+      <nav class="mt-4 flex items-center justify-between text-sm" aria-label="更新日志分页（上）">
         {page.url.prev ? (
           <a class="underline text-[var(--text-secondary)]" rel="prev" href={`${page.url.prev}/`}>← 更新的 {CHANGELOG_PAGE_SIZE} 条</a>
         ) : (
@@ -128,7 +128,7 @@ const sections = [...byMonth.entries()].map(([month, list]) => ({ month, commits
 
 
     {totalPages > 1 && (
-      <nav class="mt-12 flex items-center justify-between text-sm" aria-label="更新日志分页">
+      <nav class="mt-12 flex items-center justify-between text-sm" aria-label="更新日志分页（下）">
         {page.url.prev ? (
           <a class="underline text-[var(--text-secondary)]" rel="prev" href={`${page.url.prev}/`}>← 更新的 {CHANGELOG_PAGE_SIZE} 条</a>
         ) : (

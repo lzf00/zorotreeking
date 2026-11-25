@@ -62,11 +62,13 @@ test("外链体检分批跑，缓存进仓库（否则每次全量重抓十几�
 
 test("完整 a11y 巡检在每周里跑，且没有 dist 时明说跳过", async () => {
   const script = await read("scripts/weekly-audit.mjs");
-  assert.match(script, /scripts\/check-a11y\.mjs", "--dist"/, "a11y.yml 的唯一内容要接进来");
+  // 第 193 轮：从「手写 64 条路径」改成「按模板反推 + ISO 周轮转 1/7」
+  assert.match(script, /scripts\/check-a11y\.mjs", "--dist", "--templates"/, "a11y.yml 的唯一内容要接进来");
+  assert.match(script, /--template-window=\$\{week\}\/7/, "必须按周轮转，否则 72 个模板跑不完部署预算");
   assert.match(script, /跳过完整 a11y 巡检/, "跳过必须说出来");
   // 顺序坑（第 154 轮）：a11y 曾经在打印和写报告之后才 push，于是"跑了但报告里没有"
   const printIndex = script.indexOf("const mark = result.ok");
-  const a11yIndex = script.indexOf('"无障碍（完整 64 项）"');
+  const a11yIndex = script.indexOf("无障碍（模板轮转");
   assert.ok(printIndex > 0 && a11yIndex > 0 && a11yIndex < printIndex, "a11y 必须在打印/写报告之前进 results");
 });
 
