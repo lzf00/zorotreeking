@@ -98,7 +98,27 @@ jobs:
       # 重构失效，红着也照样部署了 20 多次。整套只跑 ~1s，放在 build 前面。
       - name: Unit and guard tests
         id: tests
-        run: npm test
+        # 第 199 轮：失败原因要能**不登录也能看见**。
+        # 事故现场：daily-digest 连挂 3 次，挂在这一步，但 GitHub 的日志必须仓库管理员权限
+        # 才下得下来（`gh run view --log-failed` → 403 Must have admin rights），
+        # 于是连续两天只知道"红了"、不知道为什么。现在把失败摘要写进 step summary，
+        # 并用 ::error 逐条输出失败的测试名 —— 这两样在 run 页面和 `gh run view` 里都看得到。
+        run: |
+          set -o pipefail
+          if npm test 2>&1 | tee /tmp/unit-tests.log; then
+            exit 0
+          fi
+          {
+            echo "### ✗ 单元/守卫测试失败（npm test）"
+            echo '```'
+            grep -E "^(not ok|# fail)|^  (error|expected|actual|operator):" /tmp/unit-tests.log | head -60 || true
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          grep -E "^not ok" /tmp/unit-tests.log | head -10 | while IFS= read -r line; do
+            echo "::error title=测试失败::${line#not ok }"
+          done
+          tail -40 /tmp/unit-tests.log
+          exit 1
 
       # NOTE: scripts/invest-snapshot.ts 不再在每次 build 跑。
       # 它原本设计是月末归档持仓快照（每月一次），但每次 build 跑会：

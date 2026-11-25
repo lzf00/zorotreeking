@@ -106,7 +106,16 @@ export async function GET(context: APIContext) {
     "/en/hike": latestOf(hikeEn),
     "/tag": latestOf([...aiZh, ...invZh, ...hikeZh, ...photoZh]),
     "/en/tag": latestOf([...aiEn, ...invEn, ...hikeEn, ...photoEn]),
+    // 第 199 轮：归档首页此前拿不到 lastmod（模板是 `[...page].astro`，sourceFileFor 找不到源码文件，
+    // 也没有「最新内容日期」的映射），于是 sitemap 里 1280 条 URL 有 3 条没有 lastmod。
+    // 归档页确实会随任何一篇新内容变化，取该语言最新一篇的日期就是诚实值。
+    "/archive": latestOf([...aiZh, ...invZh, ...hikeZh, ...photoZh]),
+    "/en/archive": latestOf([...aiEn, ...invEn, ...hikeEn, ...photoEn]),
   };
+  // 更新日志的内容来自 git 历史（见 src/lib/changelog.ts），lastmod 取最新一条白名单提交。
+  // 浅克隆 / 没装 git 时 readGitLog() 返回空数组，那就继续不写 lastmod —— 不写比写假的好。
+  const newestChangelog = buildChangelog(readGitLog()).sections[0]?.commits[0]?.date;
+  if (newestChangelog) latestBySection["/changelog"] = new Date(`${newestChangelog}T00:00:00+08:00`);
   type SitemapImage = { loc: string; title?: string; caption?: string };
   const urls: { loc: string; lastmod?: Date; images?: SitemapImage[] }[] = getStaticSitemapPaths().map((path) => {
     const contentDate = latestBySection[path];

@@ -152,13 +152,19 @@ async function main() {
         ? JSON.parse(readFileSync(AUDIT_BASELINE, "utf8"))
         : null;
       const verdict = compare(stats, baseline);
-      siteAuditNote =
+      if (stats.pages === 0) {
+        // 同上：0 页不是"无异常"，是"没巡检成"
+        siteAuditNote = "全量巡检 0 页 → 巡检没做成（dist/sitemap 缺失或正在重建），本次不算通过";
+        console.log(`::error title=每周巡检·全量巡检::${siteAuditNote}`);
+      } else {
+        siteAuditNote =
         `全量巡检 ${stats.pages} 页：中位 ${stats.medianKB} KB · p95 ${stats.p95KB} KB` +
         (baseline?.p95KB ? `（基线 p95 ${baseline.p95KB} KB）` : "（首次记录基线）") +
         (verdict.ok ? " ✅ 无异常" : ` ⚠️ ${verdict.problems.join("；")}`);
-      console.log(siteAuditNote);
-      if (!verdict.ok) {
-        console.log(`::warning title=每周巡检·体积趋势::${verdict.problems.join("；")}`);
+        console.log(siteAuditNote);
+        if (!verdict.ok) {
+          console.log(`::warning title=每周巡检·体积趋势::${verdict.problems.join("；")}`);
+        }
       }
       if (!DRY_RUN) {
         writeFileSync(

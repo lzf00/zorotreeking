@@ -317,6 +317,14 @@ async function main() {
     for (const row of failures.slice(0, 20)) console.log(`  ${row.url}\n    ${row.issues.join("\n    ")}`);
   }
   console.log(`\n明细：${path.relative(process.cwd(), OUT)}`);
+  // 第 199 轮：0 页也必须是失败。
+  // 事故现场：每周巡检和一次构建同时跑，dist 正在被删除重建，sitemap 读不到 → 目录扫描也
+  // 扫不到 index.html → 巡检 0 页、0 失败，退出码 0，报告里写着「✅ 无异常」。
+  // 一个什么都没检查的巡检比没跑更糟：它让人以为查过了。
+  if (results.length === 0) {
+    console.error("::error title=全量巡检::巡检 0 页 —— 这不是通过，是没巡检成（dist/sitemap 可能正在重建）");
+    process.exit(1);
+  }
   process.exit(failures.length ? 1 : 0);
 }
 

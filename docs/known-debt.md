@@ -456,3 +456,18 @@
 - **已知内容缺口（未修，需内容决策）**：`/about/` 正文不含「关于」，搜「关于」命中首页。
 - **已知排序现象（可接受）**：搜「更新日志」时 `/now/` 仍排第 1 —— 它正文里三处写着
   「看更新日志」，属于合理命中，`/changelog/` 第 2。
+
+## 第 199 轮
+
+- **sitemap lastmod 补齐**：`/archive/`、`/en/archive/`、`/changelog/` 补上 lastmod，
+  1280/1280 条 URL 完整；新增 `tests/audit-honesty.test.ts`（5 条）锁住。
+- **巡检空结果不算通过**：`audit-site.mjs`（0 页 → error/exit 1）、`weekly-audit.mjs`
+  （0 页 → ::error）、`check-a11y.mjs`（非 200 → 记「没打开」并计失败）。
+- **CI 可诊断性**：`deploy.yml` 的 `npm test` 步骤失败时写 step summary + `::error` 注解，
+  因为 GitHub 的失败日志需要管理员权限，连续两次事故只知道"红了"。
+- **仍未定位**：`daily-digest` 在 2026-11-24/25 各有两次 `Unit and guard tests` 失败，
+  本地在 UTC / 浅克隆 / 无 dist 三种条件下都跑不出（913 条全绿）。下一次失败会有注解可看。
+  两次失败的另一半原因是"投资日报缺 en 版"（翻译步骤超时）——那是生成端的网络问题，
+  拦下来是对的（单语内容会带来死链），但**连续两天没发出内容**这件事需要重试策略。
+- **未修（需用户/服务器）**：`weekly-roundup.yml` 逾期 17 天；nginx 三项；`/opt/wind-recap`
+  生成端副本；内联 CSS 97 KB/页。

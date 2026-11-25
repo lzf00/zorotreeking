@@ -230,7 +230,22 @@ for (const path of PATHS) {
     const page = await browser.newPage(viewport.options);
     const entry = { path, theme, viewport: viewport.id, ok: true, violations: [] };
     try {
-      await page.goto(BASE_URL + path, { waitUntil: "networkidle", timeout: 60_000 });
+      const response = await page.goto(BASE_URL + path, { waitUntil: "networkidle", timeout: 60_000 });
+      // 第 199 轮：拿到的不是 200 就别急着判 WCAG。
+      // 事故现场：每周巡检与一次构建并行，dist 正在重建，首页返回了静态服务的兜底文本，
+      // axe 于是报「缺 <title> / 缺 lang / 内容不在 landmark 里」——三条严肃违规，全是假的。
+      // 页面根本没打开时，唯一诚实的结论是"没测成"。
+      const status = response?.status() ?? 0;
+      if (status !== 200) {
+        // 页面没打开：既不能判"无障碍违规"，也绝不能算通过
+        entry.ok = false;
+        entry.skipped = `HTTP ${status || "无响应"}：页面没打开，不能据此判无障碍`;
+        failures += 1;
+        report.results.push(entry);
+        console.log(`✗ ${theme.padEnd(5)} ${path}  ${entry.skipped}`);
+        await page.close();
+        continue;
+      }
       if (theme === "dark") {
         await page.evaluate(() => {
           document.documentElement.classList.add("dark");
