@@ -1,4 +1,5 @@
 ---
+import { siteDateString } from "@/lib/site-date";
 import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
@@ -89,7 +90,7 @@ const sectionLabelEn: Record<string, string> = {
                   {p.data.title}
                 </span>
                 <time class="text-xs text-[var(--text-tertiary)] font-mono tabular-nums shrink-0">
-                  {p.data.date.toISOString().slice(0, 10)}
+                  {siteDateString(p.data.date)}
                 </time>
               </a>
             </li>
@@ -159,7 +160,7 @@ const sectionLabelEn: Record<string, string> = {
                   {p.data.title}
                 </span>
                 <time class="text-xs text-[var(--text-tertiary)] font-mono tabular-nums shrink-0">
-                  {p.data.date.toISOString().slice(0, 10)}
+                  {siteDateString(p.data.date)}
                 </time>
               </a>
             </li>

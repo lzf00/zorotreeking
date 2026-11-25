@@ -1,4 +1,5 @@
 ---
+import { siteDateString } from "@/lib/site-date";
 import { getCollection, render } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import StarRating from "@/components/StarRating";
@@ -92,7 +93,7 @@ const untranslated = untranslatedNotice(cjkLeaks(entry.body ?? ""));
         </p>
       )}
       <div class="mt-10 flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] uppercase tracking-[0.15em] text-zinc-500 dark:text-zinc-400 font-mono">
-        <time>{entry.data.date.toISOString().slice(0, 10)}</time>
+        <time>{siteDateString(entry.data.date)}</time>
         <span class="text-zinc-300 dark:text-zinc-700">·</span>
         <span>{readMins} {t("post.readTime")}</span>
         {entry.data.tags.map((tag) => <TagChip tag={tag} lang={lang} />)}

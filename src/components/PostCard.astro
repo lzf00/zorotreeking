@@ -1,4 +1,5 @@
 ---
+import { siteDateString } from "@/lib/site-date";
 import { lightCover } from "@/lib/cover-src";
 /**
  * 列表页文章卡（带视觉钩子）。
@@ -29,7 +30,7 @@ const sectionConfig = {
   photo: { bg: "bg-purple-50 dark:bg-purple-950/40", text: "text-section-photo", letter: "影" },
 } as const;
 const cfg = sectionConfig[section];
-const dateStr = date.toISOString().slice(0, 10);
+const dateStr = siteDateString(date);
 ---
 
 <a href={href} class="group flex items-start gap-4 py-4 sm:py-5">

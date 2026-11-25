@@ -1,3 +1,4 @@
+import { siteDateString } from "@/lib/site-date";
 import { existsSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { getCollection } from "astro:content";
@@ -255,7 +256,7 @@ export async function GET(context: APIContext) {
               `</image:image>`,
           )
           .join("");
-        return `  <url><loc>${escapeXml(u.loc)}</loc>${u.lastmod ? `<lastmod>${u.lastmod.toISOString().slice(0, 10)}</lastmod>` : ""}${images}</url>`;
+        return `  <url><loc>${escapeXml(u.loc)}</loc>${u.lastmod ? `<lastmod>${siteDateString(u.lastmod)}</lastmod>` : ""}${images}</url>`;
       })
       .join("\n") +
     `\n</urlset>\n`;

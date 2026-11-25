@@ -13,6 +13,7 @@
  *
  * 字体由 scripts/setup-fonts.sh 在 prebuild 阶段下载到 .fonts/。
  */
+import { siteDateString } from "@/lib/site-date";
 import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
 import { selectCanonicalOgEntries } from "@/lib/og-paths";
@@ -56,7 +57,7 @@ export const GET: APIRoute = async ({ props }) => {
   const color = SECTION_COLOR[entry.collection] ?? "#1d1d1f";
   const label = SECTION_LABEL[entry.collection] ?? entry.collection;
   const dateStr = entry.data.date instanceof Date
-    ? entry.data.date.toISOString().slice(0, 10)
+    ? siteDateString(entry.data.date)
     : String(entry.data.date).slice(0, 10);
 
   // satori 类型严格，但运行时接受我们这个 object-tree；强制 cast 即可

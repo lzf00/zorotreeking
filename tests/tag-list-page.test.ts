@@ -32,7 +32,8 @@ test("紧凑行带 datetime，深色模式对比度够（不用 zinc-500）", as
   for (const path of PAGES) {
     const source = await read(path);
     const compact = source.slice(source.indexOf("posts.slice(pageNumber === 1 ? DETAILED_COUNT : 0)"));
-    assert.match(compact, /datetime=\{p\.date\.toISOString\(\)\.slice\(0, 10\)\}/, "日期要机器可读");
+    // 第 196 轮：日期一律走 siteDateString（UTC 切片会把 +08 的日期退回前一天）
+    assert.match(compact, /datetime=\{siteDateString\(p\.date\)\}/, "日期要机器可读，且用站点时区");
     assert.doesNotMatch(compact.slice(0, 1200), /dark:text-zinc-500/, "深色底 zinc-500 只有 4.09:1");
   }
 });

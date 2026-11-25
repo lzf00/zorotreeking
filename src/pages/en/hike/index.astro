@@ -1,4 +1,5 @@
 ---
+import { siteDateString } from "@/lib/site-date";
 import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
@@ -45,7 +46,7 @@ const diffColor = {
         {hikes.map((h) => (
           <li class="py-5">
             <div class="flex items-center gap-2 text-xs text-[var(--text-tertiary)] mb-1.5">
-              <time>{h.data.date.toISOString().slice(0, 10)}</time><span>·</span><span>{h.data.location}</span>
+              <time>{siteDateString(h.data.date)}</time><span>·</span><span>{h.data.location}</span>
               <span class:list={["px-2 py-0.5 rounded-full", diffColor[h.data.difficulty]]}>{diffLabel[h.data.difficulty]}</span>
             </div>
             <h2 class="text-lg font-semibold">

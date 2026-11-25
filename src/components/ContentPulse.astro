@@ -15,6 +15,7 @@
  * 算出过去 365 天每天的 {ai, invest, photo, hike, digest} 分布，
  * 渲染纯 SVG（无 JS，hover 用 title）。
  */
+import { siteDateString } from "@/lib/site-date";
 import { getCollection } from "astro:content";
 import ContentPulseCells from "@/components/ContentPulseCells.astro";
 import { getLangFromUrl } from "@/i18n/ui";
@@ -75,7 +76,7 @@ for (const p of await getCollection("hike", (p) => p.data.lang === lang && !p.da
 // 按日期分组
 const byDay: Record<string, Item[]> = {};
 for (const it of items) {
-  const key = it.date.toISOString().slice(0, 10);
+  const key = siteDateString(it.date);
   (byDay[key] ??= []).push(it);
 }
 
@@ -97,7 +98,7 @@ for (let w = 0; w < WEEKS; w++) {
     const cur = new Date(start);
     cur.setDate(start.getDate() + w * 7 + d);
     if (cur > today) break;
-    const key = cur.toISOString().slice(0, 10);
+    const key = siteDateString(cur);
     week.push({ date: key, items: byDay[key] ?? [] });
   }
   weeks.push(week);

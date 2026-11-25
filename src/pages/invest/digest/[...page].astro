@@ -1,4 +1,5 @@
 ---
+import { siteDateString } from "@/lib/site-date";
 import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
@@ -105,7 +106,7 @@ const coverVariants = (cover: string | undefined) => {
       return {
         href: pathWithLang(`/invest/${d.data.translationKey}`, lang),
         title: d.data.title,
-        iso: d.data.date.toISOString().slice(0, 10),
+        iso: siteDateString(d.data.date),
         cover: variants ? variants.w960 : cover,
         coverSrcset: variants ? `${variants.w640} 640w, ${variants.w960} 960w, ${cover} 1200w` : undefined,
         summary: tldr?.summary?.[0] ?? undefined,

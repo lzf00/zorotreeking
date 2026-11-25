@@ -1,4 +1,5 @@
 ---
+import { siteDateString } from "@/lib/site-date";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { buildTagIndex, recentInSection, relatedTags, tagSections, tagToSlug } from "@/lib/tags";
 import { MAX_TAG_ITEMLIST, tagStats } from "@/lib/tag-relations";
@@ -109,7 +110,7 @@ const DETAILED_COUNT = 20;
           <div class="flex items-center gap-2 text-xs text-[var(--text-tertiary)] mb-1">
             <span class={sectionColor[p.section]}>{sectionLabel[p.section]}</span>
             <span>·</span>
-            <time datetime={p.date.toISOString().slice(0, 10)}>{p.date.toISOString().slice(0, 10)}</time>
+            <time datetime={siteDateString(p.date)}>{siteDateString(p.date)}</time>
           </div>
           <h2 class="text-lg font-semibold">
             <a href={pathWithLang(`/${p.section}/${p.slug}`, lang)}
@@ -124,8 +125,8 @@ const DETAILED_COUNT = 20;
         <li>
           <a href={pathWithLang(`/${p.section}/${p.slug}`, lang)}
              class="group flex items-baseline gap-3 py-2 text-sm transition-colors hover:text-[var(--text-secondary)]">
-            <time class="shrink-0 font-mono text-xs text-[var(--text-tertiary)]" datetime={p.date.toISOString().slice(0, 10)}>
-              {p.date.toISOString().slice(0, 10)}
+            <time class="shrink-0 font-mono text-xs text-[var(--text-tertiary)]" datetime={siteDateString(p.date)}>
+              {siteDateString(p.date)}
             </time>
             <span class={`shrink-0 text-xs ${sectionColor[p.section]}`}>{sectionLabel[p.section]}</span>
             <span class="min-w-0 flex-1 truncate group-hover:underline">{p.title}</span>
@@ -145,7 +146,7 @@ const DETAILED_COUNT = 20;
           <li class="py-3">
             <a href={pathWithLang(`/${m.section}/${m.slug}`, lang)} class="group flex items-baseline justify-between gap-4">
               <span class="min-w-0 text-sm font-medium group-hover:text-[var(--text-secondary)]">{m.title}</span>
-              <time class="shrink-0 text-xs text-[var(--text-tertiary)] font-mono">{m.date.toISOString().slice(0, 10)}</time>
+              <time class="shrink-0 text-xs text-[var(--text-tertiary)] font-mono">{siteDateString(m.date)}</time>
             </a>
           </li>
         ))}

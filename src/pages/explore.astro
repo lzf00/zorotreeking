@@ -8,6 +8,7 @@
  * - 每个点是一篇文章，颜色对应 collection（AI 蓝 / Invest 红 / Hike 绿）
  * - hover 显示标题，click 跳转文章
  */
+import { siteDateString } from "@/lib/site-date";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 import embeddingsData from "@/data/embeddings.json";
@@ -77,7 +78,7 @@ const recentTopics = all
   .map((p) => ({
     href: `/${p.collection}/${p.data.translationKey}/`,
     title: p.data.title,
-    date: p.data.date.toISOString().slice(0, 10),
+    date: siteDateString(p.data.date),
     collection: p.collection,
     color: colorMap[p.collection] ?? "#71717a",
   }));
@@ -131,7 +132,7 @@ const stats = {
             const r = m.isDigest ? 0.7 : 1.1;
             const opacity = m.isDigest ? 0.55 : 1;
             // digest 的标题里已经含日期，再拼一次会出现 "2026-05-14 · 2026-05-14"
-            const dateStr = m.date.toISOString().slice(0, 10);
+            const dateStr = siteDateString(m.date);
             const label = m.title.includes(dateStr) ? m.title : `${m.title} · ${dateStr}`;
             // 每节点只留必要属性：class 用 #explore-map a 统一控制，
             // tooltip 文本直接用 aria-label（本来内容一样，复制一份等于白占 45B×500），

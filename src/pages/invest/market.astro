@@ -8,6 +8,7 @@
  * 不同于 /invest 主页（动态实时调东方财富 / 天天基金），本页是每日一次的静态快照，
  * 重点展示 Wind 独家字段：5 日/20 日涨跌、近 5 日主力净流入、申万一级板块、要闻摘要等。
  */
+import { siteDateString } from "@/lib/site-date";
 import fs from "node:fs";
 import path from "node:path";
 import { getCollection } from "astro:content";
@@ -373,7 +374,7 @@ function fmtAsOf(iso: string | undefined): string {
                   <p class="mt-0.5 text-xs text-[var(--text-secondary)]">{p.data.description}</p>
                 )}
               </div>
-              <time class="text-xs text-[var(--text-tertiary)] font-mono shrink-0">{p.data.date.toISOString().slice(0, 10)}</time>
+              <time class="text-xs text-[var(--text-tertiary)] font-mono shrink-0">{siteDateString(p.data.date)}</time>
             </div>
           </li>
         ))}

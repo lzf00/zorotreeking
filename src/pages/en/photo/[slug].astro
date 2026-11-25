@@ -1,4 +1,5 @@
 ---
+import { siteDateString } from "@/lib/site-date";
 import { getCollection, render } from "astro:content";
 import PhotoLayout from "@/layouts/PhotoLayout.astro";
 import FeedbackButtons from "@/components/FeedbackButtons";
@@ -27,7 +28,7 @@ const heroSets = heroSrcSets(cover);
 const geoPoints = photos
   .filter((p: any) => Number.isFinite(p.lat) && Number.isFinite(p.lng))
   .map((p: any) => ({ lat: p.lat, lng: p.lng, thumb: p.thumb, alt: p.alt, src: p.src }));
-const dateStr = entry.data.date.toISOString().slice(0, 10);
+const dateStr = siteDateString(entry.data.date);
 // 与中文相册页保持一致：优先 1200×630 派生图，否则用原图 + 真实尺寸。
 const shareImage = cover?.srcOg ?? cover?.src;
 const shareDims = cover?.srcOg

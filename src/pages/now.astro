@@ -7,6 +7,7 @@
  *
  * 编辑：直接改这个文件的下方的 sections 数据，然后 push 部署。
  */
+import { siteDateString } from "@/lib/site-date";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { readGitLog } from "@/lib/changelog";
 import { nowStaleness, recentChanges } from "@/lib/now";
@@ -54,7 +55,7 @@ const sections: Array<{ icon: string; title: string; items: string[] }> = [
 ];
 // ──────────────────────────────────────────────────────────────
 // 下面全是算出来的，不用手改 —— 手写的那部分会过期，这两块不会。
-const todayIso = new Date().toISOString().slice(0, 10);
+const todayIso = siteDateString(new Date());
 const staleness = nowStaleness(updated, todayIso);
 const recent = recentChanges(readGitLog(), { todayIso, days: 30, limit: 5 });
 ---

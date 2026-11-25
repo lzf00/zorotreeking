@@ -420,3 +420,16 @@
 - 新增 `tests/paginated-titles.test.ts`（标题带页码 / 描述带页码 / 英文页不许出现中文页码）。
 - 顺带确认：站内零入链页面只有 `/photography/`、`/en/photography/` 两个跳转桩（预期内），
   内链 87511 个引用全部可解析。
+
+## 第 196 轮
+
+- **日期口径统一**：57 处 `toISOString().slice(0,10)` → `siteDateString(...)`（35 个文件）。
+  实际只影响 7 个页面（4 篇带时区日期的相册 → 中英文页面此前差一天；`/about/` 热力图整体偏一天）。
+- **修掉的真 bug**：`/en/photo/hudieren/` 显示 2026-05-25（中文页 2026-05-26）；`/en/photo/mac1/`、
+  `/tag/photo/`、`/en/photo/` 同理；现在中英文完全一致。
+- **热力图**：格子键改为站点时区，行首=周日、末格=今天，369 格 weekday 与行号逐一验证对齐；
+  本地构建与 CI 构建不再不同。
+- **新增硬闸门**：`tests/site-date.test.ts` —— `src/` 下除 `site-date.ts` 外出现
+  `toISOString().slice(0, 10)` 直接失败。
+- **仍未做**：`site-knowledge.json` 的 `generated_at` 仍用构建时间（无害但不诚实，下轮可选改 git 时间）；
+  `inlineStylesheets` 内联 CSS（等用户决定）。

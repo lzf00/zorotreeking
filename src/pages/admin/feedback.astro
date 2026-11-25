@@ -9,6 +9,7 @@
  * 数据来自公开的文章反馈汇总接口；页面 noindex，但不伪装成安全后台。
  * 若未来加入敏感数据，应由 nginx/后端提供真正的身份认证。
  */
+import { siteDateString } from "@/lib/site-date";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 
@@ -23,21 +24,21 @@ const rows: Row[] = [
     slug: `ai/${p.data.translationKey}`,
     title: p.data.title,
     section: "ai",
-    date: p.data.date.toISOString().slice(0, 10),
+    date: siteDateString(p.data.date),
     href: `/ai/${p.data.translationKey}/`,
   })),
   ...invest.map((p) => ({
     slug: `invest/${p.data.translationKey}`,
     title: p.data.title,
     section: "invest",
-    date: p.data.date.toISOString().slice(0, 10),
+    date: siteDateString(p.data.date),
     href: `/invest/${p.data.translationKey}/`,
   })),
   ...photo.map((p) => ({
     slug: `photo/${p.data.translationKey}`,
     title: p.data.title,
     section: "photo",
-    date: p.data.date.toISOString().slice(0, 10),
+    date: siteDateString(p.data.date),
     href: `/photo/${p.data.translationKey}/`,
   })),
 ];

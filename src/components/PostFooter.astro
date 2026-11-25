@@ -9,6 +9,7 @@
  *   lang："zh" | "en"
  *   archiveLink：可选；digest 类文章传 "/ai/digest" 让读者去归档页
  */
+import { siteDateString } from "@/lib/site-date";
 import type { PostRef } from "@/lib/related-posts";
 import { pathWithLang } from "@/i18n/ui";
 
@@ -51,7 +52,7 @@ const t = (zh: string, en: string) => (lang === "zh" ? zh : en);
             {prev.title}
           </div>
           <time class="mt-1.5 block text-[11px] text-zinc-500 dark:text-zinc-400 font-mono tabular-nums">
-            {prev.date.toISOString().slice(0, 10)}
+            {siteDateString(prev.date)}
           </time>
         </a>
       ) : <div></div>}
@@ -66,7 +67,7 @@ const t = (zh: string, en: string) => (lang === "zh" ? zh : en);
             {next.title}
           </div>
           <time class="mt-1.5 block text-[11px] text-zinc-500 dark:text-zinc-400 font-mono tabular-nums">
-            {next.date.toISOString().slice(0, 10)}
+            {siteDateString(next.date)}
           </time>
         </a>
       ) : <div></div>}
@@ -89,7 +90,7 @@ const t = (zh: string, en: string) => (lang === "zh" ? zh : en);
                   {r.title}
                 </span>
                 <time class="text-[11px] text-zinc-500 dark:text-zinc-400 font-mono tabular-nums shrink-0">
-                  {r.date.toISOString().slice(0, 10)}
+                  {siteDateString(r.date)}
                 </time>
               </div>
               {r.description && (

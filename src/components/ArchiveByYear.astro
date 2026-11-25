@@ -10,6 +10,7 @@
  * 现在由页面负责切页并把当页的 `posts` 传进来 —— 组件自己不再取数，
  * 否则页面和组件各查一遍 collection，还容易在"这一页到底有几条"上对不上。
  */
+import { siteDateString } from "@/lib/site-date";
 import { pathWithLang, useTranslations, type Lang } from "@/i18n/ui";
 
 export interface ArchivePost {
@@ -76,8 +77,8 @@ const sectionColor: Record<(typeof sections)[number], string> = {
               href={pathWithLang(`/${post.section}/${post.slug}`, lang)}
               class="group flex items-baseline gap-3 py-2.5 hover:text-[var(--text)] transition-colors"
             >
-              <time class="shrink-0 font-mono text-xs text-[var(--text-tertiary)]" datetime={post.date.toISOString().slice(0, 10)}>
-                {post.date.toISOString().slice(0, 10)}
+              <time class="shrink-0 font-mono text-xs text-[var(--text-tertiary)]" datetime={siteDateString(post.date)}>
+                {siteDateString(post.date)}
               </time>
               <span class={`shrink-0 text-xs ${sectionColor[post.section]}`}>{t(`section.${post.section}.title`)}</span>
               <span class="min-w-0 flex-1 text-[var(--text-secondary)] group-hover:text-[var(--text)]">{post.title}</span>

@@ -1,4 +1,5 @@
 ---
+import { siteDateString } from "@/lib/site-date";
 import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import SectionCard from "@/components/SectionCard.astro";
@@ -77,7 +78,7 @@ const sectionAccent: Record<string, string> = {
               <span class="w-1.5 h-1.5 rounded-full shrink-0" style={`background:${sectionAccent[p.section]}`}></span>
               <span class="text-xs text-[var(--text-tertiary)] uppercase tracking-wide shrink-0 w-20">{sectionLabel[p.section]}</span>
               <span class="flex-1 truncate text-[15px] group-hover:text-[var(--text)] text-[var(--text-secondary)] transition-colors">{p.data.title}</span>
-              <time class="text-xs text-[var(--text-tertiary)] shrink-0 tabular-nums">{p.data.date.toISOString().slice(0, 10)}</time>
+              <time class="text-xs text-[var(--text-tertiary)] shrink-0 tabular-nums">{siteDateString(p.data.date)}</time>
             </a>
           </li>
         ))}

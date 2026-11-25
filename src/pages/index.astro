@@ -1,4 +1,5 @@
 ---
+import { siteDateString } from "@/lib/site-date";
 import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import SectionCard from "@/components/SectionCard.astro";
@@ -212,7 +213,7 @@ const sectionLabel: Record<SectionKey, string> = {
                 )}
               </div>
               <div class="mt-4 flex items-center justify-between text-[11px] text-[var(--text-tertiary)] font-mono">
-                <time>{p.data.date.toISOString().slice(0, 10)}</time>
+                <time>{siteDateString(p.data.date)}</time>
                 <span class="group-hover:translate-x-1 transition-transform">→</span>
               </div>
             </a>
@@ -283,7 +284,7 @@ const sectionLabel: Record<SectionKey, string> = {
               <span class="w-1.5 h-1.5 rounded-full shrink-0" style={`background:rgb(var(--section-${p.section}-rgb))`}></span>
               <span class="text-xs text-[var(--text-tertiary)] uppercase tracking-wide shrink-0 w-16">{sectionLabel[p.section as SectionKey]}</span>
               <span class="flex-1 truncate text-[15px] group-hover:text-[var(--text)] text-[var(--text-secondary)] transition-colors">{p.data.title}</span>
-              <time class="text-xs text-[var(--text-tertiary)] shrink-0 tabular-nums">{p.data.date.toISOString().slice(0, 10)}</time>
+              <time class="text-xs text-[var(--text-tertiary)] shrink-0 tabular-nums">{siteDateString(p.data.date)}</time>
             </a>
           </li>
         ))}

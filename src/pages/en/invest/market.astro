@@ -8,6 +8,7 @@
  * Data source: src/data/wind-market-latest.json (shared with zh page)
  * Pushed daily at 15:30 by stock_pusher via git → CI.
  */
+import { siteDateString } from "@/lib/site-date";
 import fs from "node:fs";
 import path from "node:path";
 import { getCollection } from "astro:content";
@@ -338,7 +339,7 @@ function fmtAsOf(iso: string | undefined): string {
                   <p class="mt-0.5 text-xs text-[var(--text-secondary)]">{p.data.description}</p>
                 )}
               </div>
-              <time class="text-xs text-[var(--text-tertiary)] font-mono shrink-0">{p.data.date.toISOString().slice(0, 10)}</time>
+              <time class="text-xs text-[var(--text-tertiary)] font-mono shrink-0">{siteDateString(p.data.date)}</time>
             </div>
           </li>
         ))}

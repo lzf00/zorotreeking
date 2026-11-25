@@ -1,3 +1,4 @@
+import { siteDateString } from "@/lib/site-date";
 import { getCollection } from "astro:content";
 import type { APIContext } from "astro";
 import { getTravelGuides } from "@/data/travel-guides";
@@ -35,7 +36,7 @@ export async function GET(context: APIContext) {
       .map((p) => ({
         title: p.data.title,
         description: p.data.description ?? "",
-        date: p.data.date.toISOString().slice(0, 10),
+        date: siteDateString(p.data.date),
         url: `${site}/${section}/${p.data.translationKey}`,
         tags: p.data.tags ?? [],
       }));
