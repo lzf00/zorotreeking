@@ -10,6 +10,7 @@ import { tagToSlug } from "@/lib/tags";
 import { DIGEST_PAGE_SIZE, digestPagePaths } from "@/lib/digest-pagination";
 import { ARCHIVE_PAGE_SIZE } from "@/lib/archive-pagination";
 import { pagePaths } from "@/lib/pagination";
+import { TAG_PAGE_SIZE } from "@/lib/tag-pagination";
 import { escapeXml } from "@/lib/xml";
 
 type Section = "ai" | "invest" | "hike" | "photo";
@@ -198,19 +199,23 @@ export async function GET(context: APIContext) {
   const enEntries = [...aiEn, ...invEn, ...hikeEn, ...photoEn];
   const pushTags = (lang: "zh" | "en", entries: typeof zhEntries) => {
     const latestByTag = new Map<string, Date>();
+    const countByTag = new Map<string, number>();
     for (const entry of entries) {
       const date = entry.data.updated ?? entry.data.date;
       for (const tag of entry.data.tags ?? []) {
         if (!tag) continue;
         const current = latestByTag.get(tag);
         if (!current || date > current) latestByTag.set(tag, date);
+        countByTag.set(tag, (countByTag.get(tag) ?? 0) + 1);
       }
     }
     for (const [tag, lastmod] of latestByTag) {
-      urls.push({
-        loc: withSlash(`${site}${lang === "en" ? "/en" : ""}/tag/${tagToSlug(tag)}`),
-        lastmod,
-      });
+      const base = `${lang === "en" ? "/en" : ""}/tag/${tagToSlug(tag)}`;
+      urls.push({ loc: withSlash(`${site}${base}`), lastmod });
+      // 第 191 轮：重标签页分页后，第 2..N 页是可索引页，必须一起进 sitemap
+      for (const path of pagePaths(base, countByTag.get(tag) ?? 0, TAG_PAGE_SIZE)) {
+        urls.push({ loc: withSlash(`${site}${path}`), lastmod });
+      }
     }
   };
   pushTags("zh", zhEntries);

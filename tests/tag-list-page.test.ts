@@ -12,14 +12,16 @@ import { test } from "node:test";
 
 const read = (path: string) => readFile(new URL(`../${path}`, import.meta.url), "utf8");
 
-const PAGES = ["src/pages/tag/[tag].astro", "src/pages/en/tag/[tag].astro"] as const;
+// 第 191 轮起标签页变成分页路由：`[tag]/[...page].astro`
+const PAGES = ["src/pages/tag/[tag]/[...page].astro", "src/pages/en/tag/[tag]/[...page].astro"] as const;
 
 test("中英标签页都只给前 20 篇摘要，其余走紧凑行", async () => {
   for (const path of PAGES) {
     const source = await read(path);
     assert.match(source, /const DETAILED_COUNT = 20/, `${path} 缺少 DETAILED_COUNT`);
-    assert.match(source, /posts\.slice\(0, DETAILED_COUNT\)\.map/, `${path} 详情段没切片`);
-    assert.match(source, /posts\.slice\(DETAILED_COUNT\)\.map/, `${path} 紧凑段没切片`);
+    // 第 191 轮：摘要段只在第 1 页出现，第 2 页起全走紧凑行
+    assert.match(source, /posts\.slice\(0, pageNumber === 1 \? DETAILED_COUNT : 0\)\.map/, `${path} 详情段没切片`);
+    assert.match(source, /posts\.slice\(pageNumber === 1 \? DETAILED_COUNT : 0\)\.map/, `${path} 紧凑段没切片`);
     // 两条路径都必须渲染链接，否则内容就从列表里消失了
     const hrefs = source.match(/href=\{pathWithLang\(`\/\$\{p\.section\}/g) ?? [];
     assert.equal(hrefs.length, 2, `${path} 应有两处（详情 + 紧凑）链接渲染，实际 ${hrefs.length} 处`);
@@ -29,7 +31,7 @@ test("中英标签页都只给前 20 篇摘要，其余走紧凑行", async () =
 test("紧凑行带 datetime，深色模式对比度够（不用 zinc-500）", async () => {
   for (const path of PAGES) {
     const source = await read(path);
-    const compact = source.slice(source.indexOf("posts.slice(DETAILED_COUNT)"));
+    const compact = source.slice(source.indexOf("posts.slice(pageNumber === 1 ? DETAILED_COUNT : 0)"));
     assert.match(compact, /datetime=\{p\.date\.toISOString\(\)\.slice\(0, 10\)\}/, "日期要机器可读");
     assert.doesNotMatch(compact.slice(0, 1200), /dark:text-zinc-500/, "深色底 zinc-500 只有 4.09:1");
   }

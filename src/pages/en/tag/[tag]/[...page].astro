@@ -5,30 +5,64 @@ import { MAX_TAG_ITEMLIST, tagStats } from "@/lib/tag-relations";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
 import { tagDescription } from "@/lib/descriptions";
 import TagIntro from "@/components/TagIntro.astro";
+import { TAG_PAGE_SIZE } from "@/lib/tag-pagination";
+import { counterpartBase, pageCount } from "@/lib/pagination";
 
+/**
+ * 分页路由（第 191 轮）：一个标签展开成 1..N 页。
+ *
+ * 第 1 页就是原来的 `/tag/<slug>/`（rest 参数缺省），其余是 `/tag/<slug>/2/`……
+ * 只有条目数超过 `TAG_PAGE_SIZE` 的标签才会多出页来，小标签的 URL 一个不变。
+ */
 export async function getStaticPaths() {
-  const lang = "zh" as const;
+  const lang = "en" as const;
   const { tags } = await buildTagIndex(lang);
-  return tags.map(({ tag, posts }) => ({
-    params: { tag: tagToSlug(tag) },
-    props: { tag, posts },
-  }));
+  return tags.flatMap(({ tag, posts }) => {
+    const slug = tagToSlug(tag);
+    const pages = pageCount(posts.length, TAG_PAGE_SIZE);
+    return Array.from({ length: pages }, (_, i) => ({
+      params: { tag: slug, page: i === 0 ? undefined : String(i + 1) },
+      props: { tag, posts, pageNumber: i + 1, totalPages: pages },
+    }));
+  });
 }
 
-const { tag, posts } = Astro.props as {
+const { tag, posts: allPosts, pageNumber, totalPages } = Astro.props as {
   tag: string;
   posts: Array<{ section: "ai" | "invest" | "photo" | "hike"; slug: string; title: string; description?: string; date: Date; tags: string[] }>;
+  pageNumber: number;
+  totalPages: number;
 };
-const lang = "zh" as const;
+const lang = "en" as const;
 const t = useTranslations(lang);
-const description = tagDescription(tag, posts, lang);
-const related = relatedTags(tag, posts);
-const sections = tagSections(posts);
-const stats = tagStats(posts);
+
+// 当页条目：重标签页只渲染自己那 100 条（第 191 轮）
+const posts = allPosts.slice((pageNumber - 1) * TAG_PAGE_SIZE, pageNumber * TAG_PAGE_SIZE);
+const description = tagDescription(tag, allPosts, lang);
+const related = relatedTags(tag, allPosts);
+const sections = tagSections(allPosts);
+const stats = tagStats(allPosts);
 // 只有一两篇内容的标签页正文很短，补一块「同栏目最近文章」，避免成为纯列表空页
-const more = posts.length < 3 && posts[0]
-  ? await recentInSection(lang, posts[0].section, 5, posts.map((p) => p.slug))
+const more = allPosts.length < 3 && allPosts[0]
+  ? await recentInSection(lang, allPosts[0].section, 5, allPosts.map((p) => p.slug))
   : [];
+
+/**
+ * 分页导航与语言切换（第 191 轮）。
+ *
+ * 这里没用 Astro 的 `paginate()`（一个标签一种页数，需求是"每个标签各切各的"），
+ * 所以 prev/next 自己算；rel=prev/next 照旧要有，爬虫靠它按顺序抓。
+ *
+ * 语言切换：第 1 页由 Navbar 给（`/tag/<slug>` 命中 hasAlternateLanguagePath），
+ * 第 2 页起自己给，并且**对端页数不够就不链**（链到不存在的页会让 check:lang-switch 判红）。
+ */
+const ownBase = `/en/tag/${tagToSlug(tag)}`;
+const otherIndex = await buildTagIndex("zh"); // 对端语言是编译期常量，不做运行期分支
+const otherCount = otherIndex.tags.find((item) => item.tag === tag)?.posts.length ?? 0;
+const hasCounterpart = pageCount(otherCount, TAG_PAGE_SIZE) >= pageNumber;
+const otherHref = `${counterpartBase(ownBase)}/${pageNumber}/`;
+const prevHref = pageNumber === 2 ? `${ownBase}/` : `${ownBase}/${pageNumber - 1}/`;
+const nextHref = `${ownBase}/${pageNumber + 1}/`;
 
 const sectionColor: Record<string, string> = {
   ai: "text-section-ai",
@@ -60,15 +94,17 @@ const DETAILED_COUNT = 20;
   <section class="max-w-3xl mx-auto px-5 pt-12 pb-6">
     <a href={pathWithLang("/tag", lang)} class="text-sm text-[var(--text-tertiary)] hover:text-[var(--text-secondary)]">← {t("tag.allTags")}</a>
     <h1 class="mt-2 font-serif text-5xl sm:text-6xl leading-[0.95] tracking-tight">#{tag}</h1>
-    <p class="mt-2 text-sm text-[var(--text-tertiary)]">{posts.length} {t("tag.count")}</p>
-    <TagIntro tag={tag} lang={lang} sections={sections} related={related} count={posts.length} from={stats.from} to={stats.to} bySection={stats.bySection} />
+    <p class="mt-2 text-sm text-[var(--text-tertiary)]">
+      {allPosts.length} {allPosts.length === 1 ? t("tag.countOne") : t("tag.count")}
+    </p>
+    <TagIntro tag={tag} lang={lang} sections={sections} related={related} count={allPosts.length} from={stats.from} to={stats.to} bySection={stats.bySection} />
   </section>
   <section class="max-w-3xl mx-auto px-5">
     {/* 第 134 轮：一个标签下可能有 300+ 篇（#auto 3400 个标签、31 KB gzip），
         全部带摘要渲染既费 DOM 也费字节。最新 20 篇保留板块/日期/摘要，
         更早的只留日期 + 标题 —— 链接一条不少，只是不再带摘要。 */}
     <ul class="divide-y divide-[var(--border)]">
-      {posts.slice(0, DETAILED_COUNT).map((p) => (
+      {posts.slice(0, pageNumber === 1 ? DETAILED_COUNT : 0).map((p) => (
         <li class="py-5">
           <div class="flex items-center gap-2 text-xs text-[var(--text-tertiary)] mb-1">
             <span class={sectionColor[p.section]}>{sectionLabel[p.section]}</span>
@@ -84,7 +120,7 @@ const DETAILED_COUNT = 20;
           {p.description && <p class="mt-1 text-sm text-[var(--text-secondary)] line-clamp-2">{p.description}</p>}
         </li>
       ))}
-      {posts.slice(DETAILED_COUNT).map((p) => (
+      {posts.slice(pageNumber === 1 ? DETAILED_COUNT : 0).map((p) => (
         <li>
           <a href={pathWithLang(`/${p.section}/${p.slug}`, lang)}
              class="group flex items-baseline gap-3 py-2 text-sm transition-colors hover:text-[var(--text-secondary)]">
@@ -102,7 +138,7 @@ const DETAILED_COUNT = 20;
   {more.length > 0 && (
     <section class="max-w-3xl mx-auto px-5 pb-16">
       <h2 class="text-base font-semibold tracking-tight mb-3">
-        更多来自{t(`section.${posts[0].section}.title`)}
+        More from {t(`section.${posts[0].section}.title`)}
       </h2>
       <ul class="divide-y divide-[var(--border)] border-t border-[var(--border)]">
         {more.map((m) => (
@@ -115,8 +151,30 @@ const DETAILED_COUNT = 20;
         ))}
       </ul>
       <a href={pathWithLang(`/${posts[0].section}`, lang)} class="mt-4 inline-block text-xs text-[var(--text-tertiary)] hover:text-[var(--text-secondary)]">
-        查看全部{t(`section.${posts[0].section}.title`)} →
+        All {t(`section.${posts[0].section}.title`)} →
       </a>
+    </section>
+  )}
+  {totalPages > 1 && (
+    <section class="max-w-3xl mx-auto px-5 pb-16">
+      <nav class="flex items-center justify-between text-sm" aria-label="Tag pagination">
+        {pageNumber > 1 ? (
+          <a class="underline text-[var(--text-secondary)]" rel="prev" href={prevHref}>← Newer 100</a>
+        ) : (
+          <span />
+        )}
+        <span class="text-[var(--text-tertiary)]">{`Page ${pageNumber} / ${totalPages}`}</span>
+        {pageNumber < totalPages ? (
+          <a class="underline text-[var(--text-secondary)]" rel="next" href={nextHref}>Older 100 →</a>
+        ) : (
+          <span />
+        )}
+      </nav>
+      {pageNumber > 1 && hasCounterpart && (
+        <p class="mt-4 text-sm">
+          <a href={otherHref} class="underline decoration-[var(--border)] hover:decoration-current" hreflang="zh-CN" lang="zh-CN">中文</a>
+        </p>
+      )}
     </section>
   )}
 </BaseLayout>
