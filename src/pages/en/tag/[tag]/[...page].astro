@@ -104,7 +104,10 @@ const DETAILED_COUNT = 20;
     {/* 第 134 轮：一个标签下可能有 300+ 篇（#auto 3400 个标签、31 KB gzip），
         全部带摘要渲染既费 DOM 也费字节。最新 20 篇保留板块/日期/摘要，
         更早的只留日期 + 标题 —— 链接一条不少，只是不再带摘要。 */}
-    <ul class="divide-y divide-[var(--border)]">
+    {/* 第 198 轮：这一列是别处页面的标题回声。留着它，索引里就被同一批标题反复填满，
+        搜「日报」会先命中一堆标签页（每个都列着上百条含「日报」的标题），而不是日报本身。
+        列表里的每一篇都有自己的页面，也会被索引；标签页只需要用自己的名字与简介参与检索。 */}
+    <ul data-pagefind-ignore class="divide-y divide-[var(--border)]">
       {posts.slice(0, pageNumber === 1 ? DETAILED_COUNT : 0).map((p) => (
         <li class="py-5">
           <div class="flex items-center gap-2 text-xs text-[var(--text-tertiary)] mb-1">

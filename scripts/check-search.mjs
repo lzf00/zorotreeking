@@ -44,7 +44,77 @@ export const DEFAULT_QUERIES = [
   "论文",
   "深度学习",
   "复盘",
+  // 第 198 轮：补上下面 RELEVANCE_EXPECTATIONS 用到的词，并覆盖全站入口页
+  "ETF 三因子",
+  "归档",
+  "更新日志",
+  "标签",
+  "订阅",
+  "留言板",
+  "相册",
+  "徒步路线",
 ];
+
+/**
+ * 相关性期望表（第 198 轮）。
+ *
+ * 起因：站内搜索有"能出结果但出的不是你想看的"这一类故障 —— 第 194 轮修分页页、
+ * 第 198 轮修回声列表，两次都是"结果不为空、只是排错了"。原来的探针只断言
+ * **有没有结果 / 索引新不新 / 命中是不是死链**，这类问题一条都测不出来。
+ *
+ * 这里是人工标注的"用户会想点的那一页"，配上可接受的名次。名次放得比较宽（1–3）：
+ * 站点还有聚合页（归档、周末看点）会自然排在前面，那是合理的；只要目标页在可接受
+ * 范围内就算通过。改排序或改模板时，这张表会立刻告警。
+ */
+export const RELEVANCE_EXPECTATIONS = [
+  { query: "宝可梦", url: "/photo/baokemeng/", rank: 1 },
+  { query: "ETF 三因子", url: "/invest/etf/", rank: 1 },
+  { query: "订阅", url: "/subscribe/", rank: 1 },
+  { query: "留言板", url: "/guestbook/", rank: 1 },
+  { query: "标签", url: "/tag/", rank: 1 },
+  { query: "相册", url: "/photo/", rank: 1 },
+  { query: "徒步路线", url: "/hike/", rank: 1 },
+  // 这两个词以前会被"回声列表"抢走：标签页列着上百条含「日报」的标题，
+  // 归档页列着全站标题 —— 目标页根本进不了前 5。
+  { query: "日报", url: "/invest/digest/", rank: 2 },
+  { query: "归档", url: "/archive/", rank: 3 },
+  { query: "更新日志", url: "/changelog/", rank: 2 },
+];
+
+/**
+ * 纯逻辑：按期望表判定相关性。目标页没进可接受名次就算失败。
+ * @param {{ query: string, top?: string[], total?: number, error?: string }[]} rows
+ * @param {{ query: string, url: string, rank: number }[]} expectations
+ */
+export function evaluateRelevance(rows, expectations = RELEVANCE_EXPECTATIONS) {
+  const byQuery = new Map(rows.map((row) => [row.query, row]));
+  const results = [];
+  for (const expectation of expectations) {
+    const row = byQuery.get(expectation.query);
+    // 只判"真的搜过"的词：调用方（CLI）负责保证期望表里的词都在查询集里，
+    // 单测/局部调用只传几个查询时不该因为"别的词没跑"而红。
+    if (!row) continue;
+    if (row.error) {
+      results.push({ ...expectation, ok: false, actual: null, reason: `查询「${expectation.query}」没跑成` });
+      continue;
+    }
+    const top = row.top ?? [];
+    const index = top.indexOf(expectation.url);
+    const actual = index === -1 ? null : index + 1;
+    const ok = actual != null && actual <= expectation.rank;
+    results.push({
+      ...expectation,
+      ok,
+      actual,
+      reason: ok
+        ? null
+        : actual == null
+          ? `「${expectation.query}」前 ${top.length} 名里没有 ${expectation.url}`
+          : `「${expectation.query}」里 ${expectation.url} 排第 ${actual} 名（期望前 ${expectation.rank}）`,
+    });
+  }
+  return results;
+}
 
 /**
  * 纯逻辑：把每个查询的结果汇总成「有没有坏」。可单测。
@@ -71,6 +141,9 @@ export function summarizeSearchProbe(rows) {
     }))
     .filter((item) => !item.ok || item.warning);
   const deadLinks = rows.flatMap((row) => row.deadLinks ?? []);
+  // 第 198 轮：相关性（"结果不为空但排错了"）也算坏
+  const relevance = evaluateRelevance(rows);
+  const relevanceMisses = relevance.filter((item) => !item.ok);
   return {
     rows,
     failures,
@@ -78,7 +151,9 @@ export function summarizeSearchProbe(rows) {
     staleIndex,
     titleWarnings,
     deadLinks,
-    ok: failures.length === 0 && staleIndex.length === 0 && deadLinks.length === 0,
+    relevance,
+    relevanceMisses,
+    ok: failures.length === 0 && staleIndex.length === 0 && deadLinks.length === 0 && relevanceMisses.length === 0,
     /** 失败信息里最有用的是资源路径 + 状态码，提取出来直接给人看 */
     brokenResources: failures.map((row) => extractResource(row.error)),
   };
@@ -172,7 +247,7 @@ export function extractResource(message = "") {
   return match ? { status: Number(match[1]), path: match[2] } : { status: null, path: null };
 }
 
-export function formatSearchProbe({ rows, failures, empties, staleIndex = [], titleWarnings = [], deadLinks = [], ok }, base) {
+export function formatSearchProbe({ rows, failures, empties, staleIndex = [], titleWarnings = [], deadLinks = [], relevance = [], ok }, base) {
   const lines = [`站内搜索探针（${base}）`, ""];
   for (const row of rows.filter((item) => !item.meta)) {
     const icon = row.error ? "✗" : row.total === 0 ? "⚠" : "✓";
@@ -197,6 +272,15 @@ export function formatSearchProbe({ rows, failures, empties, staleIndex = [], ti
     lines.push("");
     lines.push("标题整句搜不到（警告级，页面本身已在索引里）：");
     for (const item of titleWarnings) lines.push(`  ⚠ ${item.url} — ${item.warning ?? ""}`);
+  }
+  if (relevance.length) {
+    const hit = relevance.filter((item) => item.ok).length;
+    lines.push("");
+    lines.push(`相关性（人工标注 ${relevance.length} 条，命中 ${hit} 条）：`);
+    for (const item of relevance) {
+      const where = item.actual == null ? "未进前 10" : `第 ${item.actual} 名`;
+      lines.push(`  ${item.ok ? "✓" : "✗"} 「${item.query}」→ ${item.url}（${where}，期望前 ${item.rank}）`);
+    }
   }
   if (deadLinks.length) {
     lines.push("");

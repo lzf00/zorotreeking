@@ -96,7 +96,7 @@ const recent = recentChanges(readGitLog(), { todayIso, days: 30, limit: 5 });
         <h2 class="text-[11px] uppercase tracking-[0.18em] text-zinc-500 dark:text-zinc-400 font-mono mb-3">
           最近 30 天的改动 · 自动生成
         </h2>
-        <ul class="space-y-2">
+        <ul data-pagefind-ignore class="space-y-2">
           {recent.map((c) => (
             <li class="flex items-baseline gap-2 text-sm leading-relaxed">
               <span class="text-[11px] font-mono text-[var(--text-tertiary)] shrink-0">{c.date.slice(5)}</span>

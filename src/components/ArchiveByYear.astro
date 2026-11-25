@@ -60,7 +60,9 @@ const sectionColor: Record<(typeof sections)[number], string> = {
   {span && <span> · {span}</span>}
 </div>
 
-<div class="mt-8 space-y-10">
+{/* 第 198 轮：这里是全站标题的汇总回声，不参与站内检索（每篇内容都有自己的页面）。
+    归档页仍会被「归档 / 全部文章」这类查询命中，靠的是标题与上方那句计数说明。 */}
+<div data-pagefind-ignore class="mt-8 space-y-10">
   {years.map((year) => (
     // 一页 500+ 行时，屏幕外的年份没必要参与布局与绘制
     <section style="content-visibility:auto;contain-intrinsic-size:auto 1200px">
