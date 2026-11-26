@@ -800,6 +800,10 @@
 
 ## 第 222 轮
 
+- **加（闸门）**：`npm run check:weight:runtime`（= `report-page-weight.mjs --budget`）已进 `gate`：
+  按基线 15% 余量判每个代表页的手机端总重量；基线 `scripts/page-weight-runtime-baseline.json` 单位 KB，
+  `--update-budget` 重登记，未登记页面只报不判。测试 +2 条（预算判定、单位必须是 KB）。
+- **自伤（已修）**：第一版把 KB 基线当字节比，上限算成 1 KB，8 个页面全红。
 - **加（可观测性）**：`npm run report:weight`（`scripts/report-page-weight.mjs`）—— 手机视口下真实加载
   每个代表页，按资源类型汇总重量；剔除本地 `/api/**` 404 噪声并注明剔除条数。
   `tests/page-weight-report.test.ts`（3 条）锁住剔除逻辑与"报表/闸门分工"说明。

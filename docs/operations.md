@@ -43,6 +43,7 @@
 | `npm test` | 单元/集成测试（node:test + tsx） |
 | `build` | 静态构建（1194 个页面） |
 | `check:weight` | 页面重量闸门：HTML > 220 KB / 内联 CSS > 120 KB 就红；已有超标页在 `scripts/page-weight-baseline.json`，比基线再长 10% 要重新登记理由 · 同时看 gzip 60 KB / 3000 标签 |
+| `check:weight:runtime` | 手机视口真实加载 8 个代表页，总字节超过基线 15% 就红（第 222 轮）；基线 `scripts/page-weight-runtime-baseline.json`（KB），`--update-budget` 重登记 |
 | `check:images` | 图片体积与格式预算 |
 | `check:links` | 站内链接与锚点 |
 | `check:orphans` | 零入链页面检查：读完 dist 的站内链接图，任何可索引页面若无人指向就报出来（错误页/后台页/跳转桩除外）。**本地硬失败、CI 只告警**（第 204 轮） |
@@ -87,6 +88,10 @@
 `check:weight` 是**闸门**（看构建产物里 HTML + 内联 CSS 的 gzip 体积，逐页预算）；
 `npm run report:weight` 是**报表**（在浏览器里按手机视口真实加载一次，统计文档/脚本/字体/图片/fetch
 全部资源），用来回答"这次改动让首屏多了多少 KB"。
+
+`--budget` 是**闸门模式**：实测超过基线 15% 就红（`npm run check:weight:runtime`，已在 `gate` 里）。
+基线存在 `scripts/page-weight-runtime-baseline.json`（单位 KB），复核后用 `--update-budget` 重登记；
+没登记的页面只报不判 —— 新页面不该让闸门红，但也不该悄悄逃过登记。
 
 2026-11-26 的基线（本地构建、未压缩、390×844@2x）：
 
