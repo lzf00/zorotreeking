@@ -109,6 +109,10 @@ async function scanAttrs() {
 
 async function main() {
   const args = process.argv.slice(2);
+  // 第 227 轮：与 check:content-quality 同一口径 —— 内容/数据问题只警告不拦发布。
+  // 英文日报里的中文名是服务器生成端每天写回的，本地拉下来必然脏；拿它挡住代码发布没道理。
+  // site-audit.yml 里本来也是 continue-on-error，这里让本地 gate 与之一致。
+  const nonBlocking = args.includes("--non-blocking");
   const current = await scan();
   const entries = Object.entries(current).sort(([a], [b]) => a.localeCompare(b));
 
@@ -141,6 +145,10 @@ async function main() {
   if (regressions.length) {
     console.error("::error title=英文页新增了未翻译的中文::");
     for (const r of regressions) console.error(`  ✗ ${r.file}：${r.count} 处（baseline 允许 ${r.allowed}）`);
+    if (nonBlocking) {
+      console.error("  （--non-blocking：内容问题只警告，不拦发布）");
+      return;
+    }
     process.exit(1);
   }
 
@@ -159,6 +167,10 @@ async function main() {
     console.error(`::error title=英文页的界面属性里还有中文::${attrOffenders.length} 个页面`);
     for (const offender of attrOffenders.slice(0, 10)) {
       console.error(`  ✗ ${offender.page}：${offender.found.slice(0, 4).join(" / ")}`);
+    }
+    if (nonBlocking) {
+      console.error("  （--non-blocking：内容问题只警告，不拦发布）");
+      return;
     }
     process.exit(1);
   }

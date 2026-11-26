@@ -11,6 +11,13 @@
  *
  * 用法：npx tsx scripts/fetch-fonts.ts
  * 产物：src/assets/fonts/*.woff2 + src/styles/fonts.css（都进 git，避免构建期联网）
+ *
+ * ⚠️ 第 227 轮起，字体还要过一道 `scripts/subset-fonts.py`：
+ *    Google 的 latin 子集比站点实际用到的字符多一倍，可变轴也带着整套 deltas，
+ *    裁完 101.5 KB → 75.7 KB。重新下载之后**必须**再跑一遍裁剪，否则
+ *    `npm test` 的 tests/font-subset.test.ts 会因为体积超限而红。
+ *    另外注意本脚本会整份重写 fonts.css，而兜底字体（size-adjust / ascent-override）
+ *    是第 75/148 轮手工标定的 —— 跑之前先把它抄下来，或者只取 woff2 不覆盖 CSS。
  */
 import { promises as fs } from "node:fs";
 import path from "node:path";

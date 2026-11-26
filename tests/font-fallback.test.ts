@@ -63,7 +63,7 @@ test("预载衬线和正文两套字体，但只这两套（第 150 轮改了第
   assert.match(layout, /rel="preload" href=\{serifFontUrl\} as="font"/, "要预载衬线体");
   assert.match(layout, /rel="preload" href=\{bodyFontUrl\} as="font"/, "正文 Inter 也要预载，否则 swap 位移无法消除");
   assert.match(layout, /import serifFontUrl from "\.\.\/assets\/fonts\/instrument-serif-400-latin\.woff2\?url"/);
-  assert.match(layout, /import bodyFontUrl from "\.\.\/assets\/fonts\/inter-100-900-latin\.woff2\?url"/);
+  assert.match(layout, /import bodyFontUrl from "\.\.\/assets\/fonts\/inter-300-700-latin\.woff2\?url"/);
   assert.match(layout, /crossorigin="anonymous"/, "字体 preload 必须带 crossorigin，否则会重复下载");
   // 大首页面上正文 Inter 仍会被图片挤到后面（/photo/ 实测 1006ms 才到）→ 提到最高优先级
   assert.match(layout, /href=\{bodyFontUrl\}[^>]*fetchpriority="high"/, "正文 preload 要 fetchpriority=high");

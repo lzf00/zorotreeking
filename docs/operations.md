@@ -38,7 +38,8 @@
 | `validate:etf` | ETF 三因子数据自洽（份额/量能/方向） |
 | `check:dates` | 内容日期与文件名/前置字段一致 |
 | `check:digest-quality` | 最近 7 天的日报正文里不许有"摘要失败"占位符（历史遗留用 `--all` 盘点） |
-| `check:content-quality` | 内容质量体检：英文日报中文残留、封面复用比例、缺摘要明细。**本地硬失败、CI 只告警**（第 202 轮） |
+| `check:content-quality` | 内容质量体检：英文日报中文残留、封面复用比例、缺摘要明细。**只警告不拦发布**（第 202 轮起步，第 227 轮在 gate 里改成 `--non-blocking`） |
+| `check:content-quality -- --non-blocking` | 同上，门禁里用的就是这条带开关的形式（只打警告、退出码恒 0） |
 | `check` | `astro check`（TS 类型 + 模板） |
 | `npm test` | 单元/集成测试（node:test + tsx） |
 | `build` | 静态构建（1194 个页面） |
@@ -58,7 +59,8 @@
 | `check:hydration-drift` | 把浏览器时钟拨后 10 天、再换成纽约时区+英文，各扫一遍抽样页面；任何 pageerror 即失败（第 217 轮） |
 | `check:degraded` | 把 `/api/**` 全拦成 500，6 个关键模板仍须可读（不许白屏 / undefined / 未捕获异常，第 166 轮） |
 | `check:search:dist` | 本地起服务跑 Pagefind 搜索探针；断言索引是最新的（最新日报排进前 3）、命中不是死链 |
-| `check:i18n-leaks` | 英文内容里不许新增未翻译的中文正文（存量在 `scripts/i18n-leaks-baseline.json`） |
+| `check:i18n-leaks` | 英文内容里不许新增未翻译的中文正文（存量在 `scripts/i18n-leaks-baseline.json`）；第 227 轮起 gate 里带 `--non-blocking`（内容问题只警告） |
+| `check:i18n-leaks -- --non-blocking` | 同上，门禁里用的带开关形式（打警告、退出码恒 0） |
 | `check:a11y:sample` | 从 sitemap 分节抽样 12 页测 a11y（每周巡检，seed=ISO 周，补手写清单的盲区） |
 | `check:a11y:fast` | 双主题 axe 快检（4 个模板 × 浅/深，约 32 秒）+ 三个浮层的键盘契约：搜索面板/照片灯箱/AI 助手（真按键，验焦点陷阱与焦点归还）；所有可见表单控件必须有可读名称（placeholder 不算） |
 | `check:interactions` | 交互自检：搜索、灯箱、点赞、评分、主题切换、ETF/行情岛降级、SSR 直出，19 个场景（约 40 秒） |
@@ -83,7 +85,58 @@
 构建期检查看的是 `dist/`，nginx、缓存、证书都不在其中，这一层只有它覆盖。
 2026-11-22 首跑：1194 条全部 2xx，p50 18ms / p95 262ms。
 
-### 手机视口下的真实重量：`npm run report:weight`（第 222 轮）
+### 门禁只该被代码挡住（第 227 轮）
+
+`npm run gate` 里 `check:content-quality` 现在带 `--non-blocking`：检查照跑、`::warning` 注解照发、
+失败项照列，但**不返回非零**。
+
+改的理由很具体：英文日报表格里的中文名是**服务器上的生成端**每天写回的，本地 `git pull` 下来
+就是脏的。三轮里它三次把整条门禁卡红 —— 部署明明没事（CI 里有 repair 步骤），却要人去跑
+`npm run fix:recap-names` 才能继续。用内容问题挡住代码发布，和「门禁失败必然是代码问题」
+这条原则相反。
+
+分工现在是：
+
+| 位置 | 行为 |
+|---|---|
+| `npm run check:content-quality` | 默认仍然 `exit 1`（手动跑想看红） |
+| `npm run gate` | 带 `--non-blocking`，只警告不拦 |
+| `deploy.yml` | `continue-on-error: true` + annotation |
+
+## 字体是自托管的，也是要裁的：`scripts/subset-fonts.py`（第 227 轮）
+
+站点自托管三份 woff2（衬线、正文 Inter、等宽 JetBrains Mono），日报页实测 101.5 KB ——
+比整页脚本 + 分享栏加起来还大。Google 给的 `latin` 子集带 230 / 229 个字形，而站点真正用到的
+只有 126–131 个。
+
+```bash
+python3 scripts/subset-fonts.py           # 裁剪 + 生成 scripts/font-coverage.json
+python3 scripts/subset-fonts.py --check   # 只校验：语料里的字符是否都被清单覆盖
+```
+
+| 文件 | 裁前 | 裁后 |
+|---|---|---|
+| `instrument-serif-400-latin.woff2` | 14.7 KB | 10.9 KB |
+| `instrument-serif-italic-…woff2` | 15.3 KB | 11.5 KB |
+| `inter-300-700-latin.woff2` | 47.3 KB | 29.1 KB |
+| `jetbrains-mono-400-700-latin.woff2` | 39.5 KB | 24.7 KB |
+
+三条注意：
+
+1. 可变轴只保留**元素上真的出现过**的区间：Inter 300–700、等宽 400–700。依据是扫
+   `dist` 里元素 class 得到的字重（400 / 500 / 550 / 600 / 300），不是 CSS 里有没有
+   `.font-black` 这类工具类规则。
+2. 度量表（hmtx / OS2 / ascent / descent）原样保留，所以第 75 / 148 轮标定的
+   `size-adjust` 兜底数值继续有效 —— 裁完 `check:font-fallback` 仍然全绿。
+3. 重新跑 `scripts/fetch-fonts.ts` 会把完整字体下载回来，而且会**整份重写**
+   `src/styles/fonts.css`（兜底段是手工标定的）。下载后必须再跑一次裁剪；
+   `tests/font-subset.test.ts` 用体积上限兜住这个回归。
+
+覆盖清单 `scripts/font-coverage.json` 记着「哪些码点被 webfont 覆盖」「哪些字符只能落到系统字体」
+（中文 3187 个 + 78 个符号/emoji）。内容里出现新符号时 `npm test` 会红，提示重跑脚本 ——
+宁可红一次，也不要线上出现豆腐块。
+
+## 手机视口下的真实重量：`npm run report:weight`（第 222 轮）
 
 `check:weight` 是**闸门**（看构建产物里 HTML + 内联 CSS 的 gzip 体积，逐页预算）；
 `npm run report:weight` 是**报表**（在浏览器里按手机视口真实加载一次，统计文档/脚本/字体/图片/fetch

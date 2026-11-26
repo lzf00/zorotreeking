@@ -15,8 +15,8 @@ const ROOT = path.resolve(import.meta.dirname, '..');
 const b64 = async (p) => (await readFile(path.join(ROOT, p))).toString('base64');
 
 const serif = await b64('src/assets/fonts/instrument-serif-400-latin.woff2');
-const sans = await b64('src/assets/fonts/inter-100-900-latin.woff2');
-const mono = await b64('src/assets/fonts/jetbrains-mono-100-800-latin.woff2');
+const sans = await b64('src/assets/fonts/inter-300-700-latin.woff2');
+const mono = await b64('src/assets/fonts/jetbrains-mono-400-700-latin.woff2');
 
 const html = `<!doctype html><html><head><meta charset="utf-8"><style>
 @font-face { font-family: 'IS'; src: url(data:font/woff2;base64,${serif}) format('woff2'); font-display: block; }

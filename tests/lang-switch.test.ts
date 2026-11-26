@@ -36,6 +36,6 @@ test("跳转桩不在检查范围内（/photography/ → /photo/）", async () =
 test("check:lang-switch 在门禁里，且速查页有它", async () => {
   const pkg = await read("package.json");
   assert.match(pkg, /"check:lang-switch": "node scripts\/check-lang-switch\.mjs"/);
-  assert.match(pkg, /npm run check:i18n-leaks && npm run check:lang-switch &&/);
+  assert.match(pkg, /npm run check:i18n-leaks -- --non-blocking && npm run check:lang-switch &&/);
   assert.match(await read("docs/operations.md"), /check:lang-switch/);
 });
