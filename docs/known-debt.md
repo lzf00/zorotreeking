@@ -864,7 +864,11 @@
 - **加（守卫）**：`check:interactions` 新增场景「日报页不再加载 React（0 个 hydration 岛）」——
   先滚到底再数岛和脚本，避免恒绿；`tests/feedback-icons.test.ts` 增加"内容页不许有 `client:` 指令"，
   `tests/feedback-lazy.test.ts` / `tests/a11y-harness.test.ts` / `tests/site-utils.test.ts` 跟随换文件。
-- **自伤（已修）**：① 组件脚本里 `type FeedbackState` 从 `@/lib/feedback-cache` 导入，但那个模块只是
+- **自伤（已修，导致一次 CI 部署失败）**：
+  - 线上首次部署在「Interaction smoke」红掉：新场景把 `https://giscus.app/client.js` 当成了 React
+    （正则 `/client\./` 一刀切）。本地 hermetic 上下文会拦掉第三方域名，所以本地永远绿。
+    已改成「只统计本站同源脚本」，并加测试锁住这个过滤条件。
+  - ① 组件脚本里 `type FeedbackState` 从 `@/lib/feedback-cache` 导入，但那个模块只是
   `import` 没 `export` 它 → `astro check` 两个 error 挡门禁；② `optimistic()` 的参数写成 `FeedbackKind`，
   而返回值的 `my_vote` 收窄成 `"like" | "dislike" | null`，`ts(2322)`。
 - **顺带修**：选中态背景一直没生效（`var(--market-up)14` 是无效 CSS）。

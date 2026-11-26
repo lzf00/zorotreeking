@@ -227,7 +227,11 @@ const SCENARIOS = [
           .map((entry) => entry.name)
           .filter((name) => name.endsWith(".js")),
       );
-      const react = scripts.filter((name) => /\/client\.|\/react[.-]/.test(name));
+      // 只看本站脚本：第一次写这条场景时用 /client\./ 一刀切，结果 CI 上把
+      // https://giscus.app/client.js 也算成了 React（本地 hermetic 拦掉第三方，测不出来）。
+      const origin = new URL(page.url()).origin;
+      const own = scripts.filter((name) => name.startsWith(origin));
+      const react = own.filter((name) => /\/client\.[^/]+\.js$/.test(name) || /\/react[.-]/.test(name));
       if (react.length > 0) return fail(`日报页仍在下载 React：${react.slice(0, 2).join(", ")}`);
     },
   },

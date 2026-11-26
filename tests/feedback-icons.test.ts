@@ -77,3 +77,14 @@ test("内容页不再有任何 hydration 指令（第 226 轮：按钮改成 Ast
   await walk(dir);
   assert.deepEqual(offenders, [], `内容页里不该再有 hydration 指令：${offenders.slice(0, 3).join(", ")}`);
 });
+
+test("「日报页不再加载 React」这条场景只数本站脚本（否则会被第三方 client.js 误伤）", async () => {
+  const src = await read("scripts/check-interactions.mjs");
+  const at = src.indexOf("日报页不再加载 React");
+  assert.ok(at > 0, "找不到该场景");
+  const block = src.slice(at, src.indexOf("      if (react.length > 0)", at) + 40);
+  // 必须在页面同源范围内判断：第一次写的时候用 /client\./ 一刀切，
+  // CI 上把 https://giscus.app/client.js 也算成了 React，本地（hermetic）测不出来。
+  assert.match(block, /origin/, "要先取页面同源 origin");
+  assert.match(block, /startsWith\(origin\)/, "只统计本站脚本");
+});
