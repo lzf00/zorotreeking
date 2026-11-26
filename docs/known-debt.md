@@ -696,6 +696,11 @@
 - **核实（不算问题）**：本地 `serveDist` 打开任何页面都会有一条 `/api/track` 404 ——
   静态服务没有后端，线上该端点存在（GET→405 是故意的）。已确认与本次改动无关。
 - **全站 a11y 复扫**：`check-a11y.mjs --dist` 70 次检查 0 失败 / 0 告警（浅色+深色）。
+- **观察（预算到顶）**：英文日报详情页本来就贴着 220 KB HTML 上限（164 个页面在 210–220 KB 区间），
+  本轮服务端渲染分享栏 +2.9 KB 后，有 4 个页面越过上限，按项目机制登记进
+  `scripts/page-weight-baseline.json` 并写了人工理由。**这说明预算早就该从源头砍**：
+  一张日报页有 17 个反馈按钮，每个的 SSR 标记带两个 SVG 约 1.2 KB，合计约 20 KB，
+  比分享栏大一个量级 —— 下一轮就是它。
 - **仍未解（需你/服务器）**：nginx 三项、39 期/300 条摘要缺口（需 LLM key）、内联 CSS 外链化、
   `/opt/wind-recap` 副本同步、giscus App 安装。
 
@@ -814,3 +819,19 @@
   JetBrains Mono 只用于日期与小标签，子集化大约能省 25–30 KB/页；属于可选优化，不进本轮。
 - **仍未解（需你/服务器）**：nginx 三项、39 期/300 条摘要（需 LLM key）、内联 CSS 外链化、
   `/opt/wind-recap` 副本同步、giscus App 安装、留言时间是否统一北京时间。
+
+## 第 224 轮
+
+- **改（性能）**：`ShareSidebar.tsx` → `ShareSidebar.astro`（原生 script，无 React）。
+  日报/复盘详情页首屏脚本 228 KB → **7 KB**，手机端总重量 532 KB → **314 KB**；
+  388 个日报 + 126 个复盘 + 英文镜像全部受益。收益来自"整页不再需要 React"（`client:idle` 会连渲染器一起拉），
+  不是组件本身变快。行为逐项验证：滚过 400px 出现、复制换对勾且写入剪贴板、二维码弹出并把焦点放到关闭按钮、
+  Esc 关闭、回顶部、390px 下不显示。a11y 4/4 通过，交互 22/22 通过。
+- **加（测试）**：`tests/share-sidebar-vanilla.test.ts`（3 条）—— 旧的 `.tsx` 必须不存在、
+  文章页不许出现 `client:idle`/`client:load`、英文页仍传 `lang="en"`。
+- **自伤（已修）**：删掉 `.tsx` 后忘记改导入后缀，`@/components/ShareSidebar` 让整次构建失败
+  （`vite: Rolldown failed to resolve import`）。项目里 `.astro` 组件一律显式写后缀，这条没有文档化 —— 现在写进测试。
+- **观察（未改）**：`/invest/[slug]` 复盘详情页仍是 `client:idle`（`client:load` 的 `LiveHoldings` 等），
+  单页脚本 262 KB；`/invest/` 首页同理。要降下来得逐个改成 `visible`，属于下一轮。
+- **仍未解（需你/服务器）**：nginx 三项、39 期/300 条摘要（需 LLM key）、内联 CSS 外链化、
+  `/opt/wind-recap` 副本同步、giscus App 安装、留言时间是否统一北京时间、字体子集化（省 25–30 KB/页）。

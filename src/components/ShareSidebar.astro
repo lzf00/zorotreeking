@@ -1,0 +1,221 @@
+---
+/**
+ * 文章页浮动分享栏（仅 xl 屏显示）。
+ *
+ * 第 224 轮：从 React 岛改成 Astro + 一段原生 script。
+ * 原因不是这个组件慢，而是它是**整页唯一一个 `client:idle` 的岛** ——
+ * Astro 会为了它把 202 KB 的 React 运行时（gzip 62 KB）在 idle 时拉下来，
+ * 而日报/复盘页的其余岛（星标、点赞）都是 `client:visible`，本来可以等读者滚到再加载。
+ * 也就是说：一个分享栏，让 388 个日报页 + 126 个复盘页在加载完后仍要下载整包 React。
+ *
+ * 行为与样式保持原样：四个按钮（复制链接 / Twitter / 微信二维码 / 回顶部）、
+ * 滚过 400px 才出现、复制成功换成对勾、微信弹二维码。新增了 Esc 关闭与焦点归还。
+ */
+interface Props {
+  title: string;
+  url: string;
+  lang?: "zh" | "en";
+}
+const { title, url, lang = "zh" } = Astro.props;
+
+const COPY = {
+  zh: {
+    share: "分享文章",
+    copied: "已复制",
+    copy: "复制链接",
+    twitter: "分享到 Twitter",
+    wechat: "微信扫码分享",
+    wechatShort: "微信分享",
+    top: "回到顶部",
+    close: "关闭",
+    prompt: "复制链接",
+    scan: "手机微信【发现】→【扫一扫】",
+  },
+  en: {
+    share: "Share this article",
+    copied: "Copied",
+    copy: "Copy link",
+    twitter: "Share on Twitter",
+    wechat: "Scan the QR code to share on WeChat",
+    wechatShort: "Share on WeChat",
+    top: "Back to top",
+    close: "Close",
+    prompt: "Copy link",
+    scan: "In WeChat: Discover → Scan",
+  },
+} as const;
+const copy = COPY[lang];
+const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`;
+const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(url)}`;
+---
+
+<aside
+  class="share-rail hidden xl:flex"
+  aria-label={copy.share}
+  data-share-url={url}
+  data-copied-label={copy.copied}
+  data-copy-label={copy.copy}
+>
+  <button type="button" class="share-btn" data-share="copy" aria-label={copy.copy} title={copy.copy}>
+    <svg class="share-icon-copy" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+    <svg class="share-icon-done" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+  </button>
+
+  <a class="share-btn" href={twitterUrl} target="_blank" rel="noopener noreferrer" aria-label={copy.twitter} title={copy.twitter}>
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+  </a>
+
+  <button type="button" class="share-btn" data-share="wechat" aria-label={copy.wechat} title={copy.wechatShort}>
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8.5 13.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm7 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2zM12 2C6.48 2 2 5.84 2 10.5c0 2.65 1.46 5.02 3.77 6.58l-.49 2.27c-.06.27.23.5.48.36L8.4 18.5c1.13.27 2.34.42 3.6.42 5.52 0 10-3.84 10-8.5S17.52 2 12 2z"/></svg>
+  </button>
+
+  <button type="button" class="share-btn" data-share="top" aria-label={copy.top} title={copy.top}>
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg>
+  </button>
+</aside>
+
+<div class="share-qr" role="dialog" aria-modal="true" aria-label={copy.wechatShort} hidden>
+  <div class="share-qr-card">
+    <div class="share-qr-title">{copy.wechatShort}</div>
+    <div class="share-qr-hint">{copy.scan}</div>
+    <div class="share-qr-code">
+      <img width="200" height="200" alt="QR code" src={qrSrc} loading="lazy" />
+    </div>
+    <div class="share-qr-url">{url}</div>
+    <button type="button" class="share-qr-close" data-share="close">{copy.close}</button>
+  </div>
+</div>
+
+<style>
+  .share-rail {
+    position: fixed;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%) translateX(80px);
+    opacity: 0;
+    transition: transform 0.25s ease-out, opacity 0.25s;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 30;
+    pointer-events: none;
+  }
+  .share-rail.is-visible {
+    transform: translateY(-50%) translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .share-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .share-icon-done { display: none; }
+  .share-btn.is-copied .share-icon-copy { display: none; }
+  .share-btn.is-copied .share-icon-done { display: block; }
+
+  .share-qr {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .share-qr[hidden] { display: none; }
+  .share-qr-card {
+    background: var(--bg);
+    border-radius: 16px;
+    padding: 24px;
+    max-width: 320px;
+    width: calc(100% - 32px);
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  }
+  .share-qr-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .share-qr-hint { font-size: 12px; color: var(--text-tertiary); margin-bottom: 16px; }
+  .share-qr-code { background: white; padding: 12px; border-radius: 12px; display: inline-block; }
+  .share-qr-url { margin-top: 14px; font-size: 11px; color: var(--text-tertiary); word-break: break-all; }
+  .share-qr-close {
+    margin-top: 16px;
+    padding: 6px 14px;
+    font-size: 12px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: transparent;
+    cursor: pointer;
+  }
+</style>
+
+<script>
+  // 一次扫描整页（同一页只会有一个分享栏），不做全局状态，也不引任何依赖。
+  const rail = document.querySelector<HTMLElement>(".share-rail");
+  const qr = document.querySelector<HTMLElement>(".share-qr");
+  if (rail) {
+    const url = rail.dataset.shareUrl ?? location.href;
+    const copiedLabel = rail.dataset.copiedLabel ?? "Copied";
+    const copyLabel = rail.dataset.copyLabel ?? "Copy link";
+
+    // 滚过首屏才出现：用 rAF 节流的 scroll，避免长文滚动时每帧都改样式
+    let ticking = false;
+    const sync = () => {
+      rail.classList.toggle("is-visible", (window.scrollY || 0) > 400);
+      ticking = false;
+    };
+    window.addEventListener("scroll", () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(sync);
+    }, { passive: true });
+    sync();
+
+    const copyBtn = rail.querySelector<HTMLButtonElement>('[data-share="copy"]');
+    copyBtn?.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(url);
+      } catch {
+        window.prompt(copyLabel, url);
+        return;
+      }
+      copyBtn.classList.add("is-copied");
+      copyBtn.title = copiedLabel;
+      window.setTimeout(() => {
+        copyBtn.classList.remove("is-copied");
+        copyBtn.title = copyLabel;
+      }, 1800);
+    });
+
+    rail.querySelector('[data-share="top"]')?.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    let restoreTo: HTMLElement | null = null;
+    const closeQr = () => {
+      if (!qr) return;
+      qr.hidden = true;
+      restoreTo?.focus();
+      restoreTo = null;
+    };
+    const openQr = () => {
+      if (!qr) return;
+      restoreTo = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+      qr.hidden = false;
+      qr.querySelector<HTMLButtonElement>('[data-share="close"]')?.focus();
+    };
+    rail.querySelector('[data-share="wechat"]')?.addEventListener("click", openQr);
+    qr?.addEventListener("click", (event) => {
+      if (event.target === qr) closeQr();
+    });
+    qr?.querySelector('[data-share="close"]')?.addEventListener("click", closeQr);
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && qr && !qr.hidden) closeQr();
+    });
+  }
+</script>

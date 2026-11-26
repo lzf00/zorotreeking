@@ -11,7 +11,7 @@ import { zhCounterpartPath } from "@/lib/i18n-leaks";
 import Giscus from "@/components/Giscus.astro";
 import PostFooter from "@/components/PostFooter.astro";
 import ReadingProgress from "@/components/ReadingProgress.astro";
-import ShareSidebar from "@/components/ShareSidebar";
+import ShareSidebar from "@/components/ShareSidebar.astro";
 import SubscribeCTA from "@/components/SubscribeCTA.astro";
 import Breadcrumb from "@/components/Breadcrumb.astro";
 import KeyboardNav from "@/components/KeyboardNav.astro";
@@ -84,7 +84,7 @@ const untranslated = untranslatedNotice(cjkLeaks(entry.body ?? ""));
     nextHref={next ? pathWithLang(`/ai/${next.translationKey}`, lang) : undefined}
     sectionHref={pathWithLang("/ai", lang)} />
   <ShareSidebar lang="en" title={entry.data.title}
-    url={new URL(Astro.url.pathname, Astro.site).toString()} client:idle />
+    url={new URL(Astro.url.pathname, Astro.site).toString()} />
   <TOC headings={headings} label="Contents" />
   <article class="max-w-2xl mx-auto px-6 sm:px-8 pt-12 sm:pt-20 pb-24 sm:pb-32">
 
