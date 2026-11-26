@@ -102,6 +102,30 @@ const SCENARIOS = [
     },
   },
   {
+    // 第 220 轮：`/search/` 页面曾经只渲染 10 条，却写着「查看全部结果」。
+    // 现在首屏 20 条、可加载更多，条数照实写。
+    name: "搜索页：条数照实写、能加载更多",
+    url: "/search/?q=" + encodeURIComponent("ETF"),
+    async run({ page, fail }) {
+      await page.waitForTimeout(2600);
+      const first = await page.locator('[role="option"]').count();
+      if (first < 2) return fail(`搜索页没有结果（拿到 ${first} 条），没法测分页`);
+      const status = (await page.locator('[role="status"]').first().textContent())?.trim() ?? "";
+      if (!/\d+ 条结果/.test(status)) return fail(`状态行没写条数：「${status}」`);
+
+      const more = page.locator("button", { hasText: "加载更多" }).first();
+      if ((await more.count()) === 0) {
+        // 结果很少时不该出现这个按钮；这种情况只看首屏是否 ≤ 20
+        if (first > 20) return fail(`首屏 ${first} 条超过 20，且没有"加载更多"按钮`);
+        return;
+      }
+      await more.click();
+      await page.waitForTimeout(1200);
+      const after = await page.locator('[role="option"]').count();
+      if (after <= first) return fail(`点了"加载更多"条数没变（${first} → ${after}）`);
+    },
+  },
+  {
     name: "搜索弹窗（英文）",
     url: "/en/",
     async run({ page, fail, openSearch }) {

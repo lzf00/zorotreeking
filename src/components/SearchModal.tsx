@@ -46,7 +46,9 @@ const COPY = {
     idle: "输入关键词开始搜索（也可以按 / 唤起浮层）",
     idleModal: "输入关键词开始搜索 · 按 / 唤起 · Esc 关闭",
     results: (n: number) => `${n} 条结果`,
-    more: "{copy.more}",
+    shown: (shown: number, total: number) => `已显示 ${shown} / ${total} 条`,
+    loadMore: "加载更多",
+    more: (n: number) => `在搜索页查看全部 ${n} 条结果 →`,
   },
   en: {
     resultList: "Search results",
@@ -58,9 +60,15 @@ const COPY = {
     idle: "Type to search (press / anywhere to open the overlay)",
     idleModal: "Type to search · press / to open · Esc to close",
     results: (n: number) => `${n} result${n === 1 ? "" : "s"}`,
-    more: "See all results on the search page →",
+    shown: (shown: number, total: number) => `Showing ${shown} of ${total}`,
+    loadMore: "Show more",
+    more: (n: number) => `See all ${n} results on the search page →`,
   },
 } as const;
+
+/** 浮层只给 10 条；`/search/` 页首屏 20 条，之后可以"加载更多"。 */
+const MODAL_SIZE = 10;
+const PAGE_SIZE = 20;
 
 type Lang = keyof typeof COPY;
 
@@ -203,6 +211,31 @@ export default function SearchModal({ initialOpen = false, initialQuery = "", va
     setActiveIndex(-1);
   }, [query]);
 
+  /**
+   * 「全部结果」不能只给 10 条（第 220 轮）。
+   *
+   * `/search/` 页面上那句「在搜索页查看全部结果 →」把读者带过来，结果还是只显示前 10 条，
+   * 状态行还写着「10 条结果」—— 搜「英伟达」实际 83 条，等于对读者说了假话。
+   * 现在页面模式一次取 20 条，可以点「加载更多」继续；状态行改成「已显示 20 / 83 条」。
+   */
+  const [total, setTotal] = useState<number | null>(null);
+  const handlesRef = useRef<Array<{ id: string; data: () => Promise<Result> }>>([]);
+  const [pendingMore, setPendingMore] = useState(false);
+
+  async function loadMore() {
+    const next = handlesRef.current.slice(results.length, results.length + PAGE_SIZE);
+    if (next.length === 0) return;
+    setPendingMore(true);
+    try {
+      const items = await Promise.all(next.map((handle) => handle.data()));
+      setResults((current) => [...current, ...items]);
+    } catch (error) {
+      console.warn("[search] load more failed", error);
+    } finally {
+      setPendingMore(false);
+    }
+  }
+
   // 搜索
   useEffect(() => {
     if (!open || !query.trim()) {
@@ -223,8 +256,13 @@ export default function SearchModal({ initialOpen = false, initialQuery = "", va
           await mod.init?.();
         }
         const search = await window.pagefind!.search(query);
-        const items = await Promise.all(search.results.slice(0, 10).map((r) => r.data()));
-        if (!cancelled) setResults(items);
+        const take = isPage ? PAGE_SIZE : MODAL_SIZE;
+        handlesRef.current = search.results;
+        const items = await Promise.all(search.results.slice(0, take).map((r) => r.data()));
+        if (!cancelled) {
+          setResults(items);
+          setTotal(search.results.length);
+        }
       } catch (e) {
         console.warn("[search] failed", e);
         if (!cancelled) setResults([]);
@@ -233,7 +271,7 @@ export default function SearchModal({ initialOpen = false, initialQuery = "", va
       }
     })();
     return () => { cancelled = true; };
-  }, [open, query]);
+  }, [open, query, isPage]);
 
   if (!open) return null;
 
@@ -267,10 +305,15 @@ export default function SearchModal({ initialOpen = false, initialQuery = "", va
         </div>
         <div style={listStyle}>
           <div role="status" aria-live="polite" style={srOnlyStyle}>
-            {loading ? copy.searching : query ? copy.results(results.length) : ""}
+            {loading ? copy.searching : query ? copy.results(total ?? results.length) : ""}
           </div>
           {loading && <div style={emptyStyle}>{copy.searching}</div>}
           {!loading && query && results.length === 0 && emptyBlock(query, lang, "page")}
+          {!loading && query && results.length > 0 && total !== null && (
+            <div className="px-4 pb-1 text-[11.5px] text-[var(--text-tertiary)]" style={resultCountStyle}>
+              {copy.shown(results.length, total)}
+            </div>
+          )}
           {!loading && !query && <div style={emptyStyle}>{copy.idle}</div>}
           {/* 第 219 轮：listbox 里只能放 option（axe 的 aria-required-children），
               所以状态文案留在外面，只有结果本身进 listbox。 */}
@@ -300,6 +343,18 @@ export default function SearchModal({ initialOpen = false, initialQuery = "", va
             </a>
           ))}
           </div>
+          {!loading && query && total !== null && results.length < total && (
+            <div style={{ padding: "10px 16px" }}>
+              <button
+                type="button"
+                onClick={loadMore}
+                disabled={pendingMore}
+                style={loadMoreStyle}
+              >
+                {pendingMore ? copy.searching : `${copy.loadMore}（${Math.min(PAGE_SIZE, total - results.length)}）`}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -352,7 +407,7 @@ export default function SearchModal({ initialOpen = false, initialQuery = "", va
               style={moreStyle}
               onClick={() => setOpen(false)}
             >
-              在搜索页查看全部结果 →
+              {copy.more(total ?? results.length)}
             </a>
           )}
           {/* 第 219 轮：listbox 里只能放 option（axe aria-required-children），状态与入口留在外面 */}
@@ -437,6 +492,15 @@ const resultStyle: React.CSSProperties = {
 const resultKindStyle: React.CSSProperties = {
   fontSize: 10.5, letterSpacing: "0.08em", textTransform: "uppercase",
   color: "var(--text-tertiary, #9ca3af)", marginBottom: 2, fontFamily: "var(--font-mono, ui-monospace, monospace)",
+};
+const resultCountStyle: React.CSSProperties = {
+  fontFamily: "var(--font-mono, ui-monospace, monospace)",
+};
+const loadMoreStyle: React.CSSProperties = {
+  width: "100%", padding: "9px 12px", borderRadius: 10, cursor: "pointer",
+  fontFamily: "inherit", fontSize: 13,
+  border: "1px solid var(--border-soft, #e5e7eb)",
+  background: "var(--bg-soft, #f9fafb)", color: "var(--text, #111827)",
 };
 const resultActiveStyle: React.CSSProperties = {
   background: "var(--bg-soft, #f3f4f6)",

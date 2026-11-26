@@ -61,3 +61,26 @@ test("组件真的接上了：listbox/option/activedescendant 与按键处理（
   const smoke = await readFile(new URL("../scripts/check-interactions.mjs", import.meta.url), "utf8");
   assert.match(smoke, /搜索：↓ 选结果、Enter 打开/);
 });
+
+test("「查看全部结果」不能说假话：页面模式首屏 20 条、可加载更多、条数照实写（第 220 轮）", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const src = await readFile(new URL("../src/components/SearchModal.tsx", import.meta.url), "utf8");
+
+  // 浮层 10 条，搜索页首屏 20 条
+  assert.match(src, /const MODAL_SIZE = 10;/);
+  assert.match(src, /const PAGE_SIZE = 20;/);
+  assert.match(src, /const take = isPage \? PAGE_SIZE : MODAL_SIZE;/);
+
+  // 状态行与「已显示 x / 共 y 条」要用真实总数，不能用"已渲染条数"冒充
+  assert.match(src, /copy\.results\(total \?\? results\.length\)/, "状态行要用搜索返回的真实总数");
+  assert.match(src, /copy\.shown\(results\.length, total\)/);
+  assert.match(src, /copy\.more\(total \?\? results\.length\)/, "跳转文案要写真实条数");
+  assert.match(src, /async function loadMore\(/, "要能继续加载，否则'全部结果'仍是空话");
+  assert.match(src, /handlesRef\.current\.slice\(results\.length/);
+
+  // 两种语言都要有这三条文案
+  for (const key of ["shown", "loadMore", "more"]) {
+    const hits = src.split(`${key}:`).length - 1;
+    assert.ok(hits >= 2, `文案 ${key} 中文英文都要有`);
+  }
+});
