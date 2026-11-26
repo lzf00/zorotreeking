@@ -37,7 +37,12 @@ test("声明是一句完整的话，且不冒充人工翻译", () => {
 
 test("judge：英文文章缺声明 / 缺 translationOfWork 都要报；中文页误标也要报", () => {
   const good = judge([
-    { route: "/en/ai/digest-2026-11-25/", html: page("/en/ai/digest-2026-11-25/", ',"translationOfWork":{"@id":"/ai/digest-2026-11-25/"}') + '<p data-machine-translation="1"></p>' },
+    {
+      route: "/en/ai/digest-2026-11-25/",
+      html:
+        page("/en/ai/digest-2026-11-25/", ',"translationOfWork":{"@id":"/ai/digest-2026-11-25/"}') +
+        '<p data-machine-translation="1" data-pagefind-ignore></p>',
+    },
   ]);
   assert.deepEqual(good.violations, []);
   assert.equal(good.checked, 1);
@@ -46,10 +51,16 @@ test("judge：英文文章缺声明 / 缺 translationOfWork 都要报；中文�
   assert.equal(missingNotice.violations.length, 1);
   assert.match(missingNotice.violations[0].problem, /没有机翻声明/);
 
-  const missingWork = judge([{ route: "/en/ai/foo/", html: page("x") + '<p data-machine-translation="1"></p>' }]);
+  const indexed = judge([{ route: "/en/ai/foo/", html: page("x", ',"translationOfWork":{}') + '<p data-machine-translation="1"></p>' }]);
+  assert.equal(indexed.violations.length, 1);
+  assert.match(indexed.violations[0].problem, /搜索索引/);
+
+  const missingWork = judge([{ route: "/en/ai/foo/", html: page("x") + '<p data-machine-translation="1" data-pagefind-ignore></p>' }]);
   assert.match(missingWork.violations[0].problem, /translationOfWork/);
 
-  const zhMislabeled = judge([{ route: "/ai/foo/", html: page("x") + '<p data-machine-translation="1"></p>' }]);
+  const zhMislabeled = judge([
+    { route: "/ai/foo/", html: page("x") + '<p data-machine-translation="1" data-pagefind-ignore></p>' },
+  ]);
   assert.equal(zhMislabeled.violations.length, 1);
   assert.match(zhMislabeled.violations[0].problem, /中文原文页被标成机翻/);
 });
@@ -84,4 +95,14 @@ test("articleNodes / hasNotice 读真实 HTML 片段", () => {
   assert.equal(articleNodes('<script type="application/ld+json">{"@type":"WebSite"}</script>').length, 0);
   assert.equal(hasNotice('<p data-machine-translation="1">'), true);
   assert.equal(hasNotice('<p data-machine-translation="0">'), false);
+});
+
+test("机翻声明不进搜索索引", async () => {
+  const { noticeIsIgnored } = await import("../scripts/check-translation-notice.mjs");
+  assert.equal(noticeIsIgnored('<p data-machine-translation="1" data-pagefind-ignore>…</p>'), true);
+  assert.equal(noticeIsIgnored('<p data-machine-translation="1">…</p>'), false);
+  assert.equal(noticeIsIgnored("<p>无</p>"), null);
+
+  const component = await read("src/components/TranslationNotice.astro");
+  assert.match(component, /data-pagefind-ignore/);
 });

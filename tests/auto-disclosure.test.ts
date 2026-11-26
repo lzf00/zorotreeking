@@ -59,8 +59,20 @@ test("闸门脚本的前缀清单和源码规则不许各写一份、各漂一�
 });
 
 test("judge：漏声明、以及反过来把人的内容标成机器产出，都要报", () => {
-  const ok = { route: "/ai/digest-2026-11-25/", html: '<p data-auto-disclosure="digest"></p>' + '<script type="application/ld+json">{"@type":"Article","contributor":{}}</script>' };
+  const ok = {
+    route: "/ai/digest-2026-11-25/",
+    html:
+      '<p data-auto-disclosure="digest" data-pagefind-ignore></p>' +
+      '<script type="application/ld+json">{"@type":"Article","contributor":{}}</script>',
+  };
   assert.deepEqual(judge([ok]), []);
+
+  // 声明在，但没排除索引 → 单独报一条
+  const indexed = judge([
+    { route: "/ai/digest-2026-11-25/", html: '<p data-auto-disclosure="digest"></p><script type="application/ld+json">{"@type":"Article","contributor":{}}</script>' },
+  ]);
+  assert.equal(indexed.length, 1);
+  assert.match(indexed[0].problem, /搜索索引/);
 
   const missing = judge([{ route: "/ai/digest-2026-11-25/", html: "<p>没有声明</p>" }]);
   assert.equal(missing.length, 2, "既缺声明也缺 contributor");
@@ -93,4 +105,16 @@ test("BaseLayout 给自动页面加 contributor，但不改作者（人是发布
   assert.match(src, /autoKindOfPath/);
   assert.match(src, /contributor: autoContributor/);
   assert.match(src, /name: "Zifei Liu"/, "作者仍是站长：他对发布负责");
+});
+
+test("声明块不进搜索索引（第 212 轮：样板文字会把命中片段挤成免责声明）", async () => {
+  const { disclosureIsIgnored } = await import("../scripts/check-auto-disclosure.mjs");
+  const html = '<p data-auto-disclosure="digest" data-pagefind-ignore class="x">…</p>';
+  assert.equal(disclosureIsIgnored(html), true);
+  assert.equal(disclosureIsIgnored('<p data-auto-disclosure="digest">…</p>'), false);
+  assert.equal(disclosureIsIgnored("<p>没有声明</p>"), null);
+
+  // 组件源码里必须有这个属性，否则下一版构建会静默把样板塞回索引
+  const component = await read("src/components/AutoDisclosure.astro");
+  assert.match(component, /data-pagefind-ignore/);
 });

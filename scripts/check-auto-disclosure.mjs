@@ -53,6 +53,20 @@ export function hasContributor(html) {
   return false;
 }
 
+/**
+ * 声明块必须是「搜不到」的（第 212 轮）。
+ *
+ * 声明在 1068 个页面上是同一句话。之前它被 pagefind 索引了，于是：
+ *   · 搜「自动整理」时，命中片段显示的是那句声明，而不是文章内容；
+ *   · 一句样板说明凭空变成 1068 个页面共有的关键词。
+ * 加 data-pagefind-ignore 后样板不再入索引（实测「措辞可能有偏移」从有结果变成 0）。
+ */
+export function disclosureIsIgnored(html) {
+  const m = /<[a-z]+[^>]*data-auto-disclosure="[a-z]+"[^>]*>/i.exec(html);
+  if (!m) return null;
+  return /data-pagefind-ignore/.test(m[0]);
+}
+
 /** 纯函数：给定一批 {route, html} 给出违规列表 */
 export function judge(pages) {
   const violations = [];
@@ -62,6 +76,9 @@ export function judge(pages) {
     const contributor = hasContributor(html);
     if (auto && !kind) violations.push({ route, problem: "自动产出但页面没有声明" });
     if (auto && !contributor) violations.push({ route, problem: "自动产出但 JSON-LD 没有 contributor" });
+    if (auto && disclosureIsIgnored(html) === false) {
+      violations.push({ route, problem: "自动声明进了搜索索引（会污染命中片段，缺 data-pagefind-ignore）" });
+    }
     if (!auto && kind) violations.push({ route, problem: "人写的内容被标成自动生成" });
   }
   return violations;

@@ -40,6 +40,13 @@ export function hasNotice(html) {
   return /data-machine-translation="1"/.test(html);
 }
 
+/** 机翻声明同样不许进搜索索引（第 212 轮，理由见 check-auto-disclosure.mjs） */
+export function noticeIsIgnored(html) {
+  const m = /<[a-z]+[^>]*data-machine-translation="1"[^>]*>/i.exec(html);
+  if (!m) return null;
+  return /data-pagefind-ignore/.test(m[0]);
+}
+
 export function judge(pages) {
   const violations = [];
   let checked = 0;
@@ -50,6 +57,9 @@ export function judge(pages) {
     if (en) {
       checked += 1;
       if (!hasNotice(html)) violations.push({ route, problem: "英文文章页没有机翻声明" });
+      if (noticeIsIgnored(html) === false) {
+        violations.push({ route, problem: "机翻声明进了搜索索引（缺 data-pagefind-ignore）" });
+      }
       if (!articles.some((a) => a.translationOfWork)) {
         violations.push({ route, problem: "英文文章页 JSON-LD 没有 translationOfWork" });
       }
