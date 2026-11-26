@@ -1,4 +1,5 @@
 ---
+import FeedbackIcons from "@/components/FeedbackIcons.astro";
 import { siteDateString } from "@/lib/site-date";
 import { getCollection, render } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
@@ -119,7 +120,8 @@ const coverageText = digestCoverageInfo ? coverageNotice(digestCoverageInfo, lan
           {coverageText}
         </p>
       )}
-      <Content />
+      <FeedbackIcons />
+    <Content />
     </div>
 
     <div class="mt-24 pt-12 border-t border-zinc-100 dark:border-zinc-800">

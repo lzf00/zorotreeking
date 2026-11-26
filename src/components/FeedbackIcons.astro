@@ -1,0 +1,36 @@
+---
+/**
+ * 反馈按钮的图标精灵（第 225 轮）。
+ *
+ * 一张日报页有 17 个反馈按钮（MDX 里逐个写的），每个按钮的 `<svg>` 里都内联一份
+ * 完整的 path `d`：一对按钮约 900 字节，17 对就是 **21.8 KB / 页**，占页面 10.7%。
+ * 这些路径每个页面都一模一样 —— 属于"本该只出现一次的东西出现了 17 次"。
+ *
+ * 所以把两个 path 提到一个隐藏的 `<symbol>` 里，每个页面渲染一次；
+ * 按钮侧只留 `<use href="#fb-icon-like">`（约 60 字节）。
+ *
+ * 用法：任何渲染 FeedbackButtons 的页面模板必须包含一次本组件，
+ * 否则图标会静默消失（没有报错、没有占位），所以 tests/feedback-icons.test.ts 会盯着这件事。
+ */
+---
+
+<svg class="fb-sprite" width="0" height="0" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="fb-icon-like" viewBox="0 0 24 24">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+    </symbol>
+    <symbol id="fb-icon-dislike" viewBox="0 0 24 24">
+      <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17" />
+    </symbol>
+  </defs>
+</svg>
+
+<style>
+  /* 精灵本身不占位：宽高 0 + 绝对定位，避免在某些浏览器上撑出一行空白 */
+  .fb-sprite {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+  }
+</style>

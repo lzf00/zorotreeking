@@ -113,11 +113,11 @@ export default function FeedbackButtons({ slug, align = "right", lang = "zh" }: 
         aria-label={copy.like}
         title={copy.like}
       >
-        <svg width="13" height="13" viewBox="0 0 24 24"
+        <svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"
           fill={likeActive ? "#dc2626" : "none"}
           stroke={likeActive ? "#dc2626" : "currentColor"}
           strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+          <use href="#fb-icon-like" />
         </svg>
         {likes > 0 && <span className="fb-num">{likes}</span>}
       </button>
@@ -135,11 +135,11 @@ export default function FeedbackButtons({ slug, align = "right", lang = "zh" }: 
         aria-label={copy.dislike}
         title={copy.dislike}
       >
-        <svg width="13" height="13" viewBox="0 0 24 24"
+        <svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"
           fill={dislikeActive ? "#525252" : "none"}
           stroke={dislikeActive ? "#525252" : "currentColor"}
           strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17" />
+          <use href="#fb-icon-dislike" />
         </svg>
         {dislikes > 0 && <span className="fb-num">{dislikes}</span>}
       </button>

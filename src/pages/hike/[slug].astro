@@ -1,4 +1,5 @@
 ---
+import FeedbackIcons from "@/components/FeedbackIcons.astro";
 import { siteDateString } from "@/lib/site-date";
 import { getCollection, render } from "astro:content";
 import { promises as fs } from "node:fs";
@@ -92,7 +93,8 @@ const diffLabel = { easy: "轻松", moderate: "中等", hard: "困难", expert: 
 
     {(entry.body ?? "").trim().length > 0 && (
       <div class="prose prose-neutral dark:prose-invert max-w-none mt-8 prose-headings:tracking-tight prose-a:text-section-hike">
-        <Content />
+        <FeedbackIcons />
+    <Content />
       </div>
     )}
     <FeedbackButtons slug={`hike/${entry.data.translationKey}`} client:idle />

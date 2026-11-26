@@ -835,3 +835,20 @@
   单页脚本 262 KB；`/invest/` 首页同理。要降下来得逐个改成 `visible`，属于下一轮。
 - **仍未解（需你/服务器）**：nginx 三项、39 期/300 条摘要（需 LLM key）、内联 CSS 外链化、
   `/opt/wind-recap` 副本同步、giscus App 安装、留言时间是否统一北京时间、字体子集化（省 25–30 KB/页）。
+
+## 第 225 轮
+
+- **改（体积）**：反馈按钮图标从内联 path 改成 `<symbol>` + `<use>` 精灵。
+  日报页 HTML −3.3 KB（17 个岛 × 200 B），4 个越线的英文日报页回到 220 KB 预算内，
+  上一轮临时登记的 4 条基线已删除（闸门恢复严格）。
+  新增 `src/components/FeedbackIcons.astro`；8 个渲染 `<Content />` 的模板各带一次精灵。
+- **加（测试）**：`tests/feedback-icons.test.ts`（3 条）—— 按钮必须走 `<use>` 且不再内联 path、
+  每个正文模板必须 import 并渲染一次精灵、精灵每页只能出现一次。
+- **自伤（已修）**：第一版按"模板 import 了 FeedbackButtons"找插入点，但日报页不 import（按钮写在 MDX 里），
+  脚本静默跳过 → `<use>` 指向不存在的 symbol，浏览器不报错、只是画不出图标。
+  改成"凡渲染 `<Content />` 的模板都插"，并用测试锁死。
+- **观察（仍然大）**：反馈岛单个仍约 1.1 KB，其中约 230 B 是 `astro-island` 的 props JSON；
+  17 个岛合计 18.9 KB。彻底解决要把 FeedbackButtons 从 React 换成 Astro/原生（下一轮），
+  那样日报页只剩 StarRating 一个 React 岛。
+- **仍未解（需你/服务器）**：nginx 三项、39 期/300 条摘要（需 LLM key）、内联 CSS 外链化、
+  `/opt/wind-recap` 副本同步、giscus App 安装、留言时区、字体子集化。
