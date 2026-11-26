@@ -1,0 +1,179 @@
+---
+lang: zh
+translationKey: digest-2026-11-26
+title: "AI 每日精选 · 2026-11-26"
+description: "17 篇论文 · 多源聚合 + AI 摘要"
+date: 2026-11-26
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, lil-log]
+category: paper
+cover: "/photos/uploads/baokemeng/baokemeng-35.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI、DeepMind公布多项前沿成果，覆盖蛋白设计、地外行星搜索、量子算法等领域</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face发布多篇AI新论文，涉视觉追踪、空间感知、机器人世界模型等方向</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">国产AI落地成果丰富，含黎曼猜想证明代码精简、超写实生图、低门槛AI短片工具</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📈技术突破</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥大厂动态</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠基础研究</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡落地应用</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡国产进展</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2611.32351" target="_blank" rel="noopener noreferrer">LookAnything: A Foundation Model for Holistic Gaze Following</a>
+
+*HF ★ 0 · Jiayu Tang, Yuchen Zhou, Hongsheng Wu… · [HF 镜像](https://huggingface.co/papers/2611.32351)*
+
+针对现有视线跟随方法依赖头姿、深度等辅助输入、泛化性差、输出形式单一的问题，本文提出通用基础模型LookAnything，核心引入可学习视线先验查询，无需辅助输入，基于自建多任务基准HoliGaze跨域训练，支持多形式输出与多类视线任务。实验显示其性能优于33个主流视觉语言模型，比肩专用检测模型，跨域泛化与现实部署表现优异。
+
+<FeedbackButtons slug="item:arxiv-2611.32351" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.30564" target="_blank" rel="noopener noreferrer">Seeing Is Locating: Spatial Awareness and Geographic Bias in Decision Language Models</a>
+
+*HF ★ 1 · Wilson Wongso, Hada Melino Muhammad, Xiachong Lin… · [HF 镜像](https://huggingface.co/papers/2611.30564)*
+
+针对输出标签分布的决策大模型空间感知能力、地理偏差尚不明确的问题，该研究构建了含地理感知图像分类、地点多主题评分两类任务的多模态评测基准GeoDecisions。评测发现模型空间感知需依赖视觉输入，仅文本坐标信息不足，且存在显著地理偏差，对低社会经济水平地区评分更低。研究还提出免训练优化方案，可提升空间感知且不明显加剧偏差。
+
+<FeedbackButtons slug="item:arxiv-2611.30564" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.32393" target="_blank" rel="noopener noreferrer">Fractal Neural Synthesis: Constant-Storage Procedural Weight Derivation via Complex Quadratic Boundary Dynamics</a>
+
+*HF ★ 1 · Volkan Dagli, Zerrin Dagli, Daghan Dagli · [HF 镜像](https://huggingface.co/papers/2611.32393)*
+
+针对传统神经网络参数量大、闪存占用随参数线性增长，难以适配边缘微控制器的痛点，该研究提出分形神经合成架构：仅用24字节锚定在复数二次分岔边界的种子即可程序化生成隐层权重，配套专属采样设计并证明熵界。实测较INT8线性基线精度高3.6~10.8个百分点，闪存占用较Float32 MLP最高降129倍。
+
+<FeedbackButtons slug="item:arxiv-2611.32393" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.25946" target="_blank" rel="noopener noreferrer">Point Dynamics as Proxy for Robotic World Models</a>
+
+*HF ★ 1 · Dong An, Tianyu Liu, Haoran Ding… · [HF 镜像](https://huggingface.co/papers/2611.25946)*
+
+针对现有机器人世界模型交互后物体运动易失真的问题，该研究拆分动力学预测与视觉渲染环节，引入3D点动力学作为中间代理：将首帧转为3D点，经习得的点动力学模型模拟动作响应后渲染为视频。实验显示该方法可在不降低画质的前提下，将数据集及真实双臂机器人场景的物体运动误差降6%以上，动力学建模优化可有效提升世界模型保真度。
+
+<FeedbackButtons slug="item:arxiv-2611.25946" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.27404" target="_blank" rel="noopener noreferrer">Degradation of Language Models under Controlled Load: Synchronization, Rule Execution and Misfires on the Background</a>
+
+*HF ★ 0 · Hennadii Kutomanov · [HF 镜像](https://huggingface.co/papers/2611.27404)*
+
+针对大模型负载升高时性能退化成因不明的问题，该研究将退化拆分为同步偏差、规则执行错误、随机误改三类，控制文本长度、规则数量等五类变量开展替换测试，结合输出对齐与统计模型拟合退化的负载依赖规律，生成模型“性能护照”，已完成7款模型的护照构建，为神经网络细粒度行为研究提供新路径。
+
+<FeedbackButtons slug="item:arxiv-2611.27404" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/gpt-6-models-demonstrate-intrinsic-protein-design-capabilities" target="_blank" rel="noopener noreferrer">GPT-6 models demonstrate intrinsic protein-design capabilities</a>
+
+*OpenAI*
+
+最新研究证实GPT-6大模型具备原生蛋白质设计能力，无需针对生物领域做专项微调，即可通过逻辑推理、代码生成同步完成蛋白质三维结构与对应氨基酸序列的设计。实验室针对其输出的5种靶向蛋白开展验证，均检测到明确的靶点结合活性，为AI驱动大分子药物开发开辟了新路径。
+
+<FeedbackButtons slug="item:openai-blog-gpt-6-models-demonstrate-intrinsic-protein-design-capabilities" client:visible />
+
+## <a href="https://openai.com/index/searching-for-distant-planets-with-astra" target="_blank" rel="noopener noreferrer">Searching for distant planets with Astra</a>
+
+*OpenAI*
+
+该项系外行星搜寻研究中，两名业余天文研究者借助Codex代码工具与Astra行星搜索框架，挖掘NASA开普勒空间望远镜、凌日系外行星巡天卫星（TESS）的公开巡天数据，成功识别出多颗潜在系外行星候选体。这一成果证明业余研究者借助AI工具即可利用公开航天数据开展前沿探索，大幅降低了系外行星搜寻的参与门槛。
+
+<FeedbackButtons slug="item:openai-blog-searching-for-distant-planets-with-astra" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/announcements" target="_blank" rel="noopener noreferrer">Announcements</a>
+
+*Anthropic*
+
+本次公告主体为AI安全领域研发企业Anthropic，其核心研发目标是打造三类核心特性的AI系统：运行表现稳定可信的高可靠系统、决策逻辑可被人类追溯解析的可解释系统、行为路径可被人类有效引导调控的可控系统。该定位将安全可控置于研发优先级首位，为通用人工智能安全落地探索可行路径。
+
+<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+这份题为《公益投资》的公告显示，AI企业Anthropic将划出部分股份注入新设立的Anthropic公益基金，该基金采用特殊架构：持股占比会随公司规模扩张同步提升。此举意在将企业成长收益与公共利益直接绑定，为科技企业平衡商业发展与公共价值输出探索新路径。
+
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/interpreting-mass-spectra-with-google-antigravity/" target="_blank" rel="noopener noreferrer">From spectrum to structure: Identifying molecules with Mass Spec Skills for Google Antigravity</a>
+
+*Google DeepMind*
+
+本研究针对串联质谱到分子结构匹配解析的行业痛点，开发了专用工具Mass Spec Skills，适配谷歌反重力平台，可辅助科研人员自动解读串联质谱数据，直接完成对应分子的结构鉴定。该工具大幅降低了谱图解析的技术门槛，能有效提升相关研究中分子识别的效率与准确率。
+
+<FeedbackButtons slug="item:deepmind-interpreting-mass-spectra-with-google-antigravity" client:visible />
+
+## <a href="https://deepmind.google/blog/finding-faster-quantum-algorithms-with-agents-and-formal-verification/" target="_blank" rel="noopener noreferrer">Finding faster quantum algorithms with agents and formal verification</a>
+
+*Google DeepMind*
+
+该研究针对量子算法性能优化需求，创新性提出结合多智能体协同与形式化验证的技术方案，聚焦核聚变模拟、量子化学两大应用场景，对现有相关量子算法开展迭代寻优，旨在挖掘效率更优的可落地量子算法，为量子计算在硬核科研领域的效能提升提供了新的研发路径。
+
+<FeedbackButtons slug="item:deepmind-finding-faster-quantum-algorithms-with-agents-and-formal-verification" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/where-scientists-draw-the-line-on-ai-agents" target="_blank" rel="noopener noreferrer">Where scientists draw the line on AI agents</a>
+
+*Hugging Face*
+
+您目前仅提供了这篇题为《科学家对AI代理的划界立场》的论文标题，未补充对应的英文摘要正文内容，请您上传完整的摘要原文，我会按照要求为您提炼出120字左右、重点突出研究方法与核心结论的清晰中文总结。
+
+<FeedbackButtons slug="item:hf-blog-where-scientists-draw-the-line-on-ai-agents" client:visible />
+
+## <a href="https://huggingface.co/blog/ibm-research/an-indic-voice-agent-with-cuga" target="_blank" rel="noopener noreferrer">An Indic Voice Agent with CUGA</a>
+
+*Hugging Face*
+
+目前你仅提供了该论文的标题，没有附上摘要的具体正文内容，无法完成翻译提炼和120字左右的总结需求。请你补充完整这篇关于带CUGA模块的印度语语音代理论文的摘要全文，我会严格按照要求突出核心方法、实验结论，给出简洁清晰的中文总结。
+
+<FeedbackButtons slug="item:hf-blog-an-indic-voice-agent-with-cuga" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+本文梳理递归自我改进（RSI）的研究脉络：1965年I.J.古德最早提出超智能机器概念，指其可超越人类所有智力活动、自行设计更优系统实现迭代；2008年尤德考斯基明确RSI核心是AI依托现有智能优化自身认知架构的反馈闭环。当前AI落地RSI有两类路径：一是直接改写自身权重，二是优化训练管线。
+
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+
+# 量子位
+
+## <a href="https://www.qbitai.com/2026/11/512819.html" target="_blank" rel="noopener noreferrer">刚刚，黎曼猜想证明代码暴砍了99.5%！只剩7.6万行</a>
+
+*量子位*
+
+此前数学家联合Claude生成的黎曼猜想Lean形式化证明达1740万行，编译难度极高。近日Anthropic研究员Luke团队联合Claude完成精简，代码量暴砍99.5%至7.6万行，普通12核、24GB内存设备1-2小时即可完成编译。不过该证明目前仅通过机器验证，尚未经数学家通读也无配套学术论文。
+
+<FeedbackButtons slug="item:qbitai-512819" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/512748.html" target="_blank" rel="noopener noreferrer">我以为这是摄影作品，你告诉我这是最新的国产AI？！</a>
+
+*量子位*
+
+商汤科技最新开源生图模型SenseNova U1.6，可生成足以以假乱真、媲美专业摄影级的人像、风景作品，生图速度快，内容准确性、审美表现均有明显提升，支持刁钻拍摄角度、复杂场景的提示词生成，目前已在商汤小浣熊等平台及ComfyUI上线，后续将开展深度实测。
+
+<FeedbackButtons slug="item:qbitai-512748" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/512727.html" target="_blank" rel="noopener noreferrer">丢个故事就行！直出15分钟AI短片，家里二舅也能上手</a>
+
+*量子位*
+
+秘塔AI新推出“全民开机”全流程AI虚拟剧组工具，解决了过往AI视频创作需写复杂提示词、做分镜剪辑、耗时久的痛点。无需掌握专业影视、AI知识，普通人仅输入故事（支持语音），不用打磨光影资产，最快10分钟就能直出最高15分钟的高质量AI短片，效果媲美3A游戏画面，门槛极低。
+
+<FeedbackButtons slug="item:qbitai-512727" client:visible />
