@@ -402,7 +402,30 @@ test("the original Ali roadbook stays independent while retaining the complete m
   assert.match(map, /data-map-provider/);
   assert.match(map, /securitypolicyviolation/);
   assert.match(map, /高德地图 Web Worker 被 CSP 阻止/);
-  assert.match(map, /aliRoutedDayGeometry/);
+  // 第 229 轮：路线几何不再进 HTML（Astro 的 props 序列化会把数组套成二元组，
+  // 单页 props 47–84 KB，gzip 后仍占整页 20–25 KB）。改成滚到地图时取静态 JSON。
+  assert.match(map, /routedDayGeometry/, "地图仍要按几何画折线");
+  assert.match(atlas, /<AliRouteMap[^>]*dataUrl=\{`\/data\/ali-route\/\$\{dataKey\}\.json`\}/, "地图数据要按 URL 取，不许塞回 props");
+  assert.doesNotMatch(atlas, /routedDayGeometry=\{routedDayGeometry\}/, "不要再把几何当 props 传");
+  assert.doesNotMatch(map, /import \{[^}]*aliRoutedDayGeometry/, "组件不该再 import 默认几何（会和数据文件重复）");
+  assert.match(map, /fetch\(dataUrl/, "地图要自己取数据");
+  // 数据文件由构建期端点生成，key 用页面 slug
+  const registry = await readFile(new URL("../src/data/route-datasets.ts", import.meta.url), "utf8");
+  for (const key of [
+    "ali-grand-loop-2026",
+    "ali-grand-loop-ali-permit-2026",
+    "ali-grand-loop-lhasa-return-2026",
+    "ali-grand-loop-lhasa-lanzhou-2026",
+    "ali-central-loop-lhasa-lanzhou-2026",
+    "ali-central-loop-nagqu-chengdu-2026",
+    "ali-central-loop-nagqu-g317-chengdu-2026",
+    "chuanxi-loop-chengdu-2026",
+  ]) {
+    assert.match(registry, new RegExp(`"${key}":`), `数据清单缺 ${key}`);
+  }
+  const endpoint = await readFile(new URL("../src/pages/data/ali-route/[key].json.ts", import.meta.url), "utf8");
+  assert.match(endpoint, /getStaticPaths/, "端点要在构建期把 8 份数据都吐出来");
+  assert.match(endpoint, /application\/json/, "要有正确的 content-type");
   assert.match(map, /公路走向与编号/);
   assert.match(map, /重点峰体/);
   assert.match(map, /hasPermanentLabel/);

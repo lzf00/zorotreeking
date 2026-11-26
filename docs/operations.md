@@ -103,6 +103,20 @@
 | `npm run gate` | 带 `--non-blocking`，只警告不拦 |
 | `deploy.yml` | `continue-on-error: true` + annotation |
 
+## 路书地图数据：`/data/ali-route/<slug>.json`（第 229 轮）
+
+8 个路书页的地图几何不进 HTML 了，改成构建期由 `src/pages/data/ali-route/[key].json.ts`
+吐出的静态 JSON，数据源在 `src/data/route-datasets.ts`（key = 页面 slug）。
+
+```bash
+ls dist/data/ali-route/            # 构建后应有 8 个 .json
+```
+
+- 地图岛是 `client:visible`，**滚进可视区才 fetch**；不滚到地图的读者不付这 20 KB。
+- 新增线路要同时改三处：数据模块、`route-datasets.ts` 的 key、对应 Overview 的 `dataKey`。
+- 改完量一下 `gzip` 体积而不是原始 HTML：`[0,[...]]` 这种外壳压得下去，
+  真正占字节的是坐标数字（第 229 轮踩过：原始 84→50 KB，gzip 只省 1 KB）。
+
 ## 字体是自托管的，也是要裁的：`scripts/subset-fonts.py`（第 227 轮）
 
 站点自托管三份 woff2（衬线、正文 Inter、等宽 JetBrains Mono），日报页实测 101.5 KB ——

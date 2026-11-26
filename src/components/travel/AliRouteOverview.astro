@@ -15,6 +15,8 @@ import {
 } from "../../data/ali-route";
 
 interface Props {
+  /** 地图数据 key（对应 /data/ali-route/<key>.json），默认主路书 */
+  dataKey?: string;
   points?: AliRoutePoint[];
   days?: AliRouteDay[];
   mapPoints?: AliRoutePoint[];
@@ -31,6 +33,7 @@ interface Props {
 }
 
 const {
+  dataKey = "ali-grand-loop-2026",
   points = aliRoutePoints,
   days = aliRouteDays,
   mapPoints = points,
@@ -112,14 +115,10 @@ const reservationStatusClass = {
           </span>
         ))}
       </div>
-      <AliRouteMap
-        client:visible
-        points={mapPoints}
-        days={mapDays}
-        roadLabels={roadLabels}
-        routedDayGeometry={routedDayGeometry}
-        mapAriaLabel={mapAriaLabel}
-      />
+      {/* 第 229 轮：路线几何不再塞进 HTML（Astro 的 props 序列化会把数组套成二元组，
+          单页 props 47–84 KB、gzip 后仍占整页 20–25 KB）。地图滚进可视区时才去取
+          /data/ali-route/<key>.json，不滚到地图的读者一分钱不付。 */}
+      <AliRouteMap client:visible dataUrl={`/data/ali-route/${dataKey}.json`} mapAriaLabel={mapAriaLabel} />
       <div class="ali-route-atlas__legend" aria-label="地图图例">
         <span><i class="ali-route-road-swatch"></i>道路拟合</span>
         <span><i class="ali-route-day-swatch"></i>逐日路线</span>

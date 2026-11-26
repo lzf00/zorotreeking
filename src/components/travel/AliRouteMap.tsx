@@ -1,20 +1,46 @@
 import { useEffect, useRef, useState } from "react";
 import "leaflet/dist/leaflet.css";
 
-import {
-  aliRoadLabels,
-  aliRoutedDayGeometry,
-  type AliRoadLabel,
-} from "../../data/ali-road-geometry";
+import type { AliRoadLabel } from "../../data/ali-road-geometry";
 import type { AliRouteDay, AliRoutePoint, AliRoutePointKind } from "../../data/ali-route";
 import { toAmapPosition } from "../../utils/amap-coordinate";
 
 interface Props {
+  /**
+   * 路线数据（points / days / roadLabels / routedDayGeometry）的静态 JSON 地址，
+   * 由 `src/pages/data/ali-route/[key].json.ts` 在构建期生成。
+   *
+   * 为什么不作为 props 传（第 229 轮）：Astro 的 island props 序列化会把每个数组/对象包成
+   * `[类型, 值]` 二元组，单页实测 47–84 KB HTML —— gzip 后仍占整页 20–25 KB，而这些页面
+   * 整页 gzip 只有 55–80 KB。地图本来就在首屏之外（client:visible），数据也没必要跟着
+   * 首屏 HTML 一起下。改成一个 fetch，顺手还能让 8 个页面共享浏览器缓存。
+   */
+  dataUrl: string;
+  mapAriaLabel?: string;
+}
+
+interface RouteData {
   points: AliRoutePoint[];
   days: AliRouteDay[];
-  roadLabels?: AliRoadLabel[];
-  routedDayGeometry?: Record<number, [number, number][]>;
-  mapAriaLabel?: string;
+  roadLabels: AliRoadLabel[];
+  routedDayGeometry: Record<number, [number, number][]>;
+}
+
+const EMPTY_ROUTE: RouteData = { points: [], days: [], roadLabels: [], routedDayGeometry: {} };
+
+function parseRouteData(raw: string): RouteData {
+  try {
+    const parsed = JSON.parse(raw) as Partial<RouteData>;
+    return {
+      points: parsed.points ?? [],
+      days: parsed.days ?? [],
+      roadLabels: parsed.roadLabels ?? [],
+      routedDayGeometry: parsed.routedDayGeometry ?? {},
+    };
+  } catch (error) {
+    console.error("[AliRouteMap] 路线数据解析失败，地图将保持空白", error);
+    return { points: [], days: [], roadLabels: [], routedDayGeometry: {} };
+  }
 }
 
 type MapProvider = "loading" | "amap" | "osm";
@@ -459,15 +485,38 @@ async function renderOpenStreetMap(
 }
 
 export default function AliRouteMap({
-  points,
-  days,
-  roadLabels = aliRoadLabels,
-  routedDayGeometry = aliRoutedDayGeometry,
+  dataUrl,
   mapAriaLabel = "旅行路线真实底图，包含道路拟合线、公路编号、每日路线、途经城市、景点、补给点与住宿点",
 }: Props) {
   const mapElement = useRef<HTMLDivElement>(null);
   const amapLayerGroups = useRef<Partial<Record<LayerKey, AMapOverlayGroup>>>({});
   const [provider, setProvider] = useState<MapProvider>("loading");
+  const [route, setRoute] = useState<RouteData | null>(null);
+  const [loadError, setLoadError] = useState(false);
+
+  // 数据按需取：地图进入可视区、面板挂载之后才发这一个请求。
+  useEffect(() => {
+    let cancelled = false;
+    const controller = new AbortController();
+    (async () => {
+      try {
+        const response = await fetch(dataUrl, { signal: controller.signal, credentials: "same-origin" });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const raw = await response.text();
+        if (!cancelled) setRoute(parseRouteData(raw));
+      } catch (error) {
+        if (cancelled || controller.signal.aborted) return;
+        console.error("[AliRouteMap] 路线数据加载失败", error);
+        setLoadError(true);
+      }
+    })();
+    return () => {
+      cancelled = true;
+      controller.abort();
+    };
+  }, [dataUrl]);
+
+  const { points, days, roadLabels, routedDayGeometry } = route ?? EMPTY_ROUTE;
 
   useEffect(() => {
     if (!mapElement.current || points.length === 0) return;
@@ -521,11 +570,13 @@ export default function AliRouteMap({
     else group.hide();
   }
 
-  const providerLabel = provider === "amap"
-    ? "高德地图官方底图"
-    : provider === "osm"
-      ? "OpenStreetMap 备用底图"
-      : "地图正在加载";
+  const providerLabel = loadError
+    ? "路线数据加载失败，刷新页面可重试"
+    : provider === "amap"
+      ? "高德地图官方底图"
+      : provider === "osm"
+        ? "OpenStreetMap 备用底图"
+        : "地图正在加载";
 
   return (
     <div className="ali-route-map-shell" data-map-provider={provider}>

@@ -807,6 +807,34 @@ Lighthouse 不吃这一套 —— 同样的假红会从别的审计工具反复�
 同样在检查内容文件，同样会红。这一轮把两条都改成 `--non-blocking`：检查照跑、`::warning`
 注解照发、失败项照列，只是不返回非零。CI 侧本来就是 `continue-on-error`，两边终于一致。
 
+### 路书页三分之一的首屏是地图数据（第 229 轮）
+
+8 个阿里/川西路书页的 HTML gzip 是 48–80 KB，其中 **6–25 KB 是地图数据**——路线几何
+（每个坐标点、每天的分段、公路编号）作为 island props 直接写在 HTML 里。读者不滚到地图
+也照付，而且 Astro 的 props 序列化会把每个数组/对象包成 `[类型, 值]` 二元组：同一份
+37 KB JSON 变成 84 KB HTML。
+
+改成构建期生成静态 JSON（`/data/ali-route/<slug>.json`），地图岛在**滚进可视区**时才取：
+
+| 页面 | HTML gzip 改前 | 改后 | 省 |
+|---|---|---|---|
+| ali-central-loop-lhasa-lanzhou | 73.0 KB | 48.1 KB | **24.9** |
+| ali-grand-loop-lhasa-lanzhou | 73.0 KB | 50.0 KB | **23.0** |
+| ali-central-loop-nagqu-chengdu | 68.5 KB | 48.1 KB | **20.4** |
+| ali-grand-loop-lhasa-return | 80.4 KB | 61.6 KB | **18.8** |
+| ali-grand-loop（主路书） | 79.6 KB | 61.3 KB | **18.3** |
+| ali-grand-loop-ali-permit | 77.4 KB | 59.8 KB | **17.6** |
+| ali-central-loop-nagqu-g317 | 55.7 KB | 45.9 KB | **9.8** |
+| chuanxi-loop-chengdu | 58.9 KB | 52.6 KB | **6.3** |
+
+八页合计省 **≈139 KB gzip**；island props 从 47–84 KB 降到 **0.2 KB**。
+
+两个附带好处：数据文件可被浏览器和 nginx 缓存（8 个页面同一份几何）；组件不再 import
+默认几何，客户端 chunk 里也不会再塞一份同样的数据。
+
+顺带记一个**被证伪的做法**：先把 props 改成 `JSON.stringify` 后的字符串（HTML 从 84 → 50 KB），
+结果 gzip 只省 1 KB —— 因为压缩算法本来就能把那些重复的 `[0,[...]]` 外壳吃掉，真正占字节的是
+坐标数字的熵。所以「原始体积变小」不等于「线上变轻」，这次要不是量了 gzip 就白改了。
 ### 相册页最后一块 React（第 228 轮）
 
 第 227 轮裁完字体后，再数一遍各页的 JS：相册页 `/photo/baokemeng/` 要下 **342 KB**，

@@ -917,3 +917,21 @@
   内联 CSS 外链化（已实测：本站内联更快，有意选择）、`/opt/wind-recap` 副本同步、
   giscus App 安装、留言时区。下一块可优化的是 `/invest/` 的 270 KB 脚本
   （6 个岛 + React），但那些岛真的有交互，需要先想清楚是懒加载还是换运行时。
+
+## 第 229 轮
+
+- **改（性能）**：8 个路书页的地图几何从 island props 移到静态 JSON
+  （`src/data/route-datasets.ts` + `src/pages/data/ali-route/[key].json.ts`），地图滚进可视区才取。
+  HTML gzip 每页省 6.3–24.9 KB（合计 ≈139 KB），props 从 47–84 KB 降到 0.2 KB。
+  实测（Playwright）：数据 200、provider=osm 备用底图、折线 3 条、标记 47–54 个、瓦片正常。
+- **被证伪**：先把 props 改成 `JSON.stringify` 字符串（HTML 84 → 50 KB），gzip 只省 1 KB ——
+  压缩本来就吃掉了 `[0,[...]]` 外壳，真占字节的是坐标数字。若不量 gzip 就会白改一轮。
+- **自伤（已修）**：`route-datasets.ts` 里凭印象写了 `nagquG317Chengdu*` 导出名，
+  实际叫 `nagquG317*`，`nagqu-g317-chengdu-route.ts` 的天数导出是 `nagquG317DeadlineRouteDays`；
+  `tsc` 一次报 4 条才补上。
+- **仍未解（需你/服务器）**：nginx 三项、39 期/300 条摘要（需 LLM key）、
+  内联 CSS 外链化（已实测：本站内联更快，有意选择）、`/opt/wind-recap` 副本同步、
+  giscus App 安装、留言时区。
+- **下一块（需要你定方向）**：`/invest/` 系列 6 个岛 + React 运行时 202 KB（`/invest/` 516 KB、
+  `/search/` 460 KB、`/guestbook/` 432 KB）。要么逐个改原生（每轮一个，像相册页），
+  要么换 Preact 兼容层（202 → ~30 KB，但 recharts 图表和 Leaflet 有兼容风险）。
