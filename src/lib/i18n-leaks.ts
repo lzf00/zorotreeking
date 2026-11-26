@@ -50,3 +50,27 @@ export function untranslatedNotice(leaks: I18nLeaks): string | null {
   if (leaks.prose > 0) parts.push(`${leaks.prose} headline${leaks.prose === 1 ? "" : "s"}/paragraph${leaks.prose === 1 ? "" : "s"}`);
   return `This page is machine-translated. ${parts.join(" and ")} below remain in the original Chinese — the Chinese version of this page has the full text.`;
 }
+
+/**
+ * 英文页整体是机翻的（第 211 轮）。
+ *
+ * 第 121 轮只处理了"英文页里还剩大段中文"这种情况。但**干净的**英文页同样有问题：
+ * 全站 536 篇英文文章（AI 217 + 投资 319）都是脚本从中文稿翻出来的，
+ * 读起来通顺，读者没有任何线索知道自己在读译文。
+ *
+ * 通顺的机翻比明显没翻完的更危险：后者读者知道要小心，前者会让人
+ * 以为这句话的措辞是作者选的。所以英文文章页一律标注，并给出中文原文入口。
+ */
+export const MACHINE_TRANSLATION_NOTICE =
+  "This page is machine-translated from the Chinese original. Wording may drift; the Chinese version is the authoritative one.";
+
+/**
+ * `/en/ai/foo/` → `/ai/foo/`；不是英文内容路径就返回 null。
+ * 只做字符串处理，不查内容集合 —— 模板里已经有中英成对的 translationKey。
+ */
+export function zhCounterpartPath(pathname: string): string | null {
+  if (!pathname.startsWith("/en/")) return null;
+  const rest = pathname.slice("/en".length);
+  if (!rest.startsWith("/")) return null;
+  return rest;
+}

@@ -6,6 +6,8 @@ import StarRating from "@/components/StarRating";
 import TOC from "@/components/TOC.astro";
 import TagChip from "@/components/TagChip.astro";
 import AutoDisclosure from "@/components/AutoDisclosure.astro";
+import TranslationNotice from "@/components/TranslationNotice.astro";
+import { zhCounterpartPath } from "@/lib/i18n-leaks";
 import Giscus from "@/components/Giscus.astro";
 import PostFooter from "@/components/PostFooter.astro";
 import ReadingProgress from "@/components/ReadingProgress.astro";
@@ -38,6 +40,8 @@ const { Content, headings } = await render(entry);
 const lang = "en" as const;
 // 自动产出的日报/复盘要说清楚（第 210 轮）
 const autoKind = autoKindOfPost({ translationKey: entry.data.translationKey, tags: entry.data.tags });
+// 中文原文入口（英文稿都是它的译文）
+const zhHref = zhCounterpartPath(Astro.url.pathname);
 const t = useTranslations(lang);
 const readMins = estimateReadingTime(entry.body ?? "");
 
@@ -103,6 +107,7 @@ const untranslated = untranslatedNotice(cjkLeaks(entry.body ?? ""));
         {entry.data.tags.map((tag) => <TagChip tag={tag} lang={lang} />)}
       </div>
       {autoKind && <AutoDisclosure kind={autoKind} lang={"en"} />}
+      <TranslationNotice zhHref={zhHref} />
     </header>
 
     <div class={`prose prose-zinc dark:prose-invert max-w-none

@@ -19,6 +19,7 @@ import { breadcrumbJsonLd, buildBreadcrumb } from "@/lib/breadcrumbs";
 import serifFontUrl from "../assets/fonts/instrument-serif-400-latin.woff2?url";
 import bodyFontUrl from "../assets/fonts/inter-100-900-latin.woff2?url";
 import { autoKindOfPath } from "@/lib/auto-content";
+import { zhCounterpartPath } from "@/lib/i18n-leaks";
 
 interface Props {
   title?: string;
@@ -93,6 +94,8 @@ const socialImage = social.src;
 // 自动生成的内容：署名的人仍然是站长的"发布者"身份，但要让结构化数据也知道
 // 文字是流程产出的（contributor），而不是假装人写的（第 210 轮）。
 const autoKind = autoKindOfPath(Astro.url.pathname);
+// 英文文章是中文原文的机翻：结构化数据里如实写 translationOfWork（第 211 轮）
+const zhCounterpart = zhCounterpartPath(Astro.url.pathname);
 const autoContributor = {
   "@type": "Organization",
   name: "ZoroTreeking 自动整理流程",
@@ -118,6 +121,20 @@ if (ogType === "article") {
     dateModified: (modifiedTime ?? publishedTime)?.toISOString(),
     author,
     ...(autoKind ? { contributor: autoContributor } : {}),
+    ...(zhCounterpart
+      ? {
+          // 用 CreativeWork 而不是 Article：这里只是指个向，中文原文自己的 Article
+          // 带全套字段。写成 Article 会让 SEO 校验（check-seo.mjs）按 Article 的必填项
+          // 来查这个空壳节点，537 页一起报错 —— 第 211 轮踩过。
+          // 不写 inLanguage：这个字段一旦出现在嵌套节点里，SEO 校验会拿它跟
+          // 页面自己的 html lang 比对（英文页 = zh-CN），537 页各多一条告警。
+          // 语言信息由 @id 指向的中文页自己携带。
+          translationOfWork: {
+            "@type": "CreativeWork",
+            "@id": new URL(zhCounterpart, Astro.site).toString(),
+          },
+        }
+      : {}),
     publisher: { "@type": "Organization", name: siteName, url: Astro.site?.toString() },
     mainEntityOfPage: { "@type": "WebPage", "@id": canonicalUrl },
     keywords: tags?.join(", "),

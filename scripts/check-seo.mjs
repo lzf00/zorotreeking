@@ -78,6 +78,10 @@ const SCHEMA_RULES = {
   ListItem: { required: ["position", "name"], urls: ["item", "url"] },
   SearchAction: { required: ["target", "query-input"], urls: [] },
   EntryPoint: { required: ["urlTemplate"], urls: [] },
+  // 「引用型」节点：只用来指个向（`{"@type":"CreativeWork","@id":"…"}`），
+  // 真正的字段在被指向的那一页上。第 211 轮用 translationOfWork 指中文原文时用了它；
+  // 之前没登记，537 个英文页各多一条「未知 @type」告警。
+  CreativeWork: { required: [], urls: [] },
 };
 
 const ENTITIES = { "&amp;": "&", "&lt;": "<", "&gt;": ">", "&quot;": '"', "&#39;": "'", "&apos;": "'", "&nbsp;": " " };

@@ -626,3 +626,23 @@
   —— 英文站是另外四个模板。这正是"闸门扫构建产物"而不是"扫源码"的价值。
 - **仍未处理（服务端/权限）**：giscus App 安装、nginx 三条必须修 + 三条建议、
   `/opt/wind-recap` 副本同步、39 期/300 条摘要（需 LLM key）。
+
+## 第 211 轮
+
+- **修（诚实性）**：英文文章页不说自己是机翻。全站 537 篇英文文章（AI 217 / 投资 319 / 徒步 1）
+  都由脚本从中文稿翻译而来，此前只有"页内还残留大段中文"的少数页面会被第 121 轮的提示覆盖。
+  通顺的译文反而更容易误导（读者以为措辞是作者选的）。新增
+  `MACHINE_TRANSLATION_NOTICE` + `TranslationNotice.astro`（带中文原文入口）挂到三个英文文章模板；
+  JSON-LD 加 `translationOfWork` 指向中文原文。新增 `scripts/check-translation-notice.mjs` 进闸门
+  （英文文章必须有声明、中文原文页不许有），`tests/translation-notice.test.ts` 8 条。
+  实测 537/537 覆盖。
+- **本轮自伤（已修，两处）**：
+  1. `translationOfWork` 里写成 `{"@type":"Article"}` 空壳节点 → `check-seo.mjs` 按 Article 必填项
+     校验，537 个英文页一起报「缺 headline/author…」，门禁直接红。改成 `CreativeWork`。
+  2. 沿用上一条，嵌套节点里带了 `inLanguage: "zh-CN"` → SEO 校验拿它跟页面 html lang（en）比对，
+     每页多一条告警；同时 `CreativeWork` 没登记进 `SCHEMA_RULES` → 又多 537 条「未知 @type」。
+     去掉嵌套 inLanguage + 把 `CreativeWork` 作为「引用型节点」登记进检查规则，告警归零。
+- **观察（未修，可能只是调度延迟）**：2026-11-26 08:25 北京时，当天日报（AI / 投资）尚未生成 ——
+  最新一期仍是 2026-11-25。仓库文档记录 schedule 触发实测延迟 5–7 小时（本地 check-freshness
+  显示"落后 1 天 ✅"在阈值内），因此**不判定为故障**；若 24 小时内仍未生成，需要看
+  daily-digest workflow 的运行结果（匿名 GitHub API 已限流，本轮无法查历史）。

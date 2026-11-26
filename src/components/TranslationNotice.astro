@@ -1,0 +1,22 @@
+---
+/**
+ * 英文文章页的机翻声明（第 211 轮）。
+ *
+ * 英文稿全部由脚本从中文稿翻译而来。通顺的译文比"没翻完"的更容易误导：
+ * 读者会以为措辞是作者选的。所以一律标注，并给出中文原文入口。
+ */
+import { MACHINE_TRANSLATION_NOTICE } from "@/lib/i18n-leaks";
+
+interface Props { zhHref?: string | null }
+const { zhHref = null } = Astro.props;
+---
+<p
+  data-machine-translation="1"
+  class="mt-4 border-l-2 border-zinc-300 dark:border-zinc-700 py-1.5 pl-3 text-[12px] leading-relaxed text-zinc-500 dark:text-zinc-400"
+>
+  <span class="font-mono text-[10.5px] uppercase tracking-[0.12em] mr-2 text-zinc-500">Machine translation</span>
+  {MACHINE_TRANSLATION_NOTICE}
+  {zhHref && (
+    <>· <a href={zhHref} class="underline decoration-dotted hover:text-zinc-800 dark:hover:text-zinc-200">Read the Chinese original →</a></>
+  )}
+</p>
