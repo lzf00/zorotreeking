@@ -797,3 +797,16 @@
   1440px 折叠目录高度 0、侧栏 `display:block`；无 pageerror。
 - **仍未解（需你/服务器）**：nginx 三项、39 期/300 条摘要（需 LLM key）、内联 CSS 外链化、
   `/opt/wind-recap` 副本同步、giscus App 安装、留言时间是否统一北京时间。
+
+## 第 222 轮
+
+- **加（可观测性）**：`npm run report:weight`（`scripts/report-page-weight.mjs`）—— 手机视口下真实加载
+  每个代表页，按资源类型汇总重量；剔除本地 `/api/**` 404 噪声并注明剔除条数。
+  `tests/page-weight-report.test.ts`（3 条）锁住剔除逻辑与"报表/闸门分工"说明。
+  `docs/operations.md` 记录 2026-11-26 的基线表（`/` 252 KB … `/photo/baokemeng/` 799 KB）。
+- **差点出错的判断（已避免）**：第一次测把本地 `/api/**` 的 404 页面体（每条约 130 KB）算进页面重量，
+  `/invest/` 虚增到 1069 KB，差点报"线上页面很重"。实际线上有后端，且 nginx 会 gzip。
+- **观察（未改）**：每页固定加载 3 个 woff2 共 102 KB（Inter 47 / JetBrains Mono 40 / Instrument Serif 15），
+  JetBrains Mono 只用于日期与小标签，子集化大约能省 25–30 KB/页；属于可选优化，不进本轮。
+- **仍未解（需你/服务器）**：nginx 三项、39 期/300 条摘要（需 LLM key）、内联 CSS 外链化、
+  `/opt/wind-recap` 副本同步、giscus App 安装、留言时间是否统一北京时间。
