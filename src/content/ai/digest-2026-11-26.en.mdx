@@ -1,0 +1,179 @@
+---
+lang: en
+translationKey: digest-2026-11-26
+title: "AI Daily Digest · 2026-11-26"
+description: "17 papers · multi-source aggregation + AI summaries"
+date: 2026-11-26
+tags: [digest, auto, hf-papers, openai, anthropic, deepmind, hf-blog, lil-log]
+category: paper
+cover: "/photos/uploads/baokemeng/baokemeng-35.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Today's highlights in 30 seconds</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI and DeepMind have announced multiple cutting-edge achievements covering protein design, exoplanet search, quantum algorithms and other fields</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face has released several new AI papers focusing on visual tracking, spatial awareness, robotic world models and other directions</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Domestic Chinese AI implementation results are abundant, including Riemann Hypothesis proof code simplification, hyper-realistic image generation, and low-threshold AI short film tools</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">📈 Technological Breakthroughs</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔥 Big Tech Updates</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 Fundamental Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💡 Practical Applications</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Domestic Chinese Progress</span>
+  </div>
+</div>
+
+# Hugging Face Daily Papers
+
+## <a href="https://arxiv.org/abs/2611.32351" target="_blank" rel="noopener noreferrer">LookAnything: A Foundation Model for Holistic Gaze Following</a>
+
+*HF ★ 0 · Jiayu Tang, Yuchen Zhou, Hongsheng Wu… · [HF Mirror](https://huggingface.co/papers/2611.32351)*
+
+Existing gaze following methods rely on auxiliary inputs such as head pose and depth, have poor generalization, and only support single output formats. To address these issues, this paper proposes LookAnything, a general foundation model. Its core innovation is the introduction of learnable gaze prior queries, which eliminate the need for auxiliary inputs. Trained across domains on the self-built multi-task benchmark HoliGaze, it supports multiple output formats and various gaze-related tasks. Experiments show that its performance surpasses 33 mainstream vision-language models, matches specialized detection models, and delivers excellent cross-domain generalization and real-world deployment performance.
+
+<FeedbackButtons lang="en" slug="item:arxiv-2611.32351" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.30564" target="_blank" rel="noopener noreferrer">Seeing Is Locating: Spatial Awareness and Geographic Bias in Decision Language Models</a>
+
+*HF ★ 1 · Wilson Wongso, Hada Melino Muhammad, Xiachong Lin… · [HF Mirror](https://huggingface.co/papers/2611.30564)*
+
+The spatial awareness capabilities and geographic biases of decision-making large models that output label distributions are not yet well understood. This study constructs GeoDecisions, a multimodal evaluation benchmark that includes two types of tasks: geographically-aware image classification and multi-theme location scoring. Evaluation finds that the model's spatial awareness relies on visual input, text-only coordinate information is insufficient, and there is significant geographic bias, with lower scores for regions with low socioeconomic levels. The study also proposes a training-free optimization scheme that can improve spatial awareness without significantly exacerbating bias.
+
+<FeedbackButtons lang="en" slug="item:arxiv-2611.30564" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.32393" target="_blank" rel="noopener noreferrer">Fractal Neural Synthesis: Constant-Storage Procedural Weight Derivation via Complex Quadratic Boundary Dynamics</a>
+
+*HF ★ 1 · Volkan Dagli, Zerrin Dagli, Daghan Dagli · [HF Mirror](https://huggingface.co/papers/2611.32393)*
+
+Traditional neural networks have a large number of parameters, and flash memory usage increases linearly with parameters, making it difficult to adapt to edge microcontrollers. To address this pain point, this study proposes a fractal neural synthesis architecture: only a 24-byte seed anchored at the complex quadratic bifurcation boundary is needed to programmatically generate hidden layer weights, with a dedicated sampling design and proven entropy bounds. Actual measurements show that its accuracy is 3.6~10.8 percentage points higher than the INT8 linear baseline, and flash memory usage is up to 129 times lower than Float32 MLP.
+
+<FeedbackButtons lang="en" slug="item:arxiv-2611.32393" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.25946" target="_blank" rel="noopener noreferrer">Point Dynamics as Proxy for Robotic World Models</a>
+
+*HF ★ 1 · Dong An, Tianyu Liu, Haoran Ding… · [HF Mirror](https://huggingface.co/papers/2611.25946)*
+
+Existing robotic world models are prone to distortion of object motion after interaction. This study splits the dynamics prediction and visual rendering links, and introduces 3D point dynamics as an intermediate proxy: convert the first frame to 3D points, simulate the action response through a learned point dynamics model, and then render it into a video. Experiments show that this method can reduce the object motion error of datasets and real dual-arm robot scenarios by more than 6% without reducing image quality, and optimizing dynamics modeling can effectively improve the fidelity of world models.
+
+<FeedbackButtons lang="en" slug="item:arxiv-2611.25946" client:visible />
+
+## <a href="https://arxiv.org/abs/2611.27404" target="_blank" rel="noopener noreferrer">Degradation of Language Models under Controlled Load: Synchronization, Rule Execution and Misfires on the Background</a>
+
+*HF ★ 0 · Hennadii Kutomanov · [HF Mirror](https://huggingface.co/papers/2611.27404)*
+
+The causes of performance degradation of large models under increased load are unclear. This study divides degradation into three categories: synchronization deviation, rule execution errors, and random mismodifications. It controls five types of variables such as text length and number of rules to carry out replacement tests, combines output alignment and statistical models to fit the load-dependent law of degradation, and generates a "performance passport" for the model. Performance passports for 7 models have been completed, providing a new path for fine-grained behavior research of neural networks.
+
+<FeedbackButtons lang="en" slug="item:arxiv-2611.27404" client:visible />
+
+# OpenAI
+
+## <a href="https://openai.com/index/gpt-6-models-demonstrate-intrinsic-protein-design-capabilities" target="_blank" rel="noopener noreferrer">GPT-6 models demonstrate intrinsic protein-design capabilities</a>
+
+*OpenAI*
+
+The latest research confirms that GPT-6 large models have native protein design capabilities. Without special fine-tuning for the biological field, it can simultaneously complete the design of protein three-dimensional structures and corresponding amino acid sequences through logical reasoning and code generation. The laboratory verified 5 targeted proteins output by the model, and all detected clear target binding activity, opening up a new path for AI-driven macromolecular drug development.
+
+<FeedbackButtons lang="en" slug="item:openai-blog-gpt-6-models-demonstrate-intrinsic-protein-design-capabilities" client:visible />
+
+## <a href="https://openai.com/index/searching-for-distant-planets-with-astra" target="_blank" rel="noopener noreferrer">Searching for distant planets with Astra</a>
+
+*OpenAI*
+
+In this exoplanet search study, two amateur astronomy researchers used the Codex code tool and Astra planet search framework to mine public survey data from NASA's Kepler Space Telescope and Transiting Exoplanet Survey Satellite (TESS), and successfully identified multiple potential exoplanet candidates. This achievement proves that amateur researchers can use public aerospace data to carry out cutting-edge exploration with the help of AI tools, greatly reducing the participation threshold for exoplanet search.
+
+<FeedbackButtons lang="en" slug="item:openai-blog-searching-for-distant-planets-with-astra" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/announcements" target="_blank" rel="noopener noreferrer">Announcements</a>
+
+*Anthropic*
+
+This announcement is from AI security R&D enterprise Anthropic, whose core R&D goal is to build AI systems with three core characteristics: highly reliable systems with stable and credible operating performance, interpretable systems whose decision-making logic can be traced and parsed by humans, and controllable systems whose behavior paths can be effectively guided and regulated by humans. This positioning places safety and controllability at the top of R&D priorities, exploring feasible paths for the safe implementation of artificial general intelligence.
+
+<FeedbackButtons lang="en" slug="item:anthropic-announcements" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+This announcement titled *Investing in the public benefit* shows that AI company Anthropic will allocate part of its shares to the newly established Anthropic Public Benefit Fund, which adopts a special structure: the shareholding ratio will increase simultaneously as the company expands in scale. This move aims to directly bind enterprise growth benefits with public interests, exploring a new path for technology companies to balance commercial development and public value output.
+
+<FeedbackButtons lang="en" slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/interpreting-mass-spectra-with-google-antigravity/" target="_blank" rel="noopener noreferrer">From spectrum to structure: Identifying molecules with Mass Spec Skills for Google Antigravity</a>
+
+*Google DeepMind*
+
+This research addresses the industry pain point of matching and parsing tandem mass spectrometry to molecular structures, and developed the dedicated tool Mass Spec Skills, adapted to the Google Antigravity platform, which can assist researchers to automatically interpret tandem mass spectrometry data and directly complete structural identification of corresponding molecules. This tool greatly reduces the technical threshold for spectrum analysis, and can effectively improve the efficiency and accuracy of molecular identification in related research.
+
+<FeedbackButtons lang="en" slug="item:deepmind-interpreting-mass-spectra-with-google-antigravity" client:visible />
+
+## <a href="https://deepmind.google/blog/finding-faster-quantum-algorithms-with-agents-and-formal-verification/" target="_blank" rel="noopener noreferrer">Finding faster quantum algorithms with agents and formal verification</a>
+
+*Google DeepMind*
+
+This research addresses the demand for quantum algorithm performance optimization, and innovatively proposes a technical solution combining multi-agent collaboration and formal verification, focusing on two application scenarios: nuclear fusion simulation and quantum chemistry, to iteratively optimize existing related quantum algorithms, aiming to mine more efficient and implementable quantum algorithms, providing a new R&D path for the performance improvement of quantum computing in hard-core scientific research fields.
+
+<FeedbackButtons lang="en" slug="item:deepmind-finding-faster-quantum-algorithms-with-agents-and-formal-verification" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/allenai/where-scientists-draw-the-line-on-ai-agents" target="_blank" rel="noopener noreferrer">Where scientists draw the line on AI agents</a>
+
+*Hugging Face*
+
+Currently you have only provided the title of this paper *Where scientists draw the line on AI agents*, and have not supplemented the corresponding full English abstract text. Please upload the complete original abstract, and I will extract a clear ~120-word summary highlighting the research methods and core conclusions as required.
+
+<FeedbackButtons lang="en" slug="item:hf-blog-where-scientists-draw-the-line-on-ai-agents" client:visible />
+
+## <a href="https://huggingface.co/blog/ibm-research/an-indic-voice-agent-with-cuga" target="_blank" rel="noopener noreferrer">An Indic Voice Agent with CUGA</a>
+
+*Hugging Face*
+
+Currently you have only provided the title of this paper, without attaching the specific content of the abstract, so it is impossible to complete the translation, extraction and ~120-word summary requirement. Please supplement the full abstract of this paper on the Indic voice agent with CUGA module, and I will strictly follow the requirements to highlight the core methods and experimental conclusions, and provide a concise and clear summary.
+
+<FeedbackButtons lang="en" slug="item:hf-blog-an-indic-voice-agent-with-cuga" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This paper sorts out the research context of Recursive Self-Improvement (RSI): In 1965, I.J. Good first proposed the concept of superintelligent machines, referring to systems that can surpass all human intellectual activities and design better systems on their own to achieve iteration; In 2008, Yudkowsky clarified that the core of RSI is the feedback loop where AI relies on existing intelligence to optimize its own cognitive architecture. There are currently two paths for AI to implement RSI: one is to directly rewrite its own weights, and the other is to optimize the training pipeline.
+
+<FeedbackButtons lang="en" slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/11/512819.html" target="_blank" rel="noopener noreferrer">Just now, the Riemann Hypothesis proof code was cut by 99.5%! Only 76,000 lines left</a>
+
+*QbitAI*
+
+Previously, the Lean formal proof of the Riemann Hypothesis generated by mathematicians in collaboration with Claude reached 17.4 million lines, which was extremely difficult to compile. Recently, the team of Anthropic researcher Luke collaborated with Claude to complete the simplification, cutting the code volume by 99.5% to 76,000 lines, which can be compiled in 1-2 hours on an ordinary 12-core, 24GB memory device. However, the proof has only been verified by machines so far, has not been read through by mathematicians, and has no supporting academic papers.
+
+<FeedbackButtons lang="en" slug="item:qbitai-512819" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/512748.html" target="_blank" rel="noopener noreferrer">I thought this was a photography work, you told me it's the latest domestic Chinese AI?!</a>
+
+*QbitAI*
+
+SenseTime's latest open-source image generation model SenseNova U1.6 can generate portrait and landscape works that are realistic enough to be indistinguishable from professional photography. It has fast generation speed, significantly improved content accuracy and aesthetic performance, and supports prompt generation for tricky shooting angles and complex scenarios. It is now available on platforms such as SenseTime's Little Raccoon and ComfyUI, and in-depth actual measurements will be carried out later.
+
+<FeedbackButtons lang="en" slug="item:qbitai-512748" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/512727.html" target="_blank" rel="noopener noreferrer">Just throw in a story! Directly output 15-minute AI short films, even your uncle can use it</a>
+
+*QbitAI*
+
+Mita AI has newly launched the "All People Can Create" full-process AI virtual crew tool, which solves the pain points of previous AI video creation, such as needing to write complex prompts, do storyboard editing, and long time consumption. No professional film/television or AI knowledge is required: ordinary users only need to input a story (voice input is supported), no need to polish lighting assets, and can directly output high-quality AI short films of up to 15 minutes in as fast as 10 minutes, with effects comparable to 3A game graphics, and an extremely low threshold.
+
+<FeedbackButtons lang="en" slug="item:qbitai-512727" client:visible />
