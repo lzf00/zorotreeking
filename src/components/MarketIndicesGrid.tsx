@@ -125,7 +125,7 @@ export default function MarketIndicesGrid({ initialIndices, initialUpdated, init
         {updated
           ? source === "live"
             ? formatChinaMarketTime(updated)
-            : formatSnapshotWithFreshness(updated)
+            : formatSnapshotWithFreshness(updated, mounted ? new Date() : null)
           : L.none}
         {source === "wind_snapshot" && <span className="ml-2 text-amber-700 dark:text-amber-400">{L.liveNotUpdated}</span>}
         {mounted && !isChinaATradingHours() && <span className="ml-2">{L.marketClosedNote}</span>}

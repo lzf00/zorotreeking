@@ -108,8 +108,13 @@ export function isChinaToday(timestampSeconds: number, now: Date = new Date()): 
  * 快照时间 + 新鲜度提示：今天的只给日期时间，不是今天的额外标「非今日」。
  * 用后缀而不是隐藏，是因为读者要知道"这份行情是旧的那一天"。
  */
-export function formatSnapshotWithFreshness(timestampSeconds: number, now: Date = new Date()): string {
+export function formatSnapshotWithFreshness(timestampSeconds: number, now: Date | null = null): string {
   if (!Number.isFinite(timestampSeconds)) return "—";
   const stamp = formatChinaMarketStamp(timestampSeconds);
+  // 第 215 轮：不传 now 就不加「（非今日）」。
+  // 这一句依赖"现在几点"，一旦在 SSR 里算出来，而读者浏览器时钟/日期与构建时不同
+  // （跨天访问、缓存页、时区偏一天），初始渲染就和客户端不一致 → React #418 水合报错。
+  // 修法与站内其他"时钟文案"一致：等挂载后再算，见调用方传 mounted ? new Date() : null。
+  if (!now) return stamp;
   return isChinaToday(timestampSeconds, now) ? stamp : `${stamp}（非今日）`;
 }

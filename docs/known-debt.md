@@ -698,3 +698,20 @@
 - **全站 a11y 复扫**：`check-a11y.mjs --dist` 70 次检查 0 失败 / 0 告警（浅色+深色）。
 - **仍未解（需你/服务器）**：nginx 三项、39 期/300 条摘要缺口（需 LLM key）、内联 CSS 外链化、
   `/opt/wind-recap` 副本同步、giscus App 安装。
+
+## 第 215 轮
+
+- **修（自伤，第 209 轮引入）**：`formatSnapshotWithFreshness` 默认用 `new Date()` 在 SSR 阶段
+  算出「（非今日）」，而 `check:interactions` 的"跨时段访问"场景把浏览器时钟拨到 11-20 ——
+  只要快照日期等于构建日期（每天上午都会），两棵树就不同 → React #418 水合报错，
+  每次访问 `/invest/` 一条 pageerror。修法：`now` 默认值改为 `null`（不传就不加后缀），
+  三个行情组件用 `mounted ? new Date() : null`，挂载后再算。补测试 2 条。
+  这就是 CI 上 `Build & Deploy` 挂在 `Interaction smoke` 的原因。
+- **修（内容）**：今天的 `market-recap-2026-11-26.en.mdx` 有 10 个中文表格单元格
+  （紫金矿业、新易盛、北方华创…），用部署里同一套 `backfill_en_names.py --headlines` 回填，
+  126 个英文复盘全部干净。根因仍是 `/opt/wind-recap` 生成端副本未同步。
+- **查实**：`83891af2`（自动复盘提交）的部署挂在第 19 步 `check:seo`，但那之后内容又变了；
+  本轮重建后本地 `check:seo` 0 错误 0 告警，判断为内容状态的瞬时失败（与第 213 轮同类）。
+- **验证**：门禁 1018 通过 / 0 失败；`check:interactions` 19/19（含"跨时段访问不报 hydration 错误"）。
+- **仍未解（需你/服务器）**：nginx 三项、39 期/300 条摘要（需 LLM key）、内联 CSS 外链化、
+  `/opt/wind-recap` 副本同步、giscus App 安装。

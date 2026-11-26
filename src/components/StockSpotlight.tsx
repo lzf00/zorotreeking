@@ -47,6 +47,9 @@ function sourceLabel(source: string, L: MarketLabels): string {
 }
 
 export default function StockSpotlight({ stocks, showNote = true, initialQuotes, initialUpdated, lang = "zh" }: Props) {
+  // 水合后再算「（非今日）」：SSR 里算会让跨天/跨时区访问出现 React #418（第 215 轮）
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
   const L = marketLabels(lang);
   const [quotes, setQuotes] = useState<Record<string, Quote> | null>(
     initialQuotes && Object.keys(initialQuotes).length > 0 ? initialQuotes : null,
@@ -124,7 +127,7 @@ export default function StockSpotlight({ stocks, showNote = true, initialQuotes,
             {avg == null ? L.none : `${avg > 0 ? "+" : ""}${avg.toFixed(2)}%`}
           </span>
         </span>
-        <span className="font-mono text-[10.5px]">{updated ? `${sourceLabel(source, L)} ${source === "snapshot" ? formatSnapshotWithFreshness(updated) : formatChinaMarketTime(updated)}` : ""}</span>
+        <span className="font-mono text-[10.5px]">{updated ? `${sourceLabel(source, L)} ${source === "snapshot" ? formatSnapshotWithFreshness(updated, mounted ? new Date() : null) : formatChinaMarketTime(updated)}` : ""}</span>
       </div>
       <div className="rounded-2xl border border-[var(--border)] overflow-hidden">
         <div className="overflow-x-auto min-w-0 max-w-full" tabIndex={0} role="group">

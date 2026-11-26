@@ -37,6 +37,8 @@ test("是不是「今天」按北京时间算，跨时区不会错一天", () =>
 test("不是今天的快照会标「（非今日）」", () => {
   const nextDay = new Date("2026-11-26T07:00:00+08:00");
   assert.equal(formatSnapshotWithFreshness(SNAP, nextDay), "2026-11-25 16:30:23（非今日）");
+  // 第 215 轮：不传 now 时不加后缀 —— SSR 里算「今天」会让跨天/跨时区访问出现 React #418
+  assert.equal(formatSnapshotWithFreshness(SNAP), "2026-11-25 16:30:23", "SSR/首帧不带新鲜度后缀");
   const sameDay = new Date("2026-11-25T20:00:00+08:00");
   assert.equal(formatSnapshotWithFreshness(SNAP, sameDay), "2026-11-25 16:30:23", "当天不加噪音");
 });
@@ -54,5 +56,18 @@ test("两个展示快照的组件都用带日期的格式（不是 formatChinaMa
     const src = await read(rel);
     assert.match(src, /formatSnapshotWithFreshness/, `${rel} 没接带日期的快照格式`);
     assert.match(src, /source === "live"[\s\S]{0,200}?formatSnapshotWithFreshness|source === "snapshot"/, `${rel} 里实时/快照要分两种格式`);
+  }
+});
+
+test("新鲜度后缀必须等挂载后再算（第 215 轮：SSR 里算 = 跨天访问 hydration 报错）", async () => {
+  const { readFile } = await import("node:fs/promises");
+  for (const rel of [
+    "src/components/MarketIndicesGrid.tsx",
+    "src/components/SectorRanking.tsx",
+    "src/components/StockSpotlight.tsx",
+  ]) {
+    const src = await readFile(new URL(`../${rel}`, import.meta.url), "utf8");
+    assert.match(src, /mounted \? new Date\(\) : null/, `${rel} 把「现在」直接塞进渲染，SSR 与客户端会不一致`);
+    assert.match(src, /const \[mounted, setMounted\] = useState\(false\)/, `${rel} 缺 mounted 状态`);
   }
 });

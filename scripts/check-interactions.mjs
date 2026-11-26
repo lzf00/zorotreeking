@@ -53,7 +53,16 @@ const SCENARIOS = [
       if (results === 0) return fail(`输入「${KEYWORD}」后没有搜索结果链接`);
       // 第 214 轮：每条结果头上要有「板块 · 类型 · 日期」。1068 页自动产出的标题几乎一样，
       // 没有这一行读者分不清挑哪条（这是纯展示层，不碰索引）。
-      const labelled = await page.locator('[role="dialog"] a[href] >> text=/·|日报|复盘|周报|笔记|Photography|Site page/').count();
+      //
+      // 用 evaluate 数而不是链式 locator：`a[href] >> text=/…/` 在不同 Playwright 版本和
+      // 不同 dist 上的匹配语义会把这里变成假失败（第 214 轮 CI 就是这么红的）。
+      const labelled = await page.evaluate(() => {
+        const KIND = /(·\s*\d{4}-\d{2}-\d{2})|日报|复盘|周报|笔记|Photography|Site page|AI digest/;
+        return [...document.querySelectorAll('[role="dialog"] a[href]')].filter((a) => {
+          const first = a.querySelector("div");
+          return first && KIND.test(first.textContent || "");
+        }).length;
+      });
       if (labelled === 0) return fail("搜索结果没有「板块 · 类型 · 日期」标签");
       await page.keyboard.press("Escape");
       await page.waitForTimeout(400);

@@ -44,6 +44,9 @@ interface Props {
 }
 
 export default function SectorRanking({ initialData, lang = "zh" }: Props = {}) {
+  // 水合后再算「（非今日）」：SSR 里算会让跨天/跨时区访问出现 React #418（第 215 轮）
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
   const L = marketLabels(lang);
   const [data, setData] = useState<Resp | null>(initialData ?? null);
   const [error, setError] = useState<string | null>(null);
@@ -129,7 +132,7 @@ export default function SectorRanking({ initialData, lang = "zh" }: Props = {}) 
         {sectorSourceLabel(data, L)} · {L.sectorCount(String(data.total ?? "?"))} ·{" "}
         {data.ts
           ? `${data.stale ? L.snapshotTime : L.apiResponse} ${
-              data.stale ? formatSnapshotWithFreshness(data.ts) : formatChinaMarketTime(data.ts)
+              data.stale ? formatSnapshotWithFreshness(data.ts, mounted ? new Date() : null) : formatChinaMarketTime(data.ts)
             }`
           : L.none}
         {data.stale && <span className="ml-2 text-amber-700 dark:text-amber-400">{L.liveNotUpdated}</span>}
