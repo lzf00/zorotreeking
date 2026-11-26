@@ -2,6 +2,7 @@ import DOMPurify from "dompurify";
 import { useEffect, useRef, useState } from "react";
 
 import { searchEmptyState, type SearchLang } from "@/lib/search-empty";
+import { describeResult } from "@/lib/search-result-meta";
 
 /**
  * 全站搜索 modal（pagefind 客户端全文检索）。
@@ -237,6 +238,10 @@ export default function SearchModal({ initialOpen = false, initialQuery = "", va
           {!loading && !query && <div style={emptyStyle}>{copy.idle}</div>}
           {results.map((r, i) => (
             <a key={i} href={r.url} style={resultStyle}>
+              {/* 第 214 轮：1292 页里 1068 页是每日自动产出，标题长得几乎一样。
+                  这一行说明「这是哪一类、哪一天的」，让读者一眼分得清。 */}
+              <div style={resultKindStyle}>{describeResult(r.url).label}</div>
+              <div style={resultKindStyle}>{describeResult(r.url).label}</div>
               <div style={resultTitleStyle}>{r.meta?.title || r.url}</div>
               <div
                 style={resultExcerptStyle}
@@ -366,6 +371,10 @@ const resultStyle: React.CSSProperties = {
   display: "block", padding: "10px 16px",
   textDecoration: "none", color: "var(--text, #111827)",
   borderBottom: "1px solid var(--border-soft, #f0f1f3)",
+};
+const resultKindStyle: React.CSSProperties = {
+  fontSize: 10.5, letterSpacing: "0.08em", textTransform: "uppercase",
+  color: "var(--text-tertiary, #9ca3af)", marginBottom: 2, fontFamily: "var(--font-mono, ui-monospace, monospace)",
 };
 const resultTitleStyle: React.CSSProperties = {
   fontSize: 14, fontWeight: 600, marginBottom: 3,

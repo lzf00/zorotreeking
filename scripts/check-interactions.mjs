@@ -51,6 +51,10 @@ const SCENARIOS = [
       // 结果就是弹窗里的 <a>（pagefind 结果不分 class）
       const results = await page.locator('[role="dialog"] a[href]').count();
       if (results === 0) return fail(`输入「${KEYWORD}」后没有搜索结果链接`);
+      // 第 214 轮：每条结果头上要有「板块 · 类型 · 日期」。1068 页自动产出的标题几乎一样，
+      // 没有这一行读者分不清挑哪条（这是纯展示层，不碰索引）。
+      const labelled = await page.locator('[role="dialog"] a[href] >> text=/·|日报|复盘|周报|笔记|Photography|Site page/').count();
+      if (labelled === 0) return fail("搜索结果没有「板块 · 类型 · 日期」标签");
       await page.keyboard.press("Escape");
       await page.waitForTimeout(400);
       if (await page.locator("input[type=text]").first().isVisible()) return fail("Esc 没有关闭搜索弹窗");
