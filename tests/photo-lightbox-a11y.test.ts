@@ -12,7 +12,7 @@ import { test } from "node:test";
 const read = (path: string) => readFile(new URL(`../${path}`, import.meta.url), "utf8");
 
 test("灯箱要有 aria-modal、可读标签、初始焦点与焦点陷阱", async () => {
-  const gallery = await read("src/components/PhotoGallery.tsx");
+  const gallery = await read("src/components/PhotoGallery.astro");
   assert.match(gallery, /setAttribute\("aria-modal", "true"\)/);
   assert.match(gallery, /图片查看器/, "要告诉读屏用户怎么操作");
   assert.match(gallery, /pswp__button--close/, "打开后应把焦点移到关闭按钮");
@@ -21,7 +21,7 @@ test("灯箱要有 aria-modal、可读标签、初始焦点与焦点陷阱", asy
 });
 
 test("焦点归还必须等 DOM 拆完（reduced-motion 下尤其）", async () => {
-  const gallery = await read("src/components/PhotoGallery.tsx");
+  const gallery = await read("src/components/PhotoGallery.astro");
   assert.match(gallery, /lightbox\.on\("destroy"/, "要在 destroy 后回归焦点，太早会被拆 DOM 覆盖");
   assert.match(gallery, /triggerElement/, "要记住打开它的那张照片");
   assert.match(gallery, /active !== document\.body/, "只在焦点真丢了时介入，别抢 PhotoSwipe 正确的路径");

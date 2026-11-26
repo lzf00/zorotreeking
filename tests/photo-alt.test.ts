@@ -71,7 +71,7 @@ test("生成器和组件都按语言取 alt（别只改数据不改出口）", a
   assert.match(builder, /readAlbumMeta\(albumSlug, "en"\)/, "要读英文相册元信息");
   assert.ok(!/alt: path\.basename/.test(builder), "不能再退回文件名");
 
-  const gallery = await readFile(new URL("../src/components/PhotoGallery.tsx", import.meta.url), "utf8");
+  const gallery = await readFile(new URL("../src/components/PhotoGallery.astro", import.meta.url), "utf8");
   assert.match(gallery, /const alt = photoAlt\(p, lang\)/, "组件要按 lang 选 alt");
   assert.ok(!/alt=\{p\.alt\}|aria-label=\{p\.alt\}/.test(gallery), "还有地方直接用中文 alt");
 

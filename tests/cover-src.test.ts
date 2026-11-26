@@ -56,9 +56,9 @@ test("cover 直接写成派生图时，也要往下换成更轻的一档", () =>
 
 test("首屏第一张图要 eager + high，其余仍 lazy（LCP 元素就是它）", async () => {
   const { readFile } = await import("node:fs/promises");
-  const gallery = await readFile(new URL("../src/components/PhotoGallery.tsx", import.meta.url), "utf8");
+  const gallery = await readFile(new URL("../src/components/PhotoGallery.astro", import.meta.url), "utf8");
   assert.match(gallery, /loading=\{i === 0 \? "eager" : "lazy"\}/, "相册首图必须 eager");
-  assert.match(gallery, /fetchPriority=\{i === 0 \? "high" : "auto"\}/, "相册首图要高优先级");
+  assert.match(gallery, /fetchpriority=\{i === 0 \? "high" : "auto"\}/, "相册首图要高优先级");
   // 第 133 轮：日报归档页改用共享组件，eager/high 规则搬到了 DigestArchiveGrid
   const archive = await readFile(new URL("../src/components/DigestArchiveGrid.astro", import.meta.url), "utf8");
   assert.match(archive, /index < 2 \? "eager" : "lazy"/, "归档页前两张卡片要 eager");

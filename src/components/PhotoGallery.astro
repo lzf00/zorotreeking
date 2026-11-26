@@ -1,0 +1,334 @@
+---
+/**
+ * 相册网格 + PhotoSwipe 灯箱（第 228 轮：从 React 岛改成 Astro + 原生 script）。
+ *
+ * 为什么值得动：这个组件的 SSR 标记本来就只有网格，**一点 React 状态都没有** ——
+ * 全部逻辑是一个 useEffect：把 PhotoSwipe 挂到已经渲染好的 <a> 上。可是因为它被写成
+ * `client:load` 的 React 岛，相册页实测要下 **342 KB JS**，其中 202 KB 是 React 运行时本身。
+ *
+ * 改成原生之后：
+ *   · 首屏 0 KB 交互脚本（PhotoSwipe 在空闲/悬停/点击时按需下载）
+ *   · React 运行时彻底不出现，相册页 JS 从 342 KB 降到 ~60 KB（只有 PhotoSwipe）
+ *
+ * 行为逐条保留（每一条都是之前轮次踩出来的，别删）：
+ *   · 灯箱按显示尺寸挑图：`data-pswp-srcset` 给 720w / 1200w / 全尺寸（第 127 轮）
+ *   · 空闲预热 PhotoSwipe + 第一张大图解码（第 129 轮：首次打开 576 ms → 16 ms）
+ *   · 键盘契约：aria-modal、打开后焦点移进关闭按钮、Tab 在灯箱内绕回、
+ *     关闭后焦点归还到打开它的那张照片（第 141 轮）
+ *   · 首图 eager + high，其余 lazy（LCP 就是第一张）
+ */
+import { buildSrcSet, galleryVariants, lightboxVariants } from "@/lib/photo-srcset";
+import { photoAlt } from "@/lib/photo-manifests";
+import "photoswipe/style.css";
+
+type Exif = {
+  camera?: string;
+  lens?: string;
+  iso?: number;
+  aperture?: number;
+  shutter?: string;
+  focal?: number;
+  takenAt?: string;
+};
+
+type Photo = {
+  src: string;
+  srcWebp?: string;
+  thumb: string;
+  thumbWebp?: string;
+  thumbSm?: string;
+  midWebp?: string;
+  heroWebp?: string;
+  width: number;
+  height: number;
+  alt: string;
+  altEn?: string;
+  exif?: Exif;
+};
+
+interface Props {
+  photos: Photo[];
+  galleryId: string;
+  /** 英文页传 "en"，alt / 灯箱 aria-label 才会用英文文案 */
+  lang?: "zh" | "en";
+}
+
+const { photos, galleryId, lang = "zh" } = Astro.props;
+
+function formatExifLine(exif?: Exif): string {
+  if (!exif) return "";
+  const parts: string[] = [];
+  if (exif.camera) parts.push(exif.camera);
+  if (exif.lens) parts.push(exif.lens);
+  const settings: string[] = [];
+  if (exif.focal != null) settings.push(`${Math.round(Number(exif.focal))}mm`);
+  if (exif.aperture != null) settings.push(`f/${Number(exif.aperture).toFixed(1).replace(/\.0$/, "")}`);
+  if (exif.shutter) settings.push(exif.shutter);
+  if (exif.iso != null) settings.push(`ISO ${exif.iso}`);
+  if (settings.length) parts.push(settings.join(" · "));
+  return parts.join("  ·  ");
+}
+
+const first = photos[0];
+const SIZES = "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw";
+---
+
+<div
+  id={galleryId}
+  class="photo-gallery columns-1 sm:columns-2 lg:columns-3 gap-2 [&>a]:break-inside-avoid [&>a]:mb-2 [&>a]:block"
+  data-photo-gallery
+  data-first-srcset={first ? buildSrcSet(lightboxVariants(first)) : undefined}
+  data-first-src={first ? first.srcWebp || first.src : undefined}
+>
+  {photos.map((p, i) => {
+    const exifLine = formatExifLine(p.exif);
+    const alt = photoAlt(p, lang);
+    return (
+      <a
+        href={p.srcWebp || p.src}
+        data-pswp-width={p.width}
+        data-pswp-height={p.height}
+        data-pswp-srcset={buildSrcSet(lightboxVariants(p))}
+        data-exif={p.exif ? JSON.stringify(p.exif) : undefined}
+        aria-label={alt}
+        class="block group relative overflow-hidden bg-black/40"
+      >
+        <picture>
+          {p.thumbWebp && (
+            <source type="image/webp" srcset={buildSrcSet(galleryVariants(p))} sizes={SIZES} />
+          )}
+          <img
+            src={p.thumb}
+            sizes={SIZES}
+            alt={alt}
+            width={p.width || undefined}
+            height={p.height || undefined}
+            loading={i === 0 ? "eager" : "lazy"}
+            fetchpriority={i === 0 ? "high" : "auto"}
+            decoding="async"
+            class="w-full h-auto block transition-transform duration-[600ms] group-hover:scale-[1.03]"
+          />
+        </picture>
+        {exifLine && (
+          <div
+            class="absolute inset-x-0 bottom-0 px-3 py-2 text-[10.5px] font-mono tracking-wide leading-snug text-white/90 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+            style="background: linear-gradient(to top, rgba(0,0,0,0.75), rgba(0,0,0,0))"
+          >
+            {exifLine}
+          </div>
+        )}
+      </a>
+    );
+  })}
+</div>
+
+<script>
+  type Exif = Record<string, string | number | undefined>;
+
+  function formatExifLine(exif?: Exif): string {
+    if (!exif) return "";
+    const parts: string[] = [];
+    if (exif.camera) parts.push(String(exif.camera));
+    if (exif.lens) parts.push(String(exif.lens));
+    const settings: string[] = [];
+    if (exif.focal != null) settings.push(`${Math.round(Number(exif.focal))}mm`);
+    if (exif.aperture != null) settings.push(`f/${Number(exif.aperture).toFixed(1).replace(/\.0$/, "")}`);
+    if (exif.shutter) settings.push(String(exif.shutter));
+    if (exif.iso != null) settings.push(`ISO ${exif.iso}`);
+    if (settings.length) parts.push(settings.join(" · "));
+    return parts.join("  ·  ");
+  }
+
+  for (const container of document.querySelectorAll<HTMLElement>("[data-photo-gallery]")) {
+    initGallery(container);
+  }
+
+  function initGallery(container: HTMLElement): void {
+    const galleryId = container.id;
+    if (!galleryId) return;
+    let lightbox: any = null;
+    let ready = false;
+    let starting: Promise<void> | null = null;
+    let pendingOpen: HTMLAnchorElement | null = null;
+
+    /**
+     * 预热第一张大图（灯箱尺寸版）：第 129 轮实测「首次打开 576 ms、之后 16 ms」，
+     * 差的正是"模块下载 + 第一张图解码"，提前做掉就把冷启动摊平了。
+     */
+    function warmFirstImage(): void {
+      const srcset = container.dataset.firstSrcset;
+      const src = container.dataset.firstSrc;
+      if (!srcset && !src) return;
+      const img = new Image();
+      if (srcset) img.srcset = srcset;
+      img.sizes = "100vw";
+      if (src) img.src = src;
+      void img.decode?.().catch(() => {});
+    }
+
+    /** PhotoSwipe 核心与 Lightbox 都是动态 import 的：不进首屏，点开前才下载。 */
+    async function start(): Promise<void> {
+      if (ready || starting) return starting ?? Promise.resolve();
+      starting = (async () => {
+        const [{ default: PhotoSwipeLightbox }] = await Promise.all([
+          import("photoswipe/lightbox"),
+          import("photoswipe"),
+        ]);
+        lightbox = new PhotoSwipeLightbox({
+          gallery: `#${galleryId}`,
+          children: "a",
+          pswpModule: () => import("photoswipe"),
+          bgOpacity: 0.97,
+          showHideAnimationType: "fade",
+          padding: { top: 40, bottom: 40, left: 0, right: 0 },
+        });
+
+        // 把每个 <a> 上的 data-exif / aria-label 注入到 PhotoSwipe slide data
+        lightbox.addFilter("domItemData", (itemData: any, element: HTMLElement) => {
+          const raw = element.getAttribute("data-exif");
+          if (raw) {
+            try {
+              itemData.exif = JSON.parse(raw);
+            } catch {
+              /* 坏 JSON 就当没有 EXIF，不要因为一条说明文字崩掉灯箱 */
+            }
+          }
+          itemData.alt = element.getAttribute("aria-label") || "";
+          return itemData;
+        });
+
+        // 自定义 caption：左下角条形 EXIF
+        lightbox.on("uiRegister", () => {
+          lightbox.pswp?.ui?.registerElement({
+            name: "exif-caption",
+            order: 9,
+            isButton: false,
+            appendTo: "root",
+            html: "",
+            onInit: (el: HTMLElement, pswp: any) => {
+              el.style.cssText = [
+                "position:absolute",
+                "left:0",
+                "right:0",
+                "bottom:0",
+                "padding:14px 22px",
+                "color:rgba(255,255,255,0.85)",
+                "background:linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0))",
+                "font: 12.5px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace",
+                "letter-spacing:0.02em",
+                "pointer-events:none",
+                "text-align:center",
+                "z-index:1",
+              ].join(";");
+              pswp.on("change", () => {
+                const data = pswp.currSlide?.data;
+                const line = formatExifLine(data?.exif as Exif | undefined);
+                const alt = data?.alt as string | undefined;
+                el.replaceChildren();
+                if (alt) {
+                  const caption = document.createElement("div");
+                  caption.style.cssText = "font-family:inherit;color:#fff;margin-bottom:3px";
+                  caption.textContent = alt;
+                  el.appendChild(caption);
+                }
+                if (line) el.appendChild(document.createTextNode(line));
+              });
+            },
+          });
+        });
+
+        // ── 键盘契约（第 141 轮）────────────────────────────────────────────
+        // 修复前实测：点开后焦点还在背后的照片链接、没有 aria-modal、Tab 走完 4 个按钮
+        // 就跑到 BODY；prefers-reduced-motion 下关闭后焦点落到 <body>。
+        let releaseTrap: (() => void) | null = null;
+        let triggerElement: HTMLElement | null = null;
+        lightbox.on("beforeOpen", () => {
+          triggerElement = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+        });
+        lightbox.on("afterInit", () => {
+          const root = lightbox.pswp?.element as HTMLElement | undefined;
+          if (!root) return;
+          root.setAttribute("aria-modal", "true");
+          root.setAttribute("aria-label", "图片查看器，Esc 关闭，左右方向键切换");
+          const focusables = () =>
+            Array.from(
+              root.querySelectorAll<HTMLElement>('button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'),
+            ).filter((node) => node.offsetParent !== null);
+          const onKeyDown = (event: KeyboardEvent) => {
+            if (event.key !== "Tab") return;
+            const list = focusables();
+            if (list.length === 0) return;
+            const firstNode = list[0];
+            const last = list[list.length - 1];
+            const active = document.activeElement;
+            if (event.shiftKey && (active === firstNode || !root.contains(active))) {
+              event.preventDefault();
+              last.focus();
+            } else if (!event.shiftKey && (active === last || !root.contains(active))) {
+              event.preventDefault();
+              firstNode.focus();
+            }
+          };
+          root.addEventListener("keydown", onKeyDown);
+          releaseTrap = () => root.removeEventListener("keydown", onKeyDown);
+          // 等淡入开始再移焦点，避免被 animation 抢走
+          window.setTimeout(() => {
+            const target = root.querySelector<HTMLElement>(".pswp__button--close") ?? focusables()[0];
+            target?.focus();
+          }, 120);
+        });
+        // 焦点归还的兜底：**只在焦点真的丢了时**介入（两个坑都在第 141 轮实测过）
+        const restoreTriggerFocus = () => {
+          const active = document.activeElement;
+          if (active && active !== document.body && active.isConnected) return;
+          const target = triggerElement;
+          triggerElement = null;
+          if (target?.isConnected) target.focus();
+        };
+        lightbox.on("close", () => {
+          releaseTrap?.();
+          releaseTrap = null;
+          window.setTimeout(restoreTriggerFocus, 700);
+        });
+        lightbox.on("destroy", () => {
+          window.setTimeout(restoreTriggerFocus, 0);
+        });
+
+        lightbox.init();
+        ready = true;
+      })();
+      await starting;
+      // 用户在模块下载完之前就点了：等就绪后补一次点击（否则会直接跳到大图）
+      if (pendingOpen) {
+        const link = pendingOpen;
+        pendingOpen = null;
+        link.click();
+      }
+    }
+
+    const warm = () => {
+      warmFirstImage();
+      void start();
+    };
+
+    const idle = (window as any).requestIdleCallback as
+      | ((cb: () => void, opts?: { timeout: number }) => number)
+      | undefined;
+    if (idle) idle(warm, { timeout: 2000 });
+    else window.setTimeout(warm, 1200);
+
+    // 悬停/触摸提前拉，点击时基本已经在内存里了
+    container.addEventListener("pointerenter", warm, { passive: true, once: true });
+    container.addEventListener("touchstart", warm, { passive: true, once: true });
+
+    // 模块还没就绪时的点击：先拦住跳转，等就绪再补点一次
+    container.addEventListener("click", (event) => {
+      if (ready) return; // 已就绪：交给 PhotoSwipe 自己处理
+      const link = (event.target as HTMLElement | null)?.closest<HTMLAnchorElement>("a[data-pswp-width]");
+      if (!link) return;
+      event.preventDefault();
+      pendingOpen = link;
+      void start();
+    });
+  }
+</script>

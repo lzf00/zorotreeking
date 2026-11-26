@@ -898,3 +898,22 @@
 - **仍未解（需你/服务器）**：nginx 三项、39 期/300 条摘要（需 LLM key）、内联 CSS 外链化
   （已用 Lighthouse 实测过：本站内联更快，属于**有意选择**，不必再动）、
   `/opt/wind-recap` 副本同步、giscus App 安装、留言时区。
+
+## 第 228 轮
+
+- **改（性能）**：`PhotoGallery` 从 React 岛改成 Astro + 原生 script。相册页首屏 JS
+  342 → 85 KB、手机端总重量 762 → 458 KB、水合岛 1 → 0。行为逐条保留
+  （尺寸感知的灯箱 srcset、空闲预热、键盘契约、首图 eager+high），并新增
+  「模块未就绪时点击」的补偿逻辑。
+- **加（守卫）**：`tests/gallery-srcset.test.ts` 新增一条 —— 相册组件不许 import React、
+  不许带水合指令、PhotoSwipe 必须动态导入、相册页那行不许有 `client:*`、
+  `PhotoGallery.tsx` 不许复活。
+- **自伤（已修）**：
+  - 守卫第一版直接对 `.astro` 全文 `doesNotMatch(/client:/)`，被文件头注释里的
+    「`client:load` 的 React 岛」命中；改成只看代码行。
+  - 第二版又顺手要求「相册页不许有任何水合岛」，但同一页还有 `PhotoMap`（`client:visible`，
+    合法）；收窄到只约束 `<PhotoGallery>` 那一行。
+- **仍未解（需你/服务器）**：nginx 三项、39 期/300 条摘要（需 LLM key）、
+  内联 CSS 外链化（已实测：本站内联更快，有意选择）、`/opt/wind-recap` 副本同步、
+  giscus App 安装、留言时区。下一块可优化的是 `/invest/` 的 270 KB 脚本
+  （6 个岛 + React），但那些岛真的有交互，需要先想清楚是懒加载还是换运行时。

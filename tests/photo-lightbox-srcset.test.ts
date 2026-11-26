@@ -38,9 +38,9 @@ test("窄图不会被标成大宽度（否则 1x 屏也硬拉大图）", () => {
 });
 
 test("组件把 srcset 交给 PhotoSwipe，并带温度（idle 预热）", async () => {
-  const src = await readFile(new URL("../src/components/PhotoGallery.tsx", import.meta.url), "utf8");
+  const src = await readFile(new URL("../src/components/PhotoGallery.astro", import.meta.url), "utf8");
   assert.match(src, /data-pswp-srcset=\{buildSrcSet\(lightboxVariants\(p\)\)\}/);
-  assert.match(src, /warmPhotoSwipe/, "缺少 PhotoSwipe 预热");
+  assert.match(src, /void start\(\)/, "缺少 PhotoSwipe 预热（首次渲染不该付 60 KB）");
   assert.match(src, /requestIdleCallback/, "预热应在空闲时做，不抢首屏");
 });
 
