@@ -139,7 +139,11 @@ async function main() {
       id: "en-recap-chinese",
       label: "英文日报表格里的中文名",
       level: leftovers.length ? "fail" : "ok",
-      detail: leftovers.length ? `${leftovers.length} 处（例：${leftovers.slice(0, 3).join("；")}）` : `${files.length} 个英文日报干净`,
+      detail: leftovers.length
+        // 每天服务器上的生成端副本都会再写进中文名，所以这里直接给"一条命令修干净"，
+        // 而不是让人去翻部署脚本才知道怎么修（第 218 轮）。
+        ? `${leftovers.length} 处（例：${leftovers.slice(0, 3).join("；")}）—— 改法：npm run fix:recap-names`
+        : `${files.length} 个英文日报干净`,
     });
   } catch (error) {
     results.push({

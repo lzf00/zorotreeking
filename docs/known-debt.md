@@ -744,3 +744,17 @@
   但和站内"一律北京时间"的口径不一致；改动会改变留言显示，先记着不动。
 - **仍未解（需你/服务器）**：nginx 三项、39 期/300 条摘要（需 LLM key）、内联 CSS 外链化、
   `/opt/wind-recap` 副本同步、giscus App 安装。
+
+## 第 218 轮
+
+- **修（可操作性）**：`npm run fix:recap-names` 新增；`check:content-quality` 报「英文日报表格里的中文名」
+  时直接给出 `—— 改法：npm run fix:recap-names`。测试并入 `tests/content-quality-gate.test.ts`
+  （+1 条），锁住"报错里的命令存在且与 CI 的修复命令是同一条"。
+- **复发记录**：`e61c7ab7`（服务器生成端的自动复盘）又把 10 个中文名写回
+  `market-recap-2026-11-26.en.mdx`，本轮再次用回填脚本修好，126 个英文复盘干净。
+  根因（`/opt/wind-recap` 副本未同步）不变，仍待用户处理。
+- **线上巡检（一次性）**：19 个代表页（首页/各分区/详情/搜索/留言/`/now/`/英文镜像）在线上加载，
+  无同源 4xx/5xx、无 pageerror、无第三方噪音。唯一命中是 `/tag/etf/` —— 该 tag 不存在，
+  属于我探测 URL 猜错，站内没有链向它。
+- **仍未解（需你/服务器）**：nginx 三项、39 期/300 条摘要（需 LLM key）、内联 CSS 外链化、
+  `/opt/wind-recap` 副本同步、giscus App 安装、留言时间是否统一北京时间。

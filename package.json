@@ -18,6 +18,7 @@
     "test": "node --import tsx --test tests/*.test.ts",
     "sync:debt": "node scripts/sync-known-debt.mjs",
     "check:debt": "node scripts/sync-known-debt.mjs --check",
+    "fix:recap-names": "python3 scripts/wind/backfill_en_names.py --headlines",
     "check:content-quality": "node scripts/check-content-quality.mjs",
     "check": "astro check",
     "validate:etf": "tsx scripts/validate-etf-snapshot.ts",

@@ -78,3 +78,17 @@ test("这些内容状态断言不许留在 tests/ 里（会冻住发布）", asy
   const covers = await read("tests/digest-covers.test.ts");
   assert.doesNotMatch(covers, /不能被超过 8%/, "封面复用比例应在 check-content-quality.mjs");
 });
+
+test("英文日报有中文名时，报错要直接给出可执行的修法（第 218 轮）", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const script = await readFile(new URL("../scripts/check-content-quality.mjs", import.meta.url), "utf8");
+  assert.match(script, /npm run fix:recap-names/, "报错里要写清怎么修");
+
+  const pkg = JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8"));
+  assert.ok(pkg.scripts["fix:recap-names"], "npm 脚本要真的存在，否则报错里那句是空话");
+  assert.match(pkg.scripts["fix:recap-names"], /backfill_en_names\.py/);
+  assert.match(pkg.scripts["fix:recap-names"], /--headlines/, "要连要闻段一起修");
+  // 部署里已经会在测试前跑同一条命令；这里保证"人看到的修法"和"CI 的修法"是同一个
+  const deploy = await readFile(new URL("../.github/workflows/deploy.yml", import.meta.url), "utf8");
+  assert.match(deploy, /python3 scripts\/wind\/backfill_en_names\.py --headlines/);
+});
