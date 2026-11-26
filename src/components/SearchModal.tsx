@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { searchEmptyState, type SearchLang } from "@/lib/search-empty";
 import { describeResult } from "@/lib/search-result-meta";
+import { enterTarget, nextIndex } from "@/lib/search-keyboard";
 
 /**
  * 全站搜索 modal（pagefind 客户端全文检索）。
@@ -36,6 +37,7 @@ declare global {
  */
 const COPY = {
   zh: {
+    resultList: "搜索结果",
     dialog: "站内搜索",
     placeholder: "搜索文章、digest、笔记…",
     ariaInput: "输入搜索关键词",
@@ -47,6 +49,7 @@ const COPY = {
     more: "{copy.more}",
   },
   en: {
+    resultList: "Search results",
     dialog: "Search this site",
     placeholder: "Search posts, digests, notes…",
     ariaInput: "Enter search keywords",
@@ -152,7 +155,25 @@ export default function SearchModal({ initialOpen = false, initialQuery = "", va
    * 用户会"掉出"对话框，而 `aria-modal` 又不在，辅助技术也不会把背景当作不可交互。
    * 这里在 Tab / Shift+Tab 到边界时把焦点绕回另一端。
    */
+  function handleListKeys(event: React.KeyboardEvent<HTMLDivElement>) {
+    if (results.length === 0) return;
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      // 输入框里上下键默认会挪光标，必须拦掉
+      event.preventDefault();
+      setActiveIndex((current) => nextIndex(current, event.key === "ArrowDown" ? 1 : -1, results.length));
+      return;
+    }
+    if (event.key === "Enter") {
+      const target = enterTarget(results, activeIndex);
+      if (!target) return;
+      event.preventDefault();
+      window.location.assign(target);
+    }
+  }
+
   function handleKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
+    handleListKeys(event);
+    if (event.defaultPrevented) return;
     if (event.key !== "Tab") return;
     const nodes = dialogRef.current?.querySelectorAll<HTMLElement>(
       'a[href], button:not([disabled]), input:not([disabled]), textarea, select, [tabindex]:not([tabindex="-1"])',
@@ -172,6 +193,15 @@ export default function SearchModal({ initialOpen = false, initialQuery = "", va
       first.focus();
     }
   }
+
+  /**
+   * 键盘高亮（第 219 轮）：↑/↓ 在结果之间移动、Enter 打开。
+   * `-1` 表示"还没选" —— 此时按 Enter 直接打开第一条，符合地址栏补全的习惯。
+   */
+  const [activeIndex, setActiveIndex] = useState(-1);
+  useEffect(() => {
+    setActiveIndex(-1);
+  }, [query]);
 
   // 搜索
   useEffect(() => {
@@ -214,6 +244,7 @@ export default function SearchModal({ initialOpen = false, initialQuery = "", va
         role="search"
         aria-label={copy.dialog}
         style={pageShellStyle}
+        onKeyDown={handleListKeys}
       >
         <div style={inputWrapStyle}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, color: "var(--text-tertiary, #9ca3af)" }}>
@@ -225,6 +256,11 @@ export default function SearchModal({ initialOpen = false, initialQuery = "", va
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={copy.placeholder}
+            role="combobox"
+            aria-expanded={results.length > 0}
+            aria-controls="search-results"
+            aria-autocomplete="list"
+            aria-activedescendant={activeIndex >= 0 ? `search-result-${activeIndex}` : undefined}
             aria-label={copy.ariaInput}
             style={inputStyle}
           />
@@ -236,11 +272,20 @@ export default function SearchModal({ initialOpen = false, initialQuery = "", va
           {loading && <div style={emptyStyle}>{copy.searching}</div>}
           {!loading && query && results.length === 0 && emptyBlock(query, lang, "page")}
           {!loading && !query && <div style={emptyStyle}>{copy.idle}</div>}
+          {/* 第 219 轮：listbox 里只能放 option（axe 的 aria-required-children），
+              所以状态文案留在外面，只有结果本身进 listbox。 */}
+          <div role="listbox" id="search-results" aria-label={copy.resultList} style={{ display: results.length ? "block" : "none" }}>
           {results.map((r, i) => (
-            <a key={i} href={r.url} style={resultStyle}>
+            <a
+              key={i}
+              id={`search-result-${i}`}
+              role="option"
+              aria-selected={i === activeIndex}
+              href={r.url}
+              style={i === activeIndex ? { ...resultStyle, ...resultActiveStyle } : resultStyle}
+            >
               {/* 第 214 轮：1292 页里 1068 页是每日自动产出，标题长得几乎一样。
                   这一行说明「这是哪一类、哪一天的」，让读者一眼分得清。 */}
-              <div style={resultKindStyle}>{describeResult(r.url).label}</div>
               <div style={resultKindStyle}>{describeResult(r.url).label}</div>
               <div style={resultTitleStyle}>{r.meta?.title || r.url}</div>
               <div
@@ -254,6 +299,7 @@ export default function SearchModal({ initialOpen = false, initialQuery = "", va
               />
             </a>
           ))}
+          </div>
         </div>
       </div>
     );
@@ -280,6 +326,11 @@ export default function SearchModal({ initialOpen = false, initialQuery = "", va
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={copy.placeholder}
+            role="combobox"
+            aria-expanded={results.length > 0}
+            aria-controls="search-results"
+            aria-autocomplete="list"
+            aria-activedescendant={activeIndex >= 0 ? `search-result-${activeIndex}` : undefined}
             aria-label={copy.ariaInput}
             style={inputStyle}
           />
@@ -304,8 +355,18 @@ export default function SearchModal({ initialOpen = false, initialQuery = "", va
               在搜索页查看全部结果 →
             </a>
           )}
+          {/* 第 219 轮：listbox 里只能放 option（axe aria-required-children），状态与入口留在外面 */}
+          <div role="listbox" id="search-results" aria-label={copy.resultList} style={{ display: results.length ? "block" : "none" }}>
           {results.map((r, i) => (
-            <a key={i} href={r.url} style={resultStyle} onClick={() => setOpen(false)}>
+            <a
+              key={i}
+              id={`search-result-${i}`}
+              role="option"
+              aria-selected={i === activeIndex}
+              href={r.url}
+              style={i === activeIndex ? { ...resultStyle, ...resultActiveStyle } : resultStyle}
+              onClick={() => setOpen(false)}
+            >
               <div style={resultTitleStyle}>{r.meta?.title || r.url}</div>
               <div
                 style={resultExcerptStyle}
@@ -318,6 +379,7 @@ export default function SearchModal({ initialOpen = false, initialQuery = "", va
               />
             </a>
           ))}
+          </div>
         </div>
       </div>
     </div>
@@ -375,6 +437,10 @@ const resultStyle: React.CSSProperties = {
 const resultKindStyle: React.CSSProperties = {
   fontSize: 10.5, letterSpacing: "0.08em", textTransform: "uppercase",
   color: "var(--text-tertiary, #9ca3af)", marginBottom: 2, fontFamily: "var(--font-mono, ui-monospace, monospace)",
+};
+const resultActiveStyle: React.CSSProperties = {
+  background: "var(--bg-soft, #f3f4f6)",
+  boxShadow: "inset 2px 0 0 var(--accent, #1d4ed8)",
 };
 const resultTitleStyle: React.CSSProperties = {
   fontSize: 14, fontWeight: 600, marginBottom: 3,

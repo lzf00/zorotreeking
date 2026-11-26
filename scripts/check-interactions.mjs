@@ -70,6 +70,38 @@ const SCENARIOS = [
     },
   },
   {
+    // 第 219 轮：用键盘的人第一反应是 ↓ ↓ Enter。之前只处理了 Tab 与 Esc，
+    // 想打开第二条结果只能一路 Tab 过去 —— 对 1292 页的站来说这个摩擦天天都在。
+    name: "搜索：↓ 选结果、Enter 打开",
+    url: "/",
+    async run({ page, fail, openSearch }) {
+      const input = await openSearch('button[aria-label="搜索"], button[aria-label="Search"]');
+      if (!input) return fail("点开搜索后没有出现输入框");
+      await input.fill(KEYWORD);
+      await page.waitForTimeout(WAIT);
+      const options = await page.locator('[role="dialog"] [role="option"]').count();
+      if (options < 2) return fail(`搜索结果不足 2 条（拿到 ${options}），没法测键盘导航`);
+
+      await input.press("ArrowDown");
+      await input.press("ArrowDown");
+      const picked = await page.evaluate(() => {
+        const selected = document.querySelector('[role="dialog"] [role="option"][aria-selected="true"]');
+        const combobox = document.querySelector('input[role="combobox"]');
+        return {
+          href: selected?.getAttribute("href") ?? "",
+          active: combobox?.getAttribute("aria-activedescendant") ?? "",
+        };
+      });
+      if (!picked.href) return fail("按了两下 ↓ 之后没有高亮项（aria-selected 没动）");
+      if (!picked.active) return fail("输入框没有 aria-activedescendant，读屏用户不知道高亮在哪条");
+
+      await input.press("Enter");
+      await page.waitForTimeout(1200);
+      const landed = new URL(page.url()).pathname;
+      if (landed !== picked.href) return fail(`回车后停在 ${landed}，期望 ${picked.href}`);
+    },
+  },
+  {
     name: "搜索弹窗（英文）",
     url: "/en/",
     async run({ page, fail, openSearch }) {

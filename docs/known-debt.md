@@ -758,3 +758,19 @@
   属于我探测 URL 猜错，站内没有链向它。
 - **仍未解（需你/服务器）**：nginx 三项、39 期/300 条摘要（需 LLM key）、内联 CSS 外链化、
   `/opt/wind-recap` 副本同步、giscus App 安装、留言时间是否统一北京时间。
+
+## 第 219 轮
+
+- **加（可用性/无障碍）**：搜索支持键盘导航。`src/lib/search-keyboard.ts`（`nextIndex` / `enterTarget`，
+  纯函数）+ `tests/search-keyboard.test.ts`（6 条）；列表 `role="listbox"`、结果 `role="option" aria-selected`、
+  输入框 `role="combobox" aria-activedescendant`；`check:interactions` 新增场景「搜索：↓ 选结果、Enter 打开」
+  （21/21 通过）。
+- **自伤（已修）**：页面模式里输入框在列表外面，第一版把 `onKeyDown` 挂在列表上 → `↓ ↓ Enter` 完全没反应；
+  改挂到页面根节点后实测通过。另外第 214 轮 `/search/` 页的类型标签被渲染了两次（两次替换命中同一段），一并删掉。
+- **自伤（已修）**：第一版把 `role="listbox"` 套在整个结果区（含状态文案、空态、跳转链接）上，
+  axe 的 `aria-required-children` 在 `/search/`、`/en/search/` 浅深两态一共报 4 次。
+  listbox 收窄成只装 `role="option"`，其余元素移到外面。
+- **验证**：本地构建后两条路径实测（弹窗与 `/search/` 页）：两下 ↓ 高亮第二条，
+  `aria-activedescendant=search-result-1`，回车跳到 `/invest/digest-2026-08-14/`。
+- **仍未解（需你/服务器）**：nginx 三项、39 期/300 条摘要（需 LLM key）、内联 CSS 外链化、
+  `/opt/wind-recap` 副本同步、giscus App 安装、留言时间是否统一北京时间。
