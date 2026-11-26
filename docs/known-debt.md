@@ -785,3 +785,15 @@
 - **自伤（已修）**：这条假话是第 214 轮加结果标签时留下的 —— 当时只改了标签，没核对"全部结果"这句。
 - **仍未解（需你/服务器）**：nginx 三项、39 期/300 条摘要（需 LLM key）、内联 CSS 外链化、
   `/opt/wind-recap` 副本同步、giscus App 安装、留言时间是否统一北京时间。
+
+## 第 221 轮
+
+- **加（移动端可用性）**：详情页小屏折叠目录。`TOC.astro` 增加 `variant: "sidebar" | "inline"`，
+  inline 用原生 `<details>/<summary>` + `xl:hidden`，只有 >1 节才渲染；中英文详情页各渲染一次，
+  位置在 `</header>` 之后。`tests/mobile-toc.test.ts`（3 条）锁住形态、位置与"侧栏只渲染一次"。
+- **自伤（已修）**：第一版把 inline TOC 插在 `<article>` 外面（标题上方）。桌面看不见（`xl:hidden`），
+  按 390px 打开才发现顺序反了 —— 只在某个断点可见的东西必须在那个断点验证。
+- **实测**：390px 下「目录 · 24 节」默认收起、24 个锚点、点第 3 条 `location.hash` 正确；
+  1440px 折叠目录高度 0、侧栏 `display:block`；无 pageerror。
+- **仍未解（需你/服务器）**：nginx 三项、39 期/300 条摘要（需 LLM key）、内联 CSS 外链化、
+  `/opt/wind-recap` 副本同步、giscus App 安装、留言时间是否统一北京时间。

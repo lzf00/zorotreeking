@@ -110,6 +110,9 @@ const untranslated = untranslatedNotice(cjkLeaks(entry.body ?? ""));
       <TranslationNotice zhHref={zhHref} />
     </header>
 
+    {/* 小屏折叠目录（第 221 轮）：放在正文里、标题下面 */}
+    <TOC headings={headings} label="Contents" variant="inline" />
+
     <div class={`prose prose-zinc dark:prose-invert max-w-none
                 prose-headings:tracking-tight prose-headings:scroll-mt-20
                 ${headingClasses}

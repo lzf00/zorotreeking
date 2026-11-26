@@ -1,7 +1,16 @@
 ---
 import type { MarkdownHeading } from "astro";
-interface Props { headings: MarkdownHeading[]; label?: string }
-const { headings, label = "目录" } = Astro.props;
+interface Props {
+  headings: MarkdownHeading[];
+  label?: string;
+  /**
+   * `sidebar`：桌面右侧固定目录（原来是唯一形态）。
+   * `inline`：小屏折叠目录（第 221 轮）—— 侧栏是 `hidden xl:block`，
+   *   手机/平板上长文（日报 190 KB、十几个小节）此前完全没有跳转入口。
+   */
+  variant?: "sidebar" | "inline";
+}
+const { headings, label = "目录", variant = "sidebar" } = Astro.props;
 
 // Digest 这种"几十个 H2"的页面，全列 TOC 长得离谱。
 // 策略：H2 超过 6 个且有 H1 分组 → 只显示 H1（来源分组）；否则正常 h2+h3。
@@ -13,9 +22,28 @@ const items = useH1Grouping
   : headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 ---
 
+{/* 小屏折叠目录：原生 <details>，不引 JS，键盘与读屏器原生可用。
+    放在正文里（标题下方），所以两个详情页各自插一次；桌面隐藏，避免和侧栏重复。 */}
+{variant === "inline" && items.length > 1 && (
+  <details class="xl:hidden mb-10 rounded-xl border border-[var(--border)] bg-[var(--bg-soft,#f9fafb)] px-4 py-3">
+    <summary class="cursor-pointer select-none text-sm font-medium text-[var(--text)]">
+      {label} · {items.length} 节
+    </summary>
+    <ul class="mt-3 space-y-1 text-sm">
+      {items.map((h) => (
+        <li class:list={[h.depth === 3 ? "pl-3" : ""]}>
+          <a href={`#${h.slug}`} class="block py-1 text-[var(--text-secondary,#52525b)] hover:text-[var(--text)]">
+            {h.text}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </details>
+)}
+
 {/* 侧边目录和顶部主导航都是 <nav>：必须各自有可读名字，
     否则读屏器只报"导航"（axe: landmark-unique）。 */}
-{items.length > 0 && (
+{variant === "sidebar" && items.length > 0 && (
   <nav aria-label={label} class="hidden xl:block fixed top-24 right-8 max-w-[220px] text-sm">
     <div class="text-xs font-semibold text-[var(--text-tertiary)] uppercase tracking-wider mb-2">{label}</div>
     <ul class="space-y-1.5 border-l border-[var(--border)] pl-3">
