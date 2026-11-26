@@ -10,7 +10,7 @@ cover: "/photos/uploads/baokemeng/baokemeng-22.og.jpg"
 draft: false
 ---
 
-import FeedbackButtons from "@/components/FeedbackButtons";
+import FeedbackButtons from "@/components/FeedbackButtons.astro";
 
 <div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
   <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second daily overview</div>
@@ -36,7 +36,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 The current bottleneck of video generation has shifted from rendering to semantic control. This paper summarizes the multimodal understanding experience accumulated during the iteration of Kling: it opens up the full link of data-condition-alignment-evaluation, develops the unified multimodal base Kling-MLLM to adapt to each downstream module, and optimizes the whole process through high-density reference subtitles, prompt enhancement, perception-first text encoder, dual reward model, and targeted automatic evaluation, providing practical guidance for the implementation of controllable video generation.
 
-<FeedbackButtons lang="en" slug="item:arxiv-2611.04916" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2611.04916" />
 
 ## <a href="https://arxiv.org/abs/2611.02497" target="_blank" rel="noopener noreferrer">RoboColosseum: Evaluating Physical Intelligence at Scale In-The-Wild</a>
 
@@ -44,7 +44,7 @@ The current bottleneck of video generation has shifted from rendering to semanti
 
 This paper introduces the RoboColosseum distributed real-robot evaluation framework, which unifies policy scheduling and evaluation protocols, and can connect scattered robot nodes in multiple environments to carry out large-scale physical intelligence evaluation. After testing the performance of 8 models across 4 robot morphologies, it is found that the performance of cutting-edge general agents is close to that of specialized vision-language-action models, the optimal fine-tuning strategies for different morphologies vary greatly, the consistency of performance rankings across morphologies is low, and performance on open tracks is difficult to predict post-fine-tuning. This framework can more comprehensively reflect the generalization and adaptation capabilities of robot policies.
 
-<FeedbackButtons lang="en" slug="item:arxiv-2611.02497" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2611.02497" />
 
 ## <a href="https://arxiv.org/abs/2611.02737" target="_blank" rel="noopener noreferrer">MoviEdit: Long-form Multi-Shot Video Editing Made Easy</a>
 
@@ -52,7 +52,7 @@ This paper introduces the RoboColosseum distributed real-robot evaluation framew
 
 Aiming at the difficulty of maintaining editing consistency across scenes and perspectives for long-form multi-shot video editing, the team launched the MoviEdit end-to-end editing framework: an automatic data generation pipeline is built to obtain 87,000 pairs of unlabeled multi-shot editing datasets, a cascaded bidirectional autoregressive architecture is adopted, which first generates a globally consistent draft in the compression domain and then refines it, and it is also equipped with an exclusive evaluation benchmark. Experiments show that its performance far exceeds that of existing open-source models, and is on par with the cutting-edge level in the industry.
 
-<FeedbackButtons lang="en" slug="item:arxiv-2611.02737" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2611.02737" />
 
 ## <a href="https://arxiv.org/abs/2611.02501" target="_blank" rel="noopener noreferrer">SpecPilot: Autonomous Algorithm Discovery and Systems Optimization for Speculative Decoding</a>
 
@@ -60,7 +60,7 @@ Aiming at the difficulty of maintaining editing consistency across scenes and pe
 
 Aiming at the three major problems that existing parallel speculative decoding has not reached the theoretical speedup upper limit: redundant weight reading for single requests, high batch verification overhead, and no general optimization for all scenarios, this paper proposes the autonomous optimization framework SpecPilot: it locates bottlenecks through cost models, explores solutions in parallel with multiple agents, ensures correctness through output verification, and precipitates effective mechanisms through structured memory. Without accuracy loss, the speedup ratio compared to autoregressive decoding for single request and batch scenarios is increased from 4.46x and 1.94x to 10.87x and 3.93x respectively.
 
-<FeedbackButtons lang="en" slug="item:arxiv-2611.02501" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2611.02501" />
 
 ## <a href="https://arxiv.org/abs/2611.03233" target="_blank" rel="noopener noreferrer">Axion 1.0: Open Agent Foundation Models, Simplified</a>
 
@@ -68,7 +68,7 @@ Aiming at the three major problems that existing parallel speculative decoding h
 
 This paper launches the fully open-source agent base model Axion 1.0, which only adopts a three-stage minimalist training process: two rounds of lightweight supervised fine-tuning to achieve self-consistent reasoning and tool calling capabilities respectively, followed by reinforcement learning to improve long-range reasoning performance, eliminating the need for complex training steps such as DPO. Its performance is on par with leading commercial agent models, and it fully opens up all resources of the training pipeline, providing a reproducible and concise path for the development of open-source agents.
 
-<FeedbackButtons lang="en" slug="item:arxiv-2611.03233" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2611.03233" />
 
 # arXiv cs.LG
 
@@ -78,7 +78,7 @@ This paper launches the fully open-source agent base model Axion 1.0, which only
 
 Aiming at the problem of community detection in complex networks, this paper proposes 3 general hierarchical frameworks, which are compatible with multiple types of link clustering, node similarity matrices and graph representation learning models. Verified by 364 groups of module comparisons, the optimal solution has performance comparable to Leiden and Louvain algorithms, outputs nested partitions almost losslessly to adapt to scenarios where the number of communities is unknown, has higher accuracy for small multi-community networks, is only limited by complexity, and is suitable for networks with less than 10,000 nodes on a single machine.
 
-<FeedbackButtons lang="en" slug="item:arxiv-2303.12212" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2303.12212" />
 
 # OpenAI
 
@@ -88,7 +88,7 @@ Aiming at the problem of community detection in complex networks, this paper pro
 
 This research focuses on the demand for accelerating engineering R&D in the physical world. The core solution is to embed two types of large model tools, ChatGPT and Codex, into the core engineering workflow. It has been implemented and verified in multiple core hardware R&D scenarios such as CAD modeling, PCB design, and performance simulation, which can greatly shorten the operation cycle of each link, providing a reusable implementation path for efficiency upgrade and rapid iteration of traditional physical engineering.
 
-<FeedbackButtons lang="en" slug="item:openai-blog-accelerating-engineering-for-the-physical-world" client:visible />
+<FeedbackButtons lang="en" slug="item:openai-blog-accelerating-engineering-for-the-physical-world" />
 
 ## <a href="https://openai.com/index/cisco-cyber" target="_blank" rel="noopener noreferrer">How Cisco defends at machine speed with OpenAI</a>
 
@@ -96,7 +96,7 @@ This research focuses on the demand for accelerating engineering R&D in the phys
 
 This content introduces Cisco's enterprise security protection upgrade plan: the core method is to deeply integrate its full network intelligence and threat signature database accumulated from years of deep engagement in the network field with the intelligent reasoning capabilities of OpenAI's large models. It ultimately achieves machine-level ultra-fast threat identification and response, which is more flexible than traditional rule-based defense, can adapt to evolving new types of attacks, and builds an efficient adaptive security protection system.
 
-<FeedbackButtons lang="en" slug="item:openai-blog-cisco-cyber" client:visible />
+<FeedbackButtons lang="en" slug="item:openai-blog-cisco-cyber" />
 
 # Anthropic News
 
@@ -106,7 +106,7 @@ This content introduces Cisco's enterprise security protection upgrade plan: the
 
 This content is the summary of the official announcement of AI security vendor Anthropic, which clarifies the enterprise's positioning as an institution focused on AI security research and implementation. Its core R&D goals are to build three types of AI systems: first, highly reliable systems with stable output, second, interpretable systems with traceable decision-making logic, and third, steerable systems that can be flexibly adjusted according to human needs, which also anchors the core direction for its subsequent technology releases.
 
-<FeedbackButtons lang="en" slug="item:anthropic-announcements" client:visible />
+<FeedbackButtons lang="en" slug="item:anthropic-announcements" />
 
 ## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
 
@@ -114,7 +114,7 @@ This content is the summary of the official announcement of AI security vendor A
 
 AI company Anthropic has launched the "Investing in the Public Benefit" initiative, establishing the new Anthropic Public Benefit Fund: the core mechanism is to allocate part of the company's shares to the fund, and the fund adopts a special structure where its shareholding ratio will increase synchronously as the company's development scale expands, so as to more fully feed the benefits of the enterprise's commercial growth back to the public sector, exploring a new path for AI enterprises to balance profitability and public responsibility.
 
-<FeedbackButtons lang="en" slug="item:anthropic-public-benefit-fund" client:visible />
+<FeedbackButtons lang="en" slug="item:anthropic-public-benefit-fund" />
 
 # Google DeepMind
 
@@ -124,7 +124,7 @@ AI company Anthropic has launched the "Investing in the Public Benefit" initiati
 
 Aiming at the pain points of long cycle and high cost of new drug R&D, this research introduces the agentic paradigm into the field of cheminformatics. Relying on the capabilities of Google's Antigravity platform and combined with the team's technical accumulation in cheminformatics, it can significantly speed up the entire drug R&D process: it not only greatly improves the efficiency of compound retrieval, but also can independently design new rigid macrocyclic molecules with high druggability potential, providing a feasible technical path for cost reduction and efficiency improvement in new drug R&D.
 
-<FeedbackButtons lang="en" slug="item:deepmind-agentic-cheminformatics-with-google-antigravity" client:visible />
+<FeedbackButtons lang="en" slug="item:deepmind-agentic-cheminformatics-with-google-antigravity" />
 
 ## <a href="https://deepmind.google/blog/speeding-up-planning-decisions-with-ai/" target="_blank" rel="noopener noreferrer">Speeding up planning decisions with AI</a>
 
@@ -132,7 +132,7 @@ Aiming at the pain points of long cycle and high cost of new drug R&D, this rese
 
 This project is jointly promoted by Google DeepMind and the UK government. Its core is to introduce artificial intelligence technology into the public planning evaluation link, specifically addressing the pain points of traditional planning approval processes such as cumbersome procedures, long time consumption, and high labor costs. The goal is to greatly shorten the evaluation cycle of planning decisions and improve the efficiency of government services. This exploration can also provide a reference practical sample for AI empowering the field of public governance.
 
-<FeedbackButtons lang="en" slug="item:deepmind-speeding-up-planning-decisions-with-ai" client:visible />
+<FeedbackButtons lang="en" slug="item:deepmind-speeding-up-planning-decisions-with-ai" />
 
 # Hugging Face Blog
 
@@ -142,7 +142,7 @@ This project is jointly promoted by Google DeepMind and the UK government. Its c
 
 Currently only the title of this paper is provided, no abstract content is attached. Please supplement the full text of this paper's abstract, so that I can extract a concise ~120-word summary highlighting the research methods and core conclusions as required.
 
-<FeedbackButtons lang="en" slug="item:hf-blog-statebench" client:visible />
+<FeedbackButtons lang="en" slug="item:hf-blog-statebench" />
 
 ## <a href="https://huggingface.co/blog/ibm-research/palette-deck-building" target="_blank" rel="noopener noreferrer">Palette: teaching a small model to build decks in your design language</a>
 
@@ -150,7 +150,7 @@ Currently only the title of this paper is provided, no abstract content is attac
 
 Currently only the title of this paper is provided, no specific abstract content is attached. Please supplement the full text of the abstract, so that I can extract its core methods and conclusions and output a concise ~120-word summary as required.
 
-<FeedbackButtons lang="en" slug="item:hf-blog-palette-deck-building" client:visible />
+<FeedbackButtons lang="en" slug="item:hf-blog-palette-deck-building" />
 
 # Lil'Log
 
@@ -160,7 +160,7 @@ Currently only the title of this paper is provided, no specific abstract content
 
 This paper focuses on self-improvement engineering research, sorting out the evolution of the Recursive Self-Improvement (RSI) concept: In 1965, I.J. Good first proposed the idea of an ultra-intelligent machine, which refers to a machine that can surpass all human intellectual activities and independently design better system iterations. In 2008, Eliezer Yudkowsky clarified that the core of RSI is a feedback loop: AI optimizes its own cognitive mechanism based on existing intelligence. Current AI implementation of RSI can be achieved through two paths: directly rewriting weights and optimizing training pipelines.
 
-<FeedbackButtons lang="en" slug="item:lillog-2026-07-04-harness" client:visible />
+<FeedbackButtons lang="en" slug="item:lillog-2026-07-04-harness" />
 
 # QbitAI
 
@@ -170,7 +170,7 @@ This paper focuses on self-improvement engineering research, sorting out the evo
 
 openJiuwen AgentMemory has newly launched the multimodal memory capability OmniMem-Lens, which abandons the industry's common fixed-duration segmentation scheme for long videos, and adopts dual-stream audio-visual memory storage based on real events. It solves the pain points of traditional schemes such as fragmented memory, key information being drowned out by noise, and single-modal segmentation failure. Its recall accuracy is increased by up to 45.7%, and online Q&A latency is reduced by up to 97%, which can efficiently handle the information extraction needs of ultra-long videos.
 
-<FeedbackButtons lang="en" slug="item:qbitai-507533" client:visible />
+<FeedbackButtons lang="en" slug="item:qbitai-507533" />
 
 ## <a href="https://www.qbitai.com/2026/11/507507.html" target="_blank" rel="noopener noreferrer">Robots Do the Work, AI Acts as the Factory Manager! This Giant Wants to Build the Next Generation of Autonomous Smart Warehouses</a>
 
@@ -178,7 +178,7 @@ openJiuwen AgentMemory has newly launched the multimodal memory capability OmniM
 
 Leading intelligent robot company Geek+ targets the embodied intelligent warehousing track. Aiming at the pain points that current warehousing automation can only improve the efficiency of single-point standardized operations, and scenarios such as complex picking still rely on manual labor, it launched the "24/7 Autonomous Smart Warehouse Plan", aiming to build a smart warehouse that can operate autonomously 7×24 hours and continuously self-evolve, break through the limitation of manual shifts, improve operational revenue, and build a new generation of productivity infrastructure.
 
-<FeedbackButtons lang="en" slug="item:qbitai-507507" client:visible />
+<FeedbackButtons lang="en" slug="item:qbitai-507507" />
 
 ## <a href="https://www.qbitai.com/2026/11/507473.html" target="_blank" rel="noopener noreferrer">Behind the IM LS8 Pure Electric Version: 8 Years of Chassis R&D, Battery Jointly Developed by Two Major Manufacturers</a>
 
@@ -186,4 +186,4 @@ Leading intelligent robot company Geek+ targets the embodied intelligent warehou
 
 The chassis of the IM LS8 pure electric version has been developed for 8 years, and the battery is jointly developed by IM and CATL. The two sides have repeatedly adjusted technical indicators: IM required the 103kWh battery to maintain the weight of a 93kWh battery, improve ultra-fast charging performance without occupying additional thermal management resources, which pushed CATL to optimize energy density and reduce internal resistance. Finally, the two sides adhered to the professional division of labor, and made the full series equipped with CATL batteries as a core selling point.
 
-<FeedbackButtons lang="en" slug="item:qbitai-507473" client:visible />
+<FeedbackButtons lang="en" slug="item:qbitai-507473" />

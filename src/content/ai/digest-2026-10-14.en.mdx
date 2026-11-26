@@ -10,7 +10,7 @@ cover: "/photos/uploads/baokemeng/baokemeng-26.og.jpg"
 draft: false
 ---
 
-import FeedbackButtons from "@/components/FeedbackButtons";
+import FeedbackButtons from "@/components/FeedbackButtons.astro";
 
 <div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
   <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second recap of today's content</div>
@@ -36,7 +36,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 To address the redundancy issue of existing sparse attention methods that still require traversing all keys for scoring, this paper proposes DoSA, a lossless sparse attention method: without calculating scores for all candidates, it first filters out candidates that clearly do not meet the Top-K requirements via upper and lower score bounds, and only scores the remaining candidates fully, ensuring completely lossless selection results. Its GPU implementation delivers up to 2.74x speedup for indexers across multiple scenarios, and up to 1.94x speedup for end-to-end first token generation.
 
-<FeedbackButtons lang="en" slug="item:arxiv-2610.13990" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2610.13990" />
 
 ## <a href="https://arxiv.org/abs/2610.12818" target="_blank" rel="noopener noreferrer">LeWAM: End-to-End World and Action Modeling with JEPAs</a>
 
@@ -44,7 +44,7 @@ To address the redundancy issue of existing sparse attention methods that still 
 
 To address the flaw of existing Joint Embedding Predictive Architecture (JEPA) that uses staged training and is hard to adapt to control tasks end-to-end, this paper proposes LeWAM, an end-to-end control framework: it adopts a joint training objective of latent state prediction + action flow matching, applies isotropic Gaussian constraints to latent states, and a single model can support both policy execution and efficient planning. Compared with existing JEPA, its success rate on contact-intensive tasks rises to 89.7%, to 46.2% on long-sequence tasks, planning speed is 32x faster, and its behavior cloning performance is on par with mainstream methods.
 
-<FeedbackButtons lang="en" slug="item:arxiv-2610.12818" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2610.12818" />
 
 ## <a href="https://arxiv.org/abs/2610.14224" target="_blank" rel="noopener noreferrer">Harness^2: Recursive Agent Harnessing for an Open World</a>
 
@@ -52,7 +52,7 @@ To address the flaw of existing Joint Embedding Predictive Architecture (JEPA) t
 
 To address the pain point that recursive self-improvement solutions for LLM agent execution frameworks lack ground truth verification guidance and have poor generalization in open scenarios, this paper proposes the Harness² dual recursive framework: at the task layer, it optimizes the current task framework without ground truth via the "proposal-detection-composition" comparison process; at the framework layer, it recursively accumulates optimization experience to adapt to future tasks. Cross-model and cross-benchmark tests show that single-step optimization brings up to 11.8 percentage points of improvement, and increasing the recursion budget can further boost performance.
 
-<FeedbackButtons lang="en" slug="item:arxiv-2610.14224" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2610.14224" />
 
 ## <a href="https://arxiv.org/abs/2610.15028" target="_blank" rel="noopener noreferrer">UltraBERT: Beyond the Limit of BERT Pre-Training</a>
 
@@ -60,7 +60,7 @@ To address the pain point that recursive self-improvement solutions for LLM agen
 
 Existing bidirectional encoder pretraining still follows small model paradigms, and no single model can deliver excellent performance on both classification and retrieval tasks at the same time. To solve this problem, researchers identified three core pretraining rules, based on which they proposed UltraBERT: it sets dedicated prediction heads for high and low masking rates in the same batch, and introduces distillation constraints only to the low masking rate branch. It is the first single encoder that achieves SOTA on both GLUE (91.0) and BEIR (47.7) benchmarks, and also provides principled reference for bidirectional model pretraining optimization.
 
-<FeedbackButtons lang="en" slug="item:arxiv-2610.15028" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2610.15028" />
 
 ## <a href="https://arxiv.org/abs/2610.14118" target="_blank" rel="noopener noreferrer">ClawLoop: Self-Improving Agents via Harness-Native Training Loop</a>
 
@@ -68,7 +68,7 @@ Existing bidirectional encoder pretraining still follows small model paradigms, 
 
 To address the flaw that LLM agent training in existing harness environments relies on external strong models and has no room for self-improvement, this paper proposes the ClawLoop self-evolution framework, which requires no external teacher model and iteratively optimizes via a closed loop of task synthesis-training-diagnostic feedback. Tests show that this framework enables the Qwen 27B model to continuously improve across multiple benchmarks, and the generated training tasks can also be transferred to smaller Qwen 4B and 9B models for performance gains, verifying the validity of the data. (Total 119 words)
 
-<FeedbackButtons lang="en" slug="item:arxiv-2610.14118" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2610.14118" />
 
 # OpenAI
 
@@ -78,7 +78,7 @@ To address the flaw that LLM agent training in existing harness environments rel
 
 AI technology vendor Higgsfield recently launched three new large model products, breaking through the industry capability bottleneck of existing AI video generation: GPT-6 Astra raises the maximum generation duration from 1 minute to over 10 minutes, GPT-Image-2.5 greatly optimizes the accuracy of generated images, and GPT-Live explores feasible paths for voice-driven film production, providing content creators with more efficient AI creation solutions with wider capability boundaries.
 
-<FeedbackButtons lang="en" slug="item:openai-blog-higgsfield-longer-videos-voice" client:visible />
+<FeedbackButtons lang="en" slug="item:openai-blog-higgsfield-longer-videos-voice" />
 
 ## <a href="https://openai.com/index/sophos" target="_blank" rel="noopener noreferrer">Sophos cuts threat investigation time by 96% with OpenAI Daybreak</a>
 
@@ -86,7 +86,7 @@ AI technology vendor Higgsfield recently launched three new large model products
 
 Cybersecurity vendor Sophos uses OpenAI's Daybreak tool to optimize its security operation processes, achieving remarkable efficiency improvements: network threat investigation time is directly reduced by 96%, 52% of cases in its Managed Detection and Response (MDR) business can be handled automatically, and the whole process retains a manual supervision mechanism, which can effectively avoid AI misjudgment risks and ensure the accuracy of security handling.
 
-<FeedbackButtons lang="en" slug="item:openai-blog-sophos" client:visible />
+<FeedbackButtons lang="en" slug="item:openai-blog-sophos" />
 
 # Anthropic News
 
@@ -96,7 +96,7 @@ Cybersecurity vendor Sophos uses OpenAI's Daybreak tool to optimize its security
 
 This work officially launches the upgraded Cyber Verification Program (CVP), which provides two types of core resources exclusively for qualified security professionals: first, industry-leading cyber technical capability support, and second, optimized classifier tools with lower false interception rates, which can help compliant security practitioners reduce R&D barriers and improve the efficiency of cybersecurity-related work.
 
-<FeedbackButtons lang="en" slug="item:anthropic-cyber-verification-program" client:visible />
+<FeedbackButtons lang="en" slug="item:anthropic-cyber-verification-program" />
 
 ## <a href="https://www.anthropic.com/news/2026-usage-policy-update" target="_blank" rel="noopener noreferrer">2026 Usage Policy update</a>
 
@@ -104,7 +104,7 @@ This work officially launches the upgraded Cyber Verification Program (CVP), whi
 
 This is the announcement of the 2026 Usage Policy update. The relevant operator has completed the revision of the new version of the usage policy and officially released it to the public. The core of this announcement is a summary of all adjustments made in the new version of the policy compared to the previously effective version, to help relevant users quickly grasp the rule changes and adapt to the new rules in time. For the complete rules, please refer to the full text of the new version of the usage policy.
 
-<FeedbackButtons lang="en" slug="item:anthropic-2026-usage-policy-update" client:visible />
+<FeedbackButtons lang="en" slug="item:anthropic-2026-usage-policy-update" />
 
 # Google DeepMind
 
@@ -114,7 +114,7 @@ This is the announcement of the 2026 Usage Policy update. The relevant operator 
 
 Google DeepMind, in partnership with the Government Technology Agency of Singapore, has launched a new anti-fraud AI tool. The tool uses a lightweight on-device deployed Gemma model, which can run without uploading users' private chat data to the cloud, achieving zero cloud data outflow. While fully protecting user privacy, it can accurately identify and block conversation-based scams in instant messaging scenarios, providing protection for public communication security.
 
-<FeedbackButtons lang="en" slug="item:deepmind-on-device-ai-scam-detection-mddi" client:visible />
+<FeedbackButtons lang="en" slug="item:deepmind-on-device-ai-scam-detection-mddi" />
 
 ## <a href="https://deepmind.google/blog/developing-gemini-4-argon-responsibly-and-safely/" target="_blank" rel="noopener noreferrer">Developing Gemini 4 Argon responsibly and safely</a>
 
@@ -122,7 +122,7 @@ Google DeepMind, in partnership with the Government Technology Agency of Singapo
 
 This article is a summary of the secure development of Google's Gemini 4 Argon large model, with security governance mechanisms embedded throughout the entire process: high-risk data is filtered during the pretraining phase, multi-domain experts are introduced to conduct red team vs blue team tests during the alignment phase, permission isolation is implemented for high-risk output capabilities such as biological hazards and cyber attacks, and multiple rounds of risk verification are completed before launch. While retaining strong performance, the final model reduces the risk of high-risk content output by more than 98%, meeting the safety and ethics requirements for general AI.
 
-<FeedbackButtons lang="en" slug="item:deepmind-developing-gemini-4-argon-responsibly-and-safely" client:visible />
+<FeedbackButtons lang="en" slug="item:deepmind-developing-gemini-4-argon-responsibly-and-safely" />
 
 # Hugging Face Blog
 
@@ -132,7 +132,7 @@ This article is a summary of the secure development of Google's Gemini 4 Argon l
 
 To meet the privacy and operating efficiency requirements of on-device intelligent agents, this paper launches LFM2.5-24B-A2B, a 24B parameter dedicated model adapted to on-device computing power. The model can run entirely locally on end devices without cloud interaction, which not only avoids the privacy leakage risk of data upload, but also achieves low-latency high-speed inference, meeting various intelligent agent needs such as local tool calling and task planning, and is suitable for on-device private Agent deployment scenarios.
 
-<FeedbackButtons lang="en" slug="item:hf-blog-lfm25-24b-a2b" client:visible />
+<FeedbackButtons lang="en" slug="item:hf-blog-lfm25-24b-a2b" />
 
 ## <a href="https://huggingface.co/blog/allenai/impactful-scheduling" target="_blank" rel="noopener noreferrer">Impactful scheduling for GPU clusters</a>
 
@@ -140,7 +140,7 @@ To meet the privacy and operating efficiency requirements of on-device intellige
 
 You have not attached the abstract content of this paper on efficient GPU cluster scheduling yet. Please provide the full English text of the abstract, and I will extract its core methods and experimental conclusions as required, and output a concise, clear, focused Chinese summary of around 120 words.
 
-<FeedbackButtons lang="en" slug="item:hf-blog-impactful-scheduling" client:visible />
+<FeedbackButtons lang="en" slug="item:hf-blog-impactful-scheduling" />
 
 # Lil'Log
 
@@ -150,7 +150,7 @@ You have not attached the abstract content of this paper on efficient GPU cluste
 
 This paper focuses on the research of governance engineering for Recursive Self-Improvement (RSI) of AI, and sorts out the evolution of the RSI concept: as early as 1965, Good first proposed that superhuman intelligent systems can independently design better machines to achieve iteration; in 2008, Yudkowsky clarified that its core is the feedback loop where AI optimizes its own cognitive mechanism relying on existing capabilities; contemporary AI RSI can be implemented through two paths: directly rewriting weights and optimizing training pipelines.
 
-<FeedbackButtons lang="en" slug="item:lillog-2026-07-04-harness" client:visible />
+<FeedbackButtons lang="en" slug="item:lillog-2026-07-04-harness" />
 
 # QbitAI
 
@@ -160,7 +160,7 @@ This paper focuses on the research of governance engineering for Recursive Self-
 
 On October 13, APUS AI officially open sourced Reflex Agent, a personal agent product. Compared with similar product Claude Code, this agent has 3x higher response speed, and also achieves true infinite context capability, which can support long text and multi-round complex interaction scenarios, providing high-value open-source reference for application development and technology iteration of personal agents.
 
-<FeedbackButtons lang="en" slug="item:qbitai-503165" client:visible />
+<FeedbackButtons lang="en" slug="item:qbitai-503165" />
 
 ## <a href="https://www.qbitai.com/2026/10/503157.html" target="_blank" rel="noopener noreferrer">Say goodbye to scattered data, let knowledge accumulate continuously: openJiuwen launches personal knowledge space, reshaping the new experience of personal office agents!</a>
 
@@ -168,7 +168,7 @@ On October 13, APUS AI officially open sourced Reflex Agent, a personal agent pr
 
 To address the pain point that office agents need to repeatedly upload and organize materials every time they perform tasks, which consumes time and tokens and is error-prone, openJiuwen launched the personal knowledge space function for the first time. It supports manual/scheduled incremental collection of multi-source materials, which are processed via multiple modes to form reusable knowledge with directories, associations, and sources for agents to call on demand, which can improve task accuracy and reduce time and token costs.
 
-<FeedbackButtons lang="en" slug="item:qbitai-503157" client:visible />
+<FeedbackButtons lang="en" slug="item:qbitai-503157" />
 
 ## <a href="https://www.qbitai.com/2026/10/503109.html" target="_blank" rel="noopener noreferrer">Run 35B multimodal model on iPhones offline! New domestic open-source model only takes 3G of memory</a>
 
@@ -176,4 +176,4 @@ To address the pain point that office agents need to repeatedly upload and organ
 
 FaceWall Intelligence, in partnership with OpenBMB, has open sourced the MiniCPM-V 4.7 multimodal large model. The 35B parameter MoE version only activates 3B parameters during inference, and can run on iOS and Android devices with only 3G of memory. When offline, the iPhone 17 Pro Max achieves a decoding speed of over 13 tokens per second, and can complete multimodal tasks smoothly. There is also a 1.3B small version, whose performance ranks in the first tier among models of the same size.
 
-<FeedbackButtons lang="en" slug="item:qbitai-503109" client:visible />
+<FeedbackButtons lang="en" slug="item:qbitai-503109" />

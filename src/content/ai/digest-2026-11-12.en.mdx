@@ -10,7 +10,7 @@ cover: "/photos/uploads/baokemeng/baokemeng-44.og.jpg"
 draft: false
 ---
 
-import FeedbackButtons from "@/components/FeedbackButtons";
+import FeedbackButtons from "@/components/FeedbackButtons.astro";
 
 <div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
   <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's content in 30 seconds</div>
@@ -34,7 +34,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 *HF ★ 9 · Lingkai Kong, Yuzhe Gu, Haiteng Zhao… · [HF Mirror](https://huggingface.co/papers/2610.39671)*
 
-<FeedbackButtons lang="en" slug="item:arxiv-2610.39671" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2610.39671" />
 
 ## <a href="https://arxiv.org/abs/2611.13028" target="_blank" rel="noopener noreferrer">GTAGym: Real AAA Game Tasks Environment for Evaluation and Reinforcement Learning</a>
 
@@ -42,7 +42,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 To address the pain point that AAA game agent evaluation relies on manual work and cannot effectively support Reinforcement Learning, this paper proposes GTAGym, an agent evaluation and Reinforcement Learning framework based on GTA V. It comes with 150 built-in task benchmarks covering multiple scenarios, supporting automatic scoring, parallel testing, and batch task generation. Evaluations show that cutting-edge large models achieve a maximum accuracy of 70.9%, while bottlenecks remain for tasks such as air navigation; large models fine-tuned based on this framework see cross-domain task performance improve from 15% to 23%.
 
-<FeedbackButtons lang="en" slug="item:arxiv-2611.13028" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2611.13028" />
 
 ## <a href="https://arxiv.org/abs/2611.10193" target="_blank" rel="noopener noreferrer">Ensemble Routing for Prompt-Adaptive Cost-Aware LLM Inference</a>
 
@@ -50,7 +50,7 @@ To address the pain point that AAA game agent evaluation relies on manual work a
 
 To meet the demand of balancing response quality and inference cost for online large model services, this paper proposes the single-model routing method PISA and its ensemble routing extension PISA-E: it estimates the model's adaptation capability via soft clustering combined with model-specific predictors, allowing flexible adjustment of cost-quality preferences during inference without retraining. Experiments show that PISA delivers the optimal cost-performance among all evaluated single-model routing solutions; PISA-E outperforms competing products by up to 2.87 percentage points in in-distribution/out-of-distribution scenarios, and can reduce costs by up to 36%.
 
-<FeedbackButtons lang="en" slug="item:arxiv-2611.10193" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2611.10193" />
 
 # OpenAI
 
@@ -60,7 +60,7 @@ To meet the demand of balancing response quality and inference cost for online l
 
 This article is a feature interview with Sam Nickless, Partner and Chief Executive Officer of top Australian law firm Gilbert + Tobin. It centers on the firm's practice of reorganizing legal business logic and exploring new operating models relying on AI technology, covering AI implementation paths, results, and industry transformation prospects, providing a leading reference sample for the digital upgrading of the legal industry.
 
-<FeedbackButtons lang="en" slug="item:openai-blog-gilbert-tobin-sam-nickless" client:visible />
+<FeedbackButtons lang="en" slug="item:openai-blog-gilbert-tobin-sam-nickless" />
 
 ## <a href="https://openai.com/index/chatgpt-plus-for-veterans" target="_blank" rel="noopener noreferrer">ChatGPT Plus for veterans and servicemembers</a>
 
@@ -68,7 +68,7 @@ This article is a feature interview with Sam Nickless, Partner and Chief Executi
 
 This study focuses on the rollout of free ChatGPT Plus benefits for veterans and active service members awaiting demobilization. As of now, more than 20,000 eligible users have applied for the 1-year free access. The core of the study is to explore how this group uses ChatGPT Plus functions for skill adaptation for civilian occupations after demobilization, job search preparation and other practices, providing reference for the optimization of similar digital services supporting the military.
 
-<FeedbackButtons lang="en" slug="item:openai-blog-chatgpt-plus-for-veterans" client:visible />
+<FeedbackButtons lang="en" slug="item:openai-blog-chatgpt-plus-for-veterans" />
 
 # Anthropic News
 
@@ -78,7 +78,7 @@ This study focuses on the rollout of free ChatGPT Plus benefits for veterans and
 
 This announcement discloses that AI firm Anthropic positions itself as an AI safety research company, with all R&D work anchored on AI safety as the core. Its current core goal is to build three types of highly controllable AI systems: first, systems with stable and reliable operating performance, second, interpretable systems whose decision-making logic can be parsed by humans, and third, steerable systems whose operation direction can be flexibly guided by humans.
 
-<FeedbackButtons lang="en" slug="item:anthropic-announcements" client:visible />
+<FeedbackButtons lang="en" slug="item:anthropic-announcements" />
 
 ## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
 
@@ -86,7 +86,7 @@ This announcement discloses that AI firm Anthropic positions itself as an AI saf
 
 This summary announces the public benefit arrangements of AI firm Anthropic: the company will allocate part of its equity to the newly established Anthropic Public Benefit Fund. The fund adopts a special shareholding structure, and its shareholding ratio will increase synchronously with the expansion of the company's scale, so as to bind the enterprise's growth revenue with public benefits, exploring a feasible model for for-profit AI enterprises to balance social responsibilities.
 
-<FeedbackButtons lang="en" slug="item:anthropic-public-benefit-fund" client:visible />
+<FeedbackButtons lang="en" slug="item:anthropic-public-benefit-fund" />
 
 # Google DeepMind
 
@@ -96,7 +96,7 @@ This summary announces the public benefit arrangements of AI firm Anthropic: the
 
 The newly launched AlphaGenome 2 tool aims to decipher the inherent mechanism of human cells reading DNA. Its core function is to accurately predict the functional effects of DNA sequences and their various variants on different specific cell types, which can help researchers clarify the correlation between genetic variants and disease occurrence, providing new technical support for disease molecular mechanism analysis, pathogenic mutation site screening and precision diagnosis and treatment related research.
 
-<FeedbackButtons lang="en" slug="item:deepmind-alphagenome-2-deciphering-how-cells-read-dna-to-better-understand-disease" client:visible />
+<FeedbackButtons lang="en" slug="item:deepmind-alphagenome-2-deciphering-how-cells-read-dna-to-better-understand-disease" />
 
 ## <a href="https://deepmind.google/blog/gemini-4-carbon-is-now-available/" target="_blank" rel="noopener noreferrer">Gemini 4 Carbon is now available</a>
 
@@ -104,7 +104,7 @@ The newly launched AlphaGenome 2 tool aims to decipher the inherent mechanism of
 
 Google announced that the new generation large model product Gemini 4 Carbon is now officially available. As a lightweight iterative version of the Gemini 4 series, it fully retains the core capabilities of the original version such as multimodal understanding, complex logical reasoning, and code generation. Its inference speed is more than 40% higher than the standard version, and call cost is reduced by 60%. It is now integrated into Google AI Studio and cloud service platforms, adaptable to multiple scenarios such as high-frequency calls and lightweight deployment.
 
-<FeedbackButtons lang="en" slug="item:deepmind-gemini-4-carbon-is-now-available" client:visible />
+<FeedbackButtons lang="en" slug="item:deepmind-gemini-4-carbon-is-now-available" />
 
 # Hugging Face Blog
 
@@ -114,7 +114,7 @@ Google announced that the new generation large model product Gemini 4 Carbon is 
 
 This paper proposes BotPsy, an on-device personal assistant solution that uses a sub-billion-parameter agentic language model as its core, no reliance on cloud computing power required. Through targeted optimization of the small parameter model's instruction following, tool calling, and personalization adaptation capabilities, its performance is close to general large models, can respond to users' daily needs with low latency on the device side, while ensuring user data never leaves the local device, greatly improving privacy and security.
 
-<FeedbackButtons lang="en" slug="item:hf-blog-botpsy" client:visible />
+<FeedbackButtons lang="en" slug="item:hf-blog-botpsy" />
 
 ## <a href="https://huggingface.co/blog/token-pooling" target="_blank" rel="noopener noreferrer">Token Pooling-Aware Training for Multi-Vector Embedding Models</a>
 
@@ -122,7 +122,7 @@ This paper proposes BotPsy, an on-device personal assistant solution that uses a
 
 Aiming at the pain point that valid token information is easily lost in the pooling stage of multi-vector embedding models, this paper proposes a token pooling-aware training paradigm: the screening logic of downstream pooling is embedded in the training stage, guiding the model to actively optimize the discrimination of each token embedding, so that the information retained by pooling better matches the demand of dense retrieval tasks. On public retrieval benchmarks, its accuracy is up to 5% higher than the baseline, with no additional inference overhead.
 
-<FeedbackButtons lang="en" slug="item:hf-blog-token-pooling" client:visible />
+<FeedbackButtons lang="en" slug="item:hf-blog-token-pooling" />
 
 # Lil'Log
 
@@ -132,7 +132,7 @@ Aiming at the pain point that valid token information is easily lost in the pool
 
 This article sorts out the conceptual evolution of Recursive Self-Improvement (RSI): In 1965, scholar Irving Good first proposed the idea of superintelligent machines, referring to agents that can surpass all human intellectual activities and independently design better systems to achieve iterative upgrades; In 2008, Eliezer Yudkowsky clarified that the core of RSI is the feedback loop where AI optimizes its own cognitive architecture relying on existing intelligence. In the current AI context, RSI includes both models directly rewriting their own weights, and can broadly cover the behavior of models optimizing their own training pipelines.
 
-<FeedbackButtons lang="en" slug="item:lillog-2026-07-04-harness" client:visible />
+<FeedbackButtons lang="en" slug="item:lillog-2026-07-04-harness" />
 
 # QbitAI
 
@@ -142,7 +142,7 @@ This article sorts out the conceptual evolution of Recursive Self-Improvement (R
 
 Baidu released the ERNIE 5.5 Flash Preview large model, announcing that it will be open-source soon. This model features strong programming capabilities, with 280 billion total parameters, only 14 billion activated per single inference, supporting million-Token context window, with inference speed exceeding 200 Token per second. It can generate 116-second animation with 20 art styles purely from code, and can also run continuously for 11 hours in UE5 to generate a complete martial arts game, with programming evaluation performance on par with Claude Opus 5.5.
 
-<FeedbackButtons lang="en" slug="item:qbitai-509224" client:visible />
+<FeedbackButtons lang="en" slug="item:qbitai-509224" />
 
 ## <a href="https://www.qbitai.com/2026/11/509214.html" target="_blank" rel="noopener noreferrer">Made in Shanghai, connected via Hong Kong, Chinese AI accelerates its global expansion</a>
 
@@ -150,7 +150,7 @@ Baidu released the ERNIE 5.5 Flash Preview large model, announcing that it will 
 
 Recently, valuations of leading global AI vendors have corrected, and capital logic has shifted from "paying for parameters" to "pricing for returns". At present, large models have reached the production-usable threshold, technology is no longer the core bottleneck, and the core industry pain point has turned to the connection and adaptation of AI enterprises with implementation scenarios, capital, and domestic and foreign market rules. China is taking Shanghai as the core R&D and manufacturing base, and linking with Hong Kong to build an institutional interface connecting to the global AI market.
 
-<FeedbackButtons lang="en" slug="item:qbitai-509214" client:visible />
+<FeedbackButtons lang="en" slug="item:qbitai-509214" />
 
 ## <a href="https://www.qbitai.com/2026/11/509146.html" target="_blank" rel="noopener noreferrer">Double 11 live streaming rooms are transformed into AI showrooms, Luo Yonghao tests TRAE, becomes the public spokesperson for AI Coding</a>
 
@@ -158,4 +158,4 @@ Recently, valuations of leading global AI vendors have corrected, and capital lo
 
 This year's Double 11 live streaming rooms saw a boom in AI product sales: Li Jiaqi sold large model Tokens, and Luo Yonghao promoted the full-link AI development platform TRAE, demonstrating on-site zero-code generation of research reports, professional PPTs and even implementable voice input methods. This phenomenon reflects that generative AI has passed the concept inflation period, and is shifting to a pragmatic development stage oriented to the general public and focusing on actual implementation effects.
 
-<FeedbackButtons lang="en" slug="item:qbitai-509146" client:visible />
+<FeedbackButtons lang="en" slug="item:qbitai-509146" />

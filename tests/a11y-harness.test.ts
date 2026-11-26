@@ -60,20 +60,23 @@ test("沉浸式相册页必须覆盖 --danger-text（浅色主题的 red-700 在
 });
 
 test("反馈按钮的自动加载失败不能把错误码甩给访客（只有投票失败才显示）", async () => {
-  const component = await read("src/components/FeedbackButtons.tsx");
-  const ensureAt = component.indexOf("const ensureLoaded");
-  const voteAt = component.indexOf("async function vote(");
+  // 第 226 轮：组件从 React 岛换成 Astro + 原生 script，这条规则不变。
+  const component = await read("src/components/FeedbackButtons.astro");
+  const script = component.slice(component.indexOf("<script>"));
+  const ensureAt = script.indexOf("const ensureLoaded");
+  const voteAt = script.indexOf("const vote =");
   assert.ok(ensureAt > 0 && voteAt > ensureAt, "按需加载与 vote 两段都要在");
 
   // 第 86 轮起初始加载本身被删掉了（改按需），但「自动拉取失败不显示错误」这条不变
-  const loadBlock = component.slice(ensureAt, voteAt);
-  assert.ok(!/setErrCode\(/.test(loadBlock), "自动加载段不许调用 setErrCode —— 那会在每篇文章底部渲染一条红字");
+  const loadBlock = script.slice(ensureAt, voteAt);
+  assert.ok(!/setError\(/.test(loadBlock), "自动加载段不许调用 setError —— 那会在每篇文章底部渲染一条红字");
   assert.match(loadBlock, /console\.warn/, "失败要留一条 warn 方便排查");
 
   // 挂载时也不许拉取
-  const mountBlock = component.slice(0, ensureAt);
-  assert.ok(!/loadFeedback\(|postFeedback\(|fetch\(/.test(mountBlock.replace(/import[^;]+;/g, "")), "挂载阶段不许发请求");
+  const mountBlock = script.slice(0, ensureAt);
+  assert.ok(!/loadFeedbackOrEmpty\(|postFeedback\(|fetch\(/.test(mountBlock.replace(/import[^;]+;/g, "")), "挂载阶段不许发请求");
 
   // 用户主动投票失败时仍然要能看到错误码
-  assert.match(component.slice(voteAt), /setErrCode\(/, "vote 失败仍然要提示状态码");
+  assert.match(script.slice(voteAt), /setError\(row/, "vote 失败仍然要提示状态码");
 });
+

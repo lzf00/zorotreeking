@@ -80,7 +80,7 @@ const digestBody = `---
 title: x
 ---
 
-import FeedbackButtons from "@/components/FeedbackButtons";
+import FeedbackButtons from "@/components/FeedbackButtons.astro";
 
 > 免责声明
 

@@ -10,7 +10,7 @@ cover: "/photos/uploads/baokemeng/baokemeng-44.og.jpg"
 draft: false
 ---
 
-import FeedbackButtons from "@/components/FeedbackButtons";
+import FeedbackButtons from "@/components/FeedbackButtons.astro";
 
 <div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
   <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's updates in 30 seconds</div>
@@ -36,7 +36,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 This study proposes reverse Item Response Theory (IRT) for cancer drug sensitivity analysis, treating cancer types as latent subjects with drug resistance capabilities and drugs as test items with escape difficulty, modeled on more than 240,000 drug sensitivity entries from the GDSC2 database. Compared with 5 types of benchmark methods, the model delivers better performance in ranking recovery and holdout set prediction under high sparsity, with stable drug resistance classification for 19 cancer types. Its core advantage is robustness under fragmented data, and it is not designed as a general clinical drug resistance ranking list.
 
-<FeedbackButtons lang="en" slug="item:arxiv-2610.00002" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2610.00002" />
 
 ## <a href="https://arxiv.org/abs/2610.00004" target="_blank" rel="noopener noreferrer">How Far is Adam from Natural Gradient Descent?</a>
 
@@ -44,7 +44,7 @@ This study proposes reverse Item Response Theory (IRT) for cancer drug sensitivi
 
 This paper explores the geometric correlation between Adam, a commonly used optimizer in deep learning, and Natural Gradient Descent (NGD). It decomposes Adam with momentum into a diagonal empirical Fisher approximation with truncation, label replacement and temporal lag, and tests four types of loss scenarios using scale-invariant metrics. The results show that the deviation between the two is low in well-conditioned scenarios, and rises significantly in ill-conditioned scenarios. High deviation only slows down initial optimization and does not affect final convergence. Adam's performance comes from the balance between approximation error and momentum smoothing, rather than being close to the NGD path. (118 words)
 
-<FeedbackButtons lang="en" slug="item:arxiv-2610.00004" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2610.00004" />
 
 ## <a href="https://arxiv.org/abs/2610.00009" target="_blank" rel="noopener noreferrer">FourierQK: Filter Shape, Admissibility and the Leakage-Coverage Law</a>
 
@@ -52,7 +52,7 @@ This paper explores the geometric correlation between Adam, a commonly used opti
 
 This paper addresses the optimal filter shape problem for frequency collapse attention, conducts controlled ablation experiments on a 6-layer GPT based on the TinyShakespeare dataset, and verifies 5 hypotheses on filter characteristics. The conclusions show that DC and Nyquist components impair performance, optimal single-scale bandpass and admissible filters deliver better performance, and FFT leakage is positively correlated with spectral coverage. FourierQK is suitable for bidirectional attention scenarios, while autoregressive generation requires the causal spectral variant MorletQK.
 
-<FeedbackButtons lang="en" slug="item:arxiv-2610.00009" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2610.00009" />
 
 # OpenAI
 
@@ -62,7 +62,7 @@ This paper addresses the optimal filter shape problem for frequency collapse att
 
 This *GPT-6 Family Model Guide* provides practical guidance for startup teams on large model implementation, covering five core modules: GPT-6 model selection, inference parameter tuning, prompt engineering and capability enhancement, multi-tool collaborative scheduling, and production-grade workflow preparation. It helps startups lower the threshold for GPT-6 implementation, efficiently match business needs, and maximize the application value of large models.
 
-<FeedbackButtons lang="en" slug="item:openai-blog-practical-guide-building-gpt-6" client:visible />
+<FeedbackButtons lang="en" slug="item:openai-blog-practical-guide-building-gpt-6" />
 
 ## <a href="https://openai.com/index/chatham-financial" target="_blank" rel="noopener noreferrer">Chatham scales its capital markets expertise with OpenAI</a>
 
@@ -70,7 +70,7 @@ This *GPT-6 Family Model Guide* provides practical guidance for startup teams on
 
 This case focuses on the AI implementation practice of financial service provider Chatham Financial: the company relies on two OpenAI large models, Codex and GPT-5.6, to build exclusive technical tools adapted to capital market business and restructure original workflows. After deployment in the transaction verification scenario, the verification process that originally took 30 minutes is compressed to less than 4 minutes, confirming the significant efficiency improvement value of large models in highly professional financial scenarios.
 
-<FeedbackButtons lang="en" slug="item:openai-blog-chatham-financial" client:visible />
+<FeedbackButtons lang="en" slug="item:openai-blog-chatham-financial" />
 
 # Anthropic News
 
@@ -80,7 +80,7 @@ This case focuses on the AI implementation practice of financial service provide
 
 Anthropic officially launched the Claude Frontier Academy talent training program, with a committed investment of $100 million in project funds. It uses its own internal engineer capability requirements as the training and assessment standard, focusing on areas such as large model implementation and AI safety control. It plans to train a total of 10,000 qualified frontier deployment engineers by the end of 2027, delivering high-end technical talents that meet top industry standards for the compliant implementation of cutting-edge AI technology worldwide.
 
-<FeedbackButtons lang="en" slug="item:anthropic-claude-frontier-academy" client:visible />
+<FeedbackButtons lang="en" slug="item:anthropic-claude-frontier-academy" />
 
 ## <a href="https://www.anthropic.com/news/barclays-scales-claude" target="_blank" rel="noopener noreferrer">Barclays scales Claude to upgrade operations and improve client experience</a>
 
@@ -88,7 +88,7 @@ Anthropic officially launched the Claude Frontier Academy talent training progra
 
 UK universal bank Barclays is deepening its strategic cooperation with AI company Anthropic, and will roll out the Claude large model at scale, deploying a secure and compliant enterprise-grade AI system within its global business system. This move aims to comprehensively upgrade the bank's operational efficiency, optimize client service experience, and accelerate Barclays' digital and intelligent business transformation.
 
-<FeedbackButtons lang="en" slug="item:anthropic-barclays-scales-claude" client:visible />
+<FeedbackButtons lang="en" slug="item:anthropic-barclays-scales-claude" />
 
 # Google DeepMind
 
@@ -98,7 +98,7 @@ UK universal bank Barclays is deepening its strategic cooperation with AI compan
 
 Currently, only the paper title is provided, and the corresponding abstract content is not included. Please supplement the full English original of the abstract related to Gemini 4 Argon, and I will extract a concise summary of around 120 words as required, highlighting core methods and research conclusions.
 
-<FeedbackButtons lang="en" slug="item:deepmind-gemini-4-argon-our-next-era-of-frontier-intelligence" client:visible />
+<FeedbackButtons lang="en" slug="item:deepmind-gemini-4-argon-our-next-era-of-frontier-intelligence" />
 
 ## <a href="https://deepmind.google/blog/introducing-synthid-bio/" target="_blank" rel="noopener noreferrer">Introducing SynthID Bio</a>
 
@@ -106,7 +106,7 @@ Currently, only the paper title is provided, and the corresponding abstract cont
 
 This research launches the SynthID Bio technology and completes its proof of concept: this technology can embed an exclusive invisible watermark into AI-generated proteins without damaging the original biological functions of the proteins, enabling full traceability of AI-generated proteins. It can not only prevent illegal abuse risks in the field of biosecurity, but also provide a feasible technical path for intellectual property protection of relevant R&D entities.
 
-<FeedbackButtons lang="en" slug="item:deepmind-introducing-synthid-bio" client:visible />
+<FeedbackButtons lang="en" slug="item:deepmind-introducing-synthid-bio" />
 
 # Hugging Face Blog
 
@@ -116,7 +116,7 @@ This research launches the SynthID Bio technology and completes its proof of con
 
 Hello, currently only the title of this paper is provided, and the abstract content is not attached, so key information such as the technical path, performance, and core conclusions of the AstaBrief model cannot be obtained. Please supplement the complete abstract content, and I will output a simplified summary of around 120 words as required, highlighting its core methods and implementation value.
 
-<FeedbackButtons lang="en" slug="item:hf-blog-astabrief" client:visible />
+<FeedbackButtons lang="en" slug="item:hf-blog-astabrief" />
 
 ## <a href="https://huggingface.co/blog/ServiceNow-AI/autosynthdata" target="_blank" rel="noopener noreferrer">AutoSynthData: Generating Training Data for Enterprise Agents</a>
 
@@ -124,7 +124,7 @@ Hello, currently only the title of this paper is provided, and the abstract cont
 
 This paper proposes the AutoSynthData framework, addressing pain points in enterprise agent training including lack of high-quality labeled data adapted to business scenarios, high manual labeling costs, and difficulty covering long-tail scenarios. By simulating real enterprise workflows and aligning with business rules, it automatically generates fully labeled training samples for multi-round interactions and tool calls, which can be dynamically adapted to exclusive scenarios of different enterprises. Actual tests show that its labeling efficiency is dozens of times higher than manual labeling, the task completion rate of trained agents is increased by more than 30%, and adaptation costs are greatly reduced.
 
-<FeedbackButtons lang="en" slug="item:hf-blog-autosynthdata" client:visible />
+<FeedbackButtons lang="en" slug="item:hf-blog-autosynthdata" />
 
 # Lil'Log
 
@@ -134,7 +134,7 @@ This paper proposes the AutoSynthData framework, addressing pain points in enter
 
 The concept of Recursive Self-Improvement (RSI) was first proposed by I.J. Good in 1965, referring to superintelligent machines with capabilities surpassing humans that can independently design better systems to complete self-iteration. In 2008, Eliezer Yudkowsky clarified that its core is the intelligent feedback loop: AI relies on its existing capabilities to optimize its own cognitive generation mechanism. In current AI scenarios, this type of feedback can be manifested as the model directly rewriting its own weights, or more generalized training process optimization.
 
-<FeedbackButtons lang="en" slug="item:lillog-2026-07-04-harness" client:visible />
+<FeedbackButtons lang="en" slug="item:lillog-2026-07-04-harness" />
 
 # QbitAI
 
@@ -144,7 +144,7 @@ The concept of Recursive Self-Improvement (RSI) was first proposed by I.J. Good 
 
 Decision-making AI model Jev, valued at $10 billion, has recently gone viral, with related video views exceeding 38.7 million 6 days after release, and it topped third-party evaluation benchmarks. Its founder Diogo Almeida, a former OpenAI employee, pointed out that public evaluation leaderboards are easy to manipulate, the industry prioritizes speed and cost while ignoring core reliability, questioned OpenAI's insufficient practical contributions, advocated that AI should stay behind the scenes to empower scenarios, and aims to boost total factor productivity by 3% within five years.
 
-<FeedbackButtons lang="en" slug="item:qbitai-500148" client:visible />
+<FeedbackButtons lang="en" slug="item:qbitai-500148" />
 
 ## <a href="https://www.qbitai.com/2026/10/500098.html" target="_blank" rel="noopener noreferrer">openJiuwen X-Router自演进模型路由技术首发，昇腾亲和，Agent越跑越省，实测减少50+%Token消耗</a>
 
@@ -152,7 +152,7 @@ Decision-making AI model Jev, valued at $10 billion, has recently gone viral, wi
 
 openJiuwen has launched the Ascend-compatible X-Router self-evolving model routing technology, addressing current pain points of cost waste or unstable performance caused by AI Agents relying on a single model for all tasks or scheduling multiple models with fixed rules. It can independently match the optimal model according to task attributes, and iterate the scheduling strategy based on feedback. Actual tests show that it can reduce Token consumption by more than 50%.
 
-<FeedbackButtons lang="en" slug="item:qbitai-500098" client:visible />
+<FeedbackButtons lang="en" slug="item:qbitai-500098" />
 
 ## <a href="https://www.qbitai.com/2026/10/499991.html" target="_blank" rel="noopener noreferrer">丘成桐新论文致谢了GPT和Claude</a>
 
@@ -160,4 +160,4 @@ openJiuwen has launched the Ascend-compatible X-Router self-evolving model routi
 
 Shing-Tung Yau, who once stated that AI can hardly affect top mathematicians, thanked GPT-6 Astra and Claude Pro in his recently published differential geometry paper, noting that the two assisted in exploring proof ideas and completing relevant calculations. This paper solves the classic conjecture that he included in his personal problem list in 1982 and has been pending for 70 years, giving the final answer to whether 27 types of exotic spheres in seven-dimensional space can achieve positive sectional curvature everywhere.
 
-<FeedbackButtons lang="en" slug="item:qbitai-499991" client:visible />
+<FeedbackButtons lang="en" slug="item:qbitai-499991" />

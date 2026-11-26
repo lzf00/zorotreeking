@@ -181,7 +181,7 @@ test("same-origin media URLs reject external and executable protocols", () => {
 
 test("ratings are only persisted after the backend accepts them", () => {
   const source = readFileSync(
-    new URL("../src/components/StarRating.tsx", import.meta.url),
+    new URL("../src/components/StarRating.astro", import.meta.url),
     "utf8",
   );
   const postIndex = source.indexOf("await postFeedback");

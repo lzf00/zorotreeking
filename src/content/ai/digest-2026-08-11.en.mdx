@@ -10,7 +10,7 @@ cover: "/photos/uploads/baokemeng/baokemeng-16.og.jpg"
 draft: false
 ---
 
-import FeedbackButtons from "@/components/FeedbackButtons";
+import FeedbackButtons from "@/components/FeedbackButtons.astro";
 
 <div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
   <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second overview of today's content</div>
@@ -36,7 +36,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 Addressing the limitation that existing misinformation detection relies on surface features or external retrieval, this paper proposes a latent fact-checking framework based on activation engineering: it compares activation values of true and false statements, extracts misinformation directions from the Transformer residual stream, and during inference, projects the activation values of the last token of unknown statements before classifying with an MLP, eliminating the need for backbone fine-tuning or external retrieval. It outperforms zero-shot/few-shot prompt baselines across multiple benchmarks, with more significant improvements on small models, confirming that authenticity is linearly distinguishable in the latent space of pretrained large models.
 
-<FeedbackButtons lang="en" slug="item:arxiv-2608.06417" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2608.06417" />
 
 ## <a href="https://arxiv.org/abs/2608.06420" target="_blank" rel="noopener noreferrer">Risk-Aware Decision Policies for Agents Under Noisy Perception</a>
 
@@ -44,7 +44,7 @@ Addressing the limitation that existing misinformation detection relies on surfa
 
 To solve the problem of poor fault tolerance of agent decision-making under perceptual noise, the research team built an artificial life predator-prey foraging model, and compared the performance of different decision strategies under two types of perceptual noise scenarios: symmetric and asymmetric. Experiments show that blindly trusting perceptual results will completely fail as noise increases, while strategies incorporating perceptual uncertainty can significantly improve survival rate and reduce fatal errors. When uncertainty rises, agent strategies shift from exploration to conservatism, providing an interpretable reference for robust learning with noisy labels.
 
-<FeedbackButtons lang="en" slug="item:arxiv-2608.06420" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2608.06420" />
 
 ## <a href="https://arxiv.org/abs/2608.06422" target="_blank" rel="noopener noreferrer">Sharding Prevents LLM Oversight Failures and Adversarial Exploitation</a>
 
@@ -52,7 +52,7 @@ To solve the problem of poor fault tolerance of agent decision-making under perc
 
 Addressing the issues that when LLMs act as reviewers, outputting multiple verdicts in a single call leads to weak evidence support, low agreement with experts, and vulnerability to adversarial exploitation, this study proposes a sharding solution: split review requirements into small groups, assign independent model calls to each group, then aggregate the verdicts. With the same computing power, sharding can significantly improve review accuracy, resist overload-type adversarial attacks, and when paired with a debate framework, it can also counter targeted persuasion attacks on single criteria.
 
-<FeedbackButtons lang="en" slug="item:arxiv-2608.06422" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2608.06422" />
 
 # OpenAI
 
@@ -62,7 +62,7 @@ Addressing the issues that when LLMs act as reviewers, outputting multiple verdi
 
 This content is excerpted from OpenAI's official letter to Greg Abbott, Governor of Texas, USA. The core of the letter is OpenAI's official announcement of its commitments for deploying responsible AI infrastructure in Texas: the construction of relevant AI infrastructure will follow the principle of reliable, transparent and orderly growth, ensuring that the entire process of project implementation delivers tangible benefits to local Texas residents. It is an official communication document from a tech company expressing its stance on compliant AI deployment to local government.
 
-<FeedbackButtons lang="en" slug="item:openai-blog-responsible-ai-infrastructure-texas" client:visible />
+<FeedbackButtons lang="en" slug="item:openai-blog-responsible-ai-infrastructure-texas" />
 
 ## <a href="https://openai.com/index/model-ml" target="_blank" rel="noopener noreferrer">Model ML completes finance work more efficiently with GPT-5.6 Sol</a>
 
@@ -70,7 +70,7 @@ This content is excerpted from OpenAI's official letter to Greg Abbott, Governor
 
 The Model ML tool, powered by the GPT-5.6 Sol large model, can cover the entire research and analysis workflow of financial business. Unlike conventional large models that only output plain text content, it can directly generate editable, traceable PPT presentations and Excel workbooks, greatly reducing the document processing workload of financial practitioners and significantly improving the overall execution efficiency of financial work.
 
-<FeedbackButtons lang="en" slug="item:openai-blog-model-ml" client:visible />
+<FeedbackButtons lang="en" slug="item:openai-blog-model-ml" />
 
 # Anthropic News
 
@@ -80,7 +80,7 @@ The Model ML tool, powered by the GPT-5.6 Sol large model, can cover the entire 
 
 The newly released Claude Opus 5 is a leap-forward upgrade of Anthropic's Opus high-end flagship large model. Its core upgrades focus on two high-value scenarios: first, it greatly strengthens the underlying support capabilities for long-running agents, adapting to more complex continuous tasks of autonomous agents; second, it significantly improves processing performance for programming development and professional work in various vertical fields, better meeting the demanding requirements of professional production use.
 
-<FeedbackButtons lang="en" slug="item:anthropic-claude-opus-5" client:visible />
+<FeedbackButtons lang="en" slug="item:anthropic-claude-opus-5" />
 
 ## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
 
@@ -88,7 +88,7 @@ The newly released Claude Opus 5 is a leap-forward upgrade of Anthropic's Opus h
 
 This article reveals a public participation program for AI research: it openly solicits the most difficult questions in the AI field from the entire public. The project team also explicitly promises that during the entire subsequent process of conducting research on these questions and producing answers, all progress details and reasoning logic of the relevant work will be fully disclosed, fully ensuring the openness and transparency of AI research and narrowing the gap between the public and cutting-edge research.
 
-<FeedbackButtons lang="en" slug="item:anthropic-hard-questions" client:visible />
+<FeedbackButtons lang="en" slug="item:anthropic-hard-questions" />
 
 # Google DeepMind
 
@@ -98,7 +98,7 @@ This article reveals a public participation program for AI research: it openly s
 
 WeatherNext is an end-to-end meteorological AI large model based on deep learning, which has achieved breakthrough progress in the field of cyclone forecasting: compared with traditional numerical forecasting, its computing power requirement is reduced by 90%; compared with existing mainstream AI meteorological models, its cyclone path forecasting error is reduced by more than 15%. It can accurately predict cyclone formation, movement path and peak intensity 7 days in advance, greatly extending the early warning window and reserving sufficient response time for disaster prevention and mitigation.
 
-<FeedbackButtons lang="en" slug="item:deepmind-weathernext-ai-model-achieves-breakthrough-in-forecasting-cyclones" client:visible />
+<FeedbackButtons lang="en" slug="item:deepmind-weathernext-ai-model-achieves-breakthrough-in-forecasting-cyclones" />
 
 ## <a href="https://deepmind.google/blog/gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestration-and-multi-robot-collaboration/" target="_blank" rel="noopener noreferrer">Gemini Robotics ER 2: powering robotics with video understanding, task orchestration, and multi-robot collaboration</a>
 
@@ -106,7 +106,7 @@ WeatherNext is an end-to-end meteorological AI large model based on deep learnin
 
 Gemini Robotics ER 2 is a brand-new technical system built specifically for the robotics field, covering three core capability modules: high-performance video understanding technology supports robots to complete environmental perception and logical reasoning; task orchestration capability enables tool scheduling and workflow planning; multi-robot collaboration framework supports group collaboration of multiple robots. It can support robots to complete various real-scenario tasks, achieves leap-forward improvements in the three core technical dimensions of robot applications, and provides a reliable technical foundation for robot deployment in complex real-world scenarios.
 
-<FeedbackButtons lang="en" slug="item:deepmind-gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestrati" client:visible />
+<FeedbackButtons lang="en" slug="item:deepmind-gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestrati" />
 
 # Hugging Face Blog
 
@@ -116,7 +116,7 @@ Gemini Robotics ER 2 is a brand-new technical system built specifically for the 
 
 This work launches the NVIDIA Magpie TTS solution for building low-latency multilingual voice agents. The solution has open model weights, allowing developers to achieve full deployment control; by optimizing the end-to-end speech generation pipeline, it adapts to various cloud and edge deployment scenarios, can generate highly natural speech in dozens of languages at the hundred-millisecond level, outperforms existing commercial closed-source solutions, and meets the deployment requirements of real-time voice interaction.
 
-<FeedbackButtons lang="en" slug="item:hf-blog-magpie-tts-multilingual-voice-agents" client:visible />
+<FeedbackButtons lang="en" slug="item:hf-blog-magpie-tts-multilingual-voice-agents" />
 
 ## <a href="https://huggingface.co/blog/MultiverseComputingCAI/efficient-knowledge-distillation" target="_blank" rel="noopener noreferrer">Making Knowledge Distillation Cheap Enough to Run at Scale</a>
 
@@ -124,7 +124,7 @@ This work launches the NVIDIA Magpie TTS solution for building low-latency multi
 
 Currently only the paper title *Making Knowledge Distillation Cheap Enough to Run at Scale* is provided, no specific abstract content is attached, so translation, extraction and summary work cannot be completed. Please supplement the full abstract text of this paper, and I will output a concise Chinese summary of about 120 words highlighting the method and core conclusions as required.
 
-<FeedbackButtons lang="en" slug="item:hf-blog-efficient-knowledge-distillation" client:visible />
+<FeedbackButtons lang="en" slug="item:hf-blog-efficient-knowledge-distillation" />
 
 # The Gradient
 
@@ -134,7 +134,7 @@ Currently only the paper title *Making Knowledge Distillation Cheap Enough to Ru
 
 This AI alignment research starts from the perspective of virtue ethical agency, refuting the default premise of the orthogonality thesis that "intelligence and goals can be configured independently": human rational action is not directed at a fixed ultimate goal, but anchored in a self-reinforcing practical network composed of actions, tendencies, evaluation criteria and other elements. It proposes that if AI is to adapt to human collaboration and compliance requirements, its decision-making logic must match human practical reasoning patterns, and this path can simultaneously meet the needs of ethical alignment and core security attributes.
 
-<FeedbackButtons lang="en" slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+<FeedbackButtons lang="en" slug="item:thegradient-virtue-ethics-ai-alignment" />
 
 # Lil'Log
 
@@ -144,7 +144,7 @@ This AI alignment research starts from the perspective of virtue ethical agency,
 
 This article sorts out the conceptual evolution of Recursive Self-Improvement (RSI): in 1965, I.J. Good first proposed the concept of "superintelligent machine", referring to a system that can surpass all human intellectual activities and design better systems by itself to achieve self-iteration; in 2008, Eliezer Yudkowsky clarified that the core of RSI is the feedback loop where AI iterates its own cognitive architecture based on existing intelligence, and current AI can implement RSI by directly modifying weights and optimizing training pipelines.
 
-<FeedbackButtons lang="en" slug="item:lillog-2026-07-04-harness" client:visible />
+<FeedbackButtons lang="en" slug="item:lillog-2026-07-04-harness" />
 
 # 量子位
 
@@ -154,7 +154,7 @@ This article sorts out the conceptual evolution of Recursive Self-Improvement (R
 
 Five top domestic universities including Peking University and Tsinghua University jointly launched TriWorldBench, the world's first tri-view world model evaluation benchmark for robots. Breaking away from the logic of only evaluating visual generation quality, it conducts comprehensive evaluation around dimensions such as multi-view consistency, physical understanding, and task execution capability, promoting the evolution of world models towards embodied cognition. The first week's ranking has been released, with 14 teams participating, models from three institutions taking the top three spots, and total visits exceeding 10,000. The ranking will be continuously updated.
 
-<FeedbackButtons lang="en" slug="item:qbitai-469860" client:visible />
+<FeedbackButtons lang="en" slug="item:qbitai-469860" />
 
 ## <a href="https://www.qbitai.com/2026/08/469795.html" target="_blank" rel="noopener noreferrer">AI倒查论文100年！99.2%的顶刊都有问题&#8230;</a>
 
@@ -162,7 +162,7 @@ Five top domestic universities including Peking University and Tsinghua Universi
 
 A US research institution used AI agents to greatly reduce the cost of reproducibility verification, and conducted a systematic reproducibility audit of 168 oral presentation papers from ICML 2026: among the 92 papers with verifiable conclusions, only 34 had more than 40% of their conclusions reproducible, and only 8 had more than 80% reproducible. Most reproduction failures are due to objective issues such as missing code and version incompatibility, while some papers have obvious errors such as false parameter reporting and missing experimental files.
 
-<FeedbackButtons lang="en" slug="item:qbitai-469795" client:visible />
+<FeedbackButtons lang="en" slug="item:qbitai-469795" />
 
 ## <a href="https://www.qbitai.com/2026/08/469721.html" target="_blank" rel="noopener noreferrer">PDF当死，ARA该立！论文是时候Agent原生了</a>
 
@@ -170,4 +170,4 @@ A US research institution used AI agents to greatly reduce the cost of reproduci
 
 Addressing the "narrative tax" pain point of the current general scientific research PDF format, which only presents the final successful path and omits a large number of trial-and-error processes, the newly proposed ARA (Agent-native Research Artifact) is prioritized to adapt to AI needs, supporting AI to understand conclusions, reproduce experiments, and avoid failed routes to advance research, upgrading AI from a research auxiliary tool to a collaborator. The relevant team calls for the scientific research community to abandon PDF and promote ARA.
 
-<FeedbackButtons lang="en" slug="item:qbitai-469721" client:visible />
+<FeedbackButtons lang="en" slug="item:qbitai-469721" />

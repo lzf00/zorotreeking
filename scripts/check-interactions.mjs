@@ -205,6 +205,33 @@ const SCENARIOS = [
     },
   },
   {
+    // 第 226 轮：反馈按钮和星标都从 React 岛改成 Astro + 原生 script。
+    // 为什么值得单开一条：改完之后日报页**一个 hydration 岛都不该剩**。如果谁再把某个小控件
+    // 写回 `client:visible`，页面看起来完全正常，只是又要多下 62 KB gzip 的 React。
+    name: "日报页不再加载 React（0 个 hydration 岛）",
+    url: "/ai/digest-2026-08-27/",
+    async run({ page, fail }) {
+      // 先滚到底，给所有「懒到可见才加载」的东西一次机会 —— 不滚的话这条会恒绿。
+      await page.evaluate(async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        for (let y = 0; y <= document.body.scrollHeight; y += 600) {
+          window.scrollTo(0, y);
+          await sleep(60);
+        }
+      });
+      await page.waitForTimeout(1500);
+      const islands = await page.locator("astro-island").count();
+      if (islands > 0) return fail(`日报页仍挂着 ${islands} 个 hydration 岛`);
+      const scripts = await page.evaluate(() =>
+        performance.getEntriesByType("resource")
+          .map((entry) => entry.name)
+          .filter((name) => name.endsWith(".js")),
+      );
+      const react = scripts.filter((name) => /\/client\.|\/react[.-]/.test(name));
+      if (react.length > 0) return fail(`日报页仍在下载 React：${react.slice(0, 2).join(", ")}`);
+    },
+  },
+  {
     // 线上 /api/feedback 的 GET 一直是 422（第 83 轮发现）。第 86 轮改成按需加载后，
     // 如果「加载失败就不投票」，按钮会彻底点不动 —— 这条守住降级路径。
     name: "反馈 GET 422 时点击仍能投票（降级不阻塞）",

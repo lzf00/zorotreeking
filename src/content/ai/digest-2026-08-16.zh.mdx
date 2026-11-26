@@ -10,7 +10,7 @@ cover: "/photos/uploads/baokemeng/baokemeng-22.og.jpg"
 draft: false
 ---
 
-import FeedbackButtons from "@/components/FeedbackButtons";
+import FeedbackButtons from "@/components/FeedbackButtons.astro";
 
 <div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
   <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
@@ -36,7 +36,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 本文提出Maglev滑动循环记忆架构，是支持训练并行的改进滑动窗注意力循环Transformer。其耦合双模块：可访问全历史、用交错全/滑动窗注意力的预填充器Q生成记忆目标，仅用滑动窗+循环键值注入的解码器P负责推理，通过记忆一致性损失对齐两者，还可参数共享降本，在验证损失、下游预训练基准上均优于同类基线。
 
-<FeedbackButtons slug="item:arxiv-2608.02870" client:visible />
+<FeedbackButtons slug="item:arxiv-2608.02870" />
 
 ## <a href="https://arxiv.org/abs/2608.08020" target="_blank" rel="noopener noreferrer">Thought-Level Beam Search for Reasoning</a>
 
@@ -44,7 +44,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 针对大推理模型测试阶段算力分配低效、现有并行采样与剪枝方案分别存在内存瓶颈、硬件利用率低等缺陷，本文提出Gambit推理算法，采用思想级束搜索，通过轻量打分器动态将算力集中到高潜力推理路径，同时维持高硬件利用率。实验显示其性能全面优于基线，同硬件下精度最高提6.7%，吞吐量超2倍，token消耗最多降68.5%。
 
-<FeedbackButtons slug="item:arxiv-2608.08020" client:visible />
+<FeedbackButtons slug="item:arxiv-2608.08020" />
 
 ## <a href="https://arxiv.org/abs/2608.06914" target="_blank" rel="noopener noreferrer">RibAssist 3D: Biplanar Rib-Fracture Detection, Addressing, and Selective 3D Localization from CT-Derived Projections</a>
 
@@ -52,7 +52,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 本文研发RibAssist 3D肋骨骨折定位框架：基于CT生成的正、侧位正交投影，先分别检测骨折，再跨视图配准、三角化实现选择性3D定位。实验表明系统核心瓶颈并非几何精度或检测能力，而是跨视图匹配置信度；优化侧位检测器后，保守策略下每例假阳性仅0.436个，定位中值误差1.49mm，93%可精准归属对应肋骨。
 
-<FeedbackButtons slug="item:arxiv-2608.06914" client:visible />
+<FeedbackButtons slug="item:arxiv-2608.06914" />
 
 ## <a href="https://arxiv.org/abs/2608.13391" target="_blank" rel="noopener noreferrer">Context-Matched Distillation: Teacher Causality for Autoregressive Video Distillation</a>
 
@@ -60,7 +60,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 针对自回归视频少步蒸馏中双向教师用生成时不可得的未来信息监督、与学生因果信息集错位的问题，提出上下文匹配蒸馏（CMD）框架：采用因果教师，搭配前缀打分、前缀扰动策略对齐监督边界。该框架适配多类生成场景，在长短视频基准自回归方法中性能达SOTA，时变相机控制贴合度显著提升。
 
-<FeedbackButtons slug="item:arxiv-2608.13391" client:visible />
+<FeedbackButtons slug="item:arxiv-2608.13391" />
 
 ## <a href="https://arxiv.org/abs/2608.09158" target="_blank" rel="noopener noreferrer">From Inaudible Inputs to Model Failures: Low-Frequency Safety Risks in LALMs</a>
 
@@ -68,7 +68,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 本文针对大音频语言模型（LALMs）未被关注的人耳不可听低频安全风险展开研究：提出黑盒测试方法ILL，采用通用波形模板构造几乎无感知的低频攻击，可使6款LALMs的任务准确率最高下降67个百分点；配套防御方案DRG通过检测低频分布偏移申请重录，可将受攻击后准确率从28.5%提升至46.1%，为音频模型鲁棒性研究提供支撑。
 
-<FeedbackButtons slug="item:arxiv-2608.09158" client:visible />
+<FeedbackButtons slug="item:arxiv-2608.09158" />
 
 # OpenAI
 
@@ -78,7 +78,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 这份《GPT-5.6开发者指南》面向创业公司AI开发场景，核心介绍两类GPT-5.6落地实用方案：一是智能模型选型策略，二是全新Responses API的功能调用方法。应用上述方法可大幅提升创业团队搭建AI代理的效率、降低开发运维成本，为中小团队轻量化落地AI业务提供可复用的实操指引。
 
-<FeedbackButtons slug="item:openai-blog-builders-guide-to-gpt-5-6" client:visible />
+<FeedbackButtons slug="item:openai-blog-builders-guide-to-gpt-5-6" />
 
 ## <a href="https://openai.com/index/previewing-ultrafast" target="_blank" rel="noopener noreferrer">Previewing Ultrafast mode: GPT-5.6 Sol at up to 14X the speed</a>
 
@@ -86,7 +86,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 本内容介绍OpenAI面向商用场景新推出的API服务层级“极速预览版”，该服务依托Cerebras提供的算力支撑，运行GPT-5.6 Sol模型时推理速度最高可达原有水平的14倍，输出令牌峰值速率达每秒750个，可大幅压缩大模型响应延迟，适配对实时性要求较高的生成式交互、流式输出等场景需求。
 
-<FeedbackButtons slug="item:openai-blog-previewing-ultrafast" client:visible />
+<FeedbackButtons slug="item:openai-blog-previewing-ultrafast" />
 
 # Anthropic News
 
@@ -96,7 +96,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 本次发布的Claude Opus 5是Claude系列Opus高端大模型线的阶跃式升级产品。该版本补强两大核心能力：一是大幅提升对长周期运行智能体的适配支撑，可稳定承接长时间连续交互的复杂代理任务；二是代码生成、各领域专业任务处理效果同步优化，能更好满足开发者、专业从业者的高阶工作需求。
 
-<FeedbackButtons slug="item:anthropic-claude-opus-5" client:visible />
+<FeedbackButtons slug="item:anthropic-claude-opus-5" />
 
 ## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
 
@@ -104,7 +104,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 这篇题为《征集尖锐问题》的公告提出，面向全社会公开征集公众关于人工智能领域的各类高难度疑问。团队明确承诺，后续在回应、研究所有征集到的相关问题的全流程中，将全程公开工作进展、研究思路与推导过程，主动做到研究透明，保障公众对AI相关议题的知情权。
 
-<FeedbackButtons slug="item:anthropic-hard-questions" client:visible />
+<FeedbackButtons slug="item:anthropic-hard-questions" />
 
 # Google DeepMind
 
@@ -114,7 +114,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 本文介绍谷歌DeepMind推出的轻量化多模态大模型Gemini 3.7 Flash。该模型优化推理调度架构，通过混合模态预训练、大模型蒸馏剪枝实现端边云全场景适配，推理速度较Gemini 1.5 Pro提升8倍、成本降90%，多模态理解、代码生成能力追平前代中量级模型，支持百万级上下文，可部署在移动端运行实时交互任务。
 
-<FeedbackButtons slug="item:deepmind-introducing-gemini-3-7-flash" client:visible />
+<FeedbackButtons slug="item:deepmind-introducing-gemini-3-7-flash" />
 
 ## <a href="https://deepmind.google/blog/putting-sign-language-ai-into-users-hands/" target="_blank" rel="noopener noreferrer">Putting sign language AI into users’ hands</a>
 
@@ -122,7 +122,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 本研究面向听障群体的交流需求，推出突破性手语转文本（SL2T）AI模型，可支撑各类实用手语功能落地。该技术打破手语AI以往多停留在实验室、落地性不足的局限，将手语交互能力直接开放给终端用户，切实降低听障群体与健听人群的交流门槛，推动手语AI普惠落地。
 
-<FeedbackButtons slug="item:deepmind-putting-sign-language-ai-into-users-hands" client:visible />
+<FeedbackButtons slug="item:deepmind-putting-sign-language-ai-into-users-hands" />
 
 # Hugging Face Blog
 
@@ -132,7 +132,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 当前您仅提供了这篇2026年夏季开源模型现状观察论文的标题，摘要正文内容完全缺失，无法完成对应的翻译提炼、总结工作。请您补充完整摘要里的核心方法、实验结论、关键发现等具体内容，我会按要求梳理为120字左右、突出核心信息的简洁中文总结。
 
-<FeedbackButtons slug="item:hf-blog-state-of-open-models-summer-2026" client:visible />
+<FeedbackButtons slug="item:hf-blog-state-of-open-models-summer-2026" />
 
 ## <a href="https://huggingface.co/blog/amazon/strands-lerobot-streaming-data-loop" target="_blank" rel="noopener noreferrer">Record, train, and deploy from one place with Strands Agents, LeRobot, and Hugging Face Storage Buckets</a>
 
@@ -140,7 +140,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 这是Hugging Face推出的机器人AI一站式开发方案，打通Strands Agents智能体调度、LeRobot机器人算法库、官方存储桶三大组件，依托统一存储托管全链路数据资产，实现数据录制、模型训练、落地部署全流程同平台完成，无需跨平台迁移数据、适配接口，大幅降低机器人智能体开发门槛，提升落地效率。
 
-<FeedbackButtons slug="item:hf-blog-strands-lerobot-streaming-data-loop" client:visible />
+<FeedbackButtons slug="item:hf-blog-strands-lerobot-streaming-data-loop" />
 
 # The Gradient
 
@@ -150,7 +150,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 该文从美德伦理视角研究AI对齐问题，反驳“理性主体需锚定终极目标”的常见预设，指出人类理性并非指向固定目标，而是将行动适配到涵盖行为倾向、评价标准、配套资源的实践网络中。提出要实现AI与人类协作、满足对齐乃至安全要求，其决策逻辑必须匹配人类的实践型推理框架。
 
-<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+<FeedbackButtons slug="item:thegradient-virtue-ethics-ai-alignment" />
 
 # Lil'Log
 
@@ -160,7 +160,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 本文围绕AI递归自我改进（RSI）展开概念梳理：1965年I.J.古德最早提出相关构想，将可超越人类所有智力活动、能自主设计更优智能体的系统定义为超智能机器；2008年尤德考斯基明确RSI是AI依托现有智能迭代优化自身认知机制的反馈闭环，现代AI语境下的RSI既包含模型直接改写自身权重，也涵盖优化自身训练流程的广义场景。
 
-<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" />
 
 # 量子位
 
@@ -170,7 +170,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 现有大模型机制可解释性研究多依赖额外训练替代模块，成本高、易引入误差，且需针对不同模型单独适配。至知研究院联合多机构提出稀疏权重分解（SWD）新方法，直接从预训练权重拆解可干预单元，无需额外训练替代网络，数据成本不到同类训练型方法的1%，在多主流大模型的任务回路抽取中效率更优。
 
-<FeedbackButtons slug="item:qbitai-473876" client:visible />
+<FeedbackButtons slug="item:qbitai-473876" />
 
 ## <a href="https://www.qbitai.com/2026/08/473866.html" target="_blank" rel="noopener noreferrer">根治AI音乐通病！这家国产音乐模型正面挑战SUNO</a>
 
@@ -178,7 +178,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 当前AI音乐普遍存在无法感知用户细腻情绪、碎片化灵感的通病，生成内容模板化、可控性差，就连国际标杆SUNO也未突破该瓶颈。连续两年打造WAIC官方主题曲的国产全栈自研团队音潮，推出底层重构的V4.0音乐大模型，8月14日全平台上线，攻克感性表达识别难题，正面挑战SUNO，打破国产AI音乐长期跟跑局面。
 
-<FeedbackButtons slug="item:qbitai-473866" client:visible />
+<FeedbackButtons slug="item:qbitai-473866" />
 
 ## <a href="https://www.qbitai.com/2026/08/473669.html" target="_blank" rel="noopener noreferrer">源神启动！一张消费级显卡跑“Opus级”Agent，Qwen3.8-27B多项榜单反超Claude</a>
 
@@ -186,4 +186,4 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 通义千问最新开源Qwen3.8-27B大模型，总参270亿，原生支持多模态、262K上下文，重点强化编码与长程Agent能力。其在SWE-bench Pro等软件工程、Agent评测榜单上显著领先Claude Opus 4.6 Max，经量化后可在24GB显存的消费级显卡运行，实现本地部署Opus级Agent，发布后受开发者热捧。
 
-<FeedbackButtons slug="item:qbitai-473669" client:visible />
+<FeedbackButtons slug="item:qbitai-473669" />

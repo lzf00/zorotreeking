@@ -1,0 +1,190 @@
+---
+/**
+ * 点赞/踩按钮（第 226 轮：从 React 岛改成 Astro + 原生 script）。
+ *
+ * 为什么值得动：一张日报页有 17 个这样的按钮，全是 `client:visible` 的 React 岛。
+ * 读者一滚动，Astro 就要为它们把整包 React（202 KB raw / 62 KB gz）拉下来 ——
+ * 只为了两个按钮的乐观更新。改成原生后，日报页**一个 React 岛都不剩**。
+ *
+ * 行为与旧版逐条对齐（第 86 / 168 轮的教训都在里面）：
+ *   · 挂载时**不发请求**，只有 hover / focus / touch / 点击才按需拉一次（同 slug 去重 + 缓存）
+ *   · 乐观更新：点完立刻变，后台失败再回滚，并显示失败原因
+ *   · GET 失败不显示错误徽标（线上 GET 曾经长期 422，访客不该看到红色报错），仍可投票
+ *   · 未选中时零内联样式，选中态才写 style（第 168 轮把 ~700B/岛的样式搬进 .fb-btn）
+ */
+interface Props {
+  slug: string;
+  align?: "right" | "center";
+  lang?: "zh" | "en";
+}
+const { slug, align = "right", lang = "zh" } = Astro.props;
+const COPY = {
+  zh: { like: "喜欢", dislike: "不喜欢" },
+  en: { like: "Like", dislike: "Dislike" },
+} as const;
+const copy = COPY[lang];
+---
+
+<div
+  class="fb-row"
+  style={align === "right" ? undefined : "justify-content:center"}
+  data-fb-slug={slug}
+>
+  <button
+    type="button"
+    class="fb-btn"
+    data-feedback="like"
+    aria-pressed="false"
+    aria-label={copy.like}
+    title={copy.like}
+  >
+    <svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><use href="#fb-icon-like" /></svg>
+    <span class="fb-num" hidden></span>
+  </button>
+  <button
+    type="button"
+    class="fb-btn"
+    data-feedback="dislike"
+    aria-pressed="false"
+    aria-label={copy.dislike}
+    title={copy.dislike}
+  >
+    <svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><use href="#fb-icon-dislike" /></svg>
+    <span class="fb-num" hidden></span>
+  </button>
+  <span class="fb-err" hidden></span>
+</div>
+
+<script>
+  import { EMPTY_STATE, loadFeedbackOrEmpty, putCached } from "@/lib/feedback-cache";
+  import type { FeedbackState } from "@/lib/feedback-api";
+  import { postFeedback } from "@/lib/feedback-api";
+
+  /** 选中态颜色：喜欢用红心，不喜欢用中性灰（与旧 React 版一致）。 */
+  const ACTIVE_HEX = { like: "#dc2626", dislike: "#525252" } as const;
+  const FAILED_BACKOFF_MS = 30_000;
+
+  function shortErr(code: string): string {
+    if (code.startsWith("HTTP")) return code;
+    if (code === "rate-limited") return "太快了";
+    if (code === "fetch-error" || code.toLowerCase().includes("failed")) return "断网";
+    return code.slice(0, 20);
+  }
+
+  function paint(row: HTMLElement, state: FeedbackState): void {
+    for (const kind of ["like", "dislike"] as const) {
+      const button = row.querySelector<HTMLButtonElement>(`[data-feedback="${kind}"]`);
+      if (!button) continue;
+      const active = state.my_vote === kind;
+      button.setAttribute("aria-pressed", String(active));
+      const count = kind === "like" ? state.likes : state.dislikes;
+      const num = button.querySelector<HTMLElement>(".fb-num");
+      if (num) {
+        num.hidden = count <= 0;
+        num.textContent = count > 0 ? String(count) : "";
+      }
+      const svg = button.querySelector("svg");
+      if (active) {
+        const hex = ACTIVE_HEX[kind];
+        // 旧版写的是 `var(--market-up)14`，这是无效 CSS（变量后面不能直接拼十六进制），
+        // 背景其实一直没生效；这里改用固定 hex，行为终于和设计一致。
+        button.style.background = `${hex}14`;
+        button.style.color = hex;
+        button.style.fontWeight = "600";
+        svg?.setAttribute("fill", hex);
+        svg?.setAttribute("stroke", hex);
+      } else {
+        button.removeAttribute("style");
+        svg?.setAttribute("fill", "none");
+        svg?.setAttribute("stroke", "currentColor");
+      }
+    }
+  }
+
+  function setError(row: HTMLElement, code: string | null): void {
+    const span = row.querySelector<HTMLElement>(".fb-err");
+    if (!span) return;
+    span.hidden = !code;
+    span.textContent = code ? `·${shortErr(code)}` : "";
+    if (code) span.title = code;
+  }
+
+  function setupRow(row: HTMLElement): void {
+    const slug = row.dataset.fbSlug ?? "";
+    if (!slug) return;
+    let state: FeedbackState | null = null;
+    let pending = false;
+    let failedAt = 0;
+
+    const ensureLoaded = async (force = false): Promise<FeedbackState> => {
+      if (state) return state;
+      if (!force && Date.now() - failedAt < FAILED_BACKOFF_MS) return EMPTY_STATE;
+      const { state: fresh, degraded } = await loadFeedbackOrEmpty(slug);
+      if (degraded) {
+        failedAt = Date.now();
+        // 只留一条 warn：访客还没投票，不该在页面底部看到红色错误码（第 83 轮的坑）
+        console.warn("[feedback] 状态拉取失败，先用空状态（仍可投票）");
+        state = EMPTY_STATE;
+        return EMPTY_STATE;
+      }
+      state = fresh;
+      failedAt = 0;
+      paint(row, fresh);
+      return fresh;
+    };
+
+    const optimistic = (current: FeedbackState, target: "like" | "dislike"): FeedbackState => {
+      const was = current.my_vote;
+      if (was === target) {
+        return {
+          likes: target === "like" ? Math.max(0, current.likes - 1) : current.likes,
+          dislikes: target === "dislike" ? Math.max(0, current.dislikes - 1) : current.dislikes,
+          my_vote: null,
+        };
+      }
+      let likes = current.likes;
+      let dislikes = current.dislikes;
+      if (was === "like") likes = Math.max(0, likes - 1);
+      if (was === "dislike") dislikes = Math.max(0, dislikes - 1);
+      if (target === "like") likes += 1;
+      if (target === "dislike") dislikes += 1;
+      return { likes, dislikes, my_vote: target };
+    };
+
+    const vote = async (target: "like" | "dislike"): Promise<void> => {
+      if (pending) return;
+      const current = state ?? (await ensureLoaded(true));
+      const next = current.my_vote === target ? "neutral" : target;
+      pending = true;
+      setError(row, null);
+      state = optimistic(current, target);
+      paint(row, state);
+      const buttons = [...row.querySelectorAll<HTMLButtonElement>(".fb-btn")];
+      for (const b of buttons) b.disabled = true;
+      try {
+        const fresh = await postFeedback(slug, next);
+        state = fresh;
+        putCached(slug, fresh);
+        paint(row, fresh);
+      } catch (error) {
+        state = current;
+        paint(row, current);
+        setError(row, (error as Error)?.message ?? "fetch-error");
+      } finally {
+        pending = false;
+        for (const b of buttons) b.disabled = false;
+      }
+    };
+
+    for (const button of row.querySelectorAll<HTMLButtonElement>("[data-feedback]")) {
+      const kind = button.dataset.feedback === "like" ? "like" : "dislike";
+      const touch = () => { void ensureLoaded(); };
+      button.addEventListener("pointerenter", touch);
+      button.addEventListener("focus", touch);
+      button.addEventListener("touchstart", touch, { passive: true });
+      button.addEventListener("click", () => { void vote(kind); });
+    }
+  }
+
+  for (const row of document.querySelectorAll<HTMLElement>(".fb-row[data-fb-slug]")) setupRow(row);
+</script>

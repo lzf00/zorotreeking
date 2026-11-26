@@ -96,18 +96,30 @@ test("缓存过期后重新请求", async () => {
 
 test("组件挂载时不再拉取 —— 只有交互才触发（防回归）", async () => {
   const { readFile } = await import("node:fs/promises");
-  const source = await readFile(new URL("../src/components/FeedbackButtons.tsx", import.meta.url), "utf8");
+  // 第 226 轮起按钮不再是 React 岛，而是 Astro + 原生 script；这条规则本身不变。
+  const source = await readFile(new URL("../src/components/FeedbackButtons.astro", import.meta.url), "utf8");
+  const script = source.slice(source.indexOf("<script>"));
+  assert.ok(script.length > 200, "找不到客户端脚本");
 
-  // 挂载用的 useEffect 里不允许出现 loadFeedback / fetch
-  const effect = source.slice(source.indexOf("useEffect(() =>"), source.indexOf("const ensureLoaded"));
-  assert.ok(effect.length > 0, "找不到挂载 effect");
-  assert.ok(!/loadFeedback|fetchFeedback|fetch\(/.test(effect), `挂载 effect 里又发请求了：\n${effect}`);
+  const ensureAt = script.indexOf("const ensureLoaded");
+  const voteAt = script.indexOf("const vote =");
+  assert.ok(ensureAt > 0 && voteAt > ensureAt, "按需加载与 vote 两段都要在");
 
-  // 三个交互入口都要接上（用 () => void ensureLoaded() 包一层，避免把事件对象当参数传进去）
-  for (const event of ["onPointerEnter", "onFocus", "onTouchStart"]) {
-    const re = new RegExp(`${event}=\\{[^}]*ensureLoaded[^}]*\\}`);
-    assert.match(source, re, `按钮缺少按需加载入口：${event}`);
+  // 自动加载段不许把错误码甩给访客（否则每篇文章底部一条红字）
+  const loadBlock = script.slice(ensureAt, voteAt);
+  assert.ok(!/setError\(/.test(loadBlock), "自动加载段不许调用 setError");
+  assert.match(loadBlock, /console\.warn/, "失败要留一条 warn 方便排查");
+
+  // 初始化段（setupRow 之外）不许发请求
+  const bootBlock = script.slice(0, ensureAt);
+  assert.ok(!/loadFeedbackOrEmpty\(|postFeedback\(|fetch\(/.test(bootBlock), "挂载阶段不许发请求");
+
+  // 三个交互入口都要接上
+  for (const event of ["pointerenter", "focus", "touchstart"]) {
+    assert.match(script, new RegExp(`addEventListener\\("${event}"`), `缺少按需加载入口：${event}`);
   }
+  // 用户主动投票失败时仍然要提示状态码
+  assert.match(script.slice(voteAt), /setError\(row/, "vote 失败仍然要提示状态码");
 });
 
 test("部署巡检里那条「不预取整页反馈」必须真的滚一遍再数（否则恒绿）", async () => {
@@ -148,24 +160,27 @@ test("加载失败要退化成空状态，而不是让 vote() 直接放弃（线
 
 test("评分组件：挂载不发请求、初始失败不显示错误码（与反馈按钮同一类坑）", async () => {
   const { readFile } = await import("node:fs/promises");
-  const source = await readFile(new URL("../src/components/StarRating.tsx", import.meta.url), "utf8");
+  // 第 226 轮起星标也不再是 React 岛；这条规则不变，只是文件从 .tsx 变成 .astro。
+  const source = await readFile(new URL("../src/components/StarRating.astro", import.meta.url), "utf8");
+  const script = source.slice(source.indexOf("<script>"));
 
-  const mountAt = source.indexOf("useEffect(() => {");
-  const ensureAt = source.indexOf("const ensureLoaded");
-  assert.ok(ensureAt > 0, "找不到按需加载函数");
-  const mountBlock = source.slice(mountAt, ensureAt > mountAt ? undefined : undefined);
-  // 挂载 effect 里只允许读写 localStorage，不许发请求
-  const mountEffect = source.slice(mountAt, source.indexOf("}, [slug]);", mountAt) + 12);
-  assert.ok(!/loadFeedback|fetchFeedback|fetch\(/.test(mountEffect), `挂载时又发请求了：\n${mountEffect}`);
+  const ensureAt = script.indexOf("const ensureLoaded");
+  const rateAt = script.indexOf("const rate =");
+  assert.ok(ensureAt > 0 && rateAt > ensureAt, "按需加载与 rate 两段都要在");
 
-  // 失败分支只能静默降级，不许 setErr（线上 GET 422 会在每篇底部渲染红字）
-  const ensureBlock = source.slice(ensureAt, source.indexOf("useEffect(() => {", ensureAt));
+  // 初始化段只允许读 localStorage，不许发请求
+  const bootBlock = script.slice(0, ensureAt);
+  assert.ok(!/loadFeedbackOrEmpty\(|postFeedback\(|fetch\(/.test(bootBlock), `挂载时又发请求了：\n${bootBlock}`);
+
+  // 失败分支只能静默降级，不许把错误码甩给访客（线上 GET 422 会在每篇底部渲染红字）
+  const ensureBlock = script.slice(ensureAt, rateAt);
   const degradedAt = ensureBlock.indexOf("if (degraded)");
   assert.ok(degradedAt > 0, "缺少 degraded 分支");
   const degradedBlock = ensureBlock.slice(degradedAt, degradedAt + 400);
-  assert.ok(!/setErr\(/.test(degradedBlock), "初始加载失败不许 setErr");
+  assert.ok(!/rate-err|err\.hidden = false/.test(degradedBlock), "初始加载失败不许显示错误");
+  assert.match(degradedBlock, /console\.warn/, "失败要留一条 warn");
 
   // rate() 失败仍然要能提示
-  const rateAt = source.indexOf("async function rate(");
-  assert.match(source.slice(rateAt), /setErr\(/, "用户主动评分失败仍要提示");
+  assert.match(script.slice(rateAt), /err\.hidden = false/, "用户主动评分失败仍要提示");
 });
+

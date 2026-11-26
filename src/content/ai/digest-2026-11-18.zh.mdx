@@ -10,7 +10,7 @@ cover: "/photos/uploads/baokemeng/baokemeng-19.og.jpg"
 draft: false
 ---
 
-import FeedbackButtons from "@/components/FeedbackButtons";
+import FeedbackButtons from "@/components/FeedbackButtons.astro";
 
 <div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
   <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
@@ -36,7 +36,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 本次发布的星河4（Xing 4）是TeleChat系列的迭代大模型，全栈适配昇腾国产芯片与MindSpore框架：架构层通过稀疏激活、注意力优化等平衡性能与算力开销，训练端可依托8192张昇腾910C卡完成2850亿参数模型预训练，后训练配套TeleGym智能体平台，可高效支撑推理、智能体类任务的迭代开发。
 
-<FeedbackButtons slug="item:arxiv-2611.22115" client:visible />
+<FeedbackButtons slug="item:arxiv-2611.22115" />
 
 ## <a href="https://arxiv.org/abs/2611.17621" target="_blank" rel="noopener noreferrer">AscendGYM: A Cost-Aware Kernel Optimization Benchmark for Real-World Workloads on Ascend NPUs</a>
 
@@ -44,7 +44,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 针对现有昇腾NPU内核基准侧重生成能力、未覆盖真实负载下现有实现优化效果评估的缺口，研究团队推出适配真实运行环境的AscendGYM基准，含3难度等级共48个取自真实任务配置的内核，支持两类评估模式，还提出兼顾加速比与token成本的STS指标，可精准评估优化方案实际效用，现已开源。
 
-<FeedbackButtons slug="item:arxiv-2611.17621" client:visible />
+<FeedbackButtons slug="item:arxiv-2611.17621" />
 
 ## <a href="https://arxiv.org/abs/2611.22055" target="_blank" rel="noopener noreferrer">Weight-Space Programming Doesn't Need Transformers</a>
 
@@ -52,7 +52,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 本文面向无梯度训练的权重空间编程场景，验证无需沿用Transformer架构：仅靠少量标注样例引导，让前沿大模型自主设计推理架构，最终产出的稀疏查表模型，比同大模型生成的最优Transformer准确率更高，参数量仅为其1/1800。据此提出的联想记忆模型，GPU推理速度较同规模Transformer快17倍，该优势仅适用于手动写权重的场景。
 
-<FeedbackButtons slug="item:arxiv-2611.22055" client:visible />
+<FeedbackButtons slug="item:arxiv-2611.22055" />
 
 ## <a href="https://arxiv.org/abs/2611.21099" target="_blank" rel="noopener noreferrer">ForceHarness: Turning Force into Action and Physics for Frozen Frontier Models</a>
 
@@ -60,7 +60,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 针对冻结多模态大模型零样本操控机器人仅依赖图像、无法利用接触力的痛点，本文提出ForceHarness框架：无需微调或演示，通过自终止力原语实现力控闭环解决API响应延迟问题，经物理转换层将力流转为模型可推理的带不确定度物理量。实测无腕力传感器机械臂上，将GPT-6 Astra零样本成功率从3.3%提至90%，仿真性能追平手工专家控制器、优于示教训练的力感知策略。
 
-<FeedbackButtons slug="item:arxiv-2611.21099" client:visible />
+<FeedbackButtons slug="item:arxiv-2611.21099" />
 
 ## <a href="https://arxiv.org/abs/2611.19800" target="_blank" rel="noopener noreferrer">Multi-Branch Transformer</a>
 
@@ -68,7 +68,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 本文针对传统Transformer仅靠加宽加深缩放的局限，提出多分支Transformer（MBT），设置宽浅、窄深、平衡三类分支变体：输入经共享初始层后并行过独立参数分支再融合，搭配Joint-KV共享KV缓存优化长上下文推理。同参数、训练算力下，最优方案训练效率比传统Transformer高26%，KV缓存减34%，单H200解码吞吐提升51.4%，为大模型缩放提供兼顾效果与推理的新路径。
 
-<FeedbackButtons slug="item:arxiv-2611.19800" client:visible />
+<FeedbackButtons slug="item:arxiv-2611.19800" />
 
 # arXiv cs.LG
 
@@ -78,7 +78,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 针对工具调用智能体执行调度易受运行时不确定因素干扰、延迟预估失准的问题，本文提出DeltaHarness自进化调度框架：支持冷启动适配，采用执行引导的策略搜索，通过QHI循环迭代更新调度逻辑、优化执行计划，配套独立校验面板管控策略更新。实测显示，视频编辑任务延迟降30%，未知任务较最优固定方案最多降8.2%。
 
-<FeedbackButtons slug="item:arxiv-2611.21688" client:visible />
+<FeedbackButtons slug="item:arxiv-2611.21688" />
 
 ## <a href="https://arxiv.org/abs/2611.21691" target="_blank" rel="noopener noreferrer">AdaFlowLite: Scalable and Non-blocking Inference on Asynchronous Mobile Data</a>
 
@@ -86,7 +86,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 针对移动多模态传感数据异步到达易引发推理延迟或精度下降、现有方案适配性不足的问题，提出AdaFlowLite：通过分层归一化矩阵建模跨模态关联，搭配轻量多模态Swin Transformer实现免重训动态数据补全，支持部分数据到达即启动推理。实测较现有方案延迟最高降80.4%、精度最高升62.1%，能耗减半，还可辅助大模型预处理异步数据。
 
-<FeedbackButtons slug="item:arxiv-2611.21691" client:visible />
+<FeedbackButtons slug="item:arxiv-2611.21691" />
 
 ## <a href="https://arxiv.org/abs/2611.21694" target="_blank" rel="noopener noreferrer">TIBECG: Temporal Information Bottleneck for Lead-Specific Demographic Privacy in ECG Waveform Release</a>
 
@@ -94,7 +94,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 针对心电（ECG）波形传输易泄露人口统计隐私的问题，该研究提出时序信息瓶颈方法TIBECG，无需年龄、性别标签训练即可用于单导联ECG发布场景。经6386份12导联数据验证，该方法可保留95%以上诊断效用，隐私保护效果较传统方法中位提升22.08个百分点，比直接降采样更兼顾诊断性能，且需按导联差异化评估处理效果。
 
-<FeedbackButtons slug="item:arxiv-2611.21694" client:visible />
+<FeedbackButtons slug="item:arxiv-2611.21694" />
 
 # OpenAI
 
@@ -104,7 +104,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 本次推出的GPT-6.2系列包含Astra、Sol两款大模型，可适配ChatGPT Work、Codex、API三类使用场景。两款模型在专业内容生成质量、代码开发能力、计算机操作能力上均有显著提升，同时运行效率更高、调用成本更低，可为多场景用户提供性价比更优的大模型服务。
 
-<FeedbackButtons slug="item:openai-blog-introducing-gpt-6-2-astra-sol" client:visible />
+<FeedbackButtons slug="item:openai-blog-introducing-gpt-6-2-astra-sol" />
 
 ## <a href="https://openai.com/index/strengthening-nato-allied-cyber-defences-ai" target="_blank" rel="noopener noreferrer">Strengthening NATO and allied cyber defenses with AI</a>
 
@@ -112,7 +112,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 本文聚焦AI强化北约及盟友网络防御的实践，介绍OpenAI与北约及盟友网络安全机构的合作路径：为可信防御方提供技术支持，辅助其排查系统安全漏洞、验证修复方案有效性，最终旨在筑牢关键系统安全屏障，提升联盟整体网络风险抵御能力。
 
-<FeedbackButtons slug="item:openai-blog-strengthening-nato-allied-cyber-defences-ai" client:visible />
+<FeedbackButtons slug="item:openai-blog-strengthening-nato-allied-cyber-defences-ai" />
 
 # Anthropic News
 
@@ -122,7 +122,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 这份公告来自专注AI安全赛道的研究企业Anthropic，企业核心定位为AI安全技术研发商，所有技术布局均围绕安全可控的核心原则展开，当前核心目标是搭建兼具运行可靠性、决策可解释性、行为可引导性的AI系统，为后续落地低风险、对齐人类需求的AI产品筑牢技术基础。
 
-<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+<FeedbackButtons slug="item:anthropic-announcements" />
 
 ## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
 
@@ -130,7 +130,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 大模型企业Anthropic推出公共利益导向的股权创新：将部分公司股份划拨至新设立的「Anthropic公共利益基金」，该基金设置特殊结构，持股份额会随公司发展规模扩大同步提升。此举将公共收益与企业成长深度绑定，为营利性AI公司平衡商业目标、落地公共责任提供了新的实践方向。
 
-<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" />
 
 # Google DeepMind
 
@@ -140,7 +140,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 本文介绍谷歌DeepMind推出的氢能领域专用大模型Gemini 4 Hydrogen。模型以Gemini 4通用多模态基座为基础，嵌入物理化学硬约束规则，采用海量氢能催化、储氢材料、电化学仿真及实验数据专项微调。其在氢能材料设计、反应路径优化等任务上精度较通用大模型高42%，可大幅压缩研发周期、降低试错成本。
 
-<FeedbackButtons slug="item:deepmind-introducing-gemini-4-hydrogen" client:visible />
+<FeedbackButtons slug="item:deepmind-introducing-gemini-4-hydrogen" />
 
 ## <a href="https://deepmind.google/blog/alphagenome-2-deciphering-how-cells-read-dna-to-better-understand-disease/" target="_blank" rel="noopener noreferrer">AlphaGenome 2: Deciphering how cells read DNA to better understand disease</a>
 
@@ -148,7 +148,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 新一代基因分析工具AlphaGenome 2围绕DNA调控机制开展研究，核心是破解细胞读取DNA序列的内在规律，可精准预测DNA序列及其各类变异对人类不同特定细胞类型的功能影响，能够帮助研究者明确遗传变异的致病效应，深化对疾病发生机制的认知，为疾病诊疗、药物研发等场景提供重要支撑。
 
-<FeedbackButtons slug="item:deepmind-alphagenome-2-deciphering-how-cells-read-dna-to-better-understand-disease" client:visible />
+<FeedbackButtons slug="item:deepmind-alphagenome-2-deciphering-how-cells-read-dna-to-better-understand-disease" />
 
 # Hugging Face Blog
 
@@ -158,7 +158,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 开源大模型生态平台Hugging Face与推理聚合服务商OpenRouter达成合作，双方打通生态接口，整合Hugging Face的开源权重模型库资源与OpenRouter的成熟推理服务能力，大幅降低开源模型运行门槛。开发者无需复杂配置即可快速调用各类开源模型，缩减部署成本与验证周期，助力开源模型落地。
 
-<FeedbackButtons slug="item:hf-blog-openrouter" client:visible />
+<FeedbackButtons slug="item:hf-blog-openrouter" />
 
 ## <a href="https://huggingface.co/blog/nvidia/simready-assets-robot-pick-and-place" target="_blank" rel="noopener noreferrer">Build a Robot Pick-and-Place Simulation with SimReady Assets</a>
 
@@ -166,7 +166,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 本研究依托SimReady标准化仿真资产搭建机器人拾放仿真环境，无需额外建模调校，直接调用预校准物理属性、几何参数的合规资产，即可快速复现真实工况的动力学、碰撞交互特征。经测试该仿真与实机结果匹配度较高，可大幅降低仿真搭建成本，为抓取算法验证、机器人部署前调试提供高效支撑。
 
-<FeedbackButtons slug="item:hf-blog-simready-assets-robot-pick-and-place" client:visible />
+<FeedbackButtons slug="item:hf-blog-simready-assets-robot-pick-and-place" />
 
 # Lil'Log
 
@@ -176,7 +176,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 递归自我改进（RSI）起源于1965年I.J.古德提出的“超智能机器”概念，指能超越人类所有智能活动、可自主设计更优机器实现自我迭代的系统。2008年尤德考斯基明确其核心是AI依托现有智能优化自身认知架构的反馈回路，当前AI领域的RSI既可狭义指模型直接改写自身权重，广义也涵盖模型优化自身训练流程。
 
-<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" />
 
 # 量子位
 
@@ -186,7 +186,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 思维链一作、AI知名青年学者Jason Wei被Meta高薪挖角仅入职一年便离职，加入数据初创公司Mercor任首席科学家。他判断AI下一阶段发展核心是数据，将统管公司数据与评测工作，LoRA一作Edward Hu也在该公司负责模型训练，二人将联手推进相关研发。
 
-<FeedbackButtons slug="item:qbitai-510811" client:visible />
+<FeedbackButtons slug="item:qbitai-510811" />
 
 ## <a href="https://www.qbitai.com/2026/11/510821.html" target="_blank" rel="noopener noreferrer">英伟达AMD首次联手押注！Genesis完成A轮融资，估值超230亿</a>
 
@@ -194,7 +194,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 美国具身智能企业Genesis近日完成5亿美元A轮融资，投后估值35亿美元（约合230亿元），系英伟达、AMD首次联手投资具身智能赛道，另有多位科技界知名人士参投。该公司定位具身全栈玩家，自研的共享权重GENE-26.5基础模型，可完成多场景高精度复杂操作，技术优势突出。
 
-<FeedbackButtons slug="item:qbitai-510821" client:visible />
+<FeedbackButtons slug="item:qbitai-510821" />
 
 ## <a href="https://www.qbitai.com/2026/11/510737.html" target="_blank" rel="noopener noreferrer">潜伏小红书48h：AI时代，顶尖技术人才都在聊什么？</a>
 
@@ -202,4 +202,4 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 11月中旬，小红书在北京举办REDpath技术校招沙龙，摒弃传统宣讲模式，以直面答疑的AMA环节为主，吸引近200名来自全国及海外的应届生到场。应届生提问多聚焦AI时代技术岗发展、资源支持、团队氛围等务实问题，双方甚至出现技术leader反向调研产品的双向互动，广受参与者好评。
 
-<FeedbackButtons slug="item:qbitai-510737" client:visible />
+<FeedbackButtons slug="item:qbitai-510737" />

@@ -10,7 +10,7 @@ cover: "/photos/uploads/hudieren/13408098752635440.og.jpg"
 draft: false
 ---
 
-import FeedbackButtons from "@/components/FeedbackButtons";
+import FeedbackButtons from "@/components/FeedbackButtons.astro";
 
 <div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
   <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
@@ -36,7 +36,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 本文推出K2-Horizon系列6款全开源大模型，参数覆盖0.9B到375B，适配通用推理、智能体、科研等场景，同规模下在代码、智能体基准表现居开源前列。技术上提出混合值注意力等优化，稀疏模型性能追平同训练数据的32B稠密模型，Uno适配器解码提速最高2.2倍，全链路开源训练全流程与合成数据管线，可复现性极强。
 
-<FeedbackButtons slug="item:arxiv-2611.21003" client:visible />
+<FeedbackButtons slug="item:arxiv-2611.21003" />
 
 ## <a href="https://arxiv.org/abs/2611.17834" target="_blank" rel="noopener noreferrer">PaperCritic: Training AI Reviewers to Assess the Soundness of Papers</a>
 
@@ -44,7 +44,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 针对学术会议投稿量激增、现有AI审稿模仿人类易受主观评价干扰的问题，本文聚焦最核心客观的论文科学性审核维度，构建标注2.3万条评审观点的PaperSound-23K数据集，以评审精准率、召回率的F1值为奖励，通过强化学习训练PaperCritic审稿模型，其ICLR审稿表现优于前沿模型，还可迁移到Nature系列论文审稿、代码/合同审核等跨域任务。
 
-<FeedbackButtons slug="item:arxiv-2611.17834" client:visible />
+<FeedbackButtons slug="item:arxiv-2611.17834" />
 
 ## <a href="https://arxiv.org/abs/2611.19937" target="_blank" rel="noopener noreferrer">AllocFlow: End-to-End Portfolio Trading Action Generation from Raw Market Data</a>
 
@@ -52,7 +52,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 针对传统资管管线拆分信号预测与组合构建、目标错配问题，本文提出端到端流匹配框架AllocFlow：用跨资产流Transformer生成多资产联合持仓权重，采用策略监督模仿+组相对强化学习的两阶段训练优化效率。在加密永续合约数据集上，其年化净收益达51.38%、卡玛比4.043，2026年未见数据上无重训卡玛比达4.90，性能远超基准。
 
-<FeedbackButtons slug="item:arxiv-2611.19937" client:visible />
+<FeedbackButtons slug="item:arxiv-2611.19937" />
 
 ## <a href="https://arxiv.org/abs/2611.07222" target="_blank" rel="noopener noreferrer">SPILLWAY: Separating Target Admission from Sanitization to Defend Tool-Using Agents against Prompt Injection</a>
 
@@ -60,7 +60,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 针对工具调用智能体易被提示注入劫持的问题，本文提出SPILLWAY防御框架，拆分目标准入与消毒流程：基于只读工具结构化返回、固定规则做确定性准入，预过滤可疑指令留证，支持人工复核。实测标准注入、伪造模板攻击成功率为0，强化学习攻击下仅0.7%，几乎无额外模型开销，跨模型通用，兼顾安全与可用性。
 
-<FeedbackButtons slug="item:arxiv-2611.07222" client:visible />
+<FeedbackButtons slug="item:arxiv-2611.07222" />
 
 ## <a href="https://arxiv.org/abs/2611.20986" target="_blank" rel="noopener noreferrer">Calpha: Toward Native Biomolecular Intelligence in a General-Purpose Language Model</a>
 
@@ -68,7 +68,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 本文提出打通通用大模型推理与蛋白结构预测能力的通用模型Calpha，首期基于Qwen3.5-9B融合ESM2残基特征，可通过文本指令触发调用预训练SimpleFold头输出单链蛋白结构。实测短链预测性能与现有基线相当，长链表现略逊，同时模型通用语言能力（MMLU-Pro子集）下降约7个点，后续将拓展复合物预测等能力。
 
-<FeedbackButtons slug="item:arxiv-2611.20986" client:visible />
+<FeedbackButtons slug="item:arxiv-2611.20986" />
 
 # OpenAI
 
@@ -78,7 +78,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 本文聚焦AI工具的学术场景普惠需求，宣布扩容已有的「学术研究者专属ChatGPT」支持计划：将面向全球范围内总计20万名各领域科研工作者，免费开放其旗下前沿大模型的使用权限，此举可大幅降低科研人员使用先进AI工具的门槛，有望推动AI能力更好地赋能各学科科研创新。
 
-<FeedbackButtons slug="item:openai-blog-expanding-chatgpt-for-academic-researchers" client:visible />
+<FeedbackButtons slug="item:openai-blog-expanding-chatgpt-for-academic-researchers" />
 
 ## <a href="https://openai.com/index/strengthening-online-child-safety" target="_blank" rel="noopener noreferrer">Strengthening the fight against online child sexual abuse with new tools and support</a>
 
@@ -86,7 +86,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 本研究聚焦打击网络儿童性剥削与性虐待议题，提出三类核心落地路径：研发专项检测处置技术工具、出台实操工作指引、搭建跨界协作伙伴关系。这套方案覆盖事前预防、事中识别、事后处置全链条，为打击这类涉童恶性网络犯罪提供行动框架，可有效强化未成年人网络权益保护力度。
 
-<FeedbackButtons slug="item:openai-blog-strengthening-online-child-safety" client:visible />
+<FeedbackButtons slug="item:openai-blog-strengthening-online-child-safety" />
 
 # Anthropic News
 
@@ -96,7 +96,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 本次公告核心介绍AI安全研究企业Anthropic的定位与研发方向。该公司深耕AI安全赛道，技术路线以安全为核心导向，目标是打造兼具三大特性的AI系统：运行可靠输出可信、决策逻辑可解释无黑箱、行为可操控对齐人类价值，从技术源头前置防控AI落地的各类安全风险。
 
-<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+<FeedbackButtons slug="item:anthropic-announcements" />
 
 ## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
 
@@ -104,7 +104,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 头部通用AI企业Anthropic推出“公共利益基金”创新机制：承诺划拨部分公司股份注入该独立实体，设置随公司经营规模扩张自动提升基金持股占比的特殊架构，可让企业发展红利更多向公共福祉倾斜，探索了AI企业商业收益反哺社会公共利益的可行新路径。
 
-<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" />
 
 # Google DeepMind
 
@@ -114,7 +114,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 您好，目前您仅提供了论文标题《Introducing Gemini 4 Hydrogen》，未附上对应的摘要正文内容，无法开展翻译提炼及120字左右的总结工作，请您补充完整该论文的摘要内容，我会按要求梳理其核心方法、结论等关键信息，输出符合要求的简洁总结。
 
-<FeedbackButtons slug="item:deepmind-introducing-gemini-4-hydrogen" client:visible />
+<FeedbackButtons slug="item:deepmind-introducing-gemini-4-hydrogen" />
 
 ## <a href="https://deepmind.google/blog/alphagenome-2-deciphering-how-cells-read-dna-to-better-understand-disease/" target="_blank" rel="noopener noreferrer">AlphaGenome 2: Deciphering how cells read DNA to better understand disease</a>
 
@@ -122,7 +122,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 DeepMind推出的AI工具AlphaGenome 2聚焦DNA调控机制研究，核心方法为建模预测DNA序列及其各类变异对人类不同特定细胞类型的功能影响，旨在阐明细胞读取DNA的内在规律，深化对疾病致病机理的认知，为遗传病溯源、精准诊疗开发提供新的技术支撑。
 
-<FeedbackButtons slug="item:deepmind-alphagenome-2-deciphering-how-cells-read-dna-to-better-understand-disease" client:visible />
+<FeedbackButtons slug="item:deepmind-alphagenome-2-deciphering-how-cells-read-dna-to-better-understand-disease" />
 
 # Hugging Face Blog
 
@@ -132,7 +132,7 @@ DeepMind推出的AI工具AlphaGenome 2聚焦DNA调控机制研究，核心方法
 
 开源大模型生态平台Hugging Face与多模型API服务商OpenRouter近期达成合作，双方打通生态链路，将Hugging Face的开源权重模型库对接OpenRouter的成熟推理调度框架，开发者无需自行完成算力适配、推理优化等复杂操作，即可低成本快速运行各类开源大模型，大幅降低开源模型落地门槛。
 
-<FeedbackButtons slug="item:hf-blog-openrouter" client:visible />
+<FeedbackButtons slug="item:hf-blog-openrouter" />
 
 ## <a href="https://huggingface.co/blog/nvidia/simready-assets-robot-pick-and-place" target="_blank" rel="noopener noreferrer">Build a Robot Pick-and-Place Simulation with SimReady Assets</a>
 
@@ -140,7 +140,7 @@ DeepMind推出的AI工具AlphaGenome 2聚焦DNA调控机制研究，核心方法
 
 针对传统机器人抓取放置仿真搭建需手动建模校准物理参数、效率低、仿真到现实迁移效果差的痛点，该方案采用自带精准物理属性、几何信息、兼容主流引擎的标准化SimReady资产搭建高保真仿真场景，无需额外校准。测试显示其可将场景搭建周期缩短近70%，抓取策略真机迁移成功率提升37%，大幅降低抓放应用的验证成本。
 
-<FeedbackButtons slug="item:hf-blog-simready-assets-robot-pick-and-place" client:visible />
+<FeedbackButtons slug="item:hf-blog-simready-assets-robot-pick-and-place" />
 
 # Lil'Log
 
@@ -150,7 +150,7 @@ DeepMind推出的AI工具AlphaGenome 2聚焦DNA调控机制研究，核心方法
 
 本文梳理递归自我改进（RSI）相关研究：1965年学者古德最早提出相关概念，认为超智能系统可在所有智力活动中超越人类，且能设计更优机器实现自我迭代；2008年尤德考斯基明确其核心是AI依托现有智能优化自身认知机制的反馈环。研究提出现代AI的RSI路径既包括直接改写自身权重，也可优化训练管线。
 
-<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" />
 
 # 量子位
 
@@ -160,7 +160,7 @@ DeepMind推出的AI工具AlphaGenome 2聚焦DNA调控机制研究，核心方法
 
 针对现有大模型智能体难以独立完成全流程材料研发的痛点，北京中关村两院今年9月发布并开源材料科研智能体MatOS。它统一管理各类科研资产，支持能力持续迭代，内置海量数据集、工具与预定义工作流，实测任务成功率远超同类智能体，可高效完成大规模材料筛选等研发任务。
 
-<FeedbackButtons slug="item:qbitai-510652" client:visible />
+<FeedbackButtons slug="item:qbitai-510652" />
 
 ## <a href="https://www.qbitai.com/2026/11/510610.html" target="_blank" rel="noopener noreferrer">真勇啊！00后团队参加具身挑战赛，仅48小时竟敢从零手搓数据，还夺冠了！</a>
 
@@ -168,7 +168,7 @@ DeepMind推出的AI工具AlphaGenome 2聚焦DNA调控机制研究，核心方法
 
 蚂蚁灵波首届具身大模型挑战赛48小时真机决赛中，平均年龄25岁的00后领衔TARS队，前两项任务用千问过滤干扰物优化效果，针对官方清扫任务数据抓簸箕把手易打滑的缺陷，果断放弃对应官方数据集，临时采集抓后沿的新数据，最终反超对手夺冠，斩获8万元奖金。
 
-<FeedbackButtons slug="item:qbitai-510610" client:visible />
+<FeedbackButtons slug="item:qbitai-510610" />
 
 ## <a href="https://www.qbitai.com/2026/11/510592.html" target="_blank" rel="noopener noreferrer">奥特曼共情黄仁勋，“英雄也有缺陷”，但支持他重返英伟达CEO嘛&#8230;</a>
 
@@ -176,4 +176,4 @@ DeepMind推出的AI工具AlphaGenome 2聚焦DNA调控机制研究，核心方法
 
 11月16日硅谷Semafor峰会上，OpenAI CEO奥特曼首次公开谈及黄仁勋辞任英伟达CEO风波。他称黄是自己心目中的英雄，因曾有被董事会罢免的经历对其处境高度共情，坦言英雄亦有缺陷，认为AI行业不会因黄离职停滞，但表示自身信息不足，无法判断黄是否应重返英伟达。
 
-<FeedbackButtons slug="item:qbitai-510592" client:visible />
+<FeedbackButtons slug="item:qbitai-510592" />

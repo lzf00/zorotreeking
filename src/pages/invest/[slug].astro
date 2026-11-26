@@ -3,7 +3,7 @@ import FeedbackIcons from "@/components/FeedbackIcons.astro";
 import { siteDateString } from "@/lib/site-date";
 import { getCollection, render } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import StarRating from "@/components/StarRating";
+import StarRating from "@/components/StarRating.astro";
 import TagChip from "@/components/TagChip.astro";
 import AutoDisclosure from "@/components/AutoDisclosure.astro";
 import PostFooter from "@/components/PostFooter.astro";
@@ -130,7 +130,7 @@ const coverageText = digestCoverageInfo ? coverageNotice(digestCoverageInfo, lan
           <strong>这篇对你有用吗？</strong> 打个分让我知道下次的方向。
         </p>
         <div class="text-lg">
-          <StarRating slug={`invest/${entry.data.translationKey}`} align="center" label="" client:visible />
+          <StarRating slug={`invest/${entry.data.translationKey}`} align="center" label="" />
         </div>
         <p class="mt-3 text-[11px] text-[var(--text-tertiary)] font-mono">
           点星星即可评分 · 数据只保存匿名指纹 + 时间戳

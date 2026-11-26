@@ -30,7 +30,7 @@ const CONTENT_TEMPLATES = [
 ];
 
 test("图标不再内联在按钮里，而是引用精灵", async () => {
-  const buttons = await read("src/components/FeedbackButtons.tsx");
+  const buttons = await read("src/components/FeedbackButtons.astro");
   assert.match(buttons, /<use href="#fb-icon-like"/, "喜欢图标要走 <use>");
   assert.match(buttons, /<use href="#fb-icon-dislike"/, "不喜欢图标要走 <use>");
   assert.doesNotMatch(buttons, /d="M20\.84 4\.61/, "心形 path 不该再出现在按钮里（每页 17 份）");
@@ -57,4 +57,23 @@ test("精灵只能出现一次（每页一次就够，别跟着列表重复渲�
     const hits = src.match(/<FeedbackIcons \/>/g) ?? [];
     assert.equal(hits.length, 1, `${rel} 里精灵出现了 ${hits.length} 次`);
   }
+});
+
+test("内容页不再有任何 hydration 指令（第 226 轮：按钮改成 Astro 后 React 彻底离场）", async () => {
+  const { readdir } = await import("node:fs/promises");
+  const { join } = await import("node:path");
+  const dir = new URL("../src/content/", import.meta.url).pathname;
+  const offenders: string[] = [];
+  const walk = async (cur: string): Promise<void> => {
+    for (const entry of await readdir(cur, { withFileTypes: true })) {
+      const full = join(cur, entry.name);
+      if (entry.isDirectory()) { await walk(full); continue; }
+      if (!entry.name.endsWith(".mdx")) continue;
+      const src = await readFile(full, "utf8");
+      if (/client:(load|idle|visible|only)/.test(src)) offenders.push(full);
+      if (/components\/FeedbackButtons"/.test(src)) offenders.push(`${full}（还在导入 tsx 版）`);
+    }
+  };
+  await walk(dir);
+  assert.deepEqual(offenders, [], `内容页里不该再有 hydration 指令：${offenders.slice(0, 3).join(", ")}`);
 });

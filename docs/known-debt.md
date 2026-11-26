@@ -852,3 +852,22 @@
   那样日报页只剩 StarRating 一个 React 岛。
 - **仍未解（需你/服务器）**：nginx 三项、39 期/300 条摘要（需 LLM key）、内联 CSS 外链化、
   `/opt/wind-recap` 副本同步、giscus App 安装、留言时区、字体子集化。
+
+## 第 226 轮
+
+- **改（性能）**：`FeedbackButtons` 与 `StarRating` 组件从 React 岛改成 Astro + 原生 script；
+  772 个 MDX 改导入并删掉 12,013 个 `client:visible`。
+  日报页 hydration 岛 **18 → 0**，React 运行时不再加载；HTML 201.2 → 192.0 KB；
+  英文日报 219.0 → 208.0 KB（离 220 KB 上限又拉开 12 KB）；手机端总重量 314 → 307 KB。
+  反馈按钮、星标的交互逐项实测：hover 按需拉取、点击乐观更新、失败回滚并显示状态码、
+  评分只在后端接受后写 localStorage、`pointerleave` 复位。
+- **加（守卫）**：`check:interactions` 新增场景「日报页不再加载 React（0 个 hydration 岛）」——
+  先滚到底再数岛和脚本，避免恒绿；`tests/feedback-icons.test.ts` 增加"内容页不许有 `client:` 指令"，
+  `tests/feedback-lazy.test.ts` / `tests/a11y-harness.test.ts` / `tests/site-utils.test.ts` 跟随换文件。
+- **自伤（已修）**：① 组件脚本里 `type FeedbackState` 从 `@/lib/feedback-cache` 导入，但那个模块只是
+  `import` 没 `export` 它 → `astro check` 两个 error 挡门禁；② `optimistic()` 的参数写成 `FeedbackKind`，
+  而返回值的 `my_vote` 收窄成 `"like" | "dislike" | null`，`ts(2322)`。
+- **顺带修**：选中态背景一直没生效（`var(--market-up)14` 是无效 CSS）。
+- **仍未解（需你/服务器）**：nginx 三项、39 期/300 条摘要（需 LLM key）、内联 CSS 外链化、
+  `/opt/wind-recap` 副本同步、giscus App 安装、留言时区、字体子集化。
+  `/invest/[slug]` 复盘页仍有 `client:load`/`client:idle` 的行情岛（那是功能需要，不算债）。

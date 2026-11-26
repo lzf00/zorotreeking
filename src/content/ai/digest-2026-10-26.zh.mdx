@@ -10,7 +10,7 @@ cover: "/photos/uploads/baokemeng/baokemeng-32.og.jpg"
 draft: false
 ---
 
-import FeedbackButtons from "@/components/FeedbackButtons";
+import FeedbackButtons from "@/components/FeedbackButtons.astro";
 
 <div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
   <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
@@ -36,7 +36,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 针对电商长周期智能推荐代理缺乏真实交互评测基准、难对齐线上A/B结果的痛点，本文提出UserArena交互基准，覆盖1.1万用户的6.47万条真实会话轨迹，含56万余商品、13类交互动作，支持五级全链路离线评测。同时提出同策略轨迹蒸馏方法OPTD，依托轨迹级意图提升长交互模拟保真度，实验显示其在该基准下表现最优，最贴近线上策略实际效果。
 
-<FeedbackButtons slug="item:arxiv-2610.30932" client:visible />
+<FeedbackButtons slug="item:arxiv-2610.30932" />
 
 ## <a href="https://arxiv.org/abs/2610.32253" target="_blank" rel="noopener noreferrer">RSIHub: A Composable Framework for Agent-Evolution Methods</a>
 
@@ -44,7 +44,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 针对智能体进化方法重复开发实验底座的痛点，本文提出可组合开源框架RSIHub：采用可复用算子+可变资源声明的配方机制，内置执行、评测、溯源等通用能力，研究者无需修改核心即可适配各类进化策略。评测显示，框架下的进化方法最高将pass@1提升13.5个百分点，但方法排名随场景变化，优化收益不总能跨任务迁移。
 
-<FeedbackButtons slug="item:arxiv-2610.32253" client:visible />
+<FeedbackButtons slug="item:arxiv-2610.32253" />
 
 ## <a href="https://arxiv.org/abs/2610.32965" target="_blank" rel="noopener noreferrer">RynnUnify: Towards Unified Embodied Brain</a>
 
@@ -52,7 +52,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 本文提出160亿参数的统一具身模型RynnUnify，依托交错式视频-语言推理，兼具具身理解与长时序视觉规划能力，配套研发强化学习智能体扩展、适配机器人控制的世界动作扩展及专属评测基准。实验显示其多项具身任务表现显著优于现有基线，可作为具身智能通用基础底座，向统一具身脑目标迈进一步。
 
-<FeedbackButtons slug="item:arxiv-2610.32965" client:visible />
+<FeedbackButtons slug="item:arxiv-2610.32965" />
 
 ## <a href="https://arxiv.org/abs/2610.27103" target="_blank" rel="noopener noreferrer">Omni-Woodpecker: Hallucination Correction via Evidence-Prior Rebalancing for Omni LLMs</a>
 
@@ -60,7 +60,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 针对全模态大模型音视频推理的跨模态幻觉问题，现有仅在输出层干预的方案未解决融合表征中事实证据与训练先验的纠缠缺陷，本文提出免训练框架Omni-Woodpecker：先识别跨模态冲突，正交拆分表征后解码前重平衡证据与先验权重抑制幻觉。该框架跨架构泛化性强，在多款主流模型及多个基准上均实现稳定性能提升，代码已开源。
 
-<FeedbackButtons slug="item:arxiv-2610.27103" client:visible />
+<FeedbackButtons slug="item:arxiv-2610.27103" />
 
 ## <a href="https://arxiv.org/abs/2610.31569" target="_blank" rel="noopener noreferrer">Echo: Coupled Action and Task Status Signal Denoising for Vision Language Action Models</a>
 
@@ -68,7 +68,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 针对现有视觉语言动作（VLA）模型新增任务状态预测需细粒度标注、额外配套模块，且未充分挖掘状态信号对动作生成的引导价值的痛点，本文提出Echo框架：无需帧级进度标注，将停止、失败两类状态信号作为动作维度联合去噪，构造三类轨迹实现弱监督，让状态信号更快去噪以引导动作生成。实机实验显示其状态预测精准，策略性能稳定提升。
 
-<FeedbackButtons slug="item:arxiv-2610.31569" client:visible />
+<FeedbackButtons slug="item:arxiv-2610.31569" />
 
 # OpenAI
 
@@ -78,7 +78,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 这是OpenAI发布的《支撑超10亿ChatGPT用户的在线存储快速扩容》系列技术分享第二篇，核心介绍Habitat存储系统的优化方案：通过落地高可靠多租户架构、全球分布式缓存，搭配Azure Cosmos DB数据库提供底层支撑，最终实现ChatGPT读请求速率提升12倍，解决了超大规模访问下的存储响应瓶颈。
 
-<FeedbackButtons slug="item:openai-blog-scaling-storage-one-billion-users-part-two" client:visible />
+<FeedbackButtons slug="item:openai-blog-scaling-storage-one-billion-users-part-two" />
 
 ## <a href="https://openai.com/index/securing-our-frontier-model-training-environment" target="_blank" rel="noopener noreferrer">Securing our frontier model training environment</a>
 
@@ -86,7 +86,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 本文是OpenAI针对前沿大模型训练环境的安全防护研究，核心落地两项管控措施：一是搭建完全离线的隔离环境开展模型训练与评估，切断外部渗透、风险外泄的传输通道；二是调度高算力资源开展定向红队对抗测试，主动挖掘模型潜在安全漏洞。整套方案显著强化了前沿大模型研发全流程的风险管控能力，为高能力模型安全研发筑牢底层屏障。
 
-<FeedbackButtons slug="item:openai-blog-securing-our-frontier-model-training-environment" client:visible />
+<FeedbackButtons slug="item:openai-blog-securing-our-frontier-model-training-environment" />
 
 # Anthropic News
 
@@ -96,7 +96,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 这份官方公告明确了AI企业Anthropic的核心定位与发展方向：该公司是主攻AI安全方向的专业研究机构，核心业务围绕AI安全技术研发展开，长期目标是打造具备三类核心特性的AI系统：运行稳定可靠、决策逻辑可解释、运行过程可被人类有效引导调控。
 
-<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+<FeedbackButtons slug="item:anthropic-announcements" />
 
 ## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
 
@@ -104,7 +104,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 AI企业Anthropic推出公共利益专项安排：将部分股份划归新设立的Anthropic公共利益基金，且设置特殊股权结构，基金持股占比会随公司规模扩张同步提升。这一机制将企业商业成长与公共福祉直接绑定，公司发展越好可投入公共事业的资源越多，是科技企业平衡商业收益与公共责任的创新尝试。
 
-<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" />
 
 # Google DeepMind
 
@@ -114,7 +114,7 @@ AI企业Anthropic推出公共利益专项安排：将部分股份划归新设立
 
 本研究突破仅统计森林覆盖率的传统研究局限，以10米分辨率为最小评估单元，首次实现全球陆域地块的森林类型精细化分类，产出全新全球森林类型分布图。该成果填补了过往全球森林分类产品精度不足的空白，可为碳汇核算、生物多样性保护、林业管控及气候变化应对等提供高精度数据支撑。
 
-<FeedbackButtons slug="item:deepmind-beyond-tree-cover-mapping-the-worlds-forest-types" client:visible />
+<FeedbackButtons slug="item:deepmind-beyond-tree-cover-mapping-the-worlds-forest-types" />
 
 ## <a href="https://deepmind.google/blog/accelerating-antimicrobial-discovery/" target="_blank" rel="noopener noreferrer">Accelerating the search for antimicrobial peptides with Google Antigravity</a>
 
@@ -122,7 +122,7 @@ AI企业Anthropic推出公共利益专项安排：将部分股份划归新设立
 
 当前针对全球细菌耐药性加剧、新型抗菌肽传统筛选效率低的产业痛点，本研究提出借助谷歌Antigravity for Science科研工具加速候选抗菌肽挖掘的方案，通过优化高通量筛选链路，可大幅压缩新型抗菌肽的研发周期、降低试错成本，为新型抗菌药物的快速落地提供了高效技术新思路。（全文119字）
 
-<FeedbackButtons slug="item:deepmind-accelerating-antimicrobial-discovery" client:visible />
+<FeedbackButtons slug="item:deepmind-accelerating-antimicrobial-discovery" />
 
 # Hugging Face Blog
 
@@ -132,7 +132,7 @@ AI企业Anthropic推出公共利益专项安排：将部分股份划归新设立
 
 本文提出科研创意辅助工具LitPivot，核心方法是在全域文献生态中实现动态语境关联，可自动梳理细分领域研究脉络、识别不同方向的研究缺口与交叉契合点。实测表明其能帮助研究者打破思维定式，高效挖掘跨领域创新切入点，创意产出的质量与效率均优于传统文献检索模式。
 
-<FeedbackButtons slug="item:hf-blog-litpivot" client:visible />
+<FeedbackButtons slug="item:hf-blog-litpivot" />
 
 ## <a href="https://huggingface.co/blog/torch-neuronx-model-support" target="_blank" rel="noopener noreferrer">Does Your Model Run on AWS Trainium? Look It Up</a>
 
@@ -140,7 +140,7 @@ AI企业Anthropic推出公共利益专项安排：将部分股份划归新设立
 
 本文针对AWS自研Trainium训练芯片适配性不透明的痛点，推出公开可查询的模型适配校验库，覆盖主流CV、NLP、多模态大模型。实测显示，适配成功的模型相比A10G训练成本可降30%以上，性能损失控制在5%以内，配套的适配调优指南可帮助开发者快速判断模型是否适合迁移至Trainium部署。
 
-<FeedbackButtons slug="item:hf-blog-torch-neuronx-model-support" client:visible />
+<FeedbackButtons slug="item:hf-blog-torch-neuronx-model-support" />
 
 # Lil'Log
 
@@ -150,7 +150,7 @@ AI企业Anthropic推出公共利益专项安排：将部分股份划归新设立
 
 本文梳理递归自我改进（RSI）的概念脉络：1965年学者古德最早提出可超越人类全部智力活动、自主设计更优机器的“超智能机器”构想；2008年尤德考斯基明确RSI核心是AI依托现有智能迭代优化自身认知架构的反馈环。当前AI场景下的RSI既包括模型直接改写自身权重，也可广义指代模型优化自身训练流程。
 
-<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" />
 
 # 量子位
 
@@ -160,7 +160,7 @@ AI企业Anthropic推出公共利益专项安排：将部分股份划归新设立
 
 2026年10月22日科大讯飞1024开发者节发布多项AI成果：星火X2.6大模型扩容至百万token上下文、开源4B端侧版本，端云路由准确率提至96.1%；全国产算力训练的SparkAudio1.0语音基座效果升20%、调用成本降60%；还推出Agent OS等开发工具。当前平台开发者达1187万，生态向好，推动Token落地为各行业生产力。
 
-<FeedbackButtons slug="item:qbitai-505083" client:visible />
+<FeedbackButtons slug="item:qbitai-505083" />
 
 ## <a href="https://www.qbitai.com/2026/10/505032.html" target="_blank" rel="noopener noreferrer">企业AI需要两个世界模型</a>
 
@@ -168,7 +168,7 @@ AI企业Anthropic推出公共利益专项安排：将部分股份划归新设立
 
 当前企业AI应用普遍陷入“普及率高但生产力无明显提升”的困境，95%的生成式AI试点未产生可衡量收益，多停留在员工个人私用层面。特赞创始人范凌提出破局需搭建两套世界模型：向外建基于用户数据的客户世界模型摸清用户偏好，向内建基于内部数据的企业世界模型打通决策落地流程，让AI真正转化为生产力。
 
-<FeedbackButtons slug="item:qbitai-505032" client:visible />
+<FeedbackButtons slug="item:qbitai-505032" />
 
 ## <a href="https://www.qbitai.com/2026/10/504931.html" target="_blank" rel="noopener noreferrer">一张5090跑起34B实时世界模型，国产玩家拿下英伟达大奖！</a>
 
@@ -176,4 +176,4 @@ AI企业Anthropic推出公共利益专项安排：将部分股份划归新设立
 
 重庆达瓦科技的实时世界模型Scenes AI，从580余家参赛企业中突围，斩获2026英伟达创业展半程卓越奖。该模型无需引擎输入，仅用普通摄像头的真实画面，即可维护可独立读写的世界状态变量，仅更新变化部分而非全量重绘，单张RTX5090即可跑通34B参数，可实时推演变量调整后的世界演化，全局结构稳定。
 
-<FeedbackButtons slug="item:qbitai-504931" client:visible />
+<FeedbackButtons slug="item:qbitai-504931" />

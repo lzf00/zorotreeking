@@ -10,7 +10,7 @@ cover: "/photos/uploads/baokemeng/baokemeng-41.og.jpg"
 draft: false
 ---
 
-import FeedbackButtons from "@/components/FeedbackButtons";
+import FeedbackButtons from "@/components/FeedbackButtons.astro";
 
 <div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
   <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's content in 30 seconds</div>
@@ -36,7 +36,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 To address the high algorithm complexity pain points of time series causal discovery caused by autocorrelation, distribution shift, and curse of dimensionality, this paper proposes ITPD (Iterative Temporal Parent Discovery): it adopts a local-to-global approach, leveraging temporal priors, graph partitioning and other methods to implement reduced-order conditional independence tests. Experiments show it requires the fewest test runs, takes far less time than baselines on large graphs with over 1000 nodes, and is up to 40.9x faster than benchmarks for 2000-node graphs, achieving Pareto optimality in both F1 score and time consumption.
 
-<FeedbackButtons lang="en" slug="item:arxiv-2611.26232" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2611.26232" />
 
 ## <a href="https://arxiv.org/abs/2611.26239" target="_blank" rel="noopener noreferrer">Teaching Vision-Language-Action Models to Stop Safely</a>
 
@@ -44,7 +44,7 @@ To address the high algorithm complexity pain points of time series causal disco
 
 To solve the problem that existing vision-language-action (VLA) robot models cannot safely stop prohibited tasks mid-execution, leading to safety risks such as falling objects, this paper proposes SAFI, a two-stage state-aware fallback imitation method that sets safe stop responses for prohibited tasks while retaining the model's original task capabilities. Experiments show this method reduces the completion rate of prohibited tasks after mid-execution intervention to 1.3%, with zero safety incidents, and the original task performance remains fully intact.
 
-<FeedbackButtons lang="en" slug="item:arxiv-2611.26239" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2611.26239" />
 
 ## <a href="https://arxiv.org/abs/2611.25604" target="_blank" rel="noopener noreferrer">PAD: Policy-Aware Data Valuation for Autonomous Driving</a>
 
@@ -52,7 +52,7 @@ To solve the problem that existing vision-language-action (VLA) robot models can
 
 To address the issues that data scaling for end-to-end autonomous driving does not deliver proportional gains and existing data filtering does not match the utility of downstream policies, this paper proposes PAD, a policy-aware data valuation framework that combines scene calibration feedback, policy gradients, and geometric regularization approximation of local training to generate customized data utility scores for target driving policies. This method adapts to multiple planner architectures, improves the EPDMS metric by up to 5.0 compared to full dataset/pure real-vehicle training, reduces scene degradation, and greatly improves training efficiency.
 
-<FeedbackButtons lang="en" slug="item:arxiv-2611.25604" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2611.25604" />
 
 ## <a href="https://arxiv.org/abs/2611.15941" target="_blank" rel="noopener noreferrer">Lang-SVG: Hierarchical Image Vectorization with Language Priors</a>
 
@@ -60,7 +60,7 @@ To address the issues that data scaling for end-to-end autonomous driving does n
 
 To solve the problem that existing image vectorization methods only pursue pixel restoration accuracy, resulting in SVGs that do not conform to human-perceived component hierarchies and have poor editability, this paper proposes Lang-SVG: it organizes SVG primitives with semantic trees, integrates open-vocabulary segmentation priors and semantics annotated by multimodal LLMs, and is paired with optimizations including adaptive simplification, tree-guided pruning and merging, and SAM prompt completion. Under the self-developed evaluation system that balances structure and semantic alignment, it achieves SOTA in both rendering accuracy and structural quality.
 
-<FeedbackButtons lang="en" slug="item:arxiv-2611.15941" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2611.15941" />
 
 ## <a href="https://arxiv.org/abs/2611.25200" target="_blank" rel="noopener noreferrer">Squoosh Bench: Evaluating UX-1 on 318 Historical Website A/B Tests</a>
 
@@ -68,7 +68,7 @@ To solve the problem that existing image vectorization methods only pursue pixel
 
 This study evaluates the pre-selection effect of simulated browsing prediction models for test solutions based on 318 historical web A/B test datasets with durations of over 21 days. The Squoosh UX-1 model fine-tuned on human browsing data reaches 84% prediction accuracy, far outperforming the 61.6% of general LLM Qwen3 Next 80B; the test variants it predicts to win have a real-world win rate of 93.7% after launch, effectively supporting pre-selection of A/B test plans.
 
-<FeedbackButtons lang="en" slug="item:arxiv-2611.25200" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2611.25200" />
 
 # OpenAI
 
@@ -78,7 +78,7 @@ This study evaluates the pre-selection effect of simulated browsing prediction m
 
 This paper focuses on adversarial distillation, an attack scenario that steals core capabilities of large models, and introduces the layered defense solution proposed by OpenAI: it covers four linked modules including model training optimization, front-end security protection, real-time attack detection, and mandatory violation handling, which can systematically resist the risk of malicious capability extraction, and provides an implementable technical framework reference for the security protection of LLM intellectual property and core capabilities.
 
-<FeedbackButtons lang="en" slug="item:openai-blog-combatting-adversarial-distillation" client:visible />
+<FeedbackButtons lang="en" slug="item:openai-blog-combatting-adversarial-distillation" />
 
 ## <a href="https://openai.com/business/customer-stories/hebbia" target="_blank" rel="noopener noreferrer">Hebbia sees improvements in financial research with GPT-6 Astra</a>
 
@@ -86,7 +86,7 @@ This paper focuses on adversarial distillation, an attack scenario that steals c
 
 AI company Hebbia conducted specialized tests for the pre-release GPT-6 Astra large model in financial research scenarios. Evaluation results show the model has significant improvements in three core metrics: wider coverage of information sources, higher relevance of citation matching, and better presentation quality of output content, verifying the deployment value of the new-generation large model in the professional financial research field.
 
-<FeedbackButtons lang="en" slug="item:openai-blog-hebbia" client:visible />
+<FeedbackButtons lang="en" slug="item:openai-blog-hebbia" />
 
 # Anthropic News
 
@@ -96,7 +96,7 @@ AI company Hebbia conducted specialized tests for the pre-release GPT-6 Astra la
 
 This is the core content of the official announcement from AI company Anthropic: the company positions itself as a professional research enterprise in the field of AI safety, with the core goal of building AI systems that are reliable, interpretable, and controllable. Its R&D targets the core safety pain points of the current AI industry, attempts to solve problems such as AI black boxes and uncontrollability through technical paths, and explores feasible solutions for the safe deployment of artificial general intelligence.
 
-<FeedbackButtons lang="en" slug="item:anthropic-announcements" client:visible />
+<FeedbackButtons lang="en" slug="item:anthropic-announcements" />
 
 ## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
 
@@ -104,7 +104,7 @@ This is the core content of the official announcement from AI company Anthropic:
 
 AI company Anthropic announced the establishment of a dedicated public benefit fund, transferring part of the company's shares to be held by this independent entity. The fund adopts a special structural design: the proportion of Anthropic shares it holds will increase synchronously with the expansion of the company's operating scale and valuation growth, with the core of deeply binding corporate development dividends with public interests, ensuring that the company's growth results can feed back to society, and implementing its development positioning of public benefit.
 
-<FeedbackButtons lang="en" slug="item:anthropic-public-benefit-fund" client:visible />
+<FeedbackButtons lang="en" slug="item:anthropic-public-benefit-fund" />
 
 # Google DeepMind
 
@@ -114,7 +114,7 @@ AI company Anthropic announced the establishment of a dedicated public benefit f
 
 Only the paper title *Introducing Gemini 4 Neon* has been provided so far, without the corresponding full abstract content, so translation, extraction and summarization cannot be performed. Please supplement the full abstract of this article introducing Gemini 4 Neon, and I will organize it into a concise 120-word Chinese summary highlighting core methods and conclusions as required.
 
-<FeedbackButtons lang="en" slug="item:deepmind-introducing-gemini-4-neon" client:visible />
+<FeedbackButtons lang="en" slug="item:deepmind-introducing-gemini-4-neon" />
 
 ## <a href="https://deepmind.google/blog/genie-4-is-now-available/" target="_blank" rel="noopener noreferrer">Genie 4 is now available</a>
 
@@ -122,7 +122,7 @@ Only the paper title *Introducing Gemini 4 Neon* has been provided so far, witho
 
 Only the paper title *Genie 4 is now available* has been provided so far, without the specific content of the abstract, so targeted extraction of core methods and research conclusions cannot be performed. Please supplement the relevant information of this paper's abstract, and I will generate a focused 120-word concise Chinese summary as required.
 
-<FeedbackButtons lang="en" slug="item:deepmind-genie-4-is-now-available" client:visible />
+<FeedbackButtons lang="en" slug="item:deepmind-genie-4-is-now-available" />
 
 # Hugging Face Blog
 
@@ -132,7 +132,7 @@ Only the paper title *Genie 4 is now available* has been provided so far, withou
 
 The newly launched lightweight edge AI model Inkling 2 Mini is built specifically for local deployment scenarios: while compressing parameter count and lowering computing power thresholds, its performance reaches the cutting-edge level of models of the same scale. It can complete inference without cloud interaction, balancing privacy security and operating efficiency, and fits the needs of building low-resource local AI applications on personal devices and for small teams.
 
-<FeedbackButtons lang="en" slug="item:hf-blog-inkling2mini" client:visible />
+<FeedbackButtons lang="en" slug="item:hf-blog-inkling2mini" />
 
 ## <a href="https://huggingface.co/blog/harness-adapters-at-scale" target="_blank" rel="noopener noreferrer">Introducing harness adapters: adapt your favorite model to your harness to improve performance and cost</a>
 
@@ -140,7 +140,7 @@ The newly launched lightweight edge AI model Inkling 2 Mini is built specificall
 
 This paper proposes an innovative harness adapter solution that solves the pain points of high adaptation costs and performance loss when adapting mainstream pretrained models to users' own training and inference frameworks. Compatibility can be completed quickly without extensive rewriting of core code of the model or framework. Compared with traditional adaptation solutions, it reduces the labor and time costs of adaptation, and also improves the actual runtime performance of the model.
 
-<FeedbackButtons lang="en" slug="item:hf-blog-harness-adapters-at-scale" client:visible />
+<FeedbackButtons lang="en" slug="item:hf-blog-harness-adapters-at-scale" />
 
 # Lil'Log
 
@@ -150,7 +150,7 @@ This paper proposes an innovative harness adapter solution that solves the pain 
 
 Recursive Self-Improvement (RSI) was first proposed by I.J. Good in 1965, referring to the operating logic of superintelligence that can surpass all human intellectual activities and independently design better systems to achieve iteration. In 2008, Eliezer Yudkowsky clarified its core as the feedback loop where AI uses existing intelligence to optimize its own cognitive architecture. Currently, RSI implementation in the AI field is divided into two categories: one is models directly rewriting their own weights, the other is models optimizing training pipelines.
 
-<FeedbackButtons lang="en" slug="item:lillog-2026-07-04-harness" client:visible />
+<FeedbackButtons lang="en" slug="item:lillog-2026-07-04-harness" />
 
 # QbitAI
 
@@ -160,7 +160,7 @@ Recursive Self-Improvement (RSI) was first proposed by I.J. Good in 1965, referr
 
 CapCut recently held an AI × Music Visual cross-border hackathon, integrating real bands, AIGC creation and hackathon models. Relying on CapCut Hub tools, creators can complete band MVs and stage VJ visual works, which originally had high thresholds and long production cycles, in only 3 hours. Outstanding works were directly played on the main stage screen of the performance on the same day, greatly lowering the production threshold for visual content at live music events.
 
-<FeedbackButtons lang="en" slug="item:qbitai-511855" client:visible />
+<FeedbackButtons lang="en" slug="item:qbitai-511855" />
 
 ## <a href="https://www.qbitai.com/2026/11/511849.html" target="_blank" rel="noopener noreferrer">China's computing industry forges a new path to the peak</a>
 
@@ -168,7 +168,7 @@ CapCut recently held an AI × Music Visual cross-border hackathon, integrating r
 
 At the 2026 International Supercomputing Conference, the quantum chemistry calculation project for iron-molybdenum cofactor by the joint team of the University of Science and Technology of China won the Gordon Bell Prize, the highest award in the supercomputing field, for China again after 5 years. The Zhongke Tianji meteorological system also became the first Chinese enterprise entry to reach the climate modeling final of the award. Both achievements rely on the fully domestic 100,000-card AI supercluster Dawning 8000, which produced top-tier results only half a year after launch, thanks to the technical route of early industry-research collaborative adaptation.
 
-<FeedbackButtons lang="en" slug="item:qbitai-511849" client:visible />
+<FeedbackButtons lang="en" slug="item:qbitai-511849" />
 
 ## <a href="https://www.qbitai.com/2026/11/511841.html" target="_blank" rel="noopener noreferrer">80,000 group chat messages made into test papers: Tencent Yuanbao × KCL releases first Agent memory benchmark built on group chats</a>
 
@@ -176,4 +176,4 @@ At the 2026 International Supercomputing Conference, the quantum chemistry calcu
 
 Tencent Yuanbao, in collaboration with King's College London, has released GroupAssistBench, the first Agent memory benchmark built on group chat scenarios. It constructs 2395 evaluation questions based on more than 80,000 messages from 50 real groups, and tests at two levels: memory recall and open service. After testing 14 technical configurations, the team found that strong Agent memory recall capability does not equal good actual service performance. The relevant datasets and code are now open source.
 
-<FeedbackButtons lang="en" slug="item:qbitai-511841" client:visible />
+<FeedbackButtons lang="en" slug="item:qbitai-511841" />

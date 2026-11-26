@@ -1,0 +1,219 @@
+---
+/**
+ * 5 星评分（第 226 轮：从 React 岛改成 Astro + 原生 script）。
+ *
+ * 和 FeedbackButtons 一起改的原因：日报页原本有 17 个反馈岛 + 1 个星标岛，全是 React；
+ * 只要页面上还剩一个岛，Astro 就会把 202 KB 的 React 运行时拉下来。
+ * 两个都换成原生之后，388 个日报页和 126 个复盘页**一个岛都不剩**。
+ *
+ * 行为与旧版逐条对齐：
+ *   · 挂载只读 localStorage 里的历史评分，不发请求；汇总数等访客真的碰星星才拉
+ *   · hover / focus / touch 预览，click 落地；1-2 星 → dislike，3 星 → neutral，4-5 星 → like
+ *   · 失败回滚到上一次评分，并在右侧显示短错误（HTTP 码 / 太快 / 断网）
+ */
+interface Props {
+  slug: string;
+  align?: "right" | "center";
+  label?: string;
+  lang?: "zh" | "en";
+}
+const { slug, align = "right", label, lang = "zh" } = Astro.props;
+const LABELS = {
+  zh: ["差强人意", "一般", "还行", "不错", "极好"],
+  en: ["Poor", "Fair", "Okay", "Good", "Excellent"],
+} as const;
+const labels = LABELS[lang];
+const groupLabel = label ?? (lang === "zh" ? "评分" : "Rating");
+const ariaFor = (n: number) =>
+  lang === "zh" ? `${n} 星 · ${labels[n - 1]}` : `${n} star${n === 1 ? "" : "s"} · ${labels[n - 1]}`;
+---
+
+<div class="rate-row" style={align === "right" ? undefined : "justify-content:center"} data-rate-slug={slug}>
+  {label !== "" && <span class="rate-label">{groupLabel}</span>}
+  <div class="rate-stars" role="radiogroup" aria-label={groupLabel}>
+    {[1, 2, 3, 4, 5].map((n) => (
+      <button
+        type="button"
+        class="rate-star"
+        role="radio"
+        aria-checked="false"
+        aria-label={ariaFor(n)}
+        title={labels[n - 1]}
+        data-score={n}
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><use href="#rate-icon-star" /></svg>
+      </button>
+    ))}
+  </div>
+  <span class="rate-text" hidden></span>
+  <span class="rate-total" hidden></span>
+  <span class="rate-err" hidden></span>
+</div>
+
+<style>
+  .rate-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    margin: 8px 0 4px;
+    font-size: 12px;
+    color: var(--text-tertiary, #9ca3af);
+  }
+  .rate-label { letter-spacing: 0.04em; }
+  .rate-stars { display: inline-flex; }
+  .rate-star {
+    background: transparent;
+    border: none;
+    padding: 0;
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    line-height: 1;
+    color: var(--text-tertiary, #d4d4d8);
+    opacity: 0.55;
+    transition: color 0.15s, opacity 0.15s, transform 0.1s;
+  }
+  .rate-star[data-filled="true"] { color: #9ca3af; }
+  .rate-star[data-filled="true"][data-warm="true"] { color: #fbbf24; }
+  .rate-star[data-filled="true"][data-hot="true"] { color: #f59e0b; }
+  .rate-row[data-active="true"] .rate-star { opacity: 1; }
+  .rate-star[data-hover="true"] { transform: scale(1.18); }
+  .rate-row[data-pending="true"] .rate-star { cursor: wait; }
+  .rate-text { font-variant-numeric: tabular-nums; min-width: 28px; }
+  .rate-total { opacity: 0.7; }
+  .rate-err { color: var(--market-up); cursor: help; }
+</style>
+
+<script>
+  import { EMPTY_STATE, loadFeedbackOrEmpty, putCached } from "@/lib/feedback-cache";
+  import type { FeedbackState } from "@/lib/feedback-api";
+  import { postFeedback } from "@/lib/feedback-api";
+
+  const STORE_MS = 30_000;
+  const lsKey = (slug: string) => `zoro:rating:${slug}`;
+
+  function kindFor(score: number): "like" | "dislike" | "neutral" {
+    if (score >= 4) return "like";
+    if (score <= 2) return "dislike";
+    return "neutral";
+  }
+
+  function shortErr(code: string): string {
+    if (code.startsWith("HTTP")) return code;
+    if (code === "rate-limited") return "太快";
+    return "断网";
+  }
+
+  function setupRow(row: HTMLElement): void {
+    const slug = row.dataset.rateSlug ?? "";
+    if (!slug) return;
+    const stars = [...row.querySelectorAll<HTMLButtonElement>(".rate-star")];
+    const text = row.querySelector<HTMLElement>(".rate-text");
+    const total = row.querySelector<HTMLElement>(".rate-total");
+    const err = row.querySelector<HTMLElement>(".rate-err");
+    const labels = stars.map((s) => s.title);
+
+    let score = 0;
+    let hover = 0;
+    let agg: FeedbackState | null = null;
+    let pending = false;
+    let failedAt = 0;
+
+    try {
+      const saved = Number(localStorage.getItem(lsKey(slug)) ?? 0);
+      if (saved >= 1 && saved <= 5) score = saved;
+    } catch {
+      /* localStorage 被禁用时按 0 处理 */
+    }
+
+    const render = (): void => {
+      const display = hover || score;
+      row.dataset.active = String(display !== 0);
+      if (text) {
+        text.hidden = display === 0;
+        text.textContent = display ? labels[display - 1] : "";
+      }
+      for (const star of stars) {
+        const n = Number(star.dataset.score);
+        const filled = n <= display;
+        star.dataset.filled = String(filled);
+        star.dataset.warm = String(display >= 3);
+        star.dataset.hot = String(display >= 4);
+        star.dataset.hover = String(hover === n);
+        star.setAttribute("aria-checked", String(score === n));
+        star.querySelector("svg")?.setAttribute("fill", filled ? "currentColor" : "none");
+      }
+      if (total) {
+        const votes = (agg?.likes ?? 0) + (agg?.dislikes ?? 0);
+        total.hidden = votes <= 0 || !agg;
+        total.textContent = votes > 0 && agg ? `· ${votes} 人评 · 👍 ${agg.likes}` : "";
+      }
+    };
+
+    const ensureLoaded = async (): Promise<FeedbackState> => {
+      if (agg) return agg;
+      if (Date.now() - failedAt < STORE_MS) return EMPTY_STATE;
+      const { state: fresh, degraded } = await loadFeedbackOrEmpty(slug);
+      if (degraded) {
+        failedAt = Date.now();
+        console.warn("[rating] 汇总数据拉取失败，先用空状态");
+        agg = EMPTY_STATE;
+        return EMPTY_STATE;
+      }
+      failedAt = 0;
+      agg = fresh;
+      render();
+      return fresh;
+    };
+
+    const rate = async (n: number): Promise<void> => {
+      if (pending) return;
+      const prev = score;
+      score = n;
+      pending = true;
+      row.dataset.pending = "true";
+      if (err) err.hidden = true;
+      for (const s of stars) s.disabled = true;
+      render();
+      try {
+        const fresh = await postFeedback(slug, kindFor(n));
+        agg = fresh;
+        putCached(slug, fresh);
+        try {
+          localStorage.setItem(lsKey(slug), String(n));
+        } catch {
+          /* 存不了就不存，评分本身照常发 */
+        }
+        render();
+      } catch (error) {
+        score = prev;
+        render();
+        if (err) {
+          err.hidden = false;
+          err.textContent = `· ${shortErr((error as Error)?.message ?? "fetch-error")}`;
+          err.title = (error as Error)?.message ?? "fetch-error";
+        }
+      } finally {
+        pending = false;
+        row.dataset.pending = "false";
+        for (const s of stars) s.disabled = false;
+      }
+    };
+
+    for (const star of stars) {
+      const n = Number(star.dataset.score);
+      star.addEventListener("pointerenter", () => { hover = n; render(); void ensureLoaded(); });
+      star.addEventListener("focus", () => { hover = n; render(); void ensureLoaded(); });
+      star.addEventListener("touchstart", () => { void ensureLoaded(); }, { passive: true });
+      star.addEventListener("click", () => { void rate(n); });
+    }
+    row.querySelector(".rate-stars")?.addEventListener("pointerleave", () => { hover = 0; render(); });
+    render();
+  }
+
+  for (const row of document.querySelectorAll<HTMLElement>(".rate-row[data-rate-slug]")) setupRow(row);
+</script>

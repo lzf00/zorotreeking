@@ -10,7 +10,7 @@ cover: "/photos/uploads/baokemeng/baokemeng-11.og.jpg"
 draft: false
 ---
 
-import FeedbackButtons from "@/components/FeedbackButtons";
+import FeedbackButtons from "@/components/FeedbackButtons.astro";
 
 <div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
   <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second daily recap</div>
@@ -36,7 +36,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 Existing causal identifiability theories are mostly based on ideal assumptions such as infinite data and asymptotic properties, with obvious practical limitations. This paper proposes the "computational identifiability" framework: it empirically searches for estimators through limited computation, and judges that the identifiability requirement is met if the results satisfy the preset error tolerance. Experiments show that the framework can solve fine-grained identification problems in scenarios such as small samples, ambiguous causal graphs, and mixed observational-interventional data, and the relevant code has been open sourced.
 
-<FeedbackButtons lang="en" slug="item:arxiv-2606.19361" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2606.19361" />
 
 ## <a href="https://arxiv.org/abs/2606.19363" target="_blank" rel="noopener noreferrer">When to Trust, How to Distill: Multi-Foundation Model Guidance for Lightweight, Robust Scientific Time Series Forecasting</a>
 
@@ -44,7 +44,7 @@ Existing causal identifiability theories are mostly based on ideal assumptions s
 
 To address the problems of distribution shift and excessive computing power making edge deployment difficult when large time series models are applied to scientific time series forecasting scenarios, this paper proposes Guard, a multi-teacher distillation framework, which includes context routing for dynamically selecting suitable teachers, and an uncertainty gating mechanism that automatically reduces distillation intensity when teacher confidence does not match domain features. Validation on four types of climate-related tasks shows that this method significantly reduces errors compared to baselines, and the resulting lightweight model meets edge deployment requirements.
 
-<FeedbackButtons lang="en" slug="item:arxiv-2606.19363" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2606.19363" />
 
 ## <a href="https://arxiv.org/abs/2606.19364" target="_blank" rel="noopener noreferrer">Closing the Social-Semantic Gap: SPSD for Edge-Based Prompt Compression in Cloud LLM Inference</a>
 
@@ -52,7 +52,7 @@ To address the problems of distribution shift and excessive computing power maki
 
 To address the high energy consumption during the prefill phase of cloud LLM inference, and the fact that user prompts often contain social redundancy that is valueless for inference (i.e., the social-semantic gap), this paper proposes the SPSD edge-side prompt compression pipeline, which uses a 4-bit quantized small model to distill and compress prompts on the end side before uploading them to the cloud. Experiments show that an average of 99.9 input tokens are saved per call, with no significant difference in response quality compared to original prompts; energy consumption per call is reduced by 70~270 microwatt-hours, and rule-based bypasses are set in security scenarios to avoid risks.
 
-<FeedbackButtons lang="en" slug="item:arxiv-2606.19364" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2606.19364" />
 
 # OpenAI
 
@@ -62,7 +62,7 @@ To address the high energy consumption during the prefill phase of cloud LLM inf
 
 OpenAI recently rolled out two types of management feature upgrades for ChatGPT Enterprise users: a new usage data analytics module, and optimized and upgraded spend control tools. Starting from the two dimensions of usage effectiveness monitoring and cost control, these two features can help enterprises clearly grasp the input and output of AI deployment, reduce cost concerns for large-scale AI implementation, and support enterprises in steadily expanding the scale of internal AI applications.
 
-<FeedbackButtons lang="en" slug="item:openai-blog-chatgpt-enterprise-spend-controls" client:visible />
+<FeedbackButtons lang="en" slug="item:openai-blog-chatgpt-enterprise-spend-controls" />
 
 ## <a href="https://openai.com/index/improving-health-intelligence-in-chatgpt" target="_blank" rel="noopener noreferrer">Improving health intelligence in ChatGPT</a>
 
@@ -70,7 +70,7 @@ OpenAI recently rolled out two types of management feature upgrades for ChatGPT 
 
 This research targets the pain points of insufficient professionalism and adaptability of ChatGPT's answers in health consultation scenarios, and proposes to achieve health intelligence upgrades through the GPT-5.5 Instant version: core optimization paths include strengthening model reasoning capabilities, improving the accuracy of context correlation matching, and optimizing expression clarity, while introducing an output effect evaluation and calibration mechanism with physician participation. After the upgrade, ChatGPT's health-related responses have more rigorous logic and stronger adaptability, with significantly improved professional reliability and practical value.
 
-<FeedbackButtons lang="en" slug="item:openai-blog-improving-health-intelligence-in-chatgpt" client:visible />
+<FeedbackButtons lang="en" slug="item:openai-blog-improving-health-intelligence-in-chatgpt" />
 
 # Anthropic News
 
@@ -80,7 +80,7 @@ This research targets the pain points of insufficient professionalism and adapta
 
 This document is a statement in response to the new export control requirements of the US government: the US recently officially issued an export control directive, explicitly requiring a full suspension of access rights to the two AI tools Fable 5 and Mythos 5 for all foreign nationals. This restriction is not geographically bound: regardless of whether the relevant foreign national is located inside or outside the US, they must comply with this access ban, and unauthorized access will violate US export control regulations.
 
-<FeedbackButtons lang="en" slug="item:anthropic-fable-mythos-access" client:visible />
+<FeedbackButtons lang="en" slug="item:anthropic-fable-mythos-access" />
 
 ## <a href="https://www.anthropic.com/news/claude-corps" target="_blank" rel="noopener noreferrer">Introducing Claude Corps</a>
 
@@ -88,7 +88,7 @@ This document is a statement in response to the new export control requirements 
 
 The newly launched "Claude Corps" is a nationwide career support scholarship program, established for young people who are in the early stages of their careers and aspire to deliver the benefits of AI development to communities across the United States. It aims to gather young talents in relevant fields, further expand the coverage of the inclusive value of AI technology, and allow more ordinary communities to enjoy the practical benefits of AI development.
 
-<FeedbackButtons lang="en" slug="item:anthropic-claude-corps" client:visible />
+<FeedbackButtons lang="en" slug="item:anthropic-claude-corps" />
 
 # Google DeepMind
 
@@ -98,7 +98,7 @@ The newly launched "Claude Corps" is a nationwide career support scholarship pro
 
 The UK government, in partnership with Google DeepMind, has developed an AI-driven housing planning prototype tool, targeting the current bottlenecks of lengthy approval processes and low implementation efficiency in UK housing construction, aiming to shorten the planning and decision-making cycle for housing projects. This attempt is also a new exploration of AI technology applied to public government approval and livelihood infrastructure scenarios, and is expected to effectively speed up the planning process and unlock the supply potential of UK housing construction.
 
-<FeedbackButtons lang="en" slug="item:deepmind-unlocking-uk-house-building-with-ai-accelerated-planning" client:visible />
+<FeedbackButtons lang="en" slug="item:deepmind-unlocking-uk-house-building-with-ai-accelerated-planning" />
 
 ## <a href="https://deepmind.google/blog/securing-the-future-of-ai-agents/" target="_blank" rel="noopener noreferrer">Securing the future of AI agents</a>
 
@@ -106,7 +106,7 @@ The UK government, in partnership with Google DeepMind, has developed an AI-driv
 
 This research focuses on the future security of AI agents, and corely proposes an AI control roadmap to protect internal system security. This solution balances security compliance requirements and dynamic risk response efficiency, integrates traditional security protection measures and real-time monitoring mechanisms, can specifically fill the internal security gaps in AI agent implementation, and provides a clear implementation framework for their long-term large-scale secure deployment and operational risk prevention and control.
 
-<FeedbackButtons lang="en" slug="item:deepmind-securing-the-future-of-ai-agents" client:visible />
+<FeedbackButtons lang="en" slug="item:deepmind-securing-the-future-of-ai-agents" />
 
 # Hugging Face Blog
 
@@ -116,7 +116,7 @@ This research focuses on the future security of AI agents, and corely proposes a
 
 Currently only the title of this paper is provided, no specific content of the abstract is attached. Please supplement the full text of this abstract so that I can extract its core research methods and core conclusions as required, and complete a concise Chinese summary of around 120 words with highlighted key points.
 
-<FeedbackButtons lang="en" slug="item:hf-blog-mosaicleaks" client:visible />
+<FeedbackButtons lang="en" slug="item:hf-blog-mosaicleaks" />
 
 ## <a href="https://huggingface.co/blog/peft-beyond-lora" target="_blank" rel="noopener noreferrer">Beyond LoRA: Can you beat the most popular fine-tuning technique?</a>
 
@@ -124,7 +124,7 @@ Currently only the title of this paper is provided, no specific content of the a
 
 This paper targets LoRA, the mainstream parameter-efficient fine-tuning solution, and systematically compares more than ten improved LoRA variants with full fine-tuning solutions, conducting full-dimensional evaluations on three types of tasks: NLP, CV, and multimodal, based on base models of different parameter sizes. The results show that no improved solution can stably outperform standard LoRA across all scenarios for now; the latter still has the best balanced performance in versatility, robustness, and parameter tuning efficiency, and corresponding improved variants can be selected as needed only in specific task scenarios.
 
-<FeedbackButtons lang="en" slug="item:hf-blog-peft-beyond-lora" client:visible />
+<FeedbackButtons lang="en" slug="item:hf-blog-peft-beyond-lora" />
 
 # The Gradient
 
@@ -134,7 +134,7 @@ This paper targets LoRA, the mainstream parameter-efficient fine-tuning solution
 
 This paper challenges the presupposition of the orthogonality thesis in the field of AI alignment, and discusses it from the perspective of virtue ethics: it refutes the perception that "rational agents need to be anchored to fixed final goals", pointing out that the rationality of human actions stems from adaptation to a practical network including elements such as action tendencies and evaluation standards, rather than pointing to specific goals. It proposes that if AI is to adapt to human subjectivity, its decision-making logic needs to be isomorphic to the logic of human practical action, which is not only related to ethical alignment, but also guarantees the core security of AI.
 
-<FeedbackButtons lang="en" slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+<FeedbackButtons lang="en" slug="item:thegradient-virtue-ethics-ai-alignment" />
 
 # QbitAI
 
@@ -144,7 +144,7 @@ This paper challenges the presupposition of the orthogonality thesis in the fiel
 
 Alibaba ATH has launched the open world model HappyOyster 1.0. Unlike Sora and other models that can only produce fixed, non-interactive text-to-video materials that are prone to collapse over long durations, it can build a dynamic digital world that is interpretable, explorable, and interactive in real time. Users can enter the generated scene by inputting the content of their dreams, and independently control the character to complete actions such as turning and bunny hopping, with the interactive experience breaking through the upper limit of traditional text-to-video.
 
-<FeedbackButtons lang="en" slug="item:qbitai-436864" client:visible />
+<FeedbackButtons lang="en" slug="item:qbitai-436864" />
 
 ## <a href="https://www.qbitai.com/2026/06/436842.html" target="_blank" rel="noopener noreferrer">GPT has released original AI research results</a>
 
@@ -152,7 +152,7 @@ Alibaba ATH has launched the open world model HappyOyster 1.0. Unlike Sora and o
 
 OpenAI, in partnership with Molecule.one, has released new results: by connecting GPT-5.4 to the chemical AI agent Maria and its supporting high-throughput experimental system, with only the broad goal of "improving important generic reactions", it almost autonomously completed the optimization of the Chan-Lam coupling reaction commonly used in drug synthesis, solving the pain point of low yield in the coupling of primary sulfonamides and boric acid. The solution exceeded chemists' expectations, and is the first near-autonomous AI scientific discovery in the field of organic chemistry, which can broaden drug synthesis pathways; the actual experiments were verified by humans.
 
-<FeedbackButtons lang="en" slug="item:qbitai-436842" client:visible />
+<FeedbackButtons lang="en" slug="item:qbitai-436842" />
 
 ## <a href="https://www.qbitai.com/2026/06/436813.html" target="_blank" rel="noopener noreferrer">The world's first general cerebellum for humanoid robots is here! With the world's largest 20,000 hours of human motion data, it achieves zero-shot generalization</a>
 
@@ -160,4 +160,4 @@ OpenAI, in partnership with Molecule.one, has released new results: by connectin
 
 Galaxy General recently released AstraBrain-WBC 0.5, the world's first general cerebellum for humanoid robots. This model introduces the large-scale training paradigm of large models into the field of real-time motion control of humanoid robots for the first time. Trained on 20,000 hours of human motion data, it has 80 million parameters, validates the scaling law, can achieve millisecond-level whole-body cooperative control, has zero-shot generalization capability, and pushes humanoid robot motion control into the foundation model era.
 
-<FeedbackButtons lang="en" slug="item:qbitai-436813" client:visible />
+<FeedbackButtons lang="en" slug="item:qbitai-436813" />

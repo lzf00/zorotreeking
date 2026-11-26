@@ -10,7 +10,7 @@ cover: "/photos/uploads/baokemeng/baokemeng-42.og.jpg"
 draft: false
 ---
 
-import FeedbackButtons from "@/components/FeedbackButtons";
+import FeedbackButtons from "@/components/FeedbackButtons.astro";
 
 <div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
   <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
@@ -36,7 +36,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 针对时序因果发现面临的观测自相关、分布漂移、维数灾难，以及通用算法计算与样本复杂度高的痛点，该研究提出迭代时序父节点发现算法ITPD，采用局部到全局思路，借助时序先验、图分区等降阶条件独立性检验。实验显示其检验次数更少、精度与耗时处于帕累托最优，千级节点场景下速度远超基线，2000节点时最高快40.9倍。
 
-<FeedbackButtons slug="item:arxiv-2611.26232" client:visible />
+<FeedbackButtons slug="item:arxiv-2611.26232" />
 
 ## <a href="https://arxiv.org/abs/2611.26239" target="_blank" rel="noopener noreferrer">Teaching Vision-Language-Action Models to Stop Safely</a>
 
@@ -44,7 +44,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 针对现有视觉-语言-动作（VLA）机器人模型无法安全中止执行中违禁任务、易出现坠物等安全隐患的问题，本文提出状态感知回退模仿方法SAFI：为违禁任务设定固定机械臂指令与稳定夹爪目标，联合适配策略兼顾原有任务能力。实测显示该方法将接管后违禁任务成功率降至1.3%，无物理事故，且保留原有任务高性能表现。
 
-<FeedbackButtons slug="item:arxiv-2611.26239" client:visible />
+<FeedbackButtons slug="item:arxiv-2611.26239" />
 
 ## <a href="https://arxiv.org/abs/2611.25604" target="_blank" rel="noopener noreferrer">PAD: Policy-Aware Data Valuation for Autonomous Driving</a>
 
@@ -52,7 +52,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 针对端到端自动驾驶现有数据筛选方法未关联下游策略效用的痛点，该文提出策略感知数据估值框架PAD，结合场景校准反馈、策略梯度与局部训练几何正则近似，为目标驾驶策略计算专属数据效用。实验显示PAD适配多类规划器，较基准训练指标提升3.5-5个点，可降低场景退化，替代无差别数据积累，提升训练效率。
 
-<FeedbackButtons slug="item:arxiv-2611.25604" client:visible />
+<FeedbackButtons slug="item:arxiv-2611.25604" />
 
 ## <a href="https://arxiv.org/abs/2611.15941" target="_blank" rel="noopener noreferrer">Lang-SVG: Hierarchical Image Vectorization with Language Priors</a>
 
@@ -60,7 +60,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 针对现有图像矢量化方法仅追求像素级还原，生成的SVG不符合人感知的部件层级、难以编辑的问题，本文提出Lang-SVG：以带语义标签的树结构组织SVG图元，融合开放词汇分割先验、多模态大模型标注、剪枝优化等技术，配套新的结构质量评测协议，实验显示其在渲染精度和结构质量上均达当前最优水平。
 
-<FeedbackButtons slug="item:arxiv-2611.15941" client:visible />
+<FeedbackButtons slug="item:arxiv-2611.15941" />
 
 ## <a href="https://arxiv.org/abs/2611.25200" target="_blank" rel="noopener noreferrer">Squoosh Bench: Evaluating UX-1 on 318 Historical Website A/B Tests</a>
 
@@ -68,7 +68,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 针对网站A/B测试前的改版方案预筛选需求，研究选取318份运行超21天的历史A/B测试数据，屏蔽测试背景信息后对比多套预测系统：微调自人类浏览数据的Squoosh UX-1模型，通过模拟访客行为预判测试结果准确率达84%，远优于最强通用大模型Qwen3 Next 80B的61.6%，其判定获胜的改版实际胜率超93%。
 
-<FeedbackButtons slug="item:arxiv-2611.25200" client:visible />
+<FeedbackButtons slug="item:arxiv-2611.25200" />
 
 # OpenAI
 
@@ -78,7 +78,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 本文针对当前AI涌现等新兴能力评估缺乏通用可比标准的行业痛点，围绕作为语言模型核心性能指标的困惑度与AI智能水平的关联展开研究，明确困惑度可有效量化衡量AI模型的迭代进展，且具备普适性，可支撑开发者构建跨架构、跨场景的统一评估范式，为行业建立通用AI能力评估体系提供可行方向。
 
-<FeedbackButtons slug="item:openai-blog-perplexity-and-intelligence" client:visible />
+<FeedbackButtons slug="item:openai-blog-perplexity-and-intelligence" />
 
 ## <a href="https://openai.com/index/combatting-adversarial-distillation" target="_blank" rel="noopener noreferrer">Combatting adversarial distillation</a>
 
@@ -86,7 +86,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 这篇题为《对抗蒸馏防御》的研究，针对攻击者通过对抗蒸馏窃取大模型核心能力的安全风险，提出OpenAI的分层防御方案：整合模型训练优化、运行安全防护、攻击行为检测、违规处置执行四大环节，可有效抵御能力提取攻击，为大模型知识产权与能力安全防护提供可参考技术路径。
 
-<FeedbackButtons slug="item:openai-blog-combatting-adversarial-distillation" client:visible />
+<FeedbackButtons slug="item:openai-blog-combatting-adversarial-distillation" />
 
 # Anthropic News
 
@@ -96,7 +96,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 本内容为AI安全领域研发机构Anthropic发布的官方公告。该公司专注于前沿AI安全方向的技术研究与落地，核心研发目标是打造具备高可靠性、可解释性与可控性的人工智能系统，所有研发工作均围绕AI安全的核心定位展开，旨在推动安全可控的通用AI技术良性发展。
 
-<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+<FeedbackButtons slug="item:anthropic-announcements" />
 
 ## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
 
@@ -104,7 +104,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 AI企业Anthropic推出公共利益绑定新举措：专门设立Anthropic公共利益基金，将公司部分股份划入该独立实体，且设置了特殊股权结构——公司经营规模越大、估值越高，该基金的持股占比将同步提升。该安排旨在把企业商业成长收益与公共利益直接挂钩，探索AI发展红利惠及公众的可行路径。
 
-<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" />
 
 # Google DeepMind
 
@@ -114,7 +114,7 @@ AI企业Anthropic推出公共利益绑定新举措：专门设立Anthropic公共
 
 当前仅提供了论文标题《Introducing Gemini 4 Neon》，缺少对应的英文摘要正文内容，无法完成翻译提炼和总结工作。请你补充该论文的完整摘要内容，我会按照要求提炼核心方法、结论，输出120字左右简洁清晰的中文总结。
 
-<FeedbackButtons slug="item:deepmind-introducing-gemini-4-neon" client:visible />
+<FeedbackButtons slug="item:deepmind-introducing-gemini-4-neon" />
 
 ## <a href="https://deepmind.google/blog/genie-4-is-now-available/" target="_blank" rel="noopener noreferrer">Genie 4 is now available</a>
 
@@ -122,7 +122,7 @@ AI企业Anthropic推出公共利益绑定新举措：专门设立Anthropic公共
 
 你当前仅提供了论文标题，未附上对应摘要正文内容，无法基于原文精准提炼该研究的核心方法与结论。你可以补充完整Genie 4相关的论文摘要内容，我会为你输出120字左右、突出核心创新点和关键结论的简洁中文总结。
 
-<FeedbackButtons slug="item:deepmind-genie-4-is-now-available" client:visible />
+<FeedbackButtons slug="item:deepmind-genie-4-is-now-available" />
 
 # Hugging Face Blog
 
@@ -132,7 +132,7 @@ AI企业Anthropic推出公共利益绑定新举措：专门设立Anthropic公共
 
 SambaNova最新推出的Inkling 2 Mini是主打本地部署的轻量大模型，仅7B参数量，适配普通消费级显卡，无需联网即可运行。它在代码生成、常识推理、多轮对话等主流基准测试中，性能优于同量级主流开源模型，部分任务表现接近GPT-3.5，大幅降低了本地大模型的使用门槛。
 
-<FeedbackButtons slug="item:hf-blog-inkling2mini" client:visible />
+<FeedbackButtons slug="item:hf-blog-inkling2mini" />
 
 ## <a href="https://huggingface.co/blog/harness-adapters-at-scale" target="_blank" rel="noopener noreferrer">Introducing harness adapters: adapt your favorite model to your harness to improve performance and cost</a>
 
@@ -140,7 +140,7 @@ SambaNova最新推出的Inkling 2 Mini是主打本地部署的轻量大模型，
 
 这篇论文提出轻量“线束适配器”适配方案：无需修改预训练模型源码与用户自用的训练/部署流水线（即论文所称harness）代码，仅靠中间适配层即可快速完成不同开源模型与自有框架的适配。实测该方案可使训练、推理性能最高提升30%，算力成本降低25%，适配工作量仅为传统改造方案的5%，通用性极强。
 
-<FeedbackButtons slug="item:hf-blog-harness-adapters-at-scale" client:visible />
+<FeedbackButtons slug="item:hf-blog-harness-adapters-at-scale" />
 
 # Lil'Log
 
@@ -150,7 +150,7 @@ SambaNova最新推出的Inkling 2 Mini是主打本地部署的轻量大模型，
 
 本文梳理递归自我改进（RSI）的概念脉络：1965年学者I.J.古德最早提出超智能机器设想，即能超越人类所有智能活动、可自行设计更优机器的系统；2008年尤德考斯基明确定义RSI为AI依托现有智能迭代自身认知架构的反馈闭环。当前现代AI落地RSI主要有两类路径：直接改写自身权重，或广义优化自身训练管线。
 
-<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" />
 
 # 量子位
 
@@ -160,7 +160,7 @@ SambaNova最新推出的Inkling 2 Mini是主打本地部署的轻量大模型，
 
 中新团队刊发于《自然》的研究研发出植入式控糖系统NeuroAxis，以自体葡萄糖供电，可随血糖动态自适应电刺激迷走神经、调动内源神经免疫调节通路。实验显示二型糖尿病大鼠植入2周血糖接近健康水平，一型大鼠8周恢复正常控糖能力，还观测到胰岛β细胞增殖修复，无需外源注射胰岛素。
 
-<FeedbackButtons slug="item:qbitai-511904" client:visible />
+<FeedbackButtons slug="item:qbitai-511904" />
 
 ## <a href="https://www.qbitai.com/2026/11/511870.html" target="_blank" rel="noopener noreferrer">A社数学家用Claude又证明另一千禧难题，逼出一份写了12年的940页纯人类手稿</a>
 
@@ -168,7 +168,7 @@ SambaNova最新推出的Inkling 2 Mini是主打本地部署的轻量大模型，
 
 近日，Anthropic数学家Alpöge联合大模型Claude，同日宣称证明黎曼猜想、三维NS方程有限时间爆破两大公认千禧年数学难题，附形式化证明代码，陶哲轩称NS证明思路清晰但仍需规范核验。同日意大利数学家Masullo公开耗时12年完成的940页全人工黎曼猜想证明草稿，回应AI对纯数研究的冲击。
 
-<FeedbackButtons slug="item:qbitai-511870" client:visible />
+<FeedbackButtons slug="item:qbitai-511870" />
 
 ## <a href="https://www.qbitai.com/2026/11/511855.html" target="_blank" rel="noopener noreferrer">AI给乐队现场搓MV，这是黑客松还是音乐节啊</a>
 
@@ -176,4 +176,4 @@ SambaNova最新推出的Inkling 2 Mini是主打本地部署的轻量大模型，
 
 剪映近日举办AI×音乐视觉跨界黑客松，将真实乐队与演出场景引入赛事。参赛创作者借助剪映Hub工具，仅用3小时就能完成过去需专业团队制作的乐队MV、舞台VJ视觉内容，优秀作品可即时登上乐队演出主大屏播放，大幅降低音乐现场视觉内容制作门槛，模糊了黑客松与音乐节的边界。
 
-<FeedbackButtons slug="item:qbitai-511855" client:visible />
+<FeedbackButtons slug="item:qbitai-511855" />

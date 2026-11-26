@@ -53,7 +53,7 @@ test("相册沉浸模式不再拿可翻译的 aria-label 当选择器", async ()
     assert.match(page, /\[data-feedback="like"\]/, `${file} 应该用 data 属性`);
     assert.doesNotMatch(page, /\[aria-label="喜欢"\]/, `${file} 还在依赖中文 aria-label`);
   }
-  const buttons = await read("src/components/FeedbackButtons.tsx");
+  const buttons = await read("src/components/FeedbackButtons.astro");
   assert.match(buttons, /data-feedback="like"/);
   assert.match(buttons, /data-feedback="dislike"/);
 });

@@ -10,7 +10,7 @@ cover: "/photos/uploads/baokemeng/baokemeng-42.og.jpg"
 draft: false
 ---
 
-import FeedbackButtons from "@/components/FeedbackButtons";
+import FeedbackButtons from "@/components/FeedbackButtons.astro";
 
 <div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
   <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second overview of today's content</div>
@@ -36,7 +36,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 This paper introduces two search agents of different parameter scales, Iris-mini and Iris-pro. The team constructed a multi-hop hard search dataset without string matching clues by reverse-engineering web links, adopted an alternating iterative SFT-RL training paradigm, and conducted evaluations with strictly controlled variables. Both models achieved the best performance among open-source search agents of the same parameter scale on four search benchmarks. The model weights and full-process implementation will be open-sourced later.
 
-<FeedbackButtons lang="en" slug="item:arxiv-2609.04304" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2609.04304" />
 
 ## <a href="https://arxiv.org/abs/2609.04523" target="_blank" rel="noopener noreferrer">MaxKernel: Agentic Kernel Generation for TPUs</a>
 
@@ -44,7 +44,7 @@ This paper introduces two search agents of different parameter scales, Iris-mini
 
 To address the pain point that developing high-performance custom kernels for TPUs requires deep hardware expertise and has a high entry barrier, this research proposes MaxKernel, a multi-agent kernel generation system that supports three modes: human-in-the-loop collaborative design, fully automatic metric-driven optimization, and graph-based global design space exploration. Shared sub-agents complete the entire development workflow. Tested against the JaxBench benchmark and real model workloads, the performance of the generated kernels matches that of expert manually tuned results, and the system is now open source.
 
-<FeedbackButtons lang="en" slug="item:arxiv-2609.04523" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2609.04523" />
 
 ## <a href="https://arxiv.org/abs/2609.05258" target="_blank" rel="noopener noreferrer">Ask Before You Optimize: Dynamic Pre-Formulation Clarification for Interactive Optimization</a>
 
@@ -52,7 +52,7 @@ To address the pain point that developing high-performance custom kernels for TP
 
 To solve the problem that when large models generate operations research optimization models from natural language, modeling deviations often occur due to incomplete user requirements, this research launches the OR-Clarify benchmark, which can quantitatively evaluate the clarification ability of agents before modeling. It also proposes a two-stage framework InterOPT, which can identify key information gaps and independently decide whether to ask questions or terminate the interaction. Experiments show that its performance far exceeds baselines in multiple-choice scenarios, and is on par with existing state-of-the-art solutions in open-ended scenarios.
 
-<FeedbackButtons lang="en" slug="item:arxiv-2609.05258" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2609.05258" />
 
 ## <a href="https://arxiv.org/abs/2609.05416" target="_blank" rel="noopener noreferrer">WorldSculpt: Generating Compositional Worlds from Grounded Videos</a>
 
@@ -60,7 +60,7 @@ To solve the problem that when large models generate operations research optimiz
 
 To address the challenge of 3D compositional generation for highly occluded, dense and cluttered scenes, this paper proposes the WorldSculpt method: it extends the multi-view conditional pathway based on the single-object 3D generation model Pixal3D, and only requires single-object fine-tuning to generalize to complex scenes without scene-level training. The team also built UE-MeshyScene, a dense scene benchmark with precise annotations. Experiments show that this method outperforms existing solutions, with more significant advantages in more complex scenes. It can also convert 3DGS scenes into compositional mesh scenes to meet the needs of AR/VR and other applications.
 
-<FeedbackButtons lang="en" slug="item:arxiv-2609.05416" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2609.05416" />
 
 ## <a href="https://arxiv.org/abs/2609.04061" target="_blank" rel="noopener noreferrer">When Models Edit Too Much: On the Fidelity of Minimal Code Edits</a>
 
@@ -68,7 +68,7 @@ To address the challenge of 3D compositional generation for highly occluded, den
 
 This research targets the over-editing problem of large models during code repair, built a test set containing 400 known minimal patches for testing, and found that even powerful models like GPT-5.5 often output redundant modifications. Adding instructions to retain the original implementation can significantly reduce the degree of over-editing and slightly improve the repair pass rate. Reinforcement learning is more suitable for cross-scenario faithful editing needs than supervised fine-tuning, and editing fidelity should be regarded as an independent quality dimension for code repair.
 
-<FeedbackButtons lang="en" slug="item:arxiv-2609.04061" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2609.04061" />
 
 # OpenAI
 
@@ -78,7 +78,7 @@ This research targets the over-editing problem of large models during code repai
 
 In *An Alien Mind*, Jakub Pachocki proposes that as current AI capabilities continue to upgrade rapidly, AI alignment work that aligns AI behavioral goals with human intentions is facing unprecedented challenges. He calls on the industry to establish stricter AI security protection mechanisms, while promoting cross-border collaborative governance, to jointly control the potential out-of-control risks of advanced AI and ensure that the entire process of AI development is safe and controllable.
 
-<FeedbackButtons lang="en" slug="item:openai-blog-an-alien-mind" client:visible />
+<FeedbackButtons lang="en" slug="item:openai-blog-an-alien-mind" />
 
 ## <a href="https://openai.com/index/research-acceleration-view-inside-openai" target="_blank" rel="noopener noreferrer">Research acceleration: The view inside OpenAI</a>
 
@@ -86,7 +86,7 @@ In *An Alien Mind*, Jakub Pachocki proposes that as current AI capabilities cont
 
 This is a research on R&D acceleration released by OpenAI from an internal perspective. The core finding is that intelligent coding agents are deeply reshaping the AI research process. The research discloses early measured data of internal use of such agents, covering three core dimensions: agent usage rate, experiment progress speed, and supportable task complexity. It quantitatively verifies the significant improvement effect of coding agents on AI R&D efficiency, providing first-hand practical reference from leading institutions for the industry.
 
-<FeedbackButtons lang="en" slug="item:openai-blog-research-acceleration-view-inside-openai" client:visible />
+<FeedbackButtons lang="en" slug="item:openai-blog-research-acceleration-view-inside-openai" />
 
 # Anthropic News
 
@@ -96,7 +96,7 @@ This is a research on R&D acceleration released by OpenAI from an internal persp
 
 Anthropic recently released the first research preview of the Model Hardware Standard (MHS), a unified shared specification for AI agents, core to establishing general rules to ensure the safety and compatibility of AI when controlling various physical devices. The preview version is currently first open to the first batch of research laboratories and high-end manufacturers, and is expected to reduce security risks and remove compatibility barriers for the implementation of embodied AI and industrial intelligence scenarios in the future.
 
-<FeedbackButtons lang="en" slug="item:anthropic-model-hardware-standard-research-preview" client:visible />
+<FeedbackButtons lang="en" slug="item:anthropic-model-hardware-standard-research-preview" />
 
 ## <a href="https://www.anthropic.com/news/claude-text-watermark" target="_blank" rel="noopener noreferrer">How Claude&#x27;s text watermarking works</a>
 
@@ -104,7 +104,7 @@ Anthropic recently released the first research preview of the Model Hardware Sta
 
 Anthropic officially announced that text generated by future iterations of the Claude series of large models will have built-in exclusive watermarks, which can be used to determine whether the target text is generated with the participation of Claude. This initiative is a compliance move launched in collaboration with multiple leading AI vendors to meet the requirements of the EU AI Act. This article also responds to common public concerns including the technical logic of the watermark, its impact on output quality, and the motivation for the change.
 
-<FeedbackButtons lang="en" slug="item:anthropic-claude-text-watermark" client:visible />
+<FeedbackButtons lang="en" slug="item:anthropic-claude-text-watermark" />
 
 # Google DeepMind
 
@@ -114,7 +114,7 @@ Anthropic officially announced that text generated by future iterations of the C
 
 The newly launched WeatherNext 3 is a global weather AI model with industry-leading technical level and prediction accuracy. Compared with previous generation models and traditional numerical weather prediction models, its prediction accuracy for 1-10 day global conventional meteorological elements, extreme precipitation, cyclones and other severe weather events is significantly improved. Its inference speed is 1000 times faster than traditional models, and it can support high-timeliness global meteorological early warning.
 
-<FeedbackButtons lang="en" slug="item:deepmind-introducing-weathernext-3-our-most-advanced-and-accurate-global-weather-ai-model" client:visible />
+<FeedbackButtons lang="en" slug="item:deepmind-introducing-weathernext-3-our-most-advanced-and-accurate-global-weather-ai-model" />
 
 ## <a href="https://deepmind.google/blog/proactive-cyber-defense-for-governments-and-enterprises/" target="_blank" rel="noopener noreferrer">Proactive cyber defense for governments and enterprises</a>
 
@@ -122,7 +122,7 @@ The newly launched WeatherNext 3 is a global weather AI model with industry-lead
 
 Only the title of this paper is available at present, and the full content of the abstract is not attached. Please provide the complete English original text of this abstract, and I will accurately extract its core methods and research conclusions as required, and output a logically clear Chinese summary of around 120 words.
 
-<FeedbackButtons lang="en" slug="item:deepmind-proactive-cyber-defense-for-governments-and-enterprises" client:visible />
+<FeedbackButtons lang="en" slug="item:deepmind-proactive-cyber-defense-for-governments-and-enterprises" />
 
 # Hugging Face Blog
 
@@ -132,7 +132,7 @@ Only the title of this paper is available at present, and the full content of th
 
 This efficient multimodal-native multilingual encoder named NeoMME abandons the spliced design of traditional multimodal models, which uses "single-modal pre-training + cross-modal alignment module". It adopts a unified semantic space to natively fuse multimodal and multilingual features, supporting image-text encoding for hundreds of languages. Compared with mainstream similar models, its inference speed is increased by more than 30%, and the accuracy of cross-language image-text retrieval and other tasks is improved by 2-5 percentage points, which is suitable for the needs of end-side lightweight multimodal deployment.
 
-<FeedbackButtons lang="en" slug="item:hf-blog-neomme" client:visible />
+<FeedbackButtons lang="en" slug="item:hf-blog-neomme" />
 
 ## <a href="https://huggingface.co/blog/grpo-with-trl-ifstruct" target="_blank" rel="noopener noreferrer">Fine-tuning a 350M Model for Better Structured Outputs in 100 GRPO Steps</a>
 
@@ -140,7 +140,7 @@ This efficient multimodal-native multilingual encoder named NeoMME abandons the 
 
 This research addresses the pain points of small models being prone to format errors and content deviations in structured outputs. It adopts the GRPO (Group Relative Policy Optimization) reinforcement learning paradigm, and completes the fine-tuning of the 350M parameter model in only 100 iterations. The compliance rate of the final model's structured output is increased by more than 40% compared to the baseline, no additional format prompts are required for inference, and its performance is close to that of 10B-scale general large models, greatly reducing the deployment computing threshold for structured generation scenarios.
 
-<FeedbackButtons lang="en" slug="item:hf-blog-grpo-with-trl-ifstruct" client:visible />
+<FeedbackButtons lang="en" slug="item:hf-blog-grpo-with-trl-ifstruct" />
 
 # Lil'Log
 
@@ -150,7 +150,7 @@ This research addresses the pain points of small models being prone to format er
 
 This article sorts out the conceptual evolution of Recursive Self-Improvement (RSI): In 1965, Good first proposed the relevant concept, defining a "superintelligent machine" that can surpass all human intellectual activities and design better machines on its own. In 2008, Yudkowsky clarified that the core of RSI is the feedback loop where AI uses its existing intelligence to optimize its own cognitive mechanism. Current RSI in the AI field includes both the model directly rewriting its own weights, and broadly covers the optimization of training pipelines.
 
-<FeedbackButtons lang="en" slug="item:lillog-2026-07-04-harness" client:visible />
+<FeedbackButtons lang="en" slug="item:lillog-2026-07-04-harness" />
 
 # QbitAI
 
@@ -160,7 +160,7 @@ This article sorts out the conceptual evolution of Recursive Self-Improvement (R
 
 Embodied intelligence is adopting the proven In-Context Learning (ICL) technology from large models, becoming a new scaling track. Recently, the robot model S1 released by Skild AI can perform new tasks of up to 10 minutes and dozens of steps after watching only one demonstration video, without fine-tuning. When the data scale is sufficient, video prompts perform 7 times better than pure text prompts on unknown tasks. The GEN-1.5 launched at the same time also supports few-shot rapid learning of new tasks, suitable for cross-scenario migration.
 
-<FeedbackButtons lang="en" slug="item:qbitai-484897" client:visible />
+<FeedbackButtons lang="en" slug="item:qbitai-484897" />
 
 ## <a href="https://www.qbitai.com/2026/09/484890.html" target="_blank" rel="noopener noreferrer">Bilibili's first AI Creation Open Competition concludes, over 80% of participants are individual teams</a>
 
@@ -168,7 +168,7 @@ Embodied intelligence is adopting the proven In-Context Learning (ICL) technolog
 
 Bilibili's first zero-threshold AI Creation Open Competition concluded in September, with a total prize pool of 1.43 million yuan. The *Neko Girl Project*, which has ACG community attributes, won the 1 million yuan first prize. The competition received more than 30,000 submissions. Over 60% of participants have no professional development background, and over 80% are individual teams. The data confirms that Bilibili has become the core domestic community for AI content, with both AI content consumption and advertising revenue on the platform increasing significantly year-on-year.
 
-<FeedbackButtons lang="en" slug="item:qbitai-484890" client:visible />
+<FeedbackButtons lang="en" slug="item:qbitai-484890" />
 
 ## <a href="https://www.qbitai.com/2026/09/484726.html" target="_blank" rel="noopener noreferrer">GPT-6 popularizes Recurrent Transformer, Alibaba has already laid out in this field</a>
 
@@ -176,4 +176,4 @@ Bilibili's first zero-threshold AI Creation Open Competition concluded in Septem
 
 The Recurrent Transformer technology adopted by GPT-6 Astra (where the same set of Transformer layers runs repeatedly, trading computational depth for parameter scale) has sparked security controversy. The academic community previously found that this architecture has the pain point of computational redundancy, and its performance under the same computing power is difficult to match that of ordinary Transformers. Alibaba laid out in this field as early as 11 months ago, launching MeSH and SpiralFormer to solve the problems of cyclic information management and computational granularity respectively, directly addressing the pain point of cyclic idling.
 
-<FeedbackButtons lang="en" slug="item:qbitai-484726" client:visible />
+<FeedbackButtons lang="en" slug="item:qbitai-484726" />

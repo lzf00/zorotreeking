@@ -10,7 +10,7 @@ cover: "/photos/uploads/baokemeng/baokemeng-28.og.jpg"
 draft: false
 ---
 
-import FeedbackButtons from "@/components/FeedbackButtons";
+import FeedbackButtons from "@/components/FeedbackButtons.astro";
 
 <div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
   <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Catch up on today's content in 30 seconds</div>
@@ -36,7 +36,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 This article introduces Deutsche Telekom's AI transformation practices: through in-depth cooperation with OpenAI, the enterprise has restructured its underlying business logic and upgraded to an AI-native telecom operator. It has now deployed large model technology in four core scenarios: customer service efficiency improvement, employee workflow optimization, intelligent network operation, and next-generation voice service innovation, providing a referential implementation sample for the digital and intelligent upgrade of the traditional communications industry.
 
-<FeedbackButtons lang="en" slug="item:openai-blog-deutsche-telekom" client:visible />
+<FeedbackButtons lang="en" slug="item:openai-blog-deutsche-telekom" />
 
 ## <a href="https://openai.com/index/gpt-5-6-preferred-model-microsoft-365-copilot" target="_blank" rel="noopener noreferrer">GPT-5.6 is now the preferred model in Microsoft 365 Copilot</a>
 
@@ -44,7 +44,7 @@ This article introduces Deutsche Telekom's AI transformation practices: through 
 
 GPT-5.6 is now the preferred model powering Microsoft 365 Copilot. Leveraging the stronger AI capabilities of this model, Microsoft 365 Copilot can support five core office scenarios: Word, Excel, PowerPoint, intelligent conversation, and collaborative work, comprehensively helping users cut down work time, improve work output quality, and meet higher-level efficiency requirements.
 
-<FeedbackButtons lang="en" slug="item:openai-blog-gpt-5-6-preferred-model-microsoft-365-copilot" client:visible />
+<FeedbackButtons lang="en" slug="item:openai-blog-gpt-5-6-preferred-model-microsoft-365-copilot" />
 
 # Anthropic News
 
@@ -54,7 +54,7 @@ GPT-5.6 is now the preferred model powering Microsoft 365 Copilot. Leveraging th
 
 This initiative launches a public call for difficult questions in the AI field, widely collecting the public's most concerned and most confused hard-core questions about AI. It also makes a public commitment that when responding to these questions in the future, the entire work process of research derivation and technical verification will be fully disclosed. This move can not only make AI research directions more aligned with the real concerns of the public, but also break the black-box perception of AI technology and improve public trust in AI development.
 
-<FeedbackButtons lang="en" slug="item:anthropic-hard-questions" client:visible />
+<FeedbackButtons lang="en" slug="item:anthropic-hard-questions" />
 
 ## <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Claude Fable 5</a>
 
@@ -62,7 +62,7 @@ This initiative launches a public call for difficult questions in the AI field, 
 
 Anthropic announced that it will restart the deployment of the Claude Fable 5 large model on July 1, and the premise of this restart is that the relevant export controls for this product have been officially lifted. The new version has simultaneously upgraded its network security protection mechanism, and also added a jailbreak risk prevention and control framework adapted to industry scenarios, which greatly enhances the model's ability to respond to security risks while meeting compliance requirements.
 
-<FeedbackButtons lang="en" slug="item:anthropic-redeploying-fable-5" client:visible />
+<FeedbackButtons lang="en" slug="item:anthropic-redeploying-fable-5" />
 
 # Google DeepMind
 
@@ -72,7 +72,7 @@ Anthropic announced that it will restart the deployment of the Claude Fable 5 la
 
 Leading AI R&D institution Google DeepMind has reached an industry-first cross-border research partnership with world-renowned independent film and television label A24. The two parties will conduct research on the implementation of AI in the entire process of film and television creative production, exploring feasible paths for AI to empower content creation while retaining the artistic uniqueness of film and television creation, providing a new reference for the integration of technology and the cultural and entertainment industry.
 
-<FeedbackButtons lang="en" slug="item:deepmind-google-deepmind-and-a24-announce-first-of-its-kind-research-partnership" client:visible />
+<FeedbackButtons lang="en" slug="item:deepmind-google-deepmind-and-a24-announce-first-of-its-kind-research-partnership" />
 
 ## <a href="https://deepmind.google/blog/start-building-with-nano-banana-2-lite-and-gemini-omni-flash/" target="_blank" rel="noopener noreferrer">Start building with Nano Banana 2 Lite and Gemini Omni Flash</a>
 
@@ -80,7 +80,7 @@ Leading AI R&D institution Google DeepMind has reached an industry-first cross-b
 
 Currently you have only provided the paper title, the abstract body is missing, so it is temporarily impossible to accurately extract the specific method design and experimental conclusions of this study. Judging only from the title, the content focuses on edge AI deployment and development practices, covering adaptation and application building for the Banana Pi Nano Banana 2 Lite lightweight development board paired with Google's Gemini Omni Flash lightweight multimodal large model. You can get a more accurate summary after supplementing the complete abstract.
 
-<FeedbackButtons lang="en" slug="item:deepmind-start-building-with-nano-banana-2-lite-and-gemini-omni-flash" client:visible />
+<FeedbackButtons lang="en" slug="item:deepmind-start-building-with-nano-banana-2-lite-and-gemini-omni-flash" />
 
 # Hugging Face Blog
 
@@ -90,7 +90,7 @@ Currently you have only provided the paper title, the abstract body is missing, 
 
 This article is the third part of the PyTorch performance profiling series, focusing on the performance analysis of the core attention module of Transformer. Using PyTorch's built-in Profiler tool, it breaks down the time consumption and VRAM occupancy characteristics of the entire attention pipeline from QKV generation, softmax to output matrix multiplication, and compares the performance differences between native attention and optimized implementations such as FlashAttention. It can help developers accurately locate operator bottlenecks and provide clear directions for model training and inference tuning.
 
-<FeedbackButtons lang="en" slug="item:hf-blog-torch-attention-profile" client:visible />
+<FeedbackButtons lang="en" slug="item:hf-blog-torch-attention-profile" />
 
 ## <a href="https://huggingface.co/blog/nvidia/open-data-for-agents" target="_blank" rel="noopener noreferrer">Data for Agents</a>
 
@@ -98,7 +98,7 @@ This article is the third part of the PyTorch performance profiling series, focu
 
 Currently you have only provided the paper title *Data for Agents*, with no specific abstract body attached. Please supplement the full abstract text of this paper, and I will translate and refine it as required to output a concise summary of around 120 words highlighting core methods and conclusions.
 
-<FeedbackButtons lang="en" slug="item:hf-blog-open-data-for-agents" client:visible />
+<FeedbackButtons lang="en" slug="item:hf-blog-open-data-for-agents" />
 
 # The Gradient
 
@@ -108,7 +108,7 @@ Currently you have only provided the paper title *Data for Agents*, with no spec
 
 This article challenges the core premise of the orthogonality hypothesis in the field of AI alignment. From the perspective of virtue ethics, it proposes that rational human subjects have no preset fixed goals, and human rationality is essentially the adaptation of behavior to a practical network composed of actions, evaluation standards, resources, etc., rather than pointing to a specific ultimate goal. To achieve safe AI alignment and smooth collaboration with humans, AI decision-making logic needs to match this practice-based reasoning paradigm of humans.
 
-<FeedbackButtons lang="en" slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+<FeedbackButtons lang="en" slug="item:thegradient-virtue-ethics-ai-alignment" />
 
 # Lil'Log
 
@@ -118,7 +118,7 @@ This article challenges the core premise of the orthogonality hypothesis in the 
 
 The concept of Recursive Self-Improvement (RSI) was first proposed by I.J. Good in 1965, referring to superintelligent machines whose capabilities surpass all human intellectual activities, which can iteratively design better machines to achieve self-upgrade. In 2008, Eliezer Yudkowsky clarified that its core is the feedback loop where AI optimizes its own cognitive mechanism relying on existing intelligence. In the current AI context, this feedback can be manifested as the model directly rewriting its own weights, or broadly refer to the model optimizing its own training process.
 
-<FeedbackButtons lang="en" slug="item:lillog-2026-07-04-harness" client:visible />
+<FeedbackButtons lang="en" slug="item:lillog-2026-07-04-harness" />
 
 # QbitAI
 
@@ -128,7 +128,7 @@ The concept of Recursive Self-Improvement (RSI) was first proposed by I.J. Good 
 
 NVIDIA publicly demonstrated for the first time at this year's Bilibili World a laptop equipped with the RTX Spark super chip. This chip uses NVLink-C2C to directly connect the Grace CPU and Blackwell GPU, with 1P computing power and 128GB unified memory, balancing smooth gaming and AI creation. Positioned as a local personal agent, it can run 120B large models locally, supports a 1 million token context window, and is also equipped with OpenShell to implement privacy offloading.
 
-<FeedbackButtons lang="en" slug="item:qbitai-447981" client:visible />
+<FeedbackButtons lang="en" slug="item:qbitai-447981" />
 
 ## <a href="https://www.qbitai.com/2026/07/447914.html" target="_blank" rel="noopener noreferrer">Nearly 100 players enter the embodied data sector: 4.47 billion yuan raised in a year, who can actually make money by "selling data"?</a>
 
@@ -136,7 +136,7 @@ NVIDIA publicly demonstrated for the first time at this year's Bilibili World a 
 
 There are nearly 100 players in the domestic embodied data track. In the past year, 15 independent data service providers that do not involve hardware or models have raised a total of 4.47 billion yuan, though the sector is still less popular than the embodied large model track. Current data collection is divided into four major routes: real machine teleoperation, hardware-free collection, simulation synthesis, and video distillation. Although novel methods such as home data collection and VR data collection have emerged in the industry, the threshold for qualified data collection is not low.
 
-<FeedbackButtons lang="en" slug="item:qbitai-447914" client:visible />
+<FeedbackButtons lang="en" slug="item:qbitai-447914" />
 
 ## <a href="https://www.qbitai.com/2026/07/447902.html" target="_blank" rel="noopener noreferrer">China's first 100,000-card cluster completed! Fully domestic computing power supports the "100,000-card era"</a>
 
@@ -144,4 +144,4 @@ There are nearly 100 players in the domestic embodied data track. In the past ye
 
 In July, Sugon completed the construction of "Sugon 8000", China's first fully domestic 100,000-card level AI super cluster, in Zhengzhou, which has now been connected to the national integrated computing power network. The cluster adopts a native super-intelligent fusion architecture, with full precision coverage that can support both scientific computing and large model training at the same time, solving the previous problem of structural mismatch of computing power, and providing a leading implementation path for improving the efficiency of domestic computing power and reducing repeated construction costs.
 
-<FeedbackButtons lang="en" slug="item:qbitai-447902" client:visible />
+<FeedbackButtons lang="en" slug="item:qbitai-447902" />

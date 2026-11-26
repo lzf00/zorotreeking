@@ -2,7 +2,7 @@
 import FeedbackIcons from "@/components/FeedbackIcons.astro";
 import { getCollection, render } from "astro:content";
 import PhotoLayout from "@/layouts/PhotoLayout.astro";
-import FeedbackButtons from "@/components/FeedbackButtons";
+import FeedbackButtons from "@/components/FeedbackButtons.astro";
 import PhotoGallery from "@/components/PhotoGallery";
 import PhotoMap from "@/components/PhotoMap";
 import { useTranslations, pathWithLang } from "@/i18n/ui";
@@ -132,7 +132,7 @@ const geoPoints = photos
   <!-- 底部 feedback + 返回 -->
   <section class="max-w-3xl mx-auto px-5 mt-20 pb-24 text-center">
     <div class="inline-block">
-      <FeedbackButtons slug={`photo/${entry.data.translationKey}`} client:idle />
+      <FeedbackButtons slug={`photo/${entry.data.translationKey}`} />
     </div>
     <div class="mt-10">
       <a href={pathWithLang("/photo", lang)} class="text-xs uppercase tracking-[0.18em] text-white/55 hover:text-white transition-colors">

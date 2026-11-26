@@ -10,7 +10,7 @@ cover: "/photos/uploads/baokemeng/baokemeng-41.og.jpg"
 draft: false
 ---
 
-import FeedbackButtons from "@/components/FeedbackButtons";
+import FeedbackButtons from "@/components/FeedbackButtons.astro";
 
 <div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
   <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30 秒看完今日</div>
@@ -36,7 +36,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 针对时序因果发现面临自相关、分布偏移、维数灾难导致算法复杂度高的痛点，本文提出迭代时序父节点发现算法ITPD：采用局部到全局思路，借助时序先验、图划分等实现降阶条件独立测试。实验显示其测试次数最少，千节点以上大图耗时远低于基线，2000节点时最快较基准快40.9倍，F1与耗时表现达帕累托最优。
 
-<FeedbackButtons slug="item:arxiv-2611.26232" client:visible />
+<FeedbackButtons slug="item:arxiv-2611.26232" />
 
 ## <a href="https://arxiv.org/abs/2611.26239" target="_blank" rel="noopener noreferrer">Teaching Vision-Language-Action Models to Stop Safely</a>
 
@@ -44,7 +44,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 针对现有视觉-语言-动作（VLA）机器人模型难以在执行中途安全停止违禁任务、易出现坠物等安全隐患的问题，本文提出两阶段状态感知回退模仿方法SAFI，既为违禁任务设置安全停驻响应，也保留模型原有任务能力。实验显示，该方法将中途接管后的违禁任务完成率降至1.3%，无安全事故，原有任务性能保留完好。
 
-<FeedbackButtons slug="item:arxiv-2611.26239" client:visible />
+<FeedbackButtons slug="item:arxiv-2611.26239" />
 
 ## <a href="https://arxiv.org/abs/2611.25604" target="_blank" rel="noopener noreferrer">PAD: Policy-Aware Data Valuation for Autonomous Driving</a>
 
@@ -52,7 +52,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 针对端到端自动驾驶数据扩容增益不成正比、现有数据筛选未匹配下游策略效用的问题，本文提出策略感知数据估值框架PAD，结合场景校准反馈、策略梯度与局部训练几何正则近似，为目标驾驶策略定制数据效用评分。该方法适配多类规划器架构，较全量/纯实车训练最高提升EPDMS指标5.0，可减少场景退化，大幅提升训练效率。
 
-<FeedbackButtons slug="item:arxiv-2611.25604" client:visible />
+<FeedbackButtons slug="item:arxiv-2611.25604" />
 
 ## <a href="https://arxiv.org/abs/2611.15941" target="_blank" rel="noopener noreferrer">Lang-SVG: Hierarchical Image Vectorization with Language Priors</a>
 
@@ -60,7 +60,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 针对现有图像矢量化方法仅追求像素还原精度，生成的SVG不符合人类认知的部件层级、编辑性差的问题，本文提出Lang-SVG：用语义树组织SVG图元，融合开放词汇分割先验、多模态大模型标注语义，配套自适应简化、树引导剪枝合并、SAM提示补全等优化，在自研兼顾结构与语义对齐的评估体系下，渲染精度和结构质量均达SOTA。
 
-<FeedbackButtons slug="item:arxiv-2611.15941" client:visible />
+<FeedbackButtons slug="item:arxiv-2611.15941" />
 
 ## <a href="https://arxiv.org/abs/2611.25200" target="_blank" rel="noopener noreferrer">Squoosh Bench: Evaluating UX-1 on 318 Historical Website A/B Tests</a>
 
@@ -68,7 +68,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 本研究基于318份时长超21天的网页历史A/B测试数据，评估模拟浏览预测模型的测试方案预选效果。经人类浏览数据微调的Squoosh UX-1模型预测准确率达84%，远优于通用大模型Qwen3 Next 80B的61.6%；其预判获胜的测试变体真实落地胜率达93.7%，可有效辅助A/B测试前置选案。
 
-<FeedbackButtons slug="item:arxiv-2611.25200" client:visible />
+<FeedbackButtons slug="item:arxiv-2611.25200" />
 
 # OpenAI
 
@@ -78,7 +78,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 本文聚焦对抗蒸馏这一窃取大模型核心能力的攻击场景，介绍OpenAI提出的分层防御方案：覆盖模型训练优化、前置安全防护、攻击实时检测、违规强制处置四大联动模块，可系统性抵御恶意能力萃取风险，为大模型知识产权与核心能力安全防护提供可落地的技术框架参考。
 
-<FeedbackButtons slug="item:openai-blog-combatting-adversarial-distillation" client:visible />
+<FeedbackButtons slug="item:openai-blog-combatting-adversarial-distillation" />
 
 ## <a href="https://openai.com/business/customer-stories/hebbia" target="_blank" rel="noopener noreferrer">Hebbia sees improvements in financial research with GPT-6 Astra</a>
 
@@ -86,7 +86,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 AI企业Hebbia针对预发布阶段的GPT-6 Astra大模型开展金融研究场景专项测试，评估结果显示，该模型在三类核心指标上均有明显提升：一是信息来源覆盖范围更广，二是引文匹配相关性更高，三是输出内容呈现质量更优，验证了新一代大模型在专业金融研究领域的落地价值。
 
-<FeedbackButtons slug="item:openai-blog-hebbia" client:visible />
+<FeedbackButtons slug="item:openai-blog-hebbia" />
 
 # Anthropic News
 
@@ -96,7 +96,7 @@ AI企业Hebbia针对预发布阶段的GPT-6 Astra大模型开展金融研究场�
 
 这是AI企业Anthropic官方公告的核心内容：该公司定位为人工智能安全领域的专业研究企业，核心目标是打造兼具可靠性、可解释性、可调控性的AI系统。其研发锚定当前AI产业核心安全痛点，试图通过技术路径破解AI黑箱、不可控等问题，为通用人工智能安全落地探索可行方案。
 
-<FeedbackButtons slug="item:anthropic-announcements" client:visible />
+<FeedbackButtons slug="item:anthropic-announcements" />
 
 ## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
 
@@ -104,7 +104,7 @@ AI企业Hebbia针对预发布阶段的GPT-6 Astra大模型开展金融研究场�
 
 AI企业Anthropic宣布设立专属公共利益基金，将部分公司股份划归该独立实体持有。该基金采用特殊结构设计，持有的Anthropic股份占比会随公司经营规模扩张、估值提升同步上调，核心是将企业发展红利与公共利益深度绑定，确保公司增长成果能够反哺社会，落实公共受益的发展定位。
 
-<FeedbackButtons slug="item:anthropic-public-benefit-fund" client:visible />
+<FeedbackButtons slug="item:anthropic-public-benefit-fund" />
 
 # Google DeepMind
 
@@ -114,7 +114,7 @@ AI企业Anthropic宣布设立专属公共利益基金，将部分公司股份划
 
 当前你仅提供了论文标题《Introducing Gemini 4 Neon》，未附上对应的摘要正文内容，无法开展翻译提炼及总结工作。麻烦你补充完整该篇介绍Gemini 4 Neon的摘要全文，我会按照要求为你整理为120字左右、突出核心方法与结论的简洁中文总结内容。
 
-<FeedbackButtons slug="item:deepmind-introducing-gemini-4-neon" client:visible />
+<FeedbackButtons slug="item:deepmind-introducing-gemini-4-neon" />
 
 ## <a href="https://deepmind.google/blog/genie-4-is-now-available/" target="_blank" rel="noopener noreferrer">Genie 4 is now available</a>
 
@@ -122,7 +122,7 @@ AI企业Anthropic宣布设立专属公共利益基金，将部分公司股份划
 
 你目前仅提供了论文标题《Genie 4现已推出》，未附上摘要的具体正文内容，无法针对性提炼其中的核心方法与研究结论。请补充完整该论文摘要的相关信息，我会按要求为你生成120字左右、重点突出的中文精简总结。
 
-<FeedbackButtons slug="item:deepmind-genie-4-is-now-available" client:visible />
+<FeedbackButtons slug="item:deepmind-genie-4-is-now-available" />
 
 # Hugging Face Blog
 
@@ -132,7 +132,7 @@ AI企业Anthropic宣布设立专属公共利益基金，将部分公司股份划
 
 本次推出的轻量端侧AI模型Inkling 2 Mini专为本地化部署场景打造：它在压缩参数量、降低算力门槛的前提下，性能达到同量级模型的前沿水平，无需云端交互即可完成推理，兼顾隐私安全性与运行效率，适配个人设备、小团队低资源本地AI应用搭建需求。
 
-<FeedbackButtons slug="item:hf-blog-inkling2mini" client:visible />
+<FeedbackButtons slug="item:hf-blog-inkling2mini" />
 
 ## <a href="https://huggingface.co/blog/harness-adapters-at-scale" target="_blank" rel="noopener noreferrer">Introducing harness adapters: adapt your favorite model to your harness to improve performance and cost</a>
 
@@ -140,7 +140,7 @@ AI企业Anthropic宣布设立专属公共利益基金，将部分公司股份划
 
 这篇论文提出创新的harness适配器方案，解决主流预训练模型与用户自有训练、推理框架适配成本高、性能折损的痛点。无需大幅改写模型或框架核心代码即可快速完成兼容，相较传统适配方案，既降低适配的人力、时间成本，还可提升模型运行时的实际性能。
 
-<FeedbackButtons slug="item:hf-blog-harness-adapters-at-scale" client:visible />
+<FeedbackButtons slug="item:hf-blog-harness-adapters-at-scale" />
 
 # Lil'Log
 
@@ -150,7 +150,7 @@ AI企业Anthropic宣布设立专属公共利益基金，将部分公司股份划
 
 递归自我改进（RSI）最早由I.J.古德1965年提出，指可超越人类所有智力活动、还能自主设计更优系统实现迭代的超智能运行逻辑。2008年尤德考斯基明确其核心为AI调用现有智能优化自身认知架构的反馈回路。当前AI领域RSI的落地分为两类：一是模型直接改写自身权重，二是模型优化训练管线。
 
-<FeedbackButtons slug="item:lillog-2026-07-04-harness" client:visible />
+<FeedbackButtons slug="item:lillog-2026-07-04-harness" />
 
 # 量子位
 
@@ -160,7 +160,7 @@ AI企业Anthropic宣布设立专属公共利益基金，将部分公司股份划
 
 剪映近日举办AI×音乐视觉跨界黑客松，融合真实乐队、AIGC创作与黑客松模式。创作者依托剪映Hub工具，仅3小时就能完成原本门槛高、周期长的乐队MV及舞台VJ视觉作品，优秀成果当天直接登上演出主舞台大屏播放，大幅降低了音乐现场视觉内容的制作门槛。
 
-<FeedbackButtons slug="item:qbitai-511855" client:visible />
+<FeedbackButtons slug="item:qbitai-511855" />
 
 ## <a href="https://www.qbitai.com/2026/11/511849.html" target="_blank" rel="noopener noreferrer">中国计算，走出新的登峰之路</a>
 
@@ -168,7 +168,7 @@ AI企业Anthropic宣布设立专属公共利益基金，将部分公司股份划
 
 2026年国际超算大会上，中科大联合团队的铁钼辅因子量子化学计算项目，为中国时隔5年再摘超算领域最高奖戈登·贝尔奖，中科天机气象系统也实现中国企业首次入围该奖气候建模决赛，两项成果均依托全国产十万卡AI超集群曙光8000，其上线仅半年就产出顶尖成果，核心是产研提前协同适配的技术路线。
 
-<FeedbackButtons slug="item:qbitai-511849" client:visible />
+<FeedbackButtons slug="item:qbitai-511849" />
 
 ## <a href="https://www.qbitai.com/2026/11/511841.html" target="_blank" rel="noopener noreferrer">8万条群聊消息做成考卷：腾讯元宝×KCL发布首个基于群聊构建的Agent记忆基准</a>
 
@@ -176,4 +176,4 @@ AI企业Anthropic宣布设立专属公共利益基金，将部分公司股份划
 
 腾讯元宝联合伦敦国王学院发布首个群聊场景Agent记忆基准GroupAssistBench，依托50个真实群的8万余条消息构建2395道评测题，分记忆召回、开放式服务两个层级测试。团队测试14种技术配置后发现，Agent记忆召回能力强不代表实际服务效果好，目前相关数据集与代码已开源。
 
-<FeedbackButtons slug="item:qbitai-511841" client:visible />
+<FeedbackButtons slug="item:qbitai-511841" />

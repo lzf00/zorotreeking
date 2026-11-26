@@ -10,7 +10,7 @@ cover: "/photos/uploads/baokemeng/baokemeng-08.og.jpg"
 draft: false
 ---
 
-import FeedbackButtons from "@/components/FeedbackButtons";
+import FeedbackButtons from "@/components/FeedbackButtons.astro";
 
 <div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
   <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · Today's Highlights in 30 Seconds</div>
@@ -34,7 +34,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 *HF ★ 1 · Yutao Mou, Pengfei Yang, Zhe Yin… · [HF Mirror](https://huggingface.co/papers/2608.11878)*
 
-<FeedbackButtons lang="en" slug="item:arxiv-2608.11878" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2608.11878" />
 
 ## <a href="https://arxiv.org/abs/2608.11924" target="_blank" rel="noopener noreferrer">Spark-to-Paper: End-to-End Research Paper Generation as a Composable Skill</a>
 
@@ -42,7 +42,7 @@ import FeedbackButtons from "@/components/FeedbackButtons";
 
 This paper proposes Spark-to-Paper, an end-to-end paper generation system that can be embedded into existing coding assistants without requiring an independent agent platform. It splits the generation process into 13 composable skills, separates model judgment from deterministic operations and experimental planning from reporting, adds verification steps to avoid self-contradiction issues, and supports generating editable vector graphics. Actual tests show 99.5% citation accuracy, 96.4% editable chart rate, fraud detection rate increased from 14% to 92%, average cost per paper of $8.1, and average time consumption of 3.2 hours, verifying the feasibility of this lightweight solution.
 
-<FeedbackButtons lang="en" slug="item:arxiv-2608.11924" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2608.11924" />
 
 ## <a href="https://arxiv.org/abs/2608.11274" target="_blank" rel="noopener noreferrer">Agent Safety Should Be a Runtime Contract</a>
 
@@ -50,7 +50,7 @@ This paper proposes Spark-to-Paper, an end-to-end paper generation system that c
 
 Current mainstream AI security adopts training-phase injection strategies such as RLHF, which cannot adapt to scenarios of autonomous agents that can execute code and modify data. This paper proposes that agent security should adopt runtime contracts, block dangerous operations in advance through sandboxes and permission control, and retain verifiable evidence such as test records and logs to verify compliance. Combined with four types of empirical evidence, it points out that the core of agent security should be execution traces with verifiable evidence, rather than the model itself.
 
-<FeedbackButtons lang="en" slug="item:arxiv-2608.11274" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2608.11274" />
 
 # arXiv cs.LG
 
@@ -60,7 +60,7 @@ Current mainstream AI security adopts training-phase injection strategies such a
 
 Aiming at the problem that existing Transformer interpretability studies mostly analyze single layers or the entire network in isolation and lack exploration of cross-layer representation evolution laws, this research proposes the TGO-IV topological analysis framework, using persistent homology as the core tool, constructs VR complexes from token representation point clouds, combines multiple types of topological feature indicators, tracks the global topological evolution law during the forward propagation of representations, and provides a new path for exploring the evolution nodes and action mechanisms from raw input to task-related features.
 
-<FeedbackButtons lang="en" slug="item:arxiv-2608.09997" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2608.09997" />
 
 ## <a href="https://arxiv.org/abs/2608.10007" target="_blank" rel="noopener noreferrer">Uncertainty-Aware Ensemble Deep Randomized Neural Networks for Classification</a>
 
@@ -68,7 +68,7 @@ Aiming at the problem that existing Transformer interpretability studies mostly 
 
 Aiming at the problems that existing deep randomized neural networks process training samples uniformly, have weak resistance to noise and outliers, and cross-layer propagation of contaminated features affects decision-making effects, this research introduces intuitionistic fuzzy theory, combines membership degree based on sample distance to category center and non-membership degree based on neighborhood heterogeneity to assign adaptive weights to samples, which can distinguish samples of different quality, and proposes two robust improved frameworks. Tests on benchmark datasets (including noisy scenarios) show that its performance outperforms all existing SOTA solutions.
 
-<FeedbackButtons lang="en" slug="item:arxiv-2608.10007" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2608.10007" />
 
 ## <a href="https://arxiv.org/abs/2608.10010" target="_blank" rel="noopener noreferrer">CurveFP: Rational-Radix Logarithmic Datatypes with Closed Products for Language Models</a>
 
@@ -76,7 +76,7 @@ Aiming at the problems that existing deep randomized neural networks process tra
 
 Aiming at the problem that most low-precision data types for large models optimize scalar fidelity without improving product operations, this paper proposes CurveFP, a family of rational-radix logarithmic closed-product data types. Product operations only require symbol XOR and integer index update, and an 8-bit version for training and a 7-bit version for deployment are launched respectively. Actual tests show that the 7-bit version has 1 bit less than FP8 but still delivers better perplexity, the 8-bit version has lower matrix operation error, and pre-training performance is close to BF16, balancing accuracy, low storage footprint and operation simplicity.
 
-<FeedbackButtons lang="en" slug="item:arxiv-2608.10010" client:visible />
+<FeedbackButtons lang="en" slug="item:arxiv-2608.10010" />
 
 # OpenAI
 
@@ -86,7 +86,7 @@ Aiming at the problem that most low-precision data types for large models optimi
 
 This special research on enterprise AI applications released by OpenAI sorts out the current mainstream paths for enterprises to implement agent AI: generally relying on large model tools such as ChatGPT and Codex to promote the penetration of AI from traditional auxiliary functions to actual business execution links. The research also clarifies that cutting-edge enterprises that started layout earlier have significantly widened the gap with their peers in AI application progress, and are the first to reap the dividends of technology implementation.
 
-<FeedbackButtons lang="en" slug="item:openai-blog-how-enterprises-put-ai-to-work" client:visible />
+<FeedbackButtons lang="en" slug="item:openai-blog-how-enterprises-put-ai-to-work" />
 
 ## <a href="https://openai.com/index/ringcentral" target="_blank" rel="noopener noreferrer">How RingCentral builds AI-native work from engineering to ops</a>
 
@@ -94,7 +94,7 @@ This special research on enterprise AI applications released by OpenAI sorts out
 
 This article introduces the AI-native work implementation practice of cloud communication vendor RingCentral: the company introduced two large model tools, ChatGPT Work and Codex, covering the full link scenario from R&D to operation and maintenance. On one hand, it greatly accelerates the development and iteration efficiency of AI-native products; on the other hand, it breaks down data barriers between engineering and operation and maintenance departments, realizes centralized intelligent analysis of operation intelligence, and provides a reference path for full-process AI empowerment of enterprises.
 
-<FeedbackButtons lang="en" slug="item:openai-blog-ringcentral" client:visible />
+<FeedbackButtons lang="en" slug="item:openai-blog-ringcentral" />
 
 # Anthropic News
 
@@ -104,7 +104,7 @@ This article introduces the AI-native work implementation practice of cloud comm
 
 Claude Opus 5 is a generational upgrade of Anthropic's Opus high-end large model product line, delivering step-by-step performance improvements. There are two core optimizations in this version: first, it greatly enhances support for long-running agents, adapting to the needs of complex agent scenarios; second, capabilities in coding and professional field task processing have been significantly improved, which can better support high-level work needs of developers and professionals in various industries.
 
-<FeedbackButtons lang="en" slug="item:anthropic-claude-opus-5" client:visible />
+<FeedbackButtons lang="en" slug="item:anthropic-claude-opus-5" />
 
 ## <a href="https://www.anthropic.com/news/hard-questions" target="_blank" rel="noopener noreferrer">Inviting hard questions</a>
 
@@ -112,7 +112,7 @@ Claude Opus 5 is a generational upgrade of Anthropic's Opus high-end large model
 
 This initiative launches a public-facing AI question collection project, the core of which is to collect the most concerned difficult questions about the AI field from the public. It also promises that when conducting research and responding to all collected questions in the future, all work details such as research paths and derivation processes will be fully disclosed, so as to improve the transparency of AI R&D, eliminate information barriers between technology and the public, and promote AI development to adapt to real social concerns.
 
-<FeedbackButtons lang="en" slug="item:anthropic-hard-questions" client:visible />
+<FeedbackButtons lang="en" slug="item:anthropic-hard-questions" />
 
 # Google DeepMind
 
@@ -122,7 +122,7 @@ This initiative launches a public-facing AI question collection project, the cor
 
 This research targets the accessible communication needs of deaf and hard-of-hearing groups, and has developed a breakthrough sign language to text (SL2T) AI model. The core goal is to directly deploy sign language AI capabilities to end-user scenarios that users can directly access, which can support brand-new sign language interaction functions for the hearing-impaired group, effectively break down communication barriers between the hearing-impaired and normal-hearing groups, and realize inclusive implementation of accessible AI technology.
 
-<FeedbackButtons lang="en" slug="item:deepmind-putting-sign-language-ai-into-users-hands" client:visible />
+<FeedbackButtons lang="en" slug="item:deepmind-putting-sign-language-ai-into-users-hands" />
 
 ## <a href="https://deepmind.google/blog/weathernext-ai-model-achieves-breakthrough-in-forecasting-cyclones/" target="_blank" rel="noopener noreferrer">WeatherNext: AI model achieves breakthrough in forecasting cyclones</a>
 
@@ -130,7 +130,7 @@ This research targets the accessible communication needs of deaf and hard-of-hea
 
 The new AI weather model WeatherNext has achieved breakthrough progress in the field of cyclone forecasting: it adopts a high-resolution spatiotemporal sequence learning architecture, integrates multi-source meteorological observation and reanalysis datasets for training. Compared with traditional numerical forecasting, its operation efficiency is increased by dozens of times, the forecast accuracy of cyclone path, intensity and landing time is increased by more than 30%, and it can output high-precision results 7 days in advance, providing key technical support for extreme weather disaster prevention and mitigation.
 
-<FeedbackButtons lang="en" slug="item:deepmind-weathernext-ai-model-achieves-breakthrough-in-forecasting-cyclones" client:visible />
+<FeedbackButtons lang="en" slug="item:deepmind-weathernext-ai-model-achieves-breakthrough-in-forecasting-cyclones" />
 
 # Hugging Face Blog
 
@@ -140,7 +140,7 @@ The new AI weather model WeatherNext has achieved breakthrough progress in the f
 
 This article launches the OlmoEarth embedding service for the geoscience field, which supports users to custom export exclusive embedding vectors adapted to their own needs from the OlmoEarth Studio platform, which can be directly connected to various downstream analysis tasks, eliminating the need for users to train general embedding models from scratch, greatly reducing the technical threshold for AI analysis in geoscience scenarios, and effectively improving the implementation efficiency of tasks such as geoscience classification and anomaly detection.
 
-<FeedbackButtons lang="en" slug="item:hf-blog-olmoearth-embeddings" client:visible />
+<FeedbackButtons lang="en" slug="item:hf-blog-olmoearth-embeddings" />
 
 ## <a href="https://huggingface.co/blog/LiquidAI/lfm2-5-vl-3b" target="_blank" rel="noopener noreferrer">LFM2.5-VL-3B for Better and Faster Vision Capabilities for the Edge</a>
 
@@ -149,7 +149,7 @@ This article launches the OlmoEarth embedding service for the geoscience field, 
 ### Summary
 The newly launched 3B parameter edge multimodal model LFM2.5-VL-3B has targeted optimizations to the visual encoder architecture and cross-modal alignment efficiency. Compared with general multimodal models of the same scale, the accuracy of visual tasks such as image-text understanding, OCR, and visual detection is increased by more than 10% on average, and the inference speed is increased by more than 40%. It can be directly deployed on end-side low-computing-power devices without quantization, adapting to scenarios such as intelligent interaction and industrial inspection.
 
-<FeedbackButtons lang="en" slug="item:hf-blog-lfm2-5-vl-3b" client:visible />
+<FeedbackButtons lang="en" slug="item:hf-blog-lfm2-5-vl-3b" />
 
 # The Gradient
 
@@ -159,7 +159,7 @@ The newly launched 3B parameter edge multimodal model LFM2.5-VL-3B has targeted 
 
 This AI alignment research starts from the perspective of virtue ethics, refutes the common presupposition that "rational agents need to anchor fixed ultimate goals", and points out that the core of human rational action is to adapt to the practical network including action tendencies, evaluation standards and other elements. It proposes that if AI is to cooperate with humans and operate in compliance, its decision-making logic needs to match the practical reasoning paradigm of humans. This idea covers both ethical alignment and core security needs.
 
-<FeedbackButtons lang="en" slug="item:thegradient-virtue-ethics-ai-alignment" client:visible />
+<FeedbackButtons lang="en" slug="item:thegradient-virtue-ethics-ai-alignment" />
 
 # Lil'Log
 
@@ -169,7 +169,7 @@ This AI alignment research starts from the perspective of virtue ethics, refutes
 
 This article sorts out the conceptual evolution of recursive self-improvement (RSI): in 1965, scholar I.J. Good first proposed that superintelligent machines can surpass humans in all intellectual activities, and can also design better machines to complete self-iteration; in 2008, Eliezer Yudkowsky clarified that its core is the feedback loop where AI relies on existing intelligence to optimize its own cognitive mechanism. Currently, such feedback for AI includes both the model directly rewriting its own weights, and broadly covers training pipeline optimization.
 
-<FeedbackButtons lang="en" slug="item:lillog-2026-07-04-harness" client:visible />
+<FeedbackButtons lang="en" slug="item:lillog-2026-07-04-harness" />
 
 # QbitAI
 
@@ -179,7 +179,7 @@ This article sorts out the conceptual evolution of recursive self-improvement (R
 
 Jeff Dean disclosed the details of the last 48 hours before his departure after 27 years at Google at the top conference KDD 2026: he first announced his departure to 139 close colleagues, then to all Google employees, attended a farewell party with 1500 people, stayed up until 2:30 a.m. replying to farewell messages, marked himself as "unemployed" the night he returned his work badge, and took office as co-founder and CEO of the new company Discovery Loop at midnight, with three other core Google researchers starting the business with him.
 
-<FeedbackButtons lang="en" slug="item:qbitai-471254" client:visible />
+<FeedbackButtons lang="en" slug="item:qbitai-471254" />
 
 ## <a href="https://www.qbitai.com/2026/08/471162.html" target="_blank" rel="noopener noreferrer">Anthropic CEO's constant doomsday talk is unbearable for investors</a>
 
@@ -187,7 +187,7 @@ Jeff Dean disclosed the details of the last 48 hours before his departure after 
 
 It is reported that AI company Anthropic will go public at the end of October, with a financing amount that may exceed $60 billion, expected to become the second largest IPO in the world. However, the company's CEO Dario Amodei has long been highly vigilant about AI risks, insisting that safety takes priority over profit. Related conservative operations have caused dissatisfaction among investors, who even question whether he is here to run the company or save the world, asking him to play down AI doomsday risks and talk more about commercialization plans. Currently, the market is already worried about its IPO performance.
 
-<FeedbackButtons lang="en" slug="item:qbitai-471162" client:visible />
+<FeedbackButtons lang="en" slug="item:qbitai-471162" />
 
 ## <a href="https://www.qbitai.com/2026/08/471049.html" target="_blank" rel="noopener noreferrer">Domestic embodied intelligence sets a new global record! Beats Figure AI by 45% efficiency at 30% lower cost, smart embodied brain is the key</a>
 
@@ -195,4 +195,4 @@ It is reported that AI company Anthropic will go public at the end of October, w
 
 Chinese robotics firm Independent Variable publicly livestreamed unsupervised random parcel logistics sorting without human backup, with a measured efficiency of 1816 pieces per hour, 45% higher than the industry record set by US-based Figure AI. The hardware cost of the dual-arm + standard gripper solution is 70% lower, with a sorting accuracy of 98%. The core support is the self-developed WALL-B unified world model, exploring a new path for embodied intelligence development that is cost-effective and easy to scale up.
 
-<FeedbackButtons lang="en" slug="item:qbitai-471049" client:visible />
+<FeedbackButtons lang="en" slug="item:qbitai-471049" />
