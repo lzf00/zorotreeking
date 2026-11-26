@@ -142,7 +142,9 @@ test("界面上必须写出一致预期的时间（106 天的数据不能和 BLS
     "utf8",
   );
   assert.match(dashboard, /describeIsoSnapshot\(macro\?\.consensus\?\.updated_at/, "要算一致预期的年龄");
-  assert.match(dashboard, /consensusAge\.severe/, "陈旧时要在界面上提示");
+  // 第 216 轮：consensusAge 改成挂载后才算（跨天访问否则会 hydration mismatch），
+  // 因此渲染处是可选链；「陈旧必须提示」这条要求本身不变。
+  assert.match(dashboard, /consensusAge\?\.severe/, "陈旧时要在界面上提示");
   const { describeIsoSnapshot } = await import("../src/lib/snapshot-age.ts");
   const stale = describeIsoSnapshot("2026-08-07T13:00:00Z", new Date("2026-11-21T08:00:00Z"), {
     severeAfterDays: 60,

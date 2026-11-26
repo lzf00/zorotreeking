@@ -343,6 +343,36 @@ const SCENARIOS = [
     },
   },
   {
+    // 第 216 轮：上一轮抓到 React #418 的那条场景只覆盖 /invest/ 一个页面。
+    // 但「渲染时读时钟」是一个**类**，不是一处：任何页面只要把 `new Date()` 的结果写进
+    // SSR 文本，就会在「访问时刻 ≠ 构建时刻」时炸。这里把时钟拨后 10 天，逐个打开
+    // 所有带行情/快照的页面，只要哪一页抛 pageerror（#418）就算失败。
+    name: "跨天访问：行情页都不许 hydration 报错",
+    url: "/",
+    initScript: `{
+      // 比构建时刻晚 10 天：快照必然「不是今天」，任何在渲染里算新鲜度的写法都会露馅
+      const real = Date.now();
+      const fixed = real + 10 * 24 * 3600 * 1000;
+      const RealDate = Date;
+      class FakeDate extends RealDate {
+        constructor(...a) { super(...(a.length ? a : [fixed])); }
+        static now() { return fixed; }
+      }
+      window.Date = FakeDate;
+    }`,
+    async run({ page, fail }) {
+      const base = new URL(page.url()).origin;
+      for (const route of ["/", "/invest/", "/invest/etf/", "/invest/us-market/"]) {
+        await page.goto(new URL(route, base).href, { waitUntil: "networkidle" });
+        await page.waitForTimeout(1200);
+      }
+      // 断言由外层统一做：任何一次导航里的 pageerror / console.error 都会累积成失败。
+      // 这里只额外确认页面真的渲染了内容（防止 goto 失败却静默通过）。
+      const text = await page.locator("main").first().innerText().catch(() => "");
+      if (text.trim().length < 50) return fail("跨天访问时页面没渲染出内容");
+    },
+  },
+  {
     name: "ETF 页：成交表由 SSR 直出（不再先画 360px 骨架屏）",
     url: "/invest/etf/",
     async run({ page, fail }) {

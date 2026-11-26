@@ -27,10 +27,22 @@ const CLOCK_STRINGS = [
   "（已收盘）",
   "（回退缓存）",
   "刷新中…",
+  // 第 216 轮：兜底快照的新鲜度后缀。它在第 209 轮被写进 SSR，只在"快照日期 == 构建日期"
+  // 的日子炸出 React #418（每天上午），下午重跑就绿 —— 典型假信号。这里把它钉进黑名单。
+  "（非今日）",
 ];
 
-/** 允许出现在 SSR 里的例外（页面路径 + 文案）。目前没有。 */
-const ALLOW = [];
+/**
+ * 允许出现在 SSR 里的例外（页面路径片段 + 文案）。
+ *
+ * 判断标准：这页是**纯静态文档**，那句话是给人读的说明文字，不是由时钟渲染出来的内容 ——
+ * 静态页没有水合，也就不存在 SSR/client 不一致。
+ */
+const ALLOW = [
+  // 更新日志与「现在」页在讲第 215/216 轮这件事，正文里必然出现这个词
+  ["changelog/index.html", "（非今日）"],
+  ["now/index.html", "（非今日）"],
+];
 
 async function* walk(dir) {
   for (const entry of await readdir(dir, { withFileTypes: true })) {

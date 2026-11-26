@@ -715,3 +715,18 @@
 - **验证**：门禁 1018 通过 / 0 失败；`check:interactions` 19/19（含"跨时段访问不报 hydration 错误"）。
 - **仍未解（需你/服务器）**：nginx 三项、39 期/300 条摘要（需 LLM key）、内联 CSS 外链化、
   `/opt/wind-recap` 副本同步、giscus App 安装。
+
+## 第 216 轮
+
+- **修（自伤，第 116/215 轮同类）**：`/invest/us-market/` 有三处在渲染里读时钟
+  （`formatQuoteTime` 的「（今天）／（N 天前）」、一致预期年龄、两段 stale 快照说明），
+  跨天访问必然 React #418。改成挂载后再算，首帧用与时钟无关的 `absoluteStamp`。
+  这是上一轮那个 bug 的同类第二例 —— 旧场景只覆盖 `/invest/`，所以一直没暴露。
+- **加（类级护栏）**：
+  - `check:interactions` 新增场景「跨天访问：行情页都不许 hydration 报错」：时钟拨后 10 天，
+    依次打开 `/`、`/invest/`、`/invest/etf/`、`/invest/us-market/`，任何 pageerror 即失败；
+  - `check:ssr-clock` 黑名单补「（非今日）」（原来只认几条已知文案）；
+  - 测试 2 条：黑名单必须含它、`UsMarketDashboard` 全文只允许一次 `Date.now()`。
+- **验证**：门禁绿灯；交互自检 20/20（含新场景）；构建 1299 页 SSR 里无时钟文案。
+- **仍未解（需你/服务器）**：nginx 三项、39 期/300 条摘要（需 LLM key）、内联 CSS 外链化、
+  `/opt/wind-recap` 副本同步、giscus App 安装。

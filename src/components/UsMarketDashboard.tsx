@@ -46,11 +46,15 @@ function formatPrice(value: number | null): string {
     : "—";
 }
 
-function formatQuoteTime(value: number | null | undefined): string {
+function formatQuoteTime(value: number | null | undefined, nowMs: number | null): string {
   if (!finite(value)) return "—";
   // 只写"08/11 22:00"看不出是今年还是去年，更看不出是 101 天前（第 116 轮）。
   // 金融页面上把旧行情当前行情展示，比没有行情更糟。
-  return describeSnapshot(value).text;
+  //
+  // 第 216 轮：「（今天）／（N 天前）」是**读时钟**算出来的。它在 SSR 里算一次、客户端再算一次，
+  // 跨过零点（或读者在别的时区）就会不一致 → React #418，每次访问一条红字。
+  // 所以首帧只给与时钟无关的绝对日期，挂载后再升级成相对时间。
+  return nowMs === null ? absoluteStamp(value) : describeSnapshot(value, nowMs).text;
 }
 
 function metricDirection(metric: MacroComparison): "down" | "up" | "flat" {
@@ -244,6 +248,9 @@ export default function UsMarketDashboard({ initialData = null }: Props) {
   const [data, setData] = useState<UsMarketDashboardData | null>(initialData);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  // 第 216 轮：所有「多久以前」文案都等挂载后再算，避免 SSR 与客户端跨天不一致（React #418）
+  const [nowMs, setNowMs] = useState<number | null>(null);
+  useEffect(() => setNowMs(Date.now()), []);
   const inFlight = useRef(false);
 
   const load = useCallback(async () => {
@@ -284,9 +291,9 @@ export default function UsMarketDashboard({ initialData = null }: Props) {
   const macro = data?.macro;
   // 一致预期（Trading Economics）是独立于 BLS 的一块：它停在 2026-08-07，
   // 而 BLS 实际值每周都在更新 —— 不写出来，读者会把三个月前的预期当成当前的。
-  const consensusAge = describeIsoSnapshot(macro?.consensus?.updated_at ?? null, Date.now(), {
-    severeAfterDays: 60,
-  });
+  const consensusAge = nowMs === null
+    ? null
+    : describeIsoSnapshot(macro?.consensus?.updated_at ?? null, nowMs, { severeAfterDays: 60 });
   const market = data?.market;
   const judgement = useMemo(() => deriveUsMacroJudgement({
     cpi: macro?.cpi ?? emptyMetric,
@@ -388,7 +395,7 @@ export default function UsMarketDashboard({ initialData = null }: Props) {
             <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#64748b] dark:text-[#94a3b8]">Market Benchmarks</p>
             <h2 id="us-indices-title" className="mt-1 text-2xl font-semibold tracking-tight">美股大盘</h2>
           </div>
-          <span className="font-mono text-[10px] text-[var(--text-tertiary)]">延迟行情 · {formatQuoteTime(market?.quote_ts)}</span>
+          <span className="font-mono text-[10px] text-[var(--text-tertiary)]">延迟行情 · {formatQuoteTime(market?.quote_ts, nowMs)}</span>
         </div>
         {market ? (
           <div className="grid grid-cols-1 gap-5 border-y border-slate-900/10 py-5 dark:border-white/10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-0">
@@ -426,7 +433,7 @@ export default function UsMarketDashboard({ initialData = null }: Props) {
           {macro?.consensus?.source && <> · 一致预期：<a className="underline decoration-current/30 underline-offset-2 hover:text-[var(--text)]" href={macro.consensus.source_url ?? "https://tradingeconomics.com/united-states/calendar"} target="_blank" rel="noreferrer">{macro.consensus.source}</a>
             {/* 第 159 轮：一致预期停在 2026-08-07（106 天），但界面只写了个来源链接，
                 读者会以为它和旁边的 BLS 实际值一样新。陈旧要写在数字旁边。 */}
-            {consensusAge.severe && <span className="ml-1 text-amber-700 dark:text-amber-400">（数据为 {consensusAge.text}）</span>}
+            {consensusAge?.severe && <span className="ml-1 text-amber-700 dark:text-amber-400">（数据为 {consensusAge.text}）</span>}
           </>}
           {market && <> · 行情：<a className="underline decoration-current/30 underline-offset-2 hover:text-[var(--text)]" href={market.source_url} target="_blank" rel="noreferrer">东方财富公开延迟行情</a></>}。
         </p>
@@ -435,7 +442,9 @@ export default function UsMarketDashboard({ initialData = null }: Props) {
           {/* 第 116 轮：以前只写"当前使用最近一次成功缓存"，读者会当成几分钟前的缓存。
               实际这份兜底数据和 BLS 宏观块停在 2026-08-11（101 天前）。时间要写出来。 */}
           {market?.stale && (() => {
-            const snap = describeSnapshot(market?.quote_ts ?? data.ts);
+            const snap = nowMs === null
+              ? { text: absoluteStamp(market?.quote_ts ?? data.ts), severe: false }
+              : describeSnapshot(market?.quote_ts ?? data.ts, nowMs);
             return (
               <span className="mr-2 text-amber-700 dark:text-amber-400">
                 行情为 {snap.text} 的缓存快照{snap.severe ? "，不是当前行情" : ""}。
@@ -443,7 +452,9 @@ export default function UsMarketDashboard({ initialData = null }: Props) {
             );
           })()}
           {macro?.stale && (() => {
-            const snap = describeSnapshot(macro.fetched_at);
+            const snap = nowMs === null
+              ? { text: absoluteStamp(macro.fetched_at), severe: false }
+              : describeSnapshot(macro.fetched_at, nowMs);
             return (
               <span className="mr-2 text-amber-700 dark:text-amber-400">
                 宏观数据自 {snap.text} 起未更新{snap.severe ? "，CPI/非农的参考期可能已过时" : ""}。
