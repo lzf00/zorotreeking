@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { formatChinaMarketTime, isChinaATradingHours } from "@/lib/china-market";
+import { formatChinaMarketTime, formatSnapshotWithFreshness, isChinaATradingHours } from "@/lib/china-market";
 import { classifyLaggingSectors } from "@/lib/market-quality";
 import { marketLabels, sectorName, type MarketLang, type MarketLabels } from "@/lib/market-i18n";
 import { humanizeMarketError } from "@/lib/api-error";
@@ -127,7 +127,11 @@ export default function SectorRanking({ initialData, lang = "zh" }: Props = {}) 
       <p className="mt-3 text-[11px] text-[var(--text-tertiary)] font-mono">
         {L.sourcePrefix}
         {sectorSourceLabel(data, L)} · {L.sectorCount(String(data.total ?? "?"))} ·{" "}
-        {data.ts ? `${data.stale ? L.snapshotTime : L.apiResponse} ${formatChinaMarketTime(data.ts)}` : L.none}
+        {data.ts
+          ? `${data.stale ? L.snapshotTime : L.apiResponse} ${
+              data.stale ? formatSnapshotWithFreshness(data.ts) : formatChinaMarketTime(data.ts)
+            }`
+          : L.none}
         {data.stale && <span className="ml-2 text-amber-700 dark:text-amber-400">{L.liveNotUpdated}</span>}
       </p>
     </div>

@@ -18,6 +18,7 @@ import { normalizeVerificationToken } from "@/lib/site-verification";
 import { breadcrumbJsonLd, buildBreadcrumb } from "@/lib/breadcrumbs";
 import serifFontUrl from "../assets/fonts/instrument-serif-400-latin.woff2?url";
 import bodyFontUrl from "../assets/fonts/inter-100-900-latin.woff2?url";
+import { autoKindOfPath } from "@/lib/auto-content";
 
 interface Props {
   title?: string;
@@ -89,6 +90,14 @@ const siteName = "ZoroTreeking";
 // 有 1200×630 的 .og.jpg 派生图就优先用它，避免几个 MB 的原图当分享卡。
 const social = resolveSocialImage([ogImage], { width: ogImageWidth, height: ogImageHeight });
 const socialImage = social.src;
+// 自动生成的内容：署名的人仍然是站长的"发布者"身份，但要让结构化数据也知道
+// 文字是流程产出的（contributor），而不是假装人写的（第 210 轮）。
+const autoKind = autoKindOfPath(Astro.url.pathname);
+const autoContributor = {
+  "@type": "Organization",
+  name: "ZoroTreeking 自动整理流程",
+  url: new URL("/about", Astro.site).toString(),
+};
 const author = {
   "@type": "Person",
   name: "Zifei Liu",
@@ -108,6 +117,7 @@ if (ogType === "article") {
     datePublished: publishedTime?.toISOString(),
     dateModified: (modifiedTime ?? publishedTime)?.toISOString(),
     author,
+    ...(autoKind ? { contributor: autoContributor } : {}),
     publisher: { "@type": "Organization", name: siteName, url: Astro.site?.toString() },
     mainEntityOfPage: { "@type": "WebPage", "@id": canonicalUrl },
     keywords: tags?.join(", "),

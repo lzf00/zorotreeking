@@ -5,6 +5,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import StarRating from "@/components/StarRating";
 import TOC from "@/components/TOC.astro";
 import TagChip from "@/components/TagChip.astro";
+import AutoDisclosure from "@/components/AutoDisclosure.astro";
 import Giscus from "@/components/Giscus.astro";
 import PostFooter from "@/components/PostFooter.astro";
 import ReadingProgress from "@/components/ReadingProgress.astro";
@@ -20,6 +21,7 @@ import { DIGEST_AI_HEADINGS, CONTENT_AI_HEADINGS } from "@/lib/prose-headings";
 import { digestDescription, weeklyDescription } from "@/lib/descriptions";
 import { coverageNotice, digestCoverage } from "@/lib/digest-coverage";
 import { cjkLeaks, untranslatedNotice } from "@/lib/i18n-leaks";
+import { autoKindOfPost } from "@/lib/auto-content";
 
 // 日报正文的标题降过一级（h2 分组 / h3 条目），普通文章保持 h1/h2
 
@@ -34,6 +36,8 @@ const coversByKey = coverByTranslationKey(await getCollection("ai"));
 const { entry, all } = Astro.props;
 const { Content, headings } = await render(entry);
 const lang = "en" as const;
+// 自动产出的日报/复盘要说清楚（第 210 轮）
+const autoKind = autoKindOfPost({ translationKey: entry.data.translationKey, tags: entry.data.tags });
 const t = useTranslations(lang);
 const readMins = estimateReadingTime(entry.body ?? "");
 
@@ -98,6 +102,7 @@ const untranslated = untranslatedNotice(cjkLeaks(entry.body ?? ""));
         <span>{readMins} {t("post.readTime")}</span>
         {entry.data.tags.map((tag) => <TagChip tag={tag} lang={lang} />)}
       </div>
+      {autoKind && <AutoDisclosure kind={autoKind} lang={"en"} />}
     </header>
 
     <div class={`prose prose-zinc dark:prose-invert max-w-none

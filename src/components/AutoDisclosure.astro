@@ -1,0 +1,18 @@
+---
+/**
+ * 自动生成内容的署名声明（第 210 轮）。
+ * 放在文章头部 byline 之后，一句话说清"谁生成的、能信到什么程度"。
+ */
+import { autoDisclosure, type AutoKind } from "@/lib/auto-content";
+
+interface Props { kind: AutoKind; lang?: "zh" | "en" }
+const { kind, lang = "zh" } = Astro.props;
+const copy = autoDisclosure(kind, lang);
+---
+<p
+  data-auto-disclosure={kind}
+  class="mt-6 border-l-2 border-amber-400/60 bg-amber-50/40 dark:bg-amber-950/20 py-2 pl-3 pr-2 text-[12.5px] leading-relaxed text-zinc-600 dark:text-zinc-400"
+>
+  <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-amber-700 dark:text-amber-400 mr-2">{copy.label}</span>
+  {copy.text}
+</p>

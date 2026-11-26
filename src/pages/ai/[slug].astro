@@ -19,6 +19,8 @@ import { coverByTranslationKey } from "@/lib/social-image";
 import { DIGEST_AI_HEADINGS, CONTENT_AI_HEADINGS } from "@/lib/prose-headings";
 import { digestDescription, weeklyDescription } from "@/lib/descriptions";
 import { coverageNotice, digestCoverage } from "@/lib/digest-coverage";
+import AutoDisclosure from "@/components/AutoDisclosure.astro";
+import { autoKindOfPost } from "@/lib/auto-content";
 
 // 日报正文的标题降过一级（h2 分组 / h3 条目），普通文章保持 h1/h2
 
@@ -39,6 +41,8 @@ const readMins = estimateReadingTime(entry.body ?? "");
 const { prev, next } = getAdjacentPosts(entry as any, all as any);
 const related = getRelatedPosts(entry as any, all as any, 3);
 const isDigest = (entry.data.tags ?? []).includes("digest") || entry.data.translationKey.startsWith("digest-");
+// 自动产出的日报/周报要在页面上说清楚（第 210 轮）
+const autoKind = autoKindOfPost({ translationKey: entry.data.translationKey, tags: entry.data.tags });
 // 日报正文标题降过一级，普通文章保持原样
 const headingClasses = isDigest
   ? DIGEST_AI_HEADINGS
@@ -95,6 +99,7 @@ const coverageText = digestCoverageInfo ? coverageNotice(digestCoverageInfo, lan
         <span>{readMins} {t("post.readTime")}</span>
         {entry.data.tags.map((tag) => <TagChip tag={tag} lang={lang} />)}
       </div>
+      {autoKind && <AutoDisclosure kind={autoKind} lang={lang} />}
     </header>
 
     <div class={`prose prose-zinc dark:prose-invert max-w-none

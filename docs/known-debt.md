@@ -609,3 +609,20 @@
 - **核实（不需要修）**：前端用到的 `/api/*` 全部在线可用 —— `/api/models`、`/api/guestbook`、
   `/api/feedback`、`/api/data/me` 均 200；`/api/track` 对 GET 返回 405（本就只收 POST）、
   `/api/admin/*` 返回 401（本就要求后台鉴权），都是正确行为。
+
+## 第 210 轮
+
+- **修（诚实性）**：自动生成的内容在页面上没有任何说明。实测 193 篇 AI 日报里 173 篇、
+  23 篇周报全部、以及全部投资日报/复盘在**正文**里都没有「自动生成」字样（投资复盘有，
+  AI 日报没有），读者只能从一个英文标签「auto」猜；同时 JSON-LD 里 author 一律是
+  `Person: Zifei Liu`，把机器整理的文字标成个人署名。
+  新增 `src/lib/auto-content.ts`（只按 URL 前缀 + frontmatter 标签判定，不猜措辞）、
+  `AutoDisclosure.astro`、四个文章模板（中英 × AI/投资）已挂；JSON-LD 加
+  `contributor: Organization 自动整理流程`，`author` 仍是站长（对发布负责）。
+  新增 `scripts/check-auto-disclosure.mjs` 进闸门（双向：自动页面必须有声明，
+  人写页面不许有），`tests/auto-disclosure.test.ts` 9 条。
+  全站 1068 个自动页面已全部带声明。
+- **本轮自伤（已修）**：第一版只改了中文两个模板，闸门一跑就抓到 534 个英文页漏声明
+  —— 英文站是另外四个模板。这正是"闸门扫构建产物"而不是"扫源码"的价值。
+- **仍未处理（服务端/权限）**：giscus App 安装、nginx 三条必须修 + 三条建议、
+  `/opt/wind-recap` 副本同步、39 期/300 条摘要（需 LLM key）。
