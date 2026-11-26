@@ -55,6 +55,27 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: node scripts/publish-freshness-issue.mjs
 
+      # 第 213 轮：上面那步只看「仓库里有没有今天的稿子」。2026-11-24/25 的两次停更里，
+      # 稿子其实**都在**仓库里，是部署被单元测试拦下 —— 所有看门狗因此全绿，线上两天没更新。
+      # 「写了」和「发了」是两件事，这里补后者。
+      - name: Fail the run when the site is older than the content
+        if: always()
+        run: |
+          set +e
+          node scripts/check-deploy-freshness.mjs | tee /tmp/deploy-freshness.log
+          code=${PIPESTATUS[0]}
+          {
+            echo '### 部署新鲜度（内容是进了仓库，还是也上线了）'
+            echo ''
+            echo '```'
+            cat /tmp/deploy-freshness.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          if [ "$code" -ne 0 ]; then
+            echo "::error::内容进了仓库但没上线 —— 部署流水线可能被拦住了（看 daily-digest 的 deploy job）"
+          fi
+          exit "$code"
+
       - name: Fail the run when a stream is stale
         if: always()
         run: |

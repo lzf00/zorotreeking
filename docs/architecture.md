@@ -796,6 +796,66 @@ Lighthouse 不吃这一套 —— 同样的假红会从别的审计工具反复�
 "看起来像既有页面"的新模板，就必须把它录入对应的规则集（这一轮把两个搜索页都加进了
 `check:a11y` 的规则集与门禁快检，快检路径 8 条正好到上限）。
 
+### 「写了」和「发了」是两件事（第 213 轮）
+
+11-26 早上查当天日报没出现，顺手查 GitHub Actions：`daily-digest` 在 11-24、11-25 连续四次
+失败，最后一次成功是 11-23。抓取 job 全绿（内容已 commit 进 main），失败在被调用的
+`deploy.yml` 的 `Unit and guard tests` —— **内容进了仓库、整站没上线，线上停在两天前**。
+
+那两天里所有看门狗都是绿的：`check-freshness` 数的是 `src/content/` 文件名（稿子在，绿）；
+部署成功时才写的 `content/freshness` status（run 失败，没跑到，也就没人红）；可用性巡检看的是
+"站点活着吗"（活着，只是旧）。三处都在测「今天有没有写」，没有一处测「今天有没有发」。
+
+新增 `scripts/check-deploy-freshness.mjs`（本地 `npm run check:deploy-freshness`），一起判三件事：
+仓库最新内容日期 vs 线上 `deploy-meta.json` 构建日期、线上最新一期的实际状态（404/5xx）、
+距上次构建时长（>30h 说明部署流水线本身停了）。判定挂在 `freshness-watch.yml`，失败即 job 红。
+
+匿名 API 只够看 run 列表和 job 步骤，日志要 admin 权限，于是又用 `git worktree` 把失败 commit
+（7166188e）在本地复现了一遍，才拿到具体是哪两条断言红的。
+
+### 一句好心的声明，把 1068 个页面的搜索结果挤成了免责声明（第 212 轮）
+
+第 210/211 轮的自动声明与机翻声明进了 pagefind 索引：搜「自动整理」时命中片段是那句免责声明，
+同一句样板还在 1068 个页面上，凭空成了全站共享关键词。给内容加"元信息"时要想到它会不会变成内容
+—— 搜索索引看见的不分正文和告示。两个声明块加 `data-pagefind-ignore` 后实测「措辞可能有偏移」
+从有结果变 0；`check-auto-disclosure` / `check-translation-notice` 各加一条"声明必须被排除索引"。
+试着把"样板词结果必须为 0"做成闸门时放弃了：pagefind 对中文是分词匹配，会假失败。
+
+### 通顺的机翻比没翻完的更容易骗人（第 211 轮）
+
+第 121 轮只标注了"英文页里还剩大段中文"。可真正的常态是另一半：537 篇英文文章翻得挺通顺，
+读者一句怪话都看不到，于是以为措辞是作者选的。`MACHINE_TRANSLATION_NOTICE` +
+`TranslationNotice.astro`（含中文原文入口）挂到三个英文文章模板，JSON-LD 加
+`translationOfWork`；`check-translation-notice.mjs` 双向校验（英文页必须有、中文原文页不许有）。
+两处自伤：空壳 `{"@type":"Article"}` 让 SEO 校验按 Article 必填项报了 537 次；
+嵌套 `inLanguage` 又让每页多一条语言不一致告警。
+
+### 机器整理的 1068 个页面，没一句说明（第 210 轮）
+
+AI 日报、投资日报、投资复盘、周报共 1068 个页面由脚本产出，页面上没有任何标记说明它们不是人写的。
+`src/lib/auto-content.ts` 给出判定与中英文案，`AutoDisclosure.astro` 渲染声明，
+BaseLayout 在 JSON-LD 里加 `contributor`（保持 `author` 是站长：责任在人）；
+`check-auto-disclosure.mjs` 双向校验。第一次实现只改了中文两套模板，闸门立刻报
+"534 个英文页缺声明" —— 这正是"必须校验构建产物而不是源码"的理由。
+
+### 兜底快照只有时分秒，看不出是不是今天的（第 209 轮）
+
+`/invest/` 的板块快照在实时接口失败时显示「快照时间 16:30:23」，没有日期。快照可以很旧，
+读者没法判断。`formatSnapshotWithFreshness` 补上日期，非今日时追加「（非今日）」；
+实时数据仍只显示时分秒。
+
+### 跨域 iframe 里的 404，父页面永远看不见（第 208 轮）
+
+`/guestbook/` 的 giscus 评论框请求 `giscus.app/api/discussions` 稳定 404（仓库已开
+Discussions，是 GitHub App 没装）。iframe 跨域 + CORS 只给 giscus.app，客户端检测不了，
+于是改成 CI 探针（`check-giscus.mjs`，warn only）+ 页面上写清"显示不出来就用留言板或邮件"。
+
+### 后端报错不该变成读者眼里的 Python 堆栈（第 207 轮）
+
+六个行情组件把 `d.error` 原样显示，读者看到 `RemoteDisconnected: Remote end closed
+connection without response`。`humanizeMarketError()` 把限流/超时/上游不可达翻成
+「请求太频繁」「行情源暂时连不上」，原始文本只进 console。
+
 ### 首屏头条不是"最长的文章"，而是"人写的文章"（第 206 轮）
 
 线上实测：`/` 首屏第一张精选卡是 **2026-11-18 的股票日报**，而当天站点已经有 11-25 的内容。

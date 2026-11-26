@@ -664,3 +664,24 @@
   `/en/ai/digest-2026-11-25/`（覆盖机翻声明 + 自动声明），18 次检查 0 失败。
 - **放弃的方案**：把「样板词搜索结果必须为 0」做成闸门 —— `pagefind` 对中文是分词匹配，
   即便样板已排除索引，某些中文短语仍会返回无关结果，做成断言只会产生假失败。
+
+## 第 213 轮
+
+- **查实（重要）**：`daily-digest` 在 2026-11-24、11-25 各两次、共四次失败。抓取 job 成功
+  （日报内容已 commit 进 main），失败在 `deploy.yml` 的 `Unit and guard tests` ——
+  **内容进了仓库、整站没上线，线上停在两天前，而所有看门狗都是绿的**。
+  匿名 GitHub API 只够查 run 列表与 job 步骤（日志需 admin 权限，读不到），
+  于是又在本地 `git worktree` 里把失败 commit（7166188e）复现了一遍，拿到具体断言。
+- **修（新增测量）**：`scripts/check-deploy-freshness.mjs` + `tests/deploy-freshness.test.ts`（9 条），
+  接进 `freshness-watch.yml`（失败即红 + step summary）。三件事一起判：内容日期 vs 构建日期、
+  最新一期线上状态、距上次构建时长。历史事故在本地跑出来是「仓库 11-25 / 线上构建 11-23 / 两期 404」。
+- **已收敛（不再是问题）**：那次失败的两条断言都是内容状态断言。`finance-names` 的内容断言已
+  移出 `npm test`（等价检查留在 `check:content-quality`，CI 只告警）；`known-debt` 的数字由
+  `pretest` 的 `sync-known-debt.mjs` 自动对齐。HEAD 上同类内容全部通过。
+- **本轮自伤（已修）**：第 207–212 轮我每轮都用脚本把新小节插到 `docs/architecture.md` 的
+  某个"上一轮标题"之前，而那些标题其实不存在（第 210 轮那节也没写进去）→ `str.replace`
+  静默 no-op，六轮说明全部丢失，脚本还照样打印"已补"。现已补回 207–213 七节，
+  并把"锚点必须 assert、不许静默 no-op"写进 `docs/operations.md`。
+- **观察**：截至 09:30 北京时，2026-11-26 的日报仍未生成；11-25 的两个 cron 都没创建 run。
+  属调度延迟/队列，未判定为故障。若 24 小时内无产出，需要人工在 Actions 里手动
+  `workflow_dispatch` 一次 `daily-digest`。
