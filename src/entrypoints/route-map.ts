@@ -1,4 +1,6 @@
-import "leaflet/dist/leaflet.css";
+import leafletCssUrl from "leaflet/dist/leaflet.css?url";
+
+import { loadStylesheet } from "../lib/lazy-css";
 
 import type { AliRoadLabel } from "../data/ali-road-geometry";
 import type { AliRouteDay, AliRoutePoint, AliRoutePointKind } from "../data/ali-route";
@@ -379,7 +381,8 @@ async function renderOpenStreetMap(
   roadLabels: AliRoadLabel[],
   routedDayGeometry: Record<number, [number, number][]>,
 ) {
-  const L = await import("leaflet");
+  // Leaflet 的样式随底图一起按需加载：不滚到地图的读者不该为它付 HTML 体积。
+  const [L] = await Promise.all([import("leaflet"), loadStylesheet(leafletCssUrl)]);
   const { pointById, dayNumbersByPoint } = getRouteIndexes(points, days);
 
   const map = L.map(element, {

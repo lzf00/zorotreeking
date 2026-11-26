@@ -807,6 +807,33 @@ Lighthouse 不吃这一套 —— 同样的假红会从别的审计工具反复�
 同样在检查内容文件，同样会红。这一轮把两条都改成 `--non-blocking`：检查照跑、`::warning`
 注解照发、失败项照列，只是不返回非零。CI 侧本来就是 `continue-on-error`，两边终于一致。
 
+### 只在交互后才需要的 CSS，不该写进首屏（第 231 轮）
+
+`inlineStylesheets: "always"` 是量出来的有意选择（内联比外链快），但它会把**所有**静态
+import 的 CSS 塞进 HTML。问题在于不是所有 CSS 都属于首屏：
+
+| 样式表 | 谁在什么时候用 | 之前的状态 |
+|---|---|---|
+| `leaflet/dist/leaflet.css` 14.9 KB | 滚到地图、点「加载交互地图」时 | 内联进 **16 个页面**的 HTML（8 路书页 + 2 轨迹页 + 6 相册页） |
+| `photoswipe/style.css` 4.4 KB | 点开大图时 | 内联进 6 个相册页 |
+
+做法：`import url from "xxx.css?url"`（Vite 资产 URL，不进 CSS 打包）+ 统一用
+`src/lib/lazy-css.ts` 的 `loadStylesheet(href)` 在真正要用之前插 `<link>` 并等加载完成。
+
+| 页面 | HTML | gzip |
+|---|---|---|
+| `/hike/travel/ali-grand-loop-2026/` | 215.0 → **200.2 KB** | 59.1 → **52.8 KB** |
+| `/photo/baokemeng/` | 190 KB → **171.4 KB** | 40.7 → **29.3 KB** |
+| `/hike/sample-route/` | 157 KB → **140.5 KB** | — |
+| `/photo/`（索引页，本来就没这俩样式） | 126 KB 不变 | 26.0 KB |
+
+顺序是硬要求：**先 `await loadStylesheet` 再 `L.map()`**，否则底图会先以无样式状态闪一下。
+相册页的灯箱同理，先等样式再 `new PhotoSwipeLightbox`。
+
+踩坑（值得单列）：第一版把两个 import 写在了 `PhotoGallery.astro` 的 **frontmatter** 里，
+`<script>` 里直接引用 —— Astro 的 frontmatter 变量不会进客户端脚本，构建和 `tsc` **都不报错**，
+产物里只剩两个自由变量，只有在用户点开大图时才 `ReferenceError`。现在
+`tests/lazy-css.test.ts` 直接断言「import 必须在 `<script>` 里、且加载先于初始化」。
 ### 给原生代码套了一层 React（第 230 轮）
 
 8 个路书页的地图岛 `AliRouteMap.tsx` 有 554 行，其中约 470 行是**纯命令式**的

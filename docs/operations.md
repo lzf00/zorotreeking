@@ -103,6 +103,23 @@
 | `npm run gate` | 带 `--non-blocking`，只警告不拦 |
 | `deploy.yml` | `continue-on-error: true` + annotation |
 
+## 交互后才用的 CSS：`src/lib/lazy-css.ts`（第 231 轮）
+
+判据很简单：**这段样式在用户没有交互之前有没有用？** 没有就不要静态 import。
+
+```ts
+import leafletCssUrl from "leaflet/dist/leaflet.css?url";
+import { loadStylesheet } from "@/lib/lazy-css";
+
+await loadStylesheet(leafletCssUrl);   // 再去 new L.map() / 建灯箱
+```
+
+- 必须写在 `<script>` / 客户端模块里，**不能写在 .astro 的 frontmatter**：那边的变量进不了
+  浏览器，构建和 `tsc` 都不报错，只有真机点开时才炸（第 231 轮踩过）。
+- 门禁：`tests/lazy-css.test.ts` 会拦「静态 import Leaflet/PhotoSwipe 样式」和「先建实例后加载样式」。
+- 排查线上是否生效：页面 HTML 里搜不到 `.leaflet-pane` / `.pswp__`，`dist/_astro/` 下多出
+  独立的 `leaflet.<hash>.css`、`photoswipe.<hash>.css`。
+
 ## 路书地图数据：`/data/ali-route/<slug>.json`（第 229 轮）
 
 8 个路书页的地图几何不进 HTML 了，改成构建期由 `src/pages/data/ali-route/[key].json.ts`

@@ -394,8 +394,14 @@ test("the original Ali roadbook stays independent while retaining the complete m
   assert.match(atlas, /重点峰体/);
   assert.match(atlas, /逐日道路、节点、补给与退出条件/);
   assert.match(map, /tile\.openstreetmap\.org/);
-  assert.match(map, /^import "leaflet\/dist\/leaflet\.css";/m);
-  assert.doesNotMatch(map, /await import\("leaflet\/dist\/leaflet\.css"\)/);
+  // 第 231 轮：Leaflet 样式不再静态 import（那会被 inlineStylesheets:"always" 塞进每页 HTML），
+  // 改成 `?url` + 运行期插 <link>，并且必须在创建地图之前就位。
+  assert.match(map, /import leafletCssUrl from "leaflet\/dist\/leaflet\.css\?url"/);
+  assert.match(map, /loadStylesheet\(leafletCssUrl\)/);
+  assert.doesNotMatch(map, /^import "leaflet\/dist\/leaflet\.css";/m);
+  const cssLoadAt = map.indexOf("loadStylesheet(leafletCssUrl)");
+  const mapAt = map.indexOf("const map = L.map(");
+  assert.ok(cssLoadAt > 0 && mapAt > cssLoadAt, "要先等样式加载完再建地图，否则底图会闪一下没样式");
   // 第 230 轮：地图不再是 React 岛，外壳是 Astro、绘制是原生模块。
   // 先去掉注释再断言 —— 文件头注释里会写「上一版是 client:visible」，直接匹配会误报（第 228 轮踩过）。
   const shellCode = mapShell.replace(/\/\*[\s\S]*?\*\//g, "").replace(/<!--[\s\S]*?-->/g, "");

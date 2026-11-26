@@ -19,7 +19,10 @@
  */
 import { buildSrcSet, galleryVariants, lightboxVariants } from "@/lib/photo-srcset";
 import { photoAlt } from "@/lib/photo-manifests";
-import "photoswipe/style.css";
+// PhotoSwipe 的样式只有点开大图才用得上：不静态 import（那会被 inlineStylesheets:"always"
+// 塞进每一张相册页的 HTML，约 5 KB），改成 `?url` 拿资产地址、灯箱启动前再插 <link>。
+// ⚠️ 这两个 import 必须写在下面的 <script> 里 —— frontmatter 的变量不会进客户端脚本，
+// 写在这里会让浏览器里的 `loadStylesheet` / `photoswipeCssUrl` 变成未定义（第 231 轮踩过）。
 
 type Exif = {
   camera?: string;
@@ -123,6 +126,10 @@ const SIZES = "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw";
 </div>
 
 <script>
+  import photoswipeCssUrl from "photoswipe/style.css?url";
+
+  import { loadStylesheet } from "@/lib/lazy-css";
+
   type Exif = Record<string, string | number | undefined>;
 
   function formatExifLine(exif?: Exif): string {
@@ -173,6 +180,7 @@ const SIZES = "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw";
         const [{ default: PhotoSwipeLightbox }] = await Promise.all([
           import("photoswipe/lightbox"),
           import("photoswipe"),
+          loadStylesheet(photoswipeCssUrl),
         ]);
         lightbox = new PhotoSwipeLightbox({
           gallery: `#${galleryId}`,

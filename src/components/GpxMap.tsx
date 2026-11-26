@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { trackPreview } from "@/lib/gpx-preview";
+import { loadStylesheet } from "@/lib/lazy-css";
+import leafletCssUrl from "leaflet/dist/leaflet.css?url";
 
 type Point = { lat: number; lng: number; ele?: number };
 
@@ -36,7 +38,7 @@ export default function GpxMap({ points, height = 360, lang = "zh" }: Props) {
 
     (async () => {
       const L = await import("leaflet");
-      await import("leaflet/dist/leaflet.css");
+      await loadStylesheet(leafletCssUrl);
       if (cancelled || !ref.current) return;
 
       map = L.map(ref.current, { scrollWheelZoom: false, attributionControl: true });

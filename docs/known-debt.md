@@ -958,3 +958,22 @@
 - **仍未解（需你/服务器）**：nginx 三项、39 期摘要（需 LLM key）、giscus App、
   `/opt/wind-recap` 副本、留言时区、`/invest/` 系列与搜索面板的 React 运行时（202 KB）——
   后者要不要走 Preact 兼容层仍需你定。
+
+## 第 231 轮
+
+- **改（性能）**：交互后才需要的第三方 CSS 改为运行期注入（`src/lib/lazy-css.ts` + `?url`）。
+  Leaflet（14.9 KB）不再内联进 16 个页面，PhotoSwipe（4.4 KB）不再内联进 6 个相册页。
+  页重：路书页 215 → 200 KB（gzip 59.1 → 52.8）、相册页 190 → 171 KB（gzip 40.7 → 29.3）、
+  轨迹页 157 → 140 KB。真机行为已验：相册灯箱 `position:fixed/z-index:100000`、关闭按钮在、
+  Esc 后移除；路书页 47 标记 + 9 瓦片；GpxMap 点「加载交互地图」后 6 瓦片 3 条轨迹线。
+- **踩坑（自伤，已修）**：第一版把 `?url` 与 `loadStylesheet` 的 import 写在
+  `PhotoGallery.astro` 的 frontmatter 里，`<script>` 里直接用 —— Astro 不把 frontmatter
+  变量注入客户端脚本，构建不报错、`tsc` 也不报错，产物里只是两个自由变量，只有点开灯箱
+  才 `ReferenceError`。是「产物里找不到 `.pswp__` 样式」这一步把它抓出来的。
+  现在 `tests/lazy-css.test.ts` 断言 import 在 `<script>` 内且加载先于初始化。
+- **注意**：相册页在空闲预热时（`requestIdleCallback`）会把 PhotoSwipe + 其样式一起拉下来，
+  所以这 4.4 KB 只是「不在首屏 HTML 里」，不是「永不下载」；真正的净收益来自 Leaflet 那 14.9 KB。
+- **仍未解**：路书页内联 CSS 仍有 126 KB（路线详情样式），相册页 96 KB——都在
+  120 KB 预算线附近，属于页面自身内容，暂不动。
+- **仍未解（需你/服务器）**：nginx 三项、39 期摘要（需 LLM key）、giscus App、
+  `/opt/wind-recap` 副本、留言时区、`/invest/` 系列与搜索面板的 202 KB React 运行时。

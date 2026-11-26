@@ -1,5 +1,7 @@
 import { useEffect, useRef } from "react";
 import { normalizeSameOriginUrl } from "@/lib/safe-url";
+import { loadStylesheet } from "@/lib/lazy-css";
+import leafletCssUrl from "leaflet/dist/leaflet.css?url";
 
 /**
  * /photo/[slug] 页用：把相册里有 GPS 的照片标在 leaflet 小地图上。
@@ -28,7 +30,7 @@ export default function PhotoMap({ points }: Props) {
 
     (async () => {
       const L = (await import("leaflet")).default;
-      await import("leaflet/dist/leaflet.css");
+      await loadStylesheet(leafletCssUrl);
       if (!alive || !ref.current) return;
 
       const map = L.map(ref.current, {
