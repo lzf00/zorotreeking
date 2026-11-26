@@ -1,23 +1,8 @@
-import { useEffect, useRef, useState } from "react";
 import "leaflet/dist/leaflet.css";
 
-import type { AliRoadLabel } from "../../data/ali-road-geometry";
-import type { AliRouteDay, AliRoutePoint, AliRoutePointKind } from "../../data/ali-route";
-import { toAmapPosition } from "../../utils/amap-coordinate";
-
-interface Props {
-  /**
-   * 路线数据（points / days / roadLabels / routedDayGeometry）的静态 JSON 地址，
-   * 由 `src/pages/data/ali-route/[key].json.ts` 在构建期生成。
-   *
-   * 为什么不作为 props 传（第 229 轮）：Astro 的 island props 序列化会把每个数组/对象包成
-   * `[类型, 值]` 二元组，单页实测 47–84 KB HTML —— gzip 后仍占整页 20–25 KB，而这些页面
-   * 整页 gzip 只有 55–80 KB。地图本来就在首屏之外（client:visible），数据也没必要跟着
-   * 首屏 HTML 一起下。改成一个 fetch，顺手还能让 8 个页面共享浏览器缓存。
-   */
-  dataUrl: string;
-  mapAriaLabel?: string;
-}
+import type { AliRoadLabel } from "../data/ali-road-geometry";
+import type { AliRouteDay, AliRoutePoint, AliRoutePointKind } from "../data/ali-route";
+import { toAmapPosition } from "../utils/amap-coordinate";
 
 interface RouteData {
   points: AliRoutePoint[];
@@ -44,6 +29,8 @@ function parseRouteData(raw: string): RouteData {
 }
 
 type MapProvider = "loading" | "amap" | "osm";
+/** AMap 的 OverlayGroup 句柄；不再用 React ref，拿一个普通对象当持有者。 */
+type LayerGroupHolder = { current: Partial<Record<LayerKey, AMapOverlayGroup>> };
 type LayerKey = "roads" | "routes" | "places";
 
 interface AMapOverlayGroup {
@@ -238,7 +225,7 @@ async function renderAmap(
   days: AliRouteDay[],
   roadLabels: AliRoadLabel[],
   routedDayGeometry: Record<number, [number, number][]>,
-  layerGroups: React.RefObject<Partial<Record<LayerKey, AMapOverlayGroup>>>,
+  layerGroups: LayerGroupHolder,
 ) {
   const { pointById, dayNumbersByPoint } = getRouteIndexes(points, days);
   const map = new AMap.Map(element, {
@@ -484,122 +471,95 @@ async function renderOpenStreetMap(
   return () => map.remove();
 }
 
-export default function AliRouteMap({
-  dataUrl,
-  mapAriaLabel = "旅行路线真实底图，包含道路拟合线、公路编号、每日路线、途经城市、景点、补给点与住宿点",
-}: Props) {
-  const mapElement = useRef<HTMLDivElement>(null);
-  const amapLayerGroups = useRef<Partial<Record<LayerKey, AMapOverlayGroup>>>({});
-  const [provider, setProvider] = useState<MapProvider>("loading");
-  const [route, setRoute] = useState<RouteData | null>(null);
-  const [loadError, setLoadError] = useState(false);
+const PROVIDER_TEXT: Record<MapProvider, string> = {
+  loading: "地图正在加载",
+  amap: "高德地图官方底图",
+  osm: "OpenStreetMap 备用底图",
+};
 
-  // 数据按需取：地图进入可视区、面板挂载之后才发这一个请求。
-  useEffect(() => {
-    let cancelled = false;
-    const controller = new AbortController();
-    (async () => {
-      try {
-        const response = await fetch(dataUrl, { signal: controller.signal, credentials: "same-origin" });
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const raw = await response.text();
-        if (!cancelled) setRoute(parseRouteData(raw));
-      } catch (error) {
-        if (cancelled || controller.signal.aborted) return;
-        console.error("[AliRouteMap] 路线数据加载失败", error);
-        setLoadError(true);
-      }
-    })();
-    return () => {
-      cancelled = true;
-      controller.abort();
-    };
-  }, [dataUrl]);
+/**
+ * 把一个已经服务端渲染好的地图外壳接管起来（第 230 轮）。
+ *
+ * 上一版这里是 React 岛：8 个路书页为了一个「滚到才画」的地图，各自拉 202 KB 的
+ * React 运行时。地图的所有绘制本来就是命令式的 AMap / Leaflet 调用，React 只负责
+ * 一个 provider 状态和一个图层开关 —— 换成直接改 DOM 就够了。
+ *
+ * 数据仍然按需取（`/data/ali-route/<slug>.json`），只有外壳滚进可视区才调用本函数。
+ */
+export function mountRouteMap(shell: HTMLElement): () => void {
+  const mapElement = shell.querySelector<HTMLElement>(".ali-route-map");
+  const label = shell.querySelector<HTMLElement>("[data-provider-label]");
+  const layerControl = shell.querySelector<HTMLDetailsElement>(".ali-amap-layer-control");
+  const dataUrl = shell.dataset.dataUrl ?? "";
+  if (!mapElement) return () => {};
 
-  const { points, days, roadLabels, routedDayGeometry } = route ?? EMPTY_ROUTE;
+  const layerGroups: LayerGroupHolder = { current: {} };
+  let disposed = false;
+  let disposeMap: (() => void) | undefined;
+  const controller = new AbortController();
 
-  useEffect(() => {
-    if (!mapElement.current || points.length === 0) return;
-    let cancelled = false;
-    let disposeMap: (() => void) | undefined;
+  const setProvider = (provider: MapProvider, errorText?: string) => {
+    if (disposed) return;
+    shell.dataset.mapProvider = provider;
+    if (label) label.textContent = errorText ?? PROVIDER_TEXT[provider];
+    if (layerControl) layerControl.hidden = provider !== "amap";
+  };
 
-    void (async () => {
-      const element = mapElement.current;
-      if (!element) return;
-      try {
-        if (!AMAP_JS_KEY || !AMAP_SECURITY_CODE) throw new Error("高德地图配置未提供");
-        const AMap = await loadAmapSdk();
-        if (cancelled) return;
-        disposeMap = await renderAmap(
-          element,
-          AMap,
-          points,
-          days,
-          roadLabels,
-          routedDayGeometry,
-          amapLayerGroups,
-        );
-        setProvider("amap");
-      } catch (error) {
-        if (cancelled) return;
-        console.info("[AliRouteMap] 高德地图不可用，已切换 OpenStreetMap 备用底图。", error);
-        disposeMap?.();
-        element.replaceChildren();
-        disposeMap = await renderOpenStreetMap(
-          element,
-          points,
-          days,
-          roadLabels,
-          routedDayGeometry,
-        );
-        if (!cancelled) setProvider("osm");
-        else disposeMap();
-      }
-    })();
+  (async () => {
+    let route: RouteData | null = null;
+    try {
+      const response = await fetch(dataUrl, { signal: controller.signal, credentials: "same-origin" });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      route = parseRouteData(await response.text());
+    } catch (error) {
+      if (disposed || controller.signal.aborted) return;
+      console.error("[AliRouteMap] 路线数据加载失败", error);
+      setProvider("loading", "路线数据加载失败，刷新页面可重试");
+      return;
+    }
+    if (disposed) return;
+    const { points, days, roadLabels, routedDayGeometry } = route;
 
-    return () => {
-      cancelled = true;
+    try {
+      if (!AMAP_JS_KEY || !AMAP_SECURITY_CODE) throw new Error("高德地图配置未提供");
+      const AMap = await loadAmapSdk();
+      if (disposed) return;
+      disposeMap = await renderAmap(mapElement, AMap, points, days, roadLabels, routedDayGeometry, layerGroups);
+      setProvider("amap");
+    } catch (error) {
+      if (disposed) return;
       disposeMap?.();
-    };
-  }, [days, points, roadLabels, routedDayGeometry]);
+      disposeMap = undefined;
+      mapElement.replaceChildren();
+      console.info("[AliRouteMap] 高德地图不可用，已切换 OpenStreetMap 备用底图。", error);
+      try {
+        disposeMap = await renderOpenStreetMap(mapElement, points, days, roadLabels, routedDayGeometry);
+        setProvider("osm");
+      } catch (fallbackError) {
+        console.error("[AliRouteMap] 备用底图也失败了", fallbackError);
+        setProvider("loading", "地图加载失败，请稍后刷新");
+      }
+    }
+  })();
 
-  function toggleAmapLayer(layer: LayerKey, visible: boolean) {
-    const group = amapLayerGroups.current[layer];
+  // 高德地图的图层开关：SSR 时是 <details hidden>，真用上高德才显示。
+  const onLayerToggle = (event: Event) => {
+    const input = event.target as HTMLInputElement | null;
+    const key = input?.dataset.layer as LayerKey | undefined;
+    if (!input || !key) return;
+    const group = layerGroups.current[key];
     if (!group) return;
-    if (visible) group.show();
+    if (input.checked) group.show();
     else group.hide();
-  }
+  };
+  layerControl?.addEventListener("change", onLayerToggle);
 
-  const providerLabel = loadError
-    ? "路线数据加载失败，刷新页面可重试"
-    : provider === "amap"
-      ? "高德地图官方底图"
-      : provider === "osm"
-        ? "OpenStreetMap 备用底图"
-        : "地图正在加载";
-
-  return (
-    <div className="ali-route-map-shell" data-map-provider={provider}>
-      <div
-        ref={mapElement}
-        className="ali-route-map"
-        role="region"
-        aria-label={mapAriaLabel}
-      />
-      {provider === "amap" && (
-        <details className="ali-amap-layer-control">
-          <summary>图层设置</summary>
-          <fieldset aria-label="地图图层开关">
-            <legend className="sr-only">地图图层开关</legend>
-            <label><input type="checkbox" defaultChecked onChange={(event) => toggleAmapLayer("roads", event.currentTarget.checked)} />公路走向与编号</label>
-            <label><input type="checkbox" defaultChecked onChange={(event) => toggleAmapLayer("routes", event.currentTarget.checked)} />逐日行驶路线</label>
-            <label><input type="checkbox" defaultChecked onChange={(event) => toggleAmapLayer("places", event.currentTarget.checked)} />城市、景点与补给</label>
-          </fieldset>
-        </details>
-      )}
-      <p className="ali-route-map-help" aria-live="polite">
-        <strong>{providerLabel}</strong> · 拖动查看 · 点击公路牌或地点查看详情 · 已关闭滚轮缩放
-      </p>
-    </div>
-  );
+  return () => {
+    disposed = true;
+    controller.abort();
+    layerControl?.removeEventListener("change", onLayerToggle);
+    layerGroups.current = {};
+    disposeMap?.();
+    disposeMap = undefined;
+  };
 }

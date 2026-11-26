@@ -807,6 +807,32 @@ Lighthouse 不吃这一套 —— 同样的假红会从别的审计工具反复�
 同样在检查内容文件，同样会红。这一轮把两条都改成 `--non-blocking`：检查照跑、`::warning`
 注解照发、失败项照列，只是不返回非零。CI 侧本来就是 `continue-on-error`，两边终于一致。
 
+### 给原生代码套了一层 React（第 230 轮）
+
+8 个路书页的地图岛 `AliRouteMap.tsx` 有 554 行，其中约 470 行是**纯命令式**的
+AMap / Leaflet 绘制代码（`createPopup`、`renderAmap`、`renderOpenStreetMap`、
+`loadAmapSdk`……），React 只负责三件事：一个 `provider` 状态、一个图层开关的点击、
+一个 `useRef` 装 OverlayGroup。读者第一次滚到地图时，要先下载 **202 KB 的 React 运行时**
+才能让这些原生函数跑起来。
+
+改成 Astro 外壳 + 按需动态 import 的原生模块：
+
+| 指标 | 改前（React 岛） | 改后（Astro + 原生） |
+|---|---|---|
+| 8 个路书页的 React 岛数量 | 各 1 个 | **0 个** |
+| 首屏 JS | 21 KB（含 React 预载与岛运行时） | **8 KB** |
+| 滚到地图后的追加 JS | ≈250 KB（React 202 + 岛 chunk + Leaflet） | **153 KB**（route-map chunk + Leaflet） |
+| 页面上是否出现 `/_astro/client.*.js` / react 请求 | 是 | **0 个请求** |
+| HTML gzip | 48–61 KB | 43–59 KB（少了一截岛 runtime 与 props） |
+
+模式与第 228 轮相册页一致：SSR 出外壳 → `IntersectionObserver` 等滚到可视区 →
+`await import("@/entrypoints/route-map")` → `mountRouteMap(shell)` 接管 DOM。
+不滚到地图的读者：不下载 React、不下载 Leaflet、不下载路线几何，一分钱不付。
+
+顺带修掉一条**基线漂移**：`scripts/page-weight-baseline.json` 里这 8 页还登记着改前的
+重量（如 273 KB / gzip 73.6 KB），漂移上限是按登记值算的 —— 不刷新基线，这些页面以后
+长回去 10% 都不会报警。这次改成实测值（187 KB / gzip 46.7 KB），理由保留「内联 CSS 超预算」
+（Leaflet 的地图控件样式还内联在页面里，是下一块）。
 ### 路书页三分之一的首屏是地图数据（第 229 轮）
 
 8 个阿里/川西路书页的 HTML gzip 是 48–80 KB，其中 **6–25 KB 是地图数据**——路线几何

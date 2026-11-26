@@ -368,11 +368,12 @@ test("Lhasa to Lanzhou guide is integrated into hike and has a dedicated shareab
 });
 
 test("the original Ali roadbook stays independent while retaining the complete map implementation", async () => {
-  const [section, component, atlas, map] = await Promise.all([
+  const [section, component, atlas, mapShell, map] = await Promise.all([
     readFile(new URL("../src/pages/hike/index.astro", import.meta.url), "utf8"),
     readFile(new URL("../src/components/travel/AliGrandLoopGuide.astro", import.meta.url), "utf8"),
     readFile(new URL("../src/components/travel/AliRouteOverview.astro", import.meta.url), "utf8"),
-    readFile(new URL("../src/components/travel/AliRouteMap.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../src/components/travel/AliRouteMap.astro", import.meta.url), "utf8"),
+    readFile(new URL("../src/entrypoints/route-map.ts", import.meta.url), "utf8"),
   ]);
 
   assert.doesNotMatch(section, /<AliGrandLoopGuide \/>/);
@@ -395,11 +396,28 @@ test("the original Ali roadbook stays independent while retaining the complete m
   assert.match(map, /tile\.openstreetmap\.org/);
   assert.match(map, /^import "leaflet\/dist\/leaflet\.css";/m);
   assert.doesNotMatch(map, /await import\("leaflet\/dist\/leaflet\.css"\)/);
+  // 第 230 轮：地图不再是 React 岛，外壳是 Astro、绘制是原生模块。
+  // 先去掉注释再断言 —— 文件头注释里会写「上一版是 client:visible」，直接匹配会误报（第 228 轮踩过）。
+  const shellCode = mapShell.replace(/\/\*[\s\S]*?\*\//g, "").replace(/<!--[\s\S]*?-->/g, "");
+  assert.doesNotMatch(shellCode, /client:/, "地图外壳不允许再用 client:* 指令");
+  assert.doesNotMatch(map, /from "react"|require\("react"\)/, "地图模块不许再依赖 React");
+  assert.match(shellCode, /import\("@\/entrypoints\/route-map"\)/, "地图模块必须按需动态 import");
+  assert.match(shellCode, /IntersectionObserver/, "滚到可视区才加载");
+  assert.match(shellCode, /data-route-map/);
+  assert.match(map, /export function mountRouteMap/);
+  // 不许残留旧实现：地图一旦又变回 React 岛，这条守卫会先红。
+  await assert.rejects(
+    readFile(new URL("../src/components/travel/AliRouteMap.tsx", import.meta.url), "utf8"),
+    "AliRouteMap.tsx 应该已被 AliRouteMap.astro 取代",
+  );
   assert.match(map, /OpenStreetMap contributors/);
   assert.match(map, /webapi\.amap\.com\/maps\?v=2\.0/);
   assert.match(map, /PUBLIC_AMAP_JS_KEY/);
   assert.match(map, /PUBLIC_AMAP_SECURITY_CODE/);
-  assert.match(map, /data-map-provider/);
+  // provider 状态落在外壳的 data-map-provider 上（CSS 和集成测试都读这个属性），
+  // 第 230 轮由原生模块写入：`shell.dataset.mapProvider = ...`。
+  assert.match(mapShell, /data-map-provider="loading"/);
+  assert.match(map, /dataset\.mapProvider = provider/);
   assert.match(map, /securitypolicyviolation/);
   assert.match(map, /高德地图 Web Worker 被 CSP 阻止/);
   // 第 229 轮：路线几何不再进 HTML（Astro 的 props 序列化会把数组套成二元组，

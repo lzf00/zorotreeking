@@ -112,8 +112,12 @@
 ls dist/data/ali-route/            # 构建后应有 8 个 .json
 ```
 
-- 地图岛是 `client:visible`，**滚进可视区才 fetch**；不滚到地图的读者不付这 20 KB。
+- 地图外壳是 Astro（`AliRouteMap.astro`），绘制逻辑在 `src/entrypoints/route-map.ts`，
+  由 `IntersectionObserver` 在**滚进可视区**时动态 import；不滚到地图的读者不下载
+  React（已无）、Leaflet、也不下载这份 JSON。
 - 新增线路要同时改三处：数据模块、`route-datasets.ts` 的 key、对应 Overview 的 `dataKey`。
+- 排障：地图空白先看外壳的 `data-map-provider`（`loading` / `amap` / `osm`）；
+  再确认 `/data/ali-route/<key>.json` 是否 200 —— 数据文件名就是页面 slug。
 - 改完量一下 `gzip` 体积而不是原始 HTML：`[0,[...]]` 这种外壳压得下去，
   真正占字节的是坐标数字（第 229 轮踩过：原始 84→50 KB，gzip 只省 1 KB）。
 

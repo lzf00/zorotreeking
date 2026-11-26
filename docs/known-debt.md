@@ -935,3 +935,26 @@
 - **下一块（需要你定方向）**：`/invest/` 系列 6 个岛 + React 运行时 202 KB（`/invest/` 516 KB、
   `/search/` 460 KB、`/guestbook/` 432 KB）。要么逐个改原生（每轮一个，像相册页），
   要么换 Preact 兼容层（202 → ~30 KB，但 recharts 图表和 Leaflet 有兼容风险）。
+
+## 第 230 轮
+
+- **改（性能/结构）**：8 个路书页的地图从 React 岛改成 Astro 外壳 + 按需原生模块
+  （`src/components/travel/AliRouteMap.astro` + `src/entrypoints/route-map.ts`，旧的
+  `AliRouteMap.tsx` 删除）。这些页面 React 岛数量 1 → **0**，首屏 JS 21 → **8 KB**，
+  滚到地图后追加 JS ≈250 → **153 KB**，页面不再请求任何 React chunk。
+  实测（Playwright 本地）：0 个 react 请求、provider=osm、折线 3 条、标记 47–54 个、无 pageerror。
+- **改（门禁）**：刷新 `scripts/page-weight-baseline.json` 里 8 个路书页的登记值
+  （273 KB → 187 KB 等）。旧值偏大，等于给这些页面留了 10% 的隐形额度；
+  漂移上限必须按真实重量算，否则「变轻了」反而成了后面变重的掩护。
+- **踩坑（已修）**：新测试断言「外壳里不许有 client:」时，先被文件头注释里的
+  「上一版是 client:visible」误伤 —— 第 228 轮踩过同一个坑（注释里提到禁用词）。
+  教训：断言「某写法不许出现」之前，先把注释剥掉。
+- **踩坑（小）**：`hike-travel.test.ts` 里断言 `data-map-provider` 出现，但改成原生模块后
+  这个属性由 `shell.dataset.mapProvider` 写入，源文件里搜不到字面量；已改为分别断言
+  外壳里的初始属性和模块里的赋值语句。
+- **仍未解**：路书页内联 CSS 126–141 KB（Leaflet 地图控件样式 + 路线详情样式）
+  仍超 120 KB 预算，是这些页面剩下的主要成本；下一步可以把 Leaflet CSS 挪出内联
+  （运行时注入 `<link>`），预计每页省 ~14 KB raw / ~3 KB gzip。
+- **仍未解（需你/服务器）**：nginx 三项、39 期摘要（需 LLM key）、giscus App、
+  `/opt/wind-recap` 副本、留言时区、`/invest/` 系列与搜索面板的 React 运行时（202 KB）——
+  后者要不要走 Preact 兼容层仍需你定。

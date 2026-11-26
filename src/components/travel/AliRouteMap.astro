@@ -1,0 +1,87 @@
+---
+/**
+ * 路书地图外壳（第 230 轮：从 React 岛改成 Astro + 原生模块）。
+ *
+ * 上一版这里是 `AliRouteMap.tsx` + `client:visible`：8 个路书页为了一个「滚到才画」的
+ * 地图，各自要先拉 202 KB 的 React 运行时。可地图的绘制本来就是命令式的 AMap /
+ * Leaflet 调用，React 只承担一个 provider 状态和一个图层开关 —— 这部分直接用 DOM
+ * 做就够了，留着 React 等于给原生代码套壳。
+ *
+ * 现在：服务端渲染表格化的外壳（地图容器、图层开关、状态行），客户端脚本只做两件事：
+ *   1. 用 IntersectionObserver 等地图滚进可视区；
+ *   2. 那时才动态 import `@/entrypoints/route-map`（连带 Leaflet 的 CSS 一起按需加载），
+ *      由它取 `/data/ali-route/<slug>.json` 再画图。
+ *
+ * 不滚到地图的读者：既不下载 React，也不下载 Leaflet，也不下载路线几何。
+ */
+interface Props {
+  /** 路线数据地址，由 `src/pages/data/ali-route/[key].json.ts` 在构建期生成 */
+  dataUrl: string;
+  mapAriaLabel?: string;
+}
+
+const {
+  dataUrl,
+  mapAriaLabel = "旅行路线真实底图，包含道路拟合线、公路编号、每日路线、途经城市、景点、补给点与住宿点",
+} = Astro.props;
+---
+
+<div class="ali-route-map-shell" data-map-provider="loading" data-route-map data-data-url={dataUrl}>
+  <div class="ali-route-map" role="region" aria-label={mapAriaLabel}></div>
+  {/* 只有真正用上高德底图时才显示（原生脚本会把 hidden 摘掉）；OSM 用自己的图层控件。 */}
+  <details class="ali-amap-layer-control" hidden>
+    <summary>图层设置</summary>
+    <fieldset aria-label="地图图层开关">
+      <legend class="sr-only">地图图层开关</legend>
+      <label><input type="checkbox" data-layer="roads" checked />公路走向与编号</label>
+      <label><input type="checkbox" data-layer="routes" checked />逐日行驶路线</label>
+      <label><input type="checkbox" data-layer="places" checked />城市、景点与补给</label>
+    </fieldset>
+  </details>
+  <p class="ali-route-map-help" aria-live="polite">
+    <strong data-provider-label>地图正在加载</strong> · 拖动查看 · 点击公路牌或地点查看详情 · 已关闭滚轮缩放
+  </p>
+</div>
+
+<script>
+  import type { mountRouteMap as MountRouteMap } from "@/entrypoints/route-map";
+
+  type Loader = typeof MountRouteMap;
+  let loading: Promise<Loader> | undefined;
+
+  // 地图模块里有 AMap SDK 加载器、Leaflet 和路线几何解析，只有真要画地图时才值得下载。
+  const loadModule = () => (loading ??= import("@/entrypoints/route-map").then((m) => m.mountRouteMap));
+
+  const mount = (shell: HTMLElement) => {
+    if (shell.dataset.routeMapReady === "true") return;
+    shell.dataset.routeMapReady = "true";
+    void loadModule()
+      .then((mountRouteMap) => mountRouteMap(shell))
+      .catch((error) => {
+        delete shell.dataset.routeMapReady;
+        console.error("[AliRouteMap] 地图模块加载失败", error);
+        const label = shell.querySelector<HTMLElement>("[data-provider-label]");
+        if (label) label.textContent = "地图加载失败，请稍后刷新";
+      });
+  };
+
+  const shells = document.querySelectorAll<HTMLElement>("[data-route-map]");
+  if (shells.length > 0) {
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            observer.unobserve(entry.target);
+            mount(entry.target as HTMLElement);
+          }
+        },
+        // 提前 400px 起步，滚到地图时底图基本已经在路上
+        { rootMargin: "400px 0px" },
+      );
+      shells.forEach((shell) => observer.observe(shell));
+    } else {
+      shells.forEach((shell) => mount(shell));
+    }
+  }
+</script>

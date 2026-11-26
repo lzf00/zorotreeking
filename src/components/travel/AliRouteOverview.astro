@@ -1,5 +1,5 @@
 ---
-import AliRouteMap from "./AliRouteMap";
+import AliRouteMap from "./AliRouteMap.astro";
 import {
   aliRoadLabels,
   aliRoutedDayGeometry,
@@ -117,8 +117,9 @@ const reservationStatusClass = {
       </div>
       {/* 第 229 轮：路线几何不再塞进 HTML（Astro 的 props 序列化会把数组套成二元组，
           单页 props 47–84 KB、gzip 后仍占整页 20–25 KB）。地图滚进可视区时才去取
-          /data/ali-route/<key>.json，不滚到地图的读者一分钱不付。 */}
-      <AliRouteMap client:visible dataUrl={`/data/ali-route/${dataKey}.json`} mapAriaLabel={mapAriaLabel} />
+          /data/ali-route/<key>.json，不滚到地图的读者一分钱不付。
+          第 230 轮：地图本身也不再是 React 岛 —— 见 AliRouteMap.astro 顶部注释。 */}
+      <AliRouteMap dataUrl={`/data/ali-route/${dataKey}.json`} mapAriaLabel={mapAriaLabel} />
       <div class="ali-route-atlas__legend" aria-label="地图图例">
         <span><i class="ali-route-road-swatch"></i>道路拟合</span>
         <span><i class="ali-route-day-swatch"></i>逐日路线</span>
