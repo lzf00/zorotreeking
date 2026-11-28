@@ -1,0 +1,137 @@
+---
+lang: en
+translationKey: digest-2026-11-28
+title: "Daily AI Digest · 2026-11-28"
+description: "12 papers · Multi-source aggregation + AI summarization"
+date: 2026-11-28
+tags: [digest, auto, openai, anthropic, deepmind, hf-blog, lil-log, qbitai]
+category: paper
+cover: "/photos/uploads/baokemeng/baokemeng-47.og.jpg"
+draft: false
+---
+
+import FeedbackButtons from "@/components/FeedbackButtons";
+
+<div className="not-prose my-8 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40">
+  <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500 mb-3 font-mono">TL;DR · 30-second daily recap</div>
+  <ul className="space-y-1.5 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 list-none p-0 m-0">
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">OpenAI and Anthropic announced multiple new business developments, GPT-6 has native protein design capabilities, DeepMind launched multi-domain scientific research achievements</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Hugging Face launched a Trainium3-based video generation solution, and released a llama.cpp benchmark dashboard adapted for AMD</li>
+    <li className="pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-amber-400">Domestic firm Zhongqing opens up its humanoid robot ecosystem with RMB 1 billion in support, SenseTime's intelligent computing receives the highest rating, Wei Dongyi wins top mathematics award</li>
+  </ul>
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🧠 LLM Breakthroughs</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🔬 Cutting-edge Research</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">💻 Open-source Tools</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">🤖 Robot Ecosystem</span>
+    <span className="text-[12px] px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300">⚡ Industry Updates</span>
+  </div>
+</div>
+
+# OpenAI
+
+## <a href="https://openai.com/index/gpt-6-models-demonstrate-intrinsic-protein-design-capabilities" target="_blank" rel="noopener noreferrer">GPT-6 models demonstrate intrinsic protein-design capabilities</a>
+
+*OpenAI*
+
+Recent research confirms that the GPT-6 large model has inherent protein design capabilities: without special adaptation for the protein field, relying solely on its own inference and code generation capabilities, it can complete the design of protein structures and sequences. Laboratory tests show that its designed products for 5 different targets all have clear binding activity detected, providing new possibilities for general large models to be applied in biological R&D scenarios.
+
+<FeedbackButtons lang="en" slug="item:openai-blog-gpt-6-models-demonstrate-intrinsic-protein-design-capabilities" client:visible />
+
+## <a href="https://openai.com/index/searching-for-distant-planets-with-astra" target="_blank" rel="noopener noreferrer">Searching for distant planets with Astra</a>
+
+*OpenAI*
+
+Two amateur astronomers used Codex and Astra tools to mine public observation data from NASA's Kepler and TESS space telescopes, and successfully screened out several potential distant exoplanet candidates. This result confirms that lightweight AI tools can greatly lower the threshold for scientific research access, empower civilian researchers to participate in cutting-edge astronomical exploration, and also provide a feasible new path for digging deeper into the value of public aerospace scientific research data and public participation in exoplanet searches.
+
+<FeedbackButtons lang="en" slug="item:openai-blog-searching-for-distant-planets-with-astra" client:visible />
+
+# Anthropic News
+
+## <a href="https://www.anthropic.com/news/announcements" target="_blank" rel="noopener noreferrer">Announcements</a>
+
+*Anthropic*
+
+This official announcement discloses the core positioning and R&D direction of AI company Anthropic: the company focuses on AI security research, all technology R&D is oriented towards safety as the core, and the current core research goal is to build AI systems with three core characteristics: stable and reliable operation, interpretable decision-making logic, and guidable behavior paths, aiming to explore feasible routes for the safe implementation of general AI technology.
+
+<FeedbackButtons lang="en" slug="item:anthropic-announcements" client:visible />
+
+## <a href="https://www.anthropic.com/news/public-benefit-fund" target="_blank" rel="noopener noreferrer">Investing in the public benefit</a>
+
+*Anthropic*
+
+Leading AI company Anthropic has launched a public benefit investment initiative: it has set up an exclusive public benefit fund, allocated part of the company's shares to the fund, and also set up a special structure that automatically increases the fund's shareholding ratio as the company's development scale expands. This move deeply binds corporate development benefits with public welfare, avoids profit-seeking deviations in AI commercialization, and is an innovative practice for AI companies to explore common benefit governance.
+
+<FeedbackButtons lang="en" slug="item:anthropic-public-benefit-fund" client:visible />
+
+# Google DeepMind
+
+## <a href="https://deepmind.google/blog/interpreting-mass-spectra-with-google-antigravity/" target="_blank" rel="noopener noreferrer">From spectrum to structure: Identifying molecules with Mass Spec Skills for Google Antigravity</a>
+
+*Google DeepMind*
+
+This paper addresses the pain points of traditional mass spectrometry analysis relying on manual experience and low efficiency, and develops the Mass Spec Skills tool adapted for the Google Antigravity platform, which can assist researchers in automatically parsing tandem mass spectrometry data, opening up the identification link from spectra to corresponding molecular structures, effectively improving the efficiency and accuracy of unknown molecule identification, and providing technical support for high-throughput research in scenarios such as metabolomics and natural product analysis.
+
+<FeedbackButtons lang="en" slug="item:deepmind-interpreting-mass-spectra-with-google-antigravity" client:visible />
+
+## <a href="https://deepmind.google/blog/finding-faster-quantum-algorithms-with-agents-and-formal-verification/" target="_blank" rel="noopener noreferrer">Finding faster quantum algorithms with agents and formal verification</a>
+
+*Google DeepMind*
+
+This research focuses on the demand for performance upgrades of quantum algorithms in nuclear fusion and computational chemistry scenarios, and innovatively adopts a technical path of multi-agent team collaborative search combined with formal verification: agents are responsible for exploring a large number of potential algorithm structures, and formal verification checks the correctness of algorithm logic, which can efficiently screen out feasible quantum algorithms with better operation speed, providing support for the implementation of quantum computing in related scenarios.
+
+<FeedbackButtons lang="en" slug="item:deepmind-finding-faster-quantum-algorithms-with-agents-and-formal-verification" client:visible />
+
+# Hugging Face Blog
+
+## <a href="https://huggingface.co/blog/video-trainium3" target="_blank" rel="noopener noreferrer">Taking Trainium3 to the Track: Generating Videos with LTX-2.5</a>
+
+*Hugging Face*
+
+This paper focuses on the pain point of high computing power cost of AI video large models, and verifies the feasibility of adapting AWS Trainium3 dedicated AI chips to the LTX-2.5 video generation model. Through transformations such as custom operator optimization, distributed parallel strategy adaptation, and dynamic video memory scheduling, compared with mainstream GPUs of the same level, training throughput is increased by more than 30%, and inference generation cost is reduced by 40%, providing a new cost-effective computing power path for large-size long video generation.
+
+<FeedbackButtons lang="en" slug="item:hf-blog-video-trainium3" client:visible />
+
+## <a href="https://huggingface.co/blog/ggml-org/llamacpp-amd-bench" target="_blank" rel="noopener noreferrer">Introducing the llama.cpp benchmark dashboard for AMD Ryzen and Radeon</a>
+
+*Hugging Face*
+
+This launch of the llama.cpp benchmark visualization dashboard for AMD Ryzen CPUs and Radeon graphics cards fills the previous gap where llama.cpp lacked a unified tool for summarizing end-side inference performance on the AMD platform. It can automatically aggregate measured data such as large model inference speed and video memory/memory usage under different hardware configurations and model quantization precision, which not only facilitates users to compare the actual performance of running large models on AMD platforms, but also provides data support for the optimization and iteration of llama.cpp on the AMD side.
+
+<FeedbackButtons lang="en" slug="item:hf-blog-llamacpp-amd-bench" client:visible />
+
+# Lil'Log
+
+## <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener noreferrer">Harness Engineering for Self-Improvement</a>
+
+*Lilian Weng*
+
+This article sorts out the conceptual context of Recursive Self-Improvement (RSI): in 1965, scholar Irving John Good first proposed the relevant idea, referring to superhuman intelligent systems that can design better machines on their own to achieve self-iteration; in 2008, Eliezer Yudkowsky clarified that its core is the feedback loop where AI relies on existing intelligence to optimize its own cognitive mechanism. RSI in the current AI context includes both the model directly rewriting its own weights, and can also generally refer to the behavior of optimizing its own training pipeline.
+
+<FeedbackButtons lang="en" slug="item:lillog-2026-07-04-harness" client:visible />
+
+# QbitAI
+
+## <a href="https://www.qbitai.com/2026/11/513352.html" target="_blank" rel="noopener noreferrer">Humanoid robot developers assemble! Zhongqing opens up brain architecture, RMB 1 billion industrial-level ecosystem support plan is also launched</a>
+
+*QbitAI*
+
+On November 25, Zhongqing launched a humanoid robot ecosystem support plan at the 2026 Global Developer Conference: it opens up brain architecture, robots, computing power, data and more than 10 years of R&D experience, unblocks supply and demand docking in the industrial chain, and has also set up a RMB 1 billion special support fund in conjunction with industry parties, focusing on ecological collaboration. It predicts that 2027 will be a key node for the commercialization of humanoid robots, and will work together to promote implementation in multiple scenarios.
+
+<FeedbackButtons lang="en" slug="item:qbitai-513352" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/513346.html" target="_blank" rel="noopener noreferrer">First in the first batch nationwide! SenseTime's large-scale installation wins the highest rating for Token Factory intelligent computing capabilities</a>
+
+*QbitAI*
+
+At the Trusted Token Cloud Service Forum of the 2026 China Hi-Tech Fair on November 27, the China Academy of Information and Communications Technology (CAICT) released China's first Token Factory intelligent computing capability grading evaluation system, carrying out comprehensive evaluation from 5 dimensions and 14 indicators. SenseTime's large-scale installation Token Factory became the first entity in the first batch nationwide to be awarded the highest level of "Full-stack Service Type · Leading Level", its comprehensive strength has been authoritatively recognized, and it also promotes the standardization and standardized development of the Token Factory industry.
+
+<FeedbackButtons lang="en" slug="item:qbitai-513346" client:visible />
+
+## <a href="https://www.qbitai.com/2026/11/513320.html" target="_blank" rel="noopener noreferrer">Wei Dongyi wins another major award! Solved a nearly 140-year-old mathematical problem, nominated by two academicians jointly</a>
+
+*QbitAI*
+
+Peking University researcher Wei Dongyi won this year's Beijing Outstanding Youth Zhongguancun Award, jointly nominated by two academicians of the Chinese Academy of Sciences, with the RMB 500,000 bonus fully awarded to him personally. He and his collaborators solved the nearly 140-year-old unsolved problem in the field of fluid mechanics of the linear stability of Poiseuille flow in pipes under large Reynolds number conditions, and related results have been published in multiple top international mathematics journals. A total of 3 people from Peking University won this award this year.
+
+<FeedbackButtons lang="en" slug="item:qbitai-513320" client:visible />
